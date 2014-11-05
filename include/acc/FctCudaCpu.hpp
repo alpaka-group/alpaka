@@ -24,11 +24,11 @@
 
 // Do not use __device__ or __host__ attributes if we are not compiling with nvcc.
 #if defined ACC_CUDA_ENABLED && defined __CUDACC__
-	#define ACC_FCT_CUDA __device__ __forceinline__
-	#define ACC_FCT_CPU_CUDA __device__ __host__ __forceinline__
-	#define ACC_FCT_CPU __host__ inline
+    #define ACC_FCT_CUDA __device__ __forceinline__
+    #define ACC_FCT_CPU_CUDA __device__ __host__ __forceinline__
+    #define ACC_FCT_CPU __host__ inline
 #else
-	#define ACC_FCT_CUDA inline
-	#define ACC_FCT_CPU_CUDA inline
-	#define ACC_FCT_CPU inline
+    #define ACC_FCT_CUDA inline
+    #define ACC_FCT_CPU_CUDA inline
+    #define ACC_FCT_CPU inline
 #endif

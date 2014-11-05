@@ -24,12 +24,12 @@
 
 namespace acc
 {
-	namespace detail
-	{
-		//#############################################################################
-		//! The kernel executor.
-		//#############################################################################
-		template<typename TAcc, template<typename> class TKernel, typename TWorkSize>
-		class KernelExecutorBuilder;
-	}
+    namespace detail
+    {
+        //#############################################################################
+        //! The kernel executor.
+        //#############################################################################
+        template<typename TAcc, template<typename> class TKernel, typename TWorkSize>
+        class KernelExecutorBuilder;
+    }
 }

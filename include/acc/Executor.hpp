@@ -25,148 +25,148 @@
 #include <acc/IAcc.hpp>
 
 #ifdef ACC_SERIAL_ENABLED
-	#include <acc/AccSerial.hpp>
+    #include <acc/AccSerial.hpp>
 #endif
 #ifdef ACC_THREADS_ENABLED
-	#include <acc/AccThreads.hpp>
+    #include <acc/AccThreads.hpp>
 #endif
 #ifdef ACC_FIBERS_ENABLED
-	#include <acc/AccFibers.hpp>
+    #include <acc/AccFibers.hpp>
 #endif
 #ifdef ACC_OPENMP_ENABLED
-	#include <acc/AccOpenMp.hpp>
+    #include <acc/AccOpenMp.hpp>
 #endif
 #ifdef ACC_CUDA_ENABLED
-	#include <acc/AccCuda.hpp>
+    #include <acc/AccCuda.hpp>
 #endif
 
-#include <ostream>		// std::ostream
+#include <ostream>        // std::ostream
 
 namespace acc
 {
-	//#############################################################################
-	//! Builds a kernel executor.
-	//#############################################################################
-	template<typename TAcc, template<typename> class TKernel, typename TWorkSize>
-	auto buildKernelExecutor(TWorkSize work = TWorkSize()/*, TKernel kernel = TKernel(), TAcc accelerator = TAcc()*/)
-		-> typename std::result_of<detail::KernelExecutorBuilder<TAcc, TKernel, TWorkSize>(TWorkSize/*, TAcc, TKernel*/)>::type
-	{
-		// Use the specialized KernelExecutorBuilder for the given accelerator.
-		return detail::KernelExecutorBuilder<TAcc, TKernel, TWorkSize>()(work /*,kernel, accelerator*/);
-	}
+    //#############################################################################
+    //! Builds a kernel executor.
+    //#############################################################################
+    template<typename TAcc, template<typename> class TKernel, typename TWorkSize>
+    auto buildKernelExecutor(TWorkSize work = TWorkSize()/*, TKernel kernel = TKernel(), TAcc accelerator = TAcc()*/)
+        -> typename std::result_of<detail::KernelExecutorBuilder<TAcc, TKernel, TWorkSize>(TWorkSize/*, TAcc, TKernel*/)>::type
+    {
+        // Use the specialized KernelExecutorBuilder for the given accelerator.
+        return detail::KernelExecutorBuilder<TAcc, TKernel, TWorkSize>()(work /*,kernel, accelerator*/);
+    }
 
-	/*//#############################################################################
-	//! The available accelerator environments.
-	//#############################################################################
-	enum class EAccelerator
-	{
+    /*//#############################################################################
+    //! The available accelerator environments.
+    //#############################################################################
+    enum class EAccelerator
+    {
 #ifdef ACC_SERIAL_ENABLED
-		Serial,
+        Serial,
 #endif
 #ifdef ACC_THREADS_ENABLED
-		Threads,
+        Threads,
 #endif
 #ifdef ACC_FIBERS_ENABLED
-		Fibers,
+        Fibers,
 #endif
 #ifdef ACC_OPENMP_ENABLED
-		OpenMp,
+        OpenMp,
 #endif
 #ifdef ACC_CUDA_ENABLED
-		Cuda,
+        Cuda,
 #endif
-	};
+    };
 
-	//-----------------------------------------------------------------------------
-	//! Stream out the name of the accelerator environment.
-	//-----------------------------------------------------------------------------
-	std::ostream& operator << (std::ostream & os, EAccelerator const & eDevice)
-	{
+    //-----------------------------------------------------------------------------
+    //! Stream out the name of the accelerator environment.
+    //-----------------------------------------------------------------------------
+    std::ostream& operator << (std::ostream & os, EAccelerator const & eDevice)
+    {
 #ifdef ACC_SERIAL_ENABLED
-		if(eDevice == EAccelerator::Serial)
-		{
-			os << "Serial";
-		}
-		else
+        if(eDevice == EAccelerator::Serial)
+        {
+            os << "Serial";
+        }
+        else
 #endif
 #ifdef ACC_THREADS_ENABLED
-		if(eDevice == EAccelerator::Threads)
-		{
-			os << "Threads";
-		}
-		else
+        if(eDevice == EAccelerator::Threads)
+        {
+            os << "Threads";
+        }
+        else
 #endif
 #ifdef ACC_FIBERS_ENABLED
-		if(eDevice == EAccelerator::Fibers)
-		{
-			os << "Fibers";
-		}
-		else
+        if(eDevice == EAccelerator::Fibers)
+        {
+            os << "Fibers";
+        }
+        else
 #endif
 #ifdef ACC_OPENMP_ENABLED
-		if(eDevice == EAccelerator::OpenMp)
-		{
-			os << "OpenMp";
-		}
-		else
+        if(eDevice == EAccelerator::OpenMp)
+        {
+            os << "OpenMp";
+        }
+        else
 #endif
 #ifdef ACC_CUDA_ENABLED
-		if(eDevice == EAccelerator::Cuda)
-		{
-			os << "Cuda";
-		}
-		else
+        if(eDevice == EAccelerator::Cuda)
+        {
+            os << "Cuda";
+        }
+        else
 #endif 
-		{
-			os << "<unknown>";
-		}
-		return os;
-	}*/
+        {
+            os << "<unknown>";
+        }
+        return os;
+    }*/
 
-	//-----------------------------------------------------------------------------
-	//! Builds a kernel executor.
-	//-----------------------------------------------------------------------------
-	/*template<typename TKernel, typename TWorkSize>
-	auto buildKernelExecutor(EAccelerator const eDevice, TWorkSize work = TWorkSize())
-		-> FIXME: What is the return type?
-	{
+    //-----------------------------------------------------------------------------
+    //! Builds a kernel executor.
+    //-----------------------------------------------------------------------------
+    /*template<typename TKernel, typename TWorkSize>
+    auto buildKernelExecutor(EAccelerator const eDevice, TWorkSize work = TWorkSize())
+        -> FIXME: What is the return type?
+    {
 #ifdef ACC_SERIAL_ENABLED
-		if(eDevice == EAccelerator::Serial)
-		{
-			buildKernelExecutor<AccSerial, TKernel>(work);
-		}
-		else
+        if(eDevice == EAccelerator::Serial)
+        {
+            buildKernelExecutor<AccSerial, TKernel>(work);
+        }
+        else
 #endif
 #ifdef ACC_THREADS_ENABLED
-		if(eDevice == EAccelerator::Threads)
-		{
-			buildKernelExecutor<AccThreads, TKernel>(work);
-		}
-		else
+        if(eDevice == EAccelerator::Threads)
+        {
+            buildKernelExecutor<AccThreads, TKernel>(work);
+        }
+        else
 #endif
 #ifdef ACC_FIBERS_ENABLED
-		if(eDevice == EAccelerator::Fibers)
-		{
-			buildKernelExecutor<AccFibers, TKernel>(work);
-		}
-		else
+        if(eDevice == EAccelerator::Fibers)
+        {
+            buildKernelExecutor<AccFibers, TKernel>(work);
+        }
+        else
 #endif
 #ifdef ACC_OPENMP_ENABLED
-		if(eDevice == EAccelerator::OpenMp)
-		{
-			buildKernelExecutor<AccOpenMp, TKernel>(work);
-		}
-		else
+        if(eDevice == EAccelerator::OpenMp)
+        {
+            buildKernelExecutor<AccOpenMp, TKernel>(work);
+        }
+        else
 #endif
 #ifdef ACC_CUDA_ENABLED
-		if(eDevice == EAccelerator::Cuda)
-		{
-			buildKernelExecutor<AccCuda, TKernel>(work);
-		}
-		else
+        if(eDevice == EAccelerator::Cuda)
+        {
+            buildKernelExecutor<AccCuda, TKernel>(work);
+        }
+        else
 #endif 
-		{
-			std::cout << "<unknown accelerator>" << std::endl;
-		}
-	}*/
+        {
+            std::cout << "<unknown accelerator>" << std::endl;
+        }
+    }*/
 }
