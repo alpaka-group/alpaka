@@ -20,15 +20,15 @@
 * If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <acc/IAcc.hpp>            // acc::IAcc<...>
-#include <acc/Executor.hpp>        // acc::buildKernelExecutor<...>
-#include <acc/WorkSize.hpp>        // acc::WorkSizeDefault
+#include <acc/IAcc.hpp>         // acc::IAcc<...>
+#include <acc/Executor.hpp>     // acc::buildKernelExecutor<...>
+#include <acc/WorkSize.hpp>     // acc::WorkSizeDefault
 
-#include <chrono>                // std::chrono::high_resolution_clock
-#include <cassert>                // assert
-#include <iostream>                // std::cout
-#include <vector>                // std::vector
-#include <typeinfo>                // typeid
+#include <chrono>               // std::chrono::high_resolution_clock
+#include <cassert>              // assert
+#include <iostream>             // std::cout
+#include <vector>               // std::vector
+#include <typeinfo>             // typeid
 
 #ifdef ACC_CUDA_ENABLED
     #include <cuda.h>
@@ -36,16 +36,16 @@
 
 //#############################################################################
 //! An accelerated test kernel.
-//! Uses atomicFetchAdd(), syncTileKernels(), shared memory, getIdx, getSize, global memory to compute a (useless) result.
+//! Uses atomicFetchAdd(), syncBlockKernels(), shared memory, getIdx, getSize, global memory to compute a (useless) result.
 //! \param TAcc The accelerator environment to be executed on.
 //
 // NOTE: The weird syntax for 'TAcc::template getSize<...>' is required by standard but not all compilers enforce it.
 // 'TAcc' is required to make the function call dependent so that its resolution is delayed.
 // 'template' is required: http://stackoverflow.com/questions/3786360/confusing-template-error
 //#############################################################################
-template<typename TAcc>
+template<typename TPackedAcc = acc::IAcc<>>
 class ExampleAcceleratedKernel :
-    public TAcc
+    public TPackedAcc
 {
 public:
     //-----------------------------------------------------------------------------
@@ -53,79 +53,79 @@ public:
     //-----------------------------------------------------------------------------
     ACC_FCT_CPU_CUDA void operator()(std::uint32_t * const puiBlockRetVals, std::uint32_t const uiNumUselessWork) const
     {
-        //acc::vec<3> const uiIdxTileKernels(TAcc::template getIdx<acc::Tile, acc::Kernels>());
-        //acc::vec<3> const v3uiSizeTileKernels(TAcc::template getSize<acc::Tile, acc::Kernels>());
-        //acc::vec<3> const v3uiSizeGridTiles(TAcc::template getSize<acc::Grid, acc::Tiles>());
+        //acc::vec<3> const uiIdxBlockKernels(TPackedAcc::template getIdx<acc::Block, acc::Kernels>());
+        //acc::vec<3> const v3uiSizeBlockKernels(TPackedAcc::template getSize<acc::Block, acc::Kernels>());
+        //acc::vec<3> const v3uiSizeGridBlocks(TPackedAcc::template getSize<acc::Grid, acc::Blocks>());
 
         // The number of threads in this block.
-        std::uint32_t const uiNumKernelsInTile(TAcc::template getSize<acc::Tile, acc::Kernels, acc::Linear>());
+        std::uint32_t const uiNumKernelsInBlock(TPackedAcc::template getSize<acc::Block, acc::Kernels, acc::Linear>());
 
         // Get the extern allocated shared memory.
-        std::uint32_t * const pTileShared(TAcc::template getTileSharedExternMem<std::uint32_t>());
+        std::uint32_t * const pBlockShared(TPackedAcc::template getBlockSharedExternMem<std::uint32_t>());
 
-        //std::uint32_t * const pBlockShared1(getTileSharedMem<std::uint32_t, 32>());
-        //std::uint32_t * const pBlockShared2(getTileSharedMem<std::uint32_t, 16>());
+        //std::uint32_t * const pBlockShared1(getBlockSharedMem<std::uint32_t, 32>());
+        //std::uint32_t * const pBlockShared2(getBlockSharedMem<std::uint32_t, 16>());
 
         // Calculate linearized index of the thread in the block.
-        std::uint32_t const uiIdxTileKernelsLin(TAcc::template getIdx<acc::Tile, acc::Kernels, acc::Linear>());
+        std::uint32_t const uiIdxBlockKernelsLin(TPackedAcc::template getIdx<acc::Block, acc::Kernels, acc::Linear>());
 
         // Fill the shared block with the thread ids [1+X, 2+X, 3+X, ..., #Threads+X].
-        std::uint32_t iSum1(uiIdxTileKernelsLin+1);
+        std::uint32_t iSum1(uiIdxBlockKernelsLin+1);
         for(std::uint32_t i(0); i<uiNumUselessWork; ++i)
         {
             iSum1 += i;
         }
-        pTileShared[uiIdxTileKernelsLin] = iSum1;
+        pBlockShared[uiIdxBlockKernelsLin] = iSum1;
 
         // Synchronize all threads because now we are writing to the memory again but inverse.
-        TAcc::syncTileKernels();
+        TPackedAcc::syncBlockKernels();
 
         // Do something useless.
-        std::uint32_t iSum2(uiIdxTileKernelsLin);
+        std::uint32_t iSum2(uiIdxBlockKernelsLin);
         for(std::uint32_t i(0); i<uiNumUselessWork; ++i)
         {
             iSum2 -= i;
         }
 
         // Add the inverse so that every cell is filled with [#Threads, #Threads, ..., #Threads].
-        pTileShared[(uiNumKernelsInTile-1)-uiIdxTileKernelsLin] += iSum2;
+        pBlockShared[(uiNumKernelsInBlock-1)-uiIdxBlockKernelsLin] += iSum2;
 
         // Synchronize all threads again.
-        TAcc::syncTileKernels();
+        TPackedAcc::syncBlockKernels();
 
         // Now add up all the cells atomically and write the result to cell 0 of the shared memory.
-        if(uiIdxTileKernelsLin > 0)
+        if(uiIdxBlockKernelsLin > 0)
         {
-            TAcc::atomicFetchAdd(&pTileShared[0], pTileShared[uiIdxTileKernelsLin]);
+            TPackedAcc::atomicFetchAdd(&pBlockShared[0], pBlockShared[uiIdxBlockKernelsLin]);
         }
 
-        TAcc::syncTileKernels();
+        TPackedAcc::syncBlockKernels();
 
         // Only master writes result to global mem.
-        if(uiIdxTileKernelsLin==0)
+        if(uiIdxBlockKernelsLin==0)
         {
-            //acc::vec<3> const blockIdx(TAcc::getIdxGridTile());
+            //acc::vec<3> const blockIdx(TAcc::getIdxGridBlock());
             // Calculate linearized block id.
-            std::uint32_t const bId(TAcc::template getIdx<acc::Grid, acc::Tiles, acc::Linear>());
+            std::uint32_t const bId(TPackedAcc::template getIdx<acc::Grid, acc::Blocks, acc::Linear>());
 
-            puiBlockRetVals[bId] = pTileShared[0];
+            puiBlockRetVals[bId] = pBlockShared[0];
         }
     }
 
     //-----------------------------------------------------------------------------
     //! \return The size of the shared memory allocated for a block.
     //-----------------------------------------------------------------------------
-    static std::size_t getBlockSharedMemSizeBytes(acc::vec<3> const v3uiSizeTileKernels)
+    static std::size_t getBlockSharedMemSizeBytes(acc::vec<3> const v3uiSizeBlockKernels)
     {
-        return v3uiSizeTileKernels.prod() * sizeof(std::uint32_t);
+        return v3uiSizeBlockKernels.prod() * sizeof(std::uint32_t);
     }
 };
 
 //-----------------------------------------------------------------------------
 //! Profiles the given kernel.
 //-----------------------------------------------------------------------------
-template<typename TAcc, template<typename> class TKernel, typename TWorkSize, typename... TArgs>
-void profileAcceleratedKernel(std::size_t const uiIterations, TWorkSize const & workSize, TArgs && ... args)
+template<typename TAcc, typename TKernel, typename TWorkSize, typename... TArgs>
+void profileAcceleratedKernel(TKernel kernel, std::size_t const uiIterations, TWorkSize const & workSize, TArgs && ... args)
 {
     std::cout
         << "profileAcceleratedKernel("
@@ -140,7 +140,7 @@ void profileAcceleratedKernel(std::size_t const uiIterations, TWorkSize const & 
     for(std::size_t i(0); i<uiIterations; ++i)
     {
         // Execute the accelerated kernel.
-        acc::buildKernelExecutor<TAcc, TKernel>(workSize)(std::forward<TArgs>(args)...);
+        acc::buildKernelExecutor<TAcc>(workSize, kernel)(std::forward<TArgs>(args)...);
     }
 
     auto const tpEnd(std::chrono::high_resolution_clock::now());
@@ -160,7 +160,8 @@ public:
     template<typename TWorkSize>
     void operator()(std::size_t const uiIterations, TWorkSize const & workSize, std::uint32_t * const puiBlockRetVals, std::uint32_t const uiNumUselessWork)
     {
-        profileAcceleratedKernel<TAcc, ExampleAcceleratedKernel>(uiIterations, workSize, puiBlockRetVals, uiNumUselessWork);
+        
+        profileAcceleratedKernel<TAcc>(ExampleAcceleratedKernel<>(), uiIterations, workSize, puiBlockRetVals, uiNumUselessWork);
     }
 };
 
@@ -175,14 +176,15 @@ public:
     template<typename TWorkSize>
     void operator()(std::size_t const uiIterations, TWorkSize const & workSize, std::uint32_t * const puiBlockRetVals, std::uint32_t const uiNumUselessWork)
     {
-        std::size_t const uiNumTilesInGrid(workSize.template getSize<acc::Grid, acc::Tiles, acc::Linear>());
+        std::size_t const uiNumBlocksInGrid(workSize.template getSize<acc::Grid, acc::Blocks, acc::Linear>());
 
         std::uint32_t * pBlockRetValsDev (nullptr);
-        std::size_t const uiNumBytes(uiNumTilesInGrid * sizeof(std::uint32_t));
+        std::size_t const uiNumBytes(uiNumBlocksInGrid * sizeof(std::uint32_t));
         ACC_CUDA_CHECK(cudaMalloc((void **) &pBlockRetValsDev, uiNumBytes));
         ACC_CUDA_CHECK(cudaMemcpy(pBlockRetValsDev, puiBlockRetVals, uiNumBytes, cudaMemcpyHostToDevice));
 
-        profileAcceleratedKernel<acc::AccCuda, ExampleAcceleratedKernel>(uiIterations, workSize, pBlockRetValsDev, uiNumUselessWork);
+        profileAcceleratedKernel<ExampleAcceleratedKernel<>(), acc::AccCuda, ExampleAcceleratedKernel>(uiIterations, workSize, pBlockRetValsDev, uiNumUselessWork);
+        
         ACC_CUDA_CHECK(cudaDeviceSynchronize());
 
         ACC_CUDA_CHECK(cudaMemcpy(puiBlockRetVals, pBlockRetValsDev, uiNumBytes, cudaMemcpyDeviceToHost));
@@ -197,21 +199,21 @@ public:
 template<typename TAcc, typename TWorkSize>
 void profileAcceleratedExampleKernel(std::size_t const uiIterations, TWorkSize const & workSize, std::uint32_t const uiNumUselessWork)
 {
-    std::size_t const uiNumTilesInGrid(workSize.template getSize<acc::Grid, acc::Tiles, acc::Linear>());
-    std::size_t const uiNumKernelsInTile(workSize.template getSize<acc::Tile, acc::Kernels, acc::Linear>());
+    std::size_t const uiNumBlocksInGrid(workSize.template getSize<acc::Grid, acc::Blocks, acc::Linear>());
+    std::size_t const uiNumKernelsInBlock(workSize.template getSize<acc::Block, acc::Kernels, acc::Linear>());
 
     // An array for the return values calculated by the blocks.
-    std::vector<std::uint32_t> vuiBlockRetVals(uiNumTilesInGrid, 0);
+    std::vector<std::uint32_t> vuiBlockRetVals(uiNumBlocksInGrid, 0);
 
     AcceleratedExampleKernelProfiler<TAcc>()(uiIterations, workSize, vuiBlockRetVals.data(), uiNumUselessWork);
 
     // Assert that the results are correct.
     bool bResultCorrect(true);
-    for(std::size_t i(0); i<uiNumTilesInGrid; ++i)
+    for(std::size_t i(0); i<uiNumBlocksInGrid; ++i)
     {
-        if(static_cast<std::size_t>(vuiBlockRetVals[i]) != uiNumKernelsInTile*uiNumKernelsInTile)
+        if(static_cast<std::size_t>(vuiBlockRetVals[i]) != uiNumKernelsInBlock*uiNumKernelsInBlock)
         {
-            std::cout << "vuiBlockRetVals[" << i << "] == " << vuiBlockRetVals[i] << " != " << uiNumKernelsInTile*uiNumKernelsInTile << std::endl;
+            std::cout << "vuiBlockRetVals[" << i << "] == " << vuiBlockRetVals[i] << " != " << uiNumKernelsInBlock*uiNumKernelsInBlock << std::endl;
             bResultCorrect = false;
         }
     }
@@ -284,10 +286,10 @@ int main()
         initAccelerators();
 
         // Set the grid size.
-        acc::vec<3> const v3uiSizeGridTiles(16u, 8u, 4u);
+        acc::vec<3> const v3uiSizeGridBlocks(16u, 8u, 4u);
 
         // Set the block size (to the minimum all enabled tests support).
-        acc::vec<3> v3uiSizeTileKernels(
+        acc::vec<3> v3uiSizeBlockKernels(
 #if defined ACC_SERIAL_ENABLED
         1u, 1u, 1u
 #elif defined ACC_OPENMP_ENABLED
@@ -301,7 +303,7 @@ int main()
 
         std::uint32_t const uiNumUselessWork(1000);
 
-        acc::WorkSize const workSize(v3uiSizeGridTiles, v3uiSizeTileKernels);
+        acc::WorkSize const workSize(v3uiSizeGridBlocks, v3uiSizeBlockKernels);
 
         std::size_t const uiIterations(1);
 

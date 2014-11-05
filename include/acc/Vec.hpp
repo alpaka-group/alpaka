@@ -22,12 +22,12 @@
 
 #pragma once
 
-#include <acc/FctCudaCpu.hpp>    // ACC_FCT_CPU_CUDA
+#include <acc/FctCudaCpu.hpp>   // ACC_FCT_CPU_CUDA
 
-#include <cstdint>                // std::uint32_t
-#include <ostream>                // std::ostream
-#include <cassert>                // assert
-#include <type_traits>            // std::enable_if
+#include <cstdint>              // std::uint32_t
+#include <ostream>              // std::ostream
+#include <cassert>              // assert
+#include <type_traits>          // std::enable_if
 
 namespace acc
 {

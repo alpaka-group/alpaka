@@ -40,19 +40,19 @@
     #include <acc/AccCuda.hpp>
 #endif
 
-#include <ostream>        // std::ostream
+#include <ostream>                  // std::ostream
 
 namespace acc
 {
     //#############################################################################
     //! Builds a kernel executor.
     //#############################################################################
-    template<typename TAcc, template<typename> class TKernel, typename TWorkSize>
-    auto buildKernelExecutor(TWorkSize work = TWorkSize()/*, TKernel kernel = TKernel(), TAcc accelerator = TAcc()*/)
-        -> typename std::result_of<detail::KernelExecutorBuilder<TAcc, TKernel, TWorkSize>(TWorkSize/*, TAcc, TKernel*/)>::type
+    template<typename TAcc, typename TKernel, typename TWorkSize>
+    auto buildKernelExecutor(TWorkSize const & work = TWorkSize(), TKernel const & kernel = TKernel())
+        -> typename std::result_of<detail::KernelExecutorBuilder<TAcc, TKernel, TWorkSize>(TWorkSize, TKernel)>::type
     {
         // Use the specialized KernelExecutorBuilder for the given accelerator.
-        return detail::KernelExecutorBuilder<TAcc, TKernel, TWorkSize>()(work /*,kernel, accelerator*/);
+        return detail::KernelExecutorBuilder<TAcc, TKernel, TWorkSize>()(work, kernel);
     }
 
     /*//#############################################################################

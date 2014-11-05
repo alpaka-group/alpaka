@@ -22,7 +22,7 @@
 
 #pragma once
 
-#include <acc/Vec.hpp>            // acc::vec<3>
+#include <acc/Vec.hpp>  // acc::vec<3>
 
 namespace acc
 {
@@ -36,9 +36,9 @@ namespace acc
         //#############################################################################
         struct Grid;
         //#############################################################################
-        //! This type is used to get the size/index relative to a/the current tile.
+        //! This type is used to get the size/index relative to a/the current block.
         //#############################################################################
-        struct Tile;
+        struct Block;
     }
     //-----------------------------------------------------------------------------
     //! Defines the units available for getting sizes and indices of kernel executions.
@@ -50,9 +50,9 @@ namespace acc
         //#############################################################################
         struct Kernels;
         //#############################################################################
-        //! This type is used to get the size/index in units of tiles.
+        //! This type is used to get the size/index in units of blocks.
         //#############################################################################
-        struct Tiles;
+        struct Blocks;
     }
     //-----------------------------------------------------------------------------
     //! Defines the dimensions available for getting sizes and indices of kernel executions.

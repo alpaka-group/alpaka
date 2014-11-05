@@ -22,10 +22,10 @@
 
 #pragma once
 
-#include <acc/Positioning.hpp>    // acc::origin::Grid/Tiles
-#include <acc/FctCudaCpu.hpp>    // ACC_FCT_CPU_CUDA
+#include <acc/Positioning.hpp>  // acc::origin::Grid/Blocks
+#include <acc/FctCudaCpu.hpp>   // ACC_FCT_CPU_CUDA
 
-#include <utility>                // std::forward
+#include <utility>              // std::forward
 
 namespace acc
 {
@@ -46,9 +46,9 @@ namespace acc
             //-----------------------------------------------------------------------------
             //! Constructor from values.
             //-----------------------------------------------------------------------------
-            ACC_FCT_CPU_CUDA explicit WorkSizeDefault(vec<3> const v3uiSizeGridTiles, vec<3> const v3uiSizeTileKernels) :
-                m_v3uiSizeGridTiles(v3uiSizeGridTiles),
-                m_v3uiSizeTileKernels(v3uiSizeTileKernels)
+            ACC_FCT_CPU_CUDA explicit WorkSizeDefault(vec<3> const v3uiSizeGridBlocks, vec<3> const v3uiSizeBlockKernels) :
+                m_v3uiSizeGridBlocks(v3uiSizeGridBlocks),
+                m_v3uiSizeBlockKernels(v3uiSizeBlockKernels)
             {}
 
             //-----------------------------------------------------------------------------
@@ -59,21 +59,21 @@ namespace acc
             //-----------------------------------------------------------------------------
             //! \return The grid dimensions of the currently executed kernel.
             //-----------------------------------------------------------------------------
-            ACC_FCT_CPU_CUDA vec<3> getSizeGridTiles() const
+            ACC_FCT_CPU_CUDA vec<3> getSizeGridBlocks() const
             {
-                return m_v3uiSizeGridTiles;
+                return m_v3uiSizeGridBlocks;
             }
             //-----------------------------------------------------------------------------
             //! \return The block dimensions of the currently executed kernel.
             //-----------------------------------------------------------------------------
-            ACC_FCT_CPU_CUDA vec<3> getSizeTileKernels() const
+            ACC_FCT_CPU_CUDA vec<3> getSizeBlockKernels() const
             {
-                return m_v3uiSizeTileKernels;
+                return m_v3uiSizeBlockKernels;
             }
 
         private:
-            vec<3> m_v3uiSizeGridTiles;
-            vec<3> m_v3uiSizeTileKernels;
+            vec<3> m_v3uiSizeGridBlocks;
+            vec<3> m_v3uiSizeBlockKernels;
         };
 
         //#############################################################################
@@ -95,6 +95,9 @@ namespace acc
             //-----------------------------------------------------------------------------
             template<typename TWorkSize2>
             friend std::ostream & operator << (std::ostream & os, IWorkSize<TWorkSize2> const & workSize);
+
+        public:
+            using TWorkSizeImpl = TWorkSize;
 
         public:
             //-----------------------------------------------------------------------------
@@ -122,25 +125,25 @@ namespace acc
         //! The template specializations to get the requsted size.
         //#############################################################################
         template<typename TWorkSize>
-        struct GetSize<TWorkSize, origin::Tile, unit::Kernels, dim::D3>
+        struct GetSize<TWorkSize, origin::Block, unit::Kernels, dim::D3>
         {
             //-----------------------------------------------------------------------------
-            //! \return The number of kernels in each dimension of a tile.
+            //! \return The number of kernels in each dimension of a block.
             //-----------------------------------------------------------------------------
             ACC_FCT_CPU_CUDA static DimToRetType<dim::D3>::type getSize(TWorkSize const & workSize)
             {
-                return workSize.getSizeTileKernels();
+                return workSize.getSizeBlockKernels();
             }
         };
         template<typename TWorkSize>
-        struct GetSize<TWorkSize, origin::Tile, unit::Kernels, dim::Linear>
+        struct GetSize<TWorkSize, origin::Block, unit::Kernels, dim::Linear>
         {
             //-----------------------------------------------------------------------------
-            //! \return The number of kernels in a tile.
+            //! \return The number of kernels in a block.
             //-----------------------------------------------------------------------------
             ACC_FCT_CPU_CUDA static DimToRetType<dim::Linear>::type getSize(TWorkSize const & workSize)
             {
-                return GetSize<TWorkSize, origin::Tile, unit::Kernels, dim::D3>::getSize(workSize).prod();
+                return GetSize<TWorkSize, origin::Block, unit::Kernels, dim::D3>::getSize(workSize).prod();
             }
         };
         template<typename TWorkSize>
@@ -151,7 +154,7 @@ namespace acc
             //-----------------------------------------------------------------------------
             ACC_FCT_CPU_CUDA static DimToRetType<dim::D3>::type getSize(TWorkSize const & workSize)
             {
-                return workSize.getSizeGridTiles() * workSize.getSizeTileKernels();
+                return workSize.getSizeGridBlocks() * workSize.getSizeBlockKernels();
             }
         };
         template<typename TWorkSize>
@@ -166,25 +169,25 @@ namespace acc
             }
         };
         template<typename TWorkSize>
-        struct GetSize<TWorkSize, origin::Grid, unit::Tiles, dim::D3>
+        struct GetSize<TWorkSize, origin::Grid, unit::Blocks, dim::D3>
         {
             //-----------------------------------------------------------------------------
-            //! \return The number of tiles in each dimension of the grid.
+            //! \return The number of blocks in each dimension of the grid.
             //-----------------------------------------------------------------------------
             ACC_FCT_CPU_CUDA static DimToRetType<dim::D3>::type getSize(TWorkSize const & workSize)
             {
-                return workSize.getSizeGridTiles();
+                return workSize.getSizeGridBlocks();
             }
         };
         template<typename TWorkSize>
-        struct GetSize<TWorkSize, origin::Grid, unit::Tiles, dim::Linear>
+        struct GetSize<TWorkSize, origin::Grid, unit::Blocks, dim::Linear>
         {
             //-----------------------------------------------------------------------------
-            //! \return The number of tiles in the grid.
+            //! \return The number of blocks in the grid.
             //-----------------------------------------------------------------------------
             ACC_FCT_CPU_CUDA static DimToRetType<dim::Linear>::type getSize(TWorkSize const & workSize)
             {
-                return GetSize<TWorkSize, origin::Grid, unit::Tiles, dim::D3>::getSize(workSize).prod();
+                return GetSize<TWorkSize, origin::Grid, unit::Blocks, dim::D3>::getSize(workSize).prod();
             }
         };
 
@@ -194,7 +197,7 @@ namespace acc
         template<typename TWorkSizeImpl>
         ACC_FCT_CPU std::ostream & operator << (std::ostream & os, IWorkSize<TWorkSizeImpl> const & workSize)
         {
-            return (os << "{GridTiles: " << workSize.getSizeGridTiles() << ", TileKernels: " << workSize.getSizeTileKernels() << "}");
+            return (os << "{GridBlocks: " << workSize.getSizeGridBlocks() << ", BlockKernels: " << workSize.getSizeBlockKernels() << "}");
         }
     }
 

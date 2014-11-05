@@ -77,15 +77,19 @@ endif()
 ################################################################################
 # Find Boost
 ################################################################################
+SET(Boost_USE_STATIC_LIBS ON)
+SET(Boost_USE_MULTITHREADED ON)
+SET(Boost_USE_STATIC_RUNTIME OFF)
+
+SET(BOOST_REQUIRED_COMPONENTS)
+
 IF(ACC_FIBERS_ENABLE)
-    SET(Boost_USE_STATIC_LIBS ON)
-    SET(Boost_USE_MULTITHREADED ON)
-    SET(Boost_USE_STATIC_RUNTIME OFF)
-    FIND_PACKAGE(Boost REQUIRED COMPONENTS coroutine context fibers)
-    INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
-    SET(LIBS ${LIBS} ${Boost_LIBRARIES})
+    SET(${BOOST_REQUIRED_COMPONENTS} "coroutine context fibers")
 ENDIF()
 
+FIND_PACKAGE(Boost REQUIRED COMPONENTS ${BOOST_REQUIRED_COMPONENTS})
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
+SET(LIBS ${LIBS} ${Boost_LIBRARIES})
 
 ################################################################################
 # Find OpenMP

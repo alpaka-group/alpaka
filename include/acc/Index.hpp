@@ -22,11 +22,11 @@
 
 #pragma once
 
-#include <acc/Positioning.hpp>    // acc::origin::Grid/Tiles
-#include <acc/WorkSize.hpp>        // acc::IWorkSize
-#include <acc/FctCudaCpu.hpp>    // ACC_FCT_CPU_CUDA
+#include <acc/Positioning.hpp>  // acc::origin::Grid/Blocks
+#include <acc/WorkSize.hpp>     // acc::IWorkSize
+#include <acc/FctCudaCpu.hpp>   // ACC_FCT_CPU_CUDA
 
-#include <utility>                // std::forward
+#include <utility>              // std::forward
 
 namespace acc
 {
@@ -35,7 +35,7 @@ namespace acc
         //#############################################################################
         //! The template declaration to get the requsted index.
         //#############################################################################
-        template<typename TWorkSize, typename TIndex, typename TOrigin, typename TUnit, typename TDimensionality>
+        template<typename TPackedWorkSize, typename TIndex, typename TOrigin, typename TUnit, typename TDimensionality>
         struct GetIdx;
 
         //#############################################################################
@@ -45,6 +45,9 @@ namespace acc
         class IIndex :
             private TIndex
         {
+        public:
+            using TIndexImpl = TIndex;
+
         public:
             //-----------------------------------------------------------------------------
             //! Constructor.
@@ -59,10 +62,10 @@ namespace acc
             // Member function templates of a template class can not be specialized.
             // Therefore this is done via the partial specialized getIdx class, which gets a reference to this object.
             //-----------------------------------------------------------------------------
-            template<typename TWorkSize, typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-            ACC_FCT_CPU_CUDA typename DimToRetType<TDimensionality>::type getIdx(TWorkSize const & workSize) const
+            template<typename TPackedWorkSize, typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
+            ACC_FCT_CPU_CUDA typename DimToRetType<TDimensionality>::type getIdx(TPackedWorkSize const & workSize) const
             {
-                return GetIdx<TWorkSize, TIndex, TOrigin, TUnit, TDimensionality>::getIdx(
+                return GetIdx<typename TPackedWorkSize, TIndex, TOrigin, TUnit, TDimensionality>::getIdx(
                     *static_cast<TIndex const *>(this),
                     workSize);
             }
@@ -71,78 +74,78 @@ namespace acc
         //#############################################################################
         //! The template specializations to get the requsted index.
         //#############################################################################
-        template<typename TWorkSize, typename TIndex>
-        struct GetIdx<TWorkSize, TIndex, origin::Tile, unit::Kernels, dim::D3>
+        template<typename TPackedWorkSize, typename TIndex>
+        struct GetIdx<TPackedWorkSize, TIndex, origin::Block, unit::Kernels, dim::D3>
         {
             //-----------------------------------------------------------------------------
-            //! \return The 3-dimensional index of the current kernel in the tile.
+            //! \return The 3-dimensional index of the current kernel in the block.
             //-----------------------------------------------------------------------------
-            ACC_FCT_CPU_CUDA static DimToRetType<dim::D3>::type getIdx(TIndex const & index, TWorkSize const & )
+            ACC_FCT_CPU_CUDA static DimToRetType<dim::D3>::type getIdx(TIndex const & index, TPackedWorkSize const &)
             {
-                return index.getIdxTileKernel();
+                return index.getIdxBlockKernel();
             }
         };
-        template<typename TWorkSize, typename TIndex>
-        struct GetIdx<TWorkSize, TIndex, origin::Tile, unit::Kernels, dim::Linear>
+        template<typename TPackedWorkSize, typename TIndex>
+        struct GetIdx<TPackedWorkSize, TIndex, origin::Block, unit::Kernels, dim::Linear>
         {
             //-----------------------------------------------------------------------------
-            //! \return The linearized index of the current kernel in the tile.
+            //! \return The linearized index of the current kernel in the block.
             //-----------------------------------------------------------------------------
-            ACC_FCT_CPU_CUDA static DimToRetType<dim::Linear>::type getIdx(TIndex const & index, TWorkSize const & workSize)
+            ACC_FCT_CPU_CUDA static DimToRetType<dim::Linear>::type getIdx(TIndex const & index, TPackedWorkSize const & workSize)
             {
-                auto const v3uiSizeTileKernels(GetSize<TWorkSize, origin::Tile, unit::Kernels, dim::D3>()::getSize(workSize));
-                auto const v3uiTileKernelIdx(GetIdx<TIndex, TWorkSize, origin::Tile, unit::Kernels, dim::D3>::getIdx(index, workSize));
-                return v3uiTileKernelIdx[2]*v3uiSizeTileKernels[1]*v3uiSizeTileKernels[0] + v3uiTileKernelIdx[1]*v3uiSizeTileKernels[0] + v3uiTileKernelIdx[0];
+                auto const v3uiSizeBlockKernels(workSize.template getSize<origin::Block, unit::Kernels, dim::D3>());
+                auto const v3uiBlockKernelIdx(GetIdx<TPackedWorkSize, TIndex, origin::Block, unit::Kernels, dim::D3>::getIdx(index, workSize));
+                return v3uiBlockKernelIdx[2]*v3uiSizeBlockKernels[1]*v3uiSizeBlockKernels[0] + v3uiBlockKernelIdx[1]*v3uiSizeBlockKernels[0] + v3uiBlockKernelIdx[0];
             }
         };
-        template<typename TWorkSize, typename TIndex>
-        struct GetIdx<TWorkSize, TIndex, origin::Grid, unit::Kernels, dim::D3>
+        template<typename TPackedWorkSize, typename TIndex>
+        struct GetIdx<TPackedWorkSize, TIndex, origin::Grid, unit::Kernels, dim::D3>
         {
             //-----------------------------------------------------------------------------
             //! \return The 3-dimensional index of the current kernel in grid.
             //-----------------------------------------------------------------------------
-            ACC_FCT_CPU_CUDA static DimToRetType<dim::D3>::type getIdx(TIndex const & index, TWorkSize const & workSize)
+            ACC_FCT_CPU_CUDA static DimToRetType<dim::D3>::type getIdx(TIndex const & index, TPackedWorkSize const & workSize)
             {
                 return 
-                    index.getIdxGridTile() * GetSize<TIndex, origin::Tile, unit::Kernels, dim::D3>()::getSize(workSize) 
-                    + index.getIdxTileKernel();
+                    index.getIdxGridBlock() * GetSize<TIndex, origin::Block, unit::Kernels, dim::D3>()::getSize(workSize) 
+                    + index.getIdxBlockKernel();
             }
         };
-        template<typename TWorkSize, typename TIndex>
-        struct GetIdx<TWorkSize, TIndex, origin::Grid, unit::Kernels, dim::Linear>
+        template<typename TPackedWorkSize, typename TIndex>
+        struct GetIdx<TPackedWorkSize, TIndex, origin::Grid, unit::Kernels, dim::Linear>
         {
             //-----------------------------------------------------------------------------
             //! \return The linearized index of the current kernel in the grid.
             //-----------------------------------------------------------------------------
-            ACC_FCT_CPU_CUDA static DimToRetType<dim::Linear>::type getIdx(TIndex const & index, TWorkSize const & workSize)
+            ACC_FCT_CPU_CUDA static DimToRetType<dim::Linear>::type getIdx(TIndex const & index, TPackedWorkSize const & workSize)
             {
-                auto const v3uiGridKernelSize(GetSize<TWorkSize, origin::Grid, unit::Kernels, dim::D3>()::getSize(workSize));
-                auto const v3uiGridKernelIdx(GetIdx<TIndex, TWorkSize, origin::Grid, unit::Kernels, dim::D3>::getIdx(index, workSize));
+                auto const v3uiGridKernelSize(workSize.template getSize<origin::Grid, unit::Kernels, dim::D3>());
+                auto const v3uiGridKernelIdx(GetIdx<TPackedWorkSize, TIndex, origin::Grid, unit::Kernels, dim::D3>::getIdx(index, workSize));
                 return v3uiGridKernelIdx[2]*v3uiGridKernelSize[1]*v3uiGridKernelSize[0] + v3uiGridKernelIdx[1]*v3uiGridKernelSize[0] + v3uiGridKernelIdx[0];
             }
         };
-        template<typename TWorkSize, typename TIndex>
-        struct GetIdx<TWorkSize, TIndex, origin::Grid, unit::Tiles, dim::D3>
+        template<typename TPackedWorkSize, typename TIndex>
+        struct GetIdx<TPackedWorkSize, TIndex, origin::Grid, unit::Blocks, dim::D3>
         {
             //-----------------------------------------------------------------------------
-            //! \return The 3-dimensional index of the current tile in the grid.
+            //! \return The 3-dimensional index of the current block in the grid.
             //-----------------------------------------------------------------------------
-            ACC_FCT_CPU_CUDA static DimToRetType<dim::D3>::type getIdx(TIndex const & index, TWorkSize const & )
+            ACC_FCT_CPU_CUDA static DimToRetType<dim::D3>::type getIdx(TIndex const & index, TPackedWorkSize const & )
             {
-                return index.getIdxGridTile();
+                return index.getIdxGridBlock();
             }
         };
-        template<typename TWorkSize, typename TIndex>
-        struct GetIdx<TWorkSize, TIndex, origin::Grid, unit::Tiles, dim::Linear>
+        template<typename TPackedWorkSize, typename TIndex>
+        struct GetIdx<TPackedWorkSize, TIndex, origin::Grid, unit::Blocks, dim::Linear>
         {
             //-----------------------------------------------------------------------------
-            //! \return The linearized index of the current tile in the grid.
+            //! \return The linearized index of the current block in the grid.
             //-----------------------------------------------------------------------------
-            ACC_FCT_CPU_CUDA static DimToRetType<dim::Linear>::type getIdx(TIndex const & index, TWorkSize const & workSize)
+            ACC_FCT_CPU_CUDA static DimToRetType<dim::Linear>::type getIdx(TIndex const & index, TPackedWorkSize const & workSize)
             {
-                auto const v3uiSizeGridTiles(GetSize<TWorkSize, origin::Grid, unit::Tiles, dim::D3>()::getSize(workSize));
-                auto const v3uiGridTileIdx(GetIdx<TIndex, TWorkSize, origin::Grid, unit::Tiles, dim::D3>::getIdx(index, workSize));
-                return v3uiGridTileIdx[2]*v3uiSizeGridTiles[1]*v3uiSizeGridTiles[0] + v3uiGridTileIdx[1]*v3uiSizeGridTiles[0] + v3uiGridTileIdx[0];
+                auto const v3uiSizeGridBlocks(workSize.template getSize<origin::Grid, unit::Blocks, dim::D3>());
+                auto const v3uiGridBlockIdx(GetIdx<TPackedWorkSize, TIndex, origin::Grid, unit::Blocks, dim::D3>::getIdx(index, workSize));
+                return v3uiGridBlockIdx[2]*v3uiSizeGridBlocks[1]*v3uiSizeGridBlocks[0] + v3uiGridBlockIdx[1]*v3uiSizeGridBlocks[0] + v3uiGridBlockIdx[0];
             }
         };
     }
