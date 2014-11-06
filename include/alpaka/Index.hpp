@@ -1,34 +1,34 @@
 /**
 * Copyright 2014 Benjamin Worpitz
 *
-* This file is part of acc.
+* This file is part of alpaka.
 *
-* acc is free software: you can redistribute it and/or modify
+* alpaka is free software: you can redistribute it and/or modify
 * it under the terms of of either the GNU General Public License or
 * the GNU Lesser General Public License as published by
 * the Free Software Foundation, either version 3 of the License, or
 * (at your option) any later version.
 *
-* acc is distributed in the hope that it will be useful,
+* alpaka is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU General Public License and the GNU Lesser General Public License
 * for more details.
 *
 * You should have received a copy of the GNU General Public License
-* and the GNU Lesser General Public License along with acc.
+* and the GNU Lesser General Public License along with alpaka.
 * If not, see <http://www.gnu.org/licenses/>.
 */
 
 #pragma once
 
-#include <acc/Positioning.hpp>  // acc::origin::Grid/Blocks
-#include <acc/WorkSize.hpp>     // acc::IWorkSize
-#include <acc/FctCudaCpu.hpp>   // ACC_FCT_CPU_CUDA
+#include <alpaka/Positioning.hpp>   // alpaka::origin::Grid/Blocks
+#include <alpaka/WorkSize.hpp>      // alpaka::IWorkSize
+#include <alpaka/FctCudaCpu.hpp>    // ALPAKA_FCT_CPU_CUDA
 
-#include <utility>              // std::forward
+#include <utility>                  // std::forward
 
-namespace acc
+namespace alpaka
 {
     namespace detail
     {
@@ -53,7 +53,7 @@ namespace acc
             //! Constructor.
             //-----------------------------------------------------------------------------
             template<typename... TArgs>
-            ACC_FCT_CPU_CUDA IIndex(TArgs && ... args) :
+            ALPAKA_FCT_CPU_CUDA IIndex(TArgs && ... args) :
                 TIndex(std::forward<TArgs>(args)...)
             {}
 
@@ -63,7 +63,7 @@ namespace acc
             // Therefore this is done via the partial specialized getIdx class, which gets a reference to this object.
             //-----------------------------------------------------------------------------
             template<typename TPackedWorkSize, typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-            ACC_FCT_CPU_CUDA typename DimToRetType<TDimensionality>::type getIdx(TPackedWorkSize const & workSize) const
+            ALPAKA_FCT_CPU_CUDA typename DimToRetType<TDimensionality>::type getIdx(TPackedWorkSize const & workSize) const
             {
                 return GetIdx<typename TPackedWorkSize, TIndex, TOrigin, TUnit, TDimensionality>::getIdx(
                     *static_cast<TIndex const *>(this),
@@ -80,7 +80,7 @@ namespace acc
             //-----------------------------------------------------------------------------
             //! \return The 3-dimensional index of the current kernel in the block.
             //-----------------------------------------------------------------------------
-            ACC_FCT_CPU_CUDA static DimToRetType<dim::D3>::type getIdx(TIndex const & index, TPackedWorkSize const &)
+            ALPAKA_FCT_CPU_CUDA static DimToRetType<dim::D3>::type getIdx(TIndex const & index, TPackedWorkSize const &)
             {
                 return index.getIdxBlockKernel();
             }
@@ -91,7 +91,7 @@ namespace acc
             //-----------------------------------------------------------------------------
             //! \return The linearized index of the current kernel in the block.
             //-----------------------------------------------------------------------------
-            ACC_FCT_CPU_CUDA static DimToRetType<dim::Linear>::type getIdx(TIndex const & index, TPackedWorkSize const & workSize)
+            ALPAKA_FCT_CPU_CUDA static DimToRetType<dim::Linear>::type getIdx(TIndex const & index, TPackedWorkSize const & workSize)
             {
                 auto const v3uiSizeBlockKernels(workSize.template getSize<origin::Block, unit::Kernels, dim::D3>());
                 auto const v3uiBlockKernelIdx(GetIdx<TPackedWorkSize, TIndex, origin::Block, unit::Kernels, dim::D3>::getIdx(index, workSize));
@@ -104,7 +104,7 @@ namespace acc
             //-----------------------------------------------------------------------------
             //! \return The 3-dimensional index of the current kernel in grid.
             //-----------------------------------------------------------------------------
-            ACC_FCT_CPU_CUDA static DimToRetType<dim::D3>::type getIdx(TIndex const & index, TPackedWorkSize const & workSize)
+            ALPAKA_FCT_CPU_CUDA static DimToRetType<dim::D3>::type getIdx(TIndex const & index, TPackedWorkSize const & workSize)
             {
                 return 
                     index.getIdxGridBlock() * GetSize<TIndex, origin::Block, unit::Kernels, dim::D3>()::getSize(workSize) 
@@ -117,7 +117,7 @@ namespace acc
             //-----------------------------------------------------------------------------
             //! \return The linearized index of the current kernel in the grid.
             //-----------------------------------------------------------------------------
-            ACC_FCT_CPU_CUDA static DimToRetType<dim::Linear>::type getIdx(TIndex const & index, TPackedWorkSize const & workSize)
+            ALPAKA_FCT_CPU_CUDA static DimToRetType<dim::Linear>::type getIdx(TIndex const & index, TPackedWorkSize const & workSize)
             {
                 auto const v3uiGridKernelSize(workSize.template getSize<origin::Grid, unit::Kernels, dim::D3>());
                 auto const v3uiGridKernelIdx(GetIdx<TPackedWorkSize, TIndex, origin::Grid, unit::Kernels, dim::D3>::getIdx(index, workSize));
@@ -130,7 +130,7 @@ namespace acc
             //-----------------------------------------------------------------------------
             //! \return The 3-dimensional index of the current block in the grid.
             //-----------------------------------------------------------------------------
-            ACC_FCT_CPU_CUDA static DimToRetType<dim::D3>::type getIdx(TIndex const & index, TPackedWorkSize const & )
+            ALPAKA_FCT_CPU_CUDA static DimToRetType<dim::D3>::type getIdx(TIndex const & index, TPackedWorkSize const & )
             {
                 return index.getIdxGridBlock();
             }
@@ -141,7 +141,7 @@ namespace acc
             //-----------------------------------------------------------------------------
             //! \return The linearized index of the current block in the grid.
             //-----------------------------------------------------------------------------
-            ACC_FCT_CPU_CUDA static DimToRetType<dim::Linear>::type getIdx(TIndex const & index, TPackedWorkSize const & workSize)
+            ALPAKA_FCT_CPU_CUDA static DimToRetType<dim::Linear>::type getIdx(TIndex const & index, TPackedWorkSize const & workSize)
             {
                 auto const v3uiSizeGridBlocks(workSize.template getSize<origin::Grid, unit::Blocks, dim::D3>());
                 auto const v3uiGridBlockIdx(GetIdx<TPackedWorkSize, TIndex, origin::Grid, unit::Blocks, dim::D3>::getIdx(index, workSize));

@@ -1,30 +1,30 @@
 /**
 * Copyright 2014 Benjamin Worpitz
 *
-* This file is part of acc.
+* This file is part of alpaka.
 *
-* acc is free software: you can redistribute it and/or modify
+* alpaka is free software: you can redistribute it and/or modify
 * it under the terms of of either the GNU General Public License or
 * the GNU Lesser General Public License as published by
 * the Free Software Foundation, either version 3 of the License, or
 * (at your option) any later version.
 *
-* acc is distributed in the hope that it will be useful,
+* alpaka is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU General Public License and the GNU Lesser General Public License
 * for more details.
 *
 * You should have received a copy of the GNU General Public License
-* and the GNU Lesser General Public License along with acc.
+* and the GNU Lesser General Public License along with alpaka.
 * If not, see <http://www.gnu.org/licenses/>.
 */
 
 #pragma once
 
-#include <acc/KernelExecutorBuilder.hpp>    // KernelExecutorBuilder
-#include <acc/WorkSize.hpp>                 // IWorkSize, WorkSizeDefault
-#include <acc/Index.hpp>                    // IIndex
+#include <alpaka/KernelExecutorBuilder.hpp> // KernelExecutorBuilder
+#include <alpaka/WorkSize.hpp>              // IWorkSize, WorkSizeDefault
+#include <alpaka/Index.hpp>                 // IIndex
 
 #include <cstddef>                          // std::size_t
 #include <cstdint>                          // unit8_t
@@ -45,7 +45,7 @@
 
 #include <boost/mpl/apply.hpp>              // boost::mpl::apply
 
-namespace acc
+namespace alpaka
 {
     namespace threads
     {
@@ -62,7 +62,7 @@ namespace acc
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU_CUDA IndexThreads(
+                ALPAKA_FCT_CPU_CUDA IndexThreads(
                     TThreadIdToIndex & mThreadsToIndices,
                     vec<3> & v3uiGridBlockIdx) :
                     m_mThreadsToIndices(mThreadsToIndices),
@@ -72,12 +72,12 @@ namespace acc
                 //-----------------------------------------------------------------------------
                 //! Copy-onstructor.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU_CUDA IndexThreads(IndexThreads const & other) = default;
+                ALPAKA_FCT_CPU_CUDA IndexThreads(IndexThreads const & other) = default;
 
                 //-----------------------------------------------------------------------------
-                //! \return The thread index of the currently executed kernel.
+                //! \return The index of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU_CUDA vec<3> getIdxBlockKernel() const
+                ALPAKA_FCT_CPU_CUDA vec<3> getIdxBlockKernel() const
                 {
                     auto const idThread(std::this_thread::get_id());
                     auto const itFind(m_mThreadsToIndices.find(idThread));
@@ -88,7 +88,7 @@ namespace acc
                 //-----------------------------------------------------------------------------
                 //! \return The block index of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU_CUDA vec<3> getIdxGridBlock() const
+                ALPAKA_FCT_CPU_CUDA vec<3> getIdxGridBlock() const
                 {
                     return m_v3uiGridBlockIdx;
                 }
@@ -107,7 +107,7 @@ namespace acc
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU explicit ThreadBarrier(std::size_t const uiNumThreadsToWaitFor = 0) :
+                ALPAKA_FCT_CPU explicit ThreadBarrier(std::size_t const uiNumThreadsToWaitFor = 0) :
                     m_uiNumThreadsToWaitFor{uiNumThreadsToWaitFor}
                 {
                 }
@@ -115,19 +115,19 @@ namespace acc
                 //-----------------------------------------------------------------------------
                 //! Copy-constructor.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU ThreadBarrier(ThreadBarrier const & other) :
+                ALPAKA_FCT_CPU ThreadBarrier(ThreadBarrier const & other) :
                     m_uiNumThreadsToWaitFor(other.m_uiNumThreadsToWaitFor)
                 {
                 }
                 //-----------------------------------------------------------------------------
                 //! Assignment-operator.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU ThreadBarrier & operator=(ThreadBarrier const &) = delete;
+                ALPAKA_FCT_CPU ThreadBarrier & operator=(ThreadBarrier const &) = delete;
 
                 //-----------------------------------------------------------------------------
                 //! Waits for all the other threads to reach the barrier.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU void wait()
+                ALPAKA_FCT_CPU void wait()
                 {
                     std::unique_lock<std::mutex> lock(m_mtxBarrier);
                     if(--m_uiNumThreadsToWaitFor == 0)
@@ -144,7 +144,7 @@ namespace acc
                 //! \return The number of threads to wait for.
                 //! NOTE: The value almost always is invalid the time you get it.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU std::size_t getNumThreadsToWaitFor() const
+                ALPAKA_FCT_CPU std::size_t getNumThreadsToWaitFor() const
                 {
                     return m_uiNumThreadsToWaitFor;
                 }
@@ -152,7 +152,7 @@ namespace acc
                 //-----------------------------------------------------------------------------
                 //! Resets the number of threads to wait for to the given number.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU void reset(std::size_t const uiNumThreadsToWaitFor)
+                ALPAKA_FCT_CPU void reset(std::size_t const uiNumThreadsToWaitFor)
                 {
                     std::lock_guard<std::mutex> lock(m_mtxBarrier);
                     m_uiNumThreadsToWaitFor = uiNumThreadsToWaitFor;
@@ -164,8 +164,8 @@ namespace acc
                 std::size_t m_uiNumThreadsToWaitFor;
             };
 
-            using TPackedWorkSize = acc::detail::IWorkSize<acc::detail::WorkSizeDefault>;
-            using TPackedIndex = acc::detail::IIndex<IndexThreads>;
+            using TPackedWorkSize = alpaka::detail::IWorkSize<alpaka::detail::WorkSizeDefault>;
+            using TPackedIndex = alpaka::detail::IIndex<IndexThreads>;
 
             //#############################################################################
             //! The base class for all C++11 std::thread accelerated kernels.
@@ -178,49 +178,33 @@ namespace acc
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU AccThreads() :
+                ALPAKA_FCT_CPU AccThreads() :
                     TPackedIndex(m_mThreadsToIndices, m_v3uiGridBlockIdx),
                     TPackedWorkSize()
-                {
-                }
+                {}
 
                 //-----------------------------------------------------------------------------
                 //! Copy-constructor.
                 // Has to be explicitly defined because 'std::mutex::mutex(const std::mutex&)' is deleted.
                 // Do not copy most members because they are initialized by the executor for each accelerated execution.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU AccThreads(AccThreads const & other) :
-                    TPackedIndex(*static_cast<TPackedIndex const *>(&other)),
+                ALPAKA_FCT_CPU AccThreads(AccThreads const & other) :
+					TPackedIndex(m_mThreadsToIndices, m_v3uiGridBlockIdx),
                     TPackedWorkSize(other),
                     m_vThreadsInBlock(),
+					m_mThreadsToIndices(),
+					m_v3uiGridBlockIdx(),
                     m_mThreadsToBarrier(),
                     m_mtxBarrier(),
                     m_abarSyncThreads(),
                     m_vuiSharedMem(),
                     m_mtxAtomicAdd()
-                {
-                }
-
-                //-----------------------------------------------------------------------------
-                //! Move-constructor.
-                // Has to be explicitly defined because 'std::mutex::mutex(const std::mutex&)' is deleted.
-                // Do not copy anything because all the members are initialized by the executor for each accelerated execution.
-                //-----------------------------------------------------------------------------
-                /*ACC_FCT_CPU AccThreads(AccThreads && other) :
-                    TPackedIndex(other),
-                    TPackedWorkSize(other),
-                    m_vThreadsInBlock(std::move(other.m_vThreadsInBlock)),
-                    m_mThreadsToBarrier(std::move(other.m_mThreadsToBarrier)),
-                    m_mtxBarrier(),
-                    m_abarSyncThreads(),
-                    m_vuiSharedMem(std::move(other.m_vuiSharedMem)),
-                    m_mtxAtomicAdd()
-                    {}*/
+                {}
 
                 //-----------------------------------------------------------------------------
                 //! \return The maximum number of kernels in each dimension of a block allowed.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU static vec<3> getSizeBlockKernelsMax()
+                ALPAKA_FCT_CPU static vec<3> getSizeBlockKernelsMax()
                 {
                     auto const uiSizeBlockKernelsLinearMax(getSizeBlockKernelsLinearMax());
                     return{uiSizeBlockKernelsLinearMax, uiSizeBlockKernelsLinearMax, uiSizeBlockKernelsLinearMax};
@@ -228,7 +212,7 @@ namespace acc
                 //-----------------------------------------------------------------------------
                 //! \return The maximum number of kernels in a block allowed by.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU static std::uint32_t getSizeBlockKernelsLinearMax()
+                ALPAKA_FCT_CPU static std::uint32_t getSizeBlockKernelsLinearMax()
                 {
                     // FIXME: What is the maximum? Just set a reasonable value? There is a implementation defined maximum where the creation of a new thread crashes.
                     // std::thread::hardware_concurrency is too small but a multiple of it? But it can return 0, so a default for this case?
@@ -240,7 +224,7 @@ namespace acc
                 //! \return The requested index.
                 //-----------------------------------------------------------------------------
                 template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-                ACC_FCT_CPU_CUDA typename acc::detail::DimToRetType<TDimensionality>::type getIdx() const
+                ALPAKA_FCT_CPU_CUDA typename alpaka::detail::DimToRetType<TDimensionality>::type getIdx() const
                 {
                     return TPackedIndex::getIdx<TPackedWorkSize, TOrigin, TUnit, TDimensionality>(
                         *static_cast<TPackedWorkSize const *>(this));
@@ -250,7 +234,7 @@ namespace acc
                 //! Atomic addition.
                 //-----------------------------------------------------------------------------
                 template<typename T>
-                ACC_FCT_CPU void atomicFetchAdd(T * sum, T summand) const
+                ALPAKA_FCT_CPU void atomicFetchAdd(T * sum, T summand) const
                 {
                     // TODO: We could use a list of mutexes and lock the mutex depending on the target variable to allow multiple atomicFetchAdd`s on different targets concurrently.
                     std::lock_guard<std::mutex> lock(m_mtxAtomicAdd);
@@ -258,9 +242,9 @@ namespace acc
                     rsum += summand;
                 }
                 //-----------------------------------------------------------------------------
-                //! Syncs all threads in the current block.
+                //! Syncs all kernels in the current block.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU void syncBlockKernels() const
+                ALPAKA_FCT_CPU void syncBlockKernels() const
                 {
                     auto const idThread(std::this_thread::get_id());
                     auto const itFind(m_mThreadsToBarrier.find(idThread));
@@ -290,7 +274,7 @@ namespace acc
                 //! \return The pointer to the block shared memory.
                 //-----------------------------------------------------------------------------
                 template<typename T>
-                ACC_FCT_CPU T * getBlockSharedExternMem() const
+                ALPAKA_FCT_CPU T * getBlockSharedExternMem() const
                 {
                     return reinterpret_cast<T*>(m_vuiSharedMem.data());
                 }
@@ -330,8 +314,8 @@ namespace acc
                     //-----------------------------------------------------------------------------
                     //! Constructor.
                     //-----------------------------------------------------------------------------
-                    template<typename TWorkSize2>
-                    KernelExecutor(TWorkSize2 const & workSize)
+					template<typename TWorkSize2, typename TNonAcceleratedKernel>
+					KernelExecutor(TWorkSize2 const & workSize, TNonAcceleratedKernel const & kernel)
                     {
                         (*static_cast<TPackedWorkSize*>(this)) = workSize;
 #ifdef _DEBUG
@@ -378,12 +362,6 @@ namespace acc
                                 {
                                     this->AccThreads::m_v3uiGridBlockIdx[0] = bx;
 
-                                    //std::size_t const uiNumKernelsInBlock(getSizeBlockKernels()[0] * getSizeBlockKernels()[1] * getSizeBlockKernels()[2]);
-
-                                    // This is called automatically if required.
-                                    //m_abarSyncThreads[0].reset(uiNumKernelsInBlock);
-                                    //m_abarSyncThreads[1].reset(uiNumKernelsInBlock);
-
                                     vec<3> v3uiBlockKernelIdx;
                                     for(std::uint32_t tz(0); tz<v3uiSizeBlockKernels[2]; ++tz)
                                     {
@@ -395,7 +373,7 @@ namespace acc
                                             {
                                                 v3uiBlockKernelIdx[0] = tx;
 
-                                                // Create the thread.
+                                                // Create a thread.
                                                 // The v3uiBlockKernelIdx is required to be copied in from the environment because if the thread is immediately suspended the variable is already changed for the next iteration/thread.
 #ifdef _MSC_VER    // MSVC <= 14 do not compile the std::thread constructor because the type of the member function template is missing the this pointer as first argument.
                                                 auto threadKernelFct([this](vec<3> const v3uiBlockKernelIdx, TArgs ... args){threadKernel<TArgs...>(v3uiBlockKernelIdx, args...); });
@@ -481,7 +459,7 @@ namespace acc
             //-----------------------------------------------------------------------------
             TKernelExecutor operator()(TPackedWorkSize const & workSize, TKernel const & kernel) const
             {
-                return TKernelExecutor(workSize);
+				return TKernelExecutor(workSize, kernel);
             }
         };
     }

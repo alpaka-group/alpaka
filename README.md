@@ -1,10 +1,10 @@
-acc - A Abstract Many-Core Acceleration Library 
+alpaka - Abstraction Library for Parallel Kernel Acceleration
 ================================================================
 
 Software License
 ----------------
 
-*PIConGPU* is licensed under the **GPLv3+**. 
+*alpaka* is licensed under the **GPLv3+**. 
 
 Supported Compilers
 ----------------
@@ -16,11 +16,21 @@ This compiles with:
 - icc 13.0+
 - VC12+
 
-When using the CUDA-Accelerator back-end, version 6.5 is the minimum requirement.
+Requirements
+----------------
+
+Boost is the only required external dependency. By default only header-only libraries are used.
+
+When using the Fibers-Accelerator back-end, boost-coroutine, boost-context and the proposed boost library boost-fibers are required to be build.
+
+When using the CUDA-Accelerator back-end, version 6.5 of the CUDA SDK is the minimum requirement.
+
+When using the OpenMP-Accelerator back-end, the compiler and the platform have to support OpenMP 2.0 or newer.
 
 Usage
 ----------------
 
 The library is header only so nothing has to be build. Only the include path has to be set to 'PATH/TO/LIB/include/'.
+This allows the usage of header inclusion in the following way: '#include <alpaka/IAcc.hpp>'.
 
 Code not intended to be utilized by users is hidden in the 'detail' namespace.

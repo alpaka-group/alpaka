@@ -1,48 +1,48 @@
 /**
 * Copyright 2014 Benjamin Worpitz
 *
-* This file is part of acc.
+* This file is part of alpaka.
 *
-* acc is free software: you can redistribute it and/or modify
+* alpaka is free software: you can redistribute it and/or modify
 * it under the terms of of either the GNU General Public License or
 * the GNU Lesser General Public License as published by
 * the Free Software Foundation, either version 3 of the License, or
 * (at your option) any later version.
 *
-* acc is distributed in the hope that it will be useful,
+* alpaka is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU General Public License and the GNU Lesser General Public License
 * for more details.
 *
 * You should have received a copy of the GNU General Public License
-* and the GNU Lesser General Public License along with acc.
+* and the GNU Lesser General Public License along with alpaka.
 * If not, see <http://www.gnu.org/licenses/>.
 */
 
 #pragma once
 
-#include <acc/IAcc.hpp>
+#include <alpaka/IAcc.hpp>
 
-#ifdef ACC_SERIAL_ENABLED
-    #include <acc/AccSerial.hpp>
+#ifdef ALPAKA_SERIAL_ENABLED
+    #include <alpaka/AccSerial.hpp>
 #endif
-#ifdef ACC_THREADS_ENABLED
-    #include <acc/AccThreads.hpp>
+#ifdef ALPAKA_THREADS_ENABLED
+    #include <alpaka/AccThreads.hpp>
 #endif
-#ifdef ACC_FIBERS_ENABLED
-    #include <acc/AccFibers.hpp>
+#ifdef ALPAKA_FIBERS_ENABLED
+    #include <alpaka/AccFibers.hpp>
 #endif
-#ifdef ACC_OPENMP_ENABLED
-    #include <acc/AccOpenMp.hpp>
+#ifdef ALPAKA_OPENMP_ENABLED
+    #include <alpaka/AccOpenMp.hpp>
 #endif
-#ifdef ACC_CUDA_ENABLED
-    #include <acc/AccCuda.hpp>
+#ifdef ALPAKA_CUDA_ENABLED
+    #include <alpaka/AccCuda.hpp>
 #endif
 
 #include <ostream>                  // std::ostream
 
-namespace acc
+namespace alpaka
 {
     //#############################################################################
     //! Builds a kernel executor.
@@ -60,19 +60,19 @@ namespace acc
     //#############################################################################
     enum class EAccelerator
     {
-#ifdef ACC_SERIAL_ENABLED
+#ifdef ALPAKA_SERIAL_ENABLED
         Serial,
 #endif
-#ifdef ACC_THREADS_ENABLED
+#ifdef ALPAKA_THREADS_ENABLED
         Threads,
 #endif
-#ifdef ACC_FIBERS_ENABLED
+#ifdef ALPAKA_FIBERS_ENABLED
         Fibers,
 #endif
-#ifdef ACC_OPENMP_ENABLED
+#ifdef ALPAKA_OPENMP_ENABLED
         OpenMp,
 #endif
-#ifdef ACC_CUDA_ENABLED
+#ifdef ALPAKA_CUDA_ENABLED
         Cuda,
 #endif
     };
@@ -82,35 +82,35 @@ namespace acc
     //-----------------------------------------------------------------------------
     std::ostream& operator << (std::ostream & os, EAccelerator const & eDevice)
     {
-#ifdef ACC_SERIAL_ENABLED
+#ifdef ALPAKA_SERIAL_ENABLED
         if(eDevice == EAccelerator::Serial)
         {
             os << "Serial";
         }
         else
 #endif
-#ifdef ACC_THREADS_ENABLED
+#ifdef ALPAKA_THREADS_ENABLED
         if(eDevice == EAccelerator::Threads)
         {
             os << "Threads";
         }
         else
 #endif
-#ifdef ACC_FIBERS_ENABLED
+#ifdef ALPAKA_FIBERS_ENABLED
         if(eDevice == EAccelerator::Fibers)
         {
             os << "Fibers";
         }
         else
 #endif
-#ifdef ACC_OPENMP_ENABLED
+#ifdef ALPAKA_OPENMP_ENABLED
         if(eDevice == EAccelerator::OpenMp)
         {
             os << "OpenMp";
         }
         else
 #endif
-#ifdef ACC_CUDA_ENABLED
+#ifdef ALPAKA_CUDA_ENABLED
         if(eDevice == EAccelerator::Cuda)
         {
             os << "Cuda";
@@ -130,35 +130,35 @@ namespace acc
     auto buildKernelExecutor(EAccelerator const eDevice, TWorkSize work = TWorkSize())
         -> FIXME: What is the return type?
     {
-#ifdef ACC_SERIAL_ENABLED
+#ifdef ALPAKA_SERIAL_ENABLED
         if(eDevice == EAccelerator::Serial)
         {
             buildKernelExecutor<AccSerial, TKernel>(work);
         }
         else
 #endif
-#ifdef ACC_THREADS_ENABLED
+#ifdef ALPAKA_THREADS_ENABLED
         if(eDevice == EAccelerator::Threads)
         {
             buildKernelExecutor<AccThreads, TKernel>(work);
         }
         else
 #endif
-#ifdef ACC_FIBERS_ENABLED
+#ifdef ALPAKA_FIBERS_ENABLED
         if(eDevice == EAccelerator::Fibers)
         {
             buildKernelExecutor<AccFibers, TKernel>(work);
         }
         else
 #endif
-#ifdef ACC_OPENMP_ENABLED
+#ifdef ALPAKA_OPENMP_ENABLED
         if(eDevice == EAccelerator::OpenMp)
         {
             buildKernelExecutor<AccOpenMp, TKernel>(work);
         }
         else
 #endif
-#ifdef ACC_CUDA_ENABLED
+#ifdef ALPAKA_CUDA_ENABLED
         if(eDevice == EAccelerator::Cuda)
         {
             buildKernelExecutor<AccCuda, TKernel>(work);

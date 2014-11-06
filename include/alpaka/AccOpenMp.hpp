@@ -1,36 +1,35 @@
 /**
 * Copyright 2014 Benjamin Worpitz
 *
-* This file is part of acc.
+* This file is part of alpaka.
 *
-* acc is free software: you can redistribute it and/or modify
+* alpaka is free software: you can redistribute it and/or modify
 * it under the terms of of either the GNU General Public License or
 * the GNU Lesser General Public License as published by
 * the Free Software Foundation, either version 3 of the License, or
 * (at your option) any later version.
 *
-* acc is distributed in the hope that it will be useful,
+* alpaka is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU General Public License and the GNU Lesser General Public License
 * for more details.
 *
 * You should have received a copy of the GNU General Public License
-* and the GNU Lesser General Public License along with acc.
+* and the GNU Lesser General Public License along with alpaka.
 * If not, see <http://www.gnu.org/licenses/>.
 */
 
 #pragma once
 
-#include <acc/KernelExecutorBuilder.hpp>    // KernelExecutorBuilder
-#include <acc/WorkSize.hpp>                 // IWorkSize, WorkSizeDefault
-#include <acc/Index.hpp>                    // IIndex
+#include <alpaka/KernelExecutorBuilder.hpp> // KernelExecutorBuilder
+#include <alpaka/WorkSize.hpp>              // IWorkSize, WorkSizeDefault
 
 #include <cstddef>                          // std::size_t
+#include <cstdint>                          // unit8_t
 #include <vector>                           // std::vector
 #include <cassert>                          // assert
 #include <stdexcept>                        // std::except
-#include <utility>                          // std::forward
 #include <string>                           // std::to_string
 #ifdef _DEBUG
     #include <iostream>                     // std::cout
@@ -38,55 +37,71 @@
 
 #include <boost/mpl/apply.hpp>              // boost::mpl::apply
 
-namespace acc
+#include <omp.h>
+
+namespace alpaka
 {
-    namespace serial
+    namespace openmp
     {
         namespace detail
         {
+            using TPackedWorkSize = alpaka::detail::IWorkSize<alpaka::detail::WorkSizeDefault>;
+
             //#############################################################################
             //! This class stores the current indices as members.
             //#############################################################################
-            class IndexSerial
+            class IndexOpenMp
             {
             public:
                 //-----------------------------------------------------------------------------
-                //! Default-constructor.
+                //! Constructor.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU_CUDA IndexSerial() = default;
+                ALPAKA_FCT_CPU_CUDA IndexOpenMp(
+                    TPackedWorkSize const & workSize,
+                    vec<3> & v3uiGridBlockIdx) :
+                    m_WorkSize(workSize),
+                    m_v3uiGridBlockIdx(v3uiGridBlockIdx)
+                {}
 
                 //-----------------------------------------------------------------------------
                 //! Copy-onstructor.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU_CUDA IndexSerial(IndexSerial const & other) = default;
+                ALPAKA_FCT_CPU_CUDA IndexOpenMp(IndexOpenMp const & other) = default;
 
                 //-----------------------------------------------------------------------------
-                //! \return The thread index of the currently executed kernel.
+                //! \return The index of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU_CUDA vec<3> getIdxBlockKernel() const
+                ALPAKA_FCT_CPU vec<3> getIdxBlockKernel() const
                 {
-                    return m_v3uiBlockKernelIdx;
+                    vec<3> v3uiIdxBlockKernel;
+
+                    auto const v3uiSizeBlockKernels(m_WorkSize.getSize<Block, Kernels, D3>());
+                    auto const t(::omp_get_thread_num());
+                    v3uiIdxBlockKernel[0] = (t % (v3uiSizeBlockKernels[1] * v3uiSizeBlockKernels[0])) % v3uiSizeBlockKernels[0];
+                    v3uiIdxBlockKernel[1] = (t % (v3uiSizeBlockKernels[1] * v3uiSizeBlockKernels[0])) / v3uiSizeBlockKernels[0];
+                    v3uiIdxBlockKernel[2] = (t / (v3uiSizeBlockKernels[1] * v3uiSizeBlockKernels[0]));
+
+                    return v3uiIdxBlockKernel;
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The block index of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU_CUDA vec<3> getIdxGridBlock() const
+                ALPAKA_FCT_CPU vec<3> getIdxGridBlock() const
                 {
                     return m_v3uiGridBlockIdx;
                 }
 
             private:
-                vec<3> m_v3uiBlockKernelIdx;
-                vec<3> m_v3uiGridBlockIdx;
+                TPackedWorkSize const & m_WorkSize;		//!< The mapping of thread id's to thread indices.
+                vec<3> const & m_v3uiGridBlockIdx;		//!< The index of the currently executed block.
             };
 
-            using TPackedIndex = acc::detail::IIndex<IndexSerial>;
-            using TPackedWorkSize = acc::detail::IWorkSize<acc::detail::WorkSizeDefault>;
+            using TPackedIndex = alpaka::detail::IIndex<IndexOpenMp>;
 
             //#############################################################################
-            //! The base class for all non accelerated kernels.
+            //! The base class for all OpenMP accelerated kernels.
             //#############################################################################
-            class AccSerial :
+            class AccOpenMp :
                 protected TPackedIndex,
                 public TPackedWorkSize
             {
@@ -94,16 +109,15 @@ namespace acc
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU AccSerial() :
-                    TPackedIndex(),
+                ALPAKA_FCT_CPU AccOpenMp() :
+                    TPackedIndex(*static_cast<TPackedWorkSize const *>(this), m_v3uiGridBlockIdx),
                     TPackedWorkSize()
-                {
-                }
+                {}
 
                 //-----------------------------------------------------------------------------
                 //! \return The maximum number of kernels in each dimension of a block allowed.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU static vec<3> getSizeBlockKernelsMax()
+                ALPAKA_FCT_CPU static vec<3> getSizeBlockKernelsMax()
                 {
                     auto const uiSizeBlockKernelsLinearMax(getSizeBlockKernelsLinearMax());
                     return{uiSizeBlockKernelsLinearMax, uiSizeBlockKernelsLinearMax, uiSizeBlockKernelsLinearMax};
@@ -111,9 +125,14 @@ namespace acc
                 //-----------------------------------------------------------------------------
                 //! \return The maximum number of kernels in a block allowed.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU static std::uint32_t getSizeBlockKernelsLinearMax()
+                ALPAKA_FCT_CPU static std::uint32_t getSizeBlockKernelsLinearMax()
                 {
-                    return 1;
+                    // HACK: ::omp_get_max_threads() does not return the real limit of the underlying OpenMP runtime:
+                    // 'The omp_get_max_threads routine returns the value of the nthreads-var internal control variable, which is used to determine the number of threads that would form the new team, 
+                    // if an active parallel region without a num_threads clause were to be encountered at that point in the program.'
+                    // How to do this correctly? Is there even a way to get the hard limit apart from omp_set_num_threads(high_value) -> omp_get_max_threads()?
+                    ::omp_set_num_threads(1024);
+                    return ::omp_get_max_threads();
                 }
 
             protected:
@@ -121,7 +140,7 @@ namespace acc
                 //! \return The requested index.
                 //-----------------------------------------------------------------------------
                 template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-                ACC_FCT_CPU_CUDA typename detail::DimToRetType<TDimensionality>::type getIdx() const
+                ALPAKA_FCT_CPU_CUDA typename alpaka::detail::DimToRetType<TDimensionality>::type getIdx() const
                 {
                     return TPackedIndex::getIdx<TPackedWorkSize, TOrigin, TUnit, TDimensionality>(
                         *static_cast<TPackedWorkSize const *>(this));
@@ -131,31 +150,35 @@ namespace acc
                 //! Atomic addition.
                 //-----------------------------------------------------------------------------
                 template<typename T>
-                ACC_FCT_CPU void atomicFetchAdd(T * sum, T summand) const
+                ALPAKA_FCT_CPU void atomicFetchAdd(T * sum, T summand) const
                 {
-                    auto & rsum = *sum;
+                    auto & rsum(*sum);
+                    // NOTE: Braces or calling other functions directly after 'atomic' are not allowed!
+#pragma omp atomic
                     rsum += summand;
                 }
 
                 //-----------------------------------------------------------------------------
-                //! Syncs all threads in the current block.
+                //! Syncs all kernels in the current block.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU void syncBlockKernels() const
+                ALPAKA_FCT_CPU void syncBlockKernels() const
                 {
-                    // Nothing to do in here because only one thread in a group is allowed.
+#pragma omp barrier
                 }
 
                 //-----------------------------------------------------------------------------
                 //! \return The pointer to the block shared memory.
                 //-----------------------------------------------------------------------------
                 template<typename T>
-                ACC_FCT_CPU T * getBlockSharedExternMem() const
+                ALPAKA_FCT_CPU T * getBlockSharedExternMem() const
                 {
                     return reinterpret_cast<T*>(m_vuiSharedMem.data());
                 }
 
             private:
                 mutable std::vector<uint8_t> m_vuiSharedMem;    //!< Block shared memory.
+
+                mutable vec<3> m_v3uiGridBlockIdx;               //!< The index of the currently executed block.
 
             public:
                 //#############################################################################
@@ -170,12 +193,14 @@ namespace acc
                     //-----------------------------------------------------------------------------
                     //! Constructor.
                     //-----------------------------------------------------------------------------
-                    template<typename TWorkSize2>
-                    KernelExecutor(TWorkSize2 const & workSize)
+					template<typename TWorkSize2, typename TNonAcceleratedKernel>
+					KernelExecutor(TWorkSize2 const & workSize, TNonAcceleratedKernel const & kernel)
                     {
-                        (*static_cast<typename AccSerial::TPackedWorkSize*>(this)) = workSize;
+						(*static_cast<TPackedWorkSize*>(this)) = workSize;
+						// TODO: implement!
+						//(*static_cast<typename TAcceleratedKernel*>(this)) = kernel;
 #ifdef _DEBUG
-                        std::cout << "AccSerial::KernelExecutor()" << std::endl;
+                        std::cout << "AccOpenMp::KernelExecutor()" << std::endl;
 #endif
                     }
 
@@ -186,55 +211,69 @@ namespace acc
                     void operator()(TArgs && ... args) const
                     {
 #ifdef _DEBUG
-                        std::cout << "[+] AccSerial::KernelExecutor::operator()" << std::endl;
+                        std::cout << "[+] AccOpenMp::KernelExecutor::operator()" << std::endl;
 #endif
-                        auto const uiNumKernelsPerBlock(this->AccSerial::template getSize<Block, Kernels, Linear>());
-                        auto const uiMaxKernelsPerBlock(AccSerial::getSizeBlockKernelsLinearMax());
+
+                        auto const uiNumKernelsPerBlock(this->AccOpenMp::template getSize<Block, Kernels, Linear>());
+                        auto const uiMaxKernelsPerBlock(AccOpenMp::getSizeBlockKernelsLinearMax());
                         if(uiNumKernelsPerBlock > uiMaxKernelsPerBlock)
                         {
-                            throw std::runtime_error(("The given blockSize '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the serial accelerator!").c_str());
+                            throw std::runtime_error(("The given blockSize '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the OpenMp accelerator!").c_str());
                         }
 
-                        auto const v3uiSizeGridBlocks(this->AccSerial::template getSize<Grid, Blocks, D3>());
-                        auto const v3uiSizeBlockKernels(this->AccSerial::template getSize<Block, Kernels, D3>());
+                        auto const v3uiSizeGridBlocks(this->AccOpenMp::template getSize<Grid, Blocks, D3>());
+                        auto const v3uiSizeBlockKernels(this->AccOpenMp::template getSize<Block, Kernels, D3>());
 #ifdef _DEBUG
                         //std::cout << "GridBlocks: " << v3uiSizeGridBlocks << " BlockKernels: " << v3uiSizeBlockKernels << std::endl;
 #endif
 
-                        this->AccSerial::m_vuiSharedMem.resize(TAcceleratedKernel::getBlockSharedMemSizeBytes(v3uiSizeBlockKernels));
+                        this->AccOpenMp::m_vuiSharedMem.resize(TAcceleratedKernel::getBlockSharedMemSizeBytes(v3uiSizeBlockKernels));
 
+                        // CUDA programming guide: "Thread blocks are required to execute independently: It must be possible to execute them in any order, in parallel or in series. 
+                        // This independence requirement allows thread blocks to be scheduled in any order across any number of cores"
+                        // -> We can execute them serially.
                         for(std::uint32_t bz(0); bz<v3uiSizeGridBlocks[2]; ++bz)
                         {
-                            this->AccSerial::m_v3uiGridBlockIdx[2] = bz;
+                            this->AccOpenMp::m_v3uiGridBlockIdx[2] = bz;
                             for(std::uint32_t by(0); by<v3uiSizeGridBlocks[1]; ++by)
                             {
-                                this->AccSerial::m_v3uiGridBlockIdx[1] = by;
+                                this->AccOpenMp::m_v3uiGridBlockIdx[1] = by;
                                 for(std::uint32_t bx(0); bx<v3uiSizeGridBlocks[0]; ++bx)
                                 {
-                                    this->AccSerial::m_v3uiGridBlockIdx[0] = bx;
+                                    this->AccOpenMp::m_v3uiGridBlockIdx[0] = bx;
 
-                                    for(std::uint32_t tz(0); tz<v3uiSizeBlockKernels[2]; ++tz)
+                                    // The number of threads in this block.
+                                    std::uint32_t const uiNumKernelsInBlock(this->TAcceleratedKernel::template getSize<Block, Kernels, Linear>());
+
+                                    // Force the environment to use the given number of threads.
+                                    ::omp_set_dynamic(0);
+
+                                    // Parallelizing the threads is required because when syncBlockKernels is called all of them have to be done with their work up to this line.
+                                    // So we have to spawn one real thread per thread in a block.
+                                    // 'omp for' is not useful because it is meant for cases where multiple iterations are executed by one thread but in our cas a 1:1 mapping is required.
+                                    // Therefore we use 'omp parallel' with the specified number of threads in a block.
+                                    // FIXME: Does this hinder executing multiple kernels in parallel because their block sizes/omp thread numbers are interfering? Is this a real use case? 
+#pragma omp parallel num_threads(uiNumKernelsInBlock)
                                     {
-                                        this->AccSerial::m_v3uiBlockKernelIdx[2] = tz;
-                                        for(std::uint32_t ty(0); ty<v3uiSizeBlockKernels[1]; ++ty)
+#ifdef _DEBUG
+                                        if((::omp_get_thread_num() == 0) && (bz == 0) && (by == 0) && (bx == 0))
                                         {
-                                            this->AccSerial::m_v3uiBlockKernelIdx[1] = ty;
-                                            for(std::uint32_t tx(0); tx<v3uiSizeBlockKernels[0]; ++tx)
-                                            {
-                                                this->AccSerial::m_v3uiBlockKernelIdx[0] = tx;
-
-                                                this->TAcceleratedKernel::operator()(std::forward<TArgs>(args)...);
-                                            }
+                                            std::cout << "omp_get_num_threads: " << ::omp_get_num_threads() << std::endl;
                                         }
+#endif
+                                        this->TAcceleratedKernel::operator()(std::forward<TArgs>(args)...);
+
+                                        // Wait for all threads to finish before deleting the shared memory.
+                                        this->AccOpenMp::syncBlockKernels();
                                     }
                                 }
                             }
                         }
 
                         // After all blocks have been processed, the shared memory can be deleted.
-                        this->AccSerial::m_vuiSharedMem.clear();
+                        this->AccOpenMp::m_vuiSharedMem.clear();
 #ifdef _DEBUG
-                        std::cout << "[-] AccSerial::KernelExecutor::operator()" << std::endl;
+                        std::cout << "[-] AccOpenMp::KernelExecutor::operator()" << std::endl;
 #endif
                     }
                 };
@@ -242,26 +281,26 @@ namespace acc
         }
     }
 
-    using AccSerial = serial::detail::AccSerial;
+    using AccOpenMp = openmp::detail::AccOpenMp;
 
     namespace detail
     {
         //#############################################################################
         //! The serial kernel executor builder.
         //#############################################################################
-        template<typename TKernel, typename TPackedWorkSize>
-        class KernelExecutorBuilder<AccSerial, TKernel, TPackedWorkSize>
+        template<typename TKernel, typename TWorkSize>
+        class KernelExecutorBuilder<AccOpenMp, TKernel, TWorkSize>
         {
         public:
-            using TAcceleratedKernel = typename boost::mpl::apply<TKernel, AccSerial>::type;
-            using TKernelExecutor = AccSerial::KernelExecutor<TAcceleratedKernel>;
+            using TAcceleratedKernel = typename boost::mpl::apply<TKernel, AccOpenMp>::type;
+            using TKernelExecutor = AccOpenMp::KernelExecutor<TAcceleratedKernel>;
 
             //-----------------------------------------------------------------------------
             //! Creates an kernel executor for the serial accelerator.
             //-----------------------------------------------------------------------------
-            TKernelExecutor operator()(TPackedWorkSize const & workSize, TKernel const & kernel) const
+            TKernelExecutor operator()(TWorkSize const & workSize, TKernel const & kernel) const
             {
-                return TKernelExecutor(workSize);
+				return TKernelExecutor(workSize, kernel);
             }
         };
     }

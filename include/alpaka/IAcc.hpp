@@ -1,42 +1,42 @@
 /**
 * Copyright 2014 Benjamin Worpitz
 *
-* This file is part of acc.
+* This file is part of alpaka.
 *
-* acc is free software: you can redistribute it and/or modify
+* alpaka is free software: you can redistribute it and/or modify
 * it under the terms of of either the GNU General Public License or
 * the GNU Lesser General Public License as published by
 * the Free Software Foundation, either version 3 of the License, or
 * (at your option) any later version.
 *
-* acc is distributed in the hope that it will be useful,
+* alpaka is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU General Public License and the GNU Lesser General Public License
 * for more details.
 *
 * You should have received a copy of the GNU General Public License
-* and the GNU Lesser General Public License along with acc.
+* and the GNU Lesser General Public License along with alpaka.
 * If not, see <http://www.gnu.org/licenses/>.
 */
 
 #pragma once
 
-#include <acc/Vec.hpp>                  // acc::vec<3>
-#include <acc/Positioning.hpp>          // acc::origin::Grid/Blocks
+#include <alpaka/Vec.hpp>               // alpaka::vec<3>
+#include <alpaka/Positioning.hpp>       // alpaka::origin::Grid/Blocks
 
 #include <boost/mpl/placeholders.hpp>   // boost::mpl::_1
 
 //-----------------------------------------------------------------------------
 //! The namespace for the accelerator library.
 //-----------------------------------------------------------------------------
-namespace acc
+namespace alpaka
 {
     //#############################################################################
     //! The interface for all accelerators.
     //!
-    //! All the methods of this interface are declared ACC_FCT_CPU_CUDA. 
-    //! Because the kernel is always compiled with ACC_FCT_CPU_CUDA for all accelerators (even for AccSerial), equivalently there has to be an implementation of all methods for host and device for all accelerators. 
+    //! All the methods of this interface are declared ALPAKA_FCT_CPU_CUDA. 
+    //! Because the kernel is always compiled with ALPAKA_FCT_CPU_CUDA for all accelerators (even for AccSerial), equivalently there has to be an implementation of all methods for host and device for all accelerators. 
     //! These device functions are not implemented and will not call the underlying implementation for the device code, because this will never be executed and would not compile.
     //
     // TODO: Implement:
@@ -71,14 +71,14 @@ namespace acc
         //! \return [The maximum number of memory sharing kernel executions | The maximum block size] allowed by the underlying accelerator.
         // TODO: Check if the used size is valid!
         //-----------------------------------------------------------------------------
-        ACC_FCT_CPU_CUDA static vec<3> getSizeBlockKernelsMax()
+        ALPAKA_FCT_CPU_CUDA static vec<3> getSizeBlockKernelsMax()
         {
             return TAcc::getSizeBlockKernelsMax();
         }
         //-----------------------------------------------------------------------------
         //! \return [The maximum number of memory sharing kernel executions | The maximum block size] allowed by the underlying accelerator.
         //-----------------------------------------------------------------------------
-        ACC_FCT_CPU static std::uint32_t getSizeBlockKernelsLinearMax()
+        ALPAKA_FCT_CPU static std::uint32_t getSizeBlockKernelsLinearMax()
         {
             return TAcc::getSizeBlockKernelsLinearMax();
         }
@@ -87,8 +87,11 @@ namespace acc
         //! \return The requested size.
         //-----------------------------------------------------------------------------
         template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-        ACC_FCT_CPU_CUDA typename detail::DimToRetType<TDimensionality>::type getSize() const
-        {
+        ALPAKA_FCT_CPU_CUDA typename detail::DimToRetType<TDimensionality>::type getSize() const
+		{
+			// NOTE: The weird syntax for 'TAcc::template getSize<...>' is required by standard but not all compilers enforce it.
+			// 'TAcc' is required to make the function call dependent so that its resolution is delayed.
+			// 'template' is required: http://stackoverflow.com/questions/3786360/confusing-template-error
 #ifndef __CUDA_ARCH__
             return TAcc::template getSize<TOrigin, TUnit, TDimensionality>();
 #else
@@ -101,7 +104,7 @@ namespace acc
         //! \return The requested index.
         //-----------------------------------------------------------------------------
         template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-        ACC_FCT_CPU_CUDA typename detail::DimToRetType<TDimensionality>::type getIdx() const
+        ALPAKA_FCT_CPU_CUDA typename detail::DimToRetType<TDimensionality>::type getIdx() const
         {
 #ifndef __CUDA_ARCH__
             return TAcc::template getIdx<TOrigin, TUnit, TDimensionality>();
@@ -114,7 +117,7 @@ namespace acc
         //! Atomic addition.
         //-----------------------------------------------------------------------------
         template<typename T>
-        ACC_FCT_CPU_CUDA void atomicFetchAdd(T * sum, T summand) const
+        ALPAKA_FCT_CPU_CUDA void atomicFetchAdd(T * sum, T summand) const
         {
 #ifndef __CUDA_ARCH__
             return TAcc::template atomicFetchAdd<T>(sum, summand);
@@ -122,9 +125,9 @@ namespace acc
         }
 
         //-----------------------------------------------------------------------------
-        //! Syncs all threads in the current block.
+        //! Syncs all kernels in the current block.
         //-----------------------------------------------------------------------------
-        ACC_FCT_CPU_CUDA void syncBlockKernels() const
+        ALPAKA_FCT_CPU_CUDA void syncBlockKernels() const
         {
 #ifndef __CUDA_ARCH__
             return TAcc::syncBlockKernels();
@@ -135,7 +138,7 @@ namespace acc
         //! \return The pointer to the block shared memory.
         //-----------------------------------------------------------------------------
         template<typename T>
-        ACC_FCT_CPU_CUDA T * getBlockSharedExternMem() const
+        ALPAKA_FCT_CPU_CUDA T * getBlockSharedExternMem() const
         {
 #ifndef __CUDA_ARCH__
             return TAcc::template getBlockSharedExternMem<T>();
@@ -157,40 +160,40 @@ namespace acc
         //! \return [The maximum number of memory sharing kernel executions | The maximum block size] allowed by the underlying accelerator.
         // TODO: Check if the used size is valid!
         //-----------------------------------------------------------------------------
-        ACC_FCT_CPU_CUDA static vec<3> getSizeBlockKernelsMax();
+        ALPAKA_FCT_CPU_CUDA static vec<3> getSizeBlockKernelsMax();
         //-----------------------------------------------------------------------------
         //! \return [The maximum number of memory sharing kernel executions | The maximum block size] allowed by the underlying accelerator.
         //-----------------------------------------------------------------------------
-        ACC_FCT_CPU static std::uint32_t getSizeBlockKernelsLinearMax();
+        ALPAKA_FCT_CPU static std::uint32_t getSizeBlockKernelsLinearMax();
 
         //-----------------------------------------------------------------------------
         //! \return The requested size.
         //-----------------------------------------------------------------------------
         template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-        ACC_FCT_CPU_CUDA typename detail::DimToRetType<TDimensionality>::type getSize() const;
+        ALPAKA_FCT_CPU_CUDA typename detail::DimToRetType<TDimensionality>::type getSize() const;
 
     protected:
         //-----------------------------------------------------------------------------
         //! \return The requested index.
         //-----------------------------------------------------------------------------
         template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-        ACC_FCT_CPU_CUDA typename detail::DimToRetType<TDimensionality>::type getIdx() const;
+        ALPAKA_FCT_CPU_CUDA typename detail::DimToRetType<TDimensionality>::type getIdx() const;
 
         //-----------------------------------------------------------------------------
         //! Atomic addition.
         //-----------------------------------------------------------------------------
         template<typename T>
-        ACC_FCT_CPU_CUDA void atomicFetchAdd(T * sum, T summand) const;
+        ALPAKA_FCT_CPU_CUDA void atomicFetchAdd(T * sum, T summand) const;
 
         //-----------------------------------------------------------------------------
-        //! Syncs all threads in the current block.
+        //! Syncs all kernels in the current block.
         //-----------------------------------------------------------------------------
-        ACC_FCT_CPU_CUDA void syncBlockKernels() const;
+        ALPAKA_FCT_CPU_CUDA void syncBlockKernels() const;
 
         //-----------------------------------------------------------------------------
         //! \return The pointer to the block shared memory.
         //-----------------------------------------------------------------------------
         template<typename T>
-        ACC_FCT_CPU_CUDA T * getBlockSharedExternMem() const;
+        ALPAKA_FCT_CPU_CUDA T * getBlockSharedExternMem() const;
     };
 }

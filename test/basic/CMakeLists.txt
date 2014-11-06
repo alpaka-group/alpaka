@@ -1,20 +1,20 @@
 #
 # Copyright 2014 Benjamin Worpitz
 #
-# This file is part of acc.
+# This file is part of alpaka.
 #
-# acc is free software: you can redistribute it and/or modify
+# alpaka is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# acc is distributed in the hope that it will be useful,
+# alpaka is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with acc.
+# along with alpaka.
 # If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -33,33 +33,33 @@ project(test)
 # set helper pathes to find libraries and packages
 set(CMAKE_PREFIX_PATH "/usr/lib/x86_64-linux-gnu/" "$ENV{CUDA_ROOT}" "$ENV{BOOST_ROOT}")
 
-OPTION(ACC_SERIAL_ENABLE "Enable the serial accelerator" OFF)
-IF(ACC_SERIAL_ENABLE)
-    ADD_DEFINITIONS(-DACC_SERIAL_ENABLED)
+OPTION(ALPAKA_SERIAL_ENABLE "Enable the serial accelerator" OFF)
+IF(ALPAKA_SERIAL_ENABLE)
+    ADD_DEFINITIONS(-DALPAKA_SERIAL_ENABLED)
 ENDIF()
-OPTION(ACC_THREADS_ENABLE "Enable the threas accelerator" OFF)
-IF(ACC_THREADS_ENABLE)
-    ADD_DEFINITIONS(-DACC_THREADS_ENABLED)
+OPTION(ALPAKA_THREADS_ENABLE "Enable the threas accelerator" OFF)
+IF(ALPAKA_THREADS_ENABLE)
+    ADD_DEFINITIONS(-DALPAKA_THREADS_ENABLED)
 ENDIF()
-OPTION(ACC_FIBERS_ENABLE "Enable the fibers accelerator" OFF)
-IF(ACC_FIBERS_ENABLE)
-    ADD_DEFINITIONS(-DACC_FIBERS_ENABLED)
+OPTION(ALPAKA_FIBERS_ENABLE "Enable the fibers accelerator" OFF)
+IF(ALPAKA_FIBERS_ENABLE)
+    ADD_DEFINITIONS(-DALPAKA_FIBERS_ENABLED)
 ENDIF()
-OPTION(ACC_OPENMP_ENABLE "Enable the OpenMP accelerator" ON)
-IF(ACC_OPENMP_ENABLE)
-    ADD_DEFINITIONS(-DACC_OPENMP_ENABLED)
+OPTION(ALPAKA_OPENMP_ENABLE "Enable the OpenMP accelerator" ON)
+IF(ALPAKA_OPENMP_ENABLE)
+    ADD_DEFINITIONS(-DALPAKA_OPENMP_ENABLED)
 ENDIF()
-OPTION(ACC_CUDA_ENABLE "Enable the CUDA accelerator" ON)
-IF(ACC_CUDA_ENABLE)
-    ADD_DEFINITIONS(-DACC_CUDA_ENABLED)
+OPTION(ALPAKA_CUDA_ENABLE "Enable the CUDA accelerator" ON)
+IF(ALPAKA_CUDA_ENABLE)
+    ADD_DEFINITIONS(-DALPAKA_CUDA_ENABLED)
 ENDIF()
 
 
 ################################################################################
 # Build type (debug, release)
 ################################################################################
-OPTION(ACC_RELEASE "Build release version, disables all runtime asserts" OFF)
-if(ACC_RELEASE)
+OPTION(ALPAKA_RELEASE "Build release version, disables all runtime asserts" OFF)
+if(ALPAKA_RELEASE)
     message(STATUS "Release version")
 
     set(CMAKE_BUILD_TYPE Release)
@@ -83,18 +83,19 @@ SET(Boost_USE_STATIC_RUNTIME OFF)
 
 SET(BOOST_REQUIRED_COMPONENTS)
 
-IF(ACC_FIBERS_ENABLE)
-    SET(${BOOST_REQUIRED_COMPONENTS} "coroutine context fibers")
+IF(ALPAKA_FIBERS_ENABLE)
+    SET(BOOST_REQUIRED_COMPONENTS fiber coroutine context system atomic chrono date_time regex thread)
 ENDIF()
 
 FIND_PACKAGE(Boost REQUIRED COMPONENTS ${BOOST_REQUIRED_COMPONENTS})
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 SET(LIBS ${LIBS} ${Boost_LIBRARIES})
 
+
 ################################################################################
 # Find OpenMP
 ################################################################################
-IF(ACC_OPENMP_ENABLE)
+IF(ALPAKA_OPENMP_ENABLE)
     FIND_PACKAGE( OpenMP REQUIRED)
     if(OPENMP_FOUND)
         set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
@@ -107,7 +108,7 @@ ENDIF()
 ################################################################################
 # Find CUDA 
 ################################################################################
-IF(ACC_CUDA_ENABLE)
+IF(ALPAKA_CUDA_ENABLE)
     find_package(CUDA 6.5 REQUIRED)
 
     if(CUDA_VERSION VERSION_LESS 6.5)
@@ -165,11 +166,11 @@ if(CMAKE_COMPILER_IS_GNUCXX)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-local-typedefs")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 # ICC
-elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Intel")
+elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL "Intel")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 # PGI
-elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "PGI")
+elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL "PGI")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Minform=inform")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 endif()
@@ -179,27 +180,27 @@ endif()
 # Configure include directories
 ################################################################################
 
-# acc
-find_path(ACC_ROOT_DIR
-  NAMES "include/acc/IAcc.hpp"
+# alpaka
+find_path(ALPAKA_ROOT_DIR
+  NAMES "include/alpaka/IAcc.hpp"
   PATHS "${CMAKE_CURRENT_SOURCE_DIR}/../../"
-  DOC "acc root location"
+  DOC "alpaka root location"
   )
-include_directories(${ACC_ROOT_DIR}/include)
+include_directories(${ALPAKA_ROOT_DIR}/include)
 
 
 ################################################################################
 # Compile & Link
 ################################################################################
 
-# acc
-FILE(GLOB_RECURSE ACC_HPP_FILES "${ACC_ROOT_DIR}/include/*.hpp")
-FILE(GLOB_RECURSE ACC_CPP_FILES "${ACC_ROOT_DIR}/include/*.cpp")
+# alpaka
+FILE(GLOB_RECURSE ALPAKA_HPP_FILES "${ALPAKA_ROOT_DIR}/include/*.hpp")
+FILE(GLOB_RECURSE ALPAKA_CPP_FILES "${ALPAKA_ROOT_DIR}/include/*.cpp")
 
 ADD_LIBRARY(
-    acc 
-    ${ACC_HPP_FILES}
-    ${ACC_CPP_FILES})
+    alpaka 
+    ${ALPAKA_HPP_FILES}
+    ${ALPAKA_CPP_FILES})
 
 # basic
 
@@ -207,7 +208,7 @@ FILE(GLOB_RECURSE HPP_FILES "include/*.hpp")
 FILE(GLOB_RECURSE CPP_FILES "src/*.cpp")
 FILE(GLOB_RECURSE CU_FILES "src/*.cu")
 
-IF(ACC_CUDA_ENABLE)
+IF(ALPAKA_CUDA_ENABLE)
     cuda_add_executable(basic
         ${HPP_FILES}
         ${CU_FILES}

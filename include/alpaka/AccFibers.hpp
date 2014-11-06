@@ -1,29 +1,29 @@
 /**
 * Copyright 2014 Benjamin Worpitz
 *
-* This file is part of acc.
+* This file is part of alpaka.
 *
-* acc is free software: you can redistribute it and/or modify
+* alpaka is free software: you can redistribute it and/or modify
 * it under the terms of of either the GNU General Public License or
 * the GNU Lesser General Public License as published by
 * the Free Software Foundation, either version 3 of the License, or
 * (at your option) any later version.
 *
-* acc is distributed in the hope that it will be useful,
+* alpaka is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU General Public License and the GNU Lesser General Public License
 * for more details.
 *
 * You should have received a copy of the GNU General Public License
-* and the GNU Lesser General Public License along with acc.
+* and the GNU Lesser General Public License along with alpaka.
 * If not, see <http://www.gnu.org/licenses/>.
 */
 
 #pragma once
 
-#include <acc/KernelExecutorBuilder.hpp>    // KernelExecutorBuilder
-#include <acc/WorkSize.hpp>                 // IWorkSize, WorkSizeDefault
+#include <alpaka/KernelExecutorBuilder.hpp> // KernelExecutorBuilder
+#include <alpaka/WorkSize.hpp>              // IWorkSize, WorkSizeDefault
 
 #include <cstddef>                          // std::size_t
 #include <cstdint>                          // unit8_t
@@ -44,12 +44,60 @@
 #include <boost/fiber/mutex.hpp>            // boost::fibers::mutex
 //#include <boost/fiber/barrier.hpp>        // boost::fibers::barrier
 
-namespace acc
+namespace alpaka
 {
     namespace fibers
     {
         namespace detail
-        {
+		{
+			using TFiberIdToIndex = std::map<boost::fibers::fiber::id, vec<3>>;
+
+			//#############################################################################
+			//! This class stores the current indices as members.
+			//#############################################################################
+			class IndexFibers
+			{
+			public:
+				//-----------------------------------------------------------------------------
+				//! Constructor.
+				//-----------------------------------------------------------------------------
+				ALPAKA_FCT_CPU_CUDA IndexFibers(
+					TFiberIdToIndex & mFibersToIndices,
+					vec<3> & v3uiGridBlockIdx) :
+					m_mFibersToIndices(mFibersToIndices),
+					m_v3uiGridBlockIdx(v3uiGridBlockIdx)
+				{
+				}
+
+				//-----------------------------------------------------------------------------
+				//! Copy-onstructor.
+				//-----------------------------------------------------------------------------
+				ALPAKA_FCT_CPU_CUDA IndexFibers(IndexFibers const & other) = default;
+
+				//-----------------------------------------------------------------------------
+				//! \return The index of the currently executed kernel.
+				//-----------------------------------------------------------------------------
+				ALPAKA_FCT_CPU vec<3> getIdxBlockKernel() const
+				{
+					auto const idFiber(boost::this_fiber::get_id());
+					auto const itFind(m_mFibersToIndices.find(idFiber));
+					assert(itFind != m_mFibersToIndices.end());
+
+					return itFind->second;
+				}
+				//-----------------------------------------------------------------------------
+				//! \return The index of the block of the currently executed kernel.
+				//-----------------------------------------------------------------------------
+				ALPAKA_FCT_CPU vec<3> getIdxGridBlock() const
+				{
+					return m_v3uiGridBlockIdx;
+				}
+
+			private:
+				TFiberIdToIndex const & m_mFibersToIndices;		//!< The mapping of fibers id's to fibers indices.
+				vec<3> const & m_v3uiGridBlockIdx;				//!< The index of the currently executed block.
+			};
+
             //#############################################################################
             //! A barrier.
             // NOTE: We do not use the boost::fibers::barrier because it does not support simple resetting.
@@ -60,62 +108,62 @@ namespace acc
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU explicit FiberBarrier(std::size_t uiNumThreadsToWaitFor = 0) :
-                    m_uiNumThreadsToWaitFor{uiNumThreadsToWaitFor}
+                ALPAKA_FCT_CPU explicit FiberBarrier(std::size_t uiNumFibersToWaitFor = 0) :
+                    m_uiNumFibersToWaitFor{uiNumFibersToWaitFor}
                 {
                 }
 
                 //-----------------------------------------------------------------------------
                 //! Deleted copy-constructor.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU FiberBarrier(FiberBarrier const &) = delete;
+                ALPAKA_FCT_CPU FiberBarrier(FiberBarrier const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Deleted assignment-operator.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU FiberBarrier & operator=(FiberBarrier const &) = delete;
+                ALPAKA_FCT_CPU FiberBarrier & operator=(FiberBarrier const &) = delete;
 
                 //-----------------------------------------------------------------------------
-                //! Waits for all the other threads to reach the barrier.
+                //! Waits for all the other fibers to reach the barrier.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU void wait()
+                ALPAKA_FCT_CPU void wait()
                 {
                     boost::unique_lock<boost::fibers::mutex> lock(m_mtxBarrier);
-                    if(--m_uiNumThreadsToWaitFor == 0)
+					if(--m_uiNumFibersToWaitFor == 0)
                     {
-                        m_cvAllThreadsReachedBarrier.notify_all();
+                        m_cvAllFibersReachedBarrier.notify_all();
                     }
                     else
                     {
-                        m_cvAllThreadsReachedBarrier.wait(lock, [this] { return m_uiNumThreadsToWaitFor == 0; });
+						m_cvAllFibersReachedBarrier.wait(lock, [this] { return m_uiNumFibersToWaitFor == 0; });
                     }
                 }
 
                 //-----------------------------------------------------------------------------
-                //! \return The number of threads to wait for.
+                //! \return The number of fibers to wait for.
                 //! NOTE: The value almost always is invalid the time you get it.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU std::size_t getNumThreadsToWaitFor() const
+				ALPAKA_FCT_CPU std::size_t getNumFibersToWaitFor() const
                 {
-                    return m_uiNumThreadsToWaitFor;
+					return m_uiNumFibersToWaitFor;
                 }
 
                 //-----------------------------------------------------------------------------
-                //! Resets the number of threads to wait for to the given number.
+                //! Resets the number of fibers to wait for to the given number.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU void reset(std::size_t uiNumThreadsToWaitFor)
+				ALPAKA_FCT_CPU void reset(std::size_t uiNumFibersToWaitFor)
                 {
                     //boost::unique_lock<boost::fibers::mutex> lock(m_mtxBarrier);
-                    m_uiNumThreadsToWaitFor = uiNumThreadsToWaitFor;
+					m_uiNumFibersToWaitFor = uiNumFibersToWaitFor;
                 }
 
             private:
                 boost::fibers::mutex m_mtxBarrier;
-                boost::fibers::condition_variable m_cvAllThreadsReachedBarrier;
-                std::size_t m_uiNumThreadsToWaitFor;
+				boost::fibers::condition_variable m_cvAllFibersReachedBarrier;
+				std::size_t m_uiNumFibersToWaitFor;
             };
 
-            using TPackedIndex = acc::detail::IIndex<IndexFibers>;
-            using TPackedWorkSize = acc::detail::IWorkSize<acc::detail::WorkSizeDefault>;
+			using TPackedIndex = alpaka::detail::IIndex<IndexFibers>;
+			using TPackedWorkSize = alpaka::detail::IWorkSize<alpaka::detail::WorkSizeDefault>;
 
             //#############################################################################
             //! The base class for all fibers accelerated kernels.
@@ -128,25 +176,38 @@ namespace acc
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU AccFibers()
-                    TPackedIndex(),
+                ALPAKA_FCT_CPU AccFibers() :
+					TPackedIndex(m_mFibersToIndices, m_v3uiGridBlockIdx),
                     TPackedWorkSize()
-                {
-                }
+                {}
 
-                //-----------------------------------------------------------------------------
-                //! Deleted copy-constructor.
-                //-----------------------------------------------------------------------------
-                ACC_FCT_CPU AccFibers(AccFibers const &) = delete;
+				//-----------------------------------------------------------------------------
+				//! Copy-constructor.
+				// Has to be explicitly defined because 'std::mutex::mutex(const std::mutex&)' is deleted.
+				// Do not copy most members because they are initialized by the executor for each accelerated execution.
+				//-----------------------------------------------------------------------------
+				ALPAKA_FCT_CPU AccFibers(AccFibers const & other) :
+					TPackedIndex(m_mFibersToIndices, m_v3uiGridBlockIdx),
+					TPackedWorkSize(other),
+					m_vFibersInBlock(),
+					m_mFibersToIndices(),
+					m_v3uiGridBlockIdx(),
+					m_uiNumKernelsPerBlock(),
+					m_mFibersToBarrier(),
+					m_abarSyncFibers(),
+					m_idMasterFiber(),
+					m_vuiSharedMem()
+				{}
+
                 //-----------------------------------------------------------------------------
                 //! Deleted assignment-operator.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU AccFibers & operator=(AccFibers const &) = delete;
+                ALPAKA_FCT_CPU AccFibers & operator=(AccFibers const &) = delete;
 
                 //-----------------------------------------------------------------------------
                 //! \return The maximum number of kernels in each dimension of a block allowed.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU static vec<3> getSizeBlockKernelsMax()
+                ALPAKA_FCT_CPU static vec<3> getSizeBlockKernelsMax()
                 {
                     auto const uiSizeBlockKernelsLinearMax(getSizeBlockKernelsLinearMax());
                     return{uiSizeBlockKernelsLinearMax, uiSizeBlockKernelsLinearMax, uiSizeBlockKernelsLinearMax};
@@ -154,7 +215,7 @@ namespace acc
                 //-----------------------------------------------------------------------------
                 //! \return The maximum number of kernels in a block allowed by the underlying accelerator.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU static std::uint32_t getSizeBlockKernelsLinearMax()
+                ALPAKA_FCT_CPU static std::uint32_t getSizeBlockKernelsLinearMax()
                 {
                     // FIXME: What is the maximum? Just set a reasonable value?
                     return 1024;    // Magic number.
@@ -162,29 +223,10 @@ namespace acc
 
             protected:
                 //-----------------------------------------------------------------------------
-                //! \return The thread index of the currently executed kernel.
-                //-----------------------------------------------------------------------------
-                ACC_FCT_CPU vec<3> getIdxBlockKernel() const
-                {
-                    auto const idFiber(boost::this_fiber::get_id());
-                    auto const itFind(m_mFibersToIndices.find(idFiber));
-                    assert(itFind != m_mFibersToIndices.end());
-
-                    return itFind->second;
-                }
-                //-----------------------------------------------------------------------------
-                //! \return The block index of the currently executed kernel.
-                //-----------------------------------------------------------------------------
-                ACC_FCT_CPU vec<3> getIdxGridBlock() const
-                {
-                    return m_v3uiGridBlockIdx;
-                }
-
-                //-----------------------------------------------------------------------------
                 //! \return The requested index.
                 //-----------------------------------------------------------------------------
                 template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-                ACC_FCT_CPU_CUDA typename DimToRetType<TDimensionality>::type getIdx() const
+				ALPAKA_FCT_CPU_CUDA typename alpaka::detail::DimToRetType<TDimensionality>::type getIdx() const
                 {
                     return TPackedIndex::getIdx<TPackedWorkSize, TOrigin, TUnit, TDimensionality>(
                         *static_cast<TPackedWorkSize const *>(this));
@@ -194,16 +236,16 @@ namespace acc
                 //! Atomic addition.
                 //-----------------------------------------------------------------------------
                 template<typename T>
-                ACC_FCT_CPU void atomicFetchAdd(T * sum, T summand) const
+                ALPAKA_FCT_CPU void atomicFetchAdd(T * sum, T summand) const
                 {
                     // No mutex required because fibers are thread sequential.
                     auto & rsum = *sum;
                     rsum += summand;
                 }
                 //-----------------------------------------------------------------------------
-                //! Syncs all threads in the current block.
+                //! Syncs all kernels in the current block.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU void syncBlockKernels() const
+                ALPAKA_FCT_CPU void syncBlockKernels() const
                 {
                     auto const idFiber(boost::this_fiber::get_id());
                     auto const itFind(m_mFibersToBarrier.find(idFiber));
@@ -214,8 +256,8 @@ namespace acc
 
                     auto & bar(m_abarSyncFibers[uiBarrierIndex]);
 
-                    // (Re)initialize a barrier if this is the first thread to reach it.
-                    if(bar.getNumThreadsToWaitFor() == 0)
+                    // (Re)initialize a barrier if this is the first fiber to reach it.
+					if(bar.getNumFibersToWaitFor() == 0)
                     {
                         bar.reset(m_uiNumKernelsPerBlock);
                     }
@@ -229,7 +271,7 @@ namespace acc
                 //! \return The pointer to the block shared memory.
                 //-----------------------------------------------------------------------------
                 template<typename T>
-                ACC_FCT_CPU T * getBlockSharedExternMem() const
+                ALPAKA_FCT_CPU T * getBlockSharedExternMem() const
                 {
                     return reinterpret_cast<T*>(m_vuiSharedMem.data());
                 }
@@ -238,13 +280,11 @@ namespace acc
                 mutable std::vector<boost::fibers::fiber> m_vFibersInBlock; //!< The fibers executing the current block.
 
                 // getXxxIdx
-                mutable std::map<
-                    boost::fibers::fiber::id,
-                    vec<3>> m_mFibersToIndices;                             //!< The mapping of fibers id's to fibers indices.
-                mutable vec<3> m_v3uiGridBlockIdx;                           //!< The index of the currently executed block.
+				mutable TFiberIdToIndex m_mFibersToIndices;                 //!< The mapping of fibers id's to fibers indices.
+                mutable vec<3> m_v3uiGridBlockIdx;                          //!< The index of the currently executed block.
 
                 // syncBlockKernels
-                mutable std::size_t m_uiNumKernelsPerBlock;                  //!< The number of kernels per block the barrier has to wait for.
+                mutable std::size_t m_uiNumKernelsPerBlock;                 //!< The number of kernels per block the barrier has to wait for.
                 mutable std::map<
                     boost::fibers::fiber::id,
                     std::size_t> m_mFibersToBarrier;                        //!< The mapping of fibers id's to their current barrier.
@@ -267,10 +307,10 @@ namespace acc
                     //-----------------------------------------------------------------------------
                     //! Constructor.
                     //-----------------------------------------------------------------------------
-                    template<typename TWorkSize2>
-                    KernelExecutor(TWorkSize2 const & workSize)
-                    {
-                        (*static_cast<typename AccFibers::TPackedWorkSize*>(this)) = workSize;
+					template<typename TWorkSize2, typename TNonAcceleratedKernel>
+					KernelExecutor(TWorkSize2 const & workSize, TNonAcceleratedKernel const & kernel)
+					{
+						(*static_cast<TPackedWorkSize*>(this)) = workSize;
 #ifdef _DEBUG
                         std::cout << "AccFibers::KernelExecutor()" << std::endl;
 #endif
@@ -315,12 +355,6 @@ namespace acc
                                 {
                                     this->AccFibers::m_v3uiGridBlockIdx[0] = bx;
 
-                                    //std::size_t const uiNumKernelsInBlock(getSizeBlockKernels()[0] * getSizeBlockKernels()[1] * getSizeBlockKernels()[2]);
-
-                                    // This is called automatically if required.
-                                    //m_abarSyncThreads[0].reset(uiNumKernelsInBlock);
-                                    //m_abarSyncThreads[1].reset(uiNumKernelsInBlock);
-
                                     vec<3> v3uiBlockKernelIdx;
                                     for(std::uint32_t tz(0); tz<v3uiSizeBlockKernels[2]; ++tz)
                                     {
@@ -332,11 +366,11 @@ namespace acc
                                             {
                                                 v3uiBlockKernelIdx[0] = tx;
 
-                                                // Create the thread.
-                                                // The v3uiBlockKernelIdx is required to be copied in from the environment because if the thread is immediately suspended the variable is already changed for the next iteration/thread.
-#ifdef _MSC_VER    // MSVC <= 14 do not compile the std::thread constructor because the type of the member function template is missing the this pointer as first argument.
-                                                auto threadKernelFct([this](vec<3> const v3uiBlockKernelIdx, TArgs ... args){fiberKernel<TArgs...>(v3uiBlockKernelIdx, args...); });
-                                                this->AccFibers::m_vFibersInBlock.push_back(boost::fibers::fiber(threadKernelFct, v3uiBlockKernelIdx, args...));
+                                                // Create a fiber.
+                                                // The v3uiBlockKernelIdx is required to be copied in from the environment because if the fiber is immediately suspended the variable is already changed for the next iteration/thread.
+#ifdef _MSC_VER    // MSVC <= 14 do not compile the boost::fibers::fiber constructor because the type of the member function template is missing the this pointer as first argument.
+                                                auto fiberKernelFct([this](vec<3> const v3uiBlockKernelIdx, TArgs ... args){fiberKernel<TArgs...>(v3uiBlockKernelIdx, args...); });
+												this->AccFibers::m_vFibersInBlock.push_back(boost::fibers::fiber(fiberKernelFct, v3uiBlockKernelIdx, args...));
 #else
                                                 this->AccFibers::m_vFibersInBlock.push_back(boost::fibers::fiber(&KernelExecutor::fiberKernel<TArgs...>, this, v3uiBlockKernelIdx, args...));
 #endif
@@ -366,15 +400,16 @@ namespace acc
                     }
                 private:
                     //-----------------------------------------------------------------------------
-                    //! The thread entry point.
+                    //! The fiber entry point.
                     //-----------------------------------------------------------------------------
+					template<typename... TArgs>
                     void fiberKernel(vec<3> const v3uiBlockKernelIdx, TArgs ... args) const
                     {
-                        // We have to store the thread data before the kernel is calling any of the methods of this class depending on them.
+                        // We have to store the fiber data before the kernel is calling any of the methods of this class depending on them.
                         auto const idFiber(boost::this_fiber::get_id());
 
                         {
-                            // Save the thread id, and index.
+                            // Save the fiber id, and index.
 #ifdef _MSC_VER    // GCC <= 4.7.2 is not standard conformant and has no member emplace. This works with 4.7.3+.
                             this->AccFibers::m_mFibersToIndices.emplace(idFiber, v3uiBlockKernelIdx);
                             this->AccFibers::m_mFibersToBarrier.emplace(idFiber, 0);
@@ -384,13 +419,13 @@ namespace acc
 #endif
                         }
 
-                        // Sync all fibers so that the maps with thread id's are complete and not changed after here.
+                        // Sync all fibers so that the maps with fiber id's are complete and not changed after here.
                         this->AccFibers::syncBlockKernels();
 
                         // Execute the kernel itself.
                         this->TAcceleratedKernel::operator()(args ...);
 
-                        // We have to sync all fibers here because if a fiber would finish before all fibers have been started, the new thread could get a recyled (then duplicate) thread id!
+                        // We have to sync all fibers here because if a fiber would finish before all fibers have been started, the new fiber could get a recyled (then duplicate) fiber id!
                         this->AccFibers::syncBlockKernels();
                     }
                 };
@@ -417,7 +452,7 @@ namespace acc
             //-----------------------------------------------------------------------------
             TKernelExecutor operator()(TPackedWorkSize const & workSize, TKernel const & kernel) const
             {
-                return TKernelExecutor(workSize);
+				return TKernelExecutor(workSize, kernel);
             }
         };
     }

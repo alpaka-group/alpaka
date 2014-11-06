@@ -1,32 +1,32 @@
 /**
 * Copyright 2014 Benjamin Worpitz
 *
-* This file is part of acc.
+* This file is part of alpaka.
 *
-* acc is free software: you can redistribute it and/or modify
+* alpaka is free software: you can redistribute it and/or modify
 * it under the terms of of either the GNU General Public License or
 * the GNU Lesser General Public License as published by
 * the Free Software Foundation, either version 3 of the License, or
 * (at your option) any later version.
 *
-* acc is distributed in the hope that it will be useful,
+* alpaka is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU General Public License and the GNU Lesser General Public License
 * for more details.
 *
 * You should have received a copy of the GNU General Public License
-* and the GNU Lesser General Public License along with acc.
+* and the GNU Lesser General Public License along with alpaka.
 * If not, see <http://www.gnu.org/licenses/>.
 */
 
 #pragma once
 
-#include <acc/IAcc.hpp>                     // IAcc
-#include <acc/KernelExecutorBuilder.hpp>    // KernelExecutorBuilder
-#include <acc/WorkSize.hpp>                 // IWorkSize, WorkSizeDefault
-#include <acc/Index.hpp>                    // IIndex
-#include <acc/FctCudaCpu.hpp>               // ACC_FCT_CUDA
+#include <alpaka/IAcc.hpp>                  // IAcc
+#include <alpaka/KernelExecutorBuilder.hpp> // KernelExecutorBuilder
+#include <alpaka/WorkSize.hpp>              // IWorkSize, WorkSizeDefault
+#include <alpaka/Index.hpp>                 // IIndex
+#include <alpaka/FctCudaCpu.hpp>            // ALPAKA_FCT_CUDA
 
 #include <cstddef>                          // std::size_t
 #include <cstdint>                          // unit8_t
@@ -41,13 +41,13 @@
 
 #include <cuda.h>
 
-#define ACC_CUDA_CHECK(cmd) {cudaError_t error = cmd; if(error!=cudaSuccess){std::cerr<<"<"<<__FILE__<<">:"<<__LINE__<<std::endl; throw std::runtime_error(std::string("[CUDA] Error: ") + std::string(cudaGetErrorString(error)));}}
+#define ALPAKA_CUDA_CHECK(cmd) {cudaError_t error = cmd; if(error!=cudaSuccess){std::cerr<<"<"<<__FILE__<<">:"<<__LINE__<<std::endl; throw std::runtime_error(std::string("[CUDA] Error: ") + std::string(cudaGetErrorString(error)));}}
 
-#define ACC_CUDA_CHECK_MSG(cmd,msg) {cudaError_t error = cmd; if(error!=cudaSuccess){std::cerr<<"<"<<__FILE__<<">:"<<__LINE__<<msg<<std::endl; throw std::runtime_error(std::string("[CUDA] Error: ") + std::string(cudaGetErrorString(error)));}}
+#define ALPAKA_CUDA_CHECK_MSG(cmd,msg) {cudaError_t error = cmd; if(error!=cudaSuccess){std::cerr<<"<"<<__FILE__<<">:"<<__LINE__<<msg<<std::endl; throw std::runtime_error(std::string("[CUDA] Error: ") + std::string(cudaGetErrorString(error)));}}
 
-#define ACC_CUDA_CHECK_NO_EXCEP(cmd) {cudaError_t error = cmd; if(error!=cudaSuccess){printf("[CUDA] Error: <%s>:%i ",__FILE__,__LINE__);}}
+#define ALPAKA_CUDA_CHECK_NO_EXCEP(cmd) {cudaError_t error = cmd; if(error!=cudaSuccess){printf("[CUDA] Error: <%s>:%i ",__FILE__,__LINE__);}}
 
-namespace acc
+namespace alpaka
 {
     namespace cuda
     {
@@ -62,31 +62,31 @@ namespace acc
                 //-----------------------------------------------------------------------------
                 //! Default-constructor.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU_CUDA IndexCuda() = default;
+                ALPAKA_FCT_CPU_CUDA IndexCuda() = default;
 
                 //-----------------------------------------------------------------------------
                 //! Copy-onstructor.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU_CUDA IndexCuda(IndexCuda const & other) = default;
+                ALPAKA_FCT_CPU_CUDA IndexCuda(IndexCuda const & other) = default;
 
                 //-----------------------------------------------------------------------------
-                //! \return The thread index of the currently executed kernel.
+                //! \return The index of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU_CUDA vec<3> getIdxBlockKernel() const
+                ALPAKA_FCT_CPU_CUDA vec<3> getIdxBlockKernel() const
                 {
                     return{threadIdx.x, threadIdx.y, threadIdx.z};
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The block index of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU_CUDA vec<3> getIdxGridBlock() const
+                ALPAKA_FCT_CPU_CUDA vec<3> getIdxGridBlock() const
                 {
                     return{blockIdx.x, blockIdx.y, blockIdx.z};
                 }
             };
 
-            using TPackedIndex = acc::detail::IIndex<acc::detail::IndexCuda>;
-            using TPackedWorkSize = acc::detail::IWorkSize<WorkSizeCuda>;
+            using TPackedIndex = alpaka::detail::IIndex<alpaka::detail::IndexCuda>;
+            using TPackedWorkSize = alpaka::detail::IWorkSize<WorkSizeCuda>;
 
             //#############################################################################
             //! The description of the work being accelerated.
@@ -98,12 +98,12 @@ namespace acc
                 //-----------------------------------------------------------------------------
                 //! Default-constructor.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU_CUDA WorkSizeCuda() = default;
+                ALPAKA_FCT_CPU_CUDA WorkSizeCuda() = default;
 
                 //-----------------------------------------------------------------------------
                 //! \return The grid dimensions of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU_CUDA vec<3> getSizeGridBlocks() const
+                ALPAKA_FCT_CPU_CUDA vec<3> getSizeGridBlocks() const
                 {
 #ifdef __CUDA_ARCH__
                     return{gridDim.x, gridDim.y, gridDim.z};
@@ -114,7 +114,7 @@ namespace acc
                 //-----------------------------------------------------------------------------
                 //! \return The block dimensions of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU_CUDA vec<3> getSizeBlockKernels() const
+                ALPAKA_FCT_CPU_CUDA vec<3> getSizeBlockKernels() const
                 {
 #ifdef __CUDA_ARCH__
                     return{blockDim.x, blockDim.y, blockDim.z};
@@ -144,7 +144,7 @@ namespace acc
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CUDA AccCuda() :
+                ALPAKA_FCT_CUDA AccCuda() :
                     TPackedIndex(),
                     TPackedWorkSize()
                 {}
@@ -152,7 +152,7 @@ namespace acc
                 //-----------------------------------------------------------------------------
                 //! \return The maximum number of kernels in each dimension of a block allowed.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU static vec<3> getSizeBlockKernelsMax()
+                ALPAKA_FCT_CPU static vec<3> getSizeBlockKernelsMax()
                 {
                     // TODO: CC < 2.0? Get from CUDA API.
                     return{1024u, 1024u, 64u};
@@ -160,7 +160,7 @@ namespace acc
                 //-----------------------------------------------------------------------------
                 //! \return The maximum number of kernels in a block allowed.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CPU static std::uint32_t getSizeBlockKernelsLinearMax()
+                ALPAKA_FCT_CPU static std::uint32_t getSizeBlockKernelsLinearMax()
                 {
                     // TODO: CC < 2.0? Get from CUDA API.
                     return 1024;
@@ -195,11 +195,11 @@ namespace acc
                     }
 
                     cudaDeviceProp devProp;
-                    ACC_CUDA_CHECK(cudaGetDeviceProperties(&devProp, deviceNumber));
+                    ALPAKA_CUDA_CHECK(cudaGetDeviceProperties(&devProp, deviceNumber));
                     // Default compute mode (Multiple threads can use cudaSetDevice() with this device)
                     if(devProp.computeMode == cudaComputeModeDefault)
                     {
-                        ACC_CUDA_CHECK(cudaSetDevice(deviceNumber));
+                        ALPAKA_CUDA_CHECK(cudaSetDevice(deviceNumber));
                         std::cout << "Set device to " << deviceNumber << ": " << devProp.name << std::endl;
 #ifdef _DEBUG
                         std::size_t const uiKiB(1024);
@@ -280,7 +280,7 @@ namespace acc
 
                     // Instruct CUDA to actively spin when waiting for results from the device.
                     // This can decrease latency when waiting for the device, but may lower the performance of CPU threads if they are performing work in parallel with the CUDA thread.
-                    ACC_CUDA_CHECK(cudaSetDeviceFlags(cudaDeviceScheduleSpin));
+                    ALPAKA_CUDA_CHECK(cudaSetDeviceFlags(cudaDeviceScheduleSpin));
 
 #ifdef _DEBUG
                     std::cout << "[-] AccCuda::setDevice()" << std::endl;
@@ -292,7 +292,7 @@ namespace acc
                 //! \return The requested index.
                 //-----------------------------------------------------------------------------
                 template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-                ACC_FCT_CPU_CUDA typename detail::DimToRetType<TDimensionality>::type getIdx() const
+                ALPAKA_FCT_CPU_CUDA typename detail::DimToRetType<TDimensionality>::type getIdx() const
                 {
                     return TPackedIndex::getIdx<TPackedWorkSize, TOrigin, TUnit, TDimensionality>(
                         *static_cast<TPackedWorkSize const *>(this));
@@ -302,15 +302,15 @@ namespace acc
                 //! Atomic addition of integers.
                 //-----------------------------------------------------------------------------
                 template<typename T>
-                ACC_FCT_CUDA void atomicFetchAdd(T * sum, T summand) const
+                ALPAKA_FCT_CUDA void atomicFetchAdd(T * sum, T summand) const
                 {
                     atomicAdd(sum, summand);
                 }
 
                 //-----------------------------------------------------------------------------
-                //! Syncs all threads in the current block.
+                //! Syncs all kernels in the current block.
                 //-----------------------------------------------------------------------------
-                ACC_FCT_CUDA void syncBlockKernels() const
+                ALPAKA_FCT_CUDA void syncBlockKernels() const
                 {
                     __syncthreads();
                 }
@@ -319,7 +319,7 @@ namespace acc
                 //! \return The pointer to the block shared memory.
                 //-----------------------------------------------------------------------------
                 template<typename T>
-                ACC_FCT_CUDA T * getBlockSharedExternMem() const
+                ALPAKA_FCT_CUDA T * getBlockSharedExternMem() const
                 {
                     extern __shared__ uint8_t shMem[];
                     //syncBlockKernels();
@@ -331,11 +331,11 @@ namespace acc
                 //-----------------------------------------------------------------------------
                 // TODO: implement
                 /*template<typename T>
-                ACC_FCT_CUDA __forceinline__ T * getBlockSharedVar() const
+                ALPAKA_FCT_CUDA __forceinline__ T * getBlockSharedVar() const
                 {
-                __shared__ T shMem;
-                syncBlockKernels();
-                return shMem;
+					__shared__ T shMem;
+					syncBlockKernels();
+					return shMem;
                 }*/
 
             public:
@@ -353,10 +353,10 @@ namespace acc
                     //-----------------------------------------------------------------------------
                     //! Constructor.
                     //-----------------------------------------------------------------------------
-                    template<typename TWorkSize2>
-                    KernelExecutor(TWorkSize2 const & workSize) :
+					template<typename TWorkSize2, typename TNonAcceleratedKernel>
+					KernelExecutor(TWorkSize2 const & workSize, TNonAcceleratedKernel const & kernel) :
                         detail::IWorkSize<detail::WorkSizeDefault>(workSize)
-                    {
+					{
 #ifdef _DEBUG
                         std::cout << "AccCuda::KernelExecutor()" << std::endl;
 #endif
@@ -423,7 +423,7 @@ namespace acc
         //! \return The requested size.
         //-----------------------------------------------------------------------------
         template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-        ACC_FCT_CUDA typename detail::DimToRetType<TDimensionality>::type getSize() const
+        ALPAKA_FCT_CUDA typename detail::DimToRetType<TDimensionality>::type getSize() const
         {
             return TAcc::getSize<TOrigin, TUnit, TDimensionality>();
         }
@@ -433,7 +433,7 @@ namespace acc
         //! \return The requested index.
         //-----------------------------------------------------------------------------
         template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-        ACC_FCT_CUDA typename detail::DimToRetType<TDimensionality>::type getIdx() const
+        ALPAKA_FCT_CUDA typename detail::DimToRetType<TDimensionality>::type getIdx() const
         {
             return TAcc::getIdx<TOrigin, TUnit, TDimensionality>();
         }
@@ -442,15 +442,15 @@ namespace acc
         //! Atomic addition.
         //-----------------------------------------------------------------------------
         template<typename T>
-        ACC_FCT_CUDA void atomicFetchAdd(T * sum, T summand) const
+        ALPAKA_FCT_CUDA void atomicFetchAdd(T * sum, T summand) const
         {
             return TAcc::atomicFetchAdd<T>(sum, summand);
         }
 
         //-----------------------------------------------------------------------------
-        //! Syncs all threads in the current block.
+        //! Syncs all kernels in the current block.
         //-----------------------------------------------------------------------------
-        ACC_FCT_CUDA void syncBlockKernels() const
+        ALPAKA_FCT_CUDA void syncBlockKernels() const
         {
             return TAcc::syncBlockKernels();
         }
@@ -459,7 +459,7 @@ namespace acc
         //! \return The pointer to the block shared memory.
         //-----------------------------------------------------------------------------
         template<typename T>
-        ACC_FCT_CUDA T * getBlockSharedExternMem() const
+        ALPAKA_FCT_CUDA T * getBlockSharedExternMem() const
         {
             return TAcc::getBlockSharedExternMem<T>();
         }
@@ -484,7 +484,7 @@ namespace acc
             //-----------------------------------------------------------------------------
             TKernelExecutor operator()(TPackedWorkSize const & workSize, TKernel const & kernel) const
             {
-                return TKernelExecutor(workSize);
+                return TKernelExecutor(workSize, kernel);
             }
         };
     }

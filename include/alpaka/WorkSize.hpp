@@ -1,33 +1,33 @@
 /**
 * Copyright 2014 Benjamin Worpitz
 *
-* This file is part of acc.
+* This file is part of alpaka.
 *
-* acc is free software: you can redistribute it and/or modify
+* alpaka is free software: you can redistribute it and/or modify
 * it under the terms of of either the GNU General Public License or
 * the GNU Lesser General Public License as published by
 * the Free Software Foundation, either version 3 of the License, or
 * (at your option) any later version.
 *
-* acc is distributed in the hope that it will be useful,
+* alpaka is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU General Public License and the GNU Lesser General Public License
 * for more details.
 *
 * You should have received a copy of the GNU General Public License
-* and the GNU Lesser General Public License along with acc.
+* and the GNU Lesser General Public License along with alpaka.
 * If not, see <http://www.gnu.org/licenses/>.
 */
 
 #pragma once
 
-#include <acc/Positioning.hpp>  // acc::origin::Grid/Blocks
-#include <acc/FctCudaCpu.hpp>   // ACC_FCT_CPU_CUDA
+#include <alpaka/Positioning.hpp>   // alpaka::origin::Grid/Blocks
+#include <alpaka/FctCudaCpu.hpp>    // ALPAKA_FCT_CPU_CUDA
 
-#include <utility>              // std::forward
+#include <utility>                  // std::forward
 
-namespace acc
+namespace alpaka
 {
     namespace detail
     {
@@ -41,12 +41,12 @@ namespace acc
             //-----------------------------------------------------------------------------
             //! Default-constructor.
             //-----------------------------------------------------------------------------
-            ACC_FCT_CPU_CUDA WorkSizeDefault() = default;
+            ALPAKA_FCT_CPU_CUDA WorkSizeDefault() = default;
 
             //-----------------------------------------------------------------------------
             //! Constructor from values.
             //-----------------------------------------------------------------------------
-            ACC_FCT_CPU_CUDA explicit WorkSizeDefault(vec<3> const v3uiSizeGridBlocks, vec<3> const v3uiSizeBlockKernels) :
+            ALPAKA_FCT_CPU_CUDA explicit WorkSizeDefault(vec<3> const v3uiSizeGridBlocks, vec<3> const v3uiSizeBlockKernels) :
                 m_v3uiSizeGridBlocks(v3uiSizeGridBlocks),
                 m_v3uiSizeBlockKernels(v3uiSizeBlockKernels)
             {}
@@ -54,19 +54,19 @@ namespace acc
             //-----------------------------------------------------------------------------
             //! Copy-onstructor.
             //-----------------------------------------------------------------------------
-            ACC_FCT_CPU_CUDA WorkSizeDefault(WorkSizeDefault const & other) = default;
+            ALPAKA_FCT_CPU_CUDA WorkSizeDefault(WorkSizeDefault const & other) = default;
 
             //-----------------------------------------------------------------------------
             //! \return The grid dimensions of the currently executed kernel.
             //-----------------------------------------------------------------------------
-            ACC_FCT_CPU_CUDA vec<3> getSizeGridBlocks() const
+            ALPAKA_FCT_CPU_CUDA vec<3> getSizeGridBlocks() const
             {
                 return m_v3uiSizeGridBlocks;
             }
             //-----------------------------------------------------------------------------
             //! \return The block dimensions of the currently executed kernel.
             //-----------------------------------------------------------------------------
-            ACC_FCT_CPU_CUDA vec<3> getSizeBlockKernels() const
+            ALPAKA_FCT_CPU_CUDA vec<3> getSizeBlockKernels() const
             {
                 return m_v3uiSizeBlockKernels;
             }
@@ -104,7 +104,7 @@ namespace acc
             //! Constructor.
             //-----------------------------------------------------------------------------
             template<typename... TArgs>
-            ACC_FCT_CPU_CUDA IWorkSize(TArgs && ... args) :
+            ALPAKA_FCT_CPU_CUDA IWorkSize(TArgs && ... args) :
                 TWorkSize(std::forward<TArgs>(args)...)
             {}
 
@@ -114,7 +114,7 @@ namespace acc
             // Therefore this is done via the partial specialized GetSize class, which gets a reference to this object.
             //-----------------------------------------------------------------------------
             template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-            ACC_FCT_CPU_CUDA typename DimToRetType<TDimensionality>::type getSize() const
+            ALPAKA_FCT_CPU_CUDA typename DimToRetType<TDimensionality>::type getSize() const
             {
                 return GetSize<TWorkSize, TOrigin, TUnit, TDimensionality>::getSize(
                     *static_cast<TWorkSize const *>(this));
@@ -130,7 +130,7 @@ namespace acc
             //-----------------------------------------------------------------------------
             //! \return The number of kernels in each dimension of a block.
             //-----------------------------------------------------------------------------
-            ACC_FCT_CPU_CUDA static DimToRetType<dim::D3>::type getSize(TWorkSize const & workSize)
+            ALPAKA_FCT_CPU_CUDA static DimToRetType<dim::D3>::type getSize(TWorkSize const & workSize)
             {
                 return workSize.getSizeBlockKernels();
             }
@@ -141,7 +141,7 @@ namespace acc
             //-----------------------------------------------------------------------------
             //! \return The number of kernels in a block.
             //-----------------------------------------------------------------------------
-            ACC_FCT_CPU_CUDA static DimToRetType<dim::Linear>::type getSize(TWorkSize const & workSize)
+            ALPAKA_FCT_CPU_CUDA static DimToRetType<dim::Linear>::type getSize(TWorkSize const & workSize)
             {
                 return GetSize<TWorkSize, origin::Block, unit::Kernels, dim::D3>::getSize(workSize).prod();
             }
@@ -152,7 +152,7 @@ namespace acc
             //-----------------------------------------------------------------------------
             //! \return The number of kernels in each dimension of the grid.
             //-----------------------------------------------------------------------------
-            ACC_FCT_CPU_CUDA static DimToRetType<dim::D3>::type getSize(TWorkSize const & workSize)
+            ALPAKA_FCT_CPU_CUDA static DimToRetType<dim::D3>::type getSize(TWorkSize const & workSize)
             {
                 return workSize.getSizeGridBlocks() * workSize.getSizeBlockKernels();
             }
@@ -163,7 +163,7 @@ namespace acc
             //-----------------------------------------------------------------------------
             //! \return The number of kernels in the grid.
             //-----------------------------------------------------------------------------
-            ACC_FCT_CPU_CUDA static DimToRetType<dim::Linear>::type getSize(TWorkSize const & workSize)
+            ALPAKA_FCT_CPU_CUDA static DimToRetType<dim::Linear>::type getSize(TWorkSize const & workSize)
             {
                 return GetSize<TWorkSize, origin::Grid, unit::Kernels, dim::D3>::getSize(workSize).prod();
             }
@@ -174,7 +174,7 @@ namespace acc
             //-----------------------------------------------------------------------------
             //! \return The number of blocks in each dimension of the grid.
             //-----------------------------------------------------------------------------
-            ACC_FCT_CPU_CUDA static DimToRetType<dim::D3>::type getSize(TWorkSize const & workSize)
+            ALPAKA_FCT_CPU_CUDA static DimToRetType<dim::D3>::type getSize(TWorkSize const & workSize)
             {
                 return workSize.getSizeGridBlocks();
             }
@@ -185,7 +185,7 @@ namespace acc
             //-----------------------------------------------------------------------------
             //! \return The number of blocks in the grid.
             //-----------------------------------------------------------------------------
-            ACC_FCT_CPU_CUDA static DimToRetType<dim::Linear>::type getSize(TWorkSize const & workSize)
+            ALPAKA_FCT_CPU_CUDA static DimToRetType<dim::Linear>::type getSize(TWorkSize const & workSize)
             {
                 return GetSize<TWorkSize, origin::Grid, unit::Blocks, dim::D3>::getSize(workSize).prod();
             }
@@ -195,7 +195,7 @@ namespace acc
         //! Stream out operator.
         //-----------------------------------------------------------------------------
         template<typename TWorkSizeImpl>
-        ACC_FCT_CPU std::ostream & operator << (std::ostream & os, IWorkSize<TWorkSizeImpl> const & workSize)
+        ALPAKA_FCT_CPU std::ostream & operator << (std::ostream & os, IWorkSize<TWorkSizeImpl> const & workSize)
         {
             return (os << "{GridBlocks: " << workSize.getSizeGridBlocks() << ", BlockKernels: " << workSize.getSizeBlockKernels() << "}");
         }
