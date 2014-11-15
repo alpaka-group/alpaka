@@ -4,7 +4,7 @@
 * This file is part of alpaka.
 *
 * alpaka is free software: you can redistribute it and/or modify
-* it under the terms of of either the GNU General Public License or
+* it under the terms of either the GNU General Public License or
 * the GNU Lesser General Public License as published by
 * the Free Software Foundation, either version 3 of the License, or
 * (at your option) any later version.
@@ -22,7 +22,7 @@
 
 #pragma once
 
-#include <alpaka/Vec.hpp>   // alpaka::vec<3>
+#include <alpaka/Vec.hpp>   // alpaka::vec
 
 namespace alpaka
 {
@@ -87,7 +87,7 @@ namespace alpaka
         template<>
         struct DimToRetType<dim::D3>
         {
-            using type = vec<3>;
+            using type = vec<3u>;
         };
 
         template<>

@@ -4,7 +4,7 @@
 * This file is part of alpaka.
 *
 * alpaka is free software: you can redistribute it and/or modify
-* it under the terms of of either the GNU General Public License or
+* it under the terms of either the GNU General Public License or
 * the GNU Lesser General Public License as published by
 * the Free Software Foundation, either version 3 of the License, or
 * (at your option) any later version.
@@ -65,28 +65,28 @@ namespace alpaka
                 ALPAKA_FCT_CPU_CUDA IndexCuda() = default;
 
                 //-----------------------------------------------------------------------------
-                //! Copy-onstructor.
+                //! Copy-constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_CPU_CUDA IndexCuda(IndexCuda const & other) = default;
 
                 //-----------------------------------------------------------------------------
                 //! \return The index of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU_CUDA vec<3> getIdxBlockKernel() const
+                ALPAKA_FCT_CPU_CUDA vec<3u> getIdxBlockKernel() const
                 {
                     return{threadIdx.x, threadIdx.y, threadIdx.z};
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The block index of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU_CUDA vec<3> getIdxGridBlock() const
+                ALPAKA_FCT_CPU_CUDA vec<3u> getIdxGridBlock() const
                 {
                     return{blockIdx.x, blockIdx.y, blockIdx.z};
                 }
             };
 
-            using TPackedIndex = alpaka::detail::IIndex<alpaka::detail::IndexCuda>;
-            using TPackedWorkSize = alpaka::detail::IWorkSize<WorkSizeCuda>;
+            using TInterfacedIndex = alpaka::detail::IIndex<alpaka::detail::IndexCuda>;
+            using TInterfacedWorkSize = alpaka::IWorkSize<WorkSizeCuda>;
 
             //#############################################################################
             //! The description of the work being accelerated.
@@ -103,7 +103,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The grid dimensions of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU_CUDA vec<3> getSizeGridBlocks() const
+                ALPAKA_FCT_CPU_CUDA vec<3u> getSizeGridBlocks() const
                 {
 #ifdef __CUDA_ARCH__
                     return{gridDim.x, gridDim.y, gridDim.z};
@@ -114,7 +114,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The block dimensions of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU_CUDA vec<3> getSizeBlockKernels() const
+                ALPAKA_FCT_CPU_CUDA vec<3u> getSizeBlockKernels() const
                 {
 #ifdef __CUDA_ARCH__
                     return{blockDim.x, blockDim.y, blockDim.z};
@@ -125,7 +125,7 @@ namespace alpaka
             };
 
             //-----------------------------------------------------------------------------
-            //! The cuda kernel entry point.
+            //! The CUDA kernel entry point.
             //-----------------------------------------------------------------------------
             template<typename TAcceleratedKernel, typename... TArgs>
             __global__ void cudaKernel(TAcceleratedKernel accedKernel, TArgs ... args)
@@ -137,22 +137,22 @@ namespace alpaka
             //! The base class for all CUDA accelerated kernels.
             //#############################################################################
             class AccCuda :
-                protected TPackedIndex,
-                protected TPackedWorkSize
+                protected TInterfacedIndex,
+                protected TInterfacedWorkSize
             {
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_CUDA AccCuda() :
-                    TPackedIndex(),
-                    TPackedWorkSize()
+                    TInterfacedIndex(),
+                    TInterfacedWorkSize()
                 {}
 
                 //-----------------------------------------------------------------------------
                 //! \return The maximum number of kernels in each dimension of a block allowed.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU static vec<3> getSizeBlockKernelsMax()
+                ALPAKA_FCT_CPU static vec<3u> getSizeBlockKernelsMax()
                 {
                     // TODO: CC < 2.0? Get from CUDA API.
                     return{1024u, 1024u, 64u};
@@ -175,7 +175,7 @@ namespace alpaka
                     std::cout << "[+] AccCuda::setDevice()" << std::endl;
 #endif
 
-                    int iNumGpus(0); //number of gpus
+                    int iNumGpus(0);
                     cudaGetDeviceCount(&iNumGpus);
                     if(iNumGpus < 1)
                     {
@@ -294,8 +294,8 @@ namespace alpaka
                 template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
                 ALPAKA_FCT_CPU_CUDA typename detail::DimToRetType<TDimensionality>::type getIdx() const
                 {
-                    return TPackedIndex::getIdx<TPackedWorkSize, TOrigin, TUnit, TDimensionality>(
-                        *static_cast<TPackedWorkSize const *>(this));
+                    return this->TInterfacedIndex::getIdx<TOrigin, TUnit, TDimensionality>(
+                        *static_cast<TInterfacedWorkSize const *>(this));
                 }
 
                 //-----------------------------------------------------------------------------
@@ -316,27 +316,26 @@ namespace alpaka
                 }
 
                 //-----------------------------------------------------------------------------
-                //! \return The pointer to the block shared memory.
+                //! \return Allocates block shared memory.
+                //-----------------------------------------------------------------------------
+                template<typename T, std::size_t UiNumElements>
+                ALPAKA_FCT_CUDA T * allocBlockSharedMem() const
+                {
+                    static_assert(UiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
+
+                    __shared__ T shMem[UiNumElements];
+                    return &shMem;
+                }
+
+                //-----------------------------------------------------------------------------
+                //! \return The pointer to the externally allocated block shared memory.
                 //-----------------------------------------------------------------------------
                 template<typename T>
                 ALPAKA_FCT_CUDA T * getBlockSharedExternMem() const
                 {
                     extern __shared__ uint8_t shMem[];
-                    //syncBlockKernels();
                     return reinterpret_cast<T*>(shMem);
                 }
-
-                //-----------------------------------------------------------------------------
-                //! \return A pointer to the block shared memory.
-                //-----------------------------------------------------------------------------
-                // TODO: implement
-                /*template<typename T>
-                ALPAKA_FCT_CUDA __forceinline__ T * getBlockSharedVar() const
-                {
-					__shared__ T shMem;
-					syncBlockKernels();
-					return shMem;
-                }*/
 
             public:
                 //#############################################################################
@@ -345,41 +344,42 @@ namespace alpaka
                 //#############################################################################
                 template<typename TAcceleratedKernel>
                 class KernelExecutor :
-                    protected TAcceleratedKernel,
-                    public detail::IWorkSize<detail::WorkSizeDefault>
+                    protected TAcceleratedKernel
                 {
-                    using TPackedWorkSize = detail::IWorkSize<detail::WorkSizeDefault>;
                 public:
                     //-----------------------------------------------------------------------------
                     //! Constructor.
                     //-----------------------------------------------------------------------------
-					template<typename TWorkSize2, typename TNonAcceleratedKernel>
-					KernelExecutor(TWorkSize2 const & workSize, TNonAcceleratedKernel const & kernel) :
-                        detail::IWorkSize<detail::WorkSizeDefault>(workSize)
+                    template<typename... TKernelConstrArgs>
+                    KernelExecutor(TKernelConstrArgs && ... args) :
+                        TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
 					{
 #ifdef _DEBUG
-                        std::cout << "AccCuda::KernelExecutor()" << std::endl;
+                        std::cout << "[+] AccCuda::KernelExecutor()" << std::endl;
+#endif
+#ifdef _DEBUG
+                        std::cout << "[-] AccCuda::KernelExecutor()" << std::endl;
 #endif
                     }
 
                     //-----------------------------------------------------------------------------
                     //! Executes the accelerated kernel.
                     //-----------------------------------------------------------------------------
-                    template<typename... TArgs>
-                    void operator()(TArgs && ... args) const
+                    template<typename TWorkSize, typename... TArgs>
+                    void operator()(IWorkSize<TWorkSize> const & workSize, TArgs && ... args) const
                     {
 #ifdef _DEBUG
                         std::cout << "[+] AccCuda::KernelExecutor::operator()" << std::endl;
 #endif
-                        auto const uiNumKernelsPerBlock(TPackedWorkSize::getSize<Block, Kernels, Linear>());
-                        auto const uiMaxKernelsPerBlock(AccCuda::getSizeBlockKernelsLinearMax());
+						auto const uiNumKernelsPerBlock(workSize.getSize<Block, Kernels, Linear>());
+						auto const uiMaxKernelsPerBlock(this->TAcceleratedKernel::getSizeBlockKernelsLinearMax());
                         if(uiNumKernelsPerBlock > uiMaxKernelsPerBlock)
                         {
                             throw std::runtime_error(("The given blockSize '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the CUDA accelerator!").c_str());
                         }
 
-                        auto const v3uiSizeGridBlocks(TPackedWorkSize::getSize<Grid, Blocks, D3>());
-                        auto const v3uiSizeBlockKernels(TPackedWorkSize::getSize<Block, Kernels, D3>());
+						auto const v3uiSizeGridBlocks(workSize.getSize<Grid, Blocks, D3>());
+						auto const v3uiSizeBlockKernels(workSize.getSize<Block, Kernels, D3>());
 #ifdef _DEBUG
                         //std::cout << "GridBlocks: " << v3uiSizeGridBlocks << " BlockKernels: " << v3uiSizeBlockKernels<< std::endl;
 #endif
@@ -389,8 +389,8 @@ namespace alpaka
                         //std::cout << "GridBlocks: (" << gridDim.x << ", " << gridDim.y << ", " << gridDim.z << ")" << std::endl;
                         //std::cout << "BlockKernels: (" <<  << blockDim.x << ", " << blockDim.y << ", " << blockDim.z << ")" << std::endl;
 #endif
-                        TAcceleratedKernel accedKernel(*this);
-                        detail::cudaKernel<<<gridDim, blockDim, TAcceleratedKernel::getBlockSharedMemSizeBytes(v3uiSizeBlockKernels)>>>(accedKernel, args...);
+						detail::cudaKernel<<<gridDim, blockDim, BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiSizeBlockKernels)>>>(*static_cast<TAcceleratedKernel const *>(this), args...);
+                       
 #ifdef _DEBUG
                         std::cout << "[-] AccCuda::KernelExecutor::operator()" << std::endl;
 #endif
@@ -456,7 +456,18 @@ namespace alpaka
         }
 
         //-----------------------------------------------------------------------------
-        //! \return The pointer to the block shared memory.
+        //! \return Allocates block shared memory.
+        //-----------------------------------------------------------------------------
+        template<typename T, std::size_t UiNumElements>
+        ALPAKA_FCT_CUDA T * allocBlockSharedMem() const
+        {
+            static_assert(UiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
+
+            return TAcc::allocBlockSharedMem<T, UiNumElements>();
+        }
+
+        //-----------------------------------------------------------------------------
+        //! \return The pointer to the externally allocated block shared memory.
         //-----------------------------------------------------------------------------
         template<typename T>
         ALPAKA_FCT_CUDA T * getBlockSharedExternMem() const
@@ -469,22 +480,32 @@ namespace alpaka
     {
         //#############################################################################
         //! The serial kernel executor builder.
-        // TODO: Assure that the kernel is POD and does not have virtual members!
         // TODO: How to assure that the kernel does not hold pointers to host memory?
         //#############################################################################
-        template<typename TKernel, typename TPackedWorkSize>
-        class KernelExecutorBuilder<AccCuda, TKernel, TPackedWorkSize>
+        template<typename TKernel, typename... TKernelConstrArgs>
+        class KernelExecutorBuilder<AccCuda, TKernel, TKernelConstrArgs...>
         {
         public:
             using TAcceleratedKernel = typename boost::mpl::apply<TKernel, AccCuda>::type;
             using TKernelExecutor = AccCuda::KernelExecutor<TAcceleratedKernel>;
 
+			// Copying a kernel onto the CUDA device has some extra requirements of being trivially copyable:
+			// A trivially copyable class is a class that
+			// 1. Has no non-trivial copy constructors(this also requires no virtual functions or virtual bases)
+			// 2. Has no non-trivial move constructors
+			// 3. Has no non-trivial copy assignment operators
+			// 4. Has no non-trivial move assignment operators
+			// 5. Has a trivial destructor
+			//
+			// TODO: is_standard_layout is even stricter. Is is_trivially_copyable enough?
+			static_assert(std::is_trivially_copyable<TAcceleratedKernel>::value, "The given kernel functor has to be trivially copyable to be used on a CUDA device!");
+
             //-----------------------------------------------------------------------------
             //! Creates an kernel executor for the serial accelerator.
             //-----------------------------------------------------------------------------
-            TKernelExecutor operator()(TPackedWorkSize const & workSize, TKernel const & kernel) const
+            TKernelExecutor operator()(TKernelConstrArgs && ... args) const
             {
-                return TKernelExecutor(workSize, kernel);
+                return TKernelExecutor(std::forward<TKernelConstrArgs>(args)...);
             }
         };
     }

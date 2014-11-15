@@ -4,7 +4,7 @@
 * This file is part of alpaka.
 *
 * alpaka is free software: you can redistribute it and/or modify
-* it under the terms of of either the GNU General Public License or
+* it under the terms of either the GNU General Public License or
 * the GNU Lesser General Public License as published by
 * the Free Software Foundation, either version 3 of the License, or
 * (at your option) any later version.
@@ -53,57 +53,61 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Default-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU_CUDA IndexSerial() = default;
-
+				ALPAKA_FCT_CPU_CUDA IndexSerial(
+					vec<3u> & v3uiGridBlockIdx,
+					vec<3u> & v3uiBlockKernelIdx) :
+					m_v3uiGridBlockIdx(v3uiGridBlockIdx),
+					m_v3uiBlockKernelIdx(v3uiBlockKernelIdx)
+				{}
                 //-----------------------------------------------------------------------------
-                //! Copy-onstructor.
+                //! Copy-constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_CPU_CUDA IndexSerial(IndexSerial const & other) = default;
 
                 //-----------------------------------------------------------------------------
                 //! \return The index of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU_CUDA vec<3> getIdxBlockKernel() const
+                ALPAKA_FCT_CPU_CUDA vec<3u> getIdxBlockKernel() const
                 {
                     return m_v3uiBlockKernelIdx;
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The block index of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU_CUDA vec<3> getIdxGridBlock() const
+                ALPAKA_FCT_CPU_CUDA vec<3u> getIdxGridBlock() const
                 {
                     return m_v3uiGridBlockIdx;
                 }
 
             private:
-                vec<3> m_v3uiBlockKernelIdx;
-                vec<3> m_v3uiGridBlockIdx;
+				vec<3u> mutable & m_v3uiGridBlockIdx;
+				vec<3u> mutable & m_v3uiBlockKernelIdx;
             };
 
-            using TPackedIndex = alpaka::detail::IIndex<IndexSerial>;
-            using TPackedWorkSize = alpaka::detail::IWorkSize<alpaka::detail::WorkSizeDefault>;
+            using TInterfacedIndex = alpaka::detail::IIndex<IndexSerial>;
+            using TInterfacedWorkSize = alpaka::IWorkSize<alpaka::detail::WorkSizeDefault>;
 
             //#############################################################################
             //! The base class for all non accelerated kernels.
             //#############################################################################
             class AccSerial :
-                protected TPackedIndex,
-                public TPackedWorkSize
+                protected TInterfacedIndex,
+                protected TInterfacedWorkSize
             {
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_CPU AccSerial() :
-                    TPackedIndex(),
-                    TPackedWorkSize()
+					TInterfacedIndex(m_v3uiGridBlockIdx, m_v3uiBlockKernelIdx),
+                    TInterfacedWorkSize()
                 {
                 }
 
                 //-----------------------------------------------------------------------------
                 //! \return The maximum number of kernels in each dimension of a block allowed.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU static vec<3> getSizeBlockKernelsMax()
+                ALPAKA_FCT_CPU static vec<3u> getSizeBlockKernelsMax()
                 {
                     auto const uiSizeBlockKernelsLinearMax(getSizeBlockKernelsLinearMax());
                     return{uiSizeBlockKernelsLinearMax, uiSizeBlockKernelsLinearMax, uiSizeBlockKernelsLinearMax};
@@ -121,10 +125,10 @@ namespace alpaka
                 //! \return The requested index.
                 //-----------------------------------------------------------------------------
                 template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-                ALPAKA_FCT_CPU_CUDA typename detail::DimToRetType<TDimensionality>::type getIdx() const
+				ALPAKA_FCT_CPU_CUDA typename alpaka::detail::DimToRetType<TDimensionality>::type getIdx() const
                 {
-                    return TPackedIndex::getIdx<TPackedWorkSize, TOrigin, TUnit, TDimensionality>(
-                        *static_cast<TPackedWorkSize const *>(this));
+                    return this->TInterfacedIndex::getIdx<TOrigin, TUnit, TDimensionality>(
+                        *static_cast<TInterfacedWorkSize const *>(this));
                 }
 
                 //-----------------------------------------------------------------------------
@@ -146,16 +150,36 @@ namespace alpaka
                 }
 
                 //-----------------------------------------------------------------------------
-                //! \return The pointer to the block shared memory.
+                //! \return Allocates block shared memory.
+                //-----------------------------------------------------------------------------
+                template<typename T, std::size_t UiNumElements>
+                ALPAKA_FCT_CPU T * allocBlockSharedMem() const
+                {
+                    static_assert(UiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
+
+                    m_vvuiSharedMem.emplace_back(UiNumElements);
+                    return reinterpret_cast<T*>(m_vvuiSharedMem.back().data());
+                }
+
+                //-----------------------------------------------------------------------------
+                //! \return The pointer to the externally allocated block shared memory.
                 //-----------------------------------------------------------------------------
                 template<typename T>
                 ALPAKA_FCT_CPU T * getBlockSharedExternMem() const
                 {
-                    return reinterpret_cast<T*>(m_vuiSharedMem.data());
+                    return reinterpret_cast<T*>(m_vuiExternalSharedMem.data());
                 }
 
             private:
-                mutable std::vector<uint8_t> m_vuiSharedMem;    //!< Block shared memory.
+                // getIdx
+                vec<3u> mutable m_v3uiGridBlockIdx;                         //!< The index of the currently executed block.
+                vec<3u> mutable m_v3uiBlockKernelIdx;                       //!< The index of the currently executed kernel.
+
+                // allocBlockSharedMem
+                std::vector<std::vector<uint8_t>> mutable m_vvuiSharedMem;  //!< Block shared memory.
+
+                // getBlockSharedExternMem
+                std::vector<uint8_t> mutable m_vuiExternalSharedMem;        //!< External block shared memory.
 
             public:
                 //#############################################################################
@@ -170,39 +194,43 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Constructor.
                     //-----------------------------------------------------------------------------
-					template<typename TWorkSize2, typename TNonAcceleratedKernel>
-					KernelExecutor(TWorkSize2 const & workSize, TNonAcceleratedKernel const & kernel)
+                    template<typename... TKernelConstrArgs>
+                    KernelExecutor(TKernelConstrArgs && ... args) :
+                        TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
                     {
-                        (*static_cast<typename AccSerial::TPackedWorkSize*>(this)) = workSize;
 #ifdef _DEBUG
-                        std::cout << "AccSerial::KernelExecutor()" << std::endl;
+                        std::cout << "[+] AccSerial::KernelExecutor()" << std::endl;
+#endif
+#ifdef _DEBUG
+                        std::cout << "[-] AccSerial::KernelExecutor()" << std::endl;
 #endif
                     }
 
                     //-----------------------------------------------------------------------------
                     //! Executes the accelerated kernel.
                     //-----------------------------------------------------------------------------
-                    template<typename... TArgs>
-                    void operator()(TArgs && ... args) const
+                    template<typename TWorkSize, typename... TArgs>
+                    void operator()(IWorkSize<TWorkSize> const & workSize, TArgs && ... args) const
                     {
 #ifdef _DEBUG
                         std::cout << "[+] AccSerial::KernelExecutor::operator()" << std::endl;
 #endif
-                        auto const uiNumKernelsPerBlock(this->AccSerial::template getSize<Block, Kernels, Linear>());
-                        auto const uiMaxKernelsPerBlock(AccSerial::getSizeBlockKernelsLinearMax());
+                        (*const_cast<TInterfacedWorkSize*>(static_cast<TInterfacedWorkSize const *>(this))) = workSize;
+                                               
+                        auto const uiNumKernelsPerBlock(this->TAcceleratedKernel::template getSize<Block, Kernels, Linear>());
+                        auto const uiMaxKernelsPerBlock(this->TAcceleratedKernel::getSizeBlockKernelsLinearMax());
                         if(uiNumKernelsPerBlock > uiMaxKernelsPerBlock)
                         {
                             throw std::runtime_error(("The given blockSize '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the serial accelerator!").c_str());
                         }
 
-                        auto const v3uiSizeGridBlocks(this->AccSerial::template getSize<Grid, Blocks, D3>());
-                        auto const v3uiSizeBlockKernels(this->AccSerial::template getSize<Block, Kernels, D3>());
+                        auto const v3uiSizeBlockKernels(this->TAcceleratedKernel::template getSize<Block, Kernels, D3>());
+                        this->AccSerial::m_vuiExternalSharedMem.resize(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiSizeBlockKernels));
+
+						auto const v3uiSizeGridBlocks(this->TAcceleratedKernel::template getSize<Grid, Blocks, D3>());
 #ifdef _DEBUG
                         //std::cout << "GridBlocks: " << v3uiSizeGridBlocks << " BlockKernels: " << v3uiSizeBlockKernels << std::endl;
 #endif
-
-                        this->AccSerial::m_vuiSharedMem.resize(TAcceleratedKernel::getBlockSharedMemSizeBytes(v3uiSizeBlockKernels));
-
                         for(std::uint32_t bz(0); bz<v3uiSizeGridBlocks[2]; ++bz)
                         {
                             this->AccSerial::m_v3uiGridBlockIdx[2] = bz;
@@ -232,7 +260,8 @@ namespace alpaka
                         }
 
                         // After all blocks have been processed, the shared memory can be deleted.
-                        this->AccSerial::m_vuiSharedMem.clear();
+                        this->AccSerial::m_vvuiSharedMem.clear();
+                        this->AccSerial::m_vuiExternalSharedMem.clear();
 #ifdef _DEBUG
                         std::cout << "[-] AccSerial::KernelExecutor::operator()" << std::endl;
 #endif
@@ -249,8 +278,8 @@ namespace alpaka
         //#############################################################################
         //! The serial kernel executor builder.
         //#############################################################################
-        template<typename TKernel, typename TPackedWorkSize>
-        class KernelExecutorBuilder<AccSerial, TKernel, TPackedWorkSize>
+        template<typename TKernel, typename... TKernelConstrArgs>
+        class KernelExecutorBuilder<AccSerial, TKernel, TKernelConstrArgs...>
         {
         public:
             using TAcceleratedKernel = typename boost::mpl::apply<TKernel, AccSerial>::type;
@@ -259,9 +288,9 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Creates an kernel executor for the serial accelerator.
             //-----------------------------------------------------------------------------
-            TKernelExecutor operator()(TPackedWorkSize const & workSize, TKernel const & kernel) const
+            TKernelExecutor operator()(TKernelConstrArgs && ... args) const
             {
-				return TKernelExecutor(workSize, kernel);
+				return TKernelExecutor(std::forward<TKernelConstrArgs>(args)...);
             }
         };
     }

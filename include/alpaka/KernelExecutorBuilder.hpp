@@ -4,7 +4,7 @@
 * This file is part of alpaka.
 *
 * alpaka is free software: you can redistribute it and/or modify
-* it under the terms of of either the GNU General Public License or
+* it under the terms of either the GNU General Public License or
 * the GNU Lesser General Public License as published by
 * the Free Software Foundation, either version 3 of the License, or
 * (at your option) any later version.
@@ -29,7 +29,7 @@ namespace alpaka
         //#############################################################################
         //! The kernel executor builder.
         //#############################################################################
-        template<typename TAcc, typename TKernel, typename TWorkSize>
+        template<typename TAcc, typename TKernel, typename... TKernelConstrArgs>
         class KernelExecutorBuilder;
     }
 }

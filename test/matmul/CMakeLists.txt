@@ -19,27 +19,27 @@
 #
 
 ################################################################################
-# Required CMake version
+# Required cmake version
 ################################################################################
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.5)
+cmake_minimum_required(VERSION 2.8.5)
 
 ################################################################################
 # Project 
 ################################################################################
 
-PROJECT(test)
+project(test)
 
-SET(TARGET_NAME basic)
+SET(TARGET_NAME matmul
 
 # set helper paths to find libraries and packages
-SET(CMAKE_PREFIX_PATH "$ENV{CUDA_ROOT}" "$ENV{BOOST_ROOT}")	# "/usr/lib/x86_64-linux-gnu/"
+set(CMAKE_PREFIX_PATH "/usr/lib/x86_64-linux-gnu/" "$ENV{CUDA_ROOT}" "$ENV{BOOST_ROOT}")
 
 OPTION(ALPAKA_SERIAL_ENABLE "Enable the serial accelerator" OFF)
 IF(ALPAKA_SERIAL_ENABLE)
     ADD_DEFINITIONS(-DALPAKA_SERIAL_ENABLED)
 ENDIF()
-OPTION(ALPAKA_THREADS_ENABLE "Enable the threads accelerator" OFF)
+OPTION(ALPAKA_THREADS_ENABLE "Enable the threas accelerator" OFF)
 IF(ALPAKA_THREADS_ENABLE)
     ADD_DEFINITIONS(-DALPAKA_THREADS_ENABLED)
 ENDIF()
@@ -61,19 +61,19 @@ ENDIF()
 # Build type (debug, release)
 ################################################################################
 OPTION(ALPAKA_RELEASE "Build release version, disables all runtime asserts" OFF)
-IF(ALPAKA_RELEASE)
-    MESSAGE(STATUS "Release version")
+if(ALPAKA_RELEASE)
+    message(STATUS "Release version")
 
-    SET(CMAKE_BUILD_TYPE Release)
-    ADD_DEFINITIONS(-DNDEBUG)
-ELSE()
-    MESSAGE(STATUS "Debug version")
+    set(CMAKE_BUILD_TYPE Release)
+    add_definitions(-DNDEBUG)
+else()
+    message(STATUS "Debug version")
 
-    SET(CMAKE_BUILD_TYPE Debug)
-    ADD_DEFINITIONS(-D_DEBUG)
+    set(CMAKE_BUILD_TYPE Debug)
+    add_definitions(-D_DEBUG)
 
-    SET(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS}" -g "-Xcompiler=-g")
-ENDIF()
+    set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS}" -g "-Xcompiler=-g")
+endif()
 
 
 ################################################################################
@@ -99,11 +99,11 @@ SET(LIBS ${LIBS} ${Boost_LIBRARIES})
 ################################################################################
 IF(ALPAKA_OPENMP_ENABLE)
     FIND_PACKAGE( OpenMP REQUIRED)
-    IF(OPENMP_FOUND)
-        SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-        SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-        SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
-    ENDIF()
+    if(OPENMP_FOUND)
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
+    endif()
 ENDIF()
 
 
@@ -111,47 +111,47 @@ ENDIF()
 # Find CUDA 
 ################################################################################
 IF(ALPAKA_CUDA_ENABLE)
-    FIND_PACKAGE(CUDA 6.5 REQUIRED)
+    find_package(CUDA 6.5 REQUIRED)
 
-    IF(CUDA_VERSION VERSION_LESS 6.5)
-        MESSAGE(FATAL_ERROR "CUDA Toolkit < 6.5 detected!")
-    ENDIF()
+    if(CUDA_VERSION VERSION_LESS 6.5)
+        message(FATAL_ERROR "CUDA Toolkit < 6.5 detected!")
+    endif()
     
     SET(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} "-std=c++11")
     SET(CUDA_HOST_COMPILER ${CMAKE_CXX_COMPILER})
 
-    SET(CUDA_ARCH sm_20 CACHE STRING "Set GPU architecture")
-    STRING(COMPARE EQUAL ${CUDA_ARCH} "sm_10" IS_CUDA_ARCH_UNSUPPORTED)
-    STRING(COMPARE EQUAL ${CUDA_ARCH} "sm_11" IS_CUDA_ARCH_UNSUPPORTED)
-    STRING(COMPARE EQUAL ${CUDA_ARCH} "sm_12" IS_CUDA_ARCH_UNSUPPORTED)
-    STRING(COMPARE EQUAL ${CUDA_ARCH} "sm_13" IS_CUDA_ARCH_UNSUPPORTED)
+    set(CUDA_ARCH sm_20 CACHE STRING "Set GPU architecture")
+    string(COMPARE EQUAL ${CUDA_ARCH} "sm_10" IS_CUDA_ARCH_UNSUPPORTED)
+    string(COMPARE EQUAL ${CUDA_ARCH} "sm_11" IS_CUDA_ARCH_UNSUPPORTED)
+    string(COMPARE EQUAL ${CUDA_ARCH} "sm_12" IS_CUDA_ARCH_UNSUPPORTED)
+    string(COMPARE EQUAL ${CUDA_ARCH} "sm_13" IS_CUDA_ARCH_UNSUPPORTED)
 
-    IF(IS_CUDA_ARCH_UNSUPPORTED)
-        MESSAGE(FATAL_ERROR "Unsupported CUDA architecture ${CUDA_ARCH} specified. SM 2.0 or higher is required.")
-    ENDIF(IS_CUDA_ARCH_UNSUPPORTED)
+    if(IS_CUDA_ARCH_UNSUPPORTED)
+        message(FATAL_ERROR "Unsupported CUDA architecture ${CUDA_ARCH} specified. SM 2.0 or higher is required.")
+    endif(IS_CUDA_ARCH_UNSUPPORTED)
 
-    SET(CUDA_FTZ "--ftz=false" CACHE STRING "Set flush to zero for GPU")
+    set(CUDA_FTZ "--ftz=false" CACHE STRING "Set flush to zero for GPU")
 
-    SET(CUDA_MATH --use_fast_math CACHE STRING "Enable fast-math" )
-    OPTION(CUDA_SHOW_REGISTER "Show kernel registers and create PTX" OFF)
-    OPTION(CUDA_KEEP_FILES "Keep all intermediate files that are generated during internal compilation steps (folder: nvcc_tmp)" OFF)
-    OPTION(CUDA_SHOW_CODELINES "Show kernel lines in cuda-gdb and cuda-memcheck" OFF)
+    set(CUDA_MATH --use_fast_math CACHE STRING "Enable fast-math" )
+    option(CUDA_SHOW_REGISTER "Show kernel registers and create PTX" OFF)
+    option(CUDA_KEEP_FILES "Keep all intermediate files that are generated during internal compilation steps (folder: nvcc_tmp)" OFF)
+    option(CUDA_SHOW_CODELINES "Show kernel lines in cuda-gdb and cuda-memcheck" OFF)
 
-    IF(CUDA_SHOW_CODELINES)
-        SET(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} --source-in-ptx -Xcompiler -rdynamic -lineinfo)
-        SET(CUDA_KEEP_FILES ON CACHE BOOL "activate keep files" FORCE)
-    ENDIF(CUDA_SHOW_CODELINES)
+    if(CUDA_SHOW_CODELINES)
+        set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} --source-in-ptx -Xcompiler -rdynamic -lineinfo)
+        set(CUDA_KEEP_FILES ON CACHE BOOL "activate keep files" FORCE)
+    endif(CUDA_SHOW_CODELINES)
 
-    SET(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} ${nvcc_flags} -arch=${CUDA_ARCH} ${CUDA_MATH} ${CUDA_FTZ})
-    IF(CUDA_SHOW_REGISTER)
-        SET(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} -Xptxas=-v)
-    ENDIF(CUDA_SHOW_REGISTER)
+    set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} ${nvcc_flags} -arch=${CUDA_ARCH} ${CUDA_MATH} ${CUDA_FTZ})
+    if(CUDA_SHOW_REGISTER)
+        set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} -Xptxas=-v)
+    endif(CUDA_SHOW_REGISTER)
 
-    IF(CUDA_KEEP_FILES)
-        MAKE_DIRECTORY("${PROJECT_BINARY_DIR}/nvcc_tmp")
-        SET(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} --keep --keep-dir "${PROJECT_BINARY_DIR}/nvcc_tmp")
-    ENDIF(CUDA_KEEP_FILES)
-ENDIF()
+    if(CUDA_KEEP_FILES)
+        make_directory("${PROJECT_BINARY_DIR}/nvcc_tmp")
+        set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} --keep --keep-dir "${PROJECT_BINARY_DIR}/nvcc_tmp")
+    endif(CUDA_KEEP_FILES)
+endif()
 
 
 ################################################################################
@@ -159,23 +159,23 @@ ENDIF()
 ################################################################################
 
 # GNU
-IF(CMAKE_COMPILER_IS_GNUCXX)
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unknown-pragmas")
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra")
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-parameter")
+if(CMAKE_COMPILER_IS_GNUCXX)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unknown-pragmas")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-parameter")
     # new warning in gcc 4.8 (flag ignored in previous version)
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-local-typedefs")
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-local-typedefs")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 # ICC
-ELSEIF(${CMAKE_CXX_COMPILER_ID} STREQUAL "Intel")
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL "Intel")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 # PGI
-ELSEIF(${CMAKE_CXX_COMPILER_ID} STREQUAL "PGI")
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Minform=inform")
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-ENDIF()
+elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL "PGI")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Minform=inform")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+endif()
 
 
 ################################################################################
@@ -183,12 +183,12 @@ ENDIF()
 ################################################################################
 
 # alpaka
-FIND_PATH(ALPAKA_ROOT_DIR
+find_path(ALPAKA_ROOT_DIR
   NAMES "include/alpaka/IAcc.hpp"
   PATHS "${CMAKE_CURRENT_SOURCE_DIR}/../../"
   DOC "alpaka root location"
   )
-INCLUDE_DIRECTORIES(${ALPAKA_ROOT_DIR}/include)
+include_directories(${ALPAKA_ROOT_DIR}/include)
 
 
 ################################################################################
@@ -211,7 +211,7 @@ FILE(GLOB_RECURSE CPP_FILES "src/*.cpp")
 FILE(GLOB_RECURSE CU_FILES "src/*.cu")
 
 IF(ALPAKA_CUDA_ENABLE)
-    CUDA_ADD_EXECUTABLE(${TARGET_NAME}
+    cuda_add_executable(${TARGET_NAME}
         ${HPP_FILES}
         ${CU_FILES}
         #OPTIONS -arch sm_20

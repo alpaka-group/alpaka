@@ -4,7 +4,7 @@
 * This file is part of alpaka.
 *
 * alpaka is free software: you can redistribute it and/or modify
-* it under the terms of of either the GNU General Public License or
+* it under the terms of either the GNU General Public License or
 * the GNU Lesser General Public License as published by
 * the Free Software Foundation, either version 3 of the License, or
 * (at your option) any later version.
@@ -46,7 +46,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         ALPAKA_FCT_CPU_CUDA vec()
         {
-            // NOTE: depending on the size this could be optimized with memeset, intrinsics, etc. We trust in the compiler to do this.
+            // NOTE: depending on the size this could be optimized with memset, intrinsics, etc. We trust in the compiler to do this.
             for(std::size_t i(0); i<UiSize; ++i)
             {
                 m_auiData[i] = 0;
@@ -59,7 +59,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template <typename TFirstArg, typename... TArgs, typename = typename std::enable_if<sizeof...(TArgs) == (UiSize-1)>::type>
         ALPAKA_FCT_CPU_CUDA vec(TFirstArg && val, TArgs && ... values)
-#ifndef _MSC_VER    // MSVC <= 14 do not compile the basic array initialization.
+#ifndef _MSC_VER    // MSVC <= 14 do not compile the basic array initialization: "error C2536: 'alpaka::vec<0x03>::alpaka::vec<0x03>::m_auiData': cannot specify explicit initializer for arrays"
             :
             m_auiData{std::forward<TFirstArg>(val), std::forward<TArgs>(values)...}
 #endif

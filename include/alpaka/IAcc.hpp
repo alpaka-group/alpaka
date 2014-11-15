@@ -4,7 +4,7 @@
 * This file is part of alpaka.
 *
 * alpaka is free software: you can redistribute it and/or modify
-* it under the terms of of either the GNU General Public License or
+* it under the terms of either the GNU General Public License or
 * the GNU Lesser General Public License as published by
 * the Free Software Foundation, either version 3 of the License, or
 * (at your option) any later version.
@@ -22,13 +22,13 @@
 
 #pragma once
 
-#include <alpaka/Vec.hpp>               // alpaka::vec<3>
+#include <alpaka/Vec.hpp>               // alpaka::vec
 #include <alpaka/Positioning.hpp>       // alpaka::origin::Grid/Blocks
 
 #include <boost/mpl/placeholders.hpp>   // boost::mpl::_1
 
 //-----------------------------------------------------------------------------
-//! The namespace for the accelerator library.
+//! The name space for the accelerator library.
 //-----------------------------------------------------------------------------
 namespace alpaka
 {
@@ -71,7 +71,7 @@ namespace alpaka
         //! \return [The maximum number of memory sharing kernel executions | The maximum block size] allowed by the underlying accelerator.
         // TODO: Check if the used size is valid!
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_CPU_CUDA static vec<3> getSizeBlockKernelsMax()
+        ALPAKA_FCT_CPU_CUDA static vec<3u> getSizeBlockKernelsMax()
         {
             return TAcc::getSizeBlockKernelsMax();
         }
@@ -89,9 +89,6 @@ namespace alpaka
         template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
         ALPAKA_FCT_CPU_CUDA typename detail::DimToRetType<TDimensionality>::type getSize() const
 		{
-			// NOTE: The weird syntax for 'TAcc::template getSize<...>' is required by standard but not all compilers enforce it.
-			// 'TAcc' is required to make the function call dependent so that its resolution is delayed.
-			// 'template' is required: http://stackoverflow.com/questions/3786360/confusing-template-error
 #ifndef __CUDA_ARCH__
             return TAcc::template getSize<TOrigin, TUnit, TDimensionality>();
 #else
@@ -135,7 +132,21 @@ namespace alpaka
         }
 
         //-----------------------------------------------------------------------------
-        //! \return The pointer to the block shared memory.
+        //! \return Allocates block shared memory.
+        //-----------------------------------------------------------------------------
+        template<typename T, std::size_t UiNumElements>
+        ALPAKA_FCT_CPU_CUDA T * allocBlockSharedMem() const
+        {
+            static_assert(UiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
+#ifndef __CUDA_ARCH__
+            return TAcc::template allocBlockSharedMem<T, UiNumElements>();
+#else
+            return nullptr;
+#endif
+        }
+
+        //-----------------------------------------------------------------------------
+        //! \return The pointer to the externally allocated block shared memory.
         //-----------------------------------------------------------------------------
         template<typename T>
         ALPAKA_FCT_CPU_CUDA T * getBlockSharedExternMem() const
@@ -148,52 +159,18 @@ namespace alpaka
         }
     };
 
-
-    //#############################################################################
-    //! Dummy accelerator.
-    //#############################################################################
-    template<>
-    class IAcc<boost::mpl::_1>
-    {
-    public:
-        //-----------------------------------------------------------------------------
-        //! \return [The maximum number of memory sharing kernel executions | The maximum block size] allowed by the underlying accelerator.
-        // TODO: Check if the used size is valid!
-        //-----------------------------------------------------------------------------
-        ALPAKA_FCT_CPU_CUDA static vec<3> getSizeBlockKernelsMax();
-        //-----------------------------------------------------------------------------
-        //! \return [The maximum number of memory sharing kernel executions | The maximum block size] allowed by the underlying accelerator.
-        //-----------------------------------------------------------------------------
-        ALPAKA_FCT_CPU static std::uint32_t getSizeBlockKernelsLinearMax();
-
-        //-----------------------------------------------------------------------------
-        //! \return The requested size.
-        //-----------------------------------------------------------------------------
-        template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-        ALPAKA_FCT_CPU_CUDA typename detail::DimToRetType<TDimensionality>::type getSize() const;
-
-    protected:
-        //-----------------------------------------------------------------------------
-        //! \return The requested index.
-        //-----------------------------------------------------------------------------
-        template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-        ALPAKA_FCT_CPU_CUDA typename detail::DimToRetType<TDimensionality>::type getIdx() const;
-
-        //-----------------------------------------------------------------------------
-        //! Atomic addition.
-        //-----------------------------------------------------------------------------
-        template<typename T>
-        ALPAKA_FCT_CPU_CUDA void atomicFetchAdd(T * sum, T summand) const;
-
-        //-----------------------------------------------------------------------------
-        //! Syncs all kernels in the current block.
-        //-----------------------------------------------------------------------------
-        ALPAKA_FCT_CPU_CUDA void syncBlockKernels() const;
-
-        //-----------------------------------------------------------------------------
-        //! \return The pointer to the block shared memory.
-        //-----------------------------------------------------------------------------
-        template<typename T>
-        ALPAKA_FCT_CPU_CUDA T * getBlockSharedExternMem() const;
-    };
+	//#############################################################################
+	//! The trait for getting the size of the block shared extern memory for a kernel.
+	//#############################################################################
+    template<typename TAccelereatedKernel>
+	struct BlockSharedExternMemSizeBytes
+	{
+		//-----------------------------------------------------------------------------
+		//! \return The size of the shared memory allocated for a block.
+		//-----------------------------------------------------------------------------
+		static std::size_t getBlockSharedExternMemSizeBytes(vec<3u> const & v3uiSizeBlockKernels)
+		{
+			return 0;
+		}
+	};
 }
