@@ -74,6 +74,24 @@ namespace alpaka
         }
 
         //-----------------------------------------------------------------------------
+        //! Constructor.
+        //! Every value is set to zero.
+        //-----------------------------------------------------------------------------
+        template<std::size_t UiSubSize>
+        ALPAKA_FCT_CPU_CUDA vec<UiSubSize> subvec() const
+        {
+            vec<UiSubSize> ret;
+
+            // NOTE: depending on the size this could be optimized with memset, intrinsics, etc. We trust in the compiler to do this.
+            for(std::size_t i(0); i<UiSubSize; ++i)
+            {
+                ret[i] = (*this)[i];
+            }
+
+            return ret;
+        }
+
+        //-----------------------------------------------------------------------------
         //! \return A reference to the value at the given index.
         //-----------------------------------------------------------------------------
         ALPAKA_FCT_CPU_CUDA std::uint32_t & operator[](std::size_t const uiIndex)
