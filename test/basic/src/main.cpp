@@ -39,6 +39,7 @@
 //! An accelerated test kernel.
 //! Uses atomicOp(), syncBlockKernels(), shared memory, getIdx, getSize, global memory to compute a (useless) result.
 //! \param TAcc The accelerator environment to be executed on.
+//! \param UiNumUselessWork The number of useless calculations done in each kernel execution.
 //#############################################################################
 template<typename UiNumUselessWork, typename TAcc = boost::mpl::_1>
 class ExampleAcceleratedKernel :
@@ -162,7 +163,7 @@ void profileAcceleratedKernel(TExec const & exec, alpaka::IWorkSize<TWorkSize> c
 }
 
 //-----------------------------------------------------------------------------
-//! Profiles the example kernel (default Version).
+//! Profiles the given kernel (default Version).
 //-----------------------------------------------------------------------------
 template<typename TAcc>
 class AcceleratedExampleKernelProfiler
@@ -184,7 +185,7 @@ public:
 
 #ifdef ALPAKA_CUDA_ENABLED
 //-----------------------------------------------------------------------------
-//! Profiles the example kernel (specialized for CUDA).
+//! Profiles the given kernel (specialized for CUDA).
 //-----------------------------------------------------------------------------
 template<>
 class AcceleratedExampleKernelProfiler<alpaka::AccCuda>

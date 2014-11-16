@@ -74,7 +74,7 @@ namespace alpaka
             ALPAKA_FCT_CPU_CUDA static DimToRetType<dim::D3>::type getIdx(TIndex const & index, IWorkSize<TWorkSize> const & workSize)
             {
                 return 
-                    index.getIdxGridBlock() * GetSize<TIndex, origin::Block, unit::Kernels, dim::D3>()::getSize(workSize) 
+                    index.getIdxGridBlock() * workSize.template getSize<origin::Block, unit::Kernels, dim::D3>()
                     + index.getIdxBlockKernel();
             }
         };

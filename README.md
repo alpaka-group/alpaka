@@ -31,6 +31,6 @@ Usage
 ----------------
 
 The library is header only so nothing has to be build. Only the include path has to be set to 'PATH/TO/LIB/include/'.
-This allows the usage of header inclusion in the following way: '#include <alpaka/IAcc.hpp>'.
+This allows the usage of header inclusion in the following way: '#include &lt;alpaka/IAcc.hpp&gt;'.
 
 Code not intended to be utilized by users is hidden in the 'detail' namespace.
