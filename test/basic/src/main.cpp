@@ -21,7 +21,7 @@
 */
 
 #include <alpaka/IAcc.hpp>      // alpaka::IAcc<...>
-#include <alpaka/alpaka.hpp>	// alpaka::buildKernelExecutor<...>
+#include <alpaka/alpaka.hpp>    // alpaka::buildKernelExecutor<...>
 #include <alpaka/WorkSize.hpp>  // alpaka::WorkSizeDefault
 
 #include <chrono>               // std::chrono::high_resolution_clock
@@ -37,20 +37,20 @@
 
 //#############################################################################
 //! An accelerated test kernel.
-//! Uses atomicFetchAdd(), syncBlockKernels(), shared memory, getIdx, getSize, global memory to compute a (useless) result.
+//! Uses atomicOp(), syncBlockKernels(), shared memory, getIdx, getSize, global memory to compute a (useless) result.
 //! \param TAcc The accelerator environment to be executed on.
 //#############################################################################
 template<typename UiNumUselessWork, typename TAcc = boost::mpl::_1>
 class ExampleAcceleratedKernel :
-	public alpaka::IAcc<TAcc>
+    public alpaka::IAcc<TAcc>
 {
 public:
-	//-----------------------------------------------------------------------------
-	//! Constructor.
-	//-----------------------------------------------------------------------------
-	ExampleAcceleratedKernel(std::uint32_t const uiMult = 2) :
-		m_uiMult(uiMult)
-	{}
+    //-----------------------------------------------------------------------------
+    //! Constructor.
+    //-----------------------------------------------------------------------------
+    ExampleAcceleratedKernel(std::uint32_t const uiMult = 2) :
+        m_uiMult(uiMult)
+    {}
 
     //-----------------------------------------------------------------------------
     //! The kernel.
@@ -58,7 +58,7 @@ public:
     ALPAKA_FCT_CPU_CUDA void operator()(std::uint32_t * const puiBlockRetVals, std::uint32_t const uiMult2) const
     {
         // The number of kernels in this block.
-		std::uint32_t const uiNumKernelsInBlock(getSize<alpaka::Block, alpaka::Kernels, alpaka::Linear>());
+        std::uint32_t const uiNumKernelsInBlock(getSize<alpaka::Block, alpaka::Kernels, alpaka::Linear>());
 
         // Get the extern allocated shared memory.
         std::uint32_t * const pBlockShared(getBlockSharedExternMem<std::uint32_t>());
@@ -99,7 +99,7 @@ public:
         // Now add up all the cells atomically and write the result to cell 0 of the shared memory.
         if(uiIdxBlockKernelsLin > 0)
         {
-            atomicFetchAdd(&pBlockShared[0], pBlockShared[uiIdxBlockKernelsLin]);
+            atomicOp<alpaka::Add>(&pBlockShared[0], pBlockShared[uiIdxBlockKernelsLin]);
         }
 
 
@@ -111,30 +111,30 @@ public:
             // Calculate linearized block id.
             std::uint32_t const bId(getIdx<alpaka::Grid, alpaka::Blocks, alpaka::Linear>());
 
-			puiBlockRetVals[bId] = pBlockShared[0] * m_uiMult * uiMult2;
+            puiBlockRetVals[bId] = pBlockShared[0] * m_uiMult * uiMult2;
         }
     }
 
 public:
-	std::uint32_t /*const*/ m_uiMult;
+    std::uint32_t /*const*/ m_uiMult;
 };
 
 namespace alpaka
 {
-	//#############################################################################
-	//! The trait for getting the size of the block shared extern memory for a kernel.
-	//#############################################################################
-	template<typename TAcc>
+    //#############################################################################
+    //! The trait for getting the size of the block shared extern memory for a kernel.
+    //#############################################################################
+    template<typename TAcc>
     struct BlockSharedExternMemSizeBytes<ExampleAcceleratedKernel<boost::mpl::int_<100u>, TAcc>>
-	{
-		//-----------------------------------------------------------------------------
-		//! \return The size of the shared memory allocated for a block.
-		//-----------------------------------------------------------------------------
-		static std::size_t getBlockSharedExternMemSizeBytes(alpaka::vec<3u> const & v3uiSizeBlockKernels)
-		{
-			return v3uiSizeBlockKernels.prod() * sizeof(std::uint32_t);
-		}
-	};
+    {
+        //-----------------------------------------------------------------------------
+        //! \return The size of the shared memory allocated for a block.
+        //-----------------------------------------------------------------------------
+        static std::size_t getBlockSharedExternMemSizeBytes(alpaka::vec<3u> const & v3uiSizeBlockKernels)
+        {
+            return v3uiSizeBlockKernels.prod() * sizeof(std::uint32_t);
+        }
+    };
 }
 
 //-----------------------------------------------------------------------------
@@ -168,9 +168,9 @@ template<typename TAcc>
 class AcceleratedExampleKernelProfiler
 {
 public:
-	template<typename TKernel, typename TWorkSize, typename... TKernelConstrArgs>
-	void operator()(alpaka::IWorkSize<TWorkSize> const & workSize, std::uint32_t * const puiBlockRetVals, std::uint32_t const uiMult2, TKernelConstrArgs && ... args)
-	{
+    template<typename TKernel, typename TWorkSize, typename... TKernelConstrArgs>
+    void operator()(alpaka::IWorkSize<TWorkSize> const & workSize, std::uint32_t * const puiBlockRetVals, std::uint32_t const uiMult2, TKernelConstrArgs && ... args)
+    {
         std::cout
             << "AcceleratedExampleKernelProfiler("
             << " accelerator: " << typeid(TAcc).name()
@@ -178,7 +178,7 @@ public:
             << std::endl;
 
         auto exec(alpaka::buildKernelExecutor<TAcc, TKernel>(std::forward<TKernelConstrArgs>(args)...));
-		profileAcceleratedKernel(exec, workSize, puiBlockRetVals, uiMult2);
+        profileAcceleratedKernel(exec, workSize, puiBlockRetVals, uiMult2);
     }
 };
 
@@ -190,8 +190,8 @@ template<>
 class AcceleratedExampleKernelProfiler<alpaka::AccCuda>
 {
 public:
-	template<typename TKernel, typename TWorkSize, typename... TKernelConstrArgs>
-	void operator()(alpaka::IWorkSize<TWorkSize> const & workSize, std::uint32_t * const puiBlockRetVals, std::uint32_t const uiMult2, TKernelConstrArgs && ... args)
+    template<typename TKernel, typename TWorkSize, typename... TKernelConstrArgs>
+    void operator()(alpaka::IWorkSize<TWorkSize> const & workSize, std::uint32_t * const puiBlockRetVals, std::uint32_t const uiMult2, TKernelConstrArgs && ... args)
     {
         std::cout
             << "AcceleratedExampleKernelProfiler("
@@ -207,7 +207,7 @@ public:
         ALPAKA_CUDA_CHECK(cudaMemcpy(pBlockRetValsDev, puiBlockRetVals, uiNumBytes, cudaMemcpyHostToDevice));
 
         auto exec(alpaka::buildKernelExecutor<TAcc, TKernel>(std::forward<TKernelConstrArgs>(args)...));
-		profileAcceleratedKernel<alpaka::AccCuda, TKernel>(exec, workSize, pBlockRetValsDev, uiMult2);
+        profileAcceleratedKernel<alpaka::AccCuda, TKernel>(exec, workSize, pBlockRetValsDev, uiMult2);
         
         ALPAKA_CUDA_CHECK(cudaDeviceSynchronize());
 
@@ -230,17 +230,17 @@ void profileAcceleratedExampleKernel(alpaka::IWorkSize<TWorkSize> const & workSi
     std::vector<std::uint32_t> vuiBlockRetVals(uiNumBlocksInGrid, 0);
 
     std::uint32_t const m_uiMult(42);
-	AcceleratedExampleKernelProfiler<TAcc>().operator()<ExampleAcceleratedKernel<UiNumUselessWork>>(workSize, vuiBlockRetVals.data(), uiMult2, m_uiMult);
+    AcceleratedExampleKernelProfiler<TAcc>().operator()<ExampleAcceleratedKernel<UiNumUselessWork>>(workSize, vuiBlockRetVals.data(), uiMult2, m_uiMult);
 
     // Assert that the results are correct.
-	std::uint32_t const uiCorrectResult(static_cast<std::uint32_t>(uiNumKernelsInBlock*uiNumKernelsInBlock) * m_uiMult * uiMult2);
+    std::uint32_t const uiCorrectResult(static_cast<std::uint32_t>(uiNumKernelsInBlock*uiNumKernelsInBlock) * m_uiMult * uiMult2);
 
     bool bResultCorrect(true);
     for(std::size_t i(0); i<uiNumBlocksInGrid; ++i)
     {
-		if(vuiBlockRetVals[i] != uiCorrectResult)
+        if(vuiBlockRetVals[i] != uiCorrectResult)
         {
-			std::cout << "vuiBlockRetVals[" << i << "] == " << vuiBlockRetVals[i] << " != " << uiCorrectResult << std::endl;
+            std::cout << "vuiBlockRetVals[" << i << "] == " << vuiBlockRetVals[i] << " != " << uiCorrectResult << std::endl;
             bResultCorrect = false;
         }
     }
@@ -336,31 +336,31 @@ int main()
 #ifdef ALPAKA_SERIAL_ENABLED
         std::cout << std::endl;
         std::cout << "################################################################################" << std::endl;
-		profileAcceleratedExampleKernel<alpaka::AccSerial, UiNumUselessWork>(workSize, uiMult2);
+        profileAcceleratedExampleKernel<alpaka::AccSerial, UiNumUselessWork>(workSize, uiMult2);
         std::cout << "################################################################################" << std::endl;
 #endif
 #ifdef ALPAKA_THREADS_ENABLED
         std::cout << std::endl;
         std::cout << "################################################################################" << std::endl;
-		profileAcceleratedExampleKernel<alpaka::AccThreads, UiNumUselessWork>(workSize, uiMult2);
+        profileAcceleratedExampleKernel<alpaka::AccThreads, UiNumUselessWork>(workSize, uiMult2);
         std::cout << "################################################################################" << std::endl;
 #endif
 #ifdef ALPAKA_FIBERS_ENABLED
         std::cout << std::endl;
         std::cout << "################################################################################" << std::endl;
-		profileAcceleratedExampleKernel<alpaka::AccFibers, UiNumUselessWork>(workSize, uiMult2);
+        profileAcceleratedExampleKernel<alpaka::AccFibers, UiNumUselessWork>(workSize, uiMult2);
         std::cout << "################################################################################" << std::endl;
 #endif
 #ifdef ALPAKA_OPENMP_ENABLED
         std::cout << std::endl;
         std::cout << "################################################################################" << std::endl;
-		profileAcceleratedExampleKernel<alpaka::AccOpenMp, UiNumUselessWork>(workSize, uiMult2);
+        profileAcceleratedExampleKernel<alpaka::AccOpenMp, UiNumUselessWork>(workSize, uiMult2);
         std::cout << "################################################################################" << std::endl;
 #endif
 #ifdef ALPAKA_CUDA_ENABLED
         std::cout << std::endl;
         std::cout << "################################################################################" << std::endl;
-		profileAcceleratedExampleKernel<alpaka::AccCuda, UiNumUselessWork>(workSize, uiMult2);
+        profileAcceleratedExampleKernel<alpaka::AccCuda, UiNumUselessWork>(workSize, uiMult2);
         std::cout << "################################################################################" << std::endl;
 #endif
         std::cout << std::endl;

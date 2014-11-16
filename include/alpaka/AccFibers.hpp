@@ -24,6 +24,8 @@
 
 #include <alpaka/KernelExecutorBuilder.hpp> // KernelExecutorBuilder
 #include <alpaka/WorkSize.hpp>              // IWorkSize, WorkSizeDefault
+#include <alpaka/Index.hpp>                 // IIndex
+#include <alpaka/Atomic.hpp>                // IAtomic
 
 #include <cstddef>                          // std::size_t
 #include <cstdint>                          // unit8_t
@@ -49,55 +51,93 @@ namespace alpaka
     namespace fibers
     {
         namespace detail
-		{
-			using TFiberIdToIndex = std::map<boost::fibers::fiber::id, vec<3u>>;
+        {
+            using TInterfacedWorkSize = alpaka::IWorkSize<alpaka::detail::WorkSizeDefault>;
 
-			//#############################################################################
-			//! This class stores the current indices as members.
-			//#############################################################################
-			class IndexFibers
-			{
-			public:
-				//-----------------------------------------------------------------------------
-				//! Constructor.
-				//-----------------------------------------------------------------------------
-				ALPAKA_FCT_CPU_CUDA IndexFibers(
-					TFiberIdToIndex & mFibersToIndices,
-					vec<3u> & v3uiGridBlockIdx) :
-					m_mFibersToIndices(mFibersToIndices),
-					m_v3uiGridBlockIdx(v3uiGridBlockIdx)
-				{
-				}
+            using TFiberIdToIndex = std::map<boost::fibers::fiber::id, vec<3u>>;
+            //#############################################################################
+            //! This class that holds the implementation details for the indexing of the fibers accelerator.
+            //#############################################################################
+            class IndexFibers
+            {
+            public:
+                //-----------------------------------------------------------------------------
+                //! Constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU IndexFibers(
+                    TFiberIdToIndex const & mFibersToIndices,
+                    vec<3u> const & v3uiGridBlockIdx) :
+                    m_mFibersToIndices(mFibersToIndices),
+                    m_v3uiGridBlockIdx(v3uiGridBlockIdx)
+                {}
+                //-----------------------------------------------------------------------------
+                //! Copy-constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU IndexFibers(IndexFibers const & other) = default;
 
-				//-----------------------------------------------------------------------------
-				//! Copy-constructor.
-				//-----------------------------------------------------------------------------
-				ALPAKA_FCT_CPU_CUDA IndexFibers(IndexFibers const & other) = default;
+                //-----------------------------------------------------------------------------
+                //! \return The index of the currently executed kernel.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU vec<3u> getIdxBlockKernel() const
+                {
+                    auto const idFiber(boost::this_fiber::get_id());
+                    auto const itFind(m_mFibersToIndices.find(idFiber));
+                    assert(itFind != m_mFibersToIndices.end());
 
-				//-----------------------------------------------------------------------------
-				//! \return The index of the currently executed kernel.
-				//-----------------------------------------------------------------------------
-				ALPAKA_FCT_CPU vec<3u> getIdxBlockKernel() const
-				{
-					auto const idFiber(boost::this_fiber::get_id());
-					auto const itFind(m_mFibersToIndices.find(idFiber));
-					assert(itFind != m_mFibersToIndices.end());
+                    return itFind->second;
+                }
+                //-----------------------------------------------------------------------------
+                //! \return The index of the block of the currently executed kernel.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU vec<3u> getIdxGridBlock() const
+                {
+                    return m_v3uiGridBlockIdx;
+                }
 
-					return itFind->second;
-				}
-				//-----------------------------------------------------------------------------
-				//! \return The index of the block of the currently executed kernel.
-				//-----------------------------------------------------------------------------
-				ALPAKA_FCT_CPU vec<3u> getIdxGridBlock() const
-				{
-					return m_v3uiGridBlockIdx;
-				}
+            private:
+                TFiberIdToIndex const & m_mFibersToIndices;        //!< The mapping of fibers id's to fibers indices.
+                vec<3u> const & m_v3uiGridBlockIdx;            //!< The index of the currently executed block.
+            };
+            using TInterfacedIndex = alpaka::detail::IIndex<IndexFibers>;
 
-			private:
-				TFiberIdToIndex const & m_mFibersToIndices;		//!< The mapping of fibers id's to fibers indices.
-				vec<3u> const & m_v3uiGridBlockIdx;				//!< The index of the currently executed block.
-			};
+            //#############################################################################
+            //! This class that holds the implementation details for the atomic operations of the fibers accelerator.
+            //#############################################################################
+            class AtomicFibers
+            {
+            public:
+                //-----------------------------------------------------------------------------
+                //! Default-constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU AtomicFibers() = default;
+                //-----------------------------------------------------------------------------
+                //! Copy-constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU AtomicFibers(AtomicFibers const & other) = default;
+            };
+            using TInterfacedAtomic = alpaka::detail::IAtomic<AtomicFibers>;
+        }
+    }
 
+    namespace detail
+    {
+        //#############################################################################
+        //! The specialization to execute the requested atomic operation of the fibers accelerator.
+        //#############################################################################
+        template<typename TOp, typename T>
+        struct AtomicOp<fibers::detail::AtomicFibers, TOp, T>
+        {
+            ALPAKA_FCT_CPU static T atomicOp(fibers::detail::AtomicFibers const &, T * const addr, T const & value)
+            {
+                return TOp::op(addr, value);
+            }
+        };
+    }
+
+    namespace fibers
+    {
+        namespace detail
+        {
             //#############################################################################
             //! A barrier.
             // NOTE: We do not use the boost::fibers::barrier because it does not support simple resetting.
@@ -110,9 +150,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_CPU explicit FiberBarrier(std::size_t uiNumFibersToWaitFor = 0) :
                     m_uiNumFibersToWaitFor{uiNumFibersToWaitFor}
-                {
-                }
-
+                {}
                 //-----------------------------------------------------------------------------
                 //! Deleted copy-constructor.
                 //-----------------------------------------------------------------------------
@@ -128,13 +166,13 @@ namespace alpaka
                 ALPAKA_FCT_CPU void wait()
                 {
                     boost::unique_lock<boost::fibers::mutex> lock(m_mtxBarrier);
-					if(--m_uiNumFibersToWaitFor == 0)
+                    if(--m_uiNumFibersToWaitFor == 0)
                     {
                         m_cvAllFibersReachedBarrier.notify_all();
                     }
                     else
                     {
-						m_cvAllFibersReachedBarrier.wait(lock, [this] { return m_uiNumFibersToWaitFor == 0; });
+                        m_cvAllFibersReachedBarrier.wait(lock, [this] { return m_uiNumFibersToWaitFor == 0; });
                     }
                 }
 
@@ -142,63 +180,61 @@ namespace alpaka
                 //! \return The number of fibers to wait for.
                 //! NOTE: The value almost always is invalid the time you get it.
                 //-----------------------------------------------------------------------------
-				ALPAKA_FCT_CPU std::size_t getNumFibersToWaitFor() const
+                ALPAKA_FCT_CPU std::size_t getNumFibersToWaitFor() const
                 {
-					return m_uiNumFibersToWaitFor;
+                    return m_uiNumFibersToWaitFor;
                 }
 
                 //-----------------------------------------------------------------------------
                 //! Resets the number of fibers to wait for to the given number.
                 //-----------------------------------------------------------------------------
-				ALPAKA_FCT_CPU void reset(std::size_t uiNumFibersToWaitFor)
+                ALPAKA_FCT_CPU void reset(std::size_t uiNumFibersToWaitFor)
                 {
                     //boost::unique_lock<boost::fibers::mutex> lock(m_mtxBarrier);
-					m_uiNumFibersToWaitFor = uiNumFibersToWaitFor;
+                    m_uiNumFibersToWaitFor = uiNumFibersToWaitFor;
                 }
 
             private:
                 boost::fibers::mutex m_mtxBarrier;
-				boost::fibers::condition_variable m_cvAllFibersReachedBarrier;
-				std::size_t m_uiNumFibersToWaitFor;
+                boost::fibers::condition_variable m_cvAllFibersReachedBarrier;
+                std::size_t m_uiNumFibersToWaitFor;
             };
-
-			using TInterfacedIndex = alpaka::detail::IIndex<IndexFibers>;
-			using TInterfacedWorkSize = alpaka::IWorkSize<alpaka::detail::WorkSizeDefault>;
 
             //#############################################################################
             //! The base class for all fibers accelerated kernels.
             //#############################################################################
             class AccFibers :
+                protected TInterfacedWorkSize,
                 protected TInterfacedIndex,
-                protected TInterfacedWorkSize
+                protected TInterfacedAtomic
             {
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_CPU AccFibers() :
-					TInterfacedIndex(m_mFibersToIndices, m_v3uiGridBlockIdx),
-                    TInterfacedWorkSize()
+                    TInterfacedWorkSize(),
+                    TInterfacedIndex(m_mFibersToIndices, m_v3uiGridBlockIdx),
+                    TInterfacedAtomic()
                 {}
-
-				//-----------------------------------------------------------------------------
-				//! Copy-constructor.
-				// Has to be explicitly defined because 'std::mutex::mutex(const std::mutex&)' is deleted.
-				// Do not copy most members because they are initialized by the executor for each accelerated execution.
-				//-----------------------------------------------------------------------------
-				ALPAKA_FCT_CPU AccFibers(AccFibers const & other) :
-					TInterfacedIndex(m_mFibersToIndices, m_v3uiGridBlockIdx),
-					TInterfacedWorkSize(),
-					m_mFibersToIndices(),
-					m_v3uiGridBlockIdx(),
-					m_uiNumKernelsPerBlock(),
-					m_mFibersToBarrier(),
-					m_abarSyncFibers(),
+                //-----------------------------------------------------------------------------
+                //! Copy-constructor.
+                // Has to be explicitly defined because 'std::mutex::mutex(const std::mutex&)' is deleted.
+                // Do not copy most members because they are initialized by the executor for each accelerated execution.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU AccFibers(AccFibers const & other) :
+                    TInterfacedWorkSize(),
+                    TInterfacedIndex(m_mFibersToIndices, m_v3uiGridBlockIdx),
+                    TInterfacedAtomic(),
+                    m_mFibersToIndices(),
+                    m_v3uiGridBlockIdx(),
+                    m_uiNumKernelsPerBlock(),
+                    m_mFibersToBarrier(),
+                    m_abarSyncFibers(),
                     m_idMasterFiber(),
-					m_vvuiSharedMem(),
+                    m_vvuiSharedMem(),
                     m_vuiExternalSharedMem()
-				{}
-
+                {}
                 //-----------------------------------------------------------------------------
                 //! Deleted assignment-operator.
                 //-----------------------------------------------------------------------------
@@ -226,22 +262,12 @@ namespace alpaka
                 //! \return The requested index.
                 //-----------------------------------------------------------------------------
                 template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-				ALPAKA_FCT_CPU_CUDA typename alpaka::detail::DimToRetType<TDimensionality>::type getIdx() const
+                ALPAKA_FCT_CPU typename alpaka::detail::DimToRetType<TDimensionality>::type getIdx() const
                 {
                     return this->TInterfacedIndex::getIdx<TOrigin, TUnit, TDimensionality>(
                         *static_cast<TInterfacedWorkSize const *>(this));
                 }
 
-                //-----------------------------------------------------------------------------
-                //! Atomic addition.
-                //-----------------------------------------------------------------------------
-                template<typename T>
-                ALPAKA_FCT_CPU void atomicFetchAdd(T * sum, T summand) const
-                {
-                    // No mutex required because fibers are thread sequential.
-                    auto & rsum = *sum;
-                    rsum += summand;
-                }
                 //-----------------------------------------------------------------------------
                 //! Syncs all kernels in the current block.
                 //-----------------------------------------------------------------------------
@@ -257,7 +283,7 @@ namespace alpaka
                     auto & bar(m_abarSyncFibers[uiBarrierIndex]);
 
                     // (Re)initialize a barrier if this is the first fiber to reach it.
-					if(bar.getNumFibersToWaitFor() == 0)
+                    if(bar.getNumFibersToWaitFor() == 0)
                     {
                         // No DCLP required because there can not be an interruption in between the check and the reset.
                         bar.reset(m_uiNumKernelsPerBlock);
@@ -300,7 +326,7 @@ namespace alpaka
 
             private:
                 // getXxxIdx
-				TFiberIdToIndex mutable m_mFibersToIndices;                 //!< The mapping of fibers id's to fibers indices.
+                TFiberIdToIndex mutable m_mFibersToIndices;                 //!< The mapping of fibers id's to fibers indices.
                 vec<3u> mutable m_v3uiGridBlockIdx;                          //!< The index of the currently executed block.
 
                 // syncBlockKernels
@@ -335,7 +361,7 @@ namespace alpaka
                     KernelExecutor(TKernelConstrArgs && ... args) :
                         TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
                         m_vFibersInBlock()
-					{
+                    {
 #ifdef _DEBUG
                         std::cout << "[+] AccFibers::KernelExecutor()" << std::endl;
 #endif
@@ -353,10 +379,10 @@ namespace alpaka
 #ifdef _DEBUG
                         std::cout << "[+] AccFibers::KernelExecutor::operator()" << std::endl;
 #endif
-						(*const_cast<TInterfacedWorkSize*>(static_cast<TInterfacedWorkSize const *>(this))) = workSize;
+                        (*const_cast<TInterfacedWorkSize*>(static_cast<TInterfacedWorkSize const *>(this))) = workSize;
 
-						auto const uiNumKernelsPerBlock(this->TAcceleratedKernel::template getSize<Block, Kernels, Linear>());
-						auto const uiMaxKernelsPerBlock(this->TAcceleratedKernel::getSizeBlockKernelsLinearMax());
+                        auto const uiNumKernelsPerBlock(this->TAcceleratedKernel::template getSize<Block, Kernels, Linear>());
+                        auto const uiMaxKernelsPerBlock(this->TAcceleratedKernel::getSizeBlockKernelsLinearMax());
                         if(uiNumKernelsPerBlock > uiMaxKernelsPerBlock)
                         {
                             throw std::runtime_error(("The given blockSize '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the fibers accelerator!").c_str());
@@ -369,7 +395,7 @@ namespace alpaka
                         auto const v3uiSizeBlockKernels(this->TAcceleratedKernel::template getSize<Block, Kernels, D3>());
                         this->AccFibers::m_vuiExternalSharedMem.resize(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiSizeBlockKernels));
 
-						auto const v3uiSizeGridBlocks(this->TAcceleratedKernel::template getSize<Grid, Blocks, D3>());
+                        auto const v3uiSizeGridBlocks(this->TAcceleratedKernel::template getSize<Grid, Blocks, D3>());
 #ifdef _DEBUG
                         //std::cout << "GridBlocks: " << v3uiSizeGridBlocks << " BlockKernels: " << v3uiSizeBlockKernels << std::endl;
 #endif
@@ -401,7 +427,7 @@ namespace alpaka
                                                 // The v3uiBlockKernelIdx is required to be copied in from the environment because if the fiber is immediately suspended the variable is already changed for the next iteration/thread.
 #ifdef _MSC_VER    // MSVC <= 14 do not compile the boost::fibers::fiber constructor because the type of the member function template is missing the this pointer as first argument.
                                                 auto fiberKernelFct([this](vec<3u> const v3uiBlockKernelIdx, TArgs ... args){fiberKernel<TArgs...>(v3uiBlockKernelIdx, args...); });
-												m_vFibersInBlock.push_back(boost::fibers::fiber(fiberKernelFct, v3uiBlockKernelIdx, args...));
+                                                m_vFibersInBlock.push_back(boost::fibers::fiber(fiberKernelFct, v3uiBlockKernelIdx, args...));
 #else
                                                 m_vFibersInBlock.push_back(boost::fibers::fiber(&KernelExecutor::fiberKernel<TArgs...>, this, v3uiBlockKernelIdx, args...));
 #endif
@@ -434,7 +460,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! The fiber entry point.
                     //-----------------------------------------------------------------------------
-					template<typename... TArgs>
+                    template<typename... TArgs>
                     void fiberKernel(vec<3u> const v3uiBlockKernelIdx, TArgs ... args) const
                     {
                         // We have to store the fiber data before the kernel is calling any of the methods of this class depending on them.
@@ -493,7 +519,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             TKernelExecutor operator()(TKernelConstrArgs && ... args) const
             {
-				return TKernelExecutor(std::forward<TKernelConstrArgs>(args)...);
+                return TKernelExecutor(std::forward<TKernelConstrArgs>(args)...);
             }
         };
     }

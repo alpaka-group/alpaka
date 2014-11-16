@@ -25,6 +25,7 @@
 #include <alpaka/KernelExecutorBuilder.hpp> // KernelExecutorBuilder
 #include <alpaka/WorkSize.hpp>              // IWorkSize, WorkSizeDefault
 #include <alpaka/Index.hpp>                 // IIndex
+#include <alpaka/Atomic.hpp>                // IAtomic
 
 #include <cstddef>                          // std::size_t
 #include <cstdint>                          // unit8_t
@@ -51,10 +52,11 @@ namespace alpaka
     {
         namespace detail
         {
-            using TThreadIdToIndex = std::map<std::thread::id, vec<3u>>;
+            using TInterfacedWorkSize = alpaka::IWorkSize<alpaka::detail::WorkSizeDefault>;
 
+            using TThreadIdToIndex = std::map<std::thread::id, vec<3u>>;
             //#############################################################################
-            //! This class stores the current indices as members.
+            //! This class that holds the implementation details for the indexing of the threads accelerator.
             //#############################################################################
             class IndexThreads
             {
@@ -62,7 +64,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU_CUDA IndexThreads(
+                ALPAKA_FCT_CPU IndexThreads(
                     TThreadIdToIndex & mThreadsToIndices,
                     vec<3u> & v3uiGridBlockIdx) :
                     m_mThreadsToIndices(mThreadsToIndices),
@@ -71,12 +73,12 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU_CUDA IndexThreads(IndexThreads const & other) = default;
+                ALPAKA_FCT_CPU IndexThreads(IndexThreads const & other) = default;
 
                 //-----------------------------------------------------------------------------
                 //! \return The index of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU_CUDA vec<3u> getIdxBlockKernel() const
+                ALPAKA_FCT_CPU vec<3u> getIdxBlockKernel() const
                 {
                     auto const idThread(std::this_thread::get_id());
                     auto const itFind(m_mThreadsToIndices.find(idThread));
@@ -87,7 +89,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The block index of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU_CUDA vec<3u> getIdxGridBlock() const
+                ALPAKA_FCT_CPU vec<3u> getIdxGridBlock() const
                 {
                     return m_v3uiGridBlockIdx;
                 }
@@ -96,7 +98,56 @@ namespace alpaka
                 mutable TThreadIdToIndex & m_mThreadsToIndices; //!< The mapping of thread id's to thread indices.
                 mutable vec<3u> & m_v3uiGridBlockIdx;            //!< The index of the currently executed block.
             };
+            using TInterfacedIndex = alpaka::detail::IIndex<IndexThreads>;
 
+            //#############################################################################
+            //! This class that holds the implementation details for the atomic operations of the threads accelerator.
+            //#############################################################################
+            class AtomicThreads
+            {
+            public:
+                template<typename TAtomic, typename TOp, typename T>
+                friend struct alpaka::detail::AtomicOp;
+
+            public:
+                //-----------------------------------------------------------------------------
+                //! Default-constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU AtomicThreads() = default;
+                //-----------------------------------------------------------------------------
+                //! Copy-constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU AtomicThreads(AtomicThreads const & other) = default;
+
+            private:
+                std::mutex mutable m_mtxAtomic; //!< The mutex protecting access for a atomic operation.
+            };
+            using TInterfacedAtomic = alpaka::detail::IAtomic<AtomicThreads>;
+        }
+    }
+
+    namespace detail
+    {
+        //#############################################################################
+        //! The specialization to execute the requested atomic operation of the threads accelerator.
+        //#############################################################################
+        template<typename TOp, typename T>
+        struct AtomicOp<threads::detail::AtomicThreads, TOp, T>
+        {
+            ALPAKA_FCT_CPU static T atomicOp(threads::detail::AtomicThreads const & atomic, T * const addr, T const & value)
+            {
+                // TODO: Currently not only the access to the same variable is protected by a mutex but all atomic ops on all threads.
+                // We could use a list of mutexes and lock the mutex depending on the target variable to allow multiple atomic ops on different targets concurrently.
+                std::lock_guard<std::mutex> lock(atomic.m_mtxAtomic);
+                return TOp::op(addr, value);
+            }
+        };
+    }
+
+    namespace threads
+    {
+        namespace detail
+        {
             //#############################################################################
             //! A barrier.
             //#############################################################################
@@ -108,16 +159,13 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_CPU explicit ThreadBarrier(std::size_t const uiNumThreadsToWaitFor = 0) :
                     m_uiNumThreadsToWaitFor{uiNumThreadsToWaitFor}
-                {
-                }
-
+                {}
                 //-----------------------------------------------------------------------------
                 //! Copy-constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_CPU ThreadBarrier(ThreadBarrier const & other) :
                     m_uiNumThreadsToWaitFor(other.m_uiNumThreadsToWaitFor)
-                {
-                }
+                {}
                 //-----------------------------------------------------------------------------
                 //! Assignment-operator.
                 //-----------------------------------------------------------------------------
@@ -163,39 +211,37 @@ namespace alpaka
                 std::size_t m_uiNumThreadsToWaitFor;
             };
 
-            using TInterfacedWorkSize = alpaka::IWorkSize<alpaka::detail::WorkSizeDefault>;
-            using TInterfacedIndex = alpaka::detail::IIndex<IndexThreads>;
-
             //#############################################################################
             //! The base class for all C++11 std::thread accelerated kernels.
             //#############################################################################
             class AccThreads :
+                protected TInterfacedWorkSize,
                 protected TInterfacedIndex,
-                protected TInterfacedWorkSize
+                protected TInterfacedAtomic
             {
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_CPU AccThreads() :
+                    TInterfacedWorkSize(),
                     TInterfacedIndex(m_mThreadsToIndices, m_v3uiGridBlockIdx),
-                    TInterfacedWorkSize()
+                    TInterfacedAtomic()
                 {}
-
                 //-----------------------------------------------------------------------------
                 //! Copy-constructor.
                 // Has to be explicitly defined because 'std::mutex::mutex(const std::mutex&)' is deleted.
                 // Do not copy most members because they are initialized by the executor for each accelerated execution.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_CPU AccThreads(AccThreads const & other) :
-					TInterfacedIndex(m_mThreadsToIndices, m_v3uiGridBlockIdx),
                     TInterfacedWorkSize(),
-					m_mThreadsToIndices(),
-					m_v3uiGridBlockIdx(),
+                    TInterfacedIndex(m_mThreadsToIndices, m_v3uiGridBlockIdx),
+                    TInterfacedAtomic(),
+                    m_mThreadsToIndices(),
+                    m_v3uiGridBlockIdx(),
                     m_mThreadsToBarrier(),
                     m_mtxBarrier(),
                     m_abarSyncThreads(),
-                    m_mtxAtomicAdd(),
                     m_idMasterThread(),
                     m_vvuiSharedMem(),
                     m_vuiExternalSharedMem()
@@ -224,23 +270,12 @@ namespace alpaka
                 //! \return The requested index.
                 //-----------------------------------------------------------------------------
                 template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-                ALPAKA_FCT_CPU_CUDA typename alpaka::detail::DimToRetType<TDimensionality>::type getIdx() const
+                ALPAKA_FCT_CPU typename alpaka::detail::DimToRetType<TDimensionality>::type getIdx() const
                 {
                     return this->TInterfacedIndex::getIdx<TOrigin, TUnit, TDimensionality>(
                         *static_cast<TInterfacedWorkSize const *>(this));
                 }
 
-                //-----------------------------------------------------------------------------
-                //! Atomic addition.
-                //-----------------------------------------------------------------------------
-                template<typename T>
-                ALPAKA_FCT_CPU void atomicFetchAdd(T * sum, T summand) const
-                {
-                    // TODO: We could use a list of mutexes and lock the mutex depending on the target variable to allow multiple atomicFetchAdd`s on different targets concurrently.
-                    std::lock_guard<std::mutex> lock(m_mtxAtomicAdd);
-                    auto & rsum = *sum;
-                    rsum += summand;
-                }
                 //-----------------------------------------------------------------------------
                 //! Syncs all kernels in the current block.
                 //-----------------------------------------------------------------------------
@@ -315,10 +350,6 @@ namespace alpaka
                 detail::ThreadBarrier mutable m_abarSyncThreads[2];         //!< The barriers for the synchronization of threads. 
                 //!< We have to keep the current and the last barrier because one of the threads can reach the next barrier before a other thread was wakeup from the last one and has checked if it can run.
 
-                // atomicFetchAdd
-                std::mutex  mutable m_mtxAtomicAdd;                         //!< The mutex protecting access for a atomic operation.
-                //!< TODO: Currently not only the access to the same variable is protected by a mutex but all atomicFetchAdd`s on all threads.
-
                 // allocBlockSharedMem
                 std::thread::id mutable m_idMasterThread;                   //!< The id of the master thread.
                 std::vector<std::vector<uint8_t>> mutable m_vvuiSharedMem;  //!< Block shared memory.
@@ -377,7 +408,7 @@ namespace alpaka
                         auto const v3uiSizeBlockKernels(this->TAcceleratedKernel::template getSize<Block, Kernels, D3>());
                         this->AccThreads::m_vuiExternalSharedMem.resize(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiSizeBlockKernels));
 
-						auto const v3uiSizeGridBlocks(this->TAcceleratedKernel::template getSize<Grid, Blocks, D3>());
+                        auto const v3uiSizeGridBlocks(this->TAcceleratedKernel::template getSize<Grid, Blocks, D3>());
 #ifdef _DEBUG
                         //std::cout << "GridBlocks: " << v3uiSizeGridBlocks << " BlockKernels: " << v3uiSizeBlockKernels << std::endl;
 #endif
@@ -501,7 +532,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             TKernelExecutor operator()(TKernelConstrArgs && ... args) const
             {
-				return TKernelExecutor(std::forward<TKernelConstrArgs>(args)...);
+                return TKernelExecutor(std::forward<TKernelConstrArgs>(args)...);
             }
         };
     }

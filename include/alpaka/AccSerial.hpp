@@ -25,6 +25,7 @@
 #include <alpaka/KernelExecutorBuilder.hpp> // KernelExecutorBuilder
 #include <alpaka/WorkSize.hpp>              // IWorkSize, WorkSizeDefault
 #include <alpaka/Index.hpp>                 // IIndex
+#include <alpaka/Atomic.hpp>                // IAtomic
 
 #include <cstddef>                          // std::size_t
 #include <vector>                           // std::vector
@@ -44,8 +45,10 @@ namespace alpaka
     {
         namespace detail
         {
+            using TInterfacedWorkSize = alpaka::IWorkSize<alpaka::detail::WorkSizeDefault>;
+
             //#############################################################################
-            //! This class stores the current indices as members.
+            //! This class that holds the implementation details for the indexing of the serial accelerator.
             //#############################################################################
             class IndexSerial
             {
@@ -53,54 +56,92 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Default-constructor.
                 //-----------------------------------------------------------------------------
-				ALPAKA_FCT_CPU_CUDA IndexSerial(
-					vec<3u> & v3uiGridBlockIdx,
-					vec<3u> & v3uiBlockKernelIdx) :
-					m_v3uiGridBlockIdx(v3uiGridBlockIdx),
-					m_v3uiBlockKernelIdx(v3uiBlockKernelIdx)
-				{}
+                ALPAKA_FCT_CPU IndexSerial(
+                    vec<3u> const & v3uiGridBlockIdx,
+                    vec<3u> const & v3uiBlockKernelIdx) :
+                    m_v3uiGridBlockIdx(v3uiGridBlockIdx),
+                    m_v3uiBlockKernelIdx(v3uiBlockKernelIdx)
+                {}
                 //-----------------------------------------------------------------------------
                 //! Copy-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU_CUDA IndexSerial(IndexSerial const & other) = default;
+                ALPAKA_FCT_CPU IndexSerial(IndexSerial const & other) = default;
 
                 //-----------------------------------------------------------------------------
                 //! \return The index of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU_CUDA vec<3u> getIdxBlockKernel() const
+                ALPAKA_FCT_CPU vec<3u> getIdxBlockKernel() const
                 {
                     return m_v3uiBlockKernelIdx;
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The block index of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU_CUDA vec<3u> getIdxGridBlock() const
+                ALPAKA_FCT_CPU vec<3u> getIdxGridBlock() const
                 {
                     return m_v3uiGridBlockIdx;
                 }
 
             private:
-				vec<3u> mutable & m_v3uiGridBlockIdx;
-				vec<3u> mutable & m_v3uiBlockKernelIdx;
+                vec<3u> const & m_v3uiGridBlockIdx;
+                vec<3u> const & m_v3uiBlockKernelIdx;
             };
-
             using TInterfacedIndex = alpaka::detail::IIndex<IndexSerial>;
-            using TInterfacedWorkSize = alpaka::IWorkSize<alpaka::detail::WorkSizeDefault>;
 
+            //#############################################################################
+            //! This class that holds the implementation details for the atomic operations of the serial accelerator.
+            //#############################################################################
+            class AtomicSerial
+            {
+            public:
+                //-----------------------------------------------------------------------------
+                //! Default-constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU AtomicSerial() = default;
+                //-----------------------------------------------------------------------------
+                //! Copy-constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU AtomicSerial(AtomicSerial const & other) = default;
+            };
+            using TInterfacedAtomic = alpaka::detail::IAtomic<AtomicSerial>;
+        }
+    }
+
+    namespace detail
+    {
+        //#############################################################################
+        //! The specialization to execute the requested atomic operation of the serial accelerator.
+        //#############################################################################
+        template<typename TOp, typename T>
+        struct AtomicOp<serial::detail::AtomicSerial, TOp, T>
+        {
+            ALPAKA_FCT_CPU static T atomicOp(serial::detail::AtomicSerial const &, T * const addr, T const & value)
+            {
+                return TOp::op(addr, value);
+            }
+        };
+    }
+
+    namespace serial
+    {
+        namespace detail
+        {
             //#############################################################################
             //! The base class for all non accelerated kernels.
             //#############################################################################
             class AccSerial :
+                protected TInterfacedWorkSize,
                 protected TInterfacedIndex,
-                protected TInterfacedWorkSize
+                protected TInterfacedAtomic
             {
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_CPU AccSerial() :
-					TInterfacedIndex(m_v3uiGridBlockIdx, m_v3uiBlockKernelIdx),
-                    TInterfacedWorkSize()
+                    TInterfacedWorkSize(),
+                    TInterfacedIndex(m_v3uiGridBlockIdx, m_v3uiBlockKernelIdx),
+                    TInterfacedAtomic()
                 {
                 }
 
@@ -125,20 +166,10 @@ namespace alpaka
                 //! \return The requested index.
                 //-----------------------------------------------------------------------------
                 template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-				ALPAKA_FCT_CPU_CUDA typename alpaka::detail::DimToRetType<TDimensionality>::type getIdx() const
+                ALPAKA_FCT_CPU typename alpaka::detail::DimToRetType<TDimensionality>::type getIdx() const
                 {
                     return this->TInterfacedIndex::getIdx<TOrigin, TUnit, TDimensionality>(
                         *static_cast<TInterfacedWorkSize const *>(this));
-                }
-
-                //-----------------------------------------------------------------------------
-                //! Atomic addition.
-                //-----------------------------------------------------------------------------
-                template<typename T>
-                ALPAKA_FCT_CPU void atomicFetchAdd(T * sum, T summand) const
-                {
-                    auto & rsum = *sum;
-                    rsum += summand;
                 }
 
                 //-----------------------------------------------------------------------------
@@ -227,7 +258,7 @@ namespace alpaka
                         auto const v3uiSizeBlockKernels(this->TAcceleratedKernel::template getSize<Block, Kernels, D3>());
                         this->AccSerial::m_vuiExternalSharedMem.resize(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiSizeBlockKernels));
 
-						auto const v3uiSizeGridBlocks(this->TAcceleratedKernel::template getSize<Grid, Blocks, D3>());
+                        auto const v3uiSizeGridBlocks(this->TAcceleratedKernel::template getSize<Grid, Blocks, D3>());
 #ifdef _DEBUG
                         //std::cout << "GridBlocks: " << v3uiSizeGridBlocks << " BlockKernels: " << v3uiSizeBlockKernels << std::endl;
 #endif
@@ -290,7 +321,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             TKernelExecutor operator()(TKernelConstrArgs && ... args) const
             {
-				return TKernelExecutor(std::forward<TKernelConstrArgs>(args)...);
+                return TKernelExecutor(std::forward<TKernelConstrArgs>(args)...);
             }
         };
     }

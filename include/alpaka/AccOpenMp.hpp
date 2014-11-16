@@ -25,6 +25,7 @@
 #include <alpaka/KernelExecutorBuilder.hpp> // KernelExecutorBuilder
 #include <alpaka/WorkSize.hpp>              // IWorkSize, WorkSizeDefault
 #include <alpaka/Index.hpp>                 // IIndex
+#include <alpaka/Atomic.hpp>                // IAtomic
 
 #include <cstddef>                          // std::size_t
 #include <cstdint>                          // unit8_t
@@ -32,6 +33,7 @@
 #include <cassert>                          // assert
 #include <stdexcept>                        // std::except
 #include <string>                           // std::to_string
+#include <algorithm>                        // std::min, std::max
 #ifdef _DEBUG
     #include <iostream>                     // std::cout
 #endif
@@ -49,7 +51,7 @@ namespace alpaka
             using TInterfacedWorkSize = alpaka::IWorkSize<alpaka::detail::WorkSizeDefault>;
 
             //#############################################################################
-            //! This class stores the current indices as members.
+            //! This class that holds the implementation details for the indexing of the OpenMP accelerator.
             //#############################################################################
             class IndexOpenMp
             {
@@ -57,17 +59,16 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU_CUDA IndexOpenMp(
+                ALPAKA_FCT_CPU IndexOpenMp(
                     TInterfacedWorkSize const & workSize,
-                    vec<3u> & v3uiGridBlockIdx) :
+                    vec<3u> const & v3uiGridBlockIdx) :
                     m_WorkSize(workSize),
                     m_v3uiGridBlockIdx(v3uiGridBlockIdx)
                 {}
-
                 //-----------------------------------------------------------------------------
                 //! Copy-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU_CUDA IndexOpenMp(IndexOpenMp const & other) = default;
+                ALPAKA_FCT_CPU IndexOpenMp(IndexOpenMp const & other) = default;
 
                 //-----------------------------------------------------------------------------
                 //! \return The index of the currently executed kernel.
@@ -93,26 +94,107 @@ namespace alpaka
                 }
 
             private:
-                TInterfacedWorkSize const & m_WorkSize;		//!< The mapping of thread id's to thread indices.
-                vec<3u> const & m_v3uiGridBlockIdx;		//!< The index of the currently executed block.
+                TInterfacedWorkSize const & m_WorkSize;        //!< The mapping of thread id's to thread indices.
+                vec<3u> const & m_v3uiGridBlockIdx;        //!< The index of the currently executed block.
             };
-
             using TInterfacedIndex = alpaka::detail::IIndex<IndexOpenMp>;
+            
+            //#############################################################################
+            //! This class that holds the implementation details for the atomic operations of the OpenMP accelerator.
+            //#############################################################################
+            class AtomicOpenMp
+            {
+#ifdef ALPAKA_OPENMP_ATOMIC_OPS_LOCK
+            public:
+                template<typename TAtomic, typename TOp, typename T>
+                friend struct alpaka::detail::AtomicOp;
+#endif
 
+            public:
+                //-----------------------------------------------------------------------------
+                //! Default-constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU AtomicOpenMp()
+#ifdef ALPAKA_OPENMP_ATOMIC_OPS_LOCK
+                {
+                    omp_init_lock(&m_ompLock);
+                }
+#else
+                = default;
+#endif
+                //-----------------------------------------------------------------------------
+                //! Copy-constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU AtomicOpenMp(AtomicOpenMp const & other) = default;
+
+#ifdef ALPAKA_OPENMP_ATOMIC_OPS_LOCK
+                //-----------------------------------------------------------------------------
+                //! Default-constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU ~AtomicOpenMp()
+                {
+                    omp_destroy_lock(&m_ompLock);
+                }
+            private:
+                omp_lock_t mutable m_ompLock;
+#endif
+            };
+            using TInterfacedAtomic = alpaka::detail::IAtomic<AtomicOpenMp>;
+        }
+    }
+
+    namespace detail
+    {
+        //#############################################################################
+        //! The specialization to execute the requested atomic operation of the serial accelerator.
+        // NOTE: Can not use '#pragma omp atomic' because braces or calling other functions directly after '#pragma omp atomic' are not allowed!
+        // So this would not be fully atomic! Between the store of the old value and the operation could be a context switch!
+        //#############################################################################
+        template<typename TOp, typename T>
+        struct AtomicOp<openmp::detail::AtomicOpenMp, TOp, T>
+        {
+#ifdef ALPAKA_OPENMP_ATOMIC_OPS_LOCK
+            ALPAKA_FCT_CPU static T atomicOp(openmp::detail::AtomicOpenMp const & atomic, T * const addr, T const & value)
+            {
+                omp_set_lock(&atomic.m_ompLock);
+                auto const old(TOp::op(addr, value));
+                omp_unset_lock(&atomic.m_ompLock);
+                return old;
+            }
+#else
+            ALPAKA_FCT_CPU static T atomicOp(openmp::detail::AtomicOpenMp const & , T * const addr, T const & value)
+            {
+                T old;
+                #pragma omp critical (AtomicOp)
+                {
+                    old = TOp::op(addr, value);
+                }
+                return old;
+            }
+#endif
+        };
+    }
+
+    namespace openmp
+    {
+        namespace detail
+        {
             //#############################################################################
             //! The base class for all OpenMP accelerated kernels.
             //#############################################################################
             class AccOpenMp :
+                protected TInterfacedWorkSize,
                 protected TInterfacedIndex,
-                protected TInterfacedWorkSize
+                protected TInterfacedAtomic
             {
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_CPU AccOpenMp() :
+                    TInterfacedWorkSize(),
                     TInterfacedIndex(*static_cast<TInterfacedWorkSize const *>(this), m_v3uiGridBlockIdx),
-                    TInterfacedWorkSize()
+                    TInterfacedAtomic()
                 {}
 
                 //-----------------------------------------------------------------------------
@@ -141,22 +223,10 @@ namespace alpaka
                 //! \return The requested index.
                 //-----------------------------------------------------------------------------
                 template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-                ALPAKA_FCT_CPU_CUDA typename alpaka::detail::DimToRetType<TDimensionality>::type getIdx() const
+                ALPAKA_FCT_CPU typename alpaka::detail::DimToRetType<TDimensionality>::type getIdx() const
                 {
                     return this->TInterfacedIndex::getIdx<TOrigin, TUnit, TDimensionality>(
                         *static_cast<TInterfacedWorkSize const *>(this));
-                }
-
-                //-----------------------------------------------------------------------------
-                //! Atomic addition.
-                //-----------------------------------------------------------------------------
-                template<typename T>
-                ALPAKA_FCT_CPU void atomicFetchAdd(T * sum, T summand) const
-                {
-                    auto & rsum(*sum);
-                    // NOTE: Braces or calling other functions directly after 'atomic' are not allowed!
-                    #pragma omp atomic
-                    rsum += summand;
                 }
 
                 //-----------------------------------------------------------------------------
@@ -252,7 +322,7 @@ namespace alpaka
                         auto const v3uiSizeBlockKernels(this->TAcceleratedKernel::template getSize<Block, Kernels, D3>());
                         this->AccOpenMp::m_vuiExternalSharedMem.resize(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiSizeBlockKernels));
 
-						auto const v3uiSizeGridBlocks(this->TAcceleratedKernel::template getSize<Grid, Blocks, D3>());
+                        auto const v3uiSizeGridBlocks(this->TAcceleratedKernel::template getSize<Grid, Blocks, D3>());
 #ifdef _DEBUG
                         //std::cout << "GridBlocks: " << v3uiSizeGridBlocks << " BlockKernels: " << v3uiSizeBlockKernels << std::endl;
 #endif
@@ -328,7 +398,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             TKernelExecutor operator()(TKernelConstrArgs && ... args) const
             {
-				return TKernelExecutor(std::forward<TKernelConstrArgs>(args)...);
+                return TKernelExecutor(std::forward<TKernelConstrArgs>(args)...);
             }
         };
     }

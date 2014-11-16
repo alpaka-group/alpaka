@@ -120,7 +120,7 @@ namespace alpaka
         };
 
         //#############################################################################
-        //! The extended description of the work size.
+        //! The interface of the index.
         //#############################################################################
         template<typename TIndex>
         class IIndex :
@@ -133,13 +133,10 @@ namespace alpaka
             template<typename... TArgs>
             ALPAKA_FCT_CPU_CUDA IIndex(TArgs && ... args) :
                 TIndex(std::forward<TArgs>(args)...)
-            {
-            }
+            {}
 
             //-----------------------------------------------------------------------------
             //! Get the index requested.
-            // Member function templates of a template class can not be specialized.
-            // Therefore this is done via the partial specialized getIdx class, which gets a reference to this object.
             //-----------------------------------------------------------------------------
             template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3, typename TWorkSize = WorkSizeDefault>
             ALPAKA_FCT_CPU_CUDA typename DimToRetType<TDimensionality>::type getIdx(IWorkSize<TWorkSize> const & workSize) const

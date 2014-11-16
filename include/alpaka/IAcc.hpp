@@ -40,27 +40,33 @@ namespace alpaka
     //! These device functions are not implemented and will not call the underlying implementation for the device code, because this will never be executed and would not compile.
     //
     // TODO: Implement:
-    // __syncthreads_count: Voting of a conditional statement over the block.
-    // __threadfence_block();     wait until memory accesses are visible to block
-    // __threadfence();           wait until memory accesses are visible to block and device
-    // __threadfence_system();    wait until memory accesses are visible to block and device and host(2.x)
-    // atomics
-    // old = atomicSub(&addr, value);  // old = *addr;  *addr –= value
-    // old = atomicExch(&addr, value);  // old = *addr;  *addr  = value
-    // old = atomicMin(&addr, value);  // old = *addr;  *addr = min( old, value )
-    // old = atomicMax(&addr, value);  // old = *addr;  *addr = max( old, value )
-    // increment up to value, then reset to 0  
-    // decrement down to 0, then reset to value
-    // old = atomicInc(&addr, value);  // old = *addr;  *addr = ((old >= value) ? 0 : old+1 )
-    // old = atomicDec(&addr, value);  // old = *addr;  *addr = ((old == 0) or (old > val) ? val : old–1 )
-    // old = atomicAnd(&addr, value);  // old = *addr;  *addr &= value
-    // old = atomicOr(&addr, value);  // old = *addr;  *addr |= value
-    // old = atomicXor(&addr, value);  // old = *addr;  *addr ^= value
-    // compare-and-store
-    // old = atomicCAS(&addr, compare, value);  // old = *addr;  *addr = ((old == compare) ? value : old)
+    // int __syncthreads_count(int predicate):  evaluates predicate for all threads of the block and returns the number of threads for which predicate evaluates to non-zero.
+    // int __syncthreads_and(int predicate):    evaluates predicate for all threads of the block and returns non-zero if and only if predicate evaluates to non-zero for all of them.
+    // int __syncthreads_or(int predicate):     evaluates predicate for all threads of the block and returns non-zero if and only if predicate evaluates to non-zero for any of them.
     //
-    // NOTE: CUDA: "__syncthreads() is allowed in conditional code but only if the conditional evaluates identically across the entire thread block, otherwise the code execution is likely to hang or produce unintended side effects."
-    // This is not allowed on other accelerators then CUDA.
+    // __threadfence_block();       wait until memory accesses are visible to block
+    // __threadfence();             wait until memory accesses are visible to block and device
+    // __threadfence_system();      wait until memory accesses are visible to block and device and host(2.x)
+    //
+    // __all(predicate):            Evaluate predicate for all active threads of the warp and return non-zero if and only if predicate evaluates to non-zero for all of them.Supported by devices of compute capability 1.2 and higher.
+    // __any(predicate):            Evaluate predicate for all active threads of the warp and return non-zero if and only if predicate evaluates to non-zero for any of them.Supported by devices of compute capability 1.2 and higher.
+    // __ballot(predicate):         Evaluate predicate for all active threads of the warp and return an integer whose Nth bit is set if and only if predicate evaluates to non-zero for the Nth thread of the warp and the Nth thread is active.Supported by devices of compute capability 2.0 and higher.
+    // For each of these warp vote operations, the result excludes threads that are inactive (e.g., due to warp divergence). Inactive threads are represented by 0 bits in the value returned by __ballot() and are not considered in the reductions performed by __all() and __any().
+    //
+    // rsqrtf
+    //
+    // sincosf
+    //
+    // clock_t clock();
+    // long long int clock64();
+    //
+    // The read-only data cache load function is only supported by devices of compute capability 3.5 and higher.
+    // T __ldg(const T* address);
+    //
+    // surface and texture access
+    //
+    // __shfl, __shfl_up, __shfl_down, __shfl_xor exchange a variable between threads within a warp.
+
     //#############################################################################
     template<typename TAcc = boost::mpl::_1>
     class IAcc :
@@ -88,7 +94,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
         ALPAKA_FCT_CPU_CUDA typename detail::DimToRetType<TDimensionality>::type getSize() const
-		{
+        {
 #ifndef __CUDA_ARCH__
             return TAcc::template getSize<TOrigin, TUnit, TDimensionality>();
 #else
@@ -106,18 +112,21 @@ namespace alpaka
 #ifndef __CUDA_ARCH__
             return TAcc::template getIdx<TOrigin, TUnit, TDimensionality>();
 #else
-            return{};
+            return {};
 #endif
         }
 
         //-----------------------------------------------------------------------------
-        //! Atomic addition.
+        //! Execute the atomic operation on the given address with the given value.
+        //! \return The old value before executing the atomic operation.
         //-----------------------------------------------------------------------------
-        template<typename T>
-        ALPAKA_FCT_CPU_CUDA void atomicFetchAdd(T * sum, T summand) const
+        template<typename TOp, typename T>
+        ALPAKA_FCT_CPU_CUDA T atomicOp(T * const addr, T const & value) const
         {
 #ifndef __CUDA_ARCH__
-            return TAcc::template atomicFetchAdd<T>(sum, summand);
+            return TAcc::template atomicOp<TOp, T>(addr, value);
+#else
+            return {};
 #endif
         }
 
@@ -159,18 +168,18 @@ namespace alpaka
         }
     };
 
-	//#############################################################################
-	//! The trait for getting the size of the block shared extern memory for a kernel.
-	//#############################################################################
+    //#############################################################################
+    //! The trait for getting the size of the block shared extern memory for a kernel.
+    //#############################################################################
     template<typename TAccelereatedKernel>
-	struct BlockSharedExternMemSizeBytes
-	{
-		//-----------------------------------------------------------------------------
-		//! \return The size of the shared memory allocated for a block.
-		//-----------------------------------------------------------------------------
-		static std::size_t getBlockSharedExternMemSizeBytes(vec<3u> const & v3uiSizeBlockKernels)
-		{
-			return 0;
-		}
-	};
+    struct BlockSharedExternMemSizeBytes
+    {
+        //-----------------------------------------------------------------------------
+        //! \return The size of the shared memory allocated for a block.
+        //-----------------------------------------------------------------------------
+        static std::size_t getBlockSharedExternMemSizeBytes(vec<3u> const & v3uiSizeBlockKernels)
+        {
+            return 0;
+        }
+    };
 }

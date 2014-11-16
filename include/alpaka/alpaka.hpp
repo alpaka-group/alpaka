@@ -22,7 +22,7 @@
 
 #pragma once
 
-#include <alpaka/IAcc.hpp>
+#include <alpaka/KernelExecutorBuilder.hpp>
 
 #ifdef ALPAKA_SERIAL_ENABLED
     #include <alpaka/AccSerial.hpp>

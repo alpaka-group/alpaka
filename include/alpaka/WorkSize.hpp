@@ -151,7 +151,7 @@ namespace alpaka
     }
 
     //#############################################################################
-    //! The extended description of the work size.
+    //! The interface of the work size.
     // TODO: Rename into e.g.: Layout, Subdivision, Partition, Segmentation, Decomposition
     //#############################################################################
     template<typename TWorkSize>
@@ -171,13 +171,10 @@ namespace alpaka
         template<typename... TArgs>
         ALPAKA_FCT_CPU_CUDA IWorkSize(TArgs && ... args) :
             TWorkSize(std::forward<TArgs>(args)...)
-        {
-        }
+        {}
 
         //-----------------------------------------------------------------------------
         //! Get the size requested.
-        // Member function templates of a template class can not be specialized.
-        // Therefore this is done via the partial specialized GetSize class, which gets a reference to this object.
         //-----------------------------------------------------------------------------
         template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
         ALPAKA_FCT_CPU_CUDA typename detail::DimToRetType<TDimensionality>::type getSize() const

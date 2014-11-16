@@ -22,11 +22,12 @@
 
 #pragma once
 
-#include <alpaka/IAcc.hpp>                  // IAcc
 #include <alpaka/KernelExecutorBuilder.hpp> // KernelExecutorBuilder
 #include <alpaka/WorkSize.hpp>              // IWorkSize, WorkSizeDefault
 #include <alpaka/Index.hpp>                 // IIndex
-#include <alpaka/FctCudaCpu.hpp>            // ALPAKA_FCT_CUDA
+#include <alpaka/Atomic.hpp>                // IAtomic
+
+#include <alpaka/IAcc.hpp>                  // IAcc
 
 #include <cstddef>                          // std::size_t
 #include <cstdint>                          // unit8_t
@@ -54,43 +55,7 @@ namespace alpaka
         namespace detail
         {
             //#############################################################################
-            //! This class stores the current indices as members.
-            //#############################################################################
-            class IndexCuda
-            {
-            public:
-                //-----------------------------------------------------------------------------
-                //! Default-constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU_CUDA IndexCuda() = default;
-
-                //-----------------------------------------------------------------------------
-                //! Copy-constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU_CUDA IndexCuda(IndexCuda const & other) = default;
-
-                //-----------------------------------------------------------------------------
-                //! \return The index of the currently executed kernel.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU_CUDA vec<3u> getIdxBlockKernel() const
-                {
-                    return{threadIdx.x, threadIdx.y, threadIdx.z};
-                }
-                //-----------------------------------------------------------------------------
-                //! \return The block index of the currently executed kernel.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU_CUDA vec<3u> getIdxGridBlock() const
-                {
-                    return{blockIdx.x, blockIdx.y, blockIdx.z};
-                }
-            };
-
-            using TInterfacedIndex = alpaka::detail::IIndex<alpaka::detail::IndexCuda>;
-            using TInterfacedWorkSize = alpaka::IWorkSize<WorkSizeCuda>;
-
-            //#############################################################################
-            //! The description of the work being accelerated.
-            //! This class gets the sizes from the CUDA environment variables. Therefore it is only available from within a kernel invocation.
+            //! This class that holds the implementation details for the work sizes of the CUDA accelerator.
             //#############################################################################
             class WorkSizeCuda
             {
@@ -123,7 +88,160 @@ namespace alpaka
 #endif
                 }
             };
+            using TInterfacedWorkSize = alpaka::IWorkSize<WorkSizeCuda>;
 
+            //#############################################################################
+            //! This class that holds the implementation details for the indexing of the CUDA accelerator.
+            //#############################################################################
+            class IndexCuda
+            {
+            public:
+                //-----------------------------------------------------------------------------
+                //! Default-constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU_CUDA IndexCuda() = default;
+                //-----------------------------------------------------------------------------
+                //! Copy-constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU_CUDA IndexCuda(IndexCuda const & other) = default;
+
+                //-----------------------------------------------------------------------------
+                //! \return The index of the currently executed kernel.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU_CUDA vec<3u> getIdxBlockKernel() const
+                {
+                    return{threadIdx.x, threadIdx.y, threadIdx.z};
+                }
+                //-----------------------------------------------------------------------------
+                //! \return The block index of the currently executed kernel.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU_CUDA vec<3u> getIdxGridBlock() const
+                {
+                    return{blockIdx.x, blockIdx.y, blockIdx.z};
+                }
+            };
+            using TInterfacedIndex = alpaka::detail::IIndex<IndexCuda>;
+            
+            //#############################################################################
+            //! This class that holds the implementation details for the atomic operations of the CUDA accelerator.
+            //#############################################################################
+            class AtomicCuda
+            {
+            public:
+                //-----------------------------------------------------------------------------
+                //! Default-constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CUDA AtomicCuda() = default;
+                //-----------------------------------------------------------------------------
+                //! Copy-constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CUDA AtomicCuda(AtomicCuda const & other) = default;
+            };
+            using TInterfacedAtomic = alpaka::detail::IAtomic<AtomicCuda>;
+        }
+    }
+
+    namespace detail
+    {
+        //#############################################################################
+        //! The specialization to execute the requested atomic operation of the CUDA accelerator.
+        //#############################################################################
+        // TODO: These ops are only implemented for int and unsigned int; additionally Exch and Add (2.0+) for float; some also for unsigned long long int
+        // See: http://docs.nvidia.com/cuda/cuda-c-programming-guide/#atomic-functions how to implement everything with CAS
+        template<typename T>
+        struct AtomicOp<cuda::detail::AtomicCuda, Add, T>
+        {
+            ALPAKA_FCT_CUDA static T atomicOp(cuda::detail::AtomicCuda const & , T * const addr, T const & value)
+            {
+                return atomicAdd(addr, value);
+            }
+        };
+        template<typename T>
+        struct AtomicOp<cuda::detail::AtomicCuda, Sub, T>
+        {
+            ALPAKA_FCT_CUDA static T atomicOp(cuda::detail::AtomicCuda const & , T * const addr, T const & value)
+            {
+                return atomicSub(addr, value);
+            }
+        };
+        template<typename T>
+        struct AtomicOp<cuda::detail::AtomicCuda, Min, T>
+        {
+            ALPAKA_FCT_CUDA static T atomicOp(cuda::detail::AtomicCuda const & , T * const addr, T const & value)
+            {
+                return atomicMin(addr, value);
+            }
+        };
+        template<typename T>
+        struct AtomicOp<cuda::detail::AtomicCuda, Max, T>
+        {
+            ALPAKA_FCT_CUDA static T atomicOp(cuda::detail::AtomicCuda const & , T * const addr, T const & value)
+            {
+                return atomicMax(addr, value);
+            }
+        };
+        template<typename T>
+        struct AtomicOp<cuda::detail::AtomicCuda, Exch, T>
+        {
+            ALPAKA_FCT_CUDA static T atomicOp(cuda::detail::AtomicCuda const & , T * const addr, T const & value)
+            {
+                return atomicExch(addr, value);
+            }
+        };
+        template<typename T>
+        struct AtomicOp<cuda::detail::AtomicCuda, Inc, T>
+        {
+            ALPAKA_FCT_CUDA static T atomicOp(cuda::detail::AtomicCuda const & , T * const addr, T const & value)
+            {
+                return atomicInc(addr, value);
+            }
+        };
+        template<typename T>
+        struct AtomicOp<cuda::detail::AtomicCuda, Dec, T>
+        {
+            ALPAKA_FCT_CUDA static T atomicOp(cuda::detail::AtomicCuda const & , T * const addr, T const & value)
+            {
+                return atomicDec(addr, value);
+            }
+        };
+        template<typename T>
+        struct AtomicOp<cuda::detail::AtomicCuda, And, T>
+        {
+            ALPAKA_FCT_CUDA static T atomicOp(cuda::detail::AtomicCuda const & , T * const addr, T const & value)
+            {
+                return atomicAnd(addr, value);
+            }
+        };
+        template<typename T>
+        struct AtomicOp<cuda::detail::AtomicCuda, Or, T>
+        {
+            ALPAKA_FCT_CUDA static T atomicOp(cuda::detail::AtomicCuda const & , T * const addr, T const & value)
+            {
+                return atomicOr(addr, value);
+            }
+        };
+        template<typename T>
+        struct AtomicOp<cuda::detail::AtomicCuda, Xor, T>
+        {
+            ALPAKA_FCT_CUDA static T atomicOp(cuda::detail::AtomicCuda const & , T * const addr, T const & value)
+            {
+                return atomicXOr(addr, value);
+            }
+        };
+        /*template<typename T>
+        struct AtomicOp<cuda::detail::AtomicCuda, Cas, T>
+        {
+            ALPAKA_FCT_CUDA static T atomicOp(cuda::detail::AtomicCuda const & , T * const addr, T const & compare, T const & value)
+            {
+                return atomicCAS(addr, compare, value);
+            }
+        };*/
+    }
+
+    namespace cuda
+    {
+        namespace detail
+        {
             //-----------------------------------------------------------------------------
             //! The CUDA kernel entry point.
             //-----------------------------------------------------------------------------
@@ -137,16 +255,18 @@ namespace alpaka
             //! The base class for all CUDA accelerated kernels.
             //#############################################################################
             class AccCuda :
-                protected TInterfacedIndex,
-                protected TInterfacedWorkSize
+                protected TInterfacedWorkSize,
+                private TInterfacedIndex,
+                protected TInterfacedAtomic
             {
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_CUDA AccCuda() :
+                    TInterfacedWorkSize(),
                     TInterfacedIndex(),
-                    TInterfacedWorkSize()
+                    TInterfacedAtomic()
                 {}
 
                 //-----------------------------------------------------------------------------
@@ -299,15 +419,6 @@ namespace alpaka
                 }
 
                 //-----------------------------------------------------------------------------
-                //! Atomic addition of integers.
-                //-----------------------------------------------------------------------------
-                template<typename T>
-                ALPAKA_FCT_CUDA void atomicFetchAdd(T * sum, T summand) const
-                {
-                    atomicAdd(sum, summand);
-                }
-
-                //-----------------------------------------------------------------------------
                 //! Syncs all kernels in the current block.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_CUDA void syncBlockKernels() const
@@ -353,7 +464,7 @@ namespace alpaka
                     template<typename... TKernelConstrArgs>
                     KernelExecutor(TKernelConstrArgs && ... args) :
                         TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
-					{
+                    {
 #ifdef _DEBUG
                         std::cout << "[+] AccCuda::KernelExecutor()" << std::endl;
 #endif
@@ -371,15 +482,15 @@ namespace alpaka
 #ifdef _DEBUG
                         std::cout << "[+] AccCuda::KernelExecutor::operator()" << std::endl;
 #endif
-						auto const uiNumKernelsPerBlock(workSize.getSize<Block, Kernels, Linear>());
-						auto const uiMaxKernelsPerBlock(this->TAcceleratedKernel::getSizeBlockKernelsLinearMax());
+                        auto const uiNumKernelsPerBlock(workSize.getSize<Block, Kernels, Linear>());
+                        auto const uiMaxKernelsPerBlock(this->TAcceleratedKernel::getSizeBlockKernelsLinearMax());
                         if(uiNumKernelsPerBlock > uiMaxKernelsPerBlock)
                         {
                             throw std::runtime_error(("The given blockSize '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the CUDA accelerator!").c_str());
                         }
 
-						auto const v3uiSizeGridBlocks(workSize.getSize<Grid, Blocks, D3>());
-						auto const v3uiSizeBlockKernels(workSize.getSize<Block, Kernels, D3>());
+                        auto const v3uiSizeGridBlocks(workSize.getSize<Grid, Blocks, D3>());
+                        auto const v3uiSizeBlockKernels(workSize.getSize<Block, Kernels, D3>());
 #ifdef _DEBUG
                         //std::cout << "GridBlocks: " << v3uiSizeGridBlocks << " BlockKernels: " << v3uiSizeBlockKernels<< std::endl;
 #endif
@@ -389,7 +500,7 @@ namespace alpaka
                         //std::cout << "GridBlocks: (" << gridDim.x << ", " << gridDim.y << ", " << gridDim.z << ")" << std::endl;
                         //std::cout << "BlockKernels: (" <<  << blockDim.x << ", " << blockDim.y << ", " << blockDim.z << ")" << std::endl;
 #endif
-						detail::cudaKernel<<<gridDim, blockDim, BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiSizeBlockKernels)>>>(*static_cast<TAcceleratedKernel const *>(this), args...);
+                        detail::cudaKernel<<<gridDim, blockDim, BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiSizeBlockKernels)>>>(*static_cast<TAcceleratedKernel const *>(this), args...);
                        
 #ifdef _DEBUG
                         std::cout << "[-] AccCuda::KernelExecutor::operator()" << std::endl;
@@ -439,12 +550,13 @@ namespace alpaka
         }
 
         //-----------------------------------------------------------------------------
-        //! Atomic addition.
+        //! Execute the atomic operation on the given address with the given value.
+        //! \return The old value before executing the atomic operation.
         //-----------------------------------------------------------------------------
-        template<typename T>
-        ALPAKA_FCT_CUDA void atomicFetchAdd(T * sum, T summand) const
+        template<typename TOp, typename T>
+        ALPAKA_FCT_CPU_CUDA T atomicOp(T * const addr, T const & value) const
         {
-            return TAcc::atomicFetchAdd<T>(sum, summand);
+            return TAcc::atomicOp<TOp, T>(addr, value);
         }
 
         //-----------------------------------------------------------------------------
@@ -489,16 +601,16 @@ namespace alpaka
             using TAcceleratedKernel = typename boost::mpl::apply<TKernel, AccCuda>::type;
             using TKernelExecutor = AccCuda::KernelExecutor<TAcceleratedKernel>;
 
-			// Copying a kernel onto the CUDA device has some extra requirements of being trivially copyable:
-			// A trivially copyable class is a class that
-			// 1. Has no non-trivial copy constructors(this also requires no virtual functions or virtual bases)
-			// 2. Has no non-trivial move constructors
-			// 3. Has no non-trivial copy assignment operators
-			// 4. Has no non-trivial move assignment operators
-			// 5. Has a trivial destructor
-			//
-			// TODO: is_standard_layout is even stricter. Is is_trivially_copyable enough?
-			static_assert(std::is_trivially_copyable<TAcceleratedKernel>::value, "The given kernel functor has to be trivially copyable to be used on a CUDA device!");
+            // Copying a kernel onto the CUDA device has some extra requirements of being trivially copyable:
+            // A trivially copyable class is a class that
+            // 1. Has no non-trivial copy constructors(this also requires no virtual functions or virtual bases)
+            // 2. Has no non-trivial move constructors
+            // 3. Has no non-trivial copy assignment operators
+            // 4. Has no non-trivial move assignment operators
+            // 5. Has a trivial destructor
+            //
+            // TODO: is_standard_layout is even stricter. Is is_trivially_copyable enough?
+            static_assert(std::is_trivially_copyable<TAcceleratedKernel>::value, "The given kernel functor has to be trivially copyable to be used on a CUDA device!");
 
             //-----------------------------------------------------------------------------
             //! Creates an kernel executor for the serial accelerator.

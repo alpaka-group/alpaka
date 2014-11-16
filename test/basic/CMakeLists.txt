@@ -22,208 +22,58 @@
 # Required CMake version
 ################################################################################
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.5)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
+
+
+################################################################################
+# Settings
+################################################################################
+
+# Set project macros.
+SET( TARGET_NAME "basic" )
+SET( INCLUDE_DIR "include/" )
+SET( SUFFIXED_INCLUDE_DIR "${INCLUDE_DIR}/${TARGET_NAME}/" )
+SET( SUFFIXED_SOURCE_DIR "src/" )
 
 ################################################################################
 # Project 
 ################################################################################
 
-PROJECT(test)
+PROJECT(${TARGET_NAME})
 
-SET(TARGET_NAME basic)
+# Include the alpaka library.
+ADD_SUBDIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/../../" "${CMAKE_CURRENT_BINARY_DIR}/alpaka")
 
-# set helper paths to find libraries and packages
-SET(CMAKE_PREFIX_PATH "$ENV{CUDA_ROOT}" "$ENV{BOOST_ROOT}")	# "/usr/lib/x86_64-linux-gnu/"
+# Add all the include files in all recursive subdirectories and group them accordingly.
+append_recursive_files_add_to_source_group(${SUFFIXED_INCLUDE_DIR} "hpp" HPP_FILES_ALL)
+        #MESSAGE( "HPP_FILES_ALL: ${HPP_FILES_ALL}" )
 
-OPTION(ALPAKA_SERIAL_ENABLE "Enable the serial accelerator" OFF)
-IF(ALPAKA_SERIAL_ENABLE)
-    ADD_DEFINITIONS(-DALPAKA_SERIAL_ENABLED)
-ENDIF()
-OPTION(ALPAKA_THREADS_ENABLE "Enable the threads accelerator" OFF)
-IF(ALPAKA_THREADS_ENABLE)
-    ADD_DEFINITIONS(-DALPAKA_THREADS_ENABLED)
-ENDIF()
-OPTION(ALPAKA_FIBERS_ENABLE "Enable the fibers accelerator" OFF)
-IF(ALPAKA_FIBERS_ENABLE)
-    ADD_DEFINITIONS(-DALPAKA_FIBERS_ENABLED)
-ENDIF()
-OPTION(ALPAKA_OPENMP_ENABLE "Enable the OpenMP accelerator" ON)
-IF(ALPAKA_OPENMP_ENABLE)
-    ADD_DEFINITIONS(-DALPAKA_OPENMP_ENABLED)
-ENDIF()
-OPTION(ALPAKA_CUDA_ENABLE "Enable the CUDA accelerator" ON)
-IF(ALPAKA_CUDA_ENABLE)
-    ADD_DEFINITIONS(-DALPAKA_CUDA_ENABLED)
-ENDIF()
+# Add all the source files in all recursive subdirectories and group them accordingly.
+append_recursive_files_add_to_source_group(${SUFFIXED_SOURCE_DIR} "cpp" CPP_FILES_ALL)
+        #MESSAGE( "CPP_FILES_ALL: ${CPP_FILES_ALL}" )
 
+# Add all the CUDA source files in all recursive subdirectories and group them accordingly.
+append_recursive_files_add_to_source_group(${SUFFIXED_SOURCE_DIR} "cu" CU_FILES_ALL)
+        #MESSAGE( "CU_FILES_ALL: ${CU_FILES_ALL}" )
 
-################################################################################
-# Build type (debug, release)
-################################################################################
-OPTION(ALPAKA_RELEASE "Build release version, disables all runtime asserts" OFF)
-IF(ALPAKA_RELEASE)
-    MESSAGE(STATUS "Release version")
-
-    SET(CMAKE_BUILD_TYPE Release)
-    ADD_DEFINITIONS(-DNDEBUG)
-ELSE()
-    MESSAGE(STATUS "Debug version")
-
-    SET(CMAKE_BUILD_TYPE Debug)
-    ADD_DEFINITIONS(-D_DEBUG)
-
-    SET(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS}" -g "-Xcompiler=-g")
-ENDIF()
-
-
-################################################################################
-# Find Boost
-################################################################################
-SET(Boost_USE_STATIC_LIBS ON)
-SET(Boost_USE_MULTITHREADED ON)
-SET(Boost_USE_STATIC_RUNTIME OFF)
-
-SET(BOOST_REQUIRED_COMPONENTS)
-
-IF(ALPAKA_FIBERS_ENABLE)
-    SET(BOOST_REQUIRED_COMPONENTS fiber coroutine context system atomic chrono date_time regex thread)
-ENDIF()
-
-FIND_PACKAGE(Boost REQUIRED COMPONENTS ${BOOST_REQUIRED_COMPONENTS})
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
-SET(LIBS ${LIBS} ${Boost_LIBRARIES})
-
-
-################################################################################
-# Find OpenMP
-################################################################################
-IF(ALPAKA_OPENMP_ENABLE)
-    FIND_PACKAGE( OpenMP REQUIRED)
-    IF(OPENMP_FOUND)
-        SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-        SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-        SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
-    ENDIF()
-ENDIF()
-
-
-################################################################################
-# Find CUDA 
-################################################################################
-IF(ALPAKA_CUDA_ENABLE)
-    FIND_PACKAGE(CUDA 6.5 REQUIRED)
-
-    IF(CUDA_VERSION VERSION_LESS 6.5)
-        MESSAGE(FATAL_ERROR "CUDA Toolkit < 6.5 detected!")
-    ENDIF()
-    
-    SET(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} "-std=c++11")
-    SET(CUDA_HOST_COMPILER ${CMAKE_CXX_COMPILER})
-
-    SET(CUDA_ARCH sm_20 CACHE STRING "Set GPU architecture")
-    STRING(COMPARE EQUAL ${CUDA_ARCH} "sm_10" IS_CUDA_ARCH_UNSUPPORTED)
-    STRING(COMPARE EQUAL ${CUDA_ARCH} "sm_11" IS_CUDA_ARCH_UNSUPPORTED)
-    STRING(COMPARE EQUAL ${CUDA_ARCH} "sm_12" IS_CUDA_ARCH_UNSUPPORTED)
-    STRING(COMPARE EQUAL ${CUDA_ARCH} "sm_13" IS_CUDA_ARCH_UNSUPPORTED)
-
-    IF(IS_CUDA_ARCH_UNSUPPORTED)
-        MESSAGE(FATAL_ERROR "Unsupported CUDA architecture ${CUDA_ARCH} specified. SM 2.0 or higher is required.")
-    ENDIF(IS_CUDA_ARCH_UNSUPPORTED)
-
-    SET(CUDA_FTZ "--ftz=false" CACHE STRING "Set flush to zero for GPU")
-
-    SET(CUDA_MATH --use_fast_math CACHE STRING "Enable fast-math" )
-    OPTION(CUDA_SHOW_REGISTER "Show kernel registers and create PTX" OFF)
-    OPTION(CUDA_KEEP_FILES "Keep all intermediate files that are generated during internal compilation steps (folder: nvcc_tmp)" OFF)
-    OPTION(CUDA_SHOW_CODELINES "Show kernel lines in cuda-gdb and cuda-memcheck" OFF)
-
-    IF(CUDA_SHOW_CODELINES)
-        SET(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} --source-in-ptx -Xcompiler -rdynamic -lineinfo)
-        SET(CUDA_KEEP_FILES ON CACHE BOOL "activate keep files" FORCE)
-    ENDIF(CUDA_SHOW_CODELINES)
-
-    SET(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} ${nvcc_flags} -arch=${CUDA_ARCH} ${CUDA_MATH} ${CUDA_FTZ})
-    IF(CUDA_SHOW_REGISTER)
-        SET(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} -Xptxas=-v)
-    ENDIF(CUDA_SHOW_REGISTER)
-
-    IF(CUDA_KEEP_FILES)
-        MAKE_DIRECTORY("${PROJECT_BINARY_DIR}/nvcc_tmp")
-        SET(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} --keep --keep-dir "${PROJECT_BINARY_DIR}/nvcc_tmp")
-    ENDIF(CUDA_KEEP_FILES)
-ENDIF()
-
-
-################################################################################
-# Compiler settings
-################################################################################
-
-# GNU
-IF(CMAKE_COMPILER_IS_GNUCXX)
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unknown-pragmas")
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra")
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-parameter")
-    # new warning in gcc 4.8 (flag ignored in previous version)
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-local-typedefs")
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-# ICC
-ELSEIF(${CMAKE_CXX_COMPILER_ID} STREQUAL "Intel")
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-# PGI
-ELSEIF(${CMAKE_CXX_COMPILER_ID} STREQUAL "PGI")
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Minform=inform")
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-ENDIF()
-
-
-################################################################################
-# Configure include directories
-################################################################################
-
-# alpaka
-FIND_PATH(ALPAKA_ROOT_DIR
-  NAMES "include/alpaka/IAcc.hpp"
-  PATHS "${CMAKE_CURRENT_SOURCE_DIR}/../../"
-  DOC "alpaka root location"
-  )
-INCLUDE_DIRECTORIES(${ALPAKA_ROOT_DIR}/include)
-
-
-################################################################################
-# Compile & Link
-################################################################################
-
-# alpaka
-FILE(GLOB_RECURSE ALPAKA_HPP_FILES "${ALPAKA_ROOT_DIR}/include/*.hpp")
-FILE(GLOB_RECURSE ALPAKA_CPP_FILES "${ALPAKA_ROOT_DIR}/include/*.cpp")
-
-ADD_LIBRARY(
-    alpaka 
-    ${ALPAKA_HPP_FILES}
-    ${ALPAKA_CPP_FILES})
-
-# target
-
-FILE(GLOB_RECURSE HPP_FILES "include/*.hpp")
-FILE(GLOB_RECURSE CPP_FILES "src/*.cpp")
-FILE(GLOB_RECURSE CU_FILES "src/*.cu")
-
+# Builds the project as a static library and adds the headers and sources.
 IF(ALPAKA_CUDA_ENABLE)
     CUDA_ADD_EXECUTABLE(${TARGET_NAME}
-        ${HPP_FILES}
-        ${CU_FILES}
+        ${HPP_FILES_ALL}
+        ${CU_FILES_ALL}
         #OPTIONS -arch sm_20
     )
-    SET(LIBS ${LIBS} ${CUDA_CUDART_LIBRARY})
-
 ELSE()
     ADD_EXECUTABLE(${TARGET_NAME}
-        ${HPP_FILES}
-        ${CPP_FILES}
+        ${HEADER_FILES_ALL}
+        ${CPP_FILES_ALL}
     )
 ENDIF()
 
-# z m
-TARGET_LINK_LIBRARIES(${TARGET_NAME} ${LIBS})
+ADD_DEPENDENCIES(${TARGET_NAME} alpaka)
+
+# Set the include directories for this library.
+TARGET_INCLUDE_DIRECTORIES(${TARGET_NAME} PUBLIC ${INCLUDE_DIR})
+
+# Set the include libraries for this library (adds libs and include directories).
+TARGET_LINK_LIBRARIES(${TARGET_NAME} PUBLIC alpaka)
