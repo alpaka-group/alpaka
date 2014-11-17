@@ -66,6 +66,18 @@ namespace alpaka
                 //! Copy-constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_CPU IndexSerial(IndexSerial const & other) = default;
+                //-----------------------------------------------------------------------------
+                //! Move-constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU IndexSerial(IndexSerial && other) = default;
+                //-----------------------------------------------------------------------------
+                //! Assignment-operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU IndexSerial & operator=(IndexSerial const &) = delete;
+                //-----------------------------------------------------------------------------
+                //! Destructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU ~IndexSerial() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! \return The index of the currently executed kernel.
@@ -102,6 +114,18 @@ namespace alpaka
                 //! Copy-constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_CPU AtomicSerial(AtomicSerial const & other) = default;
+                //-----------------------------------------------------------------------------
+                //! Move-constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU AtomicSerial(AtomicSerial && other) = default;
+                //-----------------------------------------------------------------------------
+                //! Assignment-operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU AtomicSerial & operator=(AtomicSerial const &) = delete;
+                //-----------------------------------------------------------------------------
+                //! Destructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU ~AtomicSerial() noexcept = default;
             };
             using TInterfacedAtomic = alpaka::detail::IAtomic<AtomicSerial>;
         }
@@ -142,8 +166,23 @@ namespace alpaka
                     TInterfacedWorkSize(),
                     TInterfacedIndex(m_v3uiGridBlockIdx, m_v3uiBlockKernelIdx),
                     TInterfacedAtomic()
-                {
-                }
+                {}
+                //-----------------------------------------------------------------------------
+                //! Copy-constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU AccSerial(AccSerial const & other) = default;
+                //-----------------------------------------------------------------------------
+                //! Move-constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU AccSerial(AccSerial && other) = default;
+                //-----------------------------------------------------------------------------
+                //! Assignment-operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU AccSerial & operator=(AccSerial const &) = delete;
+                //-----------------------------------------------------------------------------
+                //! Destructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU ~AccSerial() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! \return The maximum number of kernels in each dimension of a block allowed.
@@ -227,7 +266,7 @@ namespace alpaka
                     //! Constructor.
                     //-----------------------------------------------------------------------------
                     template<typename... TKernelConstrArgs>
-                    KernelExecutor(TKernelConstrArgs && ... args) :
+                    ALPAKA_FCT_CPU KernelExecutor(TKernelConstrArgs && ... args) :
                         TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
                     {
 #ifdef _DEBUG
@@ -237,12 +276,28 @@ namespace alpaka
                         std::cout << "[-] AccSerial::KernelExecutor()" << std::endl;
 #endif
                     }
+                    //-----------------------------------------------------------------------------
+                    //! Copy-constructor.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_CPU KernelExecutor(KernelExecutor const & other) = default;
+                    //-----------------------------------------------------------------------------
+                    //! Move-constructor.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_CPU KernelExecutor(KernelExecutor && other) = default;
+                    //-----------------------------------------------------------------------------
+                    //! Assignment-operator.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_CPU KernelExecutor & operator=(KernelExecutor const &) = delete;
+                    //-----------------------------------------------------------------------------
+                    //! Destructor.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_CPU ~KernelExecutor() noexcept = default;
 
                     //-----------------------------------------------------------------------------
                     //! Executes the accelerated kernel.
                     //-----------------------------------------------------------------------------
                     template<typename TWorkSize, typename... TArgs>
-                    void operator()(IWorkSize<TWorkSize> const & workSize, TArgs && ... args) const
+                    ALPAKA_FCT_CPU void operator()(IWorkSize<TWorkSize> const & workSize, TArgs && ... args) const
                     {
 #ifdef _DEBUG
                         std::cout << "[+] AccSerial::KernelExecutor::operator()" << std::endl;
@@ -321,7 +376,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Creates an kernel executor for the serial accelerator.
             //-----------------------------------------------------------------------------
-            TKernelExecutor operator()(TKernelConstrArgs && ... args) const
+            ALPAKA_FCT_CPU TKernelExecutor operator()(TKernelConstrArgs && ... args) const
             {
                 return TKernelExecutor(std::forward<TKernelConstrArgs>(args)...);
             }

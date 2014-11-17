@@ -74,6 +74,18 @@ namespace alpaka
                 //! Copy-constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_CPU IndexFibers(IndexFibers const & other) = default;
+                //-----------------------------------------------------------------------------
+                //! Move-constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU IndexFibers(IndexFibers && other) = default;
+                //-----------------------------------------------------------------------------
+                //! Assignment-operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU IndexFibers & operator=(IndexFibers const &) = delete;
+                //-----------------------------------------------------------------------------
+                //! Destructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU ~IndexFibers() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! \return The index of the currently executed kernel.
@@ -114,6 +126,18 @@ namespace alpaka
                 //! Copy-constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_CPU AtomicFibers(AtomicFibers const & other) = default;
+                //-----------------------------------------------------------------------------
+                //! Move-constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU AtomicFibers(AtomicFibers && other) = default;
+                //-----------------------------------------------------------------------------
+                //! Assignment-operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU AtomicFibers & operator=(AtomicFibers const &) = delete;
+                //-----------------------------------------------------------------------------
+                //! Destructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU ~AtomicFibers() noexcept = default;
             };
             using TInterfacedAtomic = alpaka::detail::IAtomic<AtomicFibers>;
         }
@@ -156,9 +180,17 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_CPU FiberBarrier(FiberBarrier const &) = delete;
                 //-----------------------------------------------------------------------------
-                //! Deleted assignment-operator.
+                //! Move-constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU FiberBarrier(FiberBarrier && other) = default;
+                //-----------------------------------------------------------------------------
+                //! Assignment-operator.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_CPU FiberBarrier & operator=(FiberBarrier const &) = delete;
+                //-----------------------------------------------------------------------------
+                //! Destructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU ~FiberBarrier() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! Waits for all the other fibers to reach the barrier.
@@ -236,9 +268,17 @@ namespace alpaka
                     m_vuiExternalSharedMem()
                 {}
                 //-----------------------------------------------------------------------------
-                //! Deleted assignment-operator.
+                //! Move-constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU AccFibers(AccFibers && other) = default;
+                //-----------------------------------------------------------------------------
+                //! Assignment-operator.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_CPU AccFibers & operator=(AccFibers const &) = delete;
+                //-----------------------------------------------------------------------------
+                //! Destructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU ~AccFibers() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! \return The maximum number of kernels in each dimension of a block allowed.
@@ -359,7 +399,7 @@ namespace alpaka
                     //! Constructor.
                     //-----------------------------------------------------------------------------
                     template<typename... TKernelConstrArgs>
-                    KernelExecutor(TKernelConstrArgs && ... args) :
+                    ALPAKA_FCT_CPU KernelExecutor(TKernelConstrArgs && ... args) :
                         TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
                         m_vFibersInBlock()
                     {
@@ -370,12 +410,28 @@ namespace alpaka
                         std::cout << "[-] AccFibers::KernelExecutor()" << std::endl;
 #endif
                     }
+                    //-----------------------------------------------------------------------------
+                    //! Copy-constructor.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_CPU KernelExecutor(KernelExecutor const & other) = default;
+                    //-----------------------------------------------------------------------------
+                    //! Move-constructor.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_CPU KernelExecutor(KernelExecutor && other) = default;
+                    //-----------------------------------------------------------------------------
+                    //! Assignment-operator.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_CPU KernelExecutor & operator=(KernelExecutor const &) = delete;
+                    //-----------------------------------------------------------------------------
+                    //! Destructor.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_CPU ~KernelExecutor() noexcept = default;
 
                     //-----------------------------------------------------------------------------
                     //! Executes the accelerated kernel.
                     //-----------------------------------------------------------------------------
                     template<typename TWorkSize, typename... TArgs>
-                    void operator()(IWorkSize<TWorkSize> const & workSize, TArgs && ... args) const
+                    ALPAKA_FCT_CPU void operator()(IWorkSize<TWorkSize> const & workSize, TArgs && ... args) const
                     {
 #ifdef _DEBUG
                         std::cout << "[+] AccFibers::KernelExecutor::operator()" << std::endl;
@@ -463,7 +519,7 @@ namespace alpaka
                     //! The fiber entry point.
                     //-----------------------------------------------------------------------------
                     template<typename... TArgs>
-                    void fiberKernel(vec<3u> const v3uiBlockKernelIdx, TArgs ... args) const
+                    ALPAKA_FCT_CPU void fiberKernel(vec<3u> const v3uiBlockKernelIdx, TArgs ... args) const
                     {
                         // We have to store the fiber data before the kernel is calling any of the methods of this class depending on them.
                         auto const idFiber(boost::this_fiber::get_id());
@@ -474,18 +530,15 @@ namespace alpaka
                             m_idMasterFiber = idFiber;
                         }
 
-                        {
-                            // Save the fiber id, and index.
-#ifdef _MSC_VER    // GCC <= 4.7.2 is not standard conformant and has no member emplace. This works with 4.7.3+.
-                            this->AccFibers::m_mFibersToIndices.emplace(idFiber, v3uiBlockKernelIdx);
-                            this->AccFibers::m_mFibersToBarrier.emplace(idFiber, 0);
+                        // Save the fiber id, and index.
+#ifdef _MSC_VER // GCC <= 4.7.2 is not standard conformant and has no member emplace. This works with 4.7.3+.
+                        this->AccFibers::m_mFibersToIndices.emplace(idFiber, v3uiBlockKernelIdx);
+                        this->AccFibers::m_mFibersToBarrier.emplace(idFiber, 0);
 #else
-                            this->AccFibers::m_mFibersToIndices.insert(std::pair<boost::fibers::fiber::id, vec<3u>>(idFiber, v3uiBlockKernelIdx));
-                            this->AccFibers::m_mFibersToBarrier.insert(std::pair<boost::fibers::fiber::id, vec<3u>>(idFiber, 0));
+                        this->AccFibers::m_mFibersToIndices.insert(std::pair<boost::fibers::fiber::id, vec<3u>>(idFiber, v3uiBlockKernelIdx));
+                        this->AccFibers::m_mFibersToBarrier.insert(std::pair<boost::fibers::fiber::id, vec<3u>>(idFiber, 0));
 #endif
-                        }
-
-                        // Sync all fibers so that the maps with fiber id's are complete and not changed after here.
+                        // Sync all threads so that the maps with thread id's are complete and not changed after here.
                         this->AccFibers::syncBlockKernels();
 
                         // Execute the kernel itself.
@@ -519,7 +572,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Creates an kernel executor for the serial accelerator.
             //-----------------------------------------------------------------------------
-            TKernelExecutor operator()(TKernelConstrArgs && ... args) const
+            ALPAKA_FCT_CPU TKernelExecutor operator()(TKernelConstrArgs && ... args) const
             {
                 return TKernelExecutor(std::forward<TKernelConstrArgs>(args)...);
             }

@@ -77,7 +77,7 @@ namespace alpaka
         //! \return [The maximum number of memory sharing kernel executions | The maximum block size] allowed by the underlying accelerator.
         // TODO: Check if the used size is valid!
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_CPU_CUDA static vec<3u> getSizeBlockKernelsMax()
+        ALPAKA_FCT_CPU static vec<3u> getSizeBlockKernelsMax()
         {
             return TAcc::getSizeBlockKernelsMax();
         }

@@ -69,6 +69,18 @@ namespace alpaka
                 //! Copy-constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_CPU IndexOpenMp(IndexOpenMp const & other) = default;
+                //-----------------------------------------------------------------------------
+                //! Move-constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU IndexOpenMp(IndexOpenMp && other) = default;
+                //-----------------------------------------------------------------------------
+                //! Assignment-operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU IndexOpenMp & operator=(IndexOpenMp const &) = delete;
+                //-----------------------------------------------------------------------------
+                //! Destructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU ~IndexOpenMp() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! \return The index of the currently executed kernel.
@@ -132,6 +144,18 @@ namespace alpaka
                 //! Copy-constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_CPU AtomicOpenMp(AtomicOpenMp const & other) = default;
+                //-----------------------------------------------------------------------------
+                //! Move-constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU AtomicOpenMp(AtomicOpenMp && other) = default;
+                //-----------------------------------------------------------------------------
+                //! Assignment-operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU AtomicOpenMp & operator=(AtomicOpenMp const &) = delete;
+                //-----------------------------------------------------------------------------
+                //! Destructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU ~AtomicOpenMp() noexcept = default;
 
 #ifdef ALPAKA_OPENMP_ATOMIC_OPS_LOCK
                 //-----------------------------------------------------------------------------
@@ -202,6 +226,22 @@ namespace alpaka
                     TInterfacedIndex(*static_cast<TInterfacedWorkSize const *>(this), m_v3uiGridBlockIdx),
                     TInterfacedAtomic()
                 {}
+                //-----------------------------------------------------------------------------
+                //! Copy-constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU AccOpenMp(AccOpenMp const & other) = default;
+                //-----------------------------------------------------------------------------
+                //! Move-constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU AccOpenMp(AccOpenMp && other) = default;
+                //-----------------------------------------------------------------------------
+                //! Assignment-operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU AccOpenMp & operator=(AccOpenMp const &) = delete;
+                //-----------------------------------------------------------------------------
+                //! Destructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_CPU ~AccOpenMp() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! \return The maximum number of kernels in each dimension of a block allowed.
@@ -298,7 +338,7 @@ namespace alpaka
                     //! Constructor.
                     //-----------------------------------------------------------------------------
                     template<typename... TKernelConstrArgs>
-                    KernelExecutor(TKernelConstrArgs && ... args) :
+                    ALPAKA_FCT_CPU KernelExecutor(TKernelConstrArgs && ... args) :
                         TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
                     {
 #ifdef _DEBUG
@@ -308,12 +348,28 @@ namespace alpaka
                         std::cout << "[-] AccOpenMp::KernelExecutor()" << std::endl;
 #endif
                     }
+                    //-----------------------------------------------------------------------------
+                    //! Copy-constructor.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_CPU KernelExecutor(KernelExecutor const & other) = default;
+                    //-----------------------------------------------------------------------------
+                    //! Move-constructor.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_CPU KernelExecutor(KernelExecutor && other) = default;
+                    //-----------------------------------------------------------------------------
+                    //! Assignment-operator.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_CPU KernelExecutor & operator=(KernelExecutor const &) = delete;
+                    //-----------------------------------------------------------------------------
+                    //! Destructor.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_CPU ~KernelExecutor() noexcept = default;
 
                     //-----------------------------------------------------------------------------
                     //! Executes the accelerated kernel.
                     //-----------------------------------------------------------------------------
                     template<typename TWorkSize, typename... TArgs>
-                    void operator()(IWorkSize<TWorkSize> const & workSize, TArgs && ... args) const
+                    ALPAKA_FCT_CPU void operator()(IWorkSize<TWorkSize> const & workSize, TArgs && ... args) const
                     {
 #ifdef _DEBUG
                         std::cout << "[+] AccOpenMp::KernelExecutor::operator()" << std::endl;
@@ -412,7 +468,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Creates an kernel executor for the serial accelerator.
             //-----------------------------------------------------------------------------
-            TKernelExecutor operator()(TKernelConstrArgs && ... args) const
+            ALPAKA_FCT_CPU TKernelExecutor operator()(TKernelConstrArgs && ... args) const
             {
                 return TKernelExecutor(std::forward<TKernelConstrArgs>(args)...);
             }

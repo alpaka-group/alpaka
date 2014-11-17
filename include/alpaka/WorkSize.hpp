@@ -53,6 +53,18 @@ namespace alpaka
             //! Copy-constructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_CPU_CUDA WorkSizeDefault(WorkSizeDefault const & other) = default;
+            //-----------------------------------------------------------------------------
+            //! Move-constructor.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FCT_CPU_CUDA WorkSizeDefault(WorkSizeDefault && other) = default;
+            //-----------------------------------------------------------------------------
+            //! Assignment-operator.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FCT_CPU_CUDA WorkSizeDefault & operator=(WorkSizeDefault const &) = default;
+            //-----------------------------------------------------------------------------
+            //! Destructor.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FCT_CPU_CUDA ~WorkSizeDefault() noexcept = default;
 
             //-----------------------------------------------------------------------------
             //! \return The grid dimensions of the currently executed kernel.
