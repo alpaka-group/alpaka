@@ -188,6 +188,7 @@ namespace alpaka
                 {
                     static_assert(UiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
 
+                    // TODO: Optimize: do not initialize the memory on allocation like std::vector does!
                     m_vvuiSharedMem.emplace_back(UiNumElements);
                     return reinterpret_cast<T*>(m_vvuiSharedMem.back().data());
                 }
@@ -256,7 +257,8 @@ namespace alpaka
                         }
 
                         auto const v3uiSizeBlockKernels(this->TAcceleratedKernel::template getSize<Block, Kernels, D3>());
-                        this->AccSerial::m_vuiExternalSharedMem.resize(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiSizeBlockKernels));
+                        auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiSizeBlockKernels, std::forward<TArgs>(args)...));
+                        this->AccSerial::m_vuiExternalSharedMem.resize(uiBlockSharedExternMemSizeBytes);
 
                         auto const v3uiSizeGridBlocks(this->TAcceleratedKernel::template getSize<Grid, Blocks, D3>());
 #ifdef _DEBUG

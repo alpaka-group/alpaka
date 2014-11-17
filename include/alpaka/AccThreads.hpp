@@ -319,7 +319,8 @@ namespace alpaka
                     // The thread that was created first has to allocate the memory.
                     if(m_idMasterThread == std::this_thread::get_id())
                     {
-                        m_vvuiSharedMem.emplace_back();
+                        // TODO: Optimize: do not initialize the memory on allocation like std::vector does!
+                        m_vvuiSharedMem.emplace_back(UiNumElements);
                     }
                     syncBlockKernels();
 
@@ -336,7 +337,6 @@ namespace alpaka
                 }
 
             private:
-
                 // getIdx
                 detail::TThreadIdToIndex mutable m_mThreadsToIndices;       //!< The mapping of thread id's to thread indices.
                 vec<3u> mutable m_v3uiGridBlockIdx;                         //!< The index of the currently executed block.
@@ -406,7 +406,8 @@ namespace alpaka
                         //m_vThreadsInBlock.reserve(uiNumKernelsPerBlock);    // Minimal speedup?
 
                         auto const v3uiSizeBlockKernels(this->TAcceleratedKernel::template getSize<Block, Kernels, D3>());
-                        this->AccThreads::m_vuiExternalSharedMem.resize(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiSizeBlockKernels));
+                        auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiSizeBlockKernels, std::forward<TArgs>(args)...));
+                        this->AccThreads::m_vuiExternalSharedMem.resize(uiBlockSharedExternMemSizeBytes);
 
                         auto const v3uiSizeGridBlocks(this->TAcceleratedKernel::template getSize<Grid, Blocks, D3>());
 #ifdef _DEBUG

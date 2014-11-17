@@ -308,7 +308,8 @@ namespace alpaka
                     // The fiber that was created first has to allocate the memory.
                     if(m_idMasterFiber == boost::this_fiber::get_id())
                     {
-                        m_vvuiSharedMem.emplace_back();
+                        // TODO: Optimize: do not initialize the memory on allocation like std::vector does!
+                        m_vvuiSharedMem.emplace_back(UiNumElements);
                     }
                     syncBlockKernels();
 
@@ -393,7 +394,8 @@ namespace alpaka
                         //m_vFibersInBlock.reserve(uiNumKernelsPerBlock);    // Minimal speedup?
 
                         auto const v3uiSizeBlockKernels(this->TAcceleratedKernel::template getSize<Block, Kernels, D3>());
-                        this->AccFibers::m_vuiExternalSharedMem.resize(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiSizeBlockKernels));
+                        auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiSizeBlockKernels, std::forward<TArgs>(args)...));
+                        this->AccFibers::m_vuiExternalSharedMem.resize(uiBlockSharedExternMemSizeBytes);
 
                         auto const v3uiSizeGridBlocks(this->TAcceleratedKernel::template getSize<Grid, Blocks, D3>());
 #ifdef _DEBUG

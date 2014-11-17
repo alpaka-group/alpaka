@@ -177,7 +177,8 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The size of the shared memory allocated for a block.
         //-----------------------------------------------------------------------------
-        static std::size_t getBlockSharedExternMemSizeBytes(vec<3u> const & v3uiSizeBlockKernels)
+        template<typename... TArgs>
+        static std::size_t getBlockSharedExternMemSizeBytes(vec<3u> const & v3uiSizeBlockKernels, TArgs && ... )
         {
             return 0;
         }

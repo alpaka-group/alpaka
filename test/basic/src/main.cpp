@@ -65,8 +65,8 @@ public:
         std::uint32_t * const pBlockShared(getBlockSharedExternMem<std::uint32_t>());
 
         // Get some shared memory (allocate a second buffer directly afterwards to check for some synchronization bugs).
-        std::uint32_t * const pBlockShared1(allocBlockSharedMem<std::uint32_t, UiNumUselessWork::value>());
-        std::uint32_t * const pBlockShared2(allocBlockSharedMem<std::uint32_t, UiNumUselessWork::value>());
+        //std::uint32_t * const pBlockShared1(allocBlockSharedMem<std::uint32_t, UiNumUselessWork::value>());
+        //std::uint32_t * const pBlockShared2(allocBlockSharedMem<std::uint32_t, UiNumUselessWork::value>());
 
         // Calculate linearized index of the kernel in the block.
         std::uint32_t const uiIdxBlockKernelsLin(getIdx<alpaka::Block, alpaka::Kernels, alpaka::Linear>());
@@ -125,13 +125,14 @@ namespace alpaka
     //#############################################################################
     //! The trait for getting the size of the block shared extern memory for a kernel.
     //#############################################################################
-    template<typename TAcc>
-    struct BlockSharedExternMemSizeBytes<ExampleAcceleratedKernel<boost::mpl::int_<100u>, TAcc>>
+    template<class UiNumUselessWork, class TAcc>
+    struct BlockSharedExternMemSizeBytes<ExampleAcceleratedKernel<UiNumUselessWork, TAcc>>
     {
         //-----------------------------------------------------------------------------
         //! \return The size of the shared memory allocated for a block.
         //-----------------------------------------------------------------------------
-        static std::size_t getBlockSharedExternMemSizeBytes(alpaka::vec<3u> const & v3uiSizeBlockKernels)
+        template<typename... TArgs>
+        static std::size_t getBlockSharedExternMemSizeBytes(alpaka::vec<3u> const & v3uiSizeBlockKernels, TArgs && ...)
         {
             return v3uiSizeBlockKernels.prod() * sizeof(std::uint32_t);
         }
@@ -208,7 +209,7 @@ public:
         ALPAKA_CUDA_CHECK(cudaMemcpy(pBlockRetValsDev, puiBlockRetVals, uiNumBytes, cudaMemcpyHostToDevice));
 
         auto exec(alpaka::buildKernelExecutor<TAcc, TKernel>(std::forward<TKernelConstrArgs>(args)...));
-        profileAcceleratedKernel<alpaka::AccCuda, TKernel>(exec, workSize, pBlockRetValsDev, uiMult2);
+        profileAcceleratedKernel(exec, workSize, pBlockRetValsDev, uiMult2);
         
         ALPAKA_CUDA_CHECK(cudaDeviceSynchronize());
 

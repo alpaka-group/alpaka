@@ -500,8 +500,9 @@ namespace alpaka
                         //std::cout << "GridBlocks: (" << gridDim.x << ", " << gridDim.y << ", " << gridDim.z << ")" << std::endl;
                         //std::cout << "BlockKernels: (" <<  << blockDim.x << ", " << blockDim.y << ", " << blockDim.z << ")" << std::endl;
 #endif
-                        detail::cudaKernel<<<gridDim, blockDim, BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiSizeBlockKernels)>>>(*static_cast<TAcceleratedKernel const *>(this), args...);
-                       
+                        auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiSizeBlockKernels, std::forward<TArgs>(args)...));
+
+                        detail::cudaKernel<<<gridDim, blockDim, uiBlockSharedExternMemSizeBytes>>>(*static_cast<TAcceleratedKernel const *>(this), args...);
 #ifdef _DEBUG
                         std::cout << "[-] AccCuda::KernelExecutor::operator()" << std::endl;
 #endif
