@@ -10,7 +10,7 @@ Supported Compilers
 ----------------
 
 This library uses a subset of C++11 supported by many compilers to keep the code clean and readable.
-This compiles with:
+Supported (but not necessarily tested) compilers are:
 - gcc 4.4+
 - clang 3.3+
 - icc 13.0+
@@ -31,6 +31,6 @@ Usage
 ----------------
 
 The library is header only so nothing has to be build. Only the include path has to be set to 'PATH/TO/LIB/include/'.
-This allows the usage of header inclusion in the following way: '#include &lt;alpaka/IAcc.hpp&gt;'.
+This allows the usage of header inclusion in the following way: '#include &lt;alpaka/alpaka.hpp&gt;'.
 
 Code not intended to be utilized by users is hidden in the 'detail' namespace.

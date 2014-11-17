@@ -95,8 +95,8 @@ namespace alpaka
                 }
 
             private:
-                TFiberIdToIndex const & m_mFibersToIndices;        //!< The mapping of fibers id's to fibers indices.
-                vec<3u> const & m_v3uiGridBlockIdx;            //!< The index of the currently executed block.
+                TFiberIdToIndex const & m_mFibersToIndices;     //!< The mapping of fibers id's to fibers indices.
+                vec<3u> const & m_v3uiGridBlockIdx;             //!< The index of the currently executed block.
             };
             using TInterfacedIndex = alpaka::detail::IIndex<IndexFibers>;
 
@@ -222,7 +222,7 @@ namespace alpaka
                 // Has to be explicitly defined because 'std::mutex::mutex(const std::mutex&)' is deleted.
                 // Do not copy most members because they are initialized by the executor for each accelerated execution.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU AccFibers(AccFibers const & other) :
+                ALPAKA_FCT_CPU AccFibers(AccFibers const & ) :
                     TInterfacedWorkSize(),
                     TInterfacedIndex(m_mFibersToIndices, m_v3uiGridBlockIdx),
                     TInterfacedAtomic(),
@@ -305,7 +305,7 @@ namespace alpaka
                     // Assure that all fibers have executed the return of the last allocBlockSharedMem function (if there was one before).
                     syncBlockKernels();
 
-                    // The fiber that was created first has to allocate the memory.
+                    // Arbitrary decision: The fiber that was created first has to allocate the memory.
                     if(m_idMasterFiber == boost::this_fiber::get_id())
                     {
                         // TODO: Optimize: do not initialize the memory on allocation like std::vector does!

@@ -75,15 +75,21 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_CPU vec<3u> getIdxBlockKernel() const
                 {
-                    vec<3u> v3uiIdxBlockKernel;
-
+                    // We assume that the thread id is positive.
+                    assert(::omp_get_thread_num()>=0);
+                    auto const uiThreadId(static_cast<std::uint32_t>(::omp_get_thread_num()));
+                    // Get the number of kernels in each dimension of the grid.
                     auto const v3uiSizeBlockKernels(m_WorkSize.getSize<Block, Kernels, D3>());
-                    auto const t(::omp_get_thread_num());
-                    v3uiIdxBlockKernel[0] = (t % (v3uiSizeBlockKernels[1] * v3uiSizeBlockKernels[0])) % v3uiSizeBlockKernels[0];
-                    v3uiIdxBlockKernel[1] = (t % (v3uiSizeBlockKernels[1] * v3uiSizeBlockKernels[0])) / v3uiSizeBlockKernels[0];
-                    v3uiIdxBlockKernel[2] = (t / (v3uiSizeBlockKernels[1] * v3uiSizeBlockKernels[0]));
+                    // The number of kernels in the XY-plane.
+                    auto const uiSizeXyLin(v3uiSizeBlockKernels[0] * v3uiSizeBlockKernels[1]);
+                    auto const uiThreadIdModXy(uiThreadId % uiSizeXyLin);
+                    auto const & uiSizeX(v3uiSizeBlockKernels[0]);
 
-                    return v3uiIdxBlockKernel;
+                    return {
+                        uiThreadIdModXy % uiSizeX, 
+                        uiThreadIdModXy / uiSizeX,
+                        uiThreadId / uiSizeXyLin
+                    };
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The block index of the currently executed kernel.
@@ -247,7 +253,8 @@ namespace alpaka
 
                     // Assure that all threads have executed the return of the last allocBlockSharedMem function (if there was one before).
                     syncBlockKernels();
-                    
+
+                    // Arbitrary decision: The thread with id 0 has to allocate the memory.
                     if(::omp_get_thread_num() == 0)
                     {
                         // TODO: Optimize: do not initialize the memory on allocation like std::vector does!
@@ -351,13 +358,20 @@ namespace alpaka
                                     // So we have to spawn one real thread per thread in a block.
                                     // 'omp for' is not useful because it is meant for cases where multiple iterations are executed by one thread but in our case a 1:1 mapping is required.
                                     // Therefore we use 'omp parallel' with the specified number of threads in a block.
-                                    // FIXME: Does this hinder executing multiple kernels in parallel because their block sizes/omp thread numbers are interfering? Is this a real use case? 
+                                    //
+                                    // TODO: Does this hinder executing multiple kernels in parallel because their block sizes/omp thread numbers are interfering? Is this a real use case? 
                                     #pragma omp parallel num_threads(uiNumKernelsInBlock)
                                     {
 #ifdef _DEBUG
                                         if((::omp_get_thread_num() == 0) && (bz == 0) && (by == 0) && (bx == 0))
                                         {
-                                            std::cout << "omp_get_num_threads: " << ::omp_get_num_threads() << std::endl;
+                                            assert(::omp_get_num_threads()>=0);
+                                            auto const uiNumThreads(static_cast<std::uint32_t>(::omp_get_num_threads()));
+                                            std::cout << "omp_get_num_threads: " << uiNumThreads << std::endl;
+                                            if(uiNumThreads != uiNumKernelsInBlock)
+                                            {
+                                                throw std::runtime_error("The OpenMP runtime did not use the number of threads that had been required!");
+                                            }
                                         }
 #endif
                                         this->TAcceleratedKernel::operator()(std::forward<TArgs>(args)...);

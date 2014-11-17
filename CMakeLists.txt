@@ -19,7 +19,7 @@
 #
 
 ################################################################################
-# Required CMake version
+# Required CMake version.
 ################################################################################
 
 #CMAKE_MINIMUM_REQUIRED(VERSION 2.8.5)
@@ -27,11 +27,12 @@
 SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
 
 ################################################################################
-# Project 
+# Project.
 ################################################################################
 
 MESSAGE(STATUS "### alpaka ###")
 
+SET(ALPAKA_COMPILE_OPTIONS)
 SET(ALPAKA_LIBRARY_DEPENDENCIES)
 SET(ALPAKA_INCLUDE_DEPENDENCIES)
 SET(ALPAKA_COMPILE_DEFINITIONS)
@@ -61,7 +62,7 @@ IF(ALPAKA_CUDA_ENABLE)
 ENDIF()
 
 ################################################################################
-# Build type (debug, release)
+# Build type (debug, release).
 ################################################################################
 OPTION(ALPAKA_RELEASE "Build release version, disables all runtime asserts" OFF)
 IF(ALPAKA_RELEASE)
@@ -80,7 +81,7 @@ ENDIF()
 
 
 ################################################################################
-# Find Boost
+# Find Boost.
 ################################################################################
 SET(Boost_USE_STATIC_LIBS ON)
 SET(Boost_USE_MULTITHREADED ON)
@@ -98,20 +99,19 @@ LIST(APPEND ALPAKA_LIBRARY_DEPENDENCIES ${Boost_LIBRARIES})
 
 
 ################################################################################
-# Find OpenMP
+# Find OpenMP.
 ################################################################################
 IF(ALPAKA_OPENMP_ENABLE)
-    FIND_PACKAGE( OpenMP REQUIRED)
+    FIND_PACKAGE(OpenMP REQUIRED)
     IF(OPENMP_FOUND)
-        LIST(APPEND CMAKE_C_FLAGS ${OpenMP_C_FLAGS})
-        LIST(APPEND CMAKE_CXX_FLAGS ${OpenMP_CXX_FLAGS})
-        LIST(APPEND CMAKE_EXE_LINKER_FLAGS ${OpenMP_EXE_LINKER_FLAGS})
+        LIST(APPEND ALPAKA_COMPILE_OPTIONS "${OpenMP_CXX_FLAGS}")
+        #SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
     ENDIF()
 ENDIF()
 
 
 ################################################################################
-# Find CUDA 
+# Find CUDA.
 ################################################################################
 IF(ALPAKA_CUDA_ENABLE)
     FIND_PACKAGE(CUDA 6.5 REQUIRED)
@@ -158,43 +158,40 @@ IF(ALPAKA_CUDA_ENABLE)
     LIST(APPEND ALPAKA_LIBRARY_DEPENDENCIES ${CUDA_CUDART_LIBRARY})
 ENDIF()
 
-
 ################################################################################
-# Compiler settings
+# Compiler settings.
 ################################################################################
 
 #MSVC
 IF(MSVC)
     # Force to always compile with W4
-    IF(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
-        STRING(REGEX REPLACE "/W[0-4]" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+    IF(ALPAKA_COMPILE_OPTIONS MATCHES "/W[0-4]")
+        STRING(REGEX REPLACE "/W[0-4]" "/W4" ALPAKA_COMPILE_OPTIONS "${ALPAKA_COMPILE_OPTIONS}")
     ELSE()
-        LIST(APPEND CMAKE_CXX_FLAGS /W4)
+        LIST(APPEND ALPAKA_COMPILE_OPTIONS "/W4")
     ENDIF()
-    #LIST(APPEND CMAKE_CXX_FLAGS_RELEASE -D_CRT_NONSTDC_NO_DEPRECATE -D_CRT_SECURE_NO_DEPRECATE -D_SCL_SECURE_NO_DEPRECATE ") # -D_SCL_SECURE_NO_WARNINGS
+    # -D_SCL_SECURE_NO_WARNINGS
+    #LIST(APPEND ALPAKA_COMPILE_OPTIONS "$<$<CONFIG:RELEASE>:-D_CRT_NONSTDC_NO_DEPRECATE>")
+    #LIST(APPEND ALPAKA_COMPILE_OPTIONS "$<$<CONFIG:RELEASE>:-D_CRT_SECURE_NO_DEPRECATE>")
+    #LIST(APPEND ALPAKA_COMPILE_OPTIONS "$<$<CONFIG:RELEASE>:-D_SCL_SECURE_NO_DEPRECATE>")
 # GNU
 ELSEIF(CMAKE_COMPILER_IS_GNUCXX)
-    LIST(APPEND CMAKE_CXX_FLAGS -Wall)
-    LIST(APPEND CMAKE_CXX_FLAGS -pedantic)
-    LIST(APPEND CMAKE_CXX_FLAGS -Wno-unknown-pragmas)
-    LIST(APPEND CMAKE_CXX_FLAGS -Wextra)
-    LIST(APPEND CMAKE_CXX_FLAGS -Wno-unused-parameter)
-    # new warning in gcc 4.8 (flag ignored in previous version)
-    LIST(APPEND CMAKE_CXX_FLAGS -Wno-unused-local-typedefs)
-    LIST(APPEND CMAKE_CXX_FLAGS -std=c++11)
+    LIST(APPEND ALPAKA_COMPILE_OPTIONS "-Wall")
+    LIST(APPEND ALPAKA_COMPILE_OPTIONS "-pedantic")
+    LIST(APPEND ALPAKA_COMPILE_OPTIONS "-Wextra")
+    LIST(APPEND ALPAKA_COMPILE_OPTIONS "-std=c++11")
 # ICC
 ELSEIF(${CMAKE_CXX_COMPILER_ID} STREQUAL "Intel")
-    LIST(APPEND CMAKE_CXX_FLAGS -Wall)
-    LIST(APPEND CMAKE_CXX_FLAGS -std=c++11)
+    LIST(APPEND ALPAKA_COMPILE_OPTIONS "-Wall")
+    LIST(APPEND ALPAKA_COMPILE_OPTIONS "-std=c++11")
 # PGI
 ELSEIF(${CMAKE_CXX_COMPILER_ID} STREQUAL "PGI")
-    LIST(APPEND CMAKE_CXX_FLAGS -Minform=inform)
-    LIST(APPEND CMAKE_CXX_FLAGS -std=c++11)
+    LIST(APPEND ALPAKA_COMPILE_OPTIONS "-Minform=inform")
+    LIST(APPEND ALPAKA_COMPILE_OPTIONS "-std=c++11")
 ENDIF()
-
   
 ################################################################################
-# Compile & Link
+# Compile & Link.
 ################################################################################
 
 INCLUDE("cmake/recursive_file_functions.cmake")
@@ -202,23 +199,21 @@ INCLUDE("cmake/recursive_file_functions.cmake")
 # alpaka
 SET(ALPAKA_INCLUDE_DIR "include/")
 SET(ALPAKA_SUFFIXED_INCLUDE_DIR "${ALPAKA_INCLUDE_DIR}alpaka/")
-        #MESSAGE( "ALPAKA_SUFFIXED_INCLUDE_DIR: ${ALPAKA_SUFFIXED_INCLUDE_DIR}" )
 
 # Add all the include files in all recursive subdirectories and group them accordingly.
 append_recursive_files_add_to_source_group(${ALPAKA_SUFFIXED_INCLUDE_DIR} "hpp" ALPAKA_HEADER_FILES_ALL)
-        #MESSAGE( "ALPAKA_HEADER_FILES_ALL: ${ALPAKA_HEADER_FILES_ALL}" )
 
 # Add all the source files in all recursive subdirectories and group them accordingly.
 append_recursive_files_add_to_source_group(${ALPAKA_SUFFIXED_INCLUDE_DIR} "cpp" ALPAKA_SOURCE_FILES_ALL)
-        #MESSAGE( "ALPAKA_SOURCE_FILES_ALL: ${ALPAKA_SOURCE_FILES_ALL}" )
         
 ADD_LIBRARY(
     alpaka 
     ${ALPAKA_HEADER_FILES_ALL}
     ${ALPAKA_SOURCE_FILES_ALL})
 
+TARGET_COMPILE_OPTIONS(alpaka PUBLIC ${ALPAKA_COMPILE_OPTIONS})
+TARGET_COMPILE_DEFINITIONS(alpaka PUBLIC "${ALPAKA_COMPILE_DEFINITIONS}")
 TARGET_INCLUDE_DIRECTORIES(alpaka PUBLIC ${ALPAKA_INCLUDE_DEPENDENCIES} ${ALPAKA_INCLUDE_DIR})
 TARGET_LINK_LIBRARIES(alpaka PUBLIC ${ALPAKA_LIBRARY_DEPENDENCIES})
-TARGET_COMPILE_DEFINITIONS(alpaka PUBLIC "${ALPAKA_COMPILE_DEFINITIONS}")
 
 MESSAGE(STATUS "### alpaka done ###")

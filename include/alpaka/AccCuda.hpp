@@ -71,7 +71,7 @@ namespace alpaka
                 ALPAKA_FCT_CPU_CUDA vec<3u> getSizeGridBlocks() const
                 {
 #ifdef __CUDA_ARCH__
-                    return{gridDim.x, gridDim.y, gridDim.z};
+                    return {gridDim.x, gridDim.y, gridDim.z};
 #else
                     throw std::logic_error("WorkSizeCuda can not be used in non-CUDA Code!");
 #endif
@@ -82,7 +82,7 @@ namespace alpaka
                 ALPAKA_FCT_CPU_CUDA vec<3u> getSizeBlockKernels() const
                 {
 #ifdef __CUDA_ARCH__
-                    return{blockDim.x, blockDim.y, blockDim.z};
+                    return {blockDim.x, blockDim.y, blockDim.z};
 #else
                     throw std::logic_error("WorkSizeCuda can not be used in non-CUDA Code!");
 #endif
@@ -110,14 +110,14 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_CPU_CUDA vec<3u> getIdxBlockKernel() const
                 {
-                    return{threadIdx.x, threadIdx.y, threadIdx.z};
+                    return {threadIdx.x, threadIdx.y, threadIdx.z};
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The block index of the currently executed kernel.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_CPU_CUDA vec<3u> getIdxGridBlock() const
                 {
-                    return{blockIdx.x, blockIdx.y, blockIdx.z};
+                    return {blockIdx.x, blockIdx.y, blockIdx.z};
                 }
             };
             using TInterfacedIndex = alpaka::detail::IIndex<IndexCuda>;

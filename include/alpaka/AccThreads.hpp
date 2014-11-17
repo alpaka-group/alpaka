@@ -65,8 +65,8 @@ namespace alpaka
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_CPU IndexThreads(
-                    TThreadIdToIndex & mThreadsToIndices,
-                    vec<3u> & v3uiGridBlockIdx) :
+                    TThreadIdToIndex const & mThreadsToIndices,
+                    vec<3u> const & v3uiGridBlockIdx) :
                     m_mThreadsToIndices(mThreadsToIndices),
                     m_v3uiGridBlockIdx(v3uiGridBlockIdx)
                 {}
@@ -95,8 +95,8 @@ namespace alpaka
                 }
 
             private:
-                mutable TThreadIdToIndex & m_mThreadsToIndices; //!< The mapping of thread id's to thread indices.
-                mutable vec<3u> & m_v3uiGridBlockIdx;            //!< The index of the currently executed block.
+                TThreadIdToIndex const & m_mThreadsToIndices;   //!< The mapping of thread id's to thread indices.
+                vec<3u> const & m_v3uiGridBlockIdx;             //!< The index of the currently executed block.
             };
             using TInterfacedIndex = alpaka::detail::IIndex<IndexThreads>;
 
@@ -233,7 +233,7 @@ namespace alpaka
                 // Has to be explicitly defined because 'std::mutex::mutex(const std::mutex&)' is deleted.
                 // Do not copy most members because they are initialized by the executor for each accelerated execution.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU AccThreads(AccThreads const & other) :
+                ALPAKA_FCT_CPU AccThreads(AccThreads const & ) :
                     TInterfacedWorkSize(),
                     TInterfacedIndex(m_mThreadsToIndices, m_v3uiGridBlockIdx),
                     TInterfacedAtomic(),
@@ -316,7 +316,7 @@ namespace alpaka
                     // Assure that all threads have executed the return of the last allocBlockSharedMem function (if there was one before).
                     syncBlockKernels();
 
-                    // The thread that was created first has to allocate the memory.
+                    // Arbitrary decision: The thread that was created first has to allocate the memory.
                     if(m_idMasterThread == std::this_thread::get_id())
                     {
                         // TODO: Optimize: do not initialize the memory on allocation like std::vector does!
