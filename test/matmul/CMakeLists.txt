@@ -45,15 +45,12 @@ ADD_SUBDIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/../../" "${CMAKE_CURRENT_BINARY_DI
 
 # Add all the include files in all recursive subdirectories and group them accordingly.
 append_recursive_files_add_to_source_group(${SUFFIXED_INCLUDE_DIR} "hpp" HPP_FILES_ALL)
-        #MESSAGE( "HPP_FILES_ALL: ${HPP_FILES_ALL}" )
 
 # Add all the source files in all recursive subdirectories and group them accordingly.
 append_recursive_files_add_to_source_group(${SUFFIXED_SOURCE_DIR} "cpp" CPP_FILES_ALL)
-        #MESSAGE( "CPP_FILES_ALL: ${CPP_FILES_ALL}" )
 
 # Add all the CUDA source files in all recursive subdirectories and group them accordingly.
 append_recursive_files_add_to_source_group(${SUFFIXED_SOURCE_DIR} "cu" CU_FILES_ALL)
-        #MESSAGE( "CU_FILES_ALL: ${CU_FILES_ALL}" )
 
 # Builds the project as a static library and adds the headers and sources.
 IF(ALPAKA_CUDA_ENABLE)

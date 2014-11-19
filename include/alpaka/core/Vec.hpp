@@ -22,32 +22,37 @@
 
 #pragma once
 
-#include <alpaka/FctCudaCpu.hpp>// ALPAKA_FCT_CPU_CUDA
+#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC, ALPAKA_ALIGN
 
-#include <cstdint>              // std::uint32_t
-#include <ostream>              // std::ostream
-#include <cassert>              // assert
-#include <type_traits>          // std::enable_if
+#include <cstdint>                  // std::uint32_t
+#include <ostream>                  // std::ostream
+#include <cassert>                  // assert
+#include <type_traits>              // std::enable_if
 
 namespace alpaka
 {
     //#############################################################################
     //! A 3-dimensional vector.
     //#############################################################################
-    template<std::size_t UiSize>
+    template<std::size_t TuiDim, typename TValue = std::uint32_t>
     class vec
     {
-    public:
-        static_assert(UiSize>0, "Size of the vector is required to be greater then zero!");
 
+    public:
+        static_assert(TuiDim>0, "Size of the vector is required to be greater then zero!");
+
+        static const std::size_t s_uiDim = TuiDim;
+        using ValueType = TValue;
+
+    public:
         //-----------------------------------------------------------------------------
         //! Constructor.
         //! Every value is set to zero.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_CPU_CUDA vec()
+        ALPAKA_FCT_HOST_ACC vec()
         {
             // NOTE: depending on the size this could be optimized with memset, intrinsics, etc. We trust in the compiler to do this.
-            for(std::size_t i(0); i<UiSize; ++i)
+            for(std::size_t i(0); i<TuiDim; ++i)
             {
                 m_auiData[i] = 0;
             }
@@ -57,16 +62,16 @@ namespace alpaka
         //! Value-constructor.
         //! This constructor is only available if the number of parameters matches the vector size.
         //-----------------------------------------------------------------------------
-        template <typename TFirstArg, typename... TArgs, typename = typename std::enable_if<sizeof...(TArgs) == (UiSize-1)>::type>
-        ALPAKA_FCT_CPU_CUDA vec(TFirstArg && val, TArgs && ... values)
+        template <typename TFirstArg, typename... TArgs, typename = typename std::enable_if<sizeof...(TArgs) == (TuiDim-1)>::type>
+        ALPAKA_FCT_HOST_ACC vec(TFirstArg && val, TArgs && ... values)
 #ifndef _MSC_VER    // MSVC <= 14 do not compile the basic array initialization: "error C2536: 'alpaka::vec<0x03>::alpaka::vec<0x03>::m_auiData': cannot specify explicit initializer for arrays"
             :
             m_auiData{std::forward<TFirstArg>(val), std::forward<TArgs>(values)...}
 #endif
         {
 #ifdef _MSC_VER
-            std::uint32_t auiData2[UiSize] = {std::forward<TFirstArg>(val), std::forward<TArgs>(values)...};
-            for(std::size_t i(0); i<UiSize; ++i)
+            TValue auiData2[TuiDim] = {std::forward<TFirstArg>(val), std::forward<TArgs>(values)...};
+            for(std::size_t i(0); i<TuiDim; ++i)
             {
                 m_auiData[i] = auiData2[i];
             }
@@ -75,31 +80,41 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Copy-constructor.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_CPU vec(vec const & other) = default;
+        ALPAKA_FCT_HOST_ACC vec(vec const & other) = default;
         //-----------------------------------------------------------------------------
         //! Move-constructor.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_CPU vec(vec && other) = default;
+        ALPAKA_FCT_HOST_ACC vec(vec && other) = default;
         //-----------------------------------------------------------------------------
         //! Assignment-operator.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_CPU vec & operator=(vec const &) = default;
+        ALPAKA_FCT_HOST_ACC vec & operator=(vec const &) = default;
         //-----------------------------------------------------------------------------
         //! Destructor.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_CPU ~vec() noexcept = default;
+        ALPAKA_FCT_HOST_ACC ~vec() noexcept = default;
+
+        //-----------------------------------------------------------------------------
+        //! Destructor.
+        //-----------------------------------------------------------------------------
+        ALPAKA_FCT_HOST_ACC int getDim() const
+        {
+            return TuiDim;
+        }
 
         //-----------------------------------------------------------------------------
         //! Constructor.
         //! Every value is set to zero.
         //-----------------------------------------------------------------------------
-        template<std::size_t UiSubSize>
-        ALPAKA_FCT_CPU_CUDA vec<UiSubSize> subvec() const
+        template<std::size_t TuiSubDim>
+        ALPAKA_FCT_HOST_ACC vec<TuiSubDim, TValue> subvec() const
         {
-            vec<UiSubSize> ret;
+            static_assert(TuiSubDim <= TuiDim, "Can not create a subvector larger then the origin vector.");
+
+            vec<TuiSubDim, TValue> ret;
 
             // NOTE: depending on the size this could be optimized with memset, intrinsics, etc. We trust in the compiler to do this.
-            for(std::size_t i(0); i<UiSubSize; ++i)
+            for(std::size_t i(0); i<TuiSubDim; ++i)
             {
                 ret[i] = (*this)[i];
             }
@@ -110,27 +125,49 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return A reference to the value at the given index.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_CPU_CUDA std::uint32_t & operator[](std::size_t const uiIndex)
+        ALPAKA_FCT_HOST_ACC TValue & operator[](std::size_t const uiIndex)
         {
-            assert(uiIndex<UiSize);
+            assert(uiIndex<TuiDim);
             return m_auiData[uiIndex];
         }
         //-----------------------------------------------------------------------------
         //! \return The value at the given index.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_CPU_CUDA std::uint32_t operator[](std::size_t const uiIndex) const
+        ALPAKA_FCT_HOST_ACC TValue operator[](std::size_t const uiIndex) const
         {
-            assert(uiIndex<UiSize);
+            assert(uiIndex<TuiDim);
             return m_auiData[uiIndex];
+        }
+
+        //-----------------------------------------------------------------------------
+        // Equality comparison operator.
+        //-----------------------------------------------------------------------------
+        ALPAKA_FCT_HOST_ACC bool operator==(vec const & rhs) const
+        {
+            for(std::size_t i(0); i < dim; i++)
+            {
+                if((*this)[i] != rhs[i])
+                {
+                    return TuiDim;
+                }
+            }
+            return true;
+        }
+        //-----------------------------------------------------------------------------
+        // Inequality comparison operator.
+        //-----------------------------------------------------------------------------
+        ALPAKA_FCT_HOST_ACC bool operator!=(vec const & rhs) const
+        {
+            return !((*this) == rhs);
         }
 
         //-----------------------------------------------------------------------------
         //! \return The product of all values.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_CPU_CUDA std::uint32_t prod() const
+        ALPAKA_FCT_HOST_ACC TValue prod() const
         {
-            std::uint32_t uiProd(m_auiData[0]);
-            for(std::size_t i(1); i<UiSize; ++i)
+            TValue uiProd(m_auiData[0]);
+            for(std::size_t i(1); i<TuiDim; ++i)
             {
                 uiProd *= m_auiData[i];
             }
@@ -140,10 +177,10 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Calculates the dot product of two vectors.
         //-----------------------------------------------------------------------------
-        /*ALPAKA_FCT_CPU_CUDA static std::uint32_t dotProduct(vec const & p, vec const & q)
+        /*ALPAKA_FCT_HOST_ACC static TValue dotProduct(vec const & p, vec const & q)
         {
-            std::uint32_t uiProd(0);
-            for(size_t i(0); i<UiSize; ++i)
+            TValue uiProd(0);
+            for(size_t i(0); i<TuiDim; ++i)
             {
                 uiProd += p[i] * q[i];
             }
@@ -151,18 +188,17 @@ namespace alpaka
         }*/
 
     private:
-        // NOTE: We can not use std::array here because the operator[] i a host function not available within a kernel.
-        std::uint32_t m_auiData[UiSize];
+        ALPAKA_ALIGN(TValue, m_auiData[TuiDim]);
     };
 
     //-----------------------------------------------------------------------------
     //! \return The element wise sum of two vectors.
     //-----------------------------------------------------------------------------
-    template<std::size_t UiSize>
-    ALPAKA_FCT_CPU_CUDA vec<UiSize> operator+(vec<UiSize> const & p, vec<UiSize> const & q)
+    template<std::size_t TuiDim, typename TValue>
+    ALPAKA_FCT_HOST_ACC vec<TuiDim, TValue> operator+(vec<TuiDim, TValue> const & p, vec<TuiDim, TValue> const & q)
     {
-        vec<UiSize> vRet;
-        for(std::size_t i(0); i<UiSize; ++i)
+        vec<TuiDim, TValue> vRet;
+        for(std::size_t i(0); i<TuiDim; ++i)
         {
             vRet[i] = p[i] + q[i];
         }
@@ -172,11 +208,11 @@ namespace alpaka
     //-----------------------------------------------------------------------------
     //! \return The element wise product of two vectors.
     //-----------------------------------------------------------------------------
-    template<std::size_t UiSize>
-    ALPAKA_FCT_CPU_CUDA vec<UiSize> operator*(vec<UiSize> const & p, vec<UiSize> const & q)
+    template<std::size_t TuiDim, typename TValue>
+    ALPAKA_FCT_HOST_ACC vec<TuiDim, TValue> operator*(vec<TuiDim, TValue> const & p, vec<TuiDim, TValue> const & q)
     {
-        vec<UiSize> vRet;
-        for(std::size_t i(0); i<UiSize; ++i)
+        vec<TuiDim, TValue> vRet;
+        for(std::size_t i(0); i<TuiDim; ++i)
         {
             vRet[i] = p[i] * q[i];
         }
@@ -186,14 +222,14 @@ namespace alpaka
     //-----------------------------------------------------------------------------
     //! Stream out operator.
     //-----------------------------------------------------------------------------
-    template<std::size_t UiSize>
-    ALPAKA_FCT_CPU std::ostream & operator << (std::ostream & os, vec<UiSize> const & v)
+    template<std::size_t TuiDim, typename TValue>
+    ALPAKA_FCT_HOST std::ostream & operator << (std::ostream & os, vec<TuiDim, TValue> const & v)
     {
         os << "(";
-        for(std::size_t i(0); i<UiSize; ++i)
+        for(std::size_t i(0); i<TuiDim; ++i)
         {
             os << v[i];
-            if(i<UiSize-1)
+            if(i<TuiDim-1)
             {
                 os << ", ";
             }

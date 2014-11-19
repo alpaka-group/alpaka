@@ -24,12 +24,8 @@
 
 namespace alpaka
 {
-    namespace detail
-    {
-        //#############################################################################
-        //! The kernel executor builder.
-        //#############################################################################
-        template<typename TAcc, typename TKernel, typename... TKernelConstrArgs>
-        class KernelExecutorBuilder;
-    }
+    //#############################################################################
+    //! The data space on the CUDA accelerator.
+    //#############################################################################
+    struct MemorySpaceCuda;
 }

@@ -22,9 +22,9 @@
 
 #pragma once
 
-#include <alpaka/Vec.hpp>   // alpaka::vec
+#include <alpaka/core/Vec.hpp>  // alpaka::vec
 
-#include <algorithm>        // std::min, std::max
+#include <algorithm>            // std::min, std::max
 
 namespace alpaka
 {
@@ -35,11 +35,12 @@ namespace alpaka
     {
         //#############################################################################
         //! This type is used to indicate a atomic addition.
+        //! \return The old value of addr.
         //#############################################################################
         struct Add
         {
             template<typename T>
-            ALPAKA_FCT_CPU static T op(T * const addr, T const & value)
+            ALPAKA_FCT_HOST T operator()(T * const addr, T const & value) const
             {
                 auto const old(*addr);
                 auto & ref(*addr);
@@ -49,11 +50,12 @@ namespace alpaka
         };
         //#############################################################################
         //! This type is used to indicate a atomic subtraction.
+        //! \return The old value of addr.
         //#############################################################################
         struct Sub
         {
             template<typename T>
-            ALPAKA_FCT_CPU static T op(T * const addr, T const & value)
+            ALPAKA_FCT_HOST T operator()(T * const addr, T const & value) const
             {
                 auto const old(*addr);
                 auto & ref(*addr);
@@ -63,11 +65,12 @@ namespace alpaka
         };
         //#############################################################################
         //! This type is used to indicate a atomic minimum.
+        //! \return The old value of addr.
         //#############################################################################
         struct Min
         {
             template<typename T>
-            ALPAKA_FCT_CPU static T op(T * const addr, T const & value)
+            ALPAKA_FCT_HOST T operator()(T * const addr, T const & value) const
             {
                 auto const old(*addr);
                 auto & ref(*addr);
@@ -77,11 +80,12 @@ namespace alpaka
         };
         //#############################################################################
         //! This type is used to indicate a atomic maximum.
+        //! \return The old value of addr.
         //#############################################################################
         struct Max
         {
             template<typename T>
-            ALPAKA_FCT_CPU static T op(T * const addr, T const & value)
+            ALPAKA_FCT_HOST T operator()(T * const addr, T const & value) const
             {
                 auto const old(*addr);
                 auto & ref(*addr);
@@ -91,11 +95,12 @@ namespace alpaka
         };
         //#############################################################################
         //! This type is used to indicate a atomic exchange.
+        //! \return The old value of addr.
         //#############################################################################
         struct Exch
         {
             template<typename T>
-            ALPAKA_FCT_CPU static T op(T * const addr, T const & value)
+            ALPAKA_FCT_HOST T operator()(T * const addr, T const & value) const
             {
                 auto const old(*addr);
                 auto & ref(*addr);
@@ -106,11 +111,12 @@ namespace alpaka
         //#############################################################################
         //! This type is used to indicate a atomic increment.
         //! Increment up to value, then reset to 0.
+        //! \return The old value of addr.
         //#############################################################################
         struct Inc
         {
             template<typename T>
-            ALPAKA_FCT_CPU static T op(T * const addr, T const & value)
+            ALPAKA_FCT_HOST T operator()(T * const addr, T const & value) const
             {
                 auto const old(*addr);
                 auto & ref(*addr);
@@ -121,11 +127,12 @@ namespace alpaka
         //#############################################################################
         //! This type is used to indicate a atomic decrement.
         //! Decrement down to 0, then reset to value.
+        //! \return The old value of addr.
         //#############################################################################
         struct Dec
         {
             template<typename T>
-            ALPAKA_FCT_CPU static T op(T * const addr, T const & value)
+            ALPAKA_FCT_HOST T operator()(T * const addr, T const & value) const
             {
                 auto const old(*addr);
                 auto & ref(*addr);
@@ -135,11 +142,12 @@ namespace alpaka
         };
         //#############################################################################
         //! This type is used to indicate a atomic and.
+        //! \return The old value of addr.
         //#############################################################################
         struct And
         {
             template<typename T>
-            ALPAKA_FCT_CPU static T op(T * const addr, T const & value)
+            ALPAKA_FCT_HOST T operator()(T * const addr, T const & value) const
             {
                 auto const old(*addr);
                 auto & ref(*addr);
@@ -149,11 +157,12 @@ namespace alpaka
         };
         //#############################################################################
         //! This type is used to indicate a atomic or.
+        //! \return The old value of addr.
         //#############################################################################
         struct Or
         {
             template<typename T>
-            ALPAKA_FCT_CPU static T op(T * const addr, T const & value)
+            ALPAKA_FCT_HOST T operator()(T * const addr, T const & value) const
             {
                 auto const old(*addr);
                 auto & ref(*addr);
@@ -163,11 +172,12 @@ namespace alpaka
         };
         //#############################################################################
         //! This type is used to indicate a atomic exclusive or.
+        //! \return The old value of addr.
         //#############################################################################
         struct Xor
         {
             template<typename T>
-            ALPAKA_FCT_CPU static T op(T * const addr, T const & value)
+            ALPAKA_FCT_HOST T operator()(T * const addr, T const & value) const
             {
                 auto const old(*addr);
                 auto & ref(*addr);
@@ -177,11 +187,12 @@ namespace alpaka
         };
         //#############################################################################
         //! This type is used to indicate a atomic compare and swap.
+        //! \return The old value of addr.
         //#############################################################################
         struct Cas
         {
             template<typename T>
-            ALPAKA_FCT_CPU static T op(T * addr, T const & compare, T const & value)
+            ALPAKA_FCT_HOST T operator()(T * addr, T const & compare, T const & value) const
             {
                 auto const old(*addr);
                 auto & ref(*addr);

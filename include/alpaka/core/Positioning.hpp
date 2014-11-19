@@ -22,7 +22,7 @@
 
 #pragma once
 
-#include <alpaka/Vec.hpp>   // alpaka::vec
+#include <alpaka/core/Vec.hpp>  // alpaka::vec
 
 namespace alpaka
 {

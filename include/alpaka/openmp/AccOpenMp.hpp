@@ -22,189 +22,34 @@
 
 #pragma once
 
-#include <alpaka/KernelExecutorBuilder.hpp> // KernelExecutorBuilder
-#include <alpaka/WorkSize.hpp>              // IWorkSize, WorkSizeDefault
-#include <alpaka/Index.hpp>                 // IIndex
-#include <alpaka/Atomic.hpp>                // IAtomic
+#include <alpaka/openmp/WorkSize.hpp>               // TInterfacedWorkSize
+#include <alpaka/openmp/Index.hpp>                  // TInterfacedIndex
+#include <alpaka/openmp/Atomic.hpp>                 // TInterfacedAtomic
 
-#include <cstddef>                          // std::size_t
-#include <cstdint>                          // unit8_t
-#include <vector>                           // std::vector
-#include <cassert>                          // assert
-#include <stdexcept>                        // std::except
-#include <string>                           // std::to_string
-#include <algorithm>                        // std::min, std::max
+#include <alpaka/openmp/Common.hpp>
+
+#include <alpaka/host/MemorySpace.hpp>              // MemorySpaceHost
+#include <alpaka/host/Memory.hpp>                   // MemCopy
+
+#include <alpaka/interfaces/KernelExecCreator.hpp>  // KernelExecCreator
+
+#include <alpaka/interfaces/BlockSharedExternMemSizeBytes.hpp>
+
+#include <cstddef>                                  // std::size_t
+#include <cstdint>                                  // unit8_t
+#include <vector>                                   // std::vector
+#include <cassert>                                  // assert
+#include <stdexcept>                                // std::except
+#include <string>                                   // std::to_string
+#include <algorithm>                                // std::min, std::max
 #ifdef _DEBUG
-    #include <iostream>                     // std::cout
+    #include <iostream>                             // std::cout
 #endif
 
-#include <boost/mpl/apply.hpp>              // boost::mpl::apply
-
-#include <omp.h>
+#include <boost/mpl/apply.hpp>                      // boost::mpl::apply
 
 namespace alpaka
 {
-    namespace openmp
-    {
-        namespace detail
-        {
-            using TInterfacedWorkSize = alpaka::IWorkSize<alpaka::detail::WorkSizeDefault>;
-
-            //#############################################################################
-            //! This class that holds the implementation details for the indexing of the OpenMP accelerator.
-            //#############################################################################
-            class IndexOpenMp
-            {
-            public:
-                //-----------------------------------------------------------------------------
-                //! Constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU IndexOpenMp(
-                    TInterfacedWorkSize const & workSize,
-                    vec<3u> const & v3uiGridBlockIdx) :
-                    m_WorkSize(workSize),
-                    m_v3uiGridBlockIdx(v3uiGridBlockIdx)
-                {}
-                //-----------------------------------------------------------------------------
-                //! Copy-constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU IndexOpenMp(IndexOpenMp const & other) = default;
-                //-----------------------------------------------------------------------------
-                //! Move-constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU IndexOpenMp(IndexOpenMp && other) = default;
-                //-----------------------------------------------------------------------------
-                //! Assignment-operator.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU IndexOpenMp & operator=(IndexOpenMp const &) = delete;
-                //-----------------------------------------------------------------------------
-                //! Destructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU ~IndexOpenMp() noexcept = default;
-
-                //-----------------------------------------------------------------------------
-                //! \return The index of the currently executed kernel.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU vec<3u> getIdxBlockKernel() const
-                {
-                    // We assume that the thread id is positive.
-                    assert(::omp_get_thread_num()>=0);
-                    auto const uiThreadId(static_cast<std::uint32_t>(::omp_get_thread_num()));
-                    // Get the number of kernels in each dimension of the grid.
-                    auto const v3uiSizeBlockKernels(m_WorkSize.getSize<Block, Kernels, D3>());
-                    // The number of kernels in the XY-plane.
-                    auto const uiSizeXyLin(v3uiSizeBlockKernels[0] * v3uiSizeBlockKernels[1]);
-                    auto const uiThreadIdModXy(uiThreadId % uiSizeXyLin);
-                    auto const & uiSizeX(v3uiSizeBlockKernels[0]);
-
-                    return {
-                        uiThreadIdModXy % uiSizeX, 
-                        uiThreadIdModXy / uiSizeX,
-                        uiThreadId / uiSizeXyLin
-                    };
-                }
-                //-----------------------------------------------------------------------------
-                //! \return The block index of the currently executed kernel.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU vec<3u> getIdxGridBlock() const
-                {
-                    return m_v3uiGridBlockIdx;
-                }
-
-            private:
-                TInterfacedWorkSize const & m_WorkSize;        //!< The mapping of thread id's to thread indices.
-                vec<3u> const & m_v3uiGridBlockIdx;        //!< The index of the currently executed block.
-            };
-            using TInterfacedIndex = alpaka::detail::IIndex<IndexOpenMp>;
-            
-            //#############################################################################
-            //! This class that holds the implementation details for the atomic operations of the OpenMP accelerator.
-            //#############################################################################
-            class AtomicOpenMp
-            {
-#ifdef ALPAKA_OPENMP_ATOMIC_OPS_LOCK
-            public:
-                template<typename TAtomic, typename TOp, typename T>
-                friend struct alpaka::detail::AtomicOp;
-#endif
-
-            public:
-                //-----------------------------------------------------------------------------
-                //! Default-constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU AtomicOpenMp()
-#ifdef ALPAKA_OPENMP_ATOMIC_OPS_LOCK
-                {
-                    omp_init_lock(&m_ompLock);
-                }
-#else
-                = default;
-#endif
-                //-----------------------------------------------------------------------------
-                //! Copy-constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU AtomicOpenMp(AtomicOpenMp const & other) = default;
-                //-----------------------------------------------------------------------------
-                //! Move-constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU AtomicOpenMp(AtomicOpenMp && other) = default;
-                //-----------------------------------------------------------------------------
-                //! Assignment-operator.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU AtomicOpenMp & operator=(AtomicOpenMp const &) = delete;
-                //-----------------------------------------------------------------------------
-                //! Destructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU ~AtomicOpenMp() noexcept = default;
-
-#ifdef ALPAKA_OPENMP_ATOMIC_OPS_LOCK
-                //-----------------------------------------------------------------------------
-                //! Default-constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU ~AtomicOpenMp()
-                {
-                    omp_destroy_lock(&m_ompLock);
-                }
-            private:
-                omp_lock_t mutable m_ompLock;
-#endif
-            };
-            using TInterfacedAtomic = alpaka::detail::IAtomic<AtomicOpenMp>;
-        }
-    }
-
-    namespace detail
-    {
-        //#############################################################################
-        //! The specialization to execute the requested atomic operation of the serial accelerator.
-        // NOTE: Can not use '#pragma omp atomic' because braces or calling other functions directly after '#pragma omp atomic' are not allowed!
-        // So this would not be fully atomic! Between the store of the old value and the operation could be a context switch!
-        //#############################################################################
-        template<typename TOp, typename T>
-        struct AtomicOp<openmp::detail::AtomicOpenMp, TOp, T>
-        {
-#ifdef ALPAKA_OPENMP_ATOMIC_OPS_LOCK
-            ALPAKA_FCT_CPU static T atomicOp(openmp::detail::AtomicOpenMp const & atomic, T * const addr, T const & value)
-            {
-                omp_set_lock(&atomic.m_ompLock);
-                auto const old(TOp::op(addr, value));
-                omp_unset_lock(&atomic.m_ompLock);
-                return old;
-            }
-#else
-            ALPAKA_FCT_CPU static T atomicOp(openmp::detail::AtomicOpenMp const & , T * const addr, T const & value)
-            {
-                T old;
-                #pragma omp critical (AtomicOp)
-                {
-                    old = TOp::op(addr, value);
-                }
-                return old;
-            }
-#endif
-        };
-    }
-
     namespace openmp
     {
         namespace detail
@@ -218,10 +63,13 @@ namespace alpaka
                 protected TInterfacedAtomic
             {
             public:
+                using MemorySpace = MemorySpaceHost;
+
+            public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU AccOpenMp() :
+                ALPAKA_FCT_HOST AccOpenMp() :
                     TInterfacedWorkSize(),
                     TInterfacedIndex(*static_cast<TInterfacedWorkSize const *>(this), m_v3uiGridBlockIdx),
                     TInterfacedAtomic()
@@ -229,24 +77,24 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU AccOpenMp(AccOpenMp const & other) = default;
+                ALPAKA_FCT_HOST AccOpenMp(AccOpenMp const & other) = default;
                 //-----------------------------------------------------------------------------
                 //! Move-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU AccOpenMp(AccOpenMp && other) = default;
+                ALPAKA_FCT_HOST AccOpenMp(AccOpenMp && other) = default;
                 //-----------------------------------------------------------------------------
                 //! Assignment-operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU AccOpenMp & operator=(AccOpenMp const &) = delete;
+                ALPAKA_FCT_HOST AccOpenMp & operator=(AccOpenMp const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU ~AccOpenMp() noexcept = default;
+                ALPAKA_FCT_HOST ~AccOpenMp() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! \return The maximum number of kernels in each dimension of a block allowed.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU static vec<3u> getSizeBlockKernelsMax()
+                ALPAKA_FCT_HOST static vec<3u> getSizeBlockKernelsMax()
                 {
                     auto const uiSizeBlockKernelsLinearMax(getSizeBlockKernelsLinearMax());
                     return{uiSizeBlockKernelsLinearMax, uiSizeBlockKernelsLinearMax, uiSizeBlockKernelsLinearMax};
@@ -254,7 +102,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The maximum number of kernels in a block allowed.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU static std::uint32_t getSizeBlockKernelsLinearMax()
+                ALPAKA_FCT_HOST static std::uint32_t getSizeBlockKernelsLinearMax()
                 {
                     // HACK: ::omp_get_max_threads() does not return the real limit of the underlying OpenMP runtime:
                     // 'The omp_get_max_threads routine returns the value of the internal control variable, which is used to determine the number of threads that would form the new team, 
@@ -269,7 +117,7 @@ namespace alpaka
                 //! \return The requested index.
                 //-----------------------------------------------------------------------------
                 template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-                ALPAKA_FCT_CPU typename alpaka::detail::DimToRetType<TDimensionality>::type getIdx() const
+                ALPAKA_FCT_HOST typename alpaka::detail::DimToRetType<TDimensionality>::type getIdx() const
                 {
                     return this->TInterfacedIndex::getIdx<TOrigin, TUnit, TDimensionality>(
                         *static_cast<TInterfacedWorkSize const *>(this));
@@ -278,7 +126,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Syncs all kernels in the current block.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU void syncBlockKernels() const
+                ALPAKA_FCT_HOST void syncBlockKernels() const
                 {
                     #pragma omp barrier
                 }
@@ -286,10 +134,10 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return Allocates block shared memory.
                 //-----------------------------------------------------------------------------
-                template<typename T, std::size_t UiNumElements>
-                ALPAKA_FCT_CPU T * allocBlockSharedMem() const
+                template<typename T, std::size_t TuiNumElements>
+                ALPAKA_FCT_HOST T * allocBlockSharedMem() const
                 {
-                    static_assert(UiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
+                    static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
 
                     // Assure that all threads have executed the return of the last allocBlockSharedMem function (if there was one before).
                     syncBlockKernels();
@@ -298,7 +146,7 @@ namespace alpaka
                     if(::omp_get_thread_num() == 0)
                     {
                         // TODO: Optimize: do not initialize the memory on allocation like std::vector does!
-                        m_vvuiSharedMem.emplace_back(UiNumElements);
+                        m_vvuiSharedMem.emplace_back(TuiNumElements);
                     }
                     syncBlockKernels();
 
@@ -309,7 +157,7 @@ namespace alpaka
                 //! \return The pointer to the externally allocated block shared memory.
                 //-----------------------------------------------------------------------------
                 template<typename T>
-                ALPAKA_FCT_CPU T * getBlockSharedExternMem() const
+                ALPAKA_FCT_HOST T * getBlockSharedExternMem() const
                 {
                     return reinterpret_cast<T*>(m_vuiExternalSharedMem.data());
                 }
@@ -338,7 +186,7 @@ namespace alpaka
                     //! Constructor.
                     //-----------------------------------------------------------------------------
                     template<typename... TKernelConstrArgs>
-                    ALPAKA_FCT_CPU KernelExecutor(TKernelConstrArgs && ... args) :
+                    ALPAKA_FCT_HOST KernelExecutor(TKernelConstrArgs && ... args) :
                         TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
                     {
 #ifdef _DEBUG
@@ -351,25 +199,25 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Copy-constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_CPU KernelExecutor(KernelExecutor const & other) = default;
+                    ALPAKA_FCT_HOST KernelExecutor(KernelExecutor const & other) = default;
                     //-----------------------------------------------------------------------------
                     //! Move-constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_CPU KernelExecutor(KernelExecutor && other) = default;
+                    ALPAKA_FCT_HOST KernelExecutor(KernelExecutor && other) = default;
                     //-----------------------------------------------------------------------------
                     //! Assignment-operator.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_CPU KernelExecutor & operator=(KernelExecutor const &) = delete;
+                    ALPAKA_FCT_HOST KernelExecutor & operator=(KernelExecutor const &) = delete;
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_CPU ~KernelExecutor() noexcept = default;
+                    ALPAKA_FCT_HOST ~KernelExecutor() noexcept = default;
 
                     //-----------------------------------------------------------------------------
                     //! Executes the accelerated kernel.
                     //-----------------------------------------------------------------------------
                     template<typename TWorkSize, typename... TArgs>
-                    ALPAKA_FCT_CPU void operator()(IWorkSize<TWorkSize> const & workSize, TArgs && ... args) const
+                    ALPAKA_FCT_HOST void operator()(IWorkSize<TWorkSize> const & workSize, TArgs && ... args) const
                     {
 #ifdef _DEBUG
                         std::cout << "[+] AccOpenMp::KernelExecutor::operator()" << std::endl;
@@ -459,7 +307,7 @@ namespace alpaka
         //! The serial kernel executor builder.
         //#############################################################################
         template<typename TKernel, typename... TKernelConstrArgs>
-        class KernelExecutorBuilder<AccOpenMp, TKernel, TKernelConstrArgs...>
+        class KernelExecCreator<AccOpenMp, TKernel, TKernelConstrArgs...>
         {
         public:
             using TAcceleratedKernel = typename boost::mpl::apply<TKernel, AccOpenMp>::type;
@@ -468,7 +316,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Creates an kernel executor for the serial accelerator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_CPU TKernelExecutor operator()(TKernelConstrArgs && ... args) const
+            ALPAKA_FCT_HOST TKernelExecutor operator()(TKernelConstrArgs && ... args) const
             {
                 return TKernelExecutor(std::forward<TKernelConstrArgs>(args)...);
             }

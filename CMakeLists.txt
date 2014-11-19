@@ -22,7 +22,7 @@
 # Required CMake version.
 ################################################################################
 
-#CMAKE_MINIMUM_REQUIRED(VERSION 2.8.5)
+#CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
 
 SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
 
@@ -38,7 +38,7 @@ SET(ALPAKA_INCLUDE_DEPENDENCIES)
 SET(ALPAKA_COMPILE_DEFINITIONS)
 
 # set helper paths to find libraries and packages
-#SET(CMAKE_PREFIX_PATH "$ENV{CUDA_ROOT}" "$ENV{BOOST_ROOT}")    # "/usr/lib/x86_64-linux-gnu/"
+SET(CMAKE_PREFIX_PATH "/usr/lib/x86_64-linux-gnu/" "$ENV{CUDA_ROOT}" "$ENV{BOOST_ROOT}")
 
 OPTION(ALPAKA_SERIAL_ENABLE "Enable the serial accelerator" OFF)
 IF(ALPAKA_SERIAL_ENABLE)
@@ -205,7 +205,7 @@ append_recursive_files_add_to_source_group(${ALPAKA_SUFFIXED_INCLUDE_DIR} "hpp" 
 
 # Add all the source files in all recursive subdirectories and group them accordingly.
 append_recursive_files_add_to_source_group(${ALPAKA_SUFFIXED_INCLUDE_DIR} "cpp" ALPAKA_SOURCE_FILES_ALL)
-        
+
 ADD_LIBRARY(
     alpaka 
     ${ALPAKA_HEADER_FILES_ALL}

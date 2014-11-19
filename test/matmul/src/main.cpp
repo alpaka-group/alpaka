@@ -20,9 +20,7 @@
 * If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <alpaka/IAcc.hpp>      // alpaka::IAcc<...>
-#include <alpaka/alpaka.hpp>    // alpaka::buildKernelExecutor<...>
-#include <alpaka/WorkSize.hpp>  // alpaka::WorkSizeDefault
+#include <alpaka/alpaka.hpp>    // alpaka::createKernelExecutor<...>
 
 #include <chrono>               // std::chrono::high_resolution_clock
 #include <cassert>              // assert
@@ -39,7 +37,7 @@
 //! A matrix multiplication kernel.
 //! Computes C += A*B.
 //! This is a adaption of the algorithm from the CUDA developers guide.
-//! \param TAcc The accelerator environment to be executed on.
+//! \tparam TAcc The accelerator environment to be executed on.
 //#############################################################################
 template<typename TAcc = boost::mpl::_1>
 class MatMulKernel :
@@ -50,7 +48,7 @@ public:
     //! The kernel.
     //-----------------------------------------------------------------------------
     template <typename TElement>
-    ALPAKA_FCT_CPU_CUDA void operator()(
+    ALPAKA_FCT_HOST_ACC void operator()(
         std::uint32_t const n,
         TElement const * const A,
         TElement const * const B,
@@ -159,79 +157,51 @@ void profileAcceleratedKernel(TExec const & exec, alpaka::IWorkSize<TWorkSize> c
 }
 
 //-----------------------------------------------------------------------------
-//! Profiles the given kernel (default Version).
-//-----------------------------------------------------------------------------
-template<typename TAcc>
-class AcceleratedMatMulKernelProfiler
-{
-public:
-    template<typename TKernel, typename TWorkSize, typename... TKernelConstrArgs>
-    void operator()(alpaka::IWorkSize<TWorkSize> const & workSize, std::uint32_t const uiMatrixSize, std::uint32_t * const pA, std::uint32_t * const pB, std::uint32_t * const pC, TKernelConstrArgs && ... args)
-    {
-        std::cout
-            << "AcceleratedExampleKernelProfiler("
-            << " accelerator: " << typeid(TAcc).name()
-            << ", kernel: " << typeid(TKernel).name()
-            << ")" << std::endl;
-
-        auto exec(alpaka::buildKernelExecutor<TAcc, TKernel>(std::forward<TKernelConstrArgs>(args)...));
-        profileAcceleratedKernel(exec, workSize, uiMatrixSize, pA, pB, pC);
-    }
-};
-
-#ifdef ALPAKA_CUDA_ENABLED
-//-----------------------------------------------------------------------------
-//! Profiles the given kernel (specialized for CUDA).
-//-----------------------------------------------------------------------------
-template<>
-class AcceleratedMatMulKernelProfiler<alpaka::AccCuda>
-{
-public:
-    template<typename TKernel, typename TWorkSize, typename... TKernelConstrArgs>
-    void operator()(alpaka::IWorkSize<TWorkSize> const & workSize, std::uint32_t const uiMatrixSize, std::uint32_t * const pA, std::uint32_t * const pB, std::uint32_t * const pC, TKernelConstrArgs && ... args)
-    {
-        std::cout
-            << "AcceleratedExampleKernelProfiler("
-            << " accelerator: " << typeid(TAcc).name()
-            << ", kernel: " << typeid(TKernel).name()
-            << ")" << std::endl;
-
-        std::size_t const uiNumBlocksInGrid(workSize.template getSize<alpaka::Grid, alpaka::Blocks, alpaka::Linear>());
-
-        std::uint32_t * pBlockRetValsDev (nullptr);
-        std::size_t const uiNumBytes(uiNumBlocksInGrid * sizeof(std::uint32_t));
-        ALPAKA_CUDA_CHECK(cudaMalloc((void **) &pBlockRetValsDev, uiNumBytes));
-        ALPAKA_CUDA_CHECK(cudaMemcpy(pBlockRetValsDev, puiBlockRetVals, uiNumBytes, cudaMemcpyHostToDevice));
-
-        auto exec(alpaka::buildKernelExecutor<TAcc, TKernel>(std::forward<TKernelConstrArgs>(args)...));
-        profileAcceleratedKernel(exec, workSize, uiMatrixSize, pA, pB, pC);
-        
-        ALPAKA_CUDA_CHECK(cudaDeviceSynchronize());
-
-        ALPAKA_CUDA_CHECK(cudaMemcpy(puiBlockRetVals, pBlockRetValsDev, uiNumBytes, cudaMemcpyDeviceToHost));
-        ALPAKA_CUDA_CHECK(cudaFree(pBlockRetValsDev));
-    }
-};
-#endif
-
-//-----------------------------------------------------------------------------
 //! Profiles the example kernel and checks the result.
 //-----------------------------------------------------------------------------
 template<typename TAcc, typename TWorkSize>
 void profileAcceleratedMatMulKernel(alpaka::IWorkSize<TWorkSize> const & workSize, std::uint32_t const & uiMatrixSize)
 {
+    using TKernel = MatMulKernel<>;
+    using TAccMemorySpace = typename TAcc::MemorySpace;
+
     std::cout
         << "profileAcceleratedMatMulKernel("
         << " uiMatrixSize:" << uiMatrixSize
+        << ", accelerator: " << typeid(TAcc).name()
+        << ", kernel: " << typeid(TKernel).name()
         << ")" << std::endl;
 
+    // Initialize matrices.
     std::vector<std::uint32_t> vuiA(uiMatrixSize*uiMatrixSize, 1);
     std::vector<std::uint32_t> vuiB(uiMatrixSize*uiMatrixSize, 1);
     std::vector<std::uint32_t> vuiC(uiMatrixSize*uiMatrixSize, 0);
 
-    AcceleratedMatMulKernelProfiler<TAcc>().operator()<MatMulKernel<>>(workSize, uiMatrixSize, vuiA.data(), vuiB.data(), vuiC.data());
+    // Allocate accelerator buffers and copy.
+    std::size_t const uiSizeBytes(uiMatrixSize*uiMatrixSize * sizeof(std::uint32_t));
 
-    // Assert that the results are correct.
+    auto * const pAAcc(alpaka::memory::memAlloc<TAccMemorySpace, std::uint32_t>(uiSizeBytes));
+    auto * const pBAcc(alpaka::memory::memAlloc<TAccMemorySpace, std::uint32_t>(uiSizeBytes));
+    auto * const pCAcc(alpaka::memory::memAlloc<TAccMemorySpace, std::uint32_t>(uiSizeBytes));
+
+    alpaka::memory::memCopy<TAccMemorySpace, alpaka::MemorySpaceHost>(pAAcc, vuiA.data(), uiSizeBytes);
+    alpaka::memory::memCopy<TAccMemorySpace, alpaka::MemorySpaceHost>(pBAcc, vuiB.data(), uiSizeBytes);
+    alpaka::memory::memCopy<TAccMemorySpace, alpaka::MemorySpaceHost>(pCAcc, vuiC.data(), uiSizeBytes);
+
+    // Build the kernel executor.
+    auto exec(alpaka::createKernelExecutor<TAcc, TKernel>());
+    // Profile the kernel execution.
+    profileAcceleratedKernel(exec, workSize, uiMatrixSize, pAAcc, pBAcc, pCAcc);
+
+    // Copy back the result.
+    alpaka::memory::memCopy<alpaka::MemorySpaceHost, TAccMemorySpace>(vuiC.data(), pCAcc, uiSizeBytes);
+
+    alpaka::memory::memFree<TAccMemorySpace>(pAAcc);
+    alpaka::memory::memFree<TAccMemorySpace>(pBAcc);
+    alpaka::memory::memFree<TAccMemorySpace>(pCAcc);
+
+    // Assert that the results are correct. 
+    // When multiplying square matrices filled with ones, the result of each cell is the size of the matrix. 
     std::uint32_t const uiCorrectResult(uiMatrixSize);
 
     bool bResultCorrect(true);
@@ -251,47 +221,6 @@ void profileAcceleratedMatMulKernel(alpaka::IWorkSize<TWorkSize> const & workSiz
 }
 
 //-----------------------------------------------------------------------------
-//! Logs the enabled accelerators.
-//-----------------------------------------------------------------------------
-void logEnabledAccelerators()
-{
-    std::cout << "Accelerators enabled: ";
-#ifdef ALPAKA_SERIAL_ENABLED
-    std::cout << "ALPAKA_SERIAL_ENABLED ";
-#endif
-#ifdef ALPAKA_THREADS_ENABLED
-    std::cout << "ALPAKA_THREADS_ENABLED ";
-#endif
-#ifdef ALPAKA_FIBERS_ENABLED
-    std::cout << "ALPAKA_FIBERS_ENABLED ";
-#endif
-#ifdef ALPAKA_OPENMP_ENABLED
-    std::cout << "ALPAKA_OPENMP_ENABLED ";
-#endif
-#ifdef ALPAKA_CUDA_ENABLED
-    std::cout << "ALPAKA_CUDA_ENABLED ";
-#endif
-    std::cout << std::endl;
-}
-
-//-----------------------------------------------------------------------------
-//! Initializes the accelerators.
-//-----------------------------------------------------------------------------
-void initAccelerators()
-{
-#ifdef _DEBUG
-    std::cout << "[+] initAccelerators()" << std::endl;
-#endif
-
-#ifdef ALPAKA_CUDA_ENABLED
-    alpaka::AccCuda::setDevice(0);
-#endif
-
-#ifdef _DEBUG
-    std::cout << "[-] initAccelerators()" << std::endl;
-#endif
-}
-//-----------------------------------------------------------------------------
 //! Program entry point.
 //-----------------------------------------------------------------------------
 int main()
@@ -305,11 +234,12 @@ int main()
         std::cout << std::endl;
 
         // Logs the enabled accelerators.
-        logEnabledAccelerators();
+        alpaka::logEnabledAccelerators();
 
         std::cout << std::endl;
+
         // Initialize the accelerators.
-        initAccelerators();
+        alpaka::initAccelerators();
 
         for(std::uint32_t uiMatrixSize(16u); uiMatrixSize<1024u; uiMatrixSize *= 2u)
         {

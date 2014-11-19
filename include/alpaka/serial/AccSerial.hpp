@@ -22,130 +22,31 @@
 
 #pragma once
 
-#include <alpaka/KernelExecutorBuilder.hpp> // KernelExecutorBuilder
-#include <alpaka/WorkSize.hpp>              // IWorkSize, WorkSizeDefault
-#include <alpaka/Index.hpp>                 // IIndex
-#include <alpaka/Atomic.hpp>                // IAtomic
+#include <alpaka/serial/WorkSize.hpp>               // TInterfacedWorkSize
+#include <alpaka/serial/Index.hpp>                  // TInterfacedIndex
+#include <alpaka/serial/Atomic.hpp>                 // TInterfacedAtomic
 
-#include <cstddef>                          // std::size_t
-#include <vector>                           // std::vector
-#include <cassert>                          // assert
-#include <stdexcept>                        // std::except
-#include <utility>                          // std::forward
-#include <string>                           // std::to_string
+#include <alpaka/host/MemorySpace.hpp>              // MemorySpaceHost
+#include <alpaka/host/Memory.hpp>                   // MemCopy
+
+#include <alpaka/interfaces/KernelExecCreator.hpp>  // KernelExecCreator
+
+#include <alpaka/interfaces/BlockSharedExternMemSizeBytes.hpp>
+
+#include <cstddef>                                  // std::size_t
+#include <vector>                                   // std::vector
+#include <cassert>                                  // assert
+#include <stdexcept>                                // std::except
+#include <utility>                                  // std::forward
+#include <string>                                   // std::to_string
 #ifdef _DEBUG
-    #include <iostream>                     // std::cout
+    #include <iostream>                             // std::cout
 #endif
 
-#include <boost/mpl/apply.hpp>              // boost::mpl::apply
+#include <boost/mpl/apply.hpp>                      // boost::mpl::apply
 
 namespace alpaka
 {
-    namespace serial
-    {
-        namespace detail
-        {
-            using TInterfacedWorkSize = alpaka::IWorkSize<alpaka::detail::WorkSizeDefault>;
-
-            //#############################################################################
-            //! This class that holds the implementation details for the indexing of the serial accelerator.
-            //#############################################################################
-            class IndexSerial
-            {
-            public:
-                //-----------------------------------------------------------------------------
-                //! Default-constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU IndexSerial(
-                    vec<3u> const & v3uiGridBlockIdx,
-                    vec<3u> const & v3uiBlockKernelIdx) :
-                    m_v3uiGridBlockIdx(v3uiGridBlockIdx),
-                    m_v3uiBlockKernelIdx(v3uiBlockKernelIdx)
-                {}
-                //-----------------------------------------------------------------------------
-                //! Copy-constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU IndexSerial(IndexSerial const & other) = default;
-                //-----------------------------------------------------------------------------
-                //! Move-constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU IndexSerial(IndexSerial && other) = default;
-                //-----------------------------------------------------------------------------
-                //! Assignment-operator.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU IndexSerial & operator=(IndexSerial const &) = delete;
-                //-----------------------------------------------------------------------------
-                //! Destructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU ~IndexSerial() noexcept = default;
-
-                //-----------------------------------------------------------------------------
-                //! \return The index of the currently executed kernel.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU vec<3u> getIdxBlockKernel() const
-                {
-                    return m_v3uiBlockKernelIdx;
-                }
-                //-----------------------------------------------------------------------------
-                //! \return The block index of the currently executed kernel.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU vec<3u> getIdxGridBlock() const
-                {
-                    return m_v3uiGridBlockIdx;
-                }
-
-            private:
-                vec<3u> const & m_v3uiGridBlockIdx;
-                vec<3u> const & m_v3uiBlockKernelIdx;
-            };
-            using TInterfacedIndex = alpaka::detail::IIndex<IndexSerial>;
-
-            //#############################################################################
-            //! This class that holds the implementation details for the atomic operations of the serial accelerator.
-            //#############################################################################
-            class AtomicSerial
-            {
-            public:
-                //-----------------------------------------------------------------------------
-                //! Default-constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU AtomicSerial() = default;
-                //-----------------------------------------------------------------------------
-                //! Copy-constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU AtomicSerial(AtomicSerial const & other) = default;
-                //-----------------------------------------------------------------------------
-                //! Move-constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU AtomicSerial(AtomicSerial && other) = default;
-                //-----------------------------------------------------------------------------
-                //! Assignment-operator.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU AtomicSerial & operator=(AtomicSerial const &) = delete;
-                //-----------------------------------------------------------------------------
-                //! Destructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU ~AtomicSerial() noexcept = default;
-            };
-            using TInterfacedAtomic = alpaka::detail::IAtomic<AtomicSerial>;
-        }
-    }
-
-    namespace detail
-    {
-        //#############################################################################
-        //! The specialization to execute the requested atomic operation of the serial accelerator.
-        //#############################################################################
-        template<typename TOp, typename T>
-        struct AtomicOp<serial::detail::AtomicSerial, TOp, T>
-        {
-            ALPAKA_FCT_CPU static T atomicOp(serial::detail::AtomicSerial const &, T * const addr, T const & value)
-            {
-                return TOp::op(addr, value);
-            }
-        };
-    }
-
     namespace serial
     {
         namespace detail
@@ -159,10 +60,13 @@ namespace alpaka
                 protected TInterfacedAtomic
             {
             public:
+                using MemorySpace = MemorySpaceHost;
+
+            public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU AccSerial() :
+                ALPAKA_FCT_HOST AccSerial() :
                     TInterfacedWorkSize(),
                     TInterfacedIndex(m_v3uiGridBlockIdx, m_v3uiBlockKernelIdx),
                     TInterfacedAtomic()
@@ -170,24 +74,24 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU AccSerial(AccSerial const & other) = default;
+                ALPAKA_FCT_HOST AccSerial(AccSerial const & other) = default;
                 //-----------------------------------------------------------------------------
                 //! Move-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU AccSerial(AccSerial && other) = default;
+                ALPAKA_FCT_HOST AccSerial(AccSerial && other) = default;
                 //-----------------------------------------------------------------------------
                 //! Assignment-operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU AccSerial & operator=(AccSerial const &) = delete;
+                ALPAKA_FCT_HOST AccSerial & operator=(AccSerial const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU ~AccSerial() noexcept = default;
+                ALPAKA_FCT_HOST ~AccSerial() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! \return The maximum number of kernels in each dimension of a block allowed.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU static vec<3u> getSizeBlockKernelsMax()
+                ALPAKA_FCT_HOST static vec<3u> getSizeBlockKernelsMax()
                 {
                     auto const uiSizeBlockKernelsLinearMax(getSizeBlockKernelsLinearMax());
                     return{uiSizeBlockKernelsLinearMax, uiSizeBlockKernelsLinearMax, uiSizeBlockKernelsLinearMax};
@@ -195,7 +99,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The maximum number of kernels in a block allowed.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU static std::uint32_t getSizeBlockKernelsLinearMax()
+                ALPAKA_FCT_HOST static std::uint32_t getSizeBlockKernelsLinearMax()
                 {
                     return 1;
                 }
@@ -205,7 +109,7 @@ namespace alpaka
                 //! \return The requested index.
                 //-----------------------------------------------------------------------------
                 template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-                ALPAKA_FCT_CPU typename alpaka::detail::DimToRetType<TDimensionality>::type getIdx() const
+                ALPAKA_FCT_HOST typename alpaka::detail::DimToRetType<TDimensionality>::type getIdx() const
                 {
                     return this->TInterfacedIndex::getIdx<TOrigin, TUnit, TDimensionality>(
                         *static_cast<TInterfacedWorkSize const *>(this));
@@ -214,7 +118,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Syncs all kernels in the current block.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU void syncBlockKernels() const
+                ALPAKA_FCT_HOST void syncBlockKernels() const
                 {
                     // Nothing to do in here because only one thread in a group is allowed.
                 }
@@ -222,13 +126,13 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return Allocates block shared memory.
                 //-----------------------------------------------------------------------------
-                template<typename T, std::size_t UiNumElements>
-                ALPAKA_FCT_CPU T * allocBlockSharedMem() const
+                template<typename T, std::size_t TuiNumElements>
+                ALPAKA_FCT_HOST T * allocBlockSharedMem() const
                 {
-                    static_assert(UiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
+                    static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
 
                     // TODO: Optimize: do not initialize the memory on allocation like std::vector does!
-                    m_vvuiSharedMem.emplace_back(UiNumElements);
+                    m_vvuiSharedMem.emplace_back(TuiNumElements);
                     return reinterpret_cast<T*>(m_vvuiSharedMem.back().data());
                 }
 
@@ -236,7 +140,7 @@ namespace alpaka
                 //! \return The pointer to the externally allocated block shared memory.
                 //-----------------------------------------------------------------------------
                 template<typename T>
-                ALPAKA_FCT_CPU T * getBlockSharedExternMem() const
+                ALPAKA_FCT_HOST T * getBlockSharedExternMem() const
                 {
                     return reinterpret_cast<T*>(m_vuiExternalSharedMem.data());
                 }
@@ -266,7 +170,7 @@ namespace alpaka
                     //! Constructor.
                     //-----------------------------------------------------------------------------
                     template<typename... TKernelConstrArgs>
-                    ALPAKA_FCT_CPU KernelExecutor(TKernelConstrArgs && ... args) :
+                    ALPAKA_FCT_HOST KernelExecutor(TKernelConstrArgs && ... args) :
                         TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
                     {
 #ifdef _DEBUG
@@ -279,25 +183,25 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Copy-constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_CPU KernelExecutor(KernelExecutor const & other) = default;
+                    ALPAKA_FCT_HOST KernelExecutor(KernelExecutor const & other) = default;
                     //-----------------------------------------------------------------------------
                     //! Move-constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_CPU KernelExecutor(KernelExecutor && other) = default;
+                    ALPAKA_FCT_HOST KernelExecutor(KernelExecutor && other) = default;
                     //-----------------------------------------------------------------------------
                     //! Assignment-operator.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_CPU KernelExecutor & operator=(KernelExecutor const &) = delete;
+                    ALPAKA_FCT_HOST KernelExecutor & operator=(KernelExecutor const &) = delete;
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_CPU ~KernelExecutor() noexcept = default;
+                    ALPAKA_FCT_HOST ~KernelExecutor() noexcept = default;
 
                     //-----------------------------------------------------------------------------
                     //! Executes the accelerated kernel.
                     //-----------------------------------------------------------------------------
                     template<typename TWorkSize, typename... TArgs>
-                    ALPAKA_FCT_CPU void operator()(IWorkSize<TWorkSize> const & workSize, TArgs && ... args) const
+                    ALPAKA_FCT_HOST void operator()(IWorkSize<TWorkSize> const & workSize, TArgs && ... args) const
                     {
 #ifdef _DEBUG
                         std::cout << "[+] AccSerial::KernelExecutor::operator()" << std::endl;
@@ -367,7 +271,7 @@ namespace alpaka
         //! The serial kernel executor builder.
         //#############################################################################
         template<typename TKernel, typename... TKernelConstrArgs>
-        class KernelExecutorBuilder<AccSerial, TKernel, TKernelConstrArgs...>
+        class KernelExecCreator<AccSerial, TKernel, TKernelConstrArgs...>
         {
         public:
             using TAcceleratedKernel = typename boost::mpl::apply<TKernel, AccSerial>::type;
@@ -376,7 +280,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Creates an kernel executor for the serial accelerator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_CPU TKernelExecutor operator()(TKernelConstrArgs && ... args) const
+            ALPAKA_FCT_HOST TKernelExecutor operator()(TKernelConstrArgs && ... args) const
             {
                 return TKernelExecutor(std::forward<TKernelConstrArgs>(args)...);
             }

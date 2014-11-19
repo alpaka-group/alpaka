@@ -22,13 +22,15 @@
 
 #pragma once
 
-// Do not use __device__ or __host__ attributes if we are not compiling with nvcc.
-#if defined ALPAKA_CUDA_ENABLED && defined __CUDALPAKA__
-    #define ALPAKA_FCT_CUDA __device__ __forceinline__
-    #define ALPAKA_FCT_CPU_CUDA __device__ __host__ __forceinline__
-    #define ALPAKA_FCT_CPU __host__ inline
-#else
-    #define ALPAKA_FCT_CUDA inline
-    #define ALPAKA_FCT_CPU_CUDA inline
-    #define ALPAKA_FCT_CPU inline
-#endif
+#include <alpaka/host/WorkSize.hpp> // IWorkSize, WorkSizeHost
+
+namespace alpaka
+{
+    namespace threads
+    {
+        namespace detail
+        {
+            using TInterfacedWorkSize = alpaka::IWorkSize<alpaka::detail::WorkSizeHost>;
+        }
+    }
+}

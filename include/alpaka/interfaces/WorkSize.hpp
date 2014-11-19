@@ -22,70 +22,15 @@
 
 #pragma once
 
-#include <alpaka/Positioning.hpp>   // alpaka::origin::Grid/Blocks
-#include <alpaka/FctCudaCpu.hpp>    // ALPAKA_FCT_CPU_CUDA
+#include <alpaka/core/Positioning.hpp>  // alpaka::origin::Grid/Blocks
+#include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST_ACC
 
-#include <utility>                  // std::forward
+#include <utility>                      // std::forward
 
 namespace alpaka
 {
     namespace detail
     {
-        //#############################################################################
-        //! The description of the work size.
-        //! This class stores the sizes as members.
-        //#############################################################################
-        class WorkSizeDefault
-        {
-        public:
-            //-----------------------------------------------------------------------------
-            //! Default-constructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_CPU_CUDA WorkSizeDefault() = default;
-            //-----------------------------------------------------------------------------
-            //! Constructor from values.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_CPU_CUDA explicit WorkSizeDefault(vec<3u> const v3uiSizeGridBlocks, vec<3u> const v3uiSizeBlockKernels) :
-                m_v3uiSizeGridBlocks(v3uiSizeGridBlocks),
-                m_v3uiSizeBlockKernels(v3uiSizeBlockKernels)
-            {}
-            //-----------------------------------------------------------------------------
-            //! Copy-constructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_CPU_CUDA WorkSizeDefault(WorkSizeDefault const & other) = default;
-            //-----------------------------------------------------------------------------
-            //! Move-constructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_CPU_CUDA WorkSizeDefault(WorkSizeDefault && other) = default;
-            //-----------------------------------------------------------------------------
-            //! Assignment-operator.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_CPU_CUDA WorkSizeDefault & operator=(WorkSizeDefault const &) = default;
-            //-----------------------------------------------------------------------------
-            //! Destructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_CPU_CUDA ~WorkSizeDefault() noexcept = default;
-
-            //-----------------------------------------------------------------------------
-            //! \return The grid dimensions of the currently executed kernel.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_CPU_CUDA vec<3u> getSizeGridBlocks() const
-            {
-                return m_v3uiSizeGridBlocks;
-            }
-            //-----------------------------------------------------------------------------
-            //! \return The block dimensions of the currently executed kernel.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_CPU_CUDA vec<3u> getSizeBlockKernels() const
-            {
-                return m_v3uiSizeBlockKernels;
-            }
-
-        private:
-            vec<3u> m_v3uiSizeGridBlocks;
-            vec<3u> m_v3uiSizeBlockKernels;
-        };
-
         //#############################################################################
         //! The template to get the requested size.
         //#############################################################################
@@ -98,7 +43,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! \return The number of kernels in each dimension of a block.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_CPU_CUDA static DimToRetType<dim::D3>::type getSize(TWorkSize const & workSize)
+            ALPAKA_FCT_HOST_ACC static DimToRetType<dim::D3>::type getSize(TWorkSize const & workSize)
             {
                 return workSize.getSizeBlockKernels();
             }
@@ -109,7 +54,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! \return The number of kernels in a block.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_CPU_CUDA static DimToRetType<dim::Linear>::type getSize(TWorkSize const & workSize)
+            ALPAKA_FCT_HOST_ACC static DimToRetType<dim::Linear>::type getSize(TWorkSize const & workSize)
             {
                 return GetSize<TWorkSize, origin::Block, unit::Kernels, dim::D3>::getSize(workSize).prod();
             }
@@ -120,7 +65,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! \return The number of kernels in each dimension of the grid.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_CPU_CUDA static DimToRetType<dim::D3>::type getSize(TWorkSize const & workSize)
+            ALPAKA_FCT_HOST_ACC static DimToRetType<dim::D3>::type getSize(TWorkSize const & workSize)
             {
                 return workSize.getSizeGridBlocks() * workSize.getSizeBlockKernels();
             }
@@ -131,7 +76,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! \return The number of kernels in the grid.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_CPU_CUDA static DimToRetType<dim::Linear>::type getSize(TWorkSize const & workSize)
+            ALPAKA_FCT_HOST_ACC static DimToRetType<dim::Linear>::type getSize(TWorkSize const & workSize)
             {
                 return GetSize<TWorkSize, origin::Grid, unit::Kernels, dim::D3>::getSize(workSize).prod();
             }
@@ -142,7 +87,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! \return The number of blocks in each dimension of the grid.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_CPU_CUDA static DimToRetType<dim::D3>::type getSize(TWorkSize const & workSize)
+            ALPAKA_FCT_HOST_ACC static DimToRetType<dim::D3>::type getSize(TWorkSize const & workSize)
             {
                 return workSize.getSizeGridBlocks();
             }
@@ -153,7 +98,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! \return The number of blocks in the grid.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_CPU_CUDA static DimToRetType<dim::Linear>::type getSize(TWorkSize const & workSize)
+            ALPAKA_FCT_HOST_ACC static DimToRetType<dim::Linear>::type getSize(TWorkSize const & workSize)
             {
                 return GetSize<TWorkSize, origin::Grid, unit::Blocks, dim::D3>::getSize(workSize).prod();
             }
@@ -179,7 +124,7 @@ namespace alpaka
         //! Constructor.
         //-----------------------------------------------------------------------------
         template<typename... TArgs>
-        ALPAKA_FCT_CPU_CUDA IWorkSize(TArgs && ... args) :
+        ALPAKA_FCT_HOST_ACC IWorkSize(TArgs && ... args) :
             TWorkSize(std::forward<TArgs>(args)...)
         {}
 
@@ -187,7 +132,7 @@ namespace alpaka
         //! Get the size requested.
         //-----------------------------------------------------------------------------
         template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-        ALPAKA_FCT_CPU_CUDA typename detail::DimToRetType<TDimensionality>::type getSize() const
+        ALPAKA_FCT_HOST_ACC typename detail::DimToRetType<TDimensionality>::type getSize() const
         {
             return detail::GetSize<TWorkSize, TOrigin, TUnit, TDimensionality>::getSize(
                 *static_cast<TWorkSize const *>(this));
@@ -198,13 +143,8 @@ namespace alpaka
     //! Stream out operator.
     //-----------------------------------------------------------------------------
     template<typename TWorkSize>
-    ALPAKA_FCT_CPU std::ostream & operator << (std::ostream & os, IWorkSize<TWorkSize> const & workSize)
+    ALPAKA_FCT_HOST std::ostream & operator << (std::ostream & os, IWorkSize<TWorkSize> const & workSize)
     {
         return (os << "{GridBlocks: " << workSize.getSizeGridBlocks() << ", BlockKernels: " << workSize.getSizeBlockKernels() << "}");
     }
-
-    //#############################################################################
-    //! A basic class storing the work to be used in user code.
-    //#############################################################################
-    using WorkSize = IWorkSize<detail::WorkSizeDefault>;
 }

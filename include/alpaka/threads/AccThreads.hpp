@@ -22,29 +22,33 @@
 
 #pragma once
 
-#include <alpaka/KernelExecutorBuilder.hpp> // KernelExecutorBuilder
-#include <alpaka/WorkSize.hpp>              // IWorkSize, WorkSizeDefault
-#include <alpaka/Index.hpp>                 // IIndex
-#include <alpaka/Atomic.hpp>                // IAtomic
+#include <alpaka/threads/WorkSize.hpp>              // TInterfacedWorkSize
+#include <alpaka/threads/Index.hpp>                 // TInterfacedIndex
+#include <alpaka/threads/Atomic.hpp>                // TInterfacedAtomic
+#include <alpaka/threads/Barrier.hpp>               // BarrierThreads
 
-#include <cstddef>                          // std::size_t
-#include <cstdint>                          // unit8_t
-#include <vector>                           // std::vector
-#include <thread>                           // std::thread
-#include <map>                              // std::map
-#include <algorithm>                        // std::for_each
-#include <mutex>                            // std::mutex
-#include <condition_variable>               // std::condition_variable
-#include <array>                            // std::array
-#include <cassert>                          // assert
-#include <stdexcept>                        // std::except
-#include <string>                           // std::to_string
-#include <functional>                       // std::bind
+#include <alpaka/host/MemorySpace.hpp>              // MemorySpaceHost
+#include <alpaka/host/Memory.hpp>                   // MemCopy
+
+#include <alpaka/interfaces/KernelExecCreator.hpp>  // KernelExecCreator
+
+#include <alpaka/interfaces/BlockSharedExternMemSizeBytes.hpp>
+
+#include <cstddef>                                  // std::size_t
+#include <cstdint>                                  // unit8_t
+#include <vector>                                   // std::vector
+#include <thread>                                   // std::thread
+#include <map>                                      // std::map
+#include <algorithm>                                // std::for_each
+#include <array>                                    // std::array
+#include <cassert>                                  // assert
+#include <stdexcept>                                // std::runtime_error
+#include <string>                                   // std::to_string
 #ifdef _DEBUG
-    #include <iostream>                     // std::cout
+    #include <iostream>                             // std::cout
 #endif
 
-#include <boost/mpl/apply.hpp>              // boost::mpl::apply
+#include <boost/mpl/apply.hpp>                      // boost::mpl::apply
 
 namespace alpaka
 {
@@ -52,197 +56,6 @@ namespace alpaka
     {
         namespace detail
         {
-            using TInterfacedWorkSize = alpaka::IWorkSize<alpaka::detail::WorkSizeDefault>;
-
-            using TThreadIdToIndex = std::map<std::thread::id, vec<3u>>;
-            //#############################################################################
-            //! This class that holds the implementation details for the indexing of the threads accelerator.
-            //#############################################################################
-            class IndexThreads
-            {
-            public:
-                //-----------------------------------------------------------------------------
-                //! Constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU IndexThreads(
-                    TThreadIdToIndex const & mThreadsToIndices,
-                    vec<3u> const & v3uiGridBlockIdx) :
-                    m_mThreadsToIndices(mThreadsToIndices),
-                    m_v3uiGridBlockIdx(v3uiGridBlockIdx)
-                {}
-                //-----------------------------------------------------------------------------
-                //! Copy-constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU IndexThreads(IndexThreads const & other) = default;
-                //-----------------------------------------------------------------------------
-                //! Move-constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU IndexThreads(IndexThreads && other) = default;
-                //-----------------------------------------------------------------------------
-                //! Assignment-operator.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU IndexThreads & operator=(IndexThreads const &) = delete;
-                //-----------------------------------------------------------------------------
-                //! Destructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU ~IndexThreads() noexcept = default;
-
-                //-----------------------------------------------------------------------------
-                //! \return The index of the currently executed kernel.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU vec<3u> getIdxBlockKernel() const
-                {
-                    auto const idThread(std::this_thread::get_id());
-                    auto const itFind(m_mThreadsToIndices.find(idThread));
-                    assert(itFind != m_mThreadsToIndices.end());
-
-                    return itFind->second;
-                }
-                //-----------------------------------------------------------------------------
-                //! \return The block index of the currently executed kernel.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU vec<3u> getIdxGridBlock() const
-                {
-                    return m_v3uiGridBlockIdx;
-                }
-
-            private:
-                TThreadIdToIndex const & m_mThreadsToIndices;   //!< The mapping of thread id's to thread indices.
-                vec<3u> const & m_v3uiGridBlockIdx;             //!< The index of the currently executed block.
-            };
-            using TInterfacedIndex = alpaka::detail::IIndex<IndexThreads>;
-
-            //#############################################################################
-            //! This class that holds the implementation details for the atomic operations of the threads accelerator.
-            //#############################################################################
-            class AtomicThreads
-            {
-            public:
-                template<typename TAtomic, typename TOp, typename T>
-                friend struct alpaka::detail::AtomicOp;
-
-            public:
-                //-----------------------------------------------------------------------------
-                //! Default-constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU AtomicThreads() = default;
-                //-----------------------------------------------------------------------------
-                //! Copy-constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU AtomicThreads(AtomicThreads const & other) = default;
-                //-----------------------------------------------------------------------------
-                //! Move-constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU AtomicThreads(AtomicThreads && other) = default;
-                //-----------------------------------------------------------------------------
-                //! Assignment-operator.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU AtomicThreads & operator=(AtomicThreads const &) = delete;
-                //-----------------------------------------------------------------------------
-                //! Destructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU ~AtomicThreads() noexcept = default;
-
-            private:
-                std::mutex mutable m_mtxAtomic; //!< The mutex protecting access for a atomic operation.
-            };
-            using TInterfacedAtomic = alpaka::detail::IAtomic<AtomicThreads>;
-        }
-    }
-
-    namespace detail
-    {
-        //#############################################################################
-        //! The specialization to execute the requested atomic operation of the threads accelerator.
-        //#############################################################################
-        template<typename TOp, typename T>
-        struct AtomicOp<threads::detail::AtomicThreads, TOp, T>
-        {
-            ALPAKA_FCT_CPU static T atomicOp(threads::detail::AtomicThreads const & atomic, T * const addr, T const & value)
-            {
-                // TODO: Currently not only the access to the same variable is protected by a mutex but all atomic ops on all threads.
-                // We could use a list of mutexes and lock the mutex depending on the target variable to allow multiple atomic ops on different targets concurrently.
-                std::lock_guard<std::mutex> lock(atomic.m_mtxAtomic);
-                return TOp::op(addr, value);
-            }
-        };
-    }
-
-    namespace threads
-    {
-        namespace detail
-        {
-            //#############################################################################
-            //! A barrier.
-            //#############################################################################
-            class ThreadBarrier
-            {
-            public:
-                //-----------------------------------------------------------------------------
-                //! Constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU explicit ThreadBarrier(std::size_t const uiNumThreadsToWaitFor = 0) :
-                    m_uiNumThreadsToWaitFor{uiNumThreadsToWaitFor}
-                {}
-                //-----------------------------------------------------------------------------
-                //! Copy-constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU ThreadBarrier(ThreadBarrier const & other) :
-                    m_uiNumThreadsToWaitFor(other.m_uiNumThreadsToWaitFor)
-                {}
-                //-----------------------------------------------------------------------------
-                //! Move-constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU ThreadBarrier(ThreadBarrier && other) = default;
-                //-----------------------------------------------------------------------------
-                //! Assignment-operator.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU ThreadBarrier & operator=(ThreadBarrier const &) = delete;
-                //-----------------------------------------------------------------------------
-                //! Destructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU ~ThreadBarrier() noexcept = default;
-
-                //-----------------------------------------------------------------------------
-                //! Waits for all the other threads to reach the barrier.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU void wait()
-                {
-                    std::unique_lock<std::mutex> lock(m_mtxBarrier);
-                    if(--m_uiNumThreadsToWaitFor == 0)
-                    {
-                        m_cvAllThreadsReachedBarrier.notify_all();
-                    }
-                    else
-                    {
-                        m_cvAllThreadsReachedBarrier.wait(lock, [this] { return m_uiNumThreadsToWaitFor == 0; });
-                    }
-                }
-
-                //-----------------------------------------------------------------------------
-                //! \return The number of threads to wait for.
-                //! NOTE: The value almost always is invalid the time you get it.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU std::size_t getNumThreadsToWaitFor() const
-                {
-                    return m_uiNumThreadsToWaitFor;
-                }
-
-                //-----------------------------------------------------------------------------
-                //! Resets the number of threads to wait for to the given number.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU void reset(std::size_t const uiNumThreadsToWaitFor)
-                {
-                    std::lock_guard<std::mutex> lock(m_mtxBarrier);
-                    m_uiNumThreadsToWaitFor = uiNumThreadsToWaitFor;
-                }
-
-            private:
-                std::mutex m_mtxBarrier;
-                std::condition_variable m_cvAllThreadsReachedBarrier;
-                std::size_t m_uiNumThreadsToWaitFor;
-            };
-
             //#############################################################################
             //! The base class for all C++11 std::thread accelerated kernels.
             //#############################################################################
@@ -252,10 +65,13 @@ namespace alpaka
                 protected TInterfacedAtomic
             {
             public:
+                using MemorySpace = MemorySpaceHost;
+
+            public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU AccThreads() :
+                ALPAKA_FCT_HOST AccThreads() :
                     TInterfacedWorkSize(),
                     TInterfacedIndex(m_mThreadsToIndices, m_v3uiGridBlockIdx),
                     TInterfacedAtomic()
@@ -265,7 +81,7 @@ namespace alpaka
                 // Has to be explicitly defined because 'std::mutex::mutex(const std::mutex&)' is deleted.
                 // Do not copy most members because they are initialized by the executor for each accelerated execution.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU AccThreads(AccThreads const & ) :
+                ALPAKA_FCT_HOST AccThreads(AccThreads const & ) :
                     TInterfacedWorkSize(),
                     TInterfacedIndex(m_mThreadsToIndices, m_v3uiGridBlockIdx),
                     TInterfacedAtomic(),
@@ -281,20 +97,20 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Move-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU AccThreads(AccThreads && other) = default;
+                ALPAKA_FCT_HOST AccThreads(AccThreads && other) = default;
                 //-----------------------------------------------------------------------------
                 //! Assignment-operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU AccThreads & operator=(AccThreads const &) = delete;
+                ALPAKA_FCT_HOST AccThreads & operator=(AccThreads const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU ~AccThreads() noexcept = default;
+                ALPAKA_FCT_HOST ~AccThreads() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! \return The maximum number of kernels in each dimension of a block allowed.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU static vec<3u> getSizeBlockKernelsMax()
+                ALPAKA_FCT_HOST static vec<3u> getSizeBlockKernelsMax()
                 {
                     auto const uiSizeBlockKernelsLinearMax(getSizeBlockKernelsLinearMax());
                     return{uiSizeBlockKernelsLinearMax, uiSizeBlockKernelsLinearMax, uiSizeBlockKernelsLinearMax};
@@ -302,7 +118,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The maximum number of kernels in a block allowed by.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU static std::uint32_t getSizeBlockKernelsLinearMax()
+                ALPAKA_FCT_HOST static std::uint32_t getSizeBlockKernelsLinearMax()
                 {
                     // FIXME: What is the maximum? Just set a reasonable value? There is a implementation defined maximum where the creation of a new thread crashes.
                     // std::thread::hardware_concurrency is too small but a multiple of it? But it can return 0, so a default for this case?
@@ -314,7 +130,7 @@ namespace alpaka
                 //! \return The requested index.
                 //-----------------------------------------------------------------------------
                 template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-                ALPAKA_FCT_CPU typename alpaka::detail::DimToRetType<TDimensionality>::type getIdx() const
+                ALPAKA_FCT_HOST typename alpaka::detail::DimToRetType<TDimensionality>::type getIdx() const
                 {
                     return this->TInterfacedIndex::getIdx<TOrigin, TUnit, TDimensionality>(
                         *static_cast<TInterfacedWorkSize const *>(this));
@@ -323,7 +139,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Syncs all kernels in the current block.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU void syncBlockKernels() const
+                ALPAKA_FCT_HOST void syncBlockKernels() const
                 {
                     auto const idThread(std::this_thread::get_id());
                     auto const itFind(m_mThreadsToBarrier.find(idThread));
@@ -334,7 +150,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Syncs all kernels in the current block.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU void syncBlockKernels(std::map<std::thread::id,std::size_t>::iterator const & itFind) const
+                ALPAKA_FCT_HOST void syncBlockKernels(std::map<std::thread::id,std::size_t>::iterator const & itFind) const
                 {
                     assert(itFind != m_mThreadsToBarrier.end());
 
@@ -361,10 +177,10 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return Allocates block shared memory.
                 //-----------------------------------------------------------------------------
-                template<typename T, std::size_t UiNumElements>
-                ALPAKA_FCT_CPU T * allocBlockSharedMem() const
+                template<typename T, std::size_t TuiNumElements>
+                ALPAKA_FCT_HOST T * allocBlockSharedMem() const
                 {
-                    static_assert(UiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
+                    static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
 
                     // Assure that all threads have executed the return of the last allocBlockSharedMem function (if there was one before).
                     syncBlockKernels();
@@ -373,7 +189,7 @@ namespace alpaka
                     if(m_idMasterThread == std::this_thread::get_id())
                     {
                         // TODO: Optimize: do not initialize the memory on allocation like std::vector does!
-                        m_vvuiSharedMem.emplace_back(UiNumElements);
+                        m_vvuiSharedMem.emplace_back(TuiNumElements);
                     }
                     syncBlockKernels();
 
@@ -384,7 +200,7 @@ namespace alpaka
                 //! \return The pointer to the externally allocated block shared memory.
                 //-----------------------------------------------------------------------------
                 template<typename T>
-                ALPAKA_FCT_CPU T * getBlockSharedExternMem() const
+                ALPAKA_FCT_HOST T * getBlockSharedExternMem() const
                 {
                     return reinterpret_cast<T*>(m_vuiExternalSharedMem.data());
                 }
@@ -424,7 +240,7 @@ namespace alpaka
                     //! Constructor.
                     //-----------------------------------------------------------------------------
                     template<typename... TKernelConstrArgs>
-                    ALPAKA_FCT_CPU KernelExecutor(TKernelConstrArgs && ... args) :
+                    ALPAKA_FCT_HOST KernelExecutor(TKernelConstrArgs && ... args) :
                         TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
                         m_vThreadsInBlock(),
                         m_mtxMapInsert()
@@ -439,7 +255,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Copy-constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_CPU KernelExecutor(KernelExecutor const & other) :
+                    ALPAKA_FCT_HOST KernelExecutor(KernelExecutor const & other) :
                         TAcceleratedKernel(other),
                         m_vThreadsInBlock(),
                         m_mtxMapInsert()
@@ -447,7 +263,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Move-constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_CPU KernelExecutor(KernelExecutor && other) :
+                    ALPAKA_FCT_HOST KernelExecutor(KernelExecutor && other) :
                         TAcceleratedKernel(std::move(other)),
                         m_vThreadsInBlock(),
                         m_mtxMapInsert()
@@ -455,17 +271,17 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Assignment-operator.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_CPU KernelExecutor & operator=(KernelExecutor const &) = delete;
+                    ALPAKA_FCT_HOST KernelExecutor & operator=(KernelExecutor const &) = delete;
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_CPU ~KernelExecutor() noexcept = default;
+                    ALPAKA_FCT_HOST ~KernelExecutor() noexcept = default;
 
                     //-----------------------------------------------------------------------------
                     //! Executes the accelerated kernel.
                     //-----------------------------------------------------------------------------
                     template<typename TWorkSize, typename... TArgs>
-                    ALPAKA_FCT_CPU void operator()(IWorkSize<TWorkSize> const & workSize, TArgs && ... args) const
+                    ALPAKA_FCT_HOST void operator()(IWorkSize<TWorkSize> const & workSize, TArgs && ... args) const
                     {
 #ifdef _DEBUG
                         std::cout << "[+] AccThreads::KernelExecutor::operator()" << std::endl;
@@ -553,7 +369,7 @@ namespace alpaka
                     //! The thread entry point.
                     //-----------------------------------------------------------------------------
                     template<typename... TArgs>
-                    ALPAKA_FCT_CPU void threadKernel(vec<3u> const v3uiBlockKernelIdx, TArgs ... args) const
+                    ALPAKA_FCT_HOST void threadKernel(vec<3u> const v3uiBlockKernelIdx, TArgs ... args) const
                     {
                         // We have to store the thread data before the kernel is calling any of the methods of this class depending on them.
                         auto const idThread(std::this_thread::get_id());
@@ -609,7 +425,7 @@ namespace alpaka
         //! The threads kernel executor builder.
         //#############################################################################
         template<typename TKernel, typename... TKernelConstrArgs>
-        class KernelExecutorBuilder<AccThreads, TKernel, TKernelConstrArgs...>
+        class KernelExecCreator<AccThreads, TKernel, TKernelConstrArgs...>
         {
         public:
             using TAcceleratedKernel = typename boost::mpl::apply<TKernel, AccThreads>::type;
@@ -618,7 +434,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Creates an kernel executor for the serial accelerator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_CPU TKernelExecutor operator()(TKernelConstrArgs && ... args) const
+            ALPAKA_FCT_HOST TKernelExecutor operator()(TKernelConstrArgs && ... args) const
             {
                 return TKernelExecutor(std::forward<TKernelConstrArgs>(args)...);
             }

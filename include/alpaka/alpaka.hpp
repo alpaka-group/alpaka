@@ -22,157 +22,72 @@
 
 #pragma once
 
-#include <alpaka/KernelExecutorBuilder.hpp>
-
 #ifdef ALPAKA_SERIAL_ENABLED
-    #include <alpaka/AccSerial.hpp>
+    #include <alpaka/serial/AccSerial.hpp>
 #endif
 #ifdef ALPAKA_THREADS_ENABLED
-    #include <alpaka/AccThreads.hpp>
+    #include <alpaka/threads/AccThreads.hpp>
 #endif
 #ifdef ALPAKA_FIBERS_ENABLED
-    #include <alpaka/AccFibers.hpp>
+    #include <alpaka/fibers/AccFibers.hpp>
 #endif
 #ifdef ALPAKA_OPENMP_ENABLED
-    #include <alpaka/AccOpenMp.hpp>
+    #include <alpaka/openmp/AccOpenMp.hpp>
 #endif
 #ifdef ALPAKA_CUDA_ENABLED
-    #include <alpaka/AccCuda.hpp>
+    #include <alpaka/cuda/AccCuda.hpp>
 #endif
 
-#include <ostream>                  // std::ostream
-#include <utility>                  // std::forward
+#include <alpaka/interfaces/WorkSize.hpp>   // alpaka::WorkSizeHost
+#include <alpaka/interfaces/IAcc.hpp>       // alpaka::IAcc<...>
 
+#include <alpaka/interfaces/KernelExecCreator.hpp>
+
+#include <iostream>                         // std::cout
+
+//-----------------------------------------------------------------------------
+//! The library namespace.
+//-----------------------------------------------------------------------------
 namespace alpaka
 {
-    //#############################################################################
-    //! Builds a kernel executor.
-    //!
-    //! Requirements for type TKernel:
-    //! The kernel type has to have at least one template parameters 'typename TAcc = boost::mpl::_1' and has to inherit indirectly from this type publicly via the IAcc interface 'public alpaka::IAcc<TAcc>'.
-    //! All template parameters have to be types. No value parameters are allowed. Use boost::mpl::int_ or similar to use values.
-    //! TODO: Check the requirements at compile time!
-    //#############################################################################
-    template<typename TAcc, typename TKernel, typename... TKernelConstrArgs>
-    auto buildKernelExecutor(TKernelConstrArgs && ... args)
-        -> typename std::result_of<detail::KernelExecutorBuilder<TAcc, TKernel, TKernelConstrArgs...>(TKernelConstrArgs...)>::type
+    //-----------------------------------------------------------------------------
+    //! Logs the enabled accelerators.
+    //-----------------------------------------------------------------------------
+    static void logEnabledAccelerators()
     {
-        // Use the specialized KernelExecutorBuilder for the given accelerator.
-        return detail::KernelExecutorBuilder<TAcc, TKernel, TKernelConstrArgs...>()(std::forward<TKernelConstrArgs>(args)...);
+        std::cout << "Accelerators enabled: ";
+#ifdef ALPAKA_SERIAL_ENABLED
+        std::cout << "ALPAKA_SERIAL_ENABLED ";
+#endif
+#ifdef ALPAKA_THREADS_ENABLED
+        std::cout << "ALPAKA_THREADS_ENABLED ";
+#endif
+#ifdef ALPAKA_FIBERS_ENABLED
+        std::cout << "ALPAKA_FIBERS_ENABLED ";
+#endif
+#ifdef ALPAKA_OPENMP_ENABLED
+        std::cout << "ALPAKA_OPENMP_ENABLED ";
+#endif
+#ifdef ALPAKA_CUDA_ENABLED
+        std::cout << "ALPAKA_CUDA_ENABLED ";
+#endif
+        std::cout << std::endl;
     }
-
-    /*//#############################################################################
-    //! The available accelerator environments.
-    //#############################################################################
-    enum class EAccelerator
+    //-----------------------------------------------------------------------------
+    //! Initializes the accelerators.
+    //-----------------------------------------------------------------------------
+    void initAccelerators()
     {
-#ifdef ALPAKA_SERIAL_ENABLED
-        Serial,
+#ifdef _DEBUG
+        std::cout << "[+] initAccelerators()" << std::endl;
 #endif
-#ifdef ALPAKA_THREADS_ENABLED
-        Threads,
-#endif
-#ifdef ALPAKA_FIBERS_ENABLED
-        Fibers,
-#endif
-#ifdef ALPAKA_OPENMP_ENABLED
-        OpenMp,
-#endif
-#ifdef ALPAKA_CUDA_ENABLED
-        Cuda,
-#endif
-    };
 
-    //-----------------------------------------------------------------------------
-    //! Stream out the name of the accelerator environment.
-    //-----------------------------------------------------------------------------
-    std::ostream& operator << (std::ostream & os, EAccelerator const & eDevice)
-    {
-#ifdef ALPAKA_SERIAL_ENABLED
-        if(eDevice == EAccelerator::Serial)
-        {
-            os << "Serial";
-        }
-        else
-#endif
-#ifdef ALPAKA_THREADS_ENABLED
-        if(eDevice == EAccelerator::Threads)
-        {
-            os << "Threads";
-        }
-        else
-#endif
-#ifdef ALPAKA_FIBERS_ENABLED
-        if(eDevice == EAccelerator::Fibers)
-        {
-            os << "Fibers";
-        }
-        else
-#endif
-#ifdef ALPAKA_OPENMP_ENABLED
-        if(eDevice == EAccelerator::OpenMp)
-        {
-            os << "OpenMp";
-        }
-        else
-#endif
 #ifdef ALPAKA_CUDA_ENABLED
-        if(eDevice == EAccelerator::Cuda)
-        {
-            os << "Cuda";
-        }
-        else
-#endif 
-        {
-            os << "<unknown>";
-        }
-        return os;
-    }*/
+        AccCuda::setDevice(0);
+#endif
 
-    //-----------------------------------------------------------------------------
-    //! Builds a kernel executor.
-    //-----------------------------------------------------------------------------
-    /*template<typename TKernel, typename TWorkSize>
-    auto buildKernelExecutor(EAccelerator const eDevice, TWorkSize work = TWorkSize())
-        -> FIXME: What is the return type?
-    {
-#ifdef ALPAKA_SERIAL_ENABLED
-        if(eDevice == EAccelerator::Serial)
-        {
-            buildKernelExecutor<AccSerial, TKernel>(work);
-        }
-        else
+#ifdef _DEBUG
+        std::cout << "[-] initAccelerators()" << std::endl;
 #endif
-#ifdef ALPAKA_THREADS_ENABLED
-        if(eDevice == EAccelerator::Threads)
-        {
-            buildKernelExecutor<AccThreads, TKernel>(work);
-        }
-        else
-#endif
-#ifdef ALPAKA_FIBERS_ENABLED
-        if(eDevice == EAccelerator::Fibers)
-        {
-            buildKernelExecutor<AccFibers, TKernel>(work);
-        }
-        else
-#endif
-#ifdef ALPAKA_OPENMP_ENABLED
-        if(eDevice == EAccelerator::OpenMp)
-        {
-            buildKernelExecutor<AccOpenMp, TKernel>(work);
-        }
-        else
-#endif
-#ifdef ALPAKA_CUDA_ENABLED
-        if(eDevice == EAccelerator::Cuda)
-        {
-            buildKernelExecutor<AccCuda, TKernel>(work);
-        }
-        else
-#endif 
-        {
-            std::cout << "<unknown accelerator>" << std::endl;
-        }
-    }*/
+    }
 }

@@ -22,29 +22,26 @@
 
 #pragma once
 
-#include <alpaka/KernelExecutorBuilder.hpp> // KernelExecutorBuilder
-#include <alpaka/WorkSize.hpp>              // IWorkSize, WorkSizeDefault
-#include <alpaka/Index.hpp>                 // IIndex
-#include <alpaka/Atomic.hpp>                // IAtomic
+#include <alpaka/fibers/WorkSize.hpp>               // TInterfacedWorkSize
+#include <alpaka/fibers/Index.hpp>                  // TInterfacedIndex
+#include <alpaka/fibers/Atomic.hpp>                 // TInterfacedAtomic
+#include <alpaka/fibers/Barrier.hpp>                // BarrierFibers
 
-#include <cstddef>                          // std::size_t
-#include <cstdint>                          // unit8_t
-#include <cassert>                          // assert
-#include <stdexcept>                        // std::except
+#include <alpaka/fibers/Common.hpp>
 
-#include <boost/mpl/apply.hpp>              // boost::mpl::apply
+#include <alpaka/host/MemorySpace.hpp>              // MemorySpaceHost
+#include <alpaka/host/Memory.hpp>                   // MemCopy
 
-// Force the usage of variadic templates for fibers.
-#define BOOST_FIBERS_USE_VARIADIC_FIBER
+#include <alpaka/interfaces/KernelExecCreator.hpp>  // KernelExecCreator
 
-// Boost fiber: 
-// http://olk.github.io/libs/fiber/doc/html/index.html
-// https://github.com/olk/boost-fiber
-#include <boost/fiber/fiber.hpp>            // boost::fibers::fiber
-#include <boost/fiber/operations.hpp>       // boost::this_fiber
-#include <boost/fiber/condition.hpp>        // boost::fibers::condition_variable
-#include <boost/fiber/mutex.hpp>            // boost::fibers::mutex
-//#include <boost/fiber/barrier.hpp>        // boost::fibers::barrier
+#include <alpaka/interfaces/BlockSharedExternMemSizeBytes.hpp>
+
+#include <cstddef>                                  // std::size_t
+#include <cstdint>                                  // unit8_t
+#include <cassert>                                  // assert
+#include <stdexcept>                                // std::except
+
+#include <boost/mpl/apply.hpp>                      // boost::mpl::apply
 
 namespace alpaka
 {
@@ -52,186 +49,6 @@ namespace alpaka
     {
         namespace detail
         {
-            using TInterfacedWorkSize = alpaka::IWorkSize<alpaka::detail::WorkSizeDefault>;
-
-            using TFiberIdToIndex = std::map<boost::fibers::fiber::id, vec<3u>>;
-            //#############################################################################
-            //! This class that holds the implementation details for the indexing of the fibers accelerator.
-            //#############################################################################
-            class IndexFibers
-            {
-            public:
-                //-----------------------------------------------------------------------------
-                //! Constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU IndexFibers(
-                    TFiberIdToIndex const & mFibersToIndices,
-                    vec<3u> const & v3uiGridBlockIdx) :
-                    m_mFibersToIndices(mFibersToIndices),
-                    m_v3uiGridBlockIdx(v3uiGridBlockIdx)
-                {}
-                //-----------------------------------------------------------------------------
-                //! Copy-constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU IndexFibers(IndexFibers const & other) = default;
-                //-----------------------------------------------------------------------------
-                //! Move-constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU IndexFibers(IndexFibers && other) = default;
-                //-----------------------------------------------------------------------------
-                //! Assignment-operator.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU IndexFibers & operator=(IndexFibers const &) = delete;
-                //-----------------------------------------------------------------------------
-                //! Destructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU ~IndexFibers() noexcept = default;
-
-                //-----------------------------------------------------------------------------
-                //! \return The index of the currently executed kernel.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU vec<3u> getIdxBlockKernel() const
-                {
-                    auto const idFiber(boost::this_fiber::get_id());
-                    auto const itFind(m_mFibersToIndices.find(idFiber));
-                    assert(itFind != m_mFibersToIndices.end());
-
-                    return itFind->second;
-                }
-                //-----------------------------------------------------------------------------
-                //! \return The index of the block of the currently executed kernel.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU vec<3u> getIdxGridBlock() const
-                {
-                    return m_v3uiGridBlockIdx;
-                }
-
-            private:
-                TFiberIdToIndex const & m_mFibersToIndices;     //!< The mapping of fibers id's to fibers indices.
-                vec<3u> const & m_v3uiGridBlockIdx;             //!< The index of the currently executed block.
-            };
-            using TInterfacedIndex = alpaka::detail::IIndex<IndexFibers>;
-
-            //#############################################################################
-            //! This class that holds the implementation details for the atomic operations of the fibers accelerator.
-            //#############################################################################
-            class AtomicFibers
-            {
-            public:
-                //-----------------------------------------------------------------------------
-                //! Default-constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU AtomicFibers() = default;
-                //-----------------------------------------------------------------------------
-                //! Copy-constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU AtomicFibers(AtomicFibers const & other) = default;
-                //-----------------------------------------------------------------------------
-                //! Move-constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU AtomicFibers(AtomicFibers && other) = default;
-                //-----------------------------------------------------------------------------
-                //! Assignment-operator.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU AtomicFibers & operator=(AtomicFibers const &) = delete;
-                //-----------------------------------------------------------------------------
-                //! Destructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU ~AtomicFibers() noexcept = default;
-            };
-            using TInterfacedAtomic = alpaka::detail::IAtomic<AtomicFibers>;
-        }
-    }
-
-    namespace detail
-    {
-        //#############################################################################
-        //! The specialization to execute the requested atomic operation of the fibers accelerator.
-        //#############################################################################
-        template<typename TOp, typename T>
-        struct AtomicOp<fibers::detail::AtomicFibers, TOp, T>
-        {
-            ALPAKA_FCT_CPU static T atomicOp(fibers::detail::AtomicFibers const &, T * const addr, T const & value)
-            {
-                return TOp::op(addr, value);
-            }
-        };
-    }
-
-    namespace fibers
-    {
-        namespace detail
-        {
-            //#############################################################################
-            //! A barrier.
-            // NOTE: We do not use the boost::fibers::barrier because it does not support simple resetting.
-            //#############################################################################
-            class FiberBarrier
-            {
-            public:
-                //-----------------------------------------------------------------------------
-                //! Constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU explicit FiberBarrier(std::size_t uiNumFibersToWaitFor = 0) :
-                    m_uiNumFibersToWaitFor{uiNumFibersToWaitFor}
-                {}
-                //-----------------------------------------------------------------------------
-                //! Deleted copy-constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU FiberBarrier(FiberBarrier const &) = delete;
-                //-----------------------------------------------------------------------------
-                //! Move-constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU FiberBarrier(FiberBarrier && other) = default;
-                //-----------------------------------------------------------------------------
-                //! Assignment-operator.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU FiberBarrier & operator=(FiberBarrier const &) = delete;
-                //-----------------------------------------------------------------------------
-                //! Destructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU ~FiberBarrier() noexcept = default;
-
-                //-----------------------------------------------------------------------------
-                //! Waits for all the other fibers to reach the barrier.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU void wait()
-                {
-                    boost::unique_lock<boost::fibers::mutex> lock(m_mtxBarrier);
-                    if(--m_uiNumFibersToWaitFor == 0)
-                    {
-                        m_cvAllFibersReachedBarrier.notify_all();
-                    }
-                    else
-                    {
-                        m_cvAllFibersReachedBarrier.wait(lock, [this] { return m_uiNumFibersToWaitFor == 0; });
-                    }
-                }
-
-                //-----------------------------------------------------------------------------
-                //! \return The number of fibers to wait for.
-                //! NOTE: The value almost always is invalid the time you get it.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU std::size_t getNumFibersToWaitFor() const
-                {
-                    return m_uiNumFibersToWaitFor;
-                }
-
-                //-----------------------------------------------------------------------------
-                //! Resets the number of fibers to wait for to the given number.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU void reset(std::size_t uiNumFibersToWaitFor)
-                {
-                    //boost::unique_lock<boost::fibers::mutex> lock(m_mtxBarrier);
-                    m_uiNumFibersToWaitFor = uiNumFibersToWaitFor;
-                }
-
-            private:
-                boost::fibers::mutex m_mtxBarrier;
-                boost::fibers::condition_variable m_cvAllFibersReachedBarrier;
-                std::size_t m_uiNumFibersToWaitFor;
-            };
-
             //#############################################################################
             //! The base class for all fibers accelerated kernels.
             //#############################################################################
@@ -241,10 +58,13 @@ namespace alpaka
                 protected TInterfacedAtomic
             {
             public:
+                using MemorySpace = MemorySpaceHost;
+
+            public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU AccFibers() :
+                ALPAKA_FCT_HOST AccFibers() :
                     TInterfacedWorkSize(),
                     TInterfacedIndex(m_mFibersToIndices, m_v3uiGridBlockIdx),
                     TInterfacedAtomic()
@@ -254,7 +74,7 @@ namespace alpaka
                 // Has to be explicitly defined because 'std::mutex::mutex(const std::mutex&)' is deleted.
                 // Do not copy most members because they are initialized by the executor for each accelerated execution.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU AccFibers(AccFibers const & ) :
+                ALPAKA_FCT_HOST AccFibers(AccFibers const & ) :
                     TInterfacedWorkSize(),
                     TInterfacedIndex(m_mFibersToIndices, m_v3uiGridBlockIdx),
                     TInterfacedAtomic(),
@@ -270,20 +90,20 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Move-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU AccFibers(AccFibers && other) = default;
+                ALPAKA_FCT_HOST AccFibers(AccFibers && other) = default;
                 //-----------------------------------------------------------------------------
                 //! Assignment-operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU AccFibers & operator=(AccFibers const &) = delete;
+                ALPAKA_FCT_HOST AccFibers & operator=(AccFibers const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU ~AccFibers() noexcept = default;
+                ALPAKA_FCT_HOST ~AccFibers() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! \return The maximum number of kernels in each dimension of a block allowed.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU static vec<3u> getSizeBlockKernelsMax()
+                ALPAKA_FCT_HOST static vec<3u> getSizeBlockKernelsMax()
                 {
                     auto const uiSizeBlockKernelsLinearMax(getSizeBlockKernelsLinearMax());
                     return{uiSizeBlockKernelsLinearMax, uiSizeBlockKernelsLinearMax, uiSizeBlockKernelsLinearMax};
@@ -291,7 +111,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The maximum number of kernels in a block allowed by the underlying accelerator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU static std::uint32_t getSizeBlockKernelsLinearMax()
+                ALPAKA_FCT_HOST static std::uint32_t getSizeBlockKernelsLinearMax()
                 {
                     // FIXME: What is the maximum? Just set a reasonable value?
                     return 1024;    // Magic number.
@@ -302,7 +122,7 @@ namespace alpaka
                 //! \return The requested index.
                 //-----------------------------------------------------------------------------
                 template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-                ALPAKA_FCT_CPU typename alpaka::detail::DimToRetType<TDimensionality>::type getIdx() const
+                ALPAKA_FCT_HOST typename alpaka::detail::DimToRetType<TDimensionality>::type getIdx() const
                 {
                     return this->TInterfacedIndex::getIdx<TOrigin, TUnit, TDimensionality>(
                         *static_cast<TInterfacedWorkSize const *>(this));
@@ -311,7 +131,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Syncs all kernels in the current block.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_CPU void syncBlockKernels() const
+                ALPAKA_FCT_HOST void syncBlockKernels() const
                 {
                     auto const idFiber(boost::this_fiber::get_id());
                     auto const itFind(m_mFibersToBarrier.find(idFiber));
@@ -337,10 +157,10 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return Allocates block shared memory.
                 //-----------------------------------------------------------------------------
-                template<typename T, std::size_t UiNumElements>
-                ALPAKA_FCT_CPU T * allocBlockSharedMem() const
+                template<typename T, std::size_t TuiNumElements>
+                ALPAKA_FCT_HOST T * allocBlockSharedMem() const
                 {
-                    static_assert(UiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
+                    static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
 
                     // Assure that all fibers have executed the return of the last allocBlockSharedMem function (if there was one before).
                     syncBlockKernels();
@@ -349,7 +169,7 @@ namespace alpaka
                     if(m_idMasterFiber == boost::this_fiber::get_id())
                     {
                         // TODO: Optimize: do not initialize the memory on allocation like std::vector does!
-                        m_vvuiSharedMem.emplace_back(UiNumElements);
+                        m_vvuiSharedMem.emplace_back(TuiNumElements);
                     }
                     syncBlockKernels();
 
@@ -360,7 +180,7 @@ namespace alpaka
                 //! \return The pointer to the externally allocated block shared memory.
                 //-----------------------------------------------------------------------------
                 template<typename T>
-                ALPAKA_FCT_CPU T * getBlockSharedExternMem() const
+                ALPAKA_FCT_HOST T * getBlockSharedExternMem() const
                 {
                     return reinterpret_cast<T*>(m_vuiExternalSharedMem.data());
                 }
@@ -399,7 +219,7 @@ namespace alpaka
                     //! Constructor.
                     //-----------------------------------------------------------------------------
                     template<typename... TKernelConstrArgs>
-                    ALPAKA_FCT_CPU KernelExecutor(TKernelConstrArgs && ... args) :
+                    ALPAKA_FCT_HOST KernelExecutor(TKernelConstrArgs && ... args) :
                         TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
                         m_vFibersInBlock()
                     {
@@ -413,25 +233,25 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Copy-constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_CPU KernelExecutor(KernelExecutor const & other) = default;
+                    ALPAKA_FCT_HOST KernelExecutor(KernelExecutor const & other) = default;
                     //-----------------------------------------------------------------------------
                     //! Move-constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_CPU KernelExecutor(KernelExecutor && other) = default;
+                    ALPAKA_FCT_HOST KernelExecutor(KernelExecutor && other) = default;
                     //-----------------------------------------------------------------------------
                     //! Assignment-operator.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_CPU KernelExecutor & operator=(KernelExecutor const &) = delete;
+                    ALPAKA_FCT_HOST KernelExecutor & operator=(KernelExecutor const &) = delete;
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_CPU ~KernelExecutor() noexcept = default;
+                    ALPAKA_FCT_HOST ~KernelExecutor() noexcept = default;
 
                     //-----------------------------------------------------------------------------
                     //! Executes the accelerated kernel.
                     //-----------------------------------------------------------------------------
                     template<typename TWorkSize, typename... TArgs>
-                    ALPAKA_FCT_CPU void operator()(IWorkSize<TWorkSize> const & workSize, TArgs && ... args) const
+                    ALPAKA_FCT_HOST void operator()(IWorkSize<TWorkSize> const & workSize, TArgs && ... args) const
                     {
 #ifdef _DEBUG
                         std::cout << "[+] AccFibers::KernelExecutor::operator()" << std::endl;
@@ -459,7 +279,7 @@ namespace alpaka
 #endif
                         // CUDA programming guide: "Thread blocks are required to execute independently: It must be possible to execute them in any order, in parallel or in series. 
                         // This independence requirement allows thread blocks to be scheduled in any order across any number of cores"
-                        // -> We can execute them serially.
+                        // TODO: Execute blocks in parallel because kernel executions in a block are cooperatively multi threaded within one real thread.
                         for(std::uint32_t bz(0); bz<v3uiSizeGridBlocks[2]; ++bz)
                         {
                             this->AccFibers::m_v3uiGridBlockIdx[2] = bz;
@@ -519,7 +339,7 @@ namespace alpaka
                     //! The fiber entry point.
                     //-----------------------------------------------------------------------------
                     template<typename... TArgs>
-                    ALPAKA_FCT_CPU void fiberKernel(vec<3u> const v3uiBlockKernelIdx, TArgs ... args) const
+                    ALPAKA_FCT_HOST void fiberKernel(vec<3u> const v3uiBlockKernelIdx, TArgs ... args) const
                     {
                         // We have to store the fiber data before the kernel is calling any of the methods of this class depending on them.
                         auto const idFiber(boost::this_fiber::get_id());
@@ -563,7 +383,7 @@ namespace alpaka
         //! The fibers kernel executor builder.
         //#############################################################################
         template<typename TKernel, typename... TKernelConstrArgs>
-        class KernelExecutorBuilder<AccFibers, TKernel, TKernelConstrArgs...>
+        class KernelExecCreator<AccFibers, TKernel, TKernelConstrArgs...>
         {
         public:
             using TAcceleratedKernel = typename boost::mpl::apply<TKernel, AccFibers>::type;
@@ -572,7 +392,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Creates an kernel executor for the serial accelerator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_CPU TKernelExecutor operator()(TKernelConstrArgs && ... args) const
+            ALPAKA_FCT_HOST TKernelExecutor operator()(TKernelConstrArgs && ... args) const
             {
                 return TKernelExecutor(std::forward<TKernelConstrArgs>(args)...);
             }

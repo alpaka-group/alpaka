@@ -14,7 +14,7 @@ Supported (but not necessarily tested) compilers are:
 - gcc 4.4+
 - clang 3.3+
 - icc 13.0+
-- VC12+
+- VC12 (Nov 2013 CTP)+
 
 Requirements
 ----------------

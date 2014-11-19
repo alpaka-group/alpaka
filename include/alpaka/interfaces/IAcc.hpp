@@ -22,8 +22,8 @@
 
 #pragma once
 
-#include <alpaka/Vec.hpp>               // alpaka::vec
-#include <alpaka/Positioning.hpp>       // alpaka::origin::Grid/Blocks
+#include <alpaka/core/Vec.hpp>          // alpaka::vec
+#include <alpaka/core/Positioning.hpp>  // alpaka::origin::Grid/Blocks
 
 #include <boost/mpl/placeholders.hpp>   // boost::mpl::_1
 
@@ -35,8 +35,8 @@ namespace alpaka
     //#############################################################################
     //! The interface for all accelerators.
     //!
-    //! All the methods of this interface are declared ALPAKA_FCT_CPU_CUDA. 
-    //! Because the kernel is always compiled with ALPAKA_FCT_CPU_CUDA for all accelerators (even for AccSerial), equivalently there has to be an implementation of all methods for host and device for all accelerators. 
+    //! All the methods of this interface are declared ALPAKA_FCT_HOST_ACC. 
+    //! Because the kernel is always compiled with ALPAKA_FCT_HOST_ACC for all accelerators (even for AccSerial), equivalently there has to be an implementation of all methods for host and device for all accelerators. 
     //! These device functions are not implemented and will not call the underlying implementation for the device code, because this will never be executed and would not compile.
     //
     // TODO: Implement:
@@ -73,18 +73,21 @@ namespace alpaka
         protected TAcc
     {
     public:
+        using MemorySpace = typename TAcc::MemorySpace;
+
+    public:
         //-----------------------------------------------------------------------------
         //! \return [The maximum number of memory sharing kernel executions | The maximum block size] allowed by the underlying accelerator.
         // TODO: Check if the used size is valid!
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_CPU static vec<3u> getSizeBlockKernelsMax()
+        ALPAKA_FCT_HOST static vec<3u> getSizeBlockKernelsMax()
         {
             return TAcc::getSizeBlockKernelsMax();
         }
         //-----------------------------------------------------------------------------
         //! \return [The maximum number of memory sharing kernel executions | The maximum block size] allowed by the underlying accelerator.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_CPU static std::uint32_t getSizeBlockKernelsLinearMax()
+        ALPAKA_FCT_HOST static std::uint32_t getSizeBlockKernelsLinearMax()
         {
             return TAcc::getSizeBlockKernelsLinearMax();
         }
@@ -93,7 +96,7 @@ namespace alpaka
         //! \return The requested size.
         //-----------------------------------------------------------------------------
         template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-        ALPAKA_FCT_CPU_CUDA typename detail::DimToRetType<TDimensionality>::type getSize() const
+        ALPAKA_FCT_HOST_ACC typename detail::DimToRetType<TDimensionality>::type getSize() const
         {
 #ifndef __CUDA_ARCH__
             return TAcc::template getSize<TOrigin, TUnit, TDimensionality>();
@@ -107,7 +110,7 @@ namespace alpaka
         //! \return The requested index.
         //-----------------------------------------------------------------------------
         template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-        ALPAKA_FCT_CPU_CUDA typename detail::DimToRetType<TDimensionality>::type getIdx() const
+        ALPAKA_FCT_HOST_ACC typename detail::DimToRetType<TDimensionality>::type getIdx() const
         {
 #ifndef __CUDA_ARCH__
             return TAcc::template getIdx<TOrigin, TUnit, TDimensionality>();
@@ -121,7 +124,7 @@ namespace alpaka
         //! \return The old value before executing the atomic operation.
         //-----------------------------------------------------------------------------
         template<typename TOp, typename T>
-        ALPAKA_FCT_CPU_CUDA T atomicOp(T * const addr, T const & value) const
+        ALPAKA_FCT_HOST_ACC T atomicOp(T * const addr, T const & value) const
         {
 #ifndef __CUDA_ARCH__
             return TAcc::template atomicOp<TOp, T>(addr, value);
@@ -133,7 +136,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Syncs all kernels in the current block.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_CPU_CUDA void syncBlockKernels() const
+        ALPAKA_FCT_HOST_ACC void syncBlockKernels() const
         {
 #ifndef __CUDA_ARCH__
             return TAcc::syncBlockKernels();
@@ -143,12 +146,12 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return Allocates block shared memory.
         //-----------------------------------------------------------------------------
-        template<typename T, std::size_t UiNumElements>
-        ALPAKA_FCT_CPU_CUDA T * allocBlockSharedMem() const
+        template<typename T, std::size_t TuiNumElements>
+        ALPAKA_FCT_HOST_ACC T * allocBlockSharedMem() const
         {
-            static_assert(UiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
+            static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
 #ifndef __CUDA_ARCH__
-            return TAcc::template allocBlockSharedMem<T, UiNumElements>();
+            return TAcc::template allocBlockSharedMem<T, TuiNumElements>();
 #else
             return nullptr;
 #endif
@@ -158,29 +161,13 @@ namespace alpaka
         //! \return The pointer to the externally allocated block shared memory.
         //-----------------------------------------------------------------------------
         template<typename T>
-        ALPAKA_FCT_CPU_CUDA T * getBlockSharedExternMem() const
+        ALPAKA_FCT_HOST_ACC T * getBlockSharedExternMem() const
         {
 #ifndef __CUDA_ARCH__
             return TAcc::template getBlockSharedExternMem<T>();
 #else
             return nullptr;
 #endif
-        }
-    };
-
-    //#############################################################################
-    //! The trait for getting the size of the block shared extern memory for a kernel.
-    //#############################################################################
-    template<typename TAccelereatedKernel>
-    struct BlockSharedExternMemSizeBytes
-    {
-        //-----------------------------------------------------------------------------
-        //! \return The size of the shared memory allocated for a block.
-        //-----------------------------------------------------------------------------
-        template<typename... TArgs>
-        static std::size_t getBlockSharedExternMemSizeBytes(vec<3u> const & v3uiSizeBlockKernels, TArgs && ... )
-        {
-            return 0;
         }
     };
 }
