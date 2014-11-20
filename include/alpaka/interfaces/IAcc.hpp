@@ -66,7 +66,6 @@ namespace alpaka
     // surface and texture access
     //
     // __shfl, __shfl_up, __shfl_down, __shfl_xor exchange a variable between threads within a warp.
-
     //#############################################################################
     template<typename TAcc = boost::mpl::_1>
     class IAcc :

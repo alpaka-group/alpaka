@@ -89,6 +89,5 @@ namespace alpaka
     //#############################################################################
     //! A basic class storing the work to be used in user code.
     //#############################################################################
-    //using WorkSize = IWorkSize<detail::WorkSizeHost>;
-    typedef IWorkSize<detail::WorkSizeHost> WorkSize;
+    using WorkSize = IWorkSize<detail::WorkSizeHost>;
 }

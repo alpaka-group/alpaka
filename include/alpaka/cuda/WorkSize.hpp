@@ -62,22 +62,14 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC vec<3u> getSizeGridBlocks() const
                 {
-//#ifdef __CUDA_ARCH__
                     return {gridDim.x, gridDim.y, gridDim.z};
-//#else
-//                    throw std::logic_error("WorkSizeCuda can not be used in non-CUDA Code!");
-//#endif
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The block dimensions of the currently executed kernel.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC vec<3u> getSizeBlockKernels() const
                 {
-//#ifdef __CUDA_ARCH__
                     return {blockDim.x, blockDim.y, blockDim.z};
-//#else
-//                    throw std::logic_error("WorkSizeCuda can not be used in non-CUDA Code!");
-//#endif
                 }
             };
             using TInterfacedWorkSize = alpaka::IWorkSize<WorkSizeCuda>;

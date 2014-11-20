@@ -197,7 +197,7 @@ ENDIF()
 # Compile & Link.
 ################################################################################
 
-SET(ALPAKA_RESURSIVE_FILE_FUNCTIONS_FILE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake/recursive_file_functions.cmake")
+SET(ALPAKA_RESURSIVE_FILE_FUNCTIONS_FILE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake/common.cmake")
 INCLUDE(${ALPAKA_RESURSIVE_FILE_FUNCTIONS_FILE_PATH})
 
 # alpaka

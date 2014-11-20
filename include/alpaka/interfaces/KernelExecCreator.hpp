@@ -37,14 +37,15 @@ namespace alpaka
     //! Builds a kernel executor.
     //!
     //! Requirements for type TKernel:
-    //! The kernel type has to have at least one template parameters 'typename TAcc = boost::mpl::_1' and has to inherit indirectly from this type publicly via the IAcc interface 'public alpaka::IAcc<TAcc>'.
+    //! The kernel type has to be inherited from 'alpaka::IAcc<boost::mpl::_1>'directly.
     //! All template parameters have to be types. No value parameters are allowed. Use boost::mpl::int_ or similar to use values.
-    //! TODO: Check these requirements at compile time!
     //#############################################################################
     template<typename TAcc, typename TKernel, typename... TKernelConstrArgs>
     auto createKernelExecutor(TKernelConstrArgs && ... args)
         -> typename std::result_of<detail::KernelExecCreator<TAcc, TKernel, TKernelConstrArgs...>(TKernelConstrArgs...)>::type
     {
+        static_assert(std::is_base_of<IAcc<boost::mpl::_1>, TKernel>::value, "The TKernel for createKernelExecutor has to inherit from IAcc<boost::mpl::_1>!");
+
         // Use the specialized KernelExecCreator for the given accelerator.
         return detail::KernelExecCreator<TAcc, TKernel, TKernelConstrArgs...>()(std::forward<TKernelConstrArgs>(args)...);
     }
