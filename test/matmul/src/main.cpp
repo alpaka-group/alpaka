@@ -29,10 +29,6 @@
 #include <typeinfo>             // typeid
 #include <utility>              // std::forward
 
-#ifdef ALPAKA_CUDA_ENABLED
-    #include <cuda.h>
-#endif
-
 //#############################################################################
 //! A matrix multiplication kernel.
 //! Computes C += A*B.

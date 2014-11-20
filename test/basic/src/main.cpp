@@ -29,10 +29,6 @@
 #include <typeinfo>             // typeid
 #include <utility>              // std::forward
 
-#ifdef ALPAKA_CUDA_ENABLED
-    #include <cuda.h>
-#endif
-
 //#############################################################################
 //! An accelerated test kernel.
 //! Uses atomicOp(), syncBlockKernels(), shared memory, getIdx, getSize, global memory to compute a (useless) result.
