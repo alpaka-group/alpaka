@@ -43,15 +43,15 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC IndexCuda(IndexCuda const & other) = default;
+                ALPAKA_FCT_ACC IndexCuda(IndexCuda const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC IndexCuda(IndexCuda && other) = default;
+                ALPAKA_FCT_ACC IndexCuda(IndexCuda &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Assignment-operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC IndexCuda & operator=(IndexCuda const &) = delete;
+                ALPAKA_FCT_ACC IndexCuda & operator=(IndexCuda const & ) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------

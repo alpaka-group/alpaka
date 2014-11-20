@@ -22,17 +22,17 @@
 # Required CMake version
 ################################################################################
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8.5)
 
 ################################################################################
 # Settings
 ################################################################################
 
 # Set project macros.
-SET( TARGET_NAME "matmul" )
-SET( INCLUDE_DIR "include/" )
-SET( SUFFIXED_INCLUDE_DIR "${INCLUDE_DIR}/${TARGET_NAME}/" )
-SET( SUFFIXED_SOURCE_DIR "src/" )
+SET(TARGET_NAME matmul)
+SET(INCLUDE_DIR "include/")
+SET(SUFFIXED_INCLUDE_DIR "${INCLUDE_DIR}${TARGET_NAME}/")
+SET(SUFFIXED_SOURCE_DIR "src/")
 
 ################################################################################
 # Project 
@@ -41,7 +41,7 @@ SET( SUFFIXED_SOURCE_DIR "src/" )
 PROJECT(${TARGET_NAME})
 
 # Include the alpaka library.
-ADD_SUBDIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/../../" "${CMAKE_CURRENT_BINARY_DIR}/alpaka")
+INCLUDE("${CMAKE_CURRENT_LIST_DIR}/../../CMakeLists.txt")
 
 # Add all the include files in all recursive subdirectories and group them accordingly.
 append_recursive_files_add_to_source_group(${SUFFIXED_INCLUDE_DIR} "hpp" HPP_FILES_ALL)
@@ -52,24 +52,32 @@ append_recursive_files_add_to_source_group(${SUFFIXED_SOURCE_DIR} "cpp" CPP_FILE
 # Add all the CUDA source files in all recursive subdirectories and group them accordingly.
 append_recursive_files_add_to_source_group(${SUFFIXED_SOURCE_DIR} "cu" CU_FILES_ALL)
 
+INCLUDE_DIRECTORIES(${INCLUDE_DIR})
+
 # Builds the project as a static library and adds the headers and sources.
+# Always add all files to the target executable build call to add them to the build project.
 IF(ALPAKA_CUDA_ENABLE)
     CUDA_ADD_EXECUTABLE(${TARGET_NAME}
         ${HPP_FILES_ALL}
+        #${CPP_FILES_ALL}
         ${CU_FILES_ALL}
         #OPTIONS -arch sm_20
     )
+    # Force the .cpp files to be recognized as headers and not be compiled so there wont be a second entry point.
+    #FOREACH(filepath ${CPP_FILES_ALL})
+	#    SET_SOURCE_FILES_PROPERTIES(${filepath} PROPERTIES HEADER_FILE_ONLY TRUE)
+    #ENDFOREACH()
 ELSE()
     ADD_EXECUTABLE(${TARGET_NAME}
-        ${HEADER_FILES_ALL}
+        ${HPP_FILES_ALL}
         ${CPP_FILES_ALL}
+		${CU_FILES_ALL}
     )
+    # Force the .cu files to be recognized as headers and not be compiled so there wont be a second entry point.
+    FOREACH(filepath ${CU_FILES_ALL})
+	    SET_SOURCE_FILES_PROPERTIES(${filepath} PROPERTIES HEADER_FILE_ONLY TRUE)
+    ENDFOREACH()
 ENDIF()
 
-ADD_DEPENDENCIES(${TARGET_NAME} alpaka)
-
-# Set the include directories for this library.
-TARGET_INCLUDE_DIRECTORIES(${TARGET_NAME} PUBLIC ${INCLUDE_DIR})
-
-# Set the include libraries for this library (adds libs and include directories).
+# Set the link libraries for this library (adds libs and include directories).
 TARGET_LINK_LIBRARIES(${TARGET_NAME} PUBLIC alpaka)

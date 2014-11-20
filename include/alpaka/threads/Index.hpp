@@ -53,11 +53,11 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST IndexThreads(IndexThreads const & other) = default;
+                ALPAKA_FCT_HOST IndexThreads(IndexThreads const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST IndexThreads(IndexThreads && other) = default;
+                ALPAKA_FCT_HOST IndexThreads(IndexThreads &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Assignment-operator.
                 //-----------------------------------------------------------------------------

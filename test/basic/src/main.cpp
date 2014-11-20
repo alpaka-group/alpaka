@@ -39,9 +39,9 @@
 //! \tparam TAcc The accelerator environment to be executed on.
 //! \tparam TuiNumUselessWork The number of useless calculations done in each kernel execution.
 //#############################################################################
-template<typename TuiNumUselessWork, typename TAcc = boost::mpl::_1>
+template<typename TuiNumUselessWork, typename TAcc = alpaka::IAcc<TAcc>>
 class ExampleAcceleratedKernel :
-    public alpaka::IAcc<TAcc>
+    public TAcc
 {
 public:
     //-----------------------------------------------------------------------------
@@ -57,17 +57,17 @@ public:
     ALPAKA_FCT_HOST_ACC void operator()(std::uint32_t * const puiBlockRetVals, std::uint32_t const uiMult2) const
     {
         // The number of kernels in this block.
-        std::uint32_t const uiNumKernelsInBlock(getSize<alpaka::Block, alpaka::Kernels, alpaka::Linear>());
+        std::uint32_t const uiNumKernelsInBlock(TAcc::template getSize<alpaka::Block, alpaka::Kernels, alpaka::Linear>());
 
         // Get the extern allocated shared memory.
-        std::uint32_t * const pBlockShared(getBlockSharedExternMem<std::uint32_t>());
+        std::uint32_t * const pBlockShared(TAcc::template getBlockSharedExternMem<std::uint32_t>());
 
         // Get some shared memory (allocate a second buffer directly afterwards to check for some synchronization bugs).
-        //std::uint32_t * const pBlockShared1(allocBlockSharedMem<std::uint32_t, TuiNumUselessWork::value>());
-        //std::uint32_t * const pBlockShared2(allocBlockSharedMem<std::uint32_t, TuiNumUselessWork::value>());
+        //std::uint32_t * const pBlockShared1(TAcc::template allocBlockSharedMem<std::uint32_t, TuiNumUselessWork::value>());
+        //std::uint32_t * const pBlockShared2(TAcc::template allocBlockSharedMem<std::uint32_t, TuiNumUselessWork::value>());
 
         // Calculate linearized index of the kernel in the block.
-        std::uint32_t const uiIdxBlockKernelsLin(getIdx<alpaka::Block, alpaka::Kernels, alpaka::Linear>());
+        std::uint32_t const uiIdxBlockKernelsLin(TAcc::template getIdx<alpaka::Block, alpaka::Kernels, alpaka::Linear>());
 
 
         // Fill the shared block with the kernel ids [1+X, 2+X, 3+X, ..., #Threads+X].
@@ -80,7 +80,7 @@ public:
 
 
         // Synchronize all kernels because now we are writing to the memory again but inverse.
-        syncBlockKernels();
+        TAcc::syncBlockKernels();
 
         // Do something useless.
         std::uint32_t iSum2(uiIdxBlockKernelsLin);
@@ -93,22 +93,22 @@ public:
 
 
         // Synchronize all kernels again.
-        syncBlockKernels();
+        TAcc::syncBlockKernels();
 
         // Now add up all the cells atomically and write the result to cell 0 of the shared memory.
         if(uiIdxBlockKernelsLin > 0)
         {
-            atomicOp<alpaka::Add>(&pBlockShared[0], pBlockShared[uiIdxBlockKernelsLin]);
+            TAcc::template atomicOp<alpaka::Add>(&pBlockShared[0], pBlockShared[uiIdxBlockKernelsLin]);
         }
 
 
-        syncBlockKernels();
+        TAcc::syncBlockKernels();
 
         // Only master writes result to global memory.
         if(uiIdxBlockKernelsLin==0)
         {
             // Calculate linearized block id.
-            std::uint32_t const bId(getIdx<alpaka::Grid, alpaka::Blocks, alpaka::Linear>());
+            std::uint32_t const bId(TAcc::template getIdx<alpaka::Grid, alpaka::Blocks, alpaka::Linear>());
 
             puiBlockRetVals[bId] = pBlockShared[0] * m_uiMult * uiMult2;
         }

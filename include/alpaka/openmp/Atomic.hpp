@@ -61,11 +61,11 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST AtomicOpenMp(AtomicOpenMp const & other) = default;
+                ALPAKA_FCT_HOST AtomicOpenMp(AtomicOpenMp const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST AtomicOpenMp(AtomicOpenMp && other) = default;
+                ALPAKA_FCT_HOST AtomicOpenMp(AtomicOpenMp &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Assignment-operator.
                 //-----------------------------------------------------------------------------

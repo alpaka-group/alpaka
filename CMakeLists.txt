@@ -33,9 +33,9 @@ SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
 MESSAGE(STATUS "### alpaka ###")
 
 SET(ALPAKA_COMPILE_OPTIONS)
-SET(ALPAKA_LIBRARY_DEPENDENCIES)
-SET(ALPAKA_INCLUDE_DEPENDENCIES)
 SET(ALPAKA_COMPILE_DEFINITIONS)
+SET(ALPAKA_INCLUDE_DEPENDENCIES)
+SET(ALPAKA_LIBRARY_DEPENDENCIES)
 
 # set helper paths to find libraries and packages
 SET(CMAKE_PREFIX_PATH "/usr/lib/x86_64-linux-gnu/" "$ENV{CUDA_ROOT}" "$ENV{BOOST_ROOT}")
@@ -75,8 +75,6 @@ ELSE()
 
     SET(CMAKE_BUILD_TYPE Debug)
     LIST(APPEND ALPAKA_COMPILE_DEFINITIONS _DEBUG)
-
-    LIST(APPEND CUDA_NVCC_FLAGS -g "-Xcompiler=-g")
 ENDIF()
 
 
@@ -97,14 +95,17 @@ FIND_PACKAGE(Boost REQUIRED COMPONENTS ${BOOST_REQUIRED_COMPONENTS})
 LIST(APPEND ALPAKA_INCLUDE_DEPENDENCIES ${Boost_INCLUDE_DIRS})
 LIST(APPEND ALPAKA_LIBRARY_DEPENDENCIES ${Boost_LIBRARIES})
 
-
 ################################################################################
 # Find OpenMP.
 ################################################################################
 IF(ALPAKA_OPENMP_ENABLE)
     FIND_PACKAGE(OpenMP REQUIRED)
     IF(OPENMP_FOUND)
-        LIST(APPEND ALPAKA_COMPILE_OPTIONS "${OpenMP_CXX_FLAGS}")
+        # FIXME: We have to set the global variables because it does not work with setting ALPAKA_COMPILE_OPTIONS.
+        #LIST(APPEND ALPAKA_COMPILE_OPTIONS ${OpenMP_CXX_FLAGS})
+
+        #SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+        SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
         #SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
     ENDIF()
 ENDIF()
@@ -115,13 +116,12 @@ ENDIF()
 ################################################################################
 IF(ALPAKA_CUDA_ENABLE)
     FIND_PACKAGE(CUDA 6.5 REQUIRED)
+    #SET(CUDA_VERBOSE_BUILD ON)
+    SET(CUDA_PROPAGATE_HOST_FLAGS ON)
 
     IF(CUDA_VERSION VERSION_LESS 6.5)
         MESSAGE(FATAL_ERROR "CUDA Toolkit < 6.5 detected!")
     ENDIF()
-    
-    SET(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} "-std=c++11")
-    SET(CUDA_HOST_COMPILER ${CMAKE_CXX_COMPILER})
 
     SET(CUDA_ARCH sm_20 CACHE STRING "Set GPU architecture")
     STRING(COMPARE EQUAL ${CUDA_ARCH} "sm_10" IS_CUDA_ARCH_UNSUPPORTED)
@@ -132,28 +132,31 @@ IF(ALPAKA_CUDA_ENABLE)
     IF(IS_CUDA_ARCH_UNSUPPORTED)
         MESSAGE(FATAL_ERROR "Unsupported CUDA architecture ${CUDA_ARCH} specified. SM 2.0 or higher is required.")
     ENDIF(IS_CUDA_ARCH_UNSUPPORTED)
+    
+    LIST(APPEND CUDA_NVCC_FLAGS -std=c++11)
+    SET(CUDA_HOST_COMPILER ${CMAKE_CXX_COMPILER})
 
     SET(CUDA_FTZ "--ftz=false" CACHE STRING "Set flush to zero for GPU")
+    SET(CUDA_MATH --use_fast_math CACHE STRING "Enable fast-math")
 
-    SET(CUDA_MATH --use_fast_math CACHE STRING "Enable fast-math" )
+    LIST(APPEND CUDA_NVCC_FLAGS ${nvcc_flags} -arch=${CUDA_ARCH} ${CUDA_MATH} ${CUDA_FTZ})
+
     OPTION(CUDA_SHOW_REGISTER "Show kernel registers and create PTX" OFF)
-    OPTION(CUDA_KEEP_FILES "Keep all intermediate files that are generated during internal compilation steps (folder: nvcc_tmp)" OFF)
-    OPTION(CUDA_SHOW_CODELINES "Show kernel lines in cuda-gdb and cuda-memcheck" OFF)
+    IF(CUDA_SHOW_REGISTER)
+        LIST(APPEND CUDA_NVCC_FLAGS -Xptxas=-v)
+    ENDIF(CUDA_SHOW_REGISTER)
 
+    OPTION(CUDA_KEEP_FILES "Keep all intermediate files that are generated during internal compilation steps (folder: nvcc_tmp)" OFF)
+    IF(CUDA_KEEP_FILES)
+        MAKE_DIRECTORY("${PROJECT_BINARY_DIR}/nvcc_tmp")
+        LIST(APPEND CUDA_NVCC_FLAGS --keep --keep-dir "${PROJECT_BINARY_DIR}/nvcc_tmp")
+    ENDIF(CUDA_KEEP_FILES)
+
+    OPTION(CUDA_SHOW_CODELINES "Show kernel lines in cuda-gdb and cuda-memcheck" OFF)
     IF(CUDA_SHOW_CODELINES)
         LIST(APPEND CUDA_NVCC_FLAGS --source-in-ptx -Xcompiler -rdynamic -lineinfo)
         SET(CUDA_KEEP_FILES ON CACHE BOOL "activate keep files" FORCE)
     ENDIF(CUDA_SHOW_CODELINES)
-
-    LIST(APPEND CUDA_NVCC_FLAGS ${nvcc_flags} -arch=${CUDA_ARCH} ${CUDA_MATH} ${CUDA_FTZ})
-    IF(CUDA_SHOW_REGISTER)
-        SET(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} -Xptxas=-v)
-    ENDIF(CUDA_SHOW_REGISTER)
-
-    IF(CUDA_KEEP_FILES)
-        MAKE_DIRECTORY("${PROJECT_BINARY_DIR}/nvcc_tmp")
-        SET(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} --keep --keep-dir "${PROJECT_BINARY_DIR}/nvcc_tmp")
-    ENDIF(CUDA_KEEP_FILES)
 
     LIST(APPEND ALPAKA_LIBRARY_DEPENDENCIES ${CUDA_CUDART_LIBRARY})
 ENDIF()
@@ -194,26 +197,45 @@ ENDIF()
 # Compile & Link.
 ################################################################################
 
-INCLUDE("cmake/recursive_file_functions.cmake")
+SET(ALPAKA_RESURSIVE_FILE_FUNCTIONS_FILE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake/recursive_file_functions.cmake")
+INCLUDE(${ALPAKA_RESURSIVE_FILE_FUNCTIONS_FILE_PATH})
 
 # alpaka
-SET(ALPAKA_INCLUDE_DIR "include/")
-SET(ALPAKA_SUFFIXED_INCLUDE_DIR "${ALPAKA_INCLUDE_DIR}alpaka/")
+SET(ALPAKA_REALTIVE_INCLUDE_DIR "include/")
+SET(ALPAKA_SUFFIXED_REALTIVE_INCLUDE_DIR "${ALPAKA_REALTIVE_INCLUDE_DIR}alpaka/")
+SET(ALPAKA_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/include/")
 
 # Add all the include files in all recursive subdirectories and group them accordingly.
-append_recursive_files_add_to_source_group(${ALPAKA_SUFFIXED_INCLUDE_DIR} "hpp" ALPAKA_HEADER_FILES_ALL)
+append_recursive_files_add_to_source_group(${ALPAKA_SUFFIXED_REALTIVE_INCLUDE_DIR} "hpp" ALPAKA_HEADER_FILES_ALL)
 
 # Add all the source files in all recursive subdirectories and group them accordingly.
-append_recursive_files_add_to_source_group(${ALPAKA_SUFFIXED_INCLUDE_DIR} "cpp" ALPAKA_SOURCE_FILES_ALL)
+append_recursive_files_add_to_source_group(${ALPAKA_SUFFIXED_REALTIVE_INCLUDE_DIR} "cpp" ALPAKA_SOURCE_FILES_ALL)
+
+SET(ALPAKA_CMAKE_FILES_ALL ${CMAKE_CURRENT_LIST_FILE} ${ALPAKA_RESURSIVE_FILE_FUNCTIONS_FILE_PATH})
 
 ADD_LIBRARY(
     alpaka 
     ${ALPAKA_HEADER_FILES_ALL}
-    ${ALPAKA_SOURCE_FILES_ALL})
+    ${ALPAKA_SOURCE_FILES_ALL}
+    ${ALPAKA_CMAKE_FILES_ALL})
 
-TARGET_COMPILE_OPTIONS(alpaka PUBLIC ${ALPAKA_COMPILE_OPTIONS})
-TARGET_COMPILE_DEFINITIONS(alpaka PUBLIC "${ALPAKA_COMPILE_DEFINITIONS}")
-TARGET_INCLUDE_DIRECTORIES(alpaka PUBLIC ${ALPAKA_INCLUDE_DEPENDENCIES} ${ALPAKA_INCLUDE_DIR})
-TARGET_LINK_LIBRARIES(alpaka PUBLIC ${ALPAKA_LIBRARY_DEPENDENCIES})
+# CUDA does not work well with the way better target dependent TARGET_XXX commands: https://www.cmake.org/Bug/view.php?id=14201&nbn=1
+# It requires the settings to be available globally. So we duplicate the settings from TARGET_INCLUDE_DIRECTORIES and TARGET_COMPILE_DEFINITIONS. Maybe this can be removed some time...
+IF(ALPAKA_CUDA_ENABLE)
+    INCLUDE_DIRECTORIES(${ALPAKA_INCLUDE_DEPENDENCIES} ${ALPAKA_INCLUDE_DIR})
+
+    SET(ALPAKA_COMPILE_DEFINITIONS_COPY ${ALPAKA_COMPILE_DEFINITIONS})
+    add_prefix("-D" ALPAKA_COMPILE_DEFINITIONS_COPY)
+    ADD_DEFINITIONS(${ALPAKA_COMPILE_DEFINITIONS_COPY})
+ENDIF()
+    
+add_prefix("PUBLIC;" ALPAKA_COMPILE_OPTIONS)
+TARGET_COMPILE_OPTIONS(alpaka ${ALPAKA_COMPILE_OPTIONS})
+add_prefix("PUBLIC;" ALPAKA_COMPILE_DEFINITIONS)
+TARGET_COMPILE_DEFINITIONS(alpaka ${ALPAKA_COMPILE_DEFINITIONS})
+add_prefix("PUBLIC;" ALPAKA_INCLUDE_DEPENDENCIES)
+TARGET_INCLUDE_DIRECTORIES(alpaka ${ALPAKA_INCLUDE_DEPENDENCIES} PUBLIC ${ALPAKA_INCLUDE_DIR})
+add_prefix("PUBLIC;" ALPAKA_LIBRARY_DEPENDENCIES)
+TARGET_LINK_LIBRARIES(alpaka ${ALPAKA_LIBRARY_DEPENDENCIES})
 
 MESSAGE(STATUS "### alpaka done ###")

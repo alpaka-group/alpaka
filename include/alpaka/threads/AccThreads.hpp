@@ -33,6 +33,7 @@
 #include <alpaka/interfaces/KernelExecCreator.hpp>  // KernelExecCreator
 
 #include <alpaka/interfaces/BlockSharedExternMemSizeBytes.hpp>
+#include <alpaka/interfaces/IAcc.hpp>
 
 #include <cstddef>                                  // std::size_t
 #include <cstdint>                                  // unit8_t
@@ -56,6 +57,9 @@ namespace alpaka
     {
         namespace detail
         {
+            template<typename TAcceleratedKernel>
+            class KernelExecutor;
+
             //#############################################################################
             //! The base class for all C++11 std::thread accelerated kernels.
             //#############################################################################
@@ -66,6 +70,9 @@ namespace alpaka
             {
             public:
                 using MemorySpace = MemorySpaceHost;
+
+                template<typename TAcceleratedKernel>
+                friend class alpaka::threads::detail::KernelExecutor;
 
             public:
                 //-----------------------------------------------------------------------------
@@ -97,7 +104,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Move-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST AccThreads(AccThreads && other) = default;
+                ALPAKA_FCT_HOST AccThreads(AccThreads &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Assignment-operator.
                 //-----------------------------------------------------------------------------
@@ -225,194 +232,193 @@ namespace alpaka
 
                 // getBlockSharedExternMem
                 std::vector<uint8_t> mutable m_vuiExternalSharedMem;        //!< External block shared memory.
+            };
 
+            //#############################################################################
+            //! The executor for an accelerated serial kernel.
+            //#############################################################################
+            template<typename TAcceleratedKernel>
+            class KernelExecutor :
+                private TAcceleratedKernel
+            {
+                static_assert(std::is_base_of<IAcc<AccThreads>, TAcceleratedKernel>::value, "The TAcceleratedKernel for the threads::detail::KernelExecutor has to inherit from IAcc<AccThreads>!");
             public:
-                //#############################################################################
-                //! The executor for an accelerated serial kernel.
-                // TODO: Check that TAcceleratedKernel inherits from the correct accelerator.
-                //#############################################################################
-                template<typename TAcceleratedKernel>
-                class KernelExecutor :
-                    protected TAcceleratedKernel
+                //-----------------------------------------------------------------------------
+                //! Constructor.
+                //-----------------------------------------------------------------------------
+                template<typename... TKernelConstrArgs>
+                ALPAKA_FCT_HOST KernelExecutor(TKernelConstrArgs && ... args) :
+                    TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
+                    m_vThreadsInBlock(),
+                    m_mtxMapInsert()
                 {
-                public:
-                    //-----------------------------------------------------------------------------
-                    //! Constructor.
-                    //-----------------------------------------------------------------------------
-                    template<typename... TKernelConstrArgs>
-                    ALPAKA_FCT_HOST KernelExecutor(TKernelConstrArgs && ... args) :
-                        TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
-                        m_vThreadsInBlock(),
-                        m_mtxMapInsert()
+#ifdef _DEBUG
+                    std::cout << "[+] AccThreads::KernelExecutor()" << std::endl;
+#endif
+#ifdef _DEBUG
+                    std::cout << "[-] AccThreads::KernelExecutor()" << std::endl;
+#endif
+                }
+                //-----------------------------------------------------------------------------
+                //! Copy-constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST KernelExecutor(KernelExecutor const & other) :
+                    TAcceleratedKernel(other),
+                    m_vThreadsInBlock(),
+                    m_mtxMapInsert()
+                {}
+                //-----------------------------------------------------------------------------
+                //! Move-constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST KernelExecutor(KernelExecutor && other) :
+                    TAcceleratedKernel(std::move(other)),
+                    m_vThreadsInBlock(),
+                    m_mtxMapInsert()
+                {}
+                //-----------------------------------------------------------------------------
+                //! Assignment-operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST KernelExecutor & operator=(KernelExecutor const &) = delete;
+                //-----------------------------------------------------------------------------
+                //! Destructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST ~KernelExecutor() noexcept = default;
+
+                //-----------------------------------------------------------------------------
+                //! Executes the accelerated kernel.
+                //-----------------------------------------------------------------------------
+                template<typename TWorkSize, typename... TArgs>
+                ALPAKA_FCT_HOST void operator()(IWorkSize<TWorkSize> const & workSize, TArgs && ... args) const
+                {
+#ifdef _DEBUG
+                    std::cout << "[+] AccThreads::KernelExecutor::operator()" << std::endl;
+#endif
+                    (*const_cast<TInterfacedWorkSize*>(static_cast<TInterfacedWorkSize const *>(this))) = workSize;
+
+                    auto const uiNumKernelsPerBlock(workSize.template getSize<Block, Kernels, Linear>());
+                    auto const uiMaxKernelsPerBlock(AccThreads::getSizeBlockKernelsLinearMax());
+                    if(uiNumKernelsPerBlock > uiMaxKernelsPerBlock)
                     {
-#ifdef _DEBUG
-                        std::cout << "[+] AccThreads::KernelExecutor()" << std::endl;
-#endif
-#ifdef _DEBUG
-                        std::cout << "[-] AccThreads::KernelExecutor()" << std::endl;
-#endif
+                        throw std::runtime_error(("The given blockSize '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the threads accelerator!").c_str());
                     }
-                    //-----------------------------------------------------------------------------
-                    //! Copy-constructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST KernelExecutor(KernelExecutor const & other) :
-                        TAcceleratedKernel(other),
-                        m_vThreadsInBlock(),
-                        m_mtxMapInsert()
-                    {}
-                    //-----------------------------------------------------------------------------
-                    //! Move-constructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST KernelExecutor(KernelExecutor && other) :
-                        TAcceleratedKernel(std::move(other)),
-                        m_vThreadsInBlock(),
-                        m_mtxMapInsert()
-                    {}
-                    //-----------------------------------------------------------------------------
-                    //! Assignment-operator.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST KernelExecutor & operator=(KernelExecutor const &) = delete;
-                    //-----------------------------------------------------------------------------
-                    //! Destructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST ~KernelExecutor() noexcept = default;
 
-                    //-----------------------------------------------------------------------------
-                    //! Executes the accelerated kernel.
-                    //-----------------------------------------------------------------------------
-                    template<typename TWorkSize, typename... TArgs>
-                    ALPAKA_FCT_HOST void operator()(IWorkSize<TWorkSize> const & workSize, TArgs && ... args) const
+                    this->AccThreads::m_uiNumKernelsPerBlock = uiNumKernelsPerBlock;
+
+                    //m_vThreadsInBlock.reserve(uiNumKernelsPerBlock);    // Minimal speedup?
+
+                    auto const v3uiSizeBlockKernels(workSize.template getSize<Block, Kernels, D3>());
+                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiSizeBlockKernels, std::forward<TArgs>(args)...));
+                    this->AccThreads::m_vuiExternalSharedMem.resize(uiBlockSharedExternMemSizeBytes);
+
+                    auto const v3uiSizeGridBlocks(workSize.template getSize<Grid, Blocks, D3>());
+#ifdef _DEBUG
+                    //std::cout << "GridBlocks: " << v3uiSizeGridBlocks << " BlockKernels: " << v3uiSizeBlockKernels << std::endl;
+#endif
+                    // CUDA programming guide: "Thread blocks are required to execute independently: It must be possible to execute them in any order, in parallel or in series. 
+                    // This independence requirement allows thread blocks to be scheduled in any order across any number of cores"
+                    // -> We can execute them serially.
+                    for(std::uint32_t bz(0); bz<v3uiSizeGridBlocks[2]; ++bz)
                     {
-#ifdef _DEBUG
-                        std::cout << "[+] AccThreads::KernelExecutor::operator()" << std::endl;
-#endif
-                        (*const_cast<TInterfacedWorkSize*>(static_cast<TInterfacedWorkSize const *>(this))) = workSize;
-
-                        auto const uiNumKernelsPerBlock(this->TAcceleratedKernel::template getSize<Block, Kernels, Linear>());
-                        auto const uiMaxKernelsPerBlock(this->TAcceleratedKernel::getSizeBlockKernelsLinearMax());
-                        if(uiNumKernelsPerBlock > uiMaxKernelsPerBlock)
+                        this->AccThreads::m_v3uiGridBlockIdx[2] = bz;
+                        for(std::uint32_t by(0); by<v3uiSizeGridBlocks[1]; ++by)
                         {
-                            throw std::runtime_error(("The given blockSize '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the threads accelerator!").c_str());
-                        }
-
-                        this->AccThreads::m_uiNumKernelsPerBlock = uiNumKernelsPerBlock;
-
-                        //m_vThreadsInBlock.reserve(uiNumKernelsPerBlock);    // Minimal speedup?
-
-                        auto const v3uiSizeBlockKernels(this->TAcceleratedKernel::template getSize<Block, Kernels, D3>());
-                        auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiSizeBlockKernels, std::forward<TArgs>(args)...));
-                        this->AccThreads::m_vuiExternalSharedMem.resize(uiBlockSharedExternMemSizeBytes);
-
-                        auto const v3uiSizeGridBlocks(this->TAcceleratedKernel::template getSize<Grid, Blocks, D3>());
-#ifdef _DEBUG
-                        //std::cout << "GridBlocks: " << v3uiSizeGridBlocks << " BlockKernels: " << v3uiSizeBlockKernels << std::endl;
-#endif
-                        // CUDA programming guide: "Thread blocks are required to execute independently: It must be possible to execute them in any order, in parallel or in series. 
-                        // This independence requirement allows thread blocks to be scheduled in any order across any number of cores"
-                        // -> We can execute them serially.
-                        for(std::uint32_t bz(0); bz<v3uiSizeGridBlocks[2]; ++bz)
-                        {
-                            this->AccThreads::m_v3uiGridBlockIdx[2] = bz;
-                            for(std::uint32_t by(0); by<v3uiSizeGridBlocks[1]; ++by)
+                            this->AccThreads::m_v3uiGridBlockIdx[1] = by;
+                            for(std::uint32_t bx(0); bx<v3uiSizeGridBlocks[0]; ++bx)
                             {
-                                this->AccThreads::m_v3uiGridBlockIdx[1] = by;
-                                for(std::uint32_t bx(0); bx<v3uiSizeGridBlocks[0]; ++bx)
+                                this->AccThreads::m_v3uiGridBlockIdx[0] = bx;
+
+                                vec<3u> v3uiBlockKernelIdx;
+                                for(std::uint32_t tz(0); tz<v3uiSizeBlockKernels[2]; ++tz)
                                 {
-                                    this->AccThreads::m_v3uiGridBlockIdx[0] = bx;
-
-                                    vec<3u> v3uiBlockKernelIdx;
-                                    for(std::uint32_t tz(0); tz<v3uiSizeBlockKernels[2]; ++tz)
+                                    v3uiBlockKernelIdx[2] = tz;
+                                    for(std::uint32_t ty(0); ty<v3uiSizeBlockKernels[1]; ++ty)
                                     {
-                                        v3uiBlockKernelIdx[2] = tz;
-                                        for(std::uint32_t ty(0); ty<v3uiSizeBlockKernels[1]; ++ty)
+                                        v3uiBlockKernelIdx[1] = ty;
+                                        for(std::uint32_t tx(0); tx<v3uiSizeBlockKernels[0]; ++tx)
                                         {
-                                            v3uiBlockKernelIdx[1] = ty;
-                                            for(std::uint32_t tx(0); tx<v3uiSizeBlockKernels[0]; ++tx)
-                                            {
-                                                v3uiBlockKernelIdx[0] = tx;
+                                            v3uiBlockKernelIdx[0] = tx;
 
-                                                // Create a thread.
-                                                // The v3uiBlockKernelIdx is required to be copied in from the environment because if the thread is immediately suspended the variable is already changed for the next iteration/thread.
+                                            // Create a thread.
+                                            // The v3uiBlockKernelIdx is required to be copied in from the environment because if the thread is immediately suspended the variable is already changed for the next iteration/thread.
 #ifdef _MSC_VER    // MSVC <= 14 do not compile the std::thread constructor because the type of the member function template is missing the this pointer as first argument.
-                                                auto threadKernelFct([this](vec<3u> const v3uiBlockKernelIdx, TArgs ... args){threadKernel<TArgs...>(v3uiBlockKernelIdx, args...); });
-                                                m_vThreadsInBlock.push_back(std::thread(threadKernelFct, v3uiBlockKernelIdx, args...));
+                                            auto threadKernelFct([this](vec<3u> const v3uiBlockKernelIdx, TArgs ... args) {threadKernel<TArgs...>(v3uiBlockKernelIdx, args...); });
+                                            m_vThreadsInBlock.push_back(std::thread(threadKernelFct, v3uiBlockKernelIdx, args...));
 #else
-                                                m_vThreadsInBlock.push_back(std::thread(&KernelExecutor::threadKernel<TArgs...>, this, v3uiBlockKernelIdx, args...));
+                                            m_vThreadsInBlock.push_back(std::thread(&KernelExecutor::threadKernel<TArgs...>, this, v3uiBlockKernelIdx, args...));
 #endif
-                                            }
                                         }
                                     }
-                                    // Join all the threads.
-                                    std::for_each(m_vThreadsInBlock.begin(), m_vThreadsInBlock.end(),
-                                        [](std::thread & t)
-                                        {
-                                            t.join();
-                                        }
-                                    );
-                                    // Clean up.
-                                    m_vThreadsInBlock.clear();
-                                    this->AccThreads::m_mThreadsToIndices.clear();
-                                    this->AccThreads::m_mThreadsToBarrier.clear();
-
-                                    // After a block has been processed, the shared memory can be deleted.
-                                    this->AccThreads::m_vvuiSharedMem.clear();
-                                    this->AccThreads::m_vuiExternalSharedMem.clear();
                                 }
+                                // Join all the threads.
+                                std::for_each(m_vThreadsInBlock.begin(), m_vThreadsInBlock.end(),
+                                    [](std::thread & t)
+                                {
+                                    t.join();
+                                }
+                                );
+                                // Clean up.
+                                m_vThreadsInBlock.clear();
+                                this->AccThreads::m_mThreadsToIndices.clear();
+                                this->AccThreads::m_mThreadsToBarrier.clear();
+
+                                // After a block has been processed, the shared memory can be deleted.
+                                this->AccThreads::m_vvuiSharedMem.clear();
+                                this->AccThreads::m_vuiExternalSharedMem.clear();
                             }
                         }
+                    }
 #ifdef _DEBUG
-                        std::cout << "[-] AccThreads::KernelExecutor::operator()" << std::endl;
+                    std::cout << "[-] AccThreads::KernelExecutor::operator()" << std::endl;
 #endif
-                    }
-                private:
-                    //-----------------------------------------------------------------------------
-                    //! The thread entry point.
-                    //-----------------------------------------------------------------------------
-                    template<typename... TArgs>
-                    ALPAKA_FCT_HOST void threadKernel(vec<3u> const v3uiBlockKernelIdx, TArgs ... args) const
+                }
+            private:
+                //-----------------------------------------------------------------------------
+                //! The thread entry point.
+                //-----------------------------------------------------------------------------
+                template<typename... TArgs>
+                ALPAKA_FCT_HOST void threadKernel(vec<3u> const v3uiBlockKernelIdx, TArgs ... args) const
+                {
+                    // We have to store the thread data before the kernel is calling any of the methods of this class depending on them.
+                    auto const idThread(std::this_thread::get_id());
+
+                    // Set the master thread id.
+                    if(v3uiBlockKernelIdx[0] == 0 && v3uiBlockKernelIdx[1] == 0 && v3uiBlockKernelIdx[2] == 0)
                     {
-                        // We have to store the thread data before the kernel is calling any of the methods of this class depending on them.
-                        auto const idThread(std::this_thread::get_id());
-
-                        // Set the master thread id.
-                        if(v3uiBlockKernelIdx[0] == 0 && v3uiBlockKernelIdx[1] == 0 &&v3uiBlockKernelIdx[2] == 0)
-                        {
-                            m_idMasterThread = idThread;
-                        }
-
-                        //// We can not use the default syncBlockKernels here because it searches inside m_mFibersToBarrier for the thread id. 
-                        //// Concurrently searching while others use emplace may be unsafe!
-                        //std::map<std::thread::id, std::size_t>::iterator itThreadToBarrier;
-
-                        {
-                            // The insertion of elements has to be done one thread at a time.
-                            std::lock_guard<std::mutex> lock(m_mtxMapInsert);
-
-                            // Save the thread id, and index.
-#ifdef _MSC_VER // GCC <= 4.7.2 is not standard conformant and has no member emplace. This works with 4.7.3+.
-                            this->AccThreads::m_mThreadsToIndices.emplace(idThread, v3uiBlockKernelIdx);
-                            /*itThreadToBarrier = */this->AccThreads::m_mThreadsToBarrier.emplace(idThread, 0)/*.first*/;
-#else
-                            this->AccThreads::m_mThreadsToIndices.insert(std::make_pair(idThread, v3uiBlockKernelIdx));
-                            /*itThreadToBarrier = */this->AccThreads::m_mThreadsToBarrier.insert(std::make_pair(idThread, 0))/*.first*/;
-#endif
-                        }
-
-                        // Sync all fibers so that the maps with fiber id's are complete and not changed after here.
-                        this->AccThreads::syncBlockKernels(/*itThreadToBarrier*/);
-
-                        // Execute the kernel itself.
-                        this->TAcceleratedKernel::operator()(args ...);
-
-                        // We have to sync all threads here because if a thread would finish before all threads have been started, the new thread could get a recycled (then duplicate) thread id!
-                        this->AccThreads::syncBlockKernels();
+                        this->AccThreads::m_idMasterThread = idThread;
                     }
 
-                private:
-                    std::vector<std::thread> mutable m_vThreadsInBlock;         //!< The threads executing the current block.
+                    //// We can not use the default syncBlockKernels here because it searches inside m_mFibersToBarrier for the thread id. 
+                    //// Concurrently searching while others use emplace may be unsafe!
+                    //std::map<std::thread::id, std::size_t>::iterator itThreadToBarrier;
 
-                    std::mutex mutable m_mtxMapInsert;
-                };
+                    {
+                        // The insertion of elements has to be done one thread at a time.
+                        std::lock_guard<std::mutex> lock(m_mtxMapInsert);
+
+                        // Save the thread id, and index.
+#if ((!defined __GNUC__) || ((__GNUC__ > 4) || (__GNUC__ == 4 && ((__GNUC_MINOR__ > 7) || ((__GNUC_MINOR__ == 7) && (__GNUC_PATCHLEVEL__ == 3)))))) // GCC <= 4.7.2 is not standard conformant and has no member emplace. This works with 4.7.3+.
+                        this->AccThreads::m_mThreadsToIndices.emplace(idThread, v3uiBlockKernelIdx);
+                        /*itThreadToBarrier = */this->AccThreads::m_mThreadsToBarrier.emplace(idThread, 0)/*.first*/;
+#else
+                        this->AccThreads::m_mThreadsToIndices.insert(std::make_pair(idThread, v3uiBlockKernelIdx));
+                        /*itThreadToBarrier = */this->AccThreads::m_mThreadsToBarrier.insert(std::make_pair(idThread, 0))/*.first*/;
+#endif
+                    }
+
+                    // Sync all fibers so that the maps with fiber id's are complete and not changed after here.
+                    this->AccThreads::syncBlockKernels(/*itThreadToBarrier*/);
+
+                    // Execute the kernel itself.
+                    this->TAcceleratedKernel::operator()(args ...);
+
+                    // We have to sync all threads here because if a thread would finish before all threads have been started, the new thread could get a recycled (then duplicate) thread id!
+                    this->AccThreads::syncBlockKernels();
+                }
+
+            private:
+                std::vector<std::thread> mutable m_vThreadsInBlock;         //!< The threads executing the current block.
+
+                std::mutex mutable m_mtxMapInsert;
             };
         }
     }
@@ -429,7 +435,7 @@ namespace alpaka
         {
         public:
             using TAcceleratedKernel = typename boost::mpl::apply<TKernel, AccThreads>::type;
-            using TKernelExecutor = AccThreads::KernelExecutor<TAcceleratedKernel>;
+            using TKernelExecutor = threads::detail::KernelExecutor<TAcceleratedKernel>;
 
             //-----------------------------------------------------------------------------
             //! Creates an kernel executor for the serial accelerator.

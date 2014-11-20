@@ -46,11 +46,11 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC AtomicCuda(AtomicCuda const & other) = default;
+                ALPAKA_FCT_ACC AtomicCuda(AtomicCuda const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC AtomicCuda(AtomicCuda && other) = default;
+                ALPAKA_FCT_ACC AtomicCuda(AtomicCuda &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Assignment-operator.
                 //-----------------------------------------------------------------------------
@@ -115,7 +115,7 @@ namespace alpaka
                 do
                 {
                     assumed = old;
-                    old = atomicCAS(address_as_i, assumed, __float_as_int(val + __int_as_float(assumed)));
+                    old = atomicCAS(address_as_i, assumed, __float_as_int(value + __int_as_float(assumed)));
                     // Note: uses integer comparison to avoid hang in case of NaN (since NaN != NaN) 
                 } while(assumed != old);
                 return __int_as_float(old);
@@ -146,7 +146,7 @@ namespace alpaka
                 do
                 {
                     assumed = old;
-                    old = atomicCAS(address_as_ull, assumed, __double_as_longlong(val + __longlong_as_double(assumed)));
+                    old = atomicCAS(address_as_ull, assumed, __double_as_longlong(value + __longlong_as_double(assumed)));
                     // Note: uses integer comparison to avoid hang in case of NaN (since NaN != NaN) 
                 } 
                 while (assumed != old); 
@@ -191,14 +191,14 @@ namespace alpaka
                 return atomicMin(addr, value);
             }
         };
-        template<>
+        /*template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Min, unsigned long long int>
         {
             ALPAKA_FCT_ACC unsigned long long int operator()(cuda::detail::AtomicCuda const &, unsigned long long int * const addr, unsigned long long int const & value) const
             {
                 return atomicMin(addr, value);
             }
-        };
+        };*/
         //-----------------------------------------------------------------------------
         //! Max.
         //-----------------------------------------------------------------------------
@@ -218,14 +218,14 @@ namespace alpaka
                 return atomicMax(addr, value);
             }
         };
-        template<>
+        /*template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Max, unsigned long long int>
         {
             ALPAKA_FCT_ACC unsigned long long int operator()(cuda::detail::AtomicCuda const &, unsigned long long int * const addr, unsigned long long int const & value) const
             {
                 return atomicMax(addr, value);
             }
-        };
+        };*/
         //-----------------------------------------------------------------------------
         //! Exch.
         //-----------------------------------------------------------------------------
@@ -302,14 +302,14 @@ namespace alpaka
                 return atomicAnd(addr, value);
             }
         };
-        template<>
+        /*template<>
         struct AtomicOp<cuda::detail::AtomicCuda, And, unsigned long long int>
         {
             ALPAKA_FCT_ACC unsigned long long int operator()(cuda::detail::AtomicCuda const &, unsigned long long int * const addr, unsigned long long int const & value) const
             {
                 return atomicAnd(addr, value);
             }
-        };
+        };*/
         //-----------------------------------------------------------------------------
         //! Or.
         //-----------------------------------------------------------------------------
@@ -329,14 +329,14 @@ namespace alpaka
                 return atomicOr(addr, value);
             }
         };
-        template<>
+        /*template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Or, unsigned long long int>
         {
             ALPAKA_FCT_ACC unsigned long long int operator()(cuda::detail::AtomicCuda const &, unsigned long long int * const addr, unsigned long long int const & value) const
             {
                 return atomicOr(addr, value);
             }
-        };
+        };*/
         //-----------------------------------------------------------------------------
         //! Xor.
         //-----------------------------------------------------------------------------
@@ -345,7 +345,7 @@ namespace alpaka
         {
             ALPAKA_FCT_ACC int operator()(cuda::detail::AtomicCuda const &, int * const addr, int const & value) const
             {
-                return atomicXOr(addr, value);
+                return atomicXor(addr, value);
             }
         };
         template<>
@@ -353,17 +353,17 @@ namespace alpaka
         {
             ALPAKA_FCT_ACC unsigned int operator()(cuda::detail::AtomicCuda const &, unsigned int * const addr, unsigned int const & value) const
             {
-                return atomicXOr(addr, value);
+                return atomicXor(addr, value);
             }
         };
-        template<>
+        /*template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Xor, unsigned long long int>
         {
             ALPAKA_FCT_ACC unsigned long long int operator()(cuda::detail::AtomicCuda const &, unsigned long long int * const addr, unsigned long long int const & value) const
             {
-                return atomicXOr(addr, value);
+                return atomicXor(addr, value);
             }
-        };
+        };*/
         //-----------------------------------------------------------------------------
         //! Cas.
         //-----------------------------------------------------------------------------

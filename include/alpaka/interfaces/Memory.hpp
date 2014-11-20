@@ -79,7 +79,7 @@ namespace alpaka
         //! \param pBuffer Pointer to memory to free.
         //-----------------------------------------------------------------------------
         template<typename TMemorySpace, typename T = void>
-        void memFree(T * const pBuffer)
+        void memFree(T * pBuffer)
         {
             assert(reinterpret_cast<void *>(pBuffer));
 

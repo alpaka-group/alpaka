@@ -73,7 +73,7 @@ namespace alpaka
         protected TAcc
     {
     public:
-        using MemorySpace = typename TAcc::MemorySpace;
+        //using MemorySpace = typename TAcc::MemorySpace;
 
     public:
         //-----------------------------------------------------------------------------

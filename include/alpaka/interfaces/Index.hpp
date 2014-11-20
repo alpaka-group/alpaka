@@ -25,7 +25,7 @@
 #include <alpaka/core/Positioning.hpp>      // alpaka::origin::Grid/Blocks
 #include <alpaka/core/Common.hpp>           // ALPAKA_FCT_HOST_ACC
 
-#include <alpaka/interfaces/WorkSize.hpp>   // alpaka::IWorkSize
+#include <alpaka/host/WorkSize.hpp>         // alpaka::WorkSizeHost
 
 #include <utility>                          // std::forward
 

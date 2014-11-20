@@ -39,9 +39,9 @@
 //! This is a adaption of the algorithm from the CUDA developers guide.
 //! \tparam TAcc The accelerator environment to be executed on.
 //#############################################################################
-template<typename TAcc = boost::mpl::_1>
+template<typename TAcc = alpaka::IAcc<>>
 class MatMulKernel :
-    public alpaka::IAcc<TAcc>
+    public TAcc
 {
 public:
     //-----------------------------------------------------------------------------
@@ -55,21 +55,21 @@ public:
         TElement * const C) const
     {
         // Column and row of C to calculate.
-        auto const v2uiGridKernelIdx(getIdx<alpaka::Grid, alpaka::Kernels>().subvec<2u>());
+        auto const v2uiGridKernelIdx(TAcc::template getIdx<alpaka::Grid, alpaka::Kernels>().template subvec<2u>());
         auto const & cx(v2uiGridKernelIdx[0]);
         auto const & cy(v2uiGridKernelIdx[1]);
         // Column and row inside the block of C to calculate.
-        auto const v2uiBlockKernelIdx(getIdx<alpaka::Block, alpaka::Kernels>().subvec<2u>());
+        auto const v2uiBlockKernelIdx(TAcc::template getIdx<alpaka::Block, alpaka::Kernels>().template subvec<2u>());
         auto const & col(v2uiBlockKernelIdx[0]);
         auto const & row(v2uiBlockKernelIdx[1]);
 
-        auto const v2uiBlockSize(getSize<alpaka::Block, alpaka::Kernels>().subvec<2u>());
+        auto const v2uiBlockSize(TAcc::template getSize<alpaka::Block, alpaka::Kernels>().template subvec<2u>());
         auto const & uiBlockSizeX(v2uiBlockSize[0]);
         auto const & uiBlockSizeY(v2uiBlockSize[1]);
         auto const uiBlockSizeLin(uiBlockSizeX*uiBlockSizeY);
 
         // Shared memory used to store the current blocks of A and B.
-        auto * const pBlockSharedA(getBlockSharedExternMem<TElement>());
+        auto * const pBlockSharedA(TAcc::template getBlockSharedExternMem<TElement>());
         auto * const pBlockSharedB(pBlockSharedA + uiBlockSizeLin);
 
         TElement fCSum(0);
@@ -78,7 +78,7 @@ public:
         bool const bOutsideMatrix((cx>=n) || (cy>=n));
 
         // Loop over all blocks of A and B that are required to compute the C block. 
-        auto const uiGridSizeX(getSize<alpaka::Grid, alpaka::Blocks>()[0]);
+        auto const uiGridSizeX(TAcc::template getSize<alpaka::Grid, alpaka::Blocks>()[0]);
         for(std::uint32_t l(0); l<uiGridSizeX; ++l)
         {
             // Copy data to shared memory.
@@ -88,7 +88,7 @@ public:
             pBlockSharedB[row*uiBlockSizeX + col] = bOutsideMatrix ? 0 : B[uiIndexB];
 
             // Synchronize to make sure the sub-matrices are loaded before starting the computation.
-            syncBlockKernels();
+            TAcc::syncBlockKernels();
 
             // Dyadic product within shared memory.
             for(std::uint32_t k(0); k<uiBlockSizeY; ++k)
@@ -97,7 +97,7 @@ public:
             }
 
             // Synchronize to make sure that the preceding computation is done before loading two new sub-matrices of A and B in the next iteration.
-            syncBlockKernels();
+            TAcc::syncBlockKernels();
         }
 
         if(!bOutsideMatrix)

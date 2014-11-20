@@ -32,6 +32,7 @@
 #include <alpaka/interfaces/KernelExecCreator.hpp>  // KernelExecCreator
 
 #include <alpaka/interfaces/BlockSharedExternMemSizeBytes.hpp>
+#include <alpaka/interfaces/IAcc.hpp>
 
 #include <cstddef>                                  // std::size_t
 #include <vector>                                   // std::vector
@@ -51,6 +52,9 @@ namespace alpaka
     {
         namespace detail
         {
+            template<typename TAcceleratedKernel>
+            class KernelExecutor;
+
             //#############################################################################
             //! The base class for all non accelerated kernels.
             //#############################################################################
@@ -61,6 +65,9 @@ namespace alpaka
             {
             public:
                 using MemorySpace = MemorySpaceHost;
+
+                template<typename TAcceleratedKernel>
+                friend class alpaka::serial::detail::KernelExecutor;
 
             public:
                 //-----------------------------------------------------------------------------
@@ -74,11 +81,11 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST AccSerial(AccSerial const & other) = default;
+                ALPAKA_FCT_HOST AccSerial(AccSerial const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST AccSerial(AccSerial && other) = default;
+                ALPAKA_FCT_HOST AccSerial(AccSerial &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Assignment-operator.
                 //-----------------------------------------------------------------------------
@@ -155,110 +162,109 @@ namespace alpaka
 
                 // getBlockSharedExternMem
                 std::vector<uint8_t> mutable m_vuiExternalSharedMem;        //!< External block shared memory.
+            };
 
+            //#############################################################################
+            //! The executor for an accelerated serial kernel.
+            //#############################################################################
+            template<typename TAcceleratedKernel>
+            class KernelExecutor :
+                private TAcceleratedKernel
+            {
+                static_assert(std::is_base_of<IAcc<AccSerial>, TAcceleratedKernel>::value, "The TAcceleratedKernel for the serial::detail::KernelExecutor has to inherit from IAcc<AccSerial>!");
             public:
-                //#############################################################################
-                //! The executor for an accelerated serial kernel.
-                // TODO: Check that TAcceleratedKernel inherits from the correct accelerator.
-                //#############################################################################
-                template<typename TAcceleratedKernel>
-                class KernelExecutor :
-                    protected TAcceleratedKernel
+                //-----------------------------------------------------------------------------
+                //! Constructor.
+                //-----------------------------------------------------------------------------
+                template<typename... TKernelConstrArgs>
+                ALPAKA_FCT_HOST KernelExecutor(TKernelConstrArgs && ... args) :
+                    TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
                 {
-                public:
-                    //-----------------------------------------------------------------------------
-                    //! Constructor.
-                    //-----------------------------------------------------------------------------
-                    template<typename... TKernelConstrArgs>
-                    ALPAKA_FCT_HOST KernelExecutor(TKernelConstrArgs && ... args) :
-                        TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
-                    {
 #ifdef _DEBUG
-                        std::cout << "[+] AccSerial::KernelExecutor()" << std::endl;
+                    std::cout << "[+] AccSerial::KernelExecutor()" << std::endl;
 #endif
 #ifdef _DEBUG
-                        std::cout << "[-] AccSerial::KernelExecutor()" << std::endl;
+                    std::cout << "[-] AccSerial::KernelExecutor()" << std::endl;
 #endif
-                    }
-                    //-----------------------------------------------------------------------------
-                    //! Copy-constructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST KernelExecutor(KernelExecutor const & other) = default;
-                    //-----------------------------------------------------------------------------
-                    //! Move-constructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST KernelExecutor(KernelExecutor && other) = default;
-                    //-----------------------------------------------------------------------------
-                    //! Assignment-operator.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST KernelExecutor & operator=(KernelExecutor const &) = delete;
-                    //-----------------------------------------------------------------------------
-                    //! Destructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST ~KernelExecutor() noexcept = default;
+                }
+                //-----------------------------------------------------------------------------
+                //! Copy-constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST KernelExecutor(KernelExecutor const &) = default;
+                //-----------------------------------------------------------------------------
+                //! Move-constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST KernelExecutor(KernelExecutor &&) = default;
+                //-----------------------------------------------------------------------------
+                //! Assignment-operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST KernelExecutor & operator=(KernelExecutor const &) = delete;
+                //-----------------------------------------------------------------------------
+                //! Destructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST ~KernelExecutor() noexcept = default;
 
-                    //-----------------------------------------------------------------------------
-                    //! Executes the accelerated kernel.
-                    //-----------------------------------------------------------------------------
-                    template<typename TWorkSize, typename... TArgs>
-                    ALPAKA_FCT_HOST void operator()(IWorkSize<TWorkSize> const & workSize, TArgs && ... args) const
-                    {
+                //-----------------------------------------------------------------------------
+                //! Executes the accelerated kernel.
+                //-----------------------------------------------------------------------------
+                template<typename TWorkSize, typename... TArgs>
+                ALPAKA_FCT_HOST void operator()(IWorkSize<TWorkSize> const & workSize, TArgs && ... args) const
+                {
 #ifdef _DEBUG
-                        std::cout << "[+] AccSerial::KernelExecutor::operator()" << std::endl;
+                    std::cout << "[+] AccSerial::KernelExecutor::operator()" << std::endl;
 #endif
-                        (*const_cast<TInterfacedWorkSize*>(static_cast<TInterfacedWorkSize const *>(this))) = workSize;
+                    (*const_cast<TInterfacedWorkSize*>(static_cast<TInterfacedWorkSize const *>(this))) = workSize;
                                                
-                        auto const uiNumKernelsPerBlock(this->TAcceleratedKernel::template getSize<Block, Kernels, Linear>());
-                        auto const uiMaxKernelsPerBlock(this->TAcceleratedKernel::getSizeBlockKernelsLinearMax());
-                        if(uiNumKernelsPerBlock > uiMaxKernelsPerBlock)
-                        {
-                            throw std::runtime_error(("The given blockSize '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the serial accelerator!").c_str());
-                        }
+                    auto const uiNumKernelsPerBlock(workSize.template getSize<Block, Kernels, Linear>());
+                    auto const uiMaxKernelsPerBlock(AccSerial::getSizeBlockKernelsLinearMax());
+                    if(uiNumKernelsPerBlock > uiMaxKernelsPerBlock)
+                    {
+                        throw std::runtime_error(("The given blockSize '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the serial accelerator!").c_str());
+                    }
 
-                        auto const v3uiSizeBlockKernels(this->TAcceleratedKernel::template getSize<Block, Kernels, D3>());
-                        auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiSizeBlockKernels, std::forward<TArgs>(args)...));
-                        this->AccSerial::m_vuiExternalSharedMem.resize(uiBlockSharedExternMemSizeBytes);
+                    auto const v3uiSizeBlockKernels(workSize.template getSize<Block, Kernels, D3>());
+                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiSizeBlockKernels, std::forward<TArgs>(args)...));
+                    this->AccSerial::m_vuiExternalSharedMem.resize(uiBlockSharedExternMemSizeBytes);
 
-                        auto const v3uiSizeGridBlocks(this->TAcceleratedKernel::template getSize<Grid, Blocks, D3>());
+                    auto const v3uiSizeGridBlocks(workSize.template getSize<Grid, Blocks, D3>());
 #ifdef _DEBUG
-                        //std::cout << "GridBlocks: " << v3uiSizeGridBlocks << " BlockKernels: " << v3uiSizeBlockKernels << std::endl;
+                    //std::cout << "GridBlocks: " << v3uiSizeGridBlocks << " BlockKernels: " << v3uiSizeBlockKernels << std::endl;
 #endif
-                        for(std::uint32_t bz(0); bz<v3uiSizeGridBlocks[2]; ++bz)
+                    for(std::uint32_t bz(0); bz<v3uiSizeGridBlocks[2]; ++bz)
+                    {
+                        this->AccSerial::m_v3uiGridBlockIdx[2] = bz;
+                        for(std::uint32_t by(0); by<v3uiSizeGridBlocks[1]; ++by)
                         {
-                            this->AccSerial::m_v3uiGridBlockIdx[2] = bz;
-                            for(std::uint32_t by(0); by<v3uiSizeGridBlocks[1]; ++by)
+                            this->AccSerial::m_v3uiGridBlockIdx[1] = by;
+                            for(std::uint32_t bx(0); bx<v3uiSizeGridBlocks[0]; ++bx)
                             {
-                                this->AccSerial::m_v3uiGridBlockIdx[1] = by;
-                                for(std::uint32_t bx(0); bx<v3uiSizeGridBlocks[0]; ++bx)
+                                this->AccSerial::m_v3uiGridBlockIdx[0] = bx;
+
+                                for(std::uint32_t tz(0); tz<v3uiSizeBlockKernels[2]; ++tz)
                                 {
-                                    this->AccSerial::m_v3uiGridBlockIdx[0] = bx;
-
-                                    for(std::uint32_t tz(0); tz<v3uiSizeBlockKernels[2]; ++tz)
+                                    this->AccSerial::m_v3uiBlockKernelIdx[2] = tz;
+                                    for(std::uint32_t ty(0); ty<v3uiSizeBlockKernels[1]; ++ty)
                                     {
-                                        this->AccSerial::m_v3uiBlockKernelIdx[2] = tz;
-                                        for(std::uint32_t ty(0); ty<v3uiSizeBlockKernels[1]; ++ty)
+                                        this->AccSerial::m_v3uiBlockKernelIdx[1] = ty;
+                                        for(std::uint32_t tx(0); tx<v3uiSizeBlockKernels[0]; ++tx)
                                         {
-                                            this->AccSerial::m_v3uiBlockKernelIdx[1] = ty;
-                                            for(std::uint32_t tx(0); tx<v3uiSizeBlockKernels[0]; ++tx)
-                                            {
-                                                this->AccSerial::m_v3uiBlockKernelIdx[0] = tx;
+                                            this->AccSerial::m_v3uiBlockKernelIdx[0] = tx;
 
-                                                this->TAcceleratedKernel::operator()(std::forward<TArgs>(args)...);
-                                            }
+                                            this->TAcceleratedKernel::operator()(std::forward<TArgs>(args)...);
                                         }
                                     }
                                 }
                             }
                         }
-
-                        // After all blocks have been processed, the shared memory can be deleted.
-                        this->AccSerial::m_vvuiSharedMem.clear();
-                        this->AccSerial::m_vuiExternalSharedMem.clear();
-#ifdef _DEBUG
-                        std::cout << "[-] AccSerial::KernelExecutor::operator()" << std::endl;
-#endif
                     }
-                };
+
+                    // After all blocks have been processed, the shared memory can be deleted.
+                    this->AccSerial::m_vvuiSharedMem.clear();
+                    this->AccSerial::m_vuiExternalSharedMem.clear();
+#ifdef _DEBUG
+                    std::cout << "[-] AccSerial::KernelExecutor::operator()" << std::endl;
+#endif
+                }
             };
         }
     }
@@ -275,7 +281,7 @@ namespace alpaka
         {
         public:
             using TAcceleratedKernel = typename boost::mpl::apply<TKernel, AccSerial>::type;
-            using TKernelExecutor = AccSerial::KernelExecutor<TAcceleratedKernel>;
+            using TKernelExecutor = serial::detail::KernelExecutor<TAcceleratedKernel>;
 
             //-----------------------------------------------------------------------------
             //! Creates an kernel executor for the serial accelerator.

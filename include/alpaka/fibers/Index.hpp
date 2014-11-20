@@ -53,11 +53,11 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST IndexFibers(IndexFibers const & other) = default;
+                ALPAKA_FCT_HOST IndexFibers(IndexFibers const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST IndexFibers(IndexFibers && other) = default;
+                ALPAKA_FCT_HOST IndexFibers(IndexFibers &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Assignment-operator.
                 //-----------------------------------------------------------------------------

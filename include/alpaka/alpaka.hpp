@@ -38,15 +38,17 @@
     #include <alpaka/cuda/AccCuda.hpp>
 #endif
 
-#include <alpaka/interfaces/WorkSize.hpp>   // alpaka::WorkSizeHost
 #include <alpaka/interfaces/IAcc.hpp>       // alpaka::IAcc<...>
 
 #include <alpaka/interfaces/KernelExecCreator.hpp>
+#include <alpaka/interfaces/BlockSharedExternMemSizeBytes.hpp>
+
+#include <alpaka/host/WorkSize.hpp>         // alpaka::WorkSizeHost
 
 #include <iostream>                         // std::cout
 
 //-----------------------------------------------------------------------------
-//! The library namespace.
+//! The alpaka library namespace.
 //-----------------------------------------------------------------------------
 namespace alpaka
 {

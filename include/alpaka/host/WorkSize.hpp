@@ -24,7 +24,7 @@
 
 #include <alpaka/interfaces/WorkSize.hpp>   // alpaka::IWorkSize
 
-#include <alpaka/core/vec.hpp>              // alpaka::vec
+#include <alpaka/core/Vec.hpp>              // alpaka::vec
 
 namespace alpaka
 {
@@ -51,11 +51,11 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Copy-constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC WorkSizeHost(WorkSizeHost const & other) = default;
+            ALPAKA_FCT_HOST_ACC WorkSizeHost(WorkSizeHost const &) = default;
             //-----------------------------------------------------------------------------
             //! Move-constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC WorkSizeHost(WorkSizeHost && other) = default;
+            ALPAKA_FCT_HOST_ACC WorkSizeHost(WorkSizeHost &&) = default;
             //-----------------------------------------------------------------------------
             //! Assignment-operator.
             //-----------------------------------------------------------------------------
@@ -89,5 +89,6 @@ namespace alpaka
     //#############################################################################
     //! A basic class storing the work to be used in user code.
     //#############################################################################
-    using WorkSize = IWorkSize<detail::WorkSizeHost>;
+    //using WorkSize = IWorkSize<detail::WorkSizeHost>;
+    typedef IWorkSize<detail::WorkSizeHost> WorkSize;
 }

@@ -57,10 +57,10 @@ namespace alpaka
             template<>
             struct MemFree<MemorySpaceHost>
             {
-                MemFree(void * const pBuffer)
+                MemFree(void * pBuffer)
                 {
                     assert(pBuffer);
-                    delete[] pBuffer;
+                    delete[] reinterpret_cast<std::uint8_t *>(pBuffer);
                 }
             };
             //#############################################################################

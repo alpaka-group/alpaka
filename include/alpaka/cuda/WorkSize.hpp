@@ -43,11 +43,11 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC WorkSizeCuda(WorkSizeCuda const & other) = default;
+                ALPAKA_FCT_ACC WorkSizeCuda(WorkSizeCuda const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC WorkSizeCuda(WorkSizeCuda && other) = default;
+                ALPAKA_FCT_ACC WorkSizeCuda(WorkSizeCuda &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Assignment-operator.
                 //-----------------------------------------------------------------------------

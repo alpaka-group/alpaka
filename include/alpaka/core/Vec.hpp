@@ -80,11 +80,11 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Copy-constructor.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC vec(vec const & other) = default;
+        ALPAKA_FCT_HOST_ACC vec(vec const &) = default;
         //-----------------------------------------------------------------------------
         //! Move-constructor.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC vec(vec && other) = default;
+        ALPAKA_FCT_HOST_ACC vec(vec &&) = default;
         //-----------------------------------------------------------------------------
         //! Assignment-operator.
         //-----------------------------------------------------------------------------
@@ -144,7 +144,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         ALPAKA_FCT_HOST_ACC bool operator==(vec const & rhs) const
         {
-            for(std::size_t i(0); i < dim; i++)
+            for(std::size_t i(0); i < TuiDim; i++)
             {
                 if((*this)[i] != rhs[i])
                 {

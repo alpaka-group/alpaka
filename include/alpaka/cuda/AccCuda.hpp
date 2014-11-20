@@ -35,6 +35,7 @@
 #include <alpaka/interfaces/KernelExecCreator.hpp>  // KernelExecCreator
 
 #include <alpaka/interfaces/BlockSharedExternMemSizeBytes.hpp>
+#include <alpaka/interfaces/IAcc.hpp>
 
 #include <cstddef>                                  // std::size_t
 #include <cstdint>                                  // unit8_t
@@ -62,6 +63,9 @@ namespace alpaka
                 accedKernel(std::forward<TArgs>(args)...);
             }
 
+            template<typename TAcceleratedKernel>
+            class KernelExecutor;
+
             //#############################################################################
             //! The base class for all CUDA accelerated kernels.
             //#############################################################################
@@ -72,6 +76,9 @@ namespace alpaka
             {
             public:
                 using MemorySpace = MemorySpaceCuda;
+
+                template<typename TAcceleratedKernel>
+                friend class alpaka::cuda::detail::KernelExecutor;
 
             public:
                 //-----------------------------------------------------------------------------
@@ -85,11 +92,11 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC AccCuda(AccCuda const & other) = default;
+                ALPAKA_FCT_ACC AccCuda(AccCuda const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC AccCuda(AccCuda && other) = default;
+                ALPAKA_FCT_ACC AccCuda(AccCuda &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Assignment-operator.
                 //-----------------------------------------------------------------------------
@@ -155,7 +162,7 @@ namespace alpaka
                         std::size_t const uiKiB(1024);
                         std::size_t const uiMiB(uiKiB * uiKiB);
                         std::cout << "totalGlobalMem: " << devProp.totalGlobalMem/uiMiB << " MiB" << std::endl;
-                        std::cout << "sharedMemPerBlock: " << devProp.sharedMemPerBlock/uiMiB << " MiB" << std::endl;
+                        std::cout << "sharedMemPerBlock: " << devProp.sharedMemPerBlock/uiKiB << " KiB" << std::endl;
                         std::cout << "regsPerBlock: " << devProp.regsPerBlock << std::endl;
                         std::cout << "warpSize: " << devProp.warpSize << std::endl;
                         std::cout << "memPitch: " << devProp.memPitch << " B" << std::endl;
@@ -163,7 +170,7 @@ namespace alpaka
                         std::cout << "maxThreadsDim[3]: (" << devProp.maxThreadsDim[0] << ", " << devProp.maxThreadsDim[1] << ", " << devProp.maxThreadsDim[2] << ")" << std::endl;
                         std::cout << "maxGridSize[3]: (" << devProp.maxGridSize[0] << ", " << devProp.maxGridSize[1] << ", " << devProp.maxGridSize[2] << ")" << std::endl;
                         std::cout << "clockRate: " << devProp.clockRate << " kHz" << std::endl;
-                        std::cout << "totalConstMem: " << devProp.totalConstMem << " B" << std::endl;
+                        std::cout << "totalConstMem: " << devProp.totalConstMem/uiKiB << " KiB" << std::endl;
                         std::cout << "major: " << devProp.major << std::endl;
                         std::cout << "minor: " << devProp.minor << std::endl;
                         std::cout << "textureAlignment: " << devProp.textureAlignment << std::endl;
@@ -242,7 +249,7 @@ namespace alpaka
                 //! \return The requested index.
                 //-----------------------------------------------------------------------------
                 template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-                ALPAKA_FCT_ACC typename detail::DimToRetType<TDimensionality>::type getIdx() const
+                ALPAKA_FCT_ACC typename alpaka::detail::DimToRetType<TDimensionality>::type getIdx() const
                 {
                     return this->TInterfacedIndex::getIdx<TOrigin, TUnit, TDimensionality>(
                         *static_cast<TInterfacedWorkSize const *>(this));
@@ -277,83 +284,82 @@ namespace alpaka
                     extern __shared__ uint8_t shMem[];
                     return reinterpret_cast<T*>(shMem);
                 }
+            };
 
+            //#############################################################################
+            //! The executor for an accelerated serial kernel.
+            //#############################################################################
+            template<typename TAcceleratedKernel>
+            class KernelExecutor :
+                private TAcceleratedKernel
+            {
+                static_assert(std::is_base_of<IAcc<AccCuda>, TAcceleratedKernel>::value, "The TAcceleratedKernel for the cuda::detail::KernelExecutor has to inherit from IAcc<AccCuda>!");
             public:
-                //#############################################################################
-                //! The executor for an accelerated serial kernel.
-                // TODO: Check that TAcceleratedKernel inherits from the correct accelerator.
-                //#############################################################################
-                template<typename TAcceleratedKernel>
-                class KernelExecutor :
-                    protected TAcceleratedKernel
+                //-----------------------------------------------------------------------------
+                //! Constructor.
+                //-----------------------------------------------------------------------------
+                template<typename... TKernelConstrArgs>
+                ALPAKA_FCT_HOST KernelExecutor(TKernelConstrArgs && ... args) :
+                    TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
                 {
-                public:
-                    //-----------------------------------------------------------------------------
-                    //! Constructor.
-                    //-----------------------------------------------------------------------------
-                    template<typename... TKernelConstrArgs>
-                    ALPAKA_FCT_HOST KernelExecutor(TKernelConstrArgs && ... args) :
-                        TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
+#ifdef _DEBUG
+                    std::cout << "[+] AccCuda::KernelExecutor()" << std::endl;
+#endif
+#ifdef _DEBUG
+                    std::cout << "[-] AccCuda::KernelExecutor()" << std::endl;
+#endif
+                }
+                //-----------------------------------------------------------------------------
+                //! Copy-constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST KernelExecutor(KernelExecutor const &) = default;
+                //-----------------------------------------------------------------------------
+                //! Move-constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST KernelExecutor(KernelExecutor &&) = default;
+                //-----------------------------------------------------------------------------
+                //! Assignment-operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST KernelExecutor & operator=(KernelExecutor const &) = delete;
+                //-----------------------------------------------------------------------------
+                //! Destructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST ~KernelExecutor() noexcept = default;
+
+                //-----------------------------------------------------------------------------
+                //! Executes the accelerated kernel.
+                //-----------------------------------------------------------------------------
+                template<typename TWorkSize, typename... TArgs>
+                ALPAKA_FCT_HOST void operator()(IWorkSize<TWorkSize> const & workSize, TArgs && ... args) const
+                {
+#ifdef _DEBUG
+                    std::cout << "[+] AccCuda::KernelExecutor::operator()" << std::endl;
+#endif
+                    auto const uiNumKernelsPerBlock(workSize.template getSize<Block, Kernels, Linear>());
+                    auto const uiMaxKernelsPerBlock(AccCuda::getSizeBlockKernelsLinearMax());
+                    if(uiNumKernelsPerBlock > uiMaxKernelsPerBlock)
                     {
-#ifdef _DEBUG
-                        std::cout << "[+] AccCuda::KernelExecutor()" << std::endl;
-#endif
-#ifdef _DEBUG
-                        std::cout << "[-] AccCuda::KernelExecutor()" << std::endl;
-#endif
+                        throw std::runtime_error(("The given blockSize '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the CUDA accelerator!").c_str());
                     }
-                    //-----------------------------------------------------------------------------
-                    //! Copy-constructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST KernelExecutor(KernelExecutor const & other) = default;
-                    //-----------------------------------------------------------------------------
-                    //! Move-constructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST KernelExecutor(KernelExecutor && other) = default;
-                    //-----------------------------------------------------------------------------
-                    //! Assignment-operator.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST KernelExecutor & operator=(KernelExecutor const &) = delete;
-                    //-----------------------------------------------------------------------------
-                    //! Destructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST ~KernelExecutor() noexcept = default;
 
-                    //-----------------------------------------------------------------------------
-                    //! Executes the accelerated kernel.
-                    //-----------------------------------------------------------------------------
-                    template<typename TWorkSize, typename... TArgs>
-                    ALPAKA_FCT_HOST void operator()(IWorkSize<TWorkSize> const & workSize, TArgs && ... args) const
-                    {
+                    auto const v3uiSizeGridBlocks(workSize.template getSize<Grid, Blocks, D3>());
+                    auto const v3uiSizeBlockKernels(workSize.template getSize<Block, Kernels, D3>());
 #ifdef _DEBUG
-                        std::cout << "[+] AccCuda::KernelExecutor::operator()" << std::endl;
+                    //std::cout << "GridBlocks: " << v3uiSizeGridBlocks << " BlockKernels: " << v3uiSizeBlockKernels<< std::endl;
 #endif
-                        auto const uiNumKernelsPerBlock(workSize.getSize<Block, Kernels, Linear>());
-                        auto const uiMaxKernelsPerBlock(this->TAcceleratedKernel::getSizeBlockKernelsLinearMax());
-                        if(uiNumKernelsPerBlock > uiMaxKernelsPerBlock)
-                        {
-                            throw std::runtime_error(("The given blockSize '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the CUDA accelerator!").c_str());
-                        }
+                    dim3 gridDim(v3uiSizeGridBlocks[0], v3uiSizeGridBlocks[1], v3uiSizeGridBlocks[2]);
+                    dim3 blockDim(v3uiSizeBlockKernels[0], v3uiSizeBlockKernels[1], v3uiSizeBlockKernels[2]);
+#ifdef _DEBUG
+                    //std::cout << "GridBlocks: (" << gridDim.x << ", " << gridDim.y << ", " << gridDim.z << ")" << std::endl;
+                    //std::cout << "BlockKernels: (" <<  << blockDim.x << ", " << blockDim.y << ", " << blockDim.z << ")" << std::endl;
+#endif
+                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiSizeBlockKernels, std::forward<TArgs>(args)...));
 
-                        auto const v3uiSizeGridBlocks(workSize.getSize<Grid, Blocks, D3>());
-                        auto const v3uiSizeBlockKernels(workSize.getSize<Block, Kernels, D3>());
+                    detail::cudaKernel<<<gridDim, blockDim, uiBlockSharedExternMemSizeBytes>>>(*static_cast<TAcceleratedKernel const *>(this), args...);
 #ifdef _DEBUG
-                        //std::cout << "GridBlocks: " << v3uiSizeGridBlocks << " BlockKernels: " << v3uiSizeBlockKernels<< std::endl;
+                    std::cout << "[-] AccCuda::KernelExecutor::operator()" << std::endl;
 #endif
-                        dim3 gridDim(v3uiSizeGridBlocks[0], v3uiSizeGridBlocks[1], v3uiSizeGridBlocks[2]);
-                        dim3 blockDim(v3uiSizeBlockKernels[0], v3uiSizeBlockKernels[1], v3uiSizeBlockKernels[2]);
-#ifdef _DEBUG
-                        //std::cout << "GridBlocks: (" << gridDim.x << ", " << gridDim.y << ", " << gridDim.z << ")" << std::endl;
-                        //std::cout << "BlockKernels: (" <<  << blockDim.x << ", " << blockDim.y << ", " << blockDim.z << ")" << std::endl;
-#endif
-                        auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiSizeBlockKernels, std::forward<TArgs>(args)...));
-
-                        detail::cudaKernel<<<gridDim, blockDim, uiBlockSharedExternMemSizeBytes>>>(*static_cast<TAcceleratedKernel const *>(this), args...);
-#ifdef _DEBUG
-                        std::cout << "[-] AccCuda::KernelExecutor::operator()" << std::endl;
-#endif
-                    }
-                };
+                }
             };
         }
     }
@@ -454,7 +460,7 @@ namespace alpaka
         {
         public:
             using TAcceleratedKernel = typename boost::mpl::apply<TKernel, AccCuda>::type;
-            using TKernelExecutor = AccCuda::KernelExecutor<TAcceleratedKernel>;
+            using TKernelExecutor = cuda::detail::KernelExecutor<TAcceleratedKernel>;
 
             // Copying a kernel onto the CUDA device has some extra requirements of being trivially copyable:
             // A trivially copyable class is a class that
@@ -464,9 +470,10 @@ namespace alpaka
             // 4. Has no non-trivial move assignment operators
             // 5. Has a trivial destructor
             //
+#ifndef __GNUC__    // FIXME: Find out which version > 4.8.0 does support the std::is_trivially_copyable
             // TODO: is_standard_layout is even stricter. Is is_trivially_copyable enough?
             static_assert(std::is_trivially_copyable<TAcceleratedKernel>::value, "The given kernel functor has to be trivially copyable to be used on a CUDA device!");
-
+#endif
             //-----------------------------------------------------------------------------
             //! Creates an kernel executor for the serial accelerator.
             //-----------------------------------------------------------------------------

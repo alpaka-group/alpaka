@@ -48,11 +48,11 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST IndexSerial(IndexSerial const & other) = default;
+                ALPAKA_FCT_HOST IndexSerial(IndexSerial const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST IndexSerial(IndexSerial && other) = default;
+                ALPAKA_FCT_HOST IndexSerial(IndexSerial &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Assignment-operator.
                 //-----------------------------------------------------------------------------

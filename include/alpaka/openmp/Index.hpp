@@ -54,11 +54,11 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST IndexOpenMp(IndexOpenMp const & other) = default;
+                ALPAKA_FCT_HOST IndexOpenMp(IndexOpenMp const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST IndexOpenMp(IndexOpenMp && other) = default;
+                ALPAKA_FCT_HOST IndexOpenMp(IndexOpenMp &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Assignment-operator.
                 //-----------------------------------------------------------------------------

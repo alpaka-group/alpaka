@@ -6,7 +6,7 @@ FUNCTION(append_recursive_files In_RelativeRootDir In_FileExtension Out_Variable
 		#MESSAGE(${In_RelativeRootDir})
 		#MESSAGE(${In_FileExtension})
 	# Get all recursive files.
-	FILE(GLOB_RECURSE allFilePathsList "${In_RelativeRootDir}*.${In_FileExtension}")
+	FILE(GLOB_RECURSE allFilePathsList "${CMAKE_CURRENT_LIST_DIR}/${In_RelativeRootDir}*.${In_FileExtension}")
 		#MESSAGE( "allFilePathsList: ${allFilePathsList}" )
 	# Set the return value.
 	SET(${Out_VariableAllFilePathsList} ${${Out_VariableAllFilePathsList}} "${allFilePathsList}" PARENT_SCOPE)
@@ -18,8 +18,9 @@ ENDFUNCTION()
 FUNCTION(append_recursive_relative_subdirectories In_RelativeRootDir Out_VariableAllSubDirPathsList)
 		#MESSAGE("In_RelativeRootDir: ${In_RelativeRootDir}")
 		#MESSAGE("CMAKE_CURRENT_LIST_DIR: ${CMAKE_CURRENT_LIST_DIR}")
+	SET(rootDir "${CMAKE_CURRENT_LIST_DIR}/${In_RelativeRootDir}")
 	# Get all the recursive files with their relative paths. 
-	FILE(GLOB_RECURSE recursiveFilePathsList RELATIVE "${CMAKE_CURRENT_LIST_DIR}/${In_RelativeRootDir}" "${In_RelativeRootDir}*")
+	FILE(GLOB_RECURSE recursiveFilePathsList RELATIVE ${rootDir} "${rootDir}*")
 		#MESSAGE("recursiveFilePathsList: ${recursiveFilePathsList}")
 		
 	# Get the paths to all the recursive files.
@@ -63,7 +64,7 @@ FUNCTION(add_recursive_files_to_source_group In_RelativeRootDir In_FileExtension
 	# For the folder itself and each sub-folder...
 	FOREACH(currentRelativeSubDir "" ${recursiveRelativeSubDirList})
 		# Get all the files in this sub-folder.
-		SET(wildcardFilePath "${In_RelativeRootDir}${currentRelativeSubDir}*.${In_FileExtension}")
+		SET(wildcardFilePath "${CMAKE_CURRENT_LIST_DIR}/${In_RelativeRootDir}${currentRelativeSubDir}*.${In_FileExtension}")
 			#MESSAGE("wildcardFilePath: ${wildcardFilePath}")
 		FILE(GLOB filesInSubDirList ${wildcardFilePath})
 			#MESSAGE("filesInSubDirList: ${filesInSubDirList}")
@@ -89,9 +90,25 @@ ENDFUNCTION()
 FUNCTION(append_recursive_files_add_to_source_group In_RelativeRootDir In_FileExtension Out_VariableAllFilePathsList)
 		#MESSAGE(${In_RelativeRootDir})
 		#MESSAGE(${In_FileExtension})
+		#MESSAGE("CMAKE_CURRENT_LIST_DIR: ${CMAKE_CURRENT_LIST_DIR}")
 	SET(allFilePathsListToAppend) 	# We have to use a local variable and give it to the parent because append_recursive_files only gives it to our scope with PARENT_SCOPE.
 	append_recursive_files(${In_RelativeRootDir} ${In_FileExtension} allFilePathsListToAppend)
 		#MESSAGE( "allFilePathsListToAppend: ${allFilePathsListToAppend}" )
 	add_recursive_files_to_source_group(${In_RelativeRootDir} ${In_FileExtension})
 	SET(${Out_VariableAllFilePathsList} ${${Out_VariableAllFilePathsList}} ${allFilePathsListToAppend} PARENT_SCOPE)
+ENDFUNCTION()
+
+#------------------------------------------------------------------------------
+# void add_prefix(string prefix, list<string>* list_of_items);
+# - returns list_of_items with prefix prepended to all items
+# - original list is modified
+#------------------------------------------------------------------------------
+FUNCTION(add_prefix prefix list_of_items)
+    SET(local_list "")
+    FOREACH(item IN LISTS "${list_of_items}")
+        IF(NOT "${item}" STREQUAL "")
+            LIST(APPEND local_list "${prefix}${item}")
+        ENDIF()
+    ENDFOREACH()
+    SET(${list_of_items} "${local_list}" PARENT_SCOPE)
 ENDFUNCTION()

@@ -43,11 +43,11 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST AtomicFibers(AtomicFibers const & other) = default;
+                ALPAKA_FCT_HOST AtomicFibers(AtomicFibers const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST AtomicFibers(AtomicFibers && other) = default;
+                ALPAKA_FCT_HOST AtomicFibers(AtomicFibers &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Assignment-operator.
                 //-----------------------------------------------------------------------------

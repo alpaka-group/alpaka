@@ -34,6 +34,7 @@
 #include <alpaka/interfaces/KernelExecCreator.hpp>  // KernelExecCreator
 
 #include <alpaka/interfaces/BlockSharedExternMemSizeBytes.hpp>
+#include <alpaka/interfaces/IAcc.hpp>
 
 #include <cstddef>                                  // std::size_t
 #include <cstdint>                                  // unit8_t
@@ -54,6 +55,9 @@ namespace alpaka
     {
         namespace detail
         {
+            template<typename TAcceleratedKernel>
+            class KernelExecutor;
+
             //#############################################################################
             //! The base class for all OpenMP accelerated kernels.
             //#############################################################################
@@ -64,6 +68,9 @@ namespace alpaka
             {
             public:
                 using MemorySpace = MemorySpaceHost;
+
+                template<typename TAcceleratedKernel>
+                friend class alpaka::openmp::detail::KernelExecutor;
 
             public:
                 //-----------------------------------------------------------------------------
@@ -77,11 +84,11 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST AccOpenMp(AccOpenMp const & other) = default;
+                ALPAKA_FCT_HOST AccOpenMp(AccOpenMp const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST AccOpenMp(AccOpenMp && other) = default;
+                ALPAKA_FCT_HOST AccOpenMp(AccOpenMp &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Assignment-operator.
                 //-----------------------------------------------------------------------------
@@ -171,130 +178,129 @@ namespace alpaka
 
                 // getBlockSharedExternMem
                 std::vector<uint8_t> mutable m_vuiExternalSharedMem;        //!< External block shared memory.
+            }; 
 
+            //#############################################################################
+            //! The executor for an OpenMP accelerated kernel.
+            //#############################################################################
+            template<typename TAcceleratedKernel>
+            class KernelExecutor :
+                private TAcceleratedKernel
+            {
+                static_assert(std::is_base_of<IAcc<AccOpenMp>, TAcceleratedKernel>::value, "The TAcceleratedKernel for the openmp::detail::KernelExecutor has to inherit from IAcc<AccOpenMp>!");
             public:
-                //#############################################################################
-                //! The executor for an OpenMP accelerated kernel.
-                // TODO: Check that TAcceleratedKernel inherits from the correct accelerator.
-                //#############################################################################
-                template<typename TAcceleratedKernel>
-                class KernelExecutor :
-                    protected TAcceleratedKernel
+                //-----------------------------------------------------------------------------
+                //! Constructor.
+                //-----------------------------------------------------------------------------
+                template<typename... TKernelConstrArgs>
+                ALPAKA_FCT_HOST KernelExecutor(TKernelConstrArgs && ... args) :
+                    TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
                 {
-                public:
-                    //-----------------------------------------------------------------------------
-                    //! Constructor.
-                    //-----------------------------------------------------------------------------
-                    template<typename... TKernelConstrArgs>
-                    ALPAKA_FCT_HOST KernelExecutor(TKernelConstrArgs && ... args) :
-                        TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
+#ifdef _DEBUG
+                    std::cout << "[+] AccOpenMp::KernelExecutor()" << std::endl;
+#endif
+#ifdef _DEBUG
+                    std::cout << "[-] AccOpenMp::KernelExecutor()" << std::endl;
+#endif
+                }
+                //-----------------------------------------------------------------------------
+                //! Copy-constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST KernelExecutor(KernelExecutor const &) = default;
+                //-----------------------------------------------------------------------------
+                //! Move-constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST KernelExecutor(KernelExecutor &&) = default;
+                //-----------------------------------------------------------------------------
+                //! Assignment-operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST KernelExecutor & operator=(KernelExecutor const &) = delete;
+                //-----------------------------------------------------------------------------
+                //! Destructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST ~KernelExecutor() noexcept = default;
+
+                //-----------------------------------------------------------------------------
+                //! Executes the accelerated kernel.
+                //-----------------------------------------------------------------------------
+                template<typename TWorkSize, typename... TArgs>
+                ALPAKA_FCT_HOST void operator()(IWorkSize<TWorkSize> const & workSize, TArgs && ... args) const
+                {
+#ifdef _DEBUG
+                    std::cout << "[+] AccOpenMp::KernelExecutor::operator()" << std::endl;
+#endif
+                    (*const_cast<TInterfacedWorkSize*>(static_cast<TInterfacedWorkSize const *>(this))) = workSize;
+
+                    auto const uiNumKernelsPerBlock(workSize.template getSize<Block, Kernels, Linear>());
+                    auto const uiMaxKernelsPerBlock(AccOpenMp::getSizeBlockKernelsLinearMax());
+                    if(uiNumKernelsPerBlock > uiMaxKernelsPerBlock)
                     {
-#ifdef _DEBUG
-                        std::cout << "[+] AccOpenMp::KernelExecutor()" << std::endl;
-#endif
-#ifdef _DEBUG
-                        std::cout << "[-] AccOpenMp::KernelExecutor()" << std::endl;
-#endif
+                        throw std::runtime_error(("The given blockSize '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the OpenMp accelerator!").c_str());
                     }
-                    //-----------------------------------------------------------------------------
-                    //! Copy-constructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST KernelExecutor(KernelExecutor const & other) = default;
-                    //-----------------------------------------------------------------------------
-                    //! Move-constructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST KernelExecutor(KernelExecutor && other) = default;
-                    //-----------------------------------------------------------------------------
-                    //! Assignment-operator.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST KernelExecutor & operator=(KernelExecutor const &) = delete;
-                    //-----------------------------------------------------------------------------
-                    //! Destructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST ~KernelExecutor() noexcept = default;
 
-                    //-----------------------------------------------------------------------------
-                    //! Executes the accelerated kernel.
-                    //-----------------------------------------------------------------------------
-                    template<typename TWorkSize, typename... TArgs>
-                    ALPAKA_FCT_HOST void operator()(IWorkSize<TWorkSize> const & workSize, TArgs && ... args) const
+                    auto const v3uiSizeBlockKernels(workSize.template getSize<Block, Kernels, D3>());
+                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiSizeBlockKernels, std::forward<TArgs>(args)...));
+                    this->AccOpenMp::m_vuiExternalSharedMem.resize(uiBlockSharedExternMemSizeBytes);
+
+                    auto const v3uiSizeGridBlocks(workSize.template getSize<Grid, Blocks, D3>());
+#ifdef _DEBUG
+                    //std::cout << "GridBlocks: " << v3uiSizeGridBlocks << " BlockKernels: " << v3uiSizeBlockKernels << std::endl;
+#endif
+                    // CUDA programming guide: "Thread blocks are required to execute independently: It must be possible to execute them in any order, in parallel or in series. 
+                    // This independence requirement allows thread blocks to be scheduled in any order across any number of cores"
+                    // -> We can execute them serially.
+                    for(std::uint32_t bz(0); bz<v3uiSizeGridBlocks[2]; ++bz)
                     {
-#ifdef _DEBUG
-                        std::cout << "[+] AccOpenMp::KernelExecutor::operator()" << std::endl;
-#endif
-                        (*const_cast<TInterfacedWorkSize*>(static_cast<TInterfacedWorkSize const *>(this))) = workSize;
-
-                        auto const uiNumKernelsPerBlock(this->TAcceleratedKernel::template getSize<Block, Kernels, Linear>());
-                        auto const uiMaxKernelsPerBlock(this->TAcceleratedKernel::getSizeBlockKernelsLinearMax());
-                        if(uiNumKernelsPerBlock > uiMaxKernelsPerBlock)
+                        this->AccOpenMp::m_v3uiGridBlockIdx[2] = bz;
+                        for(std::uint32_t by(0); by<v3uiSizeGridBlocks[1]; ++by)
                         {
-                            throw std::runtime_error(("The given blockSize '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the OpenMp accelerator!").c_str());
-                        }
-
-                        auto const v3uiSizeBlockKernels(this->TAcceleratedKernel::template getSize<Block, Kernels, D3>());
-                        auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiSizeBlockKernels, std::forward<TArgs>(args)...));
-                        this->AccOpenMp::m_vuiExternalSharedMem.resize(uiBlockSharedExternMemSizeBytes);
-
-                        auto const v3uiSizeGridBlocks(this->TAcceleratedKernel::template getSize<Grid, Blocks, D3>());
-#ifdef _DEBUG
-                        //std::cout << "GridBlocks: " << v3uiSizeGridBlocks << " BlockKernels: " << v3uiSizeBlockKernels << std::endl;
-#endif
-                        // CUDA programming guide: "Thread blocks are required to execute independently: It must be possible to execute them in any order, in parallel or in series. 
-                        // This independence requirement allows thread blocks to be scheduled in any order across any number of cores"
-                        // -> We can execute them serially.
-                        for(std::uint32_t bz(0); bz<v3uiSizeGridBlocks[2]; ++bz)
-                        {
-                            this->AccOpenMp::m_v3uiGridBlockIdx[2] = bz;
-                            for(std::uint32_t by(0); by<v3uiSizeGridBlocks[1]; ++by)
+                            this->AccOpenMp::m_v3uiGridBlockIdx[1] = by;
+                            for(std::uint32_t bx(0); bx<v3uiSizeGridBlocks[0]; ++bx)
                             {
-                                this->AccOpenMp::m_v3uiGridBlockIdx[1] = by;
-                                for(std::uint32_t bx(0); bx<v3uiSizeGridBlocks[0]; ++bx)
+                                this->AccOpenMp::m_v3uiGridBlockIdx[0] = bx;
+
+                                // The number of threads in this block.
+                                std::uint32_t const uiNumKernelsInBlock(this->AccOpenMp::getSize<Block, Kernels, Linear>());
+
+                                // Force the environment to use the given number of threads.
+                                ::omp_set_dynamic(0);
+
+                                // Parallelizing the threads is required because when syncBlockKernels is called all of them have to be done with their work up to this line.
+                                // So we have to spawn one real thread per thread in a block.
+                                // 'omp for' is not useful because it is meant for cases where multiple iterations are executed by one thread but in our case a 1:1 mapping is required.
+                                // Therefore we use 'omp parallel' with the specified number of threads in a block.
+                                //
+                                // TODO: Does this hinder executing multiple kernels in parallel because their block sizes/omp thread numbers are interfering? Is this a real use case? 
+                                #pragma omp parallel num_threads(uiNumKernelsInBlock)
                                 {
-                                    this->AccOpenMp::m_v3uiGridBlockIdx[0] = bx;
-
-                                    // The number of threads in this block.
-                                    std::uint32_t const uiNumKernelsInBlock(this->AccOpenMp::getSize<Block, Kernels, Linear>());
-
-                                    // Force the environment to use the given number of threads.
-                                    ::omp_set_dynamic(0);
-
-                                    // Parallelizing the threads is required because when syncBlockKernels is called all of them have to be done with their work up to this line.
-                                    // So we have to spawn one real thread per thread in a block.
-                                    // 'omp for' is not useful because it is meant for cases where multiple iterations are executed by one thread but in our case a 1:1 mapping is required.
-                                    // Therefore we use 'omp parallel' with the specified number of threads in a block.
-                                    //
-                                    // TODO: Does this hinder executing multiple kernels in parallel because their block sizes/omp thread numbers are interfering? Is this a real use case? 
-                                    #pragma omp parallel num_threads(uiNumKernelsInBlock)
-                                    {
 #ifdef _DEBUG
-                                        if((::omp_get_thread_num() == 0) && (bz == 0) && (by == 0) && (bx == 0))
+                                    if((::omp_get_thread_num() == 0) && (bz == 0) && (by == 0) && (bx == 0))
+                                    {
+                                        assert(::omp_get_num_threads()>=0);
+                                        auto const uiNumThreads(static_cast<std::uint32_t>(::omp_get_num_threads()));
+                                        std::cout << "omp_get_num_threads: " << uiNumThreads << std::endl;
+                                        if(uiNumThreads != uiNumKernelsInBlock)
                                         {
-                                            assert(::omp_get_num_threads()>=0);
-                                            auto const uiNumThreads(static_cast<std::uint32_t>(::omp_get_num_threads()));
-                                            std::cout << "omp_get_num_threads: " << uiNumThreads << std::endl;
-                                            if(uiNumThreads != uiNumKernelsInBlock)
-                                            {
-                                                throw std::runtime_error("The OpenMP runtime did not use the number of threads that had been required!");
-                                            }
+                                            throw std::runtime_error("The OpenMP runtime did not use the number of threads that had been required!");
                                         }
-#endif
-                                        this->TAcceleratedKernel::operator()(std::forward<TArgs>(args)...);
-
-                                        // Wait for all threads to finish before deleting the shared memory.
-                                        this->AccOpenMp::syncBlockKernels();
                                     }
+#endif
+                                    this->TAcceleratedKernel::operator()(std::forward<TArgs>(args)...);
+
+                                    // Wait for all threads to finish before deleting the shared memory.
+                                    this->AccOpenMp::syncBlockKernels();
                                 }
                             }
                         }
-
-                        // After all blocks have been processed, the shared memory can be deleted.
-                        this->AccOpenMp::m_vvuiSharedMem.clear();
-                        this->AccOpenMp::m_vuiExternalSharedMem.clear();
-#ifdef _DEBUG
-                        std::cout << "[-] AccOpenMp::KernelExecutor::operator()" << std::endl;
-#endif
                     }
-                };
+
+                    // After all blocks have been processed, the shared memory can be deleted.
+                    this->AccOpenMp::m_vvuiSharedMem.clear();
+                    this->AccOpenMp::m_vuiExternalSharedMem.clear();
+#ifdef _DEBUG
+                    std::cout << "[-] AccOpenMp::KernelExecutor::operator()" << std::endl;
+#endif
+                }
             };
         }
     }
@@ -311,7 +317,7 @@ namespace alpaka
         {
         public:
             using TAcceleratedKernel = typename boost::mpl::apply<TKernel, AccOpenMp>::type;
-            using TKernelExecutor = AccOpenMp::KernelExecutor<TAcceleratedKernel>;
+            using TKernelExecutor = openmp::detail::KernelExecutor<TAcceleratedKernel>;
 
             //-----------------------------------------------------------------------------
             //! Creates an kernel executor for the serial accelerator.

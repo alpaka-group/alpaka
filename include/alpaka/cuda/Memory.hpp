@@ -60,7 +60,7 @@ namespace alpaka
             template<>
             struct MemFree<MemorySpaceCuda>
             {
-                MemFree(void * const pBuffer)
+                MemFree(void * pBuffer)
                 {
                     assert(pBuffer);
                     ALPAKA_CUDA_CHECK(cudaFree(pBuffer));
@@ -73,7 +73,7 @@ namespace alpaka
             template<>
             struct MemCopy<MemorySpaceHost, MemorySpaceCuda>
             {
-                MemCopy(void * const pDst, const void const * const pSrc, size_t const uiSizeBytes)
+                MemCopy(void * const pBufferDst, void const * const pBufferSrc, size_t const uiSizeBytes)
                 {
                     assert(pBufferDst);
                     assert(pBufferSrc);
@@ -87,7 +87,7 @@ namespace alpaka
             template<>
             struct MemCopy<MemorySpaceCuda, MemorySpaceHost>
             {
-                MemCopy(void * const pDst, const void const * const pSrc, size_t const uiSizeBytes)
+                MemCopy(void * const pBufferDst, void const * const pBufferSrc, size_t const uiSizeBytes)
                 {
                     assert(pBufferDst);
                     assert(pBufferSrc);
@@ -101,7 +101,7 @@ namespace alpaka
             template<>
             struct MemCopy<MemorySpaceCuda, MemorySpaceCuda>
             {
-                MemCopy(void * const pDst, const void const * const pSrc, size_t const uiSizeBytes)
+                MemCopy(void * const pBufferDst, void const * const pBufferSrc, size_t const uiSizeBytes)
                 {
                     assert(pBufferDst);
                     assert(pBufferSrc);

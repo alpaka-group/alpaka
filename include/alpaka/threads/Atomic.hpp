@@ -49,11 +49,11 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST AtomicThreads(AtomicThreads const & other) = default;
+                ALPAKA_FCT_HOST AtomicThreads(AtomicThreads const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST AtomicThreads(AtomicThreads && other) = default;
+                ALPAKA_FCT_HOST AtomicThreads(AtomicThreads &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Assignment-operator.
                 //-----------------------------------------------------------------------------

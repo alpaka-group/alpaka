@@ -22,9 +22,11 @@
 
 #pragma once
 
+#include <iostream> // std::cerr
+
 #include <cuda.h>
 
-#if (!defined(CUDA_VERSION) || ( CUDA_VERSION < 6500 ))
+#if (!defined(CUDA_VERSION) || (CUDA_VERSION < 6050))
     #error "CUDA version 6.5 or greater required!"
 #endif
 

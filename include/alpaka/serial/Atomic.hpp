@@ -43,11 +43,11 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST AtomicSerial(AtomicSerial const & other) = default;
+                ALPAKA_FCT_HOST AtomicSerial(AtomicSerial const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST AtomicSerial(AtomicSerial && other) = default;
+                ALPAKA_FCT_HOST AtomicSerial(AtomicSerial &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Assignment-operator.
                 //-----------------------------------------------------------------------------
