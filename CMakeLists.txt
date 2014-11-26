@@ -150,7 +150,7 @@ IF(ALPAKA_CUDA_ENABLE)
         SET(CUDA_KEEP_FILES ON CACHE BOOL "activate keep files" FORCE)
     ENDIF(CUDA_SHOW_CODELINES)
 
-    LIST(APPEND ALPAKA_LIBRARY_DEPENDENCIES ${CUDA_CUDART_LIBRARY})
+    LIST(APPEND ALPAKA_LIBRARY_DEPENDENCIES general ${CUDA_CUDART_LIBRARY})
 ENDIF()
 
 ################################################################################
@@ -227,8 +227,10 @@ list_add_prefix("PUBLIC;" ALPAKA_COMPILE_DEFINITIONS)
 TARGET_COMPILE_DEFINITIONS(alpaka ${ALPAKA_COMPILE_DEFINITIONS})
 list_add_prefix("PUBLIC;" ALPAKA_INCLUDE_DEPENDENCIES)
 TARGET_INCLUDE_DIRECTORIES(alpaka ${ALPAKA_INCLUDE_DEPENDENCIES} PUBLIC ${ALPAKA_INCLUDE_DIR})
+# NOTE: All libraries are required to be prefixed with general, debug or optimized!
 list_add_prefix_to("PUBLIC;" "optimized" ALPAKA_LIBRARY_DEPENDENCIES)
 list_add_prefix_to("PUBLIC;" "debug" ALPAKA_LIBRARY_DEPENDENCIES)
+list_add_prefix_to("PUBLIC;" "general" ALPAKA_LIBRARY_DEPENDENCIES)
 TARGET_LINK_LIBRARIES(alpaka ${ALPAKA_LIBRARY_DEPENDENCIES})
 
 MESSAGE(STATUS "### alpaka done ###")
