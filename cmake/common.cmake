@@ -99,15 +99,32 @@ FUNCTION(append_recursive_files_add_to_source_group In_RelativeRootDir In_FileEx
 ENDFUNCTION()
 
 #------------------------------------------------------------------------------
-# void add_prefix(string prefix, list<string>* list_of_items);
+# void list_add_prefix(string prefix, list<string>* list_of_items);
 # - returns list_of_items with prefix prepended to all items
 # - original list is modified
 #------------------------------------------------------------------------------
-FUNCTION(add_prefix prefix list_of_items)
+FUNCTION(list_add_prefix prefix list_of_items)
     SET(local_list "")
     FOREACH(item IN LISTS "${list_of_items}")
-        IF(NOT "${item}" STREQUAL "")
+        IF(NOT ${item} STREQUAL "")
             LIST(APPEND local_list "${prefix}${item}")
+        ENDIF()
+    ENDFOREACH()
+    SET(${list_of_items} "${local_list}" PARENT_SCOPE)
+ENDFUNCTION()
+
+#------------------------------------------------------------------------------
+# void list_add_prefix(string prefix, string item_to_prefix, list<string>* list_of_items);
+# - returns list_of_items with prefix prepended to all items
+# - original list is modified
+#------------------------------------------------------------------------------
+FUNCTION(list_add_prefix_to prefix item_to_prefix list_of_items)
+    SET(local_list "")
+    FOREACH(item IN LISTS "${list_of_items}")
+        IF(${item} STREQUAL ${item_to_prefix})
+            LIST(APPEND local_list "${prefix}${item}")
+		ELSE()
+            LIST(APPEND local_list ${item})
         ENDIF()
     ENDFOREACH()
     SET(${list_of_items} "${local_list}" PARENT_SCOPE)
