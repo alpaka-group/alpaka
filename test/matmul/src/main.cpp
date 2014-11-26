@@ -176,25 +176,21 @@ void profileAcceleratedMatMulKernel(alpaka::IWorkSize<TWorkSize> const & workSiz
     // Allocate accelerator buffers and copy.
     std::size_t const uiSizeBytes(uiMatrixSize*uiMatrixSize * sizeof(std::uint32_t));
 
-    auto * const pAAcc(alpaka::memory::memAlloc<TAccMemorySpace, std::uint32_t>(uiSizeBytes));
-    auto * const pBAcc(alpaka::memory::memAlloc<TAccMemorySpace, std::uint32_t>(uiSizeBytes));
-    auto * const pCAcc(alpaka::memory::memAlloc<TAccMemorySpace, std::uint32_t>(uiSizeBytes));
+    auto pAAcc(alpaka::memory::memAlloc<TAccMemorySpace, std::uint32_t>(uiSizeBytes));
+    auto pBAcc(alpaka::memory::memAlloc<TAccMemorySpace, std::uint32_t>(uiSizeBytes));
+    auto pCAcc(alpaka::memory::memAlloc<TAccMemorySpace, std::uint32_t>(uiSizeBytes));
 
-    alpaka::memory::memCopy<TAccMemorySpace, alpaka::MemorySpaceHost>(pAAcc, vuiA.data(), uiSizeBytes);
-    alpaka::memory::memCopy<TAccMemorySpace, alpaka::MemorySpaceHost>(pBAcc, vuiB.data(), uiSizeBytes);
-    alpaka::memory::memCopy<TAccMemorySpace, alpaka::MemorySpaceHost>(pCAcc, vuiC.data(), uiSizeBytes);
+    alpaka::memory::memCopy<TAccMemorySpace, alpaka::MemorySpaceHost>(pAAcc.get(), vuiA.data(), uiSizeBytes);
+    alpaka::memory::memCopy<TAccMemorySpace, alpaka::MemorySpaceHost>(pBAcc.get(), vuiB.data(), uiSizeBytes);
+    alpaka::memory::memCopy<TAccMemorySpace, alpaka::MemorySpaceHost>(pCAcc.get(), vuiC.data(), uiSizeBytes);
 
     // Build the kernel executor.
     auto exec(alpaka::createKernelExecutor<TAcc, TKernel>());
     // Profile the kernel execution.
-    profileAcceleratedKernel(exec, workSize, uiMatrixSize, pAAcc, pBAcc, pCAcc);
+    profileAcceleratedKernel(exec, workSize, uiMatrixSize, pAAcc.get(), pBAcc.get(), pCAcc.get());
 
     // Copy back the result.
-    alpaka::memory::memCopy<alpaka::MemorySpaceHost, TAccMemorySpace>(vuiC.data(), pCAcc, uiSizeBytes);
-
-    alpaka::memory::memFree<TAccMemorySpace>(pAAcc);
-    alpaka::memory::memFree<TAccMemorySpace>(pBAcc);
-    alpaka::memory::memFree<TAccMemorySpace>(pCAcc);
+    alpaka::memory::memCopy<alpaka::MemorySpaceHost, TAccMemorySpace>(vuiC.data(), pCAcc.get(), uiSizeBytes);
 
     // Assert that the results are correct. 
     // When multiplying square matrices filled with ones, the result of each cell is the size of the matrix. 

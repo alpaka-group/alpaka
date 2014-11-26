@@ -180,17 +180,16 @@ void profileAcceleratedExampleKernel(alpaka::IWorkSize<TWorkSize> const & workSi
 
     // Allocate accelerator buffers and copy.
     std::size_t const uiSizeBytes(uiNumBlocksInGrid * sizeof(std::uint32_t));
-    auto * const pBlockRetVals(alpaka::memory::memAlloc<TAccMemorySpace, std::uint32_t>(uiSizeBytes));
-    alpaka::memory::memCopy<TAccMemorySpace, alpaka::MemorySpaceHost>(pBlockRetVals, vuiBlockRetVals.data(), uiSizeBytes);
+    auto pBlockRetValsAcc(alpaka::memory::memAlloc<TAccMemorySpace, std::uint32_t>(uiSizeBytes));
+    alpaka::memory::memCopy<TAccMemorySpace, alpaka::MemorySpaceHost>(pBlockRetValsAcc.get(), vuiBlockRetVals.data(), uiSizeBytes);
 
     std::uint32_t const m_uiMult(42);
 
     auto exec(alpaka::createKernelExecutor<TAcc, TKernel>(m_uiMult));
-    profileAcceleratedKernel(exec, workSize, pBlockRetVals, uiMult2);
+    profileAcceleratedKernel(exec, workSize, pBlockRetValsAcc.get(), uiMult2);
 
     // Copy back the result.
-    alpaka::memory::memCopy<alpaka::MemorySpaceHost, TAccMemorySpace>(vuiBlockRetVals.data(), pBlockRetVals, uiSizeBytes);
-    alpaka::memory::memFree<TAccMemorySpace>(pBlockRetVals);
+    alpaka::memory::memCopy<alpaka::MemorySpaceHost, TAccMemorySpace>(vuiBlockRetVals.data(), pBlockRetValsAcc.get(), uiSizeBytes);
 
     // Assert that the results are correct.
     std::uint32_t const uiCorrectResult(static_cast<std::uint32_t>(uiNumKernelsInBlock*uiNumKernelsInBlock) * m_uiMult * uiMult2);

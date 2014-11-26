@@ -24,6 +24,8 @@
 
 #include <cassert>  // assert
 
+#include <memory>   // std::shared_ptr
+
 namespace alpaka
 {
     namespace memory
@@ -63,7 +65,7 @@ namespace alpaka
         //! \return Pointer to newly allocated memory.
         //-----------------------------------------------------------------------------
         template<typename TMemorySpace, typename T = void>
-        T * memAlloc(size_t const uiSizeBytes)
+        std::shared_ptr<T> memAlloc(size_t const uiSizeBytes)
         {
             assert(uiSizeBytes>0);
 
@@ -72,18 +74,11 @@ namespace alpaka
                 &pBuffer, 
                 uiSizeBytes);
             assert(pBuffer);
-            return reinterpret_cast<T *>(pBuffer);
-        }
 
-        //-----------------------------------------------------------------------------
-        //! \param pBuffer Pointer to memory to free.
-        //-----------------------------------------------------------------------------
-        template<typename TMemorySpace, typename T = void>
-        void memFree(T * pBuffer)
-        {
-            assert(reinterpret_cast<void *>(pBuffer));
-
-            detail::MemFree<TMemorySpace>{pBuffer};
+            return 
+                std::shared_ptr<T>(
+                    reinterpret_cast<T *>(pBuffer), 
+                    [=](T * b){detail::MemFree<TMemorySpace>{b};});
         }
 
         //-----------------------------------------------------------------------------

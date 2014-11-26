@@ -112,7 +112,7 @@ namespace alpaka
                 ALPAKA_FCT_HOST static vec<3u> getSizeBlockKernelsMax()
                 {
                     // TODO: CC < 2.0? Get from CUDA API.
-                    return{1024u, 1024u, 64u};
+                    return {1024u, 1024u, 64u};
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The maximum number of kernels in a block allowed.

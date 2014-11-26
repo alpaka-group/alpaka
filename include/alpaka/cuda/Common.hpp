@@ -22,7 +22,9 @@
 
 #pragma once
 
-#include <iostream> // std::cerr
+#include <iostream>     // std::cerr
+
+#include <stdexcept>    // std::runtime_error
 
 #include <cuda.h>
 

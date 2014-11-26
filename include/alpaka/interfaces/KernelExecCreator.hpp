@@ -22,6 +22,8 @@
 
 #pragma once
 
+#include <alpaka/interfaces/IAcc.hpp> // alpaka::IAcc
+
 namespace alpaka
 {
     namespace detail

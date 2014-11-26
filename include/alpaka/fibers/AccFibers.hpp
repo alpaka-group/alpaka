@@ -311,7 +311,7 @@ namespace alpaka
                                             // Create a fiber.
                                             // The v3uiBlockKernelIdx is required to be copied in from the environment because if the fiber is immediately suspended the variable is already changed for the next iteration/thread.
 #ifdef _MSC_VER    // MSVC <= 14 do not compile the boost::fibers::fiber constructor because the type of the member function template is missing the this pointer as first argument.
-                                            auto fiberKernelFct([this](vec<3u> const v3uiBlockKernelIdx, TArgs ... args) {fiberKernel<TArgs...>(v3uiBlockKernelIdx, args...); });
+                                            auto fiberKernelFct([this](vec<3u> const v3uiBlockKernelIdx, TArgs ... args) {fiberKernel<TArgs...>(v3uiBlockKernelIdx, std::forward<TArgs>(args)...); });
                                             m_vFibersInBlock.push_back(boost::fibers::fiber(fiberKernelFct, v3uiBlockKernelIdx, args...));
 #else
                                             m_vFibersInBlock.push_back(boost::fibers::fiber(&KernelExecutor::fiberKernel<TArgs...>, this, v3uiBlockKernelIdx, args...));
