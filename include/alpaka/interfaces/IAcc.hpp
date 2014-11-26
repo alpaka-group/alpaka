@@ -38,40 +38,13 @@ namespace alpaka
     //! All the methods of this interface are declared ALPAKA_FCT_HOST_ACC. 
     //! Because the kernel is always compiled with ALPAKA_FCT_HOST_ACC for all accelerators (even for AccSerial), equivalently there has to be an implementation of all methods for host and device for all accelerators. 
     //! These device functions are not implemented and will not call the underlying implementation for the device code, because this will never be executed and would not compile.
-    //
-    // TODO: Implement:
-    // int __syncthreads_count(int predicate):  evaluates predicate for all threads of the block and returns the number of threads for which predicate evaluates to non-zero.
-    // int __syncthreads_and(int predicate):    evaluates predicate for all threads of the block and returns non-zero if and only if predicate evaluates to non-zero for all of them.
-    // int __syncthreads_or(int predicate):     evaluates predicate for all threads of the block and returns non-zero if and only if predicate evaluates to non-zero for any of them.
-    //
-    // __threadfence_block();       wait until memory accesses are visible to block
-    // __threadfence();             wait until memory accesses are visible to block and device
-    // __threadfence_system();      wait until memory accesses are visible to block and device and host(2.x)
-    //
-    // __all(predicate):            Evaluate predicate for all active threads of the warp and return non-zero if and only if predicate evaluates to non-zero for all of them.Supported by devices of compute capability 1.2 and higher.
-    // __any(predicate):            Evaluate predicate for all active threads of the warp and return non-zero if and only if predicate evaluates to non-zero for any of them.Supported by devices of compute capability 1.2 and higher.
-    // __ballot(predicate):         Evaluate predicate for all active threads of the warp and return an integer whose Nth bit is set if and only if predicate evaluates to non-zero for the Nth thread of the warp and the Nth thread is active.Supported by devices of compute capability 2.0 and higher.
-    // For each of these warp vote operations, the result excludes threads that are inactive (e.g., due to warp divergence). Inactive threads are represented by 0 bits in the value returned by __ballot() and are not considered in the reductions performed by __all() and __any().
-    //
-    // rsqrtf
-    //
-    // sincosf
-    //
-    // clock_t clock();
-    // long long int clock64();
-    //
-    // The read-only data cache load function is only supported by devices of compute capability 3.5 and higher.
-    // T __ldg(const T* address);
-    //
-    // surface and texture access
-    //
-    // __shfl, __shfl_up, __shfl_down, __shfl_xor exchange a variable between threads within a warp.
     //#############################################################################
     template<typename TAcc = boost::mpl::_1>
     class IAcc :
         protected TAcc
     {
     public:
+        // TODO: Remove if not needed.
         //using MemorySpace = typename TAcc::MemorySpace;
 
     public:
@@ -97,6 +70,7 @@ namespace alpaka
         template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
         ALPAKA_FCT_HOST_ACC typename detail::DimToRetType<TDimensionality>::type getSize() const
         {
+            // TODO: Test if this ifndef is really needed.
 #ifndef __CUDA_ARCH__
             return TAcc::template getSize<TOrigin, TUnit, TDimensionality>();
 #else

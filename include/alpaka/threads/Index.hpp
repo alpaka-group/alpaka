@@ -48,8 +48,7 @@ namespace alpaka
                     vec<3u> const & v3uiGridBlockIdx) :
                     m_mThreadsToIndices(mThreadsToIndices),
                     m_v3uiGridBlockIdx(v3uiGridBlockIdx)
-                {
-                }
+                {}
                 //-----------------------------------------------------------------------------
                 //! Copy-constructor.
                 //-----------------------------------------------------------------------------

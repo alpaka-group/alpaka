@@ -142,6 +142,16 @@ namespace alpaka
                 {
                     auto const idFiber(boost::this_fiber::get_id());
                     auto const itFind(m_mFibersToBarrier.find(idFiber));
+
+                    syncBlockKernels(itFind);
+                }
+
+            private:
+                //-----------------------------------------------------------------------------
+                //! Syncs all kernels in the current block.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST void syncBlockKernels(std::map<boost::fibers::fiber::id, std::size_t>::iterator const & itFind) const
+                {
                     assert(itFind != m_mFibersToBarrier.end());
 
                     auto & uiBarIndex(itFind->second);
@@ -161,6 +171,7 @@ namespace alpaka
                     ++uiBarIndex;
                 }
 
+            protected:
                 //-----------------------------------------------------------------------------
                 //! \return Allocates block shared memory.
                 //-----------------------------------------------------------------------------
@@ -357,22 +368,26 @@ namespace alpaka
                         m_idMasterFiber = idFiber;
                     }
 
+                    // We can not use the default syncBlockKernels here because it searches inside m_mFibersToBarrier for the thread id. 
+                    // Concurrently searching while others use emplace is unsafe!
+                    std::map<boost::fibers::fiber::id, std::size_t>::iterator itFiberToBarrier;
+
                     // Save the fiber id, and index.
 #if ((!defined __GNUC__) || ((__GNUC__ > 4) || (__GNUC__ == 4 && ((__GNUC_MINOR__ > 7) || ((__GNUC_MINOR__ == 7) && (__GNUC_PATCHLEVEL__ == 3)))))) // GCC <= 4.7.2 is not standard conformant and has no member emplace. This works with 4.7.3+.
                     this->AccFibers::m_mFibersToIndices.emplace(idFiber, v3uiBlockKernelIdx);
-                    this->AccFibers::m_mFibersToBarrier.emplace(idFiber, 0);
+                    itFiberToBarrier = this->AccFibers::m_mFibersToBarrier.emplace(idFiber, 0).first;
 #else
                     this->AccFibers::m_mFibersToIndices.insert(std::pair<boost::fibers::fiber::id, vec<3u>>(idFiber, v3uiBlockKernelIdx));
-                    this->AccFibers::m_mFibersToBarrier.insert(std::pair<boost::fibers::fiber::id, vec<3u>>(idFiber, 0));
+                    itFiberToBarrier = this->AccFibers::m_mFibersToBarrier.insert(std::pair<boost::fibers::fiber::id, vec<3u>>(idFiber, 0)).first;
 #endif
                     // Sync all threads so that the maps with thread id's are complete and not changed after here.
-                    this->AccFibers::syncBlockKernels();
+                    this->AccFibers::syncBlockKernels(itFiberToBarrier);
 
                     // Execute the kernel itself.
                     this->TAcceleratedKernel::operator()(args ...);
 
                     // We have to sync all fibers here because if a fiber would finish before all fibers have been started, the new fiber could get a recycled (then duplicate) fiber id!
-                    this->AccFibers::syncBlockKernels();
+                    this->AccFibers::syncBlockKernels(itFiberToBarrier);
                 }
 
             private:

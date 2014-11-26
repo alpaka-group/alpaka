@@ -45,9 +45,9 @@
 #include <cassert>                                  // assert
 #include <stdexcept>                                // std::runtime_error
 #include <string>                                   // std::to_string
-#ifdef ALPAKA_DEBUG
+//#ifdef ALPAKA_DEBUG
     #include <iostream>                             // std::cout
-#endif
+//#endif
 
 #include <boost/mpl/apply.hpp>                      // boost::mpl::apply
 
@@ -387,9 +387,9 @@ namespace alpaka
                         this->AccThreads::m_idMasterThread = idThread;
                     }
 
-                    //// We can not use the default syncBlockKernels here because it searches inside m_mFibersToBarrier for the thread id. 
-                    //// Concurrently searching while others use emplace may be unsafe!
-                    //std::map<std::thread::id, std::size_t>::iterator itThreadToBarrier;
+                    // We can not use the default syncBlockKernels here because it searches inside m_mThreadsToBarrier for the thread id. 
+                    // Concurrently searching while others use emplace is unsafe!
+                    std::map<std::thread::id, std::size_t>::iterator itThreadToBarrier;
 
                     {
                         // The insertion of elements has to be done one thread at a time.
@@ -398,21 +398,21 @@ namespace alpaka
                         // Save the thread id, and index.
 #if ((!defined __GNUC__) || ((__GNUC__ > 4) || (__GNUC__ == 4 && ((__GNUC_MINOR__ > 7) || ((__GNUC_MINOR__ == 7) && (__GNUC_PATCHLEVEL__ == 3)))))) // GCC <= 4.7.2 is not standard conformant and has no member emplace. This works with 4.7.3+.
                         this->AccThreads::m_mThreadsToIndices.emplace(idThread, v3uiBlockKernelIdx);
-                        /*itThreadToBarrier = */this->AccThreads::m_mThreadsToBarrier.emplace(idThread, 0)/*.first*/;
+                        itThreadToBarrier = this->AccThreads::m_mThreadsToBarrier.emplace(idThread, 0).first;
 #else
                         this->AccThreads::m_mThreadsToIndices.insert(std::make_pair(idThread, v3uiBlockKernelIdx));
-                        /*itThreadToBarrier = */this->AccThreads::m_mThreadsToBarrier.insert(std::make_pair(idThread, 0))/*.first*/;
+                        itThreadToBarrier = this->AccThreads::m_mThreadsToBarrier.insert(std::make_pair(idThread, 0)).first;
 #endif
                     }
 
                     // Sync all fibers so that the maps with fiber id's are complete and not changed after here.
-                    this->AccThreads::syncBlockKernels(/*itThreadToBarrier*/);
+                    this->AccThreads::syncBlockKernels(itThreadToBarrier);
 
                     // Execute the kernel itself.
                     this->TAcceleratedKernel::operator()(args ...);
 
                     // We have to sync all threads here because if a thread would finish before all threads have been started, the new thread could get a recycled (then duplicate) thread id!
-                    this->AccThreads::syncBlockKernels();
+                    this->AccThreads::syncBlockKernels(itThreadToBarrier);
                 }
 
             private:

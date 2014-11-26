@@ -44,15 +44,13 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST explicit ThreadBarrier(std::size_t const uiNumThreadsToWaitFor = 0) :
                     m_uiNumThreadsToWaitFor{uiNumThreadsToWaitFor}
-                {
-                }
+                {}
                 //-----------------------------------------------------------------------------
                 //! Copy-constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST ThreadBarrier(ThreadBarrier const & other) :
                     m_uiNumThreadsToWaitFor(other.m_uiNumThreadsToWaitFor)
-                {
-                }
+                {}
                 //-----------------------------------------------------------------------------
                 //! Move-constructor.
                 //-----------------------------------------------------------------------------
