@@ -227,8 +227,11 @@ int main()
 
         std::cout << std::endl;
 		
-        // Initialize the accelerators.
-        alpaka::initAccelerators();
+        // Select the first cuda device to print out its properties. 
+        // NOTE: This is not required to run any kernels on the CUDA accelerator.
+#ifdef ALPAKA_CUDA_ENABLED
+        alpaka::AccCuda::setDevice(0);
+#endif
 
         // Set the grid size.
         alpaka::vec<3u> const v3uiSizeGridBlocks(16u, 8u, 4u);

@@ -75,21 +75,4 @@ namespace alpaka
 #endif
         std::cout << std::endl;
     }
-    //-----------------------------------------------------------------------------
-    //! Initializes the accelerators.
-    //-----------------------------------------------------------------------------
-    void initAccelerators()
-    {
-#ifdef ALPAKA_DEBUG
-        std::cout << "[+] initAccelerators()" << std::endl;
-#endif
-
-#ifdef ALPAKA_CUDA_ENABLED
-        AccCuda::setDevice(0);
-#endif
-
-#ifdef ALPAKA_DEBUG
-        std::cout << "[-] initAccelerators()" << std::endl;
-#endif
-    }
 }

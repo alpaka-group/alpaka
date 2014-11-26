@@ -230,8 +230,11 @@ int main()
 
         std::cout << std::endl;
 
-        // Initialize the accelerators.
-        alpaka::initAccelerators();
+        // Select the first cuda device to print out its properties. 
+        // NOTE: This is not required to run any kernels on the CUDA accelerator.
+#ifdef ALPAKA_CUDA_ENABLED
+        alpaka::AccCuda::setDevice(0);
+#endif
 
         for(std::uint32_t uiMatrixSize(16u); uiMatrixSize<1024u; uiMatrixSize *= 2u)
         {

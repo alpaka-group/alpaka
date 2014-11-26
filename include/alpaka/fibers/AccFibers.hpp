@@ -195,7 +195,7 @@ namespace alpaka
             private:
                 // getXxxIdx
                 TFiberIdToIndex mutable m_mFibersToIndices;                 //!< The mapping of fibers id's to fibers indices.
-                vec<3u> mutable m_v3uiGridBlockIdx;                          //!< The index of the currently executed block.
+                vec<3u> mutable m_v3uiGridBlockIdx;                         //!< The index of the currently executed block.
 
                 // syncBlockKernels
                 std::size_t mutable m_uiNumKernelsPerBlock;                 //!< The number of kernels per block the barrier has to wait for.
