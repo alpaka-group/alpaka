@@ -40,7 +40,7 @@
 #include <stdexcept>                                // std::except
 #include <utility>                                  // std::forward
 #include <string>                                   // std::to_string
-#ifdef _DEBUG
+#ifdef ALPAKA_DEBUG
     #include <iostream>                             // std::cout
 #endif
 
@@ -180,10 +180,10 @@ namespace alpaka
                 ALPAKA_FCT_HOST KernelExecutor(TKernelConstrArgs && ... args) :
                     TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
                 {
-#ifdef _DEBUG
+#ifdef ALPAKA_DEBUG
                     std::cout << "[+] AccSerial::KernelExecutor()" << std::endl;
 #endif
-#ifdef _DEBUG
+#ifdef ALPAKA_DEBUG
                     std::cout << "[-] AccSerial::KernelExecutor()" << std::endl;
 #endif
                 }
@@ -210,7 +210,7 @@ namespace alpaka
                 template<typename TWorkSize, typename... TArgs>
                 ALPAKA_FCT_HOST void operator()(IWorkSize<TWorkSize> const & workSize, TArgs && ... args) const
                 {
-#ifdef _DEBUG
+#ifdef ALPAKA_DEBUG
                     std::cout << "[+] AccSerial::KernelExecutor::operator()" << std::endl;
 #endif
                     (*const_cast<TInterfacedWorkSize*>(static_cast<TInterfacedWorkSize const *>(this))) = workSize;
@@ -227,7 +227,7 @@ namespace alpaka
                     this->AccSerial::m_vuiExternalSharedMem.resize(uiBlockSharedExternMemSizeBytes);
 
                     auto const v3uiSizeGridBlocks(workSize.template getSize<Grid, Blocks, D3>());
-#ifdef _DEBUG
+#ifdef ALPAKA_DEBUG
                     //std::cout << "GridBlocks: " << v3uiSizeGridBlocks << " BlockKernels: " << v3uiSizeBlockKernels << std::endl;
 #endif
                     for(std::uint32_t bz(0); bz<v3uiSizeGridBlocks[2]; ++bz)
@@ -261,7 +261,7 @@ namespace alpaka
                     // After all blocks have been processed, the shared memory can be deleted.
                     this->AccSerial::m_vvuiSharedMem.clear();
                     this->AccSerial::m_vuiExternalSharedMem.clear();
-#ifdef _DEBUG
+#ifdef ALPAKA_DEBUG
                     std::cout << "[-] AccSerial::KernelExecutor::operator()" << std::endl;
 #endif
                 }

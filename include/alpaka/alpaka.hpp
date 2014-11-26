@@ -80,7 +80,7 @@ namespace alpaka
     //-----------------------------------------------------------------------------
     void initAccelerators()
     {
-#ifdef _DEBUG
+#ifdef ALPAKA_DEBUG
         std::cout << "[+] initAccelerators()" << std::endl;
 #endif
 
@@ -88,7 +88,7 @@ namespace alpaka
         AccCuda::setDevice(0);
 #endif
 
-#ifdef _DEBUG
+#ifdef ALPAKA_DEBUG
         std::cout << "[-] initAccelerators()" << std::endl;
 #endif
     }

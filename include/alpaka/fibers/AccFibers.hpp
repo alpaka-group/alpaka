@@ -230,10 +230,10 @@ namespace alpaka
                     TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
                     m_vFibersInBlock()
                 {
-#ifdef _DEBUG
+#ifdef ALPAKA_DEBUG
                     std::cout << "[+] AccFibers::KernelExecutor()" << std::endl;
 #endif
-#ifdef _DEBUG
+#ifdef ALPAKA_DEBUG
                     std::cout << "[-] AccFibers::KernelExecutor()" << std::endl;
 #endif
                 }
@@ -260,7 +260,7 @@ namespace alpaka
                 template<typename TWorkSize, typename... TArgs>
                 ALPAKA_FCT_HOST void operator()(IWorkSize<TWorkSize> const & workSize, TArgs && ... args) const
                 {
-#ifdef _DEBUG
+#ifdef ALPAKA_DEBUG
                     std::cout << "[+] AccFibers::KernelExecutor::operator()" << std::endl;
 #endif
                     (*const_cast<TInterfacedWorkSize*>(static_cast<TInterfacedWorkSize const *>(this))) = workSize;
@@ -281,7 +281,7 @@ namespace alpaka
                     this->AccFibers::m_vuiExternalSharedMem.resize(uiBlockSharedExternMemSizeBytes);
 
                     auto const v3uiSizeGridBlocks(workSize.template getSize<Grid, Blocks, D3>());
-#ifdef _DEBUG
+#ifdef ALPAKA_DEBUG
                     //std::cout << "GridBlocks: " << v3uiSizeGridBlocks << " BlockKernels: " << v3uiSizeBlockKernels << std::endl;
 #endif
                     // CUDA programming guide: "Thread blocks are required to execute independently: It must be possible to execute them in any order, in parallel or in series. 
@@ -337,7 +337,7 @@ namespace alpaka
                             }
                         }
                     }
-#ifdef _DEBUG
+#ifdef ALPAKA_DEBUG
                     std::cout << "[-] AccFibers::KernelExecutor::operator()" << std::endl;
 #endif
                 }

@@ -42,7 +42,7 @@
 #include <stdexcept>                                // std::except
 #include <string>                                   // std::to_string
 #include <sstream>                                  // std::stringstream
-#ifdef _DEBUG
+#ifdef ALPAKA_DEBUG
     #include <iostream>                             // std::cout
 #endif
 
@@ -128,7 +128,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static void setDevice(int deviceNumber)
                 {
-#ifdef _DEBUG
+#ifdef ALPAKA_DEBUG
                     std::cout << "[+] AccCuda::setDevice()" << std::endl;
 #endif
 
@@ -158,7 +158,7 @@ namespace alpaka
                     {
                         ALPAKA_CUDA_CHECK(cudaSetDevice(deviceNumber));
                         std::cout << "Set device to " << deviceNumber << ": " << devProp.name << std::endl;
-#ifdef _DEBUG
+#ifdef ALPAKA_DEBUG
                         std::size_t const uiKiB(1024);
                         std::size_t const uiMiB(uiKiB * uiKiB);
                         std::cout << "totalGlobalMem: " << devProp.totalGlobalMem/uiMiB << " MiB" << std::endl;
@@ -239,7 +239,7 @@ namespace alpaka
                     // This can decrease latency when waiting for the device, but may lower the performance of CPU threads if they are performing work in parallel with the CUDA thread.
                     ALPAKA_CUDA_CHECK(cudaSetDeviceFlags(cudaDeviceScheduleSpin));
 
-#ifdef _DEBUG
+#ifdef ALPAKA_DEBUG
                     std::cout << "[-] AccCuda::setDevice()" << std::endl;
 #endif
                 }
@@ -302,10 +302,10 @@ namespace alpaka
                 ALPAKA_FCT_HOST KernelExecutor(TKernelConstrArgs && ... args) :
                     TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
                 {
-#ifdef _DEBUG
+#ifdef ALPAKA_DEBUG
                     std::cout << "[+] AccCuda::KernelExecutor()" << std::endl;
 #endif
-#ifdef _DEBUG
+#ifdef ALPAKA_DEBUG
                     std::cout << "[-] AccCuda::KernelExecutor()" << std::endl;
 #endif
                 }
@@ -332,7 +332,7 @@ namespace alpaka
                 template<typename TWorkSize, typename... TArgs>
                 ALPAKA_FCT_HOST void operator()(IWorkSize<TWorkSize> const & workSize, TArgs && ... args) const
                 {
-#ifdef _DEBUG
+#ifdef ALPAKA_DEBUG
                     std::cout << "[+] AccCuda::KernelExecutor::operator()" << std::endl;
 #endif
                     auto const uiNumKernelsPerBlock(workSize.template getSize<Block, Kernels, Linear>());
@@ -344,19 +344,19 @@ namespace alpaka
 
                     auto const v3uiSizeGridBlocks(workSize.template getSize<Grid, Blocks, D3>());
                     auto const v3uiSizeBlockKernels(workSize.template getSize<Block, Kernels, D3>());
-#ifdef _DEBUG
+#ifdef ALPAKA_DEBUG
                     //std::cout << "GridBlocks: " << v3uiSizeGridBlocks << " BlockKernels: " << v3uiSizeBlockKernels<< std::endl;
 #endif
                     dim3 gridDim(v3uiSizeGridBlocks[0], v3uiSizeGridBlocks[1], v3uiSizeGridBlocks[2]);
                     dim3 blockDim(v3uiSizeBlockKernels[0], v3uiSizeBlockKernels[1], v3uiSizeBlockKernels[2]);
-#ifdef _DEBUG
+#ifdef ALPAKA_DEBUG
                     //std::cout << "GridBlocks: (" << gridDim.x << ", " << gridDim.y << ", " << gridDim.z << ")" << std::endl;
                     //std::cout << "BlockKernels: (" <<  << blockDim.x << ", " << blockDim.y << ", " << blockDim.z << ")" << std::endl;
 #endif
                     auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiSizeBlockKernels, std::forward<TArgs>(args)...));
 
                     detail::cudaKernel<<<gridDim, blockDim, uiBlockSharedExternMemSizeBytes>>>(*static_cast<TAcceleratedKernel const *>(this), args...);
-#ifdef _DEBUG
+#ifdef ALPAKA_DEBUG
                     std::cout << "[-] AccCuda::KernelExecutor::operator()" << std::endl;
 #endif
                 }

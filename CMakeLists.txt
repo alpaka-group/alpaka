@@ -62,19 +62,11 @@ IF(ALPAKA_CUDA_ENABLE)
 ENDIF()
 
 ################################################################################
-# Build type (debug, release).
+# Debug option.
 ################################################################################
-OPTION(ALPAKA_RELEASE "Build release version, disables all runtime asserts" OFF)
-IF(ALPAKA_RELEASE)
-    MESSAGE(STATUS "Release version")
-
-    SET(CMAKE_BUILD_TYPE Release)
-    LIST(APPEND ALPAKA_COMPILE_DEFINITIONS NDEBUG)
-ELSE()
-    MESSAGE(STATUS "Debug version")
-
-    SET(CMAKE_BUILD_TYPE Debug)
-    LIST(APPEND ALPAKA_COMPILE_DEFINITIONS _DEBUG)
+OPTION(ALPAKA_DEBUG "Enables additional logging" OFF)
+IF(ALPAKA_DEBUG)
+    LIST(APPEND ALPAKA_COMPILE_DEFINITIONS ALPAKA_DEBUG)
 ENDIF()
 
 

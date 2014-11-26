@@ -43,7 +43,7 @@
 #include <stdexcept>                                // std::except
 #include <string>                                   // std::to_string
 #include <algorithm>                                // std::min, std::max
-#ifdef _DEBUG
+#ifdef ALPAKA_DEBUG
     #include <iostream>                             // std::cout
 #endif
 
@@ -196,10 +196,10 @@ namespace alpaka
                 ALPAKA_FCT_HOST KernelExecutor(TKernelConstrArgs && ... args) :
                     TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
                 {
-#ifdef _DEBUG
+#ifdef ALPAKA_DEBUG
                     std::cout << "[+] AccOpenMp::KernelExecutor()" << std::endl;
 #endif
-#ifdef _DEBUG
+#ifdef ALPAKA_DEBUG
                     std::cout << "[-] AccOpenMp::KernelExecutor()" << std::endl;
 #endif
                 }
@@ -226,7 +226,7 @@ namespace alpaka
                 template<typename TWorkSize, typename... TArgs>
                 ALPAKA_FCT_HOST void operator()(IWorkSize<TWorkSize> const & workSize, TArgs && ... args) const
                 {
-#ifdef _DEBUG
+#ifdef ALPAKA_DEBUG
                     std::cout << "[+] AccOpenMp::KernelExecutor::operator()" << std::endl;
 #endif
                     (*const_cast<TInterfacedWorkSize*>(static_cast<TInterfacedWorkSize const *>(this))) = workSize;
@@ -243,7 +243,7 @@ namespace alpaka
                     this->AccOpenMp::m_vuiExternalSharedMem.resize(uiBlockSharedExternMemSizeBytes);
 
                     auto const v3uiSizeGridBlocks(workSize.template getSize<Grid, Blocks, D3>());
-#ifdef _DEBUG
+#ifdef ALPAKA_DEBUG
                     //std::cout << "GridBlocks: " << v3uiSizeGridBlocks << " BlockKernels: " << v3uiSizeBlockKernels << std::endl;
 #endif
                     // CUDA programming guide: "Thread blocks are required to execute independently: It must be possible to execute them in any order, in parallel or in series. 
@@ -273,7 +273,7 @@ namespace alpaka
                                 // TODO: Does this hinder executing multiple kernels in parallel because their block sizes/omp thread numbers are interfering? Is this a real use case? 
                                 #pragma omp parallel num_threads(uiNumKernelsInBlock)
                                 {
-#ifdef _DEBUG
+#ifdef ALPAKA_DEBUG
                                     if((::omp_get_thread_num() == 0) && (bz == 0) && (by == 0) && (bx == 0))
                                     {
                                         assert(::omp_get_num_threads()>=0);
@@ -297,7 +297,7 @@ namespace alpaka
                     // After all blocks have been processed, the shared memory can be deleted.
                     this->AccOpenMp::m_vvuiSharedMem.clear();
                     this->AccOpenMp::m_vuiExternalSharedMem.clear();
-#ifdef _DEBUG
+#ifdef ALPAKA_DEBUG
                     std::cout << "[-] AccOpenMp::KernelExecutor::operator()" << std::endl;
 #endif
                 }
