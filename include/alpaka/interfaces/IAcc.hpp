@@ -34,19 +34,15 @@ namespace alpaka
 {
     //#############################################################################
     //! The interface for all accelerators.
-    //!
-    //! All the methods of this interface are declared ALPAKA_FCT_HOST_ACC. 
-    //! Because the kernel is always compiled with ALPAKA_FCT_HOST_ACC for all accelerators (even for AccSerial), equivalently there has to be an implementation of all methods for host and device for all accelerators. 
-    //! These device functions are not implemented and will not call the underlying implementation for the device code, because this will never be executed and would not compile.
+    //
+    // All the methods of this interface are declared ALPAKA_FCT_HOST_ACC. 
+    // Because the kernel is always compiled with ALPAKA_FCT_HOST_ACC for all accelerators (even for AccSerial), equivalently there has to be an implementation of all methods for host and device for all accelerators. 
+    // These device functions are not implemented and will not call the underlying implementation for the device code, because this will never be executed and would not compile.
     //#############################################################################
     template<typename TAcc = boost::mpl::_1>
     class IAcc :
         protected TAcc
     {
-    public:
-        // TODO: Remove if not needed.
-        //using MemorySpace = typename TAcc::MemorySpace;
-
     public:
         //-----------------------------------------------------------------------------
         //! \return [The maximum number of memory sharing kernel executions | The maximum block size] allowed by the underlying accelerator.
@@ -70,7 +66,6 @@ namespace alpaka
         template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
         ALPAKA_FCT_HOST_ACC typename detail::DimToRetType<TDimensionality>::type getSize() const
         {
-            // TODO: Test if this ifndef is really needed.
 #ifndef __CUDA_ARCH__
             return TAcc::template getSize<TOrigin, TUnit, TDimensionality>();
 #else

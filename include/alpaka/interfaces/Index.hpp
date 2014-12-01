@@ -139,7 +139,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Get the index requested.
             //-----------------------------------------------------------------------------
-            template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3, typename TWorkSize = WorkSizeHost>
+            template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3, typename TWorkSize = host::detail::WorkSizeHost>
             ALPAKA_FCT_HOST_ACC typename DimToRetType<TDimensionality>::type getIdx(IWorkSize<TWorkSize> const & workSize) const
             {
                 return GetIdx<TIndex, TOrigin, TUnit, TDimensionality>::getIdx(

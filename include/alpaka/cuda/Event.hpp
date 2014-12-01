@@ -78,10 +78,10 @@ namespace alpaka
             //#############################################################################
             //! The template for enqueuing the given event.
             //#############################################################################
-            template<typename TAcc>
-            struct EventQueue
+            template<>
+            struct EventEnqueue<AccCuda>
             {
-                ALPAKA_FCT_HOST EventQueue(Event<AccCuda> const & event)
+                ALPAKA_FCT_HOST EventEnqueue(Event<AccCuda> const & event)
                 {
                     ALPAKA_CUDA_CHECK(cudaEventRecord(
                         event.m_Event,
@@ -92,8 +92,8 @@ namespace alpaka
             //#############################################################################
             //! The template for an event wait.
             //#############################################################################
-            template<typename TAcc>
-            struct EventWait
+            template<>
+            struct EventWait<AccCuda>
             {
                 ALPAKA_FCT_HOST EventWait(Event<AccCuda> const & event)
                 {
@@ -104,8 +104,8 @@ namespace alpaka
             //#############################################################################
             //! The template for an event test.
             //#############################################################################
-            template<typename TAcc>
-            struct EventTest
+            template<>
+            struct EventTest<AccCuda>
             {
                 ALPAKA_FCT_HOST EventTest(Event<AccCuda> const & event, bool & bTest)
                 {

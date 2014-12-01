@@ -143,16 +143,12 @@ namespace alpaka
                     {
                         std::stringstream ssErr;
                         ssErr << "No CUDA capable devices detected!";
-
-                        std::cerr << ssErr.str() << std::endl;
                         throw std::runtime_error(ssErr.str());
                     }
                     else if(iNumGpus < deviceNumber)
                     {
                         std::stringstream ssErr;
                         ssErr << "No CUDA device " << deviceNumber << " available, only " << iNumGpus << " devices found!";
-
-                        std::cerr << ssErr.str() << std::endl;
                         throw std::runtime_error(ssErr.str());
                     }
 
@@ -221,13 +217,13 @@ namespace alpaka
                     // Compute-exclusive-thread mode (Only one thread in one process will be able to use cudaSetDevice() with this device)
                     else if(devProp.computeMode == cudaComputeModeExclusive)
                     {
-                        std::cerr << "Requested device is in computeMode cudaComputeModeExclusive.";
+                        std::cout << "Requested device is in computeMode cudaComputeModeExclusive.";
                         // TODO: Are we allowed to use the device in this case?
                     }
                     // Compute-prohibited mode (No threads can use cudaSetDevice() with this device)
                     else if(devProp.computeMode == cudaComputeModeProhibited)
                     {
-                        std::cerr << "Requested device is in computeMode cudaComputeModeProhibited. It can not be selected!";
+                        std::cout << "Requested device is in computeMode cudaComputeModeProhibited. It can not be selected!";
                     }
                     // Compute-exclusive-process mode (Many threads in one process will be able to use cudaSetDevice() with this device)
                     else if(devProp.computeMode == cudaComputeModeExclusiveProcess)

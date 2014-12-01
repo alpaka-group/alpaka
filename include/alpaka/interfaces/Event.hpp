@@ -40,7 +40,7 @@ namespace alpaka
             //! The template for enqueuing the given event.
             //#############################################################################
             template<typename TAcc>
-            struct EventQueue;
+            struct EventEnqueue;
 
             //#############################################################################
             //! The template for an event wait.
@@ -61,9 +61,9 @@ namespace alpaka
         //! Any subsequent calls which examine the status of event will only examine the completion of this most recent call to cudaEventRecord().
         //#############################################################################
         template<typename TAcc>
-        ALPAKA_FCT_HOST void eventQueue(Event<TAcc> const & event)
+        ALPAKA_FCT_HOST void eventEnqueue(Event<TAcc> const & event)
         {
-            detail::EventQueue<TAcc>{event};
+            detail::EventEnqueue<TAcc>{event};
         }
 
         //#############################################################################

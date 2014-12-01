@@ -136,23 +136,22 @@ namespace alpaka
 //-----------------------------------------------------------------------------
 //! Profiles the given kernel.
 //-----------------------------------------------------------------------------
-template<typename TExec, typename TWorkSize, typename... TArgs>
-void profileAcceleratedKernel(TExec const & exec, alpaka::IWorkSize<TWorkSize> const & workSize, TArgs && ... args)
+template<typename TExec, typename... TArgs>
+void profileAcceleratedKernel(TExec const & exec, TArgs && ... args)
 {
     std::cout
         << "profileAcceleratedKernel("
         << " kernelExecutor: " << typeid(TExec).name()
-        << ", workSize: " << workSize
         << ")" << std::endl;
 
     auto const tpStart(std::chrono::high_resolution_clock::now());
 
     // Execute the accelerated kernel.
-    exec(workSize, std::forward<TArgs>(args)...);
+    exec(std::forward<TArgs>(args)...);
 
     // Enqueue an event to wait for. This allows synchronization after the (possibly) asynchronous kernel execution.
     alpaka::event::Event<typename TExec::TAcc> ev;
-    alpaka::event::eventQueue(ev);
+    alpaka::event::eventEnqueue(ev);
     alpaka::event::eventWait(ev);
 
     auto const tpEnd(std::chrono::high_resolution_clock::now());
@@ -175,6 +174,7 @@ void profileAcceleratedExampleKernel(alpaka::IWorkSize<TWorkSize> const & workSi
         << "AcceleratedExampleKernelProfiler("
         << " accelerator: " << typeid(TAcc).name()
         << ", kernel: " << typeid(TKernel).name()
+        << ", workSize: " << workSize
         << ")" << std::endl;
 
     std::size_t const uiNumBlocksInGrid(workSize.template getSize<alpaka::Grid, alpaka::Blocks, alpaka::Linear>());
@@ -191,7 +191,7 @@ void profileAcceleratedExampleKernel(alpaka::IWorkSize<TWorkSize> const & workSi
     std::uint32_t const m_uiMult(42);
 
     auto exec(alpaka::createKernelExecutor<TAcc, TKernel>(m_uiMult));
-    profileAcceleratedKernel(exec, workSize, pBlockRetValsAcc.get(), uiMult2);
+    profileAcceleratedKernel(exec(workSize), pBlockRetValsAcc.get(), uiMult2);
 
     // Copy back the result.
     alpaka::memory::memCopy<alpaka::MemorySpaceHost, TAccMemorySpace>(vuiBlockRetVals.data(), pBlockRetValsAcc.get(), uiSizeBytes);

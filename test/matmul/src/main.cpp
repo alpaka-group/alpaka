@@ -131,23 +131,22 @@ namespace alpaka
 //-----------------------------------------------------------------------------
 //! Profiles the given kernel.
 //-----------------------------------------------------------------------------
-template<typename TExec, typename TWorkSize, typename... TArgs>
-void profileAcceleratedKernel(TExec const & exec, alpaka::IWorkSize<TWorkSize> const & workSize, TArgs && ... args)
+template<typename TExec, typename... TArgs>
+void profileAcceleratedKernel(TExec const & exec, TArgs && ... args)
 {
     std::cout
         << "profileAcceleratedKernel("
         << " kernelExecutor: " << typeid(TExec).name()
-        << ", workSize: " << workSize
         << ")" << std::endl;
 
     auto const tpStart(std::chrono::high_resolution_clock::now());
 
     // Execute the accelerated kernel.
-    exec(workSize)(std::forward<TArgs>(args)...);
+    exec(std::forward<TArgs>(args)...);
 
     // Enqueue an event to wait for. This allows synchronization after the (possibly) asynchronous kernel execution.
     alpaka::event::Event<typename TExec::TAcc> ev;
-    alpaka::event::eventQueue(ev);
+    alpaka::event::eventEnqueue(ev);
     alpaka::event::eventWait(ev);
 
     auto const tpEnd(std::chrono::high_resolution_clock::now());
@@ -171,6 +170,7 @@ void profileAcceleratedMatMulKernel(alpaka::IWorkSize<TWorkSize> const & workSiz
         << " uiMatrixSize:" << uiMatrixSize
         << ", accelerator: " << typeid(TAcc).name()
         << ", kernel: " << typeid(TKernel).name()
+        << ", workSize: " << workSize
         << ")" << std::endl;
 
     // Initialize matrices.
@@ -192,7 +192,7 @@ void profileAcceleratedMatMulKernel(alpaka::IWorkSize<TWorkSize> const & workSiz
     // Build the kernel executor.
     auto exec(alpaka::createKernelExecutor<TAcc, TKernel>());
     // Profile the kernel execution.
-    profileAcceleratedKernel(exec, workSize, uiMatrixSize, pAAcc.get(), pBAcc.get(), pCAcc.get());
+    profileAcceleratedKernel(exec(workSize), uiMatrixSize, pAAcc.get(), pBAcc.get(), pCAcc.get());
 
     // Copy back the result.
     alpaka::memory::memCopy<alpaka::MemorySpaceHost, TAccMemorySpace>(vuiC.data(), pCAcc.get(), uiSizeBytes);

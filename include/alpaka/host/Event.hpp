@@ -67,9 +67,9 @@ namespace alpaka
             //! The template for enqueuing the given event.
             //#############################################################################
             template<typename TAcc>
-            struct EventQueue
+            struct EventEnqueue
             {
-                ALPAKA_FCT_HOST EventQueue(host::detail::EventHost const & )
+                ALPAKA_FCT_HOST EventEnqueue(host::detail::EventHost const & )
                 {
                     // Because host calls are not asynchronous, this call never has to enqueue anything.
                 }
