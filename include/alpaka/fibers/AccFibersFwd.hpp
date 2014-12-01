@@ -22,15 +22,15 @@
 
 #pragma once
 
-#include <alpaka/host/WorkSize.hpp> // IWorkSize, WorkSizeHost
-
+// forward declarations
 namespace alpaka
 {
-    namespace threads
+    namespace fibers
     {
         namespace detail
         {
-            using TInterfacedWorkSize = alpaka::IWorkSize<alpaka::host::detail::WorkSizeHost>;
+            class AccFibers;
         }
     }
+    using AccFibers = fibers::detail::AccFibers;
 }

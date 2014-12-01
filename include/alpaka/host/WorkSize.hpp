@@ -28,66 +28,70 @@
 
 namespace alpaka
 {
-    namespace detail
+    namespace host
     {
-        //#############################################################################
-        //! The description of the work size.
-        //! This class stores the sizes as members.
-        //#############################################################################
-        class WorkSizeHost
+        namespace detail
         {
-        public:
-            //-----------------------------------------------------------------------------
-            //! Default-constructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC WorkSizeHost() = default;
-            //-----------------------------------------------------------------------------
-            //! Constructor from values.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC explicit WorkSizeHost(vec<3u> const v3uiSizeGridBlocks, vec<3u> const v3uiSizeBlockKernels) :
-                m_v3uiSizeGridBlocks(v3uiSizeGridBlocks),
-                m_v3uiSizeBlockKernels(v3uiSizeBlockKernels)
-            {}
-            //-----------------------------------------------------------------------------
-            //! Copy-constructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC WorkSizeHost(WorkSizeHost const &) = default;
-            //-----------------------------------------------------------------------------
-            //! Move-constructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC WorkSizeHost(WorkSizeHost &&) = default;
-            //-----------------------------------------------------------------------------
-            //! Assignment-operator.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC WorkSizeHost & operator=(WorkSizeHost const &) = default;
-            //-----------------------------------------------------------------------------
-            //! Destructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC ~WorkSizeHost() noexcept = default;
-
-            //-----------------------------------------------------------------------------
-            //! \return The grid dimensions of the currently executed kernel.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC vec<3u> getSizeGridBlocks() const
+            //#############################################################################
+            //! The description of the work size.
+            //! This class stores the sizes as members.
+            //#############################################################################
+            class WorkSizeHost
             {
-                return m_v3uiSizeGridBlocks;
-            }
-            //-----------------------------------------------------------------------------
-            //! \return The block dimensions of the currently executed kernel.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC vec<3u> getSizeBlockKernels() const
-            {
-                return m_v3uiSizeBlockKernels;
-            }
+            public:
+                //-----------------------------------------------------------------------------
+                //! Default-constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST_ACC WorkSizeHost() = default;
+                //-----------------------------------------------------------------------------
+                //! Constructor from values.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST_ACC explicit WorkSizeHost(vec<3u> const & v3uiSizeGridBlocks, vec<3u> const & v3uiSizeBlockKernels) :
+                    m_v3uiSizeGridBlocks(v3uiSizeGridBlocks),
+                    m_v3uiSizeBlockKernels(v3uiSizeBlockKernels)
+                {
+                }
+                //-----------------------------------------------------------------------------
+                //! Copy-constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST_ACC WorkSizeHost(WorkSizeHost const &) = default;
+                //-----------------------------------------------------------------------------
+                //! Move-constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST_ACC WorkSizeHost(WorkSizeHost &&) = default;
+                //-----------------------------------------------------------------------------
+                //! Assignment-operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST_ACC WorkSizeHost & operator=(WorkSizeHost const &) = default;
+                //-----------------------------------------------------------------------------
+                //! Destructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST_ACC ~WorkSizeHost() noexcept = default;
 
-        private:
-            vec<3u> m_v3uiSizeGridBlocks;
-            vec<3u> m_v3uiSizeBlockKernels;
-        };
+                //-----------------------------------------------------------------------------
+                //! \return The grid dimensions of the currently executed kernel.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST_ACC vec<3u> getSizeGridBlocks() const
+                {
+                    return m_v3uiSizeGridBlocks;
+                }
+                //-----------------------------------------------------------------------------
+                //! \return The block dimensions of the currently executed kernel.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST_ACC vec<3u> getSizeBlockKernels() const
+                {
+                    return m_v3uiSizeBlockKernels;
+                }
+
+            private:
+                vec<3u> m_v3uiSizeGridBlocks;
+                vec<3u> m_v3uiSizeBlockKernels;
+            };
+        }
     }
 
     //#############################################################################
     //! A basic class storing the work to be used in user code.
     //#############################################################################
-    using WorkSize = IWorkSize<detail::WorkSizeHost>;
+    using WorkSize = IWorkSize<host::detail::WorkSizeHost>;
 }

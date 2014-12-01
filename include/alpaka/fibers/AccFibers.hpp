@@ -22,23 +22,27 @@
 
 #pragma once
 
+// base classes
+#include <alpaka/fibers/AccFibersFwd.hpp>
 #include <alpaka/fibers/WorkSize.hpp>               // TInterfacedWorkSize
 #include <alpaka/fibers/Index.hpp>                  // TInterfacedIndex
 #include <alpaka/fibers/Atomic.hpp>                 // TInterfacedAtomic
 #include <alpaka/fibers/Barrier.hpp>                // BarrierFibers
 
-#include <alpaka/fibers/Common.hpp>
-
-#include <alpaka/host/MemorySpace.hpp>              // MemorySpaceHost
+// user functionality
 #include <alpaka/host/Memory.hpp>                   // MemCopy
+#include <alpaka/fibers/Event.hpp>                  // Event
 
+// specialized templates
 #include <alpaka/interfaces/KernelExecCreator.hpp>  // KernelExecCreator
 
+// implementation details
+#include <alpaka/fibers/Common.hpp>
 #include <alpaka/interfaces/BlockSharedExternMemSizeBytes.hpp>
 #include <alpaka/interfaces/IAcc.hpp>
 
 #include <cstddef>                                  // std::size_t
-#include <cstdint>                                  // unit8_t
+#include <cstdint>                                  // std::uint32_t
 #include <cassert>                                  // assert
 #include <stdexcept>                                // std::except
 
@@ -236,18 +240,37 @@ namespace alpaka
                 private TAcceleratedKernel
             {
                 static_assert(std::is_base_of<IAcc<AccFibers>, TAcceleratedKernel>::value, "The TAcceleratedKernel for the serial::detail::KernelExecutor has to inherit from IAcc<AccFibers>!");
+
+            public:
+                using TAcc = AccFibers;
+
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                template<typename... TKernelConstrArgs>
-                ALPAKA_FCT_HOST KernelExecutor(TKernelConstrArgs && ... args) :
+                template<typename TWorkSize, typename... TKernelConstrArgs>
+                ALPAKA_FCT_HOST KernelExecutor(IWorkSize<TWorkSize> const & workSize, TKernelConstrArgs && ... args) :
                     TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
                     m_vFibersInBlock()
                 {
 #ifdef ALPAKA_DEBUG
                     std::cout << "[+] AccFibers::KernelExecutor()" << std::endl;
 #endif
+                    (*const_cast<TInterfacedWorkSize*>(static_cast<TInterfacedWorkSize const *>(this))) = workSize;
+
+                    auto const uiNumKernelsPerBlock(workSize.template getSize<Block, Kernels, Linear>());
+                    auto const uiMaxKernelsPerBlock(AccFibers::getSizeBlockKernelsLinearMax());
+                    if(uiNumKernelsPerBlock > uiMaxKernelsPerBlock)
+                    {
+                        throw std::runtime_error(("The given blockSize '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the fibers accelerator!").c_str());
+                    }
+
+                    m_v3uiSizeGridBlocks = workSize.template getSize<Grid, Blocks, D3>();
+                    m_v3uiSizeBlockKernels = workSize.template getSize<Block, Kernels, D3>();
+
+                    this->AccFibers::m_uiNumKernelsPerBlock = uiNumKernelsPerBlock;
+
+                    //m_vFibersInBlock.reserve(uiNumKernelsPerBlock);    // Minimal speedup?
 #ifdef ALPAKA_DEBUG
                     std::cout << "[-] AccFibers::KernelExecutor()" << std::endl;
 #endif
@@ -272,54 +295,38 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Executes the accelerated kernel.
                 //-----------------------------------------------------------------------------
-                template<typename TWorkSize, typename... TArgs>
-                ALPAKA_FCT_HOST void operator()(IWorkSize<TWorkSize> const & workSize, TArgs && ... args) const
+                template<typename... TArgs>
+                ALPAKA_FCT_HOST void operator()(TArgs && ... args) const
                 {
 #ifdef ALPAKA_DEBUG
                     std::cout << "[+] AccFibers::KernelExecutor::operator()" << std::endl;
 #endif
-                    (*const_cast<TInterfacedWorkSize*>(static_cast<TInterfacedWorkSize const *>(this))) = workSize;
-
-                    auto const uiNumKernelsPerBlock(workSize.template getSize<Block, Kernels, Linear>());
-                    auto const uiMaxKernelsPerBlock(AccFibers::getSizeBlockKernelsLinearMax());
-                    if(uiNumKernelsPerBlock > uiMaxKernelsPerBlock)
-                    {
-                        throw std::runtime_error(("The given blockSize '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the fibers accelerator!").c_str());
-                    }
-
-                    this->AccFibers::m_uiNumKernelsPerBlock = uiNumKernelsPerBlock;
-
-                    //m_vFibersInBlock.reserve(uiNumKernelsPerBlock);    // Minimal speedup?
-
-                    auto const v3uiSizeBlockKernels(workSize.template getSize<Block, Kernels, D3>());
-                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiSizeBlockKernels, std::forward<TArgs>(args)...));
+                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(m_v3uiSizeBlockKernels, std::forward<TArgs>(args)...));
                     this->AccFibers::m_vuiExternalSharedMem.resize(uiBlockSharedExternMemSizeBytes);
-
-                    auto const v3uiSizeGridBlocks(workSize.template getSize<Grid, Blocks, D3>());
 #ifdef ALPAKA_DEBUG
-                    //std::cout << "GridBlocks: " << v3uiSizeGridBlocks << " BlockKernels: " << v3uiSizeBlockKernels << std::endl;
+                    //std::cout << "GridBlocks: " << m_v3uiSizeGridBlocks << " BlockKernels: " << m_v3uiSizeBlockKernels << std::endl;
 #endif
                     // CUDA programming guide: "Thread blocks are required to execute independently: It must be possible to execute them in any order, in parallel or in series. 
                     // This independence requirement allows thread blocks to be scheduled in any order across any number of cores"
                     // TODO: Execute blocks in parallel because kernel executions in a block are cooperatively multi threaded within one real thread.
-                    for(std::uint32_t bz(0); bz<v3uiSizeGridBlocks[2]; ++bz)
+                    for(std::uint32_t bz(0); bz<m_v3uiSizeGridBlocks[2]; ++bz)
                     {
                         this->AccFibers::m_v3uiGridBlockIdx[2] = bz;
-                        for(std::uint32_t by(0); by<v3uiSizeGridBlocks[1]; ++by)
+                        for(std::uint32_t by(0); by<m_v3uiSizeGridBlocks[1]; ++by)
                         {
                             this->AccFibers::m_v3uiGridBlockIdx[1] = by;
-                            for(std::uint32_t bx(0); bx<v3uiSizeGridBlocks[0]; ++bx)
+                            for(std::uint32_t bx(0); bx<m_v3uiSizeGridBlocks[0]; ++bx)
                             {
                                 this->AccFibers::m_v3uiGridBlockIdx[0] = bx;
 
                                 vec<3u> v3uiBlockKernelIdx;
-                                for(std::uint32_t tz(0); tz<v3uiSizeBlockKernels[2]; ++tz)
+                                for(std::uint32_t tz(0); tz<m_v3uiSizeBlockKernels[2]; ++tz)
                                 {
                                     v3uiBlockKernelIdx[2] = tz;
-                                    for(std::uint32_t ty(0); ty<v3uiSizeBlockKernels[1]; ++ty)
+                                    for(std::uint32_t ty(0); ty<m_v3uiSizeBlockKernels[1]; ++ty)
                                     {
                                         v3uiBlockKernelIdx[1] = ty;
-                                        for(std::uint32_t tx(0); tx<v3uiSizeBlockKernels[0]; ++tx)
+                                        for(std::uint32_t tx(0); tx<m_v3uiSizeBlockKernels[0]; ++tx)
                                         {
                                             v3uiBlockKernelIdx[0] = tx;
 
@@ -396,11 +403,12 @@ namespace alpaka
 
             private:
                 std::vector<boost::fibers::fiber> mutable m_vFibersInBlock; //!< The fibers executing the current block.
+
+                vec<3u> m_v3uiSizeGridBlocks;
+                vec<3u> m_v3uiSizeBlockKernels;
             };
         }
     }
-
-    using AccFibers = fibers::detail::AccFibers;
 
     namespace detail
     {
@@ -412,14 +420,14 @@ namespace alpaka
         {
         public:
             using TAcceleratedKernel = typename boost::mpl::apply<TKernel, AccFibers>::type;
-            using TKernelExecutor = fibers::detail::KernelExecutor<TAcceleratedKernel>;
+            using KernelExecutorExtent = KernelExecutorExtent<fibers::detail::KernelExecutor<TAcceleratedKernel>, TKernelConstrArgs...>;
 
             //-----------------------------------------------------------------------------
             //! Creates an kernel executor for the serial accelerator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST TKernelExecutor operator()(TKernelConstrArgs && ... args) const
+            ALPAKA_FCT_HOST KernelExecutorExtent operator()(TKernelConstrArgs && ... args) const
             {
-                return TKernelExecutor(std::forward<TKernelConstrArgs>(args)...);
+                return KernelExecutorExtent(std::forward<TKernelConstrArgs>(args)...);
             }
         };
     }

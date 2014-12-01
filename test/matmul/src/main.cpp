@@ -143,7 +143,12 @@ void profileAcceleratedKernel(TExec const & exec, alpaka::IWorkSize<TWorkSize> c
     auto const tpStart(std::chrono::high_resolution_clock::now());
 
     // Execute the accelerated kernel.
-    exec(workSize, std::forward<TArgs>(args)...);
+    exec(workSize)(std::forward<TArgs>(args)...);
+
+    // Enqueue an event to wait for. This allows synchronization after the (possibly) asynchronous kernel execution.
+    alpaka::event::Event<typename TExec::TAcc> ev;
+    alpaka::event::eventQueue(ev);
+    alpaka::event::eventWait(ev);
 
     auto const tpEnd(std::chrono::high_resolution_clock::now());
 

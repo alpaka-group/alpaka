@@ -22,15 +22,20 @@
 
 #pragma once
 
-#include <alpaka/host/WorkSize.hpp> // IWorkSize, WorkSizeHost
+#include <alpaka/serial/AccSerialFwd.hpp>   // AccSerial
+
+#include <alpaka/host/Event.hpp>            // EventHost
 
 namespace alpaka
 {
-    namespace threads
+    namespace event
     {
-        namespace detail
-        {
-            using TInterfacedWorkSize = alpaka::IWorkSize<alpaka::host::detail::WorkSizeHost>;
-        }
+        //#############################################################################
+        //! The template for an event.
+        //#############################################################################
+        template<>
+        struct Event<AccSerial> :
+            alpaka::host::detail::EventHost
+        {};
     }
 }

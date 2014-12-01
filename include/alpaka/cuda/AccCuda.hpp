@@ -22,26 +22,31 @@
 
 #pragma once
 
+// base classes
+#include <alpaka/cuda/AccCudaFwd.hpp>
 #include <alpaka/cuda/WorkSize.hpp>                 // TInterfacedWorkSize
 #include <alpaka/cuda/Index.hpp>                    // TInterfacedIndex
 #include <alpaka/cuda/Atomic.hpp>                   // TInterfacedAtomic
 
-#include <alpaka/cuda/MemorySpace.hpp>              // MemorySpaceCuda
+// user functionality
 #include <alpaka/cuda/Memory.hpp>                   // MemCopy
+#include <alpaka/cuda/Event.hpp>                    // Event
 
-#include <alpaka/cuda/Common.hpp>
-
-#include <alpaka/interfaces/IAcc.hpp>               // IAcc
+// specialized templates
 #include <alpaka/interfaces/KernelExecCreator.hpp>  // KernelExecCreator
 
+// implementation details
+#include <alpaka/cuda/Common.hpp>
+#include <alpaka/interfaces/IAcc.hpp>               // IAcc
 #include <alpaka/interfaces/BlockSharedExternMemSizeBytes.hpp>
-#include <alpaka/interfaces/IAcc.hpp>
 
 #include <cstddef>                                  // std::size_t
-#include <cstdint>                                  // unit8_t
+#include <cstdint>                                  // std::uint32_t
 #include <stdexcept>                                // std::except
 #include <string>                                   // std::to_string
 #include <sstream>                                  // std::stringstream
+#include <utility>                                  // std::forward
+#include <tuple>                                    // std::tuple
 #ifdef ALPAKA_DEBUG
     #include <iostream>                             // std::cout
 #endif
@@ -293,18 +298,43 @@ namespace alpaka
             class KernelExecutor :
                 private TAcceleratedKernel
             {
+                // Copying a kernel onto the CUDA device has some extra requirements of being trivially copyable:
+                // A trivially copyable class is a class that
+                // 1. Has no non-trivial copy constructors(this also requires no virtual functions or virtual bases)
+                // 2. Has no non-trivial move constructors
+                // 3. Has no non-trivial copy assignment operators
+                // 4. Has no non-trivial move assignment operators
+                // 5. Has a trivial destructor
+                //
+#ifndef __GNUC__    // FIXME: Find out which version > 4.8.0 does support the std::is_trivially_copyable
+                // TODO: is_standard_layout is even stricter. Is is_trivially_copyable enough?
+                static_assert(std::is_trivially_copyable<TAcceleratedKernel>::value, "The given kernel functor has to be trivially copyable to be used on a CUDA device!");
+#endif
                 static_assert(std::is_base_of<IAcc<AccCuda>, TAcceleratedKernel>::value, "The TAcceleratedKernel for the cuda::detail::KernelExecutor has to inherit from IAcc<AccCuda>!");
+
+            public:
+                using TAcc = AccCuda;
+
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                template<typename... TKernelConstrArgs>
-                ALPAKA_FCT_HOST KernelExecutor(TKernelConstrArgs && ... args) :
+                template<typename TWorkSize, typename... TKernelConstrArgs>
+                ALPAKA_FCT_HOST KernelExecutor(IWorkSize<TWorkSize> const & workSize, TKernelConstrArgs && ... args) :
                     TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
                 {
 #ifdef ALPAKA_DEBUG
                     std::cout << "[+] AccCuda::KernelExecutor()" << std::endl;
 #endif
+                    auto const uiNumKernelsPerBlock(workSize.template getSize<Block, Kernels, Linear>());
+                    auto const uiMaxKernelsPerBlock(AccCuda::getSizeBlockKernelsLinearMax());
+                    if(uiNumKernelsPerBlock > uiMaxKernelsPerBlock)
+                    {
+                        throw std::runtime_error(("The given blockSize '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the CUDA accelerator!").c_str());
+                    }
+
+                    m_v3uiSizeGridBlocks = workSize.template getSize<Grid, Blocks, D3>();
+                    m_v3uiSizeBlockKernels = workSize.template getSize<Block, Kernels, D3>();
 #ifdef ALPAKA_DEBUG
                     std::cout << "[-] AccCuda::KernelExecutor()" << std::endl;
 #endif
@@ -329,42 +359,29 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Executes the accelerated kernel.
                 //-----------------------------------------------------------------------------
-                template<typename TWorkSize, typename... TArgs>
-                ALPAKA_FCT_HOST void operator()(IWorkSize<TWorkSize> const & workSize, TArgs && ... args) const
+                template<typename... TArgs>
+                ALPAKA_FCT_HOST void operator()(TArgs && ... args) const
                 {
-#ifdef ALPAKA_DEBUG
-                    std::cout << "[+] AccCuda::KernelExecutor::operator()" << std::endl;
-#endif
-                    auto const uiNumKernelsPerBlock(workSize.template getSize<Block, Kernels, Linear>());
-                    auto const uiMaxKernelsPerBlock(AccCuda::getSizeBlockKernelsLinearMax());
-                    if(uiNumKernelsPerBlock > uiMaxKernelsPerBlock)
-                    {
-                        throw std::runtime_error(("The given blockSize '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the CUDA accelerator!").c_str());
-                    }
-
-                    auto const v3uiSizeGridBlocks(workSize.template getSize<Grid, Blocks, D3>());
-                    auto const v3uiSizeBlockKernels(workSize.template getSize<Block, Kernels, D3>());
-#ifdef ALPAKA_DEBUG
-                    //std::cout << "GridBlocks: " << v3uiSizeGridBlocks << " BlockKernels: " << v3uiSizeBlockKernels<< std::endl;
-#endif
-                    dim3 gridDim(v3uiSizeGridBlocks[0], v3uiSizeGridBlocks[1], v3uiSizeGridBlocks[2]);
-                    dim3 blockDim(v3uiSizeBlockKernels[0], v3uiSizeBlockKernels[1], v3uiSizeBlockKernels[2]);
+                    dim3 gridDim(m_v3uiSizeGridBlocks[0], m_v3uiSizeGridBlocks[1], m_v3uiSizeGridBlocks[2]);
+                    dim3 blockDim(m_v3uiSizeBlockKernels[0], m_v3uiSizeBlockKernels[1], m_v3uiSizeBlockKernels[2]);
 #ifdef ALPAKA_DEBUG
                     //std::cout << "GridBlocks: (" << gridDim.x << ", " << gridDim.y << ", " << gridDim.z << ")" << std::endl;
                     //std::cout << "BlockKernels: (" <<  << blockDim.x << ", " << blockDim.y << ", " << blockDim.z << ")" << std::endl;
 #endif
-                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiSizeBlockKernels, std::forward<TArgs>(args)...));
+                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(m_v3uiSizeBlockKernels, std::forward<TArgs>(args)...));
 
                     detail::cudaKernel<<<gridDim, blockDim, uiBlockSharedExternMemSizeBytes>>>(*static_cast<TAcceleratedKernel const *>(this), args...);
 #ifdef ALPAKA_DEBUG
                     std::cout << "[-] AccCuda::KernelExecutor::operator()" << std::endl;
 #endif
                 }
+
+            private:
+                vec<3u> m_v3uiSizeGridBlocks;
+                vec<3u> m_v3uiSizeBlockKernels;
             };
         }
     }
-
-    using AccCuda = cuda::detail::AccCuda;
 
     //#############################################################################
     //! The specialization of the accelerator interface for CUDA.
@@ -460,26 +477,14 @@ namespace alpaka
         {
         public:
             using TAcceleratedKernel = typename boost::mpl::apply<TKernel, AccCuda>::type;
-            using TKernelExecutor = cuda::detail::KernelExecutor<TAcceleratedKernel>;
+            using KernelExecutorExtent = KernelExecutorExtent<cuda::detail::KernelExecutor<TAcceleratedKernel>, TKernelConstrArgs...>;
 
-            // Copying a kernel onto the CUDA device has some extra requirements of being trivially copyable:
-            // A trivially copyable class is a class that
-            // 1. Has no non-trivial copy constructors(this also requires no virtual functions or virtual bases)
-            // 2. Has no non-trivial move constructors
-            // 3. Has no non-trivial copy assignment operators
-            // 4. Has no non-trivial move assignment operators
-            // 5. Has a trivial destructor
-            //
-#ifndef __GNUC__    // FIXME: Find out which version > 4.8.0 does support the std::is_trivially_copyable
-            // TODO: is_standard_layout is even stricter. Is is_trivially_copyable enough?
-            static_assert(std::is_trivially_copyable<TAcceleratedKernel>::value, "The given kernel functor has to be trivially copyable to be used on a CUDA device!");
-#endif
             //-----------------------------------------------------------------------------
             //! Creates an kernel executor for the serial accelerator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST TKernelExecutor operator()(TKernelConstrArgs && ... args) const
+            ALPAKA_FCT_HOST KernelExecutorExtent operator()(TKernelConstrArgs && ... args) const
             {
-                return TKernelExecutor(std::forward<TKernelConstrArgs>(args)...);
+                return KernelExecutorExtent(std::forward<TKernelConstrArgs>(args)...);
             }
         };
     }

@@ -22,21 +22,26 @@
 
 #pragma once
 
+// base classes
+#include <alpaka/threads/AccThreadsFwd.hpp>
 #include <alpaka/threads/WorkSize.hpp>              // TInterfacedWorkSize
 #include <alpaka/threads/Index.hpp>                 // TInterfacedIndex
 #include <alpaka/threads/Atomic.hpp>                // TInterfacedAtomic
 #include <alpaka/threads/Barrier.hpp>               // BarrierThreads
 
-#include <alpaka/host/MemorySpace.hpp>              // MemorySpaceHost
+// user functionality
 #include <alpaka/host/Memory.hpp>                   // MemCopy
+#include <alpaka/threads/Event.hpp>                 // Event
 
+// specialized templates
 #include <alpaka/interfaces/KernelExecCreator.hpp>  // KernelExecCreator
 
+// implementation details
 #include <alpaka/interfaces/BlockSharedExternMemSizeBytes.hpp>
 #include <alpaka/interfaces/IAcc.hpp>
 
 #include <cstddef>                                  // std::size_t
-#include <cstdint>                                  // unit8_t
+#include <cstdint>                                  // std::uint32_t
 #include <vector>                                   // std::vector
 #include <thread>                                   // std::thread
 #include <map>                                      // std::map
@@ -120,7 +125,7 @@ namespace alpaka
                 ALPAKA_FCT_HOST static vec<3u> getSizeBlockKernelsMax()
                 {
                     auto const uiSizeBlockKernelsLinearMax(getSizeBlockKernelsLinearMax());
-                    return{uiSizeBlockKernelsLinearMax, uiSizeBlockKernelsLinearMax, uiSizeBlockKernelsLinearMax};
+                    return {uiSizeBlockKernelsLinearMax, uiSizeBlockKernelsLinearMax, uiSizeBlockKernelsLinearMax};
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The maximum number of kernels in a block allowed by.
@@ -157,7 +162,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Syncs all kernels in the current block.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST void syncBlockKernels(std::map<std::thread::id,std::size_t>::iterator const & itFind) const
+                ALPAKA_FCT_HOST void syncBlockKernels(std::map<std::thread::id, std::size_t>::iterator const & itFind) const
                 {
                     assert(itFind != m_mThreadsToBarrier.end());
 
@@ -246,12 +251,16 @@ namespace alpaka
                 private TAcceleratedKernel
             {
                 static_assert(std::is_base_of<IAcc<AccThreads>, TAcceleratedKernel>::value, "The TAcceleratedKernel for the threads::detail::KernelExecutor has to inherit from IAcc<AccThreads>!");
+
+            public:
+                using TAcc = AccThreads;
+
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                template<typename... TKernelConstrArgs>
-                ALPAKA_FCT_HOST KernelExecutor(TKernelConstrArgs && ... args) :
+                template<typename TWorkSize, typename... TKernelConstrArgs>
+                ALPAKA_FCT_HOST KernelExecutor(IWorkSize<TWorkSize> const & workSize, TKernelConstrArgs && ... args) :
                     TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
                     m_vThreadsInBlock(),
                     m_mtxMapInsert()
@@ -259,6 +268,21 @@ namespace alpaka
 #ifdef ALPAKA_DEBUG
                     std::cout << "[+] AccThreads::KernelExecutor()" << std::endl;
 #endif
+                    (*const_cast<TInterfacedWorkSize*>(static_cast<TInterfacedWorkSize const *>(this))) = workSize;
+
+                    auto const uiNumKernelsPerBlock(workSize.template getSize<Block, Kernels, Linear>());
+                    auto const uiMaxKernelsPerBlock(AccThreads::getSizeBlockKernelsLinearMax());
+                    if(uiNumKernelsPerBlock > uiMaxKernelsPerBlock)
+                    {
+                        throw std::runtime_error(("The given blockSize '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the threads accelerator!").c_str());
+                    }
+
+                    this->AccThreads::m_uiNumKernelsPerBlock = uiNumKernelsPerBlock;
+
+                    m_v3uiSizeGridBlocks = workSize.template getSize<Grid, Blocks, D3>();
+                    m_v3uiSizeBlockKernels = workSize.template getSize<Block, Kernels, D3>();
+
+                    //m_vThreadsInBlock.reserve(uiNumKernelsPerBlock);    // Minimal speedup?
 #ifdef ALPAKA_DEBUG
                     std::cout << "[-] AccThreads::KernelExecutor()" << std::endl;
 #endif
@@ -291,54 +315,38 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Executes the accelerated kernel.
                 //-----------------------------------------------------------------------------
-                template<typename TWorkSize, typename... TArgs>
-                ALPAKA_FCT_HOST void operator()(IWorkSize<TWorkSize> const & workSize, TArgs && ... args) const
+                template<typename... TArgs>
+                ALPAKA_FCT_HOST void operator()(TArgs && ... args) const
                 {
 #ifdef ALPAKA_DEBUG
                     std::cout << "[+] AccThreads::KernelExecutor::operator()" << std::endl;
 #endif
-                    (*const_cast<TInterfacedWorkSize*>(static_cast<TInterfacedWorkSize const *>(this))) = workSize;
-
-                    auto const uiNumKernelsPerBlock(workSize.template getSize<Block, Kernels, Linear>());
-                    auto const uiMaxKernelsPerBlock(AccThreads::getSizeBlockKernelsLinearMax());
-                    if(uiNumKernelsPerBlock > uiMaxKernelsPerBlock)
-                    {
-                        throw std::runtime_error(("The given blockSize '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the threads accelerator!").c_str());
-                    }
-
-                    this->AccThreads::m_uiNumKernelsPerBlock = uiNumKernelsPerBlock;
-
-                    //m_vThreadsInBlock.reserve(uiNumKernelsPerBlock);    // Minimal speedup?
-
-                    auto const v3uiSizeBlockKernels(workSize.template getSize<Block, Kernels, D3>());
-                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiSizeBlockKernels, std::forward<TArgs>(args)...));
+                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(m_v3uiSizeBlockKernels, std::forward<TArgs>(args)...));
                     this->AccThreads::m_vuiExternalSharedMem.resize(uiBlockSharedExternMemSizeBytes);
-
-                    auto const v3uiSizeGridBlocks(workSize.template getSize<Grid, Blocks, D3>());
 #ifdef ALPAKA_DEBUG
                     //std::cout << "GridBlocks: " << v3uiSizeGridBlocks << " BlockKernels: " << v3uiSizeBlockKernels << std::endl;
 #endif
                     // CUDA programming guide: "Thread blocks are required to execute independently: It must be possible to execute them in any order, in parallel or in series. 
                     // This independence requirement allows thread blocks to be scheduled in any order across any number of cores"
                     // -> We can execute them serially.
-                    for(std::uint32_t bz(0); bz<v3uiSizeGridBlocks[2]; ++bz)
+                    for(std::uint32_t bz(0); bz<m_v3uiSizeGridBlocks[2]; ++bz)
                     {
                         this->AccThreads::m_v3uiGridBlockIdx[2] = bz;
-                        for(std::uint32_t by(0); by<v3uiSizeGridBlocks[1]; ++by)
+                        for(std::uint32_t by(0); by<m_v3uiSizeGridBlocks[1]; ++by)
                         {
                             this->AccThreads::m_v3uiGridBlockIdx[1] = by;
-                            for(std::uint32_t bx(0); bx<v3uiSizeGridBlocks[0]; ++bx)
+                            for(std::uint32_t bx(0); bx<m_v3uiSizeGridBlocks[0]; ++bx)
                             {
                                 this->AccThreads::m_v3uiGridBlockIdx[0] = bx;
 
                                 vec<3u> v3uiBlockKernelIdx;
-                                for(std::uint32_t tz(0); tz<v3uiSizeBlockKernels[2]; ++tz)
+                                for(std::uint32_t tz(0); tz<m_v3uiSizeBlockKernels[2]; ++tz)
                                 {
                                     v3uiBlockKernelIdx[2] = tz;
-                                    for(std::uint32_t ty(0); ty<v3uiSizeBlockKernels[1]; ++ty)
+                                    for(std::uint32_t ty(0); ty<m_v3uiSizeBlockKernels[1]; ++ty)
                                     {
                                         v3uiBlockKernelIdx[1] = ty;
-                                        for(std::uint32_t tx(0); tx<v3uiSizeBlockKernels[0]; ++tx)
+                                        for(std::uint32_t tx(0); tx<m_v3uiSizeBlockKernels[0]; ++tx)
                                         {
                                             v3uiBlockKernelIdx[0] = tx;
 
@@ -423,11 +431,12 @@ namespace alpaka
                 std::vector<std::thread> mutable m_vThreadsInBlock;         //!< The threads executing the current block.
 
                 std::mutex mutable m_mtxMapInsert;
+
+                vec<3u> m_v3uiSizeGridBlocks;
+                vec<3u> m_v3uiSizeBlockKernels;
             };
         }
     }
-
-    using AccThreads = threads::detail::AccThreads;
 
     namespace detail
     {
@@ -439,14 +448,14 @@ namespace alpaka
         {
         public:
             using TAcceleratedKernel = typename boost::mpl::apply<TKernel, AccThreads>::type;
-            using TKernelExecutor = threads::detail::KernelExecutor<TAcceleratedKernel>;
+            using KernelExecutorExtent = KernelExecutorExtent<threads::detail::KernelExecutor<TAcceleratedKernel>, TKernelConstrArgs...>;
 
             //-----------------------------------------------------------------------------
             //! Creates an kernel executor for the serial accelerator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST TKernelExecutor operator()(TKernelConstrArgs && ... args) const
+            ALPAKA_FCT_HOST KernelExecutorExtent operator()(TKernelConstrArgs && ... args) const
             {
-                return TKernelExecutor(std::forward<TKernelConstrArgs>(args)...);
+                return KernelExecutorExtent(std::forward<TKernelConstrArgs>(args)...);
             }
         };
     }

@@ -22,15 +22,15 @@
 
 #pragma once
 
-#include <alpaka/host/WorkSize.hpp> // IWorkSize, WorkSizeHost
-
+// forward declarations
 namespace alpaka
 {
-    namespace threads
+    namespace serial
     {
         namespace detail
         {
-            using TInterfacedWorkSize = alpaka::IWorkSize<alpaka::host::detail::WorkSizeHost>;
+            class AccSerial;
         }
     }
+    using AccSerial = serial::detail::AccSerial;
 }

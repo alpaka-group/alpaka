@@ -30,7 +30,7 @@ namespace alpaka
     {
         namespace detail
         {
-            using TInterfacedWorkSize = alpaka::IWorkSize<alpaka::detail::WorkSizeHost>;
+            using TInterfacedWorkSize = alpaka::IWorkSize<alpaka::host::detail::WorkSizeHost>;
         }
     }
 }

@@ -22,15 +22,20 @@
 
 #pragma once
 
-#include <alpaka/host/WorkSize.hpp> // IWorkSize, WorkSizeHost
+#include <alpaka/openmp/AccOpenMpFwd.hpp>   // AccOpenMp
+
+#include <alpaka/host/Event.hpp>            // EventHost
 
 namespace alpaka
 {
-    namespace threads
+    namespace event
     {
-        namespace detail
-        {
-            using TInterfacedWorkSize = alpaka::IWorkSize<alpaka::host::detail::WorkSizeHost>;
-        }
+        //#############################################################################
+        //! The template for an event.
+        //#############################################################################
+        template<>
+        struct Event<AccOpenMp> :
+            alpaka::host::detail::EventHost
+        {};
     }
 }

@@ -38,10 +38,11 @@
     #include <alpaka/cuda/AccCuda.hpp>
 #endif
 
-#include <alpaka/interfaces/IAcc.hpp>       // alpaka::IAcc<...>
-
+#include <alpaka/interfaces/Event.hpp>
+#include <alpaka/interfaces/IAcc.hpp>
 #include <alpaka/interfaces/KernelExecCreator.hpp>
 #include <alpaka/interfaces/BlockSharedExternMemSizeBytes.hpp>
+#include <alpaka/interfaces/Memory.hpp>
 
 #include <alpaka/host/WorkSize.hpp>         // alpaka::WorkSizeHost
 

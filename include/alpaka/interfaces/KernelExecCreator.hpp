@@ -29,6 +29,120 @@ namespace alpaka
     namespace detail
     {
         //#############################################################################
+        //! Extensions to the standard library.
+        //#############################################################################
+        namespace std_extension
+        {
+            // This could be replaced with c++14 std::integer_sequence if we raise the minimum.
+            template<class T, T... TVals>
+            struct integer_sequence
+            {
+                static_assert(std::is_integral<T>::value, "integer_sequence<T, I...> requires T to be an integral type.");
+
+                typedef integer_sequence<T, TVals...> type;
+                typedef T value_type;
+
+                static std::size_t size() noexcept
+                {
+                    return (sizeof...(TVals));
+                }
+            };
+
+            template<bool TbNegative, bool TbZero, class TIntCon, class TIntSeq>
+            struct make_integer_sequence_helper
+            {
+                static_assert(!TbNegative, "make_integer_sequence<T, N> requires N to be non-negative.");
+            };
+
+            template<class T, T... TVals>
+            struct make_integer_sequence_helper<false, true, std::integral_constant<T, 0>, integer_sequence<T, TVals...> > :
+                integer_sequence<T, TVals...>
+            {};
+
+            template<class T, T TIdx, T... TVals>
+            struct make_integer_sequence_helper<false, false, std::integral_constant<T, TIdx>, integer_sequence<T, TVals...> > :
+                make_integer_sequence_helper<false, TIdx == 1, std::integral_constant<T, TIdx - 1>, integer_sequence<T, TIdx - 1, TVals...> >
+            {};
+
+            template<class T, T TSize>
+            using make_integer_sequence = typename make_integer_sequence_helper<(TSize < 0), (TSize == 0), std::integral_constant<T, TSize>, integer_sequence<T> >::type;
+
+            template<std::size_t ... TVals>
+            using index_sequence = integer_sequence<std::size_t, TVals...>;
+
+            template<std::size_t TuiSize>
+            using make_index_sequence = make_integer_sequence<std::size_t, TuiSize>;
+
+            template<typename... Ts>
+            using index_sequence_for = make_index_sequence<sizeof...(Ts)>;
+        }
+
+        //#############################################################################
+        //! The executor for an accelerated serial kernel.
+        //#############################################################################
+        template<typename TKernelExecutor, typename... TKernelConstrArgs>
+        class KernelExecutorExtent
+        {
+        public:
+            using TAcc = typename TKernelExecutor::TAcc;
+
+        public:
+            //-----------------------------------------------------------------------------
+            //! Constructor.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FCT_HOST KernelExecutorExtent(TKernelConstrArgs && ... args) :
+                m_tupleKernelConstrArgs(std::forward<TKernelConstrArgs>(args)...)
+            {}
+            //-----------------------------------------------------------------------------
+            //! Copy-constructor.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FCT_HOST KernelExecutorExtent(KernelExecutorExtent const &) = default;
+            //-----------------------------------------------------------------------------
+            //! Move-constructor.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FCT_HOST KernelExecutorExtent(KernelExecutorExtent &&) = default;
+            //-----------------------------------------------------------------------------
+            //! Assignment-operator.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FCT_HOST KernelExecutorExtent & operator=(KernelExecutorExtent const &) = delete;
+            //-----------------------------------------------------------------------------
+            //! Destructor.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FCT_HOST ~KernelExecutorExtent() noexcept = default;
+
+            //-----------------------------------------------------------------------------
+            //! \return An KernelExecutor with the given extents.
+            //-----------------------------------------------------------------------------
+            template<typename TWorkSize>
+            ALPAKA_FCT_HOST TKernelExecutor operator()(IWorkSize<TWorkSize> const & workSize) const
+            {
+                return createKernelExecutor(workSize, TKernelConstrArgsIndexSequence());
+            }
+            //-----------------------------------------------------------------------------
+            //! \return An KernelExecutor with the given extents.
+            //-----------------------------------------------------------------------------
+            template<typename TWorkSize>
+            ALPAKA_FCT_HOST TKernelExecutor operator()(vec<3u> const & v3uiSizeGridBlocks, vec<3u> const & v3uiSizeBlockKernels) const
+            {
+                return createKernelExecutor(WorkSize(v3uiSizeGridBlocks, v3uiSizeBlockKernels), TKernelConstrArgsIndexSequence());
+            }
+
+        private:
+            //-----------------------------------------------------------------------------
+            //! \return An KernelExecutor with the given extents.
+            //-----------------------------------------------------------------------------
+            template<typename TWorkSize, std::size_t ... TIndices>
+            ALPAKA_FCT_HOST TKernelExecutor createKernelExecutor(IWorkSize<TWorkSize> const & workSize, std_extension::index_sequence<TIndices...>) const
+            {
+                return TKernelExecutor(workSize, std::get<TIndices>(std::forward<TKernelConstrArgs>(m_tupleKernelConstrArgs))...);
+            }
+
+        private:
+            std::tuple<TKernelConstrArgs...> m_tupleKernelConstrArgs;
+            using TKernelConstrArgsIndexSequence = std_extension::make_index_sequence<sizeof...(TKernelConstrArgs)>;
+        };
+
+        //#############################################################################
         //! The kernel executor builder.
         //#############################################################################
         template<typename TAcc, typename TKernel, typename... TKernelConstrArgs>

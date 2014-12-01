@@ -40,7 +40,6 @@ namespace alpaka
 
             //#############################################################################
             //! Frees memory in the given memory space.
-            // TODO: Remove this function and replace by a RAII wrapper for the memory?
             //#############################################################################
             template<typename TMemorySpace>
             struct MemFree;

@@ -22,22 +22,27 @@
 
 #pragma once
 
+// base classes
+
+#include <alpaka/openmp/AccOpenMpFwd.hpp>
 #include <alpaka/openmp/WorkSize.hpp>               // TInterfacedWorkSize
 #include <alpaka/openmp/Index.hpp>                  // TInterfacedIndex
 #include <alpaka/openmp/Atomic.hpp>                 // TInterfacedAtomic
 
-#include <alpaka/openmp/Common.hpp>
-
-#include <alpaka/host/MemorySpace.hpp>              // MemorySpaceHost
+// user functionality
 #include <alpaka/host/Memory.hpp>                   // MemCopy
+#include <alpaka/openmp/Event.hpp>                  // Event
 
+// specialized templates
 #include <alpaka/interfaces/KernelExecCreator.hpp>  // KernelExecCreator
 
+// implementation details
+#include <alpaka/openmp/Common.hpp>
 #include <alpaka/interfaces/BlockSharedExternMemSizeBytes.hpp>
 #include <alpaka/interfaces/IAcc.hpp>
 
 #include <cstddef>                                  // std::size_t
-#include <cstdint>                                  // unit8_t
+#include <cstdint>                                  // std::uint32_t
 #include <vector>                                   // std::vector
 #include <cassert>                                  // assert
 #include <stdexcept>                                // std::except
@@ -104,7 +109,7 @@ namespace alpaka
                 ALPAKA_FCT_HOST static vec<3u> getSizeBlockKernelsMax()
                 {
                     auto const uiSizeBlockKernelsLinearMax(getSizeBlockKernelsLinearMax());
-                    return{uiSizeBlockKernelsLinearMax, uiSizeBlockKernelsLinearMax, uiSizeBlockKernelsLinearMax};
+                    return {uiSizeBlockKernelsLinearMax, uiSizeBlockKernelsLinearMax, uiSizeBlockKernelsLinearMax};
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The maximum number of kernels in a block allowed.
@@ -192,17 +197,32 @@ namespace alpaka
                 private TAcceleratedKernel
             {
                 static_assert(std::is_base_of<IAcc<AccOpenMp>, TAcceleratedKernel>::value, "The TAcceleratedKernel for the openmp::detail::KernelExecutor has to inherit from IAcc<AccOpenMp>!");
+
+            public:
+                using TAcc = AccOpenMp;
+
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                template<typename... TKernelConstrArgs>
-                ALPAKA_FCT_HOST KernelExecutor(TKernelConstrArgs && ... args) :
+                template<typename TWorkSize, typename... TKernelConstrArgs>
+                ALPAKA_FCT_HOST KernelExecutor(IWorkSize<TWorkSize> const & workSize, TKernelConstrArgs && ... args) :
                     TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
                 {
 #ifdef ALPAKA_DEBUG
                     std::cout << "[+] AccOpenMp::KernelExecutor()" << std::endl;
 #endif
+                    (*const_cast<TInterfacedWorkSize*>(static_cast<TInterfacedWorkSize const *>(this))) = workSize;
+
+                    auto const uiNumKernelsPerBlock(workSize.template getSize<Block, Kernels, Linear>());
+                    auto const uiMaxKernelsPerBlock(AccOpenMp::getSizeBlockKernelsLinearMax());
+                    if(uiNumKernelsPerBlock > uiMaxKernelsPerBlock)
+                    {
+                        throw std::runtime_error(("The given blockSize '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the OpenMp accelerator!").c_str());
+                    }
+
+                    m_v3uiSizeGridBlocks = workSize.template getSize<Grid, Blocks, D3>();
+                    m_v3uiSizeBlockKernels = workSize.template getSize<Block, Kernels, D3>();
 #ifdef ALPAKA_DEBUG
                     std::cout << "[-] AccOpenMp::KernelExecutor()" << std::endl;
 #endif
@@ -227,39 +247,27 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Executes the accelerated kernel.
                 //-----------------------------------------------------------------------------
-                template<typename TWorkSize, typename... TArgs>
-                ALPAKA_FCT_HOST void operator()(IWorkSize<TWorkSize> const & workSize, TArgs && ... args) const
+                template<typename... TArgs>
+                ALPAKA_FCT_HOST void operator()(TArgs && ... args) const
                 {
 #ifdef ALPAKA_DEBUG
                     std::cout << "[+] AccOpenMp::KernelExecutor::operator()" << std::endl;
 #endif
-                    (*const_cast<TInterfacedWorkSize*>(static_cast<TInterfacedWorkSize const *>(this))) = workSize;
-
-                    auto const uiNumKernelsPerBlock(workSize.template getSize<Block, Kernels, Linear>());
-                    auto const uiMaxKernelsPerBlock(AccOpenMp::getSizeBlockKernelsLinearMax());
-                    if(uiNumKernelsPerBlock > uiMaxKernelsPerBlock)
-                    {
-                        throw std::runtime_error(("The given blockSize '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the OpenMp accelerator!").c_str());
-                    }
-
-                    auto const v3uiSizeBlockKernels(workSize.template getSize<Block, Kernels, D3>());
-                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiSizeBlockKernels, std::forward<TArgs>(args)...));
+                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(m_v3uiSizeBlockKernels, std::forward<TArgs>(args)...));
                     this->AccOpenMp::m_vuiExternalSharedMem.resize(uiBlockSharedExternMemSizeBytes);
-
-                    auto const v3uiSizeGridBlocks(workSize.template getSize<Grid, Blocks, D3>());
 #ifdef ALPAKA_DEBUG
                     //std::cout << "GridBlocks: " << v3uiSizeGridBlocks << " BlockKernels: " << v3uiSizeBlockKernels << std::endl;
 #endif
                     // CUDA programming guide: "Thread blocks are required to execute independently: It must be possible to execute them in any order, in parallel or in series. 
                     // This independence requirement allows thread blocks to be scheduled in any order across any number of cores"
                     // -> We can execute them serially.
-                    for(std::uint32_t bz(0); bz<v3uiSizeGridBlocks[2]; ++bz)
+                    for(std::uint32_t bz(0); bz<m_v3uiSizeGridBlocks[2]; ++bz)
                     {
                         this->AccOpenMp::m_v3uiGridBlockIdx[2] = bz;
-                        for(std::uint32_t by(0); by<v3uiSizeGridBlocks[1]; ++by)
+                        for(std::uint32_t by(0); by<m_v3uiSizeGridBlocks[1]; ++by)
                         {
                             this->AccOpenMp::m_v3uiGridBlockIdx[1] = by;
-                            for(std::uint32_t bx(0); bx<v3uiSizeGridBlocks[0]; ++bx)
+                            for(std::uint32_t bx(0); bx<m_v3uiSizeGridBlocks[0]; ++bx)
                             {
                                 this->AccOpenMp::m_v3uiGridBlockIdx[0] = bx;
 
@@ -305,11 +313,13 @@ namespace alpaka
                     std::cout << "[-] AccOpenMp::KernelExecutor::operator()" << std::endl;
 #endif
                 }
+
+            private:
+                vec<3u> m_v3uiSizeGridBlocks;
+                vec<3u> m_v3uiSizeBlockKernels;
             };
         }
     }
-
-    using AccOpenMp = openmp::detail::AccOpenMp;
 
     namespace detail
     {
@@ -321,14 +331,14 @@ namespace alpaka
         {
         public:
             using TAcceleratedKernel = typename boost::mpl::apply<TKernel, AccOpenMp>::type;
-            using TKernelExecutor = openmp::detail::KernelExecutor<TAcceleratedKernel>;
+            using KernelExecutorExtent = KernelExecutorExtent<openmp::detail::KernelExecutor<TAcceleratedKernel>, TKernelConstrArgs...>;
 
             //-----------------------------------------------------------------------------
             //! Creates an kernel executor for the serial accelerator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST TKernelExecutor operator()(TKernelConstrArgs && ... args) const
+            ALPAKA_FCT_HOST KernelExecutorExtent operator()(TKernelConstrArgs && ... args) const
             {
-                return TKernelExecutor(std::forward<TKernelConstrArgs>(args)...);
+                return KernelExecutorExtent(std::forward<TKernelConstrArgs>(args)...);
             }
         };
     }
