@@ -203,7 +203,11 @@ namespace alpaka
                     return reinterpret_cast<T*>(m_vuiExternalSharedMem.data());
                 }
 
+#ifdef ALPAKA_NVCC_FRIEND_ACCESS_BUG
+            protected:
+#else
             private:
+#endif
                 // getXxxIdx
                 TFiberIdToIndex mutable m_mFibersToIndices;                 //!< The mapping of fibers id's to fibers indices.
                 vec<3u> mutable m_v3uiGridBlockIdx;                         //!< The index of the currently executed block.

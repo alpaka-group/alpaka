@@ -45,9 +45,9 @@
 #include <cassert>                                  // assert
 #include <stdexcept>                                // std::runtime_error
 #include <string>                                   // std::to_string
-//#ifdef ALPAKA_DEBUG
+#ifdef ALPAKA_DEBUG
     #include <iostream>                             // std::cout
-//#endif
+#endif
 
 #include <boost/mpl/apply.hpp>                      // boost::mpl::apply
 
@@ -212,7 +212,11 @@ namespace alpaka
                     return reinterpret_cast<T*>(m_vuiExternalSharedMem.data());
                 }
 
+#ifdef ALPAKA_NVCC_FRIEND_ACCESS_BUG
+            protected:
+#else
             private:
+#endif
                 // getIdx
                 detail::TThreadIdToIndex mutable m_mThreadsToIndices;       //!< The mapping of thread id's to thread indices.
                 vec<3u> mutable m_v3uiGridBlockIdx;                         //!< The index of the currently executed block.
