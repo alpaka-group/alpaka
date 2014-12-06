@@ -109,7 +109,7 @@ namespace alpaka
             {
                 ALPAKA_FCT_HOST EventTest(Event<AccCuda> const & event, bool & bTest)
                 {
-                    auto ret(cudaEventQuery(event.m_Event));
+                    auto const ret(cudaEventQuery(event.m_Event));
                     if(ret == cudaSuccess)
                     {
                         bTest = true;

@@ -49,8 +49,7 @@ namespace alpaka
                 ALPAKA_FCT_HOST_ACC explicit WorkSizeHost(vec<3u> const & v3uiSizeGridBlocks, vec<3u> const & v3uiSizeBlockKernels) :
                     m_v3uiSizeGridBlocks(v3uiSizeGridBlocks),
                     m_v3uiSizeBlockKernels(v3uiSizeBlockKernels)
-                {
-                }
+                {}
                 //-----------------------------------------------------------------------------
                 //! Copy-constructor.
                 //-----------------------------------------------------------------------------

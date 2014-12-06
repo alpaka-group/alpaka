@@ -58,7 +58,7 @@ namespace alpaka
         //#############################################################################
         //! Queues the given event.
         //! If it has previously been queued, then this call will overwrite any existing state of the event. 
-        //! Any subsequent calls which examine the status of event will only examine the completion of this most recent call to cudaEventRecord().
+        //! Any subsequent calls which examine the status of event will only examine the completion of this most recent call to eventEnqueue.
         //#############################################################################
         template<typename TAcc>
         ALPAKA_FCT_HOST void eventEnqueue(Event<TAcc> const & event)

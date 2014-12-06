@@ -24,7 +24,7 @@
 
 #include <alpaka/interfaces/Atomic.hpp> // IAtomic
 
-//#define ALPAKA_ATOMIC_ADD_FLOAT_CAS   // Undefine this to use the floating point implementation of atomic using atomicCAS for device with compute capability <2.0. 
+//#define ALPAKA_ATOMIC_ADD_FLOAT_CAS   // Undefine this to use the floating point implementation of atomic add using atomicCAS for device with compute capability < 2.0. 
                                         // This should be slower then the version using atomicExch.
 
 namespace alpaka
