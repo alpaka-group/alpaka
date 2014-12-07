@@ -32,6 +32,7 @@
 // user functionality
 #include <alpaka/host/Memory.hpp>                   // MemCopy
 #include <alpaka/fibers/Event.hpp>                  // Event
+#include <alpaka/fibers/Device.hpp>                 // Devices
 
 // specialized templates
 #include <alpaka/interfaces/KernelExecCreator.hpp>  // KernelExecCreator
@@ -47,6 +48,9 @@
 #include <stdexcept>                                // std::except
 
 #include <boost/mpl/apply.hpp>                      // boost::mpl::apply
+
+// workarounds
+#include <boost/predef.h>
 
 namespace alpaka
 {
@@ -110,23 +114,6 @@ namespace alpaka
                 //! Destructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST ~AccFibers() noexcept = default;
-
-                //-----------------------------------------------------------------------------
-                //! \return The maximum number of kernels in each dimension of a block allowed.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static vec<3u> getSizeBlockKernelsMax()
-                {
-                    auto const uiSizeBlockKernelsLinearMax(getSizeBlockKernelsLinearMax());
-                    return{uiSizeBlockKernelsLinearMax, uiSizeBlockKernelsLinearMax, uiSizeBlockKernelsLinearMax};
-                }
-                //-----------------------------------------------------------------------------
-                //! \return The maximum number of kernels in a block allowed by the underlying accelerator.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::uint32_t getSizeBlockKernelsLinearMax()
-                {
-                    // FIXME: What is the maximum? Just set a reasonable value?
-                    return 1024;    // Magic number.
-                }
 
             protected:
                 //-----------------------------------------------------------------------------
@@ -259,11 +246,11 @@ namespace alpaka
                     (*const_cast<TInterfacedWorkSize*>(static_cast<TInterfacedWorkSize const *>(this))) = workSize;
 
                     auto const uiNumKernelsPerBlock(workSize.template getSize<Block, Kernels, Linear>());
-                    auto const uiMaxKernelsPerBlock(AccFibers::getSizeBlockKernelsLinearMax());
+                    /*auto const uiMaxKernelsPerBlock(AccFibers::getSizeBlockKernelsLinearMax());
                     if(uiNumKernelsPerBlock > uiMaxKernelsPerBlock)
                     {
                         throw std::runtime_error(("The given blockSize '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the fibers accelerator!").c_str());
-                    }
+                    }*/
 
                     m_v3uiSizeGridBlocks = workSize.template getSize<Grid, Blocks, D3>();
                     m_v3uiSizeBlockKernels = workSize.template getSize<Block, Kernels, D3>();
@@ -332,7 +319,7 @@ namespace alpaka
 
                                             // Create a fiber.
                                             // The v3uiBlockKernelIdx is required to be copied in from the environment because if the fiber is immediately suspended the variable is already changed for the next iteration/thread.
-#ifdef _MSC_VER    // MSVC <= 14 do not compile the boost::fibers::fiber constructor because the type of the member function template is missing the this pointer as first argument.
+#if BOOST_COMP_MSVC <= BOOST_VERSION_NUMBER(14, 0, 22310)   // MSVC <= 14 do not compile the boost::fibers::fiber constructor because the type of the member function template is missing the this pointer as first argument.
                                             auto fiberKernelFct([this](vec<3u> const v3uiBlockKernelIdx, TArgs ... args) {fiberKernel<TArgs...>(v3uiBlockKernelIdx, std::forward<TArgs>(args)...); });
                                             m_vFibersInBlock.push_back(boost::fibers::fiber(fiberKernelFct, v3uiBlockKernelIdx, args...));
 #else
@@ -384,7 +371,7 @@ namespace alpaka
                     std::map<boost::fibers::fiber::id, std::size_t>::iterator itFiberToBarrier;
 
                     // Save the fiber id, and index.
-#if ((!defined __GNUC__) || ((__GNUC__ > 4) || (__GNUC__ == 4 && ((__GNUC_MINOR__ > 7) || ((__GNUC_MINOR__ == 7) && (__GNUC_PATCHLEVEL__ == 3)))))) // GCC <= 4.7.2 is not standard conformant and has no member emplace. This works with 4.7.3+.
+#if BOOST_COMP_GNUC <= BOOST_VERSION_NUMBER(4, 7, 2) // GCC <= 4.7.2 is not standard conformant and has no member emplace.
                     this->AccFibers::m_mFibersToIndices.emplace(idFiber, v3uiBlockKernelIdx);
                     itFiberToBarrier = this->AccFibers::m_mFibersToBarrier.emplace(idFiber, 0).first;
 #else

@@ -31,6 +31,7 @@
 // user functionality
 #include <alpaka/cuda/Memory.hpp>                   // MemCopy
 #include <alpaka/cuda/Event.hpp>                    // Event
+#include <alpaka/cuda/Device.hpp>                   // Devices
 
 // specialized templates
 #include <alpaka/interfaces/KernelExecCreator.hpp>  // KernelExecCreator
@@ -44,7 +45,6 @@
 #include <cstdint>                                  // std::uint32_t
 #include <stdexcept>                                // std::except
 #include <string>                                   // std::to_string
-#include <sstream>                                  // std::stringstream
 #include <utility>                                  // std::forward
 #include <tuple>                                    // std::tuple
 #ifdef ALPAKA_DEBUG
@@ -52,6 +52,9 @@
 #endif
 
 #include <boost/mpl/apply.hpp>                      // boost::mpl::apply
+
+// workarounds
+#include <boost/predef.h>
 
 namespace alpaka
 {
@@ -111,140 +114,6 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC ~AccCuda() noexcept = default;
 
-                //-----------------------------------------------------------------------------
-                //! \return The maximum number of kernels in each dimension of a block allowed.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static vec<3u> getSizeBlockKernelsMax()
-                {
-                    // TODO: CC < 2.0? Get from CUDA API.
-                    return {1024u, 1024u, 64u};
-                }
-                //-----------------------------------------------------------------------------
-                //! \return The maximum number of kernels in a block allowed.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::uint32_t getSizeBlockKernelsLinearMax()
-                {
-                    // TODO: CC < 2.0? Get from CUDA API.
-                    return 1024;
-                }
-
-                //-----------------------------------------------------------------------------
-                //! Sets the CUDA device to use.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static void setDevice(int deviceNumber)
-                {
-#ifdef ALPAKA_DEBUG
-                    std::cout << "[+] AccCuda::setDevice()" << std::endl;
-#endif
-
-                    int iNumGpus(0);
-                    cudaGetDeviceCount(&iNumGpus);
-                    if(iNumGpus < 1)
-                    {
-                        std::stringstream ssErr;
-                        ssErr << "No CUDA capable devices detected!";
-                        throw std::runtime_error(ssErr.str());
-                    }
-                    else if(iNumGpus < deviceNumber)
-                    {
-                        std::stringstream ssErr;
-                        ssErr << "No CUDA device " << deviceNumber << " available, only " << iNumGpus << " devices found!";
-                        throw std::runtime_error(ssErr.str());
-                    }
-
-                    cudaDeviceProp devProp;
-                    ALPAKA_CUDA_CHECK(cudaGetDeviceProperties(&devProp, deviceNumber));
-                    // Default compute mode (Multiple threads can use cudaSetDevice() with this device)
-                    if(devProp.computeMode == cudaComputeModeDefault)
-                    {
-                        ALPAKA_CUDA_CHECK(cudaSetDevice(deviceNumber));
-                        std::cout << "Set device to " << deviceNumber << ": " << devProp.name << std::endl;
-#ifdef ALPAKA_DEBUG
-                        std::size_t const uiKiB(1024);
-                        std::size_t const uiMiB(uiKiB * uiKiB);
-                        std::cout << "totalGlobalMem: " << devProp.totalGlobalMem/uiMiB << " MiB" << std::endl;
-                        std::cout << "sharedMemPerBlock: " << devProp.sharedMemPerBlock/uiKiB << " KiB" << std::endl;
-                        std::cout << "regsPerBlock: " << devProp.regsPerBlock << std::endl;
-                        std::cout << "warpSize: " << devProp.warpSize << std::endl;
-                        std::cout << "memPitch: " << devProp.memPitch << " B" << std::endl;
-                        std::cout << "maxThreadsPerBlock: " << devProp.maxThreadsPerBlock << std::endl;
-                        std::cout << "maxThreadsDim[3]: (" << devProp.maxThreadsDim[0] << ", " << devProp.maxThreadsDim[1] << ", " << devProp.maxThreadsDim[2] << ")" << std::endl;
-                        std::cout << "maxGridSize[3]: (" << devProp.maxGridSize[0] << ", " << devProp.maxGridSize[1] << ", " << devProp.maxGridSize[2] << ")" << std::endl;
-                        std::cout << "clockRate: " << devProp.clockRate << " kHz" << std::endl;
-                        std::cout << "totalConstMem: " << devProp.totalConstMem/uiKiB << " KiB" << std::endl;
-                        std::cout << "major: " << devProp.major << std::endl;
-                        std::cout << "minor: " << devProp.minor << std::endl;
-                        std::cout << "textureAlignment: " << devProp.textureAlignment << std::endl;
-                        std::cout << "texturePitchAlignment: " << devProp.texturePitchAlignment << std::endl;
-                        //std::cout << "deviceOverlap: " << devProp.deviceOverlap << std::endl;    // Deprecated
-                        std::cout << "multiProcessorCount: " << devProp.multiProcessorCount << std::endl;
-                        std::cout << "kernelExecTimeoutEnabled: " << devProp.kernelExecTimeoutEnabled << std::endl;
-                        std::cout << "integrated: " << devProp.integrated << std::endl;
-                        std::cout << "canMapHostMemory: " << devProp.canMapHostMemory << std::endl;
-                        std::cout << "computeMode: " << devProp.computeMode << std::endl;
-                        std::cout << "maxTexture1D: " << devProp.maxTexture1D << std::endl;
-                        std::cout << "maxTexture1DLinear: " << devProp.maxTexture1DLinear << std::endl;
-                        std::cout << "maxTexture2D[2]: " << devProp.maxTexture2D[0] << "x" << devProp.maxTexture2D[1] << std::endl;
-                        std::cout << "maxTexture2DLinear[3]: " << devProp.maxTexture2DLinear[0] << "x" << devProp.maxTexture2DLinear[1] << "x" << devProp.maxTexture2DLinear[2] << std::endl;
-                        std::cout << "maxTexture2DGather[2]: " << devProp.maxTexture2DGather[0] << "x" << devProp.maxTexture2DGather[1] << std::endl;
-                        std::cout << "maxTexture3D[3]: " << devProp.maxTexture3D[0] << "x" << devProp.maxTexture3D[1] << "x" << devProp.maxTexture3D[2] << std::endl;
-                        std::cout << "maxTextureCubemap: " << devProp.maxTextureCubemap << std::endl;
-                        std::cout << "maxTexture1DLayered[2]: " << devProp.maxTexture1DLayered[0] << "x" << devProp.maxTexture1DLayered[1] << std::endl;
-                        std::cout << "maxTexture2DLayered[3]: " << devProp.maxTexture2DLayered[0] << "x" << devProp.maxTexture2DLayered[1] << "x" << devProp.maxTexture2DLayered[2] << std::endl;
-                        std::cout << "maxTextureCubemapLayered[2]: " << devProp.maxTextureCubemapLayered[0] << "x" << devProp.maxTextureCubemapLayered[1] << std::endl;
-                        std::cout << "maxSurface1D: " << devProp.maxSurface1D << std::endl;
-                        std::cout << "maxSurface2D[2]: " << devProp.maxSurface2D[0] << "x" << devProp.maxSurface2D[1] << std::endl;
-                        std::cout << "maxSurface3D[3]: " << devProp.maxSurface3D[0] << "x" << devProp.maxSurface3D[1] << "x" << devProp.maxSurface3D[2] << std::endl;
-                        std::cout << "maxSurface1DLayered[2]: " << devProp.maxSurface1DLayered[0] << "x" << devProp.maxSurface1DLayered[1] << std::endl;
-                        std::cout << "maxSurface2DLayered[3]: " << devProp.maxSurface2DLayered[0] << "x" << devProp.maxSurface2DLayered[1] << "x" << devProp.maxSurface2DLayered[2] << std::endl;
-                        std::cout << "maxSurfaceCubemap: " << devProp.maxSurfaceCubemap << std::endl;
-                        std::cout << "maxSurfaceCubemapLayered[2]: " << devProp.maxSurfaceCubemapLayered[0] << "x" << devProp.maxSurfaceCubemapLayered[1] << std::endl;
-                        std::cout << "surfaceAlignment: " << devProp.surfaceAlignment << std::endl;
-                        std::cout << "concurrentKernels: " << devProp.concurrentKernels << std::endl;
-                        std::cout << "ECCEnabled: " << devProp.ECCEnabled << std::endl;
-                        std::cout << "pciBusID: " << devProp.pciBusID << std::endl;
-                        std::cout << "pciDeviceID: " << devProp.pciDeviceID << std::endl;
-                        std::cout << "pciDomainID: " << devProp.pciDomainID << std::endl;
-                        std::cout << "tccDriver: " << devProp.tccDriver << std::endl;
-                        std::cout << "asyncEngineCount: " << devProp.asyncEngineCount << std::endl;
-                        std::cout << "unifiedAddressing: " << devProp.unifiedAddressing << std::endl;
-                        std::cout << "memoryClockRate: " << devProp.memoryClockRate << " kHz" << std::endl;
-                        std::cout << "memoryBusWidth: " << devProp.memoryBusWidth << " b" << std::endl;
-                        std::cout << "l2CacheSize: " << devProp.l2CacheSize << " B" << std::endl;
-                        std::cout << "maxThreadsPerMultiProcessor: " << devProp.maxThreadsPerMultiProcessor << std::endl;
-#endif
-                    }
-                    // Compute-exclusive-thread mode (Only one thread in one process will be able to use cudaSetDevice() with this device)
-                    else if(devProp.computeMode == cudaComputeModeExclusive)
-                    {
-                        std::cout << "Requested device is in computeMode cudaComputeModeExclusive.";
-                        // TODO: Are we allowed to use the device in this case?
-                    }
-                    // Compute-prohibited mode (No threads can use cudaSetDevice() with this device)
-                    else if(devProp.computeMode == cudaComputeModeProhibited)
-                    {
-                        std::cout << "Requested device is in computeMode cudaComputeModeProhibited. It can not be selected!";
-                    }
-                    // Compute-exclusive-process mode (Many threads in one process will be able to use cudaSetDevice() with this device)
-                    else if(devProp.computeMode == cudaComputeModeExclusiveProcess)
-                    {
-                        std::cerr << "Requested device is in computeMode cudaComputeModeExclusiveProcess.";
-                        // TODO: Are we allowed to use the device in this case?
-                    }
-                    else
-                    {
-                        std::cerr << "unknown computeMode!";
-                    }
-
-                    // Instruct CUDA to actively spin when waiting for results from the device.
-                    // This can decrease latency when waiting for the device, but may lower the performance of CPU threads if they are performing work in parallel with the CUDA thread.
-                    ALPAKA_CUDA_CHECK(cudaSetDeviceFlags(cudaDeviceScheduleSpin));
-
-#ifdef ALPAKA_DEBUG
-                    std::cout << "[-] AccCuda::setDevice()" << std::endl;
-#endif
-                }
-
             protected:
                 //-----------------------------------------------------------------------------
                 //! \return The requested index.
@@ -302,7 +171,7 @@ namespace alpaka
                 // 4. Has no non-trivial move assignment operators
                 // 5. Has a trivial destructor
                 //
-#ifndef __GNUC__    // FIXME: Find out which version > 4.8.0 does support the std::is_trivially_copyable
+#if BOOST_COMP_GNUC // FIXME: Find out which version > 4.9.0 does support the std::is_trivially_copyable
                 // TODO: is_standard_layout is even stricter. Is is_trivially_copyable enough?
                 static_assert(std::is_trivially_copyable<TAcceleratedKernel>::value, "The given kernel functor has to be trivially copyable to be used on a CUDA device!");
 #endif
@@ -322,12 +191,12 @@ namespace alpaka
 #ifdef ALPAKA_DEBUG
                     std::cout << "[+] AccCuda::KernelExecutor()" << std::endl;
 #endif
-                    auto const uiNumKernelsPerBlock(workSize.template getSize<Block, Kernels, Linear>());
+                    /*auto const uiNumKernelsPerBlock(workSize.template getSize<Block, Kernels, Linear>());
                     auto const uiMaxKernelsPerBlock(AccCuda::getSizeBlockKernelsLinearMax());
                     if(uiNumKernelsPerBlock > uiMaxKernelsPerBlock)
                     {
                         throw std::runtime_error(("The given blockSize '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the CUDA accelerator!").c_str());
-                    }
+                    }*/
 
                     m_v3uiSizeGridBlocks = workSize.template getSize<Grid, Blocks, D3>();
                     m_v3uiSizeBlockKernels = workSize.template getSize<Block, Kernels, D3>();
@@ -388,22 +257,6 @@ namespace alpaka
     {
         using TAcc = AccCuda;
     public:
-        //-----------------------------------------------------------------------------
-        //! \return [The maximum number of memory sharing kernel executions | The maximum block size] allowed by the underlying accelerator.
-        // TODO: Check if the used size is valid!
-        //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST static vec<3u> getSizeBlockKernelsMax()
-        {
-            return TAcc::getSizeBlockKernelsMax();
-        }
-        //-----------------------------------------------------------------------------
-        //! \return [The maximum number of memory sharing kernel executions | The maximum block size] allowed by the underlying accelerator.
-        //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST static std::uint32_t getSizeBlockKernelsLinearMax()
-        {
-            return TAcc::getSizeBlockKernelsLinearMax();
-        }
-
         //-----------------------------------------------------------------------------
         //! \return The requested size.
         //-----------------------------------------------------------------------------

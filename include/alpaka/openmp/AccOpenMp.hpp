@@ -32,6 +32,7 @@
 // user functionality
 #include <alpaka/host/Memory.hpp>                   // MemCopy
 #include <alpaka/openmp/Event.hpp>                  // Event
+#include <alpaka/openmp/Device.hpp>                 // Devices
 
 // specialized templates
 #include <alpaka/interfaces/KernelExecCreator.hpp>  // KernelExecCreator
@@ -102,27 +103,6 @@ namespace alpaka
                 //! Destructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST ~AccOpenMp() noexcept = default;
-
-                //-----------------------------------------------------------------------------
-                //! \return The maximum number of kernels in each dimension of a block allowed.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static vec<3u> getSizeBlockKernelsMax()
-                {
-                    auto const uiSizeBlockKernelsLinearMax(getSizeBlockKernelsLinearMax());
-                    return {uiSizeBlockKernelsLinearMax, uiSizeBlockKernelsLinearMax, uiSizeBlockKernelsLinearMax};
-                }
-                //-----------------------------------------------------------------------------
-                //! \return The maximum number of kernels in a block allowed.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::uint32_t getSizeBlockKernelsLinearMax()
-                {
-                    // HACK: ::omp_get_max_threads() does not return the real limit of the underlying OpenMP runtime:
-                    // 'The omp_get_max_threads routine returns the value of the internal control variable, which is used to determine the number of threads that would form the new team, 
-                    // if an active parallel region without a num_threads clause were to be encountered at that point in the program.'
-                    // How to do this correctly? Is there even a way to get the hard limit apart from omp_set_num_threads(high_value) -> omp_get_max_threads()?
-                    ::omp_set_num_threads(1024);
-                    return ::omp_get_max_threads();
-                }
 
             protected:
                 //-----------------------------------------------------------------------------
@@ -214,12 +194,12 @@ namespace alpaka
 #endif
                     (*const_cast<TInterfacedWorkSize*>(static_cast<TInterfacedWorkSize const *>(this))) = workSize;
 
-                    auto const uiNumKernelsPerBlock(workSize.template getSize<Block, Kernels, Linear>());
+                    /*auto const uiNumKernelsPerBlock(workSize.template getSize<Block, Kernels, Linear>());
                     auto const uiMaxKernelsPerBlock(AccOpenMp::getSizeBlockKernelsLinearMax());
                     if(uiNumKernelsPerBlock > uiMaxKernelsPerBlock)
                     {
                         throw std::runtime_error(("The given blockSize '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the OpenMp accelerator!").c_str());
-                    }
+                    }*/
 
                     m_v3uiSizeGridBlocks = workSize.template getSize<Grid, Blocks, D3>();
                     m_v3uiSizeBlockKernels = workSize.template getSize<Block, Kernels, D3>();
@@ -272,7 +252,7 @@ namespace alpaka
                                 this->AccOpenMp::m_v3uiGridBlockIdx[0] = bx;
 
                                 // The number of threads in this block.
-                                std::uint32_t const uiNumKernelsInBlock(this->AccOpenMp::getSize<Block, Kernels, Linear>());
+                                auto const uiNumKernelsInBlock(this->AccOpenMp::getSize<Block, Kernels, Linear>());
 
                                 // Force the environment to use the given number of threads.
                                 ::omp_set_dynamic(0);
@@ -283,7 +263,7 @@ namespace alpaka
                                 // Therefore we use 'omp parallel' with the specified number of threads in a block.
                                 //
                                 // TODO: Does this hinder executing multiple kernels in parallel because their block sizes/omp thread numbers are interfering? Is this a real use case? 
-                                #pragma omp parallel num_threads(uiNumKernelsInBlock)
+                                #pragma omp parallel num_threads(static_cast<int>(uiNumKernelsInBlock))
                                 {
 #ifdef ALPAKA_DEBUG
                                     if((::omp_get_thread_num() == 0) && (bz == 0) && (by == 0) && (bx == 0))

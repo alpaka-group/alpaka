@@ -45,22 +45,6 @@ namespace alpaka
     {
     public:
         //-----------------------------------------------------------------------------
-        //! \return [The maximum number of memory sharing kernel executions | The maximum block size] allowed by the underlying accelerator.
-        // TODO: Check if the used size is valid!
-        //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST static vec<3u> getSizeBlockKernelsMax()
-        {
-            return TAcc::getSizeBlockKernelsMax();
-        }
-        //-----------------------------------------------------------------------------
-        //! \return [The maximum number of memory sharing kernel executions | The maximum block size] allowed by the underlying accelerator.
-        //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST static std::uint32_t getSizeBlockKernelsLinearMax()
-        {
-            return TAcc::getSizeBlockKernelsLinearMax();
-        }
-
-        //-----------------------------------------------------------------------------
         //! \return The requested size.
         //-----------------------------------------------------------------------------
         template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>

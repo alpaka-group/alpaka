@@ -11,10 +11,10 @@ Supported Compilers
 
 This library uses a subset of C++11 supported by many compilers to keep the code clean and readable.
 Supported (but not necessarily tested) compilers are:
-- gcc 4.4+
-- clang 3.3+
+- gcc 4.7+
+- clang 3.4+
 - icc 13.0+
-- VC12 (Nov 2013 CTP)+
+- MSVC 2015+
 
 Requirements
 ----------------

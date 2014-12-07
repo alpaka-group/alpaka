@@ -69,7 +69,6 @@ IF(ALPAKA_DEBUG)
     LIST(APPEND ALPAKA_COMPILE_DEFINITIONS ALPAKA_DEBUG)
 ENDIF()
 
-
 ################################################################################
 # Find Boost.
 ################################################################################
@@ -80,7 +79,7 @@ SET(Boost_USE_STATIC_RUNTIME OFF)
 SET(BOOST_REQUIRED_COMPONENTS)
 
 IF(ALPAKA_FIBERS_ENABLE)
-    SET(BOOST_REQUIRED_COMPONENTS fiber coroutine context system atomic chrono date_time regex thread)
+    SET(BOOST_REQUIRED_COMPONENTS fiber coroutine context system atomic chrono date_time regex thread) # predef
 ENDIF()
 
 FIND_PACKAGE(Boost REQUIRED COMPONENTS ${BOOST_REQUIRED_COMPONENTS})
@@ -101,7 +100,6 @@ IF(ALPAKA_OPENMP_ENABLE)
         #SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
     ENDIF()
 ENDIF()
-
 
 ################################################################################
 # Find CUDA.

@@ -26,6 +26,9 @@
 #include <climits>      // CHAR_BIT
 #include <cstddef>      // std::size_t
 
+// workarounds
+#include <boost/predef.h>
+
 //-----------------------------------------------------------------------------
 //! Disable nvcc warning:
 //! calling a __host__ function from __host__ __device__ function.
@@ -116,8 +119,8 @@ namespace alpaka
 
 // Older versions of GCC < 4.8 do not support alignas.
 // But even newer GCC versions do not support constant expressions as parameters: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=58109
-#ifdef __GNUC__
-    /*#if (((__GNUC__ > 4) || (__GNUC__ == 4 && (__GNUC_MINOR__ >= 8))))
+#if BOOST_COMP_GNUC
+    /*#if BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(4, 8, 0)
         #define ALPAKA_OPTIMAL_ALIGNMENT_GCC_4_8(byte) \
 			        alignas(((byte)==1?1:     \
 			        ((byte)<=2?2:             \

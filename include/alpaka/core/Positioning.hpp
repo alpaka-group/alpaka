@@ -93,7 +93,7 @@ namespace alpaka
         template<>
         struct DimToRetType<dim::Linear>
         {
-            using type = std::uint32_t;
+            using type = vec<3u>::ValueType;
         };
     }
 }

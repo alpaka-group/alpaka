@@ -32,6 +32,7 @@
 // user functionality
 #include <alpaka/host/Memory.hpp>                   // MemCopy
 #include <alpaka/threads/Event.hpp>                 // Event
+#include <alpaka/threads/Device.hpp>                // Devices
 
 // specialized templates
 #include <alpaka/interfaces/KernelExecCreator.hpp>  // KernelExecCreator
@@ -55,6 +56,9 @@
 #endif
 
 #include <boost/mpl/apply.hpp>                      // boost::mpl::apply
+
+// workarounds
+#include <boost/predef.h>
 
 namespace alpaka
 {
@@ -118,24 +122,6 @@ namespace alpaka
                 //! Destructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST ~AccThreads() noexcept = default;
-
-                //-----------------------------------------------------------------------------
-                //! \return The maximum number of kernels in each dimension of a block allowed.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static vec<3u> getSizeBlockKernelsMax()
-                {
-                    auto const uiSizeBlockKernelsLinearMax(getSizeBlockKernelsLinearMax());
-                    return {uiSizeBlockKernelsLinearMax, uiSizeBlockKernelsLinearMax, uiSizeBlockKernelsLinearMax};
-                }
-                //-----------------------------------------------------------------------------
-                //! \return The maximum number of kernels in a block allowed by.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::uint32_t getSizeBlockKernelsLinearMax()
-                {
-                    // FIXME: What is the maximum? Just set a reasonable value? There is a implementation defined maximum where the creation of a new thread crashes.
-                    // std::thread::hardware_concurrency is too small but a multiple of it? But it can return 0, so a default for this case?
-                    return 1024;    // Magic number.
-                }
 
             protected:
                 //-----------------------------------------------------------------------------
@@ -271,11 +257,11 @@ namespace alpaka
                     (*const_cast<TInterfacedWorkSize*>(static_cast<TInterfacedWorkSize const *>(this))) = workSize;
 
                     auto const uiNumKernelsPerBlock(workSize.template getSize<Block, Kernels, Linear>());
-                    auto const uiMaxKernelsPerBlock(AccThreads::getSizeBlockKernelsLinearMax());
+                    /*auto const uiMaxKernelsPerBlock(AccThreads::getSizeBlockKernelsLinearMax());
                     if(uiNumKernelsPerBlock > uiMaxKernelsPerBlock)
                     {
                         throw std::runtime_error(("The given blockSize '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the threads accelerator!").c_str());
-                    }
+                    }*/
 
                     this->AccThreads::m_uiNumKernelsPerBlock = uiNumKernelsPerBlock;
 
@@ -352,7 +338,7 @@ namespace alpaka
 
                                             // Create a thread.
                                             // The v3uiBlockKernelIdx is required to be copied in from the environment because if the thread is immediately suspended the variable is already changed for the next iteration/thread.
-#ifdef _MSC_VER    // MSVC <= 14 do not compile the std::thread constructor because the type of the member function template is missing the this pointer as first argument.
+#if BOOST_COMP_MSVC <= BOOST_VERSION_NUMBER(14, 0, 22310)   // MSVC <= 14 do not compile the std::thread constructor because the type of the member function template is missing the this pointer as first argument.
                                             auto threadKernelFct([this](vec<3u> const v3uiBlockKernelIdx, TArgs ... args) {threadKernel<TArgs...>(v3uiBlockKernelIdx, std::forward<TArgs>(args)...); });
                                             m_vThreadsInBlock.push_back(std::thread(threadKernelFct, v3uiBlockKernelIdx, args...));
 #else
@@ -408,7 +394,7 @@ namespace alpaka
                         std::lock_guard<std::mutex> lock(m_mtxMapInsert);
 
                         // Save the thread id, and index.
-#if ((!defined __GNUC__) || ((__GNUC__ > 4) || (__GNUC__ == 4 && ((__GNUC_MINOR__ > 7) || ((__GNUC_MINOR__ == 7) && (__GNUC_PATCHLEVEL__ == 3)))))) // GCC <= 4.7.2 is not standard conformant and has no member emplace. This works with 4.7.3+.
+#if BOOST_COMP_GNUC <= BOOST_VERSION_NUMBER(4, 7, 2) // GCC <= 4.7.2 is not standard conformant and has no member emplace.
                         this->AccThreads::m_mThreadsToIndices.emplace(idThread, v3uiBlockKernelIdx);
                         itThreadToBarrier = this->AccThreads::m_mThreadsToBarrier.emplace(idThread, 0).first;
 #else

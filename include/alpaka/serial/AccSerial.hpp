@@ -31,6 +31,7 @@
 // user functionality
 #include <alpaka/host/Memory.hpp>                   // MemCopy
 #include <alpaka/serial/Event.hpp>                  // Event
+#include <alpaka/serial/Device.hpp>                 // Devices
 
 // specialized templates
 #include <alpaka/interfaces/KernelExecCreator.hpp>  // KernelExecCreator
@@ -99,22 +100,6 @@ namespace alpaka
                 //! Destructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST ~AccSerial() noexcept = default;
-
-                //-----------------------------------------------------------------------------
-                //! \return The maximum number of kernels in each dimension of a block allowed.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static vec<3u> getSizeBlockKernelsMax()
-                {
-                    auto const uiSizeBlockKernelsLinearMax(getSizeBlockKernelsLinearMax());
-                    return {uiSizeBlockKernelsLinearMax, uiSizeBlockKernelsLinearMax, uiSizeBlockKernelsLinearMax};
-                }
-                //-----------------------------------------------------------------------------
-                //! \return The maximum number of kernels in a block allowed.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::uint32_t getSizeBlockKernelsLinearMax()
-                {
-                    return 1;
-                }
 
             protected:
                 //-----------------------------------------------------------------------------
@@ -198,12 +183,12 @@ namespace alpaka
 #endif
                     (*const_cast<TInterfacedWorkSize*>(static_cast<TInterfacedWorkSize const *>(this))) = workSize;
 
-                    auto const uiNumKernelsPerBlock(workSize.template getSize<Block, Kernels, Linear>());
+                    /*auto const uiNumKernelsPerBlock(workSize.template getSize<Block, Kernels, Linear>());
                     auto const uiMaxKernelsPerBlock(AccSerial::getSizeBlockKernelsLinearMax());
                     if(uiNumKernelsPerBlock > uiMaxKernelsPerBlock)
                     {
                         throw std::runtime_error(("The given blockSize '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the serial accelerator!").c_str());
-                    }
+                    }*/
 
                     m_v3uiSizeGridBlocks = workSize.template getSize<Grid, Blocks, D3>();
                     m_v3uiSizeBlockKernels = workSize.template getSize<Block, Kernels, D3>();
