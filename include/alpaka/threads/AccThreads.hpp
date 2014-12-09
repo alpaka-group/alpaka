@@ -44,7 +44,7 @@
 #include <alpaka/interfaces/BlockSharedExternMemSizeBytes.hpp>
 #include <alpaka/interfaces/IAcc.hpp>
 #ifndef ALPAKA_THREADS_NO_POOL
-    #include <alpaka/threads/ThreadPool.hpp>        // ThreadPool
+    #include <alpaka/core/ConcurrentExecutionPool.hpp>  // ConcurrentExecutionPool
 #endif
 
 #include <cstddef>                                  // std::size_t
@@ -236,6 +236,34 @@ namespace alpaka
             };
 
             //#############################################################################
+            //! The type given to the ConcurrentExecutionPool for yielding the current thread.
+            //#############################################################################
+            struct ThreadPoolYield
+            {
+                //-----------------------------------------------------------------------------
+                //! Yields the current thread.
+                //-----------------------------------------------------------------------------
+                static void yield()
+                {
+                    std::this_thread::yield();
+                }
+            };
+            //#############################################################################
+            //! The type given to the ConcurrentExecutionPool for returning the current exception.
+            //#############################################################################
+            struct ThreadPoolCurrentException
+            {
+                //-----------------------------------------------------------------------------
+                //! \return The current exception.
+                //-----------------------------------------------------------------------------
+                static auto current_exception()
+                    -> std::result_of<decltype(&std::current_exception)()>::type
+                {
+                    return std::current_exception();
+                }
+            };
+
+            //#############################################################################
             //! The executor for an accelerated serial kernel.
             //#############################################################################
             template<typename TAcceleratedKernel>
@@ -332,8 +360,17 @@ namespace alpaka
 #endif
 
 #ifndef ALPAKA_THREADS_NO_POOL
-                    auto const uiNumThreads(m_v3uiSizeBlockKernels.prod());
-                    ThreadPool<true> threadPool(uiNumThreads, uiNumThreads);
+                    auto const uiNumKernelsInBlock(this->AccThreads::getSize<Block, Kernels, Linear>());
+                    // When using the thread pool the threads are yielding because this is faster. 
+                    // Using condition variables and going to sleep is very costly for real threads. 
+                    // Especially when the time to wait is really short (syncBlockKernels) yielding is much faster.
+                    using TPool = alpaka::detail::ConcurrentExecutionPool<
+                        std::thread,                // The concurrent execution type.
+                        std::promise,               // The promise type.
+                        ThreadPoolCurrentException, // The type returning the current exception.
+                        ThreadPoolYield             // The type yielding the current concurrent execution.
+                    >;
+                    TPool pool(uiNumKernelsInBlock, uiNumKernelsInBlock);
 #endif
                     // Execute the blocks serially.
                     for(std::uint32_t bz(0); bz<m_v3uiSizeGridBlocks[2]; ++bz)
@@ -365,13 +402,13 @@ namespace alpaka
     #ifdef ALPAKA_THREADS_NO_POOL
                                             m_vThreadsInBlock.push_back(std::thread(threadKernelFct, v3uiBlockKernelIdx, args...));
     #else
-                                            m_vFuturesInBlock.emplace_back(threadPool.enqueueTask(threadKernelFct, v3uiBlockKernelIdx, args...));
+                                            m_vFuturesInBlock.emplace_back(pool.enqueueTask(threadKernelFct, v3uiBlockKernelIdx, args...));
     #endif
 #else
     #ifdef ALPAKA_THREADS_NO_POOL
                                             m_vThreadsInBlock.push_back(std::thread(&KernelExecutor::threadKernel<TArgs...>, this, v3uiBlockKernelIdx, args...));
     #else
-                                            m_vFuturesInBlock.emplace_back(threadPool.enqueueTask(&KernelExecutor::threadKernel<TArgs...>, this, v3uiBlockKernelIdx, args...));
+                                            m_vFuturesInBlock.emplace_back(pool.enqueueTask(&KernelExecutor::threadKernel<TArgs...>, this, v3uiBlockKernelIdx, args...));
     #endif
 #endif
                                         }
@@ -461,7 +498,6 @@ namespace alpaka
 #else
                 std::vector<std::future<void>> mutable m_vFuturesInBlock; //!< The futures of the threads in the current block.
 #endif
-
                 std::mutex mutable m_mtxMapInsert;
 
                 vec<3u> m_v3uiSizeGridBlocks;

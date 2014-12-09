@@ -22,6 +22,9 @@
 
 #pragma once
 
+//#define ALPAKA_FIBERS_NO_POOL     // Define this to recreate all of the fibers between executing blocks.
+                                    // NOTE: Using the fiber pool should be massively faster in nearly every case!
+
 // Base classes.
 #include <alpaka/fibers/AccFibersFwd.hpp>
 #include <alpaka/fibers/WorkSize.hpp>               // TInterfacedWorkSize
@@ -41,6 +44,9 @@
 #include <alpaka/fibers/Common.hpp>
 #include <alpaka/interfaces/BlockSharedExternMemSizeBytes.hpp>
 #include <alpaka/interfaces/IAcc.hpp>
+#ifndef ALPAKA_FIBERS_NO_POOL
+    #include <alpaka/core/ConcurrentExecutionPool.hpp>  // ConcurrentExecutionPool
+#endif
 
 #include <cstddef>                                  // std::size_t
 #include <cstdint>                                  // std::uint32_t
@@ -220,6 +226,34 @@ namespace alpaka
             };
 
             //#############################################################################
+            //! The type given to the ConcurrentExecutionPool for yielding the current fiber.
+            //#############################################################################
+            struct FiberPoolYield
+            {
+                //-----------------------------------------------------------------------------
+                //! Yields the current fiber.
+                //-----------------------------------------------------------------------------
+                static void yield()
+                {
+                    boost::this_fiber::yield();
+                }
+            };
+            //#############################################################################
+            //! The type given to the ConcurrentExecutionPool for returning the current exception.
+            //#############################################################################
+            struct FiberPoolCurrentException
+            {
+                //-----------------------------------------------------------------------------
+                //! \return The current exception.
+                //-----------------------------------------------------------------------------
+                static auto current_exception()
+                    -> std::result_of<decltype(&boost::current_exception)()>::type
+                {
+                    return boost::current_exception();
+                }
+            };
+
+            //#############################################################################
             //! The executor for an accelerated serial kernel.
             //#############################################################################
             template<typename TAcceleratedKernel>
@@ -238,7 +272,11 @@ namespace alpaka
                 template<typename TWorkSize, typename... TKernelConstrArgs>
                 ALPAKA_FCT_HOST KernelExecutor(IWorkSize<TWorkSize> const & workSize, TKernelConstrArgs && ... args) :
                     TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
+#ifdef ALPAKA_FIBERS_NO_POOL
                     m_vFibersInBlock()
+#else
+                    m_vFuturesInBlock()
+#endif
                 {
 #ifdef ALPAKA_DEBUG
                     std::cout << "[+] AccFibers::KernelExecutor()" << std::endl;
@@ -293,6 +331,22 @@ namespace alpaka
 #ifdef ALPAKA_DEBUG
                     //std::cout << "GridBlocks: " << m_v3uiSizeGridBlocks << " BlockKernels: " << m_v3uiSizeBlockKernels << std::endl;
 #endif
+#ifndef ALPAKA_FIBERS_NO_POOL
+                    auto const uiNumKernelsInBlock(this->AccFibers::getSize<Block, Kernels, Linear>());
+                    // Yielding is not faster for fibers. Therefore we use condition variables. 
+                    // It is better to wake them up when the conditions are fulfilled because this does not cost as much as for real threads.
+                    using TPool = alpaka::detail::ConcurrentExecutionPool<
+                        boost::fibers::fiber,               // The concurrent execution type.
+                        boost::fibers::promise,             // The promise type.
+                        FiberPoolCurrentException,          // The type returning the current exception.
+                        FiberPoolYield,                     // The type yielding the current concurrent execution.
+                        boost::fibers::mutex,               // The mutex type to use. Only required if TbYield is true.
+                        boost::unique_lock,                 // The unique lock type to use. Only required if TbYield is true.
+                        boost::fibers::condition_variable,  // The condition variable type to use. Only required if TbYield is true.
+                        false                               // If the threads should yield.
+                    >;
+                    TPool pool(uiNumKernelsInBlock, uiNumKernelsInBlock);
+#endif
                     // Execute the blocks serially.
                     for(std::uint32_t bz(0); bz<m_v3uiSizeGridBlocks[2]; ++bz)
                     {
@@ -320,13 +374,22 @@ namespace alpaka
                                             // The v3uiBlockKernelIdx is required to be copied in from the environment because if the fiber is immediately suspended the variable is already changed for the next iteration/thread.
 #if BOOST_COMP_MSVC //<= BOOST_VERSION_NUMBER(14, 0, 22310)    MSVC does not compile the boost::fibers::fiber constructor because the type of the member function template is missing the this pointer as first argument.
                                             auto fiberKernelFct([this](vec<3u> const v3uiBlockKernelIdx, TArgs ... args) {fiberKernel<TArgs...>(v3uiBlockKernelIdx, std::forward<TArgs>(args)...); });
+    #ifdef ALPAKA_FIBERS_NO_POOL
                                             m_vFibersInBlock.push_back(boost::fibers::fiber(fiberKernelFct, v3uiBlockKernelIdx, args...));
+    #else
+                                            m_vFuturesInBlock.emplace_back(pool.enqueueTask(fiberKernelFct, v3uiBlockKernelIdx, args...));
+    #endif
 #else
+    #ifdef ALPAKA_FIBERS_NO_POOL
                                             m_vFibersInBlock.push_back(boost::fibers::fiber(&KernelExecutor::fiberKernel<TArgs...>, this, v3uiBlockKernelIdx, args...));
+    #else
+                                            m_vFuturesInBlock.emplace_back(pool.enqueueTask(&KernelExecutor::fiberKernel<TArgs...>, this, v3uiBlockKernelIdx, args...));
+    #endif
 #endif
                                         }
                                     }
                                 }
+#ifdef ALPAKA_FIBERS_NO_POOL
                                 // Join all the fibers.
                                 std::for_each(m_vFibersInBlock.begin(), m_vFibersInBlock.end(),
                                     [](boost::fibers::fiber & f)
@@ -336,6 +399,17 @@ namespace alpaka
                                 );
                                 // Clean up.
                                 m_vFibersInBlock.clear();
+#else
+                                // Join all the threads.
+                                std::for_each(m_vFuturesInBlock.begin(), m_vFuturesInBlock.end(),
+                                    [](boost::fibers::future<void> & t)
+                                    {
+                                        t.wait();
+                                    }
+                                );
+                                // Clean up.
+                                m_vFuturesInBlock.clear();
+#endif
                                 this->AccFibers::m_mFibersToIndices.clear();
                                 this->AccFibers::m_mFibersToBarrier.clear();
 
@@ -388,8 +462,11 @@ namespace alpaka
                 }
 
             private:
-                std::vector<boost::fibers::fiber> mutable m_vFibersInBlock; //!< The fibers executing the current block.
-
+#ifdef ALPAKA_FIBERS_NO_POOL
+                std::vector<boost::fibers::fiber> mutable m_vFibersInBlock;         //!< The fibers executing the current block.
+#else
+                std::vector<boost::fibers::future<void>> mutable m_vFuturesInBlock; //!< The futures of the fibers in the current block.
+#endif
                 vec<3u> m_v3uiSizeGridBlocks;
                 vec<3u> m_v3uiSizeBlockKernels;
             };
