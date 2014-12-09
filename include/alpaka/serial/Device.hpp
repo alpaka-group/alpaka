@@ -37,7 +37,7 @@ namespace alpaka
     {
         namespace detail
         {
-            // forward declaration
+            // Forward declaration.
             class DeviceManagerSerial;
 
             //#############################################################################

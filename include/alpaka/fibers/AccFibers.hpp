@@ -22,22 +22,22 @@
 
 #pragma once
 
-// base classes
+// Base classes.
 #include <alpaka/fibers/AccFibersFwd.hpp>
 #include <alpaka/fibers/WorkSize.hpp>               // TInterfacedWorkSize
 #include <alpaka/fibers/Index.hpp>                  // TInterfacedIndex
 #include <alpaka/fibers/Atomic.hpp>                 // TInterfacedAtomic
 #include <alpaka/fibers/Barrier.hpp>                // BarrierFibers
 
-// user functionality
+// User functionality.
 #include <alpaka/host/Memory.hpp>                   // MemCopy
 #include <alpaka/fibers/Event.hpp>                  // Event
 #include <alpaka/fibers/Device.hpp>                 // Devices
 
-// specialized templates
+// Specialized templates.
 #include <alpaka/interfaces/KernelExecCreator.hpp>  // KernelExecCreator
 
-// implementation details
+// Implementation details.
 #include <alpaka/fibers/Common.hpp>
 #include <alpaka/interfaces/BlockSharedExternMemSizeBytes.hpp>
 #include <alpaka/interfaces/IAcc.hpp>
@@ -49,7 +49,7 @@
 
 #include <boost/mpl/apply.hpp>                      // boost::mpl::apply
 
-// workarounds
+// Workarounds.
 #include <boost/predef.h>
 
 namespace alpaka
@@ -107,7 +107,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST AccFibers(AccFibers &&) = default;
                 //-----------------------------------------------------------------------------
-                //! Assignment-operator.
+                //! Copy-assignment.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST AccFibers & operator=(AccFibers const &) = delete;
                 //-----------------------------------------------------------------------------
@@ -271,7 +271,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecutor(KernelExecutor &&) = default;
                 //-----------------------------------------------------------------------------
-                //! Assignment-operator.
+                //! Copy-assignment.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecutor & operator=(KernelExecutor const &) = delete;
                 //-----------------------------------------------------------------------------
@@ -293,9 +293,7 @@ namespace alpaka
 #ifdef ALPAKA_DEBUG
                     //std::cout << "GridBlocks: " << m_v3uiSizeGridBlocks << " BlockKernels: " << m_v3uiSizeBlockKernels << std::endl;
 #endif
-                    // CUDA programming guide: "Thread blocks are required to execute independently: It must be possible to execute them in any order, in parallel or in series. 
-                    // This independence requirement allows thread blocks to be scheduled in any order across any number of cores"
-                    // TODO: Execute blocks in parallel because kernel executions in a block are cooperatively multi threaded within one real thread.
+                    // Execute the blocks serially.
                     for(std::uint32_t bz(0); bz<m_v3uiSizeGridBlocks[2]; ++bz)
                     {
                         this->AccFibers::m_v3uiGridBlockIdx[2] = bz;
@@ -306,6 +304,7 @@ namespace alpaka
                             {
                                 this->AccFibers::m_v3uiGridBlockIdx[0] = bx;
 
+                                // Execute the kernels in parallel using cooperative multi-threading.
                                 vec<3u> v3uiBlockKernelIdx;
                                 for(std::uint32_t tz(0); tz<m_v3uiSizeBlockKernels[2]; ++tz)
                                 {
@@ -319,7 +318,7 @@ namespace alpaka
 
                                             // Create a fiber.
                                             // The v3uiBlockKernelIdx is required to be copied in from the environment because if the fiber is immediately suspended the variable is already changed for the next iteration/thread.
-#if BOOST_COMP_MSVC <= BOOST_VERSION_NUMBER(14, 0, 22310)   // MSVC <= 14 do not compile the boost::fibers::fiber constructor because the type of the member function template is missing the this pointer as first argument.
+#if BOOST_COMP_MSVC //<= BOOST_VERSION_NUMBER(14, 0, 22310)    MSVC does not compile the boost::fibers::fiber constructor because the type of the member function template is missing the this pointer as first argument.
                                             auto fiberKernelFct([this](vec<3u> const v3uiBlockKernelIdx, TArgs ... args) {fiberKernel<TArgs...>(v3uiBlockKernelIdx, std::forward<TArgs>(args)...); });
                                             m_vFibersInBlock.push_back(boost::fibers::fiber(fiberKernelFct, v3uiBlockKernelIdx, args...));
 #else
@@ -331,9 +330,9 @@ namespace alpaka
                                 // Join all the fibers.
                                 std::for_each(m_vFibersInBlock.begin(), m_vFibersInBlock.end(),
                                     [](boost::fibers::fiber & f)
-                                {
-                                    f.join();
-                                }
+                                    {
+                                        f.join();
+                                    }
                                 );
                                 // Clean up.
                                 m_vFibersInBlock.clear();
@@ -355,7 +354,7 @@ namespace alpaka
                 //! The fiber entry point.
                 //-----------------------------------------------------------------------------
                 template<typename... TArgs>
-                ALPAKA_FCT_HOST void fiberKernel(vec<3u> const v3uiBlockKernelIdx, TArgs ... args) const
+                ALPAKA_FCT_HOST void fiberKernel(vec<3u> const v3uiBlockKernelIdx, TArgs && ... args) const
                 {
                     // We have to store the fiber data before the kernel is calling any of the methods of this class depending on them.
                     auto const idFiber(boost::this_fiber::get_id());
@@ -382,7 +381,7 @@ namespace alpaka
                     this->AccFibers::syncBlockKernels(itFiberToBarrier);
 
                     // Execute the kernel itself.
-                    this->TAcceleratedKernel::operator()(args ...);
+                    this->TAcceleratedKernel::operator()(std::forward<TArgs>(args)...);
 
                     // We have to sync all fibers here because if a fiber would finish before all fibers have been started, the new fiber could get a recycled (then duplicate) fiber id!
                     this->AccFibers::syncBlockKernels(itFiberToBarrier);

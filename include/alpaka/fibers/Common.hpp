@@ -25,6 +25,14 @@
 // Force the usage of variadic templates for fibers.
 #define BOOST_FIBERS_USE_VARIADIC_FIBER
 
+#if BOOST_COMP_MSVC
+    #pragma warning(push)
+    #pragma warning(disable: 4267)  // boost/asio/detail/impl/socket_ops.ipp(1968): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+                                    // boost/asio/detail/impl/socket_ops.ipp(2172): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+    #pragma warning(disable: 4297)  // boost/coroutine/detail/symmetric_coroutine_impl.hpp(409) : warning C4297 : 'boost::coroutines::detail::symmetric_coroutine_impl<void>::yield' : function assumed not to throw an exception but does
+    #pragma warning(disable: 4996)  // boost/asio/detail/impl/socket_ops.ipp(1363) : warning C4996 : 'WSASocketA' : Use WSASocketW() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+#endif
+
 // Boost fiber:
 // http://olk.github.io/libs/fiber/doc/html/index.html
 // https://github.com/olk/boost-fiber
@@ -33,3 +41,7 @@
 #include <boost/fiber/condition.hpp>                // boost::fibers::condition_variable
 #include <boost/fiber/mutex.hpp>                    // boost::fibers::mutex
 //#include <boost/fiber/barrier.hpp>                // boost::fibers::barrier
+
+#if BOOST_COMP_MSVC
+    #pragma warning( pop )
+#endif

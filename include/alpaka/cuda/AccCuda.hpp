@@ -22,21 +22,21 @@
 
 #pragma once
 
-// base classes
+// Base classes.
 #include <alpaka/cuda/AccCudaFwd.hpp>
 #include <alpaka/cuda/WorkSize.hpp>                 // TInterfacedWorkSize
 #include <alpaka/cuda/Index.hpp>                    // TInterfacedIndex
 #include <alpaka/cuda/Atomic.hpp>                   // TInterfacedAtomic
 
-// user functionality
+// User functionality.
 #include <alpaka/cuda/Memory.hpp>                   // MemCopy
 #include <alpaka/cuda/Event.hpp>                    // Event
 #include <alpaka/cuda/Device.hpp>                   // Devices
 
-// specialized templates
+// Specialized templates.
 #include <alpaka/interfaces/KernelExecCreator.hpp>  // KernelExecCreator
 
-// implementation details
+// Implementation details.
 #include <alpaka/cuda/Common.hpp>
 #include <alpaka/interfaces/IAcc.hpp>               // IAcc
 #include <alpaka/interfaces/BlockSharedExternMemSizeBytes.hpp>
@@ -53,7 +53,7 @@
 
 #include <boost/mpl/apply.hpp>                      // boost::mpl::apply
 
-// workarounds
+// Workarounds.
 #include <boost/predef.h>
 
 namespace alpaka
@@ -106,7 +106,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC AccCuda(AccCuda &&) = default;
                 //-----------------------------------------------------------------------------
-                //! Assignment-operator.
+                //! Copy-assignment.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC AccCuda & operator=(AccCuda const &) = delete;
                 //-----------------------------------------------------------------------------
@@ -213,7 +213,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecutor(KernelExecutor &&) = default;
                 //-----------------------------------------------------------------------------
-                //! Assignment-operator.
+                //! Copy-assignment.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecutor & operator=(KernelExecutor const &) = delete;
                 //-----------------------------------------------------------------------------

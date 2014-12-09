@@ -67,12 +67,12 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template <typename TFirstArg, typename... TArgs, typename = typename std::enable_if<sizeof...(TArgs) == (TuiDim-1)>::type>
         ALPAKA_FCT_HOST_ACC vec(TFirstArg && val, TArgs && ... values)
-#if !(BOOST_COMP_MSVC <= BOOST_VERSION_NUMBER(14, 0, 22310))   // MSVC <= 14 do not compile the basic array initialization: "error C2536: 'alpaka::vec<0x03>::alpaka::vec<0x03>::m_auiData': cannot specify explicit initializer for arrays"
+#if !(BOOST_COMP_MSVC /*<= BOOST_VERSION_NUMBER(14, 0, 22310)*/)   // MSVC does not compile the basic array initialization: "error C2536: 'alpaka::vec<0x03>::alpaka::vec<0x03>::m_auiData': cannot specify explicit initializer for arrays"
             :
             m_auiData{std::forward<TFirstArg>(val), std::forward<TArgs>(values)...}
 #endif
         {
-#if BOOST_COMP_MSVC <= BOOST_VERSION_NUMBER(14, 0, 22310)
+#if BOOST_COMP_MSVC //<= BOOST_VERSION_NUMBER(14, 0, 22310)
             TValue auiData2[TuiDim] = {std::forward<TFirstArg>(val), std::forward<TArgs>(values)...};
             for(std::size_t i(0); i<TuiDim; ++i)
             {
@@ -89,7 +89,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         ALPAKA_FCT_HOST_ACC vec(vec &&) = default;
         //-----------------------------------------------------------------------------
-        //! Assignment-operator.
+        //! Copy-assignment.
         //-----------------------------------------------------------------------------
         ALPAKA_FCT_HOST_ACC vec & operator=(vec const &) = default;
         //-----------------------------------------------------------------------------

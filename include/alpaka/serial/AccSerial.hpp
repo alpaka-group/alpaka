@@ -22,21 +22,21 @@
 
 #pragma once
 
-// base classes
+// Base classes.
 #include <alpaka/serial/AccSerialFwd.hpp>
 #include <alpaka/serial/WorkSize.hpp>               // TInterfacedWorkSize
 #include <alpaka/serial/Index.hpp>                  // TInterfacedIndex
 #include <alpaka/serial/Atomic.hpp>                 // TInterfacedAtomic
 
-// user functionality
+// User functionality.
 #include <alpaka/host/Memory.hpp>                   // MemCopy
 #include <alpaka/serial/Event.hpp>                  // Event
 #include <alpaka/serial/Device.hpp>                 // Devices
 
-// specialized templates
+// Specialized templates.
 #include <alpaka/interfaces/KernelExecCreator.hpp>  // KernelExecCreator
 
-// implementation details
+// Implementation details.
 #include <alpaka/interfaces/BlockSharedExternMemSizeBytes.hpp>
 #include <alpaka/interfaces/IAcc.hpp>
 
@@ -58,6 +58,7 @@ namespace alpaka
     {
         namespace detail
         {
+            // Forward declaration.
             template<typename TAcceleratedKernel>
             class KernelExecutor;
 
@@ -93,7 +94,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST AccSerial(AccSerial &&) = default;
                 //-----------------------------------------------------------------------------
-                //! Assignment-operator.
+                //! Copy-assignment.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST AccSerial & operator=(AccSerial const &) = delete;
                 //-----------------------------------------------------------------------------
@@ -205,7 +206,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecutor(KernelExecutor &&) = default;
                 //-----------------------------------------------------------------------------
-                //! Assignment-operator.
+                //! Copy-assignment.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecutor & operator=(KernelExecutor const &) = delete;
                 //-----------------------------------------------------------------------------
@@ -227,6 +228,7 @@ namespace alpaka
 #ifdef ALPAKA_DEBUG
                     //std::cout << "GridBlocks: " << v3uiSizeGridBlocks << " BlockKernels: " << v3uiSizeBlockKernels << std::endl;
 #endif
+                    // Execute the blocks serially.
                     for(std::uint32_t bz(0); bz<m_v3uiSizeGridBlocks[2]; ++bz)
                     {
                         this->AccSerial::m_v3uiGridBlockIdx[2] = bz;
@@ -237,6 +239,7 @@ namespace alpaka
                             {
                                 this->AccSerial::m_v3uiGridBlockIdx[0] = bx;
 
+                                // Execute the kernels serially.
                                 for(std::uint32_t tz(0); tz<m_v3uiSizeBlockKernels[2]; ++tz)
                                 {
                                     this->AccSerial::m_v3uiBlockKernelIdx[2] = tz;

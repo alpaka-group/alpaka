@@ -22,22 +22,21 @@
 
 #pragma once
 
-// base classes
-
+// Base classes.
 #include <alpaka/openmp/AccOpenMpFwd.hpp>
 #include <alpaka/openmp/WorkSize.hpp>               // TInterfacedWorkSize
 #include <alpaka/openmp/Index.hpp>                  // TInterfacedIndex
 #include <alpaka/openmp/Atomic.hpp>                 // TInterfacedAtomic
 
-// user functionality
+// User functionality.
 #include <alpaka/host/Memory.hpp>                   // MemCopy
 #include <alpaka/openmp/Event.hpp>                  // Event
 #include <alpaka/openmp/Device.hpp>                 // Devices
 
-// specialized templates
+// Specialized templates.
 #include <alpaka/interfaces/KernelExecCreator.hpp>  // KernelExecCreator
 
-// implementation details
+// Implementation details.
 #include <alpaka/openmp/Common.hpp>
 #include <alpaka/interfaces/BlockSharedExternMemSizeBytes.hpp>
 #include <alpaka/interfaces/IAcc.hpp>
@@ -96,7 +95,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST AccOpenMp(AccOpenMp &&) = default;
                 //-----------------------------------------------------------------------------
-                //! Assignment-operator.
+                //! Copy-assignment.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST AccOpenMp & operator=(AccOpenMp const &) = delete;
                 //-----------------------------------------------------------------------------
@@ -216,7 +215,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecutor(KernelExecutor &&) = default;
                 //-----------------------------------------------------------------------------
-                //! Assignment-operator.
+                //! Copy-assignment.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecutor & operator=(KernelExecutor const &) = delete;
                 //-----------------------------------------------------------------------------
@@ -238,9 +237,10 @@ namespace alpaka
 #ifdef ALPAKA_DEBUG
                     //std::cout << "GridBlocks: " << v3uiSizeGridBlocks << " BlockKernels: " << v3uiSizeBlockKernels << std::endl;
 #endif
-                    // CUDA programming guide: "Thread blocks are required to execute independently: It must be possible to execute them in any order, in parallel or in series. 
-                    // This independence requirement allows thread blocks to be scheduled in any order across any number of cores"
-                    // -> We can execute them serially.
+                    // The number of threads in this block.
+                    auto const uiNumKernelsInBlock(this->AccOpenMp::getSize<Block, Kernels, Linear>());
+
+                    // Execute the blocks serially.
                     for(std::uint32_t bz(0); bz<m_v3uiSizeGridBlocks[2]; ++bz)
                     {
                         this->AccOpenMp::m_v3uiGridBlockIdx[2] = bz;
@@ -251,8 +251,7 @@ namespace alpaka
                             {
                                 this->AccOpenMp::m_v3uiGridBlockIdx[0] = bx;
 
-                                // The number of threads in this block.
-                                auto const uiNumKernelsInBlock(this->AccOpenMp::getSize<Block, Kernels, Linear>());
+                                // Execute the threads in parallel threads.
 
                                 // Force the environment to use the given number of threads.
                                 ::omp_set_dynamic(0);

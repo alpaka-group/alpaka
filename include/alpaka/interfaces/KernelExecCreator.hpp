@@ -102,7 +102,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST KernelExecutorExtent(KernelExecutorExtent &&) = default;
             //-----------------------------------------------------------------------------
-            //! Assignment-operator.
+            //! Copy-assignment.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST KernelExecutorExtent & operator=(KernelExecutorExtent const &) = delete;
             //-----------------------------------------------------------------------------

@@ -22,24 +22,30 @@
 
 #pragma once
 
-// base classes
+//#define ALPAKA_THREADS_NO_POOL    // Define this to recreate all of the threads between executing blocks.
+                                    // NOTE: Using the thread pool should be massively faster in nearly every case!
+
+// Base classes.
 #include <alpaka/threads/AccThreadsFwd.hpp>
 #include <alpaka/threads/WorkSize.hpp>              // TInterfacedWorkSize
 #include <alpaka/threads/Index.hpp>                 // TInterfacedIndex
 #include <alpaka/threads/Atomic.hpp>                // TInterfacedAtomic
 #include <alpaka/threads/Barrier.hpp>               // BarrierThreads
 
-// user functionality
+// User functionality.
 #include <alpaka/host/Memory.hpp>                   // MemCopy
 #include <alpaka/threads/Event.hpp>                 // Event
 #include <alpaka/threads/Device.hpp>                // Devices
 
-// specialized templates
+// Specialized templates.
 #include <alpaka/interfaces/KernelExecCreator.hpp>  // KernelExecCreator
 
-// implementation details
+// Implementation details.
 #include <alpaka/interfaces/BlockSharedExternMemSizeBytes.hpp>
 #include <alpaka/interfaces/IAcc.hpp>
+#ifndef ALPAKA_THREADS_NO_POOL
+    #include <alpaka/threads/ThreadPool.hpp>        // ThreadPool
+#endif
 
 #include <cstddef>                                  // std::size_t
 #include <cstdint>                                  // std::uint32_t
@@ -115,7 +121,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST AccThreads(AccThreads &&) = default;
                 //-----------------------------------------------------------------------------
-                //! Assignment-operator.
+                //! Copy-assignment.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST AccThreads & operator=(AccThreads const &) = delete;
                 //-----------------------------------------------------------------------------
@@ -248,7 +254,11 @@ namespace alpaka
                 template<typename TWorkSize, typename... TKernelConstrArgs>
                 ALPAKA_FCT_HOST KernelExecutor(IWorkSize<TWorkSize> const & workSize, TKernelConstrArgs && ... args) :
                     TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
+#ifdef ALPAKA_THREADS_NO_POOL
                     m_vThreadsInBlock(),
+#else
+                    m_vFuturesInBlock(),
+#endif
                     m_mtxMapInsert()
                 {
 #ifdef ALPAKA_DEBUG
@@ -278,7 +288,11 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecutor(KernelExecutor const & other) :
                     TAcceleratedKernel(other),
+#ifdef ALPAKA_THREADS_NO_POOL
                     m_vThreadsInBlock(),
+#else
+                    m_vFuturesInBlock(),
+#endif
                     m_mtxMapInsert()
                 {}
                 //-----------------------------------------------------------------------------
@@ -286,11 +300,15 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecutor(KernelExecutor && other) :
                     TAcceleratedKernel(std::move(other)),
+#ifdef ALPAKA_THREADS_NO_POOL
                     m_vThreadsInBlock(),
+#else
+                    m_vFuturesInBlock(),
+#endif
                     m_mtxMapInsert()
                 {}
                 //-----------------------------------------------------------------------------
-                //! Assignment-operator.
+                //! Copy-assignment.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecutor & operator=(KernelExecutor const &) = delete;
                 //-----------------------------------------------------------------------------
@@ -312,9 +330,12 @@ namespace alpaka
 #ifdef ALPAKA_DEBUG
                     //std::cout << "GridBlocks: " << v3uiSizeGridBlocks << " BlockKernels: " << v3uiSizeBlockKernels << std::endl;
 #endif
-                    // CUDA programming guide: "Thread blocks are required to execute independently: It must be possible to execute them in any order, in parallel or in series. 
-                    // This independence requirement allows thread blocks to be scheduled in any order across any number of cores"
-                    // -> We can execute them serially.
+
+#ifndef ALPAKA_THREADS_NO_POOL
+                    auto const uiNumThreads(m_v3uiSizeBlockKernels.prod());
+                    ThreadPool<false> threadPool(uiNumThreads, uiNumThreads);
+#endif
+                    // Execute the blocks serially.
                     for(std::uint32_t bz(0); bz<m_v3uiSizeGridBlocks[2]; ++bz)
                     {
                         this->AccThreads::m_v3uiGridBlockIdx[2] = bz;
@@ -325,6 +346,7 @@ namespace alpaka
                             {
                                 this->AccThreads::m_v3uiGridBlockIdx[0] = bx;
 
+                                // Execute the kernels in parallel threads.
                                 vec<3u> v3uiBlockKernelIdx;
                                 for(std::uint32_t tz(0); tz<m_v3uiSizeBlockKernels[2]; ++tz)
                                 {
@@ -338,24 +360,44 @@ namespace alpaka
 
                                             // Create a thread.
                                             // The v3uiBlockKernelIdx is required to be copied in from the environment because if the thread is immediately suspended the variable is already changed for the next iteration/thread.
-#if BOOST_COMP_MSVC <= BOOST_VERSION_NUMBER(14, 0, 22310)   // MSVC <= 14 do not compile the std::thread constructor because the type of the member function template is missing the this pointer as first argument.
+#if BOOST_COMP_MSVC //<= BOOST_VERSION_NUMBER(14, 0, 22310)    MSVC does not compile the std::thread constructor because the type of the member function template is missing the this pointer as first argument.
                                             auto threadKernelFct([this](vec<3u> const v3uiBlockKernelIdx, TArgs ... args) {threadKernel<TArgs...>(v3uiBlockKernelIdx, std::forward<TArgs>(args)...); });
+    #ifdef ALPAKA_THREADS_NO_POOL
                                             m_vThreadsInBlock.push_back(std::thread(threadKernelFct, v3uiBlockKernelIdx, args...));
+    #else
+                                            m_vFuturesInBlock.emplace_back(threadPool.enqueueTask(threadKernelFct, v3uiBlockKernelIdx, args...));
+    #endif
 #else
+    #ifdef ALPAKA_THREADS_NO_POOL
                                             m_vThreadsInBlock.push_back(std::thread(&KernelExecutor::threadKernel<TArgs...>, this, v3uiBlockKernelIdx, args...));
+    #else
+                                            m_vFuturesInBlock.emplace_back(threadPool.enqueueTask(&KernelExecutor::threadKernel<TArgs...>, this, v3uiBlockKernelIdx, args...));
+    #endif
 #endif
                                         }
                                     }
                                 }
+#ifdef ALPAKA_THREADS_NO_POOL
                                 // Join all the threads.
                                 std::for_each(m_vThreadsInBlock.begin(), m_vThreadsInBlock.end(),
                                     [](std::thread & t)
-                                {
-                                    t.join();
-                                }
+                                    {
+                                        t.join();
+                                    }
                                 );
                                 // Clean up.
                                 m_vThreadsInBlock.clear();
+#else
+                                // Join all the threads.
+                                std::for_each(m_vFuturesInBlock.begin(), m_vFuturesInBlock.end(),
+                                    [](std::future<void> & t)
+                                    {
+                                        t.wait();
+                                    }
+                                );
+                                // Clean up.
+                                m_vFuturesInBlock.clear();
+#endif
                                 this->AccThreads::m_mThreadsToIndices.clear();
                                 this->AccThreads::m_mThreadsToBarrier.clear();
 
@@ -374,7 +416,7 @@ namespace alpaka
                 //! The thread entry point.
                 //-----------------------------------------------------------------------------
                 template<typename... TArgs>
-                ALPAKA_FCT_HOST void threadKernel(vec<3u> const v3uiBlockKernelIdx, TArgs ... args) const
+                ALPAKA_FCT_HOST void threadKernel(vec<3u> const v3uiBlockKernelIdx, TArgs && ... args) const
                 {
                     // We have to store the thread data before the kernel is calling any of the methods of this class depending on them.
                     auto const idThread(std::this_thread::get_id());
@@ -407,14 +449,18 @@ namespace alpaka
                     this->AccThreads::syncBlockKernels(itThreadToBarrier);
 
                     // Execute the kernel itself.
-                    this->TAcceleratedKernel::operator()(args ...);
+                    this->TAcceleratedKernel::operator()(std::forward<TArgs>(args)...);
 
                     // We have to sync all threads here because if a thread would finish before all threads have been started, the new thread could get a recycled (then duplicate) thread id!
                     this->AccThreads::syncBlockKernels(itThreadToBarrier);
                 }
 
             private:
-                std::vector<std::thread> mutable m_vThreadsInBlock;         //!< The threads executing the current block.
+#ifdef ALPAKA_THREADS_NO_POOL
+                std::vector<std::thread> mutable m_vThreadsInBlock;       //!< The threads executing the current block.
+#else
+                std::vector<std::future<void>> mutable m_vFuturesInBlock; //!< The futures of the threads in the current block.
+#endif
 
                 std::mutex mutable m_mtxMapInsert;
 
