@@ -164,6 +164,7 @@ namespace alpaka
             template<bool TbYield = true>
             class ThreadPool
             {
+            public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //!
@@ -260,8 +261,6 @@ namespace alpaka
 
                     // No longer in danger, can revoke ownership so m_qTasks is not left with dangling reference.
                     packagePtr.release();
-
-                    m_cvWakeup.notify_one();
 
                     return future;
                 };

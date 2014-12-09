@@ -333,7 +333,7 @@ namespace alpaka
 
 #ifndef ALPAKA_THREADS_NO_POOL
                     auto const uiNumThreads(m_v3uiSizeBlockKernels.prod());
-                    ThreadPool<false> threadPool(uiNumThreads, uiNumThreads);
+                    ThreadPool<true> threadPool(uiNumThreads, uiNumThreads);
 #endif
                     // Execute the blocks serially.
                     for(std::uint32_t bz(0); bz<m_v3uiSizeGridBlocks[2]; ++bz)
