@@ -24,20 +24,20 @@ Requirements
 [Boost](http://boost.org/) is the only required external dependency.
 By default only header-only libraries are used.
 
-When using the *Fibers-Accelerator* back-end, `boost-coroutine`, `boost-context` and
+When using the **Fibers-Accelerator** back-end, `boost-coroutine`, `boost-context` and
 the proposed boost library `boost-fibers` are required to be build.
 
-When using the *CUDA-Accelerator* back-end, version **6.5** of the CUDA SDK is the
+When using the **CUDA-Accelerator** back-end, version *6.5* of the *CUDA SDK* is the
 minimum requirement.
 
-When using the *OpenMP-Accelerator* back-end, the compiler and the platform have
-to support **OpenMP 2.0** or newer.
+When using the **OpenMP-Accelerator** back-end, the compiler and the platform have
+to support *OpenMP 2.0* or newer.
 
 Usage
 -----
 
 The library is header only so nothing has to be build.
-Only the include path (`-I` or `export CPLUS_INCLUDE_PATH`) has to be set to 'PATH/TO/LIB/include/'.
+Only the include path (`-I` or `export CPLUS_INCLUDE_PATH=`) has to be set to `<PATH-TO-LIB>/include/`.
 This allows the usage of header inclusion in the following way:
 
 ```c++
