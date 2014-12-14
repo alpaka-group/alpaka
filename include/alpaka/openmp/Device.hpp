@@ -28,7 +28,7 @@
 
 #include <alpaka/openmp/Common.hpp>
 
-#include <alpaka/interfaces/Device.hpp>     // alpaka::device::DeviceHandle, alpaka::device::DeviceManager
+#include <alpaka/interfaces/Device.hpp>     // alpaka::device::Device, alpaka::device::DeviceManager
 
 #include <sstream>                          // std::stringstream
 #include <limits>                           // std::numeric_limits
@@ -46,7 +46,7 @@ namespace alpaka
             //#############################################################################
             //! The CUDA accelerator device handle.
             //#############################################################################
-            class DeviceHandleOpenMp
+            class DeviceOpenMp
             {
                 friend class DeviceManagerOpenMp;
 
@@ -54,23 +54,23 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceHandleOpenMp() = default;
+                ALPAKA_FCT_HOST DeviceOpenMp() = default;
                 //-----------------------------------------------------------------------------
                 //! Copy-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceHandleOpenMp(DeviceHandleOpenMp const &) = default;
+                ALPAKA_FCT_HOST DeviceOpenMp(DeviceOpenMp const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceHandleOpenMp(DeviceHandleOpenMp &&) = default;
+                ALPAKA_FCT_HOST DeviceOpenMp(DeviceOpenMp &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Assignment-operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceHandleOpenMp & operator=(DeviceHandleOpenMp const &) = default;
+                ALPAKA_FCT_HOST DeviceOpenMp & operator=(DeviceOpenMp const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST ~DeviceHandleOpenMp() noexcept = default;
+                ALPAKA_FCT_HOST ~DeviceOpenMp() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! \return The device properties.
@@ -105,33 +105,33 @@ namespace alpaka
         //! The CUDA accelerator device handle.
         //#############################################################################
         template<>
-        class DeviceHandle<AccOpenMp> :
-            public device::detail::IDeviceHandle<cuda::detail::DeviceHandleOpenMp>
+        class Device<AccOpenMp> :
+            public device::detail::IDevice<cuda::detail::DeviceOpenMp>
         {
             friend class cuda::detail::DeviceManagerOpenMp;
         private:
             //-----------------------------------------------------------------------------
             //! Constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST DeviceHandle() = default;
+            ALPAKA_FCT_HOST Device() = default;
 
         public:
             //-----------------------------------------------------------------------------
             //! Copy-constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST DeviceHandle(DeviceHandle const &) = default;
+            ALPAKA_FCT_HOST Device(Device const &) = default;
             //-----------------------------------------------------------------------------
             //! Move-constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST DeviceHandle(DeviceHandle &&) = default;
+            ALPAKA_FCT_HOST Device(Device &&) = default;
             //-----------------------------------------------------------------------------
             //! Assignment-operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST DeviceHandle & operator=(DeviceHandle const &) = default;
+            ALPAKA_FCT_HOST Device & operator=(Device const &) = default;
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST ~DeviceHandle() noexcept = default;
+            ALPAKA_FCT_HOST ~Device() noexcept = default;
         };
     }
 
@@ -161,7 +161,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of devices available.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static device::DeviceHandle<AccOpenMp> getDeviceHandleByIndex(std::size_t const & uiIndex)
+                ALPAKA_FCT_HOST static device::Device<AccOpenMp> getDeviceByIndex(std::size_t const & uiIndex)
                 {
                     std::size_t const uiNumDevices(getDeviceCount());
                     if(uiIndex >= uiNumDevices)
@@ -176,14 +176,14 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The handle to the currently used device.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static device::DeviceHandle<AccOpenMp> getCurrentDeviceHandle()
+                ALPAKA_FCT_HOST static device::Device<AccOpenMp> getCurrentDevice()
                 {
                     return {};
                 }
                 //-----------------------------------------------------------------------------
                 //! Sets the device to use with this accelerator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static void setCurrentDevice(device::DeviceHandle<AccOpenMp> const & )
+                ALPAKA_FCT_HOST static void setCurrentDevice(device::Device<AccOpenMp> const & )
                 {
                     // The code is already running on this device.
                 }

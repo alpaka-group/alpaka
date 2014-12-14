@@ -26,7 +26,7 @@
 
 #include <alpaka/host/SystemInfo.hpp>       // host::getCpuName, host::getGlobalMemorySizeBytes
 
-#include <alpaka/interfaces/Device.hpp>     // alpaka::device::DeviceHandle, alpaka::device::DeviceManager
+#include <alpaka/interfaces/Device.hpp>     // alpaka::device::Device, alpaka::device::DeviceManager
 
 #include <sstream>                          // std::stringstream
 #include <limits>                           // std::numeric_limits
@@ -44,7 +44,7 @@ namespace alpaka
             //#############################################################################
             //! The CUDA accelerator device handle.
             //#############################################################################
-            class DeviceHandleFibers
+            class DeviceFibers
             {
                 friend class DeviceManagerFibers;
 
@@ -52,23 +52,23 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceHandleFibers() = default;
+                ALPAKA_FCT_HOST DeviceFibers() = default;
                 //-----------------------------------------------------------------------------
                 //! Copy-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceHandleFibers(DeviceHandleFibers const &) = default;
+                ALPAKA_FCT_HOST DeviceFibers(DeviceFibers const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceHandleFibers(DeviceHandleFibers &&) = default;
+                ALPAKA_FCT_HOST DeviceFibers(DeviceFibers &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Assignment-operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceHandleFibers & operator=(DeviceHandleFibers const &) = default;
+                ALPAKA_FCT_HOST DeviceFibers & operator=(DeviceFibers const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST ~DeviceHandleFibers() noexcept = default;
+                ALPAKA_FCT_HOST ~DeviceFibers() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! \return The device properties.
@@ -98,33 +98,33 @@ namespace alpaka
         //! The CUDA accelerator device handle.
         //#############################################################################
         template<>
-        class DeviceHandle<AccFibers> :
-            public device::detail::IDeviceHandle<cuda::detail::DeviceHandleFibers>
+        class Device<AccFibers> :
+            public device::detail::IDevice<cuda::detail::DeviceFibers>
         {
             friend class cuda::detail::DeviceManagerFibers;
         private:
             //-----------------------------------------------------------------------------
             //! Constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST DeviceHandle() = default;
+            ALPAKA_FCT_HOST Device() = default;
 
         public:
             //-----------------------------------------------------------------------------
             //! Copy-constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST DeviceHandle(DeviceHandle const &) = default;
+            ALPAKA_FCT_HOST Device(Device const &) = default;
             //-----------------------------------------------------------------------------
             //! Move-constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST DeviceHandle(DeviceHandle &&) = default;
+            ALPAKA_FCT_HOST Device(Device &&) = default;
             //-----------------------------------------------------------------------------
             //! Assignment-operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST DeviceHandle & operator=(DeviceHandle const &) = default;
+            ALPAKA_FCT_HOST Device & operator=(Device const &) = default;
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST ~DeviceHandle() noexcept = default;
+            ALPAKA_FCT_HOST ~Device() noexcept = default;
         };
     }
 
@@ -153,7 +153,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of devices available.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static device::DeviceHandle<AccFibers> getDeviceHandleByIndex(std::size_t const & uiIndex)
+                ALPAKA_FCT_HOST static device::Device<AccFibers> getDeviceByIndex(std::size_t const & uiIndex)
                 {
                     std::size_t const uiNumDevices(getDeviceCount());
                     if(uiIndex >= uiNumDevices)
@@ -168,14 +168,14 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The handle to the currently used device.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static device::DeviceHandle<AccFibers> getCurrentDeviceHandle()
+                ALPAKA_FCT_HOST static device::Device<AccFibers> getCurrentDevice()
                 {
                     return {};
                 }
                 //-----------------------------------------------------------------------------
                 //! Sets the device to use with this accelerator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static void setCurrentDevice(device::DeviceHandle<AccFibers> const & )
+                ALPAKA_FCT_HOST static void setCurrentDevice(device::Device<AccFibers> const & )
                 {
                     // The code is already running on this device.
                 }

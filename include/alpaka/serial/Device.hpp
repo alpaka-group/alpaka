@@ -26,7 +26,7 @@
 
 #include <alpaka/host/SystemInfo.hpp>       // host::getCpuName, host::getGlobalMemorySizeBytes
 
-#include <alpaka/interfaces/Device.hpp>     // alpaka::device::DeviceHandle, alpaka::device::DeviceManager
+#include <alpaka/interfaces/Device.hpp>     // alpaka::device::Device, alpaka::device::DeviceManager
 
 #include <sstream>                          // std::stringstream
 #include <limits>                           // std::numeric_limits
@@ -43,7 +43,7 @@ namespace alpaka
             //#############################################################################
             //! The serial accelerator device handle.
             //#############################################################################
-            class DeviceHandleSerial
+            class DeviceSerial
             {
                 friend class DeviceManagerSerial;
 
@@ -51,23 +51,23 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceHandleSerial() = default;
+                ALPAKA_FCT_HOST DeviceSerial() = default;
                 //-----------------------------------------------------------------------------
                 //! Copy-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceHandleSerial(DeviceHandleSerial const &) = default;
+                ALPAKA_FCT_HOST DeviceSerial(DeviceSerial const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceHandleSerial(DeviceHandleSerial &&) = default;
+                ALPAKA_FCT_HOST DeviceSerial(DeviceSerial &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Assignment-operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceHandleSerial & operator=(DeviceHandleSerial const &) = default;
+                ALPAKA_FCT_HOST DeviceSerial & operator=(DeviceSerial const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST ~DeviceHandleSerial() noexcept = default;
+                ALPAKA_FCT_HOST ~DeviceSerial() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! \return The device properties.
@@ -97,33 +97,33 @@ namespace alpaka
         //! The serial accelerator device handle.
         //#############################################################################
         template<>
-        class DeviceHandle<AccSerial> :
-            public device::detail::IDeviceHandle<serial::detail::DeviceHandleSerial>
+        class Device<AccSerial> :
+            public device::detail::IDevice<serial::detail::DeviceSerial>
         {
             friend class serial::detail::DeviceManagerSerial;
         private:
             //-----------------------------------------------------------------------------
             //! Constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST DeviceHandle() = default;
+            ALPAKA_FCT_HOST Device() = default;
 
         public:
             //-----------------------------------------------------------------------------
             //! Copy-constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST DeviceHandle(DeviceHandle const &) = default;
+            ALPAKA_FCT_HOST Device(Device const &) = default;
             //-----------------------------------------------------------------------------
             //! Move-constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST DeviceHandle(DeviceHandle &&) = default;
+            ALPAKA_FCT_HOST Device(Device &&) = default;
             //-----------------------------------------------------------------------------
             //! Assignment-operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST DeviceHandle & operator=(DeviceHandle const &) = default;
+            ALPAKA_FCT_HOST Device & operator=(Device const &) = default;
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST ~DeviceHandle() noexcept = default;
+            ALPAKA_FCT_HOST ~Device() noexcept = default;
         };
     }
 
@@ -152,7 +152,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of devices available.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static device::DeviceHandle<AccSerial> getDeviceHandleByIndex(std::size_t const & uiIndex)
+                ALPAKA_FCT_HOST static device::Device<AccSerial> getDeviceByIndex(std::size_t const & uiIndex)
                 {
                     std::size_t const uiNumDevices(getDeviceCount());
                     if(uiIndex >= uiNumDevices)
@@ -167,14 +167,14 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The handle to the currently used device.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static device::DeviceHandle<AccSerial> getCurrentDeviceHandle()
+                ALPAKA_FCT_HOST static device::Device<AccSerial> getCurrentDevice()
                 {
                     return {};
                 }
                 //-----------------------------------------------------------------------------
                 //! Sets the device to use with this accelerator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static void setCurrentDevice(device::DeviceHandle<AccSerial> const & )
+                ALPAKA_FCT_HOST static void setCurrentDevice(device::Device<AccSerial> const & )
                 {
                     // The code is already running on this device.
                 }

@@ -46,5 +46,5 @@
 //#include <boost/fiber/barrier.hpp>                // boost::fibers::barrier
 
 #if BOOST_COMP_MSVC
-    #pragma warning( pop )
+    #pragma warning(pop)
 #endif

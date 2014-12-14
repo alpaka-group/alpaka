@@ -24,7 +24,7 @@
 
 #include <alpaka/cuda/AccCudaFwd.hpp>   // AccCuda
 
-#include <alpaka/interfaces/Device.hpp> // alpaka::device::DeviceHandle, alpaka::device::DeviceManager
+#include <alpaka/interfaces/Device.hpp> // alpaka::device::Device, alpaka::device::DeviceManager
 
 #include <alpaka/cuda/Common.hpp>
 
@@ -44,7 +44,7 @@ namespace alpaka
             //#############################################################################
             //! The CUDA accelerator device handle.
             //#############################################################################
-            class DeviceHandleCuda
+            class DeviceCuda
             {
                 friend class DeviceManagerCuda;
 
@@ -52,23 +52,23 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceHandleCuda() = default;
+                ALPAKA_FCT_HOST DeviceCuda() = default;
                 //-----------------------------------------------------------------------------
                 //! Copy-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceHandleCuda(DeviceHandleCuda const &) = default;
+                ALPAKA_FCT_HOST DeviceCuda(DeviceCuda const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceHandleCuda(DeviceHandleCuda &&) = default;
+                ALPAKA_FCT_HOST DeviceCuda(DeviceCuda &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Assignment-operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceHandleCuda & operator=(DeviceHandleCuda const &) = default;
+                ALPAKA_FCT_HOST DeviceCuda & operator=(DeviceCuda const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST ~DeviceHandleCuda() noexcept = default;
+                ALPAKA_FCT_HOST ~DeviceCuda() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! \return The device properties.
@@ -116,33 +116,33 @@ namespace alpaka
         //! The CUDA accelerator device handle.
         //#############################################################################
         template<>
-        class DeviceHandle<AccCuda> :
-            public device::detail::IDeviceHandle<cuda::detail::DeviceHandleCuda>
+        class Device<AccCuda> :
+            public device::detail::IDevice<cuda::detail::DeviceCuda>
         {
             friend class cuda::detail::DeviceManagerCuda;
         private:
             //-----------------------------------------------------------------------------
             //! Constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST DeviceHandle() = default;
+            ALPAKA_FCT_HOST Device() = default;
 
         public:
             //-----------------------------------------------------------------------------
             //! Copy-constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST DeviceHandle(DeviceHandle const &) = default;
+            ALPAKA_FCT_HOST Device(Device const &) = default;
             //-----------------------------------------------------------------------------
             //! Move-constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST DeviceHandle(DeviceHandle &&) = default;
+            ALPAKA_FCT_HOST Device(Device &&) = default;
             //-----------------------------------------------------------------------------
             //! Assignment-operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST DeviceHandle & operator=(DeviceHandle const &) = default;
+            ALPAKA_FCT_HOST Device & operator=(Device const &) = default;
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST ~DeviceHandle() noexcept = default;
+            ALPAKA_FCT_HOST ~Device() noexcept = default;
         };
     }
 
@@ -174,14 +174,14 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of devices available.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static device::DeviceHandle<AccCuda> getDeviceHandleByIndex(std::size_t const & uiIndex)
+                ALPAKA_FCT_HOST static device::Device<AccCuda> getDeviceByIndex(std::size_t const & uiIndex)
                 {
-                    device::DeviceHandle<AccCuda> deviceHandle;
+                    device::Device<AccCuda> device;
 
                     std::size_t const uiNumDevices(getDeviceCount());
                     if(uiIndex < getDeviceCount())
                     {
-                        deviceHandle.m_iDevice = static_cast<int>(uiIndex);
+                        device.m_iDevice = static_cast<int>(uiIndex);
                     }
                     else
                     {
@@ -190,21 +190,21 @@ namespace alpaka
                         throw std::runtime_error(ssErr.str());
                     }
 
-                    return deviceHandle;
+                    return device;
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The handle to the currently used device.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static device::DeviceHandle<AccCuda> getCurrentDeviceHandle()
+                ALPAKA_FCT_HOST static device::Device<AccCuda> getCurrentDevice()
                 {
-                    device::DeviceHandle<AccCuda> deviceHandle;
-                    ALPAKA_CUDA_CHECK(cudaGetDevice(&deviceHandle.m_iDevice));
-                    return deviceHandle;
+                    device::Device<AccCuda> device;
+                    ALPAKA_CUDA_CHECK(cudaGetDevice(&device.m_iDevice));
+                    return device;
                 }
                 //-----------------------------------------------------------------------------
                 //! Sets the device to use with this accelerator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static void setCurrentDevice(device::DeviceHandle<AccCuda> const & deviceHandle)
+                ALPAKA_FCT_HOST static void setCurrentDevice(device::Device<AccCuda> const & device)
                 {
     #ifdef ALPAKA_DEBUG
                     std::cout << "[+] DeviceManagerCuda::setCurrentDevice()" << std::endl;
@@ -214,20 +214,20 @@ namespace alpaka
                     {
                         throw std::runtime_error("No CUDA capable devices detected!");
                     }
-                    else if(uiNumDevices < deviceHandle.m_iDevice)
+                    else if(uiNumDevices < device.m_iDevice)
                     {
                         std::stringstream ssErr;
-                        ssErr << "No CUDA device " << deviceHandle.m_iDevice << " available, only " << uiNumDevices << " devices found!";
+                        ssErr << "No CUDA device " << device.m_iDevice << " available, only " << uiNumDevices << " devices found!";
                         throw std::runtime_error(ssErr.str());
                     }
 
                     cudaDeviceProp devProp;
-                    ALPAKA_CUDA_CHECK(cudaGetDeviceProperties(&devProp, deviceHandle.m_iDevice));
+                    ALPAKA_CUDA_CHECK(cudaGetDeviceProperties(&devProp, device.m_iDevice));
                     // Default compute mode (Multiple threads can use cudaSetDevice() with this device)
                     if(devProp.computeMode == cudaComputeModeDefault)
                     {
-                        ALPAKA_CUDA_CHECK(cudaSetDevice(deviceHandle.m_iDevice));
-                        std::cout << "Set device to " << deviceHandle.m_iDevice << ": " << std::endl;
+                        ALPAKA_CUDA_CHECK(cudaSetDevice(device.m_iDevice));
+                        std::cout << "Set device to " << device.m_iDevice << ": " << std::endl;
     #ifndef ALPAKA_DEBUG
                         std::cout << devProp.name << std::endl;
     #else

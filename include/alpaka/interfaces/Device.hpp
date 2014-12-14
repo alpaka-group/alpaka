@@ -52,38 +52,38 @@ namespace alpaka
             //#############################################################################
             //! The template of a device handle.
             //#############################################################################
-            template<typename TDeviceHandle>
-            class IDeviceHandle :
-                private TDeviceHandle
+            template<typename TDevice>
+            class IDevice :
+                private TDevice
             {
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST IDeviceHandle() = default;
+                ALPAKA_FCT_HOST IDevice() = default;
                 //-----------------------------------------------------------------------------
                 //! Copy-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST IDeviceHandle(IDeviceHandle const &) = default;
+                ALPAKA_FCT_HOST IDevice(IDevice const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST IDeviceHandle(IDeviceHandle &&) = default;
+                ALPAKA_FCT_HOST IDevice(IDevice &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Assignment-operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST IDeviceHandle & operator=(IDeviceHandle const &) = default;
+                ALPAKA_FCT_HOST IDevice & operator=(IDevice const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST ~IDeviceHandle() noexcept = default;
+                ALPAKA_FCT_HOST ~IDevice() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! \return The device properties.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST DeviceProperties getProperties() const
                 {
-                    this->TDeviceHandle::getProperties();
+                    return this->TDevice::getProperties();
                 }
             };
         }
@@ -92,7 +92,7 @@ namespace alpaka
         //! The template of a device handle.
         //#############################################################################
         template<typename TAcc>
-        class DeviceHandle;
+        class Device;
 
         namespace detail
         {
@@ -104,7 +104,7 @@ namespace alpaka
                 private TDeviceManager
             {
             public:
-                using TDeviceHandle = typename decltype(TDeviceManager::getCurrentDeviceHandle());
+                using TDevice = typename decltype(TDeviceManager::getCurrentDevice());
 
             public:
                 //-----------------------------------------------------------------------------
@@ -122,38 +122,38 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The handle to the device with the given index.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static TDeviceHandle getDeviceHandleByIndex()
+                ALPAKA_FCT_HOST static TDevice getDeviceByIndex()
                 {
-                    return TDeviceManager::getDeviceHandleByIndex()
+                    return TDeviceManager::getDeviceByIndex()
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The number handles to all devices available.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::vector<TDeviceHandle> getDeviceHandles()
+                ALPAKA_FCT_HOST static std::vector<TDevice> getDevices()
                 {
-                    std::vector<TDeviceHandle> vDeviceHandles;
+                    std::vector<TDevice> vDevices;
 
                     std::size_t const uiDeviceCount(getDeviceCount());
                     for(std::size_t uiDeviceIndex(0); uiDeviceIndex < uiDeviceCount; ++uiDeviceIndex)
                     {
-                        vDeviceHandles.push_back(getDeviceHandle(uiDeviceIndex));
+                        vDevices.push_back(getDevice(uiDeviceIndex));
                     }
 
-                    return vDeviceHandles;
+                    return vDevices;
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The handle to the currently used device.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static TDeviceHandle getCurrentDeviceHandle()
+                ALPAKA_FCT_HOST static TDevice getCurrentDevice()
                 {
-                    return TDeviceManager::getCurrentDeviceHandle();
+                    return TDeviceManager::getCurrentDevice();
                 }
                 //-----------------------------------------------------------------------------
                 //! Sets the device to use with this accelerator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static void setCurrentDevice(TDeviceHandle const & deviceHandle)
+                ALPAKA_FCT_HOST static void setCurrentDevice(TDevice const & device)
                 {
-                    TDeviceManager::setCurrentDevice(deviceHandle);
+                    TDeviceManager::setCurrentDevice(device);
                 }
             };
         }
