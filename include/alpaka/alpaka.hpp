@@ -48,6 +48,11 @@
 
 #include <iostream>                         // std::cout
 
+#include <boost/mpl/vector.hpp>             // boost::mpl::vector
+#include <boost/mpl/filter_view.hpp>        // boost::mpl::filter_view
+#include <boost/type_traits/is_same.hpp>    // boost::is_same
+#include <boost/mpl/not.hpp>                // boost::not_
+
 //-----------------------------------------------------------------------------
 //! The alpaka library namespace.
 //-----------------------------------------------------------------------------
@@ -76,4 +81,60 @@ namespace alpaka
 #endif
         std::cout << std::endl;
     }
+
+    //-----------------------------------------------------------------------------
+    //! The detail namespace is used to separate implementation details from user accessible code.
+    //-----------------------------------------------------------------------------
+    namespace detail
+    {
+#ifdef ALPAKA_SERIAL_ENABLED
+        using AccSerialIfAvailableElseVoid = AccSerial;
+#else
+        using AccSerialIfAvailableElseVoid = void;
+#endif
+#ifdef ALPAKA_THREADS_ENABLED
+        using AccThreadsIfAvailableElseVoid = AccThreads;
+#else
+        using AccThreadsIfAvailableElseVoid = void;
+#endif
+#ifdef ALPAKA_FIBERS_ENABLED
+        using AccFibersIfAvailableElseVoid = AccFibers;
+#else
+        using AccFibersIfAvailableElseVoid = void;
+#endif
+#ifdef ALPAKA_OPENMP_ENABLED
+        using AccOpenMpIfAvailableElseVoid = AccOpenMp;
+#else
+        using AccOpenMpIfAvailableElseVoid = void;
+#endif
+#ifdef ALPAKA_CUDA_ENABLED
+        using AccCudaIfAvailableElseVoid = AccCuda;
+#else
+        using AccCudaIfAvailableElseVoid = void;
+#endif
+        //-----------------------------------------------------------------------------
+        //! A vector containing all available accelerators and void's.
+        //-----------------------------------------------------------------------------
+        using EnabledAcceleratorsVoid = 
+            boost::mpl::vector<
+                AccSerialIfAvailableElseVoid, 
+                AccThreadsIfAvailableElseVoid,
+                AccFibersIfAvailableElseVoid,
+                AccOpenMpIfAvailableElseVoid,
+                AccCudaIfAvailableElseVoid
+            >;
+    }
+    //-----------------------------------------------------------------------------
+    //! A vector containing all available accelerators.
+    //-----------------------------------------------------------------------------
+    using EnabledAccelerators = 
+        boost::mpl::filter_view<
+            detail::EnabledAcceleratorsVoid, 
+            boost::mpl::not_<
+                boost::is_same<
+                    boost::mpl::_1, 
+                    void
+                >
+            >
+        >::type;
 }

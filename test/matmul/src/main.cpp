@@ -20,14 +20,30 @@
 * If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <alpaka/alpaka.hpp>    // alpaka::createKernelExecutor<...>
+#include <alpaka/alpaka.hpp>            // alpaka::createKernelExecutor<...>
 
-#include <chrono>               // std::chrono::high_resolution_clock
-#include <cassert>              // assert
-#include <iostream>             // std::cout
-#include <vector>               // std::vector
-#include <typeinfo>             // typeid
-#include <utility>              // std::forward
+#include <chrono>                       // std::chrono::high_resolution_clock
+#include <cassert>                      // assert
+#include <iostream>                     // std::cout
+#include <vector>                       // std::vector
+#include <typeinfo>                     // typeid
+#include <utility>                      // std::forward
+#include <functional>                   // std::placeholders
+#include <typeindex>                    // std::type_index
+#include <unordered_map>                // std::unordered_map
+
+#if BOOST_COMP_MSVC
+    #pragma warning(push)
+    #pragma warning(disable: 4512)      // boost/program_options/options_description.hpp(265): warning C4512: 'boost::program_options::options_description': assignment operator was implicitly defined as deleted
+#endif
+
+#include <boost/program_options.hpp>    // boost::program_options
+
+#if BOOST_COMP_MSVC
+    #pragma warning(pop)
+#endif
+
+#include <boost/mpl/for_each.hpp>       // boost::mpl::for_each
 
 //#############################################################################
 //! A matrix multiplication kernel.
@@ -159,92 +175,32 @@ void profileAcceleratedKernel(TExec const & exec, TArgs && ... args)
 //-----------------------------------------------------------------------------
 //! Profiles the example kernel and checks the result.
 //-----------------------------------------------------------------------------
-template<typename TAcc, typename TWorkSize>
-void profileAcceleratedMatMulKernel(alpaka::IWorkSize<TWorkSize> const & workSize, std::uint32_t const & uiMatrixSize)
+struct ProfileAcceleratedMatMulKernel
 {
-    using TKernel = MatMulKernel<>;
-    using TAccMemorySpace = typename TAcc::MemorySpace;
-
-    std::cout
-        << "profileAcceleratedMatMulKernel("
-        << " uiMatrixSize:" << uiMatrixSize
-        << ", accelerator: " << typeid(TAcc).name()
-        << ", kernel: " << typeid(TKernel).name()
-        << ", workSize: " << workSize
-        << ")" << std::endl;
-
-    // Initialize matrices.
-    std::vector<std::uint32_t> vuiA(uiMatrixSize*uiMatrixSize, 1);
-    std::vector<std::uint32_t> vuiB(uiMatrixSize*uiMatrixSize, 1);
-    std::vector<std::uint32_t> vuiC(uiMatrixSize*uiMatrixSize, 0);
-
-    // Allocate accelerator buffers and copy.
-    std::size_t const uiSizeBytes(uiMatrixSize*uiMatrixSize * sizeof(std::uint32_t));
-
-    auto pAAcc(alpaka::memory::memAlloc<TAccMemorySpace, std::uint32_t>(uiSizeBytes));
-    auto pBAcc(alpaka::memory::memAlloc<TAccMemorySpace, std::uint32_t>(uiSizeBytes));
-    auto pCAcc(alpaka::memory::memAlloc<TAccMemorySpace, std::uint32_t>(uiSizeBytes));
-
-    alpaka::memory::memCopy<TAccMemorySpace, alpaka::MemorySpaceHost>(pAAcc.get(), vuiA.data(), uiSizeBytes);
-    alpaka::memory::memCopy<TAccMemorySpace, alpaka::MemorySpaceHost>(pBAcc.get(), vuiB.data(), uiSizeBytes);
-    alpaka::memory::memCopy<TAccMemorySpace, alpaka::MemorySpaceHost>(pCAcc.get(), vuiC.data(), uiSizeBytes);
-
-    // Build the kernel executor.
-    auto exec(alpaka::createKernelExecutor<TAcc, TKernel>());
-    // Profile the kernel execution.
-    profileAcceleratedKernel(exec(workSize), uiMatrixSize, pAAcc.get(), pBAcc.get(), pCAcc.get());
-
-    // Copy back the result.
-    alpaka::memory::memCopy<alpaka::MemorySpaceHost, TAccMemorySpace>(vuiC.data(), pCAcc.get(), uiSizeBytes);
-
-    // Assert that the results are correct. 
-    // When multiplying square matrices filled with ones, the result of each cell is the size of the matrix. 
-    std::uint32_t const uiCorrectResult(uiMatrixSize);
-
-    bool bResultCorrect(true);
-    for(std::size_t i(0); i<uiMatrixSize*uiMatrixSize; ++i)
+    template<typename TAcc>
+    void operator()(TAcc, std::uint32_t const & uiMatrixSize, bool const & bAdaptiveBlockSize)
     {
-        if(vuiC[i] != uiCorrectResult)
+        std::cout << std::endl;
+        std::cout << "################################################################################" << std::endl;
+
+        using TKernel = MatMulKernel<>;
+        using TAccMemorySpace = typename TAcc::MemorySpace;
+
+        // Set the block size (to the minimum all enabled tests support).
+        alpaka::vec<3u> v3uiSizeBlockKernels;
+
+        if(bAdaptiveBlockSize)
         {
-            std::cout << "C[" << i << "] == " << vuiC[i] << " != " << uiCorrectResult << std::endl;
-            bResultCorrect = false;
+            auto const & v3uiBlockKernelSizePerDimMax(alpaka::device::DeviceManager<TAcc>::getCurrentDevice().getProperties().m_v3uiBlockKernelSizePerDimMax);
+            auto const & uiBlockKernelSizeMax(alpaka::device::DeviceManager<TAcc>::getCurrentDevice().getProperties().m_uiBlockKernelSizeMax);
+            // TODO: This division strategy is not optimal at all. Just find the (next smaller or equal) square fitting into the maximum number of kernels per block. 
+            std::size_t uiBlockKernelSize2d(static_cast<size_t>(std::sqrt(static_cast<double>(uiBlockKernelSizeMax))));
+
+            v3uiSizeBlockKernels = alpaka::vec<3u>(std::min(v3uiBlockKernelSizePerDimMax[0u], uiBlockKernelSize2d), std::min(v3uiBlockKernelSizePerDimMax[1u], uiBlockKernelSize2d), 1u);
         }
-    }
-
-    if(bResultCorrect)
-    {
-        std::cout << "Execution results correct!" << std::endl;
-    }
-}
-
-//-----------------------------------------------------------------------------
-//! Program entry point.
-//-----------------------------------------------------------------------------
-int main()
-{
-    try
-    {
-        std::cout << std::endl;
-        std::cout << "################################################################################" << std::endl;
-        std::cout << "                              alpaka matmul test                                " << std::endl;
-        std::cout << "################################################################################" << std::endl;
-        std::cout << std::endl;
-
-        // Logs the enabled accelerators.
-        alpaka::logEnabledAccelerators();
-
-        std::cout << std::endl;
-
-#ifdef ALPAKA_CUDA_ENABLED
-        // Select the first CUDA device. 
-        // NOTE: This is not required to run any kernels on the CUDA accelerator because all accelerators have a default device.
-        alpaka::device::DeviceManager<AccCuda>::setDevice(alpaka::device::DeviceManager<AccCuda>::getDeviceHandle(0));
-#endif
-
-        for(std::uint32_t uiMatrixSize(16u); uiMatrixSize<1024u; uiMatrixSize *= 2u)
+        else
         {
-            // Set the block size (to the minimum all enabled tests support).
-            alpaka::vec<3u> const v3uiSizeBlockKernels(
+            v3uiSizeBlockKernels = alpaka::vec<3u>(
 #if defined ALPAKA_SERIAL_ENABLED
                 1u, 1u, 1u
 #elif defined ALPAKA_OPENMP_ENABLED
@@ -254,44 +210,126 @@ int main()
 #else
                 1u, 1u, 1u
 #endif
-                );
+            );
+        }
 
-            // Set the grid size.
-            alpaka::vec<3u> const v3uiSizeGridBlocks(((uiMatrixSize-1u)/v3uiSizeBlockKernels[0u])+1u, ((uiMatrixSize-1u)/v3uiSizeBlockKernels[1u])+1u, 1u);
+        // Set the grid size.
+        alpaka::vec<3u> const v3uiSizeGridBlocks(((uiMatrixSize-1u)/v3uiSizeBlockKernels[0u])+1u, ((uiMatrixSize-1u)/v3uiSizeBlockKernels[1u])+1u, 1u);
 
-            alpaka::WorkSize const workSize(v3uiSizeGridBlocks, v3uiSizeBlockKernels);
+        alpaka::WorkSize const workSize(v3uiSizeGridBlocks, v3uiSizeBlockKernels);
 
-#ifdef ALPAKA_SERIAL_ENABLED
+        std::cout
+            << "profileAcceleratedMatMulKernel("
+            << " uiMatrixSize:" << uiMatrixSize
+            << ", accelerator: " << typeid(TAcc).name()
+            << ", kernel: " << typeid(TKernel).name()
+            << ", workSize: " << workSize
+            << ")" << std::endl;
+
+        // Initialize matrices.
+        std::vector<std::uint32_t> vuiA(uiMatrixSize*uiMatrixSize, 1);
+        std::vector<std::uint32_t> vuiB(uiMatrixSize*uiMatrixSize, 1);
+        std::vector<std::uint32_t> vuiC(uiMatrixSize*uiMatrixSize, 0);
+
+        // Allocate accelerator buffers and copy.
+        std::size_t const uiSizeBytes(uiMatrixSize*uiMatrixSize * sizeof(std::uint32_t));
+
+        auto pAAcc(alpaka::memory::memAlloc<TAccMemorySpace, std::uint32_t>(uiSizeBytes));
+        auto pBAcc(alpaka::memory::memAlloc<TAccMemorySpace, std::uint32_t>(uiSizeBytes));
+        auto pCAcc(alpaka::memory::memAlloc<TAccMemorySpace, std::uint32_t>(uiSizeBytes));
+
+        alpaka::memory::memCopy<TAccMemorySpace, alpaka::MemorySpaceHost>(pAAcc.get(), vuiA.data(), uiSizeBytes);
+        alpaka::memory::memCopy<TAccMemorySpace, alpaka::MemorySpaceHost>(pBAcc.get(), vuiB.data(), uiSizeBytes);
+        alpaka::memory::memCopy<TAccMemorySpace, alpaka::MemorySpaceHost>(pCAcc.get(), vuiC.data(), uiSizeBytes);
+
+        // Build the kernel executor.
+        auto exec(alpaka::createKernelExecutor<TAcc, TKernel>());
+        // Profile the kernel execution.
+        profileAcceleratedKernel(exec(workSize), uiMatrixSize, pAAcc.get(), pBAcc.get(), pCAcc.get());
+
+        // Copy back the result.
+        alpaka::memory::memCopy<alpaka::MemorySpaceHost, TAccMemorySpace>(vuiC.data(), pCAcc.get(), uiSizeBytes);
+
+        // Assert that the results are correct. 
+        // When multiplying square matrices filled with ones, the result of each cell is the size of the matrix. 
+        std::uint32_t const uiCorrectResult(uiMatrixSize);
+
+        bool bResultCorrect(true);
+        for(std::size_t i(0); i<uiMatrixSize*uiMatrixSize; ++i)
+        {
+            if(vuiC[i] != uiCorrectResult)
+            {
+                std::cout << "C[" << i << "] == " << vuiC[i] << " != " << uiCorrectResult << std::endl;
+                bResultCorrect = false;
+            }
+        }
+
+        if(bResultCorrect)
+        {
+            std::cout << "Execution results correct!" << std::endl;
+        }
+
+        std::cout << "################################################################################" << std::endl;
+    }
+};
+
+//-----------------------------------------------------------------------------
+//! Program entry point.
+//-----------------------------------------------------------------------------
+int main(int argc, char *argv[])
+{
+    try
+    {
+        // Declare the supported options.
+        boost::program_options::options_description desc("Available options");
+        desc.add_options()
+            (   "help", 
+                "Prints the help message.")
+            (   "adaptiveBlockKernelSize,a", 
+                boost::program_options::value<bool>()->default_value(false), 
+                "If the size of a block is the minimum of all enabled accelerators (false), or adaptive to the current accelerator (true).")
+            ;
+        boost::program_options::variables_map vm;
+        boost::program_options::store(boost::program_options::parse_command_line(argc, argv, desc), vm);
+        boost::program_options::notify(vm);
+
+        if(vm.count("help")>0)
+        {
+            std::cout << desc << std::endl;
+            return 1;
+        }
+        else
+        {
             std::cout << std::endl;
             std::cout << "################################################################################" << std::endl;
-            profileAcceleratedMatMulKernel<alpaka::AccSerial>(workSize, uiMatrixSize);
+            std::cout << "                              alpaka matmul test                                " << std::endl;
             std::cout << "################################################################################" << std::endl;
-#endif
-#ifdef ALPAKA_THREADS_ENABLED
             std::cout << std::endl;
-            std::cout << "################################################################################" << std::endl;
-            profileAcceleratedMatMulKernel<alpaka::AccThreads>(workSize, uiMatrixSize);
-            std::cout << "################################################################################" << std::endl;
-#endif
-#ifdef ALPAKA_FIBERS_ENABLED
+
+            // Logs the enabled accelerators.
+            alpaka::logEnabledAccelerators();
+
             std::cout << std::endl;
-            std::cout << "################################################################################" << std::endl;
-            profileAcceleratedMatMulKernel<alpaka::AccFibers>(workSize, uiMatrixSize);
-            std::cout << "################################################################################" << std::endl;
-#endif
-#ifdef ALPAKA_OPENMP_ENABLED
-            std::cout << std::endl;
-            std::cout << "################################################################################" << std::endl;
-            profileAcceleratedMatMulKernel<alpaka::AccOpenMp>(workSize, uiMatrixSize);
-            std::cout << "################################################################################" << std::endl;
-#endif
+
+            bool const bAdaptiveBlockSize(vm["adaptiveBlockKernelSize"].as<bool>());
+            std::cout << "Adaptive block kernel size:" << bAdaptiveBlockSize << std::endl;
+
 #ifdef ALPAKA_CUDA_ENABLED
-            std::cout << std::endl;
-            std::cout << "################################################################################" << std::endl;
-            profileAcceleratedMatMulKernel<alpaka::AccCuda>(workSize, uiMatrixSize);
-            std::cout << "################################################################################" << std::endl;
+            // Select the first CUDA device. 
+            // NOTE: This is not required to run any kernels on the CUDA accelerator because all accelerators have a default device. This is only to show the possibility.
+            alpaka::device::DeviceManager<AccCuda>::setDevice(alpaka::device::DeviceManager<AccCuda>::getDevice(0));
 #endif
-            std::cout << std::endl;
+
+            // For different matrix sizes.
+            for(std::uint32_t uiMatrixSize(16u); uiMatrixSize<1024u; uiMatrixSize *= 2u)
+            {
+                std::cout << std::endl;
+
+                // Execute the kernel on all enabled accelerators.
+                boost::mpl::for_each<alpaka::EnabledAccelerators>(
+                    std::bind(ProfileAcceleratedMatMulKernel(), std::placeholders::_1, uiMatrixSize, bAdaptiveBlockSize)
+                );
+            }
         }
         return 0;
     }

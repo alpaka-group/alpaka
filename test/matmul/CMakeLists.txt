@@ -40,6 +40,8 @@ SET(SUFFIXED_SOURCE_DIR "src/")
 
 PROJECT(${TARGET_NAME})
 
+SET(BOOST_REQUIRED_COMPONENTS program_options)
+
 # Include the alpaka library.
 INCLUDE("${CMAKE_CURRENT_LIST_DIR}/../../CMakeLists.txt")
 
