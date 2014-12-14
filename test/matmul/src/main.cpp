@@ -185,16 +185,18 @@ struct ProfileAcceleratedMatMulKernel
 
         using TKernel = MatMulKernel<>;
         using TAccMemorySpace = typename TAcc::MemorySpace;
+        using TDeviceManager = alpaka::device::DeviceManager<TAcc>;
 
         // Set the block size (to the minimum all enabled tests support).
         alpaka::vec<3u> v3uiSizeBlockKernels;
 
         if(bAdaptiveBlockSize)
         {
-            auto const & v3uiBlockKernelSizePerDimMax(alpaka::device::DeviceManager<TAcc>::getCurrentDevice().getProperties().m_v3uiBlockKernelSizePerDimMax);
-            auto const & uiBlockKernelSizeMax(alpaka::device::DeviceManager<TAcc>::getCurrentDevice().getProperties().m_uiBlockKernelSizeMax);
+            auto const deviceProperties(TDeviceManager::getCurrentDevice().getProperties());
+            auto const & v3uiBlockKernelSizePerDimMax(deviceProperties.m_v3uiBlockKernelSizePerDimMax);
+            auto const & uiBlockKernelSizeMax(deviceProperties.m_uiBlockKernelSizeMax);
             // TODO: This division strategy is not optimal at all. Just find the (next smaller or equal) square fitting into the maximum number of kernels per block. 
-            std::size_t uiBlockKernelSize2d(static_cast<size_t>(std::sqrt(static_cast<double>(uiBlockKernelSizeMax))));
+            std::size_t uiBlockKernelSize2d(static_cast<std::size_t>(std::sqrt(static_cast<double>(uiBlockKernelSizeMax))));
 
             v3uiSizeBlockKernels = alpaka::vec<3u>(std::min(v3uiBlockKernelSizePerDimMax[0u], uiBlockKernelSize2d), std::min(v3uiBlockKernelSizePerDimMax[1u], uiBlockKernelSize2d), 1u);
         }
@@ -317,9 +319,8 @@ int main(int argc, char *argv[])
 #ifdef ALPAKA_CUDA_ENABLED
             // Select the first CUDA device. 
             // NOTE: This is not required to run any kernels on the CUDA accelerator because all accelerators have a default device. This only shows the possibility.
-            alpaka::device::DeviceManager<AccCuda>::setDevice(alpaka::device::DeviceManager<AccCuda>::getDevice(0));
+            alpaka::device::DeviceManager<alpaka::AccCuda>::setCurrentDevice(alpaka::device::DeviceManager<alpaka::AccCuda>::getCurrentDevice());
 #endif
-
             // For different matrix sizes.
             for(std::uint32_t uiMatrixSize(16u); uiMatrixSize<1024u; uiMatrixSize *= 2u)
             {

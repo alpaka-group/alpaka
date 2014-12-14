@@ -21,7 +21,7 @@ Supported (but not necessarily tested) compilers are:
 Requirements
 ------------
 
-[Boost](http://boost.org/) is the only required external dependency.
+[Boost](http://boost.org/) 1.55+ is the only required external dependency.
 By default only header-only libraries are used.
 
 When using the **Fibers-Accelerator** back-end, `boost-coroutine`, `boost-context` and

@@ -54,13 +54,14 @@ namespace alpaka
             //#############################################################################
             template<typename TDevice>
             class IDevice :
-                private TDevice
+                protected TDevice
             {
-            public:
+            protected:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST IDevice() = default;
+            public:
                 //-----------------------------------------------------------------------------
                 //! Copy-constructor.
                 //-----------------------------------------------------------------------------
@@ -104,7 +105,7 @@ namespace alpaka
                 private TDeviceManager
             {
             public:
-                using TDevice = typename decltype(TDeviceManager::getCurrentDevice());
+                using TDevice = decltype(TDeviceManager::getCurrentDevice());
 
             public:
                 //-----------------------------------------------------------------------------
@@ -124,7 +125,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static TDevice getDeviceByIndex()
                 {
-                    return TDeviceManager::getDeviceByIndex()
+                    return TDeviceManager::getDeviceByIndex();
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The number handles to all devices available.
@@ -136,7 +137,7 @@ namespace alpaka
                     std::size_t const uiDeviceCount(getDeviceCount());
                     for(std::size_t uiDeviceIndex(0); uiDeviceIndex < uiDeviceCount; ++uiDeviceIndex)
                     {
-                        vDevices.push_back(getDevice(uiDeviceIndex));
+                        vDevices.push_back(getDeviceByIndex(uiDeviceIndex));
                     }
 
                     return vDevices;

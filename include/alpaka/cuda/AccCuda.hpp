@@ -171,7 +171,7 @@ namespace alpaka
                 // 4. Has no non-trivial move assignment operators
                 // 5. Has a trivial destructor
                 //
-#if BOOST_COMP_GNUC // FIXME: Find out which version > 4.9.0 does support the std::is_trivially_copyable
+#if !BOOST_COMP_GNUC // FIXME: Find out which version > 4.9.0 does support the std::is_trivially_copyable
                 // TODO: is_standard_layout is even stricter. Is is_trivially_copyable enough?
                 static_assert(std::is_trivially_copyable<TAcceleratedKernel>::value, "The given kernel functor has to be trivially copyable to be used on a CUDA device!");
 #endif

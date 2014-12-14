@@ -397,7 +397,7 @@ namespace alpaka
 
                                             // Create a thread.
                                             // The v3uiBlockKernelIdx is required to be copied in from the environment because if the thread is immediately suspended the variable is already changed for the next iteration/thread.
-#if BOOST_COMP_MSVC //<= BOOST_VERSION_NUMBER(14, 0, 22310)    MSVC does not compile the std::thread constructor because the type of the member function template is missing the this pointer as first argument.
+#if !BOOST_COMP_MSVC //<= BOOST_VERSION_NUMBER(14, 0, 22310)    MSVC does not compile the std::thread constructor because the type of the member function template is missing the this pointer as first argument.
                                             auto threadKernelFct([this](vec<3u> const v3uiBlockKernelIdx, TArgs ... args) {threadKernel<TArgs...>(v3uiBlockKernelIdx, std::forward<TArgs>(args)...); });
     #ifdef ALPAKA_THREADS_NO_POOL
                                             m_vThreadsInBlock.push_back(std::thread(threadKernelFct, v3uiBlockKernelIdx, args...));

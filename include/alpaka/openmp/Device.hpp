@@ -49,12 +49,12 @@ namespace alpaka
             class DeviceOpenMp
             {
                 friend class DeviceManagerOpenMp;
-
-            public:
+            protected:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST DeviceOpenMp() = default;
+            public:
                 //-----------------------------------------------------------------------------
                 //! Copy-constructor.
                 //-----------------------------------------------------------------------------
@@ -72,6 +72,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST ~DeviceOpenMp() noexcept = default;
 
+            protected:
                 //-----------------------------------------------------------------------------
                 //! \return The device properties.
                 //-----------------------------------------------------------------------------
@@ -95,6 +96,9 @@ namespace alpaka
 
                     return deviceProperties;
                 }
+
+            private:
+                int m_iDevice;
             };
         }
     }

@@ -244,7 +244,7 @@ int main()
 #ifdef ALPAKA_CUDA_ENABLED
         // Select the first CUDA device. 
         // NOTE: This is not required to run any kernels on the CUDA accelerator because all accelerators have a default device. This only shows the possibility.
-        alpaka::device::DeviceManager<AccCuda>::setDevice(alpaka::device::DeviceManager<AccCuda>::getDevice(0));
+        alpaka::device::DeviceManager<alpaka::AccCuda>::setCurrentDevice(alpaka::device::DeviceManager<alpaka::AccCuda>::getCurrentDevice());
 #endif
 
         // Set the grid size.

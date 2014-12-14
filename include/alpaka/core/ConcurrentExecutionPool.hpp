@@ -111,7 +111,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Sets an exception.
             //-----------------------------------------------------------------------------
-            virtual void setException(TExceptionPtr exceptPtr) final
+            virtual void setException(typename TaskPackage<TCurrentException>::TExceptionPtr exceptPtr) final
             {
                 m_Promise.set_exception(exceptPtr);
             }
@@ -149,7 +149,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Sets an exception.
             //-----------------------------------------------------------------------------
-            virtual void setException(TExceptionPtr exceptPtr) final
+            virtual void setException(typename TaskPackage<TCurrentException>::TExceptionPtr exceptPtr) final
             {
                 m_Promise.set_exception(exceptPtr);
             }
@@ -162,7 +162,7 @@ namespace alpaka
         //#############################################################################
         //! ConcurrentExecutionPool using yield.
         //#############################################################################
-        template<typename TConcurrentExecutor, template<typename TFuncReturn> class TPromise, typename TCurrentException, typename TYield, typename TMutex = void, template<typename TMutex> class TUniqueLock = std::atomic, typename TConditionVariable = void, bool TbYield = true>
+        template<typename TConcurrentExecutor, template<typename TFuncReturn> class TPromise, typename TCurrentException, typename TYield, typename TMutex = void, template<typename TMutex2> class TUniqueLock = std::atomic, typename TConditionVariable = void, bool TbYield = true>
         class ConcurrentExecutionPool
         {
         public:
@@ -340,7 +340,7 @@ namespace alpaka
         //#############################################################################
         //! ConcurrentExecutionPool using condition_variable to wait for new work.
         //#############################################################################
-        template<typename TConcurrentExecutor, template<typename TFuncReturn> class TPromise, typename TCurrentException, typename TYield, typename TMutex, template<typename TMutex> class TUniqueLock, typename TConditionVariable>
+        template<typename TConcurrentExecutor, template<typename TFuncReturn> class TPromise, typename TCurrentException, typename TYield, typename TMutex, template<typename TMutex2> class TUniqueLock, typename TConditionVariable>
         class ConcurrentExecutionPool<TConcurrentExecutor, TPromise, TCurrentException, TYield, TMutex, TUniqueLock, TConditionVariable, false>
         {
         public:
