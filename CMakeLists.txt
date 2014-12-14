@@ -76,10 +76,11 @@ SET(Boost_USE_STATIC_LIBS ON)
 SET(Boost_USE_MULTITHREADED ON)
 SET(Boost_USE_STATIC_RUNTIME OFF)
 
-SET(BOOST_REQUIRED_COMPONENTS)
-
 IF(ALPAKA_FIBERS_ENABLE)
-    SET(BOOST_REQUIRED_COMPONENTS fiber coroutine context system atomic chrono date_time regex thread)
+    LIST(APPEND BOOST_REQUIRED_COMPONENTS fiber coroutine context system atomic chrono date_time regex thread)
+ELSE()
+    # Empty addition to define the variable if it is not existing.
+    LIST(APPEND BOOST_REQUIRED_COMPONENTS)
 ENDIF()
 
 FIND_PACKAGE(Boost REQUIRED COMPONENTS ${BOOST_REQUIRED_COMPONENTS})
