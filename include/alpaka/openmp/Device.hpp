@@ -89,7 +89,6 @@ namespace alpaka
                     deviceProperties.m_uiBlockKernelSizeMax = ::omp_get_max_threads();
                     deviceProperties.m_v3uiBlockKernelSizePerDimMax = vec<3u>(deviceProperties.m_uiBlockKernelSizeMax, deviceProperties.m_uiBlockKernelSizeMax, deviceProperties.m_uiBlockKernelSizeMax);
                     deviceProperties.m_v3uiGridBlockSizePerDimMax = vec<3u>(std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max());
-                    deviceProperties.m_uiStreamCount = std::numeric_limits<std::size_t>::max();
                     deviceProperties.m_uiExecutionUnitCount = std::thread::hardware_concurrency();          // TODO: This may be inaccurate.
                     deviceProperties.m_uiGlobalMemorySizeBytes = host::getGlobalMemorySizeBytes();
                     //deviceProperties.m_uiClockFrequencyHz = TODO;

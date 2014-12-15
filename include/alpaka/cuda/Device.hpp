@@ -97,7 +97,6 @@ namespace alpaka
                     deviceProperties.m_uiBlockKernelSizeMax = static_cast<std::size_t>(cudaDevProp.maxThreadsPerBlock);
                     deviceProperties.m_v3uiBlockKernelSizePerDimMax = vec<3u>(static_cast<std::size_t>(cudaDevProp.maxThreadsDim[0]), static_cast<std::size_t>(cudaDevProp.maxThreadsDim[1]), static_cast<std::size_t>(cudaDevProp.maxThreadsDim[2]));
                     deviceProperties.m_v3uiGridBlockSizePerDimMax = vec<3u>(static_cast<std::size_t>(cudaDevProp.maxGridSize[0]), static_cast<std::size_t>(cudaDevProp.maxGridSize[1]), static_cast<std::size_t>(cudaDevProp.maxGridSize[2]));
-                    deviceProperties.m_uiStreamCount = std::numeric_limits<std::size_t>::max();
                     deviceProperties.m_uiExecutionUnitCount = static_cast<std::size_t>(cudaDevProp.multiProcessorCount) * uiCoresPerMultiProcessor;
                     deviceProperties.m_uiGlobalMemorySizeBytes = static_cast<std::size_t>(cudaDevProp.totalGlobalMem);
                     //deviceProperties.m_uiClockFrequencyHz = cudaDevProp.clockRate * 1000;

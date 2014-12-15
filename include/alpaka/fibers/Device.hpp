@@ -82,7 +82,6 @@ namespace alpaka
                     deviceProperties.m_uiBlockKernelSizeMax = 1024; // FIXME: What is the maximum? Just set a reasonable value?
                     deviceProperties.m_v3uiBlockKernelSizePerDimMax = vec<3u>(deviceProperties.m_uiBlockKernelSizeMax, deviceProperties.m_uiBlockKernelSizeMax, deviceProperties.m_uiBlockKernelSizeMax);
                     deviceProperties.m_v3uiGridBlockSizePerDimMax = vec<3u>(std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max());
-                    deviceProperties.m_uiStreamCount = std::numeric_limits<std::size_t>::max();
                     deviceProperties.m_uiExecutionUnitCount = std::thread::hardware_concurrency();          // TODO: This may be inaccurate. // TODO: Would it be better to not rely on std::thread? But we are already requiring c++11 so std::thread is always available.
                     deviceProperties.m_uiGlobalMemorySizeBytes = host::getGlobalMemorySizeBytes();
                     //deviceProperties.m_uiClockFrequencyHz = TODO;

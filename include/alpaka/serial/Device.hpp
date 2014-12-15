@@ -81,7 +81,6 @@ namespace alpaka
                     deviceProperties.m_uiBlockKernelSizeMax = 1;    // TODO: Magic number.
                     deviceProperties.m_v3uiBlockKernelSizePerDimMax = vec<3u>(1u, 1u, 1u);
                     deviceProperties.m_v3uiGridBlockSizePerDimMax = vec<3u>(std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max());
-                    deviceProperties.m_uiStreamCount = std::numeric_limits<std::size_t>::max();
                     deviceProperties.m_uiExecutionUnitCount = 1;
                     deviceProperties.m_uiGlobalMemorySizeBytes = host::getGlobalMemorySizeBytes();
                     //deviceProperties.m_uiClockFrequencyHz = TODO;

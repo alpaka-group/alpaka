@@ -41,7 +41,6 @@ namespace alpaka
             std::size_t m_uiBlockKernelSizeMax;
             vec<3u> m_v3uiBlockKernelSizePerDimMax;
             vec<3u> m_v3uiGridBlockSizePerDimMax;
-            std::size_t m_uiStreamCount;
             std::size_t m_uiExecutionUnitCount;
             std::size_t m_uiGlobalMemorySizeBytes;
             //std::size_t m_uiClockFrequencyHz;
