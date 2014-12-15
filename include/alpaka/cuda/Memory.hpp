@@ -40,12 +40,39 @@ namespace alpaka
         namespace detail
         {
             //#############################################################################
+            //! Page-locks the memory range specified.
+            //#############################################################################
+            void pageLockHostMem(void const * const pBuffer, std::size_t const uiSizeBytes)
+            {
+                assert(pBuffer);
+                assert(uiSizeBytes>0);
+
+                // cudaHostRegisterDefault: 
+                //  See http://cgi.cs.indiana.edu/~nhusted/dokuwiki/doku.php?id=programming:cudaperformance1
+                // cudaHostRegisterPortable: 
+                //  The memory returned by this call will be considered as pinned memory by all CUDA contexts, not just the one that performed the allocation.
+                // cudaHostRegisterMapped: 
+                //  Maps the allocation into the CUDA address space.The device pointer to the memory may be obtained by calling cudaHostGetDevicePointer().
+                //  This feature is available only on GPUs with compute capability greater than or equal to 1.1.
+                ALPAKA_CUDA_CHECK(cudaHostRegister(pBuffer, uiSizeBytes, cudaHostRegisterDefault));
+            }
+            //#############################################################################
+            //! Unmaps page-locked memory.
+            //#############################################################################
+            void unPageLockHostMem(void const * const pBuffer)
+            {
+                assert(pBuffer);
+
+                ALPAKA_CUDA_CHECK(cudaHostUnregister(pBufferSrc));
+            }
+
+            //#############################################################################
             //! Allocates memory in the CUDA memory space.
             //#############################################################################
             template<>
             struct MemAlloc<MemorySpaceCuda>
             {
-                MemAlloc(void ** const pBuffer, std::size_t const uiSizeBytes)
+                MemAlloc(void ** const pBuffer, std::size_t const & uiSizeBytes)
                 {
                     assert(uiSizeBytes>0);
 
@@ -63,6 +90,7 @@ namespace alpaka
                 MemFree(void * pBuffer)
                 {
                     assert(pBuffer);
+
                     ALPAKA_CUDA_CHECK(cudaFree(pBuffer));
                 }
             };
@@ -73,12 +101,16 @@ namespace alpaka
             template<>
             struct MemCopy<MemorySpaceHost, MemorySpaceCuda>
             {
-                MemCopy(void * const pBufferDst, void const * const pBufferSrc, size_t const uiSizeBytes)
+                MemCopy(void * const pBufferDst, void const * const pBufferSrc, std::size_t const & uiSizeBytes)
                 {
                     assert(pBufferDst);
                     assert(pBufferSrc);
 
+                    pageLockHostMem(pBufferDst, uiSizeBytes);
+
                     ALPAKA_CUDA_CHECK(cudaMemcpy(pBufferDst, pBufferSrc, uiSizeBytes, cudaMemcpyDeviceToHost));
+
+                    unPageLockHostMem(pBufferSrc);
                 }
             };
             //#############################################################################
@@ -87,12 +119,16 @@ namespace alpaka
             template<>
             struct MemCopy<MemorySpaceCuda, MemorySpaceHost>
             {
-                MemCopy(void * const pBufferDst, void const * const pBufferSrc, size_t const uiSizeBytes)
+                MemCopy(void * const pBufferDst, void const * const pBufferSrc, std::size_t const & uiSizeBytes)
                 {
                     assert(pBufferDst);
                     assert(pBufferSrc);
 
+                    pageLockHostMem(pBufferSrc, uiSizeBytes);
+
                     ALPAKA_CUDA_CHECK(cudaMemcpy(pBufferDst, pBufferSrc, uiSizeBytes, cudaMemcpyHostToDevice));
+
+                    unPageLockHostMem(pBufferSrc);
                 }
             };
             //#############################################################################
@@ -101,7 +137,7 @@ namespace alpaka
             template<>
             struct MemCopy<MemorySpaceCuda, MemorySpaceCuda>
             {
-                MemCopy(void * const pBufferDst, void const * const pBufferSrc, size_t const uiSizeBytes)
+                MemCopy(void * const pBufferDst, void const * const pBufferSrc, std::size_t const & uiSizeBytes)
                 {
                     assert(pBufferDst);
                     assert(pBufferSrc);
@@ -116,7 +152,7 @@ namespace alpaka
             template<>
             struct MemSet<MemorySpaceCuda>
             {
-                MemSet(void * const pBuffer, int const iValue, size_t const uiSizeBytes)
+                MemSet(void * const pBuffer, int const iValue, std::size_t const & uiSizeBytes)
                 {
                     assert(pBuffer);
 

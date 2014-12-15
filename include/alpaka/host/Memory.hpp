@@ -42,7 +42,7 @@ namespace alpaka
             template<>
             struct MemAlloc<MemorySpaceHost>
             {
-                MemAlloc(void ** const pBuffer, std::size_t const uiSizeBytes)
+                MemAlloc(void ** const pBuffer, std::size_t const & uiSizeBytes)
                 {
                     assert(uiSizeBytes>0);
 
@@ -69,7 +69,7 @@ namespace alpaka
             template<>
             struct MemCopy<MemorySpaceHost, MemorySpaceHost>
             {
-                MemCopy(void * const pBufferDst, void * const pBufferSrc, size_t const uiSizeBytes)
+                MemCopy(void * const pBufferDst, void * const pBufferSrc, std::size_t const & uiSizeBytes)
                 {
                     assert(pBufferDst);
                     assert(pBufferSrc);
@@ -84,7 +84,7 @@ namespace alpaka
             template<>
             struct MemSet<MemorySpaceHost>
             {
-                MemSet(void * const pBuffer, int const iValue, size_t const uiSizeBytes)
+                MemSet(void * const pBuffer, int const iValue, std::size_t const & uiSizeBytes)
                 {
                     assert(pBuffer);
 

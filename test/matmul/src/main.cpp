@@ -234,7 +234,7 @@ struct ProfileAcceleratedMatMulKernel
         std::vector<std::uint32_t> vuiC(uiMatrixSize*uiMatrixSize, 0);
 
         // Allocate accelerator buffers and copy.
-        std::size_t const uiSizeBytes(uiMatrixSize*uiMatrixSize * sizeof(std::uint32_t));
+        std::size_t const & uiSizeBytes(uiMatrixSize*uiMatrixSize * sizeof(std::uint32_t));
 
         auto pAAcc(alpaka::memory::memAlloc<TAccMemorySpace, std::uint32_t>(uiSizeBytes));
         auto pBAcc(alpaka::memory::memAlloc<TAccMemorySpace, std::uint32_t>(uiSizeBytes));
