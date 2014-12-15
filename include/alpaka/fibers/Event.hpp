@@ -34,8 +34,8 @@ namespace alpaka
         //! The template for an event.
         //#############################################################################
         template<>
-        struct Event<AccFibers> :
-            alpaka::host::detail::EventHost
+        class Event<AccFibers> :
+            public alpaka::host::detail::EventHost
         {};
     }
 }

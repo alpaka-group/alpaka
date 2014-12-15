@@ -34,8 +34,8 @@ namespace alpaka
         //! The template for an event.
         //#############################################################################
         template<>
-        struct Event<AccThreads> :
-            alpaka::host::detail::EventHost
+        class Event<AccThreads> :
+            public alpaka::host::detail::EventHost
         {};
     }
 }
