@@ -44,20 +44,20 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             // \tparam TIndex type of the index values
             // \param index Index to be mapped.
-            // \param size Spatial size to map the index to.
+            // \param extent Spatial size to map the index to.
             // \return Vector of dimension TuiDimDst.
             //-----------------------------------------------------------------------------
             template<typename TIndex>
-            ALPAKA_FCT_HOST_ACC vec<3u> operator()(vec<1u, TIndex> const & index, vec<2u, TIndex> const & size) const
+            ALPAKA_FCT_HOST_ACC vec<3u> operator()(vec<1u, TIndex> const & index, vec<2u, TIndex> const & extent) const
             {
                 auto const & uiIndex(index[0]);
-                auto const uiSizeXyLin(size.prod());
-                auto const & uiSizeX(size[0]);
+                auto const uiExtentXyLin(extent.prod());
+                auto const & uiExtentX(extent[0]);
 
                 return {
-                    uiIndex % uiSizeX,
-                    (uiIndex % uiSizeXyLin) / uiSizeX,
-                    uiIndex / uiSizeXyLin
+                    uiIndex % uiExtentX,
+                    (uiIndex % uiExtentXyLin) / uiExtentX,
+                    uiIndex / uiExtentXyLin
                 };
             }
         };
@@ -68,18 +68,18 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             // \tparam TIndex type of the index values
             // \param index Index to be mapped.
-            // \param size Spatial size to map the index to.
+            // \param extent Spatial size to map the index to.
             // \return Vector of dimension TuiDimDst.
             //-----------------------------------------------------------------------------
             template<typename TIndex>
-            ALPAKA_FCT_HOST_ACC vec<3u> operator()(vec<1u, TIndex> const & index, vec<1u, TIndex> const & size) const
+            ALPAKA_FCT_HOST_ACC vec<3u> operator()(vec<1u, TIndex> const & index, vec<1u, TIndex> const & extent) const
             {
                 auto const & uiIndex(index[0]);
-                auto const & uiSizeX(size[0]);
+                auto const & uiExtentX(extent[0]);
 
                 return {
-                    uiIndex % uiSizeX,
-                    uiIndex / uiSizeX
+                    uiIndex % uiExtentX,
+                    uiIndex / uiExtentX
                 };
             }
         };
@@ -93,9 +93,9 @@ namespace alpaka
     //! \tparam TIndex type of the index vector to map from.
     //#############################################################################
     template<std::size_t TuiIndexDimDst, std::size_t TuiIndexDimSrc, typename TIndex>
-    auto mapIndex(vec<TuiIndexDimSrc, TIndex> const & index, vec<TuiIndexDimDst-1u, TIndex> const & size)
+    auto mapIndex(vec<TuiIndexDimSrc, TIndex> const & index, vec<TuiIndexDimDst-1u, TIndex> const & extent)
         -> typename std::result_of<detail::MapIndex<TuiIndexDimDst, TuiIndexDimSrc>(vec<TuiIndexDimSrc, TIndex>, vec<TuiIndexDimDst-1u, TIndex>)>::type
     {
-        return detail::MapIndex<TuiIndexDimDst, TuiIndexDimSrc>()(index, size);
+        return detail::MapIndex<TuiIndexDimDst, TuiIndexDimSrc>()(index, extent);
     }
 }

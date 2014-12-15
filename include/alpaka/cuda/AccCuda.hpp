@@ -24,7 +24,7 @@
 
 // Base classes.
 #include <alpaka/cuda/AccCudaFwd.hpp>
-#include <alpaka/cuda/WorkSize.hpp>                 // TInterfacedWorkSize
+#include <alpaka/cuda/WorkExtent.hpp>               // TInterfacedWorkExtent
 #include <alpaka/cuda/Index.hpp>                    // TInterfacedIndex
 #include <alpaka/cuda/Atomic.hpp>                   // TInterfacedAtomic
 
@@ -78,7 +78,7 @@ namespace alpaka
             //! The base class for all CUDA accelerated kernels.
             //#############################################################################
             class AccCuda :
-                protected TInterfacedWorkSize,
+                protected TInterfacedWorkExtent,
                 private TInterfacedIndex,
                 protected TInterfacedAtomic
             {
@@ -93,7 +93,7 @@ namespace alpaka
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC AccCuda() :
-                    TInterfacedWorkSize(),
+                    TInterfacedWorkExtent(),
                     TInterfacedIndex(),
                     TInterfacedAtomic()
                 {}
@@ -122,7 +122,7 @@ namespace alpaka
                 ALPAKA_FCT_ACC typename alpaka::detail::DimToRetType<TDimensionality>::type getIdx() const
                 {
                     return this->TInterfacedIndex::getIdx<TOrigin, TUnit, TDimensionality>(
-                        *static_cast<TInterfacedWorkSize const *>(this));
+                        *static_cast<TInterfacedWorkExtent const *>(this));
                 }
 
                 //-----------------------------------------------------------------------------
@@ -184,22 +184,22 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                template<typename TWorkSize, typename... TKernelConstrArgs>
-                ALPAKA_FCT_HOST KernelExecutor(IWorkSize<TWorkSize> const & workSize, TKernelConstrArgs && ... args) :
+                template<typename TWorkExtent, typename... TKernelConstrArgs>
+                ALPAKA_FCT_HOST KernelExecutor(IWorkExtent<TWorkExtent> const & workExtent, TKernelConstrArgs && ... args) :
                     TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
                 {
 #ifdef ALPAKA_DEBUG
                     std::cout << "[+] AccCuda::KernelExecutor()" << std::endl;
 #endif
-                    /*auto const uiNumKernelsPerBlock(workSize.template getSize<Block, Kernels, Linear>());
-                    auto const uiMaxKernelsPerBlock(AccCuda::getSizeBlockKernelsLinearMax());
+                    /*auto const uiNumKernelsPerBlock(workExtent.template getExtent<Block, Kernels, Linear>());
+                    auto const uiMaxKernelsPerBlock(AccCuda::getExtentBlockKernelsLinearMax());
                     if(uiNumKernelsPerBlock > uiMaxKernelsPerBlock)
                     {
-                        throw std::runtime_error(("The given blockSize '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the CUDA accelerator!").c_str());
+                        throw std::runtime_error(("The given block kernels count '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the CUDA accelerator!").c_str());
                     }*/
 
-                    m_v3uiSizeGridBlocks = workSize.template getSize<Grid, Blocks, D3>();
-                    m_v3uiSizeBlockKernels = workSize.template getSize<Block, Kernels, D3>();
+                    m_v3uiGridBlocksExtent = workExtent.template getExtent<Grid, Blocks, D3>();
+                    m_v3uiBlockKernelsExtent = workExtent.template getExtent<Block, Kernels, D3>();
 #ifdef ALPAKA_DEBUG
                     std::cout << "[-] AccCuda::KernelExecutor()" << std::endl;
 #endif
@@ -227,13 +227,13 @@ namespace alpaka
                 template<typename... TArgs>
                 ALPAKA_FCT_HOST void operator()(TArgs && ... args) const
                 {
-                    dim3 gridDim(m_v3uiSizeGridBlocks[0], m_v3uiSizeGridBlocks[1], m_v3uiSizeGridBlocks[2]);
-                    dim3 blockDim(m_v3uiSizeBlockKernels[0], m_v3uiSizeBlockKernels[1], m_v3uiSizeBlockKernels[2]);
+                    dim3 gridDim(m_v3uiGridBlocksExtent[0], m_v3uiGridBlocksExtent[1], m_v3uiGridBlocksExtent[2]);
+                    dim3 blockDim(m_v3uiBlockKernelsExtent[0], m_v3uiBlockKernelsExtent[1], m_v3uiBlockKernelsExtent[2]);
 #ifdef ALPAKA_DEBUG
                     //std::cout << "GridBlocks: (" << gridDim.x << ", " << gridDim.y << ", " << gridDim.z << ")" << std::endl;
                     //std::cout << "BlockKernels: (" <<  << blockDim.x << ", " << blockDim.y << ", " << blockDim.z << ")" << std::endl;
 #endif
-                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(m_v3uiSizeBlockKernels, std::forward<TArgs>(args)...));
+                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(m_v3uiBlockKernelsExtent, std::forward<TArgs>(args)...));
 
                     // Instead of using the language extension for the kernel call, we use the runtime API.
                     // This allows us to get better error information.
@@ -271,8 +271,8 @@ namespace alpaka
                 }
 
             private:
-                vec<3u> m_v3uiSizeGridBlocks;
-                vec<3u> m_v3uiSizeBlockKernels;
+                vec<3u> m_v3uiGridBlocksExtent;
+                vec<3u> m_v3uiBlockKernelsExtent;
             };
         }
     }
@@ -287,12 +287,12 @@ namespace alpaka
         using TAcc = AccCuda;
     public:
         //-----------------------------------------------------------------------------
-        //! \return The requested size.
+        //! \return The requested extent.
         //-----------------------------------------------------------------------------
         template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-        ALPAKA_FCT_ACC typename detail::DimToRetType<TDimensionality>::type getSize() const
+        ALPAKA_FCT_ACC typename detail::DimToRetType<TDimensionality>::type getExtent() const
         {
-            return TAcc::getSize<TOrigin, TUnit, TDimensionality>();
+            return TAcc::getExtent<TOrigin, TUnit, TDimensionality>();
         }
 
     protected:

@@ -27,44 +27,44 @@
 namespace alpaka
 {
     //-----------------------------------------------------------------------------
-    //! Defines the origins available for getting sizes and indices of kernel executions.
+    //! Defines the origins available for getting extents and indices of kernel executions.
     //-----------------------------------------------------------------------------
     namespace origin
     {
         //#############################################################################
-        //! This type is used to get the size/index relative to the grid.
+        //! This type is used to get the extent/index relative to the grid.
         //#############################################################################
         struct Grid;
         //#############################################################################
-        //! This type is used to get the size/index relative to a/the current block.
+        //! This type is used to get the extent/index relative to a/the current block.
         //#############################################################################
         struct Block;
     }
     //-----------------------------------------------------------------------------
-    //! Defines the units available for getting sizes and indices of kernel executions.
+    //! Defines the units available for getting extents and indices of kernel executions.
     //-----------------------------------------------------------------------------
     namespace unit
     {
         //#############################################################################
-        //! This type is used to get the size/index in units of kernels.
+        //! This type is used to get the extent/index in units of kernels.
         //#############################################################################
         struct Kernels;
         //#############################################################################
-        //! This type is used to get the size/index in units of blocks.
+        //! This type is used to get the extent/index in units of blocks.
         //#############################################################################
         struct Blocks;
     }
     //-----------------------------------------------------------------------------
-    //! Defines the dimensions available for getting sizes and indices of kernel executions.
+    //! Defines the dimensions available for extents sizes and indices of kernel executions.
     //-----------------------------------------------------------------------------
     namespace dim
     {
         //#############################################################################
-        //! This type is used to get the size/index linearized.
+        //! This type is used to get the extent/index linearized.
         //#############################################################################
         struct Linear;
         //#############################################################################
-        //! This type is used to get the size/index 3-dimensional.
+        //! This type is used to get the extent/index 3-dimensional.
         //#############################################################################
         struct D3;
     }
@@ -79,7 +79,7 @@ namespace alpaka
     namespace detail
     {
         //#############################################################################
-        //! The trait for retrieving the return type of the getSize functions depending on the dimensionality.
+        //! The trait for retrieving the return type of the getExtent functions depending on the dimensionality.
         //#############################################################################
         template<class TDimensionality>
         struct DimToRetType;

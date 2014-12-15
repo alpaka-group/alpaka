@@ -24,7 +24,7 @@
 
 // Base classes.
 #include <alpaka/openmp/AccOpenMpFwd.hpp>
-#include <alpaka/openmp/WorkSize.hpp>               // TInterfacedWorkSize
+#include <alpaka/openmp/WorkExtent.hpp>             // TInterfacedWorkExtent
 #include <alpaka/openmp/Index.hpp>                  // TInterfacedIndex
 #include <alpaka/openmp/Atomic.hpp>                 // TInterfacedAtomic
 
@@ -67,7 +67,7 @@ namespace alpaka
             //! The base class for all OpenMP accelerated kernels.
             //#############################################################################
             class AccOpenMp :
-                protected TInterfacedWorkSize,
+                protected TInterfacedWorkExtent,
                 protected TInterfacedIndex,
                 protected TInterfacedAtomic
             {
@@ -82,8 +82,8 @@ namespace alpaka
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST AccOpenMp() :
-                    TInterfacedWorkSize(),
-                    TInterfacedIndex(*static_cast<TInterfacedWorkSize const *>(this), m_v3uiGridBlockIdx),
+                    TInterfacedWorkExtent(),
+                    TInterfacedIndex(*static_cast<TInterfacedWorkExtent const *>(this), m_v3uiGridBlockIdx),
                     TInterfacedAtomic()
                 {}
                 //-----------------------------------------------------------------------------
@@ -111,7 +111,7 @@ namespace alpaka
                 ALPAKA_FCT_HOST typename alpaka::detail::DimToRetType<TDimensionality>::type getIdx() const
                 {
                     return this->TInterfacedIndex::getIdx<TOrigin, TUnit, TDimensionality>(
-                        *static_cast<TInterfacedWorkSize const *>(this));
+                        *static_cast<TInterfacedWorkExtent const *>(this));
                 }
 
                 //-----------------------------------------------------------------------------
@@ -184,24 +184,24 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                template<typename TWorkSize, typename... TKernelConstrArgs>
-                ALPAKA_FCT_HOST KernelExecutor(IWorkSize<TWorkSize> const & workSize, TKernelConstrArgs && ... args) :
+                template<typename TWorkExtent, typename... TKernelConstrArgs>
+                ALPAKA_FCT_HOST KernelExecutor(IWorkExtent<TWorkExtent> const & workExtent, TKernelConstrArgs && ... args) :
                     TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
                 {
 #ifdef ALPAKA_DEBUG
                     std::cout << "[+] AccOpenMp::KernelExecutor()" << std::endl;
 #endif
-                    (*const_cast<TInterfacedWorkSize*>(static_cast<TInterfacedWorkSize const *>(this))) = workSize;
+                    (*const_cast<TInterfacedWorkExtent*>(static_cast<TInterfacedWorkExtent const *>(this))) = workExtent;
 
-                    /*auto const uiNumKernelsPerBlock(workSize.template getSize<Block, Kernels, Linear>());
-                    auto const uiMaxKernelsPerBlock(AccOpenMp::getSizeBlockKernelsLinearMax());
+                    /*auto const uiNumKernelsPerBlock(workExtent.template getExtent<Block, Kernels, Linear>());
+                    auto const uiMaxKernelsPerBlock(AccOpenMp::getExtentBlockKernelsLinearMax());
                     if(uiNumKernelsPerBlock > uiMaxKernelsPerBlock)
                     {
-                        throw std::runtime_error(("The given blockSize '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the OpenMp accelerator!").c_str());
+                        throw std::runtime_error(("The given block kernels count '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the OpenMp accelerator!").c_str());
                     }*/
 
-                    m_v3uiSizeGridBlocks = workSize.template getSize<Grid, Blocks, D3>();
-                    m_v3uiSizeBlockKernels = workSize.template getSize<Block, Kernels, D3>();
+                    m_v3uiGridBlocksExtent = workExtent.template getExtent<Grid, Blocks, D3>();
+                    m_v3uiBlockKernelsExtent = workExtent.template getExtent<Block, Kernels, D3>();
 #ifdef ALPAKA_DEBUG
                     std::cout << "[-] AccOpenMp::KernelExecutor()" << std::endl;
 #endif
@@ -232,22 +232,22 @@ namespace alpaka
 #ifdef ALPAKA_DEBUG
                     std::cout << "[+] AccOpenMp::KernelExecutor::operator()" << std::endl;
 #endif
-                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(m_v3uiSizeBlockKernels, std::forward<TArgs>(args)...));
+                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(m_v3uiBlockKernelsExtent, std::forward<TArgs>(args)...));
                     this->AccOpenMp::m_vuiExternalSharedMem.resize(uiBlockSharedExternMemSizeBytes);
 #ifdef ALPAKA_DEBUG
-                    //std::cout << "GridBlocks: " << v3uiSizeGridBlocks << " BlockKernels: " << v3uiSizeBlockKernels << std::endl;
+                    //std::cout << "GridBlocks: " << v3uiGridBlocksExtent << " BlockKernels: " << v3uiBlockKernelsExtent << std::endl;
 #endif
                     // The number of threads in this block.
-                    auto const uiNumKernelsInBlock(this->AccOpenMp::getSize<Block, Kernels, Linear>());
+                    auto const uiNumKernelsInBlock(this->AccOpenMp::getExtent<Block, Kernels, Linear>());
 
                     // Execute the blocks serially.
-                    for(std::uint32_t bz(0); bz<m_v3uiSizeGridBlocks[2]; ++bz)
+                    for(std::uint32_t bz(0); bz<m_v3uiGridBlocksExtent[2]; ++bz)
                     {
                         this->AccOpenMp::m_v3uiGridBlockIdx[2] = bz;
-                        for(std::uint32_t by(0); by<m_v3uiSizeGridBlocks[1]; ++by)
+                        for(std::uint32_t by(0); by<m_v3uiGridBlocksExtent[1]; ++by)
                         {
                             this->AccOpenMp::m_v3uiGridBlockIdx[1] = by;
-                            for(std::uint32_t bx(0); bx<m_v3uiSizeGridBlocks[0]; ++bx)
+                            for(std::uint32_t bx(0); bx<m_v3uiGridBlocksExtent[0]; ++bx)
                             {
                                 this->AccOpenMp::m_v3uiGridBlockIdx[0] = bx;
 
@@ -294,8 +294,8 @@ namespace alpaka
                 }
 
             private:
-                vec<3u> m_v3uiSizeGridBlocks;
-                vec<3u> m_v3uiSizeBlockKernels;
+                vec<3u> m_v3uiGridBlocksExtent;
+                vec<3u> m_v3uiBlockKernelsExtent;
             };
         }
     }

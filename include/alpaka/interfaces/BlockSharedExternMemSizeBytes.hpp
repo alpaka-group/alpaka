@@ -36,13 +36,13 @@ namespace alpaka
     struct BlockSharedExternMemSizeBytes
     {
         //-----------------------------------------------------------------------------
-        //! \param v3uiSizeBlockKernels The size of the blocks for which the block shared memory size should be calculated.
+        //! \param v3uiBlockKernelsExtent The size of the blocks for which the block shared memory size should be calculated.
         //! \param ... The kernel invocation arguments for which the block shared memory size should be calculated.
         //! \return The size of the shared memory allocated for a block in bytes.
         //! The default version always returns zero.
         //-----------------------------------------------------------------------------
         template<typename... TArgs>
-        static std::size_t getBlockSharedExternMemSizeBytes(vec<3u> const & /*v3uiSizeBlockKernels*/, TArgs && ...)
+        static std::size_t getBlockSharedExternMemSizeBytes(vec<3u> const & /*v3uiBlockKernelsExtent*/, TArgs && ...)
         {
             return 0;
         }

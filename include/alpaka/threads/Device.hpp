@@ -81,9 +81,9 @@ namespace alpaka
                     deviceProperties.m_sName = host::getCpuName();
                     // TODO: Magic number. What is the maximum? Just set a reasonable value? There is a implementation defined maximum where the creation of a new thread crashes.
                     // std::thread::hardware_concurrency  can return 0, so a default for this case?
-                    deviceProperties.m_uiBlockKernelSizeMax = std::thread::hardware_concurrency() * 128;
-                    deviceProperties.m_v3uiBlockKernelSizePerDimMax = vec<3u>(deviceProperties.m_uiBlockKernelSizeMax, deviceProperties.m_uiBlockKernelSizeMax, deviceProperties.m_uiBlockKernelSizeMax);
-                    deviceProperties.m_v3uiGridBlockSizePerDimMax = vec<3u>(std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max());
+                    deviceProperties.m_uiBlockKernelsCountMax = std::thread::hardware_concurrency() * 8;
+                    deviceProperties.m_v3uiBlockKernelsExtentMax = vec<3u>(deviceProperties.m_uiBlockKernelsCountMax, deviceProperties.m_uiBlockKernelsCountMax, deviceProperties.m_uiBlockKernelsCountMax);
+                    deviceProperties.m_v3uiGridBlocksExtentMax = vec<3u>(std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max());
                     deviceProperties.m_uiExecutionUnitCount = std::thread::hardware_concurrency();          // TODO: This may be inaccurate.
                     deviceProperties.m_uiGlobalMemorySizeBytes = host::getGlobalMemorySizeBytes();
                     //deviceProperties.m_uiClockFrequencyHz = TODO;

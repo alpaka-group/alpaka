@@ -22,7 +22,7 @@
 
 #pragma once
 
-#include <alpaka/interfaces/WorkSize.hpp>   // IWorkSize
+#include <alpaka/interfaces/WorkExtent.hpp> // IWorkExtent
 
 namespace alpaka
 {
@@ -33,46 +33,46 @@ namespace alpaka
             //#############################################################################
             //! This class holds the implementation details for the work sizes of the CUDA accelerator.
             //#############################################################################
-            class WorkSizeCuda
+            class WorkExtentCuda
             {
             public:
                 //-----------------------------------------------------------------------------
                 //! Default-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC WorkSizeCuda() = default;
+                ALPAKA_FCT_ACC WorkExtentCuda() = default;
                 //-----------------------------------------------------------------------------
                 //! Copy-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC WorkSizeCuda(WorkSizeCuda const &) = default;
+                ALPAKA_FCT_ACC WorkExtentCuda(WorkExtentCuda const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC WorkSizeCuda(WorkSizeCuda &&) = default;
+                ALPAKA_FCT_ACC WorkExtentCuda(WorkExtentCuda &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Copy-assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC WorkSizeCuda & operator=(WorkSizeCuda const &) = delete;
+                ALPAKA_FCT_ACC WorkExtentCuda & operator=(WorkExtentCuda const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST ~WorkSizeCuda() noexcept = default;
+                ALPAKA_FCT_HOST ~WorkExtentCuda() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! \return The grid dimensions of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC vec<3u> getSizeGridBlocks() const
+                ALPAKA_FCT_ACC vec<3u> getExtentGridBlocks() const
                 {
                     return {gridDim.x, gridDim.y, gridDim.z};
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The block dimensions of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC vec<3u> getSizeBlockKernels() const
+                ALPAKA_FCT_ACC vec<3u> getExtentBlockKernels() const
                 {
                     return {blockDim.x, blockDim.y, blockDim.z};
                 }
             };
-            using TInterfacedWorkSize = alpaka::IWorkSize<WorkSizeCuda>;
+            using TInterfacedWorkExtent = alpaka::IWorkExtent<WorkExtentCuda>;
         }
     }
 }

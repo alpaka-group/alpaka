@@ -38,9 +38,9 @@ namespace alpaka
         struct DeviceProperties
         {
             std::string m_sName;
-            std::size_t m_uiBlockKernelSizeMax;
-            vec<3u> m_v3uiBlockKernelSizePerDimMax;
-            vec<3u> m_v3uiGridBlockSizePerDimMax;
+            std::size_t m_uiBlockKernelsCountMax;
+            vec<3u> m_v3uiBlockKernelsExtentMax;
+            vec<3u> m_v3uiGridBlocksExtentMax;
             std::size_t m_uiExecutionUnitCount;
             std::size_t m_uiGlobalMemorySizeBytes;
             //std::size_t m_uiClockFrequencyHz;

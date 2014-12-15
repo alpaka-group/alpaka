@@ -27,7 +27,7 @@
 
 // Base classes.
 #include <alpaka/threads/AccThreadsFwd.hpp>
-#include <alpaka/threads/WorkSize.hpp>              // TInterfacedWorkSize
+#include <alpaka/threads/WorkExtent.hpp>            // TInterfacedWorkExtent
 #include <alpaka/threads/Index.hpp>                 // TInterfacedIndex
 #include <alpaka/threads/Atomic.hpp>                // TInterfacedAtomic
 #include <alpaka/threads/Barrier.hpp>               // BarrierThreads
@@ -79,7 +79,7 @@ namespace alpaka
             //! The base class for all C++11 std::thread accelerated kernels.
             //#############################################################################
             class AccThreads :
-                protected TInterfacedWorkSize,
+                protected TInterfacedWorkExtent,
                 protected TInterfacedIndex,
                 protected TInterfacedAtomic
             {
@@ -94,7 +94,7 @@ namespace alpaka
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST AccThreads() :
-                    TInterfacedWorkSize(),
+                    TInterfacedWorkExtent(),
                     TInterfacedIndex(m_mThreadsToIndices, m_v3uiGridBlockIdx),
                     TInterfacedAtomic()
                 {}
@@ -104,7 +104,7 @@ namespace alpaka
                 // Do not copy most members because they are initialized by the executor for each accelerated execution.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST AccThreads(AccThreads const & ) :
-                    TInterfacedWorkSize(),
+                    TInterfacedWorkExtent(),
                     TInterfacedIndex(m_mThreadsToIndices, m_v3uiGridBlockIdx),
                     TInterfacedAtomic(),
                     m_mThreadsToIndices(),
@@ -137,7 +137,7 @@ namespace alpaka
                 ALPAKA_FCT_HOST typename alpaka::detail::DimToRetType<TDimensionality>::type getIdx() const
                 {
                     return this->TInterfacedIndex::getIdx<TOrigin, TUnit, TDimensionality>(
-                        *static_cast<TInterfacedWorkSize const *>(this));
+                        *static_cast<TInterfacedWorkExtent const *>(this));
                 }
 
                 //-----------------------------------------------------------------------------
@@ -279,8 +279,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                template<typename TWorkSize, typename... TKernelConstrArgs>
-                ALPAKA_FCT_HOST KernelExecutor(IWorkSize<TWorkSize> const & workSize, TKernelConstrArgs && ... args) :
+                template<typename TWorkExtent, typename... TKernelConstrArgs>
+                ALPAKA_FCT_HOST KernelExecutor(IWorkExtent<TWorkExtent> const & workExtent, TKernelConstrArgs && ... args) :
                     TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
 #ifdef ALPAKA_THREADS_NO_POOL
                     m_vThreadsInBlock(),
@@ -292,19 +292,19 @@ namespace alpaka
 #ifdef ALPAKA_DEBUG
                     std::cout << "[+] AccThreads::KernelExecutor()" << std::endl;
 #endif
-                    (*const_cast<TInterfacedWorkSize*>(static_cast<TInterfacedWorkSize const *>(this))) = workSize;
+                    (*const_cast<TInterfacedWorkExtent*>(static_cast<TInterfacedWorkExtent const *>(this))) = workExtent;
 
-                    auto const uiNumKernelsPerBlock(workSize.template getSize<Block, Kernels, Linear>());
-                    /*auto const uiMaxKernelsPerBlock(AccThreads::getSizeBlockKernelsLinearMax());
+                    auto const uiNumKernelsPerBlock(workExtent.template getExtent<Block, Kernels, Linear>());
+                    /*auto const uiMaxKernelsPerBlock(AccThreads::getExtentBlockKernelsLinearMax());
                     if(uiNumKernelsPerBlock > uiMaxKernelsPerBlock)
                     {
-                        throw std::runtime_error(("The given blockSize '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the threads accelerator!").c_str());
+                        throw std::runtime_error(("The given block kernels count '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the threads accelerator!").c_str());
                     }*/
 
                     this->AccThreads::m_uiNumKernelsPerBlock = uiNumKernelsPerBlock;
 
-                    m_v3uiSizeGridBlocks = workSize.template getSize<Grid, Blocks, D3>();
-                    m_v3uiSizeBlockKernels = workSize.template getSize<Block, Kernels, D3>();
+                    m_v3uiGridBlocksExtent = workExtent.template getExtent<Grid, Blocks, D3>();
+                    m_v3uiBlockKernelsExtent = workExtent.template getExtent<Block, Kernels, D3>();
 
                     //m_vThreadsInBlock.reserve(uiNumKernelsPerBlock);    // Minimal speedup?
 #ifdef ALPAKA_DEBUG
@@ -353,14 +353,14 @@ namespace alpaka
 #ifdef ALPAKA_DEBUG
                     std::cout << "[+] AccThreads::KernelExecutor::operator()" << std::endl;
 #endif
-                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(m_v3uiSizeBlockKernels, std::forward<TArgs>(args)...));
+                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(m_v3uiBlockKernelsExtent, std::forward<TArgs>(args)...));
                     this->AccThreads::m_vuiExternalSharedMem.resize(uiBlockSharedExternMemSizeBytes);
 #ifdef ALPAKA_DEBUG
-                    //std::cout << "GridBlocks: " << v3uiSizeGridBlocks << " BlockKernels: " << v3uiSizeBlockKernels << std::endl;
+                    //std::cout << "GridBlocks: " << v3uiGridBlocksExtent << " BlockKernels: " << v3uiBlockKernelsExtent << std::endl;
 #endif
 
 #ifndef ALPAKA_THREADS_NO_POOL
-                    auto const uiNumKernelsInBlock(this->AccThreads::getSize<Block, Kernels, Linear>());
+                    auto const uiNumKernelsInBlock(this->AccThreads::getExtent<Block, Kernels, Linear>());
                     // When using the thread pool the threads are yielding because this is faster. 
                     // Using condition variables and going to sleep is very costly for real threads. 
                     // Especially when the time to wait is really short (syncBlockKernels) yielding is much faster.
@@ -373,25 +373,25 @@ namespace alpaka
                     TPool pool(uiNumKernelsInBlock, uiNumKernelsInBlock);
 #endif
                     // Execute the blocks serially.
-                    for(std::uint32_t bz(0); bz<m_v3uiSizeGridBlocks[2]; ++bz)
+                    for(std::uint32_t bz(0); bz<m_v3uiGridBlocksExtent[2]; ++bz)
                     {
                         this->AccThreads::m_v3uiGridBlockIdx[2] = bz;
-                        for(std::uint32_t by(0); by<m_v3uiSizeGridBlocks[1]; ++by)
+                        for(std::uint32_t by(0); by<m_v3uiGridBlocksExtent[1]; ++by)
                         {
                             this->AccThreads::m_v3uiGridBlockIdx[1] = by;
-                            for(std::uint32_t bx(0); bx<m_v3uiSizeGridBlocks[0]; ++bx)
+                            for(std::uint32_t bx(0); bx<m_v3uiGridBlocksExtent[0]; ++bx)
                             {
                                 this->AccThreads::m_v3uiGridBlockIdx[0] = bx;
 
                                 // Execute the kernels in parallel threads.
                                 vec<3u> v3uiBlockKernelIdx;
-                                for(std::uint32_t tz(0); tz<m_v3uiSizeBlockKernels[2]; ++tz)
+                                for(std::uint32_t tz(0); tz<m_v3uiBlockKernelsExtent[2]; ++tz)
                                 {
                                     v3uiBlockKernelIdx[2] = tz;
-                                    for(std::uint32_t ty(0); ty<m_v3uiSizeBlockKernels[1]; ++ty)
+                                    for(std::uint32_t ty(0); ty<m_v3uiBlockKernelsExtent[1]; ++ty)
                                     {
                                         v3uiBlockKernelIdx[1] = ty;
-                                        for(std::uint32_t tx(0); tx<m_v3uiSizeBlockKernels[0]; ++tx)
+                                        for(std::uint32_t tx(0); tx<m_v3uiBlockKernelsExtent[0]; ++tx)
                                         {
                                             v3uiBlockKernelIdx[0] = tx;
 
@@ -501,8 +501,8 @@ namespace alpaka
 #endif
                 std::mutex mutable m_mtxMapInsert;
 
-                vec<3u> m_v3uiSizeGridBlocks;
-                vec<3u> m_v3uiSizeBlockKernels;
+                vec<3u> m_v3uiGridBlocksExtent;
+                vec<3u> m_v3uiBlockKernelsExtent;
             };
         }
     }

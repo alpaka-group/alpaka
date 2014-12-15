@@ -25,7 +25,7 @@
 #include <alpaka/core/Positioning.hpp>      // alpaka::origin::Grid/Blocks
 #include <alpaka/core/Common.hpp>           // ALPAKA_FCT_HOST_ACC
 
-#include <alpaka/host/WorkSize.hpp>         // alpaka::WorkSizeHost
+#include <alpaka/host/WorkExtent.hpp>       // alpaka::WorkExtentHost
 
 #include <utility>                          // std::forward
 
@@ -45,8 +45,8 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! \return The 3-dimensional index of the current kernel in the block.
             //-----------------------------------------------------------------------------
-            template<typename TWorkSize>
-            ALPAKA_FCT_HOST_ACC static DimToRetType<dim::D3>::type getIdx(TIndex const & index, IWorkSize<TWorkSize> const &)
+            template<typename TWorkExtent>
+            ALPAKA_FCT_HOST_ACC static DimToRetType<dim::D3>::type getIdx(TIndex const & index, IWorkExtent<TWorkExtent> const &)
             {
                 return index.getIdxBlockKernel();
             }
@@ -57,12 +57,12 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! \return The linearized index of the current kernel in the block.
             //-----------------------------------------------------------------------------
-            template<typename TWorkSize>
-            ALPAKA_FCT_HOST_ACC static DimToRetType<dim::Linear>::type getIdx(TIndex const & index, IWorkSize<TWorkSize> const & workSize)
+            template<typename TWorkExtent>
+            ALPAKA_FCT_HOST_ACC static DimToRetType<dim::Linear>::type getIdx(TIndex const & index, IWorkExtent<TWorkExtent> const & workExtent)
             {
-                auto const v3uiSizeBlockKernels(workSize.template getSize<origin::Block, unit::Kernels, dim::D3>());
-                auto const v3uiBlockKernelIdx(GetIdx<TIndex, origin::Block, unit::Kernels, dim::D3>::getIdx(index, workSize));
-                return v3uiBlockKernelIdx[2]*v3uiSizeBlockKernels[1]*v3uiSizeBlockKernels[0] + v3uiBlockKernelIdx[1]*v3uiSizeBlockKernels[0] + v3uiBlockKernelIdx[0];
+                auto const v3uiBlockKernelsExtent(workExtent.template getExtent<origin::Block, unit::Kernels, dim::D3>());
+                auto const v3uiBlockKernelIdx(GetIdx<TIndex, origin::Block, unit::Kernels, dim::D3>::getIdx(index, workExtent));
+                return v3uiBlockKernelIdx[2]*v3uiBlockKernelsExtent[1]*v3uiBlockKernelsExtent[0] + v3uiBlockKernelIdx[1]*v3uiBlockKernelsExtent[0] + v3uiBlockKernelIdx[0];
             }
         };
         template<typename TIndex>
@@ -71,11 +71,11 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! \return The 3-dimensional index of the current kernel in grid.
             //-----------------------------------------------------------------------------
-            template<typename TWorkSize>
-            ALPAKA_FCT_HOST_ACC static DimToRetType<dim::D3>::type getIdx(TIndex const & index, IWorkSize<TWorkSize> const & workSize)
+            template<typename TWorkExtent>
+            ALPAKA_FCT_HOST_ACC static DimToRetType<dim::D3>::type getIdx(TIndex const & index, IWorkExtent<TWorkExtent> const & workExtent)
             {
                 return 
-                    index.getIdxGridBlock() * workSize.template getSize<origin::Block, unit::Kernels, dim::D3>()
+                    index.getIdxGridBlock() * workExtent.template getExtent<origin::Block, unit::Kernels, dim::D3>()
                     + index.getIdxBlockKernel();
             }
         };
@@ -85,11 +85,11 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! \return The linearized index of the current kernel in the grid.
             //-----------------------------------------------------------------------------
-            template<typename TWorkSize>
-            ALPAKA_FCT_HOST_ACC static DimToRetType<dim::Linear>::type getIdx(TIndex const & index, IWorkSize<TWorkSize> const & workSize)
+            template<typename TWorkExtent>
+            ALPAKA_FCT_HOST_ACC static DimToRetType<dim::Linear>::type getIdx(TIndex const & index, IWorkExtent<TWorkExtent> const & workExtent)
             {
-                auto const v3uiGridKernelSize(workSize.template getSize<origin::Grid, unit::Kernels, dim::D3>());
-                auto const v3uiGridKernelIdx(GetIdx<TIndex, origin::Grid, unit::Kernels, dim::D3>::getIdx(index, workSize));
+                auto const v3uiGridKernelSize(workExtent.template getExtent<origin::Grid, unit::Kernels, dim::D3>());
+                auto const v3uiGridKernelIdx(GetIdx<TIndex, origin::Grid, unit::Kernels, dim::D3>::getIdx(index, workExtent));
                 return v3uiGridKernelIdx[2]*v3uiGridKernelSize[1]*v3uiGridKernelSize[0] + v3uiGridKernelIdx[1]*v3uiGridKernelSize[0] + v3uiGridKernelIdx[0];
             }
         };
@@ -99,8 +99,8 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! \return The 3-dimensional index of the current block in the grid.
             //-----------------------------------------------------------------------------
-            template<typename TWorkSize>
-            ALPAKA_FCT_HOST_ACC static DimToRetType<dim::D3>::type getIdx(TIndex const & index, IWorkSize<TWorkSize> const & )
+            template<typename TWorkExtent>
+            ALPAKA_FCT_HOST_ACC static DimToRetType<dim::D3>::type getIdx(TIndex const & index, IWorkExtent<TWorkExtent> const & )
             {
                 return index.getIdxGridBlock();
             }
@@ -111,12 +111,12 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! \return The linearized index of the current block in the grid.
             //-----------------------------------------------------------------------------
-            template<typename TWorkSize>
-            ALPAKA_FCT_HOST_ACC static DimToRetType<dim::Linear>::type getIdx(TIndex const & index, IWorkSize<TWorkSize> const & workSize)
+            template<typename TWorkExtent>
+            ALPAKA_FCT_HOST_ACC static DimToRetType<dim::Linear>::type getIdx(TIndex const & index, IWorkExtent<TWorkExtent> const & workExtent)
             {
-                auto const v3uiSizeGridBlocks(workSize.template getSize<origin::Grid, unit::Blocks, dim::D3>());
-                auto const v3uiGridBlockIdx(GetIdx<TIndex, origin::Grid, unit::Blocks, dim::D3>::getIdx(index, workSize));
-                return v3uiGridBlockIdx[2]*v3uiSizeGridBlocks[1]*v3uiSizeGridBlocks[0] + v3uiGridBlockIdx[1]*v3uiSizeGridBlocks[0] + v3uiGridBlockIdx[0];
+                auto const v3uiGridBlocksExtent(workExtent.template getExtent<origin::Grid, unit::Blocks, dim::D3>());
+                auto const v3uiGridBlockIdx(GetIdx<TIndex, origin::Grid, unit::Blocks, dim::D3>::getIdx(index, workExtent));
+                return v3uiGridBlockIdx[2]*v3uiGridBlocksExtent[1]*v3uiGridBlocksExtent[0] + v3uiGridBlockIdx[1]*v3uiGridBlocksExtent[0] + v3uiGridBlockIdx[0];
             }
         };
 
@@ -139,12 +139,12 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Get the index requested.
             //-----------------------------------------------------------------------------
-            template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3, typename TWorkSize = host::detail::WorkSizeHost>
-            ALPAKA_FCT_HOST_ACC typename DimToRetType<TDimensionality>::type getIdx(IWorkSize<TWorkSize> const & workSize) const
+            template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3, typename TWorkExtent = host::detail::WorkExtentHost>
+            ALPAKA_FCT_HOST_ACC typename DimToRetType<TDimensionality>::type getIdx(IWorkExtent<TWorkExtent> const & workExtent) const
             {
                 return GetIdx<TIndex, TOrigin, TUnit, TDimensionality>::getIdx(
                     *static_cast<TIndex const *>(this),
-                    workSize);
+                    workExtent);
             }
         };
     }

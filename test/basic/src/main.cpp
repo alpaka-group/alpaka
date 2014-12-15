@@ -31,7 +31,7 @@
 
 //#############################################################################
 //! An accelerated test kernel.
-//! Uses atomicOp(), syncBlockKernels(), shared memory, getIdx, getSize, global memory to compute a (useless) result.
+//! Uses atomicOp(), syncBlockKernels(), shared memory, getIdx, getExtent, global memory to compute a (useless) result.
 //! \tparam TAcc The accelerator environment to be executed on.
 //! \tparam TuiNumUselessWork The number of useless calculations done in each kernel execution.
 //#############################################################################
@@ -53,7 +53,7 @@ public:
     ALPAKA_FCT_HOST_ACC void operator()(std::uint32_t * const puiBlockRetVals, std::uint32_t const uiMult2) const
     {
         // The number of kernels in this block.
-        std::uint32_t const uiNumKernelsInBlock(TAcc::template getSize<alpaka::Block, alpaka::Kernels, alpaka::Linear>());
+        std::uint32_t const uiNumKernelsInBlock(TAcc::template getExtent<alpaka::Block, alpaka::Kernels, alpaka::Linear>());
 
         // Get the extern allocated shared memory.
         std::uint32_t * const pBlockShared(TAcc::template getBlockSharedExternMem<std::uint32_t>());
@@ -172,7 +172,7 @@ struct profileAcceleratedExampleKernel
 	{
 		std::cout << std::endl;
 		std::cout << "################################################################################" << std::endl;
-			
+		
 		using TKernel = ExampleAcceleratedKernel<TuiNumUselessWork>;
 		using TAccMemorySpace = typename TAcc::MemorySpace;
 
@@ -183,14 +183,14 @@ struct profileAcceleratedExampleKernel
 			<< ", workSize: " << workSize
 			<< ")" << std::endl;
 
-		std::size_t const uiNumBlocksInGrid(workSize.template getSize<alpaka::Grid, alpaka::Blocks, alpaka::Linear>());
-		std::size_t const uiNumKernelsInBlock(workSize.template getSize<alpaka::Block, alpaka::Kernels, alpaka::Linear>());
+		std::size_t const uiGridBlocksCount(workSize.template getExtent<alpaka::Grid, alpaka::Blocks, alpaka::Linear>());
+		std::size_t const uiBlockKernelsCount(workSize.template getExtent<alpaka::Block, alpaka::Kernels, alpaka::Linear>());
 
 		// An array for the return values calculated by the blocks.
-		std::vector<std::uint32_t> vuiBlockRetVals(uiNumBlocksInGrid, 0);
+		std::vector<std::uint32_t> vuiBlockRetVals(uiGridBlocksCount, 0);
 
 		// Allocate accelerator buffers and copy.
-		std::size_t const uiSizeBytes(uiNumBlocksInGrid * sizeof(std::uint32_t));
+		std::size_t const uiSizeBytes(uiGridBlocksCount * sizeof(std::uint32_t));
 		auto pBlockRetValsAcc(alpaka::memory::memAlloc<TAccMemorySpace, std::uint32_t>(uiSizeBytes));
 		alpaka::memory::memCopy<TAccMemorySpace, alpaka::MemorySpaceHost>(pBlockRetValsAcc.get(), vuiBlockRetVals.data(), uiSizeBytes);
 
@@ -203,10 +203,10 @@ struct profileAcceleratedExampleKernel
 		alpaka::memory::memCopy<alpaka::MemorySpaceHost, TAccMemorySpace>(vuiBlockRetVals.data(), pBlockRetValsAcc.get(), uiSizeBytes);
 
 		// Assert that the results are correct.
-		std::uint32_t const uiCorrectResult(static_cast<std::uint32_t>(uiNumKernelsInBlock*uiNumKernelsInBlock) * m_uiMult * uiMult2);
+		std::uint32_t const uiCorrectResult(static_cast<std::uint32_t>(uiBlockKernelsCount*uiBlockKernelsCount) * m_uiMult * uiMult2);
 
 		bool bResultCorrect(true);
-		for(std::size_t i(0); i<uiNumBlocksInGrid; ++i)
+		for(std::size_t i(0); i<uiGridBlocksCount; ++i)
 		{
 			if(vuiBlockRetVals[i] != uiCorrectResult)
 			{
@@ -249,19 +249,28 @@ int main()
 
         // Set the grid size.
         alpaka::vec<3u> const v3uiSizeGridBlocks(16u, 8u, 4u);
-
+		
         // Set the block size (to the minimum all enabled tests support).
-        alpaka::vec<3u> const v3uiSizeBlockKernels(
-#if defined ALPAKA_SERIAL_ENABLED
-        1u, 1u, 1u
-#elif defined ALPAKA_OPENMP_ENABLED
-        4u, 4u, 2u
-#elif defined ALPAKA_CUDA_ENABLED || defined ALPAKA_THREADS_ENABLED || defined ALPAKA_FIBERS_ENABLED
-        16u, 16u, 2u
-#else
-        1u, 1u, 1u
-#endif
-        );
+		alpaka::vec<3u> v3uiSizeBlockKernels;
+		
+		alpaka::vec<3u> const v3uiMaxBlockKernelsExtent(alpaka::getMaxBlockKernelExtentEnabledAccelerators());
+		std::size_t const uiMaxBlockKernelsCount(alpaka::getMaxBlockKernelCountEnabledAccelerators());
+
+		v3uiBlockKernelsExtent = v3uiMaxBlockKernelsExtent;
+
+		// If the block kernels extent allows more kernels then available on the accelerator, clip it.
+		std::size_t const uiBlockKernelsCount(v3uiMaxBlockKernelsExtent.prod());
+		if(uiBlockKernelsCount>uiMaxBlockKernelsCount)
+		{
+			// Very primitive clipping. Just halve it until it fits.
+			while(v3uiBlockKernelsExtent.prod()>uiMaxBlockKernelsCount)
+			{
+				v3uiBlockKernelsExtent = alpaka::vec<3u>(
+					std::max(static_cast<std::size_t>(1u), static_cast<std::size_t>(v3uiBlockKernelsExtent[0u]/2u)),
+					std::max(static_cast<std::size_t>(1u), static_cast<std::size_t>(v3uiBlockKernelsExtent[1u]/2u)),
+					std::max(static_cast<std::size_t>(1u), static_cast<std::size_t>(v3uiBlockKernelsExtent[2u]/2u)));
+			}
+		}
 
         using TuiNumUselessWork = boost::mpl::int_<100u>;
         std::uint32_t const uiMult2(5u);

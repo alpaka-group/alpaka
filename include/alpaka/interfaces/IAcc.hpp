@@ -45,13 +45,13 @@ namespace alpaka
     {
     public:
         //-----------------------------------------------------------------------------
-        //! \return The requested size.
+        //! \return The requested extent.
         //-----------------------------------------------------------------------------
         template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-        ALPAKA_FCT_HOST_ACC typename detail::DimToRetType<TDimensionality>::type getSize() const
+        ALPAKA_FCT_HOST_ACC typename detail::DimToRetType<TDimensionality>::type getExtent() const
         {
 #ifndef __CUDA_ARCH__
-            return TAcc::template getSize<TOrigin, TUnit, TDimensionality>();
+            return TAcc::template getExtent<TOrigin, TUnit, TDimensionality>();
 #else
             return {};
 #endif

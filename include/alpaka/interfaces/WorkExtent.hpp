@@ -34,73 +34,73 @@ namespace alpaka
         //#############################################################################
         //! The template to get the requested size.
         //#############################################################################
-        template<typename TWorkSize, typename TOrigin, typename TUnit, typename TDimensionality>
-        struct GetSize;
+        template<typename TWorkExtent, typename TOrigin, typename TUnit, typename TDimensionality>
+        struct GetExtent;
 
-        template<typename TWorkSize>
-        struct GetSize<TWorkSize, origin::Block, unit::Kernels, dim::D3>
+        template<typename TWorkExtent>
+        struct GetExtent<TWorkExtent, origin::Block, unit::Kernels, dim::D3>
         {
             //-----------------------------------------------------------------------------
             //! \return The number of kernels in each dimension of a block.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC static DimToRetType<dim::D3>::type getSize(TWorkSize const & workSize)
+            ALPAKA_FCT_HOST_ACC static DimToRetType<dim::D3>::type getExtent(TWorkExtent const & workExtent)
             {
-                return workSize.getSizeBlockKernels();
+                return workExtent.getExtentBlockKernels();
             }
         };
-        template<typename TWorkSize>
-        struct GetSize<TWorkSize, origin::Block, unit::Kernels, dim::Linear>
+        template<typename TWorkExtent>
+        struct GetExtent<TWorkExtent, origin::Block, unit::Kernels, dim::Linear>
         {
             //-----------------------------------------------------------------------------
             //! \return The number of kernels in a block.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC static DimToRetType<dim::Linear>::type getSize(TWorkSize const & workSize)
+            ALPAKA_FCT_HOST_ACC static DimToRetType<dim::Linear>::type getExtent(TWorkExtent const & workExtent)
             {
-                return GetSize<TWorkSize, origin::Block, unit::Kernels, dim::D3>::getSize(workSize).prod();
+                return GetExtent<TWorkExtent, origin::Block, unit::Kernels, dim::D3>::getExtent(workExtent).prod();
             }
         };
-        template<typename TWorkSize>
-        struct GetSize<TWorkSize, origin::Grid, unit::Kernels, dim::D3>
+        template<typename TWorkExtent>
+        struct GetExtent<TWorkExtent, origin::Grid, unit::Kernels, dim::D3>
         {
             //-----------------------------------------------------------------------------
             //! \return The number of kernels in each dimension of the grid.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC static DimToRetType<dim::D3>::type getSize(TWorkSize const & workSize)
+            ALPAKA_FCT_HOST_ACC static DimToRetType<dim::D3>::type getExtent(TWorkExtent const & workExtent)
             {
-                return workSize.getSizeGridBlocks() * workSize.getSizeBlockKernels();
+                return workExtent.getExtentGridBlocks() * workExtent.getExtentBlockKernels();
             }
         };
-        template<typename TWorkSize>
-        struct GetSize<TWorkSize, origin::Grid, unit::Kernels, dim::Linear>
+        template<typename TWorkExtent>
+        struct GetExtent<TWorkExtent, origin::Grid, unit::Kernels, dim::Linear>
         {
             //-----------------------------------------------------------------------------
             //! \return The number of kernels in the grid.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC static DimToRetType<dim::Linear>::type getSize(TWorkSize const & workSize)
+            ALPAKA_FCT_HOST_ACC static DimToRetType<dim::Linear>::type getExtent(TWorkExtent const & workExtent)
             {
-                return GetSize<TWorkSize, origin::Grid, unit::Kernels, dim::D3>::getSize(workSize).prod();
+                return GetExtent<TWorkExtent, origin::Grid, unit::Kernels, dim::D3>::getExtent(workExtent).prod();
             }
         };
-        template<typename TWorkSize>
-        struct GetSize<TWorkSize, origin::Grid, unit::Blocks, dim::D3>
+        template<typename TWorkExtent>
+        struct GetExtent<TWorkExtent, origin::Grid, unit::Blocks, dim::D3>
         {
             //-----------------------------------------------------------------------------
             //! \return The number of blocks in each dimension of the grid.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC static DimToRetType<dim::D3>::type getSize(TWorkSize const & workSize)
+            ALPAKA_FCT_HOST_ACC static DimToRetType<dim::D3>::type getExtent(TWorkExtent const & workExtent)
             {
-                return workSize.getSizeGridBlocks();
+                return workExtent.getExtentGridBlocks();
             }
         };
-        template<typename TWorkSize>
-        struct GetSize<TWorkSize, origin::Grid, unit::Blocks, dim::Linear>
+        template<typename TWorkExtent>
+        struct GetExtent<TWorkExtent, origin::Grid, unit::Blocks, dim::Linear>
         {
             //-----------------------------------------------------------------------------
             //! \return The number of blocks in the grid.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC static DimToRetType<dim::Linear>::type getSize(TWorkSize const & workSize)
+            ALPAKA_FCT_HOST_ACC static DimToRetType<dim::Linear>::type getExtent(TWorkExtent const & workExtent)
             {
-                return GetSize<TWorkSize, origin::Grid, unit::Blocks, dim::D3>::getSize(workSize).prod();
+                return GetExtent<TWorkExtent, origin::Grid, unit::Blocks, dim::D3>::getExtent(workExtent).prod();
             }
         };
     }
@@ -109,42 +109,42 @@ namespace alpaka
     //! The interface of the work size.
     // TODO: Rename into e.g.: Layout, Subdivision, Partition, Segmentation, Decomposition
     //#############################################################################
-    template<typename TWorkSize>
-    class IWorkSize :
-        private TWorkSize
+    template<typename TWorkExtent>
+    class IWorkExtent :
+        private TWorkExtent
     {
         //-----------------------------------------------------------------------------
         //! Stream out operator.
         //-----------------------------------------------------------------------------
-        template<typename TWorkSize2>
-        friend std::ostream & operator << (std::ostream & os, IWorkSize<TWorkSize2> const & workSize);
+        template<typename TWorkExtent2>
+        friend std::ostream & operator << (std::ostream & os, IWorkExtent<TWorkExtent2> const & workExtent);
 
     public:
         //-----------------------------------------------------------------------------
         //! Constructor.
         //-----------------------------------------------------------------------------
         template<typename... TArgs>
-        ALPAKA_FCT_HOST_ACC IWorkSize(TArgs && ... args) :
-            TWorkSize(std::forward<TArgs>(args)...)
+        ALPAKA_FCT_HOST_ACC IWorkExtent(TArgs && ... args) :
+            TWorkExtent(std::forward<TArgs>(args)...)
         {}
 
         //-----------------------------------------------------------------------------
         //! Get the size requested.
         //-----------------------------------------------------------------------------
         template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-        ALPAKA_FCT_HOST_ACC typename detail::DimToRetType<TDimensionality>::type getSize() const
+        ALPAKA_FCT_HOST_ACC typename detail::DimToRetType<TDimensionality>::type getExtent() const
         {
-            return detail::GetSize<TWorkSize, TOrigin, TUnit, TDimensionality>::getSize(
-                *static_cast<TWorkSize const *>(this));
+            return detail::GetExtent<TWorkExtent, TOrigin, TUnit, TDimensionality>::getExtent(
+                *static_cast<TWorkExtent const *>(this));
         }
     };
 
     //-----------------------------------------------------------------------------
     //! Stream out operator.
     //-----------------------------------------------------------------------------
-    template<typename TWorkSize>
-    ALPAKA_FCT_HOST std::ostream & operator << (std::ostream & os, IWorkSize<TWorkSize> const & workSize)
+    template<typename TWorkExtent>
+    ALPAKA_FCT_HOST std::ostream & operator << (std::ostream & os, IWorkExtent<TWorkExtent> const & workExtent)
     {
-        return (os << "{GridBlocks: " << workSize.getSizeGridBlocks() << ", BlockKernels: " << workSize.getSizeBlockKernels() << "}");
+        return (os << "{GridBlocks: " << workExtent.getExtentGridBlocks() << ", BlockKernels: " << workExtent.getExtentBlockKernels() << "}");
     }
 }

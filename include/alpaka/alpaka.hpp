@@ -44,14 +44,16 @@
 #include <alpaka/interfaces/BlockSharedExternMemSizeBytes.hpp>
 #include <alpaka/interfaces/Memory.hpp>
 
-#include <alpaka/host/WorkSize.hpp>         // alpaka::WorkSizeHost
+#include <alpaka/host/WorkExtent.hpp>       // alpaka::WorkExtentHost
 
 #include <iostream>                         // std::cout
+#include <algorithm>                        // std::min
 
 #include <boost/mpl/vector.hpp>             // boost::mpl::vector
 #include <boost/mpl/filter_view.hpp>        // boost::mpl::filter_view
 #include <boost/type_traits/is_same.hpp>    // boost::is_same
 #include <boost/mpl/not.hpp>                // boost::not_
+#include <boost/mpl/for_each.hpp>           // boost::mpl::for_each
 
 //-----------------------------------------------------------------------------
 //! The alpaka library namespace.
@@ -137,4 +139,75 @@ namespace alpaka
                 >
             >
         >::type;
+
+    namespace detail
+    {
+        struct CorrectMaxBlockKernelExtent
+        {
+            //-----------------------------------------------------------------------------
+            //! \return The maximum block size per dimension supported by all of the given accelerators.
+            //-----------------------------------------------------------------------------
+            template<typename TAcc>
+            void operator()(TAcc, alpaka::vec<3u> & v3uiBlockKernelExtent)
+            {
+                using TDeviceManager = alpaka::device::DeviceManager<TAcc>;
+                auto const deviceProperties(TDeviceManager::getCurrentDevice().getProperties());
+                auto const & v3uiBlockKernelsExtentMax(deviceProperties.m_v3uiBlockKernelsExtentMax);
+
+                v3uiBlockKernelExtent = alpaka::vec<3u>(
+                    std::min(v3uiBlockKernelExtent[0u], v3uiBlockKernelsExtentMax[0u]),
+                    std::min(v3uiBlockKernelExtent[1u], v3uiBlockKernelsExtentMax[1u]),
+                    std::min(v3uiBlockKernelExtent[2u], v3uiBlockKernelsExtentMax[2u])
+                );
+            }
+        };
+
+        struct CorrectMaxBlockKernelCount
+        {
+            //-----------------------------------------------------------------------------
+            //! \return The maximum block size supported by all of the given accelerators.
+            //-----------------------------------------------------------------------------
+            template<typename TAcc>
+            void operator()(TAcc, std::size_t & uiBlockKernelCount)
+            {
+                using TDeviceManager = alpaka::device::DeviceManager<TAcc>;
+                auto const deviceProperties(TDeviceManager::getCurrentDevice().getProperties());
+                auto const & uiBlockKernelCountMax(deviceProperties.m_uiBlockKernelsCountMax);
+
+                uiBlockKernelCount = std::min(uiBlockKernelCount, uiBlockKernelCountMax);
+            }
+        };
+    }
+
+    //-----------------------------------------------------------------------------
+    //! \return The maximum block size per dimension supported by all of the enabled accelerators.
+    //-----------------------------------------------------------------------------
+    alpaka::vec<3u> getMaxBlockKernelExtentEnabledAccelerators()
+    {
+        alpaka::vec<3u> v3uiMaxBlockKernelExtent(
+            std::numeric_limits<std::size_t>::max(),
+            std::numeric_limits<std::size_t>::max(),
+            std::numeric_limits<std::size_t>::max());
+
+        boost::mpl::for_each<alpaka::EnabledAccelerators>(
+            std::bind(detail::CorrectMaxBlockKernelExtent(), std::placeholders::_1, std::ref(v3uiMaxBlockKernelExtent))
+        );
+
+        return v3uiMaxBlockKernelExtent;
+    }
+
+    //-----------------------------------------------------------------------------
+    //! \return The maximum block size supported by all of the enabled accelerators.
+    //-----------------------------------------------------------------------------
+    std::size_t getMaxBlockKernelCountEnabledAccelerators()
+    {
+        std::size_t uiMaxBlockKernelCount(
+            std::numeric_limits<std::size_t>::max());
+
+        boost::mpl::for_each<alpaka::EnabledAccelerators>(
+            std::bind(detail::CorrectMaxBlockKernelCount(), std::placeholders::_1, std::ref(uiMaxBlockKernelCount))
+        );
+
+        return uiMaxBlockKernelCount;
+    }
 }

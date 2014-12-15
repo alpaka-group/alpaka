@@ -22,7 +22,7 @@
 
 #pragma once
 
-#include <alpaka/openmp/WorkSize.hpp>   // TInterfacedWorkSize
+#include <alpaka/openmp/WorkExtent.hpp> // TInterfacedWorkExtent
 
 #include <alpaka/openmp/Common.hpp>
 
@@ -46,9 +46,9 @@ namespace alpaka
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST IndexOpenMp(
-                    TInterfacedWorkSize const & workSize,
+                    TInterfacedWorkExtent const & workExtent,
                     vec<3u> const & v3uiGridBlockIdx) :
-                    m_WorkSize(workSize),
+                    m_WorkExtent(workExtent),
                     m_v3uiGridBlockIdx(v3uiGridBlockIdx)
                 {}
                 //-----------------------------------------------------------------------------
@@ -77,11 +77,11 @@ namespace alpaka
                     assert(::omp_get_thread_num()>=0);
                     auto const uiThreadId(static_cast<std::uint32_t>(::omp_get_thread_num()));
                     // Get the number of kernels in each dimension of the grid.
-                    auto const v3uiSizeBlockKernels(m_WorkSize.getSize<Block, Kernels, D3>());
+                    auto const v3uiBlockKernelsExtent(m_WorkExtent.getExtent<Block, Kernels, D3>());
 
                     return mapIndex<3>(
                         vec<1u>(uiThreadId), 
-                        m_WorkSize.getSize<Block, Kernels, D3>().subvec<2>());
+                        m_WorkExtent.getExtent<Block, Kernels, D3>().subvec<2>());
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The block index of the currently executed kernel.
@@ -92,7 +92,7 @@ namespace alpaka
                 }
 
             private:
-                TInterfacedWorkSize const & m_WorkSize;        //!< The mapping of thread id's to thread indices.
+                TInterfacedWorkExtent const & m_WorkExtent;        //!< The mapping of thread id's to thread indices.
                 vec<3u> const & m_v3uiGridBlockIdx;        //!< The index of the currently executed block.
             };
             using TInterfacedIndex = alpaka::detail::IIndex<IndexOpenMp>;

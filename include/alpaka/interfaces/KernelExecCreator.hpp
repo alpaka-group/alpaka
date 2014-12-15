@@ -113,28 +113,28 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! \return An KernelExecutor with the given extents.
             //-----------------------------------------------------------------------------
-            template<typename TWorkSize>
-            ALPAKA_FCT_HOST TKernelExecutor operator()(IWorkSize<TWorkSize> const & workSize) const
+            template<typename TWorkExtent>
+            ALPAKA_FCT_HOST TKernelExecutor operator()(IWorkExtent<TWorkExtent> const & workExtent) const
             {
-                return createKernelExecutor(workSize, TKernelConstrArgsIndexSequence());
+                return createKernelExecutor(workExtent, TKernelConstrArgsIndexSequence());
             }
             //-----------------------------------------------------------------------------
             //! \return An KernelExecutor with the given extents.
             //-----------------------------------------------------------------------------
-            template<typename TWorkSize>
-            ALPAKA_FCT_HOST TKernelExecutor operator()(vec<3u> const & v3uiSizeGridBlocks, vec<3u> const & v3uiSizeBlockKernels) const
+            template<typename TWorkExtent>
+            ALPAKA_FCT_HOST TKernelExecutor operator()(vec<3u> const & v3uiGridBlocksExtent, vec<3u> const & v3uiBlockKernelsExtent) const
             {
-                return createKernelExecutor(WorkSize(v3uiSizeGridBlocks, v3uiSizeBlockKernels), TKernelConstrArgsIndexSequence());
+                return createKernelExecutor(WorkExtent(v3uiGridBlocksExtent, v3uiBlockKernelsExtent), TKernelConstrArgsIndexSequence());
             }
 
         private:
             //-----------------------------------------------------------------------------
             //! \return An KernelExecutor with the given extents.
             //-----------------------------------------------------------------------------
-            template<typename TWorkSize, std::size_t ... TIndices>
-            ALPAKA_FCT_HOST TKernelExecutor createKernelExecutor(IWorkSize<TWorkSize> const & workSize, std_extension::index_sequence<TIndices...>) const
+            template<typename TWorkExtent, std::size_t ... TIndices>
+            ALPAKA_FCT_HOST TKernelExecutor createKernelExecutor(IWorkExtent<TWorkExtent> const & workExtent, std_extension::index_sequence<TIndices...>) const
             {
-                return TKernelExecutor(workSize, std::get<TIndices>(std::forward<TKernelConstrArgs>(m_tupleKernelConstrArgs))...);
+                return TKernelExecutor(workExtent, std::get<TIndices>(std::forward<TKernelConstrArgs>(m_tupleKernelConstrArgs))...);
             }
 
         private:
