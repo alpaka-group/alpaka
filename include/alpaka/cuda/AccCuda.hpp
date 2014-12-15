@@ -235,10 +235,39 @@ namespace alpaka
 #endif
                     auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(m_v3uiSizeBlockKernels, std::forward<TArgs>(args)...));
 
-                    detail::cudaKernel<<<gridDim, blockDim, uiBlockSharedExternMemSizeBytes>>>(*static_cast<TAcceleratedKernel const *>(this), args...);
+                    // Instead of using the language extension for the kernel call, we use the runtime API.
+                    // This allows us to get better error information.
+                    // TODO: Add stream!
+                    //detail::cudaKernel<<<gridDim, blockDim, uiBlockSharedExternMemSizeBytes>>>(*static_cast<TAcceleratedKernel const *>(this), args...);
+
+                    ALPAKA_CUDA_CHECK(cudaConfigureCall(gridDim, blockDim, uiBlockSharedExternMemSizeBytes));
+                    pushCudaKernelArgument<0>(*static_cast<TAcceleratedKernel const *>(this), std::forward<TArgs>(args)...);
+                    ALPAKA_CUDA_CHECK(cudaLaunch(cudaKernel));
 #ifdef ALPAKA_DEBUG
                     std::cout << "[-] AccCuda::KernelExecutor::operator()" << std::endl;
 #endif
+                }
+
+            private:
+                //-----------------------------------------------------------------------------
+                //! Push kernel arguments.
+                //-----------------------------------------------------------------------------
+                template<std::size_t TuiOffset>
+                pushCudaKernelArgument()
+                {
+                    // The base case to push zero arguments.
+                }
+                //-----------------------------------------------------------------------------
+                //! Push kernel arguments.
+                //-----------------------------------------------------------------------------
+                template<std::size_t TuiOffset, typename T0, typename... TArgs>
+                pushCudaKernelArgument(T0 && arg0, TArgs && ... args)
+                {
+                    // Push the first argument.
+                    ALPAKA_CUDA_CHECK(cudaSetupArgument(&arg0, sizeof(arg0), TuiOffset));
+
+                    // Push the rest of the arguments recursively.
+                    pushCudaKernelArgument<TuiOffset+sizeof(arg0)>(std::forward<TArgs>(args)...);
                 }
 
             private:
