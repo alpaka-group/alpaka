@@ -48,6 +48,8 @@ namespace alpaka
     {
         //#############################################################################
         //! TaskPackage.
+        //!
+        //! \tparam TCurrentException Must have a static method "current_exception()" that returns the current exception.
         //#############################################################################
         template<typename TCurrentException>
         class TaskPackage
@@ -85,6 +87,11 @@ namespace alpaka
 
         //#############################################################################
         //! TaskPackageImpl with return type.
+        //!
+        //! \tparam TCurrentException Must have a static method "current_exception()" that returns the current exception.
+        //! \tparam TPromise The promise type returned by the task.
+        //! \tparam TFunc The type of the function to execute.
+        //! \tparam TFuncReturn The return type of the TFunc. Used for class specialization.
         //#############################################################################
         template<typename TCurrentException, template<typename TFuncReturn> class TPromise, typename TFunc, typename TFuncReturn>
         class TaskPackageImpl :
@@ -123,6 +130,10 @@ namespace alpaka
 
         //#############################################################################
         //! TaskPackageImpl without return type.
+        //!
+        //! \tparam TCurrentException Must have a static method "current_exception()" that returns the current exception.
+        //! \tparam TPromise The promise type returned by the task.
+        //! \tparam TFunc The type of the function to execute.
         //#############################################################################
         template<typename TCurrentException, template<typename TFuncReturn> class TPromise, typename TFunc>
         struct TaskPackageImpl<TCurrentException, TPromise, TFunc, void> :
@@ -161,6 +172,15 @@ namespace alpaka
 
         //#############################################################################
         //! ConcurrentExecutionPool using yield.
+        //!
+        //! \tparam TConcurrentExecutor The type of concurrent executor (for example std::thread). 
+        //! \tparam TPromise The promise type returned by the task.
+        //! \tparam TCurrentException Must have a static method "current_exception()" that returns the current exception.
+        //! \tparam TYield The type is required to have a static method "void yield()" to yield the current thread if there is no work.
+        //! \tparam TMutex Unused. The mutex type used for locking threads.
+        //! \tparam TUniqueLock Unused. The lock type used to lock the TMutex.
+        //! \tparam TConditionVariable Unused. The condition variable type used to make the threads wait if there is no work. Uses the TUniqueLock.
+        //! \tparam TbYield Booleam value the threads should yield instead of wait for a condition variable.
         //#############################################################################
         template<typename TConcurrentExecutor, template<typename TFuncReturn> class TPromise, typename TCurrentException, typename TYield, typename TMutex = void, template<typename TMutex2> class TUniqueLock = std::atomic, typename TConditionVariable = void, bool TbYield = true>
         class ConcurrentExecutionPool
@@ -245,8 +265,10 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Runs the given function on one of the pool in First In First Out (FIFO) order.
             //! 
+            //! \tparam TFunc   The function type.
             //! \param task     Function or functor to be called on the pool.
             //!                 Takes an arbitrary number of arguments and arbitrary return type.
+            //! \tparam TArgs   The argument types pack.
             //! \param args     Arguments for task, cannot be moved. 
             //!                 If such parameters must be used, use a lambda and capture via move then move the lambda.
             //! 
@@ -338,7 +360,15 @@ namespace alpaka
         };
 
         //#############################################################################
-        //! ConcurrentExecutionPool using condition_variable to wait for new work.
+        //! ConcurrentExecutionPool using a condition variable to wait for new work.
+        //!
+        //! \tparam TConcurrentExecutor The type of concurrent executor (for example std::thread). 
+        //! \tparam TPromise The promise type returned by the task.
+        //! \tparam TCurrentException Must have a static method "current_exception()" that returns the current exception.
+        //! \tparam TYield Unused. The type is required to have a static method "void yield()" to yield the current thread if there is no work.
+        //! \tparam TMutex The mutex type used for locking threads.
+        //! \tparam TUniqueLock The lock type used to lock the TMutex.
+        //! \tparam TConditionVariable The condition variable type used to make the threads wait if there is no work. Uses the TUniqueLock.
         //#############################################################################
         template<typename TConcurrentExecutor, template<typename TFuncReturn> class TPromise, typename TCurrentException, typename TYield, typename TMutex, template<typename TMutex2> class TUniqueLock, typename TConditionVariable>
         class ConcurrentExecutionPool<TConcurrentExecutor, TPromise, TCurrentException, TYield, TMutex, TUniqueLock, TConditionVariable, false>
@@ -427,8 +457,10 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Runs the given function on one of the pool in First In First Out (FIFO) order.
             //! 
+            //! \tparam TFunc   The function type.
             //! \param task     Function or functor to be called on the pool.
             //!                 Takes an arbitrary number of arguments and arbitrary return type.
+            //! \tparam TArgs   The argument types pack.
             //! \param args     Arguments for task, cannot be moved. 
             //!                 If such parameters must be used, use a lambda and capture via move then move the lambda.
             //! 

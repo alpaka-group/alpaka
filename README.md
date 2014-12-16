@@ -25,7 +25,7 @@ Requirements
 By default only header-only libraries are used.
 
 When using the **Fibers-Accelerator** back-end, `boost-coroutine`, `boost-context` and
-the proposed boost library `boost-fibers` are required to be build.
+the proposed boost library [`boost-fibers`](https://github.com/olk/boost-fiber) from the develop branch are required to be build.
 
 When using the **CUDA-Accelerator** back-end, version *6.5* of the *CUDA SDK* is the
 minimum requirement.

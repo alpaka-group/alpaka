@@ -36,6 +36,7 @@ namespace alpaka
     struct BlockSharedExternMemSizeBytes
     {
         //-----------------------------------------------------------------------------
+        //! \tparam TArgs The kernel invocation argument types pack.
         //! \param v3uiBlockKernelsExtent The size of the blocks for which the block shared memory size should be calculated.
         //! \param ... The kernel invocation arguments for which the block shared memory size should be calculated.
         //! \return The size of the shared memory allocated for a block in bytes.
