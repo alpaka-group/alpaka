@@ -169,6 +169,25 @@ void profileAcceleratedKernel(TExec const & exec, TArgs && ... args)
 
     std::cout << "Execution time: " << std::chrono::duration_cast<std::chrono::milliseconds>(durElapsed).count() << " ms" << std::endl;
 }
+
+//-----------------------------------------------------------------------------
+//! \param uiMaxDivisor The maximum divisor.
+//! \param uiDividend The dividend.
+//! \return A number that statisfies the following conditions:
+//!     1) uiDividend/ret==0
+//!     2) ret<=uiMaxDivisor
+//-----------------------------------------------------------------------------
+std::size_t nextLowerOrEqualFactor(std::size_t const & uiMaxDivisor, std::size_t const & uiDividend)
+{
+    std::size_t uiDivisor(uiMaxDivisor);
+    // TODO: This is not very efficient.
+    while((uiDividend%uiDivisor)!=0)
+    {
+        --uiDivisor;
+    }
+    return uiDivisor;
+}
+
 //-----------------------------------------------------------------------------
 //! Profiles the example kernel and checks the result.
 //-----------------------------------------------------------------------------
@@ -218,6 +237,12 @@ struct ProfileAcceleratedMatMulKernel
                 }
             }
         }
+
+        // Make the block kernels extent divide the matrix size.
+        v3uiBlockKernelsExtent = alpaka::vec<3u>(
+            nextLowerOrEqualFactor(v3uiBlockKernelsExtent[0u], uiMatrixSize),
+            nextLowerOrEqualFactor(v3uiBlockKernelsExtent[1u], uiMatrixSize),
+            nextLowerOrEqualFactor(v3uiBlockKernelsExtent[2u], uiMatrixSize));
 
         // Set the grid size.
         alpaka::vec<3u> const v3uiGridBlocksExtent(((uiMatrixSize-1u)/v3uiBlockKernelsExtent[0u])+1u, ((uiMatrixSize-1u)/v3uiBlockKernelsExtent[1u])+1u, 1u);

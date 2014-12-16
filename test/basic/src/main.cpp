@@ -167,8 +167,8 @@ void profileAcceleratedKernel(TExec const & exec, TArgs && ... args)
 template<typename TuiNumUselessWork>
 struct profileAcceleratedExampleKernel
 {
-	template<typename TAcc, typename TWorkSize>
-	void operator()(TAcc, alpaka::IWorkSize<TWorkSize> const & workSize, std::uint32_t const uiMult2)
+	template<typename TAcc, typename TWorkExtent>
+	void operator()(TAcc, alpaka::IWorkExtent<TWorkExtent> const & workExtent, std::uint32_t const uiMult2)
 	{
 		std::cout << std::endl;
 		std::cout << "################################################################################" << std::endl;
@@ -180,11 +180,11 @@ struct profileAcceleratedExampleKernel
 			<< "AcceleratedExampleKernelProfiler("
 			<< " accelerator: " << typeid(TAcc).name()
 			<< ", kernel: " << typeid(TKernel).name()
-			<< ", workSize: " << workSize
+			<< ", workExtent: " << workExtent
 			<< ")" << std::endl;
 
-		std::size_t const uiGridBlocksCount(workSize.template getExtent<alpaka::Grid, alpaka::Blocks, alpaka::Linear>());
-		std::size_t const uiBlockKernelsCount(workSize.template getExtent<alpaka::Block, alpaka::Kernels, alpaka::Linear>());
+		std::size_t const uiGridBlocksCount(workExtent.template getExtent<alpaka::Grid, alpaka::Blocks, alpaka::Linear>());
+		std::size_t const uiBlockKernelsCount(workExtent.template getExtent<alpaka::Block, alpaka::Kernels, alpaka::Linear>());
 
 		// An array for the return values calculated by the blocks.
 		std::vector<std::uint32_t> vuiBlockRetVals(uiGridBlocksCount, 0);
@@ -197,7 +197,7 @@ struct profileAcceleratedExampleKernel
 		std::uint32_t const m_uiMult(42);
 
 		auto exec(alpaka::createKernelExecutor<TAcc, TKernel>(m_uiMult));
-		profileAcceleratedKernel(exec(workSize), pBlockRetValsAcc.get(), uiMult2);
+		profileAcceleratedKernel(exec(workExtent), pBlockRetValsAcc.get(), uiMult2);
 
 		// Copy back the result.
 		alpaka::memory::memCopy<alpaka::MemorySpaceHost, TAccMemorySpace>(vuiBlockRetVals.data(), pBlockRetValsAcc.get(), uiSizeBytes);
@@ -223,6 +223,25 @@ struct profileAcceleratedExampleKernel
 		std::cout << "################################################################################" << std::endl;
 	}
 };
+
+//-----------------------------------------------------------------------------
+//! \param uiMaxDivisor The maximum divisor.
+//! \param uiDividend The dividend.
+//! \return A number that statisfies the following conditions:
+//!     1) uiDividend/ret==0
+//!     2) ret<=uiMaxDivisor
+//-----------------------------------------------------------------------------
+std::size_t nextLowerOrEqualFactor(std::size_t const & uiMaxDivisor, std::size_t const & uiDividend)
+{
+    std::size_t uiDivisor(uiMaxDivisor);
+    // TODO: This is not very efficient.
+    while((uiDividend%uiDivisor)!=0)
+    {
+        --uiDivisor;
+    }
+    return uiDivisor;
+}
+
 //-----------------------------------------------------------------------------
 //! Program entry point.
 //-----------------------------------------------------------------------------
@@ -248,10 +267,10 @@ int main()
 #endif
 
         // Set the grid size.
-        alpaka::vec<3u> const v3uiSizeGridBlocks(16u, 8u, 4u);
+        alpaka::vec<3u> const v3uiGridBlocksExtent(16u, 8u, 4u);
 		
         // Set the block size (to the minimum all enabled tests support).
-		alpaka::vec<3u> v3uiSizeBlockKernels;
+		alpaka::vec<3u> v3uiBlockKernelsExtent;
 		
 		alpaka::vec<3u> const v3uiMaxBlockKernelsExtent(alpaka::getMaxBlockKernelExtentEnabledAccelerators());
 		std::size_t const uiMaxBlockKernelsCount(alpaka::getMaxBlockKernelCountEnabledAccelerators());
@@ -271,15 +290,21 @@ int main()
 					std::max(static_cast<std::size_t>(1u), static_cast<std::size_t>(v3uiBlockKernelsExtent[2u]/2u)));
 			}
 		}
+		
+        // Make the block kernels extent divide the matrix size.
+        v3uiBlockKernelsExtent = alpaka::vec<3u>(
+            nextLowerOrEqualFactor(v3uiBlockKernelsExtent[0u], uiMatrixSize),
+            nextLowerOrEqualFactor(v3uiBlockKernelsExtent[1u], uiMatrixSize),
+            nextLowerOrEqualFactor(v3uiBlockKernelsExtent[2u], uiMatrixSize));
 
         using TuiNumUselessWork = boost::mpl::int_<100u>;
         std::uint32_t const uiMult2(5u);
 
-        alpaka::WorkSize const workSize(v3uiSizeGridBlocks, v3uiSizeBlockKernels);
+        alpaka::WorkExtent const workExtent(v3uiGridBlocksExtent, v3uiBlockKernelsExtent);
 
 		// Execute the kernel on all enabled accelerators.
 		boost::mpl::for_each<alpaka::EnabledAccelerators>(
-			std::bind(ProfileAcceleratedExampleKernel<TuiNumUselessWork>(), std::placeholders::_1, workSize, uiMult2)
+			std::bind(ProfileAcceleratedExampleKernel<TuiNumUselessWork>(), std::placeholders::_1, workExtent, uiMult2)
 		);
 
         return 0;
