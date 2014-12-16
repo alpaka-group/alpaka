@@ -171,24 +171,6 @@ void profileAcceleratedKernel(TExec const & exec, TArgs && ... args)
 }
 
 //-----------------------------------------------------------------------------
-//! \param uiMaxDivisor The maximum divisor.
-//! \param uiDividend The dividend.
-//! \return A number that statisfies the following conditions:
-//!     1) uiDividend/ret==0
-//!     2) ret<=uiMaxDivisor
-//-----------------------------------------------------------------------------
-std::size_t nextLowerOrEqualFactor(std::size_t const & uiMaxDivisor, std::size_t const & uiDividend)
-{
-    std::size_t uiDivisor(uiMaxDivisor);
-    // TODO: This is not very efficient.
-    while((uiDividend%uiDivisor)!=0)
-    {
-        --uiDivisor;
-    }
-    return uiDivisor;
-}
-
-//-----------------------------------------------------------------------------
 //! Profiles the example kernel and checks the result.
 //-----------------------------------------------------------------------------
 struct ProfileAcceleratedMatMulKernel
@@ -201,53 +183,11 @@ struct ProfileAcceleratedMatMulKernel
 
         using TKernel = MatMulKernel<>;
         using TAccMemorySpace = typename TAcc::MemorySpace;
-        using TDeviceManager = alpaka::device::DeviceManager<TAcc>;
 
-        // Set the block size (to the minimum all enabled tests support).
-        alpaka::vec<3u> v3uiBlockKernelsExtent;
-
-        if(bAdaptiveBlockKernelsExtent)
-        {
-            auto const deviceProperties(TDeviceManager::getCurrentDevice().getProperties());
-            auto const & v3uiBlockKernelsExtentMax(deviceProperties.m_v3uiBlockKernelsExtentMax);
-            auto const & uiBlockKernelCountMax(deviceProperties.m_uiBlockKernelsCountMax);
-            // TODO: This division strategy is not optimal at all. Just find the (next smaller or equal) square fitting into the maximum number of kernels per block. 
-            std::size_t const uiBlockKernelsCount(static_cast<std::size_t>(std::sqrt(static_cast<double>(uiBlockKernelCountMax))));
-
-            v3uiBlockKernelsExtent = alpaka::vec<3u>(std::min(v3uiBlockKernelsExtentMax[0u], uiBlockKernelsCount), std::min(v3uiBlockKernelsExtentMax[1u], uiBlockKernelsCount), 1u);
-        }
-        else
-        {
-            alpaka::vec<3u> const v3uiMaxBlockKernelsExtent(alpaka::getMaxBlockKernelExtentEnabledAccelerators());
-            std::size_t const uiMaxBlockKernelsCount(alpaka::getMaxBlockKernelCountEnabledAccelerators());
-
-            v3uiBlockKernelsExtent = v3uiMaxBlockKernelsExtent;
-
-            // If the block kernels extent allows more kernels then available on the accelerator, clip it.
-            std::size_t const uiBlockKernelsCount(v3uiMaxBlockKernelsExtent.prod());
-            if(uiBlockKernelsCount>uiMaxBlockKernelsCount)
-            {
-                // Very primitive clipping. Just halve it until it fits.
-                while(v3uiBlockKernelsExtent.prod()>uiMaxBlockKernelsCount)
-                {
-                    v3uiBlockKernelsExtent = alpaka::vec<3u>(
-                        std::max(static_cast<std::size_t>(1u), static_cast<std::size_t>(v3uiBlockKernelsExtent[0u]/2u)),
-                        std::max(static_cast<std::size_t>(1u), static_cast<std::size_t>(v3uiBlockKernelsExtent[1u]/2u)),
-                        std::max(static_cast<std::size_t>(1u), static_cast<std::size_t>(v3uiBlockKernelsExtent[2u]/2u)));
-                }
-            }
-        }
-
-        // Make the block kernels extent divide the matrix size.
-        v3uiBlockKernelsExtent = alpaka::vec<3u>(
-            nextLowerOrEqualFactor(v3uiBlockKernelsExtent[0u], uiMatrixSize),
-            nextLowerOrEqualFactor(v3uiBlockKernelsExtent[1u], uiMatrixSize),
-            nextLowerOrEqualFactor(v3uiBlockKernelsExtent[2u], uiMatrixSize));
-
-        // Set the grid size.
-        alpaka::vec<3u> const v3uiGridBlocksExtent(((uiMatrixSize-1u)/v3uiBlockKernelsExtent[0u])+1u, ((uiMatrixSize-1u)/v3uiBlockKernelsExtent[1u])+1u, 1u);
-
-        alpaka::WorkExtent const workExtent(v3uiGridBlocksExtent, v3uiBlockKernelsExtent);
+        // Let alpaka calculate a good block and grid sizes given our full problem extent.
+        alpaka::WorkExtent const workExtent(alpaka::getValidWorkExtent<TAcc>(
+            alpaka::vec<3u>(uiMatrixSize, uiMatrixSize, 1), 
+            bAdaptiveBlockKernelsExtent));
 
         std::cout
             << "profileAcceleratedMatMulKernel("
@@ -286,7 +226,9 @@ struct ProfileAcceleratedMatMulKernel
         std::uint32_t const uiCorrectResult(uiMatrixSize);
 
         bool bResultCorrect(true);
-        for(std::size_t i(0); i<uiMatrixSize*uiMatrixSize; ++i)
+        for(std::size_t i(0); 
+            i<uiMatrixSize*uiMatrixSize; 
+            ++i)
         {
             if(vuiC[i] != uiCorrectResult)
             {
@@ -349,16 +291,23 @@ int main(int argc, char *argv[])
 #ifdef ALPAKA_CUDA_ENABLED
             // Select the first CUDA device. 
             // NOTE: This is not required to run any kernels on the CUDA accelerator because all accelerators have a default device. This only shows the possibility.
-            alpaka::device::DeviceManager<alpaka::AccCuda>::setCurrentDevice(alpaka::device::DeviceManager<alpaka::AccCuda>::getCurrentDevice());
+            alpaka::device::DeviceManager<alpaka::AccCuda>::setCurrentDevice(
+                alpaka::device::DeviceManager<alpaka::AccCuda>::getCurrentDevice());
 #endif
             // For different matrix sizes.
-            for(std::uint32_t uiMatrixSize(16u); uiMatrixSize<1024u; uiMatrixSize *= 2u)
+            for(std::uint32_t uiMatrixSize(16u); 
+                uiMatrixSize < 1024u; 
+                uiMatrixSize *= 2u)
             {
                 std::cout << std::endl;
 
                 // Execute the kernel on all enabled accelerators.
                 boost::mpl::for_each<alpaka::EnabledAccelerators>(
-                    std::bind(ProfileAcceleratedMatMulKernel(), std::placeholders::_1, uiMatrixSize, bAdaptiveBlockKernelsExtent)
+                    std::bind(
+                        ProfileAcceleratedMatMulKernel(), 
+                        std::placeholders::_1, 
+                        uiMatrixSize, 
+                        bAdaptiveBlockKernelsExtent)
                 );
             }
         }

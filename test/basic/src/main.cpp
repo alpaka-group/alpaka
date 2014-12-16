@@ -225,24 +225,6 @@ struct profileAcceleratedExampleKernel
 };
 
 //-----------------------------------------------------------------------------
-//! \param uiMaxDivisor The maximum divisor.
-//! \param uiDividend The dividend.
-//! \return A number that statisfies the following conditions:
-//!     1) uiDividend/ret==0
-//!     2) ret<=uiMaxDivisor
-//-----------------------------------------------------------------------------
-std::size_t nextLowerOrEqualFactor(std::size_t const & uiMaxDivisor, std::size_t const & uiDividend)
-{
-    std::size_t uiDivisor(uiMaxDivisor);
-    // TODO: This is not very efficient.
-    while((uiDividend%uiDivisor)!=0)
-    {
-        --uiDivisor;
-    }
-    return uiDivisor;
-}
-
-//-----------------------------------------------------------------------------
 //! Program entry point.
 //-----------------------------------------------------------------------------
 int main()
@@ -263,44 +245,16 @@ int main()
 #ifdef ALPAKA_CUDA_ENABLED
         // Select the first CUDA device. 
         // NOTE: This is not required to run any kernels on the CUDA accelerator because all accelerators have a default device. This only shows the possibility.
-        alpaka::device::DeviceManager<alpaka::AccCuda>::setCurrentDevice(alpaka::device::DeviceManager<alpaka::AccCuda>::getCurrentDevice());
+        alpaka::device::DeviceManager<alpaka::AccCuda>::setCurrentDevice(
+			alpaka::device::DeviceManager<alpaka::AccCuda>::getCurrentDevice());
 #endif
 
-        // Set the grid size.
-        alpaka::vec<3u> const v3uiGridBlocksExtent(16u, 8u, 4u);
-		
-        // Set the block size (to the minimum all enabled tests support).
-		alpaka::vec<3u> v3uiBlockKernelsExtent;
-		
-		alpaka::vec<3u> const v3uiMaxBlockKernelsExtent(alpaka::getMaxBlockKernelExtentEnabledAccelerators());
-		std::size_t const uiMaxBlockKernelsCount(alpaka::getMaxBlockKernelCountEnabledAccelerators());
-
-		v3uiBlockKernelsExtent = v3uiMaxBlockKernelsExtent;
-
-		// If the block kernels extent allows more kernels then available on the accelerator, clip it.
-		std::size_t const uiBlockKernelsCount(v3uiMaxBlockKernelsExtent.prod());
-		if(uiBlockKernelsCount>uiMaxBlockKernelsCount)
-		{
-			// Very primitive clipping. Just halve it until it fits.
-			while(v3uiBlockKernelsExtent.prod()>uiMaxBlockKernelsCount)
-			{
-				v3uiBlockKernelsExtent = alpaka::vec<3u>(
-					std::max(static_cast<std::size_t>(1u), static_cast<std::size_t>(v3uiBlockKernelsExtent[0u]/2u)),
-					std::max(static_cast<std::size_t>(1u), static_cast<std::size_t>(v3uiBlockKernelsExtent[1u]/2u)),
-					std::max(static_cast<std::size_t>(1u), static_cast<std::size_t>(v3uiBlockKernelsExtent[2u]/2u)));
-			}
-		}
-		
-        // Make the block kernels extent divide the matrix size.
-        v3uiBlockKernelsExtent = alpaka::vec<3u>(
-            nextLowerOrEqualFactor(v3uiBlockKernelsExtent[0u], uiMatrixSize),
-            nextLowerOrEqualFactor(v3uiBlockKernelsExtent[1u], uiMatrixSize),
-            nextLowerOrEqualFactor(v3uiBlockKernelsExtent[2u], uiMatrixSize));
+        // Set the grid blocks extent.
+        alpaka::WorkExtent const workExtent(alpaka::getValidWorkExtent<TAcc>(16u, 8u, 4u), 
+            false));
 
         using TuiNumUselessWork = boost::mpl::int_<100u>;
         std::uint32_t const uiMult2(5u);
-
-        alpaka::WorkExtent const workExtent(v3uiGridBlocksExtent, v3uiBlockKernelsExtent);
 
 		// Execute the kernel on all enabled accelerators.
 		boost::mpl::for_each<alpaka::EnabledAccelerators>(

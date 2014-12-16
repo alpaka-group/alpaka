@@ -85,7 +85,7 @@ namespace alpaka
                         (cudaDevProp.major==2)
                             ? ((cudaDevProp.minor==1)
                                 ? 48    // 2.1
-                                : 32)    // 2.0
+                                : 32)   // 2.0
                         : (cudaDevProp.major==3)
                             ? 192       // 3.X
                         : (cudaDevProp.major==5)
@@ -265,7 +265,7 @@ namespace alpaka
                 }
 
             private:
-    #ifdef ALPAKA_DEBUG
+    //#ifdef ALPAKA_DEBUG
                 //-----------------------------------------------------------------------------
                 //! Prints all the device properties to std::cout.
                 //-----------------------------------------------------------------------------

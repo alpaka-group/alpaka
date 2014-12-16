@@ -210,4 +210,98 @@ namespace alpaka
 
         return uiMaxBlockKernelCount;
     }
+
+    namespace detail
+    {
+        //-----------------------------------------------------------------------------
+        //! \param uiMaxDivisor The maximum divisor.
+        //! \param uiDividend The dividend.
+        //! \return A number that statisfies the following conditions:
+        //!     1) uiDividend/ret==0
+        //!     2) ret<=uiMaxDivisor
+        //-----------------------------------------------------------------------------
+        std::size_t nextLowerOrEqualFactor(std::size_t const & uiMaxDivisor, std::size_t const & uiDividend)
+        {
+            std::size_t uiDivisor(uiMaxDivisor);
+            // \TODO: This is not very efficient. Replace with a better algorithm.
+            while((uiDividend%uiDivisor)!=0)
+            {
+                --uiDivisor;
+            }
+            return uiDivisor;
+        }
+    }
+
+    //-----------------------------------------------------------------------------
+    //! \param v3uiGridKernelsExtent        
+    //!     The maximum divisor.
+    //! \param bAdaptiveBlockKernelsExtent  
+    //!     If the block kernels extent should be selected adaptively to the given accelerator
+    //!     or the minimum supported by all accelerator.
+    //! \return The work extent.
+    // \TODO: Make this a template depending on Accelerator and Kernel
+    //-----------------------------------------------------------------------------
+    template<typename TAcc>
+    alpaka::WorkExtent getValidWorkExtent(alpaka::vec<3u> const & v3uiGridKernelsExtent, bool const & bAdaptiveBlockKernelsExtent)
+    {
+        // TODO: Print a warning when the grid kernels extent is a prime number and the resulting block kernels extent is 1.
+
+        assert(v3uiGridKernelsExtent[0u]>0);
+        assert(v3uiGridKernelsExtent[1u]>0);
+        assert(v3uiGridKernelsExtent[2u]>0);
+
+        alpaka::vec<3u> v3uiMaxBlockKernelsExtent;
+        std::size_t uiMaxBlockKernelsCount;
+
+        // Get the maximum block kernels extent depending on the the input.
+        if(bAdaptiveBlockKernelsExtent)
+        {
+            using TDeviceManager = alpaka::device::DeviceManager<TAcc>;
+            auto const deviceProperties(TDeviceManager::getCurrentDevice().getProperties());
+            v3uiMaxBlockKernelsExtent = deviceProperties.m_v3uiBlockKernelsExtentMax;
+            uiMaxBlockKernelsCount = deviceProperties.m_uiBlockKernelsCountMax;
+        }
+        else
+        {
+            v3uiMaxBlockKernelsExtent = alpaka::getMaxBlockKernelExtentEnabledAccelerators();
+            uiMaxBlockKernelsCount = alpaka::getMaxBlockKernelCountEnabledAccelerators();
+        }
+
+        // Restrict the max block kernels extent with the grid kernels extent.
+        // This removes dimensions not required.
+        // This has to be done before the uiMaxBlockKernelsCount clipping to get the maximum correctly.
+        v3uiMaxBlockKernelsExtent = alpaka::vec<3u>(
+            std::min(v3uiMaxBlockKernelsExtent[0u], v3uiGridKernelsExtent[0u]),
+            std::min(v3uiMaxBlockKernelsExtent[1u], v3uiGridKernelsExtent[1u]),
+            std::min(v3uiMaxBlockKernelsExtent[2u], v3uiGridKernelsExtent[2u]));
+
+        // If the block kernels extent allows more kernels then available on the accelerator, clip it.
+        std::size_t const uiBlockKernelsCount(v3uiMaxBlockKernelsExtent.prod());
+        if(uiBlockKernelsCount>uiMaxBlockKernelsCount)
+        {
+            // Very primitive clipping. Just halve it until it fits.
+            // TODO: Use a better algorithm.
+            while(v3uiMaxBlockKernelsExtent.prod()>uiMaxBlockKernelsCount)
+            {
+                v3uiMaxBlockKernelsExtent = alpaka::vec<3u>(
+                    std::max(static_cast<std::size_t>(1u), static_cast<std::size_t>(v3uiMaxBlockKernelsExtent[0u]/2u)),
+                    std::max(static_cast<std::size_t>(1u), static_cast<std::size_t>(v3uiMaxBlockKernelsExtent[1u]/2u)),
+                    std::max(static_cast<std::size_t>(1u), static_cast<std::size_t>(v3uiMaxBlockKernelsExtent[2u]/2u)));
+            }
+        }
+
+        // Make the block kernels extent divide the grid kernels extent.
+        alpaka::vec<3u> const v3uiBlockKernelsExtent(
+            detail::nextLowerOrEqualFactor(v3uiMaxBlockKernelsExtent[0u], v3uiGridKernelsExtent[0u]),
+            detail::nextLowerOrEqualFactor(v3uiMaxBlockKernelsExtent[1u], v3uiGridKernelsExtent[1u]),
+            detail::nextLowerOrEqualFactor(v3uiMaxBlockKernelsExtent[2u], v3uiGridKernelsExtent[2u]));
+
+        // Set the grid blocks extent.
+        alpaka::vec<3u> const v3uiGridBlocksExtent(
+            v3uiGridKernelsExtent[0u]/v3uiBlockKernelsExtent[0u],
+            v3uiGridKernelsExtent[1u]/v3uiBlockKernelsExtent[1u],
+            v3uiGridKernelsExtent[2u]/v3uiBlockKernelsExtent[2u]);
+
+        return alpaka::WorkExtent(v3uiGridBlocksExtent, v3uiBlockKernelsExtent);
+    }
 }
