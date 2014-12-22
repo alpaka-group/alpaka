@@ -37,13 +37,14 @@ namespace alpaka
         //#############################################################################
         struct DeviceProperties
         {
-            std::string m_sName;
-            std::size_t m_uiBlockKernelsCountMax;
-            vec<3u> m_v3uiBlockKernelsExtentMax;
-            vec<3u> m_v3uiGridBlocksExtentMax;
-            std::size_t m_uiExecutionUnitCount;
-            std::size_t m_uiGlobalMemorySizeBytes;
-            //std::size_t m_uiClockFrequencyHz;
+            std::string m_sName;                    //!< The name.
+            std::size_t m_uiMultiProcessorCount;    //!< The number of multiprocessors.
+            std::size_t m_uiBlockKernelsCountMax;   //!< The maximum number of kernels in a block.
+            vec<3u> m_v3uiBlockKernelsExtentMax;    //!< The maximum number of kernels in each dimension of a block.
+            vec<3u> m_v3uiGridBlocksExtentMax;      //!< The maximum number of blocks in each dimension of the grid.
+            std::size_t m_uiGlobalMemorySizeBytes;  //!< Size of the global device memory in bytes.
+            //std::size_t m_uiSharedMemorySizeBytes;  //!< Size of the available block shared memory in bytes. 
+            //std::size_t m_uiMaxClockFrequencyHz;    //!< Maximum clock frequency of the device in Hz.
         };
 
         namespace detail

@@ -81,25 +81,13 @@ namespace alpaka
                     cudaDeviceProp cudaDevProp;
                     ALPAKA_CUDA_CHECK(cudaGetDeviceProperties(&cudaDevProp, m_iDevice));
 
-                    std::size_t const uiCoresPerMultiProcessor(
-                        (cudaDevProp.major==2)
-                            ? ((cudaDevProp.minor==1)
-                                ? 48    // 2.1
-                                : 32)   // 2.0
-                        : (cudaDevProp.major==3)
-                            ? 192       // 3.X
-                        : (cudaDevProp.major==5)
-                            ? 128       // 5.X
-                            : 1         // Unknown
-                    );
-                    
                     deviceProperties.m_sName = cudaDevProp.name;
+                    deviceProperties.m_uiMultiProcessorCount = static_cast<std::size_t>(cudaDevProp.multiProcessorCount);
                     deviceProperties.m_uiBlockKernelsCountMax = static_cast<std::size_t>(cudaDevProp.maxThreadsPerBlock);
                     deviceProperties.m_v3uiBlockKernelsExtentMax = vec<3u>(static_cast<std::size_t>(cudaDevProp.maxThreadsDim[0]), static_cast<std::size_t>(cudaDevProp.maxThreadsDim[1]), static_cast<std::size_t>(cudaDevProp.maxThreadsDim[2]));
                     deviceProperties.m_v3uiGridBlocksExtentMax = vec<3u>(static_cast<std::size_t>(cudaDevProp.maxGridSize[0]), static_cast<std::size_t>(cudaDevProp.maxGridSize[1]), static_cast<std::size_t>(cudaDevProp.maxGridSize[2]));
-                    deviceProperties.m_uiExecutionUnitCount = static_cast<std::size_t>(cudaDevProp.multiProcessorCount) * uiCoresPerMultiProcessor;
                     deviceProperties.m_uiGlobalMemorySizeBytes = static_cast<std::size_t>(cudaDevProp.totalGlobalMem);
-                    //deviceProperties.m_uiClockFrequencyHz = cudaDevProp.clockRate * 1000;
+                    //deviceProperties.m_uiMaxClockFrequencyHz = cudaDevProp.clockRate * 1000;
 
                     return deviceProperties;
                 }

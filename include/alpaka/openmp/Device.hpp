@@ -81,6 +81,7 @@ namespace alpaka
                     device::DeviceProperties deviceProperties;
 
                     deviceProperties.m_sName = host::getCpuName();
+                    deviceProperties.m_uiMultiProcessorCount = 1;
                     // HACK: ::omp_get_max_threads() does not return the real limit of the underlying OpenMP runtime:
                     // 'The omp_get_max_threads routine returns the value of the internal control variable, which is used to determine the number of threads that would form the new team, 
                     // if an active parallel region without a num_threads clause were to be encountered at that point in the program.'
@@ -89,9 +90,8 @@ namespace alpaka
                     deviceProperties.m_uiBlockKernelsCountMax = ::omp_get_max_threads();
                     deviceProperties.m_v3uiBlockKernelsExtentMax = vec<3u>(deviceProperties.m_uiBlockKernelsCountMax, deviceProperties.m_uiBlockKernelsCountMax, deviceProperties.m_uiBlockKernelsCountMax);
                     deviceProperties.m_v3uiGridBlocksExtentMax = vec<3u>(std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max());
-                    deviceProperties.m_uiExecutionUnitCount = std::thread::hardware_concurrency();          // \TODO: This may be inaccurate.
                     deviceProperties.m_uiGlobalMemorySizeBytes = host::getGlobalMemorySizeBytes();
-                    //deviceProperties.m_uiClockFrequencyHz = TODO;
+                    //deviceProperties.m_uiMaxClockFrequencyHz = TODO;
 
                     return deviceProperties;
                 }
