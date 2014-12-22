@@ -58,10 +58,10 @@ namespace alpaka
         //#############################################################################
         //! Queues the given event.
         //! If it has previously been queued, then this call will overwrite any existing state of the event. 
-        //! Any subsequent calls which examine the status of event will only examine the completion of this most recent call to eventEnqueue.
+        //! Any subsequent calls which examine the status of event will only examine the completion of this most recent call to enqueue.
         //#############################################################################
         template<typename TAcc>
-        ALPAKA_FCT_HOST void eventEnqueue(Event<TAcc> const & event)
+        ALPAKA_FCT_HOST void enqueue(Event<TAcc> const & event)
         {
             detail::EventEnqueue<TAcc>{event};
         }
@@ -70,7 +70,7 @@ namespace alpaka
         //! Waits for the completion of the given event.
         //#############################################################################
         template<typename TAcc>
-        ALPAKA_FCT_HOST void eventWait(Event<TAcc> const & event)
+        ALPAKA_FCT_HOST void wait(Event<TAcc> const & event)
         {
             detail::EventWait<TAcc>{event};
         }
@@ -79,7 +79,7 @@ namespace alpaka
         //! Tests if the given event has already be completed.
         //#############################################################################
         template<typename TAcc>
-        ALPAKA_FCT_HOST bool eventTest(Event<TAcc> const & event)
+        ALPAKA_FCT_HOST bool test(Event<TAcc> const & event)
         {
             bool bTest(false);
 

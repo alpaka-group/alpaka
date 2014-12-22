@@ -151,8 +151,8 @@ void profileAcceleratedKernel(TExec const & exec, TArgs && ... args)
 
     // Enqueue an event to wait for. This allows synchronization after the (possibly) asynchronous kernel execution.
     alpaka::event::Event<typename TExec::TAcc> ev;
-    alpaka::event::eventEnqueue(ev);
-    alpaka::event::eventWait(ev);
+    alpaka::event::enqueue(ev);
+    alpaka::event::wait(ev);
 
     auto const tpEnd(std::chrono::high_resolution_clock::now());
 
@@ -191,8 +191,8 @@ struct profileAcceleratedExampleKernel
 
 		// Allocate accelerator buffers and copy.
 		std::size_t const uiSizeBytes(uiGridBlocksCount * sizeof(std::uint32_t));
-		auto pBlockRetValsAcc(alpaka::memory::memAlloc<TAccMemorySpace, std::uint32_t>(uiSizeBytes));
-		alpaka::memory::memCopy<TAccMemorySpace, alpaka::MemorySpaceHost>(pBlockRetValsAcc.get(), vuiBlockRetVals.data(), uiSizeBytes);
+		auto pBlockRetValsAcc(alpaka::memory::alloc<TAccMemorySpace, std::uint32_t>(uiSizeBytes));
+		alpaka::memory::copy<TAccMemorySpace, alpaka::MemorySpaceHost>(pBlockRetValsAcc.get(), vuiBlockRetVals.data(), uiSizeBytes);
 
 		std::uint32_t const m_uiMult(42);
 
@@ -200,7 +200,7 @@ struct profileAcceleratedExampleKernel
 		profileAcceleratedKernel(exec(workExtent), pBlockRetValsAcc.get(), uiMult2);
 
 		// Copy back the result.
-		alpaka::memory::memCopy<alpaka::MemorySpaceHost, TAccMemorySpace>(vuiBlockRetVals.data(), pBlockRetValsAcc.get(), uiSizeBytes);
+		alpaka::memory::copy<alpaka::MemorySpaceHost, TAccMemorySpace>(vuiBlockRetVals.data(), pBlockRetValsAcc.get(), uiSizeBytes);
 
 		// Assert that the results are correct.
 		std::uint32_t const uiCorrectResult(static_cast<std::uint32_t>(uiBlockKernelsCount*uiBlockKernelsCount) * m_uiMult * uiMult2);

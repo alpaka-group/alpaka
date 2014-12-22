@@ -160,8 +160,8 @@ void profileAcceleratedKernel(TExec const & exec, TArgs && ... args)
 
     // Enqueue an event to wait for. This allows synchronization after the (possibly) asynchronous kernel execution.
     alpaka::event::Event<typename TExec::TAcc> ev;
-    alpaka::event::eventEnqueue(ev);
-    alpaka::event::eventWait(ev);
+    alpaka::event::enqueue(ev);
+    alpaka::event::wait(ev);
 
     auto const tpEnd(std::chrono::high_resolution_clock::now());
 
@@ -205,13 +205,13 @@ struct ProfileAcceleratedMatMulKernel
         // Allocate accelerator buffers and copy.
         std::size_t const & uiSizeBytes(uiMatrixSize*uiMatrixSize * sizeof(std::uint32_t));
 
-        auto pAAcc(alpaka::memory::memAlloc<TAccMemorySpace, std::uint32_t>(uiSizeBytes));
-        auto pBAcc(alpaka::memory::memAlloc<TAccMemorySpace, std::uint32_t>(uiSizeBytes));
-        auto pCAcc(alpaka::memory::memAlloc<TAccMemorySpace, std::uint32_t>(uiSizeBytes));
+        auto pAAcc(alpaka::memory::alloc<TAccMemorySpace, std::uint32_t>(uiSizeBytes));
+        auto pBAcc(alpaka::memory::alloc<TAccMemorySpace, std::uint32_t>(uiSizeBytes));
+        auto pCAcc(alpaka::memory::alloc<TAccMemorySpace, std::uint32_t>(uiSizeBytes));
 
-        alpaka::memory::memCopy<TAccMemorySpace, alpaka::MemorySpaceHost>(pAAcc.get(), vuiA.data(), uiSizeBytes);
-        alpaka::memory::memCopy<TAccMemorySpace, alpaka::MemorySpaceHost>(pBAcc.get(), vuiB.data(), uiSizeBytes);
-        alpaka::memory::memCopy<TAccMemorySpace, alpaka::MemorySpaceHost>(pCAcc.get(), vuiC.data(), uiSizeBytes);
+        alpaka::memory::copy<TAccMemorySpace, alpaka::MemorySpaceHost>(pAAcc.get(), vuiA.data(), uiSizeBytes);
+        alpaka::memory::copy<TAccMemorySpace, alpaka::MemorySpaceHost>(pBAcc.get(), vuiB.data(), uiSizeBytes);
+        alpaka::memory::copy<TAccMemorySpace, alpaka::MemorySpaceHost>(pCAcc.get(), vuiC.data(), uiSizeBytes);
 
         // Build the kernel executor.
         auto exec(alpaka::createKernelExecutor<TAcc, TKernel>());
@@ -219,7 +219,7 @@ struct ProfileAcceleratedMatMulKernel
         profileAcceleratedKernel(exec(workExtent), uiMatrixSize, pAAcc.get(), pBAcc.get(), pCAcc.get());
 
         // Copy back the result.
-        alpaka::memory::memCopy<alpaka::MemorySpaceHost, TAccMemorySpace>(vuiC.data(), pCAcc.get(), uiSizeBytes);
+        alpaka::memory::copy<alpaka::MemorySpaceHost, TAccMemorySpace>(vuiC.data(), pCAcc.get(), uiSizeBytes);
 
         // Assert that the results are correct. 
         // When multiplying square matrices filled with ones, the result of each cell is the size of the matrix. 

@@ -64,7 +64,7 @@ namespace alpaka
         //! \return Pointer to newly allocated memory.
         //-----------------------------------------------------------------------------
         template<typename TMemorySpace, typename T = void>
-        std::shared_ptr<T> memAlloc(size_t const uiSizeBytes)
+        std::shared_ptr<T> alloc(size_t const uiSizeBytes)
         {
             assert(uiSizeBytes>0);
 
@@ -86,7 +86,7 @@ namespace alpaka
         //! \param uiSizeBytes Size in bytes to copy.
         //-----------------------------------------------------------------------------
         template<typename TMemorySpaceDst, typename TDtaSpaceSrc, typename T = void>
-        void memCopy(T * const pBufferDst, T * const pBufferSrc, std::size_t const & uiSizeBytes)
+        void copy(T * const pBufferDst, T * const pBufferSrc, std::size_t const & uiSizeBytes)
         {
             assert(pBufferDst);
             assert(pBufferSrc);
@@ -103,7 +103,7 @@ namespace alpaka
         //! \param uiSizeBytes Size in bytes to set.
         //-----------------------------------------------------------------------------
         template<typename TMemorySpace, typename T = void>
-        void memSet(T * const pBuffer, int const iValue, std::size_t const & uiSizeBytes)
+        void set(T * const pBuffer, int const iValue, std::size_t const & uiSizeBytes)
         {
             assert(pBuffer);
 

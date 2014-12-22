@@ -92,6 +92,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST void reset(std::size_t uiNumFibersToWaitFor)
                 {
+                    // A lock is not required in the fiber implementation.
                     //boost::unique_lock<boost::fibers::mutex> lock(m_mtxBarrier);
                     m_uiNumFibersToWaitFor = uiNumFibersToWaitFor;
                 }
