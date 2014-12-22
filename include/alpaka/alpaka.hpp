@@ -216,7 +216,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \param uiMaxDivisor The maximum divisor.
         //! \param uiDividend The dividend.
-        //! \return A number that statisfies the following conditions:
+        //! \return A number that satisfies the following conditions:
         //!     1) uiDividend/ret==0
         //!     2) ret<=uiMaxDivisor
         //-----------------------------------------------------------------------------
@@ -244,7 +244,7 @@ namespace alpaka
     template<typename TAcc>
     alpaka::WorkExtent getValidWorkExtent(alpaka::vec<3u> const & v3uiGridKernelsExtent, bool const & bAdaptiveBlockKernelsExtent)
     {
-        // TODO: Print a warning when the grid kernels extent is a prime number and the resulting block kernels extent is 1.
+        // \TODO: Print a warning when the grid kernels extent is a prime number and the resulting block kernels extent is 1.
 
         assert(v3uiGridKernelsExtent[0u]>0);
         assert(v3uiGridKernelsExtent[1u]>0);
@@ -280,7 +280,7 @@ namespace alpaka
         if(uiBlockKernelsCount>uiMaxBlockKernelsCount)
         {
             // Very primitive clipping. Just halve it until it fits.
-            // TODO: Use a better algorithm.
+            // \TODO: Use a better algorithm for clipping.
             while(v3uiMaxBlockKernelsExtent.prod()>uiMaxBlockKernelsCount)
             {
                 v3uiMaxBlockKernelsExtent = alpaka::vec<3u>(

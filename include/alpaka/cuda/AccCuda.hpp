@@ -172,7 +172,7 @@ namespace alpaka
                 // 5. Has a trivial destructor
                 //
 #if !BOOST_COMP_GNUC // FIXME: Find out which version > 4.9.0 does support the std::is_trivially_copyable
-                // TODO: is_standard_layout is even stricter. Is is_trivially_copyable enough?
+                // \TODO: is_standard_layout is even stricter. Is is_trivially_copyable enough?
                 static_assert(std::is_trivially_copyable<TAcceleratedKernel>::value, "The given kernel functor has to be trivially copyable to be used on a CUDA device!");
 #endif
                 static_assert(std::is_base_of<IAcc<AccCuda>, TAcceleratedKernel>::value, "The TAcceleratedKernel for the cuda::detail::KernelExecutor has to inherit from IAcc<AccCuda>!");
@@ -237,7 +237,6 @@ namespace alpaka
 
                     // Instead of using the language extension for the kernel call, we use the runtime API.
                     // This allows us to get better error information.
-                    // TODO: Add stream!
                     //detail::cudaKernel<<<gridDim, blockDim, uiBlockSharedExternMemSizeBytes>>>(*static_cast<TAcceleratedKernel const *>(this), args...);
 
                     ALPAKA_CUDA_CHECK(cudaConfigureCall(gridDim, blockDim, uiBlockSharedExternMemSizeBytes));
@@ -348,7 +347,7 @@ namespace alpaka
     {
         //#############################################################################
         //! The serial kernel executor builder.
-        // TODO: How to assure that the kernel does not hold pointers to host memory?
+        // \TODO: How to assure that the kernel does not hold pointers to host memory?
         //#############################################################################
         template<typename TKernel, typename... TKernelConstrArgs>
         class KernelExecCreator<AccCuda, TKernel, TKernelConstrArgs...>

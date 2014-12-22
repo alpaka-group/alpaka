@@ -78,7 +78,7 @@ namespace alpaka
                     device::DeviceProperties deviceProperties;
 
                     deviceProperties.m_sName = host::getCpuName();
-                    deviceProperties.m_uiBlockKernelsCountMax = 1;    // TODO: Magic number.
+                    deviceProperties.m_uiBlockKernelsCountMax = 1;
                     deviceProperties.m_v3uiBlockKernelsExtentMax = vec<3u>(1u, 1u, 1u);
                     deviceProperties.m_v3uiGridBlocksExtentMax = vec<3u>(std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max());
                     deviceProperties.m_uiExecutionUnitCount = 1;

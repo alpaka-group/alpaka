@@ -88,8 +88,16 @@ namespace alpaka
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy-constructor.
+                // Do not copy most members because they are initialized by the executor for each accelerated execution.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST AccOpenMp(AccOpenMp const &) = default;
+                ALPAKA_FCT_HOST AccOpenMp(AccOpenMp const &) :
+                    TInterfacedWorkExtent(),
+                    TInterfacedIndex(*static_cast<TInterfacedWorkExtent const *>(this), m_v3uiGridBlockIdx),
+                    TInterfacedAtomic(),
+                    m_v3uiGridBlockIdx(),
+                    m_vvuiSharedMem(),
+                    m_vuiExternalSharedMem()
+                {}
                 //-----------------------------------------------------------------------------
                 //! Move-constructor.
                 //-----------------------------------------------------------------------------
@@ -136,12 +144,14 @@ namespace alpaka
                     // Arbitrary decision: The thread with id 0 has to allocate the memory.
                     if(::omp_get_thread_num() == 0)
                     {
-                        // TODO: Optimize: do not initialize the memory on allocation like std::vector does!
-                        m_vvuiSharedMem.emplace_back(TuiNumElements);
+                        // \TODO: C++14 std::make_unique would be better.
+                        m_vvuiSharedMem.emplace_back(
+                            std::unique_ptr<uint8_t[]>(
+                                new uint8_t[TuiNumElements]));
                     }
                     syncBlockKernels();
 
-                    return reinterpret_cast<T*>(m_vvuiSharedMem.back().data());
+                    return reinterpret_cast<T*>(m_vvuiSharedMem.back().get());
                 }
 
                 //-----------------------------------------------------------------------------
@@ -150,7 +160,7 @@ namespace alpaka
                 template<typename T>
                 ALPAKA_FCT_HOST T * getBlockSharedExternMem() const
                 {
-                    return reinterpret_cast<T*>(m_vuiExternalSharedMem.data());
+                    return reinterpret_cast<T*>(m_vuiExternalSharedMem.get());
                 }
 
 #ifdef ALPAKA_NVCC_FRIEND_ACCESS_BUG
@@ -162,10 +172,11 @@ namespace alpaka
                 vec<3u> mutable m_v3uiGridBlockIdx;                          //!< The index of the currently executed block.
 
                 // allocBlockSharedMem
-                std::vector<std::vector<uint8_t>> mutable m_vvuiSharedMem;  //!< Block shared memory.
+                std::vector<
+                    std::unique_ptr<uint8_t[]>> mutable m_vvuiSharedMem;    //!< Block shared memory.
 
                 // getBlockSharedExternMem
-                std::vector<uint8_t> mutable m_vuiExternalSharedMem;        //!< External block shared memory.
+                std::unique_ptr<uint8_t[]> mutable m_vuiExternalSharedMem;  //!< External block shared memory.
             }; 
 
             //#############################################################################
@@ -233,7 +244,8 @@ namespace alpaka
                     std::cout << "[+] AccOpenMp::KernelExecutor::operator()" << std::endl;
 #endif
                     auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(m_v3uiBlockKernelsExtent, std::forward<TArgs>(args)...));
-                    this->AccOpenMp::m_vuiExternalSharedMem.resize(uiBlockSharedExternMemSizeBytes);
+                    this->AccOpenMp::m_vuiExternalSharedMem.reset(
+                        new uint8_t[uiBlockSharedExternMemSizeBytes]);
 #ifdef ALPAKA_DEBUG
                     //std::cout << "GridBlocks: " << v3uiGridBlocksExtent << " BlockKernels: " << v3uiBlockKernelsExtent << std::endl;
 #endif
@@ -261,7 +273,7 @@ namespace alpaka
                                 // 'omp for' is not useful because it is meant for cases where multiple iterations are executed by one thread but in our case a 1:1 mapping is required.
                                 // Therefore we use 'omp parallel' with the specified number of threads in a block.
                                 //
-                                // TODO: Does this hinder executing multiple kernels in parallel because their block sizes/omp thread numbers are interfering? Is this a real use case? 
+                                // \TODO: Does this hinder executing multiple kernels in parallel because their block sizes/omp thread numbers are interfering? Is this a real use case? 
                                 #pragma omp parallel num_threads(static_cast<int>(uiNumKernelsInBlock))
                                 {
 #ifdef ALPAKA_DEBUG
@@ -281,13 +293,14 @@ namespace alpaka
                                     // Wait for all threads to finish before deleting the shared memory.
                                     this->AccOpenMp::syncBlockKernels();
                                 }
+
+                                // After a block has been processed, the shared memory can be deleted.
+                                this->AccOpenMp::m_vvuiSharedMem.clear();
                             }
                         }
                     }
-
-                    // After all blocks have been processed, the shared memory can be deleted.
-                    this->AccOpenMp::m_vvuiSharedMem.clear();
-                    this->AccOpenMp::m_vuiExternalSharedMem.clear();
+                    // After all blocks have been processed, the external shared memory can be deleted.
+                    this->AccOpenMp::m_vuiExternalSharedMem.reset();
 #ifdef ALPAKA_DEBUG
                     std::cout << "[-] AccOpenMp::KernelExecutor::operator()" << std::endl;
 #endif

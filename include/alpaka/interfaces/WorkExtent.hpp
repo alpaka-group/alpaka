@@ -107,7 +107,6 @@ namespace alpaka
 
     //#############################################################################
     //! The interface of the work size.
-    // TODO: Rename into e.g.: Layout, Subdivision, Partition, Segmentation, Decomposition
     //#############################################################################
     template<typename TWorkExtent>
     class IWorkExtent :

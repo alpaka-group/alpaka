@@ -285,7 +285,7 @@ namespace alpaka
                 using TFuncReturn = typename std::result_of<TFunc(TArgs...)>::type;
                 using TTaskPackageType = TaskPackageImpl<TCurrentException, TPromise, decltype(boundTask), TFuncReturn>;
                 // Ensures no memory leak if push throws.
-                // TODO: C++14 std::make_unique would be better.
+                // \TODO: C++14 std::make_unique would be better.
                 auto packagePtr(std::unique_ptr<TTaskPackageType>(new TTaskPackageType(std::move(boundTask))));
 
                 m_qTasks.push(static_cast<TaskPackage<TCurrentException> *>(packagePtr.get()));
@@ -477,7 +477,7 @@ namespace alpaka
                 using TFuncReturn = typename std::result_of<TFunc(TArgs...)>::type;
                 using TTaskPackageType = TaskPackageImpl<TCurrentException, TPromise, decltype(boundTask), TFuncReturn>;
                 // Ensures no memory leak if push throws.
-                // TODO: C++14 std::make_unique would be better.
+                // \TODO: C++14 std::make_unique would be better.
                 auto packagePtr(std::unique_ptr<TTaskPackageType>(new TTaskPackageType(std::move(boundTask))));
 
                 m_qTasks.push(static_cast<TaskPackage<TCurrentException> *>(packagePtr.get()));

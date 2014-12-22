@@ -238,7 +238,7 @@ namespace alpaka
                     else if(devProp.computeMode == cudaComputeModeExclusive)
                     {
                         std::cout << "Requested device is in computeMode cudaComputeModeExclusive.";
-                        // TODO: Are we allowed to use the device in this case?
+                        // \TODO: Are we allowed to use the device in compute mode cudaComputeModeExclusive?
                     }
                     // Compute-prohibited mode (No threads can use cudaSetDevice() with this device)
                     else if(devProp.computeMode == cudaComputeModeProhibited)
@@ -249,7 +249,7 @@ namespace alpaka
                     else if(devProp.computeMode == cudaComputeModeExclusiveProcess)
                     {
                         std::cerr << "Requested device is in computeMode cudaComputeModeExclusiveProcess.";
-                        // TODO: Are we allowed to use the device in this case?
+                        // \TODO: Are we allowed to use the device in compute mode cudaComputeModeExclusiveProcess?
                     }
                     else
                     {

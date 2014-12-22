@@ -87,8 +87,17 @@ namespace alpaka
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy-constructor.
+                // Do not copy most members because they are initialized by the executor for each accelerated execution.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST AccSerial(AccSerial const &) = default;
+                ALPAKA_FCT_HOST AccSerial(AccSerial const &) :
+                    TInterfacedWorkExtent(),
+                    TInterfacedIndex(m_v3uiGridBlockIdx, m_v3uiBlockKernelIdx),
+                    TInterfacedAtomic(),
+                    m_v3uiGridBlockIdx(),
+                    m_v3uiBlockKernelIdx(),
+                    m_vvuiSharedMem(),
+                    m_vuiExternalSharedMem()
+                {}
                 //-----------------------------------------------------------------------------
                 //! Move-constructor.
                 //-----------------------------------------------------------------------------
@@ -129,9 +138,11 @@ namespace alpaka
                 {
                     static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
 
-                    // TODO: Optimize: do not initialize the memory on allocation like std::vector does!
-                    m_vvuiSharedMem.emplace_back(TuiNumElements);
-                    return reinterpret_cast<T*>(m_vvuiSharedMem.back().data());
+                    // \TODO: C++14 std::make_unique would be better.
+                    m_vvuiSharedMem.emplace_back(
+                        std::unique_ptr<uint8_t[]>(
+                            new uint8_t[TuiNumElements]));
+                    return reinterpret_cast<T*>(m_vvuiSharedMem.back().get());
                 }
 
                 //-----------------------------------------------------------------------------
@@ -140,7 +151,7 @@ namespace alpaka
                 template<typename T>
                 ALPAKA_FCT_HOST T * getBlockSharedExternMem() const
                 {
-                    return reinterpret_cast<T*>(m_vuiExternalSharedMem.data());
+                    return reinterpret_cast<T*>(m_vuiExternalSharedMem.get());
                 }
 
 #ifdef ALPAKA_NVCC_FRIEND_ACCESS_BUG
@@ -153,10 +164,11 @@ namespace alpaka
                 vec<3u> mutable m_v3uiBlockKernelIdx;                       //!< The index of the currently executed kernel.
 
                 // allocBlockSharedMem
-                std::vector<std::vector<uint8_t>> mutable m_vvuiSharedMem;  //!< Block shared memory.
+                std::vector<
+                    std::unique_ptr<uint8_t[]>> mutable m_vvuiSharedMem;    //!< Block shared memory.
 
                 // getBlockSharedExternMem
-                std::vector<uint8_t> mutable m_vuiExternalSharedMem;        //!< External block shared memory.
+                std::unique_ptr<uint8_t[]> mutable m_vuiExternalSharedMem;  //!< External block shared memory.
             };
 
             //#############################################################################
@@ -224,7 +236,8 @@ namespace alpaka
                     std::cout << "[+] AccSerial::KernelExecutor::operator()" << std::endl;
 #endif
                     auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(m_v3uiBlockKernelsExtent, std::forward<TArgs>(args)...));
-                    this->AccSerial::m_vuiExternalSharedMem.resize(uiBlockSharedExternMemSizeBytes);
+                    this->AccSerial::m_vuiExternalSharedMem.reset(
+                        new uint8_t[uiBlockSharedExternMemSizeBytes]);
 #ifdef ALPAKA_DEBUG
                     //std::cout << "GridBlocks: " << v3uiGridBlocksExtent << " BlockKernels: " << v3uiBlockKernelsExtent << std::endl;
 #endif
@@ -254,13 +267,13 @@ namespace alpaka
                                         }
                                     }
                                 }
+                                // After a block has been processed, the shared memory can be deleted.
+                                this->AccSerial::m_vvuiSharedMem.clear();
                             }
                         }
                     }
-
-                    // After all blocks have been processed, the shared memory can be deleted.
-                    this->AccSerial::m_vvuiSharedMem.clear();
-                    this->AccSerial::m_vuiExternalSharedMem.clear();
+                    // After all blocks have been processed, the external shared memory can be deleted.
+                    this->AccSerial::m_vuiExternalSharedMem.reset();
 #ifdef ALPAKA_DEBUG
                     std::cout << "[-] AccSerial::KernelExecutor::operator()" << std::endl;
 #endif

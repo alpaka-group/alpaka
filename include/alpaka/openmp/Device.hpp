@@ -89,7 +89,7 @@ namespace alpaka
                     deviceProperties.m_uiBlockKernelsCountMax = ::omp_get_max_threads();
                     deviceProperties.m_v3uiBlockKernelsExtentMax = vec<3u>(deviceProperties.m_uiBlockKernelsCountMax, deviceProperties.m_uiBlockKernelsCountMax, deviceProperties.m_uiBlockKernelsCountMax);
                     deviceProperties.m_v3uiGridBlocksExtentMax = vec<3u>(std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max());
-                    deviceProperties.m_uiExecutionUnitCount = std::thread::hardware_concurrency();          // TODO: This may be inaccurate.
+                    deviceProperties.m_uiExecutionUnitCount = std::thread::hardware_concurrency();          // \TODO: This may be inaccurate.
                     deviceProperties.m_uiGlobalMemorySizeBytes = host::getGlobalMemorySizeBytes();
                     //deviceProperties.m_uiClockFrequencyHz = TODO;
 
@@ -144,7 +144,7 @@ namespace alpaka
         {
             //#############################################################################
             //! The CUDA accelerator device manager.
-            // TODO: Add ability to offload to Xeon Phi.
+            // \TODO: Add ability to offload to Xeon Phi.
             //#############################################################################
             class DeviceManagerOpenMp
             {

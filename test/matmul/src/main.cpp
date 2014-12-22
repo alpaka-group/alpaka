@@ -186,7 +186,7 @@ struct ProfileAcceleratedMatMulKernel
 
         // Let alpaka calculate a good block and grid sizes given our full problem extent.
         alpaka::WorkExtent const workExtent(alpaka::getValidWorkExtent<TAcc>(
-            alpaka::vec<3u>(uiMatrixSize, uiMatrixSize, 1), 
+            alpaka::vec<3u>(uiMatrixSize, uiMatrixSize, 1u), 
             bAdaptiveBlockKernelsExtent));
 
         std::cout
@@ -198,9 +198,9 @@ struct ProfileAcceleratedMatMulKernel
             << ")" << std::endl;
 
         // Initialize matrices.
-        std::vector<std::uint32_t> vuiA(uiMatrixSize*uiMatrixSize, 1);
-        std::vector<std::uint32_t> vuiB(uiMatrixSize*uiMatrixSize, 1);
-        std::vector<std::uint32_t> vuiC(uiMatrixSize*uiMatrixSize, 0);
+        std::vector<std::uint32_t> vuiA(uiMatrixSize*uiMatrixSize, 1u);
+        std::vector<std::uint32_t> vuiB(uiMatrixSize*uiMatrixSize, 1u);
+        std::vector<std::uint32_t> vuiC(uiMatrixSize*uiMatrixSize, 0u);
 
         // Allocate accelerator buffers and copy.
         std::size_t const & uiSizeBytes(uiMatrixSize*uiMatrixSize * sizeof(std::uint32_t));

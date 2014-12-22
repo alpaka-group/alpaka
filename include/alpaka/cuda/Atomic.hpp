@@ -102,35 +102,7 @@ namespace alpaka
         {
             ALPAKA_FCT_ACC float operator()(cuda::detail::AtomicCuda const &, float * const addr, float const & value) const
             {
-#if __CUDA_ARCH__ >= 200 // for Fermi, atomicAdd supports floats
                 return atomicAdd(addr, value);
-#else
-                // Code adapted from the double version from: http://docs.nvidia.com/cuda/cuda-c-programming-guide/#atomic-functions
-                // TODO: look at: http://forums.nvidia.com/index.php?showtopic=158039&view=findpost&p=991561 there may be a faster version using Exch
-
-#ifdef ALPAKA_ATOMIC_ADD_FLOAT_CAS
-                int * address_as_i(reinterpret_cast<int *>(addr));
-                int old(*address_as_i);
-                int assumed;
-                do
-                {
-                    assumed = old;
-                    old = atomicCAS(address_as_i, assumed, __float_as_int(value + __int_as_float(assumed)));
-                    // Note: uses integer comparison to avoid hang in case of NaN (since NaN != NaN) 
-                } while(assumed != old);
-                return __int_as_float(old);
-#else
-                float ret = atomicExch(addr, 0.0f);
-                float old = ret+value;
-
-                while((old = atomicExch(addr, old))!=0.0f)
-                {
-                    old = atomicExch(addr, 0.0f)+old;
-                }
-
-                return ret;
-#endif
-#endif
             }
         };
         template<>

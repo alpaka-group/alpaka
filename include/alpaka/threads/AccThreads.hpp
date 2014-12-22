@@ -100,7 +100,6 @@ namespace alpaka
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy-constructor.
-                // Has to be explicitly defined because 'std::mutex::mutex(const std::mutex&)' is deleted.
                 // Do not copy most members because they are initialized by the executor for each accelerated execution.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST AccThreads(AccThreads const & ) :
@@ -192,12 +191,14 @@ namespace alpaka
                     // Arbitrary decision: The thread that was created first has to allocate the memory.
                     if(m_idMasterThread == std::this_thread::get_id())
                     {
-                        // TODO: Optimize: do not initialize the memory on allocation like std::vector does!
-                        m_vvuiSharedMem.emplace_back(TuiNumElements);
+                        // \TODO: C++14 std::make_unique would be better.
+                        m_vvuiSharedMem.emplace_back(
+                            std::unique_ptr<uint8_t[]>(
+                                new uint8_t[TuiNumElements]));
                     }
                     syncBlockKernels();
 
-                    return reinterpret_cast<T*>(m_vvuiSharedMem.back().data());
+                    return reinterpret_cast<T*>(m_vvuiSharedMem.back().get());
                 }
 
                 //-----------------------------------------------------------------------------
@@ -206,7 +207,7 @@ namespace alpaka
                 template<typename T>
                 ALPAKA_FCT_HOST T * getBlockSharedExternMem() const
                 {
-                    return reinterpret_cast<T*>(m_vuiExternalSharedMem.data());
+                    return reinterpret_cast<T*>(m_vuiExternalSharedMem.get());
                 }
 
 #ifdef ALPAKA_NVCC_FRIEND_ACCESS_BUG
@@ -229,10 +230,11 @@ namespace alpaka
 
                 // allocBlockSharedMem
                 std::thread::id mutable m_idMasterThread;                   //!< The id of the master thread.
-                std::vector<std::vector<uint8_t>> mutable m_vvuiSharedMem;  //!< Block shared memory.
+                std::vector<
+                    std::unique_ptr<uint8_t[]>> mutable m_vvuiSharedMem;    //!< Block shared memory.
 
                 // getBlockSharedExternMem
-                std::vector<uint8_t> mutable m_vuiExternalSharedMem;        //!< External block shared memory.
+                std::unique_ptr<uint8_t[]> mutable m_vuiExternalSharedMem;  //!< External block shared memory.
             };
 
             //#############################################################################
@@ -354,7 +356,8 @@ namespace alpaka
                     std::cout << "[+] AccThreads::KernelExecutor::operator()" << std::endl;
 #endif
                     auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(m_v3uiBlockKernelsExtent, std::forward<TArgs>(args)...));
-                    this->AccThreads::m_vuiExternalSharedMem.resize(uiBlockSharedExternMemSizeBytes);
+                    this->AccThreads::m_vuiExternalSharedMem.reset(
+                        new uint8_t[uiBlockSharedExternMemSizeBytes]);
 #ifdef ALPAKA_DEBUG
                     //std::cout << "GridBlocks: " << v3uiGridBlocksExtent << " BlockKernels: " << v3uiBlockKernelsExtent << std::endl;
 #endif
@@ -441,10 +444,11 @@ namespace alpaka
 
                                 // After a block has been processed, the shared memory can be deleted.
                                 this->AccThreads::m_vvuiSharedMem.clear();
-                                this->AccThreads::m_vuiExternalSharedMem.clear();
                             }
                         }
                     }
+                    // After all blocks have been processed, the external shared memory can be deleted.
+                    this->AccThreads::m_vuiExternalSharedMem.reset();
 #ifdef ALPAKA_DEBUG
                     std::cout << "[-] AccThreads::KernelExecutor::operator()" << std::endl;
 #endif
