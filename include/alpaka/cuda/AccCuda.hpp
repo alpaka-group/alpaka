@@ -68,6 +68,10 @@ namespace alpaka
             template<typename TAcceleratedKernel, typename... TArgs>
             __global__ void cudaKernel(TAcceleratedKernel accedKernel, TArgs ... args)
             {
+
+#if defined(__CUDA_ARCH__) && (__CUDA_ARCH__ < 200)
+    #error "Cuda device capability >= 2.0 is required!"
+#endif
                 accedKernel(std::forward<TArgs>(args)...);
             }
 
@@ -200,6 +204,9 @@ namespace alpaka
 
                     m_v3uiGridBlocksExtent = workExtent.template getExtent<Grid, Blocks, D3>();
                     m_v3uiBlockKernelsExtent = workExtent.template getExtent<Block, Kernels, D3>();
+
+                    // TODO: Check that (sizeof(TAcceleratedKernel) * m_v3uiBlockKernelsExtent.prod()) < available memory size
+
 #ifdef ALPAKA_DEBUG
                     std::cout << "[-] AccCuda::KernelExecutor()" << std::endl;
 #endif
@@ -234,6 +241,7 @@ namespace alpaka
                     //std::cout << "BlockKernels: (" <<  << blockDim.x << ", " << blockDim.y << ", " << blockDim.z << ")" << std::endl;
 #endif
                     auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(m_v3uiBlockKernelsExtent, std::forward<TArgs>(args)...));
+                    // TODO: Check if the shared memory is big enough for the requested size.
 
                     // Instead of using the language extension for the kernel call, we use the runtime API.
                     // This allows us to get better error information.

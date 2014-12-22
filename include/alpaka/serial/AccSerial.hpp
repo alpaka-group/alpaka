@@ -141,7 +141,7 @@ namespace alpaka
                     // \TODO: C++14 std::make_unique would be better.
                     m_vvuiSharedMem.emplace_back(
                         std::unique_ptr<uint8_t[]>(
-                            new uint8_t[TuiNumElements]));
+                            reinterpret_cast<uint8_t*>(new T[TuiNumElements])));
                     return reinterpret_cast<T*>(m_vvuiSharedMem.back().get());
                 }
 

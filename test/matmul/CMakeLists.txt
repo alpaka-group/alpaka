@@ -63,7 +63,7 @@ IF(ALPAKA_CUDA_ENABLE)
         ${HPP_FILES_ALL}
         #${CPP_FILES_ALL}
         ${CU_FILES_ALL}
-        #OPTIONS -arch sm_20
+        OPTIONS -arch sm_20
     )
     # Force the .cpp files to be recognized as headers and not be compiled so there wont be a second entry point.
     #FOREACH(filepath ${CPP_FILES_ALL})

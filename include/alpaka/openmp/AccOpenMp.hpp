@@ -147,7 +147,7 @@ namespace alpaka
                         // \TODO: C++14 std::make_unique would be better.
                         m_vvuiSharedMem.emplace_back(
                             std::unique_ptr<uint8_t[]>(
-                                new uint8_t[TuiNumElements]));
+                                reinterpret_cast<uint8_t*>(new T[TuiNumElements])));
                     }
                     syncBlockKernels();
 
@@ -169,7 +169,7 @@ namespace alpaka
             private:
 #endif
                 // getIdx
-                vec<3u> mutable m_v3uiGridBlockIdx;                          //!< The index of the currently executed block.
+                vec<3u> mutable m_v3uiGridBlockIdx;                         //!< The index of the currently executed block.
 
                 // allocBlockSharedMem
                 std::vector<
