@@ -521,14 +521,14 @@ namespace alpaka
         {
         public:
             using TAcceleratedKernel = typename boost::mpl::apply<TKernel, AccThreads>::type;
-            using KernelExecutorExtent = KernelExecutorExtent<threads::detail::KernelExecutor<TAcceleratedKernel>, TKernelConstrArgs...>;
+            using TKernelExecutorExtent = KernelExecutorExtent<threads::detail::KernelExecutor<TAcceleratedKernel>, TKernelConstrArgs...>;
 
             //-----------------------------------------------------------------------------
             //! Creates an kernel executor for the serial accelerator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST KernelExecutorExtent operator()(TKernelConstrArgs && ... args) const
+            ALPAKA_FCT_HOST TKernelExecutorExtent operator()(TKernelConstrArgs && ... args) const
             {
-                return KernelExecutorExtent(std::forward<TKernelConstrArgs>(args)...);
+                return TKernelExecutorExtent(std::forward<TKernelConstrArgs>(args)...);
             }
         };
     }

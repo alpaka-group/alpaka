@@ -253,7 +253,7 @@ namespace alpaka
                 }
 
             private:
-    //#ifdef ALPAKA_DEBUG
+    #ifdef ALPAKA_DEBUG
                 //-----------------------------------------------------------------------------
                 //! Prints all the device properties to std::cout.
                 //-----------------------------------------------------------------------------

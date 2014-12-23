@@ -54,7 +54,7 @@ namespace alpaka
                 // cudaHostRegisterMapped: 
                 //  Maps the allocation into the CUDA address space.The device pointer to the memory may be obtained by calling cudaHostGetDevicePointer().
                 //  This feature is available only on GPUs with compute capability greater than or equal to 1.1.
-                ALPAKA_CUDA_CHECK(cudaHostRegister(pBuffer, uiSizeBytes, cudaHostRegisterDefault));
+                ALPAKA_CUDA_CHECK(cudaHostRegister(const_cast<void *>(pBuffer), uiSizeBytes, cudaHostRegisterDefault));
             }
             //#############################################################################
             //! Unmaps page-locked memory.
@@ -63,7 +63,7 @@ namespace alpaka
             {
                 assert(pBuffer);
 
-                ALPAKA_CUDA_CHECK(cudaHostUnregister(pBufferSrc));
+                ALPAKA_CUDA_CHECK(cudaHostUnregister(const_cast<void *>(pBuffer)));
             }
 
             //#############################################################################

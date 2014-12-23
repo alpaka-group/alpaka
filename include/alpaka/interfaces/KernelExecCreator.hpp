@@ -134,11 +134,11 @@ namespace alpaka
             template<typename TWorkExtent, std::size_t ... TIndices>
             ALPAKA_FCT_HOST TKernelExecutor createKernelExecutor(IWorkExtent<TWorkExtent> const & workExtent, std_extension::index_sequence<TIndices...>) const
             {
-                if(workExtent.getExtent<Grid, Blocks, Linear>() == 0)
+                if(workExtent.template getExtent<Grid, Blocks, Linear>() == 0)
                 {
                     throw std::runtime_error("The workExtent grid blocks extent is not allowed to be zero in any dimension!");
                 }
-                if(workExtent.getExtent<Block, Kernels, Linear>() == 0)
+                if(workExtent.template getExtent<Block, Kernels, Linear>() == 0)
                 {
                     throw std::runtime_error("The workExtent block kernels extent is not allowed to be zero in any dimension!");
                 }

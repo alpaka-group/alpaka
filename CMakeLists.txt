@@ -37,8 +37,12 @@ SET(ALPAKA_COMPILE_DEFINITIONS)
 SET(ALPAKA_INCLUDE_DEPENDENCIES)
 SET(ALPAKA_LIBRARY_DEPENDENCIES)
 
-# set helper paths to find libraries and packages
+# Set helper paths to find libraries and packages.
 SET(CMAKE_PREFIX_PATH "/usr/lib/x86_64-linux-gnu/" "$ENV{CUDA_ROOT}" "$ENV{BOOST_ROOT}")
+
+# Add common functions.
+SET(ALPAKA_RESURSIVE_FILE_FUNCTIONS_FILE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake/common.cmake")
+INCLUDE(${ALPAKA_RESURSIVE_FILE_FUNCTIONS_FILE_PATH})
 
 OPTION(ALPAKA_SERIAL_ENABLE "Enable the serial accelerator" OFF)
 IF(ALPAKA_SERIAL_ENABLE)
@@ -85,7 +89,11 @@ ENDIF()
 
 FIND_PACKAGE(Boost REQUIRED COMPONENTS ${BOOST_REQUIRED_COMPONENTS})
 LIST(APPEND ALPAKA_INCLUDE_DEPENDENCIES ${Boost_INCLUDE_DIRS})
+IF(NOT MSVC)    # On non MSVC targets the general attribute is not added.
+    list_add_prefix("general;" Boost_LIBRARIES)
+ENDIF()
 LIST(APPEND ALPAKA_LIBRARY_DEPENDENCIES ${Boost_LIBRARIES})
+
 
 ################################################################################
 # Find OpenMP.
@@ -191,9 +199,6 @@ ENDIF()
 ################################################################################
 # Compile & Link.
 ################################################################################
-
-SET(ALPAKA_RESURSIVE_FILE_FUNCTIONS_FILE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake/common.cmake")
-INCLUDE(${ALPAKA_RESURSIVE_FILE_FUNCTIONS_FILE_PATH})
 
 # alpaka
 SET(ALPAKA_REALTIVE_INCLUDE_DIR "include/")

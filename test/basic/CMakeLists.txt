@@ -57,11 +57,11 @@ INCLUDE_DIRECTORIES(${INCLUDE_DIR})
 # Builds the project as a static library and adds the headers and sources.
 # Always add all files to the target executable build call to add them to the build project.
 IF(ALPAKA_CUDA_ENABLE)
+    CMAKE_POLICY(SET CMP0023 OLD)   # CUDA_ADD_EXECUTABLE calls TARGET_LINK_LIBRARIES without keywords.
     CUDA_ADD_EXECUTABLE(${TARGET_NAME}
         ${HPP_FILES_ALL}
         #${CPP_FILES_ALL}
         ${CU_FILES_ALL}
-        OPTIONS -arch sm_20
     )
     # Force the .cpp files to be recognized as headers and not be compiled so there wont be a second entry point.
     #FOREACH(filepath ${CPP_FILES_ALL})

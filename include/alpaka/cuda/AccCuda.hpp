@@ -248,8 +248,8 @@ namespace alpaka
                     //detail::cudaKernel<<<gridDim, blockDim, uiBlockSharedExternMemSizeBytes>>>(*static_cast<TAcceleratedKernel const *>(this), args...);
 
                     ALPAKA_CUDA_CHECK(cudaConfigureCall(gridDim, blockDim, uiBlockSharedExternMemSizeBytes));
-                    pushCudaKernelArgument<0>(*static_cast<TAcceleratedKernel const *>(this), std::forward<TArgs>(args)...);
-                    ALPAKA_CUDA_CHECK(cudaLaunch(cudaKernel));
+                    pushCudaKernelArgument<0>(std::ref(*static_cast<TAcceleratedKernel const *>(this)), std::forward<TArgs>(args)...);
+                    ALPAKA_CUDA_CHECK(cudaLaunch(cudaKernel<TAcceleratedKernel, TArgs...>));
 #ifdef ALPAKA_DEBUG
                     std::cout << "[-] AccCuda::KernelExecutor::operator()" << std::endl;
 #endif
@@ -260,7 +260,7 @@ namespace alpaka
                 //! Push kernel arguments.
                 //-----------------------------------------------------------------------------
                 template<std::size_t TuiOffset>
-                pushCudaKernelArgument()
+                void pushCudaKernelArgument() const
                 {
                     // The base case to push zero arguments.
                 }
@@ -268,7 +268,7 @@ namespace alpaka
                 //! Push kernel arguments.
                 //-----------------------------------------------------------------------------
                 template<std::size_t TuiOffset, typename T0, typename... TArgs>
-                pushCudaKernelArgument(T0 && arg0, TArgs && ... args)
+                void pushCudaKernelArgument(T0 && arg0, TArgs && ... args) const
                 {
                     // Push the first argument.
                     ALPAKA_CUDA_CHECK(cudaSetupArgument(&arg0, sizeof(arg0), TuiOffset));
@@ -362,14 +362,14 @@ namespace alpaka
         {
         public:
             using TAcceleratedKernel = typename boost::mpl::apply<TKernel, AccCuda>::type;
-            using KernelExecutorExtent = KernelExecutorExtent<cuda::detail::KernelExecutor<TAcceleratedKernel>, TKernelConstrArgs...>;
+            using TKernelExecutorExtent = KernelExecutorExtent<cuda::detail::KernelExecutor<TAcceleratedKernel>, TKernelConstrArgs...>;
 
             //-----------------------------------------------------------------------------
             //! Creates an kernel executor for the serial accelerator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST KernelExecutorExtent operator()(TKernelConstrArgs && ... args) const
+            ALPAKA_FCT_HOST TKernelExecutorExtent operator()(TKernelConstrArgs && ... args) const
             {
-                return KernelExecutorExtent(std::forward<TKernelConstrArgs>(args)...);
+                return TKernelExecutorExtent(std::forward<TKernelConstrArgs>(args)...);
             }
         };
     }
