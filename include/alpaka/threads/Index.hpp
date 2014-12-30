@@ -1,5 +1,6 @@
 /**
-* Copyright 2014 Benjamin Worpitz
+* \file
+* Copyright 2014-2015 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -35,7 +36,7 @@ namespace alpaka
         {
             using TThreadIdToIndex = std::map<std::thread::id, vec<3u>>;
             //#############################################################################
-            //! This class holds the implementation details for the indexing of the threads accelerator.
+            //! This threads accelerator index provider.
             //#############################################################################
             class IndexThreads
             {

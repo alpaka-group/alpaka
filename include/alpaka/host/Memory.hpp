@@ -1,5 +1,6 @@
 /**
-* Copyright 2014 Benjamin Worpitz
+* \file
+* Copyright 2014-2015 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -37,7 +38,7 @@ namespace alpaka
         namespace detail
         {
             //#############################################################################
-            //! Allocates memory in the Host memory space.
+            //! The host accelerators memory allocator.
             //#############################################################################
             template<>
             struct MemAlloc<MemorySpaceHost>
@@ -52,7 +53,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! Frees memory in the Host memory space.
+            //! The host accelerators memory freer.
             //#############################################################################
             template<>
             struct MemFree<MemorySpaceHost>
@@ -64,6 +65,8 @@ namespace alpaka
                 }
             };
             //#############################################################################
+            //! The host accelerators memory copier.
+            //!
             //! Copies from a host memory into host memory.
             //#############################################################################
             template<>
@@ -79,7 +82,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! Fills the buffer with the data in the Host memory space.
+            //! The host accelerators memory setter.
             //#############################################################################
             template<>
             struct MemSet<MemorySpaceHost>

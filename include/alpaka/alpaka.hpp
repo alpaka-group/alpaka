@@ -1,5 +1,6 @@
 /**
-* Copyright 2014 Benjamin Worpitz
+* \\file
+* Copyright 2014-2015 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -56,7 +57,7 @@
 #include <boost/mpl/for_each.hpp>           // boost::mpl::for_each
 
 //-----------------------------------------------------------------------------
-//! The alpaka library namespace.
+//! The alpaka library.
 //-----------------------------------------------------------------------------
 namespace alpaka
 {

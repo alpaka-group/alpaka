@@ -1,5 +1,6 @@
 /**
-* Copyright 2014 Benjamin Worpitz
+* \file
+* Copyright 2014-2015 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -79,7 +80,9 @@ namespace alpaka
             class KernelExecutor;
 
             //#############################################################################
-            //! The base class for all CUDA accelerated kernels.
+            //! The CUDA accelerator.
+            //!
+            //! This accelerator allows parallel kernel execution on devices supporting CUDA.
             //#############################################################################
             class AccCuda :
                 protected TInterfacedWorkExtent,
@@ -285,7 +288,9 @@ namespace alpaka
     }
 
     //#############################################################################
-    //! The specialization of the accelerator interface for CUDA.
+    //! The CUDA accelerator interface.
+    //!
+    //! This specialization is required because the functions are not allowed to be declared ALPAKA_FCT_HOST_ACC but are required to be ALPAKA_FCT_ACC only.
     //#############################################################################
     template<>
     class IAcc<AccCuda> :

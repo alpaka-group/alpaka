@@ -1,5 +1,6 @@
 /**
-* Copyright 2014 Benjamin Worpitz
+* \file
+* Copyright 2014-2015 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -34,7 +35,7 @@
 
 namespace alpaka
 {
-    namespace cuda
+    namespace fibers
     {
         namespace detail
         {
@@ -42,7 +43,7 @@ namespace alpaka
             class DeviceManagerFibers;
 
             //#############################################################################
-            //! The CUDA accelerator device handle.
+            //! The fibers accelerator device handle.
             //#############################################################################
             class DeviceFibers
             {
@@ -95,13 +96,13 @@ namespace alpaka
     namespace device
     {
         //#############################################################################
-        //! The CUDA accelerator device handle.
+        //! The fibers accelerator interfaced device handle.
         //#############################################################################
         template<>
         class Device<AccFibers> :
-            public device::detail::IDevice<cuda::detail::DeviceFibers>
+            public device::detail::IDevice<fibers::detail::DeviceFibers>
         {
-            friend class cuda::detail::DeviceManagerFibers;
+            friend class fibers::detail::DeviceManagerFibers;
         private:
             //-----------------------------------------------------------------------------
             //! Constructor.
@@ -128,12 +129,12 @@ namespace alpaka
         };
     }
 
-    namespace cuda
+    namespace fibers
     {
         namespace detail
         {
             //#############################################################################
-            //! The CUDA accelerator device manager.
+            //! The fibers accelerator device manager.
             //#############################################################################
             class DeviceManagerFibers
             {
@@ -186,11 +187,11 @@ namespace alpaka
     namespace device
     {
         //#############################################################################
-        //! The threads accelerator device manager.
+        //! The fibers accelerator interfaced device manager.
         //#############################################################################
         template<>
         class DeviceManager<AccFibers> :
-            public detail::IDeviceManager<cuda::detail::DeviceManagerFibers>
+            public detail::IDeviceManager<fibers::detail::DeviceManagerFibers>
         {};
     }
 }

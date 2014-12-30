@@ -1,5 +1,6 @@
 /**
-* Copyright 2014 Benjamin Worpitz
+* \file
+* Copyright 2014-2015 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -33,8 +34,7 @@ namespace alpaka
         namespace detail
         {
             //#############################################################################
-            //! The description of the work extent.
-            //! This class stores the sizes as members.
+            //! The host accelerators work extent.
             //#############################################################################
             class WorkExtentHost
             {

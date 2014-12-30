@@ -1,5 +1,6 @@
 /**
-* Copyright 2014 Benjamin Worpitz
+* \file
+* Copyright 2014-2015 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -31,7 +32,7 @@ namespace alpaka
         namespace detail
         {
             //#############################################################################
-            //! This class holds the implementation details for the atomic operations of the serial accelerator.
+            //! The serial accelerator atomic operations.
             //#############################################################################
             class AtomicSerial
             {
@@ -64,7 +65,7 @@ namespace alpaka
     namespace detail
     {
         //#############################################################################
-        //! The specialization to execute the requested atomic operation of the serial accelerator.
+        //! The serial accelerator atomic operation functor.
         //#############################################################################
         template<typename TOp, typename T>
         struct AtomicOp<serial::detail::AtomicSerial, TOp, T>

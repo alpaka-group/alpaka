@@ -1,5 +1,6 @@
 /**
-* Copyright 2014 Benjamin Worpitz
+* \file
+* Copyright 2014-2015 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -34,7 +35,7 @@ namespace alpaka
         namespace detail
         {
             //#############################################################################
-            //! This class holds the implementation details for the atomic operations of the CUDA accelerator.
+            //! The CUDA accelerator atomic operations.
             //#############################################################################
             class AtomicCuda
             {
@@ -71,7 +72,10 @@ namespace alpaka
         // See: http://docs.nvidia.com/cuda/cuda-c-programming-guide/#atomic-functions how to implement everything with CAS
         //#############################################################################
         //-----------------------------------------------------------------------------
-        //! Add.
+        // Add.
+        //-----------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------
+        //! The CUDA accelerator atomic operation functor.
         //-----------------------------------------------------------------------------
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Add, int>
@@ -81,6 +85,9 @@ namespace alpaka
                 return atomicAdd(addr, value);
             }
         };
+        //-----------------------------------------------------------------------------
+        //! The CUDA accelerator atomic operation functor.
+        //-----------------------------------------------------------------------------
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Add, unsigned int>
         {
@@ -89,6 +96,9 @@ namespace alpaka
                 return atomicAdd(addr, value);
             }
         };
+        //-----------------------------------------------------------------------------
+        //! The CUDA accelerator atomic operation functor.
+        //-----------------------------------------------------------------------------
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Add, unsigned long long int>
         {
@@ -97,6 +107,9 @@ namespace alpaka
                 return atomicAdd(addr, value);
             }
         };
+        //-----------------------------------------------------------------------------
+        //! The CUDA accelerator atomic operation functor.
+        //-----------------------------------------------------------------------------
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Add, float>
         {
@@ -105,6 +118,9 @@ namespace alpaka
                 return atomicAdd(addr, value);
             }
         };
+        //-----------------------------------------------------------------------------
+        //! The CUDA accelerator atomic operation functor.
+        //-----------------------------------------------------------------------------
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Add, double>
         {
@@ -126,7 +142,10 @@ namespace alpaka
             }
         };
         //-----------------------------------------------------------------------------
-        //! Sub.
+        // Sub.
+        //-----------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------
+        //! The CUDA accelerator atomic operation functor.
         //-----------------------------------------------------------------------------
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Sub, int>
@@ -136,6 +155,9 @@ namespace alpaka
                 return atomicSub(addr, value);
             }
         };
+        //-----------------------------------------------------------------------------
+        //! The CUDA accelerator atomic operation functor.
+        //-----------------------------------------------------------------------------
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Sub, unsigned int>
         {
@@ -145,7 +167,10 @@ namespace alpaka
             }
         };
         //-----------------------------------------------------------------------------
-        //! Min.
+        // Min.
+        //-----------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------
+        //! The CUDA accelerator atomic operation functor.
         //-----------------------------------------------------------------------------
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Min, int>
@@ -155,6 +180,9 @@ namespace alpaka
                 return atomicMin(addr, value);
             }
         };
+        //-----------------------------------------------------------------------------
+        //! The CUDA accelerator atomic operation functor.
+        //-----------------------------------------------------------------------------
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Min, unsigned int>
         {
@@ -163,6 +191,9 @@ namespace alpaka
                 return atomicMin(addr, value);
             }
         };
+        //-----------------------------------------------------------------------------
+        //! The CUDA accelerator atomic operation functor.
+        //-----------------------------------------------------------------------------
         /*template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Min, unsigned long long int>
         {
@@ -172,7 +203,10 @@ namespace alpaka
             }
         };*/
         //-----------------------------------------------------------------------------
-        //! Max.
+        // Max.
+        //-----------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------
+        //! The CUDA accelerator atomic operation functor.
         //-----------------------------------------------------------------------------
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Max, int>
@@ -182,6 +216,9 @@ namespace alpaka
                 return atomicMax(addr, value);
             }
         };
+        //-----------------------------------------------------------------------------
+        //! The CUDA accelerator atomic operation functor.
+        //-----------------------------------------------------------------------------
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Max, unsigned int>
         {
@@ -190,6 +227,9 @@ namespace alpaka
                 return atomicMax(addr, value);
             }
         };
+        //-----------------------------------------------------------------------------
+        //! The CUDA accelerator atomic operation functor.
+        //-----------------------------------------------------------------------------
         /*template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Max, unsigned long long int>
         {
@@ -199,7 +239,10 @@ namespace alpaka
             }
         };*/
         //-----------------------------------------------------------------------------
-        //! Exch.
+        // Exch.
+        //-----------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------
+        //! The CUDA accelerator atomic operation functor.
         //-----------------------------------------------------------------------------
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Exch, int>
@@ -209,6 +252,9 @@ namespace alpaka
                 return atomicExch(addr, value);
             }
         };
+        //-----------------------------------------------------------------------------
+        //! The CUDA accelerator atomic operation functor.
+        //-----------------------------------------------------------------------------
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Exch, unsigned int>
         {
@@ -217,6 +263,9 @@ namespace alpaka
                 return atomicExch(addr, value);
             }
         };
+        //-----------------------------------------------------------------------------
+        //! The CUDA accelerator atomic operation functor.
+        //-----------------------------------------------------------------------------
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Exch, unsigned long long int>
         {
@@ -225,6 +274,9 @@ namespace alpaka
                 return atomicExch(addr, value);
             }
         };
+        //-----------------------------------------------------------------------------
+        //! The CUDA accelerator atomic operation functor.
+        //-----------------------------------------------------------------------------
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Exch, float>
         {
@@ -234,7 +286,10 @@ namespace alpaka
             }
         };
         //-----------------------------------------------------------------------------
-        //! Inc.
+        // Inc.
+        //-----------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------
+        //! The CUDA accelerator atomic operation functor.
         //-----------------------------------------------------------------------------
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Inc, unsigned int>
@@ -245,7 +300,10 @@ namespace alpaka
             }
         };
         //-----------------------------------------------------------------------------
-        //! Dec.
+        // Dec.
+        //-----------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------
+        //! The CUDA accelerator atomic operation functor.
         //-----------------------------------------------------------------------------
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Dec, unsigned int>
@@ -256,7 +314,10 @@ namespace alpaka
             }
         };
         //-----------------------------------------------------------------------------
-        //! And.
+        // And.
+        //-----------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------
+        //! The CUDA accelerator atomic operation functor.
         //-----------------------------------------------------------------------------
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, And, int>
@@ -266,6 +327,9 @@ namespace alpaka
                 return atomicAnd(addr, value);
             }
         };
+        //-----------------------------------------------------------------------------
+        //! The CUDA accelerator atomic operation functor.
+        //-----------------------------------------------------------------------------
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, And, unsigned int>
         {
@@ -274,6 +338,9 @@ namespace alpaka
                 return atomicAnd(addr, value);
             }
         };
+        //-----------------------------------------------------------------------------
+        //! The CUDA accelerator atomic operation functor.
+        //-----------------------------------------------------------------------------
         /*template<>
         struct AtomicOp<cuda::detail::AtomicCuda, And, unsigned long long int>
         {
@@ -283,7 +350,10 @@ namespace alpaka
             }
         };*/
         //-----------------------------------------------------------------------------
-        //! Or.
+        // Or.
+        //-----------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------
+        //! The CUDA accelerator atomic operation functor.
         //-----------------------------------------------------------------------------
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Or, int>
@@ -293,6 +363,9 @@ namespace alpaka
                 return atomicOr(addr, value);
             }
         };
+        //-----------------------------------------------------------------------------
+        //! The CUDA accelerator atomic operation functor.
+        //-----------------------------------------------------------------------------
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Or, unsigned int>
         {
@@ -301,6 +374,9 @@ namespace alpaka
                 return atomicOr(addr, value);
             }
         };
+        //-----------------------------------------------------------------------------
+        //! The CUDA accelerator atomic operation functor.
+        //-----------------------------------------------------------------------------
         /*template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Or, unsigned long long int>
         {
@@ -310,7 +386,10 @@ namespace alpaka
             }
         };*/
         //-----------------------------------------------------------------------------
-        //! Xor.
+        // Xor.
+        //-----------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------
+        //! The CUDA accelerator atomic operation functor.
         //-----------------------------------------------------------------------------
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Xor, int>
@@ -320,6 +399,9 @@ namespace alpaka
                 return atomicXor(addr, value);
             }
         };
+        //-----------------------------------------------------------------------------
+        //! The CUDA accelerator atomic operation functor.
+        //-----------------------------------------------------------------------------
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Xor, unsigned int>
         {
@@ -328,6 +410,9 @@ namespace alpaka
                 return atomicXor(addr, value);
             }
         };
+        //-----------------------------------------------------------------------------
+        //! The CUDA accelerator atomic operation functor.
+        //-----------------------------------------------------------------------------
         /*template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Xor, unsigned long long int>
         {
@@ -337,7 +422,10 @@ namespace alpaka
             }
         };*/
         //-----------------------------------------------------------------------------
-        //! Cas.
+        // Cas.
+        //-----------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------
+        //! The CUDA accelerator atomic operation functor.
         //-----------------------------------------------------------------------------
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Cas, int>
@@ -347,6 +435,9 @@ namespace alpaka
                 return atomicCAS(addr, compare, value);
             }
         };
+        //-----------------------------------------------------------------------------
+        //! The CUDA accelerator atomic operation functor.
+        //-----------------------------------------------------------------------------
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Cas, unsigned int>
         {
@@ -355,6 +446,9 @@ namespace alpaka
                 return atomicCAS(addr, compare, value);
             }
         };
+        //-----------------------------------------------------------------------------
+        //! The CUDA accelerator atomic operation functor.
+        //-----------------------------------------------------------------------------
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Cas, unsigned long long int>
         {

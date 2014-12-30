@@ -1,5 +1,6 @@
 /**
-* Copyright 2014 Benjamin Worpitz
+* \file
+* Copyright 2014-2015 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -34,7 +35,7 @@
 
 namespace alpaka
 {
-    namespace cuda
+    namespace threads
     {
         namespace detail
         {
@@ -42,7 +43,7 @@ namespace alpaka
             class DeviceManagerThreads;
 
             //#############################################################################
-            //! The CUDA accelerator device handle.
+            //! The threads accelerator device handle.
             //#############################################################################
             class DeviceThreads
             {
@@ -97,13 +98,13 @@ namespace alpaka
     namespace device
     {
         //#############################################################################
-        //! The CUDA accelerator device handle.
+        //! The threads accelerator interfaced device handle.
         //#############################################################################
         template<>
         class Device<AccThreads> :
-            public device::detail::IDevice<cuda::detail::DeviceThreads>
+            public device::detail::IDevice<threads::detail::DeviceThreads>
         {
-            friend class cuda::detail::DeviceManagerThreads;
+            friend class threads::detail::DeviceManagerThreads;
         private:
             //-----------------------------------------------------------------------------
             //! Constructor.
@@ -130,12 +131,12 @@ namespace alpaka
         };
     }
 
-    namespace cuda
+    namespace threads
     {
         namespace detail
         {
             //#############################################################################
-            //! The CUDA accelerator device manager.
+            //! The threads accelerator device manager.
             //#############################################################################
             class DeviceManagerThreads
             {
@@ -188,11 +189,11 @@ namespace alpaka
     namespace device
     {
         //#############################################################################
-        //! The threads accelerator device manager.
+        //! The threads accelerator interfaced device manager.
         //#############################################################################
         template<>
         class DeviceManager<AccThreads> :
-            public detail::IDeviceManager<cuda::detail::DeviceManagerThreads>
+            public detail::IDeviceManager<threads::detail::DeviceManagerThreads>
         {};
     }
 }

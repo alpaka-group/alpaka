@@ -1,0 +1,11 @@
+//-----------------------------------------------------------------------------
+//! \page Rationale Rationale
+//!
+//! A user kernel has to have access to accelerator methods like synchronization of threads, index retrieval and many more.
+//! There are two ways to implement this:
+//! - The kernel has to be a functor and inherits from the accelerator. This does not allow C++11 lambdas to be used as kernels.
+//! - The kernel can be an arbitrary function object and has access to the accelerator methods through a templated parameter.
+//!
+//! The library does not use a common accelerator base class from which all accelerator implementations inherit, because this would sacrifice performance.
+//! Especially in the case of CUDA copying objects (kernels inheriting from the accelerator) with virtual functions into device memory is not allowed.
+//-----------------------------------------------------------------------------

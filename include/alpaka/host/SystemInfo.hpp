@@ -1,5 +1,6 @@
 /**
-* Copyright 2014 Benjamin Worpitz
+* \file
+* Copyright 2014-2015 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -43,6 +44,9 @@
 
 namespace alpaka
 {
+    //-----------------------------------------------------------------------------
+    //! The host and host accelerators functionality.
+    //-----------------------------------------------------------------------------
     namespace host
     {
 #ifdef BOOST_ARCH_X86_AVAILABLE

@@ -1,5 +1,6 @@
 /**
-* Copyright 2014 Benjamin Worpitz
+* \file
+* Copyright 2014-2015 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -30,10 +31,13 @@
 
 namespace alpaka
 {
+    //-----------------------------------------------------------------------------
+    //! The device management functionality.
+    //-----------------------------------------------------------------------------
     namespace device
     {
         //#############################################################################
-        //! The interface of a device handle.
+        //! The device properties.
         //#############################################################################
         struct DeviceProperties
         {
@@ -50,7 +54,7 @@ namespace alpaka
         namespace detail
         {
             //#############################################################################
-            //! The template of a device handle.
+            //! The device handle interface.
             //#############################################################################
             template<typename TDevice>
             class IDevice :
@@ -90,7 +94,7 @@ namespace alpaka
         }
 
         //#############################################################################
-        //! The template of a device handle.
+        //! The abstract device handle.
         //#############################################################################
         template<typename TAcc>
         class Device;
@@ -98,7 +102,7 @@ namespace alpaka
         namespace detail
         {
             //#############################################################################
-            //! The interface for device selection.
+            //! The device manager interface.
             //#############################################################################
             template<typename TDeviceManager>
             class IDeviceManager :
@@ -160,7 +164,7 @@ namespace alpaka
         }
 
         //#############################################################################
-        //! The template of a device manager.
+        //! The abstract device manager.
         //#############################################################################
         template<typename TAcc>
         class DeviceManager;

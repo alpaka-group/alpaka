@@ -1,5 +1,6 @@
 /**
-* Copyright 2014 Benjamin Worpitz
+* \file
+* Copyright 2014-2015 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -32,7 +33,7 @@ namespace alpaka
     namespace event
     {
         //#############################################################################
-        //! The template for an event.
+        //! The CUDA accelerator event.
         //#############################################################################
         template<>
         class Event<AccCuda>
@@ -77,10 +78,10 @@ namespace alpaka
         namespace detail
         {
             //#############################################################################
-            //! The template for enqueuing the given event.
+            //! The CUDA accelerator event enqueuer.
             //#############################################################################
             template<>
-            struct EventEnqueue<AccCuda>
+            struct EventEnqueue<Event<AccCuda>>
             {
                 ALPAKA_FCT_HOST EventEnqueue(Event<AccCuda> const & event)
                 {
@@ -91,10 +92,10 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The template for an event wait.
+            //! The CUDA accelerator event waiter.
             //#############################################################################
             template<>
-            struct EventWait<AccCuda>
+            struct EventWait<Event<AccCuda>>
             {
                 ALPAKA_FCT_HOST EventWait(Event<AccCuda> const & event)
                 {
@@ -103,10 +104,10 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The template for an event test.
+            //! The CUDA accelerator event tester.
             //#############################################################################
             template<>
-            struct EventTest<AccCuda>
+            struct EventTest<Event<AccCuda>>
             {
                 ALPAKA_FCT_HOST EventTest(Event<AccCuda> const & event, bool & bTest)
                 {

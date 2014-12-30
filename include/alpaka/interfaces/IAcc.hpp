@@ -1,5 +1,6 @@
 /**
-* Copyright 2014 Benjamin Worpitz
+* \file
+* Copyright 2014-2015 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -33,7 +34,7 @@
 namespace alpaka
 {
     //#############################################################################
-    //! The interface for all accelerators.
+    //! The accelerator interface.
     //
     // All the methods of this interface are declared ALPAKA_FCT_HOST_ACC. 
     // Because the kernel is always compiled with ALPAKA_FCT_HOST_ACC for all accelerators (even for AccSerial), equivalently there has to be an implementation of all methods for host and device for all accelerators. 

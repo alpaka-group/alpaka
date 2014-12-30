@@ -1,5 +1,6 @@
 /**
-* Copyright 2014 Benjamin Worpitz
+* \file
+* Copyright 2014-2015 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -26,10 +27,13 @@
 
 namespace alpaka
 {
+    //-----------------------------------------------------------------------------
+    //! The event management functionality.
+    //-----------------------------------------------------------------------------
     namespace event
     {
         //#############################################################################
-        //! The template for an event.
+        //! The abstract event.
         //#############################################################################
         template<typename TAcc>
         class Event;
@@ -37,33 +41,34 @@ namespace alpaka
         namespace detail
         {
             //#############################################################################
-            //! The template for enqueuing the given event.
+            //! The abstract event enqueuer.
             //#############################################################################
-            template<typename TAcc>
+            template<typename TEvent, typename TSfinae = void>
             struct EventEnqueue;
 
             //#############################################################################
-            //! The template for an event wait.
+            //! The abstract event waiter.
             //#############################################################################
-            template<typename TAcc>
+            template<typename TEvent, typename TSfinae = void>
             struct EventWait;
 
             //#############################################################################
-            //! The template for an event test.
+            //! The abstract event tester.
             //#############################################################################
-            template<typename TAcc>
+            template<typename TEvent, typename TSfinae = void>
             struct EventTest;
         }
 
         //#############################################################################
         //! Queues the given event.
+        //!
         //! If it has previously been queued, then this call will overwrite any existing state of the event. 
         //! Any subsequent calls which examine the status of event will only examine the completion of this most recent call to enqueue.
         //#############################################################################
         template<typename TAcc>
         ALPAKA_FCT_HOST void enqueue(Event<TAcc> const & event)
         {
-            detail::EventEnqueue<TAcc>{event};
+            detail::EventEnqueue<Event<TAcc>>{event};
         }
 
         //#############################################################################
@@ -72,7 +77,7 @@ namespace alpaka
         template<typename TAcc>
         ALPAKA_FCT_HOST void wait(Event<TAcc> const & event)
         {
-            detail::EventWait<TAcc>{event};
+            detail::EventWait<Event<TAcc>>{event};
         }
 
         //#############################################################################
@@ -83,7 +88,7 @@ namespace alpaka
         {
             bool bTest(false);
 
-            detail::EventTest<TAcc>{event, bTest};
+            detail::EventTest<Event<TAcc>>{event, bTest};
 
             return bTest;
         }

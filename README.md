@@ -1,6 +1,11 @@
 alpaka - Abstraction Library for Parallel Kernel Acceleration
 ================================================================
 
+The alpaka library allows users to utilize a multitude of different accelerators that require different libraries/compilers by providing a uniform interface.
+Users have to write only one implementation of their algorithms and can benefit from all supported accelerators.
+There is no need to write special CUDA, OpenMP or custom threading code.
+The supported accelerators can be selected at compile time but the decision which accelerator executes which kernel can be made at runtime.
+
 Software License
 ----------------
 

@@ -1,5 +1,6 @@
 /**
-* Copyright 2014 Benjamin Worpitz
+* \file
+* Copyright 2014-2015 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -76,7 +77,10 @@ namespace alpaka
             class KernelExecutor;
 
             //#############################################################################
-            //! The base class for all C++11 std::thread accelerated kernels.
+            //! The threads accelerator.
+            //!
+            //! This accelerator allows parallel kernel execution on the host.
+            //! It uses C++11 std::threads to implement the parallelism.
             //#############################################################################
             class AccThreads :
                 protected TInterfacedWorkExtent,

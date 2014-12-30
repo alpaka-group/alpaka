@@ -1,5 +1,6 @@
 /**
-* Copyright 2014 Benjamin Worpitz
+* \file
+* Copyright 2014-2015 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -30,13 +31,13 @@ namespace alpaka
     namespace detail
     {
         //#############################################################################
-        //! The template to execute the requested atomic operation.
+        //! The abstract atomic operation functor.
         //#############################################################################
         template<typename TAtomic, typename TOp, typename T>
         struct AtomicOp;
 
         //#############################################################################
-        //! The interface of the atomic operations.
+        //! The atomic operations interface.
         //#############################################################################
         template<typename TAtomic>
         class IAtomic :

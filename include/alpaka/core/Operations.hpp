@@ -1,5 +1,6 @@
 /**
-* Copyright 2014 Benjamin Worpitz
+* \file
+* Copyright 2014-2015 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -29,12 +30,13 @@
 namespace alpaka
 {
     //-----------------------------------------------------------------------------
-    //! Defines operations.
+    //! Defines operation functors.
     //-----------------------------------------------------------------------------
     namespace operations
     {
         //#############################################################################
-        //! This type is used to indicate a atomic addition.
+        //! The addition functor.
+        //!
         //! \return The old value of addr.
         //#############################################################################
         struct Add
@@ -49,7 +51,8 @@ namespace alpaka
             }
         };
         //#############################################################################
-        //! This type is used to indicate a atomic subtraction.
+        //! The subtraction functor.
+        //!
         //! \return The old value of addr.
         //#############################################################################
         struct Sub
@@ -64,7 +67,8 @@ namespace alpaka
             }
         };
         //#############################################################################
-        //! This type is used to indicate a atomic minimum.
+        //! The minimum functor.
+        //!
         //! \return The old value of addr.
         //#############################################################################
         struct Min
@@ -79,7 +83,8 @@ namespace alpaka
             }
         };
         //#############################################################################
-        //! This type is used to indicate a atomic maximum.
+        //! The maximum functor.
+        //!
         //! \return The old value of addr.
         //#############################################################################
         struct Max
@@ -94,7 +99,8 @@ namespace alpaka
             }
         };
         //#############################################################################
-        //! This type is used to indicate a atomic exchange.
+        //! The exchange functor.
+        //!
         //! \return The old value of addr.
         //#############################################################################
         struct Exch
@@ -109,8 +115,10 @@ namespace alpaka
             }
         };
         //#############################################################################
-        //! This type is used to indicate a atomic increment.
-        //! Increment up to value, then reset to 0.
+        //! The increment functor.
+        //!
+        //! Increments up to value, then reset to 0.
+        //!
         //! \return The old value of addr.
         //#############################################################################
         struct Inc
@@ -125,8 +133,10 @@ namespace alpaka
             }
         };
         //#############################################################################
-        //! This type is used to indicate a atomic decrement.
+        //! The decrement functor.
+        //!
         //! Decrement down to 0, then reset to value.
+        //!
         //! \return The old value of addr.
         //#############################################################################
         struct Dec
@@ -141,7 +151,8 @@ namespace alpaka
             }
         };
         //#############################################################################
-        //! This type is used to indicate a atomic and.
+        //! The and functor.
+        //!
         //! \return The old value of addr.
         //#############################################################################
         struct And
@@ -156,7 +167,8 @@ namespace alpaka
             }
         };
         //#############################################################################
-        //! This type is used to indicate a atomic or.
+        //! The or functor.
+        //!
         //! \return The old value of addr.
         //#############################################################################
         struct Or
@@ -171,7 +183,8 @@ namespace alpaka
             }
         };
         //#############################################################################
-        //! This type is used to indicate a atomic exclusive or.
+        //! The exclusive or functor.
+        //!
         //! \return The old value of addr.
         //#############################################################################
         struct Xor
@@ -186,7 +199,8 @@ namespace alpaka
             }
         };
         //#############################################################################
-        //! This type is used to indicate a atomic compare and swap.
+        //! The compare and swap functor.
+        //!
         //! \return The old value of addr.
         //#############################################################################
         struct Cas

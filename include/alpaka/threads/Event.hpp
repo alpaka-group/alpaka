@@ -1,5 +1,6 @@
 /**
-* Copyright 2014 Benjamin Worpitz
+* \file
+* Copyright 2014-2015 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -31,7 +32,7 @@ namespace alpaka
     namespace event
     {
         //#############################################################################
-        //! The template for an event.
+        //! The threads accelerator event.
         //#############################################################################
         template<>
         class Event<AccThreads> :

@@ -1,5 +1,6 @@
 /**
-* Copyright 2014 Benjamin Worpitz
+* \file
+* Copyright 2014-2015 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -35,7 +36,7 @@
 namespace alpaka
 {
     //#############################################################################
-    //! A 3-dimensional vector.
+    //! A n-dimensional vector.
     //#############################################################################
     template<std::size_t TuiDim, typename TValue = std::size_t>
     class vec

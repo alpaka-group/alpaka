@@ -1,5 +1,6 @@
 /**
-* Copyright 2014 Benjamin Worpitz
+* \file
+* Copyright 2014-2015 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -101,7 +102,7 @@ namespace alpaka
     namespace device
     {
         //#############################################################################
-        //! The CUDA accelerator device handle.
+        //! The CUDA accelerator interfaced device handle.
         //#############################################################################
         template<>
         class Device<AccCuda> :
@@ -321,7 +322,7 @@ namespace alpaka
     namespace device
     {
         //#############################################################################
-        //! The CUDA accelerator device manager.
+        //! The CUDA accelerator interfaced device manager.
         //#############################################################################
         template<>
         class DeviceManager<AccCuda> :

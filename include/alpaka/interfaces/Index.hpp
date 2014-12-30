@@ -1,5 +1,6 @@
 /**
-* Copyright 2014 Benjamin Worpitz
+* \file
+* Copyright 2014-2015 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -34,7 +35,7 @@ namespace alpaka
     namespace detail
     {
         //#############################################################################
-        //! The template to get the requested index.
+        //! The abstract index getter.
         //#############################################################################
         template<typename TIndex, typename TOrigin, typename TUnit, typename TDimensionality>
         struct GetIdx;
@@ -121,7 +122,7 @@ namespace alpaka
         };
 
         //#############################################################################
-        //! The interface of the index.
+        //! The index provider interface.
         //#############################################################################
         template<typename TIndex>
         class IIndex :

@@ -1,5 +1,6 @@
 /**
-* Copyright 2014 Benjamin Worpitz
+* \file
+* Copyright 2014-2015 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -36,7 +37,7 @@ namespace alpaka
         {
             using TFiberIdToIndex = std::map<boost::fibers::fiber::id, vec<3u>>;
             //#############################################################################
-            //! This class holds the implementation details for the indexing of the fibers accelerator.
+            //! This fibers accelerator index provider.
             //#############################################################################
             class IndexFibers
             {

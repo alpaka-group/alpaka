@@ -1,5 +1,6 @@
 /**
-* Copyright 2014 Benjamin Worpitz
+* \file
+* Copyright 2014-2015 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -31,7 +32,7 @@ namespace alpaka
         namespace detail
         {
             //#############################################################################
-            //! This class holds the implementation details for the indexing of the serial accelerator.
+            //! This serial accelerator index provider.
             //#############################################################################
             class IndexSerial
             {

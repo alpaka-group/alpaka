@@ -1,5 +1,6 @@
 /**
-* Copyright 2014 Benjamin Worpitz
+* \file
+* Copyright 2014-2015 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -37,7 +38,7 @@ namespace alpaka
         namespace detail
         {
             //#############################################################################
-            //! This class holds the implementation details for the atomic operations of the OpenMP accelerator.
+            //! The OpenMP accelerator atomic operations.
             //#############################################################################
             class AtomicOpenMp
             {
@@ -94,7 +95,8 @@ namespace alpaka
     namespace detail
     {
         //#############################################################################
-        //! The specialization to execute the requested atomic operation of the serial accelerator.
+        //! The OpenMP accelerator atomic operation functor.
+        //
         // NOTE: Can not use '#pragma omp atomic' because braces or calling other functions directly after '#pragma omp atomic' are not allowed!
         // So this would not be fully atomic! Between the store of the old value and the operation could be a context switch!
         //#############################################################################

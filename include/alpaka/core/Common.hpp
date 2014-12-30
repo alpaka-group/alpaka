@@ -1,5 +1,6 @@
 /**
-* Copyright 2014 Benjamin Worpitz
+* \file
+* Copyright 2014-2015 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -68,53 +69,56 @@
 
 namespace alpaka
 {
-    //-----------------------------------------------------------------------------
-    //! Rounds to the next higher power of two (if not already power of two).
-    // Adapted from llvm/ADT/SmallPtrSet.h
-    //-----------------------------------------------------------------------------
-    template<unsigned N>
-    struct RoundUpToPowerOfTwo;
+    namespace detail
+    {
+        //-----------------------------------------------------------------------------
+        //! Rounds to the next higher power of two (if not already power of two).
+        // Adapted from llvm/ADT/SmallPtrSet.h
+        //-----------------------------------------------------------------------------
+        template<unsigned N>
+        struct RoundUpToPowerOfTwo;
 
-    template<unsigned N, bool isPowerTwo>
-    struct RoundUpToPowerOfTwoH
-    {
-        enum 
-        { 
-            value = N 
-        };
-    };
-    template<unsigned N>
-    struct RoundUpToPowerOfTwoH<N, false>
-    {
-        enum
+        template<unsigned N, bool isPowerTwo>
+        struct RoundUpToPowerOfTwoH
         {
-            // We could just use NextVal = N+1, but this converges faster.  N|(N-1) sets
-            // the right-most zero bits to one all at once, e.g. 0b0011000 -> 0b0011111.
-            value = RoundUpToPowerOfTwo<(N|(N-1)) + 1>::value
+            enum
+            {
+                value = N
+            };
         };
-    };
-    template<unsigned N>
-    struct RoundUpToPowerOfTwo
-    {
-        enum 
-        { 
-            value = RoundUpToPowerOfTwoH<N, (N&(N-1)) == 0>::value 
+        template<unsigned N>
+        struct RoundUpToPowerOfTwoH<N, false>
+        {
+            enum
+            {
+                // We could just use NextVal = N+1, but this converges faster.  N|(N-1) sets
+                // the right-most zero bits to one all at once, e.g. 0b0011000 -> 0b0011111.
+                value = RoundUpToPowerOfTwo<(N | (N - 1)) + 1>::value
+            };
         };
-    };
+        template<unsigned N>
+        struct RoundUpToPowerOfTwo
+        {
+            enum
+            {
+                value = RoundUpToPowerOfTwoH<N, (N&(N - 1)) == 0>::value
+            };
+        };
 
-    //-----------------------------------------------------------------------------
-    //! Calculates the optimal alignment for data of the given size.
-    //-----------------------------------------------------------------------------
-    template<std::size_t TuiSizeBytes>
-    struct OptimalAlignment
-    {
-        // We have to use a enum here because VC14 says: "expected constant expression" when using "static const std::size_t".
-        enum
+        //-----------------------------------------------------------------------------
+        //! Calculates the optimal alignment for data of the given size.
+        //-----------------------------------------------------------------------------
+        template<std::size_t TuiSizeBytes>
+        struct OptimalAlignment
         {
-            // GCC does not support alignments larger then 128: "warning: requested alignment 256 is larger than 128[-Wattributes]".
-            value = (TuiSizeBytes > 64) ? 128 : RoundUpToPowerOfTwo<TuiSizeBytes>::value
+            // We have to use a enum here because VC14 says: "expected constant expression" when using "static const std::size_t".
+            enum
+            {
+                // GCC does not support alignments larger then 128: "warning: requested alignment 256 is larger than 128[-Wattributes]".
+                value = (TuiSizeBytes > 64) ? 128 : RoundUpToPowerOfTwo<TuiSizeBytes>::value
+            };
         };
-    };
+    }
 }
 
 // Older versions of GCC < 4.8 do not support alignas.
@@ -166,7 +170,7 @@ namespace alpaka
     //! Aligns the data optimally.
     //! You must align all arrays and structs which can used on accelerators.
     //-----------------------------------------------------------------------------
-    #define ALPAKA_ALIGN(type, name) alignas(alpaka::OptimalAlignment<sizeof(type)>::value) type name
+    #define ALPAKA_ALIGN(type, name) alignas(alpaka::detail::OptimalAlignment<sizeof(type)>::value) type name
     //-----------------------------------------------------------------------------
     //! Aligns the data at 8 bytes.
     //! You must align all arrays and structs which can used on accelerators.

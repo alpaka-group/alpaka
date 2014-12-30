@@ -1,5 +1,6 @@
 /**
-* Copyright 2014 Benjamin Worpitz
+* \file
+* Copyright 2014-2015 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -23,41 +24,49 @@
 #pragma once
 
 #include <cassert>  // assert
-
 #include <memory>   // std::shared_ptr
 
 namespace alpaka
 {
+    //-----------------------------------------------------------------------------
+    //! The memory management functionality.
+    //-----------------------------------------------------------------------------
     namespace memory
     {
         namespace detail
         {
             //#############################################################################
-            //! Allocates memory in the given memory space.
+            //! The abstract memory allocator.
             //#############################################################################
             template<typename TMemorySpace>
             struct MemAlloc;
 
             //#############################################################################
-            //! Frees memory in the given memory space.
+            //! The abstract memory freer.
             //#############################################################################
             template<typename TMemorySpace>
             struct MemFree;
 
             //#############################################################################
-            //! Copies memory from one buffer into another buffer possibly on different memory space.
+            //! The abstract memory copier.
+            //!
+            //! Copies memory from one buffer into another buffer possibly in a different memory space.
             //#############################################################################
-            template<typename TMemorySpaceDst, typename TDtaSpaceSrc>
+            template<typename TMemorySpaceDst, typename TMemorySpaceSrc>
             struct MemCopy;
 
             //#############################################################################
-            //! Fills the buffer with the data in the given memory space.
+            //! The abstract memory setter.
+            //!
+            //! Fills the buffer with data.
             //#############################################################################
             template<typename TMemorySpace>
             struct MemSet;
         }
 
         //-----------------------------------------------------------------------------
+        //! Allocates memory in the given memory space.
+        //!
         //! \tparam TMemorySpace The memory space to allocate in.
         //! \tparam T The type of the returned buffer.
         //! \param uiSizeBytes Size in bytes to set.
@@ -81,23 +90,27 @@ namespace alpaka
         }
 
         //-----------------------------------------------------------------------------
+        //! Copies memory possibly between different memory spaces.
+        //!
         //! \param pBufferDst Pointer to destination memory.
         //! \param pBufferSrc Pointer to source memory.
         //! \param uiSizeBytes Size in bytes to copy.
         //-----------------------------------------------------------------------------
-        template<typename TMemorySpaceDst, typename TDtaSpaceSrc, typename T = void>
+        template<typename TMemorySpaceDst, typename TMemorySpaceSrc, typename T = void>
         void copy(T * const pBufferDst, T * const pBufferSrc, std::size_t const & uiSizeBytes)
         {
             assert(pBufferDst);
             assert(pBufferSrc);
 
-            detail::MemCopy<TMemorySpaceDst, TDtaSpaceSrc>(
+            detail::MemCopy<TMemorySpaceDst, TMemorySpaceSrc>(
                 reinterpret_cast<void *>(pBufferDst), 
                 reinterpret_cast<void *>(pBufferSrc), 
                 uiSizeBytes);
         }
 
         //-----------------------------------------------------------------------------
+        //! Sets the memory to the given value.
+        //!
         //! \param pBuffer Pointer to memory.
         //! \param iValue Value to set for each byte of specified memory.
         //! \param uiSizeBytes Size in bytes to set.

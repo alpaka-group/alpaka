@@ -1,5 +1,6 @@
 /**
-* Copyright 2014 Benjamin Worpitz
+* \file
+* Copyright 2014-2015 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -36,7 +37,7 @@
 
 namespace alpaka
 {
-    namespace cuda
+    namespace openmp
     {
         namespace detail
         {
@@ -44,7 +45,7 @@ namespace alpaka
             class DeviceManagerOpenMp;
 
             //#############################################################################
-            //! The CUDA accelerator device handle.
+            //! The OpenMP accelerator device handle.
             //#############################################################################
             class DeviceOpenMp
             {
@@ -105,13 +106,13 @@ namespace alpaka
     namespace device
     {
         //#############################################################################
-        //! The CUDA accelerator device handle.
+        //! The OpenMP accelerator interfaced device handle.
         //#############################################################################
         template<>
         class Device<AccOpenMp> :
-            public device::detail::IDevice<cuda::detail::DeviceOpenMp>
+            public device::detail::IDevice<openmp::detail::DeviceOpenMp>
         {
-            friend class cuda::detail::DeviceManagerOpenMp;
+            friend class openmp::detail::DeviceManagerOpenMp;
         private:
             //-----------------------------------------------------------------------------
             //! Constructor.
@@ -138,12 +139,12 @@ namespace alpaka
         };
     }
 
-    namespace cuda
+    namespace openmp
     {
         namespace detail
         {
             //#############################################################################
-            //! The CUDA accelerator device manager.
+            //! The OpenMP accelerator device manager.
             // \TODO: Add ability to offload to Xeon Phi.
             //#############################################################################
             class DeviceManagerOpenMp
@@ -197,11 +198,11 @@ namespace alpaka
     namespace device
     {
         //#############################################################################
-        //! The threads accelerator device manager.
+        //! The OpenMP accelerator interfaced device manager.
         //#############################################################################
         template<>
         class DeviceManager<AccOpenMp> :
-            public detail::IDeviceManager<cuda::detail::DeviceManagerOpenMp>
+            public detail::IDeviceManager<openmp::detail::DeviceManagerOpenMp>
         {};
     }
 }

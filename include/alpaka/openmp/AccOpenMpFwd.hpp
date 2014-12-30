@@ -1,5 +1,6 @@
 /**
-* Copyright 2014 Benjamin Worpitz
+* \file
+* Copyright 2014-2015 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -25,6 +26,9 @@
 // forward declarations
 namespace alpaka
 {
+    //-----------------------------------------------------------------------------
+    //! The OpenMP accelerator.
+    //-----------------------------------------------------------------------------
     namespace openmp
     {
         namespace detail

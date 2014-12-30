@@ -1,5 +1,6 @@
 /**
-* Copyright 2014 Benjamin Worpitz
+* \file
+* Copyright 2014-2015 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -106,7 +107,7 @@ namespace alpaka
     }
 
     //#############################################################################
-    //! The interface of the work size.
+    //! The work extent interface.
     //#############################################################################
     template<typename TWorkExtent>
     class IWorkExtent :

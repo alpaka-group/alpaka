@@ -1,5 +1,6 @@
 /**
-* Copyright 2014 Benjamin Worpitz
+* \file
+* Copyright 2014-2015 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -68,7 +69,12 @@ namespace alpaka
             class KernelExecutor;
 
             //#############################################################################
-            //! The base class for all fibers accelerated kernels.
+            //! The fibers accelerator.
+            //!
+            //! This accelerator allows parallel kernel execution on the host.
+            //! It uses boost::fibers to implement the cooperative parallelism.
+            //! By using fibers the shared memory can reside in the closest memory/cache available.
+            //! Furthermore there is no false sharing between neighboring kernels as it is the case in real multi-threading. 
             //#############################################################################
             class AccFibers :
                 protected TInterfacedWorkExtent,

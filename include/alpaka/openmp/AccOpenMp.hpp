@@ -1,5 +1,6 @@
 /**
-* Copyright 2014 Benjamin Worpitz
+* \file
+* Copyright 2014-2015 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -64,7 +65,11 @@ namespace alpaka
             class KernelExecutor;
 
             //#############################################################################
-            //! The base class for all OpenMP accelerated kernels.
+            //! The OpenMP accelerator.
+            //!
+            //! This accelerator allows parallel kernel execution on the host.
+            // \TODO: Offloading?
+            //! It uses OpenMP to implement the parallelism.
             //#############################################################################
             class AccOpenMp :
                 protected TInterfacedWorkExtent,

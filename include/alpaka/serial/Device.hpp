@@ -1,5 +1,6 @@
 /**
-* Copyright 2014 Benjamin Worpitz
+* \file
+* Copyright 2014-2015 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -94,7 +95,7 @@ namespace alpaka
     namespace device
     {
         //#############################################################################
-        //! The serial accelerator device handle.
+        //! The serial accelerator interfaced device handle.
         //#############################################################################
         template<>
         class Device<AccSerial> :
@@ -185,7 +186,7 @@ namespace alpaka
     namespace device
     {
         //#############################################################################
-        //! The serial accelerator device manager.
+        //! The serial accelerator interfaced device manager.
         //#############################################################################
         template<>
         class DeviceManager<AccSerial> :

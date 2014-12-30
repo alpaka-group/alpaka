@@ -1,5 +1,6 @@
 /**
-* Copyright 2014 Benjamin Worpitz
+* \file
+* Copyright 2014-2015 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -67,7 +68,7 @@ namespace alpaka
             }
 
             //#############################################################################
-            //! Allocates memory in the CUDA memory space.
+            //! The CUDA memory allocator.
             //#############################################################################
             template<>
             struct MemAlloc<MemorySpaceCuda>
@@ -82,7 +83,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! Allocates memory in the CUDA memory space.
+            //! The CUDA memory freer.
             //#############################################################################
             template<>
             struct MemFree<MemorySpaceCuda>
@@ -96,6 +97,8 @@ namespace alpaka
             };
 
             //#############################################################################
+            //! The CUDA memory copier.
+            //!
             //! Copies from CUDA memory into Host memory.
             //#############################################################################
             template<>
@@ -114,6 +117,8 @@ namespace alpaka
                 }
             };
             //#############################################################################
+            //! The CUDA memory copier.
+            //!
             //! Copies from Host memory into CUDA memory.
             //#############################################################################
             template<>
@@ -132,6 +137,8 @@ namespace alpaka
                 }
             };
             //#############################################################################
+            //! The CUDA memory copier.
+            //!
             //! Copies from CUDA memory into CUDA memory.
             //#############################################################################
             template<>
@@ -147,7 +154,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! Fills the buffer with the data in the CUDA memory space.
+            //! The CUDA memory setter.
             //#############################################################################
             template<>
             struct MemSet<MemorySpaceCuda>

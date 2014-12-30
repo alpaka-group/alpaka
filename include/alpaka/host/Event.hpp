@@ -1,5 +1,6 @@
 /**
-* Copyright 2014 Benjamin Worpitz
+* \file
+* Copyright 2014-2015 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -22,7 +23,9 @@
 
 #pragma once
 
-#include <alpaka/interfaces/Event.hpp>
+#include <type_traits>                  // std::is_base
+
+#include <alpaka/interfaces/Event.hpp>  // alpaka::event::EventEnqueue, ...
 
 namespace alpaka
 {
@@ -31,7 +34,7 @@ namespace alpaka
         namespace detail
         {
             //#############################################################################
-            //! The template for an event.
+            //! The host accelerators event.
             //#############################################################################
             class EventHost
             {
@@ -65,10 +68,10 @@ namespace alpaka
         namespace detail
         {
             //#############################################################################
-            //! The template for enqueuing the given event.
+            //! The host accelerators event enqueuer.
             //#############################################################################
-            template<typename TAcc>
-            struct EventEnqueue
+            template<typename TEvent>
+            struct EventEnqueue<TEvent, typename std::enable_if<std::is_base_of<host::detail::EventHost, TEvent>::value, void>::type>
             {
                 ALPAKA_FCT_HOST EventEnqueue(host::detail::EventHost const & )
                 {
@@ -77,10 +80,10 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The template for an event wait.
+            //! The host accelerators event waiter.
             //#############################################################################
-            template<typename TAcc>
-            struct EventWait
+            template<typename TEvent>
+            struct EventWait<TEvent, typename std::enable_if<std::is_base_of<host::detail::EventHost, TEvent>::value, void>::type>
             {
                 ALPAKA_FCT_HOST EventWait(host::detail::EventHost const & )
                 {
@@ -89,10 +92,10 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The template for an event test.
+            //! The host accelerators event tester.
             //#############################################################################
-            template<typename TAcc>
-            struct EventTest
+            template<typename TEvent>
+            struct EventTest<TEvent, typename std::enable_if<std::is_base_of<host::detail::EventHost, TEvent>::value, void>::type>
             {
                 ALPAKA_FCT_HOST EventTest(host::detail::EventHost const & , bool & bTest)
                 {

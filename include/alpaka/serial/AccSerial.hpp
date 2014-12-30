@@ -1,5 +1,6 @@
 /**
-* Copyright 2014 Benjamin Worpitz
+* \file
+* Copyright 2014-2015 Benjamin Worpitz
 *
 * This file is part of alpaka.
 *
@@ -63,7 +64,10 @@ namespace alpaka
             class KernelExecutor;
 
             //#############################################################################
-            //! The base class for all non accelerated kernels.
+            //! The serial accelerator.
+            //!
+            //! This accelerator allows serial kernel execution on the host.
+            //! The block size is restricted to 1x1x1 so there is no parallelism at all.
             //#############################################################################
             class AccSerial :
                 protected TInterfacedWorkExtent,
