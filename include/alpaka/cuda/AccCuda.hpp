@@ -170,17 +170,8 @@ namespace alpaka
             class KernelExecutor :
                 private TAcceleratedKernel
             {
-                // Copying a kernel onto the CUDA device has some extra requirements of being trivially copyable:
-                // A trivially copyable class is a class that
-                // 1. Has no non-trivial copy constructors(this also requires no virtual functions or virtual bases)
-                // 2. Has no non-trivial move constructors
-                // 3. Has no non-trivial copy assignment operators
-                // 4. Has no non-trivial move assignment operators
-                // 5. Has a trivial destructor
-                //
-#if !BOOST_COMP_GNUC // FIXME: Find out which version > 4.9.0 does support the std::is_trivially_copyable
-                // \TODO: is_standard_layout is even stricter. Is is_trivially_copyable enough?
-                static_assert(std::is_trivially_copyable<TAcceleratedKernel>::value, "The given kernel functor has to be trivially copyable to be used on a CUDA device!");
+#if (!BOOST_COMP_GNUC) || (BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(5, 0, 0))
+                static_assert(std::is_trivially_copyable<TAcceleratedKernel>::value, "The given kernel functor has to fulfill is_trivially_copyable to be used on a CUDA device!");
 #endif
                 static_assert(std::is_base_of<IAcc<AccCuda>, TAcceleratedKernel>::value, "The TAcceleratedKernel for the cuda::detail::KernelExecutor has to inherit from IAcc<AccCuda>!");
 
@@ -239,16 +230,8 @@ namespace alpaka
                 {
                     dim3 gridDim(m_v3uiGridBlocksExtent[0], m_v3uiGridBlocksExtent[1], m_v3uiGridBlocksExtent[2]);
                     dim3 blockDim(m_v3uiBlockKernelsExtent[0], m_v3uiBlockKernelsExtent[1], m_v3uiBlockKernelsExtent[2]);
-#ifdef ALPAKA_DEBUG
-                    //std::cout << "GridBlocks: (" << gridDim.x << ", " << gridDim.y << ", " << gridDim.z << ")" << std::endl;
-                    //std::cout << "BlockKernels: (" <<  << blockDim.x << ", " << blockDim.y << ", " << blockDim.z << ")" << std::endl;
-#endif
-                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(m_v3uiBlockKernelsExtent, std::forward<TArgs>(args)...));
-                    // TODO: Check if the shared memory is big enough for the requested size.
 
-                    // Instead of using the language extension for the kernel call, we use the runtime API.
-                    // This allows us to get better error information.
-                    //detail::cudaKernel<<<gridDim, blockDim, uiBlockSharedExternMemSizeBytes>>>(*static_cast<TAcceleratedKernel const *>(this), args...);
+                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(m_v3uiBlockKernelsExtent, std::forward<TArgs>(args)...));
 
                     ALPAKA_CUDA_CHECK(cudaConfigureCall(gridDim, blockDim, uiBlockSharedExternMemSizeBytes));
                     pushCudaKernelArgument<0>(std::ref(*static_cast<TAcceleratedKernel const *>(this)), std::forward<TArgs>(args)...);

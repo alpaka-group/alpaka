@@ -71,6 +71,8 @@ namespace alpaka
 
                 //-----------------------------------------------------------------------------
                 //! \return The index of the currently executed kernel.
+                //
+                // \TODO: Would it be faster to precompute the 3 dimensional index and cache it inside an array?
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST vec<3u> getIdxBlockKernel() const
                 {

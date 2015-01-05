@@ -362,9 +362,6 @@ namespace alpaka
                     auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(m_v3uiBlockKernelsExtent, std::forward<TArgs>(args)...));
                     this->AccThreads::m_vuiExternalSharedMem.reset(
                         new uint8_t[uiBlockSharedExternMemSizeBytes]);
-#ifdef ALPAKA_DEBUG
-                    //std::cout << "GridBlocks: " << v3uiGridBlocksExtent << " BlockKernels: " << v3uiBlockKernelsExtent << std::endl;
-#endif
 
 #ifndef ALPAKA_THREADS_NO_POOL
                     auto const uiNumKernelsInBlock(this->AccThreads::getExtent<Block, Kernels, Linear>());

@@ -47,7 +47,7 @@
 //#############################################################################
 //! A matrix multiplication kernel.
 //! Computes C += A*B.
-//! This is a adaption of the algorithm from the CUDA developers guide.
+//! This is an adaption of the algorithm from the CUDA developers guide.
 //! \tparam TAcc The accelerator environment to be executed on.
 //#############################################################################
 template<typename TAcc = alpaka::IAcc<>>

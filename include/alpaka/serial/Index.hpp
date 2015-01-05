@@ -41,10 +41,8 @@ namespace alpaka
                 //! Default-constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST IndexSerial(
-                    vec<3u> const & v3uiGridBlockIdx,
-                    vec<3u> const & v3uiBlockKernelIdx) :
-                    m_v3uiGridBlockIdx(v3uiGridBlockIdx),
-                    m_v3uiBlockKernelIdx(v3uiBlockKernelIdx)
+                    vec<3u> const & v3uiGridBlockIdx) :
+                    m_v3uiGridBlockIdx(v3uiGridBlockIdx)
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy-constructor.
@@ -68,7 +66,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST vec<3u> getIdxBlockKernel() const
                 {
-                    return m_v3uiBlockKernelIdx;
+                    return {0,0,0};
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The block index of the currently executed kernel.
@@ -80,7 +78,6 @@ namespace alpaka
 
             private:
                 vec<3u> const & m_v3uiGridBlockIdx;
-                vec<3u> const & m_v3uiBlockKernelIdx;
             };
             using TInterfacedIndex = alpaka::detail::IIndex<IndexSerial>;
         }

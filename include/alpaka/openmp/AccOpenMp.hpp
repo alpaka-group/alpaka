@@ -251,9 +251,7 @@ namespace alpaka
                     auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(m_v3uiBlockKernelsExtent, std::forward<TArgs>(args)...));
                     this->AccOpenMp::m_vuiExternalSharedMem.reset(
                         new uint8_t[uiBlockSharedExternMemSizeBytes]);
-#ifdef ALPAKA_DEBUG
-                    //std::cout << "GridBlocks: " << v3uiGridBlocksExtent << " BlockKernels: " << v3uiBlockKernelsExtent << std::endl;
-#endif
+
                     // The number of threads in this block.
                     auto const uiNumKernelsInBlock(this->AccOpenMp::getExtent<Block, Kernels, Linear>());
 
@@ -273,12 +271,12 @@ namespace alpaka
                                 // Force the environment to use the given number of threads.
                                 ::omp_set_dynamic(0);
 
-                                // Parallelizing the threads is required because when syncBlockKernels is called all of them have to be done with their work up to this line.
-                                // So we have to spawn one real thread per thread in a block.
+                                // Parallel execution of the kernels in a block is required because when syncBlockKernels is called all of them have to be done with their work up to this line.
+                                // So we have to spawn one real thread per kernel in a block.
                                 // 'omp for' is not useful because it is meant for cases where multiple iterations are executed by one thread but in our case a 1:1 mapping is required.
                                 // Therefore we use 'omp parallel' with the specified number of threads in a block.
                                 //
-                                // \TODO: Does this hinder executing multiple kernels in parallel because their block sizes/omp thread numbers are interfering? Is this a real use case? 
+                                // \TODO: Does this hinder executing multiple kernels in parallel because their block sizes/omp thread numbers are interfering? Is this num_threads global? Is this a real use case? 
                                 #pragma omp parallel num_threads(static_cast<int>(uiNumKernelsInBlock))
                                 {
 #ifdef ALPAKA_DEBUG

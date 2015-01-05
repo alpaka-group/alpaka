@@ -86,7 +86,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST AccSerial() :
                     TInterfacedWorkExtent(),
-                    TInterfacedIndex(m_v3uiGridBlockIdx, m_v3uiBlockKernelIdx),
+                    TInterfacedIndex(m_v3uiGridBlockIdx),
                     TInterfacedAtomic()
                 {}
                 //-----------------------------------------------------------------------------
@@ -95,10 +95,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST AccSerial(AccSerial const &) :
                     TInterfacedWorkExtent(),
-                    TInterfacedIndex(m_v3uiGridBlockIdx, m_v3uiBlockKernelIdx),
+                    TInterfacedIndex(m_v3uiGridBlockIdx),
                     TInterfacedAtomic(),
                     m_v3uiGridBlockIdx(),
-                    m_v3uiBlockKernelIdx(),
                     m_vvuiSharedMem(),
                     m_vuiExternalSharedMem()
                 {}
@@ -165,7 +164,6 @@ namespace alpaka
 #endif
                 // getIdx
                 vec<3u> mutable m_v3uiGridBlockIdx;                         //!< The index of the currently executed block.
-                vec<3u> mutable m_v3uiBlockKernelIdx;                       //!< The index of the currently executed kernel.
 
                 // allocBlockSharedMem
                 std::vector<
@@ -242,9 +240,7 @@ namespace alpaka
                     auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(m_v3uiBlockKernelsExtent, std::forward<TArgs>(args)...));
                     this->AccSerial::m_vuiExternalSharedMem.reset(
                         new uint8_t[uiBlockSharedExternMemSizeBytes]);
-#ifdef ALPAKA_DEBUG
-                    //std::cout << "GridBlocks: " << v3uiGridBlocksExtent << " BlockKernels: " << v3uiBlockKernelsExtent << std::endl;
-#endif
+
                     // Execute the blocks serially.
                     for(std::uint32_t bz(0); bz<m_v3uiGridBlocksExtent[2]; ++bz)
                     {
@@ -256,21 +252,9 @@ namespace alpaka
                             {
                                 this->AccSerial::m_v3uiGridBlockIdx[0] = bx;
 
-                                // Execute the kernels serially.
-                                for(std::uint32_t tz(0); tz<m_v3uiBlockKernelsExtent[2]; ++tz)
-                                {
-                                    this->AccSerial::m_v3uiBlockKernelIdx[2] = tz;
-                                    for(std::uint32_t ty(0); ty<m_v3uiBlockKernelsExtent[1]; ++ty)
-                                    {
-                                        this->AccSerial::m_v3uiBlockKernelIdx[1] = ty;
-                                        for(std::uint32_t tx(0); tx<m_v3uiBlockKernelsExtent[0]; ++tx)
-                                        {
-                                            this->AccSerial::m_v3uiBlockKernelIdx[0] = tx;
+                                // There is only ever one kernel in a block in the serial accelerator.
+                                this->TAcceleratedKernel::operator()(std::forward<TArgs>(args)...);
 
-                                            this->TAcceleratedKernel::operator()(std::forward<TArgs>(args)...);
-                                        }
-                                    }
-                                }
                                 // After a block has been processed, the shared memory can be deleted.
                                 this->AccSerial::m_vvuiSharedMem.clear();
                             }

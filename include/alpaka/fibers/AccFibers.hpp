@@ -337,9 +337,7 @@ namespace alpaka
                     auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(m_v3uiBlockKernelsExtent, std::forward<TArgs>(args)...));
                     this->AccFibers::m_vuiExternalSharedMem.reset(
                         new uint8_t[uiBlockSharedExternMemSizeBytes]);
-#ifdef ALPAKA_DEBUG
-                    //std::cout << "GridBlocks: " << m_v3uiGridBlocksExtent << " BlockKernels: " << m_v3uiBlockKernelsExtent << std::endl;
-#endif
+
 #ifndef ALPAKA_FIBERS_NO_POOL
                     auto const uiNumKernelsInBlock(this->AccFibers::getExtent<Block, Kernels, Linear>());
                     // Yielding is not faster for fibers. Therefore we use condition variables. 
