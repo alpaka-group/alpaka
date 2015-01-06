@@ -1,5 +1,5 @@
 alpaka - Abstraction Library for Parallel Kernel Acceleration
-================================================================
+=============================================================
 
 The alpaka library allows users to utilize a multitude of different accelerator types that require different libraries/compilers by providing a uniform kernel interface.
 Users have to write only one implementation of their algorithms and can benefit from all supported accelerators.
@@ -17,7 +17,7 @@ By using this abstraction the execution can be optimally adapted to the availabl
 Software License
 ----------------
 
-*alpaka* is licensed under the **GPLv3+**. 
+*alpaka* is licensed under the **LGPLv3+**.
 
 Supported Compilers
 -------------------
@@ -74,3 +74,19 @@ If you are building with the **CUDA-Accelerator** enabled, your source files are
 When the **CUDA-Accelerator** is disabled, this is not required and a `.cpp` extension is enough.
 To allow both use-cases, it is desirable to have both, a `.cpp` file with the implementation and a `.cu` file containing only `#include <PATH/TO/IMPL.cpp>` to forward to the implementation.
 The build system then has to use the `.cu` files when the **CUDA-Accelerator** is enabled and the `.cpp` files else.
+
+Authors
+-------
+
+### Maintainers and core developers
+
+Benjamin Worpitz
+
+### Scientific Supervision
+
+- Dr. Michael Bussmann
+
+### Participants, Former Members and Thanks
+
+- Rene Widera
+- Axel Huebl
