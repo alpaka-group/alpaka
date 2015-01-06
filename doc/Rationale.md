@@ -6,7 +6,7 @@
 
 - User kernels should be implemented independent of the accelerator.
 - A user kernel has to have access to accelerator methods like synchronization within blocks, index retrieval and many more.
-- For usage with CUDA the kernel methods have to be attributed with ALPAKA_FCT_HOST_ACC (__device__ __host__).
+- For usage with CUDA the kernel methods have to be attributed with ALPAKA_FCT_HOST_ACC (\__device\__ \__host\__).
 - The user kernel has to fulfill std::is_trivially_copyable because only such objects can be copied into CUDA device memory.
   A trivially copyable class is a class that
    1. Has no non-trivial copy constructors(this also requires no virtual functions or virtual bases)
@@ -26,7 +26,7 @@ There are two possible ways to tell the kernel about the accelerator type:
     The only way to allow this would be to require the user to implement a templated copy constructor for every kernel.
     This is not allowed for kernels that should be copyable to a CUDA device because std::is_trivially_copyable requires the kernel to have no non-trivial copy constructors.
   * - The kernel has to be a class template. This does not allow C++ lambdas to be used as kernels because they are no templates themselves (but only their `operator()` can be templated in C++14).
- 2. The `operator()` is templated on the accelerator type and has a reference parameter to the accelerator.
+ 2. The `operator()` is templated on the accelerator type and has a reference to the accelerator as parameter.
   * + The kernel can be an arbitrary function object with ALPAKA_FCT_HOST_ACC attributes.
   * + This would allow to instantiate the accelerator independent kernel and set its members before execution.
   * +/- C++14 provides polymorphic lambdas. All compilers (even MSVC) support this. Inheriting from a non capturing lambda for the KernelExecutor is allowed. (TODO: How to check for a non capturing lambda?)
@@ -39,11 +39,9 @@ There are two possible ways to tell the kernel about the accelerator type:
 Currently we implement version 1.
 
 Kernels bound to an accelerator can be built with the `createKernelExecutor` template function.
-To separate the kernel execution attributes (<grid/block>-extents, stream) from the invocation arguments, the first call to `operator()` returns a kernel executor with stored execution attributes.
+This function returns an object that stores the given kernel type and the constructor argumnts..
+To separate the kernel execution attributes (grid/block-extents, stream) from the invocation arguments, the first call to `operator()` returns a kernel executor with stored execution attributes.
 The returned executor can then be executed with the `operator()` leading to `createKernelExecutor<TAcc, TKernel>(TKernelConstrArgs ... args)(<grid/block>-extents, stream = 0)(invocation-args ...)` for a complete kernel invocation.
-
-To allow the user to store members in the kernel without requiring to store the return value of `createKernelExecutor(...)()` and set the values and execute it afterwards, `createKernelExecutor` also forwards given constructor arguments.
-TODO: Currently the `createKernelExecutor(...)` only returns a proxy object storing the kernel construction attributes and the execution attributes and has not inherited from the user kernel. Therefore it can not be used to access kernel members. Change?
 
 TODO: Why do we require the user to have a default template argument `template<typename TAcc = alpaka::IAcc<>>` for the kernel? 
  - Because we can not create a kernel before binding it to an accelerator we could just make it a simple template `template<typename TAcc>` and make IAcc an implementation detail. 
@@ -103,7 +101,7 @@ Parallel execution of the kernels in a block is required because when syncBlockK
 So we have to spawn one real thread per kernel in a block.
 `omp for` is not useful because it is meant for cases where multiple iterations are executed by one thread but in our case a 1:1 mapping is required.
 Therefore we use `omp parallel` with the specified number of threads in a block.
-Another reason for not using `omp for` like `#pragma omp parallel for collapse(3) num_threads(blockDim.x*blockDim.y*blockDim.z)` is that `#pragma omp barrier` used for intra block synchronization is not allowed inside this block.
+Another reason for not using `omp for` like `#pragma omp parallel for collapse(3) num_threads(blockDim.x*blockDim.y*blockDim.z)` is that `#pragma omp barrier` used for intra block synchronization is not allowed inside `omp for` blocks.
 
 Because OpenMP is designed for a 1:1 abstraction of hardware to software threads, the block size is restricted by the number of OpenMP threads allowed by the runtime. 
 This could be as little as 2 or 4 kernels but on a system with 4 cores with hyperthreading OpenMP can for example also allow a maximum of 64 threads.

@@ -25,7 +25,7 @@
 
 #include <type_traits>                  // std::is_base
 
-#include <alpaka/interfaces/Event.hpp>  // alpaka::event::StreamEnqueueEvent, ...
+#include <alpaka/interfaces/Stream.hpp> // alpaka::event::StreamEnqueueEvent, ...
 
 namespace alpaka
 {
@@ -34,91 +34,77 @@ namespace alpaka
         namespace detail
         {
             //#############################################################################
-            //! The host accelerators event.
+            //! The host accelerators stream.
             //#############################################################################
-            class EventHost
+            class StreamHost
             {
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST EventHost() = default;
+                ALPAKA_FCT_HOST StreamHost() = default;
                 //-----------------------------------------------------------------------------
                 //! Copy-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST EventHost(EventHost const &) = default;
+                ALPAKA_FCT_HOST StreamHost(StreamHost const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST EventHost(EventHost &&) = default;
+                ALPAKA_FCT_HOST StreamHost(StreamHost &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Assignment-operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST EventHost & operator=(EventHost const &) = default;
+                ALPAKA_FCT_HOST StreamHost & operator=(StreamHost const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST ~EventHost() noexcept = default;
+                ALPAKA_FCT_HOST ~StreamHost() noexcept = default;
             };
         }
     }
 
-    namespace event
+    namespace stream
     {
         namespace detail
         {
             //#############################################################################
-            //! The host accelerators event enqueuer.
+            //! Waits for the completion of the given stream.
             //#############################################################################
-            template<typename TEvent>
-            struct DefaultStreamEnqueueEvent<
-                TEvent,
-                typename std::enable_if<std::is_base_of<host::detail::EventHost, TEvent>::value, void>::type>
+            template<typename TStream>
+            struct ThreadWaitStream<
+                TStream, 
+                typename std::enable_if<std::is_base_of<host::detail::StreamHost, TStream>::value, void>::type>
             {
-                ALPAKA_FCT_HOST DefaultStreamEnqueueEvent(host::detail::EventHost const &)
-                {
-                    // Because host calls are not asynchronous, this call never has to enqueue anything.
-                }
-            };
-
-            //#############################################################################
-            //! The host accelerators event enqueuer.
-            //#############################################################################
-            template<typename TEvent, typename TStream>
-            struct StreamEnqueueEvent<
-                TEvent,
-                TStream,
-                typename std::enable_if<std::is_base_of<host::detail::EventHost, TEvent>::value && std::is_same<typename TEvent::TAcc, typename TStream::TAcc>::value, void>::type>
-            {
-                ALPAKA_FCT_HOST StreamEnqueueEvent(host::detail::EventHost const &, TStream const &)
-                {
-                    // Because host calls are not asynchronous, this call never has to enqueue anything.
-                }
-            };
-
-            //#############################################################################
-            //! The host accelerators thread event waiter.
-            //#############################################################################
-            template<typename TEvent>
-            struct ThreadWaitEvent<
-                TEvent, 
-                typename std::enable_if<std::is_base_of<host::detail::EventHost, TEvent>::value, void>::type>
-            {
-                ALPAKA_FCT_HOST ThreadWaitEvent(host::detail::EventHost const &)
+                ALPAKA_FCT_HOST ThreadWaitStream(host::detail::StreamHost const &)
                 {
                     // Because host calls are not asynchronous, this call never has to wait.
                 }
             };
 
             //#############################################################################
-            //! The host accelerators event tester.
+            //! Waits the stream for the completion of the given event.
             //#############################################################################
-            template<typename TEvent>
-            struct EventTest<
+            template<typename TStream, typename TEvent>
+            struct StreamWaitEvent<
+                TStream,
                 TEvent,
-                typename std::enable_if<std::is_base_of<host::detail::EventHost, TEvent>::value, void>::type>
+                typename std::enable_if<std::is_base_of<host::detail::StreamHost, TStream>::value && std::is_same<typename TStream::TAcc, typename TEvent::TAcc>::value, void>::type>
             {
-                ALPAKA_FCT_HOST EventTest(host::detail::EventHost const &, bool & bTest)
+                ALPAKA_FCT_HOST StreamWaitEvent(host::detail::StreamHost const &, TEvent const &)
+                {
+                    // Because host calls are not asynchronous, this call never has to let a stream wait.
+                }
+            };
+
+            //#############################################################################
+            //! Tests if all operations in the given stream have been completed.
+            //#############################################################################
+            template<typename TStream>
+            struct StreamTest<
+                TStream,
+                typename std::enable_if<std::is_base_of<host::detail::StreamHost, TStream>::value, void>::type>
+            {
+                ALPAKA_FCT_HOST StreamTest(host::detail::StreamHost const &, bool & bTest)
                 {
                     // Because host calls are not asynchronous, this call always returns true.
                     bTest = true;

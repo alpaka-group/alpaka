@@ -23,23 +23,23 @@
 
 #pragma once
 
-#include <alpaka/serial/AccSerialFwd.hpp>   // AccSerial
+#include <alpaka/threads/AccThreadsFwd.hpp> // AccThreads
 
-#include <alpaka/host/Event.hpp>            // EventHost
+#include <alpaka/host/Stream.hpp>           // StreamHost
 
 namespace alpaka
 {
-    namespace event
+    namespace stream
     {
         //#############################################################################
-        //! The serial accelerator event.
+        //! The threads accelerator stream.
         //#############################################################################
         template<>
-        class Event<AccSerial> :
-            public alpaka::host::detail::EventHost
+        class Stream<AccThreads> :
+            public alpaka::host::detail::StreamHost
         {
         public:
-            using TAcc = AccSerial;
+            using TAcc = AccThreads;
         };
     }
 }

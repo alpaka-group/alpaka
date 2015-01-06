@@ -40,7 +40,6 @@ namespace alpaka
     template<std::size_t TuiDim, typename TValue = std::size_t>
     class vec
     {
-
     public:
         static_assert(TuiDim>0, "Size of the vector is required to be greater then zero!");
 

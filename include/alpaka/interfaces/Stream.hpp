@@ -28,95 +28,74 @@
 // forward declarations
 namespace alpaka
 {
-    namespace stream
+    namespace event
     {
         template<typename TAcc>
-        class Stream;
+        class Event;
     }
 }
 
 namespace alpaka
 {
     //-----------------------------------------------------------------------------
-    //! The event management functionality.
+    //! The stream management functionality.
     //-----------------------------------------------------------------------------
-    namespace event
+    namespace stream
     {
         //#############################################################################
-        //! The abstract event.
+        //! The abstract stream.
         //#############################################################################
         template<typename TAcc>
-        class Event;
+        class Stream;
 
         namespace detail
         {
             //#############################################################################
-            //! The abstract event enqueuer.
+            //! The abstract thread stream waiter.
             //#############################################################################
-            template<typename TEvent, typename TSfinae = void>
-            struct DefaultStreamEnqueueEvent;
+            template<typename TStream, typename TSfinae = void>
+            struct ThreadWaitStream;
 
             //#############################################################################
-            //! The abstract event enqueuer.
+            //! The abstract stream event waiter.
             //#############################################################################
-            template<typename TEvent, typename TStream, typename TSfinae = void>
-            struct StreamEnqueueEvent;
+            template<typename TStream, typename TEvent, typename TSfinae = void>
+            struct StreamWaitEvent;
 
             //#############################################################################
-            //! The abstract thread event waiter.
+            //! The abstract thread stream waiter.
             //#############################################################################
-            template<typename TEvent, typename TSfinae = void>
-            struct ThreadWaitEvent;
-
-            //#############################################################################
-            //! The abstract event tester.
-            //#############################################################################
-            template<typename TEvent, typename TSfinae = void>
-            struct EventTest;
+            template<typename TStream, typename TSfinae = void>
+            struct StreamTest;
         }
 
         //#############################################################################
-        //! Queues the given event in the stream zero.
-        //!
-        //! If it has previously been queued, then this call will overwrite any existing state of the event. 
-        //! Any subsequent calls which examine the status of event will only examine the completion of this most recent call to enqueue.
+        //! Waits for the completion of the given stream.
         //#############################################################################
         template<typename TAcc>
-        ALPAKA_FCT_HOST void enqueue(Event<TAcc> const & event)
+        ALPAKA_FCT_HOST void wait(Stream<TAcc> const & stream)
         {
-            detail::DefaultStreamEnqueueEvent<Event<TAcc>>{event};
+            detail::ThreadWaitStream<Stream<TAcc>>{stream};
         }
 
         //#############################################################################
-        //! Queues the given event in the given stream.
-        //!
-        //! If it has previously been queued, then this call will overwrite any existing state of the event. 
-        //! Any subsequent calls which examine the status of event will only examine the completion of this most recent call to enqueue.
+        //! Waits the stream for the completion of the given event.
         //#############################################################################
         template<typename TAcc>
-        ALPAKA_FCT_HOST void enqueue(Event<TAcc> const & event, stream::Stream<TAcc> const & stream)
+        ALPAKA_FCT_HOST void wait(Stream<TAcc> const & stream, event::Event<TAcc> const & event)
         {
-            detail::StreamEnqueueEvent<Event<TAcc>, stream::Stream<TAcc>>{event, &stream};
+            detail::StreamWaitEvent<Stream<TAcc>, event::Event<TAcc>>{stream, event};
         }
 
         //#############################################################################
-        //! Waits the thread for the completion of the given event.
+        //! Tests if all operations in the given stream have been completed.
         //#############################################################################
         template<typename TAcc>
-        ALPAKA_FCT_HOST void wait(Event<TAcc> const & event)
-        {
-            detail::ThreadWaitEvent<Event<TAcc>>{event};
-        }
-
-        //#############################################################################
-        //! Tests if the given event has already be completed.
-        //#############################################################################
-        template<typename TAcc>
-        ALPAKA_FCT_HOST bool test(Event<TAcc> const & event)
+        ALPAKA_FCT_HOST bool test(Stream<TAcc> const & stream)
         {
             bool bTest(false);
 
-            detail::EventTest<Event<TAcc>>{event, bTest};
+            detail::StreamTest<Stream<TAcc>>{stream, bTest};
 
             return bTest;
         }

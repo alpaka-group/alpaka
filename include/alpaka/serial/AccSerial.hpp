@@ -31,6 +31,7 @@
 // User functionality.
 #include <alpaka/host/Memory.hpp>                   // MemCopy
 #include <alpaka/serial/Event.hpp>                  // Event
+#include <alpaka/serial/Stream.hpp>                 // Stream
 #include <alpaka/serial/Device.hpp>                 // Devices
 
 // Specialized templates.

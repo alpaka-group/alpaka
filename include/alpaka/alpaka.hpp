@@ -39,6 +39,7 @@
 #endif
 
 #include <alpaka/interfaces/Event.hpp>
+#include <alpaka/interfaces/Stream.hpp>
 #include <alpaka/interfaces/IAcc.hpp>
 #include <alpaka/interfaces/KernelExecCreator.hpp>
 #include <alpaka/interfaces/BlockSharedExternMemSizeBytes.hpp>

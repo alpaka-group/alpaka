@@ -37,6 +37,9 @@ namespace alpaka
         template<>
         class Event<AccOpenMp> :
             public alpaka::host::detail::EventHost
-        {};
+        {
+        public:
+            using TAcc = AccOpenMp;
+        };
     }
 }

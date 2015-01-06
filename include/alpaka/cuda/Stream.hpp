@@ -26,17 +26,17 @@
 #include <alpaka/cuda/Common.hpp>
 #include <alpaka/cuda/AccCudaFwd.hpp>   // AccCuda
 
-#include <alpaka/interfaces/Event.hpp>
+#include <alpaka/interfaces/stream.hpp>
 
 namespace alpaka
 {
-    namespace event
+    namespace stream
     {
         //#############################################################################
-        //! The CUDA accelerator event.
+        //! The CUDA accelerator stream.
         //#############################################################################
         template<>
-        class Event<AccCuda>
+        class Stream<AccCuda>
         {
         public:
             using TAcc = AccCuda;
@@ -45,96 +45,77 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST Event(bool bBusyWait = true)
+            ALPAKA_FCT_HOST Stream()
             {
-                // Creates an event object with the specified flags. Valid flags include:
-                //  cudaEventDefault: Default event creation flag.
-                //  cudaEventBlockingSync : Specifies that event should use blocking synchronization.A host thread that uses cudaEventSynchronize() to wait on an event created with this flag will block until the event actually completes.
-                //  cudaEventDisableTiming : Specifies that the created event does not need to record timing data.Events created with this flag specified and the cudaEventBlockingSync flag not specified will provide the best performance when used with cudaStreamWaitEvent() and cudaEventQuery().
-                ALPAKA_CUDA_CHECK(cudaEventCreateWithFlags(
-                    &m_Event,
-                    (bBusyWait ? cudaEventDefault : cudaEventBlockingSync) | cudaEventDisableTiming));
+                ALPAKA_CUDA_CHECK(cudaStreamCreate(
+                    &m_Stream);
             }
             //-----------------------------------------------------------------------------
             //! Copy-constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST Event(Event const &) = default;
+            ALPAKA_FCT_HOST Stream(Stream const &) = default;
             //-----------------------------------------------------------------------------
             //! Move-constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST Event(Event &&) = default;
+            ALPAKA_FCT_HOST Stream(Stream &&) = default;
             //-----------------------------------------------------------------------------
             //! Assignment-operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST Event & operator=(Event const &) = default;
+            ALPAKA_FCT_HOST Stream & operator=(Stream const &) = default;
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST ~Event() noexcept
+            ALPAKA_FCT_HOST ~Stream() noexcept
             {
-                ALPAKA_CUDA_CHECK(cudaEventDestroy(m_Event));
+                ALPAKA_CUDA_CHECK(cudaStreamDestroy(m_Stream));
             }
 
-            cudaEvent_t m_Event;
+            cudaStream_t m_Stream;
         };
 
         namespace detail
         {
             //#############################################################################
-            //! The CUDA accelerator event enqueuer.
+            //! The CUDA accelerator thread stream waiter.
             //#############################################################################
             template<>
-            struct DefaultStreamEnqueueEvent<
-                Event<AccCuda>,
-                stream::Stream<AccCuda>>
+            struct ThreadWaitStream<
+                Stream<AccCuda>>
             {
-                ALPAKA_FCT_HOST DefaultStreamEnqueueEvent(Event<AccCuda> const & event)
+                ALPAKA_FCT_HOST ThreadWaitStream(Stream<AccCuda> const & stream)
                 {
-                    ALPAKA_CUDA_CHECK(cudaEventRecord(
+                    ALPAKA_CUDA_CHECK(cudaStreamSynchronize(
+                        stream.m_Stream));
+                }
+            };
+
+            //#############################################################################
+            //! The CUDA accelerator stream event waiter.
+            //#############################################################################
+            template<>
+            struct StreamWaitEvent<
+                Stream<AccCuda>,
+                event::Event<AccCuda>>
+            {
+                ALPAKA_FCT_HOST StreamWaitEvent(Stream<AccCuda> const & stream, event::Event<AccCuda> const & event)
+                {
+                    ALPAKA_CUDA_CHECK(cudaStreamWaitEvent(
+                        stream.m_Stream,
                         event.m_Event,
-                        nullptr));
+                        0));
                 }
             };
 
             //#############################################################################
-            //! The CUDA accelerator event enqueuer.
+            //! The CUDA accelerator stream tester.
             //#############################################################################
             template<>
-            struct StreamEnqueueEvent<
-                Event<AccCuda>, 
-                stream::Stream<AccCuda>>
+            struct StreamTest<
+                event::Event<AccCuda>>
             {
-                ALPAKA_FCT_HOST StreamEnqueueEvent(Event<AccCuda> const & event, stream::Stream<AccCuda> const * stream)
+                ALPAKA_FCT_HOST StreamTest(Stream<AccCuda> const & stream, bool & bTest)
                 {
-                    ALPAKA_CUDA_CHECK(cudaEventRecord(
-                        event.m_Event,
-                        &stream->m_Stream));
-                }
-            };
-
-            //#############################################################################
-            //! The CUDA accelerator thread event waiter.
-            //#############################################################################
-            template<>
-            struct ThreadWaitEvent<
-                Event<AccCuda>>
-            {
-                ALPAKA_FCT_HOST ThreadWaitEvent(Event<AccCuda> const & event)
-                {
-                    ALPAKA_CUDA_CHECK(cudaEventSynchronize(event.m_Event));
-                }
-            };
-
-            //#############################################################################
-            //! The CUDA accelerator event tester.
-            //#############################################################################
-            template<>
-            struct EventTest<
-                Event<AccCuda>>
-            {
-                ALPAKA_FCT_HOST EventTest(Event<AccCuda> const & event, bool & bTest)
-                {
-                    auto const ret(cudaEventQuery(event.m_Event));
+                    auto const ret(cudaStreamQuery(stream.m_Stream));
                     if(ret == cudaSuccess)
                     {
                         bTest = true;
@@ -145,7 +126,7 @@ namespace alpaka
                     }
                     else
                     {
-                        throw std::runtime_error(("Unexpected return value '" + std::string(cudaGetErrorString(ret)) + "'from cudaEventQuery!").c_str());
+                        throw std::runtime_error(("Unexpected return value '" + std::string(cudaGetErrorString(ret)) + "'from cudaStreamQuery!").c_str());
                     }
                 }
             };

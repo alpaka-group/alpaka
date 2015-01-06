@@ -31,6 +31,7 @@
 // User functionality.
 #include <alpaka/cuda/Memory.hpp>                   // MemCopy
 #include <alpaka/cuda/Event.hpp>                    // Event
+#include <alpaka/cuda/Stream.hpp>                   // Stream
 #include <alpaka/cuda/Device.hpp>                   // Devices
 
 // Specialized templates.
@@ -170,7 +171,7 @@ namespace alpaka
                 private TAcceleratedKernel
             {
 #if (!BOOST_COMP_GNUC) || (BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(5, 0, 0))
-                static_assert(std::is_trivially_copyable<TAcceleratedKernel>::value, "The given kernel functor has to fulfill is_trivially_copyable to be used on a CUDA device!");
+                static_assert(std::is_trivially_copyable<TAcceleratedKernel>::value, "The given kernel functor has to fulfill is_trivially_copyable!");
 #endif
                 static_assert(std::is_base_of<IAcc<AccCuda>, TAcceleratedKernel>::value, "The TAcceleratedKernel for the cuda::detail::KernelExecutor has to inherit from IAcc<AccCuda>!");
 

@@ -35,6 +35,7 @@
 // User functionality.
 #include <alpaka/host/Memory.hpp>                   // MemCopy
 #include <alpaka/fibers/Event.hpp>                  // Event
+#include <alpaka/fibers/Stream.hpp>                 // Stream
 #include <alpaka/fibers/Device.hpp>                 // Devices
 
 // Specialized templates.

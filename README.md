@@ -80,7 +80,7 @@ Authors
 
 ### Maintainers and core developers
 
-Benjamin Worpitz
+- Benjamin Worpitz
 
 ### Scientific Supervision
 

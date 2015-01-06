@@ -31,6 +31,7 @@
 // User functionality.
 #include <alpaka/host/Memory.hpp>                   // MemCopy
 #include <alpaka/openmp/Event.hpp>                  // Event
+#include <alpaka/openmp/Stream.hpp>                 // Stream
 #include <alpaka/openmp/Device.hpp>                 // Devices
 
 // Specialized templates.
