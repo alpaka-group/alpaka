@@ -94,37 +94,37 @@ namespace alpaka
                 m_tupleKernelConstrArgs(std::forward<TKernelConstrArgs>(args)...)
             {}
             //-----------------------------------------------------------------------------
-            //! Copy-constructor.
+            //! Copy constructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST KernelExecutorExtent(KernelExecutorExtent const &) = default;
             //-----------------------------------------------------------------------------
-            //! Move-constructor.
+            //! Move constructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST KernelExecutorExtent(KernelExecutorExtent &&) = default;
             //-----------------------------------------------------------------------------
-            //! Copy-assignment.
+            //! Copy assignment.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST KernelExecutorExtent & operator=(KernelExecutorExtent const &) = delete;
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST ~KernelExecutorExtent() noexcept = default;
+            ALPAKA_FCT_HOST virtual ~KernelExecutorExtent() noexcept = default;
 
             //-----------------------------------------------------------------------------
             //! \return An KernelExecutor with the given extents.
             //-----------------------------------------------------------------------------
             template<typename TWorkExtent>
-            ALPAKA_FCT_HOST TKernelExecutor operator()(IWorkExtent<TWorkExtent> const & workExtent) const
+            ALPAKA_FCT_HOST TKernelExecutor operator()(IWorkExtent<TWorkExtent> const & workExtent, stream::Stream<TAcc> const & stream) const
             {
-                return createKernelExecutor(workExtent, TKernelConstrArgsIndexSequence());
+                return createKernelExecutor(workExtent, stream, TKernelConstrArgsIndexSequence());
             }
             //-----------------------------------------------------------------------------
             //! \return An KernelExecutor with the given extents.
             //-----------------------------------------------------------------------------
             template<typename TWorkExtent>
-            ALPAKA_FCT_HOST TKernelExecutor operator()(vec<3u> const & v3uiGridBlocksExtent, vec<3u> const & v3uiBlockKernelsExtent) const
+            ALPAKA_FCT_HOST TKernelExecutor operator()(vec<3u> const & v3uiGridBlocksExtent, vec<3u> const & v3uiBlockKernelsExtent, stream::Stream<TAcc> const & stream) const
             {
-                return createKernelExecutor(WorkExtent(v3uiGridBlocksExtent, v3uiBlockKernelsExtent), TKernelConstrArgsIndexSequence());
+                return this->operator()(WorkExtent(v3uiGridBlocksExtent, v3uiBlockKernelsExtent), stream);
             }
 
         private:
@@ -132,7 +132,7 @@ namespace alpaka
             //! \return An KernelExecutor with the given extents.
             //-----------------------------------------------------------------------------
             template<typename TWorkExtent, std::size_t ... TIndices>
-            ALPAKA_FCT_HOST TKernelExecutor createKernelExecutor(IWorkExtent<TWorkExtent> const & workExtent, std_extension::index_sequence<TIndices...>) const
+            ALPAKA_FCT_HOST TKernelExecutor createKernelExecutor(IWorkExtent<TWorkExtent> const & workExtent, stream::Stream<TAcc> const & stream, std_extension::index_sequence<TIndices...>) const
             {
                 if(workExtent.template getExtent<Grid, Blocks, Linear>() == 0)
                 {
@@ -143,7 +143,7 @@ namespace alpaka
                     throw std::runtime_error("The workExtent block kernels extent is not allowed to be zero in any dimension!");
                 }
 
-                return TKernelExecutor(workExtent, std::get<TIndices>(std::forward<TKernelConstrArgs>(m_tupleKernelConstrArgs))...);
+                return TKernelExecutor(workExtent, stream, std::get<TIndices>(std::forward<TKernelConstrArgs>(m_tupleKernelConstrArgs))...);
             }
 
         private:

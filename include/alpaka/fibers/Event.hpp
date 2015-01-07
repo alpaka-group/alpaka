@@ -36,7 +36,7 @@ namespace alpaka
         //#############################################################################
         template<>
         class Event<AccFibers> :
-            public alpaka::host::detail::EventHost
+            public host::detail::EventHost
         {
         public:
             using TAcc = AccFibers;

@@ -44,21 +44,21 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC AtomicCuda() = default;
                 //-----------------------------------------------------------------------------
-                //! Copy-constructor.
+                //! Copy constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC AtomicCuda(AtomicCuda const &) = default;
                 //-----------------------------------------------------------------------------
-                //! Move-constructor.
+                //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC AtomicCuda(AtomicCuda &&) = default;
                 //-----------------------------------------------------------------------------
-                //! Copy-assignment.
+                //! Copy assignment.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC AtomicCuda & operator=(AtomicCuda const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST ~AtomicCuda() noexcept = default;
+                ALPAKA_FCT_ACC /*virtual*/ ~AtomicCuda() noexcept = default;
             };
             using TInterfacedAtomic = alpaka::detail::IAtomic<AtomicCuda>;
         }

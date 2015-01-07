@@ -54,21 +54,35 @@ namespace alpaka
                 ALPAKA_FCT_HOST DeviceSerial() = default;
             public:
                 //-----------------------------------------------------------------------------
-                //! Copy-constructor.
+                //! Copy constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST DeviceSerial(DeviceSerial const &) = default;
                 //-----------------------------------------------------------------------------
-                //! Move-constructor.
+                //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST DeviceSerial(DeviceSerial &&) = default;
                 //-----------------------------------------------------------------------------
-                //! Assignment-operator.
+                //! Assignment operator.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST DeviceSerial & operator=(DeviceSerial const &) = default;
                 //-----------------------------------------------------------------------------
+                //! Equality comparison operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST bool operator==(DeviceSerial const & rhs) const
+                {
+                    return true;
+                }
+                //-----------------------------------------------------------------------------
+                //! Inequality comparison operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST bool operator!=(DeviceSerial const & rhs) const
+                {
+                    return !((*this) == rhs);
+                }
+                //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST ~DeviceSerial() noexcept = default;
+                ALPAKA_FCT_HOST virtual ~DeviceSerial() noexcept = default;
 
             protected:
                 //-----------------------------------------------------------------------------
@@ -110,22 +124,38 @@ namespace alpaka
 
         public:
             //-----------------------------------------------------------------------------
-            //! Copy-constructor.
+            //! Copy constructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST Device(Device const &) = default;
             //-----------------------------------------------------------------------------
-            //! Move-constructor.
+            //! Move constructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST Device(Device &&) = default;
             //-----------------------------------------------------------------------------
-            //! Assignment-operator.
+            //! Assignment operator.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST Device & operator=(Device const &) = default;
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST ~Device() noexcept = default;
+            ALPAKA_FCT_HOST virtual ~Device() noexcept = default;
         };
+
+        namespace detail
+        {
+            //#############################################################################
+            //! The serial accelerator thread device waiter.
+            //#############################################################################
+            template<>
+            struct ThreadWaitDevice<
+                Device<AccSerial>>
+            {
+                ALPAKA_FCT_HOST ThreadWaitDevice(Device<AccSerial> const & device)
+                {
+                    // Because host calls are not asynchronous, this call never has to wait.
+                }
+            };
+        }
     }
 
     namespace serial

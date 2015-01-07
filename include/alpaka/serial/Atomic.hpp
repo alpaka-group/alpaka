@@ -41,21 +41,21 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST AtomicSerial() = default;
                 //-----------------------------------------------------------------------------
-                //! Copy-constructor.
+                //! Copy constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST AtomicSerial(AtomicSerial const &) = default;
                 //-----------------------------------------------------------------------------
-                //! Move-constructor.
+                //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST AtomicSerial(AtomicSerial &&) = default;
                 //-----------------------------------------------------------------------------
-                //! Copy-assignment.
+                //! Copy assignment.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST AtomicSerial & operator=(AtomicSerial const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST ~AtomicSerial() noexcept = default;
+                ALPAKA_FCT_HOST virtual ~AtomicSerial() noexcept = default;
             };
             using TInterfacedAtomic = alpaka::detail::IAtomic<AtomicSerial>;
         }

@@ -212,19 +212,19 @@ namespace alpaka
                 }
             }
             //-----------------------------------------------------------------------------
-            //! Copy-constructor.
+            //! Copy constructor.
             //-----------------------------------------------------------------------------
             ConcurrentExecutionPool(ConcurrentExecutionPool const &) = delete;
             //-----------------------------------------------------------------------------
-            //! Move-constructor.
+            //! Move constructor.
             //-----------------------------------------------------------------------------
             ConcurrentExecutionPool(ConcurrentExecutionPool &&) = delete;
             //-----------------------------------------------------------------------------
-            //! Copy-assignment.
+            //! Copy assignment.
             //-----------------------------------------------------------------------------
             ConcurrentExecutionPool & operator=(ConcurrentExecutionPool const &) = delete;
             //-----------------------------------------------------------------------------
-            //! Move-assignment.
+            //! Move assignment.
             //-----------------------------------------------------------------------------
             ConcurrentExecutionPool & operator=(ConcurrentExecutionPool &&) = delete;
 
@@ -402,19 +402,19 @@ namespace alpaka
                 }
             }
             //-----------------------------------------------------------------------------
-            //! Copy-constructor.
+            //! Copy constructor.
             //-----------------------------------------------------------------------------
             ConcurrentExecutionPool(ConcurrentExecutionPool const &) = delete;
             //-----------------------------------------------------------------------------
-            //! Move-constructor.
+            //! Move constructor.
             //-----------------------------------------------------------------------------
             ConcurrentExecutionPool(ConcurrentExecutionPool &&) = delete;
             //-----------------------------------------------------------------------------
-            //! Copy-assignment.
+            //! Copy assignment.
             //-----------------------------------------------------------------------------
             ConcurrentExecutionPool & operator=(ConcurrentExecutionPool const &) = delete;
             //-----------------------------------------------------------------------------
-            //! Move-assignment.
+            //! Move assignment.
             //-----------------------------------------------------------------------------
             ConcurrentExecutionPool & operator=(ConcurrentExecutionPool &&) = delete;
 

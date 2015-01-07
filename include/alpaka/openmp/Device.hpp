@@ -57,21 +57,35 @@ namespace alpaka
                 ALPAKA_FCT_HOST DeviceOpenMp() = default;
             public:
                 //-----------------------------------------------------------------------------
-                //! Copy-constructor.
+                //! Copy constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST DeviceOpenMp(DeviceOpenMp const &) = default;
                 //-----------------------------------------------------------------------------
-                //! Move-constructor.
+                //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST DeviceOpenMp(DeviceOpenMp &&) = default;
                 //-----------------------------------------------------------------------------
-                //! Assignment-operator.
+                //! Assignment operator.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST DeviceOpenMp & operator=(DeviceOpenMp const &) = default;
                 //-----------------------------------------------------------------------------
+                //! Equality comparison operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST bool operator==(DeviceOpenMp const &) const
+                {
+                    return true;
+                }
+                //-----------------------------------------------------------------------------
+                //! Inequality comparison operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST bool operator!=(DeviceOpenMp const & rhs) const
+                {
+                    return !((*this) == rhs);
+                }
+                //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST ~DeviceOpenMp() noexcept = default;
+                ALPAKA_FCT_HOST virtual ~DeviceOpenMp() noexcept = default;
 
             protected:
                 //-----------------------------------------------------------------------------
@@ -121,22 +135,38 @@ namespace alpaka
 
         public:
             //-----------------------------------------------------------------------------
-            //! Copy-constructor.
+            //! Copy constructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST Device(Device const &) = default;
             //-----------------------------------------------------------------------------
-            //! Move-constructor.
+            //! Move constructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST Device(Device &&) = default;
             //-----------------------------------------------------------------------------
-            //! Assignment-operator.
+            //! Assignment operator.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST Device & operator=(Device const &) = default;
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST ~Device() noexcept = default;
+            ALPAKA_FCT_HOST virtual ~Device() noexcept = default;
         };
+
+        namespace detail
+        {
+            //#############################################################################
+            //! The OpenMP accelerator thread device waiter.
+            //#############################################################################
+            template<>
+            struct ThreadWaitDevice<
+                Device<AccOpenMp >>
+            {
+                ALPAKA_FCT_HOST ThreadWaitDevice(Device<AccOpenMp> const &)
+                {
+                    // Because host calls are not asynchronous, this call never has to wait.
+                }
+            };
+        }
     }
 
     namespace openmp

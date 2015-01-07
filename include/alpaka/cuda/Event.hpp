@@ -52,30 +52,30 @@ namespace alpaka
                 //  cudaEventBlockingSync : Specifies that event should use blocking synchronization.A host thread that uses cudaEventSynchronize() to wait on an event created with this flag will block until the event actually completes.
                 //  cudaEventDisableTiming : Specifies that the created event does not need to record timing data.Events created with this flag specified and the cudaEventBlockingSync flag not specified will provide the best performance when used with cudaStreamWaitEvent() and cudaEventQuery().
                 ALPAKA_CUDA_CHECK(cudaEventCreateWithFlags(
-                    &m_Event,
+                    &m_cudaEvent,
                     (bBusyWait ? cudaEventDefault : cudaEventBlockingSync) | cudaEventDisableTiming));
             }
             //-----------------------------------------------------------------------------
-            //! Copy-constructor.
+            //! Copy constructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST Event(Event const &) = default;
             //-----------------------------------------------------------------------------
-            //! Move-constructor.
+            //! Move constructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST Event(Event &&) = default;
             //-----------------------------------------------------------------------------
-            //! Assignment-operator.
+            //! Assignment operator.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST Event & operator=(Event const &) = default;
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST ~Event() noexcept
+            ALPAKA_FCT_HOST virtual ~Event() noexcept
             {
-                ALPAKA_CUDA_CHECK(cudaEventDestroy(m_Event));
+                ALPAKA_CUDA_CHECK(cudaEventDestroy(m_cudaEvent));
             }
 
-            cudaEvent_t m_Event;
+            cudaEvent_t m_cudaEvent;
         };
 
         namespace detail
@@ -91,7 +91,7 @@ namespace alpaka
                 ALPAKA_FCT_HOST DefaultStreamEnqueueEvent(Event<AccCuda> const & event)
                 {
                     ALPAKA_CUDA_CHECK(cudaEventRecord(
-                        event.m_Event,
+                        event.m_cudaEvent,
                         nullptr));
                 }
             };
@@ -107,8 +107,8 @@ namespace alpaka
                 ALPAKA_FCT_HOST StreamEnqueueEvent(Event<AccCuda> const & event, stream::Stream<AccCuda> const * stream)
                 {
                     ALPAKA_CUDA_CHECK(cudaEventRecord(
-                        event.m_Event,
-                        &stream->m_Stream));
+                        event.m_cudaEvent,
+                        &stream->m_cudaStream));
                 }
             };
 
@@ -121,7 +121,7 @@ namespace alpaka
             {
                 ALPAKA_FCT_HOST ThreadWaitEvent(Event<AccCuda> const & event)
                 {
-                    ALPAKA_CUDA_CHECK(cudaEventSynchronize(event.m_Event));
+                    ALPAKA_CUDA_CHECK(cudaEventSynchronize(event.m_cudaEvent));
                 }
             };
 
@@ -134,7 +134,7 @@ namespace alpaka
             {
                 ALPAKA_FCT_HOST EventTest(Event<AccCuda> const & event, bool & bTest)
                 {
-                    auto const ret(cudaEventQuery(event.m_Event));
+                    auto const ret(cudaEventQuery(event.m_cudaEvent));
                     if(ret == cudaSuccess)
                     {
                         bTest = true;

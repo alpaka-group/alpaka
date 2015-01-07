@@ -103,7 +103,7 @@ namespace alpaka
                     TInterfacedAtomic()
                 {}
                 //-----------------------------------------------------------------------------
-                //! Copy-constructor.
+                //! Copy constructor.
                 // Do not copy most members because they are initialized by the executor for each accelerated execution.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST AccThreads(AccThreads const & ) :
@@ -120,17 +120,17 @@ namespace alpaka
                     m_vuiExternalSharedMem()
                 {}
                 //-----------------------------------------------------------------------------
-                //! Move-constructor.
+                //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST AccThreads(AccThreads &&) = default;
                 //-----------------------------------------------------------------------------
-                //! Copy-assignment.
+                //! Copy assignment.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST AccThreads & operator=(AccThreads const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST ~AccThreads() noexcept = default;
+                ALPAKA_FCT_HOST virtual ~AccThreads() noexcept = default;
 
             protected:
                 //-----------------------------------------------------------------------------
@@ -286,7 +286,7 @@ namespace alpaka
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 template<typename TWorkExtent, typename... TKernelConstrArgs>
-                ALPAKA_FCT_HOST KernelExecutor(IWorkExtent<TWorkExtent> const & workExtent, TKernelConstrArgs && ... args) :
+                ALPAKA_FCT_HOST KernelExecutor(IWorkExtent<TWorkExtent> const & workExtent, stream::Stream<AccThreads> const &, TKernelConstrArgs && ... args) :
                     TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
 #ifdef ALPAKA_THREADS_NO_POOL
                     m_vThreadsInBlock(),
@@ -318,7 +318,7 @@ namespace alpaka
 #endif
                 }
                 //-----------------------------------------------------------------------------
-                //! Copy-constructor.
+                //! Copy constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecutor(KernelExecutor const & other) :
                     TAcceleratedKernel(other),
@@ -330,7 +330,7 @@ namespace alpaka
                     m_mtxMapInsert()
                 {}
                 //-----------------------------------------------------------------------------
-                //! Move-constructor.
+                //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecutor(KernelExecutor && other) :
                     TAcceleratedKernel(std::move(other)),
@@ -342,13 +342,13 @@ namespace alpaka
                     m_mtxMapInsert()
                 {}
                 //-----------------------------------------------------------------------------
-                //! Copy-assignment.
+                //! Copy assignment.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecutor & operator=(KernelExecutor const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST ~KernelExecutor() noexcept = default;
+                ALPAKA_FCT_HOST virtual ~KernelExecutor() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! Executes the accelerated kernel.

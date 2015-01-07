@@ -50,21 +50,21 @@ namespace alpaka
                     m_v3uiGridBlockIdx(v3uiGridBlockIdx)
                 {}
                 //-----------------------------------------------------------------------------
-                //! Copy-constructor.
+                //! Copy constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST IndexThreads(IndexThreads const &) = default;
                 //-----------------------------------------------------------------------------
-                //! Move-constructor.
+                //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST IndexThreads(IndexThreads &&) = default;
                 //-----------------------------------------------------------------------------
-                //! Copy-assignment.
+                //! Copy assignment.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST IndexThreads & operator=(IndexThreads const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST ~IndexThreads() noexcept = default;
+                ALPAKA_FCT_HOST virtual ~IndexThreads() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! \return The index of the currently executed kernel.

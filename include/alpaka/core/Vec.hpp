@@ -38,7 +38,7 @@ namespace alpaka
     //! A n-dimensional vector.
     //#############################################################################
     template<std::size_t TuiDim, typename TValue = std::size_t>
-    class vec
+    class vec final
     {
     public:
         static_assert(TuiDim>0, "Size of the vector is required to be greater then zero!");
@@ -80,21 +80,21 @@ namespace alpaka
 #endif
         }
         //-----------------------------------------------------------------------------
-        //! Copy-constructor.
+        //! Copy constructor.
         //-----------------------------------------------------------------------------
         ALPAKA_FCT_HOST_ACC vec(vec const &) = default;
         //-----------------------------------------------------------------------------
-        //! Move-constructor.
+        //! Move constructor.
         //-----------------------------------------------------------------------------
         ALPAKA_FCT_HOST_ACC vec(vec &&) = default;
         //-----------------------------------------------------------------------------
-        //! Copy-assignment.
+        //! Copy assignment.
         //-----------------------------------------------------------------------------
         ALPAKA_FCT_HOST_ACC vec & operator=(vec const &) = default;
         //-----------------------------------------------------------------------------
         //! Destructor.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC ~vec() noexcept = default;
+        ALPAKA_FCT_HOST_ACC /*virtual*/ ~vec() noexcept = default;
 
         //-----------------------------------------------------------------------------
         //! Destructor.

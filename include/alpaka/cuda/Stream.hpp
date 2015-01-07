@@ -48,29 +48,43 @@ namespace alpaka
             ALPAKA_FCT_HOST Stream()
             {
                 ALPAKA_CUDA_CHECK(cudaStreamCreate(
-                    &m_Stream);
+                    &m_cudaStream);
             }
             //-----------------------------------------------------------------------------
-            //! Copy-constructor.
+            //! Copy constructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST Stream(Stream const &) = default;
             //-----------------------------------------------------------------------------
-            //! Move-constructor.
+            //! Move constructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST Stream(Stream &&) = default;
             //-----------------------------------------------------------------------------
-            //! Assignment-operator.
+            //! Assignment operator.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST Stream & operator=(Stream const &) = default;
             //-----------------------------------------------------------------------------
+            //! Equality comparison operator.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FCT_HOST bool operator==(Stream const & rhs) const
+            {
+                return m_cudaStream == rhs.m_cudaStream;
+            }
+            //-----------------------------------------------------------------------------
+            //! Equality comparison operator.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FCT_HOST bool operator!=(Stream const & rhs) const
+            {
+                return !((*this) == rhs);
+            }
+            //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST ~Stream() noexcept
+            ALPAKA_FCT_HOST virtual ~Stream() noexcept
             {
-                ALPAKA_CUDA_CHECK(cudaStreamDestroy(m_Stream));
+                ALPAKA_CUDA_CHECK(cudaStreamDestroy(m_cudaStream));
             }
 
-            cudaStream_t m_Stream;
+            cudaStream_t m_cudaStream;
         };
 
         namespace detail
@@ -85,7 +99,7 @@ namespace alpaka
                 ALPAKA_FCT_HOST ThreadWaitStream(Stream<AccCuda> const & stream)
                 {
                     ALPAKA_CUDA_CHECK(cudaStreamSynchronize(
-                        stream.m_Stream));
+                        stream.m_cudaStream));
                 }
             };
 
@@ -100,8 +114,8 @@ namespace alpaka
                 ALPAKA_FCT_HOST StreamWaitEvent(Stream<AccCuda> const & stream, event::Event<AccCuda> const & event)
                 {
                     ALPAKA_CUDA_CHECK(cudaStreamWaitEvent(
-                        stream.m_Stream,
-                        event.m_Event,
+                        stream.m_cudaStream,
+                        event.m_cudaEvent,
                         0));
                 }
             };
@@ -115,7 +129,7 @@ namespace alpaka
             {
                 ALPAKA_FCT_HOST StreamTest(Stream<AccCuda> const & stream, bool & bTest)
                 {
-                    auto const ret(cudaStreamQuery(stream.m_Stream));
+                    auto const ret(cudaStreamQuery(stream.m_cudaStream));
                     if(ret == cudaSuccess)
                     {
                         bTest = true;

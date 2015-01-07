@@ -36,7 +36,7 @@ namespace alpaka
         //#############################################################################
         template<>
         class Stream<AccThreads> :
-            public alpaka::host::detail::StreamHost
+            public host::detail::StreamHost
         {
         public:
             using TAcc = AccThreads;

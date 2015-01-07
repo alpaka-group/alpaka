@@ -54,21 +54,35 @@ namespace alpaka
                 ALPAKA_FCT_HOST DeviceCuda() = default;
             public:
                 //-----------------------------------------------------------------------------
-                //! Copy-constructor.
+                //! Copy constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST DeviceCuda(DeviceCuda const &) = default;
                 //-----------------------------------------------------------------------------
-                //! Move-constructor.
+                //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST DeviceCuda(DeviceCuda &&) = default;
                 //-----------------------------------------------------------------------------
-                //! Assignment-operator.
+                //! Assignment operator.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST DeviceCuda & operator=(DeviceCuda const &) = default;
                 //-----------------------------------------------------------------------------
+                //! Equality comparison operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST bool operator==(DeviceCuda const & rhs) const
+                {
+                    return m_iDevice == rhs.m_iDevice;
+                }
+                //-----------------------------------------------------------------------------
+                //! Inequality comparison operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST bool operator!=(DeviceCuda const & rhs) const
+                {
+                    return !((*this) == rhs);
+                }
+                //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST ~DeviceCuda() noexcept = default;
+                ALPAKA_FCT_HOST virtual ~DeviceCuda() noexcept = default;
 
             protected:
                 //-----------------------------------------------------------------------------
@@ -116,22 +130,52 @@ namespace alpaka
 
         public:
             //-----------------------------------------------------------------------------
-            //! Copy-constructor.
+            //! Copy constructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST Device(Device const &) = default;
             //-----------------------------------------------------------------------------
-            //! Move-constructor.
+            //! Move constructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST Device(Device &&) = default;
             //-----------------------------------------------------------------------------
-            //! Assignment-operator.
+            //! Assignment operator.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST Device & operator=(Device const &) = default;
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST ~Device() noexcept = default;
+            ALPAKA_FCT_HOST virtual ~Device() noexcept = default;
         };
+
+        namespace detail
+        {
+            //#############################################################################
+            //! The CUDA accelerator thread device waiter.
+            //#############################################################################
+            template<>
+            struct ThreadWaitDevice<
+                Device<AccCuda>>
+            {
+                ALPAKA_FCT_HOST ThreadWaitDevice(Device<AccCuda> const & device)
+                {
+                    // \TODO: This should be secured by a lock.
+
+                    auto const oldDevice(DeviceManager<AccCuda>::getCurrentDevice());
+
+                    if(oldDevice != device)
+                    {
+                        DeviceManager<AccCuda>::setCurrentDevice(device);
+                    }
+
+                    ALPAKA_CUDA_CHECK(cudaDeviceSynchronize());
+
+                    if(oldDevice != device)
+                    {
+                        DeviceManager<AccCuda>::setCurrentDevice(oldDevice);
+                    }
+                }
+            };
+        }
     }
 
     namespace cuda

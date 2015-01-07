@@ -55,21 +55,35 @@ namespace alpaka
                 ALPAKA_FCT_HOST DeviceThreads() = default;
             public:
                 //-----------------------------------------------------------------------------
-                //! Copy-constructor.
+                //! Copy constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST DeviceThreads(DeviceThreads const &) = default;
                 //-----------------------------------------------------------------------------
-                //! Move-constructor.
+                //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST DeviceThreads(DeviceThreads &&) = default;
                 //-----------------------------------------------------------------------------
-                //! Assignment-operator.
+                //! Assignment operator.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST DeviceThreads & operator=(DeviceThreads const &) = default;
                 //-----------------------------------------------------------------------------
+                //! Equality comparison operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST bool operator==(DeviceThreads const &) const
+                {
+                    return true;
+                }
+                //-----------------------------------------------------------------------------
+                //! Inequality comparison operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST bool operator!=(DeviceThreads const & rhs) const
+                {
+                    return !((*this) == rhs);
+                }
+                //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST ~DeviceThreads() noexcept = default;
+                ALPAKA_FCT_HOST virtual ~DeviceThreads() noexcept = default;
 
             protected:
                 //-----------------------------------------------------------------------------
@@ -113,22 +127,38 @@ namespace alpaka
 
         public:
             //-----------------------------------------------------------------------------
-            //! Copy-constructor.
+            //! Copy constructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST Device(Device const &) = default;
             //-----------------------------------------------------------------------------
-            //! Move-constructor.
+            //! Move constructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST Device(Device &&) = default;
             //-----------------------------------------------------------------------------
-            //! Assignment-operator.
+            //! Assignment operator.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST Device & operator=(Device const &) = default;
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST ~Device() noexcept = default;
+            ALPAKA_FCT_HOST virtual ~Device() noexcept = default;
         };
+
+        namespace detail
+        {
+            //#############################################################################
+            //! The threads accelerator thread device waiter.
+            //#############################################################################
+            template<>
+            struct ThreadWaitDevice<
+                Device<AccThreads >>
+            {
+                ALPAKA_FCT_HOST ThreadWaitDevice(Device<AccThreads> const &)
+                {
+                    // Because host calls are not asynchronous, this call never has to wait.
+                }
+            };
+        }
     }
 
     namespace threads

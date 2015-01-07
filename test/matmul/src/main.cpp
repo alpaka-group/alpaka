@@ -58,7 +58,7 @@ public:
     //-----------------------------------------------------------------------------
     //! The kernel.
     //-----------------------------------------------------------------------------
-    template <typename TElement>
+    template<typename TElement>
     ALPAKA_FCT_HOST_ACC void operator()(
         std::uint32_t const n,
         TElement const * const A,
@@ -216,8 +216,10 @@ struct ProfileAcceleratedMatMulKernel
 
         // Build the kernel executor.
         auto exec(alpaka::createKernelExecutor<TAcc, TKernel>());
+        // Get a new stream.
+        alpaka::stream::Stream<TAcc> stream;
         // Profile the kernel execution.
-        profileAcceleratedKernel(exec(workExtent), uiMatrixSize, pAAcc.get(), pBAcc.get(), pCAcc.get());
+        profileAcceleratedKernel(exec(workExtent, stream), uiMatrixSize, pAAcc.get(), pBAcc.get(), pCAcc.get());
 
         // Copy back the result.
         alpaka::memory::copy<alpaka::MemorySpaceHost, TAccMemorySpace>(vuiC.data(), pCAcc.get(), uiSizeBytes);

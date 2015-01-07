@@ -50,17 +50,17 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST FiberBarrier(FiberBarrier const &) = delete;
                 //-----------------------------------------------------------------------------
-                //! Move-constructor.
+                //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST FiberBarrier(FiberBarrier &&) = default;
                 //-----------------------------------------------------------------------------
-                //! Copy-assignment.
+                //! Copy assignment.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST FiberBarrier & operator=(FiberBarrier const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST ~FiberBarrier() noexcept = default;
+                ALPAKA_FCT_HOST virtual ~FiberBarrier() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! Waits for all the other fibers to reach the barrier.

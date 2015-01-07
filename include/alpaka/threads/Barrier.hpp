@@ -46,23 +46,23 @@ namespace alpaka
                     m_uiNumThreadsToWaitFor{uiNumThreadsToWaitFor}
                 {}
                 //-----------------------------------------------------------------------------
-                //! Copy-constructor.
+                //! Copy constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST ThreadBarrier(ThreadBarrier const & other) :
                     m_uiNumThreadsToWaitFor(other.m_uiNumThreadsToWaitFor)
                 {}
                 //-----------------------------------------------------------------------------
-                //! Move-constructor.
+                //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST ThreadBarrier(ThreadBarrier &&) = default;
                 //-----------------------------------------------------------------------------
-                //! Copy-assignment.
+                //! Copy assignment.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST ThreadBarrier & operator=(ThreadBarrier const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST ~ThreadBarrier() noexcept = default;
+                ALPAKA_FCT_HOST virtual ~ThreadBarrier() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! Waits for all the other threads to reach the barrier.

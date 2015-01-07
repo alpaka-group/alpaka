@@ -55,21 +55,35 @@ namespace alpaka
                 ALPAKA_FCT_HOST DeviceFibers() = default;
             public:
                 //-----------------------------------------------------------------------------
-                //! Copy-constructor.
+                //! Copy constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST DeviceFibers(DeviceFibers const &) = default;
                 //-----------------------------------------------------------------------------
-                //! Move-constructor.
+                //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST DeviceFibers(DeviceFibers &&) = default;
                 //-----------------------------------------------------------------------------
-                //! Assignment-operator.
+                //! Assignment operator.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST DeviceFibers & operator=(DeviceFibers const &) = default;
                 //-----------------------------------------------------------------------------
+                //! Equality comparison operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST bool operator==(DeviceFibers const &) const
+                {
+                    return true;
+                }
+                //-----------------------------------------------------------------------------
+                //! Inequality comparison operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST bool operator!=(DeviceFibers const & rhs) const
+                {
+                    return !((*this) == rhs);
+                }
+                //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST ~DeviceFibers() noexcept = default;
+                ALPAKA_FCT_HOST virtual ~DeviceFibers() noexcept = default;
 
             protected:
                 //-----------------------------------------------------------------------------
@@ -111,22 +125,38 @@ namespace alpaka
 
         public:
             //-----------------------------------------------------------------------------
-            //! Copy-constructor.
+            //! Copy constructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST Device(Device const &) = default;
             //-----------------------------------------------------------------------------
-            //! Move-constructor.
+            //! Move constructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST Device(Device &&) = default;
             //-----------------------------------------------------------------------------
-            //! Assignment-operator.
+            //! Assignment operator.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST Device & operator=(Device const &) = default;
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST ~Device() noexcept = default;
+            ALPAKA_FCT_HOST virtual ~Device() noexcept = default;
         };
+
+        namespace detail
+        {
+            //#############################################################################
+            //! The fibers accelerator thread device waiter.
+            //#############################################################################
+            template<>
+            struct ThreadWaitDevice<
+                Device<AccFibers >>
+            {
+                ALPAKA_FCT_HOST ThreadWaitDevice(Device<AccFibers> const &)
+                {
+                    // Because host calls are not asynchronous, this call never has to wait.
+                }
+            };
+        }
     }
 
     namespace fibers

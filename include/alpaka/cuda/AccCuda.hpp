@@ -105,21 +105,21 @@ namespace alpaka
                     TInterfacedAtomic()
                 {}
                 //-----------------------------------------------------------------------------
-                //! Copy-constructor.
+                //! Copy constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC AccCuda(AccCuda const &) = default;
                 //-----------------------------------------------------------------------------
-                //! Move-constructor.
+                //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC AccCuda(AccCuda &&) = default;
                 //-----------------------------------------------------------------------------
-                //! Copy-assignment.
+                //! Copy assignment.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC AccCuda & operator=(AccCuda const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC ~AccCuda() noexcept = default;
+                ALPAKA_FCT_ACC /*virtual*/ ~AccCuda() noexcept = default;
 
             protected:
                 //-----------------------------------------------------------------------------
@@ -183,7 +183,7 @@ namespace alpaka
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 template<typename TWorkExtent, typename... TKernelConstrArgs>
-                ALPAKA_FCT_HOST KernelExecutor(IWorkExtent<TWorkExtent> const & workExtent, TKernelConstrArgs && ... args) :
+                ALPAKA_FCT_HOST KernelExecutor(IWorkExtent<TWorkExtent> const & workExtent, stream::Stream<AccCuda> const & stream, TKernelConstrArgs && ... args) :
                     TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
                 {
 #ifdef ALPAKA_DEBUG
@@ -206,21 +206,21 @@ namespace alpaka
 #endif
                 }
                 //-----------------------------------------------------------------------------
-                //! Copy-constructor.
+                //! Copy constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecutor(KernelExecutor const &) = default;
                 //-----------------------------------------------------------------------------
-                //! Move-constructor.
+                //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecutor(KernelExecutor &&) = default;
                 //-----------------------------------------------------------------------------
-                //! Copy-assignment.
+                //! Copy assignment.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecutor & operator=(KernelExecutor const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST ~KernelExecutor() noexcept = default;
+                ALPAKA_FCT_HOST virtual ~KernelExecutor() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! Executes the accelerated kernel.
@@ -233,7 +233,7 @@ namespace alpaka
 
                     auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(m_v3uiBlockKernelsExtent, std::forward<TArgs>(args)...));
 
-                    ALPAKA_CUDA_CHECK(cudaConfigureCall(gridDim, blockDim, uiBlockSharedExternMemSizeBytes));
+                    ALPAKA_CUDA_CHECK(cudaConfigureCall(gridDim, blockDim, uiBlockSharedExternMemSizeBytes, m_Stream.m_cudaStream));
                     pushCudaKernelArgument<0>(std::ref(*static_cast<TAcceleratedKernel const *>(this)), std::forward<TArgs>(args)...);
                     ALPAKA_CUDA_CHECK(cudaLaunch(cudaKernel<TAcceleratedKernel, TArgs...>));
 #ifdef ALPAKA_DEBUG
@@ -266,6 +266,8 @@ namespace alpaka
             private:
                 vec<3u> m_v3uiGridBlocksExtent;
                 vec<3u> m_v3uiBlockKernelsExtent;
+
+                stream::Stream<AccCuda> m_Stream;
             };
         }
     }

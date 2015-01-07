@@ -66,21 +66,21 @@ namespace alpaka
                 ALPAKA_FCT_HOST IDevice() = default;
             public:
                 //-----------------------------------------------------------------------------
-                //! Copy-constructor.
+                //! Copy constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST IDevice(IDevice const &) = default;
                 //-----------------------------------------------------------------------------
-                //! Move-constructor.
+                //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST IDevice(IDevice &&) = default;
                 //-----------------------------------------------------------------------------
-                //! Assignment-operator.
+                //! Assignment operator.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST IDevice & operator=(IDevice const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST ~IDevice() noexcept = default;
+                ALPAKA_FCT_HOST virtual ~IDevice() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! \return The device properties.
@@ -97,6 +97,24 @@ namespace alpaka
         //#############################################################################
         template<typename TAcc>
         class Device;
+
+        namespace detail
+        {
+            //#############################################################################
+            //! The abstract thread device waiter.
+            //#############################################################################
+            template<typename TStream, typename TSfinae = void>
+            struct ThreadWaitDevice;
+        }
+
+        //#############################################################################
+        //! Waits for the device to complete all of its work.
+        //#############################################################################
+        template<typename TAcc>
+        ALPAKA_FCT_HOST void wait(Device<TAcc> const & device)
+        {
+            detail::ThreadWaitDevice<Device<TAcc>>{device};
+        }
 
         namespace detail
         {

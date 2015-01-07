@@ -42,21 +42,21 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC WorkExtentCuda() = default;
                 //-----------------------------------------------------------------------------
-                //! Copy-constructor.
+                //! Copy constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC WorkExtentCuda(WorkExtentCuda const &) = default;
                 //-----------------------------------------------------------------------------
-                //! Move-constructor.
+                //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC WorkExtentCuda(WorkExtentCuda &&) = default;
                 //-----------------------------------------------------------------------------
-                //! Copy-assignment.
+                //! Copy assignment.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC WorkExtentCuda & operator=(WorkExtentCuda const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST ~WorkExtentCuda() noexcept = default;
+                ALPAKA_FCT_ACC /*virtual*/ ~WorkExtentCuda() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! \return The grid dimensions of the currently executed kernel.

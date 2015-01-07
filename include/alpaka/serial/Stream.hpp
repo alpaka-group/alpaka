@@ -36,7 +36,7 @@ namespace alpaka
         //#############################################################################
         template<>
         class Stream<AccSerial> :
-            public alpaka::host::detail::StreamHost
+            public host::detail::StreamHost
         {
         public:
             using TAcc = AccSerial;

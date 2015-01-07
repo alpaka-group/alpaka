@@ -196,8 +196,12 @@ struct profileAcceleratedExampleKernel
 
 		std::uint32_t const m_uiMult(42);
 
+        // Build the kernel executor.
 		auto exec(alpaka::createKernelExecutor<TAcc, TKernel>(m_uiMult));
-		profileAcceleratedKernel(exec(workExtent), pBlockRetValsAcc.get(), uiMult2);
+        // Get a new stream.
+        alpaka::stream::Stream<TAcc> stream;
+        // Profile the kernel execution.
+		profileAcceleratedKernel(exec(workExtent, stream), pBlockRetValsAcc.get(), uiMult2);
 
 		// Copy back the result.
 		alpaka::memory::copy<alpaka::MemorySpaceHost, TAccMemorySpace>(vuiBlockRetVals.data(), pBlockRetValsAcc.get(), uiSizeBytes);

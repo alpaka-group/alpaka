@@ -59,32 +59,33 @@ namespace alpaka
                     = default;
 #endif
                 //-----------------------------------------------------------------------------
-                //! Copy-constructor.
+                //! Copy constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST AtomicOpenMp(AtomicOpenMp const &) = default;
                 //-----------------------------------------------------------------------------
-                //! Move-constructor.
+                //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST AtomicOpenMp(AtomicOpenMp &&) = default;
                 //-----------------------------------------------------------------------------
-                //! Copy-assignment.
+                //! Copy assignment.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST AtomicOpenMp & operator=(AtomicOpenMp const &) = delete;
-                //-----------------------------------------------------------------------------
-                //! Destructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST ~AtomicOpenMp() noexcept = default;
 
 #ifdef ALPAKA_OPENMP_ATOMIC_OPS_LOCK
                 //-----------------------------------------------------------------------------
                 //! Default-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST ~AtomicOpenMp()
+                ALPAKA_FCT_HOST virtual ~AtomicOpenMp()
                 {
                     omp_destroy_lock(&m_ompLock);
                 }
             private:
                 omp_lock_t mutable m_ompLock;
+#else
+                //-----------------------------------------------------------------------------
+                //! Destructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST virtual ~AtomicOpenMp() noexcept = default;
 #endif
             };
             using TInterfacedAtomic = alpaka::detail::IAtomic<AtomicOpenMp>;

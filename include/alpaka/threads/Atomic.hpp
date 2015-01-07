@@ -47,21 +47,21 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST AtomicThreads() = default;
                 //-----------------------------------------------------------------------------
-                //! Copy-constructor.
+                //! Copy constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST AtomicThreads(AtomicThreads const &) = default;
                 //-----------------------------------------------------------------------------
-                //! Move-constructor.
+                //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST AtomicThreads(AtomicThreads &&) = default;
                 //-----------------------------------------------------------------------------
-                //! Copy-assignment.
+                //! Copy assignment.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST AtomicThreads & operator=(AtomicThreads const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST ~AtomicThreads() noexcept = default;
+                ALPAKA_FCT_HOST virtual ~AtomicThreads() noexcept = default;
 
             private:
                 std::mutex mutable m_mtxAtomic; //!< The mutex protecting access for a atomic operation.

@@ -42,42 +42,42 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Default-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST_ACC WorkExtentHost() = default;
+                ALPAKA_FCT_HOST WorkExtentHost() = default;
                 //-----------------------------------------------------------------------------
                 //! Constructor from values.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST_ACC explicit WorkExtentHost(vec<3u> const & v3uiGridBlocksExtent, vec<3u> const & v3uiBlockKernelsExtent) :
+                ALPAKA_FCT_HOST explicit WorkExtentHost(vec<3u> const & v3uiGridBlocksExtent, vec<3u> const & v3uiBlockKernelsExtent) :
                     m_v3uiGridBlocksExtent(v3uiGridBlocksExtent),
                     m_v3uiBlockKernelsExtent(v3uiBlockKernelsExtent)
                 {}
                 //-----------------------------------------------------------------------------
-                //! Copy-constructor.
+                //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST_ACC WorkExtentHost(WorkExtentHost const &) = default;
+                ALPAKA_FCT_HOST WorkExtentHost(WorkExtentHost const &) = default;
                 //-----------------------------------------------------------------------------
-                //! Move-constructor.
+                //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST_ACC WorkExtentHost(WorkExtentHost &&) = default;
+                ALPAKA_FCT_HOST WorkExtentHost(WorkExtentHost &&) = default;
                 //-----------------------------------------------------------------------------
-                //! Copy-assignment.
+                //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST_ACC WorkExtentHost & operator=(WorkExtentHost const &) = default;
+                ALPAKA_FCT_HOST WorkExtentHost & operator=(WorkExtentHost const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST_ACC ~WorkExtentHost() noexcept = default;
+                ALPAKA_FCT_HOST virtual ~WorkExtentHost() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! \return The grid dimensions of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST_ACC vec<3u> getExtentGridBlocks() const
+                ALPAKA_FCT_HOST vec<3u> getExtentGridBlocks() const
                 {
                     return m_v3uiGridBlocksExtent;
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The block dimensions of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST_ACC vec<3u> getExtentBlockKernels() const
+                ALPAKA_FCT_HOST vec<3u> getExtentBlockKernels() const
                 {
                     return m_v3uiBlockKernelsExtent;
                 }
