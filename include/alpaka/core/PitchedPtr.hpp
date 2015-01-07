@@ -21,23 +21,30 @@
 
 #pragma once
 
-#include <alpaka/fibers/AccFibersFwd.hpp>   // AccFibers
+#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC, ALPAKA_ALIGN
 
-#include <alpaka/host/Event.hpp>            // EventHost
+#include <cstdint>                  // std::size_t
 
 namespace alpaka
 {
-    namespace event
+    //#############################################################################
+    //! A pitched pointer.
+    //#############################################################################
+    struct PichedPtr
     {
-        //#############################################################################
-        //! The fibers accelerator event.
-        //#############################################################################
-        template<>
-        class Event<AccFibers> :
-            public host::detail::EventHost
-        {
-        public:
-            using TAcc = AccFibers;
-        };
+        std::size_t pitch;
+        void * ptr;
+        std::size_t xsize;
+        std::size_t ysize;
+    };
+
+    PichedPtr makePitchedPtr(
+        void * d,
+        std::size_t p,
+        std::size_t xsz,
+        std::size_t ysz)
+    {
+        return PichedPtr{p, d, xsz, ysz};
     }
+
 }
