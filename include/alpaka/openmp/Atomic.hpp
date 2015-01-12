@@ -49,7 +49,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Default-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST AtomicOpenMp()
+                ALPAKA_FCT_ACC_NO_CUDA AtomicOpenMp()
 #ifdef ALPAKA_OPENMP_ATOMIC_OPS_LOCK
                 {
                     omp_init_lock(&m_ompLock);
@@ -60,21 +60,21 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST AtomicOpenMp(AtomicOpenMp const &) = default;
+                ALPAKA_FCT_ACC_NO_CUDA AtomicOpenMp(AtomicOpenMp const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST AtomicOpenMp(AtomicOpenMp &&) = default;
+                ALPAKA_FCT_ACC_NO_CUDA AtomicOpenMp(AtomicOpenMp &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST AtomicOpenMp & operator=(AtomicOpenMp const &) = delete;
+                ALPAKA_FCT_ACC_NO_CUDA AtomicOpenMp & operator=(AtomicOpenMp const &) = delete;
 
 #ifdef ALPAKA_OPENMP_ATOMIC_OPS_LOCK
                 //-----------------------------------------------------------------------------
                 //! Default-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST virtual ~AtomicOpenMp()
+                ALPAKA_FCT_ACC_NO_CUDA virtual ~AtomicOpenMp()
                 {
                     omp_destroy_lock(&m_ompLock);
                 }
@@ -84,7 +84,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST virtual ~AtomicOpenMp() noexcept = default;
+                ALPAKA_FCT_ACC_NO_CUDA virtual ~AtomicOpenMp() noexcept = default;
 #endif
             };
             using TInterfacedAtomic = alpaka::detail::IAtomic<AtomicOpenMp>;
@@ -103,7 +103,7 @@ namespace alpaka
         struct AtomicOp<openmp::detail::AtomicOpenMp, TOp, T>
         {
 #ifdef ALPAKA_OPENMP_ATOMIC_OPS_LOCK
-            ALPAKA_FCT_HOST T operator()(openmp::detail::AtomicOpenMp const & atomic, T * const addr, T const & value) const
+            ALPAKA_FCT_ACC_NO_CUDA T operator()(openmp::detail::AtomicOpenMp const & atomic, T * const addr, T const & value) const
             {
                 omp_set_lock(&atomic.m_ompLock);
                 auto const old(TOp()(addr, value));
@@ -111,7 +111,7 @@ namespace alpaka
                 return old;
             }
 #else
-            ALPAKA_FCT_HOST T operator()(openmp::detail::AtomicOpenMp const &, T * const addr, T const & value) const
+            ALPAKA_FCT_ACC_NO_CUDA T operator()(openmp::detail::AtomicOpenMp const &, T * const addr, T const & value) const
             {
                 T old;
 #pragma omp critical (AtomicOp)

@@ -98,7 +98,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC AccCuda() :
+                ALPAKA_FCT_ACC_CUDA_ONLY AccCuda() :
                     TInterfacedWorkExtent(),
                     TInterfacedIndex(),
                     TInterfacedAtomic()
@@ -106,26 +106,26 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC AccCuda(AccCuda const &) = default;
+                ALPAKA_FCT_ACC_CUDA_ONLY AccCuda(AccCuda const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC AccCuda(AccCuda &&) = default;
+                ALPAKA_FCT_ACC_CUDA_ONLY AccCuda(AccCuda &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC AccCuda & operator=(AccCuda const &) = delete;
+                ALPAKA_FCT_ACC_CUDA_ONLY AccCuda & operator=(AccCuda const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC /*virtual*/ ~AccCuda() noexcept = default;
+                ALPAKA_FCT_ACC_CUDA_ONLY /*virtual*/ ~AccCuda() noexcept = default;
 
             protected:
                 //-----------------------------------------------------------------------------
                 //! \return The requested index.
                 //-----------------------------------------------------------------------------
                 template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-                ALPAKA_FCT_ACC typename alpaka::detail::DimToRetType<TDimensionality>::type getIdx() const
+                ALPAKA_FCT_ACC_CUDA_ONLY typename alpaka::detail::DimToRetType<TDimensionality>::type getIdx() const
                 {
                     return this->TInterfacedIndex::getIdx<TOrigin, TUnit, TDimensionality>(
                         *static_cast<TInterfacedWorkExtent const *>(this));
@@ -134,7 +134,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Syncs all kernels in the current block.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC void syncBlockKernels() const
+                ALPAKA_FCT_ACC_CUDA_ONLY void syncBlockKernels() const
                 {
                     __syncthreads();
                 }
@@ -143,7 +143,7 @@ namespace alpaka
                 //! \return Allocates block shared memory.
                 //-----------------------------------------------------------------------------
                 template<typename T, std::size_t TuiNumElements>
-                ALPAKA_FCT_ACC T * allocBlockSharedMem() const
+                ALPAKA_FCT_ACC_CUDA_ONLY T * allocBlockSharedMem() const
                 {
                     static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
 
@@ -155,7 +155,7 @@ namespace alpaka
                 //! \return The pointer to the externally allocated block shared memory.
                 //-----------------------------------------------------------------------------
                 template<typename T>
-                ALPAKA_FCT_ACC T * getBlockSharedExternMem() const
+                ALPAKA_FCT_ACC_CUDA_ONLY T * getBlockSharedExternMem() const
                 {
                     extern __shared__ uint8_t shMem[];
                     return reinterpret_cast<T*>(shMem);
@@ -274,7 +274,7 @@ namespace alpaka
     //#############################################################################
     //! The CUDA accelerator interface.
     //!
-    //! This specialization is required because the functions are not allowed to be declared ALPAKA_FCT_HOST_ACC but are required to be ALPAKA_FCT_ACC only.
+    //! This specialization is required because the functions are not allowed to be declared ALPAKA_FCT_ACC but are required to be ALPAKA_FCT_ACC_CUDA_ONLY only.
     //#############################################################################
     template<>
     class IAcc<AccCuda> :
@@ -286,7 +286,7 @@ namespace alpaka
         //! \return The requested extent.
         //-----------------------------------------------------------------------------
         template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-        ALPAKA_FCT_ACC typename detail::DimToRetType<TDimensionality>::type getExtent() const
+        ALPAKA_FCT_ACC_CUDA_ONLY typename detail::DimToRetType<TDimensionality>::type getExtent() const
         {
             return TAcc::getExtent<TOrigin, TUnit, TDimensionality>();
         }
@@ -296,7 +296,7 @@ namespace alpaka
         //! \return The requested index.
         //-----------------------------------------------------------------------------
         template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-        ALPAKA_FCT_ACC typename detail::DimToRetType<TDimensionality>::type getIdx() const
+        ALPAKA_FCT_ACC_CUDA_ONLY typename detail::DimToRetType<TDimensionality>::type getIdx() const
         {
             return TAcc::getIdx<TOrigin, TUnit, TDimensionality>();
         }
@@ -306,7 +306,7 @@ namespace alpaka
         //! \return The old value before executing the atomic operation.
         //-----------------------------------------------------------------------------
         template<typename TOp, typename T>
-        ALPAKA_FCT_ACC T atomicOp(T * const addr, T const & value) const
+        ALPAKA_FCT_ACC_CUDA_ONLY T atomicOp(T * const addr, T const & value) const
         {
             return TAcc::atomicOp<TOp, T>(addr, value);
         }
@@ -314,7 +314,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Syncs all kernels in the current block.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_ACC void syncBlockKernels() const
+        ALPAKA_FCT_ACC_CUDA_ONLY void syncBlockKernels() const
         {
             return TAcc::syncBlockKernels();
         }
@@ -323,7 +323,7 @@ namespace alpaka
         //! \return Allocates block shared memory.
         //-----------------------------------------------------------------------------
         template<typename T, std::size_t TuiNumElements>
-        ALPAKA_FCT_ACC T * allocBlockSharedMem() const
+        ALPAKA_FCT_ACC_CUDA_ONLY T * allocBlockSharedMem() const
         {
             static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
 
@@ -334,7 +334,7 @@ namespace alpaka
         //! \return The pointer to the externally allocated block shared memory.
         //-----------------------------------------------------------------------------
         template<typename T>
-        ALPAKA_FCT_ACC T * getBlockSharedExternMem() const
+        ALPAKA_FCT_ACC_CUDA_ONLY T * getBlockSharedExternMem() const
         {
             return TAcc::getBlockSharedExternMem<T>();
         }

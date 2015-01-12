@@ -22,7 +22,7 @@
 #pragma once
 
 #include <alpaka/core/Positioning.hpp>  // alpaka::origin::Grid/Blocks
-#include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST_ACC
+#include <alpaka/core/Common.hpp>       // ALPAKA_FCT_ACC
 
 #include <utility>                      // std::forward
 

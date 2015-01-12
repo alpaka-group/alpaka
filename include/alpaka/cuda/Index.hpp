@@ -38,35 +38,35 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Default-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC IndexCuda() = default;
+                ALPAKA_FCT_ACC_CUDA_ONLY IndexCuda() = default;
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC IndexCuda(IndexCuda const &) = default;
+                ALPAKA_FCT_ACC_CUDA_ONLY IndexCuda(IndexCuda const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC IndexCuda(IndexCuda &&) = default;
+                ALPAKA_FCT_ACC_CUDA_ONLY IndexCuda(IndexCuda &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC IndexCuda & operator=(IndexCuda const & ) = delete;
+                ALPAKA_FCT_ACC_CUDA_ONLY IndexCuda & operator=(IndexCuda const & ) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC /*virtual*/ ~IndexCuda() noexcept = default;
+                ALPAKA_FCT_ACC_CUDA_ONLY /*virtual*/ ~IndexCuda() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! \return The index of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC vec<3u> getIdxBlockKernel() const
+                ALPAKA_FCT_ACC_CUDA_ONLY vec<3u> getIdxBlockKernel() const
                 {
                     return {threadIdx.x, threadIdx.y, threadIdx.z};
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The block index of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC vec<3u> getIdxGridBlock() const
+                ALPAKA_FCT_ACC_CUDA_ONLY vec<3u> getIdxGridBlock() const
                 {
                     return {blockIdx.x, blockIdx.y, blockIdx.z};
                 }

@@ -44,23 +44,23 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Default-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST AtomicThreads() = default;
+                ALPAKA_FCT_ACC_NO_CUDA AtomicThreads() = default;
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST AtomicThreads(AtomicThreads const &) = default;
+                ALPAKA_FCT_ACC_NO_CUDA AtomicThreads(AtomicThreads const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST AtomicThreads(AtomicThreads &&) = default;
+                ALPAKA_FCT_ACC_NO_CUDA AtomicThreads(AtomicThreads &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST AtomicThreads & operator=(AtomicThreads const &) = delete;
+                ALPAKA_FCT_ACC_NO_CUDA AtomicThreads & operator=(AtomicThreads const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST virtual ~AtomicThreads() noexcept = default;
+                ALPAKA_FCT_ACC_NO_CUDA virtual ~AtomicThreads() noexcept = default;
 
             private:
                 std::mutex mutable m_mtxAtomic; //!< The mutex protecting access for a atomic operation.
@@ -77,7 +77,7 @@ namespace alpaka
         template<typename TOp, typename T>
         struct AtomicOp<threads::detail::AtomicThreads, TOp, T>
         {
-            ALPAKA_FCT_HOST T operator()(threads::detail::AtomicThreads const & atomic, T * const addr, T const & value) const
+            ALPAKA_FCT_ACC_NO_CUDA T operator()(threads::detail::AtomicThreads const & atomic, T * const addr, T const & value) const
             {
                 // \TODO: Currently not only the access to the same memory location is protected by a mutex but all atomic ops on all threads.
                 // We could use a list of mutexes and lock the mutex depending on the target memory location to allow multiple atomic ops on different targets concurrently.

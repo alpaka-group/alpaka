@@ -44,7 +44,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST IndexOpenMp(
+                ALPAKA_FCT_ACC_NO_CUDA IndexOpenMp(
                     TInterfacedWorkExtent const & workExtent,
                     vec<3u> const & v3uiGridBlockIdx) :
                     m_WorkExtent(workExtent),
@@ -53,26 +53,26 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST IndexOpenMp(IndexOpenMp const &) = default;
+                ALPAKA_FCT_ACC_NO_CUDA IndexOpenMp(IndexOpenMp const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST IndexOpenMp(IndexOpenMp &&) = default;
+                ALPAKA_FCT_ACC_NO_CUDA IndexOpenMp(IndexOpenMp &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST IndexOpenMp & operator=(IndexOpenMp const &) = delete;
+                ALPAKA_FCT_ACC_NO_CUDA IndexOpenMp & operator=(IndexOpenMp const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST virtual ~IndexOpenMp() noexcept = default;
+                ALPAKA_FCT_ACC_NO_CUDA virtual ~IndexOpenMp() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! \return The index of the currently executed kernel.
                 //
                 // \TODO: Would it be faster to precompute the 3 dimensional index and cache it inside an array?
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST vec<3u> getIdxBlockKernel() const
+                ALPAKA_FCT_ACC_NO_CUDA vec<3u> getIdxBlockKernel() const
                 {
                     // We assume that the thread id is positive.
                     assert(::omp_get_thread_num()>=0);
@@ -87,7 +87,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The block index of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST vec<3u> getIdxGridBlock() const
+                ALPAKA_FCT_ACC_NO_CUDA vec<3u> getIdxGridBlock() const
                 {
                     return m_v3uiGridBlockIdx;
                 }

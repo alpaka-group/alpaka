@@ -23,7 +23,7 @@
 
 #include <alpaka/fibers/Common.hpp>
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC
+#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_ACC_NO_CUDA
 
 namespace alpaka
 {
@@ -41,30 +41,30 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST explicit FiberBarrier(std::size_t uiNumFibersToWaitFor = 0) :
+                ALPAKA_FCT_ACC_NO_CUDA explicit FiberBarrier(std::size_t uiNumFibersToWaitFor = 0) :
                     m_uiNumFibersToWaitFor{uiNumFibersToWaitFor}
                 {}
                 //-----------------------------------------------------------------------------
                 //! Deleted copy-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST FiberBarrier(FiberBarrier const &) = delete;
+                ALPAKA_FCT_ACC_NO_CUDA FiberBarrier(FiberBarrier const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST FiberBarrier(FiberBarrier &&) = default;
+                ALPAKA_FCT_ACC_NO_CUDA FiberBarrier(FiberBarrier &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST FiberBarrier & operator=(FiberBarrier const &) = delete;
+                ALPAKA_FCT_ACC_NO_CUDA FiberBarrier & operator=(FiberBarrier const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST virtual ~FiberBarrier() noexcept = default;
+                ALPAKA_FCT_ACC_NO_CUDA virtual ~FiberBarrier() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! Waits for all the other fibers to reach the barrier.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST void wait()
+                ALPAKA_FCT_ACC_NO_CUDA void wait()
                 {
                     boost::unique_lock<boost::fibers::mutex> lock(m_mtxBarrier);
                     if(--m_uiNumFibersToWaitFor == 0)
@@ -81,7 +81,7 @@ namespace alpaka
                 //! \return The number of fibers to wait for.
                 //! NOTE: The value almost always is invalid the time you get it.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST std::size_t getNumFibersToWaitFor() const
+                ALPAKA_FCT_ACC_NO_CUDA std::size_t getNumFibersToWaitFor() const
                 {
                     return m_uiNumFibersToWaitFor;
                 }
@@ -89,7 +89,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Resets the number of fibers to wait for to the given number.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST void reset(std::size_t uiNumFibersToWaitFor)
+                ALPAKA_FCT_ACC_NO_CUDA void reset(std::size_t uiNumFibersToWaitFor)
                 {
                     // A lock is not required in the fiber implementation.
                     //boost::unique_lock<boost::fibers::mutex> lock(m_mtxBarrier);

@@ -46,7 +46,7 @@ namespace alpaka
         //! The default version always returns zero.
         //-----------------------------------------------------------------------------
         template<typename... TArgs>
-        static std::size_t getBlockSharedExternMemSizeBytes(vec<3u> const & v3uiBlockKernelsExtent, TArgs && ... )
+        ALPAKA_FCT_HOST static std::size_t getBlockSharedExternMemSizeBytes(vec<3u> const & v3uiBlockKernelsExtent, TArgs && ... )
         {
             boost::ignore_unused(v3uiBlockKernelsExtent);
 

@@ -34,8 +34,8 @@ namespace alpaka
     //#############################################################################
     //! The accelerator interface.
     //
-    // All the methods of this interface are declared ALPAKA_FCT_HOST_ACC. 
-    // Because the kernel is always compiled with ALPAKA_FCT_HOST_ACC for all accelerators (even for AccSerial), equivalently there has to be an implementation of all methods for host and device for all accelerators. 
+    // All the methods of this interface are declared ALPAKA_FCT_ACC. 
+    // Because the kernel is always compiled with ALPAKA_FCT_ACC for all accelerators (even for AccSerial), equivalently there has to be an implementation of all methods for host and device for all accelerators. 
     // These device functions are not implemented and will not call the underlying implementation for the device code, because this will never be executed and would not compile.
     //#############################################################################
     template<typename TAcc = boost::mpl::_1>
@@ -47,7 +47,7 @@ namespace alpaka
         //! \return The requested extent.
         //-----------------------------------------------------------------------------
         template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-        ALPAKA_FCT_HOST_ACC typename detail::DimToRetType<TDimensionality>::type getExtent() const
+        ALPAKA_FCT_ACC typename detail::DimToRetType<TDimensionality>::type getExtent() const
         {
 #ifndef __CUDA_ARCH__
             return TAcc::template getExtent<TOrigin, TUnit, TDimensionality>();
@@ -61,7 +61,7 @@ namespace alpaka
         //! \return The requested index.
         //-----------------------------------------------------------------------------
         template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-        ALPAKA_FCT_HOST_ACC typename detail::DimToRetType<TDimensionality>::type getIdx() const
+        ALPAKA_FCT_ACC typename detail::DimToRetType<TDimensionality>::type getIdx() const
         {
 #ifndef __CUDA_ARCH__
             return TAcc::template getIdx<TOrigin, TUnit, TDimensionality>();
@@ -75,7 +75,7 @@ namespace alpaka
         //! \return The old value before executing the atomic operation.
         //-----------------------------------------------------------------------------
         template<typename TOp, typename T>
-        ALPAKA_FCT_HOST_ACC T atomicOp(T * const addr, T const & value) const
+        ALPAKA_FCT_ACC T atomicOp(T * const addr, T const & value) const
         {
 #ifndef __CUDA_ARCH__
             return TAcc::template atomicOp<TOp, T>(addr, value);
@@ -87,7 +87,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Syncs all kernels in the current block.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC void syncBlockKernels() const
+        ALPAKA_FCT_ACC void syncBlockKernels() const
         {
 #ifndef __CUDA_ARCH__
             return TAcc::syncBlockKernels();
@@ -98,7 +98,7 @@ namespace alpaka
         //! \return Allocates block shared memory.
         //-----------------------------------------------------------------------------
         template<typename T, std::size_t TuiNumElements>
-        ALPAKA_FCT_HOST_ACC T * allocBlockSharedMem() const
+        ALPAKA_FCT_ACC T * allocBlockSharedMem() const
         {
             static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
 #ifndef __CUDA_ARCH__
@@ -112,7 +112,7 @@ namespace alpaka
         //! \return The pointer to the externally allocated block shared memory.
         //-----------------------------------------------------------------------------
         template<typename T>
-        ALPAKA_FCT_HOST_ACC T * getBlockSharedExternMem() const
+        ALPAKA_FCT_ACC T * getBlockSharedExternMem() const
         {
 #ifndef __CUDA_ARCH__
             return TAcc::template getBlockSharedExternMem<T>();

@@ -43,7 +43,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST IndexFibers(
+                ALPAKA_FCT_ACC_NO_CUDA IndexFibers(
                     TFiberIdToIndex const & mFibersToIndices,
                     vec<3u> const & v3uiGridBlockIdx) :
                     m_mFibersToIndices(mFibersToIndices),
@@ -52,24 +52,24 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST IndexFibers(IndexFibers const &) = default;
+                ALPAKA_FCT_ACC_NO_CUDA IndexFibers(IndexFibers const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST IndexFibers(IndexFibers &&) = default;
+                ALPAKA_FCT_ACC_NO_CUDA IndexFibers(IndexFibers &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST IndexFibers & operator=(IndexFibers const &) = delete;
+                ALPAKA_FCT_ACC_NO_CUDA IndexFibers & operator=(IndexFibers const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST virtual ~IndexFibers() noexcept = default;
+                ALPAKA_FCT_ACC_NO_CUDA virtual ~IndexFibers() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! \return The index of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST vec<3u> getIdxBlockKernel() const
+                ALPAKA_FCT_ACC_NO_CUDA vec<3u> getIdxBlockKernel() const
                 {
                     auto const idFiber(boost::this_fiber::get_id());
                     auto const itFind(m_mFibersToIndices.find(idFiber));
@@ -80,7 +80,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The index of the block of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST vec<3u> getIdxGridBlock() const
+                ALPAKA_FCT_ACC_NO_CUDA vec<3u> getIdxGridBlock() const
                 {
                     return m_v3uiGridBlockIdx;
                 }

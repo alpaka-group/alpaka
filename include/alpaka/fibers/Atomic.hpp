@@ -38,23 +38,23 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Default-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST AtomicFibers() = default;
+                ALPAKA_FCT_ACC_NO_CUDA AtomicFibers() = default;
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST AtomicFibers(AtomicFibers const &) = default;
+                ALPAKA_FCT_ACC_NO_CUDA AtomicFibers(AtomicFibers const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST AtomicFibers(AtomicFibers &&) = default;
+                ALPAKA_FCT_ACC_NO_CUDA AtomicFibers(AtomicFibers &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST AtomicFibers & operator=(AtomicFibers const &) = delete;
+                ALPAKA_FCT_ACC_NO_CUDA AtomicFibers & operator=(AtomicFibers const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST virtual ~AtomicFibers() noexcept = default;
+                ALPAKA_FCT_ACC_NO_CUDA virtual ~AtomicFibers() noexcept = default;
             };
             using TInterfacedAtomic = alpaka::detail::IAtomic<AtomicFibers>;
         }
@@ -68,7 +68,7 @@ namespace alpaka
         template<typename TOp, typename T>
         struct AtomicOp<fibers::detail::AtomicFibers, TOp, T>
         {
-            ALPAKA_FCT_HOST T operator()(fibers::detail::AtomicFibers const &, T * const addr, T const & value) const
+            ALPAKA_FCT_ACC_NO_CUDA T operator()(fibers::detail::AtomicFibers const &, T * const addr, T const & value) const
             {
                 return TOp()(addr, value);
             }

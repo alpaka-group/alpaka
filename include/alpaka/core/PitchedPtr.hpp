@@ -21,8 +21,6 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC, ALPAKA_ALIGN
-
 #include <cstdint>                  // std::size_t
 
 namespace alpaka

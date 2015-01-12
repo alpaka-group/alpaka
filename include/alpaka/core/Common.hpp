@@ -48,18 +48,24 @@
 #endif
 
 //-----------------------------------------------------------------------------
-//! All functions that can be used on an accelerator have to be attributed with ALPAKA_FCT_ACC or ALPAKA_FCT_HOST_ACC.
+//! All functions that can be used on an accelerator have to be attributed with ALPAKA_FCT_ACC_CUDA_ONLY or ALPAKA_FCT_ACC.
 //!
 //! Usage:
-//! ALPAKA_FCT_HOST_ACC int add(int a, int b);
+//! ALPAKA_FCT_ACC int add(int a, int b);
 //-----------------------------------------------------------------------------
 #if defined ALPAKA_CUDA_ENABLED
-    #define ALPAKA_FCT_ACC __device__ __forceinline__
+    #define ALPAKA_FCT_ACC_CUDA_ONLY __device__ __forceinline__
+    #define ALPAKA_FCT_ACC_NO_CUDA __host__ __forceinline__
+    #define ALPAKA_FCT_ACC \
+        ALPAKA_NO_HOST_ACC_WARNING \
+        __device__ __host__ __forceinline__
     #define ALPAKA_FCT_HOST_ACC \
         ALPAKA_NO_HOST_ACC_WARNING \
         __device__ __host__ __forceinline__
-    #define ALPAKA_FCT_HOST __host__ inline
+    #define ALPAKA_FCT_HOST __host__ __forceinline__
 #else
+    //#define ALPAKA_FCT_ACC_CUDA_ONLY inline
+    #define ALPAKA_FCT_ACC_NO_CUDA inline
     #define ALPAKA_FCT_ACC inline
     #define ALPAKA_FCT_HOST_ACC inline
     #define ALPAKA_FCT_HOST inline

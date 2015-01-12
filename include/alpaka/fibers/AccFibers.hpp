@@ -90,7 +90,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST AccFibers() :
+                ALPAKA_FCT_ACC_NO_CUDA AccFibers() :
                     TInterfacedWorkExtent(),
                     TInterfacedIndex(m_mFibersToIndices, m_v3uiGridBlockIdx),
                     TInterfacedAtomic()
@@ -99,7 +99,7 @@ namespace alpaka
                 //! Copy constructor.
                 // Do not copy most members because they are initialized by the executor for each accelerated execution.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST AccFibers(AccFibers const & ) :
+                ALPAKA_FCT_ACC_NO_CUDA AccFibers(AccFibers const & ) :
                     TInterfacedWorkExtent(),
                     TInterfacedIndex(m_mFibersToIndices, m_v3uiGridBlockIdx),
                     TInterfacedAtomic(),
@@ -115,22 +115,22 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST AccFibers(AccFibers &&) = default;
+                ALPAKA_FCT_ACC_NO_CUDA AccFibers(AccFibers &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST AccFibers & operator=(AccFibers const &) = delete;
+                ALPAKA_FCT_ACC_NO_CUDA AccFibers & operator=(AccFibers const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST virtual ~AccFibers() noexcept = default;
+                ALPAKA_FCT_ACC_NO_CUDA virtual ~AccFibers() noexcept = default;
 
             protected:
                 //-----------------------------------------------------------------------------
                 //! \return The requested index.
                 //-----------------------------------------------------------------------------
                 template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-                ALPAKA_FCT_HOST typename alpaka::detail::DimToRetType<TDimensionality>::type getIdx() const
+                ALPAKA_FCT_ACC_NO_CUDA typename alpaka::detail::DimToRetType<TDimensionality>::type getIdx() const
                 {
                     return this->TInterfacedIndex::getIdx<TOrigin, TUnit, TDimensionality>(
                         *static_cast<TInterfacedWorkExtent const *>(this));
@@ -139,7 +139,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Syncs all kernels in the current block.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST void syncBlockKernels() const
+                ALPAKA_FCT_ACC_NO_CUDA void syncBlockKernels() const
                 {
                     auto const idFiber(boost::this_fiber::get_id());
                     auto const itFind(m_mFibersToBarrier.find(idFiber));
@@ -151,7 +151,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Syncs all kernels in the current block.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST void syncBlockKernels(std::map<boost::fibers::fiber::id, std::size_t>::iterator const & itFind) const
+                ALPAKA_FCT_ACC_NO_CUDA void syncBlockKernels(std::map<boost::fibers::fiber::id, std::size_t>::iterator const & itFind) const
                 {
                     assert(itFind != m_mFibersToBarrier.end());
 
@@ -177,7 +177,7 @@ namespace alpaka
                 //! \return Allocates block shared memory.
                 //-----------------------------------------------------------------------------
                 template<typename T, std::size_t TuiNumElements>
-                ALPAKA_FCT_HOST T * allocBlockSharedMem() const
+                ALPAKA_FCT_ACC_NO_CUDA T * allocBlockSharedMem() const
                 {
                     static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
 
@@ -201,7 +201,7 @@ namespace alpaka
                 //! \return The pointer to the externally allocated block shared memory.
                 //-----------------------------------------------------------------------------
                 template<typename T>
-                ALPAKA_FCT_HOST T * getBlockSharedExternMem() const
+                ALPAKA_FCT_ACC_NO_CUDA T * getBlockSharedExternMem() const
                 {
                     return reinterpret_cast<T*>(m_vuiExternalSharedMem.get());
                 }
@@ -240,7 +240,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Yields the current fiber.
                 //-----------------------------------------------------------------------------
-                static void yield()
+                ALPAKA_FCT_ACC_NO_CUDA static void yield()
                 {
                     boost::this_fiber::yield();
                 }
@@ -253,7 +253,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The current exception.
                 //-----------------------------------------------------------------------------
-                static auto current_exception()
+                ALPAKA_FCT_ACC_NO_CUDA static auto current_exception()
                     -> std::result_of<decltype(&boost::current_exception)()>::type
                 {
                     return boost::current_exception();

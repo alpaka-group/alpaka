@@ -49,7 +49,7 @@ public:
     //-----------------------------------------------------------------------------
     //! The kernel.
     //-----------------------------------------------------------------------------
-    ALPAKA_FCT_HOST_ACC void operator()(std::uint32_t * const puiBlockRetVals, std::uint32_t const uiMult2) const
+    ALPAKA_FCT_ACC void operator()(std::uint32_t * const puiBlockRetVals, std::uint32_t const uiMult2) const
     {
         // The number of kernels in this block.
         std::uint32_t const uiNumKernelsInBlock(TAcc::template getExtent<alpaka::Block, alpaka::Kernels, alpaka::Linear>());
@@ -119,7 +119,7 @@ namespace alpaka
     //! The trait for getting the size of the block shared extern memory for a kernel.
     //#############################################################################
     template<class TuiNumUselessWork, class TAcc>
-    struct BlockSharedExternMemSizeBytes<ExampleAcceleratedKernel<TuiNumUselessWork, TAcc>>
+    ALPAKA_FCT_HOST struct BlockSharedExternMemSizeBytes<ExampleAcceleratedKernel<TuiNumUselessWork, TAcc>>
     {
         //-----------------------------------------------------------------------------
         //! \return The size of the shared memory allocated for a block.

@@ -42,7 +42,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST IndexThreads(
+                ALPAKA_FCT_ACC_NO_CUDA IndexThreads(
                     TThreadIdToIndex const & mThreadsToIndices,
                     vec<3u> const & v3uiGridBlockIdx) :
                     m_mThreadsToIndices(mThreadsToIndices),
@@ -51,24 +51,24 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST IndexThreads(IndexThreads const &) = default;
+                ALPAKA_FCT_ACC_NO_CUDA IndexThreads(IndexThreads const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST IndexThreads(IndexThreads &&) = default;
+                ALPAKA_FCT_ACC_NO_CUDA IndexThreads(IndexThreads &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST IndexThreads & operator=(IndexThreads const &) = delete;
+                ALPAKA_FCT_ACC_NO_CUDA IndexThreads & operator=(IndexThreads const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST virtual ~IndexThreads() noexcept = default;
+                ALPAKA_FCT_ACC_NO_CUDA virtual ~IndexThreads() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! \return The index of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST vec<3u> getIdxBlockKernel() const
+                ALPAKA_FCT_ACC_NO_CUDA vec<3u> getIdxBlockKernel() const
                 {
                     auto const idThread(std::this_thread::get_id());
                     auto const itFind(m_mThreadsToIndices.find(idThread));
@@ -79,7 +79,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The block index of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST vec<3u> getIdxGridBlock() const
+                ALPAKA_FCT_ACC_NO_CUDA vec<3u> getIdxGridBlock() const
                 {
                     return m_v3uiGridBlockIdx;
                 }

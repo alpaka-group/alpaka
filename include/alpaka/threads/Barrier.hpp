@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC
+#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_ACC_NO_CUDA
 
 #include <mutex>                    // std::mutex
 #include <condition_variable>       // std::condition_variable
@@ -41,32 +41,32 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST explicit ThreadBarrier(std::size_t const uiNumThreadsToWaitFor = 0) :
+                ALPAKA_FCT_ACC_NO_CUDA explicit ThreadBarrier(std::size_t const uiNumThreadsToWaitFor = 0) :
                     m_uiNumThreadsToWaitFor{uiNumThreadsToWaitFor}
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST ThreadBarrier(ThreadBarrier const & other) :
+                ALPAKA_FCT_ACC_NO_CUDA ThreadBarrier(ThreadBarrier const & other) :
                     m_uiNumThreadsToWaitFor(other.m_uiNumThreadsToWaitFor)
                 {}
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST ThreadBarrier(ThreadBarrier &&) = default;
+                ALPAKA_FCT_ACC_NO_CUDA ThreadBarrier(ThreadBarrier &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST ThreadBarrier & operator=(ThreadBarrier const &) = delete;
+                ALPAKA_FCT_ACC_NO_CUDA ThreadBarrier & operator=(ThreadBarrier const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST virtual ~ThreadBarrier() noexcept = default;
+                ALPAKA_FCT_ACC_NO_CUDA virtual ~ThreadBarrier() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! Waits for all the other threads to reach the barrier.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST void wait()
+                ALPAKA_FCT_ACC_NO_CUDA void wait()
                 {
                     std::unique_lock<std::mutex> lock(m_mtxBarrier);
                     if(--m_uiNumThreadsToWaitFor == 0)
@@ -83,7 +83,7 @@ namespace alpaka
                 //! \return The number of threads to wait for.
                 //! NOTE: The value almost always is invalid the time you get it.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST std::size_t getNumThreadsToWaitFor() const
+                ALPAKA_FCT_ACC_NO_CUDA std::size_t getNumThreadsToWaitFor() const
                 {
                     return m_uiNumThreadsToWaitFor;
                 }
@@ -91,7 +91,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Resets the number of threads to wait for to the given number.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST void reset(std::size_t const uiNumThreadsToWaitFor)
+                ALPAKA_FCT_ACC_NO_CUDA void reset(std::size_t const uiNumThreadsToWaitFor)
                 {
                     std::lock_guard<std::mutex> lock(m_mtxBarrier);
                     m_uiNumThreadsToWaitFor = uiNumThreadsToWaitFor;

@@ -96,7 +96,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST AccThreads() :
+                ALPAKA_FCT_ACC_NO_CUDA AccThreads() :
                     TInterfacedWorkExtent(),
                     TInterfacedIndex(m_mThreadsToIndices, m_v3uiGridBlockIdx),
                     TInterfacedAtomic()
@@ -105,7 +105,7 @@ namespace alpaka
                 //! Copy constructor.
                 // Do not copy most members because they are initialized by the executor for each accelerated execution.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST AccThreads(AccThreads const & ) :
+                ALPAKA_FCT_ACC_NO_CUDA AccThreads(AccThreads const & ) :
                     TInterfacedWorkExtent(),
                     TInterfacedIndex(m_mThreadsToIndices, m_v3uiGridBlockIdx),
                     TInterfacedAtomic(),
@@ -121,22 +121,22 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST AccThreads(AccThreads &&) = default;
+                ALPAKA_FCT_ACC_NO_CUDA AccThreads(AccThreads &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST AccThreads & operator=(AccThreads const &) = delete;
+                ALPAKA_FCT_ACC_NO_CUDA AccThreads & operator=(AccThreads const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST virtual ~AccThreads() noexcept = default;
+                ALPAKA_FCT_ACC_NO_CUDA virtual ~AccThreads() noexcept = default;
 
             protected:
                 //-----------------------------------------------------------------------------
                 //! \return The requested index.
                 //-----------------------------------------------------------------------------
                 template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-                ALPAKA_FCT_HOST typename alpaka::detail::DimToRetType<TDimensionality>::type getIdx() const
+                ALPAKA_FCT_ACC_NO_CUDA typename alpaka::detail::DimToRetType<TDimensionality>::type getIdx() const
                 {
                     return this->TInterfacedIndex::getIdx<TOrigin, TUnit, TDimensionality>(
                         *static_cast<TInterfacedWorkExtent const *>(this));
@@ -145,7 +145,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Syncs all kernels in the current block.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST void syncBlockKernels() const
+                ALPAKA_FCT_ACC_NO_CUDA void syncBlockKernels() const
                 {
                     auto const idThread(std::this_thread::get_id());
                     auto const itFind(m_mThreadsToBarrier.find(idThread));
@@ -156,7 +156,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Syncs all kernels in the current block.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST void syncBlockKernels(std::map<std::thread::id, std::size_t>::iterator const & itFind) const
+                ALPAKA_FCT_ACC_NO_CUDA void syncBlockKernels(std::map<std::thread::id, std::size_t>::iterator const & itFind) const
                 {
                     assert(itFind != m_mThreadsToBarrier.end());
 
@@ -184,7 +184,7 @@ namespace alpaka
                 //! \return Allocates block shared memory.
                 //-----------------------------------------------------------------------------
                 template<typename T, std::size_t TuiNumElements>
-                ALPAKA_FCT_HOST T * allocBlockSharedMem() const
+                ALPAKA_FCT_ACC_NO_CUDA T * allocBlockSharedMem() const
                 {
                     static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
 
@@ -208,7 +208,7 @@ namespace alpaka
                 //! \return The pointer to the externally allocated block shared memory.
                 //-----------------------------------------------------------------------------
                 template<typename T>
-                ALPAKA_FCT_HOST T * getBlockSharedExternMem() const
+                ALPAKA_FCT_ACC_NO_CUDA T * getBlockSharedExternMem() const
                 {
                     return reinterpret_cast<T*>(m_vuiExternalSharedMem.get());
                 }

@@ -38,23 +38,23 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Default-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST AtomicSerial() = default;
+                ALPAKA_FCT_ACC_NO_CUDA AtomicSerial() = default;
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST AtomicSerial(AtomicSerial const &) = default;
+                ALPAKA_FCT_ACC_NO_CUDA AtomicSerial(AtomicSerial const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST AtomicSerial(AtomicSerial &&) = default;
+                ALPAKA_FCT_ACC_NO_CUDA AtomicSerial(AtomicSerial &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST AtomicSerial & operator=(AtomicSerial const &) = delete;
+                ALPAKA_FCT_ACC_NO_CUDA AtomicSerial & operator=(AtomicSerial const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST virtual ~AtomicSerial() noexcept = default;
+                ALPAKA_FCT_ACC_NO_CUDA virtual ~AtomicSerial() noexcept = default;
             };
             using TInterfacedAtomic = alpaka::detail::IAtomic<AtomicSerial>;
         }
@@ -68,7 +68,7 @@ namespace alpaka
         template<typename TOp, typename T>
         struct AtomicOp<serial::detail::AtomicSerial, TOp, T>
         {
-            ALPAKA_FCT_HOST T operator()(serial::detail::AtomicSerial const &, T * const addr, T const & value) const
+            ALPAKA_FCT_ACC_NO_CUDA T operator()(serial::detail::AtomicSerial const &, T * const addr, T const & value) const
             {
                 return TOp()(addr, value);
             }

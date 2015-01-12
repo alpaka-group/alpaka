@@ -38,38 +38,38 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Default-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST IndexSerial(
+                ALPAKA_FCT_ACC_NO_CUDA IndexSerial(
                     vec<3u> const & v3uiGridBlockIdx) :
                     m_v3uiGridBlockIdx(v3uiGridBlockIdx)
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST IndexSerial(IndexSerial const &) = default;
+                ALPAKA_FCT_ACC_NO_CUDA IndexSerial(IndexSerial const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST IndexSerial(IndexSerial &&) = default;
+                ALPAKA_FCT_ACC_NO_CUDA IndexSerial(IndexSerial &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST IndexSerial & operator=(IndexSerial const &) = delete;
+                ALPAKA_FCT_ACC_NO_CUDA IndexSerial & operator=(IndexSerial const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST virtual ~IndexSerial() noexcept = default;
+                ALPAKA_FCT_ACC_NO_CUDA virtual ~IndexSerial() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! \return The index of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST vec<3u> getIdxBlockKernel() const
+                ALPAKA_FCT_ACC_NO_CUDA vec<3u> getIdxBlockKernel() const
                 {
                     return {0,0,0};
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The block index of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST vec<3u> getIdxGridBlock() const
+                ALPAKA_FCT_ACC_NO_CUDA vec<3u> getIdxGridBlock() const
                 {
                     return m_v3uiGridBlockIdx;
                 }

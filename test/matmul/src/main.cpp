@@ -57,7 +57,7 @@ public:
     //! The kernel.
     //-----------------------------------------------------------------------------
     template<typename TElement>
-    ALPAKA_FCT_HOST_ACC void operator()(
+    ALPAKA_FCT_ACC void operator()(
         std::uint32_t const n,
         TElement const * const A,
         TElement const * const B,
@@ -128,12 +128,12 @@ namespace alpaka
         //! \return The size of the shared memory allocated for a block.
         //-----------------------------------------------------------------------------
         template<typename TElement>
-        static std::size_t getBlockSharedExternMemSizeBytes(
+        ALPAKA_FCT_HOST static std::size_t getBlockSharedExternMemSizeBytes(
             alpaka::vec<3u> const & v3uiBlockKernelsExtent,
-            std::uint32_t const ,
-            TElement const * const ,
-            TElement const * const ,
-            TElement * const )
+            std::uint32_t const,
+            TElement const * const,
+            TElement const * const,
+            TElement * const)
         {
             // Reserve the buffer for the two blocks of A and B.
             return 2u * v3uiBlockKernelsExtent.prod() * sizeof(TElement);

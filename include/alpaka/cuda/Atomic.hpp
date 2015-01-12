@@ -41,23 +41,23 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Default-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC AtomicCuda() = default;
+                ALPAKA_FCT_ACC_CUDA_ONLY AtomicCuda() = default;
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC AtomicCuda(AtomicCuda const &) = default;
+                ALPAKA_FCT_ACC_CUDA_ONLY AtomicCuda(AtomicCuda const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC AtomicCuda(AtomicCuda &&) = default;
+                ALPAKA_FCT_ACC_CUDA_ONLY AtomicCuda(AtomicCuda &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC AtomicCuda & operator=(AtomicCuda const &) = delete;
+                ALPAKA_FCT_ACC_CUDA_ONLY AtomicCuda & operator=(AtomicCuda const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC /*virtual*/ ~AtomicCuda() noexcept = default;
+                ALPAKA_FCT_ACC_CUDA_ONLY /*virtual*/ ~AtomicCuda() noexcept = default;
             };
             using TInterfacedAtomic = alpaka::detail::IAtomic<AtomicCuda>;
         }
@@ -78,7 +78,7 @@ namespace alpaka
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Add, int>
         {
-            ALPAKA_FCT_ACC int operator()(cuda::detail::AtomicCuda const & , int * const addr, int const & value) const
+            ALPAKA_FCT_ACC_CUDA_ONLY int operator()(cuda::detail::AtomicCuda const & , int * const addr, int const & value) const
             {
                 return atomicAdd(addr, value);
             }
@@ -89,7 +89,7 @@ namespace alpaka
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Add, unsigned int>
         {
-            ALPAKA_FCT_ACC unsigned int operator()(cuda::detail::AtomicCuda const &, unsigned int * const addr, unsigned int const & value) const
+            ALPAKA_FCT_ACC_CUDA_ONLY unsigned int operator()(cuda::detail::AtomicCuda const &, unsigned int * const addr, unsigned int const & value) const
             {
                 return atomicAdd(addr, value);
             }
@@ -100,7 +100,7 @@ namespace alpaka
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Add, unsigned long long int>
         {
-            ALPAKA_FCT_ACC unsigned long long int operator()(cuda::detail::AtomicCuda const &, unsigned long long int * const addr, unsigned long long int const & value) const
+            ALPAKA_FCT_ACC_CUDA_ONLY unsigned long long int operator()(cuda::detail::AtomicCuda const &, unsigned long long int * const addr, unsigned long long int const & value) const
             {
                 return atomicAdd(addr, value);
             }
@@ -111,7 +111,7 @@ namespace alpaka
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Add, float>
         {
-            ALPAKA_FCT_ACC float operator()(cuda::detail::AtomicCuda const &, float * const addr, float const & value) const
+            ALPAKA_FCT_ACC_CUDA_ONLY float operator()(cuda::detail::AtomicCuda const &, float * const addr, float const & value) const
             {
                 return atomicAdd(addr, value);
             }
@@ -122,7 +122,7 @@ namespace alpaka
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Add, double>
         {
-            ALPAKA_FCT_ACC double operator()(cuda::detail::AtomicCuda const &, double * const addr, double const & value) const
+            ALPAKA_FCT_ACC_CUDA_ONLY double operator()(cuda::detail::AtomicCuda const &, double * const addr, double const & value) const
             {
                 // Code from: http://docs.nvidia.com/cuda/cuda-c-programming-guide/#atomic-functions
 
@@ -148,7 +148,7 @@ namespace alpaka
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Sub, int>
         {
-            ALPAKA_FCT_ACC int operator()(cuda::detail::AtomicCuda const &, int * const addr, int const & value) const
+            ALPAKA_FCT_ACC_CUDA_ONLY int operator()(cuda::detail::AtomicCuda const &, int * const addr, int const & value) const
             {
                 return atomicSub(addr, value);
             }
@@ -159,7 +159,7 @@ namespace alpaka
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Sub, unsigned int>
         {
-            ALPAKA_FCT_ACC unsigned int operator()(cuda::detail::AtomicCuda const &, unsigned int * const addr, unsigned int const & value) const
+            ALPAKA_FCT_ACC_CUDA_ONLY unsigned int operator()(cuda::detail::AtomicCuda const &, unsigned int * const addr, unsigned int const & value) const
             {
                 return atomicSub(addr, value);
             }
@@ -173,7 +173,7 @@ namespace alpaka
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Min, int>
         {
-            ALPAKA_FCT_ACC int operator()(cuda::detail::AtomicCuda const &, int * const addr, int const & value) const
+            ALPAKA_FCT_ACC_CUDA_ONLY int operator()(cuda::detail::AtomicCuda const &, int * const addr, int const & value) const
             {
                 return atomicMin(addr, value);
             }
@@ -184,7 +184,7 @@ namespace alpaka
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Min, unsigned int>
         {
-            ALPAKA_FCT_ACC unsigned int operator()(cuda::detail::AtomicCuda const &, unsigned int * const addr, unsigned int const & value) const
+            ALPAKA_FCT_ACC_CUDA_ONLY unsigned int operator()(cuda::detail::AtomicCuda const &, unsigned int * const addr, unsigned int const & value) const
             {
                 return atomicMin(addr, value);
             }
@@ -195,7 +195,7 @@ namespace alpaka
         /*template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Min, unsigned long long int>
         {
-            ALPAKA_FCT_ACC unsigned long long int operator()(cuda::detail::AtomicCuda const &, unsigned long long int * const addr, unsigned long long int const & value) const
+            ALPAKA_FCT_ACC_CUDA_ONLY unsigned long long int operator()(cuda::detail::AtomicCuda const &, unsigned long long int * const addr, unsigned long long int const & value) const
             {
                 return atomicMin(addr, value);
             }
@@ -209,7 +209,7 @@ namespace alpaka
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Max, int>
         {
-            ALPAKA_FCT_ACC int operator()(cuda::detail::AtomicCuda const &, int * const addr, int const & value) const
+            ALPAKA_FCT_ACC_CUDA_ONLY int operator()(cuda::detail::AtomicCuda const &, int * const addr, int const & value) const
             {
                 return atomicMax(addr, value);
             }
@@ -220,7 +220,7 @@ namespace alpaka
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Max, unsigned int>
         {
-            ALPAKA_FCT_ACC unsigned int operator()(cuda::detail::AtomicCuda const &, unsigned int * const addr, unsigned int const & value) const
+            ALPAKA_FCT_ACC_CUDA_ONLY unsigned int operator()(cuda::detail::AtomicCuda const &, unsigned int * const addr, unsigned int const & value) const
             {
                 return atomicMax(addr, value);
             }
@@ -231,7 +231,7 @@ namespace alpaka
         /*template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Max, unsigned long long int>
         {
-            ALPAKA_FCT_ACC unsigned long long int operator()(cuda::detail::AtomicCuda const &, unsigned long long int * const addr, unsigned long long int const & value) const
+            ALPAKA_FCT_ACC_CUDA_ONLY unsigned long long int operator()(cuda::detail::AtomicCuda const &, unsigned long long int * const addr, unsigned long long int const & value) const
             {
                 return atomicMax(addr, value);
             }
@@ -245,7 +245,7 @@ namespace alpaka
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Exch, int>
         {
-            ALPAKA_FCT_ACC int operator()(cuda::detail::AtomicCuda const & , int * const addr, int const & value) const
+            ALPAKA_FCT_ACC_CUDA_ONLY int operator()(cuda::detail::AtomicCuda const & , int * const addr, int const & value) const
             {
                 return atomicExch(addr, value);
             }
@@ -256,7 +256,7 @@ namespace alpaka
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Exch, unsigned int>
         {
-            ALPAKA_FCT_ACC unsigned int operator()(cuda::detail::AtomicCuda const &, unsigned int * const addr, unsigned int const & value) const
+            ALPAKA_FCT_ACC_CUDA_ONLY unsigned int operator()(cuda::detail::AtomicCuda const &, unsigned int * const addr, unsigned int const & value) const
             {
                 return atomicExch(addr, value);
             }
@@ -267,7 +267,7 @@ namespace alpaka
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Exch, unsigned long long int>
         {
-            ALPAKA_FCT_ACC unsigned long long int operator()(cuda::detail::AtomicCuda const &, unsigned long long int * const addr, unsigned long long int const & value) const
+            ALPAKA_FCT_ACC_CUDA_ONLY unsigned long long int operator()(cuda::detail::AtomicCuda const &, unsigned long long int * const addr, unsigned long long int const & value) const
             {
                 return atomicExch(addr, value);
             }
@@ -278,7 +278,7 @@ namespace alpaka
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Exch, float>
         {
-            ALPAKA_FCT_ACC float operator()(cuda::detail::AtomicCuda const &, float * const addr, float const & value) const
+            ALPAKA_FCT_ACC_CUDA_ONLY float operator()(cuda::detail::AtomicCuda const &, float * const addr, float const & value) const
             {
                 return atomicExch(addr, value);
             }
@@ -292,7 +292,7 @@ namespace alpaka
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Inc, unsigned int>
         {
-            ALPAKA_FCT_ACC unsigned int operator()(cuda::detail::AtomicCuda const & , unsigned int * const addr, unsigned int const & value) const
+            ALPAKA_FCT_ACC_CUDA_ONLY unsigned int operator()(cuda::detail::AtomicCuda const & , unsigned int * const addr, unsigned int const & value) const
             {
                 return atomicInc(addr, value);
             }
@@ -306,7 +306,7 @@ namespace alpaka
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Dec, unsigned int>
         {
-            ALPAKA_FCT_ACC unsigned int operator()(cuda::detail::AtomicCuda const & , unsigned int * const addr, unsigned int const & value) const
+            ALPAKA_FCT_ACC_CUDA_ONLY unsigned int operator()(cuda::detail::AtomicCuda const & , unsigned int * const addr, unsigned int const & value) const
             {
                 return atomicDec(addr, value);
             }
@@ -320,7 +320,7 @@ namespace alpaka
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, And, int>
         {
-            ALPAKA_FCT_ACC int operator()(cuda::detail::AtomicCuda const &, int * const addr, int const & value) const
+            ALPAKA_FCT_ACC_CUDA_ONLY int operator()(cuda::detail::AtomicCuda const &, int * const addr, int const & value) const
             {
                 return atomicAnd(addr, value);
             }
@@ -331,7 +331,7 @@ namespace alpaka
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, And, unsigned int>
         {
-            ALPAKA_FCT_ACC unsigned int operator()(cuda::detail::AtomicCuda const &, unsigned int * const addr, unsigned int const & value) const
+            ALPAKA_FCT_ACC_CUDA_ONLY unsigned int operator()(cuda::detail::AtomicCuda const &, unsigned int * const addr, unsigned int const & value) const
             {
                 return atomicAnd(addr, value);
             }
@@ -342,7 +342,7 @@ namespace alpaka
         /*template<>
         struct AtomicOp<cuda::detail::AtomicCuda, And, unsigned long long int>
         {
-            ALPAKA_FCT_ACC unsigned long long int operator()(cuda::detail::AtomicCuda const &, unsigned long long int * const addr, unsigned long long int const & value) const
+            ALPAKA_FCT_ACC_CUDA_ONLY unsigned long long int operator()(cuda::detail::AtomicCuda const &, unsigned long long int * const addr, unsigned long long int const & value) const
             {
                 return atomicAnd(addr, value);
             }
@@ -356,7 +356,7 @@ namespace alpaka
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Or, int>
         {
-            ALPAKA_FCT_ACC int operator()(cuda::detail::AtomicCuda const &, int * const addr, int const & value) const
+            ALPAKA_FCT_ACC_CUDA_ONLY int operator()(cuda::detail::AtomicCuda const &, int * const addr, int const & value) const
             {
                 return atomicOr(addr, value);
             }
@@ -367,7 +367,7 @@ namespace alpaka
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Or, unsigned int>
         {
-            ALPAKA_FCT_ACC unsigned int operator()(cuda::detail::AtomicCuda const &, unsigned int * const addr, unsigned int const & value) const
+            ALPAKA_FCT_ACC_CUDA_ONLY unsigned int operator()(cuda::detail::AtomicCuda const &, unsigned int * const addr, unsigned int const & value) const
             {
                 return atomicOr(addr, value);
             }
@@ -378,7 +378,7 @@ namespace alpaka
         /*template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Or, unsigned long long int>
         {
-            ALPAKA_FCT_ACC unsigned long long int operator()(cuda::detail::AtomicCuda const &, unsigned long long int * const addr, unsigned long long int const & value) const
+            ALPAKA_FCT_ACC_CUDA_ONLY unsigned long long int operator()(cuda::detail::AtomicCuda const &, unsigned long long int * const addr, unsigned long long int const & value) const
             {
                 return atomicOr(addr, value);
             }
@@ -392,7 +392,7 @@ namespace alpaka
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Xor, int>
         {
-            ALPAKA_FCT_ACC int operator()(cuda::detail::AtomicCuda const &, int * const addr, int const & value) const
+            ALPAKA_FCT_ACC_CUDA_ONLY int operator()(cuda::detail::AtomicCuda const &, int * const addr, int const & value) const
             {
                 return atomicXor(addr, value);
             }
@@ -403,7 +403,7 @@ namespace alpaka
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Xor, unsigned int>
         {
-            ALPAKA_FCT_ACC unsigned int operator()(cuda::detail::AtomicCuda const &, unsigned int * const addr, unsigned int const & value) const
+            ALPAKA_FCT_ACC_CUDA_ONLY unsigned int operator()(cuda::detail::AtomicCuda const &, unsigned int * const addr, unsigned int const & value) const
             {
                 return atomicXor(addr, value);
             }
@@ -414,7 +414,7 @@ namespace alpaka
         /*template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Xor, unsigned long long int>
         {
-            ALPAKA_FCT_ACC unsigned long long int operator()(cuda::detail::AtomicCuda const &, unsigned long long int * const addr, unsigned long long int const & value) const
+            ALPAKA_FCT_ACC_CUDA_ONLY unsigned long long int operator()(cuda::detail::AtomicCuda const &, unsigned long long int * const addr, unsigned long long int const & value) const
             {
                 return atomicXor(addr, value);
             }
@@ -428,7 +428,7 @@ namespace alpaka
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Cas, int>
         {
-            ALPAKA_FCT_ACC int operator()(cuda::detail::AtomicCuda const &, int * const addr, int const & compare, int const & value) const
+            ALPAKA_FCT_ACC_CUDA_ONLY int operator()(cuda::detail::AtomicCuda const &, int * const addr, int const & compare, int const & value) const
             {
                 return atomicCAS(addr, compare, value);
             }
@@ -439,7 +439,7 @@ namespace alpaka
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Cas, unsigned int>
         {
-            ALPAKA_FCT_ACC unsigned int operator()(cuda::detail::AtomicCuda const &, unsigned int * const addr, unsigned int const & compare, unsigned int const & value) const
+            ALPAKA_FCT_ACC_CUDA_ONLY unsigned int operator()(cuda::detail::AtomicCuda const &, unsigned int * const addr, unsigned int const & compare, unsigned int const & value) const
             {
                 return atomicCAS(addr, compare, value);
             }
@@ -450,7 +450,7 @@ namespace alpaka
         template<>
         struct AtomicOp<cuda::detail::AtomicCuda, Cas, unsigned long long int>
         {
-            ALPAKA_FCT_ACC unsigned long long int operator()(cuda::detail::AtomicCuda const &, unsigned long long int * const addr, unsigned long long int const & compare, unsigned long long int const & value) const
+            ALPAKA_FCT_ACC_CUDA_ONLY unsigned long long int operator()(cuda::detail::AtomicCuda const &, unsigned long long int * const addr, unsigned long long int const & compare, unsigned long long int const & value) const
             {
                 return atomicCAS(addr, compare, value);
             }

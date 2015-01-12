@@ -46,7 +46,7 @@ namespace alpaka
             //! Constructor.
             //-----------------------------------------------------------------------------
             template<typename... TArgs>
-            ALPAKA_FCT_HOST_ACC IAtomic(TArgs && ... args) :
+            ALPAKA_FCT_ACC IAtomic(TArgs && ... args) :
                 TAtomic(std::forward<TArgs>(args)...)
             {}
 
@@ -55,7 +55,7 @@ namespace alpaka
             //! \return The old value before executing the atomic operation.
             //-----------------------------------------------------------------------------
             template<typename TOp, typename T>
-            ALPAKA_FCT_HOST_ACC T atomicOp(T * const addr, T const & value) const
+            ALPAKA_FCT_ACC T atomicOp(T * const addr, T const & value) const
             {
                 return AtomicOp<TAtomic, TOp, T>()(
                     *static_cast<TAtomic const *>(this), 

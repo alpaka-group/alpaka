@@ -38,35 +38,35 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Default-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC WorkExtentCuda() = default;
+                ALPAKA_FCT_ACC_CUDA_ONLY WorkExtentCuda() = default;
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC WorkExtentCuda(WorkExtentCuda const &) = default;
+                ALPAKA_FCT_ACC_CUDA_ONLY WorkExtentCuda(WorkExtentCuda const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC WorkExtentCuda(WorkExtentCuda &&) = default;
+                ALPAKA_FCT_ACC_CUDA_ONLY WorkExtentCuda(WorkExtentCuda &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC WorkExtentCuda & operator=(WorkExtentCuda const &) = delete;
+                ALPAKA_FCT_ACC_CUDA_ONLY WorkExtentCuda & operator=(WorkExtentCuda const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC /*virtual*/ ~WorkExtentCuda() noexcept = default;
+                ALPAKA_FCT_ACC_CUDA_ONLY /*virtual*/ ~WorkExtentCuda() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! \return The grid dimensions of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC vec<3u> getExtentGridBlocks() const
+                ALPAKA_FCT_ACC_CUDA_ONLY vec<3u> getExtentGridBlocks() const
                 {
                     return {gridDim.x, gridDim.y, gridDim.z};
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The block dimensions of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC vec<3u> getExtentBlockKernels() const
+                ALPAKA_FCT_ACC_CUDA_ONLY vec<3u> getExtentBlockKernels() const
                 {
                     return {blockDim.x, blockDim.y, blockDim.z};
                 }
