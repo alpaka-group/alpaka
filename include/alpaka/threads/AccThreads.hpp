@@ -26,9 +26,9 @@
 
 // Base classes.
 #include <alpaka/threads/AccThreadsFwd.hpp>
-#include <alpaka/threads/WorkExtent.hpp>            // TInterfacedWorkExtent
-#include <alpaka/threads/Index.hpp>                 // TInterfacedIndex
-#include <alpaka/threads/Atomic.hpp>                // TInterfacedAtomic
+#include <alpaka/threads/WorkExtent.hpp>            // InterfacedWorkExtentThreads
+#include <alpaka/threads/Index.hpp>                 // InterfacedIndexThreads
+#include <alpaka/threads/Atomic.hpp>                // InterfacedAtomicThreads
 #include <alpaka/threads/Barrier.hpp>               // BarrierThreads
 
 // User functionality.
@@ -82,9 +82,9 @@ namespace alpaka
             //! It uses C++11 std::threads to implement the parallelism.
             //#############################################################################
             class AccThreads :
-                protected TInterfacedWorkExtent,
-                protected TInterfacedIndex,
-                protected TInterfacedAtomic
+                protected InterfacedWorkExtentThreads,
+                protected InterfacedIndexThreads,
+                protected InterfacedAtomicThreads
             {
             public:
                 using MemorySpace = MemorySpaceHost;
@@ -97,18 +97,18 @@ namespace alpaka
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA AccThreads() :
-                    TInterfacedWorkExtent(),
-                    TInterfacedIndex(m_mThreadsToIndices, m_v3uiGridBlockIdx),
-                    TInterfacedAtomic()
+                    InterfacedWorkExtentThreads(),
+                    InterfacedIndexThreads(m_mThreadsToIndices, m_v3uiGridBlockIdx),
+                    InterfacedAtomicThreads()
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 // Do not copy most members because they are initialized by the executor for each accelerated execution.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA AccThreads(AccThreads const & ) :
-                    TInterfacedWorkExtent(),
-                    TInterfacedIndex(m_mThreadsToIndices, m_v3uiGridBlockIdx),
-                    TInterfacedAtomic(),
+                    InterfacedWorkExtentThreads(),
+                    InterfacedIndexThreads(m_mThreadsToIndices, m_v3uiGridBlockIdx),
+                    InterfacedAtomicThreads(),
                     m_mThreadsToIndices(),
                     m_v3uiGridBlockIdx(),
                     m_mThreadsToBarrier(),
@@ -138,8 +138,8 @@ namespace alpaka
                 template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
                 ALPAKA_FCT_ACC_NO_CUDA typename alpaka::detail::DimToRetType<TDimensionality>::type getIdx() const
                 {
-                    return this->TInterfacedIndex::getIdx<TOrigin, TUnit, TDimensionality>(
-                        *static_cast<TInterfacedWorkExtent const *>(this));
+                    return this->InterfacedIndexThreads::getIdx<TOrigin, TUnit, TDimensionality>(
+                        *static_cast<InterfacedWorkExtentThreads const *>(this));
                 }
 
                 //-----------------------------------------------------------------------------
@@ -219,7 +219,7 @@ namespace alpaka
             private:
 #endif
                 // getIdx
-                detail::TThreadIdToIndex mutable m_mThreadsToIndices;       //!< The mapping of thread id's to thread indices.
+                detail::ThreadIdToIndexMap mutable m_mThreadsToIndices;       //!< The mapping of thread id's to thread indices.
                 vec<3u> mutable m_v3uiGridBlockIdx;                         //!< The index of the currently executed block.
 
                 // syncBlockKernels
@@ -278,7 +278,7 @@ namespace alpaka
                 static_assert(std::is_base_of<IAcc<AccThreads>, TAcceleratedKernel>::value, "The TAcceleratedKernel for the threads::detail::KernelExecutor has to inherit from IAcc<AccThreads>!");
 
             public:
-                using TAcc = AccThreads;
+                using Acc = AccThreads;
 
             public:
                 //-----------------------------------------------------------------------------
@@ -297,7 +297,7 @@ namespace alpaka
 #ifdef ALPAKA_DEBUG
                     std::cout << "[+] AccThreads::KernelExecutor()" << std::endl;
 #endif
-                    (*const_cast<TInterfacedWorkExtent*>(static_cast<TInterfacedWorkExtent const *>(this))) = workExtent;
+                    (*static_cast<InterfacedWorkExtentThreads *>(this)) = workExtent;
 
                     auto const uiNumKernelsPerBlock(workExtent.template getExtent<Block, Kernels, Linear>());
                     /*auto const uiMaxKernelsPerBlock(AccThreads::getExtentBlockKernelsLinearMax());
@@ -367,13 +367,13 @@ namespace alpaka
                     // When using the thread pool the threads are yielding because this is faster. 
                     // Using condition variables and going to sleep is very costly for real threads. 
                     // Especially when the time to wait is really short (syncBlockKernels) yielding is much faster.
-                    using TPool = alpaka::detail::ConcurrentExecutionPool<
+                    using ThreadPool = alpaka::detail::ConcurrentExecutionPool<
                         std::thread,                // The concurrent execution type.
                         std::promise,               // The promise type.
                         ThreadPoolCurrentException, // The type returning the current exception.
                         ThreadPoolYield             // The type yielding the current concurrent execution.
                     >;
-                    TPool pool(uiNumKernelsInBlock, uiNumKernelsInBlock);
+                    ThreadPool pool(uiNumKernelsInBlock, uiNumKernelsInBlock);
 #endif
                     // Execute the blocks serially.
                     for(std::uint32_t bz(0); bz<m_v3uiGridBlocksExtent[2]; ++bz)
@@ -520,15 +520,15 @@ namespace alpaka
         class KernelExecCreator<AccThreads, TKernel, TKernelConstrArgs...>
         {
         public:
-            using TAcceleratedKernel = typename boost::mpl::apply<TKernel, AccThreads>::type;
-            using TKernelExecutorExtent = KernelExecutorExtent<threads::detail::KernelExecutor<TAcceleratedKernel>, TKernelConstrArgs...>;
+            using AcceleratedKernel = typename boost::mpl::apply<TKernel, AccThreads>::type;
+            using AcceleratedKernelExecutorExtent = KernelExecutorExtent<threads::detail::KernelExecutor<AcceleratedKernel>, TKernelConstrArgs...>;
 
             //-----------------------------------------------------------------------------
             //! Creates an kernel executor for the serial accelerator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST TKernelExecutorExtent operator()(TKernelConstrArgs && ... args) const
+            ALPAKA_FCT_HOST AcceleratedKernelExecutorExtent operator()(TKernelConstrArgs && ... args) const
             {
-                return TKernelExecutorExtent(std::forward<TKernelConstrArgs>(args)...);
+                return AcceleratedKernelExecutorExtent(std::forward<TKernelConstrArgs>(args)...);
             }
         };
     }

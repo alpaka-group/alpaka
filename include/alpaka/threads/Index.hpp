@@ -32,7 +32,7 @@ namespace alpaka
     {
         namespace detail
         {
-            using TThreadIdToIndex = std::map<std::thread::id, vec<3u>>;
+            using ThreadIdToIndexMap = std::map<std::thread::id, vec<3u>>;
             //#############################################################################
             //! This threads accelerator index provider.
             //#############################################################################
@@ -43,7 +43,7 @@ namespace alpaka
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA IndexThreads(
-                    TThreadIdToIndex const & mThreadsToIndices,
+                    ThreadIdToIndexMap const & mThreadsToIndices,
                     vec<3u> const & v3uiGridBlockIdx) :
                     m_mThreadsToIndices(mThreadsToIndices),
                     m_v3uiGridBlockIdx(v3uiGridBlockIdx)
@@ -85,10 +85,10 @@ namespace alpaka
                 }
 
             private:
-                TThreadIdToIndex const & m_mThreadsToIndices;   //!< The mapping of thread id's to thread indices.
+                ThreadIdToIndexMap const & m_mThreadsToIndices;   //!< The mapping of thread id's to thread indices.
                 vec<3u> const & m_v3uiGridBlockIdx;             //!< The index of the currently executed block.
             };
-            using TInterfacedIndex = alpaka::detail::IIndex<IndexThreads>;
+            using InterfacedIndexThreads = alpaka::detail::IIndex<IndexThreads>;
         }
     }
 }

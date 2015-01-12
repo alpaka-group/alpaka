@@ -151,8 +151,9 @@ namespace alpaka
             template<typename TAcc>
             void operator()(TAcc, alpaka::vec<3u> & v3uiBlockKernelExtent)
             {
-                using TDeviceManager = alpaka::device::DeviceManager<TAcc>;
-                auto const deviceProperties(TDeviceManager::getCurrentDevice().getProperties());
+                using DeviceManager = alpaka::device::DeviceManager<TAcc>;
+
+                auto const deviceProperties(DeviceManager::getCurrentDevice().getProperties());
                 auto const & v3uiBlockKernelsExtentMax(deviceProperties.m_v3uiBlockKernelsExtentMax);
 
                 v3uiBlockKernelExtent = alpaka::vec<3u>(
@@ -171,8 +172,8 @@ namespace alpaka
             template<typename TAcc>
             void operator()(TAcc, std::size_t & uiBlockKernelCount)
             {
-                using TDeviceManager = alpaka::device::DeviceManager<TAcc>;
-                auto const deviceProperties(TDeviceManager::getCurrentDevice().getProperties());
+                using DeviceManager = alpaka::device::DeviceManager<TAcc>;
+                auto const deviceProperties(DeviceManager::getCurrentDevice().getProperties());
                 auto const & uiBlockKernelCountMax(deviceProperties.m_uiBlockKernelsCountMax);
 
                 uiBlockKernelCount = std::min(uiBlockKernelCount, uiBlockKernelCountMax);
@@ -257,8 +258,8 @@ namespace alpaka
         // Get the maximum block kernels extent depending on the the input.
         if(bAdaptiveBlockKernelsExtent)
         {
-            using TDeviceManager = alpaka::device::DeviceManager<TAcc>;
-            auto const deviceProperties(TDeviceManager::getCurrentDevice().getProperties());
+            using DeviceManager = alpaka::device::DeviceManager<TAcc>;
+            auto const deviceProperties(DeviceManager::getCurrentDevice().getProperties());
             v3uiMaxBlockKernelsExtent = deviceProperties.m_v3uiBlockKernelsExtentMax;
             uiMaxBlockKernelsCount = deviceProperties.m_uiBlockKernelsCountMax;
         }

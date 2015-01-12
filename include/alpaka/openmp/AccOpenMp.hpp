@@ -23,9 +23,9 @@
 
 // Base classes.
 #include <alpaka/openmp/AccOpenMpFwd.hpp>
-#include <alpaka/openmp/WorkExtent.hpp>             // TInterfacedWorkExtent
-#include <alpaka/openmp/Index.hpp>                  // TInterfacedIndex
-#include <alpaka/openmp/Atomic.hpp>                 // TInterfacedAtomic
+#include <alpaka/openmp/WorkExtent.hpp>             // InterfacedWorkExtentOpenMp
+#include <alpaka/openmp/Index.hpp>                  // InterfacedIndexOpenMp
+#include <alpaka/openmp/Atomic.hpp>                 // InterfacedAtomicOpenMp
 
 // User functionality.
 #include <alpaka/host/Memory.hpp>                   // MemCopy
@@ -71,9 +71,9 @@ namespace alpaka
             //! It uses OpenMP to implement the parallelism.
             //#############################################################################
             class AccOpenMp :
-                protected TInterfacedWorkExtent,
-                protected TInterfacedIndex,
-                protected TInterfacedAtomic
+                protected InterfacedWorkExtentOpenMp,
+                protected InterfacedIndexOpenMp,
+                protected InterfacedAtomicOpenMp
             {
             public:
                 using MemorySpace = MemorySpaceHost;
@@ -86,18 +86,18 @@ namespace alpaka
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA AccOpenMp() :
-                    TInterfacedWorkExtent(),
-                    TInterfacedIndex(*static_cast<TInterfacedWorkExtent const *>(this), m_v3uiGridBlockIdx),
-                    TInterfacedAtomic()
+                    InterfacedWorkExtentOpenMp(),
+                    InterfacedIndexOpenMp(*static_cast<InterfacedWorkExtentOpenMp const *>(this), m_v3uiGridBlockIdx),
+                    InterfacedAtomicOpenMp()
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 // Do not copy most members because they are initialized by the executor for each accelerated execution.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA AccOpenMp(AccOpenMp const &) :
-                    TInterfacedWorkExtent(),
-                    TInterfacedIndex(*static_cast<TInterfacedWorkExtent const *>(this), m_v3uiGridBlockIdx),
-                    TInterfacedAtomic(),
+                    InterfacedWorkExtentOpenMp(),
+                    InterfacedIndexOpenMp(*static_cast<InterfacedWorkExtentOpenMp const *>(this), m_v3uiGridBlockIdx),
+                    InterfacedAtomicOpenMp(),
                     m_v3uiGridBlockIdx(),
                     m_vvuiSharedMem(),
                     m_vuiExternalSharedMem()
@@ -122,8 +122,8 @@ namespace alpaka
                 template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
                 ALPAKA_FCT_ACC_NO_CUDA typename alpaka::detail::DimToRetType<TDimensionality>::type getIdx() const
                 {
-                    return this->TInterfacedIndex::getIdx<TOrigin, TUnit, TDimensionality>(
-                        *static_cast<TInterfacedWorkExtent const *>(this));
+                    return this->InterfacedIndexOpenMp::getIdx<TOrigin, TUnit, TDimensionality>(
+                        *static_cast<InterfacedWorkExtentOpenMp const *>(this));
                 }
 
                 //-----------------------------------------------------------------------------
@@ -193,7 +193,7 @@ namespace alpaka
                 static_assert(std::is_base_of<IAcc<AccOpenMp>, TAcceleratedKernel>::value, "The TAcceleratedKernel for the openmp::detail::KernelExecutor has to inherit from IAcc<AccOpenMp>!");
 
             public:
-                using TAcc = AccOpenMp;
+                using Acc = AccOpenMp;
 
             public:
                 //-----------------------------------------------------------------------------
@@ -206,7 +206,7 @@ namespace alpaka
 #ifdef ALPAKA_DEBUG
                     std::cout << "[+] AccOpenMp::KernelExecutor()" << std::endl;
 #endif
-                    (*const_cast<TInterfacedWorkExtent*>(static_cast<TInterfacedWorkExtent const *>(this))) = workExtent;
+                    (*static_cast<InterfacedWorkExtentOpenMp *>(this)) = workExtent;
 
                     /*auto const uiNumKernelsPerBlock(workExtent.template getExtent<Block, Kernels, Linear>());
                     auto const uiMaxKernelsPerBlock(AccOpenMp::getExtentBlockKernelsLinearMax());
@@ -324,15 +324,15 @@ namespace alpaka
         class KernelExecCreator<AccOpenMp, TKernel, TKernelConstrArgs...>
         {
         public:
-            using TAcceleratedKernel = typename boost::mpl::apply<TKernel, AccOpenMp>::type;
-            using TKernelExecutorExtent = KernelExecutorExtent<openmp::detail::KernelExecutor<TAcceleratedKernel>, TKernelConstrArgs...>;
+            using AcceleratedKernel = typename boost::mpl::apply<TKernel, AccOpenMp>::type;
+            using AcceleratedKernelExecutorExtent = KernelExecutorExtent<openmp::detail::KernelExecutor<AcceleratedKernel>, TKernelConstrArgs...>;
 
             //-----------------------------------------------------------------------------
             //! Creates an kernel executor for the serial accelerator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST TKernelExecutorExtent operator()(TKernelConstrArgs && ... args) const
+            ALPAKA_FCT_HOST AcceleratedKernelExecutorExtent operator()(TKernelConstrArgs && ... args) const
             {
-                return TKernelExecutorExtent(std::forward<TKernelConstrArgs>(args)...);
+                return AcceleratedKernelExecutorExtent(std::forward<TKernelConstrArgs>(args)...);
             }
         };
     }

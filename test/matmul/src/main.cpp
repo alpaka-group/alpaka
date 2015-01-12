@@ -158,7 +158,7 @@ void profileAcceleratedKernel(TExec const & exec, TArgs && ... args)
     exec(std::forward<TArgs>(args)...);
 
     // Enqueue an event to wait for. This allows synchronization after the (possibly) asynchronous kernel execution.
-    alpaka::event::Event<typename TExec::TAcc> ev;
+    alpaka::event::Event<typename TExec::Acc> ev;
     alpaka::event::enqueue(ev);
     alpaka::event::wait(ev);
 
@@ -180,8 +180,8 @@ struct ProfileAcceleratedMatMulKernel
         std::cout << std::endl;
         std::cout << "################################################################################" << std::endl;
 
-        using TKernel = MatMulKernel<>;
-        using TAccMemorySpace = typename TAcc::MemorySpace;
+        using Kernel = MatMulKernel<>;
+        using AccMemorySpace = typename TAcc::MemorySpace;
 
         // Let alpaka calculate a good block and grid sizes given our full problem extent.
         alpaka::WorkExtent const workExtent(alpaka::getValidWorkExtent<TAcc>(
@@ -192,7 +192,7 @@ struct ProfileAcceleratedMatMulKernel
             << "profileAcceleratedMatMulKernel("
             << " uiMatrixSize:" << uiMatrixSize
             << ", accelerator: " << typeid(TAcc).name()
-            << ", kernel: " << typeid(TKernel).name()
+            << ", kernel: " << typeid(Kernel).name()
             << ", workExtent: " << workExtent
             << ")" << std::endl;
 
@@ -204,23 +204,23 @@ struct ProfileAcceleratedMatMulKernel
         // Allocate accelerator buffers and copy.
         std::size_t const & uiSizeBytes(uiMatrixSize*uiMatrixSize * sizeof(std::uint32_t));
 
-        auto pAAcc(alpaka::memory::alloc<TAccMemorySpace, std::uint32_t>(uiSizeBytes));
-        auto pBAcc(alpaka::memory::alloc<TAccMemorySpace, std::uint32_t>(uiSizeBytes));
-        auto pCAcc(alpaka::memory::alloc<TAccMemorySpace, std::uint32_t>(uiSizeBytes));
+        auto pAAcc(alpaka::memory::alloc<AccMemorySpace, std::uint32_t>(uiSizeBytes));
+        auto pBAcc(alpaka::memory::alloc<AccMemorySpace, std::uint32_t>(uiSizeBytes));
+        auto pCAcc(alpaka::memory::alloc<AccMemorySpace, std::uint32_t>(uiSizeBytes));
 
-        alpaka::memory::copy<TAccMemorySpace, alpaka::MemorySpaceHost>(pAAcc.get(), vuiA.data(), uiSizeBytes);
-        alpaka::memory::copy<TAccMemorySpace, alpaka::MemorySpaceHost>(pBAcc.get(), vuiB.data(), uiSizeBytes);
-        alpaka::memory::copy<TAccMemorySpace, alpaka::MemorySpaceHost>(pCAcc.get(), vuiC.data(), uiSizeBytes);
+        alpaka::memory::copy<AccMemorySpace, alpaka::MemorySpaceHost>(pAAcc.get(), vuiA.data(), uiSizeBytes);
+        alpaka::memory::copy<AccMemorySpace, alpaka::MemorySpaceHost>(pBAcc.get(), vuiB.data(), uiSizeBytes);
+        alpaka::memory::copy<AccMemorySpace, alpaka::MemorySpaceHost>(pCAcc.get(), vuiC.data(), uiSizeBytes);
 
         // Build the kernel executor.
-        auto exec(alpaka::createKernelExecutor<TAcc, TKernel>());
+        auto exec(alpaka::createKernelExecutor<TAcc, Kernel>());
         // Get a new stream.
         alpaka::stream::Stream<TAcc> stream;
         // Profile the kernel execution.
         profileAcceleratedKernel(exec(workExtent, stream), uiMatrixSize, pAAcc.get(), pBAcc.get(), pCAcc.get());
 
         // Copy back the result.
-        alpaka::memory::copy<alpaka::MemorySpaceHost, TAccMemorySpace>(vuiC.data(), pCAcc.get(), uiSizeBytes);
+        alpaka::memory::copy<alpaka::MemorySpaceHost, AccMemorySpace>(vuiC.data(), pCAcc.get(), uiSizeBytes);
 
         // Assert that the results are correct. 
         // When multiplying square matrices filled with ones, the result of each cell is the size of the matrix. 

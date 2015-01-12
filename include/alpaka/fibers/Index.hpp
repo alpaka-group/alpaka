@@ -33,7 +33,7 @@ namespace alpaka
     {
         namespace detail
         {
-            using TFiberIdToIndex = std::map<boost::fibers::fiber::id, vec<3u>>;
+            using FiberIdToIndexMap = std::map<boost::fibers::fiber::id, vec<3u>>;
             //#############################################################################
             //! This fibers accelerator index provider.
             //#############################################################################
@@ -44,7 +44,7 @@ namespace alpaka
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA IndexFibers(
-                    TFiberIdToIndex const & mFibersToIndices,
+                    FiberIdToIndexMap const & mFibersToIndices,
                     vec<3u> const & v3uiGridBlockIdx) :
                     m_mFibersToIndices(mFibersToIndices),
                     m_v3uiGridBlockIdx(v3uiGridBlockIdx)
@@ -86,10 +86,10 @@ namespace alpaka
                 }
 
             private:
-                TFiberIdToIndex const & m_mFibersToIndices;     //!< The mapping of fibers id's to fibers indices.
+                FiberIdToIndexMap const & m_mFibersToIndices;     //!< The mapping of fibers id's to fibers indices.
                 vec<3u> const & m_v3uiGridBlockIdx;             //!< The index of the currently executed block.
             };
-            using TInterfacedIndex = alpaka::detail::IIndex<IndexFibers>;
+            using InterfacedIndexFibers = alpaka::detail::IIndex<IndexFibers>;
         }
     }
 }

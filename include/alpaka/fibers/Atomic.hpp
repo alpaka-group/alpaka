@@ -56,7 +56,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA virtual ~AtomicFibers() noexcept = default;
             };
-            using TInterfacedAtomic = alpaka::detail::IAtomic<AtomicFibers>;
+            using InterfacedAtomicFibers = alpaka::detail::IAtomic<AtomicFibers>;
         }
     }
 

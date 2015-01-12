@@ -77,7 +77,7 @@ namespace alpaka
             private:
                 vec<3u> const & m_v3uiGridBlockIdx;
             };
-            using TInterfacedIndex = alpaka::detail::IIndex<IndexSerial>;
+            using InterfacedIndexSerial = alpaka::detail::IIndex<IndexSerial>;
         }
     }
 }

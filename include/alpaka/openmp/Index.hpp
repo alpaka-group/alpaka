@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/openmp/WorkExtent.hpp> // TInterfacedWorkExtent
+#include <alpaka/openmp/WorkExtent.hpp> // InterfacedWorkExtentOpenMp
 
 #include <alpaka/openmp/Common.hpp>
 
@@ -45,7 +45,7 @@ namespace alpaka
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA IndexOpenMp(
-                    TInterfacedWorkExtent const & workExtent,
+                    InterfacedWorkExtentOpenMp const & workExtent,
                     vec<3u> const & v3uiGridBlockIdx) :
                     m_WorkExtent(workExtent),
                     m_v3uiGridBlockIdx(v3uiGridBlockIdx)
@@ -93,10 +93,10 @@ namespace alpaka
                 }
 
             private:
-                TInterfacedWorkExtent const & m_WorkExtent;        //!< The mapping of thread id's to thread indices.
+                InterfacedWorkExtentOpenMp const & m_WorkExtent;        //!< The mapping of thread id's to thread indices.
                 vec<3u> const & m_v3uiGridBlockIdx;        //!< The index of the currently executed block.
             };
-            using TInterfacedIndex = alpaka::detail::IIndex<IndexOpenMp>;
+            using InterfacedIndexOpenMp = alpaka::detail::IIndex<IndexOpenMp>;
         }
     }
 }

@@ -87,7 +87,7 @@ namespace alpaka
                 ALPAKA_FCT_ACC_NO_CUDA virtual ~AtomicOpenMp() noexcept = default;
 #endif
             };
-            using TInterfacedAtomic = alpaka::detail::IAtomic<AtomicOpenMp>;
+            using InterfacedAtomicOpenMp = alpaka::detail::IAtomic<AtomicOpenMp>;
         }
     }
 

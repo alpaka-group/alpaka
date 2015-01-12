@@ -71,7 +71,7 @@ namespace alpaka
                     return {blockIdx.x, blockIdx.y, blockIdx.z};
                 }
             };
-            using TInterfacedIndex = alpaka::detail::IIndex<IndexCuda>;
+            using InterfacedIndexCuda = alpaka::detail::IIndex<IndexCuda>;
         }
     }
 }

@@ -172,13 +172,13 @@ struct profileAcceleratedExampleKernel
 		std::cout << std::endl;
 		std::cout << "################################################################################" << std::endl;
 		
-		using TKernel = ExampleAcceleratedKernel<TuiNumUselessWork>;
-		using TAccMemorySpace = typename TAcc::MemorySpace;
+		using Kernel = ExampleAcceleratedKernel<TuiNumUselessWork>;
+		using AccMemorySpace = typename TAcc::MemorySpace;
 
 		std::cout
 			<< "AcceleratedExampleKernelProfiler("
 			<< " accelerator: " << typeid(TAcc).name()
-			<< ", kernel: " << typeid(TKernel).name()
+			<< ", kernel: " << typeid(Kernel).name()
 			<< ", workExtent: " << workExtent
 			<< ")" << std::endl;
 
@@ -190,20 +190,20 @@ struct profileAcceleratedExampleKernel
 
 		// Allocate accelerator buffers and copy.
 		std::size_t const uiSizeBytes(uiGridBlocksCount * sizeof(std::uint32_t));
-		auto pBlockRetValsAcc(alpaka::memory::alloc<TAccMemorySpace, std::uint32_t>(uiSizeBytes));
-		alpaka::memory::copy<TAccMemorySpace, alpaka::MemorySpaceHost>(pBlockRetValsAcc.get(), vuiBlockRetVals.data(), uiSizeBytes);
+		auto pBlockRetValsAcc(alpaka::memory::alloc<AccMemorySpace, std::uint32_t>(uiSizeBytes));
+		alpaka::memory::copy<AccMemorySpace, alpaka::MemorySpaceHost>(pBlockRetValsAcc.get(), vuiBlockRetVals.data(), uiSizeBytes);
 
 		std::uint32_t const m_uiMult(42);
 
         // Build the kernel executor.
-		auto exec(alpaka::createKernelExecutor<TAcc, TKernel>(m_uiMult));
+		auto exec(alpaka::createKernelExecutor<TAcc, Kernel>(m_uiMult));
         // Get a new stream.
         alpaka::stream::Stream<TAcc> stream;
         // Profile the kernel execution.
 		profileAcceleratedKernel(exec(workExtent, stream), pBlockRetValsAcc.get(), uiMult2);
 
 		// Copy back the result.
-		alpaka::memory::copy<alpaka::MemorySpaceHost, TAccMemorySpace>(vuiBlockRetVals.data(), pBlockRetValsAcc.get(), uiSizeBytes);
+		alpaka::memory::copy<alpaka::MemorySpaceHost, AccMemorySpace>(vuiBlockRetVals.data(), pBlockRetValsAcc.get(), uiSizeBytes);
 
 		// Assert that the results are correct.
 		std::uint32_t const uiCorrectResult(static_cast<std::uint32_t>(uiBlockKernelsCount*uiBlockKernelsCount) * m_uiMult * uiMult2);

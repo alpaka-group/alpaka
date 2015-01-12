@@ -65,7 +65,7 @@ namespace alpaka
             private:
                 std::mutex mutable m_mtxAtomic; //!< The mutex protecting access for a atomic operation.
             };
-            using TInterfacedAtomic = alpaka::detail::IAtomic<AtomicThreads>;
+            using InterfacedAtomicThreads = alpaka::detail::IAtomic<AtomicThreads>;
         }
     }
 

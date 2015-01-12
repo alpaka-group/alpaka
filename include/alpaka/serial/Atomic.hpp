@@ -56,7 +56,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA virtual ~AtomicSerial() noexcept = default;
             };
-            using TInterfacedAtomic = alpaka::detail::IAtomic<AtomicSerial>;
+            using InterfacedAtomicSerial = alpaka::detail::IAtomic<AtomicSerial>;
         }
     }
 

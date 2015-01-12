@@ -71,7 +71,7 @@ namespace alpaka
                     return {blockDim.x, blockDim.y, blockDim.z};
                 }
             };
-            using TInterfacedWorkExtent = alpaka::IWorkExtent<WorkExtentCuda>;
+            using InterfacedWorkExtentCuda = alpaka::IWorkExtent<WorkExtentCuda>;
         }
     }
 }

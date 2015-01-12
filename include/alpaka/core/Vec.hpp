@@ -43,7 +43,7 @@ namespace alpaka
         static_assert(TuiDim>0, "Size of the vector is required to be greater then zero!");
 
         static const std::size_t s_uiDim = TuiDim;
-        using ValueType = TValue;
+        using Value = TValue;
 
     public:
         //-----------------------------------------------------------------------------

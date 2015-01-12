@@ -23,9 +23,9 @@
 
 // Base classes.
 #include <alpaka/cuda/AccCudaFwd.hpp>
-#include <alpaka/cuda/WorkExtent.hpp>               // TInterfacedWorkExtent
-#include <alpaka/cuda/Index.hpp>                    // TInterfacedIndex
-#include <alpaka/cuda/Atomic.hpp>                   // TInterfacedAtomic
+#include <alpaka/cuda/WorkExtent.hpp>               // InterfacedWorkExtentCuda
+#include <alpaka/cuda/Index.hpp>                    // InterfacedIndexCuda
+#include <alpaka/cuda/Atomic.hpp>                   // InterfacedAtomicCuda
 
 // User functionality.
 #include <alpaka/cuda/Memory.hpp>                   // MemCopy
@@ -84,9 +84,9 @@ namespace alpaka
             //! This accelerator allows parallel kernel execution on devices supporting CUDA.
             //#############################################################################
             class AccCuda :
-                protected TInterfacedWorkExtent,
-                private TInterfacedIndex,
-                protected TInterfacedAtomic
+                protected InterfacedWorkExtentCuda,
+                private InterfacedIndexCuda,
+                protected InterfacedAtomicCuda
             {
             public:
                 using MemorySpace = MemorySpaceCuda;
@@ -99,9 +99,9 @@ namespace alpaka
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_CUDA_ONLY AccCuda() :
-                    TInterfacedWorkExtent(),
-                    TInterfacedIndex(),
-                    TInterfacedAtomic()
+                    InterfacedWorkExtentCuda(),
+                    InterfacedIndexCuda(),
+                    InterfacedAtomicCuda()
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
@@ -127,8 +127,8 @@ namespace alpaka
                 template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
                 ALPAKA_FCT_ACC_CUDA_ONLY typename alpaka::detail::DimToRetType<TDimensionality>::type getIdx() const
                 {
-                    return this->TInterfacedIndex::getIdx<TOrigin, TUnit, TDimensionality>(
-                        *static_cast<TInterfacedWorkExtent const *>(this));
+                    return this->InterfacedIndexCuda::getIdx<TOrigin, TUnit, TDimensionality>(
+                        *static_cast<InterfacedWorkExtentCuda const *>(this));
                 }
 
                 //-----------------------------------------------------------------------------
@@ -175,7 +175,7 @@ namespace alpaka
                 static_assert(std::is_base_of<IAcc<AccCuda>, TAcceleratedKernel>::value, "The TAcceleratedKernel for the cuda::detail::KernelExecutor has to inherit from IAcc<AccCuda>!");
 
             public:
-                using TAcc = AccCuda;
+                using Acc = AccCuda;
 
             public:
                 //-----------------------------------------------------------------------------
@@ -280,7 +280,7 @@ namespace alpaka
     class IAcc<AccCuda> :
         protected AccCuda
     {
-        using TAcc = AccCuda;
+        using Acc = AccCuda;
     public:
         //-----------------------------------------------------------------------------
         //! \return The requested extent.
@@ -350,15 +350,15 @@ namespace alpaka
         class KernelExecCreator<AccCuda, TKernel, TKernelConstrArgs...>
         {
         public:
-            using TAcceleratedKernel = typename boost::mpl::apply<TKernel, AccCuda>::type;
-            using TKernelExecutorExtent = KernelExecutorExtent<cuda::detail::KernelExecutor<TAcceleratedKernel>, TKernelConstrArgs...>;
+            using AcceleratedKernel = typename boost::mpl::apply<TKernel, AccCuda>::type;
+            using AcceleratedKernelExecutorExtent = KernelExecutorExtent<cuda::detail::KernelExecutor<AcceleratedKernel>, TKernelConstrArgs...>;
 
             //-----------------------------------------------------------------------------
             //! Creates an kernel executor for the serial accelerator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST TKernelExecutorExtent operator()(TKernelConstrArgs && ... args) const
+            ALPAKA_FCT_HOST AcceleratedKernelExecutorExtent operator()(TKernelConstrArgs && ... args) const
             {
-                return TKernelExecutorExtent(std::forward<TKernelConstrArgs>(args)...);
+                return AcceleratedKernelExecutorExtent(std::forward<TKernelConstrArgs>(args)...);
             }
         };
     }

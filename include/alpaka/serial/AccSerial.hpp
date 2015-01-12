@@ -23,9 +23,9 @@
 
 // Base classes.
 #include <alpaka/serial/AccSerialFwd.hpp>
-#include <alpaka/serial/WorkExtent.hpp>             // TInterfacedWorkExtent
-#include <alpaka/serial/Index.hpp>                  // TInterfacedIndex
-#include <alpaka/serial/Atomic.hpp>                 // TInterfacedAtomic
+#include <alpaka/serial/WorkExtent.hpp>             // InterfacedWorkExtentSerial
+#include <alpaka/serial/Index.hpp>                  // InterfacedIndexSerial
+#include <alpaka/serial/Atomic.hpp>                 // InterfacedAtomicSerial
 
 // User functionality.
 #include <alpaka/host/Memory.hpp>                   // MemCopy
@@ -69,9 +69,9 @@ namespace alpaka
             //! The block size is restricted to 1x1x1 so there is no parallelism at all.
             //#############################################################################
             class AccSerial :
-                protected TInterfacedWorkExtent,
-                protected TInterfacedIndex,
-                protected TInterfacedAtomic
+                protected InterfacedWorkExtentSerial,
+                protected InterfacedIndexSerial,
+                protected InterfacedAtomicSerial
             {
             public:
                 using MemorySpace = MemorySpaceHost;
@@ -84,18 +84,18 @@ namespace alpaka
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA AccSerial() :
-                    TInterfacedWorkExtent(),
-                    TInterfacedIndex(m_v3uiGridBlockIdx),
-                    TInterfacedAtomic()
+                    InterfacedWorkExtentSerial(),
+                    InterfacedIndexSerial(m_v3uiGridBlockIdx),
+                    InterfacedAtomicSerial()
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 // Do not copy most members because they are initialized by the executor for each accelerated execution.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA AccSerial(AccSerial const &) :
-                    TInterfacedWorkExtent(),
-                    TInterfacedIndex(m_v3uiGridBlockIdx),
-                    TInterfacedAtomic(),
+                    InterfacedWorkExtentSerial(),
+                    InterfacedIndexSerial(m_v3uiGridBlockIdx),
+                    InterfacedAtomicSerial(),
                     m_v3uiGridBlockIdx(),
                     m_vvuiSharedMem(),
                     m_vuiExternalSharedMem()
@@ -120,8 +120,8 @@ namespace alpaka
                 template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
                 ALPAKA_FCT_ACC_NO_CUDA typename alpaka::detail::DimToRetType<TDimensionality>::type getIdx() const
                 {
-                    return this->TInterfacedIndex::getIdx<TOrigin, TUnit, TDimensionality>(
-                        *static_cast<TInterfacedWorkExtent const *>(this));
+                    return this->InterfacedIndexSerial::getIdx<TOrigin, TUnit, TDimensionality>(
+                        *static_cast<InterfacedWorkExtentSerial const *>(this));
                 }
 
                 //-----------------------------------------------------------------------------
@@ -182,7 +182,7 @@ namespace alpaka
                 static_assert(std::is_base_of<IAcc<AccSerial>, TAcceleratedKernel>::value, "The TAcceleratedKernel for the serial::detail::KernelExecutor has to inherit from IAcc<AccSerial>!");
 
             public:
-                using TAcc = AccSerial;
+                using Acc = AccSerial;
 
             public:
                 //-----------------------------------------------------------------------------
@@ -195,7 +195,7 @@ namespace alpaka
 #ifdef ALPAKA_DEBUG
                     std::cout << "[+] AccSerial::KernelExecutor()" << std::endl;
 #endif
-                    (*const_cast<TInterfacedWorkExtent*>(static_cast<TInterfacedWorkExtent const *>(this))) = workExtent;
+                    (*static_cast<InterfacedWorkExtentSerial *>(this)) = workExtent;
 
                     /*auto const uiNumKernelsPerBlock(workExtent.template getExtent<Block, Kernels, Linear>());
                     auto const uiMaxKernelsPerBlock(AccSerial::getExtentBlockKernelsLinearMax());
@@ -282,15 +282,15 @@ namespace alpaka
         class KernelExecCreator<AccSerial, TKernel, TKernelConstrArgs...>
         {
         public:
-            using TAcceleratedKernel = typename boost::mpl::apply<TKernel, AccSerial>::type;
-            using TKernelExecutorExtent = KernelExecutorExtent<serial::detail::KernelExecutor<TAcceleratedKernel>, TKernelConstrArgs...>;
+            using AcceleratedKernel = typename boost::mpl::apply<TKernel, AccSerial>::type;
+            using AcceleratedKernelExecutorExtent = KernelExecutorExtent<serial::detail::KernelExecutor<AcceleratedKernel>, TKernelConstrArgs...>;
 
             //-----------------------------------------------------------------------------
             //! Creates an kernel executor for the serial accelerator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST TKernelExecutorExtent operator()(TKernelConstrArgs && ... args) const
+            ALPAKA_FCT_HOST AcceleratedKernelExecutorExtent operator()(TKernelConstrArgs && ... args) const
             {
-                return TKernelExecutorExtent(std::forward<TKernelConstrArgs>(args)...);
+                return AcceleratedKernelExecutorExtent(std::forward<TKernelConstrArgs>(args)...);
             }
         };
     }

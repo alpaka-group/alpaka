@@ -100,7 +100,7 @@ namespace alpaka
             struct StreamWaitEvent<
                 TStream,
                 TEvent,
-                typename std::enable_if<std::is_base_of<host::detail::StreamHost, TStream>::value && std::is_same<typename TStream::TAcc, typename TEvent::TAcc>::value, void>::type>
+                typename std::enable_if<std::is_base_of<host::detail::StreamHost, TStream>::value && std::is_same<typename TStream::Acc, typename TEvent::Acc>::value, void>::type>
             {
                 ALPAKA_FCT_HOST StreamWaitEvent(host::detail::StreamHost const &, TEvent const &)
                 {

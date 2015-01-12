@@ -26,9 +26,9 @@
 
 // Base classes.
 #include <alpaka/fibers/AccFibersFwd.hpp>
-#include <alpaka/fibers/WorkExtent.hpp>             // TInterfacedWorkExtent
-#include <alpaka/fibers/Index.hpp>                  // TInterfacedIndex
-#include <alpaka/fibers/Atomic.hpp>                 // TInterfacedAtomic
+#include <alpaka/fibers/WorkExtent.hpp>             // InterfacedWorkExtentFibers
+#include <alpaka/fibers/Index.hpp>                  // InterfacedIndexFibers
+#include <alpaka/fibers/Atomic.hpp>                 // InterfacedAtomicFibers
 #include <alpaka/fibers/Barrier.hpp>                // BarrierFibers
 
 // User functionality.
@@ -76,9 +76,9 @@ namespace alpaka
             //! Furthermore there is no false sharing between neighboring kernels as it is the case in real multi-threading. 
             //#############################################################################
             class AccFibers :
-                protected TInterfacedWorkExtent,
-                protected TInterfacedIndex,
-                protected TInterfacedAtomic
+                protected InterfacedWorkExtentFibers,
+                protected InterfacedIndexFibers,
+                protected InterfacedAtomicFibers
             {
             public:
                 using MemorySpace = MemorySpaceHost;
@@ -91,18 +91,18 @@ namespace alpaka
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA AccFibers() :
-                    TInterfacedWorkExtent(),
-                    TInterfacedIndex(m_mFibersToIndices, m_v3uiGridBlockIdx),
-                    TInterfacedAtomic()
+                    InterfacedWorkExtentFibers(),
+                    InterfacedIndexFibers(m_mFibersToIndices, m_v3uiGridBlockIdx),
+                    InterfacedAtomicFibers()
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 // Do not copy most members because they are initialized by the executor for each accelerated execution.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA AccFibers(AccFibers const & ) :
-                    TInterfacedWorkExtent(),
-                    TInterfacedIndex(m_mFibersToIndices, m_v3uiGridBlockIdx),
-                    TInterfacedAtomic(),
+                    InterfacedWorkExtentFibers(),
+                    InterfacedIndexFibers(m_mFibersToIndices, m_v3uiGridBlockIdx),
+                    InterfacedAtomicFibers(),
                     m_mFibersToIndices(),
                     m_v3uiGridBlockIdx(),
                     m_uiNumKernelsPerBlock(),
@@ -132,8 +132,8 @@ namespace alpaka
                 template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
                 ALPAKA_FCT_ACC_NO_CUDA typename alpaka::detail::DimToRetType<TDimensionality>::type getIdx() const
                 {
-                    return this->TInterfacedIndex::getIdx<TOrigin, TUnit, TDimensionality>(
-                        *static_cast<TInterfacedWorkExtent const *>(this));
+                    return this->InterfacedIndexFibers::getIdx<TOrigin, TUnit, TDimensionality>(
+                        *static_cast<InterfacedWorkExtentFibers const *>(this));
                 }
 
                 //-----------------------------------------------------------------------------
@@ -212,7 +212,7 @@ namespace alpaka
             private:
 #endif
                 // getXxxIdx
-                TFiberIdToIndex mutable m_mFibersToIndices;                 //!< The mapping of fibers id's to fibers indices.
+                FiberIdToIndexMap mutable m_mFibersToIndices;                 //!< The mapping of fibers id's to fibers indices.
                 vec<3u> mutable m_v3uiGridBlockIdx;                         //!< The index of the currently executed block.
 
                 // syncBlockKernels
@@ -270,7 +270,7 @@ namespace alpaka
                 static_assert(std::is_base_of<IAcc<AccFibers>, TAcceleratedKernel>::value, "The TAcceleratedKernel for the serial::detail::KernelExecutor has to inherit from IAcc<AccFibers>!");
 
             public:
-                using TAcc = AccFibers;
+                using Acc = AccFibers;
 
             public:
                 //-----------------------------------------------------------------------------
@@ -288,7 +288,7 @@ namespace alpaka
 #ifdef ALPAKA_DEBUG
                     std::cout << "[+] AccFibers::KernelExecutor()" << std::endl;
 #endif
-                    (*const_cast<TInterfacedWorkExtent*>(static_cast<TInterfacedWorkExtent const *>(this))) = workExtent;
+                    (*static_cast<InterfacedWorkExtentFibers *>(this)) = workExtent;
 
                     auto const uiNumKernelsPerBlock(workExtent.template getExtent<Block, Kernels, Linear>());
                     /*auto const uiMaxKernelsPerBlock(AccFibers::getExtentBlockKernelsLinearMax());
@@ -341,7 +341,7 @@ namespace alpaka
                     auto const uiNumKernelsInBlock(this->AccFibers::getExtent<Block, Kernels, Linear>());
                     // Yielding is not faster for fibers. Therefore we use condition variables. 
                     // It is better to wake them up when the conditions are fulfilled because this does not cost as much as for real threads.
-                    using TPool = alpaka::detail::ConcurrentExecutionPool<
+                    using FiberPool = alpaka::detail::ConcurrentExecutionPool<
                         boost::fibers::fiber,               // The concurrent execution type.
                         boost::fibers::promise,             // The promise type.
                         FiberPoolCurrentException,          // The type returning the current exception.
@@ -351,7 +351,7 @@ namespace alpaka
                         boost::fibers::condition_variable,  // The condition variable type to use. Only required if TbYield is true.
                         false                               // If the threads should yield.
                     >;
-                    TPool pool(uiNumKernelsInBlock, uiNumKernelsInBlock);
+                    FiberPool pool(uiNumKernelsInBlock, uiNumKernelsInBlock);
 #endif
                     // Execute the blocks serially.
                     for(std::uint32_t bz(0); bz<m_v3uiGridBlocksExtent[2]; ++bz)
@@ -490,15 +490,15 @@ namespace alpaka
         class KernelExecCreator<AccFibers, TKernel, TKernelConstrArgs...>
         {
         public:
-            using TAcceleratedKernel = typename boost::mpl::apply<TKernel, AccFibers>::type;
-            using TKernelExecutorExtent = KernelExecutorExtent<fibers::detail::KernelExecutor<TAcceleratedKernel>, TKernelConstrArgs...>;
+            using AcceleratedKernel = typename boost::mpl::apply<TKernel, AccFibers>::type;
+            using AcceleratedKernelExecutorExtent = KernelExecutorExtent<fibers::detail::KernelExecutor<AcceleratedKernel>, TKernelConstrArgs...>;
 
             //-----------------------------------------------------------------------------
             //! Creates an kernel executor for the serial accelerator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST TKernelExecutorExtent operator()(TKernelConstrArgs && ... args) const
+            ALPAKA_FCT_HOST AcceleratedKernelExecutorExtent operator()(TKernelConstrArgs && ... args) const
             {
-                return TKernelExecutorExtent(std::forward<TKernelConstrArgs>(args)...);
+                return AcceleratedKernelExecutorExtent(std::forward<TKernelConstrArgs>(args)...);
             }
         };
     }

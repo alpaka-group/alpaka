@@ -83,7 +83,7 @@ namespace alpaka
         class KernelExecutorExtent
         {
         public:
-            using TAcc = typename TKernelExecutor::TAcc;
+            using Acc = typename TKernelExecutor::Acc;
 
         public:
             //-----------------------------------------------------------------------------
@@ -113,15 +113,15 @@ namespace alpaka
             //! \return An KernelExecutor with the given extents.
             //-----------------------------------------------------------------------------
             template<typename TWorkExtent>
-            ALPAKA_FCT_HOST TKernelExecutor operator()(IWorkExtent<TWorkExtent> const & workExtent, stream::Stream<TAcc> const & stream) const
+            ALPAKA_FCT_HOST TKernelExecutor operator()(IWorkExtent<TWorkExtent> const & workExtent, stream::Stream<Acc> const & stream) const
             {
-                return createKernelExecutor(workExtent, stream, TKernelConstrArgsIndexSequence());
+                return createKernelExecutor(workExtent, stream, KernelConstrArgsIndexSequenceT());
             }
             //-----------------------------------------------------------------------------
             //! \return An KernelExecutor with the given extents.
             //-----------------------------------------------------------------------------
             template<typename TWorkExtent>
-            ALPAKA_FCT_HOST TKernelExecutor operator()(vec<3u> const & v3uiGridBlocksExtent, vec<3u> const & v3uiBlockKernelsExtent, stream::Stream<TAcc> const & stream) const
+            ALPAKA_FCT_HOST TKernelExecutor operator()(vec<3u> const & v3uiGridBlocksExtent, vec<3u> const & v3uiBlockKernelsExtent, stream::Stream<Acc> const & stream) const
             {
                 return this->operator()(WorkExtent(v3uiGridBlocksExtent, v3uiBlockKernelsExtent), stream);
             }
@@ -131,7 +131,7 @@ namespace alpaka
             //! \return An KernelExecutor with the given extents.
             //-----------------------------------------------------------------------------
             template<typename TWorkExtent, std::size_t ... TIndices>
-            ALPAKA_FCT_HOST TKernelExecutor createKernelExecutor(IWorkExtent<TWorkExtent> const & workExtent, stream::Stream<TAcc> const & stream, std_extension::index_sequence<TIndices...>) const
+            ALPAKA_FCT_HOST TKernelExecutor createKernelExecutor(IWorkExtent<TWorkExtent> const & workExtent, stream::Stream<Acc> const & stream, std_extension::index_sequence<TIndices...>) const
             {
                 if(workExtent.template getExtent<Grid, Blocks, Linear>() == 0)
                 {
@@ -147,7 +147,7 @@ namespace alpaka
 
         private:
             std::tuple<TKernelConstrArgs...> m_tupleKernelConstrArgs;
-            using TKernelConstrArgsIndexSequence = std_extension::make_index_sequence<sizeof...(TKernelConstrArgs)>;
+            using KernelConstrArgsIndexSequenceT = std_extension::make_index_sequence<sizeof...(TKernelConstrArgs)>;
         };
 
         //#############################################################################

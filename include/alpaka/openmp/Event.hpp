@@ -37,7 +37,7 @@ namespace alpaka
             public host::detail::EventHost
         {
         public:
-            using TAcc = AccOpenMp;
+            using Acc = AccOpenMp;
         };
     }
 }

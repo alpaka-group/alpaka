@@ -37,7 +37,7 @@ namespace alpaka
         class Stream<AccCuda>
         {
         public:
-            using TAcc = AccCuda;
+            using Acc = AccCuda;
 
         public:
             //-----------------------------------------------------------------------------

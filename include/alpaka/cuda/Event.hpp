@@ -36,7 +36,7 @@ namespace alpaka
         class Event<AccCuda>
         {
         public:
-            using TAcc = AccCuda;
+            using Acc = AccCuda;
 
         public:
             //-----------------------------------------------------------------------------

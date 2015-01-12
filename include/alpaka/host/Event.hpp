@@ -86,7 +86,7 @@ namespace alpaka
             struct StreamEnqueueEvent<
                 TEvent,
                 TStream,
-                typename std::enable_if<std::is_base_of<host::detail::EventHost, TEvent>::value && std::is_same<typename TEvent::TAcc, typename TStream::TAcc>::value, void>::type>
+                typename std::enable_if<std::is_base_of<host::detail::EventHost, TEvent>::value && std::is_same<typename TEvent::Acc, typename TStream::Acc>::value, void>::type>
             {
                 ALPAKA_FCT_HOST StreamEnqueueEvent(host::detail::EventHost const &, TStream const &)
                 {

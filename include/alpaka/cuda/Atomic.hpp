@@ -59,7 +59,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_CUDA_ONLY /*virtual*/ ~AtomicCuda() noexcept = default;
             };
-            using TInterfacedAtomic = alpaka::detail::IAtomic<AtomicCuda>;
+            using InterfacedAtomicCuda = alpaka::detail::IAtomic<AtomicCuda>;
         }
     }
 

@@ -92,7 +92,7 @@ namespace alpaka
         template<>
         struct DimToRetType<dim::Linear>
         {
-            using type = vec<3u>::ValueType;
+            using type = vec<3u>::Value;
         };
     }
 }

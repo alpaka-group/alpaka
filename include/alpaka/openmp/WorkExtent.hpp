@@ -29,7 +29,7 @@ namespace alpaka
     {
         namespace detail
         {
-            using TInterfacedWorkExtent = alpaka::IWorkExtent<alpaka::host::detail::WorkExtentHost>;
+            using InterfacedWorkExtentOpenMp = alpaka::IWorkExtent<alpaka::host::detail::WorkExtentHost>;
         }
     }
 }

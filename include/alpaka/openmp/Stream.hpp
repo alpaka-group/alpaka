@@ -37,7 +37,7 @@ namespace alpaka
             public host::detail::StreamHost
         {
         public:
-            using TAcc = AccOpenMp;
+            using Acc = AccOpenMp;
         };
     }
 }
