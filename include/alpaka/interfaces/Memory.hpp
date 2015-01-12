@@ -94,7 +94,7 @@ namespace alpaka
         //! \param pBufferSrc Pointer to source memory.
         //! \param uiSizeBytes Size in bytes to copy.
         //-----------------------------------------------------------------------------
-        template<typename TMemorySpaceDst, typename TMemorySpaceSrc, typename T = void>
+        template<typename TMemorySpaceDst, typename TMemorySpaceSrc, typename T>
         void copy(T * const pBufferDst, T * const pBufferSrc, std::size_t const & uiSizeBytes)
         {
             assert(pBufferDst);
@@ -113,7 +113,7 @@ namespace alpaka
         //! \param iValue Value to set for each byte of specified memory.
         //! \param uiSizeBytes Size in bytes to set.
         //-----------------------------------------------------------------------------
-        template<typename TMemorySpace, typename T = void>
+        template<typename TMemorySpace, typename T>
         void set(T * const pBuffer, int const iValue, std::size_t const & uiSizeBytes)
         {
             assert(pBuffer);
