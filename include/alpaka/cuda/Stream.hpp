@@ -21,10 +21,10 @@
 
 #pragma once
 
+#include <alpaka/traits/stream.hpp>
+
 #include <alpaka/cuda/Common.hpp>
 #include <alpaka/cuda/AccCudaFwd.hpp>   // AccCuda
-
-#include <alpaka/interfaces/stream.hpp>
 
 namespace alpaka
 {
@@ -85,16 +85,19 @@ namespace alpaka
             cudaStream_t m_cudaStream;
         };
 
-        namespace detail
+        namespace traits
         {
             //#############################################################################
             //! The CUDA accelerator thread stream waiter.
             //#############################################################################
             template<>
-            struct ThreadWaitStream<
-                Stream<AccCuda>>
+            struct ThreadWaitStream
+            <
+                Stream<AccCuda>
+            >
             {
-                ALPAKA_FCT_HOST ThreadWaitStream(Stream<AccCuda> const & stream)
+                static ALPAKA_FCT_HOST void threadWaitStream(
+                    Stream<AccCuda> const & stream)
                 {
                     ALPAKA_CUDA_CHECK(cudaStreamSynchronize(
                         stream.m_cudaStream));
@@ -105,11 +108,15 @@ namespace alpaka
             //! The CUDA accelerator stream event waiter.
             //#############################################################################
             template<>
-            struct StreamWaitEvent<
+            struct StreamWaitEvent
+            <
                 Stream<AccCuda>,
-                event::Event<AccCuda>>
+                event::Event<AccCuda>
+            >
             {
-                ALPAKA_FCT_HOST StreamWaitEvent(Stream<AccCuda> const & stream, event::Event<AccCuda> const & event)
+                static ALPAKA_FCT_HOST void streamWaitEvent(
+                    Stream<AccCuda> const & stream, 
+                    event::Event<AccCuda> const & event)
                 {
                     ALPAKA_CUDA_CHECK(cudaStreamWaitEvent(
                         stream.m_cudaStream,
@@ -122,19 +129,22 @@ namespace alpaka
             //! The CUDA accelerator stream tester.
             //#############################################################################
             template<>
-            struct StreamTest<
-                event::Event<AccCuda>>
+            struct StreamTest
+            <
+                event::Event<AccCuda>
+            >
             {
-                ALPAKA_FCT_HOST StreamTest(Stream<AccCuda> const & stream, bool & bTest)
+                static ALPAKA_FCT_HOST bool streamTest(
+                    Stream<AccCuda> const & stream)
                 {
                     auto const ret(cudaStreamQuery(stream.m_cudaStream));
                     if(ret == cudaSuccess)
                     {
-                        bTest = true;
+                        return true;
                     }
                     else if(ret == cudaErrorNotReady)
                     {
-                        bTest = false;
+                        return false;
                     }
                     else
                     {

@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/core/Vec.hpp>  // alpaka::vec
+#include <alpaka/core/Vec.hpp>  // alpaka::Vec
 
 #include <vector>               // std::vector
 #include <string>               // std::string
@@ -42,8 +42,8 @@ namespace alpaka
             std::string m_sName;                    //!< The name.
             std::size_t m_uiMultiProcessorCount;    //!< The number of multiprocessors.
             std::size_t m_uiBlockKernelsCountMax;   //!< The maximum number of kernels in a block.
-            vec<3u> m_v3uiBlockKernelsExtentMax;    //!< The maximum number of kernels in each dimension of a block.
-            vec<3u> m_v3uiGridBlocksExtentMax;      //!< The maximum number of blocks in each dimension of the grid.
+            Vec<3u> m_v3uiBlockKernelsExtentMax;    //!< The maximum number of kernels in each dimension of a block.
+            Vec<3u> m_v3uiGridBlocksExtentMax;      //!< The maximum number of blocks in each dimension of the grid.
             std::size_t m_uiGlobalMemorySizeBytes;  //!< Size of the global device memory in bytes.
             //std::size_t m_uiSharedMemorySizeBytes;  //!< Size of the available block shared memory in bytes. 
             //std::size_t m_uiMaxClockFrequencyHz;    //!< Maximum clock frequency of the device in Hz.

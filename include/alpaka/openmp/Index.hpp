@@ -46,7 +46,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA IndexOpenMp(
                     InterfacedWorkExtentOpenMp const & workExtent,
-                    vec<3u> const & v3uiGridBlockIdx) :
+                    Vec<3u> const & v3uiGridBlockIdx) :
                     m_WorkExtent(workExtent),
                     m_v3uiGridBlockIdx(v3uiGridBlockIdx)
                 {}
@@ -72,29 +72,29 @@ namespace alpaka
                 //
                 // \TODO: Would it be faster to precompute the 3 dimensional index and cache it inside an array?
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA vec<3u> getIdxBlockKernel() const
+                ALPAKA_FCT_ACC_NO_CUDA Vec<3u> getIdxBlockKernel() const
                 {
                     // We assume that the thread id is positive.
                     assert(::omp_get_thread_num()>=0);
                     auto const uiThreadId(static_cast<std::uint32_t>(::omp_get_thread_num()));
                     // Get the number of kernels in each dimension of the grid.
-                    auto const v3uiBlockKernelsExtent(m_WorkExtent.getExtent<Block, Kernels, D3>());
+                    auto const v3uiBlockKernelsExtent(m_WorkExtent.getExtent<Block, Kernels, dim::Dim3>());
 
                     return mapIndex<3>(
-                        vec<1u>(uiThreadId), 
-                        m_WorkExtent.getExtent<Block, Kernels, D3>().subvec<2>());
+                        Vec<1u>(uiThreadId), 
+                        m_WorkExtent.getExtent<Block, Kernels, dim::Dim3>().subvec<2>());
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The block index of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA vec<3u> getIdxGridBlock() const
+                ALPAKA_FCT_ACC_NO_CUDA Vec<3u> getIdxGridBlock() const
                 {
                     return m_v3uiGridBlockIdx;
                 }
 
             private:
                 InterfacedWorkExtentOpenMp const & m_WorkExtent;        //!< The mapping of thread id's to thread indices.
-                vec<3u> const & m_v3uiGridBlockIdx;        //!< The index of the currently executed block.
+                Vec<3u> const & m_v3uiGridBlockIdx;        //!< The index of the currently executed block.
             };
             using InterfacedIndexOpenMp = alpaka::detail::IIndex<IndexOpenMp>;
         }

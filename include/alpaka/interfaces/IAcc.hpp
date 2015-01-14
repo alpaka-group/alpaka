@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/core/Vec.hpp>          // alpaka::vec
+#include <alpaka/core/Vec.hpp>          // alpaka::Vec
 #include <alpaka/core/Positioning.hpp>  // alpaka::origin::Grid/Blocks
 
 #include <boost/mpl/placeholders.hpp>   // boost::mpl::_1
@@ -46,8 +46,8 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The requested extent.
         //-----------------------------------------------------------------------------
-        template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-        ALPAKA_FCT_ACC typename detail::DimToRetType<TDimensionality>::type getExtent() const
+        template<typename TOrigin, typename TUnit, typename TDimensionality = dim::Dim3>
+        ALPAKA_FCT_ACC typename dim::DimToVecT<TDimensionality> getExtent() const
         {
 #ifndef __CUDA_ARCH__
             return TAcc::template getExtent<TOrigin, TUnit, TDimensionality>();
@@ -60,8 +60,8 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The requested index.
         //-----------------------------------------------------------------------------
-        template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-        ALPAKA_FCT_ACC typename detail::DimToRetType<TDimensionality>::type getIdx() const
+        template<typename TOrigin, typename TUnit, typename TDimensionality = dim::Dim3>
+        ALPAKA_FCT_ACC typename dim::DimToVecT<TDimensionality> getIdx() const
         {
 #ifndef __CUDA_ARCH__
             return TAcc::template getIdx<TOrigin, TUnit, TDimensionality>();

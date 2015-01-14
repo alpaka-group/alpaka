@@ -42,7 +42,7 @@ namespace alpaka
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA explicit ThreadBarrier(std::size_t const uiNumThreadsToWaitFor = 0) :
-                    m_uiNumThreadsToWaitFor{uiNumThreadsToWaitFor}
+                    m_uiNumThreadsToWaitFor(uiNumThreadsToWaitFor)
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.

@@ -119,8 +119,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The requested index.
                 //-----------------------------------------------------------------------------
-                template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-                ALPAKA_FCT_ACC_NO_CUDA typename alpaka::detail::DimToRetType<TDimensionality>::type getIdx() const
+                template<typename TOrigin, typename TUnit, typename TDimensionality = dim::Dim3>
+                ALPAKA_FCT_ACC_NO_CUDA typename dim::DimToVecT<TDimensionality> getIdx() const
                 {
                     return this->InterfacedIndexOpenMp::getIdx<TOrigin, TUnit, TDimensionality>(
                         *static_cast<InterfacedWorkExtentOpenMp const *>(this));
@@ -173,7 +173,7 @@ namespace alpaka
             private:
 #endif
                 // getIdx
-                vec<3u> mutable m_v3uiGridBlockIdx;                         //!< The index of the currently executed block.
+                Vec<3u> mutable m_v3uiGridBlockIdx;                         //!< The index of the currently executed block.
 
                 // allocBlockSharedMem
                 std::vector<
@@ -208,15 +208,15 @@ namespace alpaka
 #endif
                     (*static_cast<InterfacedWorkExtentOpenMp *>(this)) = workExtent;
 
-                    /*auto const uiNumKernelsPerBlock(workExtent.template getExtent<Block, Kernels, Linear>());
+                    /*auto const uiNumKernelsPerBlock(workExtent.template getExtent<Block, Kernels, dim::Dim1>()[0]);
                     auto const uiMaxKernelsPerBlock(AccOpenMp::getExtentBlockKernelsLinearMax());
                     if(uiNumKernelsPerBlock > uiMaxKernelsPerBlock)
                     {
                         throw std::runtime_error(("The given block kernels count '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the OpenMp accelerator!").c_str());
                     }*/
 
-                    m_v3uiGridBlocksExtent = workExtent.template getExtent<Grid, Blocks, D3>();
-                    m_v3uiBlockKernelsExtent = workExtent.template getExtent<Block, Kernels, D3>();
+                    m_v3uiGridBlocksExtent = workExtent.template getExtent<Grid, Blocks, dim::Dim3>();
+                    m_v3uiBlockKernelsExtent = workExtent.template getExtent<Block, Kernels, dim::Dim3>();
 #ifdef ALPAKA_DEBUG
                     std::cout << "[-] AccOpenMp::KernelExecutor()" << std::endl;
 #endif
@@ -252,7 +252,7 @@ namespace alpaka
                         new uint8_t[uiBlockSharedExternMemSizeBytes]);
 
                     // The number of threads in this block.
-                    auto const uiNumKernelsInBlock(this->AccOpenMp::getExtent<Block, Kernels, Linear>());
+                    auto const uiNumKernelsInBlock(this->AccOpenMp::getExtent<Block, Kernels, dim::Dim1>()[0]);
 
                     // Execute the blocks serially.
                     for(std::uint32_t bz(0); bz<m_v3uiGridBlocksExtent[2]; ++bz)
@@ -309,8 +309,8 @@ namespace alpaka
                 }
 
             private:
-                vec<3u> m_v3uiGridBlocksExtent;
-                vec<3u> m_v3uiBlockKernelsExtent;
+                Vec<3u> m_v3uiGridBlocksExtent;
+                Vec<3u> m_v3uiBlockKernelsExtent;
             };
         }
     }

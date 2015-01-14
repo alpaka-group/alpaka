@@ -117,8 +117,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The requested index.
                 //-----------------------------------------------------------------------------
-                template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-                ALPAKA_FCT_ACC_NO_CUDA typename alpaka::detail::DimToRetType<TDimensionality>::type getIdx() const
+                template<typename TOrigin, typename TUnit, typename TDimensionality = dim::Dim3>
+                ALPAKA_FCT_ACC_NO_CUDA typename dim::DimToVecT<TDimensionality> getIdx() const
                 {
                     return this->InterfacedIndexSerial::getIdx<TOrigin, TUnit, TDimensionality>(
                         *static_cast<InterfacedWorkExtentSerial const *>(this));
@@ -162,7 +162,7 @@ namespace alpaka
             private:
 #endif
                 // getIdx
-                vec<3u> mutable m_v3uiGridBlockIdx;                         //!< The index of the currently executed block.
+                Vec<3u> mutable m_v3uiGridBlockIdx;                         //!< The index of the currently executed block.
 
                 // allocBlockSharedMem
                 std::vector<
@@ -197,15 +197,15 @@ namespace alpaka
 #endif
                     (*static_cast<InterfacedWorkExtentSerial *>(this)) = workExtent;
 
-                    /*auto const uiNumKernelsPerBlock(workExtent.template getExtent<Block, Kernels, Linear>());
+                    /*auto const uiNumKernelsPerBlock(workExtent.template getExtent<Block, Kernels, Dim1>());
                     auto const uiMaxKernelsPerBlock(AccSerial::getExtentBlockKernelsLinearMax());
                     if(uiNumKernelsPerBlock > uiMaxKernelsPerBlock)
                     {
                         throw std::runtime_error(("The given block kernels count '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the serial accelerator!").c_str());
                     }*/
 
-                    m_v3uiGridBlocksExtent = workExtent.template getExtent<Grid, Blocks, D3>();
-                    m_v3uiBlockKernelsExtent = workExtent.template getExtent<Block, Kernels, D3>();
+                    m_v3uiGridBlocksExtent = workExtent.template getExtent<Grid, Blocks, Dim3>();
+                    m_v3uiBlockKernelsExtent = workExtent.template getExtent<Block, Kernels, Dim3>();
 #ifdef ALPAKA_DEBUG
                     std::cout << "[-] AccSerial::KernelExecutor()" << std::endl;
 #endif
@@ -267,8 +267,8 @@ namespace alpaka
                 }
 
             private:
-                vec<3u> m_v3uiGridBlocksExtent;
-                vec<3u> m_v3uiBlockKernelsExtent;
+                Vec<3u> m_v3uiGridBlocksExtent;
+                Vec<3u> m_v3uiBlockKernelsExtent;
             };
         }
     }

@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/core/Vec.hpp>          // alpaka::vec
+#include <alpaka/core/Vec.hpp>          // alpaka::Vec
 
 #include <boost/core/ignore_unused.hpp> // boost::ignore_
 
@@ -46,7 +46,7 @@ namespace alpaka
         //! The default version always returns zero.
         //-----------------------------------------------------------------------------
         template<typename... TArgs>
-        ALPAKA_FCT_HOST static std::size_t getBlockSharedExternMemSizeBytes(vec<3u> const & v3uiBlockKernelsExtent, TArgs && ... )
+        ALPAKA_FCT_HOST static std::size_t getBlockSharedExternMemSizeBytes(Vec<3u> const & v3uiBlockKernelsExtent, TArgs && ... )
         {
             boost::ignore_unused(v3uiBlockKernelsExtent);
 

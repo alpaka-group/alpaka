@@ -32,7 +32,7 @@ namespace alpaka
     {
         namespace detail
         {
-            using ThreadIdToIndexMap = std::map<std::thread::id, vec<3u>>;
+            using ThreadIdToIndexMap = std::map<std::thread::id, Vec<3u>>;
             //#############################################################################
             //! This threads accelerator index provider.
             //#############################################################################
@@ -44,7 +44,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA IndexThreads(
                     ThreadIdToIndexMap const & mThreadsToIndices,
-                    vec<3u> const & v3uiGridBlockIdx) :
+                    Vec<3u> const & v3uiGridBlockIdx) :
                     m_mThreadsToIndices(mThreadsToIndices),
                     m_v3uiGridBlockIdx(v3uiGridBlockIdx)
                 {}
@@ -68,7 +68,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The index of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA vec<3u> getIdxBlockKernel() const
+                ALPAKA_FCT_ACC_NO_CUDA Vec<3u> getIdxBlockKernel() const
                 {
                     auto const idThread(std::this_thread::get_id());
                     auto const itFind(m_mThreadsToIndices.find(idThread));
@@ -79,14 +79,14 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The block index of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA vec<3u> getIdxGridBlock() const
+                ALPAKA_FCT_ACC_NO_CUDA Vec<3u> getIdxGridBlock() const
                 {
                     return m_v3uiGridBlockIdx;
                 }
 
             private:
                 ThreadIdToIndexMap const & m_mThreadsToIndices;   //!< The mapping of thread id's to thread indices.
-                vec<3u> const & m_v3uiGridBlockIdx;             //!< The index of the currently executed block.
+                Vec<3u> const & m_v3uiGridBlockIdx;             //!< The index of the currently executed block.
             };
             using InterfacedIndexThreads = alpaka::detail::IIndex<IndexThreads>;
         }

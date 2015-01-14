@@ -68,7 +68,7 @@ namespace alpaka
         template<typename TOp, typename T>
         struct AtomicOp<serial::detail::AtomicSerial, TOp, T>
         {
-            ALPAKA_FCT_ACC_NO_CUDA T operator()(serial::detail::AtomicSerial const &, T * const addr, T const & value) const
+            ALPAKA_FCT_ACC_NO_CUDA static T atomicOp(serial::detail::AtomicSerial const &, T * const addr, T const & value)
             {
                 return TOp()(addr, value);
             }

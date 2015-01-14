@@ -189,9 +189,9 @@ struct profileAcceleratedExampleKernel
 		std::vector<std::uint32_t> vuiBlockRetVals(uiGridBlocksCount, 0);
 
 		// Allocate accelerator buffers and copy.
-		std::size_t const uiSizeBytes(uiGridBlocksCount * sizeof(std::uint32_t));
-		auto pBlockRetValsAcc(alpaka::memory::alloc<AccMemorySpace, std::uint32_t>(uiSizeBytes));
-		alpaka::memory::copy<AccMemorySpace, alpaka::MemorySpaceHost>(pBlockRetValsAcc.get(), vuiBlockRetVals.data(), uiSizeBytes);
+		std::size_t const uiSizeElements(uiGridBlocksCount);
+		auto pBlockRetValsAcc(alpaka::memory::alloc<std::uint32_t, AccMemorySpace>(uiSizeElements));
+		alpaka::memory::copy(pBlockRetValsAcc, vuiBlockRetVals, uiSizeElements);
 
 		std::uint32_t const m_uiMult(42);
 
@@ -203,7 +203,7 @@ struct profileAcceleratedExampleKernel
 		profileAcceleratedKernel(exec(workExtent, stream), pBlockRetValsAcc.get(), uiMult2);
 
 		// Copy back the result.
-		alpaka::memory::copy<alpaka::MemorySpaceHost, AccMemorySpace>(vuiBlockRetVals.data(), pBlockRetValsAcc.get(), uiSizeBytes);
+		alpaka::memory::copy(vuiBlockRetVals, pBlockRetValsAcc, uiSizeElements);
 
 		// Assert that the results are correct.
 		std::uint32_t const uiCorrectResult(static_cast<std::uint32_t>(uiBlockKernelsCount*uiBlockKernelsCount) * m_uiMult * uiMult2);

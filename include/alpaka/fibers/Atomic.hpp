@@ -68,7 +68,7 @@ namespace alpaka
         template<typename TOp, typename T>
         struct AtomicOp<fibers::detail::AtomicFibers, TOp, T>
         {
-            ALPAKA_FCT_ACC_NO_CUDA T operator()(fibers::detail::AtomicFibers const &, T * const addr, T const & value) const
+            ALPAKA_FCT_ACC_NO_CUDA static T atomicOp(fibers::detail::AtomicFibers const &, T * const addr, T const & value)
             {
                 return TOp()(addr, value);
             }

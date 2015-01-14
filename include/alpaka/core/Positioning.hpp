@@ -21,8 +21,6 @@
 
 #pragma once
 
-#include <alpaka/core/Vec.hpp>  // alpaka::vec
-
 namespace alpaka
 {
     //-----------------------------------------------------------------------------
@@ -53,46 +51,7 @@ namespace alpaka
         //#############################################################################
         struct Blocks;
     }
-    //-----------------------------------------------------------------------------
-    //! Defines the dimensions available for extents sizes and indices of kernel executions.
-    //-----------------------------------------------------------------------------
-    namespace dim
-    {
-        //#############################################################################
-        //! This type is used to get the extent/index linearized.
-        //#############################################################################
-        struct Linear;
-        //#############################################################################
-        //! This type is used to get the extent/index 3-dimensional.
-        //#############################################################################
-        struct D3;
-    }
 
     using namespace origin;
     using namespace unit;
-    using namespace dim;
-
-    //-----------------------------------------------------------------------------
-    //! Defines implementation details that should not be used directly by the user.
-    //-----------------------------------------------------------------------------
-    namespace detail
-    {
-        //#############################################################################
-        //! The trait for retrieving the return type of the getExtent functions depending on the dimensionality.
-        //#############################################################################
-        template<class TDimensionality>
-        struct DimToRetType;
-
-        template<>
-        struct DimToRetType<dim::D3>
-        {
-            using type = vec<3u>;
-        };
-
-        template<>
-        struct DimToRetType<dim::Linear>
-        {
-            using type = vec<3u>::Value;
-        };
-    }
 }

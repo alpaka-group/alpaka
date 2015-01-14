@@ -93,8 +93,8 @@ namespace alpaka
                     deviceProperties.m_sName = host::getCpuName();
                     deviceProperties.m_uiMultiProcessorCount = 1;
                     deviceProperties.m_uiBlockKernelsCountMax = 1;
-                    deviceProperties.m_v3uiBlockKernelsExtentMax = vec<3u>(1u, 1u, 1u);
-                    deviceProperties.m_v3uiGridBlocksExtentMax = vec<3u>(std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max());
+                    deviceProperties.m_v3uiBlockKernelsExtentMax = Vec<3u>(1u, 1u, 1u);
+                    deviceProperties.m_v3uiGridBlocksExtentMax = Vec<3u>(std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max());
                     deviceProperties.m_uiGlobalMemorySizeBytes = host::getGlobalMemorySizeBytes();
                     //deviceProperties.m_uiMaxClockFrequencyHz = TODO;
 

@@ -21,9 +21,9 @@
 
 #pragma once
 
-#include <type_traits>                  // std::is_base
+#include <alpaka/traits/Stream.hpp>     // traits::StreamEnqueueEvent, ...
 
-#include <alpaka/interfaces/Stream.hpp> // alpaka::event::StreamEnqueueEvent, ...
+#include <type_traits>                  // std::is_base
 
 namespace alpaka
 {
@@ -75,9 +75,9 @@ namespace alpaka
         }
     }
 
-    namespace stream
+    namespace traits
     {
-        namespace detail
+        namespace stream
         {
             //#############################################################################
             //! Waits for the completion of the given stream.
@@ -87,7 +87,8 @@ namespace alpaka
                 TStream, 
                 typename std::enable_if<std::is_base_of<host::detail::StreamHost, TStream>::value, void>::type>
             {
-                ALPAKA_FCT_HOST ThreadWaitStream(host::detail::StreamHost const &)
+                static ALPAKA_FCT_HOST void threadWaitStream(
+                    host::detail::StreamHost const &)
                 {
                     // Because host calls are not asynchronous, this call never has to wait.
                 }
@@ -102,7 +103,9 @@ namespace alpaka
                 TEvent,
                 typename std::enable_if<std::is_base_of<host::detail::StreamHost, TStream>::value && std::is_same<typename TStream::Acc, typename TEvent::Acc>::value, void>::type>
             {
-                ALPAKA_FCT_HOST StreamWaitEvent(host::detail::StreamHost const &, TEvent const &)
+                static ALPAKA_FCT_HOST void streamWaitEvent(
+                    host::detail::StreamHost const &, 
+                    TEvent const &)
                 {
                     // Because host calls are not asynchronous, this call never has to let a stream wait.
                 }
@@ -116,10 +119,11 @@ namespace alpaka
                 TStream,
                 typename std::enable_if<std::is_base_of<host::detail::StreamHost, TStream>::value, void>::type>
             {
-                ALPAKA_FCT_HOST StreamTest(host::detail::StreamHost const &, bool & bTest)
+                static ALPAKA_FCT_HOST bool streamTest(
+                    host::detail::StreamHost const &)
                 {
                     // Because host calls are not asynchronous, this call always returns true.
-                    bTest = true;
+                    return true;
                 }
             };
         }

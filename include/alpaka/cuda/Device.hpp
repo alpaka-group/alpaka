@@ -97,8 +97,8 @@ namespace alpaka
                     deviceProperties.m_sName = cudaDevProp.name;
                     deviceProperties.m_uiMultiProcessorCount = static_cast<std::size_t>(cudaDevProp.multiProcessorCount);
                     deviceProperties.m_uiBlockKernelsCountMax = static_cast<std::size_t>(cudaDevProp.maxThreadsPerBlock);
-                    deviceProperties.m_v3uiBlockKernelsExtentMax = vec<3u>(static_cast<std::size_t>(cudaDevProp.maxThreadsDim[0]), static_cast<std::size_t>(cudaDevProp.maxThreadsDim[1]), static_cast<std::size_t>(cudaDevProp.maxThreadsDim[2]));
-                    deviceProperties.m_v3uiGridBlocksExtentMax = vec<3u>(static_cast<std::size_t>(cudaDevProp.maxGridSize[0]), static_cast<std::size_t>(cudaDevProp.maxGridSize[1]), static_cast<std::size_t>(cudaDevProp.maxGridSize[2]));
+                    deviceProperties.m_v3uiBlockKernelsExtentMax = Vec<3u>(static_cast<std::size_t>(cudaDevProp.maxThreadsDim[0]), static_cast<std::size_t>(cudaDevProp.maxThreadsDim[1]), static_cast<std::size_t>(cudaDevProp.maxThreadsDim[2]));
+                    deviceProperties.m_v3uiGridBlocksExtentMax = Vec<3u>(static_cast<std::size_t>(cudaDevProp.maxGridSize[0]), static_cast<std::size_t>(cudaDevProp.maxGridSize[1]), static_cast<std::size_t>(cudaDevProp.maxGridSize[2]));
                     deviceProperties.m_uiGlobalMemorySizeBytes = static_cast<std::size_t>(cudaDevProp.totalGlobalMem);
                     //deviceProperties.m_uiMaxClockFrequencyHz = cudaDevProp.clockRate * 1000;
 

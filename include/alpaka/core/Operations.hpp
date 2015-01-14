@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/core/Vec.hpp>  // alpaka::vec
+#include <alpaka/core/Vec.hpp>  // alpaka::Vec
 
 #include <algorithm>            // std::min, std::max
 
@@ -213,6 +213,4 @@ namespace alpaka
             }
         };
     }
-
-    using namespace operations;
 }

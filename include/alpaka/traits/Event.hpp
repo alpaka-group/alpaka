@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST
+#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST
 
 // forward declarations
 namespace alpaka
@@ -35,43 +35,61 @@ namespace alpaka
 
 namespace alpaka
 {
-    //-----------------------------------------------------------------------------
-    //! The event management functionality.
-    //-----------------------------------------------------------------------------
-    namespace event
+    namespace traits
     {
-        //#############################################################################
-        //! The abstract event.
-        //#############################################################################
-        template<typename TAcc>
-        class Event;
-
-        namespace traits
+        //-----------------------------------------------------------------------------
+        //! The event management traits.
+        //-----------------------------------------------------------------------------
+        namespace event
         {
             //#############################################################################
-            //! The abstract event enqueuer.
+            //! The event type trait.
+            //#############################################################################
+            //template<typename TAcc>
+            //class GetEvent;
+
+            //#############################################################################
+            //! The event enqueuer trait.
             //#############################################################################
             template<typename TEvent, typename TSfinae = void>
             struct DefaultStreamEnqueueEvent;
 
             //#############################################################################
-            //! The abstract event enqueuer.
+            //! The event enqueuer trait.
             //#############################################################################
             template<typename TEvent, typename TStream, typename TSfinae = void>
             struct StreamEnqueueEvent;
 
             //#############################################################################
-            //! The abstract thread event waiter.
+            //! The thread event waiter trait.
             //#############################################################################
             template<typename TEvent, typename TSfinae = void>
             struct ThreadWaitEvent;
 
             //#############################################################################
-            //! The abstract event tester.
+            //! The event tester trait.
             //#############################################################################
             template<typename TEvent, typename TSfinae = void>
             struct EventTest;
         }
+    }
+
+    //-----------------------------------------------------------------------------
+    //! The event management trait accessors.
+    //-----------------------------------------------------------------------------
+    namespace event
+    {
+        //#############################################################################
+        //! The event type trait alias template to remove the ::type.
+        //#############################################################################
+        //template<typename TAcc> 
+        //using GetEventT = typename traits::memory::GetEvent<TAcc>::type;
+
+        //#############################################################################
+        //! The abstract event.
+        //#############################################################################
+        template<typename TAcc> 
+        class Event;
 
         //#############################################################################
         //! Queues the given event in the stream zero.
@@ -80,9 +98,10 @@ namespace alpaka
         //! Any subsequent calls which examine the status of event will only examine the completion of this most recent call to enqueue.
         //#############################################################################
         template<typename TAcc>
-        ALPAKA_FCT_HOST void enqueue(Event<TAcc> const & event)
+        ALPAKA_FCT_HOST void enqueue(
+            Event<TAcc> const & event)
         {
-            detail::DefaultStreamEnqueueEvent<Event<TAcc>>{event};
+            traits::event::DefaultStreamEnqueueEvent<Event<TAcc>>::defaultStreamEnqueueEvent(event);
         }
 
         //#############################################################################
@@ -92,31 +111,31 @@ namespace alpaka
         //! Any subsequent calls which examine the status of event will only examine the completion of this most recent call to enqueue.
         //#############################################################################
         template<typename TAcc>
-        ALPAKA_FCT_HOST void enqueue(Event<TAcc> const & event, stream::Stream<TAcc> const & stream)
+        ALPAKA_FCT_HOST void enqueue(
+            Event<TAcc> const & event, 
+            stream::Stream<TAcc> const & stream)
         {
-            detail::StreamEnqueueEvent<Event<TAcc>, stream::Stream<TAcc>>{event, &stream};
+            traits::event::StreamEnqueueEvent<Event<TAcc>, stream::Stream<TAcc>>::streamEnqueueEvent(event, stream);
         }
 
         //#############################################################################
         //! Waits the thread for the completion of the given event.
         //#############################################################################
         template<typename TAcc>
-        ALPAKA_FCT_HOST void wait(Event<TAcc> const & event)
+        ALPAKA_FCT_HOST void wait(
+            Event<TAcc> const & event)
         {
-            detail::ThreadWaitEvent<Event<TAcc>>{event};
+            traits::event::ThreadWaitEvent<Event<TAcc>>::threadWaitEvent(event);
         }
 
         //#############################################################################
         //! Tests if the given event has already be completed.
         //#############################################################################
         template<typename TAcc>
-        ALPAKA_FCT_HOST bool test(Event<TAcc> const & event)
+        ALPAKA_FCT_HOST bool test(
+            Event<TAcc> const & event)
         {
-            bool bTest(false);
-
-            detail::EventTest<Event<TAcc>>{event, bTest};
-
-            return bTest;
+            return traits::event::EventTest<Event<TAcc>>::eventTest(event);
         }
     }
 }

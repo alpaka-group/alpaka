@@ -121,7 +121,7 @@ namespace alpaka
             //! \return An KernelExecutor with the given extents.
             //-----------------------------------------------------------------------------
             template<typename TWorkExtent>
-            ALPAKA_FCT_HOST TKernelExecutor operator()(vec<3u> const & v3uiGridBlocksExtent, vec<3u> const & v3uiBlockKernelsExtent, stream::Stream<Acc> const & stream) const
+            ALPAKA_FCT_HOST TKernelExecutor operator()(Vec<3u> const & v3uiGridBlocksExtent, Vec<3u> const & v3uiBlockKernelsExtent, stream::Stream<Acc> const & stream) const
             {
                 return this->operator()(WorkExtent(v3uiGridBlocksExtent, v3uiBlockKernelsExtent), stream);
             }
@@ -133,11 +133,11 @@ namespace alpaka
             template<typename TWorkExtent, std::size_t ... TIndices>
             ALPAKA_FCT_HOST TKernelExecutor createKernelExecutor(IWorkExtent<TWorkExtent> const & workExtent, stream::Stream<Acc> const & stream, std_extension::index_sequence<TIndices...>) const
             {
-                if(workExtent.template getExtent<Grid, Blocks, Linear>() == 0)
+                if(workExtent.template getExtent<Grid, Blocks, dim::Dim1>()[0] == 0u)
                 {
                     throw std::runtime_error("The workExtent grid blocks extent is not allowed to be zero in any dimension!");
                 }
-                if(workExtent.template getExtent<Block, Kernels, Linear>() == 0)
+                if(workExtent.template getExtent<Block, Kernels, dim::Dim1>()[0] == 0u)
                 {
                     throw std::runtime_error("The workExtent block kernels extent is not allowed to be zero in any dimension!");
                 }

@@ -124,8 +124,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The requested index.
                 //-----------------------------------------------------------------------------
-                template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-                ALPAKA_FCT_ACC_CUDA_ONLY typename alpaka::detail::DimToRetType<TDimensionality>::type getIdx() const
+                template<typename TOrigin, typename TUnit, typename TDimensionality = dim::Dim3>
+                ALPAKA_FCT_ACC_CUDA_ONLY typename dim::DimToVecT<TDimensionality> getIdx() const
                 {
                     return this->InterfacedIndexCuda::getIdx<TOrigin, TUnit, TDimensionality>(
                         *static_cast<InterfacedWorkExtentCuda const *>(this));
@@ -188,15 +188,15 @@ namespace alpaka
 #ifdef ALPAKA_DEBUG
                     std::cout << "[+] AccCuda::KernelExecutor()" << std::endl;
 #endif
-                    /*auto const uiNumKernelsPerBlock(workExtent.template getExtent<Block, Kernels, Linear>());
+                    /*auto const uiNumKernelsPerBlock(workExtent.template getExtent<Block, Kernels, Dim1>());
                     auto const uiMaxKernelsPerBlock(AccCuda::getExtentBlockKernelsLinearMax());
                     if(uiNumKernelsPerBlock > uiMaxKernelsPerBlock)
                     {
                         throw std::runtime_error(("The given block kernels count '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the CUDA accelerator!").c_str());
                     }*/
 
-                    m_v3uiGridBlocksExtent = workExtent.template getExtent<Grid, Blocks, D3>();
-                    m_v3uiBlockKernelsExtent = workExtent.template getExtent<Block, Kernels, D3>();
+                    m_v3uiGridBlocksExtent = workExtent.template getExtent<Grid, Blocks, Dim3>();
+                    m_v3uiBlockKernelsExtent = workExtent.template getExtent<Block, Kernels, Dim3>();
 
                     // TODO: Check that (sizeof(TAcceleratedKernel) * m_v3uiBlockKernelsExtent.prod()) < available memory size
 
@@ -263,8 +263,8 @@ namespace alpaka
                 }
 
             private:
-                vec<3u> m_v3uiGridBlocksExtent;
-                vec<3u> m_v3uiBlockKernelsExtent;
+                Vec<3u> m_v3uiGridBlocksExtent;
+                Vec<3u> m_v3uiBlockKernelsExtent;
 
                 stream::Stream<AccCuda> m_Stream;
             };
@@ -285,8 +285,8 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The requested extent.
         //-----------------------------------------------------------------------------
-        template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-        ALPAKA_FCT_ACC_CUDA_ONLY typename detail::DimToRetType<TDimensionality>::type getExtent() const
+        template<typename TOrigin, typename TUnit, typename TDimensionality = dim::Dim3>
+        ALPAKA_FCT_ACC_CUDA_ONLY typename dim::DimToVecT<TDimensionality> getExtent() const
         {
             return TAcc::getExtent<TOrigin, TUnit, TDimensionality>();
         }
@@ -295,8 +295,8 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The requested index.
         //-----------------------------------------------------------------------------
-        template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-        ALPAKA_FCT_ACC_CUDA_ONLY typename detail::DimToRetType<TDimensionality>::type getIdx() const
+        template<typename TOrigin, typename TUnit, typename TDimensionality = dim::Dim3>
+        ALPAKA_FCT_ACC_CUDA_ONLY typename dim::DimToVecT<TDimensionality> getIdx() const
         {
             return TAcc::getIdx<TOrigin, TUnit, TDimensionality>();
         }

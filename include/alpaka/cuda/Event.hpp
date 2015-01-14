@@ -23,7 +23,7 @@
 #include <alpaka/cuda/Common.hpp>
 #include <alpaka/cuda/AccCudaFwd.hpp>   // AccCuda
 
-#include <alpaka/interfaces/Event.hpp>
+#include <alpaka/traits/Event.hpp>
 
 namespace alpaka
 {
@@ -74,18 +74,24 @@ namespace alpaka
 
             cudaEvent_t m_cudaEvent;
         };
+    }
 
-        namespace detail
+    namespace traits
+    {
+        namespace event
         {
             //#############################################################################
-            //! The CUDA accelerator event enqueuer.
+            //! The CUDA accelerator event enqueue trait specialization.
             //#############################################################################
             template<>
-            struct DefaultStreamEnqueueEvent<
-                Event<AccCuda>,
-                stream::Stream<AccCuda>>
+            struct DefaultStreamEnqueueEvent
+            <
+                alpaka::event::Event<AccCuda>,
+                stream::Stream<AccCuda>
+            >
             {
-                ALPAKA_FCT_HOST DefaultStreamEnqueueEvent(Event<AccCuda> const & event)
+                static ALPAKA_FCT_HOST void defaultStreamEnqueueEvent(
+                    alpaka::event::Event<AccCuda> const & event)
                 {
                     ALPAKA_CUDA_CHECK(cudaEventRecord(
                         event.m_cudaEvent,
@@ -94,14 +100,18 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The CUDA accelerator event enqueuer.
+            //! The CUDA accelerator event enqueue trait specialization.
             //#############################################################################
             template<>
-            struct StreamEnqueueEvent<
-                Event<AccCuda>, 
-                stream::Stream<AccCuda>>
+            struct StreamEnqueueEvent
+            <
+                alpaka::event::Event<AccCuda>,
+                stream::Stream<AccCuda>
+            >
             {
-                ALPAKA_FCT_HOST StreamEnqueueEvent(Event<AccCuda> const & event, stream::Stream<AccCuda> const * stream)
+                static ALPAKA_FCT_HOST void streamEnqueueEvent(
+                    alpaka::event::Event<AccCuda> const & event, 
+                    stream::Stream<AccCuda> const * stream)
                 {
                     ALPAKA_CUDA_CHECK(cudaEventRecord(
                         event.m_cudaEvent,
@@ -110,35 +120,41 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The CUDA accelerator thread event waiter.
+            //! The CUDA accelerator thread event wait trait specialization.
             //#############################################################################
             template<>
-            struct ThreadWaitEvent<
-                Event<AccCuda>>
+            struct ThreadWaitEvent
+            <
+                alpaka::event::Event<AccCuda>
+            >
             {
-                ALPAKA_FCT_HOST ThreadWaitEvent(Event<AccCuda> const & event)
+                static ALPAKA_FCT_HOST void threadWaitEvent(
+                    alpaka::event::Event<AccCuda> const & event)
                 {
                     ALPAKA_CUDA_CHECK(cudaEventSynchronize(event.m_cudaEvent));
                 }
             };
 
             //#############################################################################
-            //! The CUDA accelerator event tester.
+            //! The CUDA accelerator event test trait specialization.
             //#############################################################################
             template<>
-            struct EventTest<
-                Event<AccCuda>>
+            struct EventTest
+            <
+                alpaka::event::Event<AccCuda>
+            >
             {
-                ALPAKA_FCT_HOST EventTest(Event<AccCuda> const & event, bool & bTest)
+                static ALPAKA_FCT_HOST bool eventTest(
+                    alpaka::event::Event<AccCuda> const & event)
                 {
                     auto const ret(cudaEventQuery(event.m_cudaEvent));
                     if(ret == cudaSuccess)
                     {
-                        bTest = true;
+                        return true;
                     }
                     else if(ret == cudaErrorNotReady)
                     {
-                        bTest = false;
+                        return false;
                     }
                     else
                     {

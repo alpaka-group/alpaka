@@ -37,13 +37,14 @@
     #include <alpaka/cuda/AccCuda.hpp>
 #endif
 
-#include <alpaka/interfaces/Event.hpp>
-#include <alpaka/interfaces/Stream.hpp>
+#include <alpaka/traits/Event.hpp>
+#include <alpaka/traits/Stream.hpp>
+#include <alpaka/traits/Memory.hpp>
+#include <alpaka/core/RuntimeExtents.hpp>
+#include <alpaka/core/BasicDims.hpp>
 #include <alpaka/interfaces/IAcc.hpp>
 #include <alpaka/interfaces/KernelExecCreator.hpp>
 #include <alpaka/interfaces/BlockSharedExternMemSizeBytes.hpp>
-#include <alpaka/interfaces/Memory.hpp>
-#include <alpaka/core/PitchedPtr.hpp>       // alpaka::PitchedPtr
 
 #include <alpaka/host/WorkExtent.hpp>       // alpaka::WorkExtentHost
 
@@ -149,14 +150,14 @@ namespace alpaka
             //! \return The maximum block size per dimension supported by all of the given accelerators.
             //-----------------------------------------------------------------------------
             template<typename TAcc>
-            void operator()(TAcc, alpaka::vec<3u> & v3uiBlockKernelExtent)
+            void operator()(TAcc, alpaka::Vec<3u> & v3uiBlockKernelExtent)
             {
                 using DeviceManager = alpaka::device::DeviceManager<TAcc>;
 
                 auto const deviceProperties(DeviceManager::getCurrentDevice().getProperties());
                 auto const & v3uiBlockKernelsExtentMax(deviceProperties.m_v3uiBlockKernelsExtentMax);
 
-                v3uiBlockKernelExtent = alpaka::vec<3u>(
+                v3uiBlockKernelExtent = alpaka::Vec<3u>(
                     std::min(v3uiBlockKernelExtent[0u], v3uiBlockKernelsExtentMax[0u]),
                     std::min(v3uiBlockKernelExtent[1u], v3uiBlockKernelsExtentMax[1u]),
                     std::min(v3uiBlockKernelExtent[2u], v3uiBlockKernelsExtentMax[2u])
@@ -184,9 +185,9 @@ namespace alpaka
     //-----------------------------------------------------------------------------
     //! \return The maximum block size per dimension supported by all of the enabled accelerators.
     //-----------------------------------------------------------------------------
-    alpaka::vec<3u> getMaxBlockKernelExtentEnabledAccelerators()
+    alpaka::Vec<3u> getMaxBlockKernelExtentEnabledAccelerators()
     {
-        alpaka::vec<3u> v3uiMaxBlockKernelExtent(
+        alpaka::Vec<3u> v3uiMaxBlockKernelExtent(
             std::numeric_limits<std::size_t>::max(),
             std::numeric_limits<std::size_t>::max(),
             std::numeric_limits<std::size_t>::max());
@@ -244,7 +245,7 @@ namespace alpaka
     // \TODO: Make this a template depending on Accelerator and Kernel
     //-----------------------------------------------------------------------------
     template<typename TAcc>
-    alpaka::WorkExtent getValidWorkExtent(alpaka::vec<3u> const & v3uiGridKernelsExtent, bool const & bAdaptiveBlockKernelsExtent)
+    alpaka::WorkExtent getValidWorkExtent(alpaka::Vec<3u> const & v3uiGridKernelsExtent, bool const & bAdaptiveBlockKernelsExtent)
     {
         // \TODO: Print a warning when the grid kernels extent is a prime number and the resulting block kernels extent is 1.
 
@@ -252,7 +253,7 @@ namespace alpaka
         assert(v3uiGridKernelsExtent[1u]>0);
         assert(v3uiGridKernelsExtent[2u]>0);
 
-        alpaka::vec<3u> v3uiMaxBlockKernelsExtent;
+        alpaka::Vec<3u> v3uiMaxBlockKernelsExtent;
         std::size_t uiMaxBlockKernelsCount;
 
         // Get the maximum block kernels extent depending on the the input.
@@ -272,7 +273,7 @@ namespace alpaka
         // Restrict the max block kernels extent with the grid kernels extent.
         // This removes dimensions not required.
         // This has to be done before the uiMaxBlockKernelsCount clipping to get the maximum correctly.
-        v3uiMaxBlockKernelsExtent = alpaka::vec<3u>(
+        v3uiMaxBlockKernelsExtent = alpaka::Vec<3u>(
             std::min(v3uiMaxBlockKernelsExtent[0u], v3uiGridKernelsExtent[0u]),
             std::min(v3uiMaxBlockKernelsExtent[1u], v3uiGridKernelsExtent[1u]),
             std::min(v3uiMaxBlockKernelsExtent[2u], v3uiGridKernelsExtent[2u]));
@@ -285,7 +286,7 @@ namespace alpaka
             // \TODO: Use a better algorithm for clipping.
             while(v3uiMaxBlockKernelsExtent.prod()>uiMaxBlockKernelsCount)
             {
-                v3uiMaxBlockKernelsExtent = alpaka::vec<3u>(
+                v3uiMaxBlockKernelsExtent = alpaka::Vec<3u>(
                     std::max(static_cast<std::size_t>(1u), static_cast<std::size_t>(v3uiMaxBlockKernelsExtent[0u]/2u)),
                     std::max(static_cast<std::size_t>(1u), static_cast<std::size_t>(v3uiMaxBlockKernelsExtent[1u]/2u)),
                     std::max(static_cast<std::size_t>(1u), static_cast<std::size_t>(v3uiMaxBlockKernelsExtent[2u]/2u)));
@@ -293,13 +294,13 @@ namespace alpaka
         }
 
         // Make the block kernels extent divide the grid kernels extent.
-        alpaka::vec<3u> const v3uiBlockKernelsExtent(
+        alpaka::Vec<3u> const v3uiBlockKernelsExtent(
             detail::nextLowerOrEqualFactor(v3uiMaxBlockKernelsExtent[0u], v3uiGridKernelsExtent[0u]),
             detail::nextLowerOrEqualFactor(v3uiMaxBlockKernelsExtent[1u], v3uiGridKernelsExtent[1u]),
             detail::nextLowerOrEqualFactor(v3uiMaxBlockKernelsExtent[2u], v3uiGridKernelsExtent[2u]));
 
         // Set the grid blocks extent.
-        alpaka::vec<3u> const v3uiGridBlocksExtent(
+        alpaka::Vec<3u> const v3uiGridBlocksExtent(
             v3uiGridKernelsExtent[0u]/v3uiBlockKernelsExtent[0u],
             v3uiGridKernelsExtent[1u]/v3uiBlockKernelsExtent[1u],
             v3uiGridKernelsExtent[2u]/v3uiBlockKernelsExtent[2u]);

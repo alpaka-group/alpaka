@@ -59,14 +59,14 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The grid dimensions of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY vec<3u> getExtentGridBlocks() const
+                ALPAKA_FCT_ACC_CUDA_ONLY Vec<3u> getExtentGridBlocks() const
                 {
                     return {gridDim.x, gridDim.y, gridDim.z};
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The block dimensions of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY vec<3u> getExtentBlockKernels() const
+                ALPAKA_FCT_ACC_CUDA_ONLY Vec<3u> getExtentBlockKernels() const
                 {
                     return {blockDim.x, blockDim.y, blockDim.z};
                 }

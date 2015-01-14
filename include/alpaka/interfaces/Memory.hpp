@@ -21,8 +21,10 @@
 
 #pragma once
 
-#include <cassert>  // assert
-#include <memory>   // std::shared_ptr
+#include <cassert>                      // assert
+#include <memory>                       // std::shared_ptr
+
+#include <alpaka/core/Dimension.hpp>    // Dim<N>
 
 namespace alpaka
 {
@@ -36,14 +38,8 @@ namespace alpaka
             //#############################################################################
             //! The abstract memory allocator.
             //#############################################################################
-            template<typename TMemorySpace>
+            template<typename T, typename TDim, typename TMemorySpace>
             struct MemAlloc;
-
-            //#############################################################################
-            //! The abstract memory freer.
-            //#############################################################################
-            template<typename TMemorySpace>
-            struct MemFree;
 
             //#############################################################################
             //! The abstract memory copier.
@@ -62,29 +58,110 @@ namespace alpaka
             struct MemSet;
         }
 
+        //#############################################################################
+        //! The runtime memory layout interface.
+        //!
+        //! This defines the pitches of the memory buffer.
+        //#############################################################################
+        /*template<typename TDim>
+        struct RuntimeMemLayout;
+
+        //#############################################################################
+        //! The 1D runtime memory layout.
+        //#############################################################################
+        template<>
+        struct RuntimeMemLayout<Dim1>
+        {};
+        //#############################################################################
+        //! The 2D runtime memory layout.
+        //#############################################################################
+        template<>
+        struct RuntimeMemLayout<Dim2>
+        {
+            std::size_t uiRowPitchBytes;    //!< The width in bytes of the 2D array pointed to, including any padding added to the end of each row.
+        };
+        //#############################################################################
+        //! The 3D runtime memory layout.
+        //#############################################################################
+        template<>
+        struct RuntimeMemLayout<Dim3>
+        {
+            std::size_t uiRowPitchBytes;    //!< The width in bytes of the 3D array pointed to, including any padding added to the end of each row.
+            std::size_t uiRowWidthBytes;    //!< The width of each row in bytes.
+            std::size_t uiSliceHeightRows;  //!< The height of each 2D slice in rows.
+        };
+
+
+        //#############################################################################
+        //! The memory buffer interface.
+        //!
+        //! Templating on the memory space prevents mixing pointers of different memory spaces.
+        //#############################################################################
+        template</*typename TMemLayout, *//*typename TMemExtent, typename TMemAllocator, typename TDim, typename TMemorySpace>
+        class Buffer :
+            public TMemAllocator,
+            //public TMemLayout,
+            public TMemExtent
+        {
+        public:
+            using MemorySpace = TMemorySpace;
+            using Dim = TDim;
+
+        private:
+            void * pMem;  //!< The pointer to the memory.
+        };
+
+        namespace detail
+        {
+            //#############################################################################
+            //! The abstract native pointer getter.
+            //#############################################################################
+            template<typename TMemoryObject>
+            struct GetNativePtr();
+
+            //#############################################################################
+            //! The simple pointer native pointer getter.
+            //#############################################################################
+            template<typename TMemoryObject>
+            struct GetNativePtr<T*>
+            {
+                T * operator()(TMemoryObject const & memObject)
+                {
+                    return memObject.pMem;
+                }
+            };
+        }
+
+        //-----------------------------------------------------------------------------
+        //! \return The native pointer.
+        //-----------------------------------------------------------------------------
+        template<typename TMemoryObject>
+        auto getNativePtr(TMemoryObject const & memObject)
+            -> typename std::result_of<detail::GetNativePtr()(TMemoryObject)>::type *
+        {
+            return detail::GetNativePtr()(memObject);
+        }*/
+
         //-----------------------------------------------------------------------------
         //! Allocates memory in the given memory space.
         //!
-        //! \tparam TMemorySpace The memory space to allocate in.
         //! \tparam T The type of the returned buffer.
-        //! \param uiSizeBytes Size in bytes to set.
-        //! \return Pointer to newly allocated memory.
+        //! \tparam TMemorySpace The memory space to allocate in.
+        //! \tparam TMemExtent The type holding the extents of the buffer.
+        //! \tparam TMemLayout The type holding the memory layout of the buffer (pitches).
+        //! \param memExtent The extents of the buffer.
+        //! \param memLayout The memory layout of the buffer (pitches).
+        //! \return Pointer to newly allocated buffer.
         //-----------------------------------------------------------------------------
-        template<typename TMemorySpace, typename T = void>
-        std::shared_ptr<T> alloc(size_t const uiSizeBytes)
+        template<typename T, typename TMemorySpace, typename TMemExtent/*, typename TMemLayout*/>
+        auto alloc(TMemExtent const & memExtent/*, TMemLayout const & memLayout*/)
+            -> typename std::result_of<detail::MemAlloc<T, dim::GetDimT<TMemExtent>, TMemorySpace>()(TMemExtent/*, TMemLayout*/)>::type
         {
-            assert(uiSizeBytes>0);
+            /*static_assert(
+                std::is_same<GetDimT<TMemExtent>, GetDimT<TMemLayout>>, 
+                "The memExtent and the memLayout are required to have the same dimensionality!");*/
 
-            void * pBuffer(nullptr);
-            detail::MemAlloc<TMemorySpace>(
-                &pBuffer, 
-                uiSizeBytes);
-            assert(pBuffer);
-
-            return 
-                std::shared_ptr<T>(
-                    reinterpret_cast<T *>(pBuffer), 
-                    [=](T * b){detail::MemFree<TMemorySpace>{b};});
+            return detail::MemAlloc<T, dim::GetDimT<TMemExtent>, TMemorySpace>()(memExtent/*, memLayout*/);
         }
 
         //-----------------------------------------------------------------------------

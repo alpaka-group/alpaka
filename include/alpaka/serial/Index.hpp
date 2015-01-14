@@ -39,7 +39,7 @@ namespace alpaka
                 //! Default-constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA IndexSerial(
-                    vec<3u> const & v3uiGridBlockIdx) :
+                    Vec<3u> const & v3uiGridBlockIdx) :
                     m_v3uiGridBlockIdx(v3uiGridBlockIdx)
                 {}
                 //-----------------------------------------------------------------------------
@@ -62,20 +62,20 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The index of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA vec<3u> getIdxBlockKernel() const
+                ALPAKA_FCT_ACC_NO_CUDA Vec<3u> getIdxBlockKernel() const
                 {
                     return {0,0,0};
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The block index of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA vec<3u> getIdxGridBlock() const
+                ALPAKA_FCT_ACC_NO_CUDA Vec<3u> getIdxGridBlock() const
                 {
                     return m_v3uiGridBlockIdx;
                 }
 
             private:
-                vec<3u> const & m_v3uiGridBlockIdx;
+                Vec<3u> const & m_v3uiGridBlockIdx;
             };
             using InterfacedIndexSerial = alpaka::detail::IIndex<IndexSerial>;
         }

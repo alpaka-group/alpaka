@@ -103,7 +103,7 @@ namespace alpaka
         struct AtomicOp<openmp::detail::AtomicOpenMp, TOp, T>
         {
 #ifdef ALPAKA_OPENMP_ATOMIC_OPS_LOCK
-            ALPAKA_FCT_ACC_NO_CUDA T operator()(openmp::detail::AtomicOpenMp const & atomic, T * const addr, T const & value) const
+            ALPAKA_FCT_ACC_NO_CUDA static T atomicOp(openmp::detail::AtomicOpenMp const & atomic, T * const addr, T const & value)
             {
                 omp_set_lock(&atomic.m_ompLock);
                 auto const old(TOp()(addr, value));
@@ -111,7 +111,7 @@ namespace alpaka
                 return old;
             }
 #else
-            ALPAKA_FCT_ACC_NO_CUDA T operator()(openmp::detail::AtomicOpenMp const &, T * const addr, T const & value) const
+            ALPAKA_FCT_ACC_NO_CUDA static T atomicOp(openmp::detail::AtomicOpenMp const &, T * const addr, T const & value)
             {
                 T old;
 #pragma omp critical (AtomicOp)

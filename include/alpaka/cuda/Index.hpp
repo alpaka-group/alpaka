@@ -59,14 +59,14 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The index of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY vec<3u> getIdxBlockKernel() const
+                ALPAKA_FCT_ACC_CUDA_ONLY Vec<3u> getIdxBlockKernel() const
                 {
                     return {threadIdx.x, threadIdx.y, threadIdx.z};
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The block index of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY vec<3u> getIdxGridBlock() const
+                ALPAKA_FCT_ACC_CUDA_ONLY Vec<3u> getIdxGridBlock() const
                 {
                     return {blockIdx.x, blockIdx.y, blockIdx.z};
                 }

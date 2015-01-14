@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/core/Vec.hpp>          // alpaka::vec
+#include <alpaka/core/Vec.hpp>          // alpaka::Vec
 #include <alpaka/core/Operations.hpp>   // alpaka::Add, Sub, ...
 
 namespace alpaka
@@ -57,7 +57,7 @@ namespace alpaka
             template<typename TOp, typename T>
             ALPAKA_FCT_ACC T atomicOp(T * const addr, T const & value) const
             {
-                return AtomicOp<TAtomic, TOp, T>()(
+                return AtomicOp<TAtomic, TOp, T>::atomicOp(
                     *static_cast<TAtomic const *>(this), 
                     addr,
                     value);

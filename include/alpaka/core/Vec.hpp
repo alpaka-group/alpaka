@@ -37,7 +37,7 @@ namespace alpaka
     //! A n-dimensional vector.
     //#############################################################################
     template<std::size_t TuiDim, typename TValue = std::size_t>
-    class vec final
+    class Vec final
     {
     public:
         static_assert(TuiDim>0, "Size of the vector is required to be greater then zero!");
@@ -50,7 +50,7 @@ namespace alpaka
         //! Constructor.
         //! Every value is set to zero.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC vec()
+        ALPAKA_FCT_HOST_ACC Vec()
         {
             // NOTE: depending on the size this could be optimized with memset, intrinsics, etc. We trust in the compiler to do this.
             for(std::size_t i(0); i<TuiDim; ++i)
@@ -64,8 +64,8 @@ namespace alpaka
         //! This constructor is only available if the number of parameters matches the vector size.
         //-----------------------------------------------------------------------------
         template <typename TFirstArg, typename... TArgs, typename = typename std::enable_if<sizeof...(TArgs) == (TuiDim-1)>::type>
-        ALPAKA_FCT_HOST_ACC vec(TFirstArg && val, TArgs && ... values)
-#if !(BOOST_COMP_MSVC /*<= BOOST_VERSION_NUMBER(14, 0, 22310)*/)   // MSVC does not compile the basic array initialization: "error C2536: 'alpaka::vec<0x03>::alpaka::vec<0x03>::m_auiData': cannot specify explicit initializer for arrays"
+        ALPAKA_FCT_HOST_ACC Vec(TFirstArg && val, TArgs && ... values)
+#if !(BOOST_COMP_MSVC /*<= BOOST_VERSION_NUMBER(14, 0, 22310)*/)   // MSVC does not compile the basic array initialization: "error C2536: 'alpaka::Vec<0x03>::alpaka::Vec<0x03>::m_auiData': cannot specify explicit initializer for arrays"
             :
             m_auiData{std::forward<TFirstArg>(val), std::forward<TArgs>(values)...}
 #endif
@@ -81,19 +81,19 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Copy constructor.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC vec(vec const &) = default;
+        ALPAKA_FCT_HOST_ACC Vec(Vec const &) = default;
         //-----------------------------------------------------------------------------
         //! Move constructor.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC vec(vec &&) = default;
+        ALPAKA_FCT_HOST_ACC Vec(Vec &&) = default;
         //-----------------------------------------------------------------------------
         //! Copy assignment.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC vec & operator=(vec const &) = default;
+        ALPAKA_FCT_HOST_ACC Vec & operator=(Vec const &) = default;
         //-----------------------------------------------------------------------------
         //! Destructor.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC /*virtual*/ ~vec() noexcept = default;
+        ALPAKA_FCT_HOST_ACC /*virtual*/ ~Vec() noexcept = default;
 
         //-----------------------------------------------------------------------------
         //! Destructor.
@@ -108,11 +108,11 @@ namespace alpaka
         //! Every value is set to zero.
         //-----------------------------------------------------------------------------
         template<std::size_t TuiSubDim>
-        ALPAKA_FCT_HOST_ACC vec<TuiSubDim, TValue> subvec() const
+        ALPAKA_FCT_HOST_ACC Vec<TuiSubDim, TValue> subvec() const
         {
             static_assert(TuiSubDim <= TuiDim, "Can not create a subvector larger then the origin vector.");
 
-            vec<TuiSubDim, TValue> ret;
+            Vec<TuiSubDim, TValue> ret;
 
             // NOTE: depending on the size this could be optimized with memset, intrinsics, etc. We trust in the compiler to do this.
             for(std::size_t i(0); i<TuiSubDim; ++i)
@@ -143,7 +143,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         // Equality comparison operator.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC bool operator==(vec const & rhs) const
+        ALPAKA_FCT_HOST_ACC bool operator==(Vec const & rhs) const
         {
             for(std::size_t i(0); i < TuiDim; i++)
             {
@@ -157,7 +157,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         // Inequality comparison operator.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC bool operator!=(vec const & rhs) const
+        ALPAKA_FCT_HOST_ACC bool operator!=(Vec const & rhs) const
         {
             return !((*this) == rhs);
         }
@@ -178,7 +178,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Calculates the dot product of two vectors.
         //-----------------------------------------------------------------------------
-        /*ALPAKA_FCT_HOST_ACC static TValue dotProduct(vec const & p, vec const & q)
+        /*ALPAKA_FCT_HOST_ACC static TValue dotProduct(Vec const & p, Vec const & q)
         {
             TValue uiProd(0);
             for(size_t i(0); i<TuiDim; ++i)
@@ -196,9 +196,9 @@ namespace alpaka
     //! \return The element wise sum of two vectors.
     //-----------------------------------------------------------------------------
     template<std::size_t TuiDim, typename TValue>
-    ALPAKA_FCT_HOST_ACC vec<TuiDim, TValue> operator+(vec<TuiDim, TValue> const & p, vec<TuiDim, TValue> const & q)
+    ALPAKA_FCT_HOST_ACC Vec<TuiDim, TValue> operator+(Vec<TuiDim, TValue> const & p, Vec<TuiDim, TValue> const & q)
     {
-        vec<TuiDim, TValue> vRet;
+        Vec<TuiDim, TValue> vRet;
         for(std::size_t i(0); i<TuiDim; ++i)
         {
             vRet[i] = p[i] + q[i];
@@ -210,9 +210,9 @@ namespace alpaka
     //! \return The element wise product of two vectors.
     //-----------------------------------------------------------------------------
     template<std::size_t TuiDim, typename TValue>
-    ALPAKA_FCT_HOST_ACC vec<TuiDim, TValue> operator*(vec<TuiDim, TValue> const & p, vec<TuiDim, TValue> const & q)
+    ALPAKA_FCT_HOST_ACC Vec<TuiDim, TValue> operator*(Vec<TuiDim, TValue> const & p, Vec<TuiDim, TValue> const & q)
     {
-        vec<TuiDim, TValue> vRet;
+        Vec<TuiDim, TValue> vRet;
         for(std::size_t i(0); i<TuiDim; ++i)
         {
             vRet[i] = p[i] * q[i];
@@ -224,7 +224,7 @@ namespace alpaka
     //! Stream out operator.
     //-----------------------------------------------------------------------------
     template<std::size_t TuiDim, typename TValue>
-    ALPAKA_FCT_HOST std::ostream & operator << (std::ostream & os, vec<TuiDim, TValue> const & v)
+    ALPAKA_FCT_HOST std::ostream & operator << (std::ostream & os, Vec<TuiDim, TValue> const & v)
     {
         os << "(";
         for(std::size_t i(0); i<TuiDim; ++i)

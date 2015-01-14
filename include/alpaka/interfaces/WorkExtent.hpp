@@ -21,7 +21,10 @@
 
 #pragma once
 
-#include <alpaka/core/Positioning.hpp>  // alpaka::origin::Grid/Blocks
+#include <alpaka/traits/Dim.hpp>        // alpaka::dim::DimToVecT
+
+#include <alpaka/core/BasicDims.hpp>    // alpaka::dim::Dim<N>
+#include <alpaka/core/Positioning.hpp>  // alpaka::origin::Grid/Blocks, alpaka::unit::Blocks, alpaka::unit::Kernels
 #include <alpaka/core/Common.hpp>       // ALPAKA_FCT_ACC
 
 #include <utility>                      // std::forward
@@ -37,69 +40,69 @@ namespace alpaka
         struct GetExtent;
 
         template<typename TWorkExtent>
-        struct GetExtent<TWorkExtent, origin::Block, unit::Kernels, dim::D3>
+        struct GetExtent<TWorkExtent, origin::Block, unit::Kernels, dim::Dim3>
         {
             //-----------------------------------------------------------------------------
             //! \return The number of kernels in each dimension of a block.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC static DimToRetType<dim::D3>::type getExtent(TWorkExtent const & workExtent)
+            ALPAKA_FCT_HOST_ACC static dim::DimToVecT<dim::Dim3> getExtent(TWorkExtent const & workExtent)
             {
                 return workExtent.getExtentBlockKernels();
             }
         };
         template<typename TWorkExtent>
-        struct GetExtent<TWorkExtent, origin::Block, unit::Kernels, dim::Linear>
+        struct GetExtent<TWorkExtent, origin::Block, unit::Kernels, dim::Dim1>
         {
             //-----------------------------------------------------------------------------
             //! \return The number of kernels in a block.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC static DimToRetType<dim::Linear>::type getExtent(TWorkExtent const & workExtent)
+            ALPAKA_FCT_HOST_ACC static dim::DimToVecT<dim::Dim1> getExtent(TWorkExtent const & workExtent)
             {
-                return GetExtent<TWorkExtent, origin::Block, unit::Kernels, dim::D3>::getExtent(workExtent).prod();
+                return GetExtent<TWorkExtent, origin::Block, unit::Kernels, dim::Dim3>::getExtent(workExtent).prod();
             }
         };
         template<typename TWorkExtent>
-        struct GetExtent<TWorkExtent, origin::Grid, unit::Kernels, dim::D3>
+        struct GetExtent<TWorkExtent, origin::Grid, unit::Kernels, dim::Dim3>
         {
             //-----------------------------------------------------------------------------
             //! \return The number of kernels in each dimension of the grid.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC static DimToRetType<dim::D3>::type getExtent(TWorkExtent const & workExtent)
+            ALPAKA_FCT_HOST_ACC static dim::DimToVecT<dim::Dim3> getExtent(TWorkExtent const & workExtent)
             {
                 return workExtent.getExtentGridBlocks() * workExtent.getExtentBlockKernels();
             }
         };
         template<typename TWorkExtent>
-        struct GetExtent<TWorkExtent, origin::Grid, unit::Kernels, dim::Linear>
+        struct GetExtent<TWorkExtent, origin::Grid, unit::Kernels, dim::Dim1>
         {
             //-----------------------------------------------------------------------------
             //! \return The number of kernels in the grid.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC static DimToRetType<dim::Linear>::type getExtent(TWorkExtent const & workExtent)
+            ALPAKA_FCT_HOST_ACC static dim::DimToVecT<dim::Dim1> getExtent(TWorkExtent const & workExtent)
             {
-                return GetExtent<TWorkExtent, origin::Grid, unit::Kernels, dim::D3>::getExtent(workExtent).prod();
+                return GetExtent<TWorkExtent, origin::Grid, unit::Kernels, dim::Dim3>::getExtent(workExtent).prod();
             }
         };
         template<typename TWorkExtent>
-        struct GetExtent<TWorkExtent, origin::Grid, unit::Blocks, dim::D3>
+        struct GetExtent<TWorkExtent, origin::Grid, unit::Blocks, dim::Dim3>
         {
             //-----------------------------------------------------------------------------
             //! \return The number of blocks in each dimension of the grid.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC static DimToRetType<dim::D3>::type getExtent(TWorkExtent const & workExtent)
+            ALPAKA_FCT_HOST_ACC static dim::DimToVecT<dim::Dim3> getExtent(TWorkExtent const & workExtent)
             {
                 return workExtent.getExtentGridBlocks();
             }
         };
         template<typename TWorkExtent>
-        struct GetExtent<TWorkExtent, origin::Grid, unit::Blocks, dim::Linear>
+        struct GetExtent<TWorkExtent, origin::Grid, unit::Blocks, dim::Dim1>
         {
             //-----------------------------------------------------------------------------
             //! \return The number of blocks in the grid.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC static DimToRetType<dim::Linear>::type getExtent(TWorkExtent const & workExtent)
+            ALPAKA_FCT_HOST_ACC static dim::DimToVecT<dim::Dim1> getExtent(TWorkExtent const & workExtent)
             {
-                return GetExtent<TWorkExtent, origin::Grid, unit::Blocks, dim::D3>::getExtent(workExtent).prod();
+                return GetExtent<TWorkExtent, origin::Grid, unit::Blocks, dim::Dim3>::getExtent(workExtent).prod();
             }
         };
     }
@@ -129,10 +132,10 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Get the size requested.
         //-----------------------------------------------------------------------------
-        template<typename TOrigin, typename TUnit, typename TDimensionality = dim::D3>
-        ALPAKA_FCT_HOST_ACC typename detail::DimToRetType<TDimensionality>::type getExtent() const
+        template<typename TOrigin, typename TUnit, typename TDimensionality = dim::Dim3>
+        ALPAKA_FCT_HOST_ACC typename dim::DimToVecT<TDimensionality> getExtent() const
         {
-            return detail::GetExtent<TWorkExtent, TOrigin, TUnit, TDimensionality>::getExtent(
+            return alpaka::detail::GetExtent<TWorkExtent, TOrigin, TUnit, TDimensionality>::getExtent(
                 *static_cast<TWorkExtent const *>(this));
         }
     };
