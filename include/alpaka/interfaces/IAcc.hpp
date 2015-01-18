@@ -38,7 +38,8 @@ namespace alpaka
     // Because the kernel is always compiled with ALPAKA_FCT_ACC for all accelerators (even for AccSerial), equivalently there has to be an implementation of all methods for host and device for all accelerators. 
     // These device functions are not implemented and will not call the underlying implementation for the device code, because this will never be executed and would not compile.
     //#############################################################################
-    template<typename TAcc = boost::mpl::_1>
+    template<
+        typename TAcc = boost::mpl::_1>
     class IAcc :
         protected TAcc
     {
@@ -46,7 +47,10 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The requested extent.
         //-----------------------------------------------------------------------------
-        template<typename TOrigin, typename TUnit, typename TDimensionality = dim::Dim3>
+        template<
+            typename TOrigin, 
+            typename TUnit, 
+            typename TDimensionality = dim::Dim3>
         ALPAKA_FCT_ACC typename dim::DimToVecT<TDimensionality> getExtent() const
         {
 #ifndef __CUDA_ARCH__
@@ -60,7 +64,10 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The requested index.
         //-----------------------------------------------------------------------------
-        template<typename TOrigin, typename TUnit, typename TDimensionality = dim::Dim3>
+        template<
+            typename TOrigin,
+            typename TUnit, 
+            typename TDimensionality = dim::Dim3>
         ALPAKA_FCT_ACC typename dim::DimToVecT<TDimensionality> getIdx() const
         {
 #ifndef __CUDA_ARCH__
@@ -74,8 +81,12 @@ namespace alpaka
         //! Execute the atomic operation on the given address with the given value.
         //! \return The old value before executing the atomic operation.
         //-----------------------------------------------------------------------------
-        template<typename TOp, typename T>
-        ALPAKA_FCT_ACC T atomicOp(T * const addr, T const & value) const
+        template<
+            typename TOp, 
+            typename T>
+        ALPAKA_FCT_ACC T atomicOp(
+            T * const addr, 
+            T const & value) const
         {
 #ifndef __CUDA_ARCH__
             return TAcc::template atomicOp<TOp, T>(addr, value);
@@ -97,7 +108,9 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return Allocates block shared memory.
         //-----------------------------------------------------------------------------
-        template<typename T, std::size_t TuiNumElements>
+        template<
+            typename T, 
+            std::size_t TuiNumElements>
         ALPAKA_FCT_ACC T * allocBlockSharedMem() const
         {
             static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
@@ -111,7 +124,8 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The pointer to the externally allocated block shared memory.
         //-----------------------------------------------------------------------------
-        template<typename T>
+        template<
+            typename T>
         ALPAKA_FCT_ACC T * getBlockSharedExternMem() const
         {
 #ifndef __CUDA_ARCH__

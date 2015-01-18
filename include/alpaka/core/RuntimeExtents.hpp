@@ -36,13 +36,15 @@ namespace alpaka
         //#############################################################################
         //! The abstract runtime extent.
         //#############################################################################
-        template<typename TDim>
+        template<
+            typename TDim>
         class RuntimeExtents;
         //#############################################################################
         //! The 1D runtime extent.
         //#############################################################################
         template<>
-        class RuntimeExtents<dim::Dim1>
+        class RuntimeExtents<
+            dim::Dim1>
         {
         public:
             using Dim = dim::Dim1;
@@ -51,7 +53,8 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Constructor.
             //-----------------------------------------------------------------------------
-            template<typename TExtent>
+            template<
+                typename TExtent>
             RuntimeExtents(
                 TExtent const & extent) :
                 m_uiWidth(extent::getWidth(extent))
@@ -71,7 +74,8 @@ namespace alpaka
         //! The 2D runtime extent.
         //#############################################################################
         template<>
-        class RuntimeExtents<dim::Dim2>
+        class RuntimeExtents<
+            dim::Dim2>
         {
         public:
             using Dim = dim::Dim2;
@@ -80,7 +84,8 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Constructor.
             //-----------------------------------------------------------------------------
-            template<typename TExtent>
+            template<
+                typename TExtent>
             RuntimeExtents(
                 TExtent const & extent) :
                 m_uiWidth(extent::getWidth(extent)),
@@ -104,7 +109,8 @@ namespace alpaka
         //! The 3D runtime extent.
         //#############################################################################
         template<>
-        class RuntimeExtents<dim::Dim3>
+        class RuntimeExtents<
+            dim::Dim3>
         {
         public:
             using Dim = dim::Dim3;
@@ -113,7 +119,8 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Constructor.
             //-----------------------------------------------------------------------------
-            template<typename TExtent>
+            template<
+                typename TExtent>
             RuntimeExtents(
                 TExtent const & extent) :
                 m_uiWidth(extent::getWidth(extent)),
@@ -146,8 +153,10 @@ namespace alpaka
             //#############################################################################
             //! The RuntimeExtents dimension get trait specialization.
             //#############################################################################
-            template<typename TDim>
-            struct GetDim<alpaka::extent::RuntimeExtents<TDim>>
+            template<
+                typename TDim>
+            struct GetDim<
+                alpaka::extent::RuntimeExtents<TDim>>
             {
                 using type = TDim;
             };
@@ -158,12 +167,11 @@ namespace alpaka
             //#############################################################################
             //! The RuntimeExtents<TDim> width get trait specialization.
             //#############################################################################
-            template<typename TDim>
-            struct GetWidth
-            <
+            template<
+                typename TDim>
+            struct GetWidth<
                 alpaka::extent::RuntimeExtents<TDim>,
-                typename std::enable_if<(TDim::value >= 1) && (TDim::value <= 3), void>::type
-            >
+                typename std::enable_if<(TDim::value >= 1) && (TDim::value <= 3), void>::type>
             {
                 static std::size_t getWidth(
                     alpaka::extent::RuntimeExtents<alpaka::dim::Dim1> const & extent)
@@ -175,12 +183,11 @@ namespace alpaka
             //#############################################################################
             //! The RuntimeExtents<TDim> height get trait specialization.
             //#############################################################################
-            template<typename TDim>
-            struct GetHeight
-            <
+            template<
+                typename TDim>
+            struct GetHeight<
                 alpaka::extent::RuntimeExtents<TDim>,
-                typename std::enable_if<(TDim::value >= 2) && (TDim::value <= 3), void>::type
-            >
+                typename std::enable_if<(TDim::value >= 2) && (TDim::value <= 3), void>::type>
             {
                 static std::size_t getHeight(
                     alpaka::extent::RuntimeExtents<alpaka::dim::Dim3> const & extent)
@@ -192,12 +199,11 @@ namespace alpaka
             //#############################################################################
             //! The RuntimeExtents<Dim3> depth get trait specialization.
             //#############################################################################
-            template<typename TDim>
-            struct GetDepth
-            <
+            template<
+                typename TDim>
+            struct GetDepth<
                 alpaka::extent::RuntimeExtents<TDim>,
-                typename std::enable_if<(TDim::value >= 3) && (TDim::value <= 3), void>::type
-            >
+                typename std::enable_if<(TDim::value >= 3) && (TDim::value <= 3), void>::type>
             {
                 static std::size_t getDepth(
                     alpaka::extent::RuntimeExtents<alpaka::dim::Dim3> const & extent)

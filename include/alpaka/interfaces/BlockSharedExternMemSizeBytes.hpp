@@ -35,7 +35,8 @@ namespace alpaka
     //!
     //! The default implementation returns 0.
     //#############################################################################
-    template<typename TAccelereatedKernel>
+    template<
+        typename TAccelereatedKernel>
     struct BlockSharedExternMemSizeBytes
     {
         //-----------------------------------------------------------------------------
@@ -45,8 +46,11 @@ namespace alpaka
         //! \return The size of the shared memory allocated for a block in bytes.
         //! The default version always returns zero.
         //-----------------------------------------------------------------------------
-        template<typename... TArgs>
-        ALPAKA_FCT_HOST static std::size_t getBlockSharedExternMemSizeBytes(Vec<3u> const & v3uiBlockKernelsExtent, TArgs && ... )
+        template<
+            typename... TArgs>
+        ALPAKA_FCT_HOST static std::size_t getBlockSharedExternMemSizeBytes(
+            Vec<3u> const & v3uiBlockKernelsExtent, 
+            TArgs && ... )
         {
             boost::ignore_unused(v3uiBlockKernelsExtent);
 

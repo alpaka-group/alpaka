@@ -33,7 +33,8 @@ namespace alpaka
         //! The OpenMP accelerator stream.
         //#############################################################################
         template<>
-        class Stream<AccOpenMp> :
+        class Stream<
+            AccOpenMp> :
             public host::detail::StreamHost
         {
         public:

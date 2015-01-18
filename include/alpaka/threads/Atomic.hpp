@@ -37,7 +37,10 @@ namespace alpaka
             class AtomicThreads
             {
             public:
-                template<typename TAtomic, typename TOp, typename T>
+                template<
+                    typename TAtomic, 
+                    typename TOp, 
+                    typename T>
                 friend struct alpaka::detail::AtomicOp;
 
             public:
@@ -74,10 +77,18 @@ namespace alpaka
         //#############################################################################
         //! The threads accelerator atomic operation functor.
         //#############################################################################
-        template<typename TOp, typename T>
-        struct AtomicOp<threads::detail::AtomicThreads, TOp, T>
+        template<
+            typename TOp, 
+            typename T>
+        struct AtomicOp<
+            threads::detail::AtomicThreads, 
+            TOp, 
+            T>
         {
-            ALPAKA_FCT_ACC_NO_CUDA static T atomicOp(threads::detail::AtomicThreads const & atomic, T * const addr, T const & value)
+            ALPAKA_FCT_ACC_NO_CUDA static T atomicOp(
+                threads::detail::AtomicThreads const & atomic, 
+                T * const addr, 
+                T const & value)
             {
                 // \TODO: Currently not only the access to the same memory location is protected by a mutex but all atomic ops on all threads.
                 // We could use a list of mutexes and lock the mutex depending on the target memory location to allow multiple atomic ops on different targets concurrently.

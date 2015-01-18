@@ -41,7 +41,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA explicit FiberBarrier(std::size_t uiNumFibersToWaitFor = 0) :
+                ALPAKA_FCT_ACC_NO_CUDA explicit FiberBarrier(
+                    std::size_t uiNumFibersToWaitFor = 0) :
                     m_uiNumFibersToWaitFor{uiNumFibersToWaitFor}
                 {}
                 //-----------------------------------------------------------------------------
@@ -89,7 +90,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Resets the number of fibers to wait for to the given number.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA void reset(std::size_t uiNumFibersToWaitFor)
+                ALPAKA_FCT_ACC_NO_CUDA void reset(
+                    std::size_t uiNumFibersToWaitFor)
                 {
                     // A lock is not required in the fiber implementation.
                     //boost::unique_lock<boost::fibers::mutex> lock(m_mtxBarrier);

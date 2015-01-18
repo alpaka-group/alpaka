@@ -21,7 +21,8 @@
 
 #pragma once
 
-// forward declarations
+#include <alpaka/traits/Acc.hpp>    // GetAccName
+
 namespace alpaka
 {
     //-----------------------------------------------------------------------------
@@ -31,8 +32,28 @@ namespace alpaka
     {
         namespace detail
         {
+            // forward declarations
             class AccCuda;
         }
     }
     using AccCuda = cuda::detail::AccCuda;
+
+    namespace traits
+    {
+        namespace acc
+        {
+            //#############################################################################
+            //! The CUDA accelerator name trait specialization.
+            //#############################################################################
+            template<>
+            struct GetAccName<
+                cuda::detail::AccCuda>
+            {
+                static std::string getAccName()
+                {
+                    return "AccCuda";
+                }
+            };
+        }
+    }
 }

@@ -33,7 +33,8 @@ namespace alpaka
         //! The serial accelerator event.
         //#############################################################################
         template<>
-        class Event<AccSerial> :
+        class Event<
+            AccSerial> :
             public host::detail::EventHost
         {
         public:

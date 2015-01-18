@@ -117,7 +117,8 @@ namespace alpaka
         //! The CUDA accelerator interfaced device handle.
         //#############################################################################
         template<>
-        class Device<AccCuda> :
+        class Device<
+            AccCuda> :
             public device::detail::IDevice<cuda::detail::DeviceCuda>
         {
             friend class cuda::detail::DeviceManagerCuda;

@@ -50,7 +50,8 @@ namespace alpaka
         //!
         //! \tparam TCurrentException Must have a static method "current_exception()" that returns the current exception.
         //#############################################################################
-        template<typename TCurrentException>
+        template<
+            typename TCurrentException>
         class ITaskPackage
         {
         public:
@@ -68,7 +69,8 @@ namespace alpaka
                 }
                 catch(...)
                 {
-                    setException(TCurrentException::current_exception());
+                    setException(
+                        TCurrentException::current_exception());
                 }
             }
 
@@ -81,7 +83,8 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Sets an exception.
             //-----------------------------------------------------------------------------
-            virtual void setException(ExceptionPtr exceptPtr) = 0;
+            virtual void setException(
+                ExceptionPtr exceptPtr) = 0;
         };
 
         //#############################################################################
@@ -92,7 +95,11 @@ namespace alpaka
         //! \tparam TFunc The type of the function to execute.
         //! \tparam TFuncReturn The return type of the TFunc. Used for class specialization.
         //#############################################################################
-        template<typename TCurrentException, template<typename TFuncReturn> class TPromise, typename TFunc, typename TFuncReturn>
+        template<
+            typename TCurrentException, 
+            template<typename TFuncReturn> class TPromise, 
+            typename TFunc, 
+            typename TFuncReturn>
         class TaskPackageImpl :
             public ITaskPackage<TCurrentException>
         {
@@ -117,7 +124,8 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Sets an exception.
             //-----------------------------------------------------------------------------
-            virtual void setException(typename ITaskPackage<TCurrentException>::ExceptionPtr exceptPtr) final
+            virtual void setException(
+                typename ITaskPackage<TCurrentException>::ExceptionPtr exceptPtr) final
             {
                 m_Promise.set_exception(exceptPtr);
             }
@@ -134,10 +142,18 @@ namespace alpaka
         //! \tparam TPromise The promise type returned by the task.
         //! \tparam TFunc The type of the function to execute.
         //#############################################################################
-        template<typename TCurrentException, template<typename TFuncReturn> class TPromise, typename TFunc>
-        struct TaskPackageImpl<TCurrentException, TPromise, TFunc, void> :
+        template<
+            typename TCurrentException, 
+            template<typename TFuncReturn> class TPromise, 
+            typename TFunc>
+        class TaskPackageImpl<
+            TCurrentException, 
+            TPromise, 
+            TFunc, 
+            void> :
             public ITaskPackage<TCurrentException>
         {
+        public:
             //-----------------------------------------------------------------------------
             //! Constructor.
             //-----------------------------------------------------------------------------
@@ -181,7 +197,15 @@ namespace alpaka
         //! \tparam TConditionVariable Unused. The condition variable type used to make the threads wait if there is no work. Uses the TUniqueLock.
         //! \tparam TbYield Booleam value the threads should yield instead of wait for a condition variable.
         //#############################################################################
-        template<typename TConcurrentExecutor, template<typename TFuncReturn> class TPromise, typename TCurrentException, typename TYield, typename TMutex = void, template<typename TMutex2> class TUniqueLock = std::atomic, typename TConditionVariable = void, bool TbYield = true>
+        template<
+            typename TConcurrentExecutor, 
+            template<typename TFuncReturn> class TPromise, 
+            typename TCurrentException, 
+            typename TYield, 
+            typename TMutex = void, 
+            template<typename TMutex2> class TUniqueLock = std::atomic, 
+            typename TConditionVariable = void, 
+            bool TbYield = true>
         class ConcurrentExecutionPool
         {
         public:
@@ -274,8 +298,12 @@ namespace alpaka
             //! \return Signals when the task has completed with either success or an exception. 
             //!         Also results in an exception if the pool is destroyed before execution has begun.
             //-----------------------------------------------------------------------------
-            template<typename TFunc, typename ... TArgs>
-            auto enqueueTask(TFunc && task, TArgs && ... args)
+            template<
+                typename TFunc, 
+                typename ... TArgs>
+            auto enqueueTask(
+                TFunc && task, 
+                TArgs && ... args)
                 -> typename std::result_of< decltype(&TPromise<typename std::result_of<TFunc(TArgs...)>::type>::get_future)(TPromise<typename std::result_of<TFunc(TArgs...)>::type>) >::type
             {
                 auto boundTask(std::bind(std::forward<TFunc>(task), std::forward<TArgs>(args)...));
@@ -340,7 +368,8 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Pops a task from the queue.
             //-----------------------------------------------------------------------------
-            bool popTask(std::unique_ptr<ITaskPackage<TCurrentException>> & out)
+            bool popTask(
+                std::unique_ptr<ITaskPackage<TCurrentException>> & out)
             {
                 ITaskPackage<TCurrentException> * tempPtr(nullptr);
 
@@ -369,8 +398,23 @@ namespace alpaka
         //! \tparam TUniqueLock The lock type used to lock the TMutex.
         //! \tparam TConditionVariable The condition variable type used to make the threads wait if there is no work. Uses the TUniqueLock.
         //#############################################################################
-        template<typename TConcurrentExecutor, template<typename TFuncReturn> class TPromise, typename TCurrentException, typename TYield, typename TMutex, template<typename TMutex2> class TUniqueLock, typename TConditionVariable>
-        class ConcurrentExecutionPool<TConcurrentExecutor, TPromise, TCurrentException, TYield, TMutex, TUniqueLock, TConditionVariable, false>
+        template<
+            typename TConcurrentExecutor, 
+            template<typename TFuncReturn> class TPromise, 
+            typename TCurrentException, 
+            typename TYield, 
+            typename TMutex, 
+            template<typename TMutex2> class TUniqueLock, 
+            typename TConditionVariable>
+        class ConcurrentExecutionPool<
+            TConcurrentExecutor, 
+            TPromise, 
+            TCurrentException, 
+            TYield, 
+            TMutex, 
+            TUniqueLock, 
+            TConditionVariable, 
+            false>
         {
         public:
             //-----------------------------------------------------------------------------
@@ -466,8 +510,12 @@ namespace alpaka
             //! \return Signals when the task has completed with either success or an exception. 
             //!         Also results in an exception if the pool is destroyed before execution has begun.
             //-----------------------------------------------------------------------------
-            template<typename TFunc, typename ... TArgs>
-            auto enqueueTask(TFunc && task, TArgs && ... args)
+            template<
+                typename TFunc, 
+                typename ... TArgs>
+            auto enqueueTask(
+                TFunc && task, 
+                TArgs && ... args)
                 -> typename std::result_of< decltype(&TPromise<typename std::result_of<TFunc(TArgs...)>::type>::get_future)(TPromise<typename std::result_of<TFunc(TArgs...)>::type>) >::type
             {
                 auto boundTask(std::bind(std::forward<TFunc>(task), std::forward<TArgs>(args)...));
@@ -536,7 +584,8 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Pops a task from the queue.
             //-----------------------------------------------------------------------------
-            bool popTask(std::unique_ptr<ITaskPackage<TCurrentException>> & out)
+            bool popTask(
+                std::unique_ptr<ITaskPackage<TCurrentException>> & out)
             {
                 ITaskPackage<TCurrentException> * tempPtr(nullptr);
 

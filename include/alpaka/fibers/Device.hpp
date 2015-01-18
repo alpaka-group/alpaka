@@ -111,7 +111,8 @@ namespace alpaka
         //! The fibers accelerator interfaced device handle.
         //#############################################################################
         template<>
-        class Device<AccFibers> :
+        class Device<
+            AccFibers> :
             public device::detail::IDevice<fibers::detail::DeviceFibers>
         {
             friend class fibers::detail::DeviceManagerFibers;
@@ -147,9 +148,10 @@ namespace alpaka
             //#############################################################################
             template<>
             struct ThreadWaitDevice<
-                Device<AccFibers >>
+                Device<AccFibers>>
             {
-                ALPAKA_FCT_HOST ThreadWaitDevice(Device<AccFibers> const &)
+                ALPAKA_FCT_HOST ThreadWaitDevice(
+                    Device<AccFibers> const &)
                 {
                     // Because host calls are not asynchronous, this call never has to wait.
                 }
@@ -182,7 +184,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of devices available.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static device::Device<AccFibers> getDeviceByIndex(std::size_t const & uiIndex)
+                ALPAKA_FCT_HOST static device::Device<AccFibers> getDeviceByIndex(
+                    std::size_t const & uiIndex)
                 {
                     std::size_t const uiNumDevices(getDeviceCount());
                     if(uiIndex >= uiNumDevices)
@@ -204,7 +207,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Sets the device to use with this accelerator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static void setCurrentDevice(device::Device<AccFibers> const & )
+                ALPAKA_FCT_HOST static void setCurrentDevice(
+                    device::Device<AccFibers> const & )
                 {
                     // The code is already running on this device.
                 }
@@ -218,7 +222,8 @@ namespace alpaka
         //! The fibers accelerator interfaced device manager.
         //#############################################################################
         template<>
-        class DeviceManager<AccFibers> :
+        class DeviceManager<
+            AccFibers> :
             public detail::IDeviceManager<fibers::detail::DeviceManagerFibers>
         {};
     }

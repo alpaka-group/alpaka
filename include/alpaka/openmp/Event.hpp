@@ -33,7 +33,8 @@ namespace alpaka
         //! The OpenMP accelerator event.
         //#############################################################################
         template<>
-        class Event<AccOpenMp> :
+        class Event<
+            AccOpenMp> :
             public host::detail::EventHost
         {
         public:

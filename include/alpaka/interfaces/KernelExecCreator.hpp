@@ -66,7 +66,7 @@ namespace alpaka
             template<class T, T TSize>
             using make_integer_sequence = typename make_integer_sequence_helper<(TSize < 0), (TSize == 0), std::integral_constant<T, TSize>, integer_sequence<T> >::type;
 
-            template<std::size_t ... TVals>
+            template<std::size_t... TVals>
             using index_sequence = integer_sequence<std::size_t, TVals...>;
 
             template<std::size_t TuiSize>
@@ -79,7 +79,9 @@ namespace alpaka
         //#############################################################################
         //! The executor for an accelerated serial kernel.
         //#############################################################################
-        template<typename TKernelExecutor, typename... TKernelConstrArgs>
+        template<
+            typename TKernelExecutor, 
+            typename... TKernelConstrArgs>
         class KernelExecutorExtent
         {
         public:
@@ -112,16 +114,23 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! \return An KernelExecutor with the given extents.
             //-----------------------------------------------------------------------------
-            template<typename TWorkExtent>
-            ALPAKA_FCT_HOST TKernelExecutor operator()(IWorkExtent<TWorkExtent> const & workExtent, stream::Stream<Acc> const & stream) const
+            template<
+                typename TWorkExtent>
+            ALPAKA_FCT_HOST TKernelExecutor operator()(
+                IWorkExtent<TWorkExtent> const & workExtent, 
+                stream::Stream<Acc> const & stream) const
             {
                 return createKernelExecutor(workExtent, stream, KernelConstrArgsIndexSequenceT());
             }
             //-----------------------------------------------------------------------------
             //! \return An KernelExecutor with the given extents.
             //-----------------------------------------------------------------------------
-            template<typename TWorkExtent>
-            ALPAKA_FCT_HOST TKernelExecutor operator()(Vec<3u> const & v3uiGridBlocksExtent, Vec<3u> const & v3uiBlockKernelsExtent, stream::Stream<Acc> const & stream) const
+            template<
+                typename TWorkExtent>
+            ALPAKA_FCT_HOST TKernelExecutor operator()(
+                Vec<3u> const & v3uiGridBlocksExtent,
+                Vec<3u> const & v3uiBlockKernelsExtent, 
+                stream::Stream<Acc> const & stream) const
             {
                 return this->operator()(WorkExtent(v3uiGridBlocksExtent, v3uiBlockKernelsExtent), stream);
             }
@@ -130,8 +139,17 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! \return An KernelExecutor with the given extents.
             //-----------------------------------------------------------------------------
-            template<typename TWorkExtent, std::size_t ... TIndices>
-            ALPAKA_FCT_HOST TKernelExecutor createKernelExecutor(IWorkExtent<TWorkExtent> const & workExtent, stream::Stream<Acc> const & stream, std_extension::index_sequence<TIndices...>) const
+            template<
+                typename TWorkExtent, 
+                std::size_t... TIndices>
+            ALPAKA_FCT_HOST TKernelExecutor createKernelExecutor(
+                IWorkExtent<TWorkExtent> const & workExtent, 
+                stream::Stream<Acc> const & stream,
+#if !BOOST_COMP_MSVC     // MSVC 190022512 introduced a new bug with alias templates: error C3520: 'TIndices': parameter pack must be expanded in this context
+                std_extension::index_sequence<TIndices...> const &) const
+#else
+                std_extension::integer_sequence<std::size_t, TIndices...> const &) const
+#endif
             {
                 if(workExtent.template getExtent<Grid, Blocks, dim::Dim1>()[0] == 0u)
                 {
@@ -153,7 +171,10 @@ namespace alpaka
         //#############################################################################
         //! The kernel executor builder.
         //#############################################################################
-        template<typename TAcc, typename TKernel, typename... TKernelConstrArgs>
+        template<
+            typename TAcc, 
+            typename TKernel, 
+            typename... TKernelConstrArgs>
         class KernelExecCreator;
     }
 
@@ -164,8 +185,12 @@ namespace alpaka
     //! The kernel type has to be inherited from 'alpaka::IAcc<boost::mpl::_1>'directly.
     //! All template parameters have to be types. No value parameters are allowed. Use boost::mpl::int_ or similar to use values.
     //#############################################################################
-    template<typename TAcc, typename TKernel, typename... TKernelConstrArgs>
-    auto createKernelExecutor(TKernelConstrArgs && ... args)
+    template<
+        typename TAcc, 
+        typename TKernel, 
+        typename... TKernelConstrArgs>
+    auto createKernelExecutor(
+        TKernelConstrArgs && ... args)
         -> typename std::result_of<detail::KernelExecCreator<TAcc, TKernel, TKernelConstrArgs...>(TKernelConstrArgs...)>::type
     {
 #if (!BOOST_COMP_GNUC) || (BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(5, 0, 0))

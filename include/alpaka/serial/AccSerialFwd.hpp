@@ -21,7 +21,8 @@
 
 #pragma once
 
-// forward declarations
+#include <alpaka/traits/Acc.hpp>    // GetAccName
+
 namespace alpaka
 {
     //-----------------------------------------------------------------------------
@@ -31,8 +32,28 @@ namespace alpaka
     {
         namespace detail
         {
+            // forward declarations
             class AccSerial;
         }
     }
     using AccSerial = serial::detail::AccSerial;
+
+    namespace traits
+    {
+        namespace acc
+        {
+            //#############################################################################
+            //! The serial accelerator name trait specialization.
+            //#############################################################################
+            template<>
+            struct GetAccName<
+                serial::detail::AccSerial>
+            {
+                static std::string getAccName()
+                {
+                    return "AccSerial";
+                }
+            };
+        }
+    }
 }

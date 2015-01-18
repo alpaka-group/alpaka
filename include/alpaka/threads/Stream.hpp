@@ -33,7 +33,8 @@ namespace alpaka
         //! The threads accelerator stream.
         //#############################################################################
         template<>
-        class Stream<AccThreads> :
+        class Stream<
+            AccThreads> :
             public host::detail::StreamHost
         {
         public:

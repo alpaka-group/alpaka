@@ -31,13 +31,17 @@ namespace alpaka
         //#############################################################################
         //! The abstract atomic operation functor.
         //#############################################################################
-        template<typename TAtomic, typename TOp, typename T>
+        template<
+            typename TAtomic, 
+            typename TOp, 
+            typename T>
         struct AtomicOp;
 
         //#############################################################################
         //! The atomic operations interface.
         //#############################################################################
-        template<typename TAtomic>
+        template<
+            typename TAtomic>
         class IAtomic :
             private TAtomic
         {
@@ -45,8 +49,10 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Constructor.
             //-----------------------------------------------------------------------------
-            template<typename... TArgs>
-            ALPAKA_FCT_ACC IAtomic(TArgs && ... args) :
+            template<
+                typename... TArgs>
+            ALPAKA_FCT_ACC IAtomic(
+                TArgs && ... args) :
                 TAtomic(std::forward<TArgs>(args)...)
             {}
 
@@ -54,8 +60,12 @@ namespace alpaka
             //! Execute the atomic operation on the given address with the given value.
             //! \return The old value before executing the atomic operation.
             //-----------------------------------------------------------------------------
-            template<typename TOp, typename T>
-            ALPAKA_FCT_ACC T atomicOp(T * const addr, T const & value) const
+            template<
+                typename TOp, 
+                typename T>
+            ALPAKA_FCT_ACC T atomicOp(
+                T * const addr, 
+                T const & value) const
             {
                 return AtomicOp<TAtomic, TOp, T>::atomicOp(
                     *static_cast<TAtomic const *>(this), 

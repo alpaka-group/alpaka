@@ -65,8 +65,12 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The CUDA kernel entry point.
             //-----------------------------------------------------------------------------
-            template<typename TAcceleratedKernel, typename... TArgs>
-            __global__ void cudaKernel(TAcceleratedKernel accedKernel, TArgs ... args)
+            template<
+                typename TAcceleratedKernel, 
+                typename... TArgs>
+            __global__ void cudaKernel(
+                TAcceleratedKernel accedKernel, 
+                TArgs ... args)
             {
 
 #if defined(__CUDA_ARCH__) && (__CUDA_ARCH__ < 200)
@@ -75,7 +79,8 @@ namespace alpaka
                 accedKernel(std::forward<TArgs>(args)...);
             }
 
-            template<typename TAcceleratedKernel>
+            template<
+                typename TAcceleratedKernel>
             class KernelExecutor;
 
             //#############################################################################
@@ -91,7 +96,8 @@ namespace alpaka
             public:
                 using MemorySpace = MemorySpaceCuda;
 
-                template<typename TAcceleratedKernel>
+                template<
+                    typename TAcceleratedKernel>
                 friend class alpaka::cuda::detail::KernelExecutor;
 
             public:
@@ -124,7 +130,10 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The requested index.
                 //-----------------------------------------------------------------------------
-                template<typename TOrigin, typename TUnit, typename TDimensionality = dim::Dim3>
+                template<
+                    typename TOrigin, 
+                    typename TUnit, 
+                    typename TDimensionality = dim::Dim3>
                 ALPAKA_FCT_ACC_CUDA_ONLY typename dim::DimToVecT<TDimensionality> getIdx() const
                 {
                     return this->InterfacedIndexCuda::getIdx<TOrigin, TUnit, TDimensionality>(
@@ -142,7 +151,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return Allocates block shared memory.
                 //-----------------------------------------------------------------------------
-                template<typename T, std::size_t TuiNumElements>
+                template<
+                    typename T, 
+                    std::size_t TuiNumElements>
                 ALPAKA_FCT_ACC_CUDA_ONLY T * allocBlockSharedMem() const
                 {
                     static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
@@ -154,7 +165,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The pointer to the externally allocated block shared memory.
                 //-----------------------------------------------------------------------------
-                template<typename T>
+                template<
+                    typename T>
                 ALPAKA_FCT_ACC_CUDA_ONLY T * getBlockSharedExternMem() const
                 {
                     extern __shared__ uint8_t shMem[];
@@ -165,7 +177,8 @@ namespace alpaka
             //#############################################################################
             //! The executor for an accelerated serial kernel.
             //#############################################################################
-            template<typename TAcceleratedKernel>
+            template<
+                typename TAcceleratedKernel>
             class KernelExecutor :
                 private TAcceleratedKernel
             {
@@ -181,8 +194,13 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                template<typename TWorkExtent, typename... TKernelConstrArgs>
-                ALPAKA_FCT_HOST KernelExecutor(IWorkExtent<TWorkExtent> const & workExtent, stream::Stream<AccCuda> const & stream, TKernelConstrArgs && ... args) :
+                template<
+                    typename TWorkExtent, 
+                    typename... TKernelConstrArgs>
+                ALPAKA_FCT_HOST KernelExecutor(
+                    IWorkExtent<TWorkExtent> const & workExtent, 
+                    stream::Stream<AccCuda> const & stream, 
+                    TKernelConstrArgs && ... args) :
                     TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
                 {
 #ifdef ALPAKA_DEBUG
@@ -224,8 +242,10 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Executes the accelerated kernel.
                 //-----------------------------------------------------------------------------
-                template<typename... TArgs>
-                ALPAKA_FCT_HOST void operator()(TArgs && ... args) const
+                template<
+                    typename... TArgs>
+                ALPAKA_FCT_HOST void operator()(
+                    TArgs && ... args) const
                 {
                     dim3 gridDim(m_v3uiGridBlocksExtent[0], m_v3uiGridBlocksExtent[1], m_v3uiGridBlocksExtent[2]);
                     dim3 blockDim(m_v3uiBlockKernelsExtent[0], m_v3uiBlockKernelsExtent[1], m_v3uiBlockKernelsExtent[2]);
@@ -244,7 +264,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Push kernel arguments.
                 //-----------------------------------------------------------------------------
-                template<std::size_t TuiOffset>
+                template<
+                    std::size_t TuiOffset>
                 void pushCudaKernelArgument() const
                 {
                     // The base case to push zero arguments.
@@ -252,8 +273,13 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Push kernel arguments.
                 //-----------------------------------------------------------------------------
-                template<std::size_t TuiOffset, typename T0, typename... TArgs>
-                void pushCudaKernelArgument(T0 && arg0, TArgs && ... args) const
+                template<
+                    std::size_t TuiOffset, 
+                    typename T0, 
+                    typename... TArgs>
+                void pushCudaKernelArgument(
+                    T0 && arg0, 
+                    TArgs && ... args) const
                 {
                     // Push the first argument.
                     ALPAKA_CUDA_CHECK(cudaSetupArgument(&arg0, sizeof(arg0), TuiOffset));
@@ -277,7 +303,8 @@ namespace alpaka
     //! This specialization is required because the functions are not allowed to be declared ALPAKA_FCT_ACC but are required to be ALPAKA_FCT_ACC_CUDA_ONLY only.
     //#############################################################################
     template<>
-    class IAcc<AccCuda> :
+    class IAcc<
+        AccCuda> :
         protected AccCuda
     {
         using Acc = AccCuda;
@@ -285,7 +312,10 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The requested extent.
         //-----------------------------------------------------------------------------
-        template<typename TOrigin, typename TUnit, typename TDimensionality = dim::Dim3>
+        template<
+            typename TOrigin, 
+            typename TUnit, 
+            typename TDimensionality = dim::Dim3>
         ALPAKA_FCT_ACC_CUDA_ONLY typename dim::DimToVecT<TDimensionality> getExtent() const
         {
             return TAcc::getExtent<TOrigin, TUnit, TDimensionality>();
@@ -295,7 +325,10 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The requested index.
         //-----------------------------------------------------------------------------
-        template<typename TOrigin, typename TUnit, typename TDimensionality = dim::Dim3>
+        template<
+            typename TOrigin, 
+            typename TUnit, 
+            typename TDimensionality = dim::Dim3>
         ALPAKA_FCT_ACC_CUDA_ONLY typename dim::DimToVecT<TDimensionality> getIdx() const
         {
             return TAcc::getIdx<TOrigin, TUnit, TDimensionality>();
@@ -305,8 +338,12 @@ namespace alpaka
         //! Execute the atomic operation on the given address with the given value.
         //! \return The old value before executing the atomic operation.
         //-----------------------------------------------------------------------------
-        template<typename TOp, typename T>
-        ALPAKA_FCT_ACC_CUDA_ONLY T atomicOp(T * const addr, T const & value) const
+        template<
+            typename TOp, 
+            typename T>
+        ALPAKA_FCT_ACC_CUDA_ONLY T atomicOp(
+            T * const addr, 
+            T const & value) const
         {
             return TAcc::atomicOp<TOp, T>(addr, value);
         }
@@ -322,7 +359,9 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return Allocates block shared memory.
         //-----------------------------------------------------------------------------
-        template<typename T, std::size_t TuiNumElements>
+        template<
+            typename T, 
+            std::size_t TuiNumElements>
         ALPAKA_FCT_ACC_CUDA_ONLY T * allocBlockSharedMem() const
         {
             static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
@@ -333,7 +372,8 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The pointer to the externally allocated block shared memory.
         //-----------------------------------------------------------------------------
-        template<typename T>
+        template<
+            typename T>
         ALPAKA_FCT_ACC_CUDA_ONLY T * getBlockSharedExternMem() const
         {
             return TAcc::getBlockSharedExternMem<T>();
@@ -346,8 +386,13 @@ namespace alpaka
         //! The serial kernel executor builder.
         // \TODO: How to assure that the kernel does not hold pointers to host memory?
         //#############################################################################
-        template<typename TKernel, typename... TKernelConstrArgs>
-        class KernelExecCreator<AccCuda, TKernel, TKernelConstrArgs...>
+        template<
+            typename TKernel, 
+            typename... TKernelConstrArgs>
+        class KernelExecCreator<
+            AccCuda, 
+            TKernel, 
+            TKernelConstrArgs...>
         {
         public:
             using AcceleratedKernel = typename boost::mpl::apply<TKernel, AccCuda>::type;
@@ -356,7 +401,8 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Creates an kernel executor for the serial accelerator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST AcceleratedKernelExecutorExtent operator()(TKernelConstrArgs && ... args) const
+            ALPAKA_FCT_HOST AcceleratedKernelExecutorExtent operator()(
+                TKernelConstrArgs && ... args) const
             {
                 return AcceleratedKernelExecutorExtent(std::forward<TKernelConstrArgs>(args)...);
             }

@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include <string>   // std::string
+
 namespace alpaka
 {
     //-----------------------------------------------------------------------------
@@ -28,16 +30,57 @@ namespace alpaka
     //-----------------------------------------------------------------------------
     namespace traits
     {
-        //#############################################################################
-        //! The compile-time accelerator trait.
-        //#############################################################################
-        template<typename T, typename TSfinae = void>
-        struct GetAcc;
+        //-----------------------------------------------------------------------------
+        //! The accelerator traits.
+        //-----------------------------------------------------------------------------
+        namespace acc
+        {
+            //#############################################################################
+            //! The accelerator trait.
+            //#############################################################################
+            /*template<
+                typename T,
+                typename TSfinae = void>
+            struct GetAcc;*/
+
+            //#############################################################################
+            //! The accelerator name trait.
+            //#############################################################################
+            template<
+                typename TAcc,
+                typename TSfinae = void>
+            struct GetAccName
+            {
+                static std::string getAccName()
+                {
+                    return typeid(TAcc).name();
+                }
+            };
+        }
     }
 
-    //#############################################################################
-    //! The compile-time accelerator trait alias template to remove the ::type.
-    //#############################################################################
-    template<typename T>
-    using GetAccT = typename traits::GetAcc<T>::type;
+    //-----------------------------------------------------------------------------
+    //! The accelerator trait accessors.
+    //-----------------------------------------------------------------------------
+    namespace acc
+    {
+        //#############################################################################
+        //! The accelerator trait alias template to remove the ::type.
+        //#############################################################################
+        /*template<
+            typename T>
+            using GetAccT = typename traits::acc::GetAcc<T>::type;*/
+
+        //-----------------------------------------------------------------------------
+        //! Writes the accelerator name to the given stream.
+        //!
+        //! \tparam TAcc The accelerator type to write the name of.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TAcc>
+            ALPAKA_FCT_HOST std::string getAccName()
+        {
+            return traits::acc::GetAccName<TAcc>::getAccName();
+        }
+    }
 }

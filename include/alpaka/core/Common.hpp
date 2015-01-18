@@ -82,10 +82,13 @@ namespace alpaka
         //! Rounds to the next higher power of two (if not already power of two).
         // Adapted from llvm/ADT/SmallPtrSet.h
         //-----------------------------------------------------------------------------
-        template<unsigned N>
+        template<
+            unsigned N>
         struct RoundUpToPowerOfTwo;
 
-        template<unsigned N, bool isPowerTwo>
+        template<
+            unsigned N, 
+            bool isPowerTwo>
         struct RoundUpToPowerOfTwoH
         {
             enum
@@ -93,7 +96,8 @@ namespace alpaka
                 value = N
             };
         };
-        template<unsigned N>
+        template<
+            unsigned N>
         struct RoundUpToPowerOfTwoH<N, false>
         {
             enum
@@ -103,7 +107,8 @@ namespace alpaka
                 value = RoundUpToPowerOfTwo<(N | (N - 1)) + 1>::value
             };
         };
-        template<unsigned N>
+        template<
+            unsigned N>
         struct RoundUpToPowerOfTwo
         {
             enum
@@ -115,7 +120,8 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Calculates the optimal alignment for data of the given size.
         //-----------------------------------------------------------------------------
-        template<std::size_t TuiSizeBytes>
+        template<
+            std::size_t TuiSizeBytes>
         struct OptimalAlignment
         {
             // We have to use a enum here because VC14 says: "expected constant expression" when using "static const std::size_t".

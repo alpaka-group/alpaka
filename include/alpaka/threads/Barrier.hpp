@@ -41,13 +41,15 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA explicit ThreadBarrier(std::size_t const uiNumThreadsToWaitFor = 0) :
+                ALPAKA_FCT_ACC_NO_CUDA explicit ThreadBarrier(
+                    std::size_t const uiNumThreadsToWaitFor = 0) :
                     m_uiNumThreadsToWaitFor(uiNumThreadsToWaitFor)
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA ThreadBarrier(ThreadBarrier const & other) :
+                ALPAKA_FCT_ACC_NO_CUDA ThreadBarrier(
+                    ThreadBarrier const & other) :
                     m_uiNumThreadsToWaitFor(other.m_uiNumThreadsToWaitFor)
                 {}
                 //-----------------------------------------------------------------------------
@@ -91,7 +93,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Resets the number of threads to wait for to the given number.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA void reset(std::size_t const uiNumThreadsToWaitFor)
+                ALPAKA_FCT_ACC_NO_CUDA void reset(
+                    std::size_t const uiNumThreadsToWaitFor)
                 {
                     std::lock_guard<std::mutex> lock(m_mtxBarrier);
                     m_uiNumThreadsToWaitFor = uiNumThreadsToWaitFor;

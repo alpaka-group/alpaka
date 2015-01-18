@@ -45,7 +45,9 @@ namespace alpaka
             //#############################################################################
             //! The CUDA memory buffer.
             //#############################################################################
-            template<typename TElement, typename TDim>
+            template<
+                typename TElement, 
+                typename TDim>
             class MemBufCuda :
                 public alpaka::extent::RuntimeExtents<TDim>
             {
@@ -57,7 +59,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor
                 //-----------------------------------------------------------------------------
-                template<typename TExtent>
+                template<
+                    typename TExtent>
                 MemBufCuda(
                     TElement * pMem,
                     TExtent const & extent) :
@@ -82,8 +85,10 @@ namespace alpaka
             //#############################################################################
             //! Page-locks the memory range specified.
             //#############################################################################
-            template<typename TMemBuf>
-            void pageLockHostMem(TMemBuf const & memBuf)
+            template<
+                typename TMemBuf>
+            void pageLockHostMem(
+                TMemBuf const & memBuf)
             {
                 // cudaHostRegisterDefault: 
                 //  See http://cgi.cs.indiana.edu/~nhusted/dokuwiki/doku.php?id=programming:cudaperformance1
@@ -101,8 +106,10 @@ namespace alpaka
             //#############################################################################
             //! Unmaps page-locked memory.
             //#############################################################################
-            template<typename TMemBuf>
-            void unPageLockHostMem(TMemBuf const & memBuf)
+            template<
+                typename TMemBuf>
+            void unPageLockHostMem(
+                TMemBuf const & memBuf)
             {
                 ALPAKA_CUDA_CHECK(
                     cudaHostUnregister(
@@ -112,7 +119,8 @@ namespace alpaka
             //#############################################################################
             //! The CUDA memory copy trait.
             //#############################################################################
-            template<typename TDim>
+            template<
+                typename TDim>
             struct MemCopyCuda;
             //#############################################################################
             //! The CUDA 1D memory copy trait specialization.
@@ -123,7 +131,10 @@ namespace alpaka
                 alpaka::dim::Dim1
             >
             {
-                template<typename TExtent, typename TMemBufSrc, typename TMemBufDst>
+                template<
+                    typename TExtent, 
+                    typename TMemBufSrc, 
+                    typename TMemBufDst>
                 static void memCopyCuda(
                     TMemBufDst & memBufDst, 
                     TMemBufSrc const & memBufSrc, 
@@ -159,12 +170,14 @@ namespace alpaka
             //! The CUDA 2D memory copy trait specialization.
             //#############################################################################
             template<>
-            struct MemCopyCuda
-            <
+            struct MemCopyCuda<
                 alpaka::dim::Dim2
             >
             {
-                template<typename TExtent, typename TMemBufSrc, typename TMemBufDst>
+                template<
+                    typename TExtent, 
+                    typename TMemBufSrc, 
+                    typename TMemBufDst>
                 static void memCopyCuda(
                     TMemBufDst & memBufDst, 
                     TMemBufSrc const & memBufSrc, 
@@ -208,12 +221,14 @@ namespace alpaka
             //! The CUDA 3D memory copy trait specialization.
             //#############################################################################
             template<>
-            struct MemCopyCuda
-            <
+            struct MemCopyCuda<
                 alpaka::dim::Dim3
             >
             {
-                template<typename TExtent, typename TMemBufSrc, typename TMemBufDst>
+                template<
+                    typename TExtent, 
+                    typename TMemBufSrc, 
+                    typename TMemBufDst>
                 static void memCopyCuda(
                     TMemBufDst & memBufDst, 
                     TMemBufSrc const & memBufSrc, 
@@ -290,7 +305,9 @@ namespace alpaka
             //#############################################################################
             //! The MemBufHost dimension getter trait.
             //#############################################################################
-            template<typename TElement, typename TDim>
+            template<
+                typename TElement,
+                typename TDim>
             struct GetDim<cuda::detail::MemBufCuda<TElement, TDim>>
             {
                 using type = TDim;
@@ -302,9 +319,10 @@ namespace alpaka
             //#############################################################################
             //! The MemBufCuda width get trait specialization.
             //#############################################################################
-            template<typename TElement, typename TDim>
-            struct GetWidth
-            <
+            template<
+                typename TElement,
+                typename TDim>
+            struct GetWidth<
                 cuda::detail::MemBufCuda<TElement, TDim>,
                 typename std::enable_if<(TDim::value >= 1) && (TDim::value <= 3), void>::type
             >
@@ -319,9 +337,10 @@ namespace alpaka
             //#############################################################################
             //! The MemBufCuda height get trait specialization.
             //#############################################################################
-            template<typename TElement, typename TDim>
-            struct GetHeight
-            <
+            template<
+                typename TElement,
+                typename TDim>
+            struct GetHeight<
                 cuda::detail::MemBufCuda<TElement, TDim>,
                 typename std::enable_if<(TDim::value >= 2) && (TDim::value <= 3), void>::type
             >
@@ -335,9 +354,10 @@ namespace alpaka
             //#############################################################################
             //! The MemBufCuda depth get trait specialization.
             //#############################################################################
-            template<typename TElement, typename TDim>
-            struct GetDepth
-            <
+            template<
+                typename TElement, 
+                typename TDim>
+            struct GetDepth<
                 cuda::detail::MemBufCuda<TElement, TDim>,
                 typename std::enable_if<(TDim::value >= 3) && (TDim::value <= 3), void>::type
             >
@@ -355,8 +375,11 @@ namespace alpaka
             //#############################################################################
             //! The MemBufCuda memory space trait specialization.
             //#############################################################################
-            template<typename TElement, typename TDim>
-            struct GetMemSpace<cuda::detail::MemBufCuda<TElement, TDim>>
+            template<
+                typename TElement, 
+                typename TDim>
+            struct GetMemSpace<
+                cuda::detail::MemBufCuda<TElement, TDim>>
             {
                 using type = MemorySpaceCuda;
             };
@@ -364,8 +387,11 @@ namespace alpaka
             //#############################################################################
             //! The MemBufCuda memory element type get trait specialization.
             //#############################################################################
-            template<typename TElement, typename TDim>
-            struct GetMemElemType<cuda::detail::MemBufCuda<TElement, TDim>>
+            template<
+                typename TElement, 
+                typename TDim>
+            struct GetMemElemType<
+                cuda::detail::MemBufCuda<TElement, TDim>>
             {
                 using type = TElement;
             };
@@ -373,8 +399,11 @@ namespace alpaka
             //#############################################################################
             //! The MemBufCuda native pointer get trait specialization.
             //#############################################################################
-            template<typename TElement, typename TDim>
-            struct GetNativePtr<cuda::detail::MemBufCuda<TElement, TDim>>
+            template<
+                typename TElement, 
+                typename TDim>
+            struct GetNativePtr<
+                cuda::detail::MemBufCuda<TElement, TDim>>
             {
                 static TElement const * getNativePtr(
                     cuda::detail::MemBufCuda<TElement, TDim> const & memBuf)
@@ -398,14 +427,14 @@ namespace alpaka
             //! The CUDA 1D memory allocation trait specialization.
             //#############################################################################
             template<typename T>
-            struct MemAlloc
-            <
+            struct MemAlloc<
                 T, 
                 alpaka::dim::Dim1, 
                 MemorySpaceCuda
             >
             {
-                template<typename TExtent>
+                template<
+                    typename TExtent>
                 static alpaka::cuda::detail::MemBufCuda<T, alpaka::dim::Dim1> memAlloc(
                     TExtent const & extent)
                 {
@@ -431,14 +460,14 @@ namespace alpaka
             //! The CUDA 2D memory allocation trait specialization.
             //#############################################################################
             template<typename T>
-            struct MemAlloc
-            <
+            struct MemAlloc<
                 T, 
                 alpaka::dim::Dim2, 
                 MemorySpaceCuda
             >
             {
-                template<typename TExtent>
+                template<
+                    typename TExtent>
                 static alpaka::cuda::detail::MemBufCuda<T, alpaka::dim::Dim2> memAlloc(
                     TExtent const & extent)
                 {
@@ -470,14 +499,14 @@ namespace alpaka
             //! The CUDA 3D memory allocation trait specialization.
             //#############################################################################
             template<typename T>
-            struct MemAlloc
-            <
+            struct MemAlloc<
                 T, 
                 alpaka::dim::Dim3, 
                 MemorySpaceCuda
             >
             {
-                template<typename TExtent>
+                template<
+                    typename TExtent>
                 static alpaka::cuda::detail::MemBufCuda<T, alpaka::dim::Dim3> memAlloc(
                     TExtent const & extent)
                 {
@@ -504,15 +533,18 @@ namespace alpaka
             //#############################################################################
             //! The CUDA to Host memory copy trait specialization.
             //#############################################################################
-            template<typename TDim>
-            struct MemCopy
-                <
+            template<
+                typename TDim>
+            struct MemCopy<
                 TDim,
                 MemorySpaceHost,
                 MemorySpaceCuda
                 >
             {
-                template<typename TExtent, typename TMemBufSrc, typename TMemBufDst>
+                template<
+                    typename TExtent, 
+                    typename TMemBufSrc, 
+                    typename TMemBufDst>
                 static void memCopy(
                     TMemBufDst & memBufDst,
                     TMemBufSrc const & memBufSrc,
@@ -532,15 +564,18 @@ namespace alpaka
             //#############################################################################
             //! The Host to CUDA memory copy trait specialization.
             //#############################################################################
-            template<typename TDim>
-            struct MemCopy
-            <
+            template<
+                typename TDim>
+            struct MemCopy<
                 TDim,
                 MemorySpaceCuda, 
                 MemorySpaceHost
             >
             {
-                template<typename TExtent, typename TMemBufSrc, typename TMemBufDst>
+                template<
+                    typename TExtent, 
+                    typename TMemBufSrc, 
+                    typename TMemBufDst>
                 static void memCopy(
                     TMemBufDst & memBufDst, 
                     TMemBufSrc const & memBufSrc, 
@@ -560,15 +595,18 @@ namespace alpaka
             //#############################################################################
             //! The CUDA to CUDA memory copy trait specialization.
             //#############################################################################
-            template<typename TDim>
-            struct MemCopy
-            <
+            template<
+                typename TDim>
+            struct MemCopy<
                 TDim,
                 MemorySpaceCuda,
                 MemorySpaceCuda
             >
             {
-                template<typename TExtent, typename TMemBufSrc, typename TMemBufDst>
+                template<
+                    typename TExtent, 
+                    typename TMemBufSrc, 
+                    typename TMemBufDst>
                 static void memCopy(
                     TMemBufDst & memBufDst, 
                     TMemBufSrc const & memBufSrc, 
@@ -586,13 +624,14 @@ namespace alpaka
             //! The CUDA 1D memory set trait specialization.
             //#############################################################################
             template<>
-            struct MemSet
-            <
+            struct MemSet<
                 alpaka::dim::Dim1,
                 MemorySpaceCuda
             >
             {
-                template<typename TExtent, typename TMemBuf>
+                template<
+                    typename TExtent, 
+                    typename TMemBuf>
                 static void memSet(
                     TMemBuf & memBuf, 
                     int const & iValue, 
@@ -621,13 +660,14 @@ namespace alpaka
             //! The CUDA 2D memory set trait specialization.
             //#############################################################################
             template<>
-            struct MemSet
-            <
+            struct MemSet<
                 alpaka::dim::Dim2,
                 MemorySpaceCuda
             >
             {
-                template<typename TExtent, typename TMemBuf>
+                template<
+                    typename TExtent, 
+                    typename TMemBuf>
                 static void memSet(
                     TMemBuf & memBuf, 
                     int const & iValue, 
@@ -662,13 +702,14 @@ namespace alpaka
             //! The CUDA 3D memory set trait specialization.
             //#############################################################################
             template<>
-            struct MemSet
-            <
+            struct MemSet<
                 alpaka::dim::Dim3,
                 MemorySpaceCuda
             >
             {
-                template<typename TExtent, typename TMemBuf>
+                template<
+                    typename TExtent, 
+                    typename TMemBuf>
                 static void memSet(
                     TMemBuf & memBuf, 
                     int const & iValue, 

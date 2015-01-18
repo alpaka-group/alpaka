@@ -28,7 +28,8 @@ namespace alpaka
 {
     namespace event
     {
-        template<typename TAcc>
+        template<
+            typename TAcc>
         class Event;
     }
 }
@@ -45,19 +46,26 @@ namespace alpaka
             //#############################################################################
             //! The abstract thread stream waiter.
             //#############################################################################
-            template<typename TStream, typename TSfinae = void>
+            template<
+                typename TStream, 
+                typename TSfinae = void>
             struct ThreadWaitStream;
 
             //#############################################################################
             //! The abstract stream event waiter.
             //#############################################################################
-            template<typename TStream, typename TEvent, typename TSfinae = void>
+            template<
+                typename TStream, 
+                typename TEvent, 
+                typename TSfinae = void>
             struct StreamWaitEvent;
 
             //#############################################################################
             //! The abstract thread stream waiter.
             //#############################################################################
-            template<typename TStream, typename TSfinae = void>
+            template<
+                typename TStream, 
+                typename TSfinae = void>
             struct StreamTest;
         }
     }
@@ -70,23 +78,26 @@ namespace alpaka
         //#############################################################################
         //! The abstract stream.
         //#############################################################################
-        template<typename TAcc>
+        template<
+            typename TAcc>
         class Stream;
 
-        //#############################################################################
+        //-----------------------------------------------------------------------------
         //! Waits for the completion of the given stream.
-        //#############################################################################
-        template<typename TAcc>
+        //-----------------------------------------------------------------------------
+        template<
+            typename TAcc>
         ALPAKA_FCT_HOST void wait(
             Stream<TAcc> const & stream)
         {
             traits::stream::ThreadWaitStream<Stream<TAcc>>::threadWaitStream(stream);
         }
 
-        //#############################################################################
+        //-----------------------------------------------------------------------------
         //! Waits the stream for the completion of the given event.
-        //#############################################################################
-        template<typename TAcc>
+        //-----------------------------------------------------------------------------
+        template<
+            typename TAcc>
         ALPAKA_FCT_HOST void wait(
             Stream<TAcc> const & stream, 
             event::Event<TAcc> const & event)
@@ -94,10 +105,11 @@ namespace alpaka
             traits::stream::StreamWaitEvent<Stream<TAcc>, event::Event<TAcc>>::streamWaitEvent(stream, event);
         }
 
-        //#############################################################################
+        //-----------------------------------------------------------------------------
         //! Tests if all operations in the given stream have been completed.
-        //#############################################################################
-        template<typename TAcc>
+        //-----------------------------------------------------------------------------
+        template<
+            typename TAcc>
         ALPAKA_FCT_HOST bool test(
             Stream<TAcc> const & stream)
         {

@@ -44,7 +44,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor from values.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST explicit WorkExtentHost(Vec<3u> const & v3uiGridBlocksExtent, Vec<3u> const & v3uiBlockKernelsExtent) :
+                ALPAKA_FCT_HOST explicit WorkExtentHost(
+                    Vec<3u> const & v3uiGridBlocksExtent, 
+                    Vec<3u> const & v3uiBlockKernelsExtent) :
                     m_v3uiGridBlocksExtent(v3uiGridBlocksExtent),
                     m_v3uiBlockKernelsExtent(v3uiBlockKernelsExtent)
                 {}

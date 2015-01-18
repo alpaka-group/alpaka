@@ -33,7 +33,8 @@ namespace alpaka
         //! The fibers accelerator stream.
         //#############################################################################
         template<>
-        class Stream<AccFibers> :
+        class Stream<
+            AccFibers> :
             public host::detail::StreamHost
         {
         public:

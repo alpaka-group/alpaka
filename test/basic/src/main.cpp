@@ -19,14 +19,16 @@
 * If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <alpaka/alpaka.hpp>    // alpaka::createKernelExecutor<...>
+#include <alpaka/alpaka.hpp>        // alpaka::createKernelExecutor<...>
 
-#include <chrono>               // std::chrono::high_resolution_clock
-#include <cassert>              // assert
-#include <iostream>             // std::cout
-#include <vector>               // std::vector
-#include <typeinfo>             // typeid
-#include <utility>              // std::forward
+#include <chrono>                   // std::chrono::high_resolution_clock
+#include <cassert>                  // assert
+#include <iostream>                 // std::cout
+#include <vector>                   // std::vector
+#include <typeinfo>                 // typeid
+#include <utility>                  // std::forward
+
+#include <boost/mpl/for_each.hpp>   // boost::mpl::for_each
 
 //#############################################################################
 //! An accelerated test kernel.
@@ -34,7 +36,9 @@
 //! \tparam TAcc The accelerator environment to be executed on.
 //! \tparam TuiNumUselessWork The number of useless calculations done in each kernel execution.
 //#############################################################################
-template<typename TuiNumUselessWork, typename TAcc = alpaka::IAcc<>>
+template<
+    typename TuiNumUselessWork, 
+    typename TAcc = alpaka::IAcc<>>
 class ExampleAcceleratedKernel :
     public TAcc
 {
@@ -42,14 +46,17 @@ public:
     //-----------------------------------------------------------------------------
     //! Constructor.
     //-----------------------------------------------------------------------------
-    ExampleAcceleratedKernel(std::uint32_t const uiMult = 2) :
+    ExampleAcceleratedKernel(
+        std::uint32_t const uiMult = 2) :
         m_uiMult(uiMult)
     {}
 
     //-----------------------------------------------------------------------------
     //! The kernel.
     //-----------------------------------------------------------------------------
-    ALPAKA_FCT_ACC void operator()(std::uint32_t * const puiBlockRetVals, std::uint32_t const uiMult2) const
+    ALPAKA_FCT_ACC void operator()(
+        std::uint32_t * const puiBlockRetVals, 
+        std::uint32_t const uiMult2) const
     {
         // The number of kernels in this block.
         std::uint32_t const uiNumKernelsInBlock(TAcc::template getExtent<alpaka::Block, alpaka::Kernels, alpaka::Linear>());
@@ -118,8 +125,11 @@ namespace alpaka
     //#############################################################################
     //! The trait for getting the size of the block shared extern memory for a kernel.
     //#############################################################################
-    template<class TuiNumUselessWork, class TAcc>
-    ALPAKA_FCT_HOST struct BlockSharedExternMemSizeBytes<ExampleAcceleratedKernel<TuiNumUselessWork, TAcc>>
+    template<
+        class TuiNumUselessWork, 
+        class TAcc>
+    ALPAKA_FCT_HOST struct BlockSharedExternMemSizeBytes<
+        ExampleAcceleratedKernel<TuiNumUselessWork, TAcc>>
     {
         //-----------------------------------------------------------------------------
         //! \return The size of the shared memory allocated for a block.
@@ -135,8 +145,12 @@ namespace alpaka
 //-----------------------------------------------------------------------------
 //! Profiles the given kernel.
 //-----------------------------------------------------------------------------
-template<typename TExec, typename... TArgs>
-void profileAcceleratedKernel(TExec const & exec, TArgs && ... args)
+template<
+    typename TExec, 
+    typename... TArgs>
+void profileAcceleratedKernel(
+    TExec const & exec, 
+    TArgs && ... args)
 {
     std::cout
         << "profileAcceleratedKernel("
@@ -163,11 +177,17 @@ void profileAcceleratedKernel(TExec const & exec, TArgs && ... args)
 //-----------------------------------------------------------------------------
 //! Profiles the example kernel and checks the result.
 //-----------------------------------------------------------------------------
-template<typename TuiNumUselessWork>
-struct profileAcceleratedExampleKernel
+template<
+    typename TuiNumUselessWork>
+struct ProfileAcceleratedExampleKernel
 {
-	template<typename TAcc, typename TWorkExtent>
-	void operator()(TAcc, alpaka::IWorkExtent<TWorkExtent> const & workExtent, std::uint32_t const uiMult2)
+	template<
+        typename TAcc, 
+        typename TWorkExtent>
+	void operator()(
+        TAcc, 
+        alpaka::IWorkExtent<TWorkExtent> const & workExtent, 
+        std::uint32_t const uiMult2)
 	{
 		std::cout << std::endl;
 		std::cout << "################################################################################" << std::endl;
@@ -241,7 +261,7 @@ int main()
         std::cout << std::endl;
 
         // Logs the enabled accelerators.
-        alpaka::logEnabledAccelerators();
+        alpaka::acc::writeEnabledAccelerators();
 
         std::cout << std::endl;
 		
@@ -260,7 +280,7 @@ int main()
         std::uint32_t const uiMult2(5u);
 
 		// Execute the kernel on all enabled accelerators.
-		boost::mpl::for_each<alpaka::EnabledAccelerators>(
+		boost::mpl::for_each<alpaka::acc::EnabledAccelerators>(
 			std::bind(ProfileAcceleratedExampleKernel<TuiNumUselessWork>(), std::placeholders::_1, workExtent, uiMult2)
 		);
 

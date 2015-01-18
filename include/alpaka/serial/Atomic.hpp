@@ -65,10 +65,18 @@ namespace alpaka
         //#############################################################################
         //! The serial accelerator atomic operation functor.
         //#############################################################################
-        template<typename TOp, typename T>
-        struct AtomicOp<serial::detail::AtomicSerial, TOp, T>
+        template<
+            typename TOp, 
+            typename T>
+        struct AtomicOp<
+            serial::detail::AtomicSerial, 
+            TOp, 
+            T>
         {
-            ALPAKA_FCT_ACC_NO_CUDA static T atomicOp(serial::detail::AtomicSerial const &, T * const addr, T const & value)
+            ALPAKA_FCT_ACC_NO_CUDA static T atomicOp(
+                serial::detail::AtomicSerial const &, 
+                T * const addr, 
+                T const & value)
             {
                 return TOp()(addr, value);
             }

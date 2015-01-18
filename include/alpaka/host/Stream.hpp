@@ -82,7 +82,8 @@ namespace alpaka
             //#############################################################################
             //! Waits for the completion of the given stream.
             //#############################################################################
-            template<typename TStream>
+            template<
+                typename TStream>
             struct ThreadWaitStream<
                 TStream, 
                 typename std::enable_if<std::is_base_of<host::detail::StreamHost, TStream>::value, void>::type>
@@ -97,7 +98,9 @@ namespace alpaka
             //#############################################################################
             //! Waits the stream for the completion of the given event.
             //#############################################################################
-            template<typename TStream, typename TEvent>
+            template<
+                typename TStream, 
+                typename TEvent>
             struct StreamWaitEvent<
                 TStream,
                 TEvent,
@@ -114,7 +117,8 @@ namespace alpaka
             //#############################################################################
             //! Tests if all operations in the given stream have been completed.
             //#############################################################################
-            template<typename TStream>
+            template<
+                typename TStream>
             struct StreamTest<
                 TStream,
                 typename std::enable_if<std::is_base_of<host::detail::StreamHost, TStream>::value, void>::type>

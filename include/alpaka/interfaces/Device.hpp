@@ -54,7 +54,8 @@ namespace alpaka
             //#############################################################################
             //! The device handle interface.
             //#############################################################################
-            template<typename TDevice>
+            template<
+                typename TDevice>
             class IDevice :
                 protected TDevice
             {
@@ -94,7 +95,8 @@ namespace alpaka
         //#############################################################################
         //! The abstract device handle.
         //#############################################################################
-        template<typename TAcc>
+        template<
+            typename TAcc>
         class Device;
 
         namespace detail
@@ -102,14 +104,17 @@ namespace alpaka
             //#############################################################################
             //! The abstract thread device waiter.
             //#############################################################################
-            template<typename TStream, typename TSfinae = void>
+            template<
+                typename TStream, 
+                typename TSfinae = void>
             struct ThreadWaitDevice;
         }
 
         //#############################################################################
         //! Waits for the device to complete all of its work.
         //#############################################################################
-        template<typename TAcc>
+        template<
+            typename TAcc>
         ALPAKA_FCT_HOST void wait(Device<TAcc> const & device)
         {
             detail::ThreadWaitDevice<Device<TAcc>>{device};
@@ -120,7 +125,8 @@ namespace alpaka
             //#############################################################################
             //! The device manager interface.
             //#############################################################################
-            template<typename TDeviceManager>
+            template<
+                typename TDeviceManager>
             class IDeviceManager :
                 private TDeviceManager
             {

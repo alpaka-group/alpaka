@@ -33,7 +33,8 @@ namespace alpaka
         //! The fibers accelerator event.
         //#############################################################################
         template<>
-        class Event<AccFibers> :
+        class Event<
+            AccFibers> :
             public host::detail::EventHost
         {
         public:

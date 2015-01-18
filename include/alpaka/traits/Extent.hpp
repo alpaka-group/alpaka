@@ -39,7 +39,9 @@ namespace alpaka
             //!
             //! If not specialized explicitly it returns 1.
             //#############################################################################
-            template<typename T, typename TSfinae = void>
+            template<
+                typename T, 
+                typename TSfinae = void>
             struct GetWidth
             {
                 ALPAKA_FCT_HOST_ACC static std::size_t getWidth(
@@ -53,7 +55,9 @@ namespace alpaka
             //!
             //! If not specialized explicitly it returns 1.
             //#############################################################################
-            template<typename T, typename TSfinae = void>
+            template<
+                typename T, 
+                typename TSfinae = void>
             struct GetHeight
             {
                 ALPAKA_FCT_HOST_ACC static std::size_t getHeight(
@@ -67,7 +71,9 @@ namespace alpaka
             //!
             //! If not specialized explicitly it returns 1.
             //#############################################################################
-            template<typename T, typename TSfinae = void>
+            template<
+                typename T, 
+                typename TSfinae = void>
             struct GetDepth
             {
                 ALPAKA_FCT_HOST_ACC static std::size_t getDepth(
@@ -87,7 +93,8 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The width.
         //-----------------------------------------------------------------------------
-        template<typename T>
+        template<
+            typename T>
         ALPAKA_FCT_HOST_ACC std::size_t getWidth(
             T const & width)
         {
@@ -96,7 +103,8 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The height.
         //-----------------------------------------------------------------------------
-        template<typename T>
+        template<
+            typename T>
         ALPAKA_FCT_HOST_ACC std::size_t getHeight(
             T const & height)
         {
@@ -105,7 +113,8 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The depth.
         //-----------------------------------------------------------------------------
-        template<typename T>
+        template<
+            typename T>
         ALPAKA_FCT_HOST_ACC std::size_t getDepth(
             T const & depth)
         {
@@ -114,7 +123,8 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The product of the extents.
         //-----------------------------------------------------------------------------
-        template<typename T>
+        template<
+            typename T>
         ALPAKA_FCT_HOST_ACC std::size_t getProductOfExtents(
             T const & extents)
         {
@@ -135,9 +145,9 @@ namespace alpaka
             //#############################################################################
             //! The  unsigned integral dimension getter trait specialization.
             //#############################################################################
-            template<typename T>
-            struct GetDim
-            <
+            template<
+                typename T>
+            struct GetDim<
                 T,
                 typename std::enable_if<std::is_integral<T>::value && std::is_unsigned<T>::value, void>::type
             >
@@ -151,9 +161,9 @@ namespace alpaka
             //#############################################################################
             //! The unsigned integral width get trait specialization.
             //#############################################################################
-            template<typename T>
-            struct GetWidth
-            <
+            template<
+                typename T>
+            struct GetWidth<
                 T,
                 typename std::enable_if<std::is_integral<T>::value && std::is_unsigned<T>::value, void>::type
             >

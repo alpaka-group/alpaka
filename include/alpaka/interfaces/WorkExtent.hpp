@@ -34,73 +34,131 @@ namespace alpaka
     namespace detail
     {
         //#############################################################################
-        //! The template to get the requested size.
+        //! The extent trait.
         //#############################################################################
-        template<typename TWorkExtent, typename TOrigin, typename TUnit, typename TDimensionality>
+        template<
+            typename TWorkExtent, 
+            typename TOrigin, 
+            typename TUnit, 
+            typename TDimensionality>
         struct GetExtent;
 
-        template<typename TWorkExtent>
-        struct GetExtent<TWorkExtent, origin::Block, unit::Kernels, dim::Dim3>
+        //#############################################################################
+        //! The 3D block kernels extent trait specialization.
+        //#############################################################################
+        template<
+            typename TWorkExtent>
+        struct GetExtent<
+            TWorkExtent, 
+            origin::Block, 
+            unit::Kernels, 
+            dim::Dim3>
         {
             //-----------------------------------------------------------------------------
             //! \return The number of kernels in each dimension of a block.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC static dim::DimToVecT<dim::Dim3> getExtent(TWorkExtent const & workExtent)
+            ALPAKA_FCT_HOST_ACC static dim::DimToVecT<dim::Dim3> getExtent(
+                TWorkExtent const & workExtent)
             {
                 return workExtent.getExtentBlockKernels();
             }
         };
-        template<typename TWorkExtent>
-        struct GetExtent<TWorkExtent, origin::Block, unit::Kernels, dim::Dim1>
+        //#############################################################################
+        //! The 1D block kernels extent trait specialization.
+        //#############################################################################
+        template<
+            typename TWorkExtent>
+        struct GetExtent<
+            TWorkExtent, 
+            origin::Block, 
+            unit::Kernels, 
+            dim::Dim1>
         {
             //-----------------------------------------------------------------------------
             //! \return The number of kernels in a block.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC static dim::DimToVecT<dim::Dim1> getExtent(TWorkExtent const & workExtent)
+            ALPAKA_FCT_HOST_ACC static dim::DimToVecT<dim::Dim1> getExtent(
+                TWorkExtent const & workExtent)
             {
                 return GetExtent<TWorkExtent, origin::Block, unit::Kernels, dim::Dim3>::getExtent(workExtent).prod();
             }
         };
-        template<typename TWorkExtent>
-        struct GetExtent<TWorkExtent, origin::Grid, unit::Kernels, dim::Dim3>
+        //#############################################################################
+        //! The 3D grif kernels extent trait specialization.
+        //#############################################################################
+        template<
+            typename TWorkExtent>
+        struct GetExtent<
+            TWorkExtent, 
+            origin::Grid, 
+            unit::Kernels, 
+            dim::Dim3>
         {
             //-----------------------------------------------------------------------------
             //! \return The number of kernels in each dimension of the grid.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC static dim::DimToVecT<dim::Dim3> getExtent(TWorkExtent const & workExtent)
+            ALPAKA_FCT_HOST_ACC static dim::DimToVecT<dim::Dim3> getExtent(
+                TWorkExtent const & workExtent)
             {
                 return workExtent.getExtentGridBlocks() * workExtent.getExtentBlockKernels();
             }
         };
-        template<typename TWorkExtent>
-        struct GetExtent<TWorkExtent, origin::Grid, unit::Kernels, dim::Dim1>
+        //#############################################################################
+        //! The 1D grid kernels extent trait specialization.
+        //#############################################################################
+        template<
+            typename TWorkExtent>
+        struct GetExtent<
+            TWorkExtent, 
+            origin::Grid, 
+            unit::Kernels, 
+            dim::Dim1>
         {
             //-----------------------------------------------------------------------------
             //! \return The number of kernels in the grid.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC static dim::DimToVecT<dim::Dim1> getExtent(TWorkExtent const & workExtent)
+            ALPAKA_FCT_HOST_ACC static dim::DimToVecT<dim::Dim1> getExtent(
+                TWorkExtent const & workExtent)
             {
                 return GetExtent<TWorkExtent, origin::Grid, unit::Kernels, dim::Dim3>::getExtent(workExtent).prod();
             }
         };
-        template<typename TWorkExtent>
-        struct GetExtent<TWorkExtent, origin::Grid, unit::Blocks, dim::Dim3>
+        //#############################################################################
+        //! The 3D grid blocks extent trait specialization.
+        //#############################################################################
+        template<
+            typename TWorkExtent>
+        struct GetExtent<
+            TWorkExtent, 
+            origin::Grid, 
+            unit::Blocks, 
+            dim::Dim3>
         {
             //-----------------------------------------------------------------------------
             //! \return The number of blocks in each dimension of the grid.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC static dim::DimToVecT<dim::Dim3> getExtent(TWorkExtent const & workExtent)
+            ALPAKA_FCT_HOST_ACC static dim::DimToVecT<dim::Dim3> getExtent(
+                TWorkExtent const & workExtent)
             {
                 return workExtent.getExtentGridBlocks();
             }
         };
-        template<typename TWorkExtent>
-        struct GetExtent<TWorkExtent, origin::Grid, unit::Blocks, dim::Dim1>
+        //#############################################################################
+        //! The 1D grid blocks extent trait specialization.
+        //#############################################################################
+        template<
+            typename TWorkExtent>
+        struct GetExtent<
+            TWorkExtent, 
+            origin::Grid, 
+            unit::Blocks, 
+            dim::Dim1>
         {
             //-----------------------------------------------------------------------------
             //! \return The number of blocks in the grid.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC static dim::DimToVecT<dim::Dim1> getExtent(TWorkExtent const & workExtent)
+            ALPAKA_FCT_HOST_ACC static dim::DimToVecT<dim::Dim1> getExtent(
+                TWorkExtent const & workExtent)
             {
                 return GetExtent<TWorkExtent, origin::Grid, unit::Blocks, dim::Dim3>::getExtent(workExtent).prod();
             }
@@ -110,29 +168,38 @@ namespace alpaka
     //#############################################################################
     //! The work extent interface.
     //#############################################################################
-    template<typename TWorkExtent>
+    template<
+        typename TWorkExtent>
     class IWorkExtent :
         private TWorkExtent
     {
         //-----------------------------------------------------------------------------
         //! Stream out operator.
         //-----------------------------------------------------------------------------
-        template<typename TWorkExtent2>
-        friend std::ostream & operator << (std::ostream & os, IWorkExtent<TWorkExtent2> const & workExtent);
+        template<
+            typename TWorkExtent2>
+        friend std::ostream & operator << (
+            std::ostream & os, 
+            IWorkExtent<TWorkExtent2> const & workExtent);
 
     public:
         //-----------------------------------------------------------------------------
         //! Constructor.
         //-----------------------------------------------------------------------------
-        template<typename... TArgs>
-        ALPAKA_FCT_HOST_ACC IWorkExtent(TArgs && ... args) :
+        template<
+            typename... TArgs>
+        ALPAKA_FCT_HOST_ACC IWorkExtent(
+            TArgs && ... args) :
             TWorkExtent(std::forward<TArgs>(args)...)
         {}
 
         //-----------------------------------------------------------------------------
         //! Get the size requested.
         //-----------------------------------------------------------------------------
-        template<typename TOrigin, typename TUnit, typename TDimensionality = dim::Dim3>
+        template<
+            typename TOrigin, 
+            typename TUnit,
+            typename TDimensionality = dim::Dim3>
         ALPAKA_FCT_HOST_ACC typename dim::DimToVecT<TDimensionality> getExtent() const
         {
             return alpaka::detail::GetExtent<TWorkExtent, TOrigin, TUnit, TDimensionality>::getExtent(
@@ -143,8 +210,11 @@ namespace alpaka
     //-----------------------------------------------------------------------------
     //! Stream out operator.
     //-----------------------------------------------------------------------------
-    template<typename TWorkExtent>
-    ALPAKA_FCT_HOST std::ostream & operator << (std::ostream & os, IWorkExtent<TWorkExtent> const & workExtent)
+    template<
+        typename TWorkExtent>
+    ALPAKA_FCT_HOST std::ostream & operator << (
+        std::ostream & os, 
+        IWorkExtent<TWorkExtent> const & workExtent)
     {
         return (os << "{GridBlocks: " << workExtent.getExtentGridBlocks() << ", BlockKernels: " << workExtent.getExtentBlockKernels() << "}");
     }

@@ -39,8 +39,11 @@ namespace alpaka
         //#############################################################################
         struct Add
         {
-            template<typename T>
-            ALPAKA_FCT_HOST_ACC T operator()(T * const addr, T const & value) const
+            template<
+                typename T>
+            ALPAKA_FCT_HOST_ACC T operator()(
+                T * const addr, 
+                T const & value) const
             {
                 auto const old(*addr);
                 auto & ref(*addr);
@@ -55,8 +58,11 @@ namespace alpaka
         //#############################################################################
         struct Sub
         {
-            template<typename T>
-            ALPAKA_FCT_HOST_ACC T operator()(T * const addr, T const & value) const
+            template<
+                typename T>
+            ALPAKA_FCT_HOST_ACC T operator()(
+                T * const addr, 
+                T const & value) const
             {
                 auto const old(*addr);
                 auto & ref(*addr);
@@ -71,8 +77,11 @@ namespace alpaka
         //#############################################################################
         struct Min
         {
-            template<typename T>
-            ALPAKA_FCT_HOST_ACC T operator()(T * const addr, T const & value) const
+            template<
+                typename T>
+            ALPAKA_FCT_HOST_ACC T operator()(
+                T * const addr, 
+                T const & value) const
             {
                 auto const old(*addr);
                 auto & ref(*addr);
@@ -87,8 +96,11 @@ namespace alpaka
         //#############################################################################
         struct Max
         {
-            template<typename T>
-            ALPAKA_FCT_HOST_ACC T operator()(T * const addr, T const & value) const
+            template<
+                typename T>
+            ALPAKA_FCT_HOST_ACC T operator()(
+                T * const addr, 
+                T const & value) const
             {
                 auto const old(*addr);
                 auto & ref(*addr);
@@ -103,8 +115,11 @@ namespace alpaka
         //#############################################################################
         struct Exch
         {
-            template<typename T>
-            ALPAKA_FCT_HOST_ACC T operator()(T * const addr, T const & value) const
+            template<
+                typename T>
+            ALPAKA_FCT_HOST_ACC T operator()(
+                T * const addr, 
+                T const & value) const
             {
                 auto const old(*addr);
                 auto & ref(*addr);
@@ -121,8 +136,11 @@ namespace alpaka
         //#############################################################################
         struct Inc
         {
-            template<typename T>
-            ALPAKA_FCT_HOST_ACC T operator()(T * const addr, T const & value) const
+            template<
+                typename T>
+            ALPAKA_FCT_HOST_ACC T operator()(
+                T * const addr, 
+                T const & value) const
             {
                 auto const old(*addr);
                 auto & ref(*addr);
@@ -139,8 +157,11 @@ namespace alpaka
         //#############################################################################
         struct Dec
         {
-            template<typename T>
-            ALPAKA_FCT_HOST_ACC T operator()(T * const addr, T const & value) const
+            template<
+                typename T>
+            ALPAKA_FCT_HOST_ACC T operator()(
+                T * const addr, 
+                T const & value) const
             {
                 auto const old(*addr);
                 auto & ref(*addr);
@@ -155,8 +176,11 @@ namespace alpaka
         //#############################################################################
         struct And
         {
-            template<typename T>
-            ALPAKA_FCT_HOST_ACC T operator()(T * const addr, T const & value) const
+            template<
+                typename T>
+            ALPAKA_FCT_HOST_ACC T operator()(
+                T * const addr, 
+                T const & value) const
             {
                 auto const old(*addr);
                 auto & ref(*addr);
@@ -171,8 +195,11 @@ namespace alpaka
         //#############################################################################
         struct Or
         {
-            template<typename T>
-            ALPAKA_FCT_HOST_ACC T operator()(T * const addr, T const & value) const
+            template<
+                typename T>
+            ALPAKA_FCT_HOST_ACC T operator()(
+                T * const addr, 
+                T const & value) const
             {
                 auto const old(*addr);
                 auto & ref(*addr);
@@ -187,8 +214,11 @@ namespace alpaka
         //#############################################################################
         struct Xor
         {
-            template<typename T>
-            ALPAKA_FCT_HOST_ACC T operator()(T * const addr, T const & value) const
+            template<
+                typename T>
+            ALPAKA_FCT_HOST_ACC T operator()(
+                T * const addr,
+                T const & value) const
             {
                 auto const old(*addr);
                 auto & ref(*addr);
@@ -203,8 +233,12 @@ namespace alpaka
         //#############################################################################
         struct Cas
         {
-            template<typename T>
-            ALPAKA_FCT_HOST_ACC T operator()(T * addr, T const & compare, T const & value) const
+            template<
+                typename T>
+            ALPAKA_FCT_HOST_ACC T operator()(
+                T * addr, 
+                T const & compare, 
+                T const & value) const
             {
                 auto const old(*addr);
                 auto & ref(*addr);

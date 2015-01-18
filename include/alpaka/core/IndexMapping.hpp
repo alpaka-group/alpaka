@@ -35,13 +35,17 @@ namespace alpaka
         //!
         //! \tparam TuiDim dimension of the position to map to.
         //#############################################################################
-        template<std::size_t TuiIndexDimDst, std::size_t TuiIndexDimSrc>
+        template<
+            std::size_t TuiIndexDimDst, 
+            std::size_t TuiIndexDimSrc>
         struct MapIndex;
         //#############################################################################
         //! Maps a linear index to a 3 dimensional index.
         //#############################################################################
         template<>
-        struct MapIndex<3u, 1u>
+        struct MapIndex<
+            3u, 
+            1u>
         {
             //-----------------------------------------------------------------------------
             // \tparam TElement Type of the index values.
@@ -49,8 +53,11 @@ namespace alpaka
             // \param extent Spatial size to map the index to.
             // \return Vector of dimension TuiDimDst.
             //-----------------------------------------------------------------------------
-            template<typename TElement>
-            ALPAKA_FCT_HOST_ACC static Vec<3u> mapIndex(Vec<1u, TElement> const & index, Vec<2u, TElement> const & extent)
+            template<
+                typename TElement>
+            ALPAKA_FCT_HOST_ACC static Vec<3u> mapIndex(
+                Vec<1u, TElement> const & index, 
+                Vec<2u, TElement> const & extent)
             {
                 auto const & uiIndex(index[0]);
                 auto const uiExtentXyLin(extent.prod());
@@ -67,7 +74,9 @@ namespace alpaka
         //! Maps a linear index to a 2 dimensional index.
         //#############################################################################
         template<>
-        struct MapIndex<2u, 1u>
+        struct MapIndex<
+            2u, 
+            1u>
         {
             //-----------------------------------------------------------------------------
             // \tparam TElement Type of the index values.
@@ -75,8 +84,11 @@ namespace alpaka
             // \param extent Spatial size to map the index to.
             // \return Vector of dimension TuiDimDst.
             //-----------------------------------------------------------------------------
-            template<typename TElement>
-            ALPAKA_FCT_HOST_ACC static Vec<2u> mapIndex(Vec<1u, TElement> const & index, Vec<1u, TElement> const & extent)
+            template<
+                typename TElement>
+            ALPAKA_FCT_HOST_ACC static Vec<2u> mapIndex(
+                Vec<1u, TElement> const & index, 
+                Vec<1u, TElement> const & extent)
             {
                 auto const & uiIndex(index[0]);
                 auto const & uiExtentX(extent[0]);
@@ -96,8 +108,14 @@ namespace alpaka
     //! \tparam TuiIndexDim dimension of the index vector to map from.
     //! \tparam TElement type of the elements of the index vector to map from.
     //#############################################################################
-    template<std::size_t TuiIndexDimDst, std::size_t TuiIndexDimSrc, typename TElement>
-    Vec<TuiIndexDimDst> mapIndex(Vec<TuiIndexDimSrc, TElement> const & index, Vec<TuiIndexDimDst-1u, TElement> const & extent)
+    template<
+        std::size_t TuiIndexDimDst, 
+        std::size_t TuiIndexDimSrc, 
+        typename TElement>
+    Vec<TuiIndexDimDst> mapIndex(
+        Vec<TuiIndexDimSrc, 
+        TElement> const & index, 
+        Vec<TuiIndexDimDst-1u, TElement> const & extent)
     {
         return detail::MapIndex<TuiIndexDimDst, TuiIndexDimSrc>::mapIndex(index, extent);
     }

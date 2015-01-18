@@ -68,9 +68,9 @@ namespace alpaka
             //#############################################################################
             //! The host accelerators event enqueue trait specialization.
             //#############################################################################
-            template<typename TEvent>
-            struct DefaultStreamEnqueueEvent
-            <
+            template<
+                typename TEvent>
+            struct DefaultStreamEnqueueEvent<
                 TEvent,
                 typename std::enable_if<std::is_base_of<host::detail::EventHost, TEvent>::value, void>::type
             >
@@ -85,9 +85,10 @@ namespace alpaka
             //#############################################################################
             //! The host accelerators event enqueue trait specialization.
             //#############################################################################
-            template<typename TEvent, typename TStream>
-            struct StreamEnqueueEvent
-            <
+            template<
+                typename TEvent, 
+                typename TStream>
+            struct StreamEnqueueEvent<
                 TEvent,
                 TStream,
                 typename std::enable_if<
@@ -105,9 +106,9 @@ namespace alpaka
             //#############################################################################
             //! The host accelerators thread event wait trait specialization.
             //#############################################################################
-            template<typename TEvent>
-            struct ThreadWaitEvent
-            <
+            template<
+                typename TEvent>
+            struct ThreadWaitEvent<
                 TEvent, 
                 typename std::enable_if<std::is_base_of<host::detail::EventHost, TEvent>::value, void>::type
             >
@@ -122,9 +123,9 @@ namespace alpaka
             //#############################################################################
             //! The host accelerators event test trait specialization.
             //#############################################################################
-            template<typename TEvent>
-            struct EventTest
-            <
+            template<
+                typename TEvent>
+            struct EventTest<
                 TEvent,
                 typename std::enable_if<std::is_base_of<host::detail::EventHost, TEvent>::value, void>::type
             >

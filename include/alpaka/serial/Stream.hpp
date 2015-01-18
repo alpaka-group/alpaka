@@ -33,7 +33,8 @@ namespace alpaka
         //! The serial accelerator stream.
         //#############################################################################
         template<>
-        class Stream<AccSerial> :
+        class Stream<
+            AccSerial> :
             public host::detail::StreamHost
         {
         public:

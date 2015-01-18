@@ -21,7 +21,8 @@
 
 #pragma once
 
-// forward declarations
+#include <alpaka/traits/Acc.hpp>    // GetAccName
+
 namespace alpaka
 {
     //-----------------------------------------------------------------------------
@@ -31,8 +32,28 @@ namespace alpaka
     {
         namespace detail
         {
+            // forward declarations
             class AccOpenMp;
         }
     }
     using AccOpenMp = openmp::detail::AccOpenMp;
+
+    namespace traits
+    {
+        namespace acc
+        {
+            //#############################################################################
+            //! The OpenMP accelerator name trait specialization.
+            //#############################################################################
+            template<>
+            struct GetAccName<
+                openmp::detail::AccOpenMp>
+            {
+                static std::string getAccName()
+                {
+                    return "AccOpenMp";
+                }
+            };
+        }
+    }
 }

@@ -33,7 +33,8 @@ namespace alpaka
         //! The CUDA accelerator event.
         //#############################################################################
         template<>
-        class Event<AccCuda>
+        class Event<
+            AccCuda>
         {
         public:
             using Acc = AccCuda;
@@ -84,8 +85,7 @@ namespace alpaka
             //! The CUDA accelerator event enqueue trait specialization.
             //#############################################################################
             template<>
-            struct DefaultStreamEnqueueEvent
-            <
+            struct DefaultStreamEnqueueEvent<
                 alpaka::event::Event<AccCuda>,
                 stream::Stream<AccCuda>
             >
@@ -103,8 +103,7 @@ namespace alpaka
             //! The CUDA accelerator event enqueue trait specialization.
             //#############################################################################
             template<>
-            struct StreamEnqueueEvent
-            <
+            struct StreamEnqueueEvent<
                 alpaka::event::Event<AccCuda>,
                 stream::Stream<AccCuda>
             >
@@ -123,8 +122,7 @@ namespace alpaka
             //! The CUDA accelerator thread event wait trait specialization.
             //#############################################################################
             template<>
-            struct ThreadWaitEvent
-            <
+            struct ThreadWaitEvent<
                 alpaka::event::Event<AccCuda>
             >
             {
@@ -139,8 +137,7 @@ namespace alpaka
             //! The CUDA accelerator event test trait specialization.
             //#############################################################################
             template<>
-            struct EventTest
-            <
+            struct EventTest<
                 alpaka::event::Event<AccCuda>
             >
             {

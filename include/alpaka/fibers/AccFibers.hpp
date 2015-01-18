@@ -64,7 +64,8 @@ namespace alpaka
     {
         namespace detail
         {
-            template<typename TAcceleratedKernel>
+            template<
+                typename TAcceleratedKernel>
             class KernelExecutor;
 
             //#############################################################################
@@ -83,7 +84,8 @@ namespace alpaka
             public:
                 using MemorySpace = MemorySpaceHost;
 
-                template<typename TAcceleratedKernel>
+                template<
+                    typename TAcceleratedKernel>
                 friend class alpaka::fibers::detail::KernelExecutor;
 
             public:
@@ -129,7 +131,10 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The requested index.
                 //-----------------------------------------------------------------------------
-                template<typename TOrigin, typename TUnit, typename TDimensionality = dim::Dim3>
+                template<
+                    typename TOrigin, 
+                    typename TUnit, 
+                    typename TDimensionality = dim::Dim3>
                 ALPAKA_FCT_ACC_NO_CUDA typename dim::DimToVecT<TDimensionality> getIdx() const
                 {
                     return this->InterfacedIndexFibers::getIdx<TOrigin, TUnit, TDimensionality>(
@@ -151,7 +156,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Syncs all kernels in the current block.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA void syncBlockKernels(std::map<boost::fibers::fiber::id, std::size_t>::iterator const & itFind) const
+                ALPAKA_FCT_ACC_NO_CUDA void syncBlockKernels(
+                    std::map<boost::fibers::fiber::id, std::size_t>::iterator const & itFind) const
                 {
                     assert(itFind != m_mFibersToBarrier.end());
 
@@ -176,7 +182,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return Allocates block shared memory.
                 //-----------------------------------------------------------------------------
-                template<typename T, std::size_t TuiNumElements>
+                template<
+                    typename T, 
+                    std::size_t TuiNumElements>
                 ALPAKA_FCT_ACC_NO_CUDA T * allocBlockSharedMem() const
                 {
                     static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
@@ -200,7 +208,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The pointer to the externally allocated block shared memory.
                 //-----------------------------------------------------------------------------
-                template<typename T>
+                template<
+                    typename T>
                 ALPAKA_FCT_ACC_NO_CUDA T * getBlockSharedExternMem() const
                 {
                     return reinterpret_cast<T*>(m_vuiExternalSharedMem.get());
@@ -263,7 +272,8 @@ namespace alpaka
             //#############################################################################
             //! The executor for an accelerated serial kernel.
             //#############################################################################
-            template<typename TAcceleratedKernel>
+            template<
+                typename TAcceleratedKernel>
             class KernelExecutor :
                 private TAcceleratedKernel
             {
@@ -276,8 +286,13 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                template<typename TWorkExtent, typename... TKernelConstrArgs>
-                ALPAKA_FCT_HOST KernelExecutor(IWorkExtent<TWorkExtent> const & workExtent, stream::Stream<AccFibers> const &, TKernelConstrArgs && ... args) :
+                template<
+                    typename TWorkExtent, 
+                    typename... TKernelConstrArgs>
+                ALPAKA_FCT_HOST KernelExecutor(
+                    IWorkExtent<TWorkExtent> const & workExtent, 
+                    stream::Stream<AccFibers> const &, 
+                    TKernelConstrArgs && ... args):
                     TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
 #ifdef ALPAKA_FIBERS_NO_POOL
                     m_vFibersInBlock()
@@ -327,8 +342,10 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Executes the accelerated kernel.
                 //-----------------------------------------------------------------------------
-                template<typename... TArgs>
-                ALPAKA_FCT_HOST void operator()(TArgs && ... args) const
+                template<
+                    typename... TArgs>
+                ALPAKA_FCT_HOST void operator()(
+                    TArgs && ... args) const
                 {
 #ifdef ALPAKA_DEBUG
                     std::cout << "[+] AccFibers::KernelExecutor::operator()" << std::endl;
@@ -435,8 +452,11 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! The fiber entry point.
                 //-----------------------------------------------------------------------------
-                template<typename... TArgs>
-                ALPAKA_FCT_HOST void fiberKernel(Vec<3u> const v3uiBlockKernelIdx, TArgs && ... args) const
+                template<
+                    typename... TArgs>
+                ALPAKA_FCT_HOST void fiberKernel(
+                    Vec<3u> const v3uiBlockKernelIdx, 
+                    TArgs && ... args) const
                 {
                     // We have to store the fiber data before the kernel is calling any of the methods of this class depending on them.
                     auto const idFiber(boost::this_fiber::get_id());
@@ -486,8 +506,13 @@ namespace alpaka
         //#############################################################################
         //! The fibers kernel executor builder.
         //#############################################################################
-        template<typename TKernel, typename... TKernelConstrArgs>
-        class KernelExecCreator<AccFibers, TKernel, TKernelConstrArgs...>
+        template<
+            typename TKernel, 
+            typename... TKernelConstrArgs>
+        class KernelExecCreator<
+            AccFibers, 
+            TKernel, 
+            TKernelConstrArgs...>
         {
         public:
             using AcceleratedKernel = typename boost::mpl::apply<TKernel, AccFibers>::type;
@@ -496,7 +521,8 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Creates an kernel executor for the serial accelerator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST AcceleratedKernelExecutorExtent operator()(TKernelConstrArgs && ... args) const
+            ALPAKA_FCT_HOST AcceleratedKernelExecutorExtent operator()(
+                TKernelConstrArgs && ... args) const
             {
                 return AcceleratedKernelExecutorExtent(std::forward<TKernelConstrArgs>(args)...);
             }

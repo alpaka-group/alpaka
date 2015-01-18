@@ -42,7 +42,10 @@ namespace alpaka
             {
 #ifdef ALPAKA_OPENMP_ATOMIC_OPS_LOCK
             public:
-                template<typename TAtomic, typename TOp, typename T>
+                template<
+                    typename TAtomic, 
+                    typename TOp, 
+                    typename T>
                 friend struct alpaka::detail::AtomicOp;
 #endif
             public:
@@ -99,11 +102,19 @@ namespace alpaka
         // NOTE: Can not use '#pragma omp atomic' because braces or calling other functions directly after '#pragma omp atomic' are not allowed!
         // So this would not be fully atomic! Between the store of the old value and the operation could be a context switch!
         //#############################################################################
-        template<typename TOp, typename T>
-        struct AtomicOp<openmp::detail::AtomicOpenMp, TOp, T>
+        template<
+            typename TOp, 
+            typename T>
+        struct AtomicOp<
+            openmp::detail::AtomicOpenMp, 
+            TOp, 
+            T>
         {
 #ifdef ALPAKA_OPENMP_ATOMIC_OPS_LOCK
-            ALPAKA_FCT_ACC_NO_CUDA static T atomicOp(openmp::detail::AtomicOpenMp const & atomic, T * const addr, T const & value)
+            ALPAKA_FCT_ACC_NO_CUDA static T atomicOp(
+                openmp::detail::AtomicOpenMp const & atomic, 
+                T * const addr, 
+                T const & value)
             {
                 omp_set_lock(&atomic.m_ompLock);
                 auto const old(TOp()(addr, value));
@@ -111,7 +122,10 @@ namespace alpaka
                 return old;
             }
 #else
-            ALPAKA_FCT_ACC_NO_CUDA static T atomicOp(openmp::detail::AtomicOpenMp const &, T * const addr, T const & value)
+            ALPAKA_FCT_ACC_NO_CUDA static T atomicOp(
+                openmp::detail::AtomicOpenMp const &, 
+                T * const addr, 
+                T const & value)
             {
                 T old;
 #pragma omp critical (AtomicOp)

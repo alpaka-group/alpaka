@@ -59,7 +59,8 @@ namespace alpaka
         namespace detail
         {
             // Forward declaration.
-            template<typename TAcceleratedKernel>
+            template<
+                typename TAcceleratedKernel>
             class KernelExecutor;
 
             //#############################################################################
@@ -76,7 +77,8 @@ namespace alpaka
             public:
                 using MemorySpace = MemorySpaceHost;
 
-                template<typename TAcceleratedKernel>
+                template<
+                    typename TAcceleratedKernel>
                 friend class alpaka::serial::detail::KernelExecutor;
 
             public:
@@ -117,7 +119,10 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The requested index.
                 //-----------------------------------------------------------------------------
-                template<typename TOrigin, typename TUnit, typename TDimensionality = dim::Dim3>
+                template<
+                    typename TOrigin, 
+                    typename TUnit, 
+                    typename TDimensionality = dim::Dim3>
                 ALPAKA_FCT_ACC_NO_CUDA typename dim::DimToVecT<TDimensionality> getIdx() const
                 {
                     return this->InterfacedIndexSerial::getIdx<TOrigin, TUnit, TDimensionality>(
@@ -135,7 +140,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return Allocates block shared memory.
                 //-----------------------------------------------------------------------------
-                template<typename T, std::size_t TuiNumElements>
+                template<
+                    typename T, 
+                    std::size_t TuiNumElements>
                 ALPAKA_FCT_ACC_NO_CUDA T * allocBlockSharedMem() const
                 {
                     static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
@@ -150,7 +157,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The pointer to the externally allocated block shared memory.
                 //-----------------------------------------------------------------------------
-                template<typename T>
+                template<
+                    typename T>
                 ALPAKA_FCT_ACC_NO_CUDA T * getBlockSharedExternMem() const
                 {
                     return reinterpret_cast<T*>(m_vuiExternalSharedMem.get());
@@ -175,7 +183,8 @@ namespace alpaka
             //#############################################################################
             //! The executor for an accelerated serial kernel.
             //#############################################################################
-            template<typename TAcceleratedKernel>
+            template<
+                typename TAcceleratedKernel>
             class KernelExecutor :
                 private TAcceleratedKernel
             {
@@ -188,8 +197,13 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                template<typename TWorkExtent, typename... TKernelConstrArgs>
-                ALPAKA_FCT_HOST KernelExecutor(IWorkExtent<TWorkExtent> const & workExtent, stream::Stream<AccSerial> const &, TKernelConstrArgs && ... args) :
+                template<
+                    typename TWorkExtent, 
+                    typename... TKernelConstrArgs>
+                ALPAKA_FCT_HOST KernelExecutor(
+                    IWorkExtent<TWorkExtent> const & workExtent, 
+                    stream::Stream<AccSerial> const &, 
+                    TKernelConstrArgs && ... args) :
                     TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
                 {
 #ifdef ALPAKA_DEBUG
@@ -230,8 +244,10 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Executes the accelerated kernel.
                 //-----------------------------------------------------------------------------
-                template<typename... TArgs>
-                ALPAKA_FCT_HOST void operator()(TArgs && ... args) const
+                template<
+                    typename... TArgs>
+                ALPAKA_FCT_HOST void operator()(
+                    TArgs && ... args) const
                 {
 #ifdef ALPAKA_DEBUG
                     std::cout << "[+] AccSerial::KernelExecutor::operator()" << std::endl;
@@ -278,8 +294,13 @@ namespace alpaka
         //#############################################################################
         //! The serial kernel executor builder.
         //#############################################################################
-        template<typename TKernel, typename... TKernelConstrArgs>
-        class KernelExecCreator<AccSerial, TKernel, TKernelConstrArgs...>
+        template<
+            typename TKernel, 
+            typename... TKernelConstrArgs>
+        class KernelExecCreator<
+            AccSerial, 
+            TKernel, 
+            TKernelConstrArgs...>
         {
         public:
             using AcceleratedKernel = typename boost::mpl::apply<TKernel, AccSerial>::type;
@@ -288,7 +309,8 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Creates an kernel executor for the serial accelerator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST AcceleratedKernelExecutorExtent operator()(TKernelConstrArgs && ... args) const
+            ALPAKA_FCT_HOST AcceleratedKernelExecutorExtent operator()(
+                TKernelConstrArgs && ... args) const
             {
                 return AcceleratedKernelExecutorExtent(std::forward<TKernelConstrArgs>(args)...);
             }

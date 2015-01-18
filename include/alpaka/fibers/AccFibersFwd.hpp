@@ -21,7 +21,8 @@
 
 #pragma once
 
-// forward declarations
+#include <alpaka/traits/Acc.hpp>    // GetAccName
+
 namespace alpaka
 {
     //-----------------------------------------------------------------------------
@@ -31,8 +32,28 @@ namespace alpaka
     {
         namespace detail
         {
+            // forward declarations
             class AccFibers;
         }
     }
     using AccFibers = fibers::detail::AccFibers;
+
+    namespace traits
+    {
+        namespace acc
+        {
+            //#############################################################################
+            //! The fibers accelerator name trait specialization.
+            //#############################################################################
+            template<>
+            struct GetAccName<
+                fibers::detail::AccFibers>
+            {
+                static std::string getAccName()
+                {
+                    return "AccFibers";
+                }
+            };
+        }
+    }
 }

@@ -43,7 +43,9 @@ namespace alpaka
             //#############################################################################
             //! The host memory buffer.
             //#############################################################################
-            template<typename TElement, typename TDim>
+            template<
+                typename TElement,
+                typename TDim>
             class MemBufHost :
                 public alpaka::extent::RuntimeExtents<TDim>
             {
@@ -55,7 +57,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor
                 //-----------------------------------------------------------------------------
-                template<typename TExtent>
+                template<
+                    typename TExtent>
                 MemBufHost(
                     TExtent const & extent):
                     RuntimeExtents<TDim>(extent),
@@ -72,7 +75,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of elements to allocate.
                 //-----------------------------------------------------------------------------
-                template<typename TExtent>
+                template<
+                    typename TExtent>
                 static std::size_t computeElementCount(
                     TExtent const & extent)
                 {
@@ -98,7 +102,9 @@ namespace alpaka
             //#############################################################################
             //! The MemBufHost dimension getter trait.
             //#############################################################################
-            template<typename TElement, typename TDim>
+            template<
+                typename TElement, 
+                typename TDim>
             struct GetDim<host::detail::MemBufHost<TElement, TDim>>
             {
                 using type = TDim;
@@ -110,9 +116,10 @@ namespace alpaka
             //#############################################################################
             //! The MemBufHost width get trait specialization.
             //#############################################################################
-            template<typename TElement, typename TDim>
-            struct GetWidth
-            <
+            template<
+                typename TElement, 
+                typename TDim>
+            struct GetWidth<
                 host::detail::MemBufHost<TElement, TDim>,
                 typename std::enable_if<(TDim::value >= 1) && (TDim::value <= 3), void>::type
             >
@@ -127,9 +134,10 @@ namespace alpaka
             //#############################################################################
             //! The MemBufHost height get trait specialization.
             //#############################################################################
-            template<typename TElement, typename TDim>
-            struct GetHeight
-            <
+            template<
+                typename TElement, 
+                typename TDim>
+            struct GetHeight<
                 host::detail::MemBufHost<TElement, TDim>,
                 typename std::enable_if<(TDim::value >= 2) && (TDim::value <= 3), void>::type
             >
@@ -143,9 +151,10 @@ namespace alpaka
             //#############################################################################
             //! The MemBufHost depth get trait specialization.
             //#############################################################################
-            template<typename TElement, typename TDim>
-            struct GetDepth
-            <
+            template<
+                typename TElement, 
+                typename TDim>
+            struct GetDepth<
                 host::detail::MemBufHost<TElement, TDim>,
                 typename std::enable_if<(TDim::value >= 3) && (TDim::value <= 3), void>::type
             >
@@ -163,8 +172,11 @@ namespace alpaka
             //#############################################################################
             //! The MemBufHost memory space trait specialization.
             //#############################################################################
-            template<typename TElement, typename TDim>
-            struct GetMemSpace<host::detail::MemBufHost<TElement, TDim>>
+            template<
+                typename TElement, 
+                typename TDim>
+            struct GetMemSpace<
+                host::detail::MemBufHost<TElement, TDim>>
             {
                 using type = MemorySpaceHost;
             };
@@ -172,8 +184,11 @@ namespace alpaka
             //#############################################################################
             //! The MemBufHost memory element type get trait specialization.
             //#############################################################################
-            template<typename TElement, typename TDim>
-            struct GetMemElemType<host::detail::MemBufHost<TElement, TDim>>
+            template<
+                typename TElement, 
+                typename TDim>
+            struct GetMemElemType<
+                host::detail::MemBufHost<TElement, TDim>>
             {
                 using type = TElement;
             };
@@ -181,8 +196,11 @@ namespace alpaka
             //#############################################################################
             //! The MemBufHost native pointer get trait specialization.
             //#############################################################################
-            template<typename TElement, typename TDim>
-            struct GetNativePtr<host::detail::MemBufHost<TElement, TDim>>
+            template<
+                typename TElement, 
+                typename TDim>
+            struct GetNativePtr<
+                host::detail::MemBufHost<TElement, TDim>>
             {
                 static TElement const * getNativePtr(
                     host::detail::MemBufHost<TElement, TDim> const & memBuf)
@@ -199,15 +217,17 @@ namespace alpaka
             //#############################################################################
             //! The host accelerators memory allocation trait specialization.
             //#############################################################################
-            template<typename TElement, typename TDim>
-            struct MemAlloc
-            <
+            template<
+                typename TElement, 
+                typename TDim>
+            struct MemAlloc<
                 TElement,
                 TDim,
                 MemorySpaceHost
             >
             {
-                template<typename TExtent>
+                template<
+                    typename TExtent>
                 static host::detail::MemBufHost<TElement, TDim> memAlloc(
                     TExtent const & extent)
                 {
@@ -226,15 +246,18 @@ namespace alpaka
             //!
             //! Copies from host memory into host memory.
             //#############################################################################
-            template<typename TDim>
-            struct MemCopy
-            <
+            template<
+                typename TDim>
+            struct MemCopy<
                 TDim, 
                 MemorySpaceHost, 
                 MemorySpaceHost
             >
             {
-                template<typename TExtent, typename TMemBufSrc, typename TMemBufDst>
+                template<
+                    typename TExtent, 
+                    typename TMemBufSrc, 
+                    typename TMemBufDst>
                 static void memCopy(
                     TMemBufDst & memBufDst, 
                     TMemBufSrc const & memBufSrc, 
@@ -265,14 +288,16 @@ namespace alpaka
             //#############################################################################
             //! The host accelerators memory set trait specialization.
             //#############################################################################
-            template<typename TDim>
-            struct MemSet
-            <
+            template<
+                typename TDim>
+            struct MemSet<
                 TDim, 
                 MemorySpaceHost
             >
             {
-                template<typename TExtent, typename TMemBuf>
+                template<
+                    typename TExtent, 
+                    typename TMemBuf>
                 static void memSet(
                     TMemBuf & memBuf, 
                     int const & iValue, 

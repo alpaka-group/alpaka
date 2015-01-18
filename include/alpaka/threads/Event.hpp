@@ -33,7 +33,8 @@ namespace alpaka
         //! The threads accelerator event.
         //#############################################################################
         template<>
-        class Event<AccThreads> :
+        class Event<
+            AccThreads> :
             public host::detail::EventHost
         {
         public:

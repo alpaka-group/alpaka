@@ -113,7 +113,8 @@ namespace alpaka
         //! The threads accelerator interfaced device handle.
         //#############################################################################
         template<>
-        class Device<AccThreads> :
+        class Device<
+            AccThreads> :
             public device::detail::IDevice<threads::detail::DeviceThreads>
         {
             friend class threads::detail::DeviceManagerThreads;
@@ -149,9 +150,10 @@ namespace alpaka
             //#############################################################################
             template<>
             struct ThreadWaitDevice<
-                Device<AccThreads >>
+                Device<AccThreads>>
             {
-                ALPAKA_FCT_HOST ThreadWaitDevice(Device<AccThreads> const &)
+                ALPAKA_FCT_HOST ThreadWaitDevice(
+                    Device<AccThreads> const &)
                 {
                     // Because host calls are not asynchronous, this call never has to wait.
                 }
@@ -184,7 +186,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of devices available.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static device::Device<AccThreads> getDeviceByIndex(std::size_t const & uiIndex)
+                ALPAKA_FCT_HOST static device::Device<AccThreads> getDeviceByIndex(
+                    std::size_t const & uiIndex)
                 {
                     std::size_t const uiNumDevices(getDeviceCount());
                     if(uiIndex >= uiNumDevices)
@@ -206,7 +209,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Sets the device to use with this accelerator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static void setCurrentDevice(device::Device<AccThreads> const & )
+                ALPAKA_FCT_HOST static void setCurrentDevice(
+                    device::Device<AccThreads> const & )
                 {
                     // The code is already running on this device.
                 }
@@ -220,7 +224,8 @@ namespace alpaka
         //! The threads accelerator interfaced device manager.
         //#############################################################################
         template<>
-        class DeviceManager<AccThreads> :
+        class DeviceManager<
+            AccThreads> :
             public detail::IDeviceManager<threads::detail::DeviceManagerThreads>
         {};
     }

@@ -121,7 +121,8 @@ namespace alpaka
         //! The OpenMP accelerator interfaced device handle.
         //#############################################################################
         template<>
-        class Device<AccOpenMp> :
+        class Device<
+            AccOpenMp> :
             public device::detail::IDevice<openmp::detail::DeviceOpenMp>
         {
             friend class openmp::detail::DeviceManagerOpenMp;
@@ -159,7 +160,8 @@ namespace alpaka
             struct ThreadWaitDevice<
                 Device<AccOpenMp >>
             {
-                ALPAKA_FCT_HOST ThreadWaitDevice(Device<AccOpenMp> const &)
+                ALPAKA_FCT_HOST ThreadWaitDevice(
+                    Device<AccOpenMp> const &)
                 {
                     // Because host calls are not asynchronous, this call never has to wait.
                 }
@@ -193,7 +195,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of devices available.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static device::Device<AccOpenMp> getDeviceByIndex(std::size_t const & uiIndex)
+                ALPAKA_FCT_HOST static device::Device<AccOpenMp> getDeviceByIndex(
+                    std::size_t const & uiIndex)
                 {
                     std::size_t const uiNumDevices(getDeviceCount());
                     if(uiIndex >= uiNumDevices)
@@ -215,7 +218,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Sets the device to use with this accelerator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static void setCurrentDevice(device::Device<AccOpenMp> const & )
+                ALPAKA_FCT_HOST static void setCurrentDevice(
+                    device::Device<AccOpenMp> const & )
                 {
                     // The code is already running on this device.
                 }
@@ -229,7 +233,8 @@ namespace alpaka
         //! The OpenMP accelerator interfaced device manager.
         //#############################################################################
         template<>
-        class DeviceManager<AccOpenMp> :
+        class DeviceManager<
+            AccOpenMp> :
             public detail::IDeviceManager<openmp::detail::DeviceManagerOpenMp>
         {};
     }

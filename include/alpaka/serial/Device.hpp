@@ -110,7 +110,8 @@ namespace alpaka
         //! The serial accelerator interfaced device handle.
         //#############################################################################
         template<>
-        class Device<AccSerial> :
+        class Device<
+            AccSerial> :
             public device::detail::IDevice<serial::detail::DeviceSerial>
         {
             friend class serial::detail::DeviceManagerSerial;
@@ -148,7 +149,8 @@ namespace alpaka
             struct ThreadWaitDevice<
                 Device<AccSerial>>
             {
-                ALPAKA_FCT_HOST ThreadWaitDevice(Device<AccSerial> const & device)
+                ALPAKA_FCT_HOST ThreadWaitDevice(
+                    Device<AccSerial> const & device)
                 {
                     // Because host calls are not asynchronous, this call never has to wait.
                 }
@@ -181,7 +183,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of devices available.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static device::Device<AccSerial> getDeviceByIndex(std::size_t const & uiIndex)
+                ALPAKA_FCT_HOST static device::Device<AccSerial> getDeviceByIndex(
+                    std::size_t const & uiIndex)
                 {
                     std::size_t const uiNumDevices(getDeviceCount());
                     if(uiIndex >= uiNumDevices)
@@ -203,7 +206,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Sets the device to use with this accelerator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static void setCurrentDevice(device::Device<AccSerial> const & )
+                ALPAKA_FCT_HOST static void setCurrentDevice(
+                    device::Device<AccSerial> const & )
                 {
                     // The code is already running on this device.
                 }
@@ -217,7 +221,8 @@ namespace alpaka
         //! The serial accelerator interfaced device manager.
         //#############################################################################
         template<>
-        class DeviceManager<AccSerial> :
+        class DeviceManager<
+            AccSerial> :
             public detail::IDeviceManager<serial::detail::DeviceManagerSerial>
         {};
     }

@@ -34,7 +34,8 @@ namespace alpaka
         //! The CUDA accelerator stream.
         //#############################################################################
         template<>
-        class Stream<AccCuda>
+        class Stream<
+            AccCuda>
         {
         public:
             using Acc = AccCuda;
@@ -91,8 +92,7 @@ namespace alpaka
             //! The CUDA accelerator thread stream waiter.
             //#############################################################################
             template<>
-            struct ThreadWaitStream
-            <
+            struct ThreadWaitStream<
                 Stream<AccCuda>
             >
             {
@@ -108,8 +108,7 @@ namespace alpaka
             //! The CUDA accelerator stream event waiter.
             //#############################################################################
             template<>
-            struct StreamWaitEvent
-            <
+            struct StreamWaitEvent<
                 Stream<AccCuda>,
                 event::Event<AccCuda>
             >
@@ -129,8 +128,7 @@ namespace alpaka
             //! The CUDA accelerator stream tester.
             //#############################################################################
             template<>
-            struct StreamTest
-            <
+            struct StreamTest<
                 event::Event<AccCuda>
             >
             {

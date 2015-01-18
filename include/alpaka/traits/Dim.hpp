@@ -39,13 +39,16 @@ namespace alpaka
             //#############################################################################
             //! The dimension getter trait.
             //#############################################################################
-            template<typename T, typename TSfinae = void>
+            template<
+                typename T, 
+                typename TSfinae = void>
             struct GetDim;
 
             //#############################################################################
             //! The dimension to vector transformation trait.
             //#############################################################################
-            template<class TDim>
+            template<
+                typename TDim>
             struct DimToVec
             {
                 using type = Vec<TDim::value>;
@@ -61,12 +64,14 @@ namespace alpaka
         //#############################################################################
         //! The dimension getter trait alias template to remove the ::type.
         //#############################################################################
-        template<typename T>
+        template<
+            typename T>
         using GetDimT = typename traits::dim::GetDim<T>::type;
         //-----------------------------------------------------------------------------
         //! \return The dimension.
         //-----------------------------------------------------------------------------
-        template<typename T>
+        template<
+            typename T>
         ALPAKA_FCT_HOST std::size_t getDim()
         {
             return GetDimT<T>::value;
@@ -75,7 +80,8 @@ namespace alpaka
         //#############################################################################
         //! The dimension to vector alias template to remove the ::type.
         //#############################################################################
-        template<typename TDim>
+        template<
+            typename TDim>
         using DimToVecT = typename traits::dim::DimToVec<TDim>::type;
     }
 }
