@@ -143,7 +143,7 @@ namespace alpaka
         namespace dim
         {
             //#############################################################################
-            //! The  unsigned integral dimension getter trait specialization.
+            //! The unsigned integral dimension getter trait specialization.
             //#############################################################################
             template<
                 typename T>

@@ -211,8 +211,6 @@ namespace alpaka
                 extent);
         }
 
-        // \TODO: Implement copyIfOtherMemSpace!
-
         //-----------------------------------------------------------------------------
         //! Sets the memory to the given value.
         //!
