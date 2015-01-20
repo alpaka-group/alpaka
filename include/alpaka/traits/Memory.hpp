@@ -38,7 +38,7 @@ namespace alpaka
     namespace traits
     {
         //-----------------------------------------------------------------------------
-        //! The memory management traits.
+        //! The memory traits.
         //-----------------------------------------------------------------------------
         namespace memory
         {
@@ -98,11 +98,25 @@ namespace alpaka
                 typename TMemSpace, 
                 typename TSfinae = void>
             struct MemSet;
+
+            //-----------------------------------------------------------------------------
+            //! The memory layout traits.
+            //-----------------------------------------------------------------------------
+            namespace layout
+            {
+                //#############################################################################
+                //! The pitch in bytes. This is the distance between two consecutive rows.
+                //#############################################################################
+                template<
+                    typename TMemBuf,
+                    typename TSfinae = void>
+                struct GetPitchBytes;
+            }
         }
     }
 
     //-----------------------------------------------------------------------------
-    //! The memory management trait accessors.
+    //! The memory trait accessors.
     //-----------------------------------------------------------------------------
     namespace memory
     {
@@ -235,11 +249,27 @@ namespace alpaka
                 iValue,
                 extent);
         }
+
+        //-----------------------------------------------------------------------------
+        //! The memory layout traits specializations.
+        //-----------------------------------------------------------------------------
+        namespace layout
+        {
+            //-----------------------------------------------------------------------------
+            //! \return The pitch in bytes. This is the distance between two consecutive rows.
+            //-----------------------------------------------------------------------------
+            template<
+                typename TMemBuf>
+            std::size_t getPitchBytes()
+            {
+                return traits::memory::layout::GetPitchBytes<TMemBuf>::getPitchBytes();
+            }
+        }
     }
     
 
     //-----------------------------------------------------------------------------
-    // Trait specializations for compile time arrays.
+    // Trait specializations for fixed size arrays.
     //
     // This allows the usage of multidimensional compile time arrays e.g. int[4][3] as argument to memory operations.
     // Up to 3 dimensions are supported.
@@ -249,64 +279,64 @@ namespace alpaka
         namespace dim
         {
             //#############################################################################
-            //! The compile time array dimension getter trait specialization.
+            //! The fixed size array dimension getter trait specialization.
             //#############################################################################
             template<
-                typename T>
+                typename TFixedSizeArray>
             struct GetDim<
-                T,
-                typename std::enable_if<std::is_array<T>::value, void>::type>
+                TFixedSizeArray,
+                typename std::enable_if<std::is_array<TFixedSizeArray>::value, void>::type>
             {
-                using type = alpaka::dim::Dim<std::rank<T>::value>;
+                using type = alpaka::dim::Dim<std::rank<TFixedSizeArray>::value>;
             };
         }
 
         namespace extent
         {
             //#############################################################################
-            //! The compile time array width get trait specialization.
+            //! The fixed size array width get trait specialization.
             //#############################################################################
             template<
-                typename T>
+                typename TFixedSizeArray>
             struct GetWidth<
-                T,
-                typename std::enable_if<std::is_array<T>::value && (std::rank<T>::value >= 1) && (std::rank<T>::value <= 3), void>::type>
+                TFixedSizeArray,
+                typename std::enable_if<std::is_array<TFixedSizeArray>::value && (std::rank<TFixedSizeArray>::value >= 1) && (std::rank<TFixedSizeArray>::value <= 3), void>::type>
             {
                 static std::size_t getWidth(
-                    T const &)
+                    TFixedSizeArray const &)
                 {
-                    return std::extent<T, std::rank<T>::value-1>::value;
+                    return std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value-1>::value;
                 }
             };
 
             //#############################################################################
-            //! The compile time array height get trait specialization.
+            //! The fixed size array height get trait specialization.
             //#############################################################################
             template<
-                typename T>
+                typename TFixedSizeArray>
             struct GetHeight<
-                T,
-                typename std::enable_if<std::is_array<T>::value && (std::rank<T>::value >= 2) && (std::rank<T>::value <= 3), void>::type>
+                TFixedSizeArray,
+                typename std::enable_if<std::is_array<TFixedSizeArray>::value && (std::rank<TFixedSizeArray>::value >= 2) && (std::rank<TFixedSizeArray>::value <= 3), void>::type>
             {
                 static std::size_t getHeight(
-                    T const &)
+                    TFixedSizeArray const &)
                 {
-                    return std::extent<T, std::rank<T>::value - 2>::value;
+                    return std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 2>::value;
                 }
             };
             //#############################################################################
-            //! The compile time array depth get trait specialization.
+            //! The fixed size array depth get trait specialization.
             //#############################################################################
             template<
-                typename T>
+                typename TFixedSizeArray>
             struct GetDepth<
-                T,
-                typename std::enable_if<std::is_array<T>::value && (std::rank<T>::value >= 3) && (std::rank<T>::value <= 3), void>::type>
+                TFixedSizeArray,
+                typename std::enable_if<std::is_array<TFixedSizeArray>::value && (std::rank<TFixedSizeArray>::value >= 3) && (std::rank<TFixedSizeArray>::value <= 3), void>::type>
             {
                 static std::size_t getDepth(
-                    T const &)
+                    TFixedSizeArray const &)
                 {
-                    return std::extent<T, std::rank<T>::value - 3>::value;
+                    return std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 3>::value;
                 }
             };
         }
@@ -314,13 +344,13 @@ namespace alpaka
         namespace memory
         {
             //#############################################################################
-            //! The compile time array memory space trait specialization.
+            //! The fixed size array memory space trait specialization.
             //#############################################################################
             template<
-                typename T>
+                typename TFixedSizeArray>
             struct GetMemSpace<
-                T,
-                typename std::enable_if<std::is_array<T>::value, void>::type>
+                TFixedSizeArray,
+                typename std::enable_if<std::is_array<TFixedSizeArray>::value, void>::type>
             {
 #ifdef __CUDA_ARCH__
                 using type = MemorySpaceCuda;
@@ -330,33 +360,35 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The compile time array memory element type get trait specialization.
+            //! The fixed size array memory element type get trait specialization.
             //#############################################################################
             template<
-                typename T>
+                typename TFixedSizeArray>
             struct GetMemElemType<
-                T,
-                typename std::enable_if<std::is_array<T>::value, void>::type>
+                TFixedSizeArray,
+                typename std::enable_if<std::is_array<TFixedSizeArray>::value, void>::type>
             {
-                using type = typename std::remove_all_extents<T>::type;
+                using type = typename std::remove_all_extents<TFixedSizeArray>::type;
             };
 
             //#############################################################################
-            //! The compile time array native pointer get trait specialization.
+            //! The fixed size array native pointer get trait specialization.
             //#############################################################################
             template<
-                typename T>
+                typename TFixedSizeArray>
             struct GetNativePtr<
-                T,
-                typename std::enable_if<std::is_array<T>::value, void>::type>
+                TFixedSizeArray,
+                typename std::enable_if<std::is_array<TFixedSizeArray>::value, void>::type>
             {
-                static T const * getNativePtr(
-                    T const & memBuf)
+                using TElement = typename std::remove_all_extents<TFixedSizeArray>::type;
+
+                static TElement const * getNativePtr(
+                    TFixedSizeArray const & memBuf)
                 {
                     return memBuf;
                 }
-                static T * getNativePtr(
-                    T & memBuf)
+                static TElement * getNativePtr(
+                    TFixedSizeArray & memBuf)
                 {
                     return memBuf;
                 }
@@ -375,10 +407,10 @@ namespace alpaka
             //! The std::array dimension getter trait specialization.
             //#############################################################################
             template<
-                typename T, 
+                typename TElement,
                 std::size_t TSize>
             struct GetDim<
-                std::array<T, TSize>>
+                std::array<TElement, TSize>>
             {
                 using type = alpaka::dim::Dim1;
             };
@@ -390,13 +422,13 @@ namespace alpaka
             //! The std::array width get trait specialization.
             //#############################################################################
             template<
-                typename T, 
+                typename TElement,
                 std::size_t TSize>
             struct GetWidth<
-                std::array<T, TSize> >
+                std::array<TElement, TSize> >
             {
                 static std::size_t getWidth(
-                    std::array<T, TSize> const & extent)
+                    std::array<TElement, TSize> const & extent)
                 {
                     return extent.size();
                 }
@@ -409,10 +441,10 @@ namespace alpaka
             //! The std::array memory space trait specialization.
             //#############################################################################
             template<
-                typename T, 
+                typename TElement,
                 std::size_t TSize>
             struct GetMemSpace<
-                std::array<T, TSize>>
+                std::array<TElement, TSize>>
             {
                 using type = MemorySpaceHost;
             };
@@ -421,30 +453,30 @@ namespace alpaka
             //! The std::array memory element type get trait specialization.
             //#############################################################################
             template<
-                typename T, 
+                typename TElement,
                 std::size_t TSize>
             struct GetMemElemType<
-                std::array<T, TSize>>
+                std::array<TElement, TSize>>
             {
-                using type = T;
+                using type = TElement;
             };
 
             //#############################################################################
             //! The std::array native pointer get trait specialization.
             //#############################################################################
             template<
-                typename T, 
+                typename TElement,
                 std::size_t TSize>
             struct GetNativePtr<
-                std::array<T, TSize>>
+                std::array<TElement, TSize>>
             {
-                static T const * getNativePtr(
-                    std::array<T, TSize> const & memBuf)
+                static TElement const * getNativePtr(
+                    std::array<TElement, TSize> const & memBuf)
                 {
                     return memBuf.data();
                 }
-                static T * getNativePtr(
-                    std::array<T, TSize> & memBuf)
+                static TElement * getNativePtr(
+                    std::array<TElement, TSize> & memBuf)
                 {
                     return memBuf.data();
                 }
@@ -463,10 +495,10 @@ namespace alpaka
             //! The dimension getter trait.
             //#############################################################################
             template<
-                typename T, 
+                typename TElement,
                 typename Allocator>
             struct GetDim<
-                std::vector<T, Allocator>>
+                std::vector<TElement, Allocator>>
             {
                 using type = alpaka::dim::Dim1;
             };
@@ -478,13 +510,13 @@ namespace alpaka
             //! The std::vector width get trait specialization.
             //#############################################################################
             template<
-                typename T, 
+                typename TElement,
                 typename Allocator>
             struct GetWidth<
-                std::vector<T, Allocator>>
+                std::vector<TElement, Allocator>>
             {
                 static std::size_t getWidth(
-                    std::vector<T, Allocator> const & extent)
+                    std::vector<TElement, Allocator> const & extent)
                 {
                     return extent.size();
                 }
@@ -497,10 +529,10 @@ namespace alpaka
             //! The std::vector memory space trait specialization.
             //#############################################################################
             template<
-                typename T, 
+                typename TElement,
                 typename Allocator>
             struct GetMemSpace<
-                std::vector<T, Allocator>>
+                std::vector<TElement, Allocator>>
             {
                 using type = MemorySpaceHost;
             };
@@ -509,71 +541,34 @@ namespace alpaka
             //! The std::vector memory element type get trait specialization.
             //#############################################################################
             template<
-                typename T, 
+                typename TElement,
                 typename Allocator>
             struct GetMemElemType<
-                std::vector<T, Allocator>>
+                std::vector<TElement, Allocator>>
             {
-                using type = T;
+                using type = TElement;
             };
 
             //#############################################################################
             //! The std::vector native pointer get trait specialization.
             //#############################################################################
             template<
-                typename T, 
+                typename TElement,
                 typename Allocator>
             struct GetNativePtr<
-                std::vector<T, Allocator>>
+                std::vector<TElement, Allocator>>
             {
-                static T const * getNativePtr(
-                    std::vector<T, Allocator> const & memBuf)
+                static TElement const * getNativePtr(
+                    std::vector<TElement, Allocator> const & memBuf)
                 {
                     return memBuf.data();
                 }
-                static T * getNativePtr(
-                    std::vector<T, Allocator> & memBuf)
+                static TElement * getNativePtr(
+                    std::vector<TElement, Allocator> & memBuf)
                 {
                     return memBuf.data();
                 }
             };
         }
     }
-
-    //#############################################################################
-    //! The runtime memory layout interface.
-    //!
-    //! This defines the pitches of the memory buffer.
-    //#############################################################################
-    /*template<
-        typename TDim>
-    struct RuntimeMemLayout;
-
-    //#############################################################################
-    //! The 1D runtime memory layout.
-    //#############################################################################
-    template<>
-    struct RuntimeMemLayout<
-        Dim1>
-    {};
-    //#############################################################################
-    //! The 2D runtime memory layout.
-    //#############################################################################
-    template<>
-    struct RuntimeMemLayout<
-        Dim2>
-    {
-        std::size_t uiRowPitchBytes;    //!< The width in bytes of the 2D array pointed to, including any padding added to the end of each row.
-    };
-    //#############################################################################
-    //! The 3D runtime memory layout.
-    //#############################################################################
-    template<>
-    struct RuntimeMemLayout<
-        Dim3>
-    {
-        std::size_t uiRowPitchBytes;    //!< The width in bytes of the 3D array pointed to, including any padding added to the end of each row.
-        std::size_t uiRowWidthBytes;    //!< The width of each row in bytes.
-        std::size_t uiSliceHeightRows;  //!< The height of each 2D slice in rows.
-    };*/
 }
