@@ -61,12 +61,12 @@ class MatMulKernel :
 	//! The kernel.
 	//-----------------------------------------------------------------------------
 	template<
-        typename TElement>
+        typename TElem>
 	ALPAKA_FCT_ACC void operator()(
 		std::uint32_t const n,
-		TElement const * const A,
-		TElement const * const B,
-		TElement * const C) const
+		TElem const * const A,
+		TElem const * const B,
+		TElem * const C) const
 	{
 		// Column and row of C to calculate.
 		auto const v2uiGridKernelIdx(TAcc::template getIdx<alpaka::Grid, alpaka::Kernels>().template subvec<2u>());
@@ -83,10 +83,10 @@ class MatMulKernel :
 		auto const uiBlockSizeLin(uiBlockKernelsExtentX * uiBlockKernelsExtentY);
 
 		// Shared memory used to store the current blocks of A and B.
-		auto * const pBlockSharedA(TAcc::template getBlockSharedExternMem<TElement>());
+		auto * const pBlockSharedA(TAcc::template getBlockSharedExternMem<TElem>());
 		auto * const pBlockSharedB(pBlockSharedA + uiBlockSizeLin);
 
-		TElement fCSum(0);
+		TElem fCSum(0);
 
 		// If the element is outside of the matrix, write zero into the shared block and prevent out-of-bounds access to A and B
 		bool const bOutsideMatrix((cx >= n) || (cy >= n));
@@ -140,16 +140,16 @@ namespace alpaka
 		//! \return The size of the shared memory allocated for a block.
 		//-----------------------------------------------------------------------------
 		template<
-            typename TElement>
+            typename TElem>
 		ALPAKA_FCT_HOST static std::size_t getBlockSharedExternMemSizeBytes(
 			alpaka::Vec<3u> const & v3uiBlockKernelsExtent,
 			std::uint32_t const,
-			TElement const * const,
-			TElement const * const,
-			TElement * const)
+			TElem const * const,
+			TElem const * const,
+			TElem * const)
 		{
 			// Reserve the buffer for the two blocks of A and B.
-			return 2u * v3uiBlockKernelsExtent.prod() * sizeof(TElement);
+			return 2u * v3uiBlockKernelsExtent.prod() * sizeof(TElem);
 		}
 	};
 }
@@ -201,8 +201,7 @@ struct ProfileAcceleratedMatMulKernel
 		std::cout << std::endl;
 		std::cout << "################################################################################" << std::endl;
 
-		using Kernel = MatMulKernel<>;
-		using AccMemorySpace = typename TAcc::MemorySpace;
+        using Kernel = MatMulKernel<>;
 
 		// Let alpaka calculate a good block and grid sizes given our full problem extent.
 		alpaka::WorkExtent const workExtent(alpaka::getValidWorkExtent<TAcc>(
@@ -223,19 +222,33 @@ struct ProfileAcceleratedMatMulKernel
 		std::vector<std::uint32_t> vuiC(uiMatrixSize * uiMatrixSize, 0u);
 
 		// Allocate accelerator buffers and copy.
-		std::size_t const &
-		uiSizeElements(
-			uiMatrixSize * uiMatrixSize);
-		alpaka::extent::RuntimeExtents<alpaka::dim::Dim1> extent{
-			uiSizeElements
-		};
+		alpaka::extent::RuntimeExtents<alpaka::dim::Dim2> extent(
+            uiMatrixSize,
+            uiMatrixSize
+		);
+
+        // Wrap the std::vectors into a memory buffer object.
+        // For 1D data this would not be required because the copy is specialized for std::vector and std::array.
+        // For multi dimensional data either directly create them using alpaka::memory::alloc<Type, MemSpaceHost>
+        // or use MemBufPlainPtrWrapper to wrap the data.
+        using MemBufWrapper = alpaka::memory::MemBufPlainPtrWrapper<
+            alpaka::memory::MemSpaceHost,
+            std::uint32_t,
+            alpaka::dim::Dim2>;
+        MemBufWrapper memBufAHost(vuiA.data(), extent);
+        MemBufWrapper memBufBHost(vuiB.data(), extent);
+        MemBufWrapper memBufCHost(vuiC.data(), extent);
+
+        // Allocate the buffers on the accelerator.
+        using AccMemorySpace = typename alpaka::memory::GetMemSpaceT<TAcc>;
 		auto memBufAAcc(alpaka::memory::alloc<std::uint32_t, AccMemorySpace>(extent));
 		auto memBufBAcc(alpaka::memory::alloc<std::uint32_t, AccMemorySpace>(extent));
 		auto memBufCAcc(alpaka::memory::alloc<std::uint32_t, AccMemorySpace>(extent));
 
-		alpaka::memory::copy(memBufAAcc, vuiA, extent);
-		alpaka::memory::copy(memBufBAcc, vuiB, extent);
-		alpaka::memory::copy(memBufCAcc, vuiC, extent);
+        // Copy Host -> Acc.
+		alpaka::memory::copy(memBufAAcc, memBufAHost, extent);
+		alpaka::memory::copy(memBufBAcc, memBufBHost, extent);
+		alpaka::memory::copy(memBufCAcc, memBufCHost, extent);
 
 		// Build the kernel executor.
 		auto exec(alpaka::createKernelExecutor<TAcc, Kernel>());
@@ -249,7 +262,7 @@ struct ProfileAcceleratedMatMulKernel
 			alpaka::memory::getNativePtr(memBufCAcc));
 
 		// Copy back the result.
-		alpaka::memory::copy(vuiC, memBufCAcc, extent);
+		alpaka::memory::copy(memBufCHost, memBufCAcc, extent);
 
 		// Assert that the results are correct.
 		// When multiplying square matrices filled with ones, the result of each cell is the size of the matrix.

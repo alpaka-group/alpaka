@@ -21,7 +21,10 @@
 
 #pragma once
 
-#include <alpaka/traits/Acc.hpp>    // GetAccName
+#include <alpaka/traits/Acc.hpp>        // GetAccName
+#include <alpaka/traits/Memory.hpp>     // GetMemSpace
+
+#include <alpaka/host/MemorySpace.hpp>  // MemSpaceHost
 
 namespace alpaka
 {
@@ -53,6 +56,19 @@ namespace alpaka
                 {
                     return "AccFibers";
                 }
+            };
+        }
+
+        namespace memory
+        {
+            //#############################################################################
+            //! The fibers accelerator memory space trait specialization.
+            //#############################################################################
+            template<>
+            struct GetMemSpace<
+                fibers::detail::AccFibers>
+            {
+                using type = alpaka::memory::MemSpaceHost;
             };
         }
     }

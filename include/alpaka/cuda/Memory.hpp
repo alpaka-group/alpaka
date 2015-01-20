@@ -27,8 +27,8 @@
 #include <alpaka/core/BasicDims.hpp>        // dim::Dim<N>
 #include <alpaka/core/RuntimeExtents.hpp>   // extent::RuntimeExtents<TDim>
 
-#include <alpaka/cuda/MemorySpace.hpp>      // MemorySpaceCuda
-#include <alpaka/host/MemorySpace.hpp>      // MemorySpaceHost
+#include <alpaka/cuda/MemorySpace.hpp>      // MemSpaceCuda
+#include <alpaka/host/MemorySpace.hpp>      // MemSpaceHost
 
 #include <alpaka/cuda/Common.hpp>
 
@@ -46,13 +46,13 @@ namespace alpaka
             //! The CUDA memory buffer.
             //#############################################################################
             template<
-                typename TElement, 
+                typename TElem, 
                 typename TDim>
             class MemBufCuda :
                 public alpaka::extent::RuntimeExtents<TDim>
             {
             public:
-                using Element = TElement;
+                using Elem = TElem;
                 using Dim = TDim;
 
             public:
@@ -62,16 +62,18 @@ namespace alpaka
                 template<
                     typename TExtent>
                 MemBufCuda(
-                    TElement * pMem,
+                    TElem * pMem,
+                    std::size_t const & uiPitchBytes,
                     TExtent const & extent) :
-                    RuntimeExtents<TDim>(extent),
-                    m_spMem(
-                        pMem,
-                        [](TElement * pBuffer)
-                        {
-                            assert(pBuffer);
-                            cudaFree(reinterpret_cast<void *>(pBuffer));
-                        })
+                        RuntimeExtents<TDim>(extent),
+                        m_spMem(
+                            pMem,
+                            [](TElem * pBuffer)
+                            {
+                                assert(pBuffer);
+                                cudaFree(reinterpret_cast<void *>(pBuffer));
+                            }),
+                        m_uiPitchBytes(uiPitchBytes)
                 {
                     static_assert(
                         std::is_same<TDim, alpaka::dim::GetDimT<TExtent>>::value,
@@ -79,7 +81,9 @@ namespace alpaka
                 }
 
             public:
-                std::shared_ptr<TElement> m_spMem;
+                std::shared_ptr<TElem> m_spMem;
+
+                std::size_t m_uiPitchBytes; // \TODO: By using class specialization for Dim1 we could remove this value in this case.
             };
 
             //#############################################################################
@@ -126,8 +130,7 @@ namespace alpaka
             //! The CUDA 1D memory copy trait specialization.
             //#############################################################################
             template<>
-            struct MemCopyCuda
-            <
+            struct MemCopyCuda<
                 alpaka::dim::Dim1
             >
             {
@@ -146,7 +149,7 @@ namespace alpaka
                         "The source and the destination buffers are required to have the same dimensionality!");
                     static_assert(
                         std::is_same<alpaka::dim::GetDimT<TMemBufDst>, alpaka::dim::GetDimT<TExtent>>::value,
-                        "The buffers and the extent are required to have the same dimensionality!");
+                        "The destination buffer and the extent are required to have the same dimensionality!");
                     static_assert(
                         std::is_same<alpaka::memory::GetMemElemTypeT<TMemBufDst>, alpaka::memory::GetMemElemTypeT<TMemBufSrc>>::value,
                         "The source and the destination buffers are required to have the same element type!");
@@ -189,7 +192,7 @@ namespace alpaka
                         "The source and the destination buffers are required to have the same dimensionality!");
                     static_assert(
                         std::is_same<alpaka::dim::GetDimT<TMemBufDst>, alpaka::dim::GetDimT<TExtent>>::value,
-                        "The buffers and the extent are required to have the same dimensionality!");
+                        "The destination buffer and the extent are required to have the same dimensionality!");
                     static_assert(
                         std::is_same<alpaka::memory::GetMemElemTypeT<TMemBufDst>, alpaka::memory::GetMemElemTypeT<TMemBufSrc>>::value,
                         "The source and the destination buffers are required to have the same element type!");
@@ -209,9 +212,9 @@ namespace alpaka
                     ALPAKA_CUDA_CHECK(
                         cudaMemcpy2D(
                             reinterpret_cast<void *>(alpaka::memory::getNativePtr(memBufDst)),
-                            uiDstWidth,     // \FIXME: Pitch currently not supported!
+                            alpaka::memory::getPitchBytes(memBufDst),
                             reinterpret_cast<void const *>(alpaka::memory::getNativePtr(memBufSrc)),
-                            uiSrcWidth,     // \FIXME: Pitch currently not supported!
+                            alpaka::memory::getPitchBytes(memBufSrc),
                             uiExtentWidth * sizeof(alpaka::memory::GetMemElemTypeT<TMemBufDst>),
                             uiExtentHeight,
                             cudaMemcpyKindVal));
@@ -240,7 +243,7 @@ namespace alpaka
                         "The source and the destination buffers are required to have the same dimensionality!");
                     static_assert(
                         std::is_same<alpaka::dim::GetDimT<TMemBufDst>, alpaka::dim::GetDimT<TExtent>>::value,
-                        "The buffers and the extent are required to have the same dimensionality!");
+                        "The destination buffer and the extent are required to have the same dimensionality!");
                     static_assert(
                         std::is_same<alpaka::memory::GetMemElemTypeT<TMemBufDst>, alpaka::memory::GetMemElemTypeT<TMemBufSrc>>::value,
                         "The source and the destination buffers are required to have the same element type!");
@@ -256,10 +259,10 @@ namespace alpaka
                     auto const uiSrcDepth(alpaka::extent::getDepth(memBufSrc));
                     assert(uiExtentWidth <= uiDstWidth);
                     assert(uiExtentHeight <= uiDstHeight);
-                    assert(uiExtentHeight <= uiDstDepth);
+                    assert(uiExtentDepth <= uiDstDepth);
                     assert(uiExtentWidth <= uiSrcWidth);
                     assert(uiExtentHeight <= uiSrcHeight);
-                    assert(uiExtentHeight <= uiSrcDepth);
+                    assert(uiExtentDepth <= uiSrcDepth);
 
                     // Fill CUDA parameter structure.
                     cudaMemcpy3DParms cudaMemcpy3DParmsVal = {0};
@@ -268,7 +271,7 @@ namespace alpaka
                     cudaMemcpy3DParmsVal.srcPtr = 
                         make_cudaPitchedPtr(
                             reinterpret_cast<void *>(alpaka::memory::getNativePtr(memBufSrc)),
-                            uiSrcWidth,     // \FIXME: Pitch currently not supported!
+                            alpaka::memory::getPitchBytes(memBufSrc),
                             uiSrcWidth,
                             uiSrcHeight);
                     //cudaMemcpy3DParmsVal.dstArray;    // Either dstArray or dstPtr.
@@ -276,7 +279,7 @@ namespace alpaka
                     cudaMemcpy3DParmsVal.dstPtr = 
                         make_cudaPitchedPtr(
                             reinterpret_cast<void *>(alpaka::memory::getNativePtr(memBufDst)),
-                            uiDstWidth,     // \FIXME: Pitch currently not supported!
+                            alpaka::memory::getPitchBytes(memBufDst),
                             uiDstWidth,
                             uiDstHeight);
                     cudaMemcpy3DParmsVal.extent = 
@@ -306,9 +309,10 @@ namespace alpaka
             //! The MemBufHost dimension getter trait.
             //#############################################################################
             template<
-                typename TElement,
+                typename TElem,
                 typename TDim>
-            struct GetDim<cuda::detail::MemBufCuda<TElement, TDim>>
+            struct GetDim<
+                cuda::detail::MemBufCuda<TElem, TDim>>
             {
                 using type = TDim;
             };
@@ -320,15 +324,15 @@ namespace alpaka
             //! The MemBufCuda width get trait specialization.
             //#############################################################################
             template<
-                typename TElement,
+                typename TElem,
                 typename TDim>
             struct GetWidth<
-                cuda::detail::MemBufCuda<TElement, TDim>,
-                typename std::enable_if<(TDim::value >= 1) && (TDim::value <= 3), void>::type
+                cuda::detail::MemBufCuda<TElem, TDim>,
+                typename std::enable_if<(TDim::value >= 1u) && (TDim::value <= 3u), void>::type
             >
             {
                 static std::size_t getWidth(
-                    cuda::detail::MemBufCuda<TElement, TDim> const & extent)
+                    cuda::detail::MemBufCuda<TElem, TDim> const & extent)
                 {
                     return extent.m_uiWidth;
                 }
@@ -338,15 +342,15 @@ namespace alpaka
             //! The MemBufCuda height get trait specialization.
             //#############################################################################
             template<
-                typename TElement,
+                typename TElem,
                 typename TDim>
             struct GetHeight<
-                cuda::detail::MemBufCuda<TElement, TDim>,
-                typename std::enable_if<(TDim::value >= 2) && (TDim::value <= 3), void>::type
+                cuda::detail::MemBufCuda<TElem, TDim>,
+                typename std::enable_if<(TDim::value >= 2u) && (TDim::value <= 3u), void>::type
             >
             {
                 static std::size_t getHeight(
-                    cuda::detail::MemBufCuda<TElement, TDim> const & extent)
+                    cuda::detail::MemBufCuda<TElem, TDim> const & extent)
                 {
                     return extent.m_uiHeight;
                 }
@@ -355,15 +359,15 @@ namespace alpaka
             //! The MemBufCuda depth get trait specialization.
             //#############################################################################
             template<
-                typename TElement, 
+                typename TElem, 
                 typename TDim>
             struct GetDepth<
-                cuda::detail::MemBufCuda<TElement, TDim>,
-                typename std::enable_if<(TDim::value >= 3) && (TDim::value <= 3), void>::type
+                cuda::detail::MemBufCuda<TElem, TDim>,
+                typename std::enable_if<(TDim::value >= 3u) && (TDim::value <= 3u), void>::type
             >
             {
                 static std::size_t getDepth(
-                    cuda::detail::MemBufCuda<TElement, TDim> const & extent)
+                    cuda::detail::MemBufCuda<TElem, TDim> const & extent)
                 {
                     return extent.m_uiDepth;
                 }
@@ -376,53 +380,75 @@ namespace alpaka
             //! The MemBufCuda memory space trait specialization.
             //#############################################################################
             template<
-                typename TElement, 
+                typename TElem, 
                 typename TDim>
             struct GetMemSpace<
-                cuda::detail::MemBufCuda<TElement, TDim>>
+                cuda::detail::MemBufCuda<TElem, TDim>>
             {
-                using type = MemorySpaceCuda;
+                using type = alpaka::memory::MemSpaceCuda;
             };
 
             //#############################################################################
             //! The MemBufCuda memory element type get trait specialization.
             //#############################################################################
             template<
-                typename TElement, 
+                typename TElem, 
                 typename TDim>
             struct GetMemElemType<
-                cuda::detail::MemBufCuda<TElement, TDim>>
+                cuda::detail::MemBufCuda<TElem, TDim>>
             {
-                using type = TElement;
+                using type = TElem;
+            };
+
+            //#############################################################################
+            //! The MemBufCuda memory buffer type trait specialization.
+            //#############################################################################
+            template<
+                typename TElem,
+                typename TDim>
+            struct GetMemBufType<
+                TElem, TDim, alpaka::memory::MemSpaceCuda>
+            {
+                using type = host::detail::MemBufCuda<TElem, TDim>;
             };
 
             //#############################################################################
             //! The MemBufCuda native pointer get trait specialization.
             //#############################################################################
             template<
-                typename TElement, 
+                typename TElem, 
                 typename TDim>
             struct GetNativePtr<
-                cuda::detail::MemBufCuda<TElement, TDim>>
+                cuda::detail::MemBufCuda<TElem, TDim>>
             {
-                static TElement const * getNativePtr(
-                    cuda::detail::MemBufCuda<TElement, TDim> const & memBuf)
+                static TElem const * getNativePtr(
+                    cuda::detail::MemBufCuda<TElem, TDim> const & memBuf)
                 {
                     return memBuf.m_spMem.get();
                 }
-                static TElement * getNativePtr(
-                    cuda::detail::MemBufCuda<TElement, TDim> & memBuf)
+                static TElem * getNativePtr(
+                    cuda::detail::MemBufCuda<TElem, TDim> & memBuf)
                 {
                     return memBuf.m_spMem.get();
                 }
             };
-        }
-    }
 
-    namespace traits
-    {
-        namespace memory
-        {
+            //#############################################################################
+            //! The CUDA buffer pitch get trait specialization.
+            //#############################################################################
+            template<
+                typename TElem,
+                typename TDim>
+            struct GetPitchBytes<
+                cuda::detail::MemBufCuda<TElem, TDim>>
+            {
+                static std::size_t getPitchBytes(
+                    cuda::detail::MemBufCuda<TElem, TDim> const & memPitch)
+                {
+                    return memPitch.m_uiPitchBytes;
+                }
+            };
+
             //#############################################################################
             //! The CUDA 1D memory allocation trait specialization.
             //#############################################################################
@@ -430,7 +456,7 @@ namespace alpaka
             struct MemAlloc<
                 T, 
                 alpaka::dim::Dim1, 
-                MemorySpaceCuda
+                alpaka::memory::MemSpaceCuda
             >
             {
                 template<
@@ -452,6 +478,7 @@ namespace alpaka
                     return
                         alpaka::cuda::detail::MemBufCuda<T, alpaka::dim::Dim1>(
                             pBuffer,
+                            uiWidthBytes,
                             extent);
                 }
             };
@@ -463,7 +490,7 @@ namespace alpaka
             struct MemAlloc<
                 T, 
                 alpaka::dim::Dim2, 
-                MemorySpaceCuda
+                alpaka::memory::MemSpaceCuda
             >
             {
                 template<
@@ -482,7 +509,7 @@ namespace alpaka
                     int iPitch;
                     ALPAKA_CUDA_CHECK(cudaMallocPitch(
                         &pBuffer,
-                        &iPitch,    // \FIXME: Pitch currently not supported!
+                        &iPitch,
                         uiWidthBytes,
                         uiHeight));
                     assert(pBuffer);
@@ -491,6 +518,7 @@ namespace alpaka
                     return
                         alpaka::cuda::detail::MemBufCuda<T, alpaka::dim::Dim2>(
                             pBuffer,
+                            static_cast<std::size_t>(iPitch),
                             extent);
                 }
             };
@@ -502,7 +530,7 @@ namespace alpaka
             struct MemAlloc<
                 T, 
                 alpaka::dim::Dim3, 
-                MemorySpaceCuda
+                alpaka::memory::MemSpaceCuda
             >
             {
                 template<
@@ -518,7 +546,7 @@ namespace alpaka
                     
                     cudaPitchedPtr cudaPitchedPtrVal;
                     ALPAKA_CUDA_CHECK(cudaMalloc3D(
-                        &cudaPitchedPtrVal,    // \FIXME: Pitch currently not supported!
+                        &cudaPitchedPtrVal,
                         cudaExtentVal));
 
                     assert(cudaPitchedPtrVal.ptr);
@@ -526,6 +554,7 @@ namespace alpaka
                     return
                         alpaka::cuda::detail::MemBufCuda<T, alpaka::dim::Dim3>(
                             cudaPitchedPtrVal.ptr,
+                            static_cast<std::size_t>(cudaPitchedPtrVal.pitch),
                             extent);
                 }
             };
@@ -537,8 +566,8 @@ namespace alpaka
                 typename TDim>
             struct MemCopy<
                 TDim,
-                MemorySpaceHost,
-                MemorySpaceCuda
+                alpaka::memory::MemSpaceHost,
+                alpaka::memory::MemSpaceCuda
                 >
             {
                 template<
@@ -568,8 +597,8 @@ namespace alpaka
                 typename TDim>
             struct MemCopy<
                 TDim,
-                MemorySpaceCuda, 
-                MemorySpaceHost
+                alpaka::memory::MemSpaceCuda,
+                alpaka::memory::MemSpaceHost
             >
             {
                 template<
@@ -599,8 +628,8 @@ namespace alpaka
                 typename TDim>
             struct MemCopy<
                 TDim,
-                MemorySpaceCuda,
-                MemorySpaceCuda
+                alpaka::memory::MemSpaceCuda,
+                alpaka::memory::MemSpaceCuda
             >
             {
                 template<
@@ -626,7 +655,7 @@ namespace alpaka
             template<>
             struct MemSet<
                 alpaka::dim::Dim1,
-                MemorySpaceCuda
+                alpaka::memory::MemSpaceCuda
             >
             {
                 template<
@@ -634,7 +663,7 @@ namespace alpaka
                     typename TMemBuf>
                 static void memSet(
                     TMemBuf & memBuf, 
-                    int const & iValue, 
+                    std::uint8_t const & byte, 
                     TExtent const & extent)
                 {
                     static_assert(
@@ -652,7 +681,7 @@ namespace alpaka
                     ALPAKA_CUDA_CHECK(
                         cudaMemset(
                             reinterpret_cast<void *>(alpaka::memory::getNativePtr(memBuf)),
-                            iValue,
+                            static_cast<int>(byte),
                             uiExtentWidth * sizeof(alpaka::memory::GetMemElemTypeT<TMemBuf>)));
                 }
             };
@@ -662,7 +691,7 @@ namespace alpaka
             template<>
             struct MemSet<
                 alpaka::dim::Dim2,
-                MemorySpaceCuda
+                alpaka::memory::MemSpaceCuda
             >
             {
                 template<
@@ -670,7 +699,7 @@ namespace alpaka
                     typename TMemBuf>
                 static void memSet(
                     TMemBuf & memBuf, 
-                    int const & iValue, 
+                    std::uint8_t const & byte, 
                     TExtent const & extent)
                 {
                     static_assert(
@@ -692,8 +721,8 @@ namespace alpaka
                     ALPAKA_CUDA_CHECK(
                         cudaMemset2D(
                             reinterpret_cast<void *>(alpaka::memory::getNativePtr(memBuf)),
-                            uiDstWidth,  // \FIXME: Pitch currently not supported!
-                            iValue,
+                            alpaka::memory::getPitchBytes(memBuf),
+                            static_cast<int>(byte),
                             uiExtentWidth * sizeof(alpaka::memory::GetMemElemTypeT<TMemBuf>),
                             uiExtentHeight));
                 }
@@ -704,7 +733,7 @@ namespace alpaka
             template<>
             struct MemSet<
                 alpaka::dim::Dim3,
-                MemorySpaceCuda
+                alpaka::memory::MemSpaceCuda
             >
             {
                 template<
@@ -712,7 +741,7 @@ namespace alpaka
                     typename TMemBuf>
                 static void memSet(
                     TMemBuf & memBuf, 
-                    int const & iValue, 
+                    std::uint8_t const & byte, 
                     TExtent const & extent)
                 {
                     static_assert(
@@ -736,7 +765,7 @@ namespace alpaka
                     cudaPitchedPtr const cudaPitchedPtrVal(
                         make_cudaPitchedPtr(
                             reinterpret_cast<void *>(alpaka::memory::getNativePtr(memBuf)),
-                            uiDstWidth,  // \FIXME: Pitch currently not supported!
+                            alpaka::memory::getPitchBytes(memBuf),
                             uiDstWidth,
                             uiDstHeight));
                     
@@ -750,7 +779,7 @@ namespace alpaka
                     ALPAKA_CUDA_CHECK(
                         cudaMemset3D(
                             cudaPitchedPtrVal,
-                            iValue,
+                            static_cast<int>(byte),
                             cudaExtentVal));
                 }
             };

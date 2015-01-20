@@ -55,16 +55,16 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TExtent>
-            RuntimeExtents(
+            explicit RuntimeExtents(
                 TExtent const & extent) :
-                m_uiWidth(extent::getWidth(extent))
+                    m_uiWidth(extent::getWidth(extent))
             {}
             //-----------------------------------------------------------------------------
             //! Constructor.
             //-----------------------------------------------------------------------------
             explicit RuntimeExtents(
                 std::size_t const & uiWidth) :
-                m_uiWidth(uiWidth)
+                    m_uiWidth(uiWidth)
             {}
 
         public:
@@ -86,10 +86,10 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TExtent>
-            RuntimeExtents(
+            explicit RuntimeExtents(
                 TExtent const & extent) :
-                m_uiWidth(extent::getWidth(extent)),
-                m_uiHeight(extent::getHeight(extent))
+                    m_uiWidth(extent::getWidth(extent)),
+                    m_uiHeight(extent::getHeight(extent))
             {}
             //-----------------------------------------------------------------------------
             //! Constructor.
@@ -97,8 +97,8 @@ namespace alpaka
             explicit RuntimeExtents(
                 std::size_t const & uiWidth,
                 std::size_t const & uiHeight = 1) :
-                m_uiWidth(uiWidth),
-                m_uiHeight(uiHeight)
+                    m_uiWidth(uiWidth),
+                    m_uiHeight(uiHeight)
             {}
 
         public:
@@ -121,11 +121,11 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TExtent>
-            RuntimeExtents(
+            explicit RuntimeExtents(
                 TExtent const & extent) :
-                m_uiWidth(extent::getWidth(extent)),
-                m_uiHeight(extent::getHeight(extent)),
-                m_uiDepth(extent::getDepth(extent))
+                    m_uiWidth(extent::getWidth(extent)),
+                    m_uiHeight(extent::getHeight(extent)),
+                    m_uiDepth(extent::getDepth(extent))
             {}
             //-----------------------------------------------------------------------------
             //! Constructor.
@@ -134,9 +134,9 @@ namespace alpaka
                 std::size_t const & uiWidth,
                 std::size_t const & uiHeight = 1,
                 std::size_t const & uiDepth = 1) :
-                m_uiWidth(uiWidth),
-                m_uiHeight(uiHeight),
-                m_uiDepth(uiDepth)
+                    m_uiWidth(uiWidth),
+                    m_uiHeight(uiHeight),
+                    m_uiDepth(uiDepth)
             {}
 
         public:
@@ -171,10 +171,10 @@ namespace alpaka
                 typename TDim>
             struct GetWidth<
                 alpaka::extent::RuntimeExtents<TDim>,
-                typename std::enable_if<(TDim::value >= 1) && (TDim::value <= 3), void>::type>
+                typename std::enable_if<(TDim::value >= 1u) && (TDim::value <= 3u), void>::type>
             {
                 static std::size_t getWidth(
-                    alpaka::extent::RuntimeExtents<alpaka::dim::Dim1> const & extent)
+                    alpaka::extent::RuntimeExtents<TDim> const & extent)
                 {
                     return extent.m_uiWidth;
                 }
@@ -187,10 +187,10 @@ namespace alpaka
                 typename TDim>
             struct GetHeight<
                 alpaka::extent::RuntimeExtents<TDim>,
-                typename std::enable_if<(TDim::value >= 2) && (TDim::value <= 3), void>::type>
+                typename std::enable_if<(TDim::value >= 2u) && (TDim::value <= 3u), void>::type>
             {
                 static std::size_t getHeight(
-                    alpaka::extent::RuntimeExtents<alpaka::dim::Dim3> const & extent)
+                    alpaka::extent::RuntimeExtents<TDim> const & extent)
                 {
                     return extent.m_uiHeight;
                 }
@@ -203,10 +203,10 @@ namespace alpaka
                 typename TDim>
             struct GetDepth<
                 alpaka::extent::RuntimeExtents<TDim>,
-                typename std::enable_if<(TDim::value >= 3) && (TDim::value <= 3), void>::type>
+                typename std::enable_if<(TDim::value >= 3u) && (TDim::value <= 3u), void>::type>
             {
                 static std::size_t getDepth(
-                    alpaka::extent::RuntimeExtents<alpaka::dim::Dim3> const & extent)
+                    alpaka::extent::RuntimeExtents<TDim> const & extent)
                 {
                     return extent.m_uiDepth;
                 }

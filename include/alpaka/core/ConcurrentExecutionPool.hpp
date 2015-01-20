@@ -107,9 +107,10 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Constructor.
             //-----------------------------------------------------------------------------
-            TaskPackageImpl(TFunc && func) :
-                m_Promise(),
-                m_Func(std::forward<TFunc>(func))
+            TaskPackageImpl(
+                TFunc && func) :
+                    m_Promise(),
+                    m_Func(std::forward<TFunc>(func))
             {}
 
         private:
@@ -157,9 +158,10 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Constructor.
             //-----------------------------------------------------------------------------
-            TaskPackageImpl(TFunc && func) :
-                m_Promise(),
-                m_Func(std::forward<TFunc>(func))
+            TaskPackageImpl(
+                TFunc && func) :
+                    m_Promise(),
+                    m_Func(std::forward<TFunc>(func))
             {}
 
         private:

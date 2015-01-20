@@ -88,7 +88,7 @@ namespace alpaka
                 protected InterfacedAtomicThreads
             {
             public:
-                using MemorySpace = MemorySpaceHost;
+                using MemorySpace = alpaka::memory::MemSpaceHost;
 
                 template<
                     typename TAcceleratedKernel>

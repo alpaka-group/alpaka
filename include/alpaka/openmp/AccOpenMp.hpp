@@ -77,7 +77,7 @@ namespace alpaka
                 protected InterfacedAtomicOpenMp
             {
             public:
-                using MemorySpace = MemorySpaceHost;
+                using MemorySpace = alpaka::memory::MemSpaceHost;
 
                 template<
                     typename TAcceleratedKernel>

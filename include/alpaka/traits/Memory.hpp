@@ -26,8 +26,8 @@
 #include <alpaka/traits/Dim.hpp>        // GetDimT
 #include <alpaka/traits/Extent.hpp>     // traits::getXXX
 
-#include <alpaka/host/MemorySpace.hpp>  // MemorySpaceHost
-#include <alpaka/cuda/MemorySpace.hpp>  // MemorySpaceCuda
+#include <alpaka/host/MemorySpace.hpp>  // MemSpaceHost
+#include <alpaka/cuda/MemorySpace.hpp>  // MemSpaceCuda
 
 #include <type_traits>                  // std::enable_if, std::is_array, std::extent
 #include <vector>                       // std::vector
@@ -46,7 +46,7 @@ namespace alpaka
             //! The memory space trait.
             //#############################################################################
             template<
-                typename TMemBuf, 
+                typename T,
                 typename TSfinae = void>
             struct GetMemSpace;
 
@@ -59,6 +59,16 @@ namespace alpaka
             struct GetMemElemType;
 
             //#############################################################################
+            //! The memory buffer type trait.
+            //#############################################################################
+            template<
+                typename TMemSpace,
+                typename TElem,
+                typename TDim,
+                typename TSfinae = void>
+            struct GetMemBufType;
+
+            //#############################################################################
             //! The native pointer get trait.
             //#############################################################################
             template<
@@ -67,10 +77,18 @@ namespace alpaka
             struct GetNativePtr;
 
             //#############################################################################
+            //! The pitch in bytes. This is the distance between two consecutive rows.
+            //#############################################################################
+            template<
+                typename TMemBuf,
+                typename TSfinae = void>
+            struct GetPitchBytes;
+
+            //#############################################################################
             //! The memory allocator trait.
             //#############################################################################
             template<
-                typename TElement, 
+                typename TElem, 
                 typename TDim, 
                 typename TMemSpace, 
                 typename TSfinae = void>
@@ -98,20 +116,6 @@ namespace alpaka
                 typename TMemSpace, 
                 typename TSfinae = void>
             struct MemSet;
-
-            //-----------------------------------------------------------------------------
-            //! The memory layout traits.
-            //-----------------------------------------------------------------------------
-            namespace layout
-            {
-                //#############################################################################
-                //! The pitch in bytes. This is the distance between two consecutive rows.
-                //#############################################################################
-                template<
-                    typename TMemBuf,
-                    typename TSfinae = void>
-                struct GetPitchBytes;
-            }
         }
     }
 
@@ -124,8 +128,8 @@ namespace alpaka
         //! The memory space trait alias template to remove the ::type.
         //#############################################################################
         template<
-            typename TMemBuf>
-        using GetMemSpaceT = typename traits::memory::GetMemSpace<TMemBuf>::type;
+            typename T>
+        using GetMemSpaceT = typename traits::memory::GetMemSpace<T>::type;
 
         //#############################################################################
         //! The memory element type trait alias template to remove the ::type.
@@ -133,6 +137,15 @@ namespace alpaka
         template<
             typename TMemBuf>
         using GetMemElemTypeT = typename traits::memory::GetMemElemType<TMemBuf>::type;
+
+        //#############################################################################
+        //! The memory buffer type trait alias template to remove the ::type.
+        //#############################################################################
+        template<
+            typename TElem,
+            typename TDim,
+            typename TMemSpace>
+        using GetMemBufTypeT = typename traits::memory::GetMemBufType<TElem, TDim, TMemSpace>::type;
 
         //-----------------------------------------------------------------------------
         //! Gets the native pointer of the memory buffer.
@@ -165,32 +178,34 @@ namespace alpaka
         }
 
         //-----------------------------------------------------------------------------
+        //! \return The pitch in bytes. This is the distance between two consecutive rows.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TMemBuf>
+            std::size_t getPitchBytes(
+            TMemBuf const & memBuf)
+        {
+            return traits::memory::GetPitchBytes<TMemBuf>::getPitchBytes(memBuf);
+        }
+
+        //-----------------------------------------------------------------------------
         //! Allocates memory in the given memory space.
         //!
         //! \tparam T The type of the returned buffer.
         //! \tparam TMemSpace The memory space to allocate in.
-        //! \tparam TMemLayout The type holding the memory layout of the buffer (pitches).
         //! \param extent The extents of the buffer.
-        //! \param memLayout The memory layout of the buffer (pitches).
         //! \return Pointer to newly allocated buffer.
         //-----------------------------------------------------------------------------
         template<
-            typename TElement, 
+            typename TElem, 
             typename TMemSpace, 
-            typename TExtent/*, 
-            typename TMemLayout*/>
+            typename TExtent>
         ALPAKA_FCT_HOST auto alloc(
-            TExtent const & extent = TExtent()/*, 
-            TMemLayout const & memLayout*/)
-            -> decltype(traits::memory::MemAlloc<TElement, dim::GetDimT<TExtent>, TMemSpace>::memAlloc(std::declval<TElement>()/*, memLayout*/))
+            TExtent const & extent = TExtent())
+            -> decltype(traits::memory::MemAlloc<TElem, dim::GetDimT<TExtent>, TMemSpace>::memAlloc(std::declval<TElem>()))
         {
-            /*static_assert(
-                std::is_same<GetDimT<TExtent>, GetDimT<TMemLayout>>::value,
-                "The extent and the memLayout are required to have the same dimensionality!");*/
-
-            return traits::memory::MemAlloc<TElement, dim::GetDimT<TExtent>, TMemSpace>::memAlloc(
-                extent/*, 
-                memLayout*/);
+            return traits::memory::MemAlloc<TElem, dim::GetDimT<TExtent>, TMemSpace>::memAlloc(
+                extent);
         }
 
         //-----------------------------------------------------------------------------
@@ -214,10 +229,12 @@ namespace alpaka
                 "The source and the destination buffers are required to have the same dimensionality!");
             static_assert(
                 std::is_same<alpaka::dim::GetDimT<TMemBufDst>, alpaka::dim::GetDimT<TExtent>>::value,
-                "The buffers and the extent are required to have the same dimensionality!");
+                "The destination buffer and the extent are required to have the same dimensionality!");
             static_assert(
                 std::is_same<GetMemElemTypeT<TMemBufDst>, GetMemElemTypeT<TMemBufSrc>>::value,
                 "The source and the destination buffers are required to have the same element type!");
+
+            // \TODO: Copy of arrays of different dimensions. Maybe only 1D to ND?
 
             traits::memory::MemCopy<dim::GetDimT<TMemBufDst>, GetMemSpaceT<TMemBufDst>, GetMemSpaceT<TMemBufSrc>>::memCopy(
                 memBufDst,
@@ -237,33 +254,17 @@ namespace alpaka
             typename TExtent>
         ALPAKA_FCT_HOST void set(
             TMemBuf & memBuf, 
-            int const & iValue, 
+            std::uint8_t const & byte, 
             TExtent const & extent = TExtent())
         {
             static_assert(
                 std::is_same<alpaka::dim::GetDimT<TMemBuf>, alpaka::dim::GetDimT<TExtent>>::value,
-                "The destination buffer and the extent are required to have the same dimensionality!");
+                "The buffer and the extent are required to have the same dimensionality!");
 
             traits::memory::MemSet<dim::GetDimT<TMemBuf>, GetMemSpaceT<TMemBuf>>::memSet(
                 memBuf,
-                iValue,
+                byte,
                 extent);
-        }
-
-        //-----------------------------------------------------------------------------
-        //! The memory layout traits specializations.
-        //-----------------------------------------------------------------------------
-        namespace layout
-        {
-            //-----------------------------------------------------------------------------
-            //! \return The pitch in bytes. This is the distance between two consecutive rows.
-            //-----------------------------------------------------------------------------
-            template<
-                typename TMemBuf>
-            std::size_t getPitchBytes()
-            {
-                return traits::memory::layout::GetPitchBytes<TMemBuf>::getPitchBytes();
-            }
         }
     }
     
@@ -285,7 +286,8 @@ namespace alpaka
                 typename TFixedSizeArray>
             struct GetDim<
                 TFixedSizeArray,
-                typename std::enable_if<std::is_array<TFixedSizeArray>::value, void>::type>
+                typename std::enable_if<
+                    std::is_array<TFixedSizeArray>::value, void>::type>
             {
                 using type = alpaka::dim::Dim<std::rank<TFixedSizeArray>::value>;
             };
@@ -300,12 +302,16 @@ namespace alpaka
                 typename TFixedSizeArray>
             struct GetWidth<
                 TFixedSizeArray,
-                typename std::enable_if<std::is_array<TFixedSizeArray>::value && (std::rank<TFixedSizeArray>::value >= 1) && (std::rank<TFixedSizeArray>::value <= 3), void>::type>
+                typename std::enable_if<
+                    std::is_array<TFixedSizeArray>::value
+                    && (std::rank<TFixedSizeArray>::value >= 1u)
+                    && (std::rank<TFixedSizeArray>::value <= 3u)
+                    && (std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 1u>::value > 0u), void>::type>
             {
                 static std::size_t getWidth(
                     TFixedSizeArray const &)
                 {
-                    return std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value-1>::value;
+                    return std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value-1u>::value;
                 }
             };
 
@@ -316,12 +322,16 @@ namespace alpaka
                 typename TFixedSizeArray>
             struct GetHeight<
                 TFixedSizeArray,
-                typename std::enable_if<std::is_array<TFixedSizeArray>::value && (std::rank<TFixedSizeArray>::value >= 2) && (std::rank<TFixedSizeArray>::value <= 3), void>::type>
+                typename std::enable_if<
+                    std::is_array<TFixedSizeArray>::value
+                    && (std::rank<TFixedSizeArray>::value >= 2u)
+                    && (std::rank<TFixedSizeArray>::value <= 3u)
+                    && (std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 2u>::value > 0u), void>::type>
             {
                 static std::size_t getHeight(
                     TFixedSizeArray const &)
                 {
-                    return std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 2>::value;
+                    return std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 2u>::value;
                 }
             };
             //#############################################################################
@@ -331,12 +341,16 @@ namespace alpaka
                 typename TFixedSizeArray>
             struct GetDepth<
                 TFixedSizeArray,
-                typename std::enable_if<std::is_array<TFixedSizeArray>::value && (std::rank<TFixedSizeArray>::value >= 3) && (std::rank<TFixedSizeArray>::value <= 3), void>::type>
+                typename std::enable_if<
+                    std::is_array<TFixedSizeArray>::value
+                    && (std::rank<TFixedSizeArray>::value >= 3u)
+                    && (std::rank<TFixedSizeArray>::value <= 3u)
+                    && (std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 3u>::value > 0u), void>::type>
             {
                 static std::size_t getDepth(
                     TFixedSizeArray const &)
                 {
-                    return std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 3>::value;
+                    return std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 3u>::value;
                 }
             };
         }
@@ -350,12 +364,13 @@ namespace alpaka
                 typename TFixedSizeArray>
             struct GetMemSpace<
                 TFixedSizeArray,
-                typename std::enable_if<std::is_array<TFixedSizeArray>::value, void>::type>
+                typename std::enable_if<
+                    std::is_array<TFixedSizeArray>::value, void>::type>
             {
 #ifdef __CUDA_ARCH__
-                using type = MemorySpaceCuda;
+                using type = alpaka::memory::MemSpaceCuda;
 #else
-                using type = MemorySpaceHost;
+                using type = alpaka::memory::MemSpaceHost;
 #endif
             };
 
@@ -366,7 +381,8 @@ namespace alpaka
                 typename TFixedSizeArray>
             struct GetMemElemType<
                 TFixedSizeArray,
-                typename std::enable_if<std::is_array<TFixedSizeArray>::value, void>::type>
+                typename std::enable_if<
+                    std::is_array<TFixedSizeArray>::value, void>::type>
             {
                 using type = typename std::remove_all_extents<TFixedSizeArray>::type;
             };
@@ -378,19 +394,40 @@ namespace alpaka
                 typename TFixedSizeArray>
             struct GetNativePtr<
                 TFixedSizeArray,
-                typename std::enable_if<std::is_array<TFixedSizeArray>::value, void>::type>
+                typename std::enable_if<
+                    std::is_array<TFixedSizeArray>::value, void>::type>
             {
-                using TElement = typename std::remove_all_extents<TFixedSizeArray>::type;
+                using TElem = typename std::remove_all_extents<TFixedSizeArray>::type;
 
-                static TElement const * getNativePtr(
+                static TElem const * getNativePtr(
                     TFixedSizeArray const & memBuf)
                 {
                     return memBuf;
                 }
-                static TElement * getNativePtr(
+                static TElem * getNativePtr(
                     TFixedSizeArray & memBuf)
                 {
                     return memBuf;
+                }
+            };
+
+            //#############################################################################
+            //! The fixed size array pitch get trait specialization.
+            //#############################################################################
+            template<
+                typename TFixedSizeArray>
+            struct GetPitchBytes<
+                TFixedSizeArray,
+                typename std::enable_if<
+                    std::is_array<TFixedSizeArray>::value
+                    && (std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 1u>::value > 0u), void>::type>
+            {
+                using TElem = typename std::remove_all_extents<TFixedSizeArray>::type;
+
+                static std::size_t getPitchBytes(
+                    TFixedSizeArray const &)
+                {
+                    return sizeof(TElem) * std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 1u>::value;
                 }
             };
         }
@@ -407,10 +444,10 @@ namespace alpaka
             //! The std::array dimension getter trait specialization.
             //#############################################################################
             template<
-                typename TElement,
+                typename TElem,
                 std::size_t TSize>
             struct GetDim<
-                std::array<TElement, TSize>>
+                std::array<TElem, TSize>>
             {
                 using type = alpaka::dim::Dim1;
             };
@@ -422,13 +459,13 @@ namespace alpaka
             //! The std::array width get trait specialization.
             //#############################################################################
             template<
-                typename TElement,
+                typename TElem,
                 std::size_t TSize>
             struct GetWidth<
-                std::array<TElement, TSize> >
+                std::array<TElem, TSize> >
             {
                 static std::size_t getWidth(
-                    std::array<TElement, TSize> const & extent)
+                    std::array<TElem, TSize> const & extent)
                 {
                     return extent.size();
                 }
@@ -441,44 +478,60 @@ namespace alpaka
             //! The std::array memory space trait specialization.
             //#############################################################################
             template<
-                typename TElement,
+                typename TElem,
                 std::size_t TSize>
             struct GetMemSpace<
-                std::array<TElement, TSize>>
+                std::array<TElem, TSize>>
             {
-                using type = MemorySpaceHost;
+                using type = alpaka::memory::MemSpaceHost;
             };
 
             //#############################################################################
             //! The std::array memory element type get trait specialization.
             //#############################################################################
             template<
-                typename TElement,
+                typename TElem,
                 std::size_t TSize>
             struct GetMemElemType<
-                std::array<TElement, TSize>>
+                std::array<TElem, TSize>>
             {
-                using type = TElement;
+                using type = TElem;
             };
 
             //#############################################################################
             //! The std::array native pointer get trait specialization.
             //#############################################################################
             template<
-                typename TElement,
+                typename TElem,
                 std::size_t TSize>
             struct GetNativePtr<
-                std::array<TElement, TSize>>
+                std::array<TElem, TSize>>
             {
-                static TElement const * getNativePtr(
-                    std::array<TElement, TSize> const & memBuf)
+                static TElem const * getNativePtr(
+                    std::array<TElem, TSize> const & memBuf)
                 {
                     return memBuf.data();
                 }
-                static TElement * getNativePtr(
-                    std::array<TElement, TSize> & memBuf)
+                static TElem * getNativePtr(
+                    std::array<TElem, TSize> & memBuf)
                 {
                     return memBuf.data();
+                }
+            };
+
+            //#############################################################################
+            //! The std::array pitch get trait specialization.
+            //#############################################################################
+            template<
+                typename TElem,
+                std::size_t TSize>
+            struct GetPitchBytes<
+                std::array<TElem, TSize>>
+            {
+                static std::size_t getPitchBytes(
+                    std::array<TElem, TSize> const & memPitch)
+                {
+                    return sizeof(TElem) * memPitch.size();
                 }
             };
         }
@@ -495,10 +548,10 @@ namespace alpaka
             //! The dimension getter trait.
             //#############################################################################
             template<
-                typename TElement,
+                typename TElem,
                 typename Allocator>
             struct GetDim<
-                std::vector<TElement, Allocator>>
+                std::vector<TElem, Allocator>>
             {
                 using type = alpaka::dim::Dim1;
             };
@@ -510,13 +563,13 @@ namespace alpaka
             //! The std::vector width get trait specialization.
             //#############################################################################
             template<
-                typename TElement,
+                typename TElem,
                 typename Allocator>
             struct GetWidth<
-                std::vector<TElement, Allocator>>
+                std::vector<TElem, Allocator>>
             {
                 static std::size_t getWidth(
-                    std::vector<TElement, Allocator> const & extent)
+                    std::vector<TElem, Allocator> const & extent)
                 {
                     return extent.size();
                 }
@@ -529,44 +582,60 @@ namespace alpaka
             //! The std::vector memory space trait specialization.
             //#############################################################################
             template<
-                typename TElement,
+                typename TElem,
                 typename Allocator>
             struct GetMemSpace<
-                std::vector<TElement, Allocator>>
+                std::vector<TElem, Allocator>>
             {
-                using type = MemorySpaceHost;
+                using type = alpaka::memory::MemSpaceHost;
             };
 
             //#############################################################################
             //! The std::vector memory element type get trait specialization.
             //#############################################################################
             template<
-                typename TElement,
+                typename TElem,
                 typename Allocator>
             struct GetMemElemType<
-                std::vector<TElement, Allocator>>
+                std::vector<TElem, Allocator>>
             {
-                using type = TElement;
+                using type = TElem;
             };
 
             //#############################################################################
             //! The std::vector native pointer get trait specialization.
             //#############################################################################
             template<
-                typename TElement,
+                typename TElem,
                 typename Allocator>
             struct GetNativePtr<
-                std::vector<TElement, Allocator>>
+                std::vector<TElem, Allocator>>
             {
-                static TElement const * getNativePtr(
-                    std::vector<TElement, Allocator> const & memBuf)
+                static TElem const * getNativePtr(
+                    std::vector<TElem, Allocator> const & memBuf)
                 {
                     return memBuf.data();
                 }
-                static TElement * getNativePtr(
-                    std::vector<TElement, Allocator> & memBuf)
+                static TElem * getNativePtr(
+                    std::vector<TElem, Allocator> & memBuf)
                 {
                     return memBuf.data();
+                }
+            };
+
+            //#############################################################################
+            //! The std::vector pitch get trait specialization.
+            //#############################################################################
+            template<
+                typename TElem,
+                typename Allocator>
+            struct GetPitchBytes<
+                std::vector<TElem, Allocator>>
+            {
+                static std::size_t getPitchBytes(
+                    std::vector<TElem, Allocator> const & memPitch)
+                {
+                    return sizeof(TElem) * memPitch.size();
                 }
             };
         }

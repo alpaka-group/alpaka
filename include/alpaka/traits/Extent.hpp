@@ -47,7 +47,7 @@ namespace alpaka
                 ALPAKA_FCT_HOST_ACC static std::size_t getWidth(
                     T const &)
                 {
-                    return 1;
+                    return 1u;
                 }
             };
             //#############################################################################
@@ -63,7 +63,7 @@ namespace alpaka
                 ALPAKA_FCT_HOST_ACC static std::size_t getHeight(
                     T const &)
                 {
-                    return 1;
+                    return 1u;
                 }
             };
             //#############################################################################
@@ -79,7 +79,7 @@ namespace alpaka
                 ALPAKA_FCT_HOST_ACC static std::size_t getDepth(
                     T const &)
                 {
-                    return 1;
+                    return 1u;
                 }
             };
         }

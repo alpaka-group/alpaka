@@ -27,7 +27,7 @@
 #include <alpaka/core/BasicDims.hpp>        // dim::Dim<N>
 #include <alpaka/core/RuntimeExtents.hpp>   // extent::RuntimeExtents<TDim>
 
-#include <alpaka/host/MemorySpace.hpp>      // MemorySpaceHost
+#include <alpaka/host/MemorySpace.hpp>      // MemSpaceHost
 
 #include <cstring>                          // std::memcpy, std::memset
 #include <cassert>                          // assert
@@ -44,13 +44,13 @@ namespace alpaka
             //! The host memory buffer.
             //#############################################################################
             template<
-                typename TElement,
+                typename TElem,
                 typename TDim>
             class MemBufHost :
                 public alpaka::extent::RuntimeExtents<TDim>
             {
             public:
-                using Element = TElement;
+                using Elem = TElem;
                 using Dim = TDim;
 
             public:
@@ -61,14 +61,14 @@ namespace alpaka
                     typename TExtent>
                 MemBufHost(
                     TExtent const & extent):
-                    RuntimeExtents<TDim>(extent),
-                    m_spMem(
-                        new TElement[computeElementCount(extent)],
-                        [](TElement * pBuffer)
-                        {
-                            assert(pBuffer);
-                            delete[] pBuffer;
-                        })
+                        RuntimeExtents<TDim>(extent),
+                        m_spMem(
+                            new TElem[computeElementCount(extent)],
+                            [](TElem * pBuffer)
+                            {
+                                assert(pBuffer);
+                                delete[] pBuffer;
+                            })
                 {}
 
             private:
@@ -87,7 +87,7 @@ namespace alpaka
                 }
 
             public:
-                std::shared_ptr<TElement> m_spMem;
+                std::shared_ptr<TElem> m_spMem;
             };
         }
     }
@@ -103,9 +103,10 @@ namespace alpaka
             //! The MemBufHost dimension getter trait.
             //#############################################################################
             template<
-                typename TElement, 
+                typename TElem, 
                 typename TDim>
-            struct GetDim<host::detail::MemBufHost<TElement, TDim>>
+            struct GetDim<
+                host::detail::MemBufHost<TElem, TDim>>
             {
                 using type = TDim;
             };
@@ -117,15 +118,15 @@ namespace alpaka
             //! The MemBufHost width get trait specialization.
             //#############################################################################
             template<
-                typename TElement, 
+                typename TElem, 
                 typename TDim>
             struct GetWidth<
-                host::detail::MemBufHost<TElement, TDim>,
-                typename std::enable_if<(TDim::value >= 1) && (TDim::value <= 3), void>::type
+                host::detail::MemBufHost<TElem, TDim>,
+                typename std::enable_if<(TDim::value >= 1u) && (TDim::value <= 3u), void>::type
             >
             {
                 static std::size_t getWidth(
-                    host::detail::MemBufHost<TElement, TDim> const & extent)
+                    host::detail::MemBufHost<TElem, TDim> const & extent)
                 {
                     return extent.m_uiWidth;
                 }
@@ -135,15 +136,15 @@ namespace alpaka
             //! The MemBufHost height get trait specialization.
             //#############################################################################
             template<
-                typename TElement, 
+                typename TElem, 
                 typename TDim>
             struct GetHeight<
-                host::detail::MemBufHost<TElement, TDim>,
-                typename std::enable_if<(TDim::value >= 2) && (TDim::value <= 3), void>::type
+                host::detail::MemBufHost<TElem, TDim>,
+                typename std::enable_if<(TDim::value >= 2u) && (TDim::value <= 3u), void>::type
             >
             {
                 static std::size_t getHeight(
-                    host::detail::MemBufHost<TElement, TDim> const & extent)
+                    host::detail::MemBufHost<TElem, TDim> const & extent)
                 {
                     return extent.m_uiHeight;
                 }
@@ -152,15 +153,15 @@ namespace alpaka
             //! The MemBufHost depth get trait specialization.
             //#############################################################################
             template<
-                typename TElement, 
+                typename TElem, 
                 typename TDim>
             struct GetDepth<
-                host::detail::MemBufHost<TElement, TDim>,
-                typename std::enable_if<(TDim::value >= 3) && (TDim::value <= 3), void>::type
+                host::detail::MemBufHost<TElem, TDim>,
+                typename std::enable_if<(TDim::value >= 3u) && (TDim::value <= 3u), void>::type
             >
             {
                 static std::size_t getDepth(
-                    host::detail::MemBufHost<TElement, TDim> const & extent)
+                    host::detail::MemBufHost<TElem, TDim> const & extent)
                 {
                     return extent.m_uiDepth;
                 }
@@ -173,44 +174,73 @@ namespace alpaka
             //! The MemBufHost memory space trait specialization.
             //#############################################################################
             template<
-                typename TElement, 
+                typename TElem, 
                 typename TDim>
             struct GetMemSpace<
-                host::detail::MemBufHost<TElement, TDim>>
+                host::detail::MemBufHost<TElem, TDim>>
             {
-                using type = MemorySpaceHost;
+                using type = alpaka::memory::MemSpaceHost;
             };
 
             //#############################################################################
             //! The MemBufHost memory element type get trait specialization.
             //#############################################################################
             template<
-                typename TElement, 
+                typename TElem, 
                 typename TDim>
             struct GetMemElemType<
-                host::detail::MemBufHost<TElement, TDim>>
+                host::detail::MemBufHost<TElem, TDim>>
             {
-                using type = TElement;
+                using type = TElem;
+            };
+
+            //#############################################################################
+            //! The MemBufHost memory buffer type trait specialization.
+            //#############################################################################
+            template<
+                typename TElem,
+                typename TDim>
+            struct GetMemBufType<
+                TElem, TDim, alpaka::memory::MemSpaceHost>
+            {
+                using type = host::detail::MemBufHost<TElem, TDim>;
             };
 
             //#############################################################################
             //! The MemBufHost native pointer get trait specialization.
             //#############################################################################
             template<
-                typename TElement, 
+                typename TElem, 
                 typename TDim>
             struct GetNativePtr<
-                host::detail::MemBufHost<TElement, TDim>>
+                host::detail::MemBufHost<TElem, TDim>>
             {
-                static TElement const * getNativePtr(
-                    host::detail::MemBufHost<TElement, TDim> const & memBuf)
+                static TElem const * getNativePtr(
+                    host::detail::MemBufHost<TElem, TDim> const & memBuf)
                 {
                     return memBuf.m_spMem.get();
                 }
-                static TElement * getNativePtr(
-                    host::detail::MemBufHost<TElement, TDim> & memBuf)
+                static TElem * getNativePtr(
+                    host::detail::MemBufHost<TElem, TDim> & memBuf)
                 {
                     return memBuf.m_spMem.get();
+                }
+            };
+
+            //#############################################################################
+            //! The MemBufHost pitch get trait specialization.
+            //#############################################################################
+            template<
+                typename TElem,
+                typename TDim>
+            struct GetPitchBytes<
+                host::detail::MemBufHost<TElem, TDim>>
+            {
+                static std::size_t getPitchBytes(
+                    host::detail::MemBufHost<TElem, TDim> const & memPitch)
+                {
+                    // No pitch on the host currently.
+                    return alpaka::extent::getWidth(memPitch) * sizeof(TElem);
                 }
             };
 
@@ -218,29 +248,23 @@ namespace alpaka
             //! The host accelerators memory allocation trait specialization.
             //#############################################################################
             template<
-                typename TElement, 
+                typename TElem, 
                 typename TDim>
             struct MemAlloc<
-                TElement,
+                TElem,
                 TDim,
-                MemorySpaceHost
+                alpaka::memory::MemSpaceHost
             >
             {
                 template<
                     typename TExtent>
-                static host::detail::MemBufHost<TElement, TDim> memAlloc(
+                static host::detail::MemBufHost<TElem, TDim> memAlloc(
                     TExtent const & extent)
                 {
-                    return host::detail::MemBufHost<TElement, TDim>(extent);
+                    return host::detail::MemBufHost<TElem, TDim>(extent);
                 }
             };
-        }
-    }
 
-    namespace traits
-    {
-        namespace memory
-        {
             //#############################################################################
             //! The host accelerators memory copy trait specialization.
             //!
@@ -250,8 +274,8 @@ namespace alpaka
                 typename TDim>
             struct MemCopy<
                 TDim, 
-                MemorySpaceHost, 
-                MemorySpaceHost
+                alpaka::memory::MemSpaceHost,
+                alpaka::memory::MemSpaceHost
             >
             {
                 template<
@@ -273,15 +297,79 @@ namespace alpaka
                         std::is_same<alpaka::memory::GetMemElemTypeT<TMemBufDst>, alpaka::memory::GetMemElemTypeT<TMemBufSrc>>::value,
                         "The source and the destination buffers are required to have the same element type!");
 
-                    auto const uiExtentElementCount(alpaka::extent::getProductOfExtents(extent));
-                    assert(uiExtentElementCount<=alpaka::extent::getProductOfExtents(memBufDst));
-                    assert(uiExtentElementCount<=alpaka::extent::getProductOfExtents(memBufSrc));
-                    auto const uiSizeBytes(uiExtentElementCount * sizeof(alpaka::memory::GetMemElemTypeT<TMemBufDst>));
+                    using Elem = alpaka::memory::GetMemElemTypeT<TMemBufDst>;
 
-                    std::memcpy(
-                        reinterpret_cast<void *>(alpaka::memory::getNativePtr(memBufDst)),
-                        reinterpret_cast<void const *>(alpaka::memory::getNativePtr(memBufSrc)),
-                        uiSizeBytes);
+                    auto const uiExtentWidth(alpaka::extent::getWidth(extent));
+                    auto const uiExtentHeight(alpaka::extent::getHeight(extent));
+                    auto const uiExtentDepth(alpaka::extent::getDepth(extent));
+                    auto const uiDstWidth(alpaka::extent::getWidth(memBufDst));
+                    auto const uiDstHeight(alpaka::extent::getHeight(memBufDst));
+                    auto const uiDstDepth(alpaka::extent::getDepth(memBufDst));
+                    auto const uiSrcWidth(alpaka::extent::getWidth(memBufSrc));
+                    auto const uiSrcHeight(alpaka::extent::getHeight(memBufSrc));
+                    auto const uiSrcDepth(alpaka::extent::getDepth(memBufSrc));
+                    assert(uiExtentWidth <= uiDstWidth);
+                    assert(uiExtentHeight <= uiDstHeight);
+                    assert(uiExtentDepth <= uiDstDepth);
+                    assert(uiExtentWidth <= uiSrcWidth);
+                    assert(uiExtentHeight <= uiSrcHeight);
+                    assert(uiExtentDepth <= uiSrcDepth);
+
+                    auto const uiExtentWidthBytes(uiExtentWidth * sizeof(Elem));
+                    auto const uiDstPitchBytes(alpaka::memory::getPitchBytes(memBufDst));
+                    auto const uiSrcPitchBytes(alpaka::memory::getPitchBytes(memBufSrc));
+                    assert(uiExtentWidthBytes <= uiDstPitchBytes);
+                    assert(uiExtentWidthBytes <= uiSrcPitchBytes);
+
+                    auto const pDstNative(reinterpret_cast<std::uint8_t *>(alpaka::memory::getNativePtr(memBufDst)));
+                    auto const pSrcNative(reinterpret_cast<std::uint8_t const *>(alpaka::memory::getNativePtr(memBufSrc)));
+                    auto const uiDstSliceSizeBytes(uiDstPitchBytes * uiDstHeight);
+                    auto const uiSrcSliceSizeBytes(uiSrcPitchBytes * uiSrcHeight);
+
+                    // If:
+                    // - the copy extent width and height are identical to the dst and src extent width and height
+                    // - the src and dst slice size is identical 
+                    // -> we can copy the whole memory at once overwriting the pitch bytes
+                    if((uiExtentWidth == uiDstWidth)
+                        && (uiExtentWidth == uiSrcWidth)
+                        && (uiExtentHeight == uiDstHeight)
+                        && (uiExtentHeight == uiSrcHeight)
+                        && (uiDstSliceSizeBytes == uiSrcSliceSizeBytes))
+                    {
+                        std::memcpy(
+                            reinterpret_cast<void *>(pDstNative),
+                            reinterpret_cast<void const *>(pSrcNative),
+                            uiDstSliceSizeBytes*uiExtentDepth);
+                    }
+                    else
+                    {
+                        for(std::size_t z(0); z < uiExtentDepth; ++z)
+                        {
+                            // If:
+                            // - the copy extent width is identical to the dst and src extent width
+                            // - the src and dst pitch is identical 
+                            // -> we can copy whole slices at once overwriting the pitch bytes
+                            if((uiExtentWidth == uiDstWidth)
+                                && (uiExtentWidth == uiSrcWidth)
+                                && (uiDstPitchBytes == uiSrcPitchBytes))
+                            {
+                                std::memcpy(
+                                    reinterpret_cast<void *>(pDstNative + z*uiDstSliceSizeBytes),
+                                    reinterpret_cast<void const *>(pSrcNative + z*uiSrcSliceSizeBytes),
+                                    uiDstPitchBytes*uiExtentHeight);
+                            }
+                            else
+                            {
+                                for(std::size_t y(0); y < uiExtentHeight; ++y)
+                                {
+                                    std::memcpy(
+                                        reinterpret_cast<void *>(pDstNative + y*uiDstPitchBytes + z*uiDstSliceSizeBytes),
+                                        reinterpret_cast<void const *>(pSrcNative + y*uiSrcPitchBytes + z*uiSrcSliceSizeBytes),
+                                        uiExtentWidthBytes);
+                                }
+                            }
+                        }
+                    }
                 }
             };
 
@@ -292,7 +380,7 @@ namespace alpaka
                 typename TDim>
             struct MemSet<
                 TDim, 
-                MemorySpaceHost
+                alpaka::memory::MemSpaceHost
             >
             {
                 template<
@@ -300,21 +388,71 @@ namespace alpaka
                     typename TMemBuf>
                 static void memSet(
                     TMemBuf & memBuf, 
-                    int const & iValue, 
+                    std::uint8_t const & byte, 
                     TExtent const & extent)
                 {
+                    using Elem = alpaka::memory::GetMemElemTypeT<TMemBuf>;
+
                     static_assert(
                         std::is_same<alpaka::dim::GetDimT<TMemBuf>, alpaka::dim::GetDimT<TExtent>>::value,
                         "The destination buffer and the extent are required to have the same dimensionality!");
 
-                    auto const uiExtentElementCount(alpaka::extent::getProductOfExtents(extent));
-                    assert(uiExtentElementCount<=alpaka::extent::getProductOfExtents(memBuf));
-                    auto const uiSizeBytes(uiExtentElementCount * sizeof(alpaka::memory::GetMemElemTypeT<TMemBuf>));
+                    auto const uiExtentWidth(alpaka::extent::getWidth(extent));
+                    auto const uiExtentHeight(alpaka::extent::getHeight(extent));
+                    auto const uiExtentDepth(alpaka::extent::getDepth(extent));
+                    auto const uiDstWidth(alpaka::extent::getWidth(memBuf));
+                    auto const uiDstHeight(alpaka::extent::getHeight(memBuf));
+                    auto const uiDstDepth(alpaka::extent::getDepth(memBuf));
+                    assert(uiExtentWidth <= uiDstWidth);
+                    assert(uiExtentHeight <= uiDstHeight);
+                    assert(uiExtentDepth <= uiDstDepth);
 
-                    std::memset(
-                        reinterpret_cast<void *>(alpaka::memory::getNativePtr(memBuf)),
-                        iValue,
-                        uiSizeBytes);
+                    auto const uiExtentWidthBytes(uiExtentWidth * sizeof(Elem));
+                    auto const uiDstPitchBytes(alpaka::memory::getPitchBytes(memBuf));
+                    assert(uiExtentWidthBytes <= uiDstPitchBytes);
+
+                    auto const pDstNative(reinterpret_cast<std::uint8_t *>(alpaka::memory::getNativePtr(memBuf)));
+                    auto const uiDstSliceSizeBytes(uiDstPitchBytes * uiDstHeight);
+
+                    int iByte(static_cast<int>(byte));
+
+                    // If:
+                    // - the set extent width and height are identical to the dst extent width and height
+                    // -> we can set the whole memory at once overwriting the pitch bytes
+                    if((uiExtentWidth == uiDstWidth)
+                        && (uiExtentHeight == uiDstHeight))
+                    {
+                        std::memset(
+                            reinterpret_cast<void *>(pDstNative),
+                            iByte,
+                            uiDstSliceSizeBytes*uiExtentDepth);
+                    }
+                    else
+                    {
+                        for(std::size_t z(0); z < uiExtentDepth; ++z)
+                        {
+                            // If: 
+                            // - the set extent width is identical to the dst extent width
+                            // -> we can set whole slices at once overwriting the pitch bytes
+                            if(uiExtentWidth == uiDstWidth)
+                            {
+                                std::memset(
+                                    reinterpret_cast<void *>(pDstNative + z*uiDstSliceSizeBytes),
+                                    iByte,
+                                    uiDstPitchBytes*uiExtentHeight);
+                            }
+                            else
+                            {
+                                for(std::size_t y(0); y < uiExtentHeight; ++y)
+                                {
+                                    std::memset(
+                                        reinterpret_cast<void *>(pDstNative + y*uiDstPitchBytes + z*uiDstSliceSizeBytes),
+                                        iByte,
+                                        uiExtentWidthBytes);
+                                }
+                            }
+                        }
+                    }
                 }
             };
         }

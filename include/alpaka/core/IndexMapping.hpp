@@ -48,16 +48,16 @@ namespace alpaka
             1u>
         {
             //-----------------------------------------------------------------------------
-            // \tparam TElement Type of the index values.
+            // \tparam TElem Type of the index values.
             // \param index Index to be mapped.
             // \param extent Spatial size to map the index to.
             // \return Vector of dimension TuiDimDst.
             //-----------------------------------------------------------------------------
             template<
-                typename TElement>
+                typename TElem>
             ALPAKA_FCT_HOST_ACC static Vec<3u> mapIndex(
-                Vec<1u, TElement> const & index, 
-                Vec<2u, TElement> const & extent)
+                Vec<1u, TElem> const & index, 
+                Vec<2u, TElem> const & extent)
             {
                 auto const & uiIndex(index[0]);
                 auto const uiExtentXyLin(extent.prod());
@@ -79,16 +79,16 @@ namespace alpaka
             1u>
         {
             //-----------------------------------------------------------------------------
-            // \tparam TElement Type of the index values.
+            // \tparam TElem Type of the index values.
             // \param index Index to be mapped.
             // \param extent Spatial size to map the index to.
             // \return Vector of dimension TuiDimDst.
             //-----------------------------------------------------------------------------
             template<
-                typename TElement>
+                typename TElem>
             ALPAKA_FCT_HOST_ACC static Vec<2u> mapIndex(
-                Vec<1u, TElement> const & index, 
-                Vec<1u, TElement> const & extent)
+                Vec<1u, TElem> const & index, 
+                Vec<1u, TElem> const & extent)
             {
                 auto const & uiIndex(index[0]);
                 auto const & uiExtentX(extent[0]);
@@ -106,16 +106,16 @@ namespace alpaka
     //!
     //! \tparam TuiDim dimension of the position to map to.
     //! \tparam TuiIndexDim dimension of the index vector to map from.
-    //! \tparam TElement type of the elements of the index vector to map from.
+    //! \tparam TElem type of the elements of the index vector to map from.
     //#############################################################################
     template<
         std::size_t TuiIndexDimDst, 
         std::size_t TuiIndexDimSrc, 
-        typename TElement>
+        typename TElem>
     Vec<TuiIndexDimDst> mapIndex(
         Vec<TuiIndexDimSrc, 
-        TElement> const & index, 
-        Vec<TuiIndexDimDst-1u, TElement> const & extent)
+        TElem> const & index, 
+        Vec<TuiIndexDimDst-1u, TElem> const & extent)
     {
         return detail::MapIndex<TuiIndexDimDst, TuiIndexDimSrc>::mapIndex(index, extent);
     }

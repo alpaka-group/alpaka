@@ -94,7 +94,7 @@ namespace alpaka
                 protected InterfacedAtomicCuda
             {
             public:
-                using MemorySpace = MemorySpaceCuda;
+                using MemorySpace = alpaka::memory::MemSpaceCuda;
 
                 template<
                     typename TAcceleratedKernel>

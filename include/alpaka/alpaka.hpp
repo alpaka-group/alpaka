@@ -24,6 +24,7 @@
 #include <alpaka/core/BasicDims.hpp>
 #include <alpaka/core/Common.hpp>
 #include <alpaka/core/EnabledAccelerators.hpp>
+#include <alpaka/core/MemBufPlainPtrWrapper.hpp>
 #include <alpaka/core/Operations.hpp>
 #include <alpaka/core/Positioning.hpp>
 #include <alpaka/core/RuntimeExtents.hpp>
