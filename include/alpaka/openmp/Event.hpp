@@ -36,15 +36,25 @@ namespace alpaka
             //#############################################################################
             class EventOpenMp :
                 public host::detail::EventHost
-            {
-            public:
-                using Acc = AccOpenMp;
-            };
+            {};
         }
     }
 
     namespace traits
     {
+        namespace acc
+        {
+            //#############################################################################
+            //! The OpenMP accelerator event accelerator type trait specialization.
+            //#############################################################################
+            template<>
+            struct GetAcc<
+                openmp::detail::EventOpenMp>
+            {
+                using type = AccOpenMp;
+            };
+        }
+
         namespace event
         {
             //#############################################################################

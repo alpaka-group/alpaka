@@ -38,9 +38,6 @@ namespace alpaka
             class EventCuda
             {
             public:
-                using Acc = AccCuda;
-
-            public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
@@ -81,6 +78,19 @@ namespace alpaka
 
     namespace traits
     {
+        namespace acc
+        {
+            //#############################################################################
+            //! The CUDA accelerator event accelerator type trait specialization.
+            //#############################################################################
+            template<>
+            struct GetAcc<
+                cuda::detail::EventCuda>
+            {
+                using type = AccCuda;
+            };
+        }
+
         namespace event
         {
             //#############################################################################

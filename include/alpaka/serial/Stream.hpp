@@ -36,15 +36,25 @@ namespace alpaka
             //#############################################################################
             class StreamSerial :
                 public host::detail::StreamHost
-            {
-            public:
-                using Acc = AccSerial;
-            };
+            {};
         }
     }
 
     namespace traits
     {
+        namespace acc
+        {
+            //#############################################################################
+            //! The serial accelerator stream accelerator type trait specialization.
+            //#############################################################################
+            template<>
+            struct GetAcc<
+                serial::detail::StreamSerial>
+            {
+                using type = AccSerial;
+            };
+        }
+
         namespace stream
         {
             //#############################################################################

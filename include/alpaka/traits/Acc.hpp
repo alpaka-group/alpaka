@@ -36,7 +36,7 @@ namespace alpaka
         namespace acc
         {
             //#############################################################################
-            //! The accelerator trait.
+            //! The accelerator type trait.
             //#############################################################################
             template<
                 typename T,
@@ -67,7 +67,7 @@ namespace alpaka
     namespace acc
     {
         //#############################################################################
-        //! The accelerator trait alias template to remove the ::type.
+        //! The accelerator type trait alias template to remove the ::type.
         //#############################################################################
         template<
             typename T>

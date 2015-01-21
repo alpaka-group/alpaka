@@ -163,9 +163,9 @@ void profileAcceleratedKernel(
     exec(std::forward<TArgs>(args)...);
 
     // Enqueue an event to wait for. This allows synchronization after the (possibly) asynchronous kernel execution.
-    alpaka::event::Event<typename TExec::TAcc> ev;
+    alpaka::event::GetEventT<TExec::Acc> ev;
     alpaka::event::enqueue(ev);
-    alpaka::event::wait(ev);
+    alpaka::wait::wait(ev);
 
     auto const tpEnd(std::chrono::high_resolution_clock::now());
 
@@ -193,7 +193,7 @@ struct ProfileAcceleratedExampleKernel
 		std::cout << "################################################################################" << std::endl;
 		
 		using Kernel = ExampleAcceleratedKernel<TuiNumUselessWork>;
-		using AccMemorySpace = typename TAcc::MemorySpace;
+		using AccMemorySpace = typename alpaka::memory::GetMemSpaceT<TAcc>;
 
 		std::cout
 			<< "AcceleratedExampleKernelProfiler("
@@ -218,7 +218,7 @@ struct ProfileAcceleratedExampleKernel
         // Build the kernel executor.
 		auto exec(alpaka::createKernelExecutor<TAcc, Kernel>(m_uiMult));
         // Get a new stream.
-        alpaka::stream::Stream<TAcc> stream;
+        alpaka::stream::GetStreamT<TAcc> stream;
         // Profile the kernel execution.
 		profileAcceleratedKernel(exec(workExtent, stream), pBlockRetValsAcc.get(), uiMult2);
 

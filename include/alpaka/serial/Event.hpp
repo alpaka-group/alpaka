@@ -36,15 +36,25 @@ namespace alpaka
             //#############################################################################
             class EventSerial :
                 public host::detail::EventHost
-            {
-            public:
-                using Acc = AccSerial;
-            };
+            {};
         }
     }
 
     namespace traits
     {
+        namespace acc
+        {
+            //#############################################################################
+            //! The serial accelerator event accelerator type trait specialization.
+            //#############################################################################
+            template<>
+            struct GetAcc<
+                serial::detail::EventSerial>
+            {
+                using type = AccSerial;
+            };
+        }
+
         namespace event
         {
             //#############################################################################

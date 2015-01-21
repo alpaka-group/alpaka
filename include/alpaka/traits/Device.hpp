@@ -31,12 +31,20 @@ namespace alpaka
         namespace dev
         {
             //#############################################################################
-            //! The device trait.
+            //! The device type trait.
             //#############################################################################
             template<
                 typename T,
                 typename TSfinae = void>
             struct GetDev;
+
+            //#############################################################################
+            //! The devicemanager type trait.
+            //#############################################################################
+            template<
+                typename T,
+                typename TSfinae = void>
+            struct GetDevMan;
         }
     }
 
@@ -46,10 +54,17 @@ namespace alpaka
     namespace dev
     {
         //#############################################################################
-        //! The device trait alias template to remove the ::type.
+        //! The device type trait alias template to remove the ::type.
         //#############################################################################
         template<
             typename T>
         using GetDevT = typename traits::dev::GetDev<T>::type;
+
+        //#############################################################################
+        //! The device manager type trait alias template to remove the ::type.
+        //#############################################################################
+        template<
+            typename T>
+        using GetDevManT = typename traits::dev::GetDevMan<T>::type;
     }*/
 }

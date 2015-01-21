@@ -51,9 +51,6 @@ namespace alpaka
             class StreamCuda
             {
             public:
-                using Acc = AccCuda;
-
-            public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
@@ -103,6 +100,19 @@ namespace alpaka
 
     namespace traits
     {
+        namespace acc
+        {
+            //#############################################################################
+            //! The CUDA accelerator stream accelerator type trait specialization.
+            //#############################################################################
+            template<>
+            struct GetAcc<
+                cuda::detail::StreamCuda>
+            {
+                using type = AccCuda;
+            };
+        }
+
         namespace stream
         {
             //#############################################################################
@@ -112,11 +122,11 @@ namespace alpaka
             class GetStream<
                 AccCuda>
             {
-                using type = alpaka::cuda::detail::StreamCuda;
+                using type = cuda::detail::StreamCuda;
             };
 
             //#############################################################################
-            //! The CUDA accelerator stream tester.
+            //! The CUDA accelerator stream test trait specialization.
             //#############################################################################
             template<>
             struct StreamTest<

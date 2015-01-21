@@ -37,7 +37,7 @@ namespace alpaka
         namespace dim
         {
             //#############################################################################
-            //! The dimension getter trait.
+            //! The dimension getter type trait.
             //#############################################################################
             template<
                 typename T, 
@@ -45,7 +45,7 @@ namespace alpaka
             struct GetDim;
 
             //#############################################################################
-            //! The dimension to vector transformation trait.
+            //! The dimension to vector type transformation trait.
             //#############################################################################
             template<
                 typename TDim>
@@ -78,7 +78,7 @@ namespace alpaka
         }
 
         //#############################################################################
-        //! The dimension to vector alias template to remove the ::type.
+        //! The dimension to vector type alias template to remove the ::type.
         //#############################################################################
         template<
             typename TDim>

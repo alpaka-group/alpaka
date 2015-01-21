@@ -36,15 +36,25 @@ namespace alpaka
             //#############################################################################
             class StreamOpenMp :
                 public host::detail::StreamHost
-            {
-            public:
-                using Acc = AccOpenMp;
-            };
+            {};
         }
     }
 
     namespace traits
     {
+        namespace acc
+        {
+            //#############################################################################
+            //! The OpenMP accelerator stream accelerator type trait specialization.
+            //#############################################################################
+            template<>
+            struct GetAcc<
+                openmp::detail::StreamOpenMp>
+            {
+                using type = AccOpenMp;
+            };
+        }
+
         namespace stream
         {
             //#############################################################################

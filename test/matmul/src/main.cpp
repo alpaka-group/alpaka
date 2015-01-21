@@ -216,28 +216,29 @@ struct ProfileAcceleratedMatMulKernel
 			<< ", workExtent: " << workExtent
 			<< ")" << std::endl;
 
-		// Initialize matrices.
-		std::vector<std::uint32_t> vuiA(uiMatrixSize * uiMatrixSize, 1u);
-		std::vector<std::uint32_t> vuiB(uiMatrixSize * uiMatrixSize, 1u);
-		std::vector<std::uint32_t> vuiC(uiMatrixSize * uiMatrixSize, 0u);
-
-		// Allocate accelerator buffers and copy.
 		alpaka::extent::RuntimeExtents<alpaka::dim::Dim2> extent(
             uiMatrixSize,
             uiMatrixSize
 		);
 
+        // Allocate the A and B matrices as st::vectors because this allows them to be filled with uint32_t(1).
+        // alpaka::memory::set only supports setting all bytes leading to a value of 16843009 in all elements.
+        std::vector<std::uint32_t> vuiA(uiMatrixSize * uiMatrixSize, 1u);
+        std::vector<std::uint32_t> vuiB(uiMatrixSize * uiMatrixSize, 1u);
         // Wrap the std::vectors into a memory buffer object.
-        // For 1D data this would not be required because the copy is specialized for std::vector and std::array.
-        // For multi dimensional data either directly create them using alpaka::memory::alloc<Type, MemSpaceHost>
-        // or use MemBufPlainPtrWrapper to wrap the data.
+        // For 1D data this would not be required because alpaka::memory::copy is specialized for std::vector and std::array.
+        // For multi dimensional data you could directly create them using alpaka::memory::alloc<Type, MemSpaceHost>, which is not used here.
+        // Instead we use MemBufPlainPtrWrapper to wrap the data.
         using MemBufWrapper = alpaka::memory::MemBufPlainPtrWrapper<
             alpaka::memory::MemSpaceHost,
             std::uint32_t,
             alpaka::dim::Dim2>;
         MemBufWrapper memBufAHost(vuiA.data(), extent);
         MemBufWrapper memBufBHost(vuiB.data(), extent);
-        MemBufWrapper memBufCHost(vuiC.data(), extent);
+
+        // Allocate C and set it to zero.
+        auto memBufCHost(alpaka::memory::alloc<std::uint32_t, alpaka::memory::MemSpaceHost>(extent));
+        alpaka::memory::set(memBufCHost, 0u, extent);
 
         // Allocate the buffers on the accelerator.
         using AccMemorySpace = typename alpaka::memory::GetMemSpaceT<TAcc>;
@@ -253,7 +254,7 @@ struct ProfileAcceleratedMatMulKernel
 		// Build the kernel executor.
 		auto exec(alpaka::createKernelExecutor<TAcc, Kernel>());
 		// Get a new stream.
-		alpaka::stream::GetStrramT<TAcc> stream;
+		alpaka::stream::GetStreamT<TAcc> stream;
 		// Profile the kernel execution.
 		profileAcceleratedKernel(exec(workExtent, stream),
 			uiMatrixSize,
@@ -269,13 +270,15 @@ struct ProfileAcceleratedMatMulKernel
 		std::uint32_t const uiCorrectResult(static_cast<std::uint32_t>(uiMatrixSize));
 
 		bool bResultCorrect(true);
-		for(std::size_t i(0);
+        auto const pHostData(alpaka::memory::getNativePtr(memBufCHost));
+		for(std::size_t i(0u);
 			i < uiMatrixSize * uiMatrixSize;
 			++i)
 		{
-			if(vuiC[i] != uiCorrectResult)
+            auto const uiVal(pHostData[i]);
+			if(uiVal != uiCorrectResult)
 			{
-				std::cout << "C[" << i << "] == " << vuiC[i] << " != " << uiCorrectResult << std::endl;
+				std::cout << "C[" << i << "] == " << uiVal << " != " << uiCorrectResult << std::endl;
 				bResultCorrect = false;
 			}
 		}
@@ -311,7 +314,7 @@ int main(
 		boost::program_options::store(boost::program_options::parse_command_line(argc, argv, desc), vm);
 		boost::program_options::notify(vm);
 
-		if(vm.count("help") > 0)
+		if(vm.count("help") > 0u)
 		{
 			std::cout << desc << std::endl;
 			return 1;

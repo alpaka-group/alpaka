@@ -117,7 +117,7 @@ namespace alpaka
             template<
                 typename TWorkExtent,
                 typename TStream,
-                typename std::enable_if<std::is_same<typename TStream::Acc, typename TKernelExecutor::Acc>::value, int>::type = 0>
+                typename std::enable_if<std::is_same<typename alpaka::acc::GetAccT<TStream>, typename TKernelExecutor::Acc>::value, int>::type = 0>
             ALPAKA_FCT_HOST TKernelExecutor operator()(
                 IWorkExtent<TWorkExtent> const & workExtent, 
                 TStream const & stream) const
@@ -130,7 +130,7 @@ namespace alpaka
             template<
                 typename TWorkExtent,
                 typename TStream,
-                typename std::enable_if<std::is_same<typename TStream::Acc, typename TKernelExecutor::Acc>::value, int>::type = 0>
+                typename std::enable_if<std::is_same<typename alpaka::acc::GetAccT<TStream>, typename TKernelExecutor::Acc>::value, int>::type = 0>
             ALPAKA_FCT_HOST TKernelExecutor operator()(
                 Vec<3u> const & v3uiGridBlocksExtent,
                 Vec<3u> const & v3uiBlockKernelsExtent, 

@@ -36,15 +36,25 @@ namespace alpaka
             //#############################################################################
             class EventFibers :
                 public host::detail::EventHost
-            {
-            public:
-                using Acc = AccFibers;
-            };
+            {};
         }
     }
 
     namespace traits
     {
+        namespace acc
+        {
+            //#############################################################################
+            //! The fibers accelerator event accelerator type trait specialization.
+            //#############################################################################
+            template<>
+            struct GetAcc<
+                fibers::detail::EventFibers>
+            {
+                using type = AccFibers;
+            };
+        }
+
         namespace event
         {
             //#############################################################################

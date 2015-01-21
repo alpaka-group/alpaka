@@ -61,7 +61,7 @@ namespace alpaka
         //#############################################################################
         template<
             typename TAcc>
-        using GetStrramT = typename traits::stream::GetStream<TAcc>::type;
+        using GetStreamT = typename traits::stream::GetStream<TAcc>::type;
 
         //-----------------------------------------------------------------------------
         //! Tests if all operations in the given stream have been completed.

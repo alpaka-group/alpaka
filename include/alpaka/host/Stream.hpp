@@ -127,7 +127,7 @@ namespace alpaka
                 TEvent,
                 typename std::enable_if<
                     std::is_base_of<host::detail::StreamHost, TStream>::value
-                    && std::is_same<typename TStream::Acc, typename TEvent::Acc>::value>::type>
+                    && std::is_same<typename alpaka::acc::GetAccT<TStream>, typename alpaka::acc::GetAccT<TEvent>>::value>::type>
             {
                 ALPAKA_FCT_HOST static void waiterWaitFor(
                     TStream const & stream,
