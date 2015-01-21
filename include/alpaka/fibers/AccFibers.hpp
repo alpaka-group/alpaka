@@ -66,7 +66,7 @@ namespace alpaka
         {
             template<
                 typename TAcceleratedKernel>
-            class KernelExecutor;
+            class KernelExecutorFibers;
 
             //#############################################################################
             //! The fibers accelerator.
@@ -86,7 +86,7 @@ namespace alpaka
 
                 template<
                     typename TAcceleratedKernel>
-                friend class alpaka::fibers::detail::KernelExecutor;
+                friend class alpaka::fibers::detail::KernelExecutorFibers;
 
             public:
                 //-----------------------------------------------------------------------------
@@ -270,18 +270,14 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The executor for an accelerated serial kernel.
+            //! The fibers accelerator executor.
             //#############################################################################
             template<
                 typename TAcceleratedKernel>
-            class KernelExecutor :
-                private TAcceleratedKernel
+            class KernelExecutorFibers :
+                private TAcceleratedKernel,
+                private IAcc<AccFibers>
             {
-                static_assert(std::is_base_of<IAcc<AccFibers>, TAcceleratedKernel>::value, "The TAcceleratedKernel for the serial::detail::KernelExecutor has to inherit from IAcc<AccFibers>!");
-
-            public:
-                using Acc = AccFibers;
-
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
@@ -289,7 +285,7 @@ namespace alpaka
                 template<
                     typename TWorkExtent, 
                     typename... TKernelConstrArgs>
-                ALPAKA_FCT_HOST KernelExecutor(
+                ALPAKA_FCT_HOST KernelExecutorFibers(
                     IWorkExtent<TWorkExtent> const & workExtent, 
                     StreamFibers const &,
                     TKernelConstrArgs && ... args):
@@ -301,7 +297,7 @@ namespace alpaka
 #endif
                 {
 #ifdef ALPAKA_DEBUG
-                    std::cout << "[+] AccFibers::KernelExecutor()" << std::endl;
+                    std::cout << "[+] AccFibers::KernelExecutorFibers()" << std::endl;
 #endif
                     (*static_cast<InterfacedWorkExtentFibers *>(this)) = workExtent;
 
@@ -319,25 +315,25 @@ namespace alpaka
 
                     //m_vFibersInBlock.reserve(uiNumKernelsPerBlock);    // Minimal speedup?
 #ifdef ALPAKA_DEBUG
-                    std::cout << "[-] AccFibers::KernelExecutor()" << std::endl;
+                    std::cout << "[-] AccFibers::KernelExecutorFibers()" << std::endl;
 #endif
                 }
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST KernelExecutor(KernelExecutor const &) = default;
+                ALPAKA_FCT_HOST KernelExecutorFibers(KernelExecutorFibers const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST KernelExecutor(KernelExecutor &&) = default;
+                ALPAKA_FCT_HOST KernelExecutorFibers(KernelExecutorFibers &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST KernelExecutor & operator=(KernelExecutor const &) = delete;
+                ALPAKA_FCT_HOST KernelExecutorFibers & operator=(KernelExecutorFibers const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST virtual ~KernelExecutor() noexcept = default;
+                ALPAKA_FCT_HOST virtual ~KernelExecutorFibers() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! Executes the accelerated kernel.
@@ -348,7 +344,7 @@ namespace alpaka
                     TArgs && ... args) const
                 {
 #ifdef ALPAKA_DEBUG
-                    std::cout << "[+] AccFibers::KernelExecutor::operator()" << std::endl;
+                    std::cout << "[+] AccFibers::KernelExecutorFibers::operator()" << std::endl;
 #endif
                     auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(m_v3uiBlockKernelsExtent, std::forward<TArgs>(args)...));
                     this->AccFibers::m_vuiExternalSharedMem.reset(
@@ -403,10 +399,10 @@ namespace alpaka
     #endif
 /*#else
     #ifdef ALPAKA_FIBERS_NO_POOL
-                                            m_vFibersInBlock.push_back(boost::fibers::fiber(&KernelExecutor::fiberKernel<TArgs...>, this, v3uiBlockKernelIdx, args...));
+                                            m_vFibersInBlock.push_back(boost::fibers::fiber(&KernelExecutorFibers::fiberKernel<TArgs...>, this, v3uiBlockKernelIdx, args...));
     #else
                                             // FIXME: Currently this does not work!
-                                            m_vFuturesInBlock.emplace_back(pool.enqueueTask(&KernelExecutor::fiberKernel<TArgs...>, this, v3uiBlockKernelIdx, args...));
+                                            m_vFuturesInBlock.emplace_back(pool.enqueueTask(&KernelExecutorFibers::fiberKernel<TArgs...>, this, v3uiBlockKernelIdx, args...));
     #endif
 #endif*/
                                         }
@@ -444,7 +440,7 @@ namespace alpaka
                     // After all blocks have been processed, the external shared memory can be deleted.
                     this->AccFibers::m_vuiExternalSharedMem.reset();
 #ifdef ALPAKA_DEBUG
-                    std::cout << "[-] AccFibers::KernelExecutor::operator()" << std::endl;
+                    std::cout << "[-] AccFibers::KernelExecutorFibers::operator()" << std::endl;
 #endif
                 }
             private:
@@ -482,7 +478,9 @@ namespace alpaka
                     this->AccFibers::syncBlockKernels(itFiberToBarrier);
 
                     // Execute the kernel itself.
-                    this->TAcceleratedKernel::operator()(std::forward<TArgs>(args)...);
+                    this->TAcceleratedKernel::operator()(
+                        (*static_cast<IAcc<AccFibers> const *>(this)),
+                        std::forward<TArgs>(args)...);
 
                     // We have to sync all fibers here because if a fiber would finish before all fibers have been started, the new fiber could get a recycled (then duplicate) fiber id!
                     this->AccFibers::syncBlockKernels(itFiberToBarrier);
@@ -500,10 +498,27 @@ namespace alpaka
         }
     }
 
+    namespace traits
+    {
+        namespace acc
+        {
+            //#############################################################################
+            //! The fibers accelerator kernel executor accelerator type trait specialization.
+            //#############################################################################
+            template<
+                typename AcceleratedKernel>
+            struct GetAcc<
+                fibers::detail::KernelExecutorFibers<AcceleratedKernel >>
+            {
+                using type = AccFibers;
+            };
+        }
+    }
+
     namespace detail
     {
         //#############################################################################
-        //! The fibers kernel executor builder.
+        //! The fibers accelerator kernel executor builder.
         //#############################################################################
         template<
             typename TKernel, 
@@ -515,7 +530,7 @@ namespace alpaka
         {
         public:
             using AcceleratedKernel = typename boost::mpl::apply<TKernel, AccFibers>::type;
-            using AcceleratedKernelExecutorExtent = KernelExecutorExtent<fibers::detail::KernelExecutor<AcceleratedKernel>, TKernelConstrArgs...>;
+            using AcceleratedKernelExecutorExtent = KernelExecutorExtent<fibers::detail::KernelExecutorFibers<AcceleratedKernel>, TKernelConstrArgs...>;
 
             //-----------------------------------------------------------------------------
             //! Creates an kernel executor for the serial accelerator.

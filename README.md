@@ -41,7 +41,7 @@ Accelerators
 |-|serial|threads|fibers|OpenMP|CUDA|
 |---|---|---|---|---|---|
 |Devices|Host Core|Host Cores|Host Core|Host Cores|NVIDIA GPUs|
-|Lib/API|n/a|std::thread|boost::fibers::fiber|OpenMP 2.0|CUDA 6.5|
+|Lib/API|n/a| std::thread | boost::fibers::fiber |OpenMP 2.0|CUDA 6.5|
 |Execution strategy grid-blocks|sequential|sequential|sequential|sequential|undefined|
 |Execution strategy block-kernels|sequential|preemptive multitasking|cooperative multithreading|preemptive multitasking|lock-step within warps|
 

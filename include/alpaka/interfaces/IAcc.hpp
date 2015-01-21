@@ -60,7 +60,6 @@ namespace alpaka
 #endif
         }
 
-    protected:
         //-----------------------------------------------------------------------------
         //! \return The requested index.
         //-----------------------------------------------------------------------------
@@ -135,4 +134,21 @@ namespace alpaka
 #endif
         }
     };
+
+    namespace traits
+    {
+        namespace acc
+        {
+            //#############################################################################
+            //! The accelerator interface accelerator type trait specialization.
+            //#############################################################################
+            template<
+                typename TAcc>
+            struct GetAcc<
+                IAcc<TAcc>>
+            {
+                using type = TAcc;
+            };
+        }
+    }
 }

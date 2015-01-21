@@ -61,7 +61,7 @@ namespace alpaka
             // Forward declaration.
             template<
                 typename TAcceleratedKernel>
-            class KernelExecutor;
+            class KernelExecutorSerial;
 
             //#############################################################################
             //! The serial accelerator.
@@ -79,7 +79,7 @@ namespace alpaka
 
                 template<
                     typename TAcceleratedKernel>
-                friend class alpaka::serial::detail::KernelExecutor;
+                friend class alpaka::serial::detail::KernelExecutorSerial;
 
             public:
                 //-----------------------------------------------------------------------------
@@ -181,18 +181,14 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The executor for an accelerated serial kernel.
+            //! The serial accelerator executor.
             //#############################################################################
             template<
                 typename TAcceleratedKernel>
-            class KernelExecutor :
-                private TAcceleratedKernel
+            class KernelExecutorSerial :
+                private TAcceleratedKernel,
+                private IAcc<AccSerial>
             {
-                static_assert(std::is_base_of<IAcc<AccSerial>, TAcceleratedKernel>::value, "The TAcceleratedKernel for the serial::detail::KernelExecutor has to inherit from IAcc<AccSerial>!");
-
-            public:
-                using Acc = AccSerial;
-
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
@@ -200,14 +196,14 @@ namespace alpaka
                 template<
                     typename TWorkExtent, 
                     typename... TKernelConstrArgs>
-                ALPAKA_FCT_HOST KernelExecutor(
+                ALPAKA_FCT_HOST KernelExecutorSerial(
                     IWorkExtent<TWorkExtent> const & workExtent, 
                     StreamSerial const &,
                     TKernelConstrArgs && ... args) :
                     TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
                 {
 #ifdef ALPAKA_DEBUG
-                    std::cout << "[+] AccSerial::KernelExecutor()" << std::endl;
+                    std::cout << "[+] AccSerial::KernelExecutorSerial()" << std::endl;
 #endif
                     (*static_cast<InterfacedWorkExtentSerial *>(this)) = workExtent;
 
@@ -221,25 +217,25 @@ namespace alpaka
                     m_v3uiGridBlocksExtent = workExtent.template getExtent<Grid, Blocks, Dim3>();
                     m_v3uiBlockKernelsExtent = workExtent.template getExtent<Block, Kernels, Dim3>();
 #ifdef ALPAKA_DEBUG
-                    std::cout << "[-] AccSerial::KernelExecutor()" << std::endl;
+                    std::cout << "[-] AccSerial::KernelExecutorSerial()" << std::endl;
 #endif
                 }
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST KernelExecutor(KernelExecutor const &) = default;
+                ALPAKA_FCT_HOST KernelExecutorSerial(KernelExecutorSerial const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST KernelExecutor(KernelExecutor &&) = default;
+                ALPAKA_FCT_HOST KernelExecutorSerial(KernelExecutorSerial &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST KernelExecutor & operator=(KernelExecutor const &) = delete;
+                ALPAKA_FCT_HOST KernelExecutorSerial & operator=(KernelExecutorSerial const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST virtual ~KernelExecutor() noexcept = default;
+                ALPAKA_FCT_HOST virtual ~KernelExecutorSerial() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! Executes the accelerated kernel.
@@ -250,7 +246,7 @@ namespace alpaka
                     TArgs && ... args) const
                 {
 #ifdef ALPAKA_DEBUG
-                    std::cout << "[+] AccSerial::KernelExecutor::operator()" << std::endl;
+                    std::cout << "[+] AccSerial::KernelExecutorSerial::operator()" << std::endl;
 #endif
                     auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(m_v3uiBlockKernelsExtent, std::forward<TArgs>(args)...));
                     this->AccSerial::m_vuiExternalSharedMem.reset(
@@ -268,7 +264,9 @@ namespace alpaka
                                 this->AccSerial::m_v3uiGridBlockIdx[0] = bx;
 
                                 // There is only ever one kernel in a block in the serial accelerator.
-                                this->TAcceleratedKernel::operator()(std::forward<TArgs>(args)...);
+                                this->TAcceleratedKernel::operator()(
+                                    (*static_cast<IAcc<AccSerial> const *>(this)),
+                                    std::forward<TArgs>(args)...);
 
                                 // After a block has been processed, the shared memory can be deleted.
                                 this->AccSerial::m_vvuiSharedMem.clear();
@@ -278,7 +276,7 @@ namespace alpaka
                     // After all blocks have been processed, the external shared memory can be deleted.
                     this->AccSerial::m_vuiExternalSharedMem.reset();
 #ifdef ALPAKA_DEBUG
-                    std::cout << "[-] AccSerial::KernelExecutor::operator()" << std::endl;
+                    std::cout << "[-] AccSerial::KernelExecutorSerial::operator()" << std::endl;
 #endif
                 }
 
@@ -289,10 +287,27 @@ namespace alpaka
         }
     }
 
+    namespace traits
+    {
+        namespace acc
+        {
+            //#############################################################################
+            //! The serial accelerator kernel executor accelerator type trait specialization.
+            //#############################################################################
+            template<
+                typename AcceleratedKernel>
+            struct GetAcc<
+                serial::detail::KernelExecutorSerial<AcceleratedKernel>>
+            {
+                using type = AccSerial;
+            };
+        }
+    }
+
     namespace detail
     {
         //#############################################################################
-        //! The serial kernel executor builder.
+        //! The serial accelerator kernel executor builder.
         //#############################################################################
         template<
             typename TKernel, 
@@ -304,7 +319,7 @@ namespace alpaka
         {
         public:
             using AcceleratedKernel = typename boost::mpl::apply<TKernel, AccSerial>::type;
-            using AcceleratedKernelExecutorExtent = KernelExecutorExtent<serial::detail::KernelExecutor<AcceleratedKernel>, TKernelConstrArgs...>;
+            using AcceleratedKernelExecutorExtent = KernelExecutorExtent<serial::detail::KernelExecutorSerial<AcceleratedKernel>, TKernelConstrArgs...>;
 
             //-----------------------------------------------------------------------------
             //! Creates an kernel executor for the serial accelerator.

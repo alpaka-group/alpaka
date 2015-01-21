@@ -96,7 +96,8 @@ namespace alpaka
                     && std::is_same<typename alpaka::acc::GetAccT<TEvent>, typename alpaka::acc::GetAccT<TStream>>::value>::type>
             {
                 static ALPAKA_FCT_HOST void streamEnqueueEvent(
-                    host::detail::EventHost const &, TStream const &)
+                    host::detail::EventHost const &, 
+                    TStream const &)
                 {
                     // Because host calls are not asynchronous, this call never has to enqueue anything.
                 }
@@ -112,7 +113,8 @@ namespace alpaka
                 typename std::enable_if<std::is_base_of<host::detail::EventHost, TEvent>::value>::type>
             {
                 static ALPAKA_FCT_HOST bool eventTest(
-                    host::detail::EventHost const &, bool & bTest)
+                    host::detail::EventHost const &, 
+                    bool &)
                 {
                     // Because host calls are not asynchronous, this call always returns true.
                     return true;
@@ -132,7 +134,7 @@ namespace alpaka
                 typename std::enable_if<std::is_base_of<host::detail::EventHost, TEvent>::value>::type>
             {
                 ALPAKA_FCT_HOST static void currentThreadWaitFor(
-                    TEvent const & event)
+                    TEvent const &)
                 {
                     // Because host calls are not asynchronous, this call never has to wait.
                 }

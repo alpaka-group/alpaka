@@ -62,7 +62,7 @@ namespace alpaka
         {
             template<
                 typename TAcceleratedKernel>
-            class KernelExecutor;
+            class KernelExecutorOpenMp;
 
             //#############################################################################
             //! The OpenMP accelerator.
@@ -81,7 +81,7 @@ namespace alpaka
 
                 template<
                     typename TAcceleratedKernel>
-                friend class alpaka::openmp::detail::KernelExecutor;
+                friend class alpaka::openmp::detail::KernelExecutorOpenMp;
 
             public:
                 //-----------------------------------------------------------------------------
@@ -192,18 +192,14 @@ namespace alpaka
             }; 
 
             //#############################################################################
-            //! The executor for an OpenMP accelerated kernel.
+            //! The OpenMP accelerator executor.
             //#############################################################################
             template<
                 typename TAcceleratedKernel>
-            class KernelExecutor :
-                private TAcceleratedKernel
+            class KernelExecutorOpenMp :
+                private TAcceleratedKernel,
+                private IAcc<AccOpenMp>
             {
-                static_assert(std::is_base_of<IAcc<AccOpenMp>, TAcceleratedKernel>::value, "The TAcceleratedKernel for the openmp::detail::KernelExecutor has to inherit from IAcc<AccOpenMp>!");
-
-            public:
-                using Acc = AccOpenMp;
-
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
@@ -211,14 +207,14 @@ namespace alpaka
                 template<
                     typename TWorkExtent, 
                     typename... TKernelConstrArgs>
-                ALPAKA_FCT_HOST KernelExecutor(
+                ALPAKA_FCT_HOST KernelExecutorOpenMp(
                     IWorkExtent<TWorkExtent> const & workExtent, 
                     StreamOpenMp const &, 
                     TKernelConstrArgs && ... args) :
                     TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
                 {
 #ifdef ALPAKA_DEBUG
-                    std::cout << "[+] AccOpenMp::KernelExecutor()" << std::endl;
+                    std::cout << "[+] AccOpenMp::KernelExecutorOpenMp()" << std::endl;
 #endif
                     (*static_cast<InterfacedWorkExtentOpenMp *>(this)) = workExtent;
 
@@ -232,25 +228,25 @@ namespace alpaka
                     m_v3uiGridBlocksExtent = workExtent.template getExtent<Grid, Blocks, dim::Dim3>();
                     m_v3uiBlockKernelsExtent = workExtent.template getExtent<Block, Kernels, dim::Dim3>();
 #ifdef ALPAKA_DEBUG
-                    std::cout << "[-] AccOpenMp::KernelExecutor()" << std::endl;
+                    std::cout << "[-] AccOpenMp::KernelExecutorOpenMp()" << std::endl;
 #endif
                 }
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST KernelExecutor(KernelExecutor const &) = default;
+                ALPAKA_FCT_HOST KernelExecutorOpenMp(KernelExecutorOpenMp const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST KernelExecutor(KernelExecutor &&) = default;
+                ALPAKA_FCT_HOST KernelExecutorOpenMp(KernelExecutorOpenMp &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST KernelExecutor & operator=(KernelExecutor const &) = delete;
+                ALPAKA_FCT_HOST KernelExecutorOpenMp & operator=(KernelExecutorOpenMp const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST virtual ~KernelExecutor() noexcept = default;
+                ALPAKA_FCT_HOST virtual ~KernelExecutorOpenMp() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! Executes the accelerated kernel.
@@ -261,7 +257,7 @@ namespace alpaka
                     TArgs && ... args) const
                 {
 #ifdef ALPAKA_DEBUG
-                    std::cout << "[+] AccOpenMp::KernelExecutor::operator()" << std::endl;
+                    std::cout << "[+] AccOpenMp::KernelExecutorOpenMp::operator()" << std::endl;
 #endif
                     auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(m_v3uiBlockKernelsExtent, std::forward<TArgs>(args)...));
                     this->AccOpenMp::m_vuiExternalSharedMem.reset(
@@ -306,7 +302,9 @@ namespace alpaka
                                         }
                                     }
 #endif
-                                    this->TAcceleratedKernel::operator()(std::forward<TArgs>(args)...);
+                                    this->TAcceleratedKernel::operator()(
+                                        (*static_cast<IAcc<AccOpenMp> const *>(this)),
+                                        std::forward<TArgs>(args)...);
 
                                     // Wait for all threads to finish before deleting the shared memory.
                                     this->AccOpenMp::syncBlockKernels();
@@ -320,7 +318,7 @@ namespace alpaka
                     // After all blocks have been processed, the external shared memory can be deleted.
                     this->AccOpenMp::m_vuiExternalSharedMem.reset();
 #ifdef ALPAKA_DEBUG
-                    std::cout << "[-] AccOpenMp::KernelExecutor::operator()" << std::endl;
+                    std::cout << "[-] AccOpenMp::KernelExecutorOpenMp::operator()" << std::endl;
 #endif
                 }
 
@@ -331,10 +329,27 @@ namespace alpaka
         }
     }
 
+    namespace traits
+    {
+        namespace acc
+        {
+            //#############################################################################
+            //! The OpenMP accelerator kernel executor accelerator type trait specialization.
+            //#############################################################################
+            template<
+                typename AcceleratedKernel>
+            struct GetAcc<
+                openmp::detail::KernelExecutorOpenMp<AcceleratedKernel>>
+            {
+                using type = AccOpenMp;
+            };
+        }
+    }
+
     namespace detail
     {
         //#############################################################################
-        //! The serial kernel executor builder.
+        //! The OpenMP accelerator kernel executor builder.
         //#############################################################################
         template<
             typename TKernel, 
@@ -346,7 +361,7 @@ namespace alpaka
         {
         public:
             using AcceleratedKernel = typename boost::mpl::apply<TKernel, AccOpenMp>::type;
-            using AcceleratedKernelExecutorExtent = KernelExecutorExtent<openmp::detail::KernelExecutor<AcceleratedKernel>, TKernelConstrArgs...>;
+            using AcceleratedKernelExecutorExtent = KernelExecutorExtent<openmp::detail::KernelExecutorOpenMp<AcceleratedKernel>, TKernelConstrArgs...>;
 
             //-----------------------------------------------------------------------------
             //! Creates an kernel executor for the serial accelerator.

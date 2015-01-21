@@ -6,7 +6,7 @@
 
 - User kernels should be implemented independent of the accelerator.
 - A user kernel has to have access to accelerator methods like synchronization within blocks, index retrieval and many more.
-- For usage with CUDA the kernel methods have to be attributed with ALPAKA_FCT_HOST_ACC (\__device\__ \__host\__).
+- For usage with CUDA the kernel methods have to be attributed with \__device\__ \__host\__.
 - The user kernel has to fulfill std::is_trivially_copyable because only such objects can be copied into CUDA device memory.
   A trivially copyable class is a class that
    1. Has no non-trivial copy constructors(this also requires no virtual functions or virtual bases)
@@ -30,7 +30,8 @@ There are two possible ways to tell the kernel about the accelerator type:
    * +/- To give a device function called from the kernel functor access to the accelerator methods, these methods have to be templated on the accelerated kernel and get a reference to the accelerator.
      This allows to give them access not only to the accelerator methods but also to the other kernel methods.
      This is inconsistent because the kernel uses inheritance and subsequent function calls get a parameter.
-  a) and has a reference to the accelerator as parameter.
+   * - The kernel itself has to inherit at least protected from the accelerator to allow the KernelExecutor to access the Accelerator.
+  b) and has a reference to the accelerator as parameter.
    * - This would require an additional object in device memory taking up valuable CUDA registers.
     TODO: Will all the device functions be inlined nevertheless (because we do not use run-time polymorphism)? This would make it a non-reason.
  2. The `operator()` is templated on the accelerator type and has a reference to the accelerator as parameter.
@@ -43,7 +44,7 @@ There are two possible ways to tell the kernel about the accelerator type:
 
 ### Implementation Notes
 
-Currently we implement version 1.
+Currently we implement version 1b).
 
 Kernels bound to an accelerator can be built with the `createKernelExecutor` template function.
 This function returns an object that stores the given kernel type and the constructor argumnts..
@@ -71,10 +72,8 @@ The library does not use a common accelerator base class with virtual functions 
 This is required because in the case of CUDA copying objects (kernels inheriting from the accelerator) with virtual functions into device memory is not viable because of possibly incompatible object layout (std::is_trivially_copyable).
 To deliver a common accelerator interface static polymorphism is used instead.
 
-The accelerator interface IAcc hides all implementation details of the underlying accelerator base class by inheriting from it protected.
-Private inheritance is not possible, because the `KernelExecutor` implementation for a special accelerator sometimes needs access to the accelerator itself in `KernelExecutor<UserKernel<IAcc<Acc>>>`.
-This is also the reason, the kernel itself has to inherit at least protected from the accelerator.
-The usage of the CRTP like `AccCuda : IAcc<AccCuda>` would not allow this hiding.
+The accelerator interface IAcc hides all implementation details of the underlying accelerator base class by protected inheritance.
+Private inheritance is not possible, because the `KernelExecutor` implementation for a special accelerator sometimes needs access to the accelerator itself in `KernelExecutor<IAcc<Acc>>`.
 
 TODO: Add note about ALPAKA_FCT_HOST_ACC!
 

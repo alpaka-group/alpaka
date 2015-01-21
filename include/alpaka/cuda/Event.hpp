@@ -139,19 +139,6 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The CUDA accelerator thread event wait trait specialization.
-            //#############################################################################
-            template<>
-            struct ThreadWaitEvent<
-                cuda::detail::EventCuda>
-            {
-                static ALPAKA_FCT_HOST void threadWaitEvent(
-                    cuda::detail::EventCuda const & event)
-                {
-                }
-            };
-
-            //#############################################################################
             //! The CUDA accelerator event test trait specialization.
             //#############################################################################
             template<>

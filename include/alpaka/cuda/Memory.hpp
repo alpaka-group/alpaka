@@ -303,7 +303,7 @@ namespace alpaka
         namespace dim
         {
             //#############################################################################
-            //! The MemBufHost dimension getter trait.
+            //! The MemBufCuda dimension getter trait specialization.
             //#############################################################################
             template<
                 typename TElem,

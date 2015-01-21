@@ -52,38 +52,44 @@
 //#############################################################################
 template<
     typename TAcc = alpaka::IAcc<>>
-class MatMulKernel :
-	public TAcc
+class MatMulKernel
 {
-	public:
-
-	//-----------------------------------------------------------------------------
-	//! The kernel.
-	//-----------------------------------------------------------------------------
+public:
+    //-----------------------------------------------------------------------------
+    //! The kernel entrypoint.
+    //!
+    //! \tparam TElem The matrix element type.
+    //! \param acc The accelerator to be executed on.
+    //! \param n The matrix size=width=height.
+    //! \param A The pointer to the matrix A data.
+    //! \param B The pointer to the matrix B data.
+    //! \param C The pointer to the matrix C data.
+    //-----------------------------------------------------------------------------
 	template<
         typename TElem>
 	ALPAKA_FCT_ACC void operator()(
+        TAcc const & acc,
 		std::size_t const n,
 		TElem const * const A,
 		TElem const * const B,
 		TElem * const C) const
 	{
 		// Column and row of C to calculate.
-		auto const v2uiGridKernelIdx(TAcc::template getIdx<alpaka::Grid, alpaka::Kernels>().template subvec<2u>());
+		auto const v2uiGridKernelIdx(acc.template getIdx<alpaka::Grid, alpaka::Kernels>().template subvec<2u>());
 		auto const & cx(v2uiGridKernelIdx[0]);
 		auto const & cy(v2uiGridKernelIdx[1]);
 		// Column and row inside the block of C to calculate.
-		auto const v2uiBlockKernelIdx(TAcc::template getIdx<alpaka::Block, alpaka::Kernels>().template subvec<2u>());
+		auto const v2uiBlockKernelIdx(acc.template getIdx<alpaka::Block, alpaka::Kernels>().template subvec<2u>());
 		auto const & col(v2uiBlockKernelIdx[0]);
 		auto const & row(v2uiBlockKernelIdx[1]);
 
-		auto const v2uiBlockKernelsExtent(TAcc::template getExtent<alpaka::Block,alpaka::Kernels>().template subvec<2u>());
+		auto const v2uiBlockKernelsExtent(acc.template getExtent<alpaka::Block,alpaka::Kernels>().template subvec<2u>());
 		auto const & uiBlockKernelsExtentX(v2uiBlockKernelsExtent[0]);
 		auto const & uiBlockKernelsExtentY(v2uiBlockKernelsExtent[1]);
 		auto const uiBlockSizeLin(uiBlockKernelsExtentX * uiBlockKernelsExtentY);
 
 		// Shared memory used to store the current blocks of A and B.
-		auto * const pBlockSharedA(TAcc::template getBlockSharedExternMem<TElem>());
+		auto * const pBlockSharedA(acc.template getBlockSharedExternMem<TElem>());
 		auto * const pBlockSharedB(pBlockSharedA + uiBlockSizeLin);
 
 		TElem fCSum(0);
@@ -92,7 +98,7 @@ class MatMulKernel :
 		bool const bOutsideMatrix((cx >= n) || (cy >= n));
 
 		// Loop over all blocks of A and B that are required to compute the C block.
-		auto const uiGridSizeX(TAcc::template getExtent<alpaka::Grid, alpaka::Blocks>()[0]);
+		auto const uiGridSizeX(acc.template getExtent<alpaka::Grid, alpaka::Blocks>()[0]);
 		for(std::size_t l(0); l < uiGridSizeX; ++l)
 		{
 			// Copy data to shared memory.
@@ -106,7 +112,7 @@ class MatMulKernel :
 				: B[uiIndexB];
 
 			// Synchronize to make sure the sub-matrices are loaded before starting the computation.
-			TAcc::syncBlockKernels();
+            acc.syncBlockKernels();
 
 			// Dyadic product within shared memory.
 			for(std::uint32_t k(0); k < uiBlockKernelsExtentY; ++k)
@@ -116,7 +122,7 @@ class MatMulKernel :
 			}
 
 			// Synchronize to make sure that the preceding computation is done before loading two new sub-matrices of A and B in the next iteration.
-			TAcc::syncBlockKernels();
+            acc.syncBlockKernels();
 		}
 
 		if(!bOutsideMatrix)
@@ -175,7 +181,7 @@ void profileAcceleratedKernel(
 	exec(std::forward<TArgs>(args) ...);
 
 	// Enqueue an event to wait for. This allows synchronization after the (possibly) asynchronous kernel execution.
-	alpaka::event::GetEventT<TExec::Acc> ev;
+	alpaka::event::GetEventT<alpaka::acc::GetAccT<TExec>> ev;
 	alpaka::event::enqueue(ev);
 	alpaka::wait::wait(ev);
 

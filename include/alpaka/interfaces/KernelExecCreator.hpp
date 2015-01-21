@@ -85,9 +85,6 @@ namespace alpaka
         class KernelExecutorExtent
         {
         public:
-            using Acc = typename TKernelExecutor::Acc;
-
-        public:
             //-----------------------------------------------------------------------------
             //! Constructor.
             //-----------------------------------------------------------------------------
@@ -117,7 +114,7 @@ namespace alpaka
             template<
                 typename TWorkExtent,
                 typename TStream,
-                typename std::enable_if<std::is_same<typename alpaka::acc::GetAccT<TStream>, typename TKernelExecutor::Acc>::value, int>::type = 0>
+                typename std::enable_if<std::is_same<typename alpaka::acc::GetAccT<TStream>, typename alpaka::acc::GetAccT<TKernelExecutor>>::value, int>::type = 0>
             ALPAKA_FCT_HOST TKernelExecutor operator()(
                 IWorkExtent<TWorkExtent> const & workExtent, 
                 TStream const & stream) const
@@ -130,7 +127,7 @@ namespace alpaka
             template<
                 typename TWorkExtent,
                 typename TStream,
-                typename std::enable_if<std::is_same<typename alpaka::acc::GetAccT<TStream>, typename TKernelExecutor::Acc>::value, int>::type = 0>
+                typename std::enable_if<std::is_same<typename alpaka::acc::GetAccT<TStream>, typename alpaka::acc::GetAccT<TKernelExecutor>>::value, int>::type = 0>
             ALPAKA_FCT_HOST TKernelExecutor operator()(
                 Vec<3u> const & v3uiGridBlocksExtent,
                 Vec<3u> const & v3uiBlockKernelsExtent, 
@@ -201,7 +198,6 @@ namespace alpaka
 #if (!BOOST_COMP_GNUC) || (BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(5, 0, 0))
         static_assert(std::is_trivially_copyable<TKernel>::value, "The given kernel functor has to fulfill is_trivially_copyable!");
 #endif
-        static_assert(std::is_base_of<IAcc<boost::mpl::_1>, TKernel>::value, "The TKernel for createKernelExecutor has to inherit from IAcc<boost::mpl::_1>!");
 
         // Use the specialized KernelExecCreator for the given accelerator.
         return detail::KernelExecCreator<TAcc, TKernel, TKernelConstrArgs...>()(std::forward<TKernelConstrArgs>(args)...);
