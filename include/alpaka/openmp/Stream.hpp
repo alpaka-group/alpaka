@@ -27,18 +27,35 @@
 
 namespace alpaka
 {
-    namespace stream
+    namespace openmp
     {
-        //#############################################################################
-        //! The OpenMP accelerator stream.
-        //#############################################################################
-        template<>
-        class Stream<
-            AccOpenMp> :
-            public host::detail::StreamHost
+        namespace detail
         {
-        public:
-            using Acc = AccOpenMp;
-        };
+            //#############################################################################
+            //! The OpenMP accelerator stream.
+            //#############################################################################
+            class StreamOpenMp :
+                public host::detail::StreamHost
+            {
+            public:
+                using Acc = AccOpenMp;
+            };
+        }
+    }
+
+    namespace traits
+    {
+        namespace stream
+        {
+            //#############################################################################
+            //! The OpenMP accelerator stream type trait specialization.
+            //#############################################################################
+            template<>
+            class GetStream<
+                AccOpenMp>
+            {
+                using type = alpaka::openmp::detail::StreamOpenMp;
+            };
+        }
     }
 }

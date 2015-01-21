@@ -22,106 +22,97 @@
 #pragma once
 
 #include <alpaka/traits/stream.hpp>
+#include <alpaka/traits/Wait.hpp>       // CurrentThreadWaitFor, WaiterWaitFor
 
 #include <alpaka/cuda/Common.hpp>
 #include <alpaka/cuda/AccCudaFwd.hpp>   // AccCuda
 
+// forward declarations
 namespace alpaka
 {
-    namespace stream
+    namespace cuda
     {
-        //#############################################################################
-        //! The CUDA accelerator stream.
-        //#############################################################################
-        template<>
-        class Stream<
-            AccCuda>
+        namespace detail
         {
-        public:
-            using Acc = AccCuda;
+            class EventCuda;
+        }
+    }
+}
 
-        public:
-            //-----------------------------------------------------------------------------
-            //! Constructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST Stream()
-            {
-                ALPAKA_CUDA_CHECK(cudaStreamCreate(
-                    &m_cudaStream);
-            }
-            //-----------------------------------------------------------------------------
-            //! Copy constructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST Stream(Stream const &) = default;
-            //-----------------------------------------------------------------------------
-            //! Move constructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST Stream(Stream &&) = default;
-            //-----------------------------------------------------------------------------
-            //! Assignment operator.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST Stream & operator=(Stream const &) = default;
-            //-----------------------------------------------------------------------------
-            //! Equality comparison operator.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST bool operator==(Stream const & rhs) const
-            {
-                return m_cudaStream == rhs.m_cudaStream;
-            }
-            //-----------------------------------------------------------------------------
-            //! Equality comparison operator.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST bool operator!=(Stream const & rhs) const
-            {
-                return !((*this) == rhs);
-            }
-            //-----------------------------------------------------------------------------
-            //! Destructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST virtual ~Stream() noexcept
-            {
-                ALPAKA_CUDA_CHECK(cudaStreamDestroy(m_cudaStream));
-            }
-
-            cudaStream_t m_cudaStream;
-        };
-
-        namespace traits
+namespace alpaka
+{
+    namespace cuda
+    {
+        namespace detail
         {
             //#############################################################################
-            //! The CUDA accelerator thread stream waiter.
+            //! The CUDA accelerator stream.
             //#############################################################################
-            template<>
-            struct ThreadWaitStream<
-                Stream<AccCuda>
-            >
+            class StreamCuda
             {
-                static ALPAKA_FCT_HOST void threadWaitStream(
-                    Stream<AccCuda> const & stream)
+            public:
+                using Acc = AccCuda;
+
+            public:
+                //-----------------------------------------------------------------------------
+                //! Constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST Stream()
                 {
-                    ALPAKA_CUDA_CHECK(cudaStreamSynchronize(
-                        stream.m_cudaStream));
+                    ALPAKA_CUDA_CHECK(cudaStreamCreate(
+                        &m_cudaStream);
                 }
+                //-----------------------------------------------------------------------------
+                //! Copy constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST Stream(Stream const &) = default;
+                //-----------------------------------------------------------------------------
+                //! Move constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST Stream(Stream &&) = default;
+                //-----------------------------------------------------------------------------
+                //! Assignment operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST Stream & operator=(Stream const &) = default;
+                //-----------------------------------------------------------------------------
+                //! Equality comparison operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST bool operator==(Stream const & rhs) const
+                {
+                    return m_cudaStream == rhs.m_cudaStream;
+                }
+                //-----------------------------------------------------------------------------
+                //! Equality comparison operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST bool operator!=(Stream const & rhs) const
+                {
+                    return !((*this) == rhs);
+                }
+                //-----------------------------------------------------------------------------
+                //! Destructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST virtual ~Stream() noexcept
+                {
+                    ALPAKA_CUDA_CHECK(cudaStreamDestroy(m_cudaStream));
+                }
+
+                cudaStream_t m_cudaStream;
             };
+        }
+    }
 
+    namespace traits
+    {
+        namespace stream
+        {
             //#############################################################################
-            //! The CUDA accelerator stream event waiter.
+            //! The CUDA accelerator stream type trait specialization.
             //#############################################################################
             template<>
-            struct StreamWaitEvent<
-                Stream<AccCuda>,
-                event::Event<AccCuda>
-            >
+            class GetStream<
+                AccCuda>
             {
-                static ALPAKA_FCT_HOST void streamWaitEvent(
-                    Stream<AccCuda> const & stream, 
-                    event::Event<AccCuda> const & event)
-                {
-                    ALPAKA_CUDA_CHECK(cudaStreamWaitEvent(
-                        stream.m_cudaStream,
-                        event.m_cudaEvent,
-                        0));
-                }
+                using type = alpaka::cuda::detail::StreamCuda;
             };
 
             //#############################################################################
@@ -129,11 +120,10 @@ namespace alpaka
             //#############################################################################
             template<>
             struct StreamTest<
-                event::Event<AccCuda>
-            >
+                cuda::detail::StreamCuda>
             {
                 static ALPAKA_FCT_HOST bool streamTest(
-                    Stream<AccCuda> const & stream)
+                    cuda::detail::StreamCuda const & stream)
                 {
                     auto const ret(cudaStreamQuery(stream.m_cudaStream));
                     if(ret == cudaSuccess)
@@ -148,6 +138,43 @@ namespace alpaka
                     {
                         throw std::runtime_error(("Unexpected return value '" + std::string(cudaGetErrorString(ret)) + "'from cudaStreamQuery!").c_str());
                     }
+                }
+            };
+        }
+
+        namespace wait
+        {
+            //#############################################################################
+            //! The CUDA accelerator stream thread wait trait specialization.
+            //#############################################################################
+            template<>
+            struct CurrentThreadWaitFor<
+                cuda::detail::StreamCuda>
+            {
+                ALPAKA_FCT_HOST static void currentThreadWaitFor(
+                    cuda::detail::StreamCuda const & stream)
+                {
+                    ALPAKA_CUDA_CHECK(cudaStreamSynchronize(
+                        stream.m_cudaStream));
+                }
+            };
+
+            //#############################################################################
+            //! The CUDA accelerator stream event wait trait specialization.
+            //#############################################################################
+            template<>
+            struct WaiterWaitFor<
+                cuda::detail::StreamCuda,
+                cuda::detail::EventCuda>
+            {
+                ALPAKA_FCT_HOST static void waiterWaitFor(
+                    cuda::detail::StreamCuda const & stream,
+                    cuda::detail::EventCuda const & event)
+                {
+                    ALPAKA_CUDA_CHECK(cudaStreamWaitEvent(
+                        stream.m_cudaStream,
+                        event.m_cudaEvent,
+                        0));
                 }
             };
         }

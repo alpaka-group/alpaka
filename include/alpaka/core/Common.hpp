@@ -21,8 +21,6 @@
 
 #pragma once
 
-#include <type_traits>  // std::enable_if, std::is_integral
-#include <climits>      // CHAR_BIT
 #include <cstddef>      // std::size_t
 
 // workarounds

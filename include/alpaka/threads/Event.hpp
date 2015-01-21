@@ -27,18 +27,35 @@
 
 namespace alpaka
 {
-    namespace event
+    namespace threads
     {
-        //#############################################################################
-        //! The threads accelerator event.
-        //#############################################################################
-        template<>
-        class Event<
-            AccThreads> :
-            public host::detail::EventHost
+        namespace detail
         {
-        public:
-            using Acc = AccThreads;
-        };
+            //#############################################################################
+            //! The threads accelerator event.
+            //#############################################################################
+            class EventThreads :
+                public host::detail::EventHost
+            {
+            public:
+                using Acc = AccThreads;
+            };
+        }
+    }
+
+    namespace traits
+    {
+        namespace event
+        {
+            //#############################################################################
+            //! The threads accelerator event type trait specialization.
+            //#############################################################################
+            template<>
+            class GetEvent<
+                AccThreads>
+            {
+                using type = alpaka::threads::detail::EventThreads;
+            };
+        }
     }
 }

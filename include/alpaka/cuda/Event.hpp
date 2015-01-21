@@ -24,57 +24,59 @@
 #include <alpaka/cuda/AccCudaFwd.hpp>   // AccCuda
 
 #include <alpaka/traits/Event.hpp>
+#include <alpaka/traits/Wait.hpp>       // CurrentThreadWaitFor
 
 namespace alpaka
 {
-    namespace event
+    namespace cuda
     {
-        //#############################################################################
-        //! The CUDA accelerator event.
-        //#############################################################################
-        template<>
-        class Event<
-            AccCuda>
+        namespace detail
         {
-        public:
-            using Acc = AccCuda;
-
-        public:
-            //-----------------------------------------------------------------------------
-            //! Constructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST Event(bool bBusyWait = true)
+            //#############################################################################
+            //! The CUDA accelerator event.
+            //#############################################################################
+            class EventCuda
             {
-                // Creates an event object with the specified flags. Valid flags include:
-                //  cudaEventDefault: Default event creation flag.
-                //  cudaEventBlockingSync : Specifies that event should use blocking synchronization.A host thread that uses cudaEventSynchronize() to wait on an event created with this flag will block until the event actually completes.
-                //  cudaEventDisableTiming : Specifies that the created event does not need to record timing data.Events created with this flag specified and the cudaEventBlockingSync flag not specified will provide the best performance when used with cudaStreamWaitEvent() and cudaEventQuery().
-                ALPAKA_CUDA_CHECK(cudaEventCreateWithFlags(
-                    &m_cudaEvent,
-                    (bBusyWait ? cudaEventDefault : cudaEventBlockingSync) | cudaEventDisableTiming));
-            }
-            //-----------------------------------------------------------------------------
-            //! Copy constructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST Event(Event const &) = default;
-            //-----------------------------------------------------------------------------
-            //! Move constructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST Event(Event &&) = default;
-            //-----------------------------------------------------------------------------
-            //! Assignment operator.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST Event & operator=(Event const &) = default;
-            //-----------------------------------------------------------------------------
-            //! Destructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST virtual ~Event() noexcept
-            {
-                ALPAKA_CUDA_CHECK(cudaEventDestroy(m_cudaEvent));
-            }
+            public:
+                using Acc = AccCuda;
 
-            cudaEvent_t m_cudaEvent;
-        };
+            public:
+                //-----------------------------------------------------------------------------
+                //! Constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST Event(bool bBusyWait = true)
+                {
+                    // Creates an event object with the specified flags. Valid flags include:
+                    //  cudaEventDefault: Default event creation flag.
+                    //  cudaEventBlockingSync : Specifies that event should use blocking synchronization.A host thread that uses cudaEventSynchronize() to wait on an event created with this flag will block until the event actually completes.
+                    //  cudaEventDisableTiming : Specifies that the created event does not need to record timing data.Events created with this flag specified and the cudaEventBlockingSync flag not specified will provide the best performance when used with cudaStreamWaitEvent() and cudaEventQuery().
+                    ALPAKA_CUDA_CHECK(cudaEventCreateWithFlags(
+                        &m_cudaEvent,
+                        (bBusyWait ? cudaEventDefault : cudaEventBlockingSync) | cudaEventDisableTiming));
+                }
+                //-----------------------------------------------------------------------------
+                //! Copy constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST Event(Event const &) = default;
+                //-----------------------------------------------------------------------------
+                //! Move constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST Event(Event &&) = default;
+                //-----------------------------------------------------------------------------
+                //! Assignment operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST Event & operator=(Event const &) = default;
+                //-----------------------------------------------------------------------------
+                //! Destructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST virtual ~Event() noexcept
+                {
+                    ALPAKA_CUDA_CHECK(cudaEventDestroy(m_cudaEvent));
+                }
+
+                cudaEvent_t m_cudaEvent;
+            };
+        }
     }
 
     namespace traits
@@ -82,16 +84,25 @@ namespace alpaka
         namespace event
         {
             //#############################################################################
+            //! The CUDA accelerator event type trait specialization.
+            //#############################################################################
+            template<>
+            class GetEvent<
+                AccCuda>
+            {
+                using type = alpaka::cuda::detail::EventCuda;
+            };
+
+            //#############################################################################
             //! The CUDA accelerator event enqueue trait specialization.
             //#############################################################################
             template<>
             struct DefaultStreamEnqueueEvent<
-                alpaka::event::Event<AccCuda>,
-                stream::Stream<AccCuda>
-            >
+                cuda::detail::EventCuda,
+                cuda::detail::StreamCuda>
             {
                 static ALPAKA_FCT_HOST void defaultStreamEnqueueEvent(
-                    alpaka::event::Event<AccCuda> const & event)
+                    cuda::detail::EventCuda const & event)
                 {
                     ALPAKA_CUDA_CHECK(cudaEventRecord(
                         event.m_cudaEvent,
@@ -104,13 +115,12 @@ namespace alpaka
             //#############################################################################
             template<>
             struct StreamEnqueueEvent<
-                alpaka::event::Event<AccCuda>,
-                stream::Stream<AccCuda>
-            >
+                cuda::detail::EventCuda,
+                cuda::detail::StreamCuda>
             {
                 static ALPAKA_FCT_HOST void streamEnqueueEvent(
-                    alpaka::event::Event<AccCuda> const & event, 
-                    stream::Stream<AccCuda> const * stream)
+                    cuda::detail::EventCuda const & event,
+                    cuda::detail::StreamCuda const * stream)
                 {
                     ALPAKA_CUDA_CHECK(cudaEventRecord(
                         event.m_cudaEvent,
@@ -123,13 +133,11 @@ namespace alpaka
             //#############################################################################
             template<>
             struct ThreadWaitEvent<
-                alpaka::event::Event<AccCuda>
-            >
+                cuda::detail::EventCuda>
             {
                 static ALPAKA_FCT_HOST void threadWaitEvent(
-                    alpaka::event::Event<AccCuda> const & event)
+                    cuda::detail::EventCuda const & event)
                 {
-                    ALPAKA_CUDA_CHECK(cudaEventSynchronize(event.m_cudaEvent));
                 }
             };
 
@@ -138,11 +146,10 @@ namespace alpaka
             //#############################################################################
             template<>
             struct EventTest<
-                alpaka::event::Event<AccCuda>
-            >
+                cuda::detail::EventCuda>
             {
                 static ALPAKA_FCT_HOST bool eventTest(
-                    alpaka::event::Event<AccCuda> const & event)
+                    cuda::detail::EventCuda const & event)
                 {
                     auto const ret(cudaEventQuery(event.m_cudaEvent));
                     if(ret == cudaSuccess)
@@ -157,6 +164,23 @@ namespace alpaka
                     {
                         throw std::runtime_error(("Unexpected return value '" + std::string(cudaGetErrorString(ret)) + "'from cudaEventQuery!").c_str());
                     }
+                }
+            };
+        }
+
+        namespace wait
+        {
+            //#############################################################################
+            //! The CUDA accelerator event thread wait trait specialization.
+            //#############################################################################
+            template<>
+            struct CurrentThreadWaitFor<
+                cuda::detail::EventCuda>
+            {
+                ALPAKA_FCT_HOST static void currentThreadWaitFor(
+                    cuda::detail::EventCuda const & event)
+                {
+                    ALPAKA_CUDA_CHECK(cudaEventSynchronize(event.m_cudaEvent));
                 }
             };
         }

@@ -38,8 +38,10 @@
 #include <alpaka/interfaces/BlockSharedExternMemSizeBytes.hpp>
 
 #include <alpaka/traits/Acc.hpp>
+#include <alpaka/traits/Device.hpp>
 #include <alpaka/traits/Dim.hpp>
 #include <alpaka/traits/Event.hpp>
 #include <alpaka/traits/Extent.hpp>
 #include <alpaka/traits/Memory.hpp>
 #include <alpaka/traits/Stream.hpp>
+#include <alpaka/traits/Wait.hpp>

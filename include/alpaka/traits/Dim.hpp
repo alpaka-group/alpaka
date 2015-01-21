@@ -72,7 +72,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename T>
-        ALPAKA_FCT_HOST std::size_t getDim()
+        ALPAKA_FCT_HOST_ACC std::size_t getDim()
         {
             return GetDimT<T>::value;
         }

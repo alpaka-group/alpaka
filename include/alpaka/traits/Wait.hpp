@@ -21,68 +21,63 @@
 
 #pragma once
 
-#include <string>   // std::string
+#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST
 
 namespace alpaka
 {
-    //-----------------------------------------------------------------------------
-    //! The traits.
-    //-----------------------------------------------------------------------------
     namespace traits
     {
         //-----------------------------------------------------------------------------
-        //! The accelerator traits.
+        //! The wait traits.
         //-----------------------------------------------------------------------------
-        namespace acc
+        namespace wait
         {
             //#############################################################################
-            //! The accelerator trait.
+            //! The thread wait trait.
             //#############################################################################
             template<
-                typename T,
+                typename TAwaited,
                 typename TSfinae = void>
-            struct GetAcc;
+            struct CurrentThreadWaitFor;
 
             //#############################################################################
-            //! The accelerator name trait.
-            //!
-            //! The default implementation returns the mangled class name.
+            //! The waiter wait trait.
             //#############################################################################
             template<
-                typename TAcc,
+                typename TWaiter,
+                typename TAwaited,
                 typename TSfinae = void>
-            struct GetAccName
-            {
-                ALPAKA_FCT_HOST static std::string getAccName()
-                {
-                    return typeid(TAcc).name();
-                }
-            };
+            struct WaiterWaitFor;
         }
     }
 
     //-----------------------------------------------------------------------------
-    //! The accelerator trait accessors.
+    //! The wait traits accessors.
     //-----------------------------------------------------------------------------
-    namespace acc
+    namespace wait
     {
-        //#############################################################################
-        //! The accelerator trait alias template to remove the ::type.
-        //#############################################################################
+        //-----------------------------------------------------------------------------
+        //! Waits the thread for the completion of the given awaited action to complete.
+        //-----------------------------------------------------------------------------
         template<
-            typename T>
-        using GetAccT = typename traits::acc::GetAcc<T>::type;
+            typename TAwaited>
+        ALPAKA_FCT_HOST void wait(
+            TAwaited const & awaited)
+        {
+            traits::wait::CurrentThreadWaitFor<TAwaited>::currentThreadWaitFor(awaited);
+        }
 
         //-----------------------------------------------------------------------------
-        //! Writes the accelerator name to the given stream.
-        //!
-        //! \tparam TAcc The accelerator type to write the name of.
+        //! The waiter waits for the given awaited action to complete.
         //-----------------------------------------------------------------------------
         template<
-            typename TAcc>
-        ALPAKA_FCT_HOST std::string getAccName()
+            typename TWaiter,
+            typename TAwaited>
+        ALPAKA_FCT_HOST void wait(
+            TWaiter const & waiter,
+            TAwaited const & awaited)
         {
-            return traits::acc::GetAccName<TAcc>::getAccName();
+            traits::stream::WaiterWaitFor<TWaiter, TAwaited>::waiterWaitFor(waiter, awaited);
         }
     }
 }

@@ -92,10 +92,10 @@ namespace alpaka
                     device::DeviceProperties deviceProperties;
 
                     deviceProperties.m_sName = host::getCpuName();
-                    deviceProperties.m_uiMultiProcessorCount = 1;
+                    deviceProperties.m_uiMultiProcessorCount = 1u;
                     // \TODO: Magic number. What is the maximum? Just set a reasonable value? There is a implementation defined maximum where the creation of a new thread crashes.
                     // std::thread::hardware_concurrency  can return 0, so a default for this case?
-                    deviceProperties.m_uiBlockKernelsCountMax = std::thread::hardware_concurrency() * 8;
+                    deviceProperties.m_uiBlockKernelsCountMax = std::thread::hardware_concurrency() * 8u;
                     deviceProperties.m_v3uiBlockKernelsExtentMax = Vec<3u>(deviceProperties.m_uiBlockKernelsCountMax, deviceProperties.m_uiBlockKernelsCountMax, deviceProperties.m_uiBlockKernelsCountMax);
                     deviceProperties.m_v3uiGridBlocksExtentMax = Vec<3u>(std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max());
                     deviceProperties.m_uiGlobalMemorySizeBytes = host::getGlobalMemorySizeBytes();

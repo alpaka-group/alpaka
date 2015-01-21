@@ -149,8 +149,7 @@ namespace alpaka
                 typename T>
             struct GetDim<
                 T,
-                typename std::enable_if<std::is_integral<T>::value && std::is_unsigned<T>::value, void>::type
-            >
+                typename std::enable_if<std::is_integral<T>::value && std::is_unsigned<T>::value>::type>
             {
                 using type = alpaka::dim::Dim<std::rank<T>::value>;
             };
@@ -165,10 +164,9 @@ namespace alpaka
                 typename T>
             struct GetWidth<
                 T,
-                typename std::enable_if<std::is_integral<T>::value && std::is_unsigned<T>::value, void>::type
-            >
+                typename std::enable_if<std::is_integral<T>::value && std::is_unsigned<T>::value>::type>
             {
-                static std::size_t getWidth(
+                ALPAKA_FCT_HOST_ACC static std::size_t getWidth(
                     T const & extent)
                 {
                     return static_cast<std::size_t>(extent);

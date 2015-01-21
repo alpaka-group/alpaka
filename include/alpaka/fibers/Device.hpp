@@ -93,7 +93,7 @@ namespace alpaka
 
                     deviceProperties.m_sName = host::getCpuName();
                     deviceProperties.m_uiMultiProcessorCount = std::thread::hardware_concurrency(); // \TODO: This may be inaccurate.
-                    deviceProperties.m_uiBlockKernelsCountMax = 64; // \TODO: What is the maximum? Just set a reasonable value?
+                    deviceProperties.m_uiBlockKernelsCountMax = 64u; // \TODO: What is the maximum? Just set a reasonable value?
                     deviceProperties.m_v3uiBlockKernelsExtentMax = Vec<3u>(deviceProperties.m_uiBlockKernelsCountMax, deviceProperties.m_uiBlockKernelsCountMax, deviceProperties.m_uiBlockKernelsCountMax);
                     deviceProperties.m_v3uiGridBlocksExtentMax = Vec<3u>(std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max());
                     deviceProperties.m_uiGlobalMemorySizeBytes = host::getGlobalMemorySizeBytes();

@@ -112,8 +112,7 @@ namespace alpaka
                 typename TDim>
             struct GetWidth<
                 alpaka::memory::MemBufPlainPtrWrapper<TMemSpace, TElem, TDim>,
-                typename std::enable_if<(TDim::value >= 1u) && (TDim::value <= 3u), void>::type
-            >
+                typename std::enable_if<(TDim::value >= 1u) && (TDim::value <= 3u)>::type>
             {
                 static std::size_t getWidth(
                     alpaka::memory::MemBufPlainPtrWrapper<TMemSpace, TElem, TDim> const & extent)
@@ -131,8 +130,7 @@ namespace alpaka
                 typename TDim>
             struct GetHeight<
                 alpaka::memory::MemBufPlainPtrWrapper<TMemSpace, TElem, TDim>,
-                typename std::enable_if<(TDim::value >= 2u) && (TDim::value <= 3u), void>::type
-            >
+                typename std::enable_if<(TDim::value >= 2u) && (TDim::value <= 3u)>::type>
             {
                 static std::size_t getHeight(
                     alpaka::memory::MemBufPlainPtrWrapper<TMemSpace, TElem, TDim> const & extent)
@@ -149,8 +147,7 @@ namespace alpaka
                 typename TDim>
             struct GetDepth<
                 alpaka::memory::MemBufPlainPtrWrapper<TMemSpace, TElem, TDim>,
-                typename std::enable_if<(TDim::value >= 3u) && (TDim::value <= 3u), void>::type
-            >
+                typename std::enable_if<(TDim::value >= 3u) && (TDim::value <= 3u)>::type>
             {
                 static std::size_t getDepth(
                     alpaka::memory::MemBufPlainPtrWrapper<TMemSpace, TElem, TDim> const & extent)
@@ -182,7 +179,7 @@ namespace alpaka
                 typename TMemSpace,
                 typename TElem,
                 typename TDim>
-            struct GetMemElemType<
+            struct GetMemElem<
                 alpaka::memory::MemBufPlainPtrWrapper<TMemSpace, TElem, TDim>>
             {
                 using type = TElem;

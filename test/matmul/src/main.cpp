@@ -63,7 +63,7 @@ class MatMulKernel :
 	template<
         typename TElem>
 	ALPAKA_FCT_ACC void operator()(
-		std::uint32_t const n,
+		std::size_t const n,
 		TElem const * const A,
 		TElem const * const B,
 		TElem * const C) const
@@ -93,7 +93,7 @@ class MatMulKernel :
 
 		// Loop over all blocks of A and B that are required to compute the C block.
 		auto const uiGridSizeX(TAcc::template getExtent<alpaka::Grid, alpaka::Blocks>()[0]);
-		for(std::uint32_t l(0); l < uiGridSizeX; ++l)
+		for(std::size_t l(0); l < uiGridSizeX; ++l)
 		{
 			// Copy data to shared memory.
 			auto const uiIndexA(cy * n + l * uiBlockKernelsExtentX + col);
@@ -143,7 +143,7 @@ namespace alpaka
             typename TElem>
 		ALPAKA_FCT_HOST static std::size_t getBlockSharedExternMemSizeBytes(
 			alpaka::Vec<3u> const & v3uiBlockKernelsExtent,
-			std::uint32_t const,
+			std::size_t const,
 			TElem const * const,
 			TElem const * const,
 			TElem * const)
@@ -175,9 +175,9 @@ void profileAcceleratedKernel(
 	exec(std::forward<TArgs>(args) ...);
 
 	// Enqueue an event to wait for. This allows synchronization after the (possibly) asynchronous kernel execution.
-	alpaka::event::Event<typename TExec::Acc> ev;
+	alpaka::event::GetEventT<TExec::Acc> ev;
 	alpaka::event::enqueue(ev);
-	alpaka::event::wait(ev);
+	alpaka::wait::wait(ev);
 
 	auto const tpEnd(std::chrono::high_resolution_clock::now());
 
@@ -195,7 +195,7 @@ struct ProfileAcceleratedMatMulKernel
         typename TAcc>
 	void operator()(
 		TAcc,
-		std::uint32_t const & uiMatrixSize,
+		std::size_t const & uiMatrixSize,
 		bool const & bAdaptiveBlockKernelsExtent)
 	{
 		std::cout << std::endl;
@@ -211,7 +211,7 @@ struct ProfileAcceleratedMatMulKernel
 		std::cout
 			<< "profileAcceleratedMatMulKernel("
 			<< " uiMatrixSize:" << uiMatrixSize
-			<< ", accelerator: " << typeid(TAcc).name()
+			<< ", accelerator: " << alpaka::acc::getAccName<TAcc>()
 			<< ", kernel: " << typeid(Kernel).name()
 			<< ", workExtent: " << workExtent
 			<< ")" << std::endl;
@@ -253,7 +253,7 @@ struct ProfileAcceleratedMatMulKernel
 		// Build the kernel executor.
 		auto exec(alpaka::createKernelExecutor<TAcc, Kernel>());
 		// Get a new stream.
-		alpaka::stream::Stream<TAcc> stream;
+		alpaka::stream::GetStrramT<TAcc> stream;
 		// Profile the kernel execution.
 		profileAcceleratedKernel(exec(workExtent, stream),
 			uiMatrixSize,
@@ -266,7 +266,7 @@ struct ProfileAcceleratedMatMulKernel
 
 		// Assert that the results are correct.
 		// When multiplying square matrices filled with ones, the result of each cell is the size of the matrix.
-		std::uint32_t const uiCorrectResult(uiMatrixSize);
+		std::uint32_t const uiCorrectResult(static_cast<std::uint32_t>(uiMatrixSize));
 
 		bool bResultCorrect(true);
 		for(std::size_t i(0);
@@ -340,7 +340,7 @@ int main(
 				alpaka::device::DeviceManager<alpaka::AccCuda>::getCurrentDevice());
 #endif
 			// For different matrix sizes.
-			for(std::uint32_t uiMatrixSize(16u);
+			for(std::size_t uiMatrixSize(16u);
 				uiMatrixSize < 1024u;
 				uiMatrixSize *= 2u)
 			{

@@ -23,17 +23,6 @@
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST
 
-// forward declarations
-namespace alpaka
-{
-    namespace stream
-    {
-        template<
-            typename TAcc>
-        class Stream;
-    }
-}
-
 namespace alpaka
 {
     namespace traits
@@ -45,11 +34,10 @@ namespace alpaka
         {
             //#############################################################################
             //! The event type trait.
-            // \TODO: Implement GetEventT/GetEvent!
             //#############################################################################
-            //template<
-            //    typename TAcc>
-            //class GetEvent;
+            template<
+                typename TAcc>
+            class GetEvent;
 
             //#############################################################################
             //! The event enqueuer trait.
@@ -69,14 +57,6 @@ namespace alpaka
             struct StreamEnqueueEvent;
 
             //#############################################################################
-            //! The thread event waiter trait.
-            //#############################################################################
-            template<
-                typename TEvent, 
-                typename TSfinae = void>
-            struct ThreadWaitEvent;
-
-            //#############################################################################
             //! The event tester trait.
             //#############################################################################
             template<
@@ -93,18 +73,10 @@ namespace alpaka
     {
         //#############################################################################
         //! The event type trait alias template to remove the ::type.
-        // \TODO: Implement GetEventT/GetEvent!
-        //#############################################################################
-        //template<
-        //    typename TAcc> 
-        //using GetEventT = typename traits::memory::GetEvent<TAcc>::type;
-
-        //#############################################################################
-        //! The abstract event.
         //#############################################################################
         template<
-            typename TAcc> 
-        class Event;
+            typename TAcc>
+        using GetEventT = typename traits::event::GetEvent<TAcc>::type;
 
         //-----------------------------------------------------------------------------
         //! Queues the given event in the stream zero.
@@ -113,11 +85,11 @@ namespace alpaka
         //! Any subsequent calls which examine the status of event will only examine the completion of this most recent call to enqueue.
         //-----------------------------------------------------------------------------
         template<
-            typename TAcc>
+            typename TEvent>
         ALPAKA_FCT_HOST void enqueue(
-            Event<TAcc> const & event)
+            TEvent const & event)
         {
-            traits::event::DefaultStreamEnqueueEvent<Event<TAcc>>::defaultStreamEnqueueEvent(event);
+            traits::event::DefaultStreamEnqueueEvent<TEvent>::defaultStreamEnqueueEvent(event);
         }
 
         //-----------------------------------------------------------------------------
@@ -127,34 +99,24 @@ namespace alpaka
         //! Any subsequent calls which examine the status of event will only examine the completion of this most recent call to enqueue.
         //-----------------------------------------------------------------------------
         template<
-            typename TAcc>
+            typename TEvent,
+            typename TStream>
         ALPAKA_FCT_HOST void enqueue(
-            Event<TAcc> const & event, 
-            stream::Stream<TAcc> const & stream)
+            TEvent const & event,
+            TStream const & stream)
         {
-            traits::event::StreamEnqueueEvent<Event<TAcc>, stream::Stream<TAcc>>::streamEnqueueEvent(event, stream);
-        }
-
-        //-----------------------------------------------------------------------------
-        //! Waits the thread for the completion of the given event.
-        //-----------------------------------------------------------------------------
-        template<
-            typename TAcc>
-        ALPAKA_FCT_HOST void wait(
-            Event<TAcc> const & event)
-        {
-            traits::event::ThreadWaitEvent<Event<TAcc>>::threadWaitEvent(event);
+            traits::event::StreamEnqueueEvent<TEvent, TStream>::streamEnqueueEvent(event, stream);
         }
 
         //-----------------------------------------------------------------------------
         //! Tests if the given event has already be completed.
         //-----------------------------------------------------------------------------
         template<
-            typename TAcc>
+            typename TEvent>
         ALPAKA_FCT_HOST bool test(
-            Event<TAcc> const & event)
+            TEvent const & event)
         {
-            return traits::event::EventTest<Event<TAcc>>::eventTest(event);
+            return traits::event::EventTest<TEvent>::eventTest(event);
         }
     }
 }

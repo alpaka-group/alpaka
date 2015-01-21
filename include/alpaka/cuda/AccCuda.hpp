@@ -199,7 +199,7 @@ namespace alpaka
                     typename... TKernelConstrArgs>
                 ALPAKA_FCT_HOST KernelExecutor(
                     IWorkExtent<TWorkExtent> const & workExtent, 
-                    stream::Stream<AccCuda> const & stream, 
+                    StreamCuda const & stream, 
                     TKernelConstrArgs && ... args) :
                     TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
                 {
@@ -292,7 +292,7 @@ namespace alpaka
                 Vec<3u> m_v3uiGridBlocksExtent;
                 Vec<3u> m_v3uiBlockKernelsExtent;
 
-                stream::Stream<AccCuda> m_Stream;
+                StreamCuda m_Stream;
             };
         }
     }

@@ -202,7 +202,7 @@ namespace alpaka
                     typename... TKernelConstrArgs>
                 ALPAKA_FCT_HOST KernelExecutor(
                     IWorkExtent<TWorkExtent> const & workExtent, 
-                    stream::Stream<AccSerial> const &, 
+                    StreamSerial const &,
                     TKernelConstrArgs && ... args) :
                     TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
                 {

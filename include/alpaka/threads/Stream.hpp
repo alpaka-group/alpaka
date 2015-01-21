@@ -27,18 +27,35 @@
 
 namespace alpaka
 {
-    namespace stream
+    namespace threads
     {
-        //#############################################################################
-        //! The threads accelerator stream.
-        //#############################################################################
-        template<>
-        class Stream<
-            AccThreads> :
-            public host::detail::StreamHost
+        namespace detail
         {
-        public:
-            using Acc = AccThreads;
-        };
+            //#############################################################################
+            //! The threads accelerator stream.
+            //#############################################################################
+            class StreamThreads :
+                public host::detail::StreamHost
+            {
+            public:
+                using Acc = AccThreads;
+            };
+        }
+    }
+
+    namespace traits
+    {
+        namespace stream
+        {
+            //#############################################################################
+            //! The threads accelerator stream type trait specialization.
+            //#############################################################################
+            template<>
+            class GetStream<
+                AccThreads>
+            {
+                using type = alpaka::threads::detail::StreamThreads;
+            };
+        }
     }
 }

@@ -291,7 +291,7 @@ namespace alpaka
                     typename... TKernelConstrArgs>
                 ALPAKA_FCT_HOST KernelExecutor(
                     IWorkExtent<TWorkExtent> const & workExtent, 
-                    stream::Stream<AccFibers> const &, 
+                    StreamFibers const &,
                     TKernelConstrArgs && ... args):
                     TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
 #ifdef ALPAKA_FIBERS_NO_POOL
@@ -366,8 +366,7 @@ namespace alpaka
                         boost::fibers::mutex,               // The mutex type to use. Only required if TbYield is true.
                         boost::unique_lock,                 // The unique lock type to use. Only required if TbYield is true.
                         boost::fibers::condition_variable,  // The condition variable type to use. Only required if TbYield is true.
-                        false                               // If the threads should yield.
-                    >;
+                        false>;                             // If the threads should yield.
                     FiberPool pool(uiNumKernelsInBlock[0], uiNumKernelsInBlock[0]);
 #endif
                     // Execute the blocks serially.

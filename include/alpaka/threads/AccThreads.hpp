@@ -299,7 +299,7 @@ namespace alpaka
                     typename... TKernelConstrArgs>
                 ALPAKA_FCT_HOST KernelExecutor(
                     IWorkExtent<TWorkExtent> const & workExtent, 
-                    stream::Stream<AccThreads> const &, 
+                    StreamThreads const &,
                     TKernelConstrArgs && ... args) :
                     TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
 #ifdef ALPAKA_THREADS_NO_POOL
@@ -390,8 +390,7 @@ KernelExecutor && other) :
                         std::thread,                // The concurrent execution type.
                         std::promise,               // The promise type.
                         ThreadPoolCurrentException, // The type returning the current exception.
-                        ThreadPoolYield             // The type yielding the current concurrent execution.
-                    >;
+                        ThreadPoolYield>;           // The type yielding the current concurrent execution.
                     ThreadPool pool(uiNumKernelsInBlock[0], uiNumKernelsInBlock[0]);
 #endif
                     // Execute the blocks serially.

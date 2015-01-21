@@ -27,18 +27,35 @@
 
 namespace alpaka
 {
-    namespace event
+    namespace serial
     {
-        //#############################################################################
-        //! The serial accelerator event.
-        //#############################################################################
-        template<>
-        class Event<
-            AccSerial> :
-            public host::detail::EventHost
+        namespace detail
         {
-        public:
-            using Acc = AccSerial;
-        };
+            //#############################################################################
+            //! The serial accelerator event.
+            //#############################################################################
+            class EventSerial :
+                public host::detail::EventHost
+            {
+            public:
+                using Acc = AccSerial;
+            };
+        }
+    }
+
+    namespace traits
+    {
+        namespace event
+        {
+            //#############################################################################
+            //! The serial accelerator event type trait specialization.
+            //#############################################################################
+            template<>
+            class GetEvent<
+                AccSerial>
+            {
+                using type = alpaka::serial::detail::EventSerial;
+            };
+        }
     }
 }

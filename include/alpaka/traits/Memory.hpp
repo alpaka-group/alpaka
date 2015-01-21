@@ -56,7 +56,7 @@ namespace alpaka
             template<
                 typename TMemBuf, 
                 typename TSfinae = void>
-            struct GetMemElemType;
+            struct GetMemElem;
 
             //#############################################################################
             //! The memory buffer type trait.
@@ -66,7 +66,7 @@ namespace alpaka
                 typename TElem,
                 typename TDim,
                 typename TSfinae = void>
-            struct GetMemBufType;
+            struct GetMemBuf;
 
             //#############################################################################
             //! The native pointer get trait.
@@ -136,7 +136,7 @@ namespace alpaka
         //#############################################################################
         template<
             typename TMemBuf>
-        using GetMemElemTypeT = typename traits::memory::GetMemElemType<TMemBuf>::type;
+        using GetMemElemT = typename traits::memory::GetMemElem<TMemBuf>::type;
 
         //#############################################################################
         //! The memory buffer type trait alias template to remove the ::type.
@@ -145,7 +145,7 @@ namespace alpaka
             typename TElem,
             typename TDim,
             typename TMemSpace>
-        using GetMemBufTypeT = typename traits::memory::GetMemBufType<TElem, TDim, TMemSpace>::type;
+        using GetMemBufT = typename traits::memory::GetMemBuf<TElem, TDim, TMemSpace>::type;
 
         //-----------------------------------------------------------------------------
         //! Gets the native pointer of the memory buffer.
@@ -157,7 +157,7 @@ namespace alpaka
             typename TMemBuf>
         ALPAKA_FCT_HOST auto getNativePtr(
             TMemBuf const & memBuf)
-            -> GetMemElemTypeT<TMemBuf> const *
+            -> GetMemElemT<TMemBuf> const *
         {
             return traits::memory::GetNativePtr<TMemBuf>::getNativePtr(memBuf);
         }
@@ -172,7 +172,7 @@ namespace alpaka
             typename TMemBuf>
         ALPAKA_FCT_HOST auto getNativePtr(
             TMemBuf & memBuf)
-            -> GetMemElemTypeT<TMemBuf> *
+            -> GetMemElemT<TMemBuf> *
         {
             return traits::memory::GetNativePtr<TMemBuf>::getNativePtr(memBuf);
         }
@@ -231,7 +231,7 @@ namespace alpaka
                 std::is_same<alpaka::dim::GetDimT<TMemBufDst>, alpaka::dim::GetDimT<TExtent>>::value,
                 "The destination buffer and the extent are required to have the same dimensionality!");
             static_assert(
-                std::is_same<GetMemElemTypeT<TMemBufDst>, GetMemElemTypeT<TMemBufSrc>>::value,
+                std::is_same<GetMemElemT<TMemBufDst>, GetMemElemT<TMemBufSrc>>::value,
                 "The source and the destination buffers are required to have the same element type!");
 
             // \TODO: Copy of arrays of different dimensions. Maybe only 1D to ND?
@@ -286,8 +286,7 @@ namespace alpaka
                 typename TFixedSizeArray>
             struct GetDim<
                 TFixedSizeArray,
-                typename std::enable_if<
-                    std::is_array<TFixedSizeArray>::value, void>::type>
+                typename std::enable_if<std::is_array<TFixedSizeArray>::value>::type>
             {
                 using type = alpaka::dim::Dim<std::rank<TFixedSizeArray>::value>;
             };
@@ -306,9 +305,9 @@ namespace alpaka
                     std::is_array<TFixedSizeArray>::value
                     && (std::rank<TFixedSizeArray>::value >= 1u)
                     && (std::rank<TFixedSizeArray>::value <= 3u)
-                    && (std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 1u>::value > 0u), void>::type>
+                    && (std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 1u>::value > 0u)>::type>
             {
-                static std::size_t getWidth(
+                ALPAKA_FCT_HOST_ACC static std::size_t getWidth(
                     TFixedSizeArray const &)
                 {
                     return std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value-1u>::value;
@@ -326,9 +325,9 @@ namespace alpaka
                     std::is_array<TFixedSizeArray>::value
                     && (std::rank<TFixedSizeArray>::value >= 2u)
                     && (std::rank<TFixedSizeArray>::value <= 3u)
-                    && (std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 2u>::value > 0u), void>::type>
+                    && (std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 2u>::value > 0u)>::type>
             {
-                static std::size_t getHeight(
+                ALPAKA_FCT_HOST_ACC static std::size_t getHeight(
                     TFixedSizeArray const &)
                 {
                     return std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 2u>::value;
@@ -345,9 +344,9 @@ namespace alpaka
                     std::is_array<TFixedSizeArray>::value
                     && (std::rank<TFixedSizeArray>::value >= 3u)
                     && (std::rank<TFixedSizeArray>::value <= 3u)
-                    && (std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 3u>::value > 0u), void>::type>
+                    && (std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 3u>::value > 0u)>::type>
             {
-                static std::size_t getDepth(
+                ALPAKA_FCT_HOST_ACC static std::size_t getDepth(
                     TFixedSizeArray const &)
                 {
                     return std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 3u>::value;
@@ -365,7 +364,7 @@ namespace alpaka
             struct GetMemSpace<
                 TFixedSizeArray,
                 typename std::enable_if<
-                    std::is_array<TFixedSizeArray>::value, void>::type>
+                    std::is_array<TFixedSizeArray>::value>::type>
             {
 #ifdef __CUDA_ARCH__
                 using type = alpaka::memory::MemSpaceCuda;
@@ -379,10 +378,10 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TFixedSizeArray>
-            struct GetMemElemType<
+            struct GetMemElem<
                 TFixedSizeArray,
                 typename std::enable_if<
-                    std::is_array<TFixedSizeArray>::value, void>::type>
+                    std::is_array<TFixedSizeArray>::value>::type>
             {
                 using type = typename std::remove_all_extents<TFixedSizeArray>::type;
             };
@@ -395,16 +394,16 @@ namespace alpaka
             struct GetNativePtr<
                 TFixedSizeArray,
                 typename std::enable_if<
-                    std::is_array<TFixedSizeArray>::value, void>::type>
+                    std::is_array<TFixedSizeArray>::value>::type>
             {
                 using TElem = typename std::remove_all_extents<TFixedSizeArray>::type;
 
-                static TElem const * getNativePtr(
+                ALPAKA_FCT_HOST_ACC static TElem const * getNativePtr(
                     TFixedSizeArray const & memBuf)
                 {
                     return memBuf;
                 }
-                static TElem * getNativePtr(
+                ALPAKA_FCT_HOST_ACC static TElem * getNativePtr(
                     TFixedSizeArray & memBuf)
                 {
                     return memBuf;
@@ -420,11 +419,11 @@ namespace alpaka
                 TFixedSizeArray,
                 typename std::enable_if<
                     std::is_array<TFixedSizeArray>::value
-                    && (std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 1u>::value > 0u), void>::type>
+                    && (std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 1u>::value > 0u)>::type>
             {
                 using TElem = typename std::remove_all_extents<TFixedSizeArray>::type;
 
-                static std::size_t getPitchBytes(
+                ALPAKA_FCT_HOST_ACC static std::size_t getPitchBytes(
                     TFixedSizeArray const &)
                 {
                     return sizeof(TElem) * std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 1u>::value;
@@ -464,7 +463,7 @@ namespace alpaka
             struct GetWidth<
                 std::array<TElem, TSize> >
             {
-                static std::size_t getWidth(
+                ALPAKA_FCT_HOST_ACC static std::size_t getWidth(
                     std::array<TElem, TSize> const & extent)
                 {
                     return extent.size();
@@ -492,7 +491,7 @@ namespace alpaka
             template<
                 typename TElem,
                 std::size_t TSize>
-            struct GetMemElemType<
+            struct GetMemElem<
                 std::array<TElem, TSize>>
             {
                 using type = TElem;
@@ -507,12 +506,12 @@ namespace alpaka
             struct GetNativePtr<
                 std::array<TElem, TSize>>
             {
-                static TElem const * getNativePtr(
+                ALPAKA_FCT_HOST_ACC static TElem const * getNativePtr(
                     std::array<TElem, TSize> const & memBuf)
                 {
                     return memBuf.data();
                 }
-                static TElem * getNativePtr(
+                ALPAKA_FCT_HOST_ACC static TElem * getNativePtr(
                     std::array<TElem, TSize> & memBuf)
                 {
                     return memBuf.data();
@@ -528,7 +527,7 @@ namespace alpaka
             struct GetPitchBytes<
                 std::array<TElem, TSize>>
             {
-                static std::size_t getPitchBytes(
+                ALPAKA_FCT_HOST_ACC static std::size_t getPitchBytes(
                     std::array<TElem, TSize> const & memPitch)
                 {
                     return sizeof(TElem) * memPitch.size();
@@ -568,7 +567,7 @@ namespace alpaka
             struct GetWidth<
                 std::vector<TElem, Allocator>>
             {
-                static std::size_t getWidth(
+                ALPAKA_FCT_HOST_ACC static std::size_t getWidth(
                     std::vector<TElem, Allocator> const & extent)
                 {
                     return extent.size();
@@ -596,7 +595,7 @@ namespace alpaka
             template<
                 typename TElem,
                 typename Allocator>
-            struct GetMemElemType<
+            struct GetMemElem<
                 std::vector<TElem, Allocator>>
             {
                 using type = TElem;
@@ -611,12 +610,12 @@ namespace alpaka
             struct GetNativePtr<
                 std::vector<TElem, Allocator>>
             {
-                static TElem const * getNativePtr(
+                ALPAKA_FCT_HOST_ACC static TElem const * getNativePtr(
                     std::vector<TElem, Allocator> const & memBuf)
                 {
                     return memBuf.data();
                 }
-                static TElem * getNativePtr(
+                ALPAKA_FCT_HOST_ACC static TElem * getNativePtr(
                     std::vector<TElem, Allocator> & memBuf)
                 {
                     return memBuf.data();
@@ -632,7 +631,7 @@ namespace alpaka
             struct GetPitchBytes<
                 std::vector<TElem, Allocator>>
             {
-                static std::size_t getPitchBytes(
+                ALPAKA_FCT_HOST_ACC static std::size_t getPitchBytes(
                     std::vector<TElem, Allocator> const & memPitch)
                 {
                     return sizeof(TElem) * memPitch.size();

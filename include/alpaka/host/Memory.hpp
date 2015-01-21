@@ -122,8 +122,7 @@ namespace alpaka
                 typename TDim>
             struct GetWidth<
                 host::detail::MemBufHost<TElem, TDim>,
-                typename std::enable_if<(TDim::value >= 1u) && (TDim::value <= 3u), void>::type
-            >
+                typename std::enable_if<(TDim::value >= 1u) && (TDim::value <= 3u)>::type>
             {
                 static std::size_t getWidth(
                     host::detail::MemBufHost<TElem, TDim> const & extent)
@@ -140,8 +139,7 @@ namespace alpaka
                 typename TDim>
             struct GetHeight<
                 host::detail::MemBufHost<TElem, TDim>,
-                typename std::enable_if<(TDim::value >= 2u) && (TDim::value <= 3u), void>::type
-            >
+                typename std::enable_if<(TDim::value >= 2u) && (TDim::value <= 3u)>::type>
             {
                 static std::size_t getHeight(
                     host::detail::MemBufHost<TElem, TDim> const & extent)
@@ -157,8 +155,7 @@ namespace alpaka
                 typename TDim>
             struct GetDepth<
                 host::detail::MemBufHost<TElem, TDim>,
-                typename std::enable_if<(TDim::value >= 3u) && (TDim::value <= 3u), void>::type
-            >
+                typename std::enable_if<(TDim::value >= 3u) && (TDim::value <= 3u)>::type>
             {
                 static std::size_t getDepth(
                     host::detail::MemBufHost<TElem, TDim> const & extent)
@@ -188,7 +185,7 @@ namespace alpaka
             template<
                 typename TElem, 
                 typename TDim>
-            struct GetMemElemType<
+            struct GetMemElem<
                 host::detail::MemBufHost<TElem, TDim>>
             {
                 using type = TElem;
@@ -200,7 +197,7 @@ namespace alpaka
             template<
                 typename TElem,
                 typename TDim>
-            struct GetMemBufType<
+            struct GetMemBuf<
                 TElem, TDim, alpaka::memory::MemSpaceHost>
             {
                 using type = host::detail::MemBufHost<TElem, TDim>;
@@ -253,8 +250,7 @@ namespace alpaka
             struct MemAlloc<
                 TElem,
                 TDim,
-                alpaka::memory::MemSpaceHost
-            >
+                alpaka::memory::MemSpaceHost>
             {
                 template<
                     typename TExtent>
@@ -275,8 +271,7 @@ namespace alpaka
             struct MemCopy<
                 TDim, 
                 alpaka::memory::MemSpaceHost,
-                alpaka::memory::MemSpaceHost
-            >
+                alpaka::memory::MemSpaceHost>
             {
                 template<
                     typename TExtent, 
@@ -294,10 +289,10 @@ namespace alpaka
                         std::is_same<alpaka::dim::GetDimT<TMemBufDst>, alpaka::dim::GetDimT<TExtent>>::value,
                         "The buffers and the extent are required to have the same dimensionality!");
                     static_assert(
-                        std::is_same<alpaka::memory::GetMemElemTypeT<TMemBufDst>, alpaka::memory::GetMemElemTypeT<TMemBufSrc>>::value,
+                        std::is_same<alpaka::memory::GetMemElemT<TMemBufDst>, alpaka::memory::GetMemElemT<TMemBufSrc>>::value,
                         "The source and the destination buffers are required to have the same element type!");
 
-                    using Elem = alpaka::memory::GetMemElemTypeT<TMemBufDst>;
+                    using Elem = alpaka::memory::GetMemElemT<TMemBufDst>;
 
                     auto const uiExtentWidth(alpaka::extent::getWidth(extent));
                     auto const uiExtentHeight(alpaka::extent::getHeight(extent));
@@ -380,8 +375,7 @@ namespace alpaka
                 typename TDim>
             struct MemSet<
                 TDim, 
-                alpaka::memory::MemSpaceHost
-            >
+                alpaka::memory::MemSpaceHost>
             {
                 template<
                     typename TExtent, 
@@ -391,7 +385,7 @@ namespace alpaka
                     std::uint8_t const & byte, 
                     TExtent const & extent)
                 {
-                    using Elem = alpaka::memory::GetMemElemTypeT<TMemBuf>;
+                    using Elem = alpaka::memory::GetMemElemT<TMemBuf>;
 
                     static_assert(
                         std::is_same<alpaka::dim::GetDimT<TMemBuf>, alpaka::dim::GetDimT<TExtent>>::value,

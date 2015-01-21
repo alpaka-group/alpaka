@@ -27,18 +27,35 @@
 
 namespace alpaka
 {
-    namespace stream
+    namespace fibers
     {
-        //#############################################################################
-        //! The fibers accelerator stream.
-        //#############################################################################
-        template<>
-        class Stream<
-            AccFibers> :
-            public host::detail::StreamHost
+        namespace detail
         {
-        public:
-            using Acc = AccFibers;
-        };
+            //#############################################################################
+            //! The fibers accelerator stream.
+            //#############################################################################
+            class StreamFibers :
+                public host::detail::StreamHost
+            {
+            public:
+                using Acc = AccFibers;
+            };
+        }
+    }
+
+    namespace traits
+    {
+        namespace stream
+        {
+            //#############################################################################
+            //! The fibers accelerator stream type trait specialization.
+            //#############################################################################
+            template<>
+            class GetStream<
+                AccFibers>
+            {
+                using type = alpaka::fibers::detail::StreamFibers;
+            };
+        }
     }
 }

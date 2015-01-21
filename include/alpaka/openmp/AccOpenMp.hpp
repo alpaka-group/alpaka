@@ -213,7 +213,7 @@ namespace alpaka
                     typename... TKernelConstrArgs>
                 ALPAKA_FCT_HOST KernelExecutor(
                     IWorkExtent<TWorkExtent> const & workExtent, 
-                    stream::Stream<AccOpenMp> const &, 
+                    StreamOpenMp const &, 
                     TKernelConstrArgs && ... args) :
                     TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
                 {

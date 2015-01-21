@@ -24,6 +24,7 @@
 #include <type_traits>                  // std::is_base
 
 #include <alpaka/traits/Event.hpp>      // alpaka::event::StreamEnqueueEvent, ...
+#include <alpaka/traits/Wait.hpp>       // CurrentThreadWaitFor
 
 namespace alpaka
 {
@@ -72,8 +73,7 @@ namespace alpaka
                 typename TEvent>
             struct DefaultStreamEnqueueEvent<
                 TEvent,
-                typename std::enable_if<std::is_base_of<host::detail::EventHost, TEvent>::value, void>::type
-            >
+                typename std::enable_if<std::is_base_of<host::detail::EventHost, TEvent>::value>::type>
             {
                 static ALPAKA_FCT_HOST void defaultStreamEnqueueEvent(
                     host::detail::EventHost const &)
@@ -93,30 +93,12 @@ namespace alpaka
                 TStream,
                 typename std::enable_if<
                     std::is_base_of<host::detail::EventHost, TEvent>::value 
-                    && std::is_same<typename TEvent::Acc, typename TStream::Acc>::value, void>::type
-            >
+                    && std::is_same<typename TEvent::Acc, typename TStream::Acc>::value>::type>
             {
                 static ALPAKA_FCT_HOST void streamEnqueueEvent(
                     host::detail::EventHost const &, TStream const &)
                 {
                     // Because host calls are not asynchronous, this call never has to enqueue anything.
-                }
-            };
-
-            //#############################################################################
-            //! The host accelerators thread event wait trait specialization.
-            //#############################################################################
-            template<
-                typename TEvent>
-            struct ThreadWaitEvent<
-                TEvent, 
-                typename std::enable_if<std::is_base_of<host::detail::EventHost, TEvent>::value, void>::type
-            >
-            {
-                static ALPAKA_FCT_HOST void threadWaitEvent(
-                    host::detail::EventHost const &)
-                {
-                    // Because host calls are not asynchronous, this call never has to wait.
                 }
             };
 
@@ -127,14 +109,32 @@ namespace alpaka
                 typename TEvent>
             struct EventTest<
                 TEvent,
-                typename std::enable_if<std::is_base_of<host::detail::EventHost, TEvent>::value, void>::type
-            >
+                typename std::enable_if<std::is_base_of<host::detail::EventHost, TEvent>::value>::type>
             {
                 static ALPAKA_FCT_HOST bool eventTest(
                     host::detail::EventHost const &, bool & bTest)
                 {
                     // Because host calls are not asynchronous, this call always returns true.
                     return true;
+                }
+            };
+        }
+
+        namespace wait
+        {
+            //#############################################################################
+            //! The host accelerator event thread wait trait specialization.
+            //#############################################################################
+            template<
+                typename TEvent>
+            struct CurrentThreadWaitFor<
+                TEvent,
+                typename std::enable_if<std::is_base_of<host::detail::EventHost, TEvent>::value>::type>
+            {
+                ALPAKA_FCT_HOST static void currentThreadWaitFor(
+                    TEvent const & event)
+                {
+                    // Because host calls are not asynchronous, this call never has to wait.
                 }
             };
         }

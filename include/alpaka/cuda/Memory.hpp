@@ -104,7 +104,7 @@ namespace alpaka
                 ALPAKA_CUDA_CHECK(
                     cudaHostRegister(
                         const_cast<void *>(reinterpret_cast<void *>(alpaka::memory::getNativePtr(memBuf))), 
-                        alpaka::extent::getProductOfExtents(memBuf) * sizeof(alpaka::memory::GetMemElemTypeT<TMemBuf>),
+                        alpaka::extent::getProductOfExtents(memBuf) * sizeof(alpaka::memory::GetMemElemT<TMemBuf>),
                         cudaHostRegisterDefault));
             }
             //#############################################################################
@@ -131,8 +131,7 @@ namespace alpaka
             //#############################################################################
             template<>
             struct MemCopyCuda<
-                alpaka::dim::Dim1
-            >
+                alpaka::dim::Dim1>
             {
                 template<
                     typename TExtent, 
@@ -151,7 +150,7 @@ namespace alpaka
                         std::is_same<alpaka::dim::GetDimT<TMemBufDst>, alpaka::dim::GetDimT<TExtent>>::value,
                         "The destination buffer and the extent are required to have the same dimensionality!");
                     static_assert(
-                        std::is_same<alpaka::memory::GetMemElemTypeT<TMemBufDst>, alpaka::memory::GetMemElemTypeT<TMemBufSrc>>::value,
+                        std::is_same<alpaka::memory::GetMemElemT<TMemBufDst>, alpaka::memory::GetMemElemT<TMemBufSrc>>::value,
                         "The source and the destination buffers are required to have the same element type!");
 
                     auto const uiExtentWidth(alpaka::extent::getWidth(extent));
@@ -165,7 +164,7 @@ namespace alpaka
                         cudaMemcpy(
                             reinterpret_cast<void *>(alpaka::memory::getNativePtr(memBufDst)),
                             reinterpret_cast<void const *>(alpaka::memory::getNativePtr(memBufSrc)),
-                            uiExtentWidth * sizeof(alpaka::memory::GetMemElemTypeT<TMemBufDst>),
+                            uiExtentWidth * sizeof(alpaka::memory::GetMemElemT<TMemBufDst>),
                             cudaMemcpyKindVal));
                 }
             };
@@ -174,8 +173,7 @@ namespace alpaka
             //#############################################################################
             template<>
             struct MemCopyCuda<
-                alpaka::dim::Dim2
-            >
+                alpaka::dim::Dim2>
             {
                 template<
                     typename TExtent, 
@@ -194,7 +192,7 @@ namespace alpaka
                         std::is_same<alpaka::dim::GetDimT<TMemBufDst>, alpaka::dim::GetDimT<TExtent>>::value,
                         "The destination buffer and the extent are required to have the same dimensionality!");
                     static_assert(
-                        std::is_same<alpaka::memory::GetMemElemTypeT<TMemBufDst>, alpaka::memory::GetMemElemTypeT<TMemBufSrc>>::value,
+                        std::is_same<alpaka::memory::GetMemElemT<TMemBufDst>, alpaka::memory::GetMemElemT<TMemBufSrc>>::value,
                         "The source and the destination buffers are required to have the same element type!");
 
                     auto const uiExtentWidth(alpaka::extent::getWidth(extent));
@@ -215,7 +213,7 @@ namespace alpaka
                             alpaka::memory::getPitchBytes(memBufDst),
                             reinterpret_cast<void const *>(alpaka::memory::getNativePtr(memBufSrc)),
                             alpaka::memory::getPitchBytes(memBufSrc),
-                            uiExtentWidth * sizeof(alpaka::memory::GetMemElemTypeT<TMemBufDst>),
+                            uiExtentWidth * sizeof(alpaka::memory::GetMemElemT<TMemBufDst>),
                             uiExtentHeight,
                             cudaMemcpyKindVal));
                 }
@@ -225,8 +223,7 @@ namespace alpaka
             //#############################################################################
             template<>
             struct MemCopyCuda<
-                alpaka::dim::Dim3
-            >
+                alpaka::dim::Dim3>
             {
                 template<
                     typename TExtent, 
@@ -245,7 +242,7 @@ namespace alpaka
                         std::is_same<alpaka::dim::GetDimT<TMemBufDst>, alpaka::dim::GetDimT<TExtent>>::value,
                         "The destination buffer and the extent are required to have the same dimensionality!");
                     static_assert(
-                        std::is_same<alpaka::memory::GetMemElemTypeT<TMemBufDst>, alpaka::memory::GetMemElemTypeT<TMemBufSrc>>::value,
+                        std::is_same<alpaka::memory::GetMemElemT<TMemBufDst>, alpaka::memory::GetMemElemT<TMemBufSrc>>::value,
                         "The source and the destination buffers are required to have the same element type!");
 
                     auto const uiExtentWidth(alpaka::extent::getWidth(extent));
@@ -284,7 +281,7 @@ namespace alpaka
                             uiDstHeight);
                     cudaMemcpy3DParmsVal.extent = 
                         make_cudaExtent(
-                            uiExtentWidth * sizeof(alpaka::memory::GetMemElemTypeT<TMemBufDst>),
+                            uiExtentWidth * sizeof(alpaka::memory::GetMemElemT<TMemBufDst>),
                             uiExtentHeight,
                             uiExtentDepth);
                     cudaMemcpy3DParmsVal.kind = cudaMemcpyKindVal;
@@ -328,8 +325,7 @@ namespace alpaka
                 typename TDim>
             struct GetWidth<
                 cuda::detail::MemBufCuda<TElem, TDim>,
-                typename std::enable_if<(TDim::value >= 1u) && (TDim::value <= 3u), void>::type
-            >
+                typename std::enable_if<(TDim::value >= 1u) && (TDim::value <= 3u)>::type>
             {
                 static std::size_t getWidth(
                     cuda::detail::MemBufCuda<TElem, TDim> const & extent)
@@ -346,8 +342,7 @@ namespace alpaka
                 typename TDim>
             struct GetHeight<
                 cuda::detail::MemBufCuda<TElem, TDim>,
-                typename std::enable_if<(TDim::value >= 2u) && (TDim::value <= 3u), void>::type
-            >
+                typename std::enable_if<(TDim::value >= 2u) && (TDim::value <= 3u)>::type>
             {
                 static std::size_t getHeight(
                     cuda::detail::MemBufCuda<TElem, TDim> const & extent)
@@ -363,8 +358,7 @@ namespace alpaka
                 typename TDim>
             struct GetDepth<
                 cuda::detail::MemBufCuda<TElem, TDim>,
-                typename std::enable_if<(TDim::value >= 3u) && (TDim::value <= 3u), void>::type
-            >
+                typename std::enable_if<(TDim::value >= 3u) && (TDim::value <= 3u)>::type>
             {
                 static std::size_t getDepth(
                     cuda::detail::MemBufCuda<TElem, TDim> const & extent)
@@ -394,7 +388,7 @@ namespace alpaka
             template<
                 typename TElem, 
                 typename TDim>
-            struct GetMemElemType<
+            struct GetMemElem<
                 cuda::detail::MemBufCuda<TElem, TDim>>
             {
                 using type = TElem;
@@ -406,7 +400,7 @@ namespace alpaka
             template<
                 typename TElem,
                 typename TDim>
-            struct GetMemBufType<
+            struct GetMemBuf<
                 TElem, TDim, alpaka::memory::MemSpaceCuda>
             {
                 using type = host::detail::MemBufCuda<TElem, TDim>;
@@ -456,8 +450,7 @@ namespace alpaka
             struct MemAlloc<
                 T, 
                 alpaka::dim::Dim1, 
-                alpaka::memory::MemSpaceCuda
-            >
+                alpaka::memory::MemSpaceCuda>
             {
                 template<
                     typename TExtent>
@@ -490,8 +483,7 @@ namespace alpaka
             struct MemAlloc<
                 T, 
                 alpaka::dim::Dim2, 
-                alpaka::memory::MemSpaceCuda
-            >
+                alpaka::memory::MemSpaceCuda>
             {
                 template<
                     typename TExtent>
@@ -530,8 +522,7 @@ namespace alpaka
             struct MemAlloc<
                 T, 
                 alpaka::dim::Dim3, 
-                alpaka::memory::MemSpaceCuda
-            >
+                alpaka::memory::MemSpaceCuda>
             {
                 template<
                     typename TExtent>
@@ -567,8 +558,7 @@ namespace alpaka
             struct MemCopy<
                 TDim,
                 alpaka::memory::MemSpaceHost,
-                alpaka::memory::MemSpaceCuda
-                >
+                alpaka::memory::MemSpaceCuda>
             {
                 template<
                     typename TExtent, 
@@ -598,8 +588,7 @@ namespace alpaka
             struct MemCopy<
                 TDim,
                 alpaka::memory::MemSpaceCuda,
-                alpaka::memory::MemSpaceHost
-            >
+                alpaka::memory::MemSpaceHost>
             {
                 template<
                     typename TExtent, 
@@ -629,8 +618,7 @@ namespace alpaka
             struct MemCopy<
                 TDim,
                 alpaka::memory::MemSpaceCuda,
-                alpaka::memory::MemSpaceCuda
-            >
+                alpaka::memory::MemSpaceCuda>
             {
                 template<
                     typename TExtent, 
@@ -655,8 +643,7 @@ namespace alpaka
             template<>
             struct MemSet<
                 alpaka::dim::Dim1,
-                alpaka::memory::MemSpaceCuda
-            >
+                alpaka::memory::MemSpaceCuda>
             {
                 template<
                     typename TExtent, 
@@ -682,7 +669,7 @@ namespace alpaka
                         cudaMemset(
                             reinterpret_cast<void *>(alpaka::memory::getNativePtr(memBuf)),
                             static_cast<int>(byte),
-                            uiExtentWidth * sizeof(alpaka::memory::GetMemElemTypeT<TMemBuf>)));
+                            uiExtentWidth * sizeof(alpaka::memory::GetMemElemT<TMemBuf>)));
                 }
             };
             //#############################################################################
@@ -691,8 +678,7 @@ namespace alpaka
             template<>
             struct MemSet<
                 alpaka::dim::Dim2,
-                alpaka::memory::MemSpaceCuda
-            >
+                alpaka::memory::MemSpaceCuda>
             {
                 template<
                     typename TExtent, 
@@ -723,7 +709,7 @@ namespace alpaka
                             reinterpret_cast<void *>(alpaka::memory::getNativePtr(memBuf)),
                             alpaka::memory::getPitchBytes(memBuf),
                             static_cast<int>(byte),
-                            uiExtentWidth * sizeof(alpaka::memory::GetMemElemTypeT<TMemBuf>),
+                            uiExtentWidth * sizeof(alpaka::memory::GetMemElemT<TMemBuf>),
                             uiExtentHeight));
                 }
             };
@@ -733,8 +719,7 @@ namespace alpaka
             template<>
             struct MemSet<
                 alpaka::dim::Dim3,
-                alpaka::memory::MemSpaceCuda
-            >
+                alpaka::memory::MemSpaceCuda>
             {
                 template<
                     typename TExtent, 

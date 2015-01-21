@@ -171,7 +171,7 @@ namespace alpaka
                 typename TDim>
             struct GetWidth<
                 alpaka::extent::RuntimeExtents<TDim>,
-                typename std::enable_if<(TDim::value >= 1u) && (TDim::value <= 3u), void>::type>
+                typename std::enable_if<(TDim::value >= 1u) && (TDim::value <= 3u)>::type>
             {
                 static std::size_t getWidth(
                     alpaka::extent::RuntimeExtents<TDim> const & extent)
@@ -187,7 +187,7 @@ namespace alpaka
                 typename TDim>
             struct GetHeight<
                 alpaka::extent::RuntimeExtents<TDim>,
-                typename std::enable_if<(TDim::value >= 2u) && (TDim::value <= 3u), void>::type>
+                typename std::enable_if<(TDim::value >= 2u) && (TDim::value <= 3u)>::type>
             {
                 static std::size_t getHeight(
                     alpaka::extent::RuntimeExtents<TDim> const & extent)
@@ -203,7 +203,7 @@ namespace alpaka
                 typename TDim>
             struct GetDepth<
                 alpaka::extent::RuntimeExtents<TDim>,
-                typename std::enable_if<(TDim::value >= 3u) && (TDim::value <= 3u), void>::type>
+                typename std::enable_if<(TDim::value >= 3u) && (TDim::value <= 3u)>::type>
             {
                 static std::size_t getDepth(
                     alpaka::extent::RuntimeExtents<TDim> const & extent)

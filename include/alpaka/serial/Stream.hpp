@@ -27,18 +27,35 @@
 
 namespace alpaka
 {
-    namespace stream
+    namespace serial
     {
-        //#############################################################################
-        //! The serial accelerator stream.
-        //#############################################################################
-        template<>
-        class Stream<
-            AccSerial> :
-            public host::detail::StreamHost
+        namespace detail
         {
-        public:
-            using Acc = AccSerial;
-        };
+            //#############################################################################
+            //! The serial accelerator stream.
+            //#############################################################################
+            class StreamSerial :
+                public host::detail::StreamHost
+            {
+            public:
+                using Acc = AccSerial;
+            };
+        }
+    }
+
+    namespace traits
+    {
+        namespace stream
+        {
+            //#############################################################################
+            //! The serial accelerator stream type trait specialization.
+            //#############################################################################
+            template<>
+            class GetStream<
+                AccSerial>
+            {
+                using type = alpaka::serial::detail::StreamSerial;
+            };
+        }
     }
 }

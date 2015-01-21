@@ -22,6 +22,7 @@
 #pragma once
 
 #include <alpaka/traits/Stream.hpp>     // traits::StreamEnqueueEvent, ...
+#include <alpaka/traits/Wait.hpp>       // CurrentThreadWaitFor, WaiterWaitFor
 
 #include <type_traits>                  // std::is_base
 
@@ -80,54 +81,59 @@ namespace alpaka
         namespace stream
         {
             //#############################################################################
-            //! Waits for the completion of the given stream.
-            //#############################################################################
-            template<
-                typename TStream>
-            struct ThreadWaitStream<
-                TStream, 
-                typename std::enable_if<std::is_base_of<host::detail::StreamHost, TStream>::value, void>::type>
-            {
-                static ALPAKA_FCT_HOST void threadWaitStream(
-                    host::detail::StreamHost const &)
-                {
-                    // Because host calls are not asynchronous, this call never has to wait.
-                }
-            };
-
-            //#############################################################################
-            //! Waits the stream for the completion of the given event.
-            //#############################################################################
-            template<
-                typename TStream, 
-                typename TEvent>
-            struct StreamWaitEvent<
-                TStream,
-                TEvent,
-                typename std::enable_if<std::is_base_of<host::detail::StreamHost, TStream>::value && std::is_same<typename TStream::Acc, typename TEvent::Acc>::value, void>::type>
-            {
-                static ALPAKA_FCT_HOST void streamWaitEvent(
-                    host::detail::StreamHost const &, 
-                    TEvent const &)
-                {
-                    // Because host calls are not asynchronous, this call never has to let a stream wait.
-                }
-            };
-
-            //#############################################################################
             //! Tests if all operations in the given stream have been completed.
             //#############################################################################
             template<
                 typename TStream>
             struct StreamTest<
                 TStream,
-                typename std::enable_if<std::is_base_of<host::detail::StreamHost, TStream>::value, void>::type>
+                typename std::enable_if<std::is_base_of<host::detail::StreamHost, TStream>::value>::type>
             {
                 static ALPAKA_FCT_HOST bool streamTest(
-                    host::detail::StreamHost const &)
+                    TStream const &)
                 {
                     // Because host calls are not asynchronous, this call always returns true.
                     return true;
+                }
+            };
+        }
+
+        namespace wait
+        {
+            //#############################################################################
+            //! The host accelerators stream thread wait trait specialization.
+            //#############################################################################
+            template<
+                typename TStream>
+            struct CurrentThreadWaitFor<
+                TStream,
+                typename std::enable_if<std::is_base_of<host::detail::StreamHost, TStream>::value>::type>
+            {
+                ALPAKA_FCT_HOST static void currentThreadWaitFor(
+                    TStream const & stream)
+                {
+                    // Because host calls are not asynchronous, this call never has to wait.
+                }
+            };
+
+            //#############################################################################
+            //! The CUDA accelerator stream event wait trait specialization.
+            //#############################################################################
+            template<
+                typename TStream,
+                typename TEvent>
+            struct WaiterWaitFor<
+                TStream,
+                TEvent,
+                typename std::enable_if<
+                    std::is_base_of<host::detail::StreamHost, TStream>::value
+                    && std::is_same<typename TStream::Acc, typename TEvent::Acc>::value>::type>
+            {
+                ALPAKA_FCT_HOST static void waiterWaitFor(
+                    TStream const & stream,
+                    TEvent const & event)
+                {
+                    // Because host calls are not asynchronous, this call never has to let a stream wait.
                 }
             };
         }

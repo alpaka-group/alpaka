@@ -23,16 +23,7 @@
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST
 
-// forward declarations
-namespace alpaka
-{
-    namespace event
-    {
-        template<
-            typename TAcc>
-        class Event;
-    }
-}
+#include <alpaka/traits/Wait.hpp>   // CurrentThreadWaitFor, WaiterWaitFor
 
 namespace alpaka
 {
@@ -44,24 +35,14 @@ namespace alpaka
         namespace stream
         {
             //#############################################################################
-            //! The abstract thread stream waiter.
+            //! The stream type trait.
             //#############################################################################
             template<
-                typename TStream, 
-                typename TSfinae = void>
-            struct ThreadWaitStream;
+                typename TAcc>
+            class GetStream;
 
             //#############################################################################
-            //! The abstract stream event waiter.
-            //#############################################################################
-            template<
-                typename TStream, 
-                typename TEvent, 
-                typename TSfinae = void>
-            struct StreamWaitEvent;
-
-            //#############################################################################
-            //! The abstract thread stream waiter.
+            //! The thread stream wait trait.
             //#############################################################################
             template<
                 typename TStream, 
@@ -76,44 +57,21 @@ namespace alpaka
     namespace stream
     {
         //#############################################################################
-        //! The abstract stream.
+        //! The stream type trait alias template to remove the ::type.
         //#############################################################################
         template<
             typename TAcc>
-        class Stream;
-
-        //-----------------------------------------------------------------------------
-        //! Waits for the completion of the given stream.
-        //-----------------------------------------------------------------------------
-        template<
-            typename TAcc>
-        ALPAKA_FCT_HOST void wait(
-            Stream<TAcc> const & stream)
-        {
-            traits::stream::ThreadWaitStream<Stream<TAcc>>::threadWaitStream(stream);
-        }
-
-        //-----------------------------------------------------------------------------
-        //! Waits the stream for the completion of the given event.
-        //-----------------------------------------------------------------------------
-        template<
-            typename TAcc>
-        ALPAKA_FCT_HOST void wait(
-            Stream<TAcc> const & stream, 
-            event::Event<TAcc> const & event)
-        {
-            traits::stream::StreamWaitEvent<Stream<TAcc>, event::Event<TAcc>>::streamWaitEvent(stream, event);
-        }
+        using GetStrramT = typename traits::stream::GetStream<TAcc>::type;
 
         //-----------------------------------------------------------------------------
         //! Tests if all operations in the given stream have been completed.
         //-----------------------------------------------------------------------------
         template<
-            typename TAcc>
+            typename TStream>
         ALPAKA_FCT_HOST bool test(
-            Stream<TAcc> const & stream)
+            TStream const & stream)
         {
-            return traits::stream::StreamTest<Stream<TAcc>>::streamTest(stream);
+            return traits::stream::StreamTest<TStream>::streamTest(stream);
         }
     }
 }
