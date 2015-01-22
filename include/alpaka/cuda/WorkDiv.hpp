@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/interfaces/WorkExtent.hpp> // IWorkExtent
+#include <alpaka/interfaces/WorkDiv.hpp> // IWorkDiv
 
 namespace alpaka
 {
@@ -30,48 +30,48 @@ namespace alpaka
         namespace detail
         {
             //#############################################################################
-            //! The CUDA accelerator work extent.
+            //! The CUDA accelerator work division.
             //#############################################################################
-            class WorkExtentCuda
+            class WorkDivCuda
             {
             public:
                 //-----------------------------------------------------------------------------
                 //! Default-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY WorkExtentCuda() = default;
+                ALPAKA_FCT_ACC_CUDA_ONLY WorkDivCuda() = default;
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY WorkExtentCuda(WorkExtentCuda const &) = default;
+                ALPAKA_FCT_ACC_CUDA_ONLY WorkDivCuda(WorkDivCuda const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY WorkExtentCuda(WorkExtentCuda &&) = default;
+                ALPAKA_FCT_ACC_CUDA_ONLY WorkDivCuda(WorkDivCuda &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY WorkExtentCuda & operator=(WorkExtentCuda const &) = delete;
+                ALPAKA_FCT_ACC_CUDA_ONLY WorkDivCuda & operator=(WorkDivCuda const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY /*virtual*/ ~WorkExtentCuda() noexcept = default;
+                ALPAKA_FCT_ACC_CUDA_ONLY /*virtual*/ ~WorkDivCuda() noexcept = default;
 
                 //-----------------------------------------------------------------------------
-                //! \return The grid dimensions of the currently executed kernel.
+                //! \return The grid blocks extents of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY Vec<3u> getExtentGridBlocks() const
+                ALPAKA_FCT_ACC_CUDA_ONLY Vec<3u> getGridBlocksExtents() const
                 {
                     return {gridDim.x, gridDim.y, gridDim.z};
                 }
                 //-----------------------------------------------------------------------------
-                //! \return The block dimensions of the currently executed kernel.
+                //! \return The block kernels extents of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY Vec<3u> getExtentBlockKernels() const
+                ALPAKA_FCT_ACC_CUDA_ONLY Vec<3u> getBlockKernelsExtents() const
                 {
                     return {blockDim.x, blockDim.y, blockDim.z};
                 }
             };
-            using InterfacedWorkExtentCuda = alpaka::IWorkExtent<WorkExtentCuda>;
+            using InterfacedWorkDivCuda = alpaka::IWorkDiv<WorkDivCuda>;
         }
     }
 }

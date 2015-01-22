@@ -25,7 +25,8 @@
 
 #include <alpaka/host/SystemInfo.hpp>       // host::getCpuName, host::getGlobalMemorySizeBytes
 
-#include <alpaka/interfaces/Device.hpp>     // alpaka::device::Device, alpaka::device::DeviceManager
+#include <alpaka/traits/Wait.hpp>           // CurrentThreadWaitFor
+#include <alpaka/traits/Device.hpp>         // GetDev
 
 #include <sstream>                          // std::stringstream
 #include <limits>                           // std::numeric_limits
@@ -78,93 +79,8 @@ namespace alpaka
                 {
                     return !((*this) == rhs);
                 }
-                //-----------------------------------------------------------------------------
-                //! Destructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST virtual ~DeviceThreads() noexcept = default;
-
-            protected:
-                //-----------------------------------------------------------------------------
-                //! \return The device properties.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST device::DeviceProperties getProperties() const
-                {
-                    device::DeviceProperties deviceProperties;
-
-                    deviceProperties.m_sName = host::getCpuName();
-                    deviceProperties.m_uiMultiProcessorCount = 1u;
-                    // \TODO: Magic number. What is the maximum? Just set a reasonable value? There is a implementation defined maximum where the creation of a new thread crashes.
-                    // std::thread::hardware_concurrency  can return 0, so a default for this case?
-                    deviceProperties.m_uiBlockKernelsCountMax = std::thread::hardware_concurrency() * 8u;
-                    deviceProperties.m_v3uiBlockKernelsExtentMax = Vec<3u>(deviceProperties.m_uiBlockKernelsCountMax, deviceProperties.m_uiBlockKernelsCountMax, deviceProperties.m_uiBlockKernelsCountMax);
-                    deviceProperties.m_v3uiGridBlocksExtentMax = Vec<3u>(std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max());
-                    deviceProperties.m_uiGlobalMemorySizeBytes = host::getGlobalMemorySizeBytes();
-                    //deviceProperties.m_uiMaxClockFrequencyHz = TODO;
-
-                    return deviceProperties;
-                }
             };
-        }
-    }
 
-    namespace device
-    {
-        //#############################################################################
-        //! The threads accelerator interfaced device handle.
-        //#############################################################################
-        template<>
-        class Device<
-            AccThreads> :
-            public device::detail::IDevice<threads::detail::DeviceThreads>
-        {
-            friend class threads::detail::DeviceManagerThreads;
-        private:
-            //-----------------------------------------------------------------------------
-            //! Constructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST Device() = default;
-
-        public:
-            //-----------------------------------------------------------------------------
-            //! Copy constructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST Device(Device const &) = default;
-            //-----------------------------------------------------------------------------
-            //! Move constructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST Device(Device &&) = default;
-            //-----------------------------------------------------------------------------
-            //! Assignment operator.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST Device & operator=(Device const &) = default;
-            //-----------------------------------------------------------------------------
-            //! Destructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST virtual ~Device() noexcept = default;
-        };
-
-        namespace detail
-        {
-            //#############################################################################
-            //! The threads accelerator thread device waiter.
-            //#############################################################################
-            template<>
-            struct ThreadWaitDevice<
-                Device<AccThreads>>
-            {
-                ALPAKA_FCT_HOST ThreadWaitDevice(
-                    Device<AccThreads> const &)
-                {
-                    // Because host calls are not asynchronous, this call never has to wait.
-                }
-            };
-        }
-    }
-
-    namespace threads
-    {
-        namespace detail
-        {
             //#############################################################################
             //! The threads accelerator device manager.
             //#############################################################################
@@ -186,7 +102,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of devices available.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static device::Device<AccThreads> getDeviceByIndex(
+                ALPAKA_FCT_HOST static threads::detail::DeviceThreads getDeviceByIndex(
                     std::size_t const & uiIndex)
                 {
                     std::size_t const uiNumDevices(getDeviceCount());
@@ -202,7 +118,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The handle to the currently used device.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static device::Device<AccThreads> getCurrentDevice()
+                ALPAKA_FCT_HOST static threads::detail::DeviceThreads getCurrentDevice()
                 {
                     return {};
                 }
@@ -210,7 +126,7 @@ namespace alpaka
                 //! Sets the device to use with this accelerator.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static void setCurrentDevice(
-                    device::Device<AccThreads> const & )
+                    threads::detail::DeviceThreads const & )
                 {
                     // The code is already running on this device.
                 }
@@ -218,15 +134,72 @@ namespace alpaka
         }
     }
 
-    namespace device
+    namespace traits
     {
-        //#############################################################################
-        //! The threads accelerator interfaced device manager.
-        //#############################################################################
-        template<>
-        class DeviceManager<
-            AccThreads> :
-            public detail::IDeviceManager<threads::detail::DeviceManagerThreads>
-        {};
+        namespace dev
+        {
+            //#############################################################################
+            //! The threads accelerator device type trait specialization.
+            //#############################################################################
+            template<>
+            struct GetDev<
+                AccThreads>
+            {
+                using type = threads::detail::DeviceThreads;
+            };
+
+            //#############################################################################
+            //! The threads accelerator device properties get trait specialization.
+            //#############################################################################
+            template<>
+            struct GetDevProps<
+                threads::detail::DeviceThreads>
+            {
+                ALPAKA_FCT_HOST static alpaka::dev::DevProps getDevProps(
+                    threads::detail::DeviceThreads const &)
+                {
+                    alpaka::dev::DevProps devProps;
+
+                    devProps.m_sName = host::getCpuName();
+                    devProps.m_uiMultiProcessorCount = 1u;
+                    // \TODO: Magic number. What is the maximum? Just set a reasonable value? There is a implementation defined maximum where the creation of a new thread crashes.
+                    // std::thread::hardware_concurrency  can return 0, so a default for this case?
+                    devProps.m_uiBlockKernelsCountMax = std::thread::hardware_concurrency() * 8u;
+                    devProps.m_v3uiBlockKernelsExtentsMax = Vec<3u>(devProps.m_uiBlockKernelsCountMax, devProps.m_uiBlockKernelsCountMax, devProps.m_uiBlockKernelsCountMax);
+                    devProps.m_v3uiGridBlocksExtentsMax = Vec<3u>(std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max());
+                    devProps.m_uiGlobalMemorySizeBytes = host::getGlobalMemorySizeBytes();
+                    //devProps.m_uiMaxClockFrequencyHz = TODO;
+
+                    return devProps;
+                }
+            };
+
+            //#############################################################################
+            //! The threads accelerator device manager type trait specialization.
+            //#############################################################################
+            template<>
+            struct GetDevMan<
+                AccThreads>
+            {
+                using type = threads::detail::DeviceManagerThreads;
+            };
+        }
+
+        namespace wait
+        {
+            //#############################################################################
+            //! The threads accelerator thread device wait specialization.
+            //#############################################################################
+            template<>
+            struct CurrentThreadWaitFor<
+                threads::detail::DeviceThreads>
+            {
+                ALPAKA_FCT_HOST static void currentThreadWaitFor(
+                    threads::detail::DeviceThreads const &)
+                {
+                    // Because host calls are not asynchronous, this call never has to wait.
+                }
+            };
+        }
     }
 }

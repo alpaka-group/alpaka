@@ -22,7 +22,7 @@
 #pragma once
 
 #include <alpaka/traits/Memory.hpp>         // traits::MemCopy
-#include <alpaka/traits/Extent.hpp>         // traits::getXXX
+#include <alpaka/traits/Extents.hpp>        // traits::getXXX
 
 #include <alpaka/core/BasicDims.hpp>        // dim::Dim<N>
 #include <alpaka/core/RuntimeExtents.hpp>   // extent::RuntimeExtents<TDim>
@@ -60,12 +60,12 @@ namespace alpaka
                 //! Constructor
                 //-----------------------------------------------------------------------------
                 template<
-                    typename TExtent>
+                    typename TExtents>
                 MemBufCuda(
                     TElem * pMem,
                     std::size_t const & uiPitchBytes,
-                    TExtent const & extent) :
-                        RuntimeExtents<TDim>(extent),
+                    TExtents const & extents) :
+                        RuntimeExtents<TDim>(extents),
                         m_spMem(
                             pMem,
                             [](TElem * pBuffer)
@@ -76,8 +76,8 @@ namespace alpaka
                         m_uiPitchBytes(uiPitchBytes)
                 {
                     static_assert(
-                        std::is_same<TDim, alpaka::dim::GetDimT<TExtent>>::value,
-                        "The extent is required to have the same dimensionality as the MemBufCuda!");
+                        std::is_same<TDim, alpaka::dim::GetDimT<TExtents>>::value,
+                        "The extents are required to have the same dimensionality as the MemBufCuda!");
                 }
 
             public:
@@ -134,26 +134,26 @@ namespace alpaka
                 alpaka::dim::Dim1>
             {
                 template<
-                    typename TExtent, 
+                    typename TExtents, 
                     typename TMemBufSrc, 
                     typename TMemBufDst>
                 static void memCopyCuda(
                     TMemBufDst & memBufDst, 
                     TMemBufSrc const & memBufSrc, 
-                    TExtent const & extent, 
+                    TExtents const & Extents, 
                     cudaMemcpyKind const & cudaMemcpyKindVal)
                 {
                     static_assert(
                         std::is_same<alpaka::dim::GetDimT<TMemBufDst>, alpaka::dim::GetDimT<TMemBufSrc>>::value,
                         "The source and the destination buffers are required to have the same dimensionality!");
                     static_assert(
-                        std::is_same<alpaka::dim::GetDimT<TMemBufDst>, alpaka::dim::GetDimT<TExtent>>::value,
-                        "The destination buffer and the extent are required to have the same dimensionality!");
+                        std::is_same<alpaka::dim::GetDimT<TMemBufDst>, alpaka::dim::GetDimT<TExtents>>::value,
+                        "The destination buffer and the extents are required to have the same dimensionality!");
                     static_assert(
                         std::is_same<alpaka::memory::GetMemElemT<TMemBufDst>, alpaka::memory::GetMemElemT<TMemBufSrc>>::value,
                         "The source and the destination buffers are required to have the same element type!");
 
-                    auto const uiExtentWidth(alpaka::extent::getWidth(extent));
+                    auto const uiExtentWidth(alpaka::extent::getWidth(extents));
                     auto const uiDstWidth(alpaka::extent::getWidth(memBufDst));
                     auto const uiSrcWidth(alpaka::extent::getWidth(memBufSrc));
                     assert(uiExtentWidth <= uiDstWidth);
@@ -176,27 +176,27 @@ namespace alpaka
                 alpaka::dim::Dim2>
             {
                 template<
-                    typename TExtent, 
+                    typename TExtents, 
                     typename TMemBufSrc, 
                     typename TMemBufDst>
                 static void memCopyCuda(
                     TMemBufDst & memBufDst, 
                     TMemBufSrc const & memBufSrc, 
-                    TExtent const & extent, 
+                    TExtents const & extents, 
                     cudaMemcpyKind const & cudaMemcpyKindVal)
                 {
                     static_assert(
                         std::is_same<alpaka::dim::GetDimT<TMemBufDst>, alpaka::dim::GetDimT<TMemBufSrc>>::value,
                         "The source and the destination buffers are required to have the same dimensionality!");
                     static_assert(
-                        std::is_same<alpaka::dim::GetDimT<TMemBufDst>, alpaka::dim::GetDimT<TExtent>>::value,
-                        "The destination buffer and the extent are required to have the same dimensionality!");
+                        std::is_same<alpaka::dim::GetDimT<TMemBufDst>, alpaka::dim::GetDimT<TExtents>>::value,
+                        "The destination buffer and the extents are required to have the same dimensionality!");
                     static_assert(
                         std::is_same<alpaka::memory::GetMemElemT<TMemBufDst>, alpaka::memory::GetMemElemT<TMemBufSrc>>::value,
                         "The source and the destination buffers are required to have the same element type!");
 
-                    auto const uiExtentWidth(alpaka::extent::getWidth(extent));
-                    auto const uiExtentHeight(alpaka::extent::getHeight(extent));
+                    auto const uiExtentWidth(alpaka::extent::getWidth(extents));
+                    auto const uiExtentHeight(alpaka::extent::getHeight(extents));
                     auto const uiDstWidth(alpaka::extent::getWidth(memBufDst));
                     auto const uiDstHeight(alpaka::extent::getHeight(memBufDst));
                     auto const uiSrcWidth(alpaka::extent::getWidth(memBufSrc));
@@ -226,28 +226,28 @@ namespace alpaka
                 alpaka::dim::Dim3>
             {
                 template<
-                    typename TExtent, 
+                    typename TExtents, 
                     typename TMemBufSrc, 
                     typename TMemBufDst>
                 static void memCopyCuda(
                     TMemBufDst & memBufDst, 
                     TMemBufSrc const & memBufSrc, 
-                    TExtent const & extent, 
+                    TExtents const & extents, 
                     cudaMemcpyKind const & cudaMemcpyKindVal)
                 {
                     static_assert(
                         std::is_same<alpaka::dim::GetDimT<TMemBufDst>, alpaka::dim::GetDimT<TMemBufSrc>>::value,
                         "The source and the destination buffers are required to have the same dimensionality!");
                     static_assert(
-                        std::is_same<alpaka::dim::GetDimT<TMemBufDst>, alpaka::dim::GetDimT<TExtent>>::value,
-                        "The destination buffer and the extent are required to have the same dimensionality!");
+                        std::is_same<alpaka::dim::GetDimT<TMemBufDst>, alpaka::dim::GetDimT<TExtents>>::value,
+                        "The destination buffer and the extents are required to have the same dimensionality!");
                     static_assert(
                         std::is_same<alpaka::memory::GetMemElemT<TMemBufDst>, alpaka::memory::GetMemElemT<TMemBufSrc>>::value,
                         "The source and the destination buffers are required to have the same element type!");
 
-                    auto const uiExtentWidth(alpaka::extent::getWidth(extent));
-                    auto const uiExtentHeight(alpaka::extent::getHeight(extent));
-                    auto const uiExtentDepth(alpaka::extent::getDepth(extent));
+                    auto const uiExtentWidth(alpaka::extent::getWidth(extents));
+                    auto const uiExtentHeight(alpaka::extent::getHeight(extents));
+                    auto const uiExtentDepth(alpaka::extent::getDepth(extents));
                     auto const uiDstWidth(alpaka::extent::getWidth(memBufDst));
                     auto const uiDstHeight(alpaka::extent::getHeight(memBufDst));
                     auto const uiDstDepth(alpaka::extent::getDepth(memBufDst));
@@ -453,11 +453,11 @@ namespace alpaka
                 alpaka::memory::MemSpaceCuda>
             {
                 template<
-                    typename TExtent>
+                    typename TExtents>
                 static alpaka::cuda::detail::MemBufCuda<T, alpaka::dim::Dim1> memAlloc(
-                    TExtent const & extent)
+                    TExtents const & extents)
                 {
-                    auto const uiWidth(extent::getWidth(extent));
+                    auto const uiWidth(extent::getWidth(extents));
                     assert(uiWidth>0);
                     auto const uiWidthBytes(uiWidth * sizeof(T));
                     assert(uiWidthBytes>0);
@@ -472,7 +472,7 @@ namespace alpaka
                         alpaka::cuda::detail::MemBufCuda<T, alpaka::dim::Dim1>(
                             pBuffer,
                             uiWidthBytes,
-                            extent);
+                            extents);
                 }
             };
 
@@ -486,14 +486,14 @@ namespace alpaka
                 alpaka::memory::MemSpaceCuda>
             {
                 template<
-                    typename TExtent>
+                    typename TExtents>
                 static alpaka::cuda::detail::MemBufCuda<T, alpaka::dim::Dim2> memAlloc(
-                    TExtent const & extent)
+                    TExtents const & extents)
                 {
-                    auto const uiWidth(extent::getWidth(extent));
+                    auto const uiWidth(extent::getWidth(extents));
                     auto const uiWidthBytes(uiWidth * sizeof(T));
                     assert(uiWidthBytes>0);
-                    auto const uiHeight(extent::getHeight(extent));
+                    auto const uiHeight(extent::getHeight(extents));
                     auto const uiElementCount(uiWidth * uiHeight;
                     assert(uiElementCount>0);
 
@@ -511,7 +511,7 @@ namespace alpaka
                         alpaka::cuda::detail::MemBufCuda<T, alpaka::dim::Dim2>(
                             pBuffer,
                             static_cast<std::size_t>(iPitch),
-                            extent);
+                            extents);
                 }
             };
 
@@ -525,15 +525,15 @@ namespace alpaka
                 alpaka::memory::MemSpaceCuda>
             {
                 template<
-                    typename TExtent>
+                    typename TExtents>
                 static alpaka::cuda::detail::MemBufCuda<T, alpaka::dim::Dim3> memAlloc(
-                    TExtent const & extent)
+                    TExtents const & extents)
                 {
                     cudaExtent const cudaExtentVal(
                         make_cudaExtent(
-                            extent::getWidth(extent),
-                            extent::getHeight(extent),
-                            extent::getDepth(extent)));
+                            extent::getWidth(extents),
+                            extent::getHeight(extents),
+                            extent::getDepth(extents)));
                     
                     cudaPitchedPtr cudaPitchedPtrVal;
                     ALPAKA_CUDA_CHECK(cudaMalloc3D(
@@ -546,7 +546,7 @@ namespace alpaka
                         alpaka::cuda::detail::MemBufCuda<T, alpaka::dim::Dim3>(
                             cudaPitchedPtrVal.ptr,
                             static_cast<std::size_t>(cudaPitchedPtrVal.pitch),
-                            extent);
+                            extents);
                 }
             };
 
@@ -561,20 +561,20 @@ namespace alpaka
                 alpaka::memory::MemSpaceCuda>
             {
                 template<
-                    typename TExtent, 
+                    typename TExtents, 
                     typename TMemBufSrc, 
                     typename TMemBufDst>
                 static void memCopy(
                     TMemBufDst & memBufDst,
                     TMemBufSrc const & memBufSrc,
-                    TExtent const & extent)
+                    TExtents const & extents)
                 {
                     cuda::detail::pageLockHostMem(memBufDst);
 
                     alpaka::cuda::detail::MemCopyCuda<TDim>::memCopyCuda(
                         memBufDst,
                         memBufSrc,
-                        extent,
+                        extents,
                         cudaMemcpyDeviceToHost);
 
                     cuda::detail::unPageLockHostMem(memBufDst);
@@ -591,20 +591,20 @@ namespace alpaka
                 alpaka::memory::MemSpaceHost>
             {
                 template<
-                    typename TExtent, 
+                    typename TExtents, 
                     typename TMemBufSrc, 
                     typename TMemBufDst>
                 static void memCopy(
                     TMemBufDst & memBufDst, 
                     TMemBufSrc const & memBufSrc, 
-                    TExtent const & extent)
+                    TExtents const & extents)
                 {
                     cuda::detail::pageLockHostMem(memBufSrc);
 
                     alpaka::cuda::detail::MemCopyCuda<TDim>::memCopyCuda(
                         memBufDst,
                         memBufSrc,
-                        extent,
+                        extents,
                         cudaMemcpyHostToDevice);
 
                     cuda::detail::unPageLockHostMem(memBufSrc);
@@ -621,18 +621,18 @@ namespace alpaka
                 alpaka::memory::MemSpaceCuda>
             {
                 template<
-                    typename TExtent, 
+                    typename TExtents, 
                     typename TMemBufSrc, 
                     typename TMemBufDst>
                 static void memCopy(
                     TMemBufDst & memBufDst, 
                     TMemBufSrc const & memBufSrc, 
-                    TExtent const & extent)
+                    TExtents const & extents)
                 {
                     alpaka::cuda::detail::MemCopyCuda<TDim>::memCopyCuda(
                         memBufDst,
                         memBufSrc,
-                        extent,
+                        extents,
                         cudaMemcpyDeviceToDevice);
                 }
             };
@@ -646,21 +646,21 @@ namespace alpaka
                 alpaka::memory::MemSpaceCuda>
             {
                 template<
-                    typename TExtent, 
+                    typename TExtents, 
                     typename TMemBuf>
                 static void memSet(
                     TMemBuf & memBuf, 
                     std::uint8_t const & byte, 
-                    TExtent const & extent)
+                    TExtents const & extents)
                 {
                     static_assert(
                         std::is_same<alpaka::dim::GetDimT<TMemBuf>, alpaka::dim::Dim1>::value,
                         "The destination buffer is required to have the dimensionality alpaka::dim::Dim1 for this specialization!");
                     static_assert(
-                        std::is_same<alpaka::dim::GetDimT<TMemBuf>, alpaka::dim::GetDimT<TExtent>>::value,
-                        "The destination buffer and the extent are required to have the same dimensionality!");
+                        std::is_same<alpaka::dim::GetDimT<TMemBuf>, alpaka::dim::GetDimT<TExtents>>::value,
+                        "The destination buffer and the extents are required to have the same dimensionality!");
 
-                    auto const uiExtentWidth(alpaka::extent::getWidth(extent));
+                    auto const uiExtentWidth(alpaka::extent::getWidth(extents));
                     auto const uiDstWidth(alpaka::extent::getWidth(memBuf));
                     assert(uiExtentWidth <= uiDstWidth);
 
@@ -681,23 +681,22 @@ namespace alpaka
                 alpaka::memory::MemSpaceCuda>
             {
                 template<
-                    typename TExtent, 
+                    typename TExtents, 
                     typename TMemBuf>
                 static void memSet(
                     TMemBuf & memBuf, 
                     std::uint8_t const & byte, 
-                    TExtent const & extent)
+                    TExtents const & extents)
                 {
                     static_assert(
                         std::is_same<alpaka::dim::GetDimT<TMemBuf>, alpaka::dim::Dim2>::value,
                         "The destination buffer is required to have the dimensionality alpaka::dim::Dim2 for this specialization!");
                     static_assert(
-                        std::is_same<alpaka::dim::GetDimT<TMemBuf>, alpaka::dim::GetDimT<TExtent>>::value,
-                        "The destination buffer and the extent are required to have the same dimensionality!");
+                        std::is_same<alpaka::dim::GetDimT<TMemBuf>, alpaka::dim::GetDimT<TExtents>>::value,
+                        "The destination buffer and the extents are required to have the same dimensionality!");
 
-                    alpaka::extent::RuntimeExtent
-                    auto const uiExtentWidth(alpaka::extent::getWidth(extent));
-                    auto const uiExtentHeight(alpaka::extent::getHeight(extent));
+                    auto const uiExtentWidth(alpaka::extent::getWidth(extents));
+                    auto const uiExtentHeight(alpaka::extent::getHeight(extents));
                     auto const uiDstWidth(alpaka::extent::getWidth(memBuf));
                     auto const uiDstHeight(alpaka::extent::getHeight(memBuf));
                     assert(uiExtentWidth <= uiDstWidth);
@@ -722,23 +721,23 @@ namespace alpaka
                 alpaka::memory::MemSpaceCuda>
             {
                 template<
-                    typename TExtent, 
+                    typename TExtents, 
                     typename TMemBuf>
                 static void memSet(
                     TMemBuf & memBuf, 
                     std::uint8_t const & byte, 
-                    TExtent const & extent)
+                    TExtents const & extents)
                 {
                     static_assert(
                         std::is_same<alpaka::dim::GetDimT<TMemBuf>, alpaka::dim::Dim3>::value,
                         "The destination buffer is required to have the dimensionality alpaka::dim::Dim3 for this specialization!");
                     static_assert(
-                        std::is_same<alpaka::dim::GetDimT<TMemBuf>, alpaka::dim::GetDimT<TExtent>>::value,
-                        "The destination buffer and the extent are required to have the same dimensionality!");
+                        std::is_same<alpaka::dim::GetDimT<TMemBuf>, alpaka::dim::GetDimT<TExtents>>::value,
+                        "The destination buffer and the extents are required to have the same dimensionality!");
 
-                    auto const uiExtentWidth(alpaka::extent::getWidth(extent));
-                    auto const uiExtentHeight(alpaka::extent::getHeight(extent));
-                    auto const uiExtentDepth(alpaka::extent::getDepth(extent));
+                    auto const uiExtentWidth(alpaka::extent::getWidth(extents));
+                    auto const uiExtentHeight(alpaka::extent::getHeight(extents));
+                    auto const uiExtentDepth(alpaka::extent::getDepth(extents));
                     auto const uiDstWidth(alpaka::extent::getWidth(memBuf));
                     auto const uiDstHeight(alpaka::extent::getHeight(memBuf));
                     auto const uiDstDepth(alpaka::extent::getDepth(memBuf));

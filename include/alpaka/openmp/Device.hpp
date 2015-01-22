@@ -21,13 +21,14 @@
 
 #pragma once
 
-#include <alpaka/openmp/AccOpenMpFwd.hpp>  // AccOpenMp
+#include <alpaka/openmp/AccOpenMpFwd.hpp>   // AccOpenMp
 
 #include <alpaka/host/SystemInfo.hpp>       // host::getCpuName, host::getGlobalMemorySizeBytes
 
 #include <alpaka/openmp/Common.hpp>
 
-#include <alpaka/interfaces/Device.hpp>     // alpaka::device::Device, alpaka::device::DeviceManager
+#include <alpaka/traits/Wait.hpp>           // CurrentThreadWaitFor
+#include <alpaka/traits/Device.hpp>         // GetDev
 
 #include <sstream>                          // std::stringstream
 #include <limits>                           // std::numeric_limits
@@ -80,99 +81,11 @@ namespace alpaka
                 {
                     return !((*this) == rhs);
                 }
-                //-----------------------------------------------------------------------------
-                //! Destructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST virtual ~DeviceOpenMp() noexcept = default;
 
-            protected:
-                //-----------------------------------------------------------------------------
-                //! \return The device properties.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST device::DeviceProperties getProperties() const
-                {
-                    device::DeviceProperties deviceProperties;
-
-                    deviceProperties.m_sName = host::getCpuName();
-                    deviceProperties.m_uiMultiProcessorCount = 1;
-                    // HACK: ::omp_get_max_threads() does not return the real limit of the underlying OpenMP runtime:
-                    // 'The omp_get_max_threads routine returns the value of the internal control variable, which is used to determine the number of threads that would form the new team, 
-                    // if an active parallel region without a num_threads clause were to be encountered at that point in the program.'
-                    // How to do this correctly? Is there even a way to get the hard limit apart from omp_set_num_threads(high_value) -> omp_get_max_threads()?
-                    ::omp_set_num_threads(1024);
-                    deviceProperties.m_uiBlockKernelsCountMax = ::omp_get_max_threads();
-                    deviceProperties.m_v3uiBlockKernelsExtentMax = Vec<3u>(deviceProperties.m_uiBlockKernelsCountMax, deviceProperties.m_uiBlockKernelsCountMax, deviceProperties.m_uiBlockKernelsCountMax);
-                    deviceProperties.m_v3uiGridBlocksExtentMax = Vec<3u>(std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max());
-                    deviceProperties.m_uiGlobalMemorySizeBytes = host::getGlobalMemorySizeBytes();
-                    //deviceProperties.m_uiMaxClockFrequencyHz = TODO;
-
-                    return deviceProperties;
-                }
-
-            private:
-                int m_iDevice;
+            /*private:
+                int m_iDevice;*/
             };
-        }
-    }
 
-    namespace device
-    {
-        //#############################################################################
-        //! The OpenMP accelerator interfaced device handle.
-        //#############################################################################
-        template<>
-        class Device<
-            AccOpenMp> :
-            public device::detail::IDevice<openmp::detail::DeviceOpenMp>
-        {
-            friend class openmp::detail::DeviceManagerOpenMp;
-        private:
-            //-----------------------------------------------------------------------------
-            //! Constructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST Device() = default;
-
-        public:
-            //-----------------------------------------------------------------------------
-            //! Copy constructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST Device(Device const &) = default;
-            //-----------------------------------------------------------------------------
-            //! Move constructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST Device(Device &&) = default;
-            //-----------------------------------------------------------------------------
-            //! Assignment operator.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST Device & operator=(Device const &) = default;
-            //-----------------------------------------------------------------------------
-            //! Destructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST virtual ~Device() noexcept = default;
-        };
-
-        namespace detail
-        {
-            //#############################################################################
-            //! The OpenMP accelerator thread device waiter.
-            //#############################################################################
-            template<>
-            struct ThreadWaitDevice<
-                Device<AccOpenMp >>
-            {
-                ALPAKA_FCT_HOST ThreadWaitDevice(
-                    Device<AccOpenMp> const &)
-                {
-                    // Because host calls are not asynchronous, this call never has to wait.
-                }
-            };
-        }
-    }
-
-    namespace openmp
-    {
-        namespace detail
-        {
             //#############################################################################
             //! The OpenMP accelerator device manager.
             // \TODO: Add ability to offload to Xeon Phi.
@@ -195,7 +108,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of devices available.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static device::Device<AccOpenMp> getDeviceByIndex(
+                ALPAKA_FCT_HOST static openmp::detail::DeviceOpenMp getDeviceByIndex(
                     std::size_t const & uiIndex)
                 {
                     std::size_t const uiNumDevices(getDeviceCount());
@@ -211,7 +124,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The handle to the currently used device.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static device::Device<AccOpenMp> getCurrentDevice()
+                ALPAKA_FCT_HOST static openmp::detail::DeviceOpenMp getCurrentDevice()
                 {
                     return {};
                 }
@@ -219,7 +132,7 @@ namespace alpaka
                 //! Sets the device to use with this accelerator.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static void setCurrentDevice(
-                    device::Device<AccOpenMp> const & )
+                    openmp::detail::DeviceOpenMp const & )
                 {
                     // The code is already running on this device.
                 }
@@ -227,15 +140,75 @@ namespace alpaka
         }
     }
 
-    namespace device
+    namespace traits
     {
-        //#############################################################################
-        //! The OpenMP accelerator interfaced device manager.
-        //#############################################################################
-        template<>
-        class DeviceManager<
-            AccOpenMp> :
-            public detail::IDeviceManager<openmp::detail::DeviceManagerOpenMp>
-        {};
+        namespace dev
+        {
+            //#############################################################################
+            //! The OpenMP accelerator device type trait specialization.
+            //#############################################################################
+            template<>
+            struct GetDev<
+                AccOpenMp>
+            {
+                using type = openmp::detail::DeviceOpenMp;
+            };
+
+            //#############################################################################
+            //! The OpenMP accelerator device properties get trait specialization.
+            //#############################################################################
+            template<>
+            struct GetDevProps<
+                openmp::detail::DeviceOpenMp>
+            {
+                ALPAKA_FCT_HOST static alpaka::dev::DevProps getDevProps(
+                    openmp::detail::DeviceOpenMp const &)
+                {
+                    alpaka::dev::DevProps devProps;
+
+                    devProps.m_sName = host::getCpuName();
+                    devProps.m_uiMultiProcessorCount = 1;
+                    // HACK: ::omp_get_max_threads() does not return the real limit of the underlying OpenMP runtime:
+                    // 'The omp_get_max_threads routine returns the value of the internal control variable, which is used to determine the number of threads that would form the new team, 
+                    // if an active parallel region without a num_threads clause were to be encountered at that point in the program.'
+                    // How to do this correctly? Is there even a way to get the hard limit apart from omp_set_num_threads(high_value) -> omp_get_max_threads()?
+                    ::omp_set_num_threads(1024);
+                    devProps.m_uiBlockKernelsCountMax = ::omp_get_max_threads();
+                    devProps.m_v3uiBlockKernelsExtentsMax = Vec<3u>(devProps.m_uiBlockKernelsCountMax, devProps.m_uiBlockKernelsCountMax, devProps.m_uiBlockKernelsCountMax);
+                    devProps.m_v3uiGridBlocksExtentsMax = Vec<3u>(std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max());
+                    devProps.m_uiGlobalMemorySizeBytes = host::getGlobalMemorySizeBytes();
+                    //devProps.m_uiMaxClockFrequencyHz = TODO;
+
+                    return devProps;
+                }
+            };
+
+            //#############################################################################
+            //! The OpenMP accelerator device manager type trait specialization.
+            //#############################################################################
+            template<>
+            struct GetDevMan<
+                AccOpenMp>
+            {
+                using type = openmp::detail::DeviceManagerOpenMp;
+            };
+        }
+
+        namespace wait
+        {
+            //#############################################################################
+            //! The OpenMP accelerator thread device wait specialization.
+            //#############################################################################
+            template<>
+            struct CurrentThreadWaitFor<
+                openmp::detail::DeviceOpenMp>
+            {
+                ALPAKA_FCT_HOST static void currentThreadWaitFor(
+                    openmp::detail::DeviceOpenMp const &)
+                {
+                    // Because host calls are not asynchronous, this call never has to wait.
+                }
+            };
+        }
     }
 }

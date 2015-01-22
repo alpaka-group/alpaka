@@ -22,7 +22,7 @@
 #pragma once
 
 #include <alpaka/traits/Memory.hpp>         // traits::MemCopy, ...
-#include <alpaka/traits/Extent.hpp>         // traits::getXXX
+#include <alpaka/traits/Extents.hpp>        // traits::getXXX
 
 #include <alpaka/core/BasicDims.hpp>        // dim::Dim<N>
 #include <alpaka/core/RuntimeExtents.hpp>   // extent::RuntimeExtents<TDim>
@@ -58,12 +58,12 @@ namespace alpaka
                 //! Constructor
                 //-----------------------------------------------------------------------------
                 template<
-                    typename TExtent>
+                    typename TExtents>
                 MemBufHost(
-                    TExtent const & extent):
-                        RuntimeExtents<TDim>(extent),
+                    TExtents const & extents):
+                        RuntimeExtents<TDim>(extents),
                         m_spMem(
-                            new TElem[computeElementCount(extent)],
+                            new TElem[computeElementCount(extents)],
                             [](TElem * pBuffer)
                             {
                                 assert(pBuffer);
@@ -76,11 +76,11 @@ namespace alpaka
                 //! \return The number of elements to allocate.
                 //-----------------------------------------------------------------------------
                 template<
-                    typename TExtent>
+                    typename TExtents>
                 static std::size_t computeElementCount(
-                    TExtent const & extent)
+                    TExtents const & extents)
                 {
-                    auto const uiExtentElementCount(extent::getProductOfExtents(extent));
+                    auto const uiExtentElementCount(extent::getProductOfExtents(extents));
                     assert(uiExtentElementCount>0);
 
                     return uiExtentElementCount;
@@ -253,11 +253,11 @@ namespace alpaka
                 alpaka::memory::MemSpaceHost>
             {
                 template<
-                    typename TExtent>
+                    typename TExtents>
                 static host::detail::MemBufHost<TElem, TDim> memAlloc(
-                    TExtent const & extent)
+                    TExtents const & extents)
                 {
-                    return host::detail::MemBufHost<TElem, TDim>(extent);
+                    return host::detail::MemBufHost<TElem, TDim>(extents);
                 }
             };
 
@@ -274,29 +274,29 @@ namespace alpaka
                 alpaka::memory::MemSpaceHost>
             {
                 template<
-                    typename TExtent, 
+                    typename TExtents, 
                     typename TMemBufSrc, 
                     typename TMemBufDst>
                 static void memCopy(
                     TMemBufDst & memBufDst, 
                     TMemBufSrc const & memBufSrc, 
-                    TExtent const & extent)
+                    TExtents const & extents)
                 {
                     static_assert(
                         std::is_same<alpaka::dim::GetDimT<TMemBufDst>, alpaka::dim::GetDimT<TMemBufSrc>>::value,
                         "The source and the destination buffers are required to have the same dimensionality!");
                     static_assert(
-                        std::is_same<alpaka::dim::GetDimT<TMemBufDst>, alpaka::dim::GetDimT<TExtent>>::value,
-                        "The buffers and the extent are required to have the same dimensionality!");
+                        std::is_same<alpaka::dim::GetDimT<TMemBufDst>, alpaka::dim::GetDimT<TExtents>>::value,
+                        "The buffers and the extents are required to have the same dimensionality!");
                     static_assert(
                         std::is_same<alpaka::memory::GetMemElemT<TMemBufDst>, alpaka::memory::GetMemElemT<TMemBufSrc>>::value,
                         "The source and the destination buffers are required to have the same element type!");
 
                     using Elem = alpaka::memory::GetMemElemT<TMemBufDst>;
 
-                    auto const uiExtentWidth(alpaka::extent::getWidth(extent));
-                    auto const uiExtentHeight(alpaka::extent::getHeight(extent));
-                    auto const uiExtentDepth(alpaka::extent::getDepth(extent));
+                    auto const uiExtentWidth(alpaka::extent::getWidth(extents));
+                    auto const uiExtentHeight(alpaka::extent::getHeight(extents));
+                    auto const uiExtentDepth(alpaka::extent::getDepth(extents));
                     auto const uiDstWidth(alpaka::extent::getWidth(memBufDst));
                     auto const uiDstHeight(alpaka::extent::getHeight(memBufDst));
                     auto const uiDstDepth(alpaka::extent::getDepth(memBufDst));
@@ -322,7 +322,7 @@ namespace alpaka
                     auto const uiSrcSliceSizeBytes(uiSrcPitchBytes * uiSrcHeight);
 
                     // If:
-                    // - the copy extent width and height are identical to the dst and src extent width and height
+                    // - the copy extents width and height are identical to the dst and src extents width and height
                     // - the src and dst slice size is identical 
                     // -> we can copy the whole memory at once overwriting the pitch bytes
                     if((uiExtentWidth == uiDstWidth)
@@ -341,7 +341,7 @@ namespace alpaka
                         for(std::size_t z(0); z < uiExtentDepth; ++z)
                         {
                             // If:
-                            // - the copy extent width is identical to the dst and src extent width
+                            // - the copy extents width is identical to the dst and src extents width
                             // - the src and dst pitch is identical 
                             // -> we can copy whole slices at once overwriting the pitch bytes
                             if((uiExtentWidth == uiDstWidth)
@@ -378,22 +378,22 @@ namespace alpaka
                 alpaka::memory::MemSpaceHost>
             {
                 template<
-                    typename TExtent, 
+                    typename TExtents, 
                     typename TMemBuf>
                 static void memSet(
                     TMemBuf & memBuf, 
                     std::uint8_t const & byte, 
-                    TExtent const & extent)
+                    TExtents const & extents)
                 {
                     using Elem = alpaka::memory::GetMemElemT<TMemBuf>;
 
                     static_assert(
-                        std::is_same<alpaka::dim::GetDimT<TMemBuf>, alpaka::dim::GetDimT<TExtent>>::value,
-                        "The destination buffer and the extent are required to have the same dimensionality!");
+                        std::is_same<alpaka::dim::GetDimT<TMemBuf>, alpaka::dim::GetDimT<TExtents>>::value,
+                        "The destination buffer and the extents are required to have the same dimensionality!");
 
-                    auto const uiExtentWidth(alpaka::extent::getWidth(extent));
-                    auto const uiExtentHeight(alpaka::extent::getHeight(extent));
-                    auto const uiExtentDepth(alpaka::extent::getDepth(extent));
+                    auto const uiExtentWidth(alpaka::extent::getWidth(extents));
+                    auto const uiExtentHeight(alpaka::extent::getHeight(extents));
+                    auto const uiExtentDepth(alpaka::extent::getDepth(extents));
                     auto const uiDstWidth(alpaka::extent::getWidth(memBuf));
                     auto const uiDstHeight(alpaka::extent::getHeight(memBuf));
                     auto const uiDstDepth(alpaka::extent::getDepth(memBuf));
@@ -411,7 +411,7 @@ namespace alpaka
                     int iByte(static_cast<int>(byte));
 
                     // If:
-                    // - the set extent width and height are identical to the dst extent width and height
+                    // - the set extents width and height are identical to the dst extents width and height
                     // -> we can set the whole memory at once overwriting the pitch bytes
                     if((uiExtentWidth == uiDstWidth)
                         && (uiExtentHeight == uiDstHeight))
@@ -426,7 +426,7 @@ namespace alpaka
                         for(std::size_t z(0); z < uiExtentDepth; ++z)
                         {
                             // If: 
-                            // - the set extent width is identical to the dst extent width
+                            // - the set extents width is identical to the dst extents width
                             // -> we can set whole slices at once overwriting the pitch bytes
                             if(uiExtentWidth == uiDstWidth)
                             {

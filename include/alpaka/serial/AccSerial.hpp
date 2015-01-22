@@ -23,7 +23,7 @@
 
 // Base classes.
 #include <alpaka/serial/AccSerialFwd.hpp>
-#include <alpaka/serial/WorkExtent.hpp>             // InterfacedWorkExtentSerial
+#include <alpaka/serial/WorkDiv.hpp>             // InterfacedWorkDivSerial
 #include <alpaka/serial/Index.hpp>                  // InterfacedIndexSerial
 #include <alpaka/serial/Atomic.hpp>                 // InterfacedAtomicSerial
 
@@ -37,7 +37,7 @@
 #include <alpaka/interfaces/KernelExecCreator.hpp>  // KernelExecCreator
 
 // Implementation details.
-#include <alpaka/interfaces/BlockSharedExternMemSizeBytes.hpp>
+#include <alpaka/traits/BlockSharedExternMemSizeBytes.hpp>
 #include <alpaka/interfaces/IAcc.hpp>
 
 #include <cstddef>                                  // std::size_t
@@ -70,7 +70,7 @@ namespace alpaka
             //! The block size is restricted to 1x1x1 so there is no parallelism at all.
             //#############################################################################
             class AccSerial :
-                protected InterfacedWorkExtentSerial,
+                protected InterfacedWorkDivSerial,
                 protected InterfacedIndexSerial,
                 protected InterfacedAtomicSerial
             {
@@ -86,7 +86,7 @@ namespace alpaka
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA AccSerial() :
-                    InterfacedWorkExtentSerial(),
+                    InterfacedWorkDivSerial(),
                     InterfacedIndexSerial(m_v3uiGridBlockIdx),
                     InterfacedAtomicSerial()
                 {}
@@ -95,7 +95,7 @@ namespace alpaka
                 // Do not copy most members because they are initialized by the executor for each accelerated execution.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA AccSerial(AccSerial const &) :
-                    InterfacedWorkExtentSerial(),
+                    InterfacedWorkDivSerial(),
                     InterfacedIndexSerial(m_v3uiGridBlockIdx),
                     InterfacedAtomicSerial(),
                     m_v3uiGridBlockIdx(),
@@ -117,7 +117,7 @@ namespace alpaka
 
             protected:
                 //-----------------------------------------------------------------------------
-                //! \return The requested index.
+                //! \return The requested indices.
                 //-----------------------------------------------------------------------------
                 template<
                     typename TOrigin, 
@@ -126,7 +126,7 @@ namespace alpaka
                 ALPAKA_FCT_ACC_NO_CUDA typename dim::DimToVecT<TDimensionality> getIdx() const
                 {
                     return this->InterfacedIndexSerial::getIdx<TOrigin, TUnit, TDimensionality>(
-                        *static_cast<InterfacedWorkExtentSerial const *>(this));
+                        *static_cast<InterfacedWorkDivSerial const *>(this));
                 }
 
                 //-----------------------------------------------------------------------------
@@ -194,10 +194,10 @@ namespace alpaka
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 template<
-                    typename TWorkExtent, 
+                    typename TWorkDiv, 
                     typename... TKernelConstrArgs>
                 ALPAKA_FCT_HOST KernelExecutorSerial(
-                    IWorkExtent<TWorkExtent> const & workExtent, 
+                    IWorkDiv<TWorkDiv> const & workDiv, 
                     StreamSerial const &,
                     TKernelConstrArgs && ... args) :
                     TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
@@ -205,17 +205,17 @@ namespace alpaka
 #ifdef ALPAKA_DEBUG
                     std::cout << "[+] AccSerial::KernelExecutorSerial()" << std::endl;
 #endif
-                    (*static_cast<InterfacedWorkExtentSerial *>(this)) = workExtent;
+                    (*static_cast<InterfacedWorkDivSerial *>(this)) = workDiv;
 
-                    /*auto const uiNumKernelsPerBlock(workExtent.template getExtent<Block, Kernels, Dim1>());
-                    auto const uiMaxKernelsPerBlock(AccSerial::getExtentBlockKernelsLinearMax());
+                    /*auto const uiNumKernelsPerBlock(workDiv.template getExtents<Block, Kernels, Dim1>());
+                    auto const uiMaxKernelsPerBlock(AccSerial::getWorkDivBlockKernelsLinearMax());
                     if(uiNumKernelsPerBlock > uiMaxKernelsPerBlock)
                     {
                         throw std::runtime_error(("The given block kernels count '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the serial accelerator!").c_str());
                     }*/
 
-                    m_v3uiGridBlocksExtent = workExtent.template getExtent<Grid, Blocks, Dim3>();
-                    m_v3uiBlockKernelsExtent = workExtent.template getExtent<Block, Kernels, Dim3>();
+                    m_v3uiGridBlocksExtents = workDiv.template getExtents<Grid, Blocks, Dim3>();
+                    m_v3uiBlockKernelsExtents = workDiv.template getExtents<Block, Kernels, Dim3>();
 #ifdef ALPAKA_DEBUG
                     std::cout << "[-] AccSerial::KernelExecutorSerial()" << std::endl;
 #endif
@@ -248,18 +248,18 @@ namespace alpaka
 #ifdef ALPAKA_DEBUG
                     std::cout << "[+] AccSerial::KernelExecutorSerial::operator()" << std::endl;
 #endif
-                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(m_v3uiBlockKernelsExtent, std::forward<TArgs>(args)...));
+                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(m_v3uiBlockKernelsExtents, std::forward<TArgs>(args)...));
                     this->AccSerial::m_vuiExternalSharedMem.reset(
                         new uint8_t[uiBlockSharedExternMemSizeBytes]);
 
                     // Execute the blocks serially.
-                    for(std::uint32_t bz(0); bz<m_v3uiGridBlocksExtent[2]; ++bz)
+                    for(std::uint32_t bz(0); bz<m_v3uiGridBlocksExtents[2]; ++bz)
                     {
                         this->AccSerial::m_v3uiGridBlockIdx[2] = bz;
-                        for(std::uint32_t by(0); by<m_v3uiGridBlocksExtent[1]; ++by)
+                        for(std::uint32_t by(0); by<m_v3uiGridBlocksExtents[1]; ++by)
                         {
                             this->AccSerial::m_v3uiGridBlockIdx[1] = by;
-                            for(std::uint32_t bx(0); bx<m_v3uiGridBlocksExtent[0]; ++bx)
+                            for(std::uint32_t bx(0); bx<m_v3uiGridBlocksExtents[0]; ++bx)
                             {
                                 this->AccSerial::m_v3uiGridBlockIdx[0] = bx;
 
@@ -281,8 +281,8 @@ namespace alpaka
                 }
 
             private:
-                Vec<3u> m_v3uiGridBlocksExtent;
-                Vec<3u> m_v3uiBlockKernelsExtent;
+                Vec<3u> m_v3uiGridBlocksExtents;
+                Vec<3u> m_v3uiBlockKernelsExtents;
             };
         }
     }

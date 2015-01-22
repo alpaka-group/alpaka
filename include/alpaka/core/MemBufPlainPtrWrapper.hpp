@@ -22,7 +22,7 @@
 #pragma once
 
 #include <alpaka/traits/Memory.hpp>         // traits::MemCopy, ...
-#include <alpaka/traits/Extent.hpp>         // traits::getXXX
+#include <alpaka/traits/Extents.hpp>        // traits::getXXX
 
 #include <alpaka/core/BasicDims.hpp>        // dim::Dim<N>
 #include <alpaka/core/RuntimeExtents.hpp>   // extent::RuntimeExtents<TDim>
@@ -51,24 +51,24 @@ namespace alpaka
             //! Constructor
             //-----------------------------------------------------------------------------
             template<
-                typename TExtent>
+                typename TExtents>
                 MemBufPlainPtrWrapper(
                 TElem * pMem,
-                TExtent const & extent) :
-                    RuntimeExtents<TDim>(extent),
+                TExtents const & extents) :
+                    RuntimeExtents<TDim>(extents),
                     m_pMem(pMem),
-                    m_uiPitchBytes(alpaka::extent::getWidth(extent) * sizeof(TElem))
+                    m_uiPitchBytes(alpaka::extent::getWidth(extents) * sizeof(TElem))
             {}
 
             //-----------------------------------------------------------------------------
             //! Constructor
             //-----------------------------------------------------------------------------
             template<
-                typename TExtent>
+                typename TExtents>
                 MemBufPlainPtrWrapper(
                 TElem * pMem,
                 std::size_t const & uiPitch,
-                TExtent const & extent) :
+                TExtents const & extents) :
                     RuntimeExtents<TDim>(extent),
                     m_pMem(pMem),
                     m_uiPitch(uiPitch)

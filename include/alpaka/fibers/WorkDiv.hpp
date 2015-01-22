@@ -21,15 +21,15 @@
 
 #pragma once
 
-#include <alpaka/host/WorkExtent.hpp>   // IWorkExtent, WorkExtentHost
+#include <alpaka/host/WorkDiv.hpp>   // IWorkDiv, WorkDivHost
 
 namespace alpaka
 {
-    namespace serial
+    namespace fibers
     {
         namespace detail
         {
-            using InterfacedWorkExtentSerial = alpaka::IWorkExtent<alpaka::host::detail::WorkExtentHost>;
+            using InterfacedWorkDivFibers = alpaka::IWorkDiv<alpaka::host::detail::WorkDivHost>;
         }
     }
 }

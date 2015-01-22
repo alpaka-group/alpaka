@@ -22,7 +22,7 @@
 #pragma once
 
 #include <alpaka/traits/Dim.hpp>        // traits::getDim
-#include <alpaka/traits/Extent.hpp>     // traits::getWidth, ...
+#include <alpaka/traits/Extents.hpp>    // traits::getWidth, ...
 
 #include <alpaka/core/BasicDims.hpp>    // dim::Dim<N>
 
@@ -34,13 +34,13 @@ namespace alpaka
     namespace extent
     {
         //#############################################################################
-        //! The abstract runtime extent.
+        //! The abstract runtime extents.
         //#############################################################################
         template<
             typename TDim>
         class RuntimeExtents;
         //#############################################################################
-        //! The 1D runtime extent.
+        //! The 1D runtime extents.
         //#############################################################################
         template<>
         class RuntimeExtents<
@@ -54,10 +54,10 @@ namespace alpaka
             //! Constructor.
             //-----------------------------------------------------------------------------
             template<
-                typename TExtent>
+                typename TExtents>
             explicit RuntimeExtents(
-                TExtent const & extent) :
-                    m_uiWidth(extent::getWidth(extent))
+                TExtents const & extents) :
+                    m_uiWidth(extent::getWidth(extents))
             {}
             //-----------------------------------------------------------------------------
             //! Constructor.
@@ -71,7 +71,7 @@ namespace alpaka
             std::size_t m_uiWidth;  //!< The width of each row in elements.
         };
         //#############################################################################
-        //! The 2D runtime extent.
+        //! The 2D runtime extents.
         //#############################################################################
         template<>
         class RuntimeExtents<
@@ -85,11 +85,11 @@ namespace alpaka
             //! Constructor.
             //-----------------------------------------------------------------------------
             template<
-                typename TExtent>
+                typename TExtents>
             explicit RuntimeExtents(
-                TExtent const & extent) :
-                    m_uiWidth(extent::getWidth(extent)),
-                    m_uiHeight(extent::getHeight(extent))
+                TExtents const & Extents) :
+                    m_uiWidth(extent::getWidth(extents)),
+                    m_uiHeight(extent::getHeight(extents))
             {}
             //-----------------------------------------------------------------------------
             //! Constructor.
@@ -106,7 +106,7 @@ namespace alpaka
             std::size_t m_uiHeight; //!< The height of each 2D array in rows.
         };
         //#############################################################################
-        //! The 3D runtime extent.
+        //! The 3D runtime extents.
         //#############################################################################
         template<>
         class RuntimeExtents<
@@ -120,12 +120,12 @@ namespace alpaka
             //! Constructor.
             //-----------------------------------------------------------------------------
             template<
-                typename TExtent>
+                typename TExtents>
             explicit RuntimeExtents(
-                TExtent const & extent) :
-                    m_uiWidth(extent::getWidth(extent)),
-                    m_uiHeight(extent::getHeight(extent)),
-                    m_uiDepth(extent::getDepth(extent))
+                TExtents const & Extents) :
+                    m_uiWidth(extent::getWidth(extents)),
+                    m_uiHeight(extent::getHeight(extents)),
+                    m_uiDepth(extent::getDepth(extents))
             {}
             //-----------------------------------------------------------------------------
             //! Constructor.

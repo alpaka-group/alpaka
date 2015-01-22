@@ -22,10 +22,10 @@
 #pragma once
 
 #include <alpaka/cuda/AccCudaFwd.hpp>   // AccCuda
-
-#include <alpaka/interfaces/Device.hpp> // alpaka::device::Device, alpaka::device::DeviceManager
-
 #include <alpaka/cuda/Common.hpp>
+
+#include <alpaka/traits/Wait.hpp>       // CurrentThreadWaitFor
+#include <alpaka/traits/Device.hpp>     // GetDev
 
 #include <iostream>                     // std::cout
 #include <sstream>                      // std::stringstream
@@ -78,102 +78,9 @@ namespace alpaka
                 {
                     return !((*this) == rhs);
                 }
-                //-----------------------------------------------------------------------------
-                //! Destructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST virtual ~DeviceCuda() noexcept = default;
-
-            protected:
-                //-----------------------------------------------------------------------------
-                //! \return The device properties.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST device::DeviceProperties getProperties() const
-                {
-                    device::DeviceProperties deviceProperties;
-
-                    cudaDeviceProp cudaDevProp;
-                    ALPAKA_CUDA_CHECK(cudaGetDeviceProperties(&cudaDevProp, m_iDevice));
-
-                    deviceProperties.m_sName = cudaDevProp.name;
-                    deviceProperties.m_uiMultiProcessorCount = static_cast<std::size_t>(cudaDevProp.multiProcessorCount);
-                    deviceProperties.m_uiBlockKernelsCountMax = static_cast<std::size_t>(cudaDevProp.maxThreadsPerBlock);
-                    deviceProperties.m_v3uiBlockKernelsExtentMax = Vec<3u>(static_cast<std::size_t>(cudaDevProp.maxThreadsDim[0]), static_cast<std::size_t>(cudaDevProp.maxThreadsDim[1]), static_cast<std::size_t>(cudaDevProp.maxThreadsDim[2]));
-                    deviceProperties.m_v3uiGridBlocksExtentMax = Vec<3u>(static_cast<std::size_t>(cudaDevProp.maxGridSize[0]), static_cast<std::size_t>(cudaDevProp.maxGridSize[1]), static_cast<std::size_t>(cudaDevProp.maxGridSize[2]));
-                    deviceProperties.m_uiGlobalMemorySizeBytes = static_cast<std::size_t>(cudaDevProp.totalGlobalMem);
-                    //deviceProperties.m_uiMaxClockFrequencyHz = cudaDevProp.clockRate * 1000;
-
-                    return deviceProperties;
-                }
 
             protected:
                 int m_iDevice;
-            };
-        }
-    }
-
-    namespace device
-    {
-        //#############################################################################
-        //! The CUDA accelerator interfaced device handle.
-        //#############################################################################
-        template<>
-        class Device<
-            AccCuda> :
-            public device::detail::IDevice<cuda::detail::DeviceCuda>
-        {
-            friend class cuda::detail::DeviceManagerCuda;
-        private:
-            //-----------------------------------------------------------------------------
-            //! Constructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST Device() = default;
-
-        public:
-            //-----------------------------------------------------------------------------
-            //! Copy constructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST Device(Device const &) = default;
-            //-----------------------------------------------------------------------------
-            //! Move constructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST Device(Device &&) = default;
-            //-----------------------------------------------------------------------------
-            //! Assignment operator.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST Device & operator=(Device const &) = default;
-            //-----------------------------------------------------------------------------
-            //! Destructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST virtual ~Device() noexcept = default;
-        };
-
-        namespace detail
-        {
-            //#############################################################################
-            //! The CUDA accelerator thread device waiter.
-            //#############################################################################
-            template<>
-            struct ThreadWaitDevice<
-                Device<AccCuda>>
-            {
-                ALPAKA_FCT_HOST ThreadWaitDevice(Device<AccCuda> const & device)
-                {
-                    // \TODO: This should be secured by a lock.
-
-                    auto const oldDevice(DeviceManager<AccCuda>::getCurrentDevice());
-
-                    if(oldDevice != device)
-                    {
-                        DeviceManager<AccCuda>::setCurrentDevice(device);
-                    }
-
-                    ALPAKA_CUDA_CHECK(cudaDeviceSynchronize());
-
-                    if(oldDevice != device)
-                    {
-                        DeviceManager<AccCuda>::setCurrentDevice(oldDevice);
-                    }
-                }
             };
         }
     }
@@ -206,9 +113,10 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of devices available.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static device::Device<AccCuda> getDeviceByIndex(std::size_t const & uiIndex)
+                ALPAKA_FCT_HOST static cuda::detail::DeviceCuda getDeviceByIndex(
+                    std::size_t const & uiIndex)
                 {
-                    device::Device<AccCuda> device;
+                    cuda::detail::DeviceCuda device;
 
                     std::size_t const uiNumDevices(getDeviceCount());
                     if(uiIndex < getDeviceCount())
@@ -227,16 +135,17 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The handle to the currently used device.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static device::Device<AccCuda> getCurrentDevice()
+                ALPAKA_FCT_HOST static cuda::detail::DeviceCuda getCurrentDevice()
                 {
-                    device::Device<AccCuda> device;
+                    cuda::detail::DeviceCuda device;
                     ALPAKA_CUDA_CHECK(cudaGetDevice(&device.m_iDevice));
                     return device;
                 }
                 //-----------------------------------------------------------------------------
                 //! Sets the device to use with this accelerator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static void setCurrentDevice(device::Device<AccCuda> const & device)
+                ALPAKA_FCT_HOST static void setCurrentDevice(
+                    cuda::detail::DeviceCuda const & device)
                 {
     #ifdef ALPAKA_DEBUG
                     std::cout << "[+] DeviceManagerCuda::setCurrentDevice()" << std::endl;
@@ -301,7 +210,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Prints all the device properties to std::cout.
                 //-----------------------------------------------------------------------------
-                static printDeviceProperties(cudaDeviceProp const & devProp)
+                static printDeviceProperties(
+                    cudaDeviceProp const & devProp)
                 {
                     std::size_t const uiKiB(1024);
                     std::size_t const uiMiB(uiKiB * uiKiB);
@@ -362,14 +272,87 @@ namespace alpaka
         }
     }
 
-    namespace device
+    namespace traits
     {
-        //#############################################################################
-        //! The CUDA accelerator interfaced device manager.
-        //#############################################################################
-        template<>
-        class DeviceManager<AccCuda> :
-            public detail::IDeviceManager<cuda::detail::DeviceManagerCuda>
-        {};
+        namespace dev
+        {
+            //#############################################################################
+            //! The CUDA accelerator device type trait specialization.
+            //#############################################################################
+            template<>
+            struct GetDev<
+                AccCuda>
+            {
+                using type = cuda::detail::DeviceCuda;
+            };
+
+            //#############################################################################
+            //! The CUDA accelerator device properties get trait specialization.
+            //#############################################################################
+            template<>
+            struct GetDevProps<
+                cuda::detail::DeviceCuda>
+            {
+                ALPAKA_FCT_HOST static alpaka::dev::DevProps getDevProps(
+                    cuda::detail::DeviceCuda const &)
+                {
+                    alpaka::dev::DevProps devProps;
+
+                    cudaDeviceProp cudaDevProp;
+                    ALPAKA_CUDA_CHECK(cudaGetDeviceProperties(&cudaDevProp, m_iDevice));
+
+                    devProps.m_sName = cudaDevProp.name;
+                    devProps.m_uiMultiProcessorCount = static_cast<std::size_t>(cudaDevProp.multiProcessorCount);
+                    devProps.m_uiBlockKernelsCountMax = static_cast<std::size_t>(cudaDevProp.maxThreadsPerBlock);
+                    devProps.m_v3uiBlockKernelsExtentsMax = Vec<3u>(static_cast<std::size_t>(cudaDevProp.maxThreadsDim[0]), static_cast<std::size_t>(cudaDevProp.maxThreadsDim[1]), static_cast<std::size_t>(cudaDevProp.maxThreadsDim[2]));
+                    devProps.m_v3uiGridBlocksExtentsMax = Vec<3u>(static_cast<std::size_t>(cudaDevProp.maxGridSize[0]), static_cast<std::size_t>(cudaDevProp.maxGridSize[1]), static_cast<std::size_t>(cudaDevProp.maxGridSize[2]));
+                    devProps.m_uiGlobalMemorySizeBytes = static_cast<std::size_t>(cudaDevProp.totalGlobalMem);
+                    //devProps.m_uiMaxClockFrequencyHz = cudaDevProp.clockRate * 1000;
+
+                    return devProps;
+                }
+            };
+
+            //#############################################################################
+            //! The CUDA accelerator device manager type trait specialization.
+            //#############################################################################
+            template<>
+            struct GetDevMan<
+                AccCuda>
+            {
+                using type = cuda::detail::DeviceManagerCuda;
+            };
+        }
+
+        namespace wait
+        {
+            //#############################################################################
+            //! The CUDA accelerator thread device wait specialization.
+            //#############################################################################
+            template<>
+            struct CurrentThreadWaitFor<
+                cuda::detail::DeviceCuda>
+            {
+                ALPAKA_FCT_HOST static void currentThreadWaitFor(
+                    cuda::detail::DeviceCuda const & device)
+                {
+                    // \TODO: This should be secured by a lock.
+
+                    auto const oldDevice(cuda::detail::DeviceManagerCuda::getCurrentDevice());
+
+                    if(oldDevice != device)
+                    {
+                        cuda::detail::DeviceManagerCuda::setCurrentDevice(device);
+                    }
+
+                    ALPAKA_CUDA_CHECK(cudaDeviceSynchronize());
+
+                    if(oldDevice != device)
+                    {
+                        cuda::detail::DeviceManagerCuda::setCurrentDevice(oldDevice);
+                    }
+                }
+            };
+        }
     }
 }

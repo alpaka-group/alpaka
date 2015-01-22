@@ -112,28 +112,28 @@ namespace alpaka
             //! \return An KernelExecutor with the given extents.
             //-----------------------------------------------------------------------------
             template<
-                typename TWorkExtent,
+                typename TWorkDiv,
                 typename TStream,
                 typename std::enable_if<std::is_same<typename alpaka::acc::GetAccT<TStream>, typename alpaka::acc::GetAccT<TKernelExecutor>>::value, int>::type = 0>
             ALPAKA_FCT_HOST TKernelExecutor operator()(
-                IWorkExtent<TWorkExtent> const & workExtent, 
+                IWorkDiv<TWorkDiv> const & workDiv, 
                 TStream const & stream) const
             {
-                return createKernelExecutor(workExtent, stream, KernelConstrArgsIndexSequenceT());
+                return createKernelExecutor(workDiv, stream, KernelConstrArgsIndexSequenceT());
             }
             //-----------------------------------------------------------------------------
             //! \return An KernelExecutor with the given extents.
             //-----------------------------------------------------------------------------
             template<
-                typename TWorkExtent,
+                typename TWorkDiv,
                 typename TStream,
                 typename std::enable_if<std::is_same<typename alpaka::acc::GetAccT<TStream>, typename alpaka::acc::GetAccT<TKernelExecutor>>::value, int>::type = 0>
             ALPAKA_FCT_HOST TKernelExecutor operator()(
                 Vec<3u> const & v3uiGridBlocksExtent,
-                Vec<3u> const & v3uiBlockKernelsExtent, 
+                Vec<3u> const & v3uiBlockKernelsExtents, 
                 TStream const & stream) const
             {
-                return this->operator()(WorkExtent(v3uiGridBlocksExtent, v3uiBlockKernelsExtent), stream);
+                return this->operator()(WorkDiv(v3uiGridBlocksExtent, v3uiBlockKernelsExtents), stream);
             }
 
         private:
@@ -141,11 +141,11 @@ namespace alpaka
             //! \return An KernelExecutor with the given extents.
             //-----------------------------------------------------------------------------
             template<
-                typename TWorkExtent,
+                typename TWorkDiv,
                 typename TStream,
                 std::size_t... TIndices>
             ALPAKA_FCT_HOST TKernelExecutor createKernelExecutor(
-                IWorkExtent<TWorkExtent> const & workExtent, 
+                IWorkDiv<TWorkDiv> const & workDiv, 
                 TStream const & stream,
 #if !BOOST_COMP_MSVC     // MSVC 190022512 introduced a new bug with alias templates: error C3520: 'TIndices': parameter pack must be expanded in this context
                 std_extension::index_sequence<TIndices...> const &) const
@@ -153,16 +153,16 @@ namespace alpaka
                 std_extension::integer_sequence<std::size_t, TIndices...> const &) const
 #endif
             {
-                if(workExtent.template getExtent<Grid, Blocks, dim::Dim1>()[0] == 0u)
+                if(workDiv.template getExtents<Grid, Blocks, dim::Dim1>()[0] == 0u)
                 {
-                    throw std::runtime_error("The workExtent grid blocks extent is not allowed to be zero in any dimension!");
+                    throw std::runtime_error("The workDiv grid blocks extents is not allowed to be zero in any dimension!");
                 }
-                if(workExtent.template getExtent<Block, Kernels, dim::Dim1>()[0] == 0u)
+                if(workDiv.template getExtents<Block, Kernels, dim::Dim1>()[0] == 0u)
                 {
-                    throw std::runtime_error("The workExtent block kernels extent is not allowed to be zero in any dimension!");
+                    throw std::runtime_error("The workDiv block kernels extents is not allowed to be zero in any dimension!");
                 }
 
-                return TKernelExecutor(workExtent, stream, std::get<TIndices>(std::forward<TKernelConstrArgs>(m_tupleKernelConstrArgs))...);
+                return TKernelExecutor(workDiv, stream, std::get<TIndices>(std::forward<TKernelConstrArgs>(m_tupleKernelConstrArgs))...);
             }
 
         private:

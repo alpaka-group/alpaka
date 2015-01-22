@@ -29,19 +29,19 @@
 #include <alpaka/core/Positioning.hpp>
 #include <alpaka/core/RuntimeExtents.hpp>
 #include <alpaka/core/Vec.hpp>
-#include <alpaka/core/WorkDivision.hpp>
+#include <alpaka/core/AutoWorkDiv.hpp>
 
-#include <alpaka/host/WorkExtent.hpp>
+#include <alpaka/host/WorkDiv.hpp>
 
 #include <alpaka/interfaces/IAcc.hpp>
 #include <alpaka/interfaces/KernelExecCreator.hpp>
-#include <alpaka/interfaces/BlockSharedExternMemSizeBytes.hpp>
 
 #include <alpaka/traits/Acc.hpp>
+#include <alpaka/traits/BlockSharedExternMemSizeBytes.hpp>
 #include <alpaka/traits/Device.hpp>
 #include <alpaka/traits/Dim.hpp>
 #include <alpaka/traits/Event.hpp>
-#include <alpaka/traits/Extent.hpp>
+#include <alpaka/traits/Extents.hpp>
 #include <alpaka/traits/Memory.hpp>
 #include <alpaka/traits/Stream.hpp>
 #include <alpaka/traits/Wait.hpp>

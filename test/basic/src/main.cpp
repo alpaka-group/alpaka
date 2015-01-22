@@ -32,7 +32,7 @@
 
 //#############################################################################
 //! An accelerated test kernel.
-//! Uses atomicOp(), syncBlockKernels(), shared memory, getIdx, getExtent, global memory to compute a (useless) result.
+//! Uses atomicOp(), syncBlockKernels(), shared memory, getIdx, getExtents, global memory to compute a (useless) result.
 //! \tparam TAcc The accelerator environment to be executed on.
 //! \tparam TuiNumUselessWork The number of useless calculations done in each kernel execution.
 //#############################################################################
@@ -59,7 +59,7 @@ public:
         std::uint32_t const uiMult2) const
     {
         // The number of kernels in this block.
-        std::uint32_t const uiNumKernelsInBlock(acc.template getExtent<alpaka::Block, alpaka::Kernels, alpaka::Linear>());
+        std::uint32_t const uiNumKernelsInBlock(acc.template getExtents<alpaka::Block, alpaka::Kernels, alpaka::Linear>());
 
         // Get the extern allocated shared memory.
         std::uint32_t * const pBlockShared(acc.template getBlockSharedExternMem<std::uint32_t>());
@@ -135,7 +135,9 @@ namespace alpaka
         //! \return The size of the shared memory allocated for a block.
         //-----------------------------------------------------------------------------
         template<typename... TArgs>
-        static std::size_t getBlockSharedExternMemSizeBytes(alpaka::vec<3u> const & v3uiSizeBlockKernels, TArgs && ...)
+        static std::size_t getBlockSharedExternMemSizeBytes(
+            alpaka::vec<3u> const & v3uiBlockKernelsExtents, 
+            TArgs && ...)
         {
             return v3uiSizeBlockKernels.prod() * sizeof(std::uint32_t);
         }
@@ -186,7 +188,7 @@ struct ProfileAcceleratedExampleKernel
         typename TWorkExtent>
 	void operator()(
         TAcc, 
-        alpaka::IWorkExtent<TWorkExtent> const & workExtent, 
+        alpaka::IWorkDiv<TWorkDiv> const & workDiv, 
         std::uint32_t const uiMult2)
 	{
 		std::cout << std::endl;
@@ -199,11 +201,11 @@ struct ProfileAcceleratedExampleKernel
 			<< "AcceleratedExampleKernelProfiler("
 			<< " accelerator: " << typeid(TAcc).name()
 			<< ", kernel: " << typeid(Kernel).name()
-			<< ", workExtent: " << workExtent
+			<< ", workDiv: " << workDiv
 			<< ")" << std::endl;
 
-		std::size_t const uiGridBlocksCount(workExtent.template getExtent<alpaka::Grid, alpaka::Blocks, alpaka::Linear>());
-		std::size_t const uiBlockKernelsCount(workExtent.template getExtent<alpaka::Block, alpaka::Kernels, alpaka::Linear>());
+		std::size_t const uiGridBlocksCount(workDiv.template getExtent<alpaka::Grid, alpaka::Blocks, alpaka::Linear>());
+		std::size_t const uiBlockKernelsCount(workDiv.template getExtent<alpaka::Block, alpaka::Kernels, alpaka::Linear>());
 
 		// An array for the return values calculated by the blocks.
 		std::vector<std::uint32_t> vuiBlockRetVals(uiGridBlocksCount, 0);
@@ -220,7 +222,7 @@ struct ProfileAcceleratedExampleKernel
         // Get a new stream.
         alpaka::stream::GetStreamT<TAcc> stream;
         // Profile the kernel execution.
-		profileAcceleratedKernel(exec(workExtent, stream), pBlockRetValsAcc.get(), uiMult2);
+		profileAcceleratedKernel(exec(workDiv, stream), pBlockRetValsAcc.get(), uiMult2);
 
 		// Copy back the result.
 		alpaka::memory::copy(vuiBlockRetVals, pBlockRetValsAcc, uiSizeElements);
@@ -268,8 +270,8 @@ int main()
 #ifdef ALPAKA_CUDA_ENABLED
         // Select the first CUDA device. 
         // NOTE: This is not required to run any kernels on the CUDA accelerator because all accelerators have a default device. This only shows the possibility.
-        alpaka::device::DeviceManager<alpaka::AccCuda>::setCurrentDevice(
-			alpaka::device::DeviceManager<alpaka::AccCuda>::getCurrentDevice());
+        alpaka::dev::GetDevManT<alpaka::AccCuda>::setCurrentDevice(
+			alpaka::dev::GetDevManT<alpaka::AccCuda>::getCurrentDevice());
 #endif
 
         // Set the grid blocks extent.

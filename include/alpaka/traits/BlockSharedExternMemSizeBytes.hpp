@@ -23,7 +23,7 @@
 
 #include <alpaka/core/Vec.hpp>          // alpaka::Vec
 
-#include <boost/core/ignore_unused.hpp> // boost::ignore_
+#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 
 //-----------------------------------------------------------------------------
 //! The name space for the accelerator library.
@@ -40,7 +40,7 @@ namespace alpaka
     struct BlockSharedExternMemSizeBytes
     {
         //-----------------------------------------------------------------------------
-        //! \param v3uiBlockKernelsExtent The size of the blocks for which the block shared memory size should be calculated.
+        //! \param v3uiBlockKernelsExtents The size of the blocks for which the block shared memory size should be calculated.
         //! \tparam TArgs The kernel invocation argument types pack.
         //! \param ... The kernel invocation arguments for which the block shared memory size should be calculated.
         //! \return The size of the shared memory allocated for a block in bytes.
@@ -49,10 +49,10 @@ namespace alpaka
         template<
             typename... TArgs>
         ALPAKA_FCT_HOST static std::size_t getBlockSharedExternMemSizeBytes(
-            Vec<3u> const & v3uiBlockKernelsExtent, 
+            Vec<3u> const & v3uiBlockKernelsExtents, 
             TArgs && ... )
         {
-            boost::ignore_unused(v3uiBlockKernelsExtent);
+            boost::ignore_unused(v3uiBlockKernelsExtents);
 
             return 0;
         }

@@ -50,18 +50,18 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             // \tparam TElem Type of the index values.
             // \param index Index to be mapped.
-            // \param extent Spatial size to map the index to.
+            // \param extents Spatial size to map the index to.
             // \return Vector of dimension TuiDimDst.
             //-----------------------------------------------------------------------------
             template<
                 typename TElem>
             ALPAKA_FCT_HOST_ACC static Vec<3u> mapIndex(
                 Vec<1u, TElem> const & index, 
-                Vec<2u, TElem> const & extent)
+                Vec<2u, TElem> const & extents)
             {
                 auto const & uiIndex(index[0]);
-                auto const uiExtentXyLin(extent.prod());
-                auto const & uiExtentX(extent[0]);
+                auto const uiExtentXyLin(extents.prod());
+                auto const & uiExtentX(extents[0]);
 
                 return {
                     uiIndex % uiExtentX,
@@ -81,17 +81,17 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             // \tparam TElem Type of the index values.
             // \param index Index to be mapped.
-            // \param extent Spatial size to map the index to.
+            // \param extents Spatial size to map the index to.
             // \return Vector of dimension TuiDimDst.
             //-----------------------------------------------------------------------------
             template<
                 typename TElem>
             ALPAKA_FCT_HOST_ACC static Vec<2u> mapIndex(
                 Vec<1u, TElem> const & index, 
-                Vec<1u, TElem> const & extent)
+                Vec<1u, TElem> const & extents)
             {
                 auto const & uiIndex(index[0]);
-                auto const & uiExtentX(extent[0]);
+                auto const & uiExtentX(extents[0]);
 
                 return {
                     uiIndex % uiExtentX,
@@ -113,10 +113,9 @@ namespace alpaka
         std::size_t TuiIndexDimSrc, 
         typename TElem>
     Vec<TuiIndexDimDst> mapIndex(
-        Vec<TuiIndexDimSrc, 
-        TElem> const & index, 
-        Vec<TuiIndexDimDst-1u, TElem> const & extent)
+        Vec<TuiIndexDimSrc, TElem> const & index, 
+        Vec<TuiIndexDimDst-1u, TElem> const & extents)
     {
-        return detail::MapIndex<TuiIndexDimDst, TuiIndexDimSrc>::mapIndex(index, extent);
+        return detail::MapIndex<TuiIndexDimDst, TuiIndexDimSrc>::mapIndex(index, extents);
     }
 }

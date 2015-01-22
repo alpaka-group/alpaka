@@ -25,7 +25,8 @@
 
 #include <alpaka/host/SystemInfo.hpp>       // host::getCpuName, host::getGlobalMemorySizeBytes
 
-#include <alpaka/interfaces/Device.hpp>     // alpaka::device::Device, alpaka::device::DeviceManager
+#include <alpaka/traits/Wait.hpp>           // CurrentThreadWaitFor
+#include <alpaka/traits/Device.hpp>         // GetDev
 
 #include <sstream>                          // std::stringstream
 #include <limits>                           // std::numeric_limits
@@ -77,91 +78,8 @@ namespace alpaka
                 {
                     return !((*this) == rhs);
                 }
-                //-----------------------------------------------------------------------------
-                //! Destructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST virtual ~DeviceSerial() noexcept = default;
-
-            protected:
-                //-----------------------------------------------------------------------------
-                //! \return The device properties.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST device::DeviceProperties getProperties() const
-                {
-                    device::DeviceProperties deviceProperties;
-
-                    deviceProperties.m_sName = host::getCpuName();
-                    deviceProperties.m_uiMultiProcessorCount = 1;
-                    deviceProperties.m_uiBlockKernelsCountMax = 1;
-                    deviceProperties.m_v3uiBlockKernelsExtentMax = Vec<3u>(1u, 1u, 1u);
-                    deviceProperties.m_v3uiGridBlocksExtentMax = Vec<3u>(std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max());
-                    deviceProperties.m_uiGlobalMemorySizeBytes = host::getGlobalMemorySizeBytes();
-                    //deviceProperties.m_uiMaxClockFrequencyHz = TODO;
-
-                    return deviceProperties;
-                }
             };
-        }
-    }
 
-    namespace device
-    {
-        //#############################################################################
-        //! The serial accelerator interfaced device handle.
-        //#############################################################################
-        template<>
-        class Device<
-            AccSerial> :
-            public device::detail::IDevice<serial::detail::DeviceSerial>
-        {
-            friend class serial::detail::DeviceManagerSerial;
-        private:
-            //-----------------------------------------------------------------------------
-            //! Constructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST Device() = default;
-
-        public:
-            //-----------------------------------------------------------------------------
-            //! Copy constructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST Device(Device const &) = default;
-            //-----------------------------------------------------------------------------
-            //! Move constructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST Device(Device &&) = default;
-            //-----------------------------------------------------------------------------
-            //! Assignment operator.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST Device & operator=(Device const &) = default;
-            //-----------------------------------------------------------------------------
-            //! Destructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST virtual ~Device() noexcept = default;
-        };
-
-        namespace detail
-        {
-            //#############################################################################
-            //! The serial accelerator thread device waiter.
-            //#############################################################################
-            template<>
-            struct ThreadWaitDevice<
-                Device<AccSerial>>
-            {
-                ALPAKA_FCT_HOST ThreadWaitDevice(
-                    Device<AccSerial> const & device)
-                {
-                    // Because host calls are not asynchronous, this call never has to wait.
-                }
-            };
-        }
-    }
-
-    namespace serial
-    {
-        namespace detail
-        {
             //#############################################################################
             //! The serial accelerator device manager.
             //#############################################################################
@@ -183,7 +101,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of devices available.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static device::Device<AccSerial> getDeviceByIndex(
+                ALPAKA_FCT_HOST static serial::detail::DeviceSerial getDeviceByIndex(
                     std::size_t const & uiIndex)
                 {
                     std::size_t const uiNumDevices(getDeviceCount());
@@ -199,7 +117,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The handle to the currently used device.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static device::Device<AccSerial> getCurrentDevice()
+                ALPAKA_FCT_HOST static serial::detail::DeviceSerial getCurrentDevice()
                 {
                     return {};
                 }
@@ -207,7 +125,7 @@ namespace alpaka
                 //! Sets the device to use with this accelerator.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static void setCurrentDevice(
-                    device::Device<AccSerial> const & )
+                    serial::detail::DeviceSerial const & )
                 {
                     // The code is already running on this device.
                 }
@@ -215,15 +133,70 @@ namespace alpaka
         }
     }
 
-    namespace device
+    namespace traits
     {
-        //#############################################################################
-        //! The serial accelerator interfaced device manager.
-        //#############################################################################
-        template<>
-        class DeviceManager<
-            AccSerial> :
-            public detail::IDeviceManager<serial::detail::DeviceManagerSerial>
-        {};
+        namespace dev
+        {
+            //#############################################################################
+            //! The serial accelerator device type trait specialization.
+            //#############################################################################
+            template<>
+            struct GetDev<
+                AccSerial>
+            {
+                using type = serial::detail::DeviceSerial;
+            };
+
+            //#############################################################################
+            //! The serial accelerator device properties get trait specialization.
+            //#############################################################################
+            template<>
+            struct GetDevProps<
+                serial::detail::DeviceSerial>
+            {
+                ALPAKA_FCT_HOST static alpaka::dev::DevProps getDevProps(
+                    serial::detail::DeviceSerial const &)
+                {
+                    alpaka::dev::DevProps devProps;
+
+                    devProps.m_sName = host::getCpuName();
+                    devProps.m_uiMultiProcessorCount = 1;
+                    devProps.m_uiBlockKernelsCountMax = 1;
+                    devProps.m_v3uiBlockKernelsExtentsMax = Vec<3u>(1u, 1u, 1u);
+                    devProps.m_v3uiGridBlocksExtentsMax = Vec<3u>(std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max());
+                    devProps.m_uiGlobalMemorySizeBytes = host::getGlobalMemorySizeBytes();
+                    //devProps.m_uiMaxClockFrequencyHz = TODO;
+
+                    return devProps;
+                }
+            };
+
+            //#############################################################################
+            //! The serial accelerator device manager type trait specialization.
+            //#############################################################################
+            template<>
+            struct GetDevMan<
+                AccSerial>
+            {
+                using type = serial::detail::DeviceManagerSerial;
+            };
+        }
+
+        namespace wait
+        {
+            //#############################################################################
+            //! The serial accelerator thread device wait specialization.
+            //#############################################################################
+            template<>
+            struct CurrentThreadWaitFor<
+                serial::detail::DeviceSerial>
+            {
+                ALPAKA_FCT_HOST static void currentThreadWaitFor(
+                    serial::detail::DeviceSerial const &)
+                {
+                    // Because host calls are not asynchronous, this call never has to wait.
+                }
+            };
+        }
     }
 }

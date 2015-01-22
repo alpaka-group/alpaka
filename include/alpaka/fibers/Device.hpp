@@ -25,7 +25,8 @@
 
 #include <alpaka/host/SystemInfo.hpp>       // host::getCpuName, host::getGlobalMemorySizeBytes
 
-#include <alpaka/interfaces/Device.hpp>     // alpaka::device::Device, alpaka::device::DeviceManager
+#include <alpaka/traits/Wait.hpp>           // CurrentThreadWaitFor
+#include <alpaka/traits/Device.hpp>         // GetDev
 
 #include <sstream>                          // std::stringstream
 #include <limits>                           // std::numeric_limits
@@ -78,91 +79,8 @@ namespace alpaka
                 {
                     return !((*this) == rhs);
                 }
-                //-----------------------------------------------------------------------------
-                //! Destructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST virtual ~DeviceFibers() noexcept = default;
-
-            protected:
-                //-----------------------------------------------------------------------------
-                //! \return The device properties.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST device::DeviceProperties getProperties() const
-                {
-                    device::DeviceProperties deviceProperties;
-
-                    deviceProperties.m_sName = host::getCpuName();
-                    deviceProperties.m_uiMultiProcessorCount = std::thread::hardware_concurrency(); // \TODO: This may be inaccurate.
-                    deviceProperties.m_uiBlockKernelsCountMax = 64u; // \TODO: What is the maximum? Just set a reasonable value?
-                    deviceProperties.m_v3uiBlockKernelsExtentMax = Vec<3u>(deviceProperties.m_uiBlockKernelsCountMax, deviceProperties.m_uiBlockKernelsCountMax, deviceProperties.m_uiBlockKernelsCountMax);
-                    deviceProperties.m_v3uiGridBlocksExtentMax = Vec<3u>(std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max());
-                    deviceProperties.m_uiGlobalMemorySizeBytes = host::getGlobalMemorySizeBytes();
-                    //deviceProperties.m_uiMaxClockFrequencyHz = TODO;
-
-                    return deviceProperties;
-                }
             };
-        }
-    }
 
-    namespace device
-    {
-        //#############################################################################
-        //! The fibers accelerator interfaced device handle.
-        //#############################################################################
-        template<>
-        class Device<
-            AccFibers> :
-            public device::detail::IDevice<fibers::detail::DeviceFibers>
-        {
-            friend class fibers::detail::DeviceManagerFibers;
-        private:
-            //-----------------------------------------------------------------------------
-            //! Constructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST Device() = default;
-
-        public:
-            //-----------------------------------------------------------------------------
-            //! Copy constructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST Device(Device const &) = default;
-            //-----------------------------------------------------------------------------
-            //! Move constructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST Device(Device &&) = default;
-            //-----------------------------------------------------------------------------
-            //! Assignment operator.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST Device & operator=(Device const &) = default;
-            //-----------------------------------------------------------------------------
-            //! Destructor.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST virtual ~Device() noexcept = default;
-        };
-
-        namespace detail
-        {
-            //#############################################################################
-            //! The fibers accelerator thread device waiter.
-            //#############################################################################
-            template<>
-            struct ThreadWaitDevice<
-                Device<AccFibers>>
-            {
-                ALPAKA_FCT_HOST ThreadWaitDevice(
-                    Device<AccFibers> const &)
-                {
-                    // Because host calls are not asynchronous, this call never has to wait.
-                }
-            };
-        }
-    }
-
-    namespace fibers
-    {
-        namespace detail
-        {
             //#############################################################################
             //! The fibers accelerator device manager.
             //#############################################################################
@@ -184,7 +102,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of devices available.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static device::Device<AccFibers> getDeviceByIndex(
+                ALPAKA_FCT_HOST static fibers::detail::DeviceFibers getDeviceByIndex(
                     std::size_t const & uiIndex)
                 {
                     std::size_t const uiNumDevices(getDeviceCount());
@@ -200,7 +118,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The handle to the currently used device.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static device::Device<AccFibers> getCurrentDevice()
+                ALPAKA_FCT_HOST static fibers::detail::DeviceFibers getCurrentDevice()
                 {
                     return {};
                 }
@@ -208,7 +126,7 @@ namespace alpaka
                 //! Sets the device to use with this accelerator.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static void setCurrentDevice(
-                    device::Device<AccFibers> const & )
+                    fibers::detail::DeviceFibers const & )
                 {
                     // The code is already running on this device.
                 }
@@ -216,15 +134,71 @@ namespace alpaka
         }
     }
 
-    namespace device
+
+    namespace traits
     {
-        //#############################################################################
-        //! The fibers accelerator interfaced device manager.
-        //#############################################################################
-        template<>
-        class DeviceManager<
-            AccFibers> :
-            public detail::IDeviceManager<fibers::detail::DeviceManagerFibers>
-        {};
+        namespace dev
+        {
+            //#############################################################################
+            //! The fibers accelerator device type trait specialization.
+            //#############################################################################
+            template<>
+            struct GetDev<
+                AccFibers>
+            {
+                using type = fibers::detail::DeviceFibers;
+            };
+
+            //#############################################################################
+            //! The fibers accelerator device properties get trait specialization.
+            //#############################################################################
+            template<>
+            struct GetDevProps<
+                fibers::detail::DeviceFibers>
+            {
+                ALPAKA_FCT_HOST static alpaka::dev::DevProps getDevProps(
+                    fibers::detail::DeviceFibers const &)
+                {
+                    alpaka::dev::DevProps devProps;
+
+                    devProps.m_sName = host::getCpuName();
+                    devProps.m_uiMultiProcessorCount = std::thread::hardware_concurrency(); // \TODO: This may be inaccurate.
+                    devProps.m_uiBlockKernelsCountMax = 64u; // \TODO: What is the maximum? Just set a reasonable value?
+                    devProps.m_v3uiBlockKernelsExtentsMax = Vec<3u>(devProps.m_uiBlockKernelsCountMax, devProps.m_uiBlockKernelsCountMax, devProps.m_uiBlockKernelsCountMax);
+                    devProps.m_v3uiGridBlocksExtentsMax = Vec<3u>(std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max());
+                    devProps.m_uiGlobalMemorySizeBytes = host::getGlobalMemorySizeBytes();
+                    //devProps.m_uiMaxClockFrequencyHz = TODO;
+
+                    return devProps;
+                }
+            };
+
+            //#############################################################################
+            //! The fibers accelerator device manager type trait specialization.
+            //#############################################################################
+            template<>
+            struct GetDevMan<
+                AccFibers>
+            {
+                using type = fibers::detail::DeviceManagerFibers;
+            };
+        }
+
+        namespace wait
+        {
+            //#############################################################################
+            //! The fibers accelerator thread device wait specialization.
+            //#############################################################################
+            template<>
+            struct CurrentThreadWaitFor<
+                fibers::detail::DeviceFibers>
+            {
+                ALPAKA_FCT_HOST static void currentThreadWaitFor(
+                    fibers::detail::DeviceFibers const &)
+                {
+                    // Because host calls are not asynchronous, this call never has to wait.
+                }
+            };
+        }
     }
 }

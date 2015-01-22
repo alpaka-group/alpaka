@@ -101,7 +101,7 @@ namespace alpaka
         }
         //#############################################################################
         //! A vector containing all available accelerators.
-        //-----------------------------------------------------------------------------
+        //#############################################################################
         using EnabledAccelerators = 
             boost::mpl::filter_view<
                 detail::EnabledAcceleratorsVoid, 

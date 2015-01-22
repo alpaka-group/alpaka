@@ -32,95 +32,24 @@ namespace alpaka
     //-----------------------------------------------------------------------------
     //! The device management functionality.
     //-----------------------------------------------------------------------------
-    namespace device
+    namespace dev
     {
         //#############################################################################
         //! The device properties.
         //#############################################################################
-        struct DeviceProperties
+        struct DevProps
         {
             std::string m_sName;                    //!< The name.
             std::size_t m_uiMultiProcessorCount;    //!< The number of multiprocessors.
             std::size_t m_uiBlockKernelsCountMax;   //!< The maximum number of kernels in a block.
-            Vec<3u> m_v3uiBlockKernelsExtentMax;    //!< The maximum number of kernels in each dimension of a block.
-            Vec<3u> m_v3uiGridBlocksExtentMax;      //!< The maximum number of blocks in each dimension of the grid.
+            Vec<3u> m_v3uiBlockKernelsExtentsMax;    //!< The maximum number of kernels in each dimension of a block.
+            Vec<3u> m_v3uiGridBlocksExtentsMax;      //!< The maximum number of blocks in each dimension of the grid.
             std::size_t m_uiGlobalMemorySizeBytes;  //!< Size of the global device memory in bytes.
             //std::size_t m_uiSharedMemorySizeBytes;  //!< Size of the available block shared memory in bytes. 
             //std::size_t m_uiMaxClockFrequencyHz;    //!< Maximum clock frequency of the device in Hz.
         };
 
-        namespace detail
-        {
-            //#############################################################################
-            //! The device handle interface.
-            //#############################################################################
-            template<
-                typename TDevice>
-            class IDevice :
-                protected TDevice
-            {
-            protected:
-                //-----------------------------------------------------------------------------
-                //! Constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST IDevice() = default;
-            public:
-                //-----------------------------------------------------------------------------
-                //! Copy constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST IDevice(IDevice const &) = default;
-                //-----------------------------------------------------------------------------
-                //! Move constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST IDevice(IDevice &&) = default;
-                //-----------------------------------------------------------------------------
-                //! Assignment operator.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST IDevice & operator=(IDevice const &) = default;
-                //-----------------------------------------------------------------------------
-                //! Destructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST virtual ~IDevice() noexcept = default;
-
-                //-----------------------------------------------------------------------------
-                //! \return The device properties.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceProperties getProperties() const
-                {
-                    return this->TDevice::getProperties();
-                }
-            };
-        }
-
-        //#############################################################################
-        //! The abstract device handle.
-        //#############################################################################
-        template<
-            typename TAcc>
-        class Device;
-
-        namespace detail
-        {
-            //#############################################################################
-            //! The abstract thread device waiter.
-            //#############################################################################
-            template<
-                typename TStream, 
-                typename TSfinae = void>
-            struct ThreadWaitDevice;
-        }
-
-        //#############################################################################
-        //! Waits for the device to complete all of its work.
-        //#############################################################################
-        template<
-            typename TAcc>
-        ALPAKA_FCT_HOST void wait(Device<TAcc> const & device)
-        {
-            detail::ThreadWaitDevice<Device<TAcc>>{device};
-        }
-
-        namespace detail
+        /*namespace detail
         {
             //#############################################################################
             //! The device manager interface.
@@ -183,12 +112,6 @@ namespace alpaka
                     TDeviceManager::setCurrentDevice(device);
                 }
             };
-        }
-
-        //#############################################################################
-        //! The abstract device manager.
-        //#############################################################################
-        template<typename TAcc>
-        class DeviceManager;
+        }*/
     }
 }

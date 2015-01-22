@@ -45,23 +45,23 @@ namespace alpaka
     {
     public:
         //-----------------------------------------------------------------------------
-        //! \return The requested extent.
+        //! \return The requested extents.
         //-----------------------------------------------------------------------------
         template<
             typename TOrigin, 
             typename TUnit, 
             typename TDimensionality = dim::Dim3>
-        ALPAKA_FCT_ACC typename dim::DimToVecT<TDimensionality> getExtent() const
+        ALPAKA_FCT_ACC typename dim::DimToVecT<TDimensionality> getExtents() const
         {
 #ifndef __CUDA_ARCH__
-            return TAcc::template getExtent<TOrigin, TUnit, TDimensionality>();
+            return TAcc::template getExtents<TOrigin, TUnit, TDimensionality>();
 #else
             return {};
 #endif
         }
 
         //-----------------------------------------------------------------------------
-        //! \return The requested index.
+        //! \return The requested indices.
         //-----------------------------------------------------------------------------
         template<
             typename TOrigin,

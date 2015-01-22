@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/openmp/WorkExtent.hpp> // InterfacedWorkExtentOpenMp
+#include <alpaka/openmp/WorkDiv.hpp> // InterfacedWorkDivOpenMp
 
 #include <alpaka/openmp/Common.hpp>
 
@@ -45,9 +45,9 @@ namespace alpaka
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA IndexOpenMp(
-                    InterfacedWorkExtentOpenMp const & workExtent,
+                    InterfacedWorkDivOpenMp const & workDiv,
                     Vec<3u> const & v3uiGridBlockIdx) :
-                    m_WorkExtent(workExtent),
+                    m_WorkDiv(workDiv),
                     m_v3uiGridBlockIdx(v3uiGridBlockIdx)
                 {}
                 //-----------------------------------------------------------------------------
@@ -78,11 +78,11 @@ namespace alpaka
                     assert(::omp_get_thread_num()>=0);
                     auto const uiThreadId(static_cast<std::uint32_t>(::omp_get_thread_num()));
                     // Get the number of kernels in each dimension of the grid.
-                    auto const v3uiBlockKernelsExtent(m_WorkExtent.getExtent<Block, Kernels, dim::Dim3>());
+                    auto const v3uiBlockKernelsExtents(m_WorkDiv.getExtents<Block, Kernels, dim::Dim3>());
 
                     return mapIndex<3>(
                         Vec<1u>(uiThreadId), 
-                        m_WorkExtent.getExtent<Block, Kernels, dim::Dim3>().subvec<2>());
+                        m_WorkDiv.getExtents<Block, Kernels, dim::Dim3>().subvec<2>());
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The block index of the currently executed kernel.
@@ -93,7 +93,7 @@ namespace alpaka
                 }
 
             private:
-                InterfacedWorkExtentOpenMp const & m_WorkExtent;        //!< The mapping of thread id's to thread indices.
+                InterfacedWorkDivOpenMp const & m_WorkDiv;        //!< The mapping of thread id's to thread indices.
                 Vec<3u> const & m_v3uiGridBlockIdx;        //!< The index of the currently executed block.
             };
             using InterfacedIndexOpenMp = alpaka::detail::IIndex<IndexOpenMp>;

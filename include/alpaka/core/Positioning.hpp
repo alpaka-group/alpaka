@@ -29,11 +29,11 @@ namespace alpaka
     namespace origin
     {
         //#############################################################################
-        //! This type is used to get the extent/index relative to the grid.
+        //! This type is used to get the extents/indices relative to the grid.
         //#############################################################################
         struct Grid;
         //#############################################################################
-        //! This type is used to get the extent/index relative to a/the current block.
+        //! This type is used to get the extents/indices relative to a/the current block.
         //#############################################################################
         struct Block;
     }
@@ -43,11 +43,11 @@ namespace alpaka
     namespace unit
     {
         //#############################################################################
-        //! This type is used to get the extent/index in units of kernels.
+        //! This type is used to get the extents/indices in units of kernels.
         //#############################################################################
         struct Kernels;
         //#############################################################################
-        //! This type is used to get the extent/index in units of blocks.
+        //! This type is used to get the extents/indices in units of blocks.
         //#############################################################################
         struct Blocks;
     }

@@ -24,7 +24,7 @@
 #include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST
 
 #include <alpaka/traits/Dim.hpp>        // GetDimT
-#include <alpaka/traits/Extent.hpp>     // traits::getXXX
+#include <alpaka/traits/Extents.hpp>    // traits::getXXX
 
 #include <alpaka/host/MemorySpace.hpp>  // MemSpaceHost
 #include <alpaka/cuda/MemorySpace.hpp>  // MemSpaceCuda
@@ -199,13 +199,13 @@ namespace alpaka
         template<
             typename TElem, 
             typename TMemSpace, 
-            typename TExtent>
+            typename TExtents>
         ALPAKA_FCT_HOST auto alloc(
-            TExtent const & extent = TExtent())
-            -> decltype(traits::memory::MemAlloc<TElem, dim::GetDimT<TExtent>, TMemSpace>::memAlloc(std::declval<TElem>()))
+            TExtents const & extents = TExtents())
+            -> decltype(traits::memory::MemAlloc<TElem, dim::GetDimT<TExtents>, TMemSpace>::memAlloc(std::declval<TElem>()))
         {
-            return traits::memory::MemAlloc<TElem, dim::GetDimT<TExtent>, TMemSpace>::memAlloc(
-                extent);
+            return traits::memory::MemAlloc<TElem, dim::GetDimT<TExtents>, TMemSpace>::memAlloc(
+                extents);
         }
 
         //-----------------------------------------------------------------------------
@@ -213,23 +213,23 @@ namespace alpaka
         //!
         //! \param memBufDst The destination memory buffer.
         //! \param memBufSrc The source memory buffer.
-        //! \param extent The extents of the buffer to copy.
+        //! \param extents The extents of the buffer to copy.
         //-----------------------------------------------------------------------------
         template<
             typename TMemBufDst, 
             typename TMemBufSrc, 
-            typename TExtent>
+            typename TExtents>
         ALPAKA_FCT_HOST void copy(
             TMemBufDst & memBufDst, 
             TMemBufSrc const & memBufSrc, 
-            TExtent const & extent = TExtent())
+            TExtents const & extents = TExtents())
         {
             static_assert(
                 std::is_same<dim::GetDimT<TMemBufDst>, dim::GetDimT<TMemBufSrc>>::value,
                 "The source and the destination buffers are required to have the same dimensionality!");
             static_assert(
-                std::is_same<alpaka::dim::GetDimT<TMemBufDst>, alpaka::dim::GetDimT<TExtent>>::value,
-                "The destination buffer and the extent are required to have the same dimensionality!");
+                std::is_same<alpaka::dim::GetDimT<TMemBufDst>, alpaka::dim::GetDimT<TExtents>>::value,
+                "The destination buffer and the extents are required to have the same dimensionality!");
             static_assert(
                 std::is_same<GetMemElemT<TMemBufDst>, GetMemElemT<TMemBufSrc>>::value,
                 "The source and the destination buffers are required to have the same element type!");
@@ -239,7 +239,7 @@ namespace alpaka
             traits::memory::MemCopy<dim::GetDimT<TMemBufDst>, GetMemSpaceT<TMemBufDst>, GetMemSpaceT<TMemBufSrc>>::memCopy(
                 memBufDst,
                 memBufSrc,
-                extent);
+                extents);
         }
 
         //-----------------------------------------------------------------------------
@@ -247,24 +247,24 @@ namespace alpaka
         //!
         //! \param memBuf The memory buffer to fill.
         //! \param byte Value to set for each element of the specified buffer.
-        //! \param extent The extents of the buffer to fill.
+        //! \param extent The Extents of the buffer to fill.
         //-----------------------------------------------------------------------------
         template<
             typename TMemBuf, 
-            typename TExtent>
+            typename TExtents>
         ALPAKA_FCT_HOST void set(
             TMemBuf & memBuf, 
             std::uint8_t const & byte, 
-            TExtent const & extent = TExtent())
+            TExtents const & extents = TExtents())
         {
             static_assert(
-                std::is_same<alpaka::dim::GetDimT<TMemBuf>, alpaka::dim::GetDimT<TExtent>>::value,
-                "The buffer and the extent are required to have the same dimensionality!");
+                std::is_same<alpaka::dim::GetDimT<TMemBuf>, alpaka::dim::GetDimT<TExtents>>::value,
+                "The buffer and the extents are required to have the same dimensionality!");
 
             traits::memory::MemSet<dim::GetDimT<TMemBuf>, GetMemSpaceT<TMemBuf>>::memSet(
                 memBuf,
                 byte,
-                extent);
+                extents);
         }
     }
     

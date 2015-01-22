@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/interfaces/WorkExtent.hpp> // alpaka::IWorkExtent
+#include <alpaka/interfaces/WorkDiv.hpp> // alpaka::IWorkDiv
 
 #include <alpaka/core/Vec.hpp>              // alpaka::Vec
 
@@ -32,65 +32,65 @@ namespace alpaka
         namespace detail
         {
             //#############################################################################
-            //! The host accelerators work extent.
+            //! The host accelerators work division.
             //#############################################################################
-            class WorkExtentHost
+            class WorkDivHost
             {
             public:
                 //-----------------------------------------------------------------------------
                 //! Default-constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST WorkExtentHost() = default;
+                ALPAKA_FCT_HOST WorkDivHost() = default;
                 //-----------------------------------------------------------------------------
                 //! Constructor from values.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST explicit WorkExtentHost(
+                ALPAKA_FCT_HOST explicit WorkDivHost(
                     Vec<3u> const & v3uiGridBlocksExtent, 
-                    Vec<3u> const & v3uiBlockKernelsExtent) :
-                    m_v3uiGridBlocksExtent(v3uiGridBlocksExtent),
-                    m_v3uiBlockKernelsExtent(v3uiBlockKernelsExtent)
+                    Vec<3u> const & v3uiBlockKernelsExtents) :
+                    m_v3uiGridBlocksExtents(v3uiGridBlocksExtent),
+                    m_v3uiBlockKernelsExtents(v3uiBlockKernelsExtents)
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST WorkExtentHost(WorkExtentHost const &) = default;
+                ALPAKA_FCT_HOST WorkDivHost(WorkDivHost const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST WorkExtentHost(WorkExtentHost &&) = default;
+                ALPAKA_FCT_HOST WorkDivHost(WorkDivHost &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST WorkExtentHost & operator=(WorkExtentHost const &) = default;
+                ALPAKA_FCT_HOST WorkDivHost & operator=(WorkDivHost const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST virtual ~WorkExtentHost() noexcept = default;
+                ALPAKA_FCT_HOST virtual ~WorkDivHost() noexcept = default;
 
                 //-----------------------------------------------------------------------------
-                //! \return The grid dimensions of the currently executed kernel.
+                //! \return The grid blocks extents of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST Vec<3u> getExtentGridBlocks() const
+                ALPAKA_FCT_HOST Vec<3u> getGridBlocksExtents() const
                 {
-                    return m_v3uiGridBlocksExtent;
+                    return m_v3uiGridBlocksExtents;
                 }
                 //-----------------------------------------------------------------------------
-                //! \return The block dimensions of the currently executed kernel.
+                //! \return The block kernels extents of the currently executed kernel.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST Vec<3u> getExtentBlockKernels() const
+                ALPAKA_FCT_HOST Vec<3u> getBlockKernelsExtents() const
                 {
-                    return m_v3uiBlockKernelsExtent;
+                    return m_v3uiBlockKernelsExtents;
                 }
 
             private:
-                Vec<3u> m_v3uiGridBlocksExtent;
-                Vec<3u> m_v3uiBlockKernelsExtent;
+                Vec<3u> m_v3uiGridBlocksExtents;
+                Vec<3u> m_v3uiBlockKernelsExtents;
             };
         }
     }
 
     //#############################################################################
-    //! A basic class storing the work to be used in user code.
+    //! A basic class storing the work division.
     //#############################################################################
-    using WorkExtent = IWorkExtent<host::detail::WorkExtentHost>;
+    using WorkDiv = IWorkDiv<host::detail::WorkDivHost>;
 }

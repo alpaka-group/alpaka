@@ -23,7 +23,7 @@
 
 // Base classes.
 #include <alpaka/cuda/AccCudaFwd.hpp>
-#include <alpaka/cuda/WorkExtent.hpp>               // InterfacedWorkExtentCuda
+#include <alpaka/cuda/WorkDiv.hpp>               // InterfacedWorkDivCuda
 #include <alpaka/cuda/Index.hpp>                    // InterfacedIndexCuda
 #include <alpaka/cuda/Atomic.hpp>                   // InterfacedAtomicCuda
 
@@ -39,7 +39,7 @@
 // Implementation details.
 #include <alpaka/cuda/Common.hpp>
 #include <alpaka/interfaces/IAcc.hpp>               // IAcc
-#include <alpaka/interfaces/BlockSharedExternMemSizeBytes.hpp>
+#include <alpaka/traits/BlockSharedExternMemSizeBytes.hpp>
 
 #include <cstddef>                                  // std::size_t
 #include <cstdint>                                  // std::uint32_t
@@ -70,19 +70,19 @@ namespace alpaka
     {
     public:
         //-----------------------------------------------------------------------------
-        //! \return The requested extent.
+        //! \return The requested extents.
         //-----------------------------------------------------------------------------
         template<
             typename TOrigin, 
             typename TUnit, 
             typename TDimensionality = dim::Dim3>
-        ALPAKA_FCT_ACC_CUDA_ONLY typename dim::DimToVecT<TDimensionality> getExtent() const
+        ALPAKA_FCT_ACC_CUDA_ONLY typename dim::DimToVecT<TDimensionality> getExtents() const
         {
-            return TAcc::getExtent<TOrigin, TUnit, TDimensionality>();
+            return TAcc::getExtents<TOrigin, TUnit, TDimensionality>();
         }
 
         //-----------------------------------------------------------------------------
-        //! \return The requested index.
+        //! \return The requested indices.
         //-----------------------------------------------------------------------------
         template<
             typename TOrigin, 
@@ -173,7 +173,7 @@ namespace alpaka
             //! This accelerator allows parallel kernel execution on devices supporting CUDA.
             //#############################################################################
             class AccCuda :
-                protected InterfacedWorkExtentCuda,
+                protected InterfacedWorkDivCuda,
                 private InterfacedIndexCuda,
                 protected InterfacedAtomicCuda
             {
@@ -189,7 +189,7 @@ namespace alpaka
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_CUDA_ONLY AccCuda() :
-                    InterfacedWorkExtentCuda(),
+                    InterfacedWorkDivCuda(),
                     InterfacedIndexCuda(),
                     InterfacedAtomicCuda()
                 {}
@@ -212,7 +212,7 @@ namespace alpaka
 
             protected:
                 //-----------------------------------------------------------------------------
-                //! \return The requested index.
+                //! \return The requested indices.
                 //-----------------------------------------------------------------------------
                 template<
                     typename TOrigin, 
@@ -221,7 +221,7 @@ namespace alpaka
                 ALPAKA_FCT_ACC_CUDA_ONLY typename dim::DimToVecT<TDimensionality> getIdx() const
                 {
                     return this->InterfacedIndexCuda::getIdx<TOrigin, TUnit, TDimensionality>(
-                        *static_cast<InterfacedWorkExtentCuda const *>(this));
+                        *static_cast<InterfacedWorkDivCuda const *>(this));
                 }
 
                 //-----------------------------------------------------------------------------
@@ -276,10 +276,10 @@ namespace alpaka
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 template<
-                    typename TWorkExtent, 
+                    typename TWorkDiv, 
                     typename... TKernelConstrArgs>
                 ALPAKA_FCT_HOST KernelExecutorCuda(
-                    IWorkExtent<TWorkExtent> const & workExtent, 
+                    IWorkDiv<TWorkDiv> const & workDiv, 
                     StreamCuda const & stream, 
                     TKernelConstrArgs && ... args) :
                     TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
@@ -287,17 +287,17 @@ namespace alpaka
 #ifdef ALPAKA_DEBUG
                     std::cout << "[+] AccCuda::KernelExecutorCuda()" << std::endl;
 #endif
-                    /*auto const uiNumKernelsPerBlock(workExtent.template getExtent<Block, Kernels, Dim1>());
-                    auto const uiMaxKernelsPerBlock(AccCuda::getExtentBlockKernelsLinearMax());
+                    /*auto const uiNumKernelsPerBlock(workDiv.template getExtents<Block, Kernels, Dim1>());
+                    auto const uiMaxKernelsPerBlock(AccCuda::getWorkDivBlockKernelsLinearMax());
                     if(uiNumKernelsPerBlock > uiMaxKernelsPerBlock)
                     {
                         throw std::runtime_error(("The given block kernels count '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the CUDA accelerator!").c_str());
                     }*/
 
-                    m_v3uiGridBlocksExtent = workExtent.template getExtent<Grid, Blocks, Dim3>();
-                    m_v3uiBlockKernelsExtent = workExtent.template getExtent<Block, Kernels, Dim3>();
+                    m_v3uiGridBlocksExtents = workDiv.template getExtents<Grid, Blocks, Dim3>();
+                    m_v3uiBlockKernelsExtents = workDiv.template getExtents<Block, Kernels, Dim3>();
 
-                    // TODO: Check that (sizeof(TAcceleratedKernel) * m_v3uiBlockKernelsExtent.prod()) < available memory size
+                    // TODO: Check that (sizeof(TAcceleratedKernel) * m_v3uiBlockKernelsExtents.prod()) < available memory size
 
 #ifdef ALPAKA_DEBUG
                     std::cout << "[-] AccCuda::KernelExecutorCuda()" << std::endl;
@@ -328,10 +328,10 @@ namespace alpaka
                 ALPAKA_FCT_HOST void operator()(
                     TArgs && ... args) const
                 {
-                    dim3 gridDim(m_v3uiGridBlocksExtent[0], m_v3uiGridBlocksExtent[1], m_v3uiGridBlocksExtent[2]);
-                    dim3 blockDim(m_v3uiBlockKernelsExtent[0], m_v3uiBlockKernelsExtent[1], m_v3uiBlockKernelsExtent[2]);
+                    dim3 gridDim(m_v3uiGridBlocksExtents[0], m_v3uiGridBlocksExtents[1], m_v3uiGridBlocksExtents[2]);
+                    dim3 blockDim(m_v3uiBlockKernelsExtents[0], m_v3uiBlockKernelsExtents[1], m_v3uiBlockKernelsExtents[2]);
 
-                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(m_v3uiBlockKernelsExtent, std::forward<TArgs>(args)...));
+                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(m_v3uiBlockKernelsExtents, std::forward<TArgs>(args)...));
 
                     ALPAKA_CUDA_CHECK(cudaConfigureCall(gridDim, blockDim, uiBlockSharedExternMemSizeBytes, m_Stream.m_cudaStream));
                     pushCudaKernelArgument<0>(
@@ -373,8 +373,8 @@ namespace alpaka
                 }
 
             private:
-                Vec<3u> m_v3uiGridBlocksExtent;
-                Vec<3u> m_v3uiBlockKernelsExtent;
+                Vec<3u> m_v3uiGridBlocksExtents;
+                Vec<3u> m_v3uiBlockKernelsExtents;
 
                 StreamCuda m_Stream;
             };

@@ -21,9 +21,11 @@
 
 #pragma once
 
+#include <alpaka/core/DevProps.hpp> // DevProps
+
 namespace alpaka
 {
-    /*namespace traits
+    namespace traits
     {
         //-----------------------------------------------------------------------------
         //! The device traits.
@@ -39,12 +41,20 @@ namespace alpaka
             struct GetDev;
 
             //#############################################################################
-            //! The devicemanager type trait.
+            //! The device manager type trait.
             //#############################################################################
             template<
                 typename T,
                 typename TSfinae = void>
             struct GetDevMan;
+
+            //#############################################################################
+            //! The device properties get trait.
+            //#############################################################################
+            template<
+                typename TDev,
+                typename TSfinae = void>
+            struct GetDevProps;
         }
     }
 
@@ -66,5 +76,16 @@ namespace alpaka
         template<
             typename T>
         using GetDevManT = typename traits::dev::GetDevMan<T>::type;
-    }*/
+
+        //-----------------------------------------------------------------------------
+        //! \return The device properties.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TDev>
+        ALPAKA_FCT_HOST DevProps getDevProps(
+            TDev const & device)
+        {
+            return traits::dev::GetDevProps<TDev>::getDevProps(device);
+        }
+    }
 }
