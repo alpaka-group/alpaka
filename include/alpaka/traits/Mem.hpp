@@ -26,8 +26,8 @@
 #include <alpaka/traits/Dim.hpp>        // GetDimT
 #include <alpaka/traits/Extents.hpp>    // traits::getXXX
 
-#include <alpaka/host/MemorySpace.hpp>  // MemSpaceHost
-#include <alpaka/cuda/MemorySpace.hpp>  // MemSpaceCuda
+#include <alpaka/host/MemSpace.hpp>     // MemSpaceHost
+#include <alpaka/cuda/MemSpace.hpp>     // MemSpaceCuda
 
 #include <type_traits>                  // std::enable_if, std::is_array, std::extent
 #include <vector>                       // std::vector
@@ -40,7 +40,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! The memory traits.
         //-----------------------------------------------------------------------------
-        namespace memory
+        namespace mem
         {
             //#############################################################################
             //! The memory space trait.
@@ -122,21 +122,21 @@ namespace alpaka
     //-----------------------------------------------------------------------------
     //! The memory trait accessors.
     //-----------------------------------------------------------------------------
-    namespace memory
+    namespace mem
     {
         //#############################################################################
         //! The memory space trait alias template to remove the ::type.
         //#############################################################################
         template<
             typename T>
-        using GetMemSpaceT = typename traits::memory::GetMemSpace<T>::type;
+        using GetMemSpaceT = typename traits::mem::GetMemSpace<T>::type;
 
         //#############################################################################
         //! The memory element type trait alias template to remove the ::type.
         //#############################################################################
         template<
             typename TMemBuf>
-        using GetMemElemT = typename traits::memory::GetMemElem<TMemBuf>::type;
+        using GetMemElemT = typename traits::mem::GetMemElem<TMemBuf>::type;
 
         //#############################################################################
         //! The memory buffer type trait alias template to remove the ::type.
@@ -145,7 +145,7 @@ namespace alpaka
             typename TElem,
             typename TDim,
             typename TMemSpace>
-        using GetMemBufT = typename traits::memory::GetMemBuf<TElem, TDim, TMemSpace>::type;
+        using GetMemBufT = typename traits::mem::GetMemBuf<TElem, TDim, TMemSpace>::type;
 
         //-----------------------------------------------------------------------------
         //! Gets the native pointer of the memory buffer.
@@ -159,7 +159,7 @@ namespace alpaka
             TMemBuf const & memBuf)
             -> GetMemElemT<TMemBuf> const *
         {
-            return traits::memory::GetNativePtr<TMemBuf>::getNativePtr(memBuf);
+            return traits::mem::GetNativePtr<TMemBuf>::getNativePtr(memBuf);
         }
 
         //-----------------------------------------------------------------------------
@@ -174,7 +174,7 @@ namespace alpaka
             TMemBuf & memBuf)
             -> GetMemElemT<TMemBuf> *
         {
-            return traits::memory::GetNativePtr<TMemBuf>::getNativePtr(memBuf);
+            return traits::mem::GetNativePtr<TMemBuf>::getNativePtr(memBuf);
         }
 
         //-----------------------------------------------------------------------------
@@ -185,7 +185,7 @@ namespace alpaka
             std::size_t getPitchBytes(
             TMemBuf const & memBuf)
         {
-            return traits::memory::GetPitchBytes<TMemBuf>::getPitchBytes(memBuf);
+            return traits::mem::GetPitchBytes<TMemBuf>::getPitchBytes(memBuf);
         }
 
         //-----------------------------------------------------------------------------
@@ -202,9 +202,9 @@ namespace alpaka
             typename TExtents>
         ALPAKA_FCT_HOST auto alloc(
             TExtents const & extents = TExtents())
-            -> decltype(traits::memory::MemAlloc<TElem, dim::GetDimT<TExtents>, TMemSpace>::memAlloc(std::declval<TElem>()))
+            -> decltype(traits::mem::MemAlloc<TElem, dim::GetDimT<TExtents>, TMemSpace>::memAlloc(std::declval<TElem>()))
         {
-            return traits::memory::MemAlloc<TElem, dim::GetDimT<TExtents>, TMemSpace>::memAlloc(
+            return traits::mem::MemAlloc<TElem, dim::GetDimT<TExtents>, TMemSpace>::memAlloc(
                 extents);
         }
 
@@ -236,7 +236,7 @@ namespace alpaka
 
             // \TODO: Copy of arrays of different dimensions. Maybe only 1D to ND?
 
-            traits::memory::MemCopy<dim::GetDimT<TMemBufDst>, GetMemSpaceT<TMemBufDst>, GetMemSpaceT<TMemBufSrc>>::memCopy(
+            traits::mem::MemCopy<dim::GetDimT<TMemBufDst>, GetMemSpaceT<TMemBufDst>, GetMemSpaceT<TMemBufSrc>>::memCopy(
                 memBufDst,
                 memBufSrc,
                 extents);
@@ -261,7 +261,7 @@ namespace alpaka
                 std::is_same<alpaka::dim::GetDimT<TMemBuf>, alpaka::dim::GetDimT<TExtents>>::value,
                 "The buffer and the extents are required to have the same dimensionality!");
 
-            traits::memory::MemSet<dim::GetDimT<TMemBuf>, GetMemSpaceT<TMemBuf>>::memSet(
+            traits::mem::MemSet<dim::GetDimT<TMemBuf>, GetMemSpaceT<TMemBuf>>::memSet(
                 memBuf,
                 byte,
                 extents);
@@ -354,7 +354,7 @@ namespace alpaka
             };
         }
 
-        namespace memory
+        namespace mem
         {
             //#############################################################################
             //! The fixed size array memory space trait specialization.
@@ -367,9 +367,9 @@ namespace alpaka
                     std::is_array<TFixedSizeArray>::value>::type>
             {
 #ifdef __CUDA_ARCH__
-                using type = alpaka::memory::MemSpaceCuda;
+                using type = alpaka::mem::MemSpaceCuda;
 #else
-                using type = alpaka::memory::MemSpaceHost;
+                using type = alpaka::mem::MemSpaceHost;
 #endif
             };
 
@@ -471,7 +471,7 @@ namespace alpaka
             };
         }
 
-        namespace memory
+        namespace mem
         {
             //#############################################################################
             //! The std::array memory space trait specialization.
@@ -482,7 +482,7 @@ namespace alpaka
             struct GetMemSpace<
                 std::array<TElem, TSize>>
             {
-                using type = alpaka::memory::MemSpaceHost;
+                using type = alpaka::mem::MemSpaceHost;
             };
 
             //#############################################################################
@@ -575,7 +575,7 @@ namespace alpaka
             };
         }
 
-        namespace memory
+        namespace mem
         {
             //#############################################################################
             //! The std::vector memory space trait specialization.
@@ -586,7 +586,7 @@ namespace alpaka
             struct GetMemSpace<
                 std::vector<TElem, Allocator>>
             {
-                using type = alpaka::memory::MemSpaceHost;
+                using type = alpaka::mem::MemSpaceHost;
             };
 
             //#############################################################################

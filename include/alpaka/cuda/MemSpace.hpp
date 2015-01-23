@@ -23,7 +23,7 @@
 
 namespace alpaka
 {
-    namespace memory
+    namespace mem
     {
         //#############################################################################
         //! The data space on the CUDA accelerator.

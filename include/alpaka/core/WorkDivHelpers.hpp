@@ -21,12 +21,16 @@
 
 #pragma once
 
-#include <alpaka/core/Vec.hpp>                  // alpaka::Vec
-#include <alpaka/core/EnabledAccelerators.hpp>  // alpaka::acc::EnabledAccelerators
+#include <alpaka/core/Common.hpp>           // ALPAKA_FCT_HOST
+#include <alpaka/core/Vec.hpp>              // alpaka::Vec
+#include <alpaka/core/BasicWorkDiv.hpp>     // alpaka::workdiv::BasicWorkDiv
 
-#include <alpaka/traits/Device.hpp>             // alpaka::dev::GetDevManT
+#include <alpaka/traits/Device.hpp>         // alpaka::dev::GetDevManT, getDevProps
 
-#include <algorithm>                            // std::min
+#include <algorithm>                        // std::min
+
+#include <boost/mpl/for_each.hpp>           // boost::mpl::for_each
+#include <boost/mpl/vector.hpp>             // boost::mpl::vector
 
 //-----------------------------------------------------------------------------
 //! The alpaka library.
@@ -36,16 +40,16 @@ namespace alpaka
     namespace detail
     {
         //#############################################################################
-        //! The maximum block size per dimension correction wrapper.
+        //! The maximum block kernels extents correction wrapper.
         //#############################################################################
         struct CorrectMaxBlockKernelExtents
         {
             //-----------------------------------------------------------------------------
-            //! Corrects the maximum block size per dimension if it is larger then the one supported by the given accelerator type.
+            //! Corrects the maximum block kernels extents if it is larger then the one supported by the given accelerator type.
             //-----------------------------------------------------------------------------
             template<
                 typename TAcc>
-            void operator()(
+            ALPAKA_FCT_HOST void operator()(
                 TAcc, 
                 alpaka::Vec<3u> & v3uiBlockKernelExtents)
             {
@@ -58,19 +62,43 @@ namespace alpaka
                     std::min(v3uiBlockKernelExtents[2u], v3uiBlockKernelsExtentsMax[2u]));
             }
         };
+    }
 
+    //-----------------------------------------------------------------------------
+    //! \return The maximum block kernels extents supported by all of the given accelerators.
+    //-----------------------------------------------------------------------------
+    template<
+        typename TAccSeq>
+    ALPAKA_FCT_HOST alpaka::Vec<3u> getMaxBlockKernelExtentsAccelerators()
+    {
+        static_assert(boost::mpl::is_sequence<TAccSeq>::value, "TAccSeq is required to be a mpl::sequence!");
+
+        alpaka::Vec<3u> v3uiMaxBlockKernelExtents(
+            std::numeric_limits<std::size_t>::max(),
+            std::numeric_limits<std::size_t>::max(),
+            std::numeric_limits<std::size_t>::max());
+
+        boost::mpl::for_each<TAccSeq>(
+            std::bind(detail::CorrectMaxBlockKernelExtents(), std::placeholders::_1, std::ref(v3uiMaxBlockKernelExtents))
+            );
+
+        return v3uiMaxBlockKernelExtents;
+    }
+
+    namespace detail
+    {
         //#############################################################################
-        //! The maximum block size correction wrapper.
+        //! The maximum block kernels count correction wrapper.
         //#############################################################################
         struct CorrectMaxBlockKernelCount
         {
             //-----------------------------------------------------------------------------
-            //! Corrects the maximum block size if it is larger then the one supported by the given accelerator type.
+            //! Corrects the maximum block kernels count if it is larger then the one supported by the given accelerator type.
             //-----------------------------------------------------------------------------
             template<
                 typename TAcc>
-            void operator()(
-                TAcc, 
+                void operator()(
+                TAcc,
                 std::size_t & uiBlockKernelCount)
             {
                 auto const devProps(alpaka::dev::getDevProps(alpaka::dev::GetDevManT<TAcc>::getCurrentDevice()));
@@ -82,31 +110,18 @@ namespace alpaka
     }
 
     //-----------------------------------------------------------------------------
-    //! \return The maximum block size per dimension supported by all of the enabled accelerators.
+    //! \return The maximum block kernels count supported by all of the given accelerators.
     //-----------------------------------------------------------------------------
-    alpaka::Vec<3u> getMaxBlockKernelExtentsEnabledAccelerators()
+    template<
+        typename TAccSeq>
+    ALPAKA_FCT_HOST std::size_t getMaxBlockKernelCountAccelerators()
     {
-        alpaka::Vec<3u> v3uiMaxBlockKernelExtents(
-            std::numeric_limits<std::size_t>::max(),
-            std::numeric_limits<std::size_t>::max(),
-            std::numeric_limits<std::size_t>::max());
+        static_assert(boost::mpl::is_sequence<TAccSeq>::value, "TAccSeq is required to be a mpl::sequence!");
 
-        boost::mpl::for_each<acc::EnabledAccelerators>(
-            std::bind(detail::CorrectMaxBlockKernelExtents(), std::placeholders::_1, std::ref(v3uiMaxBlockKernelExtents))
-            );
-
-        return v3uiMaxBlockKernelExtents;
-    }
-
-    //-----------------------------------------------------------------------------
-    //! \return The maximum block size supported by all of the enabled accelerators.
-    //-----------------------------------------------------------------------------
-    std::size_t getMaxBlockKernelCountEnabledAccelerators()
-    {
         std::size_t uiMaxBlockKernelCount(
             std::numeric_limits<std::size_t>::max());
 
-        boost::mpl::for_each<acc::EnabledAccelerators>(
+        boost::mpl::for_each<TAccSeq>(
             std::bind(detail::CorrectMaxBlockKernelCount(), std::placeholders::_1, std::ref(uiMaxBlockKernelCount))
             );
 
@@ -122,7 +137,7 @@ namespace alpaka
         //!     1) uiDividend/ret==0
         //!     2) ret<=uiMaxDivisor
         //-----------------------------------------------------------------------------
-        std::size_t nextLowerOrEqualFactor(
+        ALPAKA_FCT_HOST std::size_t nextLowerOrEqualFactor(
             std::size_t const & uiMaxDivisor, 
             std::size_t const & uiDividend)
         {
@@ -140,7 +155,7 @@ namespace alpaka
         //! 1. the maximum block kernels extents and 
         //! 2. the maximum block kernels count.
         //#############################################################################
-        alpaka::WorkDiv subdivideGridKernels(
+        ALPAKA_FCT_HOST alpaka::workdiv::BasicWorkDiv subdivideGridKernels(
             alpaka::Vec<3u> const & v3uiGridKernelsExtents,
             alpaka::Vec<3u> const & v3uiMaxBlockKernelsExtents,
             std::size_t uiMaxBlockKernelsCount)
@@ -183,62 +198,55 @@ namespace alpaka
                 v3uiGridKernelsExtents[1u] / v3uiBlockKernelsExtents[1u],
                 v3uiGridKernelsExtents[2u] / v3uiBlockKernelsExtents[2u]);
 
-            return alpaka::WorkDiv(v3uiGridBlocksExtents, v3uiBlockKernelsExtents);
+            return alpaka::workdiv::BasicWorkDiv(v3uiGridBlocksExtents, v3uiBlockKernelsExtents);
         }
-
-        //#############################################################################
-        //! The work division trait.
-        // \TODO: Make this a template depending on Accelerator and Kernel
-        //#############################################################################
-        template<
-            typename TAcc = void>
-        struct GetValidWorkDiv
-        {
-            static alpaka::WorkDiv getValidWorkDiv(
-                alpaka::Vec<3u> const & v3uiGridKernelsExtents)
-            {
-                // Get the maximum block kernels extents.
-                auto const devProps(alpaka::dev::getDevProps(alpaka::dev::GetDevManT<TAcc>::getCurrentDevice()));
-
-                return subdivideGridKernels(
-                    v3uiGridKernelsExtents,
-                    devProps.m_v3uiBlockKernelsExtentsMax,
-                    devProps.m_uiBlockKernelsCountMax);
-            }
-        };
-
-
-        //#############################################################################
-        //! The work division trait specialization returning the minimum supported by all enabled accelerators.
-        //#############################################################################
-        template<>
-        struct GetValidWorkDiv<
-            void>
-        {
-            static alpaka::WorkDiv getValidWorkDiv(
-                alpaka::Vec<3u> const & v3uiGridKernelsExtents)
-            {
-                return subdivideGridKernels(
-                    v3uiGridKernelsExtents,
-                    alpaka::getMaxBlockKernelExtentsEnabledAccelerators(),
-                    alpaka::getMaxBlockKernelCountEnabledAccelerators());
-            }
-        };
     }
 
     //-----------------------------------------------------------------------------
-    //! \tparam TAcc  
-    //!     If an accelerator is given, the block kernels extents is selected adaptively to the given accelerator,
-    //!     otherwise the minimum supported by all accelerators is calculated.
-    //! \param v3uiGridKernelsExtents        
-    //!     The full extents of kernels in the grid.
+    //! \tparam TAccs The accelerators for which this work division has to be valid.
+    //! \param v3uiGridKernelsExtents The full extents of kernels in the grid.
     //! \return The work division.
     //-----------------------------------------------------------------------------
     template<
-        typename TAcc = void>
-    alpaka::WorkDiv getValidWorkDiv(
+        typename TAccSeq>
+    ALPAKA_FCT_HOST alpaka::workdiv::BasicWorkDiv getValidWorkDiv(
         alpaka::Vec<3u> const & v3uiGridKernelsExtents)
     {
-        return detail::GetValidWorkDiv<TAcc>::getValidWorkDiv(v3uiGridKernelsExtents);
+        static_assert(boost::mpl::is_sequence<TAccSeq>::value, "TAccSeq is required to be a mpl::sequence!");
+
+        return detail::subdivideGridKernels(
+            v3uiGridKernelsExtents,
+            alpaka::getMaxBlockKernelExtentsAccelerators<TAccSeq>(),
+            alpaka::getMaxBlockKernelCountAccelerators<TAccSeq>());
+    }
+
+    //-----------------------------------------------------------------------------
+    //! \tparam TAcc The accelerator to test the validity on.
+    //! \param workDiv The work div to test for validity.
+    //! \return If the work division is valid on this accelerator.
+    //-----------------------------------------------------------------------------
+    template<
+        typename TAcc,
+        typename TWorkDiv>
+    ALPAKA_FCT_HOST bool isValidWorkDiv(
+        TWorkDiv const & workDiv)
+    {
+        auto const v3uiGridBlocksExtents(workdiv::getWorkDiv<Grid, Blocks, dim::Dim3>(workDiv));
+        auto const v3uiBlockKernelsExtents(workdiv::getWorkDiv<Block, Kernels, dim::Dim3>(workDiv));
+
+        auto const devProps(alpaka::dev::getDevProps(alpaka::dev::GetDevManT<TAcc>::getCurrentDevice()));
+        auto const & v3uiBlockKernelsExtentsMax(devProps.m_v3uiBlockKernelsExtentsMax);
+        auto const & uiBlockKernelCountMax(devProps.m_uiBlockKernelsCountMax);
+
+        return !((v3uiGridBlocksExtents[0] == 0)
+            || (v3uiGridBlocksExtents[1] == 0)
+            || (v3uiGridBlocksExtents[2] == 0)
+            || (v3uiBlockKernelsExtents[0] == 0)
+            || (v3uiBlockKernelsExtents[1] == 0)
+            || (v3uiBlockKernelsExtents[2] == 0)
+            || (v3uiBlockKernelsExtentsMax[0] < v3uiBlockKernelsExtents[0])
+            || (v3uiBlockKernelsExtentsMax[1] < v3uiBlockKernelsExtents[1])
+            || (v3uiBlockKernelsExtentsMax[2] < v3uiBlockKernelsExtents[2])
+            || (uiBlockKernelCountMax < v3uiBlockKernelsExtents.prod()));
     }
 }

@@ -114,12 +114,17 @@ namespace alpaka
             template<
                 typename TWorkDiv,
                 typename TStream,
-                typename std::enable_if<std::is_same<typename alpaka::acc::GetAccT<TStream>, typename alpaka::acc::GetAccT<TKernelExecutor>>::value, int>::type = 0>
+                typename std::enable_if<std::is_same<typename acc::GetAccT<TStream>, typename acc::GetAccT<TKernelExecutor>>::value, int>::type = 0>
             ALPAKA_FCT_HOST TKernelExecutor operator()(
-                IWorkDiv<TWorkDiv> const & workDiv, 
+                TWorkDiv const & workDiv, 
                 TStream const & stream) const
             {
-                return createKernelExecutor(workDiv, stream, KernelConstrArgsIndexSequenceT());
+                if(!isValidWorkDiv<acc::GetAccT<TKernelExecutor>>(workDiv))
+                {
+                    throw std::runtime_error("The given work division is not supported by " + acc::getAccName<acc::GetAccT<TKernelExecutor>>() + "!");
+                }
+
+                return createKernelExecutor(workDiv, stream, KernelConstrArgsIdxSequenceT());
             }
             //-----------------------------------------------------------------------------
             //! \return An KernelExecutor with the given extents.
@@ -127,13 +132,13 @@ namespace alpaka
             template<
                 typename TWorkDiv,
                 typename TStream,
-                typename std::enable_if<std::is_same<typename alpaka::acc::GetAccT<TStream>, typename alpaka::acc::GetAccT<TKernelExecutor>>::value, int>::type = 0>
+                typename std::enable_if<std::is_same<typename acc::GetAccT<TStream>, typename acc::GetAccT<TKernelExecutor>>::value, int>::type = 0>
             ALPAKA_FCT_HOST TKernelExecutor operator()(
                 Vec<3u> const & v3uiGridBlocksExtent,
                 Vec<3u> const & v3uiBlockKernelsExtents, 
                 TStream const & stream) const
             {
-                return this->operator()(WorkDiv(v3uiGridBlocksExtent, v3uiBlockKernelsExtents), stream);
+                return this->operator()(workdiv::BasicWorkDiv(v3uiGridBlocksExtent, v3uiBlockKernelsExtents), stream);
             }
 
         private:
@@ -145,7 +150,7 @@ namespace alpaka
                 typename TStream,
                 std::size_t... TIndices>
             ALPAKA_FCT_HOST TKernelExecutor createKernelExecutor(
-                IWorkDiv<TWorkDiv> const & workDiv, 
+                TWorkDiv const & workDiv, 
                 TStream const & stream,
 #if !BOOST_COMP_MSVC     // MSVC 190022512 introduced a new bug with alias templates: error C3520: 'TIndices': parameter pack must be expanded in this context
                 std_extension::index_sequence<TIndices...> const &) const
@@ -153,11 +158,11 @@ namespace alpaka
                 std_extension::integer_sequence<std::size_t, TIndices...> const &) const
 #endif
             {
-                if(workDiv.template getExtents<Grid, Blocks, dim::Dim1>()[0] == 0u)
+                if(workdiv::getWorkDiv<Grid, Blocks, dim::Dim1>(workDiv)[0] == 0u)
                 {
                     throw std::runtime_error("The workDiv grid blocks extents is not allowed to be zero in any dimension!");
                 }
-                if(workDiv.template getExtents<Block, Kernels, dim::Dim1>()[0] == 0u)
+                if(workdiv::getWorkDiv<Block, Kernels, dim::Dim1>(workDiv)[0] == 0u)
                 {
                     throw std::runtime_error("The workDiv block kernels extents is not allowed to be zero in any dimension!");
                 }
@@ -167,7 +172,7 @@ namespace alpaka
 
         private:
             std::tuple<TKernelConstrArgs...> m_tupleKernelConstrArgs;
-            using KernelConstrArgsIndexSequenceT = std_extension::make_index_sequence<sizeof...(TKernelConstrArgs)>;
+            using KernelConstrArgsIdxSequenceT = std_extension::make_index_sequence<sizeof...(TKernelConstrArgs)>;
         };
 
         //#############################################################################

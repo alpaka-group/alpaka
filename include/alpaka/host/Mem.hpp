@@ -21,13 +21,13 @@
 
 #pragma once
 
-#include <alpaka/traits/Memory.hpp>         // traits::MemCopy, ...
+#include <alpaka/traits/Mem.hpp>            // traits::MemCopy, ...
 #include <alpaka/traits/Extents.hpp>        // traits::getXXX
 
 #include <alpaka/core/BasicDims.hpp>        // dim::Dim<N>
-#include <alpaka/core/RuntimeExtents.hpp>   // extent::RuntimeExtents<TDim>
+#include <alpaka/core/BasicExtents.hpp>     // extent::BasicExtents<TDim>
 
-#include <alpaka/host/MemorySpace.hpp>      // MemSpaceHost
+#include <alpaka/host/MemSpace.hpp>         // MemSpaceHost
 
 #include <cstring>                          // std::memcpy, std::memset
 #include <cassert>                          // assert
@@ -47,7 +47,7 @@ namespace alpaka
                 typename TElem,
                 typename TDim>
             class MemBufHost :
-                public alpaka::extent::RuntimeExtents<TDim>
+                public alpaka::extent::BasicExtents<TDim>
             {
             public:
                 using Elem = TElem;
@@ -61,7 +61,7 @@ namespace alpaka
                     typename TExtents>
                 MemBufHost(
                     TExtents const & extents):
-                        RuntimeExtents<TDim>(extents),
+                        BasicExtents<TDim>(extents),
                         m_spMem(
                             new TElem[computeElementCount(extents)],
                             [](TElem * pBuffer)
@@ -165,7 +165,7 @@ namespace alpaka
             };
         }
 
-        namespace memory
+        namespace mem
         {
             //#############################################################################
             //! The MemBufHost memory space trait specialization.
@@ -176,7 +176,7 @@ namespace alpaka
             struct GetMemSpace<
                 host::detail::MemBufHost<TElem, TDim>>
             {
-                using type = alpaka::memory::MemSpaceHost;
+                using type = alpaka::mem::MemSpaceHost;
             };
 
             //#############################################################################
@@ -198,7 +198,7 @@ namespace alpaka
                 typename TElem,
                 typename TDim>
             struct GetMemBuf<
-                TElem, TDim, alpaka::memory::MemSpaceHost>
+                TElem, TDim, alpaka::mem::MemSpaceHost>
             {
                 using type = host::detail::MemBufHost<TElem, TDim>;
             };
@@ -250,7 +250,7 @@ namespace alpaka
             struct MemAlloc<
                 TElem,
                 TDim,
-                alpaka::memory::MemSpaceHost>
+                alpaka::mem::MemSpaceHost>
             {
                 template<
                     typename TExtents>
@@ -270,8 +270,8 @@ namespace alpaka
                 typename TDim>
             struct MemCopy<
                 TDim, 
-                alpaka::memory::MemSpaceHost,
-                alpaka::memory::MemSpaceHost>
+                alpaka::mem::MemSpaceHost,
+                alpaka::mem::MemSpaceHost>
             {
                 template<
                     typename TExtents, 
@@ -289,10 +289,10 @@ namespace alpaka
                         std::is_same<alpaka::dim::GetDimT<TMemBufDst>, alpaka::dim::GetDimT<TExtents>>::value,
                         "The buffers and the extents are required to have the same dimensionality!");
                     static_assert(
-                        std::is_same<alpaka::memory::GetMemElemT<TMemBufDst>, alpaka::memory::GetMemElemT<TMemBufSrc>>::value,
+                        std::is_same<alpaka::mem::GetMemElemT<TMemBufDst>, alpaka::mem::GetMemElemT<TMemBufSrc>>::value,
                         "The source and the destination buffers are required to have the same element type!");
 
-                    using Elem = alpaka::memory::GetMemElemT<TMemBufDst>;
+                    using Elem = alpaka::mem::GetMemElemT<TMemBufDst>;
 
                     auto const uiExtentWidth(alpaka::extent::getWidth(extents));
                     auto const uiExtentHeight(alpaka::extent::getHeight(extents));
@@ -311,13 +311,13 @@ namespace alpaka
                     assert(uiExtentDepth <= uiSrcDepth);
 
                     auto const uiExtentWidthBytes(uiExtentWidth * sizeof(Elem));
-                    auto const uiDstPitchBytes(alpaka::memory::getPitchBytes(memBufDst));
-                    auto const uiSrcPitchBytes(alpaka::memory::getPitchBytes(memBufSrc));
+                    auto const uiDstPitchBytes(alpaka::mem::getPitchBytes(memBufDst));
+                    auto const uiSrcPitchBytes(alpaka::mem::getPitchBytes(memBufSrc));
                     assert(uiExtentWidthBytes <= uiDstPitchBytes);
                     assert(uiExtentWidthBytes <= uiSrcPitchBytes);
 
-                    auto const pDstNative(reinterpret_cast<std::uint8_t *>(alpaka::memory::getNativePtr(memBufDst)));
-                    auto const pSrcNative(reinterpret_cast<std::uint8_t const *>(alpaka::memory::getNativePtr(memBufSrc)));
+                    auto const pDstNative(reinterpret_cast<std::uint8_t *>(alpaka::mem::getNativePtr(memBufDst)));
+                    auto const pSrcNative(reinterpret_cast<std::uint8_t const *>(alpaka::mem::getNativePtr(memBufSrc)));
                     auto const uiDstSliceSizeBytes(uiDstPitchBytes * uiDstHeight);
                     auto const uiSrcSliceSizeBytes(uiSrcPitchBytes * uiSrcHeight);
 
@@ -375,7 +375,7 @@ namespace alpaka
                 typename TDim>
             struct MemSet<
                 TDim, 
-                alpaka::memory::MemSpaceHost>
+                alpaka::mem::MemSpaceHost>
             {
                 template<
                     typename TExtents, 
@@ -385,7 +385,7 @@ namespace alpaka
                     std::uint8_t const & byte, 
                     TExtents const & extents)
                 {
-                    using Elem = alpaka::memory::GetMemElemT<TMemBuf>;
+                    using Elem = alpaka::mem::GetMemElemT<TMemBuf>;
 
                     static_assert(
                         std::is_same<alpaka::dim::GetDimT<TMemBuf>, alpaka::dim::GetDimT<TExtents>>::value,
@@ -402,10 +402,10 @@ namespace alpaka
                     assert(uiExtentDepth <= uiDstDepth);
 
                     auto const uiExtentWidthBytes(uiExtentWidth * sizeof(Elem));
-                    auto const uiDstPitchBytes(alpaka::memory::getPitchBytes(memBuf));
+                    auto const uiDstPitchBytes(alpaka::mem::getPitchBytes(memBuf));
                     assert(uiExtentWidthBytes <= uiDstPitchBytes);
 
-                    auto const pDstNative(reinterpret_cast<std::uint8_t *>(alpaka::memory::getNativePtr(memBuf)));
+                    auto const pDstNative(reinterpret_cast<std::uint8_t *>(alpaka::mem::getNativePtr(memBuf)));
                     auto const uiDstSliceSizeBytes(uiDstPitchBytes * uiDstHeight);
 
                     int iByte(static_cast<int>(byte));

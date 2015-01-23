@@ -50,7 +50,7 @@ namespace alpaka
 #endif
             public:
                 //-----------------------------------------------------------------------------
-                //! Default-constructor.
+                //! Default constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA AtomicOpenMp()
 #ifdef ALPAKA_OPENMP_ATOMIC_OPS_LOCK
@@ -75,7 +75,7 @@ namespace alpaka
 
 #ifdef ALPAKA_OPENMP_ATOMIC_OPS_LOCK
                 //-----------------------------------------------------------------------------
-                //! Default-constructor.
+                //! Default constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA virtual ~AtomicOpenMp()
                 {

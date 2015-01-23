@@ -26,13 +26,13 @@
 
 // Base classes.
 #include <alpaka/threads/AccThreadsFwd.hpp>
-#include <alpaka/threads/WorkDiv.hpp>            // InterfacedWorkDivThreads
-#include <alpaka/threads/Index.hpp>                 // InterfacedIndexThreads
+#include <alpaka/threads/WorkDiv.hpp>               // WorkDivThreads
+#include <alpaka/threads/Idx.hpp>                   // IdxThreads
 #include <alpaka/threads/Atomic.hpp>                // InterfacedAtomicThreads
 #include <alpaka/threads/Barrier.hpp>               // BarrierThreads
 
 // User functionality.
-#include <alpaka/host/Memory.hpp>                   // MemCopy
+#include <alpaka/host/Mem.hpp>                      // MemCopy
 #include <alpaka/threads/Event.hpp>                 // Event
 #include <alpaka/threads/Stream.hpp>                // Stream
 #include <alpaka/threads/Device.hpp>                // Devices
@@ -74,7 +74,7 @@ namespace alpaka
         {
             template<
                 typename TAcceleratedKernel>
-            class KernelExecutorthreads;
+            class KernelExecutorThreads;
 
             //#############################################################################
             //! The threads accelerator.
@@ -83,24 +83,24 @@ namespace alpaka
             //! It uses C++11 std::threads to implement the parallelism.
             //#############################################################################
             class AccThreads :
-                protected InterfacedWorkDivThreads,
-                protected InterfacedIndexThreads,
+                protected WorkDivThreads,
+                protected IdxThreads,
                 protected InterfacedAtomicThreads
             {
             public:
-                using MemorySpace = alpaka::memory::MemSpaceHost;
+                using MemSpace = alpaka::mem::MemSpaceHost;
 
                 template<
                     typename TAcceleratedKernel>
-                friend class alpaka::threads::detail::KernelExecutorthreads;
+                friend class alpaka::threads::detail::KernelExecutorThreads;
 
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA AccThreads() :
-                    InterfacedWorkDivThreads(),
-                    InterfacedIndexThreads(m_mThreadsToIndices, m_v3uiGridBlockIdx),
+                    WorkDivThreads(),
+                    IdxThreads(m_mThreadsToIndices, m_v3uiGridBlockIdx),
                     InterfacedAtomicThreads()
                 {}
                 //-----------------------------------------------------------------------------
@@ -108,8 +108,8 @@ namespace alpaka
                 // Do not copy most members because they are initialized by the executor for each accelerated execution.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA AccThreads(AccThreads const & ) :
-                    InterfacedWorkDivThreads(),
-                    InterfacedIndexThreads(m_mThreadsToIndices, m_v3uiGridBlockIdx),
+                    WorkDivThreads(),
+                    IdxThreads(m_mThreadsToIndices, m_v3uiGridBlockIdx),
                     InterfacedAtomicThreads(),
                     m_mThreadsToIndices(),
                     m_v3uiGridBlockIdx(),
@@ -143,8 +143,22 @@ namespace alpaka
                     typename TDimensionality = dim::Dim3>
                 ALPAKA_FCT_ACC_NO_CUDA typename dim::DimToVecT<TDimensionality> getIdx() const
                 {
-                    return this->InterfacedIndexThreads::getIdx<TOrigin, TUnit, TDimensionality>(
-                        *static_cast<InterfacedWorkDivThreads const *>(this));
+                    return idx::getIdx<TOrigin, TUnit, TDimensionality>(
+                        *static_cast<IdxThreads const *>(this),
+                        *static_cast<WorkDivThreads const *>(this));
+                }
+
+                //-----------------------------------------------------------------------------
+                //! \return The requested extents.
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TOrigin,
+                    typename TUnit,
+                    typename TDimensionality = dim::Dim3>
+                ALPAKA_FCT_ACC_NO_CUDA typename dim::DimToVecT<TDimensionality> getWorkDiv() const
+                {
+                    return workdiv::getWorkDiv<TOrigin, TUnit, TDimensionality>(
+                        *static_cast<WorkDivThreads const *>(this));
                 }
 
                 //-----------------------------------------------------------------------------
@@ -166,10 +180,10 @@ namespace alpaka
                 {
                     assert(itFind != m_mThreadsToBarrier.end());
 
-                    auto & uiBarIndex(itFind->second);
-                    std::size_t const uiBarrierIndex(uiBarIndex % 2);
+                    auto & uiBarIdx(itFind->second);
+                    std::size_t const uiBarrierIdx(uiBarIdx % 2);
 
-                    auto & bar(m_abarSyncThreads[uiBarrierIndex]);
+                    auto & bar(m_abarSyncThreads[uiBarrierIdx]);
 
                     // (Re)initialize a barrier if this is the first thread to reach it.
                     if(bar.getNumThreadsToWaitFor() == 0)
@@ -183,7 +197,7 @@ namespace alpaka
 
                     // Wait for the barrier.
                     bar.wait();
-                    ++uiBarIndex;
+                    ++uiBarIdx;
                 }
             protected:
                 //-----------------------------------------------------------------------------
@@ -228,7 +242,7 @@ namespace alpaka
             private:
 #endif
                 // getIdx
-                detail::ThreadIdToIndexMap mutable m_mThreadsToIndices;       //!< The mapping of thread id's to thread indices.
+                detail::ThreadIdToIdxMap mutable m_mThreadsToIndices;       //!< The mapping of thread id's to thread indices.
                 Vec<3u> mutable m_v3uiGridBlockIdx;                         //!< The index of the currently executed block.
 
                 // syncBlockKernels
@@ -282,7 +296,7 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TAcceleratedKernel>
-            class KernelExecutorthreads :
+            class KernelExecutorThreads :
                 private TAcceleratedKernel,
                 private IAcc<AccThreads>
             {
@@ -293,8 +307,8 @@ namespace alpaka
                 template<
                     typename TWorkDiv, 
                     typename... TKernelConstrArgs>
-                ALPAKA_FCT_HOST KernelExecutorthreads(
-                    IWorkDiv<TWorkDiv> const & workDiv, 
+                ALPAKA_FCT_HOST KernelExecutorThreads(
+                    TWorkDiv const & workDiv, 
                     StreamThreads const &,
                     TKernelConstrArgs && ... args) :
                     TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
@@ -306,32 +320,20 @@ namespace alpaka
                     m_mtxMapInsert()
                 {
 #ifdef ALPAKA_DEBUG
-                    std::cout << "[+] AccThreads::KernelExecutorthreads()" << std::endl;
+                    std::cout << "[+] AccThreads::KernelExecutorThreads()" << std::endl;
 #endif
-                    (*static_cast<InterfacedWorkDivThreads *>(this)) = workDiv;
+                    (*static_cast<WorkDivThreads *>(this)) = workDiv;
 
-                    auto const uiNumKernelsPerBlock(workDiv.template getExtents<Block, Kernels, dim::Dim1>()[0]);
-                    /*auto const uiMaxKernelsPerBlock(AccThreads::getWorkDivBlockKernelsLinearMax());
-                    if(uiNumKernelsPerBlock > uiMaxKernelsPerBlock)
-                    {
-                        throw std::runtime_error(("The given block kernels count '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the threads accelerator!").c_str());
-                    }*/
-
-                    this->AccThreads::m_uiNumKernelsPerBlock = uiNumKernelsPerBlock;
-
-                    m_v3uiGridBlocksExtents = workDiv.template getExtents<Grid, Blocks, dim::Dim3>();
-                    m_v3uiBlockKernelsExtents = workDiv.template getExtents<Block, Kernels, dim::Dim3>();
-
-                    //m_vThreadsInBlock.reserve(uiNumKernelsPerBlock);    // Minimal speedup?
+                    this->AccThreads::m_uiNumKernelsPerBlock = workdiv::getWorkDiv<Block, Kernels, dim::Dim1>(workDiv)[0];
 #ifdef ALPAKA_DEBUG
-                    std::cout << "[-] AccThreads::KernelExecutorthreads()" << std::endl;
+                    std::cout << "[-] AccThreads::KernelExecutorThreads()" << std::endl;
 #endif
                 }
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST KernelExecutorthreads(
-                    KernelExecutorthreads const & other) :
+                ALPAKA_FCT_HOST KernelExecutorThreads(
+                    KernelExecutorThreads const & other) :
                     TAcceleratedKernel(other),
 #ifdef ALPAKA_THREADS_NO_POOL
                     m_vThreadsInBlock(),
@@ -343,8 +345,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST KernelExecutorthreads(
-KernelExecutorthreads && other) :
+                ALPAKA_FCT_HOST KernelExecutorThreads(
+KernelExecutorThreads && other) :
                     TAcceleratedKernel(std::move(other)),
 #ifdef ALPAKA_THREADS_NO_POOL
                     m_vThreadsInBlock(),
@@ -356,11 +358,11 @@ KernelExecutorthreads && other) :
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST KernelExecutorthreads & operator=(KernelExecutorthreads const &) = delete;
+                ALPAKA_FCT_HOST KernelExecutorThreads & operator=(KernelExecutorThreads const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST virtual ~KernelExecutorthreads() noexcept = default;
+                ALPAKA_FCT_HOST virtual ~KernelExecutorThreads() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! Executes the accelerated kernel.
@@ -371,14 +373,17 @@ KernelExecutorthreads && other) :
                     TArgs && ... args) const
                 {
 #ifdef ALPAKA_DEBUG
-                    std::cout << "[+] AccThreads::KernelExecutorthreads::operator()" << std::endl;
+                    std::cout << "[+] AccThreads::KernelExecutorThreads::operator()" << std::endl;
 #endif
-                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(m_v3uiBlockKernelsExtents, std::forward<TArgs>(args)...));
+                    Vec<3u> const v3uiGridBlocksExtents(this->AccThreads::getWorkDiv<Grid, Blocks, dim::Dim3>());
+                    Vec<3u> const v3uiBlockKernelsExtents(this->AccThreads::getWorkDiv<Block, Kernels, dim::Dim3>());
+
+                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiBlockKernelsExtents, std::forward<TArgs>(args)...));
                     this->AccThreads::m_vuiExternalSharedMem.reset(
                         new uint8_t[uiBlockSharedExternMemSizeBytes]);
 
 #ifndef ALPAKA_THREADS_NO_POOL
-                    auto const uiNumKernelsInBlock(this->AccThreads::getExtents<Block, Kernels, dim::Dim1>());
+                    auto const uiNumKernelsInBlock(this->AccThreads::getWorkDiv<Block, Kernels, dim::Dim1>());
                     // When using the thread pool the threads are yielding because this is faster. 
                     // Using condition variables and going to sleep is very costly for real threads. 
                     // Especially when the time to wait is really short (syncBlockKernels) yielding is much faster.
@@ -390,25 +395,25 @@ KernelExecutorthreads && other) :
                     ThreadPool pool(uiNumKernelsInBlock[0], uiNumKernelsInBlock[0]);
 #endif
                     // Execute the blocks serially.
-                    for(std::uint32_t bz(0); bz<m_v3uiGridBlocksExtents[2]; ++bz)
+                    for(std::uint32_t bz(0); bz<v3uiGridBlocksExtents[2]; ++bz)
                     {
                         this->AccThreads::m_v3uiGridBlockIdx[2] = bz;
-                        for(std::uint32_t by(0); by<m_v3uiGridBlocksExtents[1]; ++by)
+                        for(std::uint32_t by(0); by<v3uiGridBlocksExtents[1]; ++by)
                         {
                             this->AccThreads::m_v3uiGridBlockIdx[1] = by;
-                            for(std::uint32_t bx(0); bx<m_v3uiGridBlocksExtents[0]; ++bx)
+                            for(std::uint32_t bx(0); bx<v3uiGridBlocksExtents[0]; ++bx)
                             {
                                 this->AccThreads::m_v3uiGridBlockIdx[0] = bx;
 
                                 // Execute the kernels in parallel threads.
                                 Vec<3u> v3uiBlockKernelIdx;
-                                for(std::uint32_t tz(0); tz<m_v3uiBlockKernelsExtents[2]; ++tz)
+                                for(std::uint32_t tz(0); tz<v3uiBlockKernelsExtents[2]; ++tz)
                                 {
                                     v3uiBlockKernelIdx[2] = tz;
-                                    for(std::uint32_t ty(0); ty<m_v3uiBlockKernelsExtents[1]; ++ty)
+                                    for(std::uint32_t ty(0); ty<v3uiBlockKernelsExtents[1]; ++ty)
                                     {
                                         v3uiBlockKernelIdx[1] = ty;
-                                        for(std::uint32_t tx(0); tx<m_v3uiBlockKernelsExtents[0]; ++tx)
+                                        for(std::uint32_t tx(0); tx<v3uiBlockKernelsExtents[0]; ++tx)
                                         {
                                             v3uiBlockKernelIdx[0] = tx;
 
@@ -423,10 +428,10 @@ KernelExecutorthreads && other) :
     #endif
 /*#else
     #ifdef ALPAKA_THREADS_NO_POOL
-                                            m_vThreadsInBlock.push_back(std::thread(&KernelExecutorthreads::threadKernel<TArgs...>, this, v3uiBlockKernelIdx, args...));
+                                            m_vThreadsInBlock.push_back(std::thread(&KernelExecutorThreads::threadKernel<TArgs...>, this, v3uiBlockKernelIdx, args...));
     #else
                                             // FIXME: Currently this does not work!
-                                            m_vFuturesInBlock.emplace_back(pool.enqueueTask(&KernelExecutorthreads::threadKernel<TArgs...>, this, v3uiBlockKernelIdx, args...));
+                                            m_vFuturesInBlock.emplace_back(pool.enqueueTask(&KernelExecutorThreads::threadKernel<TArgs...>, this, v3uiBlockKernelIdx, args...));
     #endif
 #endif*/
                                         }
@@ -464,7 +469,7 @@ KernelExecutorthreads && other) :
                     // After all blocks have been processed, the external shared memory can be deleted.
                     this->AccThreads::m_vuiExternalSharedMem.reset();
 #ifdef ALPAKA_DEBUG
-                    std::cout << "[-] AccThreads::KernelExecutorthreads::operator()" << std::endl;
+                    std::cout << "[-] AccThreads::KernelExecutorThreads::operator()" << std::endl;
 #endif
                 }
             private:
@@ -540,7 +545,7 @@ KernelExecutorthreads && other) :
             template<
                 typename AcceleratedKernel>
             struct GetAcc<
-                threads::detail::KernelExecutorthreads<AcceleratedKernel>>
+                threads::detail::KernelExecutorThreads<AcceleratedKernel>>
             {
                 using type = AccThreads;
             };
@@ -562,7 +567,7 @@ KernelExecutorthreads && other) :
         {
         public:
             using AcceleratedKernel = typename boost::mpl::apply<TKernel, AccThreads>::type;
-            using AcceleratedKernelExecutorExtent = KernelExecutorExtent<threads::detail::KernelExecutorthreads<AcceleratedKernel>, TKernelConstrArgs...>;
+            using AcceleratedKernelExecutorExtent = KernelExecutorExtent<threads::detail::KernelExecutorThreads<AcceleratedKernel>, TKernelConstrArgs...>;
 
             //-----------------------------------------------------------------------------
             //! Creates an kernel executor for the serial accelerator.

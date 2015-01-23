@@ -23,12 +23,12 @@
 
 // Base classes.
 #include <alpaka/cuda/AccCudaFwd.hpp>
-#include <alpaka/cuda/WorkDiv.hpp>               // InterfacedWorkDivCuda
-#include <alpaka/cuda/Index.hpp>                    // InterfacedIndexCuda
+#include <alpaka/cuda/WorkDiv.hpp>                  // WorkDivCuda
+#include <alpaka/cuda/Idx.hpp>                      // IdxCuda
 #include <alpaka/cuda/Atomic.hpp>                   // InterfacedAtomicCuda
 
 // User functionality.
-#include <alpaka/cuda/Memory.hpp>                   // MemCopy
+#include <alpaka/cuda/Mem.hpp>                      // MemCopy
 #include <alpaka/cuda/Event.hpp>                    // Event
 #include <alpaka/cuda/Stream.hpp>                   // Stream
 #include <alpaka/cuda/Device.hpp>                   // Devices
@@ -76,9 +76,9 @@ namespace alpaka
             typename TOrigin, 
             typename TUnit, 
             typename TDimensionality = dim::Dim3>
-        ALPAKA_FCT_ACC_CUDA_ONLY typename dim::DimToVecT<TDimensionality> getExtents() const
+        ALPAKA_FCT_ACC_CUDA_ONLY typename dim::DimToVecT<TDimensionality> getWorkDiv() const
         {
-            return TAcc::getExtents<TOrigin, TUnit, TDimensionality>();
+            return TAcc::getWorkDiv<TOrigin, TUnit, TDimensionality>();
         }
 
         //-----------------------------------------------------------------------------
@@ -173,12 +173,12 @@ namespace alpaka
             //! This accelerator allows parallel kernel execution on devices supporting CUDA.
             //#############################################################################
             class AccCuda :
-                protected InterfacedWorkDivCuda,
-                private InterfacedIndexCuda,
+                protected WorkDivCuda,
+                private IdxCuda,
                 protected InterfacedAtomicCuda
             {
             public:
-                using MemorySpace = alpaka::memory::MemSpaceCuda;
+                using MemSpace = alpaka::mem::MemSpaceCuda;
 
                 template<
                     typename TAcceleratedKernel>
@@ -189,8 +189,8 @@ namespace alpaka
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_CUDA_ONLY AccCuda() :
-                    InterfacedWorkDivCuda(),
-                    InterfacedIndexCuda(),
+                    WorkDivCuda(),
+                    IdxCuda(),
                     InterfacedAtomicCuda()
                 {}
                 //-----------------------------------------------------------------------------
@@ -220,8 +220,22 @@ namespace alpaka
                     typename TDimensionality = dim::Dim3>
                 ALPAKA_FCT_ACC_CUDA_ONLY typename dim::DimToVecT<TDimensionality> getIdx() const
                 {
-                    return this->InterfacedIndexCuda::getIdx<TOrigin, TUnit, TDimensionality>(
-                        *static_cast<InterfacedWorkDivCuda const *>(this));
+                    return idx::getIdx<TOrigin, TUnit, TDimensionality>(
+                        *static_cast<IdxCuda const *>(this),
+                        *static_cast<WorkDivCuda const *>(this));
+                }
+
+                //-----------------------------------------------------------------------------
+                //! \return The requested extents.
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TOrigin,
+                    typename TUnit,
+                    typename TDimensionality = dim::Dim3>
+                ALPAKA_FCT_ACC_CUDA_ONLY typename dim::DimToVecT<TDimensionality> getWorkDiv() const
+                {
+                    return workdiv::getWorkDiv<TOrigin, TUnit, TDimensionality>(
+                        *static_cast<WorkDivCuda const *>(this));
                 }
 
                 //-----------------------------------------------------------------------------
@@ -279,7 +293,7 @@ namespace alpaka
                     typename TWorkDiv, 
                     typename... TKernelConstrArgs>
                 ALPAKA_FCT_HOST KernelExecutorCuda(
-                    IWorkDiv<TWorkDiv> const & workDiv, 
+                    TWorkDiv const & workDiv, 
                     StreamCuda const & stream, 
                     TKernelConstrArgs && ... args) :
                     TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
@@ -287,15 +301,8 @@ namespace alpaka
 #ifdef ALPAKA_DEBUG
                     std::cout << "[+] AccCuda::KernelExecutorCuda()" << std::endl;
 #endif
-                    /*auto const uiNumKernelsPerBlock(workDiv.template getExtents<Block, Kernels, Dim1>());
-                    auto const uiMaxKernelsPerBlock(AccCuda::getWorkDivBlockKernelsLinearMax());
-                    if(uiNumKernelsPerBlock > uiMaxKernelsPerBlock)
-                    {
-                        throw std::runtime_error(("The given block kernels count '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the CUDA accelerator!").c_str());
-                    }*/
-
-                    m_v3uiGridBlocksExtents = workDiv.template getExtents<Grid, Blocks, Dim3>();
-                    m_v3uiBlockKernelsExtents = workDiv.template getExtents<Block, Kernels, Dim3>();
+                    m_v3uiGridBlocksExtents = workdiv::getWorkDiv<Grid, Blocks, Dim3>(workDiv);
+                    m_v3uiBlockKernelsExtents = workdiv::getWorkDiv<Block, Kernels, Dim3>(workDiv);
 
                     // TODO: Check that (sizeof(TAcceleratedKernel) * m_v3uiBlockKernelsExtents.prod()) < available memory size
 

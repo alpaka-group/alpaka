@@ -38,12 +38,12 @@ namespace alpaka
         //#############################################################################
         template<
             typename TDim>
-        class RuntimeExtents;
+        class BasicExtents;
         //#############################################################################
         //! The 1D runtime extents.
         //#############################################################################
         template<>
-        class RuntimeExtents<
+        class BasicExtents<
             dim::Dim1>
         {
         public:
@@ -55,14 +55,14 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TExtents>
-            explicit RuntimeExtents(
+            explicit BasicExtents(
                 TExtents const & extents) :
                     m_uiWidth(extent::getWidth(extents))
             {}
             //-----------------------------------------------------------------------------
             //! Constructor.
             //-----------------------------------------------------------------------------
-            explicit RuntimeExtents(
+            explicit BasicExtents(
                 std::size_t const & uiWidth) :
                     m_uiWidth(uiWidth)
             {}
@@ -74,7 +74,7 @@ namespace alpaka
         //! The 2D runtime extents.
         //#############################################################################
         template<>
-        class RuntimeExtents<
+        class BasicExtents<
             dim::Dim2>
         {
         public:
@@ -86,7 +86,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TExtents>
-            explicit RuntimeExtents(
+            explicit BasicExtents(
                 TExtents const & Extents) :
                     m_uiWidth(extent::getWidth(extents)),
                     m_uiHeight(extent::getHeight(extents))
@@ -94,7 +94,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Constructor.
             //-----------------------------------------------------------------------------
-            explicit RuntimeExtents(
+            explicit BasicExtents(
                 std::size_t const & uiWidth,
                 std::size_t const & uiHeight = 1) :
                     m_uiWidth(uiWidth),
@@ -109,7 +109,7 @@ namespace alpaka
         //! The 3D runtime extents.
         //#############################################################################
         template<>
-        class RuntimeExtents<
+        class BasicExtents<
             dim::Dim3>
         {
         public:
@@ -121,7 +121,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TExtents>
-            explicit RuntimeExtents(
+            explicit BasicExtents(
                 TExtents const & Extents) :
                     m_uiWidth(extent::getWidth(extents)),
                     m_uiHeight(extent::getHeight(extents)),
@@ -130,7 +130,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Constructor.
             //-----------------------------------------------------------------------------
-            explicit RuntimeExtents(
+            explicit BasicExtents(
                 std::size_t const & uiWidth,
                 std::size_t const & uiHeight = 1,
                 std::size_t const & uiDepth = 1) :
@@ -151,12 +151,12 @@ namespace alpaka
         namespace dim
         {
             //#############################################################################
-            //! The RuntimeExtents dimension get trait specialization.
+            //! The BasicExtents dimension get trait specialization.
             //#############################################################################
             template<
                 typename TDim>
             struct GetDim<
-                alpaka::extent::RuntimeExtents<TDim>>
+                alpaka::extent::BasicExtents<TDim>>
             {
                 using type = TDim;
             };
@@ -165,48 +165,48 @@ namespace alpaka
         namespace extent
         {
             //#############################################################################
-            //! The RuntimeExtents<TDim> width get trait specialization.
+            //! The BasicExtents<TDim> width get trait specialization.
             //#############################################################################
             template<
                 typename TDim>
             struct GetWidth<
-                alpaka::extent::RuntimeExtents<TDim>,
+                alpaka::extent::BasicExtents<TDim>,
                 typename std::enable_if<(TDim::value >= 1u) && (TDim::value <= 3u)>::type>
             {
                 static std::size_t getWidth(
-                    alpaka::extent::RuntimeExtents<TDim> const & extent)
+                    alpaka::extent::BasicExtents<TDim> const & extent)
                 {
                     return extent.m_uiWidth;
                 }
             };
 
             //#############################################################################
-            //! The RuntimeExtents<TDim> height get trait specialization.
+            //! The BasicExtents<TDim> height get trait specialization.
             //#############################################################################
             template<
                 typename TDim>
             struct GetHeight<
-                alpaka::extent::RuntimeExtents<TDim>,
+                alpaka::extent::BasicExtents<TDim>,
                 typename std::enable_if<(TDim::value >= 2u) && (TDim::value <= 3u)>::type>
             {
                 static std::size_t getHeight(
-                    alpaka::extent::RuntimeExtents<TDim> const & extent)
+                    alpaka::extent::BasicExtents<TDim> const & extent)
                 {
                     return extent.m_uiHeight;
                 }
             };
 
             //#############################################################################
-            //! The RuntimeExtents<Dim3> depth get trait specialization.
+            //! The BasicExtents<Dim3> depth get trait specialization.
             //#############################################################################
             template<
                 typename TDim>
             struct GetDepth<
-                alpaka::extent::RuntimeExtents<TDim>,
+                alpaka::extent::BasicExtents<TDim>,
                 typename std::enable_if<(TDim::value >= 3u) && (TDim::value <= 3u)>::type>
             {
                 static std::size_t getDepth(
-                    alpaka::extent::RuntimeExtents<TDim> const & extent)
+                    alpaka::extent::BasicExtents<TDim> const & extent)
                 {
                     return extent.m_uiDepth;
                 }

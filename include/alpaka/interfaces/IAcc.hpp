@@ -51,10 +51,10 @@ namespace alpaka
             typename TOrigin, 
             typename TUnit, 
             typename TDimensionality = dim::Dim3>
-        ALPAKA_FCT_ACC typename dim::DimToVecT<TDimensionality> getExtents() const
+        ALPAKA_FCT_ACC typename dim::DimToVecT<TDimensionality> getWorkDiv() const
         {
 #ifndef __CUDA_ARCH__
-            return TAcc::template getExtents<TOrigin, TUnit, TDimensionality>();
+            return TAcc::template getWorkDiv<TOrigin, TUnit, TDimensionality>();
 #else
             return {};
 #endif

@@ -21,10 +21,10 @@
 
 #pragma once
 
-#include <alpaka/traits/Acc.hpp>        // GetAccName
-#include <alpaka/traits/Memory.hpp>     // GetMemSpace
+#include <alpaka/traits/Acc.hpp>    // GetAccName
+#include <alpaka/traits/Mem.hpp>    // GetMemSpace
 
-#include <alpaka/host/MemorySpace.hpp>  // MemSpaceHost
+#include <alpaka/host/MemSpace.hpp> // MemSpaceHost
 
 namespace alpaka
 {
@@ -59,7 +59,7 @@ namespace alpaka
             };
         }
 
-        namespace memory
+        namespace mem
         {
             //#############################################################################
             //! The serial accelerator memory space trait specialization.
@@ -68,7 +68,7 @@ namespace alpaka
             struct GetMemSpace<
                 serial::detail::AccSerial>
             {
-                using type = alpaka::memory::MemSpaceHost;
+                using type = alpaka::mem::MemSpaceHost;
             };
         }
     }

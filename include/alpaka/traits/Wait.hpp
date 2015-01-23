@@ -77,7 +77,7 @@ namespace alpaka
             TWaiter const & waiter,
             TAwaited const & awaited)
         {
-            traits::stream::WaiterWaitFor<TWaiter, TAwaited>::waiterWaitFor(waiter, awaited);
+            traits::wait::WaiterWaitFor<TWaiter, TAwaited>::waiterWaitFor(waiter, awaited);
         }
     }
 }

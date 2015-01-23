@@ -22,9 +22,11 @@
 
 #include <alpaka/cuda/Common.hpp>
 #include <alpaka/cuda/AccCudaFwd.hpp>   // AccCuda
+#include <alpaka/cuda/Stream.hpp>       // StreamCuda
 
 #include <alpaka/traits/Event.hpp>
 #include <alpaka/traits/Wait.hpp>       // CurrentThreadWaitFor
+#include <alpaka/traits/Acc.hpp>        // GetAcc
 
 namespace alpaka
 {

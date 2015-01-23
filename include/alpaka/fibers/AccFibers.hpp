@@ -26,13 +26,13 @@
 
 // Base classes.
 #include <alpaka/fibers/AccFibersFwd.hpp>
-#include <alpaka/fibers/WorkDiv.hpp>             // InterfacedWorkDivFibers
-#include <alpaka/fibers/Index.hpp>                  // InterfacedIndexFibers
+#include <alpaka/fibers/WorkDiv.hpp>                // WorkDivFibers
+#include <alpaka/fibers/Idx.hpp>                    // IdxFibers
 #include <alpaka/fibers/Atomic.hpp>                 // InterfacedAtomicFibers
 #include <alpaka/fibers/Barrier.hpp>                // BarrierFibers
 
 // User functionality.
-#include <alpaka/host/Memory.hpp>                   // MemCopy
+#include <alpaka/host/Mem.hpp>                      // MemCopy
 #include <alpaka/fibers/Event.hpp>                  // Event
 #include <alpaka/fibers/Stream.hpp>                 // Stream
 #include <alpaka/fibers/Device.hpp>                 // Devices
@@ -47,6 +47,7 @@
 #ifndef ALPAKA_FIBERS_NO_POOL
     #include <alpaka/core/ConcurrentExecutionPool.hpp>  // ConcurrentExecutionPool
 #endif
+#include <alpaka/core/WorkDivHelpers.hpp>           // isValidWorkDiv
 
 #include <cstddef>                                  // std::size_t
 #include <cstdint>                                  // std::uint32_t
@@ -77,12 +78,12 @@ namespace alpaka
             //! Furthermore there is no false sharing between neighboring kernels as it is the case in real multi-threading. 
             //#############################################################################
             class AccFibers :
-                protected InterfacedWorkDivFibers,
-                protected InterfacedIndexFibers,
+                protected WorkDivFibers,
+                protected IdxFibers,
                 protected InterfacedAtomicFibers
             {
             public:
-                using MemorySpace = alpaka::memory::MemSpaceHost;
+                using MemSpace = alpaka::mem::MemSpaceHost;
 
                 template<
                     typename TAcceleratedKernel>
@@ -93,8 +94,8 @@ namespace alpaka
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA AccFibers() :
-                    InterfacedWorkDivFibers(),
-                    InterfacedIndexFibers(m_mFibersToIndices, m_v3uiGridBlockIdx),
+                    WorkDivFibers(),
+                    IdxFibers(m_mFibersToIndices, m_v3uiGridBlockIdx),
                     InterfacedAtomicFibers()
                 {}
                 //-----------------------------------------------------------------------------
@@ -102,8 +103,8 @@ namespace alpaka
                 // Do not copy most members because they are initialized by the executor for each accelerated execution.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA AccFibers(AccFibers const & ) :
-                    InterfacedWorkDivFibers(),
-                    InterfacedIndexFibers(m_mFibersToIndices, m_v3uiGridBlockIdx),
+                    WorkDivFibers(),
+                    IdxFibers(m_mFibersToIndices, m_v3uiGridBlockIdx),
                     InterfacedAtomicFibers(),
                     m_mFibersToIndices(),
                     m_v3uiGridBlockIdx(),
@@ -137,8 +138,22 @@ namespace alpaka
                     typename TDimensionality = dim::Dim3>
                 ALPAKA_FCT_ACC_NO_CUDA typename dim::DimToVecT<TDimensionality> getIdx() const
                 {
-                    return this->InterfacedIndexFibers::getIdx<TOrigin, TUnit, TDimensionality>(
-                        *static_cast<InterfacedWorkDivFibers const *>(this));
+                    return idx::getIdx<TOrigin, TUnit, TDimensionality>(
+                        *static_cast<IdxFibers const *>(this),
+                        *static_cast<WorkDivFibers const *>(this));
+                }
+
+                //-----------------------------------------------------------------------------
+                //! \return The requested extents.
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TOrigin,
+                    typename TUnit,
+                    typename TDimensionality = dim::Dim3>
+                ALPAKA_FCT_ACC_NO_CUDA typename dim::DimToVecT<TDimensionality> getWorkDiv() const
+                {
+                    return workdiv::getWorkDiv<TOrigin, TUnit, TDimensionality>(
+                        *static_cast<WorkDivFibers const *>(this));
                 }
 
                 //-----------------------------------------------------------------------------
@@ -161,10 +176,10 @@ namespace alpaka
                 {
                     assert(itFind != m_mFibersToBarrier.end());
 
-                    auto & uiBarIndex(itFind->second);
-                    std::size_t const uiBarrierIndex(uiBarIndex % 2);
+                    auto & uiBarIdx(itFind->second);
+                    std::size_t const uiBarrierIdx(uiBarIdx % 2);
 
-                    auto & bar(m_abarSyncFibers[uiBarrierIndex]);
+                    auto & bar(m_abarSyncFibers[uiBarrierIdx]);
 
                     // (Re)initialize a barrier if this is the first fiber to reach it.
                     if(bar.getNumFibersToWaitFor() == 0)
@@ -175,7 +190,7 @@ namespace alpaka
 
                     // Wait for the barrier.
                     bar.wait();
-                    ++uiBarIndex;
+                    ++uiBarIdx;
                 }
 
             protected:
@@ -221,7 +236,7 @@ namespace alpaka
             private:
 #endif
                 // getXxxIdx
-                FiberIdToIndexMap mutable m_mFibersToIndices;                 //!< The mapping of fibers id's to fibers indices.
+                FiberIdToIdxMap mutable m_mFibersToIndices;                 //!< The mapping of fibers id's to fibers indices.
                 Vec<3u> mutable m_v3uiGridBlockIdx;                         //!< The index of the currently executed block.
 
                 // syncBlockKernels
@@ -286,7 +301,7 @@ namespace alpaka
                     typename TWorkDiv, 
                     typename... TKernelConstrArgs>
                 ALPAKA_FCT_HOST KernelExecutorFibers(
-                    IWorkDiv<TWorkDiv> const & workDiv, 
+                    TWorkDiv const & workDiv, 
                     StreamFibers const &,
                     TKernelConstrArgs && ... args):
                     TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
@@ -299,21 +314,9 @@ namespace alpaka
 #ifdef ALPAKA_DEBUG
                     std::cout << "[+] AccFibers::KernelExecutorFibers()" << std::endl;
 #endif
-                    (*static_cast<InterfacedWorkDivFibers *>(this)) = workDiv;
+                    (*static_cast<WorkDivFibers *>(this)) = workDiv;
 
-                    auto const uiNumKernelsPerBlock(workDiv.template getExtents<Block, Kernels, dim::Dim1>()[0]);
-                    /*auto const uiMaxKernelsPerBlock(AccFibers::getWorkDivBlockKernelsLinearMax());
-                    if(uiNumKernelsPerBlock > uiMaxKernelsPerBlock)
-                    {
-                        throw std::runtime_error(("The given block kernels count '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the fibers accelerator!").c_str());
-                    }*/
-
-                    m_v3uiGridBlocksExtents = workDiv.template getExtents<Grid, Blocks, dim::Dim3>();
-                    m_v3uiBlockKernelsExtents = workDiv.template getExtents<Block, Kernels, dim::Dim3>();
-
-                    this->AccFibers::m_uiNumKernelsPerBlock = uiNumKernelsPerBlock;
-
-                    //m_vFibersInBlock.reserve(uiNumKernelsPerBlock);    // Minimal speedup?
+                    this->AccFibers::m_uiNumKernelsPerBlock = workdiv::getWorkDiv<Block, Kernels, dim::Dim1>(workDiv)[0];
 #ifdef ALPAKA_DEBUG
                     std::cout << "[-] AccFibers::KernelExecutorFibers()" << std::endl;
 #endif
@@ -346,12 +349,15 @@ namespace alpaka
 #ifdef ALPAKA_DEBUG
                     std::cout << "[+] AccFibers::KernelExecutorFibers::operator()" << std::endl;
 #endif
-                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(m_v3uiBlockKernelsExtents, std::forward<TArgs>(args)...));
+                    Vec<3u> const v3uiGridBlocksExtents(this->AccFibers::getWorkDiv<Grid, Blocks, dim::Dim3>());
+                    Vec<3u> const v3uiBlockKernelsExtents(this->AccFibers::getWorkDiv<Block, Kernels, dim::Dim3>());
+
+                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiBlockKernelsExtents, std::forward<TArgs>(args)...));
                     this->AccFibers::m_vuiExternalSharedMem.reset(
                         new uint8_t[uiBlockSharedExternMemSizeBytes]);
 
 #ifndef ALPAKA_FIBERS_NO_POOL
-                    auto const uiNumKernelsInBlock(this->AccFibers::getExtents<Block, Kernels, dim::Dim1>());
+                    auto const uiNumKernelsInBlock(this->AccFibers::getWorkDiv<Block, Kernels, dim::Dim1>());
                     // Yielding is not faster for fibers. Therefore we use condition variables. 
                     // It is better to wake them up when the conditions are fulfilled because this does not cost as much as for real threads.
                     using FiberPool = alpaka::detail::ConcurrentExecutionPool<
@@ -365,26 +371,27 @@ namespace alpaka
                         false>;                             // If the threads should yield.
                     FiberPool pool(uiNumKernelsInBlock[0], uiNumKernelsInBlock[0]);
 #endif
+
                     // Execute the blocks serially.
-                    for(std::uint32_t bz(0); bz<m_v3uiGridBlocksExtents[2]; ++bz)
+                    for(std::uint32_t bz(0); bz<v3uiGridBlocksExtents[2]; ++bz)
                     {
                         this->AccFibers::m_v3uiGridBlockIdx[2] = bz;
-                        for(std::uint32_t by(0); by<m_v3uiGridBlocksExtents[1]; ++by)
+                        for(std::uint32_t by(0); by<v3uiGridBlocksExtents[1]; ++by)
                         {
                             this->AccFibers::m_v3uiGridBlockIdx[1] = by;
-                            for(std::uint32_t bx(0); bx<m_v3uiGridBlocksExtents[0]; ++bx)
+                            for(std::uint32_t bx(0); bx<v3uiGridBlocksExtents[0]; ++bx)
                             {
                                 this->AccFibers::m_v3uiGridBlockIdx[0] = bx;
 
                                 // Execute the kernels in parallel using cooperative multi-threading.
                                 Vec<3u> v3uiBlockKernelIdx;
-                                for(std::uint32_t tz(0); tz<m_v3uiBlockKernelsExtents[2]; ++tz)
+                                for(std::uint32_t tz(0); tz<v3uiBlockKernelsExtents[2]; ++tz)
                                 {
                                     v3uiBlockKernelIdx[2] = tz;
-                                    for(std::uint32_t ty(0); ty<m_v3uiBlockKernelsExtents[1]; ++ty)
+                                    for(std::uint32_t ty(0); ty<v3uiBlockKernelsExtents[1]; ++ty)
                                     {
                                         v3uiBlockKernelIdx[1] = ty;
-                                        for(std::uint32_t tx(0); tx<m_v3uiBlockKernelsExtents[0]; ++tx)
+                                        for(std::uint32_t tx(0); tx<v3uiBlockKernelsExtents[0]; ++tx)
                                         {
                                             v3uiBlockKernelIdx[0] = tx;
 
@@ -492,8 +499,6 @@ namespace alpaka
 #else
                 std::vector<boost::fibers::future<void>> mutable m_vFuturesInBlock; //!< The futures of the fibers in the current block.
 #endif
-                Vec<3u> m_v3uiGridBlocksExtents;
-                Vec<3u> m_v3uiBlockKernelsExtents;
             };
         }
     }

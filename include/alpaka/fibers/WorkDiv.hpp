@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/host/WorkDiv.hpp>   // IWorkDiv, WorkDivHost
+#include <alpaka/core/BasicWorkDiv.hpp>  //  workdiv::BasicWorkDiv
 
 namespace alpaka
 {
@@ -29,7 +29,7 @@ namespace alpaka
     {
         namespace detail
         {
-            using InterfacedWorkDivFibers = alpaka::IWorkDiv<alpaka::host::detail::WorkDivHost>;
+            using WorkDivFibers = alpaka::workdiv::BasicWorkDiv;
         }
     }
 }

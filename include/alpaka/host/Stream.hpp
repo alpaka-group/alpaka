@@ -23,6 +23,7 @@
 
 #include <alpaka/traits/Stream.hpp>     // traits::StreamEnqueueEvent, ...
 #include <alpaka/traits/Wait.hpp>       // CurrentThreadWaitFor, WaiterWaitFor
+#include <alpaka/traits/Acc.hpp>        // GetAccT
 
 #include <type_traits>                  // std::is_base
 

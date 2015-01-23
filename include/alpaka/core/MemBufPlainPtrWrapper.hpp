@@ -21,15 +21,15 @@
 
 #pragma once
 
-#include <alpaka/traits/Memory.hpp>         // traits::MemCopy, ...
+#include <alpaka/traits/Mem.hpp>            // traits::MemCopy, ...
 #include <alpaka/traits/Extents.hpp>        // traits::getXXX
 
 #include <alpaka/core/BasicDims.hpp>        // dim::Dim<N>
-#include <alpaka/core/RuntimeExtents.hpp>   // extent::RuntimeExtents<TDim>
+#include <alpaka/core/BasicExtents.hpp>     // extent::BasicExtents<TDim>
 
 namespace alpaka
 {
-    namespace memory
+    namespace mem
     {
         //#############################################################################
         //! The memory buffer wrapper used to wrap plain pointers.
@@ -39,7 +39,7 @@ namespace alpaka
             typename TElem,
             typename TDim>
         class MemBufPlainPtrWrapper :
-            public alpaka::extent::RuntimeExtents<TDim>
+            public alpaka::extent::BasicExtents<TDim>
         {
         public:
             using MemSpace = TMemSpace;
@@ -55,7 +55,7 @@ namespace alpaka
                 MemBufPlainPtrWrapper(
                 TElem * pMem,
                 TExtents const & extents) :
-                    RuntimeExtents<TDim>(extents),
+                    BasicExtents<TDim>(extents),
                     m_pMem(pMem),
                     m_uiPitchBytes(alpaka::extent::getWidth(extents) * sizeof(TElem))
             {}
@@ -69,7 +69,7 @@ namespace alpaka
                 TElem * pMem,
                 std::size_t const & uiPitch,
                 TExtents const & extents) :
-                    RuntimeExtents<TDim>(extent),
+                    BasicExtents<TDim>(extent),
                     m_pMem(pMem),
                     m_uiPitch(uiPitch)
             {}
@@ -95,7 +95,7 @@ namespace alpaka
                 typename TElem,
                 typename TDim>
             struct GetDim<
-                alpaka::memory::MemBufPlainPtrWrapper<TMemSpace, TElem, TDim>>
+                alpaka::mem::MemBufPlainPtrWrapper<TMemSpace, TElem, TDim>>
             {
                 using type = TDim;
             };
@@ -111,11 +111,11 @@ namespace alpaka
                 typename TElem,
                 typename TDim>
             struct GetWidth<
-                alpaka::memory::MemBufPlainPtrWrapper<TMemSpace, TElem, TDim>,
+                alpaka::mem::MemBufPlainPtrWrapper<TMemSpace, TElem, TDim>,
                 typename std::enable_if<(TDim::value >= 1u) && (TDim::value <= 3u)>::type>
             {
                 static std::size_t getWidth(
-                    alpaka::memory::MemBufPlainPtrWrapper<TMemSpace, TElem, TDim> const & extent)
+                    alpaka::mem::MemBufPlainPtrWrapper<TMemSpace, TElem, TDim> const & extent)
                 {
                     return extent.m_uiWidth;
                 }
@@ -129,11 +129,11 @@ namespace alpaka
                 typename TElem,
                 typename TDim>
             struct GetHeight<
-                alpaka::memory::MemBufPlainPtrWrapper<TMemSpace, TElem, TDim>,
+                alpaka::mem::MemBufPlainPtrWrapper<TMemSpace, TElem, TDim>,
                 typename std::enable_if<(TDim::value >= 2u) && (TDim::value <= 3u)>::type>
             {
                 static std::size_t getHeight(
-                    alpaka::memory::MemBufPlainPtrWrapper<TMemSpace, TElem, TDim> const & extent)
+                    alpaka::mem::MemBufPlainPtrWrapper<TMemSpace, TElem, TDim> const & extent)
                 {
                     return extent.m_uiHeight;
                 }
@@ -146,18 +146,18 @@ namespace alpaka
                 typename TElem,
                 typename TDim>
             struct GetDepth<
-                alpaka::memory::MemBufPlainPtrWrapper<TMemSpace, TElem, TDim>,
+                alpaka::mem::MemBufPlainPtrWrapper<TMemSpace, TElem, TDim>,
                 typename std::enable_if<(TDim::value >= 3u) && (TDim::value <= 3u)>::type>
             {
                 static std::size_t getDepth(
-                    alpaka::memory::MemBufPlainPtrWrapper<TMemSpace, TElem, TDim> const & extent)
+                    alpaka::mem::MemBufPlainPtrWrapper<TMemSpace, TElem, TDim> const & extent)
                 {
                     return extent.m_uiDepth;
                 }
             };
         }
 
-        namespace memory
+        namespace mem
         {
             //#############################################################################
             //! The MemBufPlainPtrWrapper memory space trait specialization.
@@ -167,9 +167,9 @@ namespace alpaka
                 typename TElem,
                 typename TDim>
             struct GetMemSpace<
-                alpaka::memory::MemBufPlainPtrWrapper<TMemSpace, TElem, TDim>>
+                alpaka::mem::MemBufPlainPtrWrapper<TMemSpace, TElem, TDim>>
             {
-                using type = alpaka::memory::MemSpaceHost;
+                using type = alpaka::mem::MemSpaceHost;
             };
 
             //#############################################################################
@@ -180,7 +180,7 @@ namespace alpaka
                 typename TElem,
                 typename TDim>
             struct GetMemElem<
-                alpaka::memory::MemBufPlainPtrWrapper<TMemSpace, TElem, TDim>>
+                alpaka::mem::MemBufPlainPtrWrapper<TMemSpace, TElem, TDim>>
             {
                 using type = TElem;
             };
@@ -193,15 +193,15 @@ namespace alpaka
                 typename TElem,
                 typename TDim>
             struct GetNativePtr<
-                alpaka::memory::MemBufPlainPtrWrapper<TMemSpace, TElem, TDim>>
+                alpaka::mem::MemBufPlainPtrWrapper<TMemSpace, TElem, TDim>>
             {
                 static TElem const * getNativePtr(
-                    alpaka::memory::MemBufPlainPtrWrapper<TMemSpace, TElem, TDim> const & memBuf)
+                    alpaka::mem::MemBufPlainPtrWrapper<TMemSpace, TElem, TDim> const & memBuf)
                 {
                     return memBuf.m_pMem;
                 }
                 static TElem * getNativePtr(
-                    alpaka::memory::MemBufPlainPtrWrapper<TMemSpace, TElem, TDim> & memBuf)
+                    alpaka::mem::MemBufPlainPtrWrapper<TMemSpace, TElem, TDim> & memBuf)
                 {
                     return memBuf.m_pMem;
                 }
@@ -215,10 +215,10 @@ namespace alpaka
                 typename TElem,
                 typename TDim>
             struct GetPitchBytes<
-                alpaka::memory::MemBufPlainPtrWrapper<TMemSpace, TElem, TDim>>
+                alpaka::mem::MemBufPlainPtrWrapper<TMemSpace, TElem, TDim>>
             {
                 static std::size_t getPitchBytes(
-                    alpaka::memory::MemBufPlainPtrWrapper<TMemSpace, TElem, TDim> const & memPitch)
+                    alpaka::mem::MemBufPlainPtrWrapper<TMemSpace, TElem, TDim> const & memPitch)
                 {
                     return memPitch.m_uiPitchBytes;
                 }

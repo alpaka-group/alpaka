@@ -21,10 +21,10 @@
 
 #pragma once
 
-#include <alpaka/interfaces/Index.hpp>  // IIndex
+#include <alpaka/traits/Idx.hpp>  // idx::getIdx
 
-#include <thread>                       // std::thread
-#include <map>                          // std::map
+#include <thread>                   // std::thread
+#include <map>                      // std::map
 
 namespace alpaka
 {
@@ -32,18 +32,18 @@ namespace alpaka
     {
         namespace detail
         {
-            using ThreadIdToIndexMap = std::map<std::thread::id, Vec<3u>>;
+            using ThreadIdToIdxMap = std::map<std::thread::id, Vec<3u>>;
             //#############################################################################
             //! This threads accelerator index provider.
             //#############################################################################
-            class IndexThreads
+            class IdxThreads
             {
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA IndexThreads(
-                    ThreadIdToIndexMap const & mThreadsToIndices,
+                ALPAKA_FCT_ACC_NO_CUDA IdxThreads(
+                    ThreadIdToIdxMap const & mThreadsToIndices,
                     Vec<3u> const & v3uiGridBlockIdx) :
                     m_mThreadsToIndices(mThreadsToIndices),
                     m_v3uiGridBlockIdx(v3uiGridBlockIdx)
@@ -51,19 +51,19 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA IndexThreads(IndexThreads const &) = default;
+                ALPAKA_FCT_ACC_NO_CUDA IdxThreads(IdxThreads const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA IndexThreads(IndexThreads &&) = default;
+                ALPAKA_FCT_ACC_NO_CUDA IdxThreads(IdxThreads &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA IndexThreads & operator=(IndexThreads const &) = delete;
+                ALPAKA_FCT_ACC_NO_CUDA IdxThreads & operator=(IdxThreads const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA virtual ~IndexThreads() noexcept = default;
+                ALPAKA_FCT_ACC_NO_CUDA virtual ~IdxThreads() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! \return The index of the currently executed kernel.
@@ -85,10 +85,61 @@ namespace alpaka
                 }
 
             private:
-                ThreadIdToIndexMap const & m_mThreadsToIndices;   //!< The mapping of thread id's to thread indices.
+                ThreadIdToIdxMap const & m_mThreadsToIndices; //!< The mapping of thread id's to thread indices.
                 Vec<3u> const & m_v3uiGridBlockIdx;             //!< The index of the currently executed block.
             };
-            using InterfacedIndexThreads = alpaka::detail::IIndex<IndexThreads>;
+        }
+    }
+
+    namespace traits
+    {
+        namespace idx
+        {
+            //#############################################################################
+            //! The threads accelerator 3D block kernels index get trait specialization.
+            //#############################################################################
+            template<>
+            struct GetIdx<
+                threads::detail::IdxThreads,
+                origin::Block,
+                unit::Kernels,
+                alpaka::dim::Dim3>
+            {
+                //-----------------------------------------------------------------------------
+                //! \return The 3-dimensional index of the current kernel in the block.
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TWorkDiv>
+                ALPAKA_FCT_ACC_NO_CUDA static alpaka::dim::DimToVecT<alpaka::dim::Dim3> getIdx(
+                    threads::detail::IdxThreads const & index,
+                    TWorkDiv const &)
+                {
+                    return index.getIdxBlockKernel();
+                }
+            };
+
+            //#############################################################################
+            //! The threads accelerator 3D grid blocks index get trait specialization.
+            //#############################################################################
+            template<>
+            struct GetIdx<
+                threads::detail::IdxThreads,
+                origin::Grid,
+                unit::Blocks,
+                alpaka::dim::Dim3>
+            {
+                //-----------------------------------------------------------------------------
+                //! \return The 3-dimensional index of the current block in the grid.
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TWorkDiv>
+                ALPAKA_FCT_ACC_NO_CUDA static alpaka::dim::DimToVecT<alpaka::dim::Dim3> getIdx(
+                    threads::detail::IdxThreads const & index,
+                    TWorkDiv const &)
+                {
+                    return index.getIdxGridBlock();
+                }
+            };
         }
     }
 }

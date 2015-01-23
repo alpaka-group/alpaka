@@ -133,19 +133,19 @@ namespace alpaka
         //! \return A reference to the value at the given index.
         //-----------------------------------------------------------------------------
         ALPAKA_FCT_HOST_ACC TValue & operator[](
-            std::size_t const uiIndex)
+            std::size_t const uiIdx)
         {
-            assert(uiIndex<TuiDim);
-            return m_auiData[uiIndex];
+            assert(uiIdx<TuiDim);
+            return m_auiData[uiIdx];
         }
         //-----------------------------------------------------------------------------
         //! \return The value at the given index.
         //-----------------------------------------------------------------------------
         ALPAKA_FCT_HOST_ACC TValue operator[](
-            std::size_t const uiIndex) const
+            std::size_t const uiIdx) const
         {
-            assert(uiIndex<TuiDim);
-            return m_auiData[uiIndex];
+            assert(uiIdx<TuiDim);
+            return m_auiData[uiIdx];
         }
 
         //-----------------------------------------------------------------------------

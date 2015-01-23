@@ -23,12 +23,12 @@
 
 // Base classes.
 #include <alpaka/openmp/AccOpenMpFwd.hpp>
-#include <alpaka/openmp/WorkDiv.hpp>             // InterfacedWorkDivOpenMp
-#include <alpaka/openmp/Index.hpp>                  // InterfacedIndexOpenMp
+#include <alpaka/openmp/WorkDiv.hpp>                // WorkDivOpenMp
+#include <alpaka/openmp/Idx.hpp>                    // IdxOpenMp
 #include <alpaka/openmp/Atomic.hpp>                 // InterfacedAtomicOpenMp
 
 // User functionality.
-#include <alpaka/host/Memory.hpp>                   // MemCopy
+#include <alpaka/host/Mem.hpp>                      // MemCopy
 #include <alpaka/openmp/Event.hpp>                  // Event
 #include <alpaka/openmp/Stream.hpp>                 // Stream
 #include <alpaka/openmp/Device.hpp>                 // Devices
@@ -72,12 +72,12 @@ namespace alpaka
             //! It uses OpenMP to implement the parallelism.
             //#############################################################################
             class AccOpenMp :
-                protected InterfacedWorkDivOpenMp,
-                protected InterfacedIndexOpenMp,
+                protected WorkDivOpenMp,
+                protected IdxOpenMp,
                 protected InterfacedAtomicOpenMp
             {
             public:
-                using MemorySpace = alpaka::memory::MemSpaceHost;
+                using MemSpace = alpaka::mem::MemSpaceHost;
 
                 template<
                     typename TAcceleratedKernel>
@@ -88,8 +88,8 @@ namespace alpaka
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA AccOpenMp() :
-                    InterfacedWorkDivOpenMp(),
-                    InterfacedIndexOpenMp(*static_cast<InterfacedWorkDivOpenMp const *>(this), m_v3uiGridBlockIdx),
+                    WorkDivOpenMp(),
+                    IdxOpenMp(m_v3uiGridBlockIdx),
                     InterfacedAtomicOpenMp()
                 {}
                 //-----------------------------------------------------------------------------
@@ -97,8 +97,8 @@ namespace alpaka
                 // Do not copy most members because they are initialized by the executor for each accelerated execution.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA AccOpenMp(AccOpenMp const &) :
-                    InterfacedWorkDivOpenMp(),
-                    InterfacedIndexOpenMp(*static_cast<InterfacedWorkDivOpenMp const *>(this), m_v3uiGridBlockIdx),
+                    WorkDivOpenMp(),
+                    IdxOpenMp(m_v3uiGridBlockIdx),
                     InterfacedAtomicOpenMp(),
                     m_v3uiGridBlockIdx(),
                     m_vvuiSharedMem(),
@@ -127,8 +127,22 @@ namespace alpaka
                     typename TDimensionality = dim::Dim3>
                 ALPAKA_FCT_ACC_NO_CUDA typename dim::DimToVecT<TDimensionality> getIdx() const
                 {
-                    return this->InterfacedIndexOpenMp::getIdx<TOrigin, TUnit, TDimensionality>(
-                        *static_cast<InterfacedWorkDivOpenMp const *>(this));
+                    return idx::getIdx<TOrigin, TUnit, TDimensionality>(
+                        *static_cast<IdxOpenMp const *>(this),
+                        *static_cast<WorkDivOpenMp const *>(this));
+                }
+
+                //-----------------------------------------------------------------------------
+                //! \return The requested extents.
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TOrigin,
+                    typename TUnit,
+                    typename TDimensionality = dim::Dim3>
+                ALPAKA_FCT_ACC_NO_CUDA typename dim::DimToVecT<TDimensionality> getWorkDiv() const
+                {
+                    return workdiv::getWorkDiv<TOrigin, TUnit, TDimensionality>(
+                        *static_cast<WorkDivOpenMp const *>(this));
                 }
 
                 //-----------------------------------------------------------------------------
@@ -208,7 +222,7 @@ namespace alpaka
                     typename TWorkDiv, 
                     typename... TKernelConstrArgs>
                 ALPAKA_FCT_HOST KernelExecutorOpenMp(
-                    IWorkDiv<TWorkDiv> const & workDiv, 
+                    TWorkDiv const & workDiv, 
                     StreamOpenMp const &, 
                     TKernelConstrArgs && ... args) :
                     TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
@@ -216,17 +230,7 @@ namespace alpaka
 #ifdef ALPAKA_DEBUG
                     std::cout << "[+] AccOpenMp::KernelExecutorOpenMp()" << std::endl;
 #endif
-                    (*static_cast<InterfacedWorkDivOpenMp *>(this)) = workDiv;
-
-                    /*auto const uiNumKernelsPerBlock(workDiv.template getExtents<Block, Kernels, dim::Dim1>()[0]);
-                    auto const uiMaxKernelsPerBlock(AccOpenMp::getWorkDivBlockKernelsLinearMax());
-                    if(uiNumKernelsPerBlock > uiMaxKernelsPerBlock)
-                    {
-                        throw std::runtime_error(("The given block kernels count '" + std::to_string(uiNumKernelsPerBlock) + "' is larger then the supported maximum of '" + std::to_string(uiMaxKernelsPerBlock) + "' by the OpenMp accelerator!").c_str());
-                    }*/
-
-                    m_v3uiGridBlocksExtents = workDiv.template getExtents<Grid, Blocks, dim::Dim3>();
-                    m_v3uiBlockKernelsExtents = workDiv.template getExtents<Block, Kernels, dim::Dim3>();
+                    (*static_cast<WorkDivOpenMp *>(this)) = workDiv;
 #ifdef ALPAKA_DEBUG
                     std::cout << "[-] AccOpenMp::KernelExecutorOpenMp()" << std::endl;
 #endif
@@ -259,21 +263,24 @@ namespace alpaka
 #ifdef ALPAKA_DEBUG
                     std::cout << "[+] AccOpenMp::KernelExecutorOpenMp::operator()" << std::endl;
 #endif
-                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(m_v3uiBlockKernelsExtents, std::forward<TArgs>(args)...));
+                    Vec<3u> const v3uiGridBlocksExtents(this->AccOpenMp::getWorkDiv<Grid, Blocks, dim::Dim3>());
+                    Vec<3u> const v3uiBlockKernelsExtents(this->AccOpenMp::getWorkDiv<Block, Kernels, dim::Dim3>());
+
+                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiBlockKernelsExtents, std::forward<TArgs>(args)...));
                     this->AccOpenMp::m_vuiExternalSharedMem.reset(
                         new uint8_t[uiBlockSharedExternMemSizeBytes]);
 
                     // The number of threads in this block.
-                    auto const uiNumKernelsInBlock(this->AccOpenMp::getExtents<Block, Kernels, dim::Dim1>()[0]);
+                    auto const uiNumKernelsInBlock(this->AccOpenMp::getWorkDiv<Block, Kernels, dim::Dim1>()[0]);
 
                     // Execute the blocks serially.
-                    for(std::uint32_t bz(0); bz<m_v3uiGridBlocksExtents[2]; ++bz)
+                    for(std::uint32_t bz(0); bz<v3uiGridBlocksExtents[2]; ++bz)
                     {
                         this->AccOpenMp::m_v3uiGridBlockIdx[2] = bz;
-                        for(std::uint32_t by(0); by<m_v3uiGridBlocksExtents[1]; ++by)
+                        for(std::uint32_t by(0); by<v3uiGridBlocksExtents[1]; ++by)
                         {
                             this->AccOpenMp::m_v3uiGridBlockIdx[1] = by;
-                            for(std::uint32_t bx(0); bx<m_v3uiGridBlocksExtents[0]; ++bx)
+                            for(std::uint32_t bx(0); bx<v3uiGridBlocksExtents[0]; ++bx)
                             {
                                 this->AccOpenMp::m_v3uiGridBlockIdx[0] = bx;
 
@@ -321,10 +328,6 @@ namespace alpaka
                     std::cout << "[-] AccOpenMp::KernelExecutorOpenMp::operator()" << std::endl;
 #endif
                 }
-
-            private:
-                Vec<3u> m_v3uiGridBlocksExtents;
-                Vec<3u> m_v3uiBlockKernelsExtents;
             };
         }
     }

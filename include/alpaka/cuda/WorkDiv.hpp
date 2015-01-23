@@ -21,7 +21,9 @@
 
 #pragma once
 
-#include <alpaka/interfaces/WorkDiv.hpp> // IWorkDiv
+#include <alpaka/core/Vec.hpp>          // Vec
+
+#include <alpaka/traits/WorkDiv.hpp>    // alpaka::GetWorkDiv
 
 namespace alpaka
 {
@@ -36,7 +38,7 @@ namespace alpaka
             {
             public:
                 //-----------------------------------------------------------------------------
-                //! Default-constructor.
+                //! Default constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_CUDA_ONLY WorkDivCuda() = default;
                 //-----------------------------------------------------------------------------
@@ -71,7 +73,52 @@ namespace alpaka
                     return {blockDim.x, blockDim.y, blockDim.z};
                 }
             };
-            using InterfacedWorkDivCuda = alpaka::IWorkDiv<WorkDivCuda>;
+        }
+    }
+
+    namespace traits
+    {
+        namespace workdiv
+        {
+            //#############################################################################
+            //! The CUDA accelerator work div block kernels 3D extents trait specialization.
+            //#############################################################################
+            template<>
+            struct GetWorkDiv<
+                cuda::detail::WorkDivCuda,
+                origin::Block,
+                unit::Kernels,
+                alpaka::dim::Dim3>
+            {
+                //-----------------------------------------------------------------------------
+                //! \return The number of kernels in each dimension of a block.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_ACC_CUDA_ONLY static alpaka::dim::DimToVecT<alpaka::dim::Dim3> getWorkDiv(
+                    cuda::detail::WorkDivCuda const & workDiv)
+                {
+                    return workDiv.getBlockKernelsExtents();
+                }
+            };
+
+            //#############################################################################
+            //! The CUDA accelerator work div grid blocks 3D extents trait specialization.
+            //#############################################################################
+            template<>
+            struct GetWorkDiv<
+                cuda::detail::WorkDivCuda,
+                origin::Grid,
+                unit::Blocks,
+                alpaka::dim::Dim3>
+            {
+                //-----------------------------------------------------------------------------
+                //! \return The number of blocks in each dimension of the grid.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_ACC_CUDA_ONLY static alpaka::dim::DimToVecT<alpaka::dim::Dim3> getWorkDiv(
+                    cuda::detail::WorkDivCuda const & workDiv)
+                {
+                    return workDiv.getGridBlocksExtents();
+                }
+            };
         }
     }
 }

@@ -113,20 +113,20 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of devices available.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static cuda::detail::DeviceCuda getDeviceByIndex(
-                    std::size_t const & uiIndex)
+                ALPAKA_FCT_HOST static cuda::detail::DeviceCuda getDeviceByIdx(
+                    std::size_t const & uiIdx)
                 {
                     cuda::detail::DeviceCuda device;
 
                     std::size_t const uiNumDevices(getDeviceCount());
-                    if(uiIndex < getDeviceCount())
+                    if(uiIdx < getDeviceCount())
                     {
-                        device.m_iDevice = static_cast<int>(uiIndex);
+                        device.m_iDevice = static_cast<int>(uiIdx);
                     }
                     else
                     {
                         std::stringstream ssErr;
-                        ssErr << "Unable to return device handle for device " << uiIndex << " because there are only " << uiNumDevices << " CUDA devices!";
+                        ssErr << "Unable to return device handle for device " << uiIdx << " because there are only " << uiNumDevices << " CUDA devices!";
                         throw std::runtime_error(ssErr.str());
                     }
 
@@ -306,7 +306,7 @@ namespace alpaka
                     devProps.m_uiBlockKernelsCountMax = static_cast<std::size_t>(cudaDevProp.maxThreadsPerBlock);
                     devProps.m_v3uiBlockKernelsExtentsMax = Vec<3u>(static_cast<std::size_t>(cudaDevProp.maxThreadsDim[0]), static_cast<std::size_t>(cudaDevProp.maxThreadsDim[1]), static_cast<std::size_t>(cudaDevProp.maxThreadsDim[2]));
                     devProps.m_v3uiGridBlocksExtentsMax = Vec<3u>(static_cast<std::size_t>(cudaDevProp.maxGridSize[0]), static_cast<std::size_t>(cudaDevProp.maxGridSize[1]), static_cast<std::size_t>(cudaDevProp.maxGridSize[2]));
-                    devProps.m_uiGlobalMemorySizeBytes = static_cast<std::size_t>(cudaDevProp.totalGlobalMem);
+                    devProps.m_uiGlobalMemSizeBytes = static_cast<std::size_t>(cudaDevProp.totalGlobalMem);
                     //devProps.m_uiMaxClockFrequencyHz = cudaDevProp.clockRate * 1000;
 
                     return devProps;

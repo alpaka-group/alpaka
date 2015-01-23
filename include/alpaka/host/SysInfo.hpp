@@ -120,7 +120,7 @@ namespace alpaka
         //! \return The number of bytes of global memory.
         //! Adapted from David Robert Nadeau: http://nadeausoftware.com/articles/2012/09/c_c_tip_how_get_physical_memory_size_system
         //-----------------------------------------------------------------------------
-        inline std::size_t getGlobalMemorySizeBytes()
+        inline std::size_t getGlobalMemSizeBytes()
         {
 #if BOOST_OS_WINDOWS
             MEMORYSTATUSEX status;
@@ -149,7 +149,7 @@ namespace alpaka
             std::size_t const uiSizeLen{sizeof(uiSize)};
             if(sysctl(mib, 2, &uiSize, &uiSizeLen, nullptr, 0) < 0)
             {
-                throw std::logic_error("getGlobalMemorySizeBytes failed calling sysctl!");
+                throw std::logic_error("getGlobalMemSizeBytes failed calling sysctl!");
             }
             return static_cast<std::size_t>(uiSize);
 
@@ -174,13 +174,13 @@ namespace alpaka
             std::size_t const uiSizeLen{sizeof(uiSize)};
             if(sysctl(mib, 2, &uiSize, &uiSizeLen, nullptr, 0) < 0)
             {
-                throw std::logic_error("getGlobalMemorySizeBytes failed calling sysctl!");
+                throw std::logic_error("getGlobalMemSizeBytes failed calling sysctl!");
             }
             return static_cast<std::size_t>(uiSize);
     #endif
 
 #else
-            throw std::logic_error("getGlobalMemorySizeBytes not implemented for this system!");
+            throw std::logic_error("getGlobalMemSizeBytes not implemented for this system!");
 #endif
         }
     }

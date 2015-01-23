@@ -23,7 +23,7 @@
 
 #include <alpaka/threads/AccThreadsFwd.hpp> // AccThreads
 
-#include <alpaka/host/SystemInfo.hpp>       // host::getCpuName, host::getGlobalMemorySizeBytes
+#include <alpaka/host/SysInfo.hpp>          // host::getCpuName, host::getGlobalMemSizeBytes
 
 #include <alpaka/traits/Wait.hpp>           // CurrentThreadWaitFor
 #include <alpaka/traits/Device.hpp>         // GetDev
@@ -102,14 +102,14 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of devices available.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static threads::detail::DeviceThreads getDeviceByIndex(
-                    std::size_t const & uiIndex)
+                ALPAKA_FCT_HOST static threads::detail::DeviceThreads getDeviceByIdx(
+                    std::size_t const & uiIdx)
                 {
                     std::size_t const uiNumDevices(getDeviceCount());
-                    if(uiIndex >= uiNumDevices)
+                    if(uiIdx >= uiNumDevices)
                     {
                         std::stringstream ssErr;
-                        ssErr << "Unable to return device handle for device " << uiIndex << " because there are only " << uiNumDevices << " threads devices!";
+                        ssErr << "Unable to return device handle for device " << uiIdx << " because there are only " << uiNumDevices << " threads devices!";
                         throw std::runtime_error(ssErr.str());
                     }
 
@@ -167,7 +167,7 @@ namespace alpaka
                     devProps.m_uiBlockKernelsCountMax = std::thread::hardware_concurrency() * 8u;
                     devProps.m_v3uiBlockKernelsExtentsMax = Vec<3u>(devProps.m_uiBlockKernelsCountMax, devProps.m_uiBlockKernelsCountMax, devProps.m_uiBlockKernelsCountMax);
                     devProps.m_v3uiGridBlocksExtentsMax = Vec<3u>(std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max());
-                    devProps.m_uiGlobalMemorySizeBytes = host::getGlobalMemorySizeBytes();
+                    devProps.m_uiGlobalMemSizeBytes = host::getGlobalMemSizeBytes();
                     //devProps.m_uiMaxClockFrequencyHz = TODO;
 
                     return devProps;

@@ -37,7 +37,9 @@
     #include <alpaka/cuda/AccCuda.hpp>
 #endif
 
-#include <alpaka/traits/Acc.hpp>            //traits::GetAccName
+#include <alpaka/traits/Acc.hpp>            // traits::GetAccName
+
+#include <alpaka/core/WorkDivHelpers.hpp>   // getMaxBlockKernelExtentsAccelerators
 
 #include <boost/mpl/vector.hpp>             // boost::mpl::vector
 #include <boost/mpl/filter_view.hpp>        // boost::mpl::filter_view
@@ -99,6 +101,7 @@ namespace alpaka
                     AccCudaIfAvailableElseVoid
                 >;
         }
+
         //#############################################################################
         //! A vector containing all available accelerators.
         //#############################################################################
@@ -121,7 +124,7 @@ namespace alpaka
             struct GetAccName
             {
                 template<typename TAcc> 
-                void operator()(TAcc, std::ostream & os)
+                ALPAKA_FCT_HOST void operator()(TAcc, std::ostream & os)
                 {
                     os << acc::getAccName<TAcc>();
                     os << " ";
@@ -132,7 +135,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Writes the enabled accelerators to the given stream.
         //-----------------------------------------------------------------------------
-        inline void writeEnabledAccelerators(std::ostream & os)
+        ALPAKA_FCT_HOST void writeEnabledAccelerators(std::ostream & os)
         {
             os << "Accelerators enabled: ";
 
@@ -141,6 +144,22 @@ namespace alpaka
                 );
 
             os << std::endl;
+        }
+
+        //-----------------------------------------------------------------------------
+        //! \return The maximum block kernels extents supported by all of the enabled accelerators.
+        //-----------------------------------------------------------------------------
+        ALPAKA_FCT_HOST alpaka::Vec<3u> getMaxBlockKernelExtentsEnabledAccelerators()
+        {
+            getMaxBlockKernelExtentsAccelerators<acc::EnabledAccelerators>();
+        }
+
+        //-----------------------------------------------------------------------------
+        //! \return The maximum block kernels count supported by all of the enabled accelerators.
+        //-----------------------------------------------------------------------------
+        ALPAKA_FCT_HOST alpaka::Vec<3u> getMaxBlockKernelCountEnabledAccelerators()
+        {
+            getMaxBlockKernelCountAccelerators<acc::EnabledAccelerators>();
         }
     }
 }

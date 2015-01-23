@@ -21,68 +21,50 @@
 
 #pragma once
 
-#include <alpaka/openmp/WorkDiv.hpp> // InterfacedWorkDivOpenMp
-
-#include <alpaka/openmp/Common.hpp>
-
-#include <alpaka/interfaces/Index.hpp>  // IIndex
-
-#include <alpaka/core/IndexMapping.hpp> // IIndex
+#include <alpaka/traits/Idx.hpp>  // idx::getIdx
 
 namespace alpaka
 {
-    namespace openmp
+    namespace serial
     {
         namespace detail
         {
             //#############################################################################
-            //! This OpenMP accelerator index provider.
+            //! This serial accelerator index provider.
             //#############################################################################
-            class IndexOpenMp
+            class IdxSerial
             {
             public:
                 //-----------------------------------------------------------------------------
-                //! Constructor.
+                //! Default constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA IndexOpenMp(
-                    InterfacedWorkDivOpenMp const & workDiv,
+                ALPAKA_FCT_ACC_NO_CUDA IdxSerial(
                     Vec<3u> const & v3uiGridBlockIdx) :
-                    m_WorkDiv(workDiv),
                     m_v3uiGridBlockIdx(v3uiGridBlockIdx)
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA IndexOpenMp(IndexOpenMp const &) = default;
+                ALPAKA_FCT_ACC_NO_CUDA IdxSerial(IdxSerial const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA IndexOpenMp(IndexOpenMp &&) = default;
+                ALPAKA_FCT_ACC_NO_CUDA IdxSerial(IdxSerial &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA IndexOpenMp & operator=(IndexOpenMp const &) = delete;
+                ALPAKA_FCT_ACC_NO_CUDA IdxSerial & operator=(IdxSerial const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA virtual ~IndexOpenMp() noexcept = default;
+                ALPAKA_FCT_ACC_NO_CUDA virtual ~IdxSerial() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! \return The index of the currently executed kernel.
-                //
-                // \TODO: Would it be faster to precompute the 3 dimensional index and cache it inside an array?
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA Vec<3u> getIdxBlockKernel() const
                 {
-                    // We assume that the thread id is positive.
-                    assert(::omp_get_thread_num()>=0);
-                    auto const uiThreadId(static_cast<std::uint32_t>(::omp_get_thread_num()));
-                    // Get the number of kernels in each dimension of the grid.
-                    auto const v3uiBlockKernelsExtents(m_WorkDiv.getExtents<Block, Kernels, dim::Dim3>());
-
-                    return mapIndex<3>(
-                        Vec<1u>(uiThreadId), 
-                        m_WorkDiv.getExtents<Block, Kernels, dim::Dim3>().subvec<2>());
+                    return {0, 0, 0};
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The block index of the currently executed kernel.
@@ -93,10 +75,60 @@ namespace alpaka
                 }
 
             private:
-                InterfacedWorkDivOpenMp const & m_WorkDiv;        //!< The mapping of thread id's to thread indices.
-                Vec<3u> const & m_v3uiGridBlockIdx;        //!< The index of the currently executed block.
+                Vec<3u> const & m_v3uiGridBlockIdx;
             };
-            using InterfacedIndexOpenMp = alpaka::detail::IIndex<IndexOpenMp>;
+        }
+    }
+
+    namespace traits
+    {
+        namespace idx
+        {
+            //#############################################################################
+            //! The serial accelerator 3D block kernels index get trait specialization.
+            //#############################################################################
+            template<>
+            struct GetIdx<
+                serial::detail::IdxSerial,
+                origin::Block,
+                unit::Kernels,
+                alpaka::dim::Dim3>
+            {
+                //-----------------------------------------------------------------------------
+                //! \return The 3-dimensional index of the current kernel in the block.
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TWorkDiv>
+                ALPAKA_FCT_ACC_NO_CUDA static alpaka::dim::DimToVecT<alpaka::dim::Dim3> getIdx(
+                    serial::detail::IdxSerial const & index,
+                    TWorkDiv const &)
+                {
+                    return index.getIdxBlockKernel();
+                }
+            };
+
+            //#############################################################################
+            //! The serial accelerator 3D grid blocks index get trait specialization.
+            //#############################################################################
+            template<>
+            struct GetIdx<
+                serial::detail::IdxSerial,
+                origin::Grid,
+                unit::Blocks,
+                alpaka::dim::Dim3>
+            {
+                //-----------------------------------------------------------------------------
+                //! \return The 3-dimensional index of the current block in the grid.
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TWorkDiv>
+                ALPAKA_FCT_ACC_NO_CUDA static alpaka::dim::DimToVecT<alpaka::dim::Dim3> getIdx(
+                    serial::detail::IdxSerial const & index,
+                    TWorkDiv const &)
+                {
+                    return index.getIdxGridBlock();
+                }
+            };
         }
     }
 }

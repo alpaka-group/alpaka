@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/interfaces/Index.hpp>  // IIndex
+#include <alpaka/traits/Idx.hpp>  // idx::getIdx
 
 namespace alpaka
 {
@@ -32,29 +32,29 @@ namespace alpaka
             //#############################################################################
             //! This CUDA accelerator index provider.
             //#############################################################################
-            class IndexCuda
+            class IdxCuda
             {
             public:
                 //-----------------------------------------------------------------------------
-                //! Default-constructor.
+                //! Default constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY IndexCuda() = default;
+                ALPAKA_FCT_ACC_CUDA_ONLY IdxCuda() = default;
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY IndexCuda(IndexCuda const &) = default;
+                ALPAKA_FCT_ACC_CUDA_ONLY IdxCuda(IdxCuda const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY IndexCuda(IndexCuda &&) = default;
+                ALPAKA_FCT_ACC_CUDA_ONLY IdxCuda(IdxCuda &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY IndexCuda & operator=(IndexCuda const & ) = delete;
+                ALPAKA_FCT_ACC_CUDA_ONLY IdxCuda & operator=(IdxCuda const & ) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY /*virtual*/ ~IndexCuda() noexcept = default;
+                ALPAKA_FCT_ACC_CUDA_ONLY /*virtual*/ ~IdxCuda() noexcept = default;
 
                 //-----------------------------------------------------------------------------
                 //! \return The index of the currently executed kernel.
@@ -71,7 +71,58 @@ namespace alpaka
                     return {blockIdx.x, blockIdx.y, blockIdx.z};
                 }
             };
-            using InterfacedIndexCuda = alpaka::detail::IIndex<IndexCuda>;
+        }
+    }
+
+    namespace traits
+    {
+        namespace idx
+        {
+            //#############################################################################
+            //! The CUDA accelerator 3D block kernels index get trait specialization.
+            //#############################################################################
+            template<>
+            struct GetIdx<
+                cuda::detail::IdxCuda,
+                origin::Block,
+                unit::Kernels,
+                alpaka::dim::Dim3>
+            {
+                //-----------------------------------------------------------------------------
+                //! \return The 3-dimensional index of the current kernel in the block.
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TWorkDiv>
+                ALPAKA_FCT_ACC_CUDA_ONLY static alpaka::dim::DimToVecT<alpaka::dim::Dim3> getIdx(
+                    cuda::detail::IdxCuda const & index,
+                    TWorkDiv const &)
+                {
+                    return index.getIdxBlockKernel();
+                }
+            };
+
+            //#############################################################################
+            //! The CUDA accelerator 3D grid blocks index get trait specialization.
+            //#############################################################################
+            template<>
+            struct GetIdx<
+                cuda::detail::IdxCuda,
+                origin::Grid,
+                unit::Blocks,
+                alpaka::dim::Dim3>
+            {
+                //-----------------------------------------------------------------------------
+                //! \return The 3-dimensional index of the current block in the grid.
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TWorkDiv>
+                ALPAKA_FCT_ACC_CUDA_ONLY static alpaka::dim::DimToVecT<alpaka::dim::Dim3> getIdx(
+                    cuda::detail::IdxCuda const & index,
+                    TWorkDiv const &)
+                {
+                    return index.getIdxGridBlock();
+                }
+            };
         }
     }
 }

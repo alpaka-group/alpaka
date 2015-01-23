@@ -42,11 +42,11 @@ namespace alpaka
             std::string m_sName;                    //!< The name.
             std::size_t m_uiMultiProcessorCount;    //!< The number of multiprocessors.
             std::size_t m_uiBlockKernelsCountMax;   //!< The maximum number of kernels in a block.
-            Vec<3u> m_v3uiBlockKernelsExtentsMax;    //!< The maximum number of kernels in each dimension of a block.
-            Vec<3u> m_v3uiGridBlocksExtentsMax;      //!< The maximum number of blocks in each dimension of the grid.
-            std::size_t m_uiGlobalMemorySizeBytes;  //!< Size of the global device memory in bytes.
-            //std::size_t m_uiSharedMemorySizeBytes;  //!< Size of the available block shared memory in bytes. 
-            //std::size_t m_uiMaxClockFrequencyHz;    //!< Maximum clock frequency of the device in Hz.
+            Vec<3u> m_v3uiBlockKernelsExtentsMax;   //!< The maximum number of kernels in each dimension of a block.
+            Vec<3u> m_v3uiGridBlocksExtentsMax;     //!< The maximum number of blocks in each dimension of the grid.
+            std::size_t m_uiGlobalMemSizeBytes;     //!< Size of the global device memory in bytes.
+            //std::size_t m_uiSharedMemSizeBytes;   //!< Size of the available block shared memory in bytes. 
+            //std::size_t m_uiMaxClockFrequencyHz;  //!< Maximum clock frequency of the device in Hz.
         };
 
         /*namespace detail
@@ -78,9 +78,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The handle to the device with the given index.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static Device getDeviceByIndex()
+                ALPAKA_FCT_HOST static Device getDeviceByIdx()
                 {
-                    return TDeviceManager::getDeviceByIndex();
+                    return TDeviceManager::getDeviceByIdx();
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The number handles to all devices available.
@@ -90,9 +90,9 @@ namespace alpaka
                     std::vector<TDevice> vDevices;
 
                     std::size_t const uiDeviceCount(getDeviceCount());
-                    for(std::size_t uiDeviceIndex(0); uiDeviceIndex < uiDeviceCount; ++uiDeviceIndex)
+                    for(std::size_t uiDeviceIdx(0); uiDeviceIdx < uiDeviceCount; ++uiDeviceIdx)
                     {
-                        vDevices.push_back(getDeviceByIndex(uiDeviceIndex));
+                        vDevices.push_back(getDeviceByIdx(uiDeviceIdx));
                     }
 
                     return vDevices;
