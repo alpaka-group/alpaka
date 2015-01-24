@@ -39,7 +39,7 @@ namespace alpaka
             typename TElem,
             typename TDim>
         class MemBufPlainPtrWrapper :
-            public alpaka::extent::BasicExtents<TDim>
+            public extent::BasicExtents<TDim>
         {
         public:
             using MemSpace = TMemSpace;
@@ -55,9 +55,9 @@ namespace alpaka
                 MemBufPlainPtrWrapper(
                 TElem * pMem,
                 TExtents const & extents) :
-                    BasicExtents<TDim>(extents),
+                extent::BasicExtents<TDim>(extents),
                     m_pMem(pMem),
-                    m_uiPitchBytes(alpaka::extent::getWidth(extents) * sizeof(TElem))
+                    m_uiPitchBytes(extent::getWidth(extents) * sizeof(TElem))
             {}
 
             //-----------------------------------------------------------------------------
@@ -69,9 +69,9 @@ namespace alpaka
                 TElem * pMem,
                 std::size_t const & uiPitch,
                 TExtents const & extents) :
-                    BasicExtents<TDim>(extent),
+                    extent::BasicExtents<TDim>(extent),
                     m_pMem(pMem),
-                    m_uiPitch(uiPitch)
+                    m_uiPitchBytes(uiPitch)
             {}
 
         public:

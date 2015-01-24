@@ -87,5 +87,24 @@ namespace alpaka
         {
             return traits::dev::GetDevProps<TDev>::getDevProps(device);
         }
+
+        //-----------------------------------------------------------------------------
+        //! \return All the devices available on this accelerator.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TDevMan>
+        ALPAKA_FCT_HOST static std::vector<GetDevT<TDevMan>> getDevices(
+            TDevMan const & devMan)
+        {
+            std::vector<GetDevT<TDevMan>> vDevices;
+
+            std::size_t const uiDeviceCount(devMan.getDeviceCount());
+            for(std::size_t uiDeviceIdx(0); uiDeviceIdx < uiDeviceCount; ++uiDeviceIdx)
+            {
+                vDevices.push_back(devMan.getDeviceByIdx(uiDeviceIdx));
+            }
+
+            return vDevices;
+        }
     }
 }

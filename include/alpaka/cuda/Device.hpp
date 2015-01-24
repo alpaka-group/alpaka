@@ -285,6 +285,15 @@ namespace alpaka
             {
                 using type = cuda::detail::DeviceCuda;
             };
+            //#############################################################################
+            //! The CUDA accelerator device manager device type trait specialization.
+            //#############################################################################
+            template<>
+            struct GetDev<
+                cuda::detail::DeviceManagerCuda>
+            {
+                using type = cuda::detail::DeviceCuda;
+            };
 
             //#############################################################################
             //! The CUDA accelerator device properties get trait specialization.
@@ -319,6 +328,15 @@ namespace alpaka
             template<>
             struct GetDevMan<
                 AccCuda>
+            {
+                using type = cuda::detail::DeviceManagerCuda;
+            };
+            //#############################################################################
+            //! The CUDA accelerator device device manager type trait specialization.
+            //#############################################################################
+            template<>
+            struct GetDevMan<
+                cuda::detail::DeviceCuda>
             {
                 using type = cuda::detail::DeviceManagerCuda;
             };

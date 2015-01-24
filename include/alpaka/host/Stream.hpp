@@ -82,7 +82,7 @@ namespace alpaka
         namespace stream
         {
             //#############################################################################
-            //! Tests if all operations in the given stream have been completed.
+            //! Tests if all ops in the given stream have been completed.
             //#############################################################################
             template<
                 typename TStream>

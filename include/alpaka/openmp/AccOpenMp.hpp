@@ -25,7 +25,7 @@
 #include <alpaka/openmp/AccOpenMpFwd.hpp>
 #include <alpaka/openmp/WorkDiv.hpp>                // WorkDivOpenMp
 #include <alpaka/openmp/Idx.hpp>                    // IdxOpenMp
-#include <alpaka/openmp/Atomic.hpp>                 // InterfacedAtomicOpenMp
+#include <alpaka/openmp/Atomic.hpp>                 // AtomicOpenMp
 
 // User functionality.
 #include <alpaka/host/Mem.hpp>                      // MemCopy
@@ -34,7 +34,7 @@
 #include <alpaka/openmp/Device.hpp>                 // Devices
 
 // Specialized templates.
-#include <alpaka/interfaces/KernelExecCreator.hpp>  // KernelExecCreator
+#include <alpaka/core/KernelExecCreator.hpp>        // KernelExecCreator
 
 // Implementation details.
 #include <alpaka/openmp/Common.hpp>
@@ -74,14 +74,14 @@ namespace alpaka
             class AccOpenMp :
                 protected WorkDivOpenMp,
                 protected IdxOpenMp,
-                protected InterfacedAtomicOpenMp
+                protected AtomicOpenMp
             {
             public:
-                using MemSpace = alpaka::mem::MemSpaceHost;
+                using MemSpace = mem::MemSpaceHost;
 
                 template<
                     typename TAcceleratedKernel>
-                friend class alpaka::openmp::detail::KernelExecutorOpenMp;
+                friend class KernelExecutorOpenMp;
 
             public:
                 //-----------------------------------------------------------------------------
@@ -90,7 +90,7 @@ namespace alpaka
                 ALPAKA_FCT_ACC_NO_CUDA AccOpenMp() :
                     WorkDivOpenMp(),
                     IdxOpenMp(m_v3uiGridBlockIdx),
-                    InterfacedAtomicOpenMp()
+                    AtomicOpenMp()
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
@@ -99,7 +99,7 @@ namespace alpaka
                 ALPAKA_FCT_ACC_NO_CUDA AccOpenMp(AccOpenMp const &) :
                     WorkDivOpenMp(),
                     IdxOpenMp(m_v3uiGridBlockIdx),
-                    InterfacedAtomicOpenMp(),
+                    AtomicOpenMp(),
                     m_v3uiGridBlockIdx(),
                     m_vvuiSharedMem(),
                     m_vuiExternalSharedMem()
@@ -143,6 +143,23 @@ namespace alpaka
                 {
                     return workdiv::getWorkDiv<TOrigin, TUnit, TDimensionality>(
                         *static_cast<WorkDivOpenMp const *>(this));
+                }
+
+                //-----------------------------------------------------------------------------
+                //! Execute the atomic operation on the given address with the given value.
+                //! \return The old value before executing the atomic operation.
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TOp,
+                    typename T>
+                ALPAKA_FCT_ACC T atomicOp(
+                    T * const addr,
+                    T const & value) const
+                {
+                    return atomic::atomicOp<TOp, T>(
+                        addr,
+                        value,
+                        *static_cast<AtomicOpenMp const *>(this));
                 }
 
                 //-----------------------------------------------------------------------------

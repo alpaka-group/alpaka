@@ -21,9 +21,10 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>		// ALPAKA_FCT_ACC_CUDA_ONLY
+#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_ACC_CUDA_ONLY
+#include <alpaka/core/Ops.hpp>      // Add, Sub, ...
 
-#include <alpaka/interfaces/Atomic.hpp>	// IAtomic
+#include <alpaka/traits/Atomic.hpp> // AtomicOp
 
 //#define ALPAKA_ATOMIC_ADD_FLOAT_CAS   // Undefine this to use the floating point implementation of atomic add using atomicCAS for device with compute capability < 2.0.
 // This should be slower then the version using atomicExch.
@@ -35,7 +36,7 @@ namespace alpaka
 		namespace detail
 		{
 			//#############################################################################
-			//! The CUDA accelerator atomic operations.
+			//! The CUDA accelerator atomic ops.
 			//#############################################################################
 			class AtomicCuda
 			{
@@ -61,590 +62,592 @@ namespace alpaka
 				//-----------------------------------------------------------------------------
 				ALPAKA_FCT_ACC_CUDA_ONLY /*virtual*/ ~AtomicCuda() noexcept = default;
 			};
-			using InterfacedAtomicCuda = alpaka::detail::IAtomic<AtomicCuda>;
 		}
 	}
 
-	namespace detail
-	{
-		//#############################################################################
-		//! The specializations to execute the requested atomic operations of the CUDA accelerator.
-		// See: http://docs.nvidia.com/cuda/cuda-c-programming-guide/#atomic-functions how to implement everything with CAS
-		//#############################################################################
-		//-----------------------------------------------------------------------------
-		// Add.
-		//-----------------------------------------------------------------------------
-		//-----------------------------------------------------------------------------
-		//! The CUDA accelerator atomic operation functor.
-		//-----------------------------------------------------------------------------
-		template<>
-		struct AtomicOp<
-		    cuda::detail::AtomicCuda,
-		    operations::Add,
-		    int>
-		{
-			ALPAKA_FCT_ACC_CUDA_ONLY static int atomicOp(
-				cuda::detail::AtomicCuda const &,
-				int * const addr,
-				int const & value)
-			{
-				return atomicAdd(addr, value);
-			}
-		};
-		//-----------------------------------------------------------------------------
-		//! The CUDA accelerator atomic operation functor.
-		//-----------------------------------------------------------------------------
-		template<>
-		struct AtomicOp<
-		    cuda::detail::AtomicCuda,
-		    operations::Add,
-		    unsigned int>
-		{
-			ALPAKA_FCT_ACC_CUDA_ONLY static unsigned int atomicOp(
-				cuda::detail::AtomicCuda const &,
-				unsigned int * const addr,
-				unsigned int const & value)
-			{
-				return atomicAdd(addr, value);
-			}
-		};
-		//-----------------------------------------------------------------------------
-		//! The CUDA accelerator atomic operation functor.
-		//-----------------------------------------------------------------------------
-		template<>
-		struct AtomicOp<
-		    cuda::detail::AtomicCuda,
-		    operations::Add,
-		    unsigned long long int>
-		{
-			ALPAKA_FCT_ACC_CUDA_ONLY static unsigned long long int atomicOp(
-				cuda::detail::AtomicCuda const &,
-				unsigned long long int * const addr,
-				unsigned long long int const & value)
-			{
-				return atomicAdd(addr, value);
-			}
-		};
-		//-----------------------------------------------------------------------------
-		//! The CUDA accelerator atomic operation functor.
-		//-----------------------------------------------------------------------------
-		template<>
-		struct AtomicOp<
-		    cuda::detail::AtomicCuda,
-		    operations::Add,
-		    float>
-		{
-			ALPAKA_FCT_ACC_CUDA_ONLY static float atomicOp(
-				cuda::detail::AtomicCuda const &,
-				float * const addr,
-				float const & value)
-			{
-				return atomicAdd(addr, value);
-			}
-		};
-		//-----------------------------------------------------------------------------
-		//! The CUDA accelerator atomic operation functor.
-		//-----------------------------------------------------------------------------
-		template<>
-		struct AtomicOp<
-		    cuda::detail::AtomicCuda,
-		    operations::Add,
-		    double>
-		{
-			ALPAKA_FCT_ACC_CUDA_ONLY static double atomicOp(
-				cuda::detail::AtomicCuda const &,
-				double * const addr,
-				double const & value)
-			{
-				// Code from: http://docs.nvidia.com/cuda/cuda-c-programming-guide/#atomic-functions
+    namespace traits
+    {
+        namespace atomic
+        {
+		    //#############################################################################
+		    //! The specializations to execute the requested atomic ops of the CUDA accelerator.
+		    // See: http://docs.nvidia.com/cuda/cuda-c-programming-guide/#atomic-functions how to implement everything with CAS
+		    //#############################################################################
+		    //-----------------------------------------------------------------------------
+		    // Add.
+		    //-----------------------------------------------------------------------------
+		    //-----------------------------------------------------------------------------
+		    //! The CUDA accelerator atomic operation functor.
+		    //-----------------------------------------------------------------------------
+		    template<>
+		    struct AtomicOp<
+		        cuda::detail::AtomicCuda,
+		        ops::Add,
+		        int>
+		    {
+			    ALPAKA_FCT_ACC_CUDA_ONLY static int atomicOp(
+				    cuda::detail::AtomicCuda const &,
+				    int * const addr,
+				    int const & value)
+			    {
+				    return atomicAdd(addr, value);
+			    }
+		    };
+		    //-----------------------------------------------------------------------------
+		    //! The CUDA accelerator atomic operation functor.
+		    //-----------------------------------------------------------------------------
+		    template<>
+		    struct AtomicOp<
+		        cuda::detail::AtomicCuda,
+		        ops::Add,
+		        unsigned int>
+		    {
+			    ALPAKA_FCT_ACC_CUDA_ONLY static unsigned int atomicOp(
+				    cuda::detail::AtomicCuda const &,
+				    unsigned int * const addr,
+				    unsigned int const & value)
+			    {
+				    return atomicAdd(addr, value);
+			    }
+		    };
+		    //-----------------------------------------------------------------------------
+		    //! The CUDA accelerator atomic operation functor.
+		    //-----------------------------------------------------------------------------
+		    template<>
+		    struct AtomicOp<
+		        cuda::detail::AtomicCuda,
+		        ops::Add,
+		        unsigned long long int>
+		    {
+			    ALPAKA_FCT_ACC_CUDA_ONLY static unsigned long long int atomicOp(
+				    cuda::detail::AtomicCuda const &,
+				    unsigned long long int * const addr,
+				    unsigned long long int const & value)
+			    {
+				    return atomicAdd(addr, value);
+			    }
+		    };
+		    //-----------------------------------------------------------------------------
+		    //! The CUDA accelerator atomic operation functor.
+		    //-----------------------------------------------------------------------------
+		    template<>
+		    struct AtomicOp<
+		        cuda::detail::AtomicCuda,
+		        ops::Add,
+		        float>
+		    {
+			    ALPAKA_FCT_ACC_CUDA_ONLY static float atomicOp(
+				    cuda::detail::AtomicCuda const &,
+				    float * const addr,
+				    float const & value)
+			    {
+				    return atomicAdd(addr, value);
+			    }
+		    };
+		    //-----------------------------------------------------------------------------
+		    //! The CUDA accelerator atomic operation functor.
+		    //-----------------------------------------------------------------------------
+		    template<>
+		    struct AtomicOp<
+		        cuda::detail::AtomicCuda,
+		        ops::Add,
+		        double>
+		    {
+			    ALPAKA_FCT_ACC_CUDA_ONLY static double atomicOp(
+				    cuda::detail::AtomicCuda const &,
+				    double * const addr,
+				    double const & value)
+			    {
+				    // Code from: http://docs.nvidia.com/cuda/cuda-c-programming-guide/#atomic-functions
 
-				unsigned long long int * address_as_ull(reinterpret_cast<unsigned long long int *>(addr));
-				unsigned long long int old(*address_as_ull);
-				unsigned long long int assumed;
-				do
-				{
-					assumed = old;
-					old = atomicCAS(address_as_ull, assumed, __double_as_longlong(value + __longlong_as_double(assumed)));
-					// Note: uses integer comparison to avoid hang in case of NaN (since NaN != NaN)
-				}
-				while(assumed != old);
-				return __longlong_as_double(old);
-			}
-		};
-		//-----------------------------------------------------------------------------
-		// Sub.
-		//-----------------------------------------------------------------------------
-		//-----------------------------------------------------------------------------
-		//! The CUDA accelerator atomic operation functor.
-		//-----------------------------------------------------------------------------
-		template<>
-		struct AtomicOp<
-		    cuda::detail::AtomicCuda,
-		    operations::Sub,
-		    int>
-		{
-			ALPAKA_FCT_ACC_CUDA_ONLY static int atomicOp(
-				cuda::detail::AtomicCuda const &,
-				int * const addr,
-				int const & value)
-			{
-				return atomicSub(addr, value);
-			}
-		};
-		//-----------------------------------------------------------------------------
-		//! The CUDA accelerator atomic operation functor.
-		//-----------------------------------------------------------------------------
-		template<>
-		struct AtomicOp<
-		    cuda::detail::AtomicCuda,
-		    operations::Sub,
-		    unsigned int>
-		{
-			ALPAKA_FCT_ACC_CUDA_ONLY static unsigned int atomicOp(
-				cuda::detail::AtomicCuda const &,
-				unsigned int * const addr,
-				unsigned int const & value)
-			{
-				return atomicSub(addr, value);
-			}
-		};
-		//-----------------------------------------------------------------------------
-		// Min.
-		//-----------------------------------------------------------------------------
-		//-----------------------------------------------------------------------------
-		//! The CUDA accelerator atomic operation functor.
-		//-----------------------------------------------------------------------------
-		template<>
-		struct AtomicOp<
-		    cuda::detail::AtomicCuda,
-		    operations::Min,
-		    int>
-		{
-			ALPAKA_FCT_ACC_CUDA_ONLY static int atomicOp(
-				cuda::detail::AtomicCuda const &,
-				int * const addr,
-				int const & value)
-			{
-				return atomicMin(addr, value);
-			}
-		};
-		//-----------------------------------------------------------------------------
-		//! The CUDA accelerator atomic operation functor.
-		//-----------------------------------------------------------------------------
-		template<>
-		struct AtomicOp<
-		    cuda::detail::AtomicCuda,
-		    operations::Min,
-		    unsigned int>
-		{
-			ALPAKA_FCT_ACC_CUDA_ONLY static unsigned int atomicOp(
-				cuda::detail::AtomicCuda const &,
-				unsigned int * const addr,
-				unsigned int const & value)
-			{
-				return atomicMin(addr, value);
-			}
-		};
-		//-----------------------------------------------------------------------------
-		//! The CUDA accelerator atomic operation functor.
-		//-----------------------------------------------------------------------------
-        /*template<>
-        struct AtomicOp<
-            cuda::detail::AtomicCuda,
-            operations::Min,
-            unsigned long long int>
-        {
-            ALPAKA_FCT_ACC_CUDA_ONLY static unsigned long long int atomicOp(
-                cuda::detail::AtomicCuda const &, 
-                unsigned long long int * const addr, 
-                unsigned long long int const & value)
+				    unsigned long long int * address_as_ull(reinterpret_cast<unsigned long long int *>(addr));
+				    unsigned long long int old(*address_as_ull);
+				    unsigned long long int assumed;
+				    do
+				    {
+					    assumed = old;
+					    old = atomicCAS(address_as_ull, assumed, __double_as_longlong(value + __longlong_as_double(assumed)));
+					    // Note: uses integer comparison to avoid hang in case of NaN (since NaN != NaN)
+				    }
+				    while(assumed != old);
+				    return __longlong_as_double(old);
+			    }
+		    };
+		    //-----------------------------------------------------------------------------
+		    // Sub.
+		    //-----------------------------------------------------------------------------
+		    //-----------------------------------------------------------------------------
+		    //! The CUDA accelerator atomic operation functor.
+		    //-----------------------------------------------------------------------------
+		    template<>
+		    struct AtomicOp<
+		        cuda::detail::AtomicCuda,
+		        ops::Sub,
+		        int>
+		    {
+			    ALPAKA_FCT_ACC_CUDA_ONLY static int atomicOp(
+				    cuda::detail::AtomicCuda const &,
+				    int * const addr,
+				    int const & value)
+			    {
+				    return atomicSub(addr, value);
+			    }
+		    };
+		    //-----------------------------------------------------------------------------
+		    //! The CUDA accelerator atomic operation functor.
+		    //-----------------------------------------------------------------------------
+		    template<>
+		    struct AtomicOp<
+		        cuda::detail::AtomicCuda,
+		        ops::Sub,
+		        unsigned int>
+		    {
+			    ALPAKA_FCT_ACC_CUDA_ONLY static unsigned int atomicOp(
+				    cuda::detail::AtomicCuda const &,
+				    unsigned int * const addr,
+				    unsigned int const & value)
+			    {
+				    return atomicSub(addr, value);
+			    }
+		    };
+		    //-----------------------------------------------------------------------------
+		    // Min.
+		    //-----------------------------------------------------------------------------
+		    //-----------------------------------------------------------------------------
+		    //! The CUDA accelerator atomic operation functor.
+		    //-----------------------------------------------------------------------------
+		    template<>
+		    struct AtomicOp<
+		        cuda::detail::AtomicCuda,
+		        ops::Min,
+		        int>
+		    {
+			    ALPAKA_FCT_ACC_CUDA_ONLY static int atomicOp(
+				    cuda::detail::AtomicCuda const &,
+				    int * const addr,
+				    int const & value)
+			    {
+				    return atomicMin(addr, value);
+			    }
+		    };
+		    //-----------------------------------------------------------------------------
+		    //! The CUDA accelerator atomic operation functor.
+		    //-----------------------------------------------------------------------------
+		    template<>
+		    struct AtomicOp<
+		        cuda::detail::AtomicCuda,
+		        ops::Min,
+		        unsigned int>
+		    {
+			    ALPAKA_FCT_ACC_CUDA_ONLY static unsigned int atomicOp(
+				    cuda::detail::AtomicCuda const &,
+				    unsigned int * const addr,
+				    unsigned int const & value)
+			    {
+				    return atomicMin(addr, value);
+			    }
+		    };
+		    //-----------------------------------------------------------------------------
+		    //! The CUDA accelerator atomic operation functor.
+		    //-----------------------------------------------------------------------------
+            /*template<>
+            struct AtomicOp<
+                cuda::detail::AtomicCuda,
+                ops::Min,
+                unsigned long long int>
             {
-                return atomicMin(addr, value);
-            }
-        };*/
-		//-----------------------------------------------------------------------------
-		// Max.
-		//-----------------------------------------------------------------------------
-		//-----------------------------------------------------------------------------
-		//! The CUDA accelerator atomic operation functor.
-		//-----------------------------------------------------------------------------
-		template<>
-		struct AtomicOp<
-		    cuda::detail::AtomicCuda,
-		    operations::Max,
-		    int>
-		{
-			ALPAKA_FCT_ACC_CUDA_ONLY static int atomicOp(
-				cuda::detail::AtomicCuda const &,
-				int * const addr,
-				int const & value)
-			{
-				return atomicMax(addr, value);
-			}
-		};
-		//-----------------------------------------------------------------------------
-		//! The CUDA accelerator atomic operation functor.
-		//-----------------------------------------------------------------------------
-		template<>
-		struct AtomicOp<
-		    cuda::detail::AtomicCuda,
-		    operations::Max,
-		    unsigned int>
-		{
-			ALPAKA_FCT_ACC_CUDA_ONLY static unsigned int atomicOp(
-				cuda::detail::AtomicCuda const &,
-				unsigned int * const addr,
-				unsigned int const & value)
-			{
-				return atomicMax(addr, value);
-			}
-		};
-		//-----------------------------------------------------------------------------
-		//! The CUDA accelerator atomic operation functor.
-		//-----------------------------------------------------------------------------
-        /*template<>
-        struct AtomicOp<
-            cuda::detail::AtomicCuda,
-            operations::Max,
-            unsigned long long int>
-        {
-            ALPAKA_FCT_ACC_CUDA_ONLY static unsigned long long int atomicOp(
-                cuda::detail::AtomicCuda const &, 
-                unsigned long long int * const addr, 
-                unsigned long long int const & value)
+                ALPAKA_FCT_ACC_CUDA_ONLY static unsigned long long int atomicOp(
+                    cuda::detail::AtomicCuda const &, 
+                    unsigned long long int * const addr, 
+                    unsigned long long int const & value)
+                {
+                    return atomicMin(addr, value);
+                }
+            };*/
+		    //-----------------------------------------------------------------------------
+		    // Max.
+		    //-----------------------------------------------------------------------------
+		    //-----------------------------------------------------------------------------
+		    //! The CUDA accelerator atomic operation functor.
+		    //-----------------------------------------------------------------------------
+		    template<>
+		    struct AtomicOp<
+		        cuda::detail::AtomicCuda,
+		        ops::Max,
+		        int>
+		    {
+			    ALPAKA_FCT_ACC_CUDA_ONLY static int atomicOp(
+				    cuda::detail::AtomicCuda const &,
+				    int * const addr,
+				    int const & value)
+			    {
+				    return atomicMax(addr, value);
+			    }
+		    };
+		    //-----------------------------------------------------------------------------
+		    //! The CUDA accelerator atomic operation functor.
+		    //-----------------------------------------------------------------------------
+		    template<>
+		    struct AtomicOp<
+		        cuda::detail::AtomicCuda,
+		        ops::Max,
+		        unsigned int>
+		    {
+			    ALPAKA_FCT_ACC_CUDA_ONLY static unsigned int atomicOp(
+				    cuda::detail::AtomicCuda const &,
+				    unsigned int * const addr,
+				    unsigned int const & value)
+			    {
+				    return atomicMax(addr, value);
+			    }
+		    };
+		    //-----------------------------------------------------------------------------
+		    //! The CUDA accelerator atomic operation functor.
+		    //-----------------------------------------------------------------------------
+            /*template<>
+            struct AtomicOp<
+                cuda::detail::AtomicCuda,
+                ops::Max,
+                unsigned long long int>
             {
-                return atomicMax(addr, value);
-            }
-        };*/
-		//-----------------------------------------------------------------------------
-		// Exch.
-		//-----------------------------------------------------------------------------
-		//-----------------------------------------------------------------------------
-		//! The CUDA accelerator atomic operation functor.
-		//-----------------------------------------------------------------------------
-		template<>
-		struct AtomicOp<
-		    cuda::detail::AtomicCuda,
-		    operations::Exch,
-		    int>
-		{
-			ALPAKA_FCT_ACC_CUDA_ONLY static int atomicOp(
-				cuda::detail::AtomicCuda const &,
-				int * const addr,
-				int const & value)
-			{
-				return atomicExch(addr, value);
-			}
-		};
-		//-----------------------------------------------------------------------------
-		//! The CUDA accelerator atomic operation functor.
-		//-----------------------------------------------------------------------------
-		template<>
-		struct AtomicOp<
-		    cuda::detail::AtomicCuda,
-		    operations::Exch,
-		    unsigned int>
-		{
-			ALPAKA_FCT_ACC_CUDA_ONLY static unsigned int atomicOp(
-				cuda::detail::AtomicCuda const &,
-				unsigned int * const addr,
-				unsigned int const & value)
-			{
-				return atomicExch(addr, value);
-			}
-		};
-		//-----------------------------------------------------------------------------
-		//! The CUDA accelerator atomic operation functor.
-		//-----------------------------------------------------------------------------
-		template<>
-		struct AtomicOp<
-		    cuda::detail::AtomicCuda,
-		    operations::Exch,
-		    unsigned long long int>
-		{
-			ALPAKA_FCT_ACC_CUDA_ONLY static unsigned long long int atomicOp(
-				cuda::detail::AtomicCuda const &,
-				unsigned long long int * const addr,
-				unsigned long long int const & value)
-			{
-				return atomicExch(addr, value);
-			}
-		};
-		//-----------------------------------------------------------------------------
-		//! The CUDA accelerator atomic operation functor.
-		//-----------------------------------------------------------------------------
-		template<>
-		struct AtomicOp<
-		    cuda::detail::AtomicCuda,
-		    operations::Exch,
-		    float>
-		{
-			ALPAKA_FCT_ACC_CUDA_ONLY static float atomicOp(
-				cuda::detail::AtomicCuda const &,
-				float * const addr,
-				float const & value)
-			{
-				return atomicExch(addr, value);
-			}
-		};
-		//-----------------------------------------------------------------------------
-		// Inc.
-		//-----------------------------------------------------------------------------
-		//-----------------------------------------------------------------------------
-		//! The CUDA accelerator atomic operation functor.
-		//-----------------------------------------------------------------------------
-		template<>
-		struct AtomicOp<
-		    cuda::detail::AtomicCuda,
-		    operations::Inc,
-		    unsigned int>
-		{
-			ALPAKA_FCT_ACC_CUDA_ONLY static unsigned int atomicOp(
-				cuda::detail::AtomicCuda const &,
-				unsigned int * const addr,
-				unsigned int const & value)
-			{
-				return atomicInc(addr, value);
-			}
-		};
-		//-----------------------------------------------------------------------------
-		// Dec.
-		//-----------------------------------------------------------------------------
-		//-----------------------------------------------------------------------------
-		//! The CUDA accelerator atomic operation functor.
-		//-----------------------------------------------------------------------------
-		template<>
-		struct AtomicOp<
-		    cuda::detail::AtomicCuda,
-		    operations::Dec,
-		    unsigned int>
-		{
-			ALPAKA_FCT_ACC_CUDA_ONLY static unsigned int atomicOp(
-				cuda::detail::AtomicCuda const &,
-				unsigned int * const addr,
-				unsigned int const & value)
-			{
-				return atomicDec(addr, value);
-			}
-		};
-		//-----------------------------------------------------------------------------
-		// And.
-		//-----------------------------------------------------------------------------
-		//-----------------------------------------------------------------------------
-		//! The CUDA accelerator atomic operation functor.
-		//-----------------------------------------------------------------------------
-		template<>
-		struct AtomicOp<
-		    cuda::detail::AtomicCuda,
-		    operations::And,
-		    int>
-		{
-			ALPAKA_FCT_ACC_CUDA_ONLY static int atomicOp(
-				cuda::detail::AtomicCuda const &,
-				int * const addr,
-				int const & value)
-			{
-				return atomicAnd(addr, value);
-			}
-		};
-		//-----------------------------------------------------------------------------
-		//! The CUDA accelerator atomic operation functor.
-		//-----------------------------------------------------------------------------
-		template<>
-		struct AtomicOp<
-		    cuda::detail::AtomicCuda,
-		    operations::And,
-		    unsigned int>
-		{
-			ALPAKA_FCT_ACC_CUDA_ONLY static unsigned int atomicOp(
-				cuda::detail::AtomicCuda const &,
-				unsigned int * const addr,
-				unsigned int const & value)
-			{
-				return atomicAnd(addr, value);
-			}
-		};
-		//-----------------------------------------------------------------------------
-		//! The CUDA accelerator atomic operation functor.
-		//-----------------------------------------------------------------------------
-        /*template<>
-        struct AtomicOp<
-            cuda::detail::AtomicCuda,
-            operations::And,
-            unsigned long long int>
-        {
-            ALPAKA_FCT_ACC_CUDA_ONLY static unsigned long long int atomicOp(
-                cuda::detail::AtomicCuda const &, 
-                unsigned long long int * const addr, 
-                unsigned long long int const & value)
+                ALPAKA_FCT_ACC_CUDA_ONLY static unsigned long long int atomicOp(
+                    cuda::detail::AtomicCuda const &, 
+                    unsigned long long int * const addr, 
+                    unsigned long long int const & value)
+                {
+                    return atomicMax(addr, value);
+                }
+            };*/
+		    //-----------------------------------------------------------------------------
+		    // Exch.
+		    //-----------------------------------------------------------------------------
+		    //-----------------------------------------------------------------------------
+		    //! The CUDA accelerator atomic operation functor.
+		    //-----------------------------------------------------------------------------
+		    template<>
+		    struct AtomicOp<
+		        cuda::detail::AtomicCuda,
+		        ops::Exch,
+		        int>
+		    {
+			    ALPAKA_FCT_ACC_CUDA_ONLY static int atomicOp(
+				    cuda::detail::AtomicCuda const &,
+				    int * const addr,
+				    int const & value)
+			    {
+				    return atomicExch(addr, value);
+			    }
+		    };
+		    //-----------------------------------------------------------------------------
+		    //! The CUDA accelerator atomic operation functor.
+		    //-----------------------------------------------------------------------------
+		    template<>
+		    struct AtomicOp<
+		        cuda::detail::AtomicCuda,
+		        ops::Exch,
+		        unsigned int>
+		    {
+			    ALPAKA_FCT_ACC_CUDA_ONLY static unsigned int atomicOp(
+				    cuda::detail::AtomicCuda const &,
+				    unsigned int * const addr,
+				    unsigned int const & value)
+			    {
+				    return atomicExch(addr, value);
+			    }
+		    };
+		    //-----------------------------------------------------------------------------
+		    //! The CUDA accelerator atomic operation functor.
+		    //-----------------------------------------------------------------------------
+		    template<>
+		    struct AtomicOp<
+		        cuda::detail::AtomicCuda,
+		        ops::Exch,
+		        unsigned long long int>
+		    {
+			    ALPAKA_FCT_ACC_CUDA_ONLY static unsigned long long int atomicOp(
+				    cuda::detail::AtomicCuda const &,
+				    unsigned long long int * const addr,
+				    unsigned long long int const & value)
+			    {
+				    return atomicExch(addr, value);
+			    }
+		    };
+		    //-----------------------------------------------------------------------------
+		    //! The CUDA accelerator atomic operation functor.
+		    //-----------------------------------------------------------------------------
+		    template<>
+		    struct AtomicOp<
+		        cuda::detail::AtomicCuda,
+		        ops::Exch,
+		        float>
+		    {
+			    ALPAKA_FCT_ACC_CUDA_ONLY static float atomicOp(
+				    cuda::detail::AtomicCuda const &,
+				    float * const addr,
+				    float const & value)
+			    {
+				    return atomicExch(addr, value);
+			    }
+		    };
+		    //-----------------------------------------------------------------------------
+		    // Inc.
+		    //-----------------------------------------------------------------------------
+		    //-----------------------------------------------------------------------------
+		    //! The CUDA accelerator atomic operation functor.
+		    //-----------------------------------------------------------------------------
+		    template<>
+		    struct AtomicOp<
+		        cuda::detail::AtomicCuda,
+		        ops::Inc,
+		        unsigned int>
+		    {
+			    ALPAKA_FCT_ACC_CUDA_ONLY static unsigned int atomicOp(
+				    cuda::detail::AtomicCuda const &,
+				    unsigned int * const addr,
+				    unsigned int const & value)
+			    {
+				    return atomicInc(addr, value);
+			    }
+		    };
+		    //-----------------------------------------------------------------------------
+		    // Dec.
+		    //-----------------------------------------------------------------------------
+		    //-----------------------------------------------------------------------------
+		    //! The CUDA accelerator atomic operation functor.
+		    //-----------------------------------------------------------------------------
+		    template<>
+		    struct AtomicOp<
+		        cuda::detail::AtomicCuda,
+		        ops::Dec,
+		        unsigned int>
+		    {
+			    ALPAKA_FCT_ACC_CUDA_ONLY static unsigned int atomicOp(
+				    cuda::detail::AtomicCuda const &,
+				    unsigned int * const addr,
+				    unsigned int const & value)
+			    {
+				    return atomicDec(addr, value);
+			    }
+		    };
+		    //-----------------------------------------------------------------------------
+		    // And.
+		    //-----------------------------------------------------------------------------
+		    //-----------------------------------------------------------------------------
+		    //! The CUDA accelerator atomic operation functor.
+		    //-----------------------------------------------------------------------------
+		    template<>
+		    struct AtomicOp<
+		        cuda::detail::AtomicCuda,
+		        ops::And,
+		        int>
+		    {
+			    ALPAKA_FCT_ACC_CUDA_ONLY static int atomicOp(
+				    cuda::detail::AtomicCuda const &,
+				    int * const addr,
+				    int const & value)
+			    {
+				    return atomicAnd(addr, value);
+			    }
+		    };
+		    //-----------------------------------------------------------------------------
+		    //! The CUDA accelerator atomic operation functor.
+		    //-----------------------------------------------------------------------------
+		    template<>
+		    struct AtomicOp<
+		        cuda::detail::AtomicCuda,
+		        ops::And,
+		        unsigned int>
+		    {
+			    ALPAKA_FCT_ACC_CUDA_ONLY static unsigned int atomicOp(
+				    cuda::detail::AtomicCuda const &,
+				    unsigned int * const addr,
+				    unsigned int const & value)
+			    {
+				    return atomicAnd(addr, value);
+			    }
+		    };
+		    //-----------------------------------------------------------------------------
+		    //! The CUDA accelerator atomic operation functor.
+		    //-----------------------------------------------------------------------------
+            /*template<>
+            struct AtomicOp<
+                cuda::detail::AtomicCuda,
+                ops::And,
+                unsigned long long int>
             {
-                return atomicAnd(addr, value);
-            }
-        };*/
-		//-----------------------------------------------------------------------------
-		// Or.
-		//-----------------------------------------------------------------------------
-		//-----------------------------------------------------------------------------
-		//! The CUDA accelerator atomic operation functor.
-		//-----------------------------------------------------------------------------
-		template<>
-		struct AtomicOp<
-		cuda::detail::AtomicCuda,
-		operations::Or,
-		int>
-		{
-			ALPAKA_FCT_ACC_CUDA_ONLY static int atomicOp(
-				cuda::detail::AtomicCuda const &,
-				int * const addr,
-				int const & value)
-			{
-				return atomicOr(addr, value);
-			}
-		};
-		//-----------------------------------------------------------------------------
-		//! The CUDA accelerator atomic operation functor.
-		//-----------------------------------------------------------------------------
-		template<>
-		struct AtomicOp<
+                ALPAKA_FCT_ACC_CUDA_ONLY static unsigned long long int atomicOp(
+                    cuda::detail::AtomicCuda const &, 
+                    unsigned long long int * const addr, 
+                    unsigned long long int const & value)
+                {
+                    return atomicAnd(addr, value);
+                }
+            };*/
+		    //-----------------------------------------------------------------------------
+		    // Or.
+		    //-----------------------------------------------------------------------------
+		    //-----------------------------------------------------------------------------
+		    //! The CUDA accelerator atomic operation functor.
+		    //-----------------------------------------------------------------------------
+		    template<>
+		    struct AtomicOp<
 		    cuda::detail::AtomicCuda,
-		    operations::Or,
-		    unsigned int>
-		{
-			ALPAKA_FCT_ACC_CUDA_ONLY static unsigned int atomicOp(
-				cuda::detail::AtomicCuda const &,
-				unsigned int * const addr,
-				unsigned int const & value)
-			{
-				return atomicOr(addr, value);
-			}
-		};
-		//-----------------------------------------------------------------------------
-		//! The CUDA accelerator atomic operation functor.
-		//-----------------------------------------------------------------------------
-		/*template<>
-        struct AtomicOp<
-            cuda::detail::AtomicCuda,
-            operations::Or,
-            unsigned long long int>
-        {
-            ALPAKA_FCT_ACC_CUDA_ONLY static unsigned long long int atomicOp(
-                cuda::detail::AtomicCuda const &, 
-                unsigned long long int * const addr, 
-                unsigned long long int const & value)
-            {
-                return atomicOr(addr, value);
-            }
-        };*/
-		//-----------------------------------------------------------------------------
-		// Xor.
-		//-----------------------------------------------------------------------------
-		//-----------------------------------------------------------------------------
-		//! The CUDA accelerator atomic operation functor.
-		//-----------------------------------------------------------------------------
-		template<>
-		struct AtomicOp<
-		    cuda::detail::AtomicCuda,
-		    operations::Xor,
+		    ops::Or,
 		    int>
-		{
-			ALPAKA_FCT_ACC_CUDA_ONLY static int atomicOp(
-				cuda::detail::AtomicCuda const &,
-				int * const addr,
-				int const & value)
-			{
-				return atomicXor(addr, value);
-			}
-		};
-		//-----------------------------------------------------------------------------
-		//! The CUDA accelerator atomic operation functor.
-		//-----------------------------------------------------------------------------
-		template<>
-		struct AtomicOp<
-		    cuda::detail::AtomicCuda,
-		    operations::Xor,
-		    unsigned int>
-		{
-			ALPAKA_FCT_ACC_CUDA_ONLY static unsigned int atomicOp(
-				cuda::detail::AtomicCuda const &,
-				unsigned int * const addr,
-				unsigned int const & value)
-			{
-				return atomicXor(addr, value);
-			}
-		};
-		//-----------------------------------------------------------------------------
-		//! The CUDA accelerator atomic operation functor.
-		//-----------------------------------------------------------------------------
-		/*template<>
-        struct AtomicOp<
-            cuda::detail::AtomicCuda,
-            operations::Xor,
-            unsigned long long int>
-        {
-            ALPAKA_FCT_ACC_CUDA_ONLY static unsigned long long int atomicOp(
-                cuda::detail::AtomicCuda const &, 
-                unsigned long long int * const addr, 
-                unsigned long long int const & value)
+		    {
+			    ALPAKA_FCT_ACC_CUDA_ONLY static int atomicOp(
+				    cuda::detail::AtomicCuda const &,
+				    int * const addr,
+				    int const & value)
+			    {
+				    return atomicOr(addr, value);
+			    }
+		    };
+		    //-----------------------------------------------------------------------------
+		    //! The CUDA accelerator atomic operation functor.
+		    //-----------------------------------------------------------------------------
+		    template<>
+		    struct AtomicOp<
+		        cuda::detail::AtomicCuda,
+		        ops::Or,
+		        unsigned int>
+		    {
+			    ALPAKA_FCT_ACC_CUDA_ONLY static unsigned int atomicOp(
+				    cuda::detail::AtomicCuda const &,
+				    unsigned int * const addr,
+				    unsigned int const & value)
+			    {
+				    return atomicOr(addr, value);
+			    }
+		    };
+		    //-----------------------------------------------------------------------------
+		    //! The CUDA accelerator atomic operation functor.
+		    //-----------------------------------------------------------------------------
+		    /*template<>
+            struct AtomicOp<
+                cuda::detail::AtomicCuda,
+                ops::Or,
+                unsigned long long int>
             {
-                return atomicXor(addr, value);
-            }
-        };*/
-		//-----------------------------------------------------------------------------
-		// Cas.
-		//-----------------------------------------------------------------------------
-		//-----------------------------------------------------------------------------
-		//! The CUDA accelerator atomic operation functor.
-		//-----------------------------------------------------------------------------
-		template<>
-		struct AtomicOp<
-		    cuda::detail::AtomicCuda,
-		    operations::Cas,
-		    int>
-		{
-			ALPAKA_FCT_ACC_CUDA_ONLY static int atomicOp(
-				cuda::detail::AtomicCuda const &,
-				int * const addr,
-				int const & compare,
-				int const & value)
-			{
-				return atomicCAS(addr, compare, value);
-			}
-		};
-		//-----------------------------------------------------------------------------
-		//! The CUDA accelerator atomic operation functor.
-		//-----------------------------------------------------------------------------
-		template<>
-		struct AtomicOp<
-		    cuda::detail::AtomicCuda,
-		    operations::Cas,
-		    unsigned int>
-		{
-			ALPAKA_FCT_ACC_CUDA_ONLY static unsigned int atomicOp(
-				cuda::detail::AtomicCuda const &,
-				unsigned int * const addr,
-				unsigned int const & compare,
-				unsigned int const & value)
-			{
-				return atomicCAS(addr, compare, value);
-			}
-		};
-		//-----------------------------------------------------------------------------
-		//! The CUDA accelerator atomic operation functor.
-		//-----------------------------------------------------------------------------
-		template<>
-		struct AtomicOp<
-		    cuda::detail::AtomicCuda,
-		    operations::Cas,
-		    unsigned long long int>
-		{
-			ALPAKA_FCT_ACC_CUDA_ONLY static unsigned long long int atomicOp(
-				cuda::detail::AtomicCuda const &,
-				unsigned long long int * const addr,
-				unsigned long long int const & compare,
-				unsigned long long int const & value)
-			{
-				return atomicCAS(addr, compare, value);
-			}
-		};
+                ALPAKA_FCT_ACC_CUDA_ONLY static unsigned long long int atomicOp(
+                    cuda::detail::AtomicCuda const &, 
+                    unsigned long long int * const addr, 
+                    unsigned long long int const & value)
+                {
+                    return atomicOr(addr, value);
+                }
+            };*/
+		    //-----------------------------------------------------------------------------
+		    // Xor.
+		    //-----------------------------------------------------------------------------
+		    //-----------------------------------------------------------------------------
+		    //! The CUDA accelerator atomic operation functor.
+		    //-----------------------------------------------------------------------------
+		    template<>
+		    struct AtomicOp<
+		        cuda::detail::AtomicCuda,
+		        ops::Xor,
+		        int>
+		    {
+			    ALPAKA_FCT_ACC_CUDA_ONLY static int atomicOp(
+				    cuda::detail::AtomicCuda const &,
+				    int * const addr,
+				    int const & value)
+			    {
+				    return atomicXor(addr, value);
+			    }
+		    };
+		    //-----------------------------------------------------------------------------
+		    //! The CUDA accelerator atomic operation functor.
+		    //-----------------------------------------------------------------------------
+		    template<>
+		    struct AtomicOp<
+		        cuda::detail::AtomicCuda,
+		        ops::Xor,
+		        unsigned int>
+		    {
+			    ALPAKA_FCT_ACC_CUDA_ONLY static unsigned int atomicOp(
+				    cuda::detail::AtomicCuda const &,
+				    unsigned int * const addr,
+				    unsigned int const & value)
+			    {
+				    return atomicXor(addr, value);
+			    }
+		    };
+		    //-----------------------------------------------------------------------------
+		    //! The CUDA accelerator atomic operation functor.
+		    //-----------------------------------------------------------------------------
+		    /*template<>
+            struct AtomicOp<
+                cuda::detail::AtomicCuda,
+                ops::Xor,
+                unsigned long long int>
+            {
+                ALPAKA_FCT_ACC_CUDA_ONLY static unsigned long long int atomicOp(
+                    cuda::detail::AtomicCuda const &, 
+                    unsigned long long int * const addr, 
+                    unsigned long long int const & value)
+                {
+                    return atomicXor(addr, value);
+                }
+            };*/
+		    //-----------------------------------------------------------------------------
+		    // Cas.
+		    //-----------------------------------------------------------------------------
+		    //-----------------------------------------------------------------------------
+		    //! The CUDA accelerator atomic operation functor.
+		    //-----------------------------------------------------------------------------
+		    template<>
+		    struct AtomicOp<
+		        cuda::detail::AtomicCuda,
+		        ops::Cas,
+		        int>
+		    {
+			    ALPAKA_FCT_ACC_CUDA_ONLY static int atomicOp(
+				    cuda::detail::AtomicCuda const &,
+				    int * const addr,
+				    int const & compare,
+				    int const & value)
+			    {
+				    return atomicCAS(addr, compare, value);
+			    }
+		    };
+		    //-----------------------------------------------------------------------------
+		    //! The CUDA accelerator atomic operation functor.
+		    //-----------------------------------------------------------------------------
+		    template<>
+		    struct AtomicOp<
+		        cuda::detail::AtomicCuda,
+		        ops::Cas,
+		        unsigned int>
+		    {
+			    ALPAKA_FCT_ACC_CUDA_ONLY static unsigned int atomicOp(
+				    cuda::detail::AtomicCuda const &,
+				    unsigned int * const addr,
+				    unsigned int const & compare,
+				    unsigned int const & value)
+			    {
+				    return atomicCAS(addr, compare, value);
+			    }
+		    };
+		    //-----------------------------------------------------------------------------
+		    //! The CUDA accelerator atomic operation functor.
+		    //-----------------------------------------------------------------------------
+		    template<>
+		    struct AtomicOp<
+		        cuda::detail::AtomicCuda,
+		        ops::Cas,
+		        unsigned long long int>
+		    {
+			    ALPAKA_FCT_ACC_CUDA_ONLY static unsigned long long int atomicOp(
+				    cuda::detail::AtomicCuda const &,
+				    unsigned long long int * const addr,
+				    unsigned long long int const & compare,
+				    unsigned long long int const & value)
+			    {
+				    return atomicCAS(addr, compare, value);
+			    }
+		    };
+        }
 	}
 }

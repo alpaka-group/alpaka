@@ -28,7 +28,7 @@
 #include <alpaka/fibers/AccFibersFwd.hpp>
 #include <alpaka/fibers/WorkDiv.hpp>                // WorkDivFibers
 #include <alpaka/fibers/Idx.hpp>                    // IdxFibers
-#include <alpaka/fibers/Atomic.hpp>                 // InterfacedAtomicFibers
+#include <alpaka/fibers/Atomic.hpp>                 // AtomicFibers
 #include <alpaka/fibers/Barrier.hpp>                // BarrierFibers
 
 // User functionality.
@@ -38,14 +38,14 @@
 #include <alpaka/fibers/Device.hpp>                 // Devices
 
 // Specialized templates.
-#include <alpaka/interfaces/KernelExecCreator.hpp>  // KernelExecCreator
+#include <alpaka/core/KernelExecCreator.hpp>        // KernelExecCreator
 
 // Implementation details.
 #include <alpaka/fibers/Common.hpp>
 #include <alpaka/traits/BlockSharedExternMemSizeBytes.hpp>
 #include <alpaka/interfaces/IAcc.hpp>
 #ifndef ALPAKA_FIBERS_NO_POOL
-    #include <alpaka/core/ConcurrentExecutionPool.hpp>  // ConcurrentExecutionPool
+    #include <alpaka/core/ConcurrentExecPool.hpp>  // ConcurrentExecPool
 #endif
 #include <alpaka/core/WorkDivHelpers.hpp>           // isValidWorkDiv
 
@@ -80,14 +80,14 @@ namespace alpaka
             class AccFibers :
                 protected WorkDivFibers,
                 protected IdxFibers,
-                protected InterfacedAtomicFibers
+                protected AtomicFibers
             {
             public:
-                using MemSpace = alpaka::mem::MemSpaceHost;
+                using MemSpace = mem::MemSpaceHost;
 
                 template<
                     typename TAcceleratedKernel>
-                friend class alpaka::fibers::detail::KernelExecutorFibers;
+                friend class KernelExecutorFibers;
 
             public:
                 //-----------------------------------------------------------------------------
@@ -96,7 +96,7 @@ namespace alpaka
                 ALPAKA_FCT_ACC_NO_CUDA AccFibers() :
                     WorkDivFibers(),
                     IdxFibers(m_mFibersToIndices, m_v3uiGridBlockIdx),
-                    InterfacedAtomicFibers()
+                    AtomicFibers()
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
@@ -105,7 +105,7 @@ namespace alpaka
                 ALPAKA_FCT_ACC_NO_CUDA AccFibers(AccFibers const & ) :
                     WorkDivFibers(),
                     IdxFibers(m_mFibersToIndices, m_v3uiGridBlockIdx),
-                    InterfacedAtomicFibers(),
+                    AtomicFibers(),
                     m_mFibersToIndices(),
                     m_v3uiGridBlockIdx(),
                     m_uiNumKernelsPerBlock(),
@@ -154,6 +154,23 @@ namespace alpaka
                 {
                     return workdiv::getWorkDiv<TOrigin, TUnit, TDimensionality>(
                         *static_cast<WorkDivFibers const *>(this));
+                }
+
+                //-----------------------------------------------------------------------------
+                //! Execute the atomic operation on the given address with the given value.
+                //! \return The old value before executing the atomic operation.
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TOp,
+                    typename T>
+                ALPAKA_FCT_ACC T atomicOp(
+                    T * const addr,
+                    T const & value) const
+                {
+                    return atomic::atomicOp<TOp, T>(
+                        addr,
+                        value,
+                        *static_cast<AtomicFibers const *>(this));
                 }
 
                 //-----------------------------------------------------------------------------
@@ -257,7 +274,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The type given to the ConcurrentExecutionPool for yielding the current fiber.
+            //! The type given to the ConcurrentExecPool for yielding the current fiber.
             //#############################################################################
             struct FiberPoolYield
             {
@@ -270,7 +287,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The type given to the ConcurrentExecutionPool for returning the current exception.
+            //! The type given to the ConcurrentExecPool for returning the current exception.
             //#############################################################################
             struct FiberPoolCurrentException
             {
@@ -360,7 +377,7 @@ namespace alpaka
                     auto const uiNumKernelsInBlock(this->AccFibers::getWorkDiv<Block, Kernels, dim::Dim1>());
                     // Yielding is not faster for fibers. Therefore we use condition variables. 
                     // It is better to wake them up when the conditions are fulfilled because this does not cost as much as for real threads.
-                    using FiberPool = alpaka::detail::ConcurrentExecutionPool<
+                    using FiberPool = alpaka::detail::ConcurrentExecPool<
                         boost::fibers::fiber,               // The concurrent execution type.
                         boost::fibers::promise,             // The promise type.
                         FiberPoolCurrentException,          // The type returning the current exception.

@@ -22,7 +22,7 @@
 #pragma once
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST
-#include <alpaka/core/Vec.hpp>      // alpaka::Vec
+#include <alpaka/core/Vec.hpp>      // Vec
 
 #include <cstddef>                  // std::size_t
 

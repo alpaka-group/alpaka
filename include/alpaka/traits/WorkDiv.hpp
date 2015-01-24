@@ -21,10 +21,10 @@
 
 #pragma once
 
-#include <alpaka/traits/Dim.hpp>        // alpaka::dim::DimToVecT
+#include <alpaka/traits/Dim.hpp>        // dim::DimToVecT
 
-#include <alpaka/core/BasicDims.hpp>    // alpaka::dim::Dim<N>
-#include <alpaka/core/Positioning.hpp>  // alpaka::origin::Grid/Blocks, alpaka::unit::Blocks, alpaka::unit::Kernels
+#include <alpaka/core/BasicDims.hpp>    // dim::Dim<N>
+#include <alpaka/core/Positioning.hpp>  // origin::Grid/Blocks, unit::Blocks, unit::Kernels
 #include <alpaka/core/Common.hpp>       // ALPAKA_FCT_ACC
 
 #include <utility>                      // std::forward
@@ -33,6 +33,9 @@ namespace alpaka
 {
     namespace traits
     {
+        //-----------------------------------------------------------------------------
+        //! The work division traits.
+        //-----------------------------------------------------------------------------
         namespace workdiv
         {
             //#############################################################################
@@ -136,6 +139,9 @@ namespace alpaka
         }
     }
 
+    //-----------------------------------------------------------------------------
+    //! The work division traits accessors.
+    //-----------------------------------------------------------------------------
     namespace workdiv
     {
         //-----------------------------------------------------------------------------

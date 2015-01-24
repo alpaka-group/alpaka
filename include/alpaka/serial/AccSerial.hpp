@@ -25,7 +25,7 @@
 #include <alpaka/serial/AccSerialFwd.hpp>
 #include <alpaka/serial/WorkDiv.hpp>                // WorkDivSerial
 #include <alpaka/serial/Idx.hpp>                    // IdxSerial
-#include <alpaka/serial/Atomic.hpp>                 // InterfacedAtomicSerial
+#include <alpaka/serial/Atomic.hpp>                 // AtomicSerial
 
 // User functionality.
 #include <alpaka/host/Mem.hpp>                      // MemCopy
@@ -34,7 +34,7 @@
 #include <alpaka/serial/Device.hpp>                 // Devices
 
 // Specialized templates.
-#include <alpaka/interfaces/KernelExecCreator.hpp>  // KernelExecCreator
+#include <alpaka/core/KernelExecCreator.hpp>        // KernelExecCreator
 
 // Implementation details.
 #include <alpaka/traits/BlockSharedExternMemSizeBytes.hpp>
@@ -72,14 +72,14 @@ namespace alpaka
             class AccSerial :
                 protected WorkDivSerial,
                 protected IdxSerial,
-                protected InterfacedAtomicSerial
+                protected AtomicSerial
             {
             public:
-                using MemSpace = alpaka::mem::MemSpaceHost;
+                using MemSpace = mem::MemSpaceHost;
 
                 template<
                     typename TAcceleratedKernel>
-                friend class alpaka::serial::detail::KernelExecutorSerial;
+                friend class KernelExecutorSerial;
 
             public:
                 //-----------------------------------------------------------------------------
@@ -88,7 +88,7 @@ namespace alpaka
                 ALPAKA_FCT_ACC_NO_CUDA AccSerial() :
                     WorkDivSerial(),
                     IdxSerial(m_v3uiGridBlockIdx),
-                    InterfacedAtomicSerial()
+                    AtomicSerial()
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
@@ -97,7 +97,7 @@ namespace alpaka
                 ALPAKA_FCT_ACC_NO_CUDA AccSerial(AccSerial const &) :
                     WorkDivSerial(),
                     IdxSerial(m_v3uiGridBlockIdx),
-                    InterfacedAtomicSerial(),
+                    AtomicSerial(),
                     m_v3uiGridBlockIdx(),
                     m_vvuiSharedMem(),
                     m_vuiExternalSharedMem()
@@ -141,6 +141,23 @@ namespace alpaka
                 {
                     return workdiv::getWorkDiv<TOrigin, TUnit, TDimensionality>(
                         *static_cast<WorkDivSerial const *>(this));
+                }
+
+                //-----------------------------------------------------------------------------
+                //! Execute the atomic operation on the given address with the given value.
+                //! \return The old value before executing the atomic operation.
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TOp,
+                    typename T>
+                ALPAKA_FCT_ACC T atomicOp(
+                    T * const addr,
+                    T const & value) const
+                {
+                    return atomic::atomicOp<TOp, T>(
+                        addr,
+                        value,
+                        *static_cast<AtomicSerial const *>(this));
                 }
 
                 //-----------------------------------------------------------------------------

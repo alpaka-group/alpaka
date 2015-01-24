@@ -61,7 +61,7 @@ namespace alpaka
             //! The serial accelerator stream type trait specialization.
             //#############################################################################
             template<>
-            class GetStream<
+            struct GetStream<
                 AccSerial>
             {
                 using type = alpaka::serial::detail::StreamSerial;

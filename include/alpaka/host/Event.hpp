@@ -23,7 +23,7 @@
 
 #include <type_traits>                  // std::is_base
 
-#include <alpaka/traits/Event.hpp>      // alpaka::event::StreamEnqueueEvent, ...
+#include <alpaka/traits/Event.hpp>      // StreamEnqueueEvent, ...
 #include <alpaka/traits/Wait.hpp>       // CurrentThreadWaitFor
 
 namespace alpaka

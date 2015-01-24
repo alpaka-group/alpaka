@@ -148,6 +148,15 @@ namespace alpaka
             {
                 using type = fibers::detail::DeviceFibers;
             };
+            //#############################################################################
+            //! The fibers accelerator device manager device type trait specialization.
+            //#############################################################################
+            template<>
+            struct GetDev<
+                fibers::detail::DeviceManagerFibers>
+            {
+                using type = fibers::detail::DeviceFibers;
+            };
 
             //#############################################################################
             //! The fibers accelerator device properties get trait specialization.
@@ -179,6 +188,15 @@ namespace alpaka
             template<>
             struct GetDevMan<
                 AccFibers>
+            {
+                using type = fibers::detail::DeviceManagerFibers;
+            };
+            //#############################################################################
+            //! The fibers accelerator device device manager type trait specialization.
+            //#############################################################################
+            template<>
+            struct GetDevMan<
+                fibers::detail::DeviceFibers>
             {
                 using type = fibers::detail::DeviceManagerFibers;
             };

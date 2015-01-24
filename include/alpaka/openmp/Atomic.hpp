@@ -27,7 +27,7 @@
     #include <alpaka/openmp/Common.hpp>
 #endif
 
-#include <alpaka/interfaces/Atomic.hpp>     // IAtomic
+#include <alpaka/traits/Atomic.hpp> // AtomicOp
 
 namespace alpaka
 {
@@ -36,17 +36,17 @@ namespace alpaka
         namespace detail
         {
             //#############################################################################
-            //! The OpenMP accelerator atomic operations.
+            //! The OpenMP accelerator atomic ops.
             //#############################################################################
             class AtomicOpenMp
             {
 #ifdef ALPAKA_OPENMP_ATOMIC_OPS_LOCK
             public:
                 template<
-                    typename TAtomic, 
-                    typename TOp, 
+                    typename TAtomic,
+                    typename TOp,
                     typename T>
-                friend struct alpaka::detail::AtomicOp;
+                friend struct alpaka::traits::atomic::AtomicOp;
 #endif
             public:
                 //-----------------------------------------------------------------------------
@@ -90,51 +90,53 @@ namespace alpaka
                 ALPAKA_FCT_ACC_NO_CUDA virtual ~AtomicOpenMp() noexcept = default;
 #endif
             };
-            using InterfacedAtomicOpenMp = alpaka::detail::IAtomic<AtomicOpenMp>;
         }
     }
 
-    namespace detail
+    namespace traits
     {
-        //#############################################################################
-        //! The OpenMP accelerator atomic operation functor.
-        //
-        // NOTE: Can not use '#pragma omp atomic' because braces or calling other functions directly after '#pragma omp atomic' are not allowed!
-        // So this would not be fully atomic! Between the store of the old value and the operation could be a context switch!
-        //#############################################################################
-        template<
-            typename TOp, 
-            typename T>
-        struct AtomicOp<
-            openmp::detail::AtomicOpenMp, 
-            TOp, 
-            T>
+        namespace atomic
         {
+            //#############################################################################
+            //! The OpenMP accelerator atomic operation functor.
+            //
+            // NOTE: Can not use '#pragma omp atomic' because braces or calling other functions directly after '#pragma omp atomic' are not allowed!
+            // So this would not be fully atomic! Between the store of the old value and the operation could be a context switch!
+            //#############################################################################
+            template<
+                typename TOp,
+                typename T>
+            struct AtomicOp<
+                openmp::detail::AtomicOpenMp,
+                TOp,
+                T>
+            {
 #ifdef ALPAKA_OPENMP_ATOMIC_OPS_LOCK
-            ALPAKA_FCT_ACC_NO_CUDA static T atomicOp(
-                openmp::detail::AtomicOpenMp const & atomic, 
-                T * const addr, 
-                T const & value)
-            {
-                omp_set_lock(&atomic.m_ompLock);
-                auto const old(TOp()(addr, value));
-                omp_unset_lock(&atomic.m_ompLock);
-                return old;
-            }
-#else
-            ALPAKA_FCT_ACC_NO_CUDA static T atomicOp(
-                openmp::detail::AtomicOpenMp const &, 
-                T * const addr, 
-                T const & value)
-            {
-                T old;
-#pragma omp critical (AtomicOp)
+                ALPAKA_FCT_ACC_NO_CUDA static T atomicOp(
+                    openmp::detail::AtomicOpenMp const & atomic,
+                    T * const addr,
+                    T const & value)
                 {
-                    old = TOp()(addr, value);
+                    omp_set_lock(&atomic.m_ompLock);
+                    auto const old(TOp()(addr, value));
+                    omp_unset_lock(&atomic.m_ompLock);
+                    return old;
                 }
-                return old;
-            }
+#else
+                ALPAKA_FCT_ACC_NO_CUDA static T atomicOp(
+                    openmp::detail::AtomicOpenMp const &,
+                    T * const addr,
+                    T const & value)
+                {
+                    T old;
+                    #pragma omp critical (AtomicOp)
+                    {
+                        old = TOp()(addr, value);
+                    }
+                    return old;
+                }
 #endif
-        };
+            };
+        }
     }
 }

@@ -116,7 +116,7 @@ namespace alpaka
             std::size_t TuiSubDim>
         ALPAKA_FCT_HOST_ACC Vec<TuiSubDim, TValue> subvec() const
         {
-            static_assert(TuiSubDim <= TuiDim, "Can not create a subvector larger then the origin vector.");
+            static_assert(TuiSubDim <= TuiDim, "The sub vector has to be smaller then the origin vector.");
 
             Vec<TuiSubDim, TValue> ret;
 

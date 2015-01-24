@@ -151,7 +151,7 @@ namespace alpaka
                 T,
                 typename std::enable_if<std::is_integral<T>::value && std::is_unsigned<T>::value>::type>
             {
-                using type = alpaka::dim::Dim<std::rank<T>::value>;
+                using type = alpaka::dim::Dim1;
             };
         }
 

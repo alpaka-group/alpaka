@@ -37,7 +37,7 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TAcc>
-            class GetEvent;
+            struct GetEvent;
 
             //#############################################################################
             //! The event enqueuer trait.

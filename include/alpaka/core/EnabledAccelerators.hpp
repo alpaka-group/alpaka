@@ -149,17 +149,17 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The maximum block kernels extents supported by all of the enabled accelerators.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST alpaka::Vec<3u> getMaxBlockKernelExtentsEnabledAccelerators()
+        ALPAKA_FCT_HOST Vec<3u> getMaxBlockKernelExtentsEnabledAccelerators()
         {
-            getMaxBlockKernelExtentsAccelerators<acc::EnabledAccelerators>();
+            workdiv::getMaxBlockKernelExtentsAccelerators<acc::EnabledAccelerators>();
         }
 
         //-----------------------------------------------------------------------------
         //! \return The maximum block kernels count supported by all of the enabled accelerators.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST alpaka::Vec<3u> getMaxBlockKernelCountEnabledAccelerators()
+        ALPAKA_FCT_HOST Vec<3u> getMaxBlockKernelCountEnabledAccelerators()
         {
-            getMaxBlockKernelCountAccelerators<acc::EnabledAccelerators>();
+            workdiv::getMaxBlockKernelCountAccelerators<acc::EnabledAccelerators>();
         }
     }
 }

@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/interfaces/IAcc.hpp> // alpaka::IAcc
+#include <alpaka/interfaces/IAcc.hpp> // IAcc
 
 namespace alpaka
 {
@@ -119,12 +119,12 @@ namespace alpaka
                 TWorkDiv const & workDiv, 
                 TStream const & stream) const
             {
-                if(!isValidWorkDiv<acc::GetAccT<TKernelExecutor>>(workDiv))
+                if(!workdiv::isValidWorkDiv<acc::GetAccT<TKernelExecutor>>(workDiv))
                 {
                     throw std::runtime_error("The given work division is not supported by " + acc::getAccName<acc::GetAccT<TKernelExecutor>>() + "!");
                 }
 
-                return createKernelExecutor(workDiv, stream, KernelConstrArgsIdxSequenceT());
+                return createKernelExecutor(workDiv, stream, KernelConstrArgsIdxSequence());
             }
             //-----------------------------------------------------------------------------
             //! \return An KernelExecutor with the given extents.
@@ -167,12 +167,12 @@ namespace alpaka
                     throw std::runtime_error("The workDiv block kernels extents is not allowed to be zero in any dimension!");
                 }
 
-                return TKernelExecutor(workDiv, stream, std::get<TIndices>(std::forward<TKernelConstrArgs>(m_tupleKernelConstrArgs))...);
+                return TKernelExecutor(workDiv, stream, std::forward<TKernelConstrArgs>(std::get<TIndices>(m_tupleKernelConstrArgs))...);
             }
 
         private:
             std::tuple<TKernelConstrArgs...> m_tupleKernelConstrArgs;
-            using KernelConstrArgsIdxSequenceT = std_extension::make_index_sequence<sizeof...(TKernelConstrArgs)>;
+            using KernelConstrArgsIdxSequence = std_extension::make_index_sequence<sizeof...(TKernelConstrArgs)>;
         };
 
         //#############################################################################

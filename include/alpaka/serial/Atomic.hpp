@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/interfaces/Atomic.hpp> // IAtomic
+#include <alpaka/traits/Atomic.hpp> // AtomicOp
 
 namespace alpaka
 {
@@ -30,7 +30,7 @@ namespace alpaka
         namespace detail
         {
             //#############################################################################
-            //! The serial accelerator atomic operations.
+            //! The serial accelerator atomic ops.
             //#############################################################################
             class AtomicSerial
             {
@@ -56,30 +56,33 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA virtual ~AtomicSerial() noexcept = default;
             };
-            using InterfacedAtomicSerial = alpaka::detail::IAtomic<AtomicSerial>;
         }
     }
 
-    namespace detail
+
+    namespace traits
     {
-        //#############################################################################
-        //! The serial accelerator atomic operation functor.
-        //#############################################################################
-        template<
-            typename TOp, 
-            typename T>
-        struct AtomicOp<
-            serial::detail::AtomicSerial, 
-            TOp, 
-            T>
+        namespace atomic
         {
-            ALPAKA_FCT_ACC_NO_CUDA static T atomicOp(
-                serial::detail::AtomicSerial const &, 
-                T * const addr, 
-                T const & value)
+            //#############################################################################
+            //! The serial accelerator atomic operation functor.
+            //#############################################################################
+            template<
+                typename TOp,
+                typename T>
+            struct AtomicOp<
+                serial::detail::AtomicSerial,
+                TOp,
+                T>
             {
-                return TOp()(addr, value);
-            }
-        };
+                ALPAKA_FCT_ACC_NO_CUDA static T atomicOp(
+                    serial::detail::AtomicSerial const &,
+                    T * const addr,
+                    T const & value)
+                {
+                    return TOp()(addr, value);
+                }
+            };
+        }
     }
 }

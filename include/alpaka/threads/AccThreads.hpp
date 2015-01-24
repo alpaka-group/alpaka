@@ -28,7 +28,7 @@
 #include <alpaka/threads/AccThreadsFwd.hpp>
 #include <alpaka/threads/WorkDiv.hpp>               // WorkDivThreads
 #include <alpaka/threads/Idx.hpp>                   // IdxThreads
-#include <alpaka/threads/Atomic.hpp>                // InterfacedAtomicThreads
+#include <alpaka/threads/Atomic.hpp>                // AtomicThreads
 #include <alpaka/threads/Barrier.hpp>               // BarrierThreads
 
 // User functionality.
@@ -38,13 +38,13 @@
 #include <alpaka/threads/Device.hpp>                // Devices
 
 // Specialized templates.
-#include <alpaka/interfaces/KernelExecCreator.hpp>  // KernelExecCreator
+#include <alpaka/core/KernelExecCreator.hpp>        // KernelExecCreator
 
 // Implementation details.
 #include <alpaka/traits/BlockSharedExternMemSizeBytes.hpp>
 #include <alpaka/interfaces/IAcc.hpp>
 #ifndef ALPAKA_THREADS_NO_POOL
-    #include <alpaka/core/ConcurrentExecutionPool.hpp>  // ConcurrentExecutionPool
+    #include <alpaka/core/ConcurrentExecPool.hpp>  // ConcurrentExecPool
 #endif
 
 #include <cstddef>                                  // std::size_t
@@ -85,14 +85,14 @@ namespace alpaka
             class AccThreads :
                 protected WorkDivThreads,
                 protected IdxThreads,
-                protected InterfacedAtomicThreads
+                protected AtomicThreads
             {
             public:
-                using MemSpace = alpaka::mem::MemSpaceHost;
+                using MemSpace = mem::MemSpaceHost;
 
                 template<
                     typename TAcceleratedKernel>
-                friend class alpaka::threads::detail::KernelExecutorThreads;
+                friend class KernelExecutorThreads;
 
             public:
                 //-----------------------------------------------------------------------------
@@ -101,7 +101,7 @@ namespace alpaka
                 ALPAKA_FCT_ACC_NO_CUDA AccThreads() :
                     WorkDivThreads(),
                     IdxThreads(m_mThreadsToIndices, m_v3uiGridBlockIdx),
-                    InterfacedAtomicThreads()
+                    AtomicThreads()
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
@@ -110,7 +110,7 @@ namespace alpaka
                 ALPAKA_FCT_ACC_NO_CUDA AccThreads(AccThreads const & ) :
                     WorkDivThreads(),
                     IdxThreads(m_mThreadsToIndices, m_v3uiGridBlockIdx),
-                    InterfacedAtomicThreads(),
+                    AtomicThreads(),
                     m_mThreadsToIndices(),
                     m_v3uiGridBlockIdx(),
                     m_mThreadsToBarrier(),
@@ -159,6 +159,23 @@ namespace alpaka
                 {
                     return workdiv::getWorkDiv<TOrigin, TUnit, TDimensionality>(
                         *static_cast<WorkDivThreads const *>(this));
+                }
+
+                //-----------------------------------------------------------------------------
+                //! Execute the atomic operation on the given address with the given value.
+                //! \return The old value before executing the atomic operation.
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TOp,
+                    typename T>
+                ALPAKA_FCT_ACC T atomicOp(
+                    T * const addr,
+                    T const & value) const
+                {
+                    return atomic::atomicOp<TOp, T>(
+                        addr,
+                        value,
+                        *static_cast<AtomicThreads const *>(this));
                 }
 
                 //-----------------------------------------------------------------------------
@@ -264,7 +281,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The type given to the ConcurrentExecutionPool for yielding the current thread.
+            //! The type given to the ConcurrentExecPool for yielding the current thread.
             //#############################################################################
             struct ThreadPoolYield
             {
@@ -277,7 +294,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The type given to the ConcurrentExecutionPool for returning the current exception.
+            //! The type given to the ConcurrentExecPool for returning the current exception.
             //#############################################################################
             struct ThreadPoolCurrentException
             {
@@ -387,7 +404,7 @@ KernelExecutorThreads && other) :
                     // When using the thread pool the threads are yielding because this is faster. 
                     // Using condition variables and going to sleep is very costly for real threads. 
                     // Especially when the time to wait is really short (syncBlockKernels) yielding is much faster.
-                    using ThreadPool = alpaka::detail::ConcurrentExecutionPool<
+                    using ThreadPool = alpaka::detail::ConcurrentExecPool<
                         std::thread,                // The concurrent execution type.
                         std::promise,               // The promise type.
                         ThreadPoolCurrentException, // The type returning the current exception.

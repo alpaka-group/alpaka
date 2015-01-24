@@ -22,18 +22,18 @@ There are two possible ways to tell the kernel about the accelerator type:
   * + This allows users to specialize them for different accelerators. (Is this is really necessary or desired?)
   * - The kernel has to be a class template. This does not allow C++ lambdas to be used as kernels because they are no templates themselves (but only their `operator()` can be templated in C++14).
   * - This prevents the user from instantiating an accelerator independent kernel before executing it and then adapting it to the given accelerator on execution.
-    Because the memory layout in inheritance hierarchies is undefined a simple copy of the user kernel or its members to its specialized type is not possible platform independently.
-    This would require a copy from UserKernel<TDummyAcc> to UserKernel<TAcc> to be possible.
-    The only way to allow this would be to require the user to implement a templated copy constructor for every kernel.
-    This is not allowed for kernels that should be copyable to a CUDA device because std::is_trivially_copyable requires the kernel to have no non-trivial copy constructors.
-  a) and inherits from the accelerator. 
-   * +/- To give a device function called from the kernel functor access to the accelerator methods, these methods have to be templated on the accelerated kernel and get a reference to the accelerator.
-     This allows to give them access not only to the accelerator methods but also to the other kernel methods.
-     This is inconsistent because the kernel uses inheritance and subsequent function calls get a parameter.
-   * - The kernel itself has to inherit at least protected from the accelerator to allow the KernelExecutor to access the Accelerator.
-  b) and has a reference to the accelerator as parameter.
-   * - This would require an additional object in device memory taking up valuable CUDA registers.
-    TODO: Will all the device functions be inlined nevertheless (because we do not use run-time polymorphism)? This would make it a non-reason.
+  Because the memory layout in inheritance hierarchies is undefined a simple copy of the user kernel or its members to its specialized type is not possible platform independently.
+  This would require a copy from UserKernel<TDummyAcc> to UserKernel<TAcc> to be possible.
+  The only way to allow this would be to require the user to implement a templated copy constructor for every kernel.
+  This is not allowed for kernels that should be copyable to a CUDA device because std::is_trivially_copyable requires the kernel to have no non-trivial copy constructors.
+  * a) and inherits from the accelerator. 
+    * +/- To give a device function called from the kernel functor access to the accelerator methods, these methods have to be templated on the accelerated kernel and get a reference to the accelerator.
+    This allows to give them access not only to the accelerator methods but also to the other kernel methods.
+    This is inconsistent because the kernel uses inheritance and subsequent function calls get a parameter.
+    * - The kernel itself has to inherit at least protected from the accelerator to allow the KernelExecutor to access the Accelerator.
+  * b) and has a reference to the accelerator as parameter.
+    * - This would require an additional object in device memory taking up valuable CUDA registers.
+    * TODO: Will all the device functions be inlined nevertheless (because we do not use run-time polymorphism)? This would make it a non-reason.
  2. The `operator()` is templated on the accelerator type and has a reference to the accelerator as parameter.
   * + The kernel can be an arbitrary function object with ALPAKA_FCT_HOST_ACC attributes.
   * + This would allow to instantiate the accelerator independent kernel and set its members before execution.

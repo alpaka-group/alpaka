@@ -21,57 +21,52 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST
-
-#include <alpaka/traits/Wait.hpp>   // CurrentThreadWaitFor, WaiterWaitFor
+#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_ACC
 
 namespace alpaka
 {
     namespace traits
     {
         //-----------------------------------------------------------------------------
-        //! The stream traits.
+        //! The atomic operation traits.
         //-----------------------------------------------------------------------------
-        namespace stream
+        namespace atomic
         {
             //#############################################################################
-            //! The stream type trait.
+            //! The abstract atomic operation functor.
             //#############################################################################
             template<
-                typename TAcc>
-            struct GetStream;
-
-            //#############################################################################
-            //! The thread stream wait trait.
-            //#############################################################################
-            template<
-                typename TStream, 
-                typename TSfinae = void>
-            struct StreamTest;
+                typename TAtomic,
+                typename TOp,
+                typename T>
+            struct AtomicOp;
         }
     }
 
     //-----------------------------------------------------------------------------
-    //! The stream trait accessors.
+    //! The atomic operation traits accessors.
     //-----------------------------------------------------------------------------
-    namespace stream
+    namespace atomic
     {
-        //#############################################################################
-        //! The stream type trait alias template to remove the ::type.
-        //#############################################################################
-        template<
-            typename TAcc>
-        using GetStreamT = typename traits::stream::GetStream<TAcc>::type;
-
         //-----------------------------------------------------------------------------
-        //! Tests if all ops in the given stream have been completed.
+        //! Executes the given operation atomically.
+        //!
+        //! \tparam TOp The operation type.
+        //! \tparam T The value type.
+        //! \tparam TAtomic The atomic implementation type.
+        //! \param addr The value to change atomically.
+        //! \param value The value used in the atomic operation.
         //-----------------------------------------------------------------------------
         template<
-            typename TStream>
-        ALPAKA_FCT_HOST bool test(
-            TStream const & stream)
+            typename TOp,
+            typename T,
+            typename TAtomic>
+        ALPAKA_FCT_ACC T atomicOp(
+            unsigned int * const addr,
+            unsigned int const & value,
+            TAtomic const & atomic)
         {
-            return traits::stream::StreamTest<TStream>::streamTest(stream);
+            return traits::atomic::AtomicOp<TAtomic, TOp, T>::atomicOp(atomic, addr, value);
         }
     }
 }

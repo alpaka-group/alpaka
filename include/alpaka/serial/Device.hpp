@@ -146,6 +146,15 @@ namespace alpaka
             {
                 using type = serial::detail::DeviceSerial;
             };
+            //#############################################################################
+            //! The serial accelerator device manager device type trait specialization.
+            //#############################################################################
+            template<>
+            struct GetDev<
+                serial::detail::DeviceManagerSerial>
+            {
+                using type = serial::detail::DeviceSerial;
+            };
 
             //#############################################################################
             //! The serial accelerator device properties get trait specialization.
@@ -177,6 +186,15 @@ namespace alpaka
             template<>
             struct GetDevMan<
                 AccSerial>
+            {
+                using type = serial::detail::DeviceManagerSerial;
+            };
+            //#############################################################################
+            //! The serial accelerator device device manager type trait specialization.
+            //#############################################################################
+            template<>
+            struct GetDevMan<
+                serial::detail::DeviceSerial>
             {
                 using type = serial::detail::DeviceManagerSerial;
             };

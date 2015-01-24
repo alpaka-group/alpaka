@@ -213,8 +213,8 @@ struct ProfileAcceleratedMatMulKernel
         alpaka::Vec<3u> v3uiGridKernels(uiMatrixSize, uiMatrixSize, 1u);
 		alpaka::workdiv::BasicWorkDiv const workDiv(
             bAdaptiveBlockKernelsExtent
-            ? alpaka::getValidWorkDiv<boost::mpl::vector<TAcc>>(v3uiGridKernels)
-            : alpaka::getValidWorkDiv<alpaka::acc::EnabledAccelerators>(v3uiGridKernels));
+            ? alpaka::workdiv::getValidWorkDiv<boost::mpl::vector<TAcc>>(v3uiGridKernels)
+            : alpaka::workdiv::getValidWorkDiv<alpaka::acc::EnabledAccelerators>(v3uiGridKernels));
 
 		std::cout
 			<< "profileAcceleratedMatMulKernel("

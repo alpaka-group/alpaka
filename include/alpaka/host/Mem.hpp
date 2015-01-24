@@ -47,7 +47,7 @@ namespace alpaka
                 typename TElem,
                 typename TDim>
             class MemBufHost :
-                public alpaka::extent::BasicExtents<TDim>
+                public extent::BasicExtents<TDim>
             {
             public:
                 using Elem = TElem;
@@ -61,7 +61,7 @@ namespace alpaka
                     typename TExtents>
                 MemBufHost(
                     TExtents const & extents):
-                        BasicExtents<TDim>(extents),
+                        extent::BasicExtents<TDim>(extents),
                         m_spMem(
                             new TElem[computeElementCount(extents)],
                             [](TElem * pBuffer)
@@ -80,10 +80,10 @@ namespace alpaka
                 static std::size_t computeElementCount(
                     TExtents const & extents)
                 {
-                    auto const uiExtentElementCount(extent::getProductOfExtents(extents));
-                    assert(uiExtentElementCount>0);
+                    auto const uiExtentsElementCount(extent::getProductOfExtents(extents));
+                    assert(uiExtentsElementCount>0);
 
-                    return uiExtentElementCount;
+                    return uiExtentsElementCount;
                 }
 
             public:

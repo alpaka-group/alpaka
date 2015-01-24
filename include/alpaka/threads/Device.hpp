@@ -147,6 +147,15 @@ namespace alpaka
             {
                 using type = threads::detail::DeviceThreads;
             };
+            //#############################################################################
+            //! The threads accelerator device manager device type trait specialization.
+            //#############################################################################
+            template<>
+            struct GetDev<
+                threads::detail::DeviceManagerThreads>
+            {
+                using type = threads::detail::DeviceThreads;
+            };
 
             //#############################################################################
             //! The threads accelerator device properties get trait specialization.
@@ -180,6 +189,15 @@ namespace alpaka
             template<>
             struct GetDevMan<
                 AccThreads>
+            {
+                using type = threads::detail::DeviceManagerThreads;
+            };
+            //#############################################################################
+            //! The threads accelerator device device manager type trait specialization.
+            //#############################################################################
+            template<>
+            struct GetDevMan<
+                threads::detail::DeviceThreads>
             {
                 using type = threads::detail::DeviceManagerThreads;
             };

@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/interfaces/Atomic.hpp> // IAtomic
+#include <alpaka/traits/Atomic.hpp> // AtomicOp
 
 #include <mutex>                        // std::mutex, std::lock_guard
 
@@ -32,7 +32,7 @@ namespace alpaka
         namespace detail
         {
             //#############################################################################
-            //! The threads accelerator atomic operations.
+            //! The threads accelerator atomic ops.
             //#############################################################################
             class AtomicThreads
             {
@@ -41,7 +41,7 @@ namespace alpaka
                     typename TAtomic, 
                     typename TOp, 
                     typename T>
-                friend struct alpaka::detail::AtomicOp;
+                friend struct alpaka::traits::atomic::AtomicOp;
 
             public:
                 //-----------------------------------------------------------------------------
@@ -68,33 +68,35 @@ namespace alpaka
             private:
                 std::mutex mutable m_mtxAtomic; //!< The mutex protecting access for a atomic operation.
             };
-            using InterfacedAtomicThreads = alpaka::detail::IAtomic<AtomicThreads>;
         }
     }
 
-    namespace detail
+    namespace traits
     {
-        //#############################################################################
-        //! The threads accelerator atomic operation functor.
-        //#############################################################################
-        template<
-            typename TOp, 
-            typename T>
-        struct AtomicOp<
-            threads::detail::AtomicThreads, 
-            TOp, 
-            T>
+        namespace atomic
         {
-            ALPAKA_FCT_ACC_NO_CUDA static T atomicOp(
-                threads::detail::AtomicThreads const & atomic, 
-                T * const addr, 
-                T const & value)
+            //#############################################################################
+            //! The threads accelerator atomic operation functor.
+            //#############################################################################
+            template<
+                typename TOp,
+                typename T>
+            struct AtomicOp<
+                threads::detail::AtomicThreads,
+                TOp,
+                T>
             {
-                // \TODO: Currently not only the access to the same memory location is protected by a mutex but all atomic ops on all threads.
-                // We could use a list of mutexes and lock the mutex depending on the target memory location to allow multiple atomic ops on different targets concurrently.
-                std::lock_guard<std::mutex> lock(atomic.m_mtxAtomic);
-                return TOp()(addr, value);
-            }
-        };
+                ALPAKA_FCT_ACC_NO_CUDA static T atomicOp(
+                    threads::detail::AtomicThreads const & atomic,
+                    T * const addr,
+                    T const & value)
+                {
+                    // \TODO: Currently not only the access to the same memory location is protected by a mutex but all atomic ops on all threads.
+                    // We could use a list of mutexes and lock the mutex depending on the target memory location to allow multiple atomic ops on different targets concurrently.
+                    std::lock_guard<std::mutex> lock(atomic.m_mtxAtomic);
+                    return TOp()(addr, value);
+                }
+            };
+        }
     }
 }

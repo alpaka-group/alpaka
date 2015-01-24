@@ -153,6 +153,15 @@ namespace alpaka
             {
                 using type = openmp::detail::DeviceOpenMp;
             };
+            //#############################################################################
+            //! The OpenMP accelerator device manager device type trait specialization.
+            //#############################################################################
+            template<>
+            struct GetDev<
+                openmp::detail::DeviceManagerOpenMp>
+            {
+                using type = openmp::detail::DeviceOpenMp;
+            };
 
             //#############################################################################
             //! The OpenMP accelerator device properties get trait specialization.
@@ -189,6 +198,15 @@ namespace alpaka
             template<>
             struct GetDevMan<
                 AccOpenMp>
+            {
+                using type = openmp::detail::DeviceManagerOpenMp;
+            };
+            //#############################################################################
+            //! The OpenMP accelerator device device manager type trait specialization.
+            //#############################################################################
+            template<>
+            struct GetDevMan<
+                openmp::detail::DeviceOpenMp>
             {
                 using type = openmp::detail::DeviceManagerOpenMp;
             };

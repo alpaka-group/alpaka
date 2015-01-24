@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/core/Vec.hpp>  // alpaka::Vec
+#include <alpaka/core/Vec.hpp>  // Vec
 
 #include <algorithm>            // std::min, std::max
 
@@ -30,7 +30,7 @@ namespace alpaka
     //-----------------------------------------------------------------------------
     //! Defines operation functors.
     //-----------------------------------------------------------------------------
-    namespace operations
+    namespace ops
     {
         //#############################################################################
         //! The addition functor.

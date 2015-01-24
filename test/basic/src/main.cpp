@@ -59,7 +59,7 @@ public:
         std::uint32_t const uiMult2) const
     {
         // The number of kernels in this block.
-        std::uint32_t const uiNumKernelsInBlock(acc.template getExtents<alpaka::Block, alpaka::Kernels, alpaka::Linear>());
+        std::size_t const uiNumKernelsInBlock(acc.template getWorkDiv<alpaka::Block, alpaka::Kernels, alpaka::dim::Dim1>()[0u]);
 
         // Get the extern allocated shared memory.
         std::uint32_t * const pBlockShared(acc.template getBlockSharedExternMem<std::uint32_t>());
@@ -69,11 +69,11 @@ public:
         //std::uint32_t * const pBlockShared2(acc.template allocBlockSharedMem<std::uint32_t, TuiNumUselessWork::value>());
 
         // Calculate linearized index of the kernel in the block.
-        std::uint32_t const uiIdxBlockKernelsLin(acc.template getIdx<alpaka::Block, alpaka::Kernels, alpaka::Linear>());
+        std::size_t const uiIdxBlockKernelsLin(acc.template getIdx<alpaka::Block, alpaka::Kernels, alpaka::dim::Dim1>()[0u]);
 
 
         // Fill the shared block with the kernel ids [1+X, 2+X, 3+X, ..., #Threads+X].
-        std::uint32_t iSum1(uiIdxBlockKernelsLin+1);
+        std::uint32_t iSum1(static_cast<std::uint32_t>(uiIdxBlockKernelsLin+1));
         for(std::uint32_t i(0); i<TuiNumUselessWork::value; ++i)
         {
             iSum1 += i;
@@ -85,7 +85,7 @@ public:
         acc.syncBlockKernels();
 
         // Do something useless.
-        std::uint32_t iSum2(uiIdxBlockKernelsLin);
+        std::uint32_t iSum2(static_cast<std::uint32_t>(uiIdxBlockKernelsLin));
         for(std::uint32_t i(0); i<TuiNumUselessWork::value; ++i)
         {
             iSum2 -= i;
@@ -100,7 +100,7 @@ public:
         // Now add up all the cells atomically and write the result to cell 0 of the shared memory.
         if(uiIdxBlockKernelsLin > 0)
         {
-            acc.template atomicOp<alpaka::Add>(&pBlockShared[0], pBlockShared[uiIdxBlockKernelsLin]);
+            acc.template atomicOp<alpaka::ops::Add>(&pBlockShared[0], pBlockShared[uiIdxBlockKernelsLin]);
         }
 
 
@@ -110,9 +110,9 @@ public:
         if(uiIdxBlockKernelsLin==0)
         {
             // Calculate linearized block id.
-            std::uint32_t const bId(acc.template getIdx<alpaka::Grid, alpaka::Blocks, alpaka::Linear>());
+            std::size_t const uiblockIdx(acc.template getIdx<alpaka::Grid, alpaka::Blocks, alpaka::dim::Dim1>()[0u]);
 
-            puiBlockRetVals[bId] = pBlockShared[0] * m_uiMult * uiMult2;
+            puiBlockRetVals[uiblockIdx] = pBlockShared[0] * m_uiMult * uiMult2;
         }
     }
 
@@ -128,18 +128,18 @@ namespace alpaka
     template<
         class TuiNumUselessWork, 
         class TAcc>
-    ALPAKA_FCT_HOST struct BlockSharedExternMemSizeBytes<
+    struct BlockSharedExternMemSizeBytes<
         ExampleAcceleratedKernel<TuiNumUselessWork, TAcc>>
     {
         //-----------------------------------------------------------------------------
         //! \return The size of the shared memory allocated for a block.
         //-----------------------------------------------------------------------------
         template<typename... TArgs>
-        static std::size_t getBlockSharedExternMemSizeBytes(
-            alpaka::vec<3u> const & v3uiBlockKernelsExtents, 
+        ALPAKA_FCT_HOST static std::size_t getBlockSharedExternMemSizeBytes(
+            alpaka::Vec<3u> const & v3uiBlockKernelsExtents, 
             TArgs && ...)
         {
-            return v3uiSizeBlockKernels.prod() * sizeof(std::uint32_t);
+            return v3uiBlockKernelsExtents.prod() * sizeof(std::uint32_t);
         }
     };
 }
@@ -165,7 +165,7 @@ void profileAcceleratedKernel(
     exec(std::forward<TArgs>(args)...);
 
     // Enqueue an event to wait for. This allows synchronization after the (possibly) asynchronous kernel execution.
-    alpaka::event::GetEventT<TExec::Acc> ev;
+    alpaka::event::GetEventT<alpaka::acc::GetAccT<TExec>> ev;
     alpaka::event::enqueue(ev);
     alpaka::wait::wait(ev);
 
@@ -185,17 +185,17 @@ struct ProfileAcceleratedExampleKernel
 {
 	template<
         typename TAcc, 
-        typename TWorkExtent>
+        typename TWorkDiv>
 	void operator()(
         TAcc, 
-        alpaka::IWorkDiv<TWorkDiv> const & workDiv, 
+        TWorkDiv const & workDiv, 
         std::uint32_t const uiMult2)
 	{
 		std::cout << std::endl;
 		std::cout << "################################################################################" << std::endl;
 		
 		using Kernel = ExampleAcceleratedKernel<TuiNumUselessWork>;
-		using AccMemorySpace = typename alpaka::memory::GetMemSpaceT<TAcc>;
+		using AccMemSpace = typename alpaka::mem::GetMemSpaceT<TAcc>;
 
 		std::cout
 			<< "AcceleratedExampleKernelProfiler("
@@ -204,16 +204,16 @@ struct ProfileAcceleratedExampleKernel
 			<< ", workDiv: " << workDiv
 			<< ")" << std::endl;
 
-		std::size_t const uiGridBlocksCount(workDiv.template getExtent<alpaka::Grid, alpaka::Blocks, alpaka::Linear>());
-		std::size_t const uiBlockKernelsCount(workDiv.template getExtent<alpaka::Block, alpaka::Kernels, alpaka::Linear>());
+		std::size_t const uiGridBlocksCount(alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Blocks, alpaka::dim::Dim1>(workDiv)[0u]);
+		std::size_t const uiBlockKernelsCount(alpaka::workdiv::getWorkDiv<alpaka::Block, alpaka::Kernels, alpaka::dim::Dim1>(workDiv)[0u]);
 
 		// An array for the return values calculated by the blocks.
 		std::vector<std::uint32_t> vuiBlockRetVals(uiGridBlocksCount, 0);
 
 		// Allocate accelerator buffers and copy.
 		std::size_t const uiSizeElements(uiGridBlocksCount);
-		auto pBlockRetValsAcc(alpaka::memory::alloc<std::uint32_t, AccMemorySpace>(uiSizeElements));
-		alpaka::memory::copy(pBlockRetValsAcc, vuiBlockRetVals, uiSizeElements);
+		auto blockRetValsAcc(alpaka::mem::alloc<std::uint32_t, AccMemSpace>(uiSizeElements));
+		alpaka::mem::copy(blockRetValsAcc, vuiBlockRetVals, uiSizeElements);
 
 		std::uint32_t const m_uiMult(42);
 
@@ -222,10 +222,10 @@ struct ProfileAcceleratedExampleKernel
         // Get a new stream.
         alpaka::stream::GetStreamT<TAcc> stream;
         // Profile the kernel execution.
-		profileAcceleratedKernel(exec(workDiv, stream), pBlockRetValsAcc.get(), uiMult2);
+		profileAcceleratedKernel(exec(workDiv, stream), alpaka::mem::getNativePtr(blockRetValsAcc), uiMult2);
 
 		// Copy back the result.
-		alpaka::memory::copy(vuiBlockRetVals, pBlockRetValsAcc, uiSizeElements);
+		alpaka::mem::copy(vuiBlockRetVals, blockRetValsAcc, uiSizeElements);
 
 		// Assert that the results are correct.
 		std::uint32_t const uiCorrectResult(static_cast<std::uint32_t>(uiBlockKernelsCount*uiBlockKernelsCount) * m_uiMult * uiMult2);
@@ -263,7 +263,7 @@ int main()
         std::cout << std::endl;
 
         // Logs the enabled accelerators.
-        alpaka::acc::writeEnabledAccelerators();
+        alpaka::acc::writeEnabledAccelerators(std::cout);
 
         std::cout << std::endl;
 		
@@ -275,15 +275,16 @@ int main()
 #endif
 
         // Set the grid blocks extent.
-        alpaka::WorkExtent const workExtent(alpaka::getValidWorkExtent<TAcc>(16u, 8u, 4u), 
-            false));
+        alpaka::workdiv::BasicWorkDiv const workDiv(
+            alpaka::workdiv::getValidWorkDiv<alpaka::acc::EnabledAccelerators>(
+                alpaka::Vec<3u>(16u, 8u, 4u)));
 
         using TuiNumUselessWork = boost::mpl::int_<100u>;
         std::uint32_t const uiMult2(5u);
 
 		// Execute the kernel on all enabled accelerators.
 		boost::mpl::for_each<alpaka::acc::EnabledAccelerators>(
-			std::bind(ProfileAcceleratedExampleKernel<TuiNumUselessWork>(), std::placeholders::_1, workExtent, uiMult2)
+			std::bind(ProfileAcceleratedExampleKernel<TuiNumUselessWork>(), std::placeholders::_1, workDiv, uiMult2)
 		);
 
         return 0;

@@ -23,7 +23,7 @@
 
 #include <alpaka/fibers/Common.hpp>
 
-#include <alpaka/traits/Idx.hpp>  // idx::getIdx
+#include <alpaka/traits/Idx.hpp>    // idx::getIdx
 
 #include <map>                      // std::map
 

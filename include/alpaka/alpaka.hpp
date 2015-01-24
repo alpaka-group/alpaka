@@ -22,21 +22,21 @@
 #pragma once
 
 #include <alpaka/core/BasicDims.hpp>
+#include <alpaka/core/BasicExtents.hpp>
+#include <alpaka/core/BasicWorkDiv.hpp>
 #include <alpaka/core/Common.hpp>
 #include <alpaka/core/EnabledAccelerators.hpp>
+#include <alpaka/core/KernelExecCreator.hpp>
 #include <alpaka/core/MemBufPlainPtrWrapper.hpp>
-#include <alpaka/core/Operations.hpp>
+#include <alpaka/core/Ops.hpp>
 #include <alpaka/core/Positioning.hpp>
-#include <alpaka/core/BasicExtents.hpp>
 #include <alpaka/core/Vec.hpp>
 #include <alpaka/core/WorkDivHelpers.hpp>
 
-#include <alpaka/core/BasicWorkDiv.hpp>
-
 #include <alpaka/interfaces/IAcc.hpp>
-#include <alpaka/interfaces/KernelExecCreator.hpp>
 
 #include <alpaka/traits/Acc.hpp>
+#include <alpaka/traits/Atomic.hpp>
 #include <alpaka/traits/BlockSharedExternMemSizeBytes.hpp>
 #include <alpaka/traits/Device.hpp>
 #include <alpaka/traits/Dim.hpp>

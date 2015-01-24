@@ -193,7 +193,7 @@ namespace alpaka
         //!
         //! \tparam T The type of the returned buffer.
         //! \tparam TMemSpace The memory space to allocate in.
-        //! \param extent The extents of the buffer.
+        //! \param extents The extents of the buffer.
         //! \return Pointer to newly allocated buffer.
         //-----------------------------------------------------------------------------
         template<
@@ -228,7 +228,7 @@ namespace alpaka
                 std::is_same<dim::GetDimT<TMemBufDst>, dim::GetDimT<TMemBufSrc>>::value,
                 "The source and the destination buffers are required to have the same dimensionality!");
             static_assert(
-                std::is_same<alpaka::dim::GetDimT<TMemBufDst>, alpaka::dim::GetDimT<TExtents>>::value,
+                std::is_same<dim::GetDimT<TMemBufDst>, dim::GetDimT<TExtents>>::value,
                 "The destination buffer and the extents are required to have the same dimensionality!");
             static_assert(
                 std::is_same<GetMemElemT<TMemBufDst>, GetMemElemT<TMemBufSrc>>::value,
@@ -247,7 +247,7 @@ namespace alpaka
         //!
         //! \param memBuf The memory buffer to fill.
         //! \param byte Value to set for each element of the specified buffer.
-        //! \param extent The Extents of the buffer to fill.
+        //! \param extents The Extents of the buffer to fill.
         //-----------------------------------------------------------------------------
         template<
             typename TMemBuf, 
@@ -258,7 +258,7 @@ namespace alpaka
             TExtents const & extents = TExtents())
         {
             static_assert(
-                std::is_same<alpaka::dim::GetDimT<TMemBuf>, alpaka::dim::GetDimT<TExtents>>::value,
+                std::is_same<dim::GetDimT<TMemBuf>, dim::GetDimT<TExtents>>::value,
                 "The buffer and the extents are required to have the same dimensionality!");
 
             traits::mem::MemSet<dim::GetDimT<TMemBuf>, GetMemSpaceT<TMemBuf>>::memSet(
@@ -272,7 +272,7 @@ namespace alpaka
     //-----------------------------------------------------------------------------
     // Trait specializations for fixed size arrays.
     //
-    // This allows the usage of multidimensional compile time arrays e.g. int[4][3] as argument to memory operations.
+    // This allows the usage of multidimensional compile time arrays e.g. int[4][3] as argument to memory ops.
     // Up to 3 dimensions are supported.
     //-----------------------------------------------------------------------------
     namespace traits

@@ -61,7 +61,7 @@ namespace alpaka
             //! The serial accelerator event type trait specialization.
             //#############################################################################
             template<>
-            class GetEvent<
+            struct GetEvent<
                 AccSerial>
             {
                 using type = alpaka::serial::detail::EventSerial;

@@ -25,7 +25,7 @@
 #include <alpaka/cuda/AccCudaFwd.hpp>
 #include <alpaka/cuda/WorkDiv.hpp>                  // WorkDivCuda
 #include <alpaka/cuda/Idx.hpp>                      // IdxCuda
-#include <alpaka/cuda/Atomic.hpp>                   // InterfacedAtomicCuda
+#include <alpaka/cuda/Atomic.hpp>                   // AtomicCuda
 
 // User functionality.
 #include <alpaka/cuda/Mem.hpp>                      // MemCopy
@@ -34,7 +34,7 @@
 #include <alpaka/cuda/Device.hpp>                   // Devices
 
 // Specialized templates.
-#include <alpaka/interfaces/KernelExecCreator.hpp>  // KernelExecCreator
+#include <alpaka/core/KernelExecCreator.hpp>        // KernelExecCreator
 
 // Implementation details.
 #include <alpaka/cuda/Common.hpp>
@@ -175,14 +175,14 @@ namespace alpaka
             class AccCuda :
                 protected WorkDivCuda,
                 private IdxCuda,
-                protected InterfacedAtomicCuda
+                protected AtomicCuda
             {
             public:
-                using MemSpace = alpaka::mem::MemSpaceCuda;
+                using MemSpace = mem::MemSpaceCuda;
 
                 template<
                     typename TAcceleratedKernel>
-                friend class alpaka::cuda::detail::KernelExecutorCuda;
+                friend class cuda::detail::KernelExecutorCuda;
 
             public:
                 //-----------------------------------------------------------------------------
@@ -191,7 +191,7 @@ namespace alpaka
                 ALPAKA_FCT_ACC_CUDA_ONLY AccCuda() :
                     WorkDivCuda(),
                     IdxCuda(),
-                    InterfacedAtomicCuda()
+                    AtomicCuda()
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
@@ -236,6 +236,23 @@ namespace alpaka
                 {
                     return workdiv::getWorkDiv<TOrigin, TUnit, TDimensionality>(
                         *static_cast<WorkDivCuda const *>(this));
+                }
+
+                //-----------------------------------------------------------------------------
+                //! Execute the atomic operation on the given address with the given value.
+                //! \return The old value before executing the atomic operation.
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TOp,
+                    typename T>
+                ALPAKA_FCT_ACC T atomicOp(
+                    T * const addr,
+                    T const & value) const
+                {
+                    return atomic::atomicOp<TOp, T>(
+                        addr,
+                        value,
+                        *static_cast<AtomicCuda const *>(this));
                 }
 
                 //-----------------------------------------------------------------------------

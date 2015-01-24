@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/core/Vec.hpp>  // alpaka::Vec
+#include <alpaka/core/Vec.hpp>  // Vec
 
 #include <vector>               // std::vector
 #include <string>               // std::string
@@ -48,70 +48,5 @@ namespace alpaka
             //std::size_t m_uiSharedMemSizeBytes;   //!< Size of the available block shared memory in bytes. 
             //std::size_t m_uiMaxClockFrequencyHz;  //!< Maximum clock frequency of the device in Hz.
         };
-
-        /*namespace detail
-        {
-            //#############################################################################
-            //! The device manager interface.
-            //#############################################################################
-            template<
-                typename TDeviceManager>
-            class IDeviceManager :
-                private TDeviceManager
-            {
-            public:
-                using Device = decltype(TDeviceManager::getCurrentDevice());
-
-            public:
-                //-----------------------------------------------------------------------------
-                //! Constructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST IDeviceManager() = delete;
-
-                //-----------------------------------------------------------------------------
-                //! \return The number of devices available.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::size_t getDeviceCount()
-                {
-                    return TDeviceManager::getDeviceCount();
-                }
-                //-----------------------------------------------------------------------------
-                //! \return The handle to the device with the given index.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static Device getDeviceByIdx()
-                {
-                    return TDeviceManager::getDeviceByIdx();
-                }
-                //-----------------------------------------------------------------------------
-                //! \return The number handles to all devices available.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::vector<Device> getDevices()
-                {
-                    std::vector<TDevice> vDevices;
-
-                    std::size_t const uiDeviceCount(getDeviceCount());
-                    for(std::size_t uiDeviceIdx(0); uiDeviceIdx < uiDeviceCount; ++uiDeviceIdx)
-                    {
-                        vDevices.push_back(getDeviceByIdx(uiDeviceIdx));
-                    }
-
-                    return vDevices;
-                }
-                //-----------------------------------------------------------------------------
-                //! \return The handle to the currently used device.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static Device getCurrentDevice()
-                {
-                    return TDeviceManager::getCurrentDevice();
-                }
-                //-----------------------------------------------------------------------------
-                //! Sets the device to use with this accelerator.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static void setCurrentDevice(Device const & device)
-                {
-                    TDeviceManager::setCurrentDevice(device);
-                }
-            };
-        }*/
     }
 }

@@ -22,7 +22,7 @@
 #pragma once
 
 #include <boost/mpl/integral_c.hpp>     // boost::mpl::integral_c
-#include <cstdint>                      // std::size_t
+#include <cstddef>                      // std::size_t
 
 namespace alpaka
 {

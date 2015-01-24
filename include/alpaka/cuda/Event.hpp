@@ -99,7 +99,7 @@ namespace alpaka
             //! The CUDA accelerator event type trait specialization.
             //#############################################################################
             template<>
-            class GetEvent<
+            struct GetEvent<
                 AccCuda>
             {
                 using type = alpaka::cuda::detail::EventCuda;

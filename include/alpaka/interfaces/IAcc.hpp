@@ -21,8 +21,8 @@
 
 #pragma once
 
-#include <alpaka/core/Vec.hpp>          // alpaka::Vec
-#include <alpaka/core/Positioning.hpp>  // alpaka::origin::Grid/Blocks
+#include <alpaka/core/Vec.hpp>          // Vec
+#include <alpaka/core/Positioning.hpp>  // origin::Grid/Blocks
 
 #include <boost/mpl/placeholders.hpp>   // boost::mpl::_1
 

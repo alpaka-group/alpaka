@@ -47,25 +47,53 @@ namespace alpaka
             dim::Dim1>
         {
         public:
-            using Dim = dim::Dim1;
-
-        public:
             //-----------------------------------------------------------------------------
             //! Constructor.
             //-----------------------------------------------------------------------------
-            template<
-                typename TExtents>
-            explicit BasicExtents(
-                TExtents const & extents) :
-                    m_uiWidth(extent::getWidth(extents))
-            {}
-            //-----------------------------------------------------------------------------
-            //! Constructor.
-            //-----------------------------------------------------------------------------
-            explicit BasicExtents(
+            ALPAKA_FCT_HOST explicit BasicExtents(
                 std::size_t const & uiWidth) :
                     m_uiWidth(uiWidth)
             {}
+            //-----------------------------------------------------------------------------
+            //! Copy constructor.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FCT_HOST explicit BasicExtents(
+                BasicExtents const & other) :
+                    m_uiWidth(getWidth(other))
+            {}
+            //-----------------------------------------------------------------------------
+            //! Copy constructor.
+            //-----------------------------------------------------------------------------
+            template<
+                typename TExtents>
+            ALPAKA_FCT_HOST explicit BasicExtents(
+                TExtents const & other) :
+                    m_uiWidth(getWidth(other))
+            {}
+            //-----------------------------------------------------------------------------
+            //! Move constructor.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FCT_HOST BasicExtents(BasicExtents &&) = default;
+            //-----------------------------------------------------------------------------
+            //! Copy assignment.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FCT_HOST BasicExtents & operator=(
+                BasicExtents const & other)
+            {
+                m_uiWidth = getWidth(other);
+                return *this;
+            }
+            //-----------------------------------------------------------------------------
+            //! Copy assignment.
+            //-----------------------------------------------------------------------------
+            template<
+                typename TExtents>
+            ALPAKA_FCT_HOST BasicExtents & operator=(
+                TExtents const & other)
+            {
+                m_uiWidth = getWidth(other);
+                return *this;
+            }
 
         public:
             std::size_t m_uiWidth;  //!< The width of each row in elements.
@@ -78,28 +106,59 @@ namespace alpaka
             dim::Dim2>
         {
         public:
-            using Dim = dim::Dim2;
-
-        public:
             //-----------------------------------------------------------------------------
             //! Constructor.
             //-----------------------------------------------------------------------------
-            template<
-                typename TExtents>
-            explicit BasicExtents(
-                TExtents const & Extents) :
-                    m_uiWidth(extent::getWidth(extents)),
-                    m_uiHeight(extent::getHeight(extents))
-            {}
-            //-----------------------------------------------------------------------------
-            //! Constructor.
-            //-----------------------------------------------------------------------------
-            explicit BasicExtents(
+            ALPAKA_FCT_HOST explicit BasicExtents(
                 std::size_t const & uiWidth,
                 std::size_t const & uiHeight = 1) :
                     m_uiWidth(uiWidth),
                     m_uiHeight(uiHeight)
             {}
+            //-----------------------------------------------------------------------------
+            //! Copy constructor.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FCT_HOST explicit BasicExtents(
+                BasicExtents const & other) :
+                    m_uiWidth(getWidth(other)),
+                    m_uiHeight(getHeight(other))
+            {}
+            //-----------------------------------------------------------------------------
+            //! Copy constructor.
+            //-----------------------------------------------------------------------------
+            template<
+                typename TExtents>
+            ALPAKA_FCT_HOST explicit BasicExtents(
+                TExtents const & other) :
+                    m_uiWidth(getWidth(other)),
+                    m_uiHeight(getHeight(other))
+            {}
+            //-----------------------------------------------------------------------------
+            //! Move constructor.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FCT_HOST BasicExtents(BasicExtents &&) = default;
+            //-----------------------------------------------------------------------------
+            //! Copy assignment.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FCT_HOST BasicExtents & operator=(
+                BasicExtents const & other)
+            {
+                m_uiWidth = getWidth(other);
+                m_uiHeight = getHeight(other);
+                return *this;
+            }
+            //-----------------------------------------------------------------------------
+            //! Copy assignment.
+            //-----------------------------------------------------------------------------
+            template<
+                typename TExtents>
+            ALPAKA_FCT_HOST BasicExtents & operator=(
+                TExtents const & other)
+            {
+                m_uiWidth = getWidth(other);
+                m_uiHeight = getHeight(other);
+                return *this;
+            }
 
         public:
             std::size_t m_uiWidth;  //!< The width of each row in elements.
@@ -113,24 +172,10 @@ namespace alpaka
             dim::Dim3>
         {
         public:
-            using Dim = dim::Dim3;
-
-        public:
             //-----------------------------------------------------------------------------
             //! Constructor.
             //-----------------------------------------------------------------------------
-            template<
-                typename TExtents>
-            explicit BasicExtents(
-                TExtents const & Extents) :
-                    m_uiWidth(extent::getWidth(extents)),
-                    m_uiHeight(extent::getHeight(extents)),
-                    m_uiDepth(extent::getDepth(extents))
-            {}
-            //-----------------------------------------------------------------------------
-            //! Constructor.
-            //-----------------------------------------------------------------------------
-            explicit BasicExtents(
+            ALPAKA_FCT_HOST explicit BasicExtents(
                 std::size_t const & uiWidth,
                 std::size_t const & uiHeight = 1,
                 std::size_t const & uiDepth = 1) :
@@ -138,6 +183,54 @@ namespace alpaka
                     m_uiHeight(uiHeight),
                     m_uiDepth(uiDepth)
             {}
+            //-----------------------------------------------------------------------------
+            //! Copy constructor.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FCT_HOST explicit BasicExtents(
+                BasicExtents const & other) :
+                    m_uiWidth(getWidth(other)),
+                    m_uiHeight(getHeight(other)),
+                    m_uiDepth(getDepth(other))
+            {}
+            //-----------------------------------------------------------------------------
+            //! Copy constructor.
+            //-----------------------------------------------------------------------------
+            template<
+                typename TExtents>
+            ALPAKA_FCT_HOST explicit BasicExtents(
+                TExtents const & other) :
+                    m_uiWidth(getWidth(other)),
+                    m_uiHeight(getHeight(other)),
+                    m_uiDepth(getDepth(other))
+            {}
+            //-----------------------------------------------------------------------------
+            //! Move constructor.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FCT_HOST BasicExtents(BasicExtents &&) = default;
+            //-----------------------------------------------------------------------------
+            //! Copy assignment.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FCT_HOST BasicExtents & operator=(
+                BasicExtents const & other)
+            {
+                m_uiWidth = getWidth(other);
+                m_uiHeight = getHeight(other);
+                m_uiDepth = getDepth(other);
+                return *this;
+            }
+            //-----------------------------------------------------------------------------
+            //! Copy assignment.
+            //-----------------------------------------------------------------------------
+            template<
+                typename TExtents>
+            ALPAKA_FCT_HOST BasicExtents & operator=(
+                TExtents const & other)
+            {
+                m_uiWidth = getWidth(other);
+                m_uiHeight = getHeight(other);
+                m_uiDepth = getDepth(other);
+                return *this;
+            }
 
         public:
             std::size_t m_uiWidth;  //!< The width of each row in elements.

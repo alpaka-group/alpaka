@@ -21,16 +21,16 @@
 
 #pragma once
 
-#include <alpaka/traits/WorkDiv.hpp>    // alpaka::GetWorkDiv
+#include <alpaka/traits/WorkDiv.hpp>    // GetWorkDiv
 
-#include <alpaka/core/Vec.hpp>          // alpaka::Vec
+#include <alpaka/core/Vec.hpp>          // Vec
 
 namespace alpaka
 {
     namespace workdiv
     {
         //#############################################################################
-        //! The host accelerators work division.
+        //! A basic class holding the work division as grid blocks extents and block kernels extents.
         //#############################################################################
         class BasicWorkDiv
         {
@@ -51,11 +51,20 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
+            ALPAKA_FCT_HOST explicit BasicWorkDiv(
+                BasicWorkDiv const & other) :
+                    m_v3uiGridBlocksExtents(getWorkDiv<Grid, Blocks, dim::Dim3>(other)),
+                    m_v3uiBlockKernelsExtents(getWorkDiv<Block, Kernels, dim::Dim3>(other))
+            {}
+            //-----------------------------------------------------------------------------
+            //! Copy constructor.
+            //-----------------------------------------------------------------------------
             template<
                 typename TWorkDiv>
-            ALPAKA_FCT_HOST BasicWorkDiv(BasicWorkDiv const & other) :
-                m_v3uiGridBlocksExtents(getWorkDiv<Grid, Blocks, dim::Dim3>(other)),
-                m_v3uiBlockKernelsExtents(getWorkDiv<Block, Kernels, dim::Dim3>(other))
+            ALPAKA_FCT_HOST explicit BasicWorkDiv(
+                TWorkDiv const & other) :
+                    m_v3uiGridBlocksExtents(getWorkDiv<Grid, Blocks, dim::Dim3>(other)),
+                    m_v3uiBlockKernelsExtents(getWorkDiv<Block, Kernels, dim::Dim3>(other))
             {}
             //-----------------------------------------------------------------------------
             //! Move constructor.
@@ -64,11 +73,11 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Copy assignment.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST BasicWorkDiv & operator=(BasicWorkDiv const & other)
+            ALPAKA_FCT_HOST BasicWorkDiv & operator=(
+                BasicWorkDiv const & other)
             {
                 m_v3uiGridBlocksExtents = getWorkDiv<Grid, Blocks, dim::Dim3>(other);
                 m_v3uiBlockKernelsExtents = getWorkDiv<Block, Kernels, dim::Dim3>(other);
-
                 return *this;
             }
             //-----------------------------------------------------------------------------
@@ -76,11 +85,11 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TWorkDiv>
-            ALPAKA_FCT_HOST BasicWorkDiv & operator=(TWorkDiv const & other)
+            ALPAKA_FCT_HOST BasicWorkDiv & operator=(
+            TWorkDiv const & other)
             {
                 m_v3uiGridBlocksExtents = getWorkDiv<Grid, Blocks, dim::Dim3>(other);
                 m_v3uiBlockKernelsExtents = getWorkDiv<Block, Kernels, dim::Dim3>(other);
-
                 return *this;
             }
             //-----------------------------------------------------------------------------

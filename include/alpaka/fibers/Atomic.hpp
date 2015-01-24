@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/interfaces/Atomic.hpp> // IAtomic
+#include <alpaka/traits/Atomic.hpp> // AtomicOp
 
 namespace alpaka
 {
@@ -30,7 +30,7 @@ namespace alpaka
         namespace detail
         {
             //#############################################################################
-            //! The fibers accelerator atomic operations.
+            //! The fibers accelerator atomic ops.
             //#############################################################################
             class AtomicFibers
             {
@@ -56,30 +56,32 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA virtual ~AtomicFibers() noexcept = default;
             };
-            using InterfacedAtomicFibers = alpaka::detail::IAtomic<AtomicFibers>;
         }
     }
 
-    namespace detail
+    namespace traits
     {
-        //#############################################################################
-        //! The fibers accelerator atomic operation functor.
-        //#############################################################################
-        template<
-            typename TOp, 
-            typename T>
-        struct AtomicOp<
-            fibers::detail::AtomicFibers, 
-            TOp, 
-            T>
+        namespace atomic
         {
-            ALPAKA_FCT_ACC_NO_CUDA static T atomicOp(
-                fibers::detail::AtomicFibers const &, 
-                T * const addr, 
-                T const & value)
+            //#############################################################################
+            //! The fibers accelerator atomic operation functor.
+            //#############################################################################
+            template<
+                typename TOp,
+                typename T>
+            struct AtomicOp<
+                fibers::detail::AtomicFibers,
+                TOp,
+                T>
             {
-                return TOp()(addr, value);
-            }
-        };
+                ALPAKA_FCT_ACC_NO_CUDA static T atomicOp(
+                    fibers::detail::AtomicFibers const &,
+                    T * const addr,
+                    T const & value)
+                {
+                    return TOp()(addr, value);
+                }
+            };
+        }
     }
 }

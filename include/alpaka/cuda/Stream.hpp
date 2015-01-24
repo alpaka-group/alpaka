@@ -119,7 +119,7 @@ namespace alpaka
             //! The CUDA accelerator stream type trait specialization.
             //#############################################################################
             template<>
-            class GetStream<
+            struct GetStream<
                 AccCuda>
             {
                 using type = cuda::detail::StreamCuda;

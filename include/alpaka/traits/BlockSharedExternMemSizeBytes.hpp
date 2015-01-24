@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/core/Vec.hpp>          // alpaka::Vec
+#include <alpaka/core/Vec.hpp>          // Vec
 
 #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 
