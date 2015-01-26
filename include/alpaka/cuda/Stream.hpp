@@ -21,23 +21,12 @@
 
 #pragma once
 
-#include <alpaka/traits/stream.hpp>
+#include <alpaka/traits/Stream.hpp>
 #include <alpaka/traits/Wait.hpp>       // CurrentThreadWaitFor, WaiterWaitFor
+#include <alpaka/traits/Acc.hpp>        // GetAcc
 
-#include <alpaka/cuda/Common.hpp>
 #include <alpaka/cuda/AccCudaFwd.hpp>   // AccCuda
-
-// forward declarations
-namespace alpaka
-{
-    namespace cuda
-    {
-        namespace detail
-        {
-            class EventCuda;
-        }
-    }
-}
+#include <alpaka/cuda/Common.hpp>       // ALPAKA_CUDA_CHECK
 
 namespace alpaka
 {
@@ -54,41 +43,41 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST Stream()
+                ALPAKA_FCT_HOST StreamCuda()
                 {
                     ALPAKA_CUDA_CHECK(cudaStreamCreate(
-                        &m_cudaStream);
+                        &m_cudaStream));
                 }
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST Stream(Stream const &) = default;
+                ALPAKA_FCT_HOST StreamCuda(StreamCuda const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST Stream(Stream &&) = default;
+                ALPAKA_FCT_HOST StreamCuda(StreamCuda &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST Stream & operator=(Stream const &) = default;
+                ALPAKA_FCT_HOST StreamCuda & operator=(StreamCuda const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Equality comparison operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST bool operator==(Stream const & rhs) const
+                ALPAKA_FCT_HOST bool operator==(StreamCuda const & rhs) const
                 {
                     return m_cudaStream == rhs.m_cudaStream;
                 }
                 //-----------------------------------------------------------------------------
                 //! Equality comparison operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST bool operator!=(Stream const & rhs) const
+                ALPAKA_FCT_HOST bool operator!=(StreamCuda const & rhs) const
                 {
                     return !((*this) == rhs);
                 }
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST virtual ~Stream() noexcept
+                ALPAKA_FCT_HOST virtual ~StreamCuda() noexcept
                 {
                     ALPAKA_CUDA_CHECK(cudaStreamDestroy(m_cudaStream));
                 }
@@ -132,7 +121,7 @@ namespace alpaka
             struct StreamTest<
                 cuda::detail::StreamCuda>
             {
-                static ALPAKA_FCT_HOST bool streamTest(
+                ALPAKA_FCT_HOST static bool streamTest(
                     cuda::detail::StreamCuda const & stream)
                 {
                     auto const ret(cudaStreamQuery(stream.m_cudaStream));
@@ -166,25 +155,6 @@ namespace alpaka
                 {
                     ALPAKA_CUDA_CHECK(cudaStreamSynchronize(
                         stream.m_cudaStream));
-                }
-            };
-
-            //#############################################################################
-            //! The CUDA accelerator stream event wait trait specialization.
-            //#############################################################################
-            template<>
-            struct WaiterWaitFor<
-                cuda::detail::StreamCuda,
-                cuda::detail::EventCuda>
-            {
-                ALPAKA_FCT_HOST static void waiterWaitFor(
-                    cuda::detail::StreamCuda const & stream,
-                    cuda::detail::EventCuda const & event)
-                {
-                    ALPAKA_CUDA_CHECK(cudaStreamWaitEvent(
-                        stream.m_cudaStream,
-                        event.m_cudaEvent,
-                        0));
                 }
             };
         }

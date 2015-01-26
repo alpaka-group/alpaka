@@ -165,9 +165,11 @@ namespace alpaka
 //-----------------------------------------------------------------------------
 template<
     typename TExec,
+    typename TStream,
     typename... TArgs>
 void profileAcceleratedKernel(
 	TExec const & exec,
+    TStream const & stream, // \TODO: Add a getStream Method to the kernel executor and do not require this parameter!
 	TArgs && ... args)
 {
 	std::cout
@@ -175,14 +177,16 @@ void profileAcceleratedKernel(
 		<< " kernelExecutor: " << typeid(TExec).name()
 		<< ")" << std::endl;
 
+    // Create an event to wait for. This allows synchronization after the (possibly) asynchronous kernel execution.
+    alpaka::event::GetEventT<alpaka::acc::GetAccT<TExec>> ev;
+
 	auto const tpStart(std::chrono::high_resolution_clock::now());
 
 	// Execute the accelerated kernel.
 	exec(std::forward<TArgs>(args) ...);
 
-	// Enqueue an event to wait for. This allows synchronization after the (possibly) asynchronous kernel execution.
-	alpaka::event::GetEventT<alpaka::acc::GetAccT<TExec>> ev;
-	alpaka::event::enqueue(ev);
+    // Enqueue the event in the same stream the kernel has been enqueued to.
+	alpaka::event::enqueue(ev, stream);
 	alpaka::wait::wait(ev);
 
 	auto const tpEnd(std::chrono::high_resolution_clock::now());
@@ -265,6 +269,7 @@ struct ProfileAcceleratedMatMulKernel
 		alpaka::stream::GetStreamT<TAcc> stream;
 		// Profile the kernel execution.
 		profileAcceleratedKernel(exec(workDiv, stream),
+            stream,
 			uiMatrixSize,
 			alpaka::mem::getNativePtr(memBufAAcc),
 			alpaka::mem::getNativePtr(memBufBAcc),
@@ -325,7 +330,7 @@ int main(
 		if(vm.count("help") > 0u)
 		{
 			std::cout << desc << std::endl;
-			return 1;
+			return EXIT_FAILURE;
 		}
 		else
 		{
@@ -367,16 +372,16 @@ int main(
 					);
 			}
 		}
-		return 0;
+		return EXIT_SUCCESS;
 	}
 	catch(std::exception const & e)
 	{
 		std::cerr << e.what() << std::endl;
-		return 1;
+		return EXIT_FAILURE;
 	}
 	catch(...)
 	{
 		std::cerr << "Unknown Exception" << std::endl;
-		return 1;
+		return EXIT_FAILURE;
 	}
 }

@@ -29,11 +29,11 @@
 
 // User functionality.
 #include <alpaka/host/Mem.hpp>                      // MemCopy
-#include <alpaka/serial/Event.hpp>                  // Event
-#include <alpaka/serial/Stream.hpp>                 // Stream
+#include <alpaka/serial/Stream.hpp>                 // StreamSerial
+#include <alpaka/serial/Event.hpp>                  // EventSerial
 #include <alpaka/serial/Device.hpp>                 // Devices
 
-// Specialized templates.
+// Specialized traits.
 #include <alpaka/core/KernelExecCreator.hpp>        // KernelExecCreator
 
 // Implementation details.
@@ -256,7 +256,11 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
+#if BOOST_COMP_INTEL
+                ALPAKA_FCT_HOST virtual ~KernelExecutorSerial() = default;
+#else
                 ALPAKA_FCT_HOST virtual ~KernelExecutorSerial() noexcept = default;
+#endif
 
                 //-----------------------------------------------------------------------------
                 //! Executes the accelerated kernel.

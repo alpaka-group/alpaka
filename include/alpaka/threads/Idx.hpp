@@ -63,7 +63,11 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
+#if BOOST_COMP_INTEL
+                ALPAKA_FCT_ACC_NO_CUDA virtual ~IdxThreads() = default;
+#else
                 ALPAKA_FCT_ACC_NO_CUDA virtual ~IdxThreads() noexcept = default;
+#endif
 
                 //-----------------------------------------------------------------------------
                 //! \return The index of the currently executed kernel.

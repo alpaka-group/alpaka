@@ -149,9 +149,11 @@ namespace alpaka
 //-----------------------------------------------------------------------------
 template<
     typename TExec, 
+    typename TStream,
     typename... TArgs>
 void profileAcceleratedKernel(
     TExec const & exec, 
+    TStream const & stream, // \TODO: Add a getStream Method to the kernel executor and do not require this parameter!
     TArgs && ... args)
 {
     std::cout
@@ -159,14 +161,16 @@ void profileAcceleratedKernel(
         << " kernelExecutor: " << typeid(TExec).name()
         << ")" << std::endl;
 
+    // Create an event to wait for. This allows synchronization after the (possibly) asynchronous kernel execution.
+    alpaka::event::GetEventT<alpaka::acc::GetAccT<TExec>> ev;
+    
     auto const tpStart(std::chrono::high_resolution_clock::now());
 
     // Execute the accelerated kernel.
     exec(std::forward<TArgs>(args)...);
 
-    // Enqueue an event to wait for. This allows synchronization after the (possibly) asynchronous kernel execution.
-    alpaka::event::GetEventT<alpaka::acc::GetAccT<TExec>> ev;
-    alpaka::event::enqueue(ev);
+    // Enqueue the event in the same stream the kernel has been enqueued to.
+    alpaka::event::enqueue(ev, stream);
     alpaka::wait::wait(ev);
 
     auto const tpEnd(std::chrono::high_resolution_clock::now());
@@ -183,70 +187,70 @@ template<
     typename TuiNumUselessWork>
 struct ProfileAcceleratedExampleKernel
 {
-	template<
+    template<
         typename TAcc, 
         typename TWorkDiv>
-	void operator()(
+    void operator()(
         TAcc, 
         TWorkDiv const & workDiv, 
         std::uint32_t const uiMult2)
-	{
-		std::cout << std::endl;
-		std::cout << "################################################################################" << std::endl;
-		
-		using Kernel = ExampleAcceleratedKernel<TuiNumUselessWork>;
-		using AccMemSpace = typename alpaka::mem::GetMemSpaceT<TAcc>;
+    {
+        std::cout << std::endl;
+        std::cout << "################################################################################" << std::endl;
+        
+        using Kernel = ExampleAcceleratedKernel<TuiNumUselessWork>;
+        using AccMemSpace = typename alpaka::mem::GetMemSpaceT<TAcc>;
 
-		std::cout
-			<< "AcceleratedExampleKernelProfiler("
-			<< " accelerator: " << typeid(TAcc).name()
-			<< ", kernel: " << typeid(Kernel).name()
-			<< ", workDiv: " << workDiv
-			<< ")" << std::endl;
+        std::cout
+            << "AcceleratedExampleKernelProfiler("
+            << " accelerator: " << typeid(TAcc).name()
+            << ", kernel: " << typeid(Kernel).name()
+            << ", workDiv: " << workDiv
+            << ")" << std::endl;
 
-		std::size_t const uiGridBlocksCount(alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Blocks, alpaka::dim::Dim1>(workDiv)[0u]);
-		std::size_t const uiBlockKernelsCount(alpaka::workdiv::getWorkDiv<alpaka::Block, alpaka::Kernels, alpaka::dim::Dim1>(workDiv)[0u]);
+        std::size_t const uiGridBlocksCount(alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Blocks, alpaka::dim::Dim1>(workDiv)[0u]);
+        std::size_t const uiBlockKernelsCount(alpaka::workdiv::getWorkDiv<alpaka::Block, alpaka::Kernels, alpaka::dim::Dim1>(workDiv)[0u]);
 
-		// An array for the return values calculated by the blocks.
-		std::vector<std::uint32_t> vuiBlockRetVals(uiGridBlocksCount, 0);
+        // An array for the return values calculated by the blocks.
+        std::vector<std::uint32_t> vuiBlockRetVals(uiGridBlocksCount, 0);
 
-		// Allocate accelerator buffers and copy.
-		std::size_t const uiSizeElements(uiGridBlocksCount);
-		auto blockRetValsAcc(alpaka::mem::alloc<std::uint32_t, AccMemSpace>(uiSizeElements));
-		alpaka::mem::copy(blockRetValsAcc, vuiBlockRetVals, uiSizeElements);
+        // Allocate accelerator buffers and copy.
+        std::size_t const uiSizeElements(uiGridBlocksCount);
+        auto blockRetValsAcc(alpaka::mem::alloc<std::uint32_t, AccMemSpace>(uiSizeElements));
+        alpaka::mem::copy(blockRetValsAcc, vuiBlockRetVals, uiSizeElements);
 
-		std::uint32_t const m_uiMult(42);
+        std::uint32_t const m_uiMult(42);
 
         // Build the kernel executor.
-		auto exec(alpaka::createKernelExecutor<TAcc, Kernel>(m_uiMult));
+        auto exec(alpaka::createKernelExecutor<TAcc, Kernel>(m_uiMult));
         // Get a new stream.
         alpaka::stream::GetStreamT<TAcc> stream;
         // Profile the kernel execution.
-		profileAcceleratedKernel(exec(workDiv, stream), alpaka::mem::getNativePtr(blockRetValsAcc), uiMult2);
+        profileAcceleratedKernel(exec(workDiv, stream), alpaka::mem::getNativePtr(blockRetValsAcc), uiMult2);
 
-		// Copy back the result.
-		alpaka::mem::copy(vuiBlockRetVals, blockRetValsAcc, uiSizeElements);
+        // Copy back the result.
+        alpaka::mem::copy(vuiBlockRetVals, blockRetValsAcc, uiSizeElements);
 
-		// Assert that the results are correct.
-		std::uint32_t const uiCorrectResult(static_cast<std::uint32_t>(uiBlockKernelsCount*uiBlockKernelsCount) * m_uiMult * uiMult2);
+        // Assert that the results are correct.
+        std::uint32_t const uiCorrectResult(static_cast<std::uint32_t>(uiBlockKernelsCount*uiBlockKernelsCount) * m_uiMult * uiMult2);
 
-		bool bResultCorrect(true);
-		for(std::size_t i(0); i<uiGridBlocksCount; ++i)
-		{
-			if(vuiBlockRetVals[i] != uiCorrectResult)
-			{
-				std::cout << "vuiBlockRetVals[" << i << "] == " << vuiBlockRetVals[i] << " != " << uiCorrectResult << std::endl;
-				bResultCorrect = false;
-			}
-		}
+        bool bResultCorrect(true);
+        for(std::size_t i(0); i<uiGridBlocksCount; ++i)
+        {
+            if(vuiBlockRetVals[i] != uiCorrectResult)
+            {
+                std::cout << "vuiBlockRetVals[" << i << "] == " << vuiBlockRetVals[i] << " != " << uiCorrectResult << std::endl;
+                bResultCorrect = false;
+            }
+        }
 
-		if(bResultCorrect)
-		{
-			std::cout << "Execution results correct!" << std::endl;
-		}
-		
-		std::cout << "################################################################################" << std::endl;
-	}
+        if(bResultCorrect)
+        {
+            std::cout << "Execution results correct!" << std::endl;
+        }
+        
+        std::cout << "################################################################################" << std::endl;
+    }
 };
 
 //-----------------------------------------------------------------------------
@@ -266,12 +270,12 @@ int main()
         alpaka::acc::writeEnabledAccelerators(std::cout);
 
         std::cout << std::endl;
-		
+        
 #ifdef ALPAKA_CUDA_ENABLED
         // Select the first CUDA device. 
         // NOTE: This is not required to run any kernels on the CUDA accelerator because all accelerators have a default device. This only shows the possibility.
         alpaka::dev::GetDevManT<alpaka::AccCuda>::setCurrentDevice(
-			alpaka::dev::GetDevManT<alpaka::AccCuda>::getCurrentDevice());
+            alpaka::dev::GetDevManT<alpaka::AccCuda>::getCurrentDevice());
 #endif
 
         // Set the grid blocks extent.
@@ -282,21 +286,21 @@ int main()
         using TuiNumUselessWork = boost::mpl::int_<100u>;
         std::uint32_t const uiMult2(5u);
 
-		// Execute the kernel on all enabled accelerators.
-		boost::mpl::for_each<alpaka::acc::EnabledAccelerators>(
-			std::bind(ProfileAcceleratedExampleKernel<TuiNumUselessWork>(), std::placeholders::_1, workDiv, uiMult2)
-		);
+        // Execute the kernel on all enabled accelerators.
+        boost::mpl::for_each<alpaka::acc::EnabledAccelerators>(
+            std::bind(ProfileAcceleratedExampleKernel<TuiNumUselessWork>(), std::placeholders::_1, workDiv, uiMult2)
+        );
 
-        return 0;
+        return EXIT_SUCCESS;
     }
     catch(std::exception const & e)
     {
         std::cerr << e.what() << std::endl;
-        return 1;
+        return EXIT_FAILURE;
     }
     catch(...)
     {
         std::cerr << "Unknown Exception" << std::endl;
-        return 1;
+        return EXIT_FAILURE;
     }
 }

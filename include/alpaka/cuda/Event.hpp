@@ -20,13 +20,12 @@
 */
 #pragma once
 
-#include <alpaka/cuda/Common.hpp>
-#include <alpaka/cuda/AccCudaFwd.hpp>   // AccCuda
-#include <alpaka/cuda/Stream.hpp>       // StreamCuda
-
 #include <alpaka/traits/Event.hpp>
 #include <alpaka/traits/Wait.hpp>       // CurrentThreadWaitFor
 #include <alpaka/traits/Acc.hpp>        // GetAcc
+
+#include <alpaka/cuda/AccCudaFwd.hpp>   // AccCuda
+#include <alpaka/cuda/Common.hpp>       // ALPAKA_CUDA_CHECK
 
 namespace alpaka
 {
@@ -43,7 +42,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST Event(bool bBusyWait = true)
+                ALPAKA_FCT_HOST EventCuda(bool bBusyWait = true)
                 {
                     // Creates an event object with the specified flags. Valid flags include:
                     //  cudaEventDefault: Default event creation flag.
@@ -56,19 +55,19 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST Event(Event const &) = default;
+                ALPAKA_FCT_HOST EventCuda(EventCuda const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST Event(Event &&) = default;
+                ALPAKA_FCT_HOST EventCuda(EventCuda &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST Event & operator=(Event const &) = default;
+                ALPAKA_FCT_HOST EventCuda & operator=(EventCuda const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST virtual ~Event() noexcept
+                ALPAKA_FCT_HOST virtual ~EventCuda() noexcept
                 {
                     ALPAKA_CUDA_CHECK(cudaEventDestroy(m_cudaEvent));
                 }
@@ -102,7 +101,7 @@ namespace alpaka
             struct GetEvent<
                 AccCuda>
             {
-                using type = alpaka::cuda::detail::EventCuda;
+                using type = cuda::detail::EventCuda;
             };
 
             //#############################################################################
@@ -110,33 +109,14 @@ namespace alpaka
             //#############################################################################
             template<>
             struct DefaultStreamEnqueueEvent<
-                cuda::detail::EventCuda,
-                cuda::detail::StreamCuda>
+                cuda::detail::EventCuda>
             {
-                static ALPAKA_FCT_HOST void defaultStreamEnqueueEvent(
+                ALPAKA_FCT_HOST static void defaultStreamEnqueueEvent(
                     cuda::detail::EventCuda const & event)
                 {
                     ALPAKA_CUDA_CHECK(cudaEventRecord(
                         event.m_cudaEvent,
                         nullptr));
-                }
-            };
-
-            //#############################################################################
-            //! The CUDA accelerator event enqueue trait specialization.
-            //#############################################################################
-            template<>
-            struct StreamEnqueueEvent<
-                cuda::detail::EventCuda,
-                cuda::detail::StreamCuda>
-            {
-                static ALPAKA_FCT_HOST void streamEnqueueEvent(
-                    cuda::detail::EventCuda const & event,
-                    cuda::detail::StreamCuda const * stream)
-                {
-                    ALPAKA_CUDA_CHECK(cudaEventRecord(
-                        event.m_cudaEvent,
-                        &stream->m_cudaStream));
                 }
             };
 
@@ -147,7 +127,7 @@ namespace alpaka
             struct EventTest<
                 cuda::detail::EventCuda>
             {
-                static ALPAKA_FCT_HOST bool eventTest(
+                ALPAKA_FCT_HOST static bool eventTest(
                     cuda::detail::EventCuda const & event)
                 {
                     auto const ret(cudaEventQuery(event.m_cudaEvent));

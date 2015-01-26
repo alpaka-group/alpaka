@@ -23,6 +23,7 @@
 
 #include <alpaka/traits/Dim.hpp>            // dim::DimToVecT
 #include <alpaka/traits/WorkDiv.hpp>        // workdiv::getWorkDiv
+#include <alpaka/traits/Idx.hpp>            // idx::getIdx
 
 #include <alpaka/core/BasicDims.hpp>        // dim::Dim<N>
 #include <alpaka/core/Positioning.hpp>      // origin::Grid/Blocks, unit::Blocks, unit::Kernels
@@ -49,6 +50,30 @@ namespace alpaka
                 typename TDimensionality>
             struct GetIdx;
 
+        }
+    }
+
+    //-----------------------------------------------------------------------------
+    //! The index traits accessors.
+    //-----------------------------------------------------------------------------
+    namespace idx
+    {
+        //-----------------------------------------------------------------------------
+        //! Get the indices requested.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TOrigin,
+            typename TUnit,
+            typename TDimensionality = dim::Dim3,
+            typename TIdx = void,
+            typename TWorkDiv = void>
+        ALPAKA_FCT_ACC typename dim::DimToVecT<TDimensionality> getIdx(
+            TIdx const & index,
+            TWorkDiv const & workDiv)
+        {
+            return traits::idx::GetIdx<TIdx, TOrigin, TUnit, TDimensionality>::getIdx(
+                index,
+                workDiv);
         }
     }
 
@@ -156,30 +181,6 @@ namespace alpaka
                     return v3uiGridBlockIdx[2] * v3uiGridBlocksExtent[1] * v3uiGridBlocksExtent[0] + v3uiGridBlockIdx[1] * v3uiGridBlocksExtent[0] + v3uiGridBlockIdx[0];
                 }
             };
-        }
-    }
-
-    //-----------------------------------------------------------------------------
-    //! The index traits accessors.
-    //-----------------------------------------------------------------------------
-    namespace idx
-    {
-        //-----------------------------------------------------------------------------
-        //! Get the indices requested.
-        //-----------------------------------------------------------------------------
-        template<
-            typename TOrigin,
-            typename TUnit,
-            typename TDimensionality = dim::Dim3,
-            typename TIdx = void,
-            typename TWorkDiv = void>
-        ALPAKA_FCT_ACC typename dim::DimToVecT<TDimensionality> getIdx(
-            TIdx const & index,
-            TWorkDiv const & workDiv)
-        {
-            return traits::idx::GetIdx<TIdx, TOrigin, TUnit, TDimensionality>::getIdx(
-                index,
-                workDiv);
         }
     }
 }

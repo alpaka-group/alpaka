@@ -49,7 +49,8 @@ namespace alpaka
             class MemBufHost :
                 public extent::BasicExtents<TDim>
             {
-            public:
+            private:
+                using Extent = extent::BasicExtents<TDim>;
                 using Elem = TElem;
                 using Dim = TDim;
 
@@ -61,7 +62,7 @@ namespace alpaka
                     typename TExtents>
                 MemBufHost(
                     TExtents const & extents):
-                        extent::BasicExtents<TDim>(extents),
+                        Extent(extents),
                         m_spMem(
                             new TElem[computeElementCount(extents)],
                             [](TElem * pBuffer)

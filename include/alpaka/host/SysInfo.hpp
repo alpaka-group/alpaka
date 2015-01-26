@@ -47,7 +47,7 @@ namespace alpaka
     //-----------------------------------------------------------------------------
     namespace host
     {
-#ifdef BOOST_ARCH_X86_AVAILABLE
+#if BOOST_ARCH_X86
         namespace detail
         {
     #if BOOST_COMP_GNUC || BOOST_COMP_CLANG
@@ -60,7 +60,7 @@ namespace alpaka
                 __cpuid_count(level, subfunction, ex[0], ex[1], ex[2], ex[3]);
             }
 
-    #elif BOOST_COMP_MSVC
+    #elif BOOST_COMP_MSVC || BOOST_COMP_INTEL
         #include <intrin.h>
             //-----------------------------------------------------------------------------
             //! 

@@ -90,7 +90,7 @@ namespace alpaka
                 TStream,
                 typename std::enable_if<std::is_base_of<host::detail::StreamHost, TStream>::value>::type>
             {
-                static ALPAKA_FCT_HOST bool streamTest(
+                ALPAKA_FCT_HOST static bool streamTest(
                     TStream const &)
                 {
                     // Because host calls are not asynchronous, this call always returns true.

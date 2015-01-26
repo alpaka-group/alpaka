@@ -29,12 +29,14 @@
 
 // User functionality.
 #include <alpaka/cuda/Mem.hpp>                      // MemCopy
-#include <alpaka/cuda/Event.hpp>                    // Event
-#include <alpaka/cuda/Stream.hpp>                   // Stream
+#include <alpaka/cuda/Stream.hpp>                   // StreamCuda
+#include <alpaka/cuda/Event.hpp>                    // EventCuda
+#include <alpaka/cuda/StreamEventTraits.hpp>        // StreamCuda & EventCuda
 #include <alpaka/cuda/Device.hpp>                   // Devices
 
-// Specialized templates.
+// Specialized traits.
 #include <alpaka/core/KernelExecCreator.hpp>        // KernelExecCreator
+#include <alpaka/traits/Acc.hpp>                    // GetAcc
 
 // Implementation details.
 #include <alpaka/cuda/Common.hpp>
@@ -58,111 +60,10 @@
 
 namespace alpaka
 {
-    //#############################################################################
-    //! The CUDA accelerator interface specialization.
-    //!
-    //! This specialization is required because the functions are not allowed to be declared ALPAKA_FCT_ACC but are required to be ALPAKA_FCT_ACC_CUDA_ONLY only.
-    //#############################################################################
-    template<>
-    class IAcc<
-        AccCuda> :
-            protected AccCuda
-    {
-    public:
-        //-----------------------------------------------------------------------------
-        //! \return The requested extents.
-        //-----------------------------------------------------------------------------
-        template<
-            typename TOrigin, 
-            typename TUnit, 
-            typename TDimensionality = dim::Dim3>
-        ALPAKA_FCT_ACC_CUDA_ONLY typename dim::DimToVecT<TDimensionality> getWorkDiv() const
-        {
-            return TAcc::getWorkDiv<TOrigin, TUnit, TDimensionality>();
-        }
-
-        //-----------------------------------------------------------------------------
-        //! \return The requested indices.
-        //-----------------------------------------------------------------------------
-        template<
-            typename TOrigin, 
-            typename TUnit, 
-            typename TDimensionality = dim::Dim3>
-        ALPAKA_FCT_ACC_CUDA_ONLY typename dim::DimToVecT<TDimensionality> getIdx() const
-        {
-            return TAcc::getIdx<TOrigin, TUnit, TDimensionality>();
-        }
-
-        //-----------------------------------------------------------------------------
-        //! Execute the atomic operation on the given address with the given value.
-        //! \return The old value before executing the atomic operation.
-        //-----------------------------------------------------------------------------
-        template<
-            typename TOp, 
-            typename T>
-        ALPAKA_FCT_ACC_CUDA_ONLY T atomicOp(
-            T * const addr, 
-            T const & value) const
-        {
-            return TAcc::atomicOp<TOp, T>(addr, value);
-        }
-
-        //-----------------------------------------------------------------------------
-        //! Syncs all kernels in the current block.
-        //-----------------------------------------------------------------------------
-        ALPAKA_FCT_ACC_CUDA_ONLY void syncBlockKernels() const
-        {
-            return TAcc::syncBlockKernels();
-        }
-
-        //-----------------------------------------------------------------------------
-        //! \return Allocates block shared memory.
-        //-----------------------------------------------------------------------------
-        template<
-            typename T, 
-            std::size_t TuiNumElements>
-        ALPAKA_FCT_ACC_CUDA_ONLY T * allocBlockSharedMem() const
-        {
-            static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
-
-            return TAcc::allocBlockSharedMem<T, TuiNumElements>();
-        }
-
-        //-----------------------------------------------------------------------------
-        //! \return The pointer to the externally allocated block shared memory.
-        //-----------------------------------------------------------------------------
-        template<
-            typename T>
-        ALPAKA_FCT_ACC_CUDA_ONLY T * getBlockSharedExternMem() const
-        {
-            return TAcc::getBlockSharedExternMem<T>();
-        }
-    };
-
     namespace cuda
     {
         namespace detail
         {
-            //-----------------------------------------------------------------------------
-            //! The CUDA kernel entry point.
-            //-----------------------------------------------------------------------------
-            template<
-                typename TAcceleratedKernel, 
-                typename... TArgs>
-            __global__ void cudaKernel(
-                IAcc<AccCuda> acc,
-                TAcceleratedKernel accedKernel, 
-                TArgs ... args)
-            {
-
-#if defined(__CUDA_ARCH__) && (__CUDA_ARCH__ < 200)
-    #error "Cuda device capability >= 2.0 is required!"
-#endif
-                accedKernel(
-                    acc,
-                    std::forward<TArgs>(args)...);
-            }
-
             template<
                 typename TAcceleratedKernel>
             class KernelExecutorCuda;
@@ -288,6 +189,112 @@ namespace alpaka
                     return reinterpret_cast<T*>(shMem);
                 }
             };
+        }
+    }
+    
+    //#############################################################################
+    //! The CUDA accelerator interface specialization.
+    //!
+    //! This specialization is required because the functions are not allowed to be declared ALPAKA_FCT_ACC but are required to be ALPAKA_FCT_ACC_CUDA_ONLY only.
+    //#############################################################################
+    template<>
+    class IAcc<
+        AccCuda> :
+            protected AccCuda
+    {
+    public:
+        //-----------------------------------------------------------------------------
+        //! \return The requested extents.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TOrigin, 
+            typename TUnit, 
+            typename TDimensionality = dim::Dim3>
+        ALPAKA_FCT_ACC_CUDA_ONLY typename dim::DimToVecT<TDimensionality> getWorkDiv() const
+        {
+            return AccCuda::getWorkDiv<TOrigin, TUnit, TDimensionality>();
+        }
+
+        //-----------------------------------------------------------------------------
+        //! \return The requested indices.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TOrigin, 
+            typename TUnit, 
+            typename TDimensionality = dim::Dim3>
+        ALPAKA_FCT_ACC_CUDA_ONLY typename dim::DimToVecT<TDimensionality> getIdx() const
+        {
+            return AccCuda::getIdx<TOrigin, TUnit, TDimensionality>();
+        }
+
+        //-----------------------------------------------------------------------------
+        //! Execute the atomic operation on the given address with the given value.
+        //! \return The old value before executing the atomic operation.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TOp, 
+            typename T>
+        ALPAKA_FCT_ACC_CUDA_ONLY T atomicOp(
+            T * const addr, 
+            T const & value) const
+        {
+            return AccCuda::atomicOp<TOp, T>(addr, value);
+        }
+
+        //-----------------------------------------------------------------------------
+        //! Syncs all kernels in the current block.
+        //-----------------------------------------------------------------------------
+        ALPAKA_FCT_ACC_CUDA_ONLY void syncBlockKernels() const
+        {
+            return AccCuda::syncBlockKernels();
+        }
+
+        //-----------------------------------------------------------------------------
+        //! \return Allocates block shared memory.
+        //-----------------------------------------------------------------------------
+        template<
+            typename T, 
+            std::size_t TuiNumElements>
+        ALPAKA_FCT_ACC_CUDA_ONLY T * allocBlockSharedMem() const
+        {
+            static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
+
+            return AccCuda::allocBlockSharedMem<T, TuiNumElements>();
+        }
+
+        //-----------------------------------------------------------------------------
+        //! \return The pointer to the externally allocated block shared memory.
+        //-----------------------------------------------------------------------------
+        template<
+            typename T>
+        ALPAKA_FCT_ACC_CUDA_ONLY T * getBlockSharedExternMem() const
+        {
+            return AccCuda::getBlockSharedExternMem<T>();
+        }
+    };
+    
+    namespace cuda
+    {
+        namespace detail
+        {
+            //-----------------------------------------------------------------------------
+            //! The CUDA kernel entry point.
+            //-----------------------------------------------------------------------------
+            template<
+                typename TAcceleratedKernel,
+                typename... TArgs>
+            __global__ void cudaKernel(
+                IAcc<AccCuda> acc,
+                TAcceleratedKernel accedKernel,
+                TArgs ... args)
+            {
+#if defined(__CUDA_ARCH__) && (__CUDA_ARCH__ < 200)
+    #error "Cuda device capability >= 2.0 is required!"
+#endif
+                accedKernel(
+                    acc,
+                    std::forward<TArgs>(args)...);
+            }
 
             //#############################################################################
             //! The CUDA accelerator executor.
@@ -297,7 +304,7 @@ namespace alpaka
             class KernelExecutorCuda :
                 private TAcceleratedKernel,
                 private IAcc<AccCuda>
-            {CUDA accelerator
+            {
 #if (!BOOST_COMP_GNUC) || (BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(5, 0, 0))
                 static_assert(std::is_trivially_copyable<TAcceleratedKernel>::value, "The given kernel functor has to fulfill is_trivially_copyable!");
 #endif
@@ -318,8 +325,8 @@ namespace alpaka
 #ifdef ALPAKA_DEBUG
                     std::cout << "[+] AccCuda::KernelExecutorCuda()" << std::endl;
 #endif
-                    m_v3uiGridBlocksExtents = workdiv::getWorkDiv<Grid, Blocks, Dim3>(workDiv);
-                    m_v3uiBlockKernelsExtents = workdiv::getWorkDiv<Block, Kernels, Dim3>(workDiv);
+                    m_v3uiGridBlocksExtents = workdiv::getWorkDiv<Grid, Blocks, dim::Dim3>(workDiv);
+                    m_v3uiBlockKernelsExtents = workdiv::getWorkDiv<Block, Kernels, dim::Dim3>(workDiv);
 
                     // TODO: Check that (sizeof(TAcceleratedKernel) * m_v3uiBlockKernelsExtents.prod()) < available memory size
 
@@ -342,7 +349,11 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
+#if BOOST_COMP_INTEL
+                ALPAKA_FCT_HOST virtual ~KernelExecutorCuda() = default;
+#else
                 ALPAKA_FCT_HOST virtual ~KernelExecutorCuda() noexcept = default;
+#endif
 
                 //-----------------------------------------------------------------------------
                 //! Executes the accelerated kernel.

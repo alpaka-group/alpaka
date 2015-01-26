@@ -21,54 +21,54 @@
 
 #pragma once
 
-#include <alpaka/traits/Acc.hpp>    // GetAccName
-#include <alpaka/traits/Mem.hpp>    // GetMemSpace
-
-#include <alpaka/cuda/MemSpace.hpp> // MemSpaceCuda
+#include <alpaka/cuda/Stream.hpp>       // StreamCuda
+#include <alpaka/cuda/Event.hpp>        // EventCuda
+#include <alpaka/cuda/Common.hpp>       // ALPAKA_CUDA_CHECK
 
 namespace alpaka
 {
-    //-----------------------------------------------------------------------------
-    //! The CUDA accelerator.
-    //-----------------------------------------------------------------------------
-    namespace cuda
-    {
-        namespace detail
-        {
-            // forward declarations
-            class AccCuda;
-        }
-    }
-    using AccCuda = cuda::detail::AccCuda;
-
     namespace traits
     {
-        namespace acc
+        namespace event
         {
             //#############################################################################
-            //! The CUDA accelerator name trait specialization.
+            //! The CUDA accelerator event enqueue trait specialization.
             //#############################################################################
             template<>
-            struct GetAccName<
-                cuda::detail::AccCuda>
+            struct StreamEnqueueEvent<
+                cuda::detail::EventCuda,
+                cuda::detail::StreamCuda>
             {
-                static std::string getAccName()
+                ALPAKA_FCT_HOST static void streamEnqueueEvent(
+                    cuda::detail::EventCuda const & event,
+                    cuda::detail::StreamCuda const & stream)
                 {
-                    return "AccCuda";
+                    ALPAKA_CUDA_CHECK(cudaEventRecord(
+                        event.m_cudaEvent,
+                        stream.m_cudaStream));
                 }
             };
         }
 
-        namespace mem
+        namespace wait
         {
             //#############################################################################
-            //! The CUDA accelerator memory space trait specialization.
+            //! The CUDA accelerator stream event wait trait specialization.
             //#############################################################################
             template<>
-            struct GetMemSpace<
-                cuda::detail::AccCuda>
+            struct WaiterWaitFor<
+                cuda::detail::StreamCuda,
+                cuda::detail::EventCuda>
             {
-                using type = alpaka::mem::MemSpaceCuda;
+                ALPAKA_FCT_HOST static void waiterWaitFor(
+                    cuda::detail::StreamCuda const & stream,
+                    cuda::detail::EventCuda const & event)
+                {
+                    ALPAKA_CUDA_CHECK(cudaStreamWaitEvent(
+                        stream.m_cudaStream,
+                        event.m_cudaEvent,
+                        0));
+                }
             };
         }
     }

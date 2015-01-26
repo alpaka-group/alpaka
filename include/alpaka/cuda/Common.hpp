@@ -21,37 +21,38 @@
 
 #pragma once
 
-#include <iostream>		// std::cerr
+#include <iostream>        // std::cerr
 
-#include <stdexcept>	// std::runtime_error
+#include <stdexcept>    // std::runtime_error
 
 #include <cuda.h>       // cudaGetErrorString
 
 #if (!defined(CUDA_VERSION) || (CUDA_VERSION < 6050))
-	#error "CUDA version 6.5 or greater required!"
+    #error "CUDA version 6.5 or greater required!"
 #endif
 
  //! Error checking log only.
 #define ALPAKA_CUDA_CHECK_MSG(cmd, msg)\
-	{\
+    {\
         cudaError_t error = cmd;\
         if(error != cudaSuccess)\
         {\
-		    std::cerr << "<" << __FILE__ << ">:" << __LINE__ << msg << std::endl;\
+            std::cerr << "<" << __FILE__ << ">:" << __LINE__ << msg << std::endl;\
         }\
-	}
+    }
 
 //! Error checking with log and exception.
 #define ALPAKA_CUDA_CHECK_MSG_EXCP(cmd)\
-	{\
+    {\
         cudaError_t error = cmd;\
         if(error != cudaSuccess)\
-	    {\
-		     std::cerr << "<" << __FILE__ << ">:" << __LINE__ << std::endl;\
-		     throw std::runtime_error(std::string("[CUDA] Error: ") + std::string(cudaGetErrorString(error)));\
+        {\
+             std::cerr << "<" << __FILE__ << ">:" << __LINE__ << std::endl;\
+             throw std::runtime_error(std::string("[CUDA] Error: ") + std::string(cudaGetErrorString(error)));\
         }\
-	}
+    }
 
 //! The default error checking.
-#define ALPAKA_CUDA_CHECK(cmd) ALPAKA_CUDA_CHECK_MSG_EXCP(cmd)
+#define ALPAKA_CUDA_CHECK(cmd)\
+    ALPAKA_CUDA_CHECK_MSG_EXCP(cmd)
 

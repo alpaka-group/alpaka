@@ -65,7 +65,7 @@ IF(ALPAKA_CUDA_ENABLE)
     )
     # Force the .cpp files to be recognized as headers and not be compiled so there wont be a second entry point.
     #FOREACH(filepath ${CPP_FILES_ALL})
-	#    SET_SOURCE_FILES_PROPERTIES(${filepath} PROPERTIES HEADER_FILE_ONLY TRUE)
+    #    SET_SOURCE_FILES_PROPERTIES(${filepath} PROPERTIES HEADER_FILE_ONLY TRUE)
     #ENDFOREACH()
 ELSE()
     ADD_EXECUTABLE(${TARGET_NAME}
@@ -75,7 +75,7 @@ ELSE()
     )
     # Force the .cu files to be recognized as headers and not be compiled so there wont be a second entry point.
     FOREACH(filepath ${CU_FILES_ALL})
-	    SET_SOURCE_FILES_PROPERTIES(${filepath} PROPERTIES HEADER_FILE_ONLY TRUE)
+        SET_SOURCE_FILES_PROPERTIES(${filepath} PROPERTIES HEADER_FILE_ONLY TRUE)
     ENDFOREACH()
 ENDIF()
 

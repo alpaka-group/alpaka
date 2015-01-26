@@ -23,7 +23,9 @@
 
 #include <alpaka/traits/Atomic.hpp> // AtomicOp
 
-#include <mutex>                        // std::mutex, std::lock_guard
+#include <mutex>                    // std::mutex, std::lock_guard
+
+#include <boost/predef.h>            // workarounds
 
 namespace alpaka
 {
@@ -63,7 +65,11 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
+#if BOOST_COMP_INTEL     // alpaka/threads/Atomic.hpp(66): error : the declared exception specification is incompatible with the generated one
+                ALPAKA_FCT_ACC_NO_CUDA virtual ~AtomicThreads() = default;
+#else
                 ALPAKA_FCT_ACC_NO_CUDA virtual ~AtomicThreads() noexcept = default;
+#endif
 
             private:
                 std::mutex mutable m_mtxAtomic; //!< The mutex protecting access for a atomic operation.

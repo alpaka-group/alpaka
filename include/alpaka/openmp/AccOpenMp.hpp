@@ -29,11 +29,11 @@
 
 // User functionality.
 #include <alpaka/host/Mem.hpp>                      // MemCopy
-#include <alpaka/openmp/Event.hpp>                  // Event
-#include <alpaka/openmp/Stream.hpp>                 // Stream
+#include <alpaka/openmp/Stream.hpp>                 // StreamOpenMp
+#include <alpaka/openmp/Event.hpp>                  // EventOpenMp
 #include <alpaka/openmp/Device.hpp>                 // Devices
 
-// Specialized templates.
+// Specialized traits.
 #include <alpaka/core/KernelExecCreator.hpp>        // KernelExecCreator
 
 // Implementation details.
@@ -267,7 +267,11 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
+#if BOOST_COMP_INTEL
+                ALPAKA_FCT_HOST virtual ~KernelExecutorOpenMp() = default;
+#else
                 ALPAKA_FCT_HOST virtual ~KernelExecutorOpenMp() noexcept = default;
+#endif
 
                 //-----------------------------------------------------------------------------
                 //! Executes the accelerated kernel.

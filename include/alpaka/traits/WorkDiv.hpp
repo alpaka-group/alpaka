@@ -51,6 +51,27 @@ namespace alpaka
         }
     }
 
+    //-----------------------------------------------------------------------------
+    //! The work division traits accessors.
+    //-----------------------------------------------------------------------------
+    namespace workdiv
+    {
+        //-----------------------------------------------------------------------------
+        //! Get the extents requested.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TOrigin,
+            typename TUnit,
+            typename TDimensionality = dim::Dim3,
+            typename TWorkDiv = void>
+        ALPAKA_FCT_HOST_ACC typename dim::DimToVecT<TDimensionality> getWorkDiv(
+            TWorkDiv const & workDiv)
+        {
+            return traits::workdiv::GetWorkDiv<TWorkDiv, TOrigin, TUnit, TDimensionality>::getWorkDiv(
+                workDiv);
+        }
+    }
+
     namespace traits
     {
         namespace workdiv
@@ -136,27 +157,6 @@ namespace alpaka
                     return GetWorkDiv<TWorkDiv, origin::Grid, unit::Blocks, alpaka::dim::Dim3>::getWorkDiv(workDiv).prod();
                 }
             };
-        }
-    }
-
-    //-----------------------------------------------------------------------------
-    //! The work division traits accessors.
-    //-----------------------------------------------------------------------------
-    namespace workdiv
-    {
-        //-----------------------------------------------------------------------------
-        //! Get the extents requested.
-        //-----------------------------------------------------------------------------
-        template<
-            typename TOrigin,
-            typename TUnit,
-            typename TDimensionality = dim::Dim3,
-            typename TWorkDiv = void>
-        ALPAKA_FCT_HOST_ACC typename dim::DimToVecT<TDimensionality> getWorkDiv(
-            TWorkDiv const & workDiv)
-        {
-            return traits::workdiv::GetWorkDiv<TWorkDiv, TOrigin, TUnit, TDimensionality>::getWorkDiv(
-                workDiv);
         }
     }
 }

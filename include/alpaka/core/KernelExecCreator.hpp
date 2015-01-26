@@ -21,7 +21,9 @@
 
 #pragma once
 
-#include <alpaka/interfaces/IAcc.hpp> // IAcc
+#include <alpaka/interfaces/IAcc.hpp>        // IAcc
+
+#include <alpaka/core/WorkDivHelpers.hpp>    // workdiv::isValidWorkDiv
 
 namespace alpaka
 {

@@ -33,11 +33,11 @@
 
 // User functionality.
 #include <alpaka/host/Mem.hpp>                      // MemCopy
-#include <alpaka/threads/Event.hpp>                 // Event
-#include <alpaka/threads/Stream.hpp>                // Stream
+#include <alpaka/threads/Stream.hpp>                // StreamThreads
+#include <alpaka/threads/Event.hpp>                 // EventThreads
 #include <alpaka/threads/Device.hpp>                // Devices
 
-// Specialized templates.
+// Specialized traits.
 #include <alpaka/core/KernelExecCreator.hpp>        // KernelExecCreator
 
 // Implementation details.
@@ -131,7 +131,11 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
+#if BOOST_COMP_INTEL     // threads/AccThreads.hpp(134): error : the declared exception specification is incompatible with the generated one
+                ALPAKA_FCT_ACC_NO_CUDA virtual ~AccThreads() = default;
+#else
                 ALPAKA_FCT_ACC_NO_CUDA virtual ~AccThreads() noexcept = default;
+#endif
 
             protected:
                 //-----------------------------------------------------------------------------
@@ -379,7 +383,11 @@ KernelExecutorThreads && other) :
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
+#if BOOST_COMP_INTEL
+                ALPAKA_FCT_HOST virtual ~KernelExecutorThreads() = default;
+#else
                 ALPAKA_FCT_HOST virtual ~KernelExecutorThreads() noexcept = default;
+#endif
 
                 //-----------------------------------------------------------------------------
                 //! Executes the accelerated kernel.

@@ -41,7 +41,8 @@ namespace alpaka
         class MemBufPlainPtrWrapper :
             public extent::BasicExtents<TDim>
         {
-        public:
+        private:
+            using Extent = extent::BasicExtents<TDim>;
             using MemSpace = TMemSpace;
             using Elem = TElem;
             using Dim = TDim;
@@ -52,10 +53,10 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TExtents>
-                MemBufPlainPtrWrapper(
+            MemBufPlainPtrWrapper(
                 TElem * pMem,
                 TExtents const & extents) :
-                extent::BasicExtents<TDim>(extents),
+                    Extent(extents),
                     m_pMem(pMem),
                     m_uiPitchBytes(extent::getWidth(extents) * sizeof(TElem))
             {}
@@ -65,11 +66,11 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TExtents>
-                MemBufPlainPtrWrapper(
+            MemBufPlainPtrWrapper(
                 TElem * pMem,
                 std::size_t const & uiPitch,
                 TExtents const & extents) :
-                    extent::BasicExtents<TDim>(extent),
+                    Extent(extents),
                     m_pMem(pMem),
                     m_uiPitchBytes(uiPitch)
             {}

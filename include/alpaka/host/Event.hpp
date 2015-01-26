@@ -75,7 +75,7 @@ namespace alpaka
                 TEvent,
                 typename std::enable_if<std::is_base_of<host::detail::EventHost, TEvent>::value>::type>
             {
-                static ALPAKA_FCT_HOST void defaultStreamEnqueueEvent(
+                ALPAKA_FCT_HOST static void defaultStreamEnqueueEvent(
                     host::detail::EventHost const &)
                 {
                     // Because host calls are not asynchronous, this call never has to enqueue anything.
@@ -95,7 +95,7 @@ namespace alpaka
                     std::is_base_of<host::detail::EventHost, TEvent>::value 
                     && std::is_same<typename alpaka::acc::GetAccT<TEvent>, typename alpaka::acc::GetAccT<TStream>>::value>::type>
             {
-                static ALPAKA_FCT_HOST void streamEnqueueEvent(
+                ALPAKA_FCT_HOST static void streamEnqueueEvent(
                     host::detail::EventHost const &, 
                     TStream const &)
                 {
@@ -112,7 +112,7 @@ namespace alpaka
                 TEvent,
                 typename std::enable_if<std::is_base_of<host::detail::EventHost, TEvent>::value>::type>
             {
-                static ALPAKA_FCT_HOST bool eventTest(
+                ALPAKA_FCT_HOST static bool eventTest(
                     host::detail::EventHost const &, 
                     bool &)
                 {

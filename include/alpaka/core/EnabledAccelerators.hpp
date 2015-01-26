@@ -151,15 +151,15 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         ALPAKA_FCT_HOST Vec<3u> getMaxBlockKernelExtentsEnabledAccelerators()
         {
-            workdiv::getMaxBlockKernelExtentsAccelerators<acc::EnabledAccelerators>();
+            return workdiv::getMaxBlockKernelExtentsAccelerators<acc::EnabledAccelerators>();
         }
 
         //-----------------------------------------------------------------------------
         //! \return The maximum block kernels count supported by all of the enabled accelerators.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST Vec<3u> getMaxBlockKernelCountEnabledAccelerators()
+        ALPAKA_FCT_HOST std::size_t getMaxBlockKernelCountEnabledAccelerators()
         {
-            workdiv::getMaxBlockKernelCountAccelerators<acc::EnabledAccelerators>();
+            return workdiv::getMaxBlockKernelCountAccelerators<acc::EnabledAccelerators>();
         }
     }
 }

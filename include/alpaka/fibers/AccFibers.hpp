@@ -33,11 +33,11 @@
 
 // User functionality.
 #include <alpaka/host/Mem.hpp>                      // MemCopy
-#include <alpaka/fibers/Event.hpp>                  // Event
-#include <alpaka/fibers/Stream.hpp>                 // Stream
+#include <alpaka/fibers/Stream.hpp>                 // StreamFibers
+#include <alpaka/fibers/Event.hpp>                  // EventFibers
 #include <alpaka/fibers/Device.hpp>                 // Devices
 
-// Specialized templates.
+// Specialized traits.
 #include <alpaka/core/KernelExecCreator.hpp>        // KernelExecCreator
 
 // Implementation details.
@@ -353,7 +353,11 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
+#if BOOST_COMP_INTEL
+                ALPAKA_FCT_HOST virtual ~KernelExecutorFibers() = default;
+#else
                 ALPAKA_FCT_HOST virtual ~KernelExecutorFibers() noexcept = default;
+#endif
 
                 //-----------------------------------------------------------------------------
                 //! Executes the accelerated kernel.

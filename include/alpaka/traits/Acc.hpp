@@ -22,6 +22,7 @@
 #pragma once
 
 #include <string>   // std::string
+#include <typeinfo> // typeid
 
 namespace alpaka
 {

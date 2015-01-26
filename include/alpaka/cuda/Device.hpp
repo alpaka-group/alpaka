@@ -21,11 +21,11 @@
 
 #pragma once
 
-#include <alpaka/cuda/AccCudaFwd.hpp>   // AccCuda
-#include <alpaka/cuda/Common.hpp>
-
 #include <alpaka/traits/Wait.hpp>       // CurrentThreadWaitFor
 #include <alpaka/traits/Device.hpp>     // GetDev
+
+#include <alpaka/cuda/AccCudaFwd.hpp>   // AccCuda
+#include <alpaka/cuda/Common.hpp>
 
 #include <iostream>                     // std::cout
 #include <sstream>                      // std::stringstream
@@ -79,7 +79,7 @@ namespace alpaka
                     return !((*this) == rhs);
                 }
 
-            protected:
+            public:
                 int m_iDevice;
             };
         }
@@ -303,12 +303,12 @@ namespace alpaka
                 cuda::detail::DeviceCuda>
             {
                 ALPAKA_FCT_HOST static alpaka::dev::DevProps getDevProps(
-                    cuda::detail::DeviceCuda const &)
+                    cuda::detail::DeviceCuda const & device)
                 {
                     alpaka::dev::DevProps devProps;
 
                     cudaDeviceProp cudaDevProp;
-                    ALPAKA_CUDA_CHECK(cudaGetDeviceProperties(&cudaDevProp, m_iDevice));
+                    ALPAKA_CUDA_CHECK(cudaGetDeviceProperties(&cudaDevProp, device.m_iDevice));
 
                     devProps.m_sName = cudaDevProp.name;
                     devProps.m_uiMultiProcessorCount = static_cast<std::size_t>(cudaDevProp.multiProcessorCount);

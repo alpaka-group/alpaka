@@ -31,7 +31,10 @@ There are two possible ways to tell the kernel about the accelerator type:
     This allows to give them access not only to the accelerator methods but also to the other kernel methods.
     This is inconsistent because the kernel uses inheritance and subsequent function calls get a parameter.
     * - The kernel itself has to inherit at least protected from the accelerator to allow the KernelExecutor to access the Accelerator.
+    * - How do accelerator functions called from the kernel (and not within the kernel class itself) access the accelerator methods?
+    Casting this to the accelerator type and giving it as parameter is too much to require from the user.
   * b) and has a reference to the accelerator as parameter.
+    * + This allows to use the accelerator in accelerator functions called from the kernel (and not within the kernel class itself) to access the accelerator methods in the same way the kernel entry point function can.
     * - This would require an additional object in device memory taking up valuable CUDA registers.
     * TODO: Will all the device functions be inlined nevertheless (because we do not use run-time polymorphism)? This would make it a non-reason.
  2. The `operator()` is templated on the accelerator type and has a reference to the accelerator as parameter.

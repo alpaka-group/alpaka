@@ -137,14 +137,14 @@ namespace alpaka
 #if BOOST_COMP_GNUC
     /*#if BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(4, 8, 0)
         #define ALPAKA_OPTIMAL_ALIGNMENT_GCC_4_8(byte) \
-			        alignas(((byte)==1?1:     \
-			        ((byte)<=2?2:             \
-			        ((byte)<=4?4:             \
-			        ((byte)<=8?8:             \
-			        ((byte)<=16?16:           \
-			        ((byte)<=32?32:           \
-			        ((byte)<=64?64:128        \
-			        ))))))))
+            alignas(((byte)==1?1:     \
+            ((byte)<=2?2:             \
+            ((byte)<=4?4:             \
+            ((byte)<=8?8:             \
+            ((byte)<=16?16:           \
+            ((byte)<=32?32:           \
+            ((byte)<=64?64:128        \
+            ))))))))
         //-----------------------------------------------------------------------------
         //! Aligns the data optimally.
         //! You must align all arrays and structs which can used on accelerators.
@@ -157,14 +157,14 @@ namespace alpaka
         #define ALPAKA_ALIGN_8(type, name) alignas(8) type name
     #else*/
         #define ALPAKA_OPTIMAL_ALIGNMENT_GCC(byte) \
-			                __attribute__((aligned(((byte)==1?1:     \
-			                ((byte)<=2?2:             \
-			                ((byte)<=4?4:             \
-			                ((byte)<=8?8:             \
-			                ((byte)<=16?16:           \
-			                ((byte)<=32?32:           \
-			                ((byte)<=64?64:128        \
-			                ))))))))))
+            __attribute__((aligned(((byte)==1?1:     \
+            ((byte)<=2?2:             \
+            ((byte)<=4?4:             \
+            ((byte)<=8?8:             \
+            ((byte)<=16?16:           \
+            ((byte)<=32?32:           \
+            ((byte)<=64?64:128        \
+            ))))))))))
         //-----------------------------------------------------------------------------
         //! Aligns the data optimally.
         //! You must align all arrays and structs which can used on accelerators.
@@ -176,6 +176,26 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         #define ALPAKA_ALIGN_8(type, name) __attribute__((aligned(8))) type name
     //#endif
+#elif BOOST_COMP_INTEL
+    #define ALPAKA_OPTIMAL_ALIGNMENT_ICC(byte) \
+        alignas(((byte)==1?1:     \
+        ((byte)<=2?2:             \
+        ((byte)<=4?4:             \
+        ((byte)<=8?8:             \
+        ((byte)<=16?16:           \
+        ((byte)<=32?32:           \
+        ((byte)<=64?64:128        \
+        ))))))))
+    //-----------------------------------------------------------------------------
+    //! Aligns the data optimally.
+    //! You must align all arrays and structs which can used on accelerators.
+    //-----------------------------------------------------------------------------
+    #define ALPAKA_ALIGN(type, name) ALPAKA_OPTIMAL_ALIGNMENT_ICC(sizeof(type)) type name
+    //-----------------------------------------------------------------------------
+    //! Aligns the data at 8 bytes.
+    //! You must align all arrays and structs which can used on accelerators.
+    //-----------------------------------------------------------------------------
+    #define ALPAKA_ALIGN_8(type, name) alignas(8) type name
 #else
     //-----------------------------------------------------------------------------
     //! Aligns the data optimally.

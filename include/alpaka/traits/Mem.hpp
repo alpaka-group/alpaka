@@ -247,7 +247,7 @@ namespace alpaka
         //!
         //! \param memBuf The memory buffer to fill.
         //! \param byte Value to set for each element of the specified buffer.
-        //! \param extents The Extents of the buffer to fill.
+        //! \param extents The extents of the buffer to fill.
         //-----------------------------------------------------------------------------
         template<
             typename TMemBuf, 

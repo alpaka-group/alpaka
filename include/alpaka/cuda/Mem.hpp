@@ -21,15 +21,15 @@
 
 #pragma once
 
-#include <alpaka/traits/Mem.hpp>            // traits::MemCopy
-#include <alpaka/traits/Extents.hpp>        // traits::getXXX
-
 #include <alpaka/core/BasicDims.hpp>        // dim::Dim<N>
 #include <alpaka/core/BasicExtents.hpp>     // extent::BasicExtents<TDim>
 
-#include <alpaka/cuda/MemSpace.hpp>         // MemSpaceCuda
+#include <alpaka/traits/Mem.hpp>            // traits::MemCopy
+#include <alpaka/traits/Extents.hpp>        // traits::getXXX
+
 #include <alpaka/host/MemSpace.hpp>         // MemSpaceHost
 
+#include <alpaka/cuda/MemSpace.hpp>         // MemSpaceCuda
 #include <alpaka/cuda/Common.hpp>
 
 #include <cstddef>                          // std::size_t
@@ -51,7 +51,8 @@ namespace alpaka
             class MemBufCuda :
                 public extent::BasicExtents<TDim>
             {
-            public:
+            private:
+                using Extent = extent::BasicExtents<TDim>;
                 using Elem = TElem;
                 using Dim = TDim;
 
@@ -65,7 +66,7 @@ namespace alpaka
                     TElem * pMem,
                     std::size_t const & uiPitchBytes,
                     TExtents const & extents) :
-                        BasicExtents<TDim>(extents),
+                        Extent(extents),
                         m_spMem(
                             pMem,
                             [](TElem * pBuffer)
@@ -103,7 +104,7 @@ namespace alpaka
                 //  This feature is available only on GPUs with compute capability greater than or equal to 1.1.
                 ALPAKA_CUDA_CHECK(
                     cudaHostRegister(
-                        const_cast<void *>(reinterpret_cast<void *>(mem::getNativePtr(memBuf))), 
+                        const_cast<void *>(reinterpret_cast<void const *>(mem::getNativePtr(memBuf))),
                         extent::getProductOfExtents(memBuf) * sizeof(mem::GetMemElemT<TMemBuf>),
                         cudaHostRegisterDefault));
             }
@@ -117,7 +118,7 @@ namespace alpaka
             {
                 ALPAKA_CUDA_CHECK(
                     cudaHostUnregister(
-                        const_cast<void *>(reinterpret_cast<void *>(mem::getNativePtr(memBuf)))));
+                        const_cast<void *>(reinterpret_cast<void const *>(mem::getNativePtr(memBuf)))));
             }
 
             //#############################################################################
@@ -140,7 +141,7 @@ namespace alpaka
                 static void memCopyCuda(
                     TMemBufDst & memBufDst, 
                     TMemBufSrc const & memBufSrc, 
-                    TExtents const & Extents, 
+                    TExtents const & extents, 
                     cudaMemcpyKind const & cudaMemcpyKindVal)
                 {
                     static_assert(
@@ -223,7 +224,7 @@ namespace alpaka
             //#############################################################################
             template<>
             struct MemCopyCuda<
-                dim::Dim3>
+                alpaka::dim::Dim3>
             {
                 template<
                     typename TExtents, 
@@ -289,14 +290,14 @@ namespace alpaka
                     // Initiate the memory copy.
                     ALPAKA_CUDA_CHECK(
                         cudaMemcpy3D(
-                            &cudaMemcpy3DParmsVall));
+                            &cudaMemcpy3DParmsVal));
                 }
             };
         }
     }
 
     //-----------------------------------------------------------------------------
-    // Trait specializations for host::detail::MemBufCuda.
+    // Trait specializations for cuda::detail::MemBufCuda.
     //-----------------------------------------------------------------------------
     namespace traits
     {
@@ -403,7 +404,7 @@ namespace alpaka
             struct GetMemBuf<
                 TElem, TDim, alpaka::mem::MemSpaceCuda>
             {
-                using type = host::detail::MemBufCuda<TElem, TDim>;
+                using type = cuda::detail::MemBufCuda<TElem, TDim>;
             };
 
             //#############################################################################
@@ -457,7 +458,7 @@ namespace alpaka
                 static alpaka::cuda::detail::MemBufCuda<T, alpaka::dim::Dim1> memAlloc(
                     TExtents const & extents)
                 {
-                    auto const uiWidth(extent::getWidth(extents));
+                    auto const uiWidth(alpaka::extent::getWidth(extents));
                     assert(uiWidth>0);
                     auto const uiWidthBytes(uiWidth * sizeof(T));
                     assert(uiWidthBytes>0);
@@ -470,7 +471,7 @@ namespace alpaka
 
                     return
                         alpaka::cuda::detail::MemBufCuda<T, alpaka::dim::Dim1>(
-                            pBuffer,
+                            reinterpret_cast<T *>(pBuffer),
                             uiWidthBytes,
                             extents);
                 }
@@ -490,27 +491,27 @@ namespace alpaka
                 static alpaka::cuda::detail::MemBufCuda<T, alpaka::dim::Dim2> memAlloc(
                     TExtents const & extents)
                 {
-                    auto const uiWidth(extent::getWidth(extents));
+                    auto const uiWidth(alpaka::extent::getWidth(extents));
                     auto const uiWidthBytes(uiWidth * sizeof(T));
                     assert(uiWidthBytes>0);
-                    auto const uiHeight(extent::getHeight(extents));
-                    auto const uiElementCount(uiWidth * uiHeight;
+                    auto const uiHeight(alpaka::extent::getHeight(extents));
+                    auto const uiElementCount(uiWidth * uiHeight);
                     assert(uiElementCount>0);
 
                     void * pBuffer;
-                    int iPitch;
+                    std::size_t uiPitch;
                     ALPAKA_CUDA_CHECK(cudaMallocPitch(
                         &pBuffer,
-                        &iPitch,
+                        &uiPitch,
                         uiWidthBytes,
                         uiHeight));
                     assert(pBuffer);
-                    assert(iPitch>uiWidthBytes);
+                    assert(uiPitch>uiWidthBytes);
                     
                     return
                         alpaka::cuda::detail::MemBufCuda<T, alpaka::dim::Dim2>(
-                            pBuffer,
-                            static_cast<std::size_t>(iPitch),
+                            reinterpret_cast<T *>(pBuffer),
+                            uiPitch,
                             extents);
                 }
             };
@@ -531,9 +532,9 @@ namespace alpaka
                 {
                     cudaExtent const cudaExtentVal(
                         make_cudaExtent(
-                            extent::getWidth(extents),
-                            extent::getHeight(extents),
-                            extent::getDepth(extents)));
+                            alpaka::extent::getWidth(extents),
+                            alpaka::extent::getHeight(extents),
+                            alpaka::extent::getDepth(extents)));
                     
                     cudaPitchedPtr cudaPitchedPtrVal;
                     ALPAKA_CUDA_CHECK(cudaMalloc3D(
@@ -544,7 +545,7 @@ namespace alpaka
                     
                     return
                         alpaka::cuda::detail::MemBufCuda<T, alpaka::dim::Dim3>(
-                            cudaPitchedPtrVal.ptr,
+                            reinterpret_cast<T *>(cudaPitchedPtrVal.ptr),
                             static_cast<std::size_t>(cudaPitchedPtrVal.pitch),
                             extents);
                 }
