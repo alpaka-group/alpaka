@@ -243,6 +243,43 @@ namespace alpaka
         }
 
         //-----------------------------------------------------------------------------
+        //! Copies memory possibly between different memory spaces asynchronously.
+        //!
+        //! \param memBufDst The destination memory buffer.
+        //! \param memBufSrc The source memory buffer.
+        //! \param extents The extents of the buffer to copy.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TMemBufDst, 
+            typename TMemBufSrc, 
+            typename TExtents,
+            typename TStream>
+        ALPAKA_FCT_HOST void copy(
+            TMemBufDst & memBufDst, 
+            TMemBufSrc const & memBufSrc, 
+            TExtents const & extents = TExtents(),
+            TStream const & stream = TStream())
+        {
+            static_assert(
+                std::is_same<dim::GetDimT<TMemBufDst>, dim::GetDimT<TMemBufSrc>>::value,
+                "The source and the destination buffers are required to have the same dimensionality!");
+            static_assert(
+                std::is_same<dim::GetDimT<TMemBufDst>, dim::GetDimT<TExtents>>::value,
+                "The destination buffer and the extents are required to have the same dimensionality!");
+            static_assert(
+                std::is_same<GetMemElemT<TMemBufDst>, GetMemElemT<TMemBufSrc>>::value,
+                "The source and the destination buffers are required to have the same element type!");
+
+            // \TODO: Copy of arrays of different dimensions. Maybe only 1D to ND?
+
+            traits::mem::MemCopy<dim::GetDimT<TMemBufDst>, GetMemSpaceT<TMemBufDst>, GetMemSpaceT<TMemBufSrc>>::memCopy(
+                memBufDst,
+                memBufSrc,
+                extents,
+                stream);
+        }
+
+        //-----------------------------------------------------------------------------
         //! Sets the memory to the given value.
         //!
         //! \param memBuf The memory buffer to fill.
@@ -265,6 +302,34 @@ namespace alpaka
                 memBuf,
                 byte,
                 extents);
+        }
+
+        //-----------------------------------------------------------------------------
+        //! Sets the memory to the given value asynchronously.
+        //!
+        //! \param memBuf The memory buffer to fill.
+        //! \param byte Value to set for each element of the specified buffer.
+        //! \param extents The extents of the buffer to fill.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TMemBuf, 
+            typename TExtents,
+            typename TStream>
+        ALPAKA_FCT_HOST void set(
+            TMemBuf & memBuf, 
+            std::uint8_t const & byte, 
+            TExtents const & extents = TExtents(),
+            TStream const & stream = TStream())
+        {
+            static_assert(
+                std::is_same<dim::GetDimT<TMemBuf>, dim::GetDimT<TExtents>>::value,
+                "The buffer and the extents are required to have the same dimensionality!");
+
+            traits::mem::MemSetAsync<dim::GetDimT<TMemBuf>, GetMemSpaceT<TMemBuf>, TStream>::memSetAsync(
+                memBuf,
+                byte,
+                extents,
+                stream);
         }
     }
     

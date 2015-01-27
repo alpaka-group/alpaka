@@ -82,6 +82,28 @@ namespace alpaka
                     return 1u;
                 }
             };
+
+            //#############################################################################
+            //! The width set trait.
+            //#############################################################################
+            template<
+                typename T, 
+                typename TSfinae = void>
+            struct SetWidth;
+            //#############################################################################
+            //! The height set trait.
+            //#############################################################################
+            template<
+                typename T, 
+                typename TSfinae = void>
+            struct SetHeight;
+            //#############################################################################
+            //! The depth set trait.
+            //#############################################################################
+            template<
+                typename T, 
+                typename TSfinae = void>
+            struct SetDepth;
         }
     }
 
@@ -94,44 +116,78 @@ namespace alpaka
         //! \return The width.
         //-----------------------------------------------------------------------------
         template<
-            typename T>
+            typename TExtents>
         ALPAKA_FCT_HOST_ACC std::size_t getWidth(
-            T const & width)
+            TExtents const & extents)
         {
-            return traits::extent::GetWidth<T>::getWidth(width);
+            return traits::extent::GetWidth<TExtents>::getWidth(extents);
         }
         //-----------------------------------------------------------------------------
         //! \return The height.
         //-----------------------------------------------------------------------------
         template<
-            typename T>
+            typename TExtents>
         ALPAKA_FCT_HOST_ACC std::size_t getHeight(
-            T const & height)
+            TExtents const & extents)
         {
-            return traits::extent::GetHeight<T>::getHeight(height);
+            return traits::extent::GetHeight<TExtents>::getHeight(extents);
         }
         //-----------------------------------------------------------------------------
         //! \return The depth.
         //-----------------------------------------------------------------------------
         template<
-            typename T>
+            typename TExtents>
         ALPAKA_FCT_HOST_ACC std::size_t getDepth(
-            T const & depth)
+            TExtents const & extents)
         {
-            return traits::extent::GetDepth<T>::getDepth(depth);
+            return traits::extent::GetDepth<TExtents>::getDepth(extents);
         }
         //-----------------------------------------------------------------------------
         //! \return The product of the extents.
         //-----------------------------------------------------------------------------
         template<
-            typename T>
+            typename TExtents>
         ALPAKA_FCT_HOST_ACC std::size_t getProductOfExtents(
-            T const & extents)
+            TExtents const & extents)
         {
             return
                 getWidth(extents)
                 * getHeight(extents)
                 * getDepth(extents);
+        }
+
+        //-----------------------------------------------------------------------------
+        //! Sets the width.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TExtents>
+            ALPAKA_FCT_HOST_ACC void setWidth(
+            TExtents const & extents,
+            std::size_t const & width)
+        {
+            return traits::extent::SetWidth<TExtents>::setWidth(extents, width);
+        }
+        //-----------------------------------------------------------------------------
+        //! Sets the height.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TExtents>
+        ALPAKA_FCT_HOST_ACC std::size_t setHeight(
+            TExtents const & extents,
+            std::size_t const & height)
+        {
+            return traits::extent::SetHeight<TExtents>::setHeight(extents, height);
+        }
+        //-----------------------------------------------------------------------------
+        //! Sets the depth.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TExtents>
+        ALPAKA_FCT_HOST_ACC std::size_t setDepth(
+            TExtents const & extents,
+            std::size_t const & depth)
+        {
+            return traits::extent::SetDepth<TExtents>::setDepth(extents, depth);
         }
     }
 

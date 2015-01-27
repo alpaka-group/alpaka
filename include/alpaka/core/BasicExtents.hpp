@@ -50,14 +50,14 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST explicit BasicExtents(
+            ALPAKA_FCT_HOST_ACC explicit BasicExtents(
                 std::size_t const & uiWidth) :
                     m_uiWidth(uiWidth)
             {}
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST explicit BasicExtents(
+            ALPAKA_FCT_HOST_ACC explicit BasicExtents(
                 BasicExtents const & other) :
                     m_uiWidth(getWidth(other))
             {}
@@ -66,18 +66,18 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TExtents>
-            ALPAKA_FCT_HOST explicit BasicExtents(
+            ALPAKA_FCT_HOST_ACC explicit BasicExtents(
                 TExtents const & other) :
                     m_uiWidth(getWidth(other))
             {}
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST BasicExtents(BasicExtents &&) = default;
+            ALPAKA_FCT_HOST_ACC BasicExtents(BasicExtents &&) = default;
             //-----------------------------------------------------------------------------
             //! Copy assignment.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST BasicExtents & operator=(
+            ALPAKA_FCT_HOST_ACC BasicExtents & operator=(
                 BasicExtents const & other)
             {
                 m_uiWidth = getWidth(other);
@@ -88,7 +88,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TExtents>
-            ALPAKA_FCT_HOST BasicExtents & operator=(
+            ALPAKA_FCT_HOST_ACC BasicExtents & operator=(
                 TExtents const & other)
             {
                 m_uiWidth = getWidth(other);
@@ -109,7 +109,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST explicit BasicExtents(
+            ALPAKA_FCT_HOST_ACC explicit BasicExtents(
                 std::size_t const & uiWidth,
                 std::size_t const & uiHeight = 1) :
                     m_uiWidth(uiWidth),
@@ -118,7 +118,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST explicit BasicExtents(
+            ALPAKA_FCT_HOST_ACC explicit BasicExtents(
                 BasicExtents const & other) :
                     m_uiWidth(getWidth(other)),
                     m_uiHeight(getHeight(other))
@@ -128,7 +128,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TExtents>
-            ALPAKA_FCT_HOST explicit BasicExtents(
+            ALPAKA_FCT_HOST_ACC explicit BasicExtents(
                 TExtents const & other) :
                     m_uiWidth(getWidth(other)),
                     m_uiHeight(getHeight(other))
@@ -136,11 +136,11 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST BasicExtents(BasicExtents &&) = default;
+            ALPAKA_FCT_HOST_ACC BasicExtents(BasicExtents &&) = default;
             //-----------------------------------------------------------------------------
             //! Copy assignment.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST BasicExtents & operator=(
+            ALPAKA_FCT_HOST_ACC BasicExtents & operator=(
                 BasicExtents const & other)
             {
                 m_uiWidth = getWidth(other);
@@ -152,7 +152,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TExtents>
-            ALPAKA_FCT_HOST BasicExtents & operator=(
+            ALPAKA_FCT_HOST_ACC BasicExtents & operator=(
                 TExtents const & other)
             {
                 m_uiWidth = getWidth(other);
@@ -175,7 +175,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST explicit BasicExtents(
+            ALPAKA_FCT_HOST_ACC explicit BasicExtents(
                 std::size_t const & uiWidth,
                 std::size_t const & uiHeight = 1,
                 std::size_t const & uiDepth = 1) :
@@ -186,7 +186,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST explicit BasicExtents(
+            ALPAKA_FCT_HOST_ACC explicit BasicExtents(
                 BasicExtents const & other) :
                     m_uiWidth(getWidth(other)),
                     m_uiHeight(getHeight(other)),
@@ -197,7 +197,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TExtents>
-            ALPAKA_FCT_HOST explicit BasicExtents(
+            ALPAKA_FCT_HOST_ACC explicit BasicExtents(
                 TExtents const & other) :
                     m_uiWidth(getWidth(other)),
                     m_uiHeight(getHeight(other)),
@@ -206,11 +206,11 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST BasicExtents(BasicExtents &&) = default;
+            ALPAKA_FCT_HOST_ACC BasicExtents(BasicExtents &&) = default;
             //-----------------------------------------------------------------------------
             //! Copy assignment.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST BasicExtents & operator=(
+            ALPAKA_FCT_HOST_ACC BasicExtents & operator=(
                 BasicExtents const & other)
             {
                 m_uiWidth = getWidth(other);
@@ -223,7 +223,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TExtents>
-            ALPAKA_FCT_HOST BasicExtents & operator=(
+            ALPAKA_FCT_HOST_ACC BasicExtents & operator=(
                 TExtents const & other)
             {
                 m_uiWidth = getWidth(other);
@@ -266,10 +266,26 @@ namespace alpaka
                 alpaka::extent::BasicExtents<TDim>,
                 typename std::enable_if<(TDim::value >= 1u) && (TDim::value <= 3u)>::type>
             {
-                static std::size_t getWidth(
+                ALPAKA_FCT_HOST_ACC static std::size_t getWidth(
                     alpaka::extent::BasicExtents<TDim> const & extent)
                 {
                     return extent.m_uiWidth;
+                }
+            };
+            //#############################################################################
+            //! The BasicExtents<TDim> width set trait specialization.
+            //#############################################################################
+            template<
+                typename TDim>
+            struct SetWidth<
+                alpaka::extent::BasicExtents<TDim>,
+                typename std::enable_if<(TDim::value >= 1u) && (TDim::value <= 3u)>::type>
+            {
+                ALPAKA_FCT_HOST_ACC static std::size_t setWidth(
+                    alpaka::extent::BasicExtents<TDim> & extent,
+                    std::size_t const & width)
+                {
+                    return extent.m_uiWidth = width;
                 }
             };
 
@@ -282,10 +298,26 @@ namespace alpaka
                 alpaka::extent::BasicExtents<TDim>,
                 typename std::enable_if<(TDim::value >= 2u) && (TDim::value <= 3u)>::type>
             {
-                static std::size_t getHeight(
+                ALPAKA_FCT_HOST_ACC static std::size_t getHeight(
                     alpaka::extent::BasicExtents<TDim> const & extent)
                 {
                     return extent.m_uiHeight;
+                }
+            };
+            //#############################################################################
+            //! The BasicExtents<TDim> height set trait specialization.
+            //#############################################################################
+            template<
+                typename TDim>
+            struct SetHeight<
+                alpaka::extent::BasicExtents<TDim>,
+                typename std::enable_if<(TDim::value >= 2u) && (TDim::value <= 3u)>::type>
+            {
+                ALPAKA_FCT_HOST_ACC static std::size_t setHeight(
+                    alpaka::extent::BasicExtents<TDim> & extent,
+                    std::size_t const & height)
+                {
+                    return extent.m_uiHeight = height;
                 }
             };
 
@@ -298,10 +330,26 @@ namespace alpaka
                 alpaka::extent::BasicExtents<TDim>,
                 typename std::enable_if<(TDim::value >= 3u) && (TDim::value <= 3u)>::type>
             {
-                static std::size_t getDepth(
+                ALPAKA_FCT_HOST_ACC static std::size_t getDepth(
                     alpaka::extent::BasicExtents<TDim> const & extent)
                 {
                     return extent.m_uiDepth;
+                }
+            };
+            //#############################################################################
+            //! The BasicExtents<TDim> depth set trait specialization.
+            //#############################################################################
+            template<
+                typename TDim>
+            struct SetDepth<
+                alpaka::extent::BasicExtents<TDim>,
+                typename std::enable_if<(TDim::value >= 3u) && (TDim::value <= 3u)>::type>
+            {
+                ALPAKA_FCT_HOST_ACC static std::size_t setDepth(
+                    alpaka::extent::BasicExtents<TDim> & extent,
+                    std::size_t const & depth)
+                {
+                    return extent.m_uiDepth = depth;
                 }
             };
         }

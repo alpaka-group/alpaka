@@ -125,6 +125,9 @@ namespace alpaka
                 host::detail::MemBufHost<TElem, TDim>,
                 typename std::enable_if<(TDim::value >= 1u) && (TDim::value <= 3u)>::type>
             {
+                //-----------------------------------------------------------------------------
+                //! 
+                //-----------------------------------------------------------------------------
                 static std::size_t getWidth(
                     host::detail::MemBufHost<TElem, TDim> const & extent)
                 {
@@ -142,6 +145,9 @@ namespace alpaka
                 host::detail::MemBufHost<TElem, TDim>,
                 typename std::enable_if<(TDim::value >= 2u) && (TDim::value <= 3u)>::type>
             {
+                //-----------------------------------------------------------------------------
+                //! 
+                //-----------------------------------------------------------------------------
                 static std::size_t getHeight(
                     host::detail::MemBufHost<TElem, TDim> const & extent)
                 {
@@ -158,6 +164,9 @@ namespace alpaka
                 host::detail::MemBufHost<TElem, TDim>,
                 typename std::enable_if<(TDim::value >= 3u) && (TDim::value <= 3u)>::type>
             {
+                //-----------------------------------------------------------------------------
+                //! 
+                //-----------------------------------------------------------------------------
                 static std::size_t getDepth(
                     host::detail::MemBufHost<TElem, TDim> const & extent)
                 {
@@ -213,11 +222,17 @@ namespace alpaka
             struct GetNativePtr<
                 host::detail::MemBufHost<TElem, TDim>>
             {
+                //-----------------------------------------------------------------------------
+                //! 
+                //-----------------------------------------------------------------------------
                 static TElem const * getNativePtr(
                     host::detail::MemBufHost<TElem, TDim> const & memBuf)
                 {
                     return memBuf.m_spMem.get();
                 }
+                //-----------------------------------------------------------------------------
+                //! 
+                //-----------------------------------------------------------------------------
                 static TElem * getNativePtr(
                     host::detail::MemBufHost<TElem, TDim> & memBuf)
                 {
@@ -234,6 +249,9 @@ namespace alpaka
             struct GetPitchBytes<
                 host::detail::MemBufHost<TElem, TDim>>
             {
+                //-----------------------------------------------------------------------------
+                //! 
+                //-----------------------------------------------------------------------------
                 static std::size_t getPitchBytes(
                     host::detail::MemBufHost<TElem, TDim> const & memPitch)
                 {
@@ -253,6 +271,9 @@ namespace alpaka
                 TDim,
                 alpaka::mem::MemSpaceHost>
             {
+                //-----------------------------------------------------------------------------
+                //! 
+                //-----------------------------------------------------------------------------
                 template<
                     typename TExtents>
                 static host::detail::MemBufHost<TElem, TDim> memAlloc(
@@ -274,6 +295,9 @@ namespace alpaka
                 alpaka::mem::MemSpaceHost,
                 alpaka::mem::MemSpaceHost>
             {
+                //-----------------------------------------------------------------------------
+                //! 
+                //-----------------------------------------------------------------------------
                 template<
                     typename TExtents, 
                     typename TMemBufSrc, 
@@ -378,9 +402,12 @@ namespace alpaka
                 TDim, 
                 alpaka::mem::MemSpaceHost>
             {
+                //-----------------------------------------------------------------------------
+                //! 
+                //-----------------------------------------------------------------------------
                 template<
-                    typename TExtents, 
-                    typename TMemBuf>
+                    typename TMemBuf, 
+                    typename TExtents>
                 static void memSet(
                     TMemBuf & memBuf, 
                     std::uint8_t const & byte, 
@@ -448,6 +475,25 @@ namespace alpaka
                             }
                         }
                     }
+                }
+                //-----------------------------------------------------------------------------
+                //! 
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TMemBuf, 
+                    typename TExtents,
+                    typename TStream>
+                static void memSet(
+                    TMemBuf & memBuf, 
+                    std::uint8_t const & byte, 
+                    TExtents const & extents, 
+                    TStream const & stream)
+                {
+                    // \TODO: Implement asynchronous host memSet.
+                    memSet(
+                        memBuf,
+                        byte,
+                        extents);
                 }
             };
         }
