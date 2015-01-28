@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include <alpaka/traits/Mem.hpp>
+
 namespace alpaka
 {
     namespace mem
@@ -29,5 +31,21 @@ namespace alpaka
         //! The data space on the host.
         //#############################################################################
         struct MemSpaceHost;
+    }
+    
+    namespace traits
+    {
+        namespace mem
+        {
+            //#############################################################################
+            //! The MemSpaceHost memory space trait specialization.
+            //#############################################################################
+            template<>
+            struct GetMemSpace<
+                alpaka::mem::MemSpaceHost>
+            {
+                using type = alpaka::mem::MemSpaceHost;
+            };
+        }
     }
 }

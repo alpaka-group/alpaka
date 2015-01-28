@@ -69,7 +69,8 @@ namespace alpaka
                             {
                                 assert(pBuffer);
                                 delete[] pBuffer;
-                            })
+                            }),
+                        m_uiPitchBytes(extent::getWidth(extents) * sizeof(TElem))
                 {}
 
             private:
@@ -89,6 +90,8 @@ namespace alpaka
 
             public:
                 std::shared_ptr<TElem> m_spMem;
+
+                std::size_t m_uiPitchBytes;
             };
         }
     }
@@ -256,7 +259,7 @@ namespace alpaka
                     host::detail::MemBufHost<TElem, TDim> const & memPitch)
                 {
                     // No pitch on the host currently.
-                    return alpaka::extent::getWidth(memPitch) * sizeof(TElem);
+                    return memPitch.m_uiPitchBytes;
                 }
             };
 

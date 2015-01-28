@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include <alpaka/traits/Mem.hpp>        // GetMemSpace
+
 namespace alpaka
 {
     namespace mem
@@ -29,5 +31,21 @@ namespace alpaka
         //! The data space on the CUDA accelerator.
         //#############################################################################
         struct MemSpaceCuda;
+    }
+
+    namespace traits
+    {
+        namespace mem
+        {
+            //#############################################################################
+            //! The MemSpaceCuda memory space trait specialization.
+            //#############################################################################
+            template<>
+            struct GetMemSpace<
+                alpaka::mem::MemSpaceCuda>
+            {
+                using type = alpaka::mem::MemSpaceCuda;
+            };
+        }
     }
 }
