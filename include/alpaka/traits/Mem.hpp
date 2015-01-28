@@ -222,7 +222,7 @@ namespace alpaka
         ALPAKA_FCT_HOST void copy(
             TMemBufDst & memBufDst, 
             TMemBufSrc const & memBufSrc, 
-            TExtents const & extents = TExtents())
+            TExtents const & extents)
         {
             static_assert(
                 std::is_same<dim::GetDimT<TMemBufDst>, dim::GetDimT<TMemBufSrc>>::value,
@@ -233,8 +233,6 @@ namespace alpaka
             static_assert(
                 std::is_same<GetMemElemT<TMemBufDst>, GetMemElemT<TMemBufSrc>>::value,
                 "The source and the destination buffers are required to have the same element type!");
-
-            // \TODO: Copy of arrays of different dimensions. Maybe only 1D to ND?
 
             traits::mem::MemCopy<dim::GetDimT<TMemBufDst>, GetMemSpaceT<TMemBufDst>, GetMemSpaceT<TMemBufSrc>>::memCopy(
                 memBufDst,
@@ -257,8 +255,8 @@ namespace alpaka
         ALPAKA_FCT_HOST void copy(
             TMemBufDst & memBufDst, 
             TMemBufSrc const & memBufSrc, 
-            TExtents const & extents = TExtents(),
-            TStream const & stream = TStream())
+            TExtents const & extents,
+            TStream const & stream)
         {
             static_assert(
                 std::is_same<dim::GetDimT<TMemBufDst>, dim::GetDimT<TMemBufSrc>>::value,
@@ -269,8 +267,6 @@ namespace alpaka
             static_assert(
                 std::is_same<GetMemElemT<TMemBufDst>, GetMemElemT<TMemBufSrc>>::value,
                 "The source and the destination buffers are required to have the same element type!");
-
-            // \TODO: Copy of arrays of different dimensions. Maybe only 1D to ND?
 
             traits::mem::MemCopy<dim::GetDimT<TMemBufDst>, GetMemSpaceT<TMemBufDst>, GetMemSpaceT<TMemBufSrc>>::memCopy(
                 memBufDst,
@@ -292,7 +288,7 @@ namespace alpaka
         ALPAKA_FCT_HOST void set(
             TMemBuf & memBuf, 
             std::uint8_t const & byte, 
-            TExtents const & extents = TExtents())
+            TExtents const & extents)
         {
             static_assert(
                 std::is_same<dim::GetDimT<TMemBuf>, dim::GetDimT<TExtents>>::value,
@@ -318,8 +314,8 @@ namespace alpaka
         ALPAKA_FCT_HOST void set(
             TMemBuf & memBuf, 
             std::uint8_t const & byte, 
-            TExtents const & extents = TExtents(),
-            TStream const & stream = TStream())
+            TExtents const & extents,
+            TStream const & stream)
         {
             static_assert(
                 std::is_same<dim::GetDimT<TMemBuf>, dim::GetDimT<TExtents>>::value,
