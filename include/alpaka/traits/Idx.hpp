@@ -82,7 +82,7 @@ namespace alpaka
         namespace idx
         {
             //#############################################################################
-            //! The 1D block kernels index get trait specialization.
+            //! The 1D block kernel index get trait specialization.
             //#############################################################################
             template<
                 typename TIdx>
@@ -107,7 +107,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The 3D grid kernels index get trait specialization.
+            //! The 3D grid kernel index get trait specialization.
             //#############################################################################
             template<
                 typename TIdx>
@@ -132,7 +132,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The 1D grid kernels index get trait specialization.
+            //! The 1D grid kernel index get trait specialization.
             //#############################################################################
             template<
                 typename TIdx>
@@ -157,7 +157,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The 1D grid blocks index get trait specialization.
+            //! The 1D grid block index get trait specialization.
             //#############################################################################
             template<
                 typename TIdx>

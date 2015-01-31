@@ -57,26 +57,22 @@ INCLUDE_DIRECTORIES(${INCLUDE_DIR})
 # Builds the project as a static library and adds the headers and sources.
 # Always add all files to the target executable build call to add them to the build project.
 IF(ALPAKA_CUDA_ENABLE)
+    # Force the .cpp files to be recognized as headers and not be compiled so there wont be a second entry point.
+	SET_SOURCE_FILES_PROPERTIES(${CPP_FILES_ALL} PROPERTIES HEADER_FILE_ONLY TRUE)
     CMAKE_POLICY(SET CMP0023 OLD)   # CUDA_ADD_EXECUTABLE calls TARGET_LINK_LIBRARIES without keywords.
     CUDA_ADD_EXECUTABLE(${TARGET_NAME}
         ${HPP_FILES_ALL}
-        #${CPP_FILES_ALL}
+        ${CPP_FILES_ALL}
         ${CU_FILES_ALL}
     )
-    # Force the .cpp files to be recognized as headers and not be compiled so there wont be a second entry point.
-    #FOREACH(filepath ${CPP_FILES_ALL})
-    #    SET_SOURCE_FILES_PROPERTIES(${filepath} PROPERTIES HEADER_FILE_ONLY TRUE)
-    #ENDFOREACH()
 ELSE()
+    # Force the .cu files to be recognized as headers and not be compiled so there wont be a second entry point.
+	SET_SOURCE_FILES_PROPERTIES(${CU_FILES_ALL} PROPERTIES HEADER_FILE_ONLY TRUE)
     ADD_EXECUTABLE(${TARGET_NAME}
         ${HPP_FILES_ALL}
         ${CPP_FILES_ALL}
         ${CU_FILES_ALL}
     )
-    # Force the .cu files to be recognized as headers and not be compiled so there wont be a second entry point.
-    FOREACH(filepath ${CU_FILES_ALL})
-        SET_SOURCE_FILES_PROPERTIES(${filepath} PROPERTIES HEADER_FILE_ONLY TRUE)
-    ENDFOREACH()
 ENDIF()
 
 # Set the link libraries for this library (adds libs and include directories).

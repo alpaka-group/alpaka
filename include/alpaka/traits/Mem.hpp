@@ -318,7 +318,7 @@ namespace alpaka
                 std::is_same<dim::GetDimT<TMemBuf>, dim::GetDimT<TExtents>>::value,
                 "The buffer and the extents are required to have the same dimensionality!");
 
-            traits::mem::MemSetAsync<dim::GetDimT<TMemBuf>, GetMemSpaceT<TMemBuf>, TStream>::memSetAsync(
+            traits::mem::MemSet<dim::GetDimT<TMemBuf>, GetMemSpaceT<TMemBuf>, TStream>::memSetAsync(
                 memBuf,
                 byte,
                 extents,

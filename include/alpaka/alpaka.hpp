@@ -36,6 +36,10 @@
 
 #include <alpaka/interfaces/IAcc.hpp>
 
+#include <alpaka/host/Mem.hpp>
+#include <alpaka/host/MemSpace.hpp>
+#include <alpaka/host/SysInfo.hpp>
+
 #include <alpaka/traits/Acc.hpp>
 #include <alpaka/traits/Atomic.hpp>
 #include <alpaka/traits/BlockSharedExternMemSizeBytes.hpp>
