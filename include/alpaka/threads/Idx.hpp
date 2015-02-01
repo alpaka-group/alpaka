@@ -52,10 +52,12 @@ namespace alpaka
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA IdxThreads(IdxThreads const &) = default;
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA IdxThreads(IdxThreads &&) = default;
+#endif
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
@@ -100,7 +102,7 @@ namespace alpaka
         namespace idx
         {
             //#############################################################################
-            //! The threads accelerator 3D block kernels index get trait specialization.
+            //! The threads accelerator 3D block kernel index get trait specialization.
             //#############################################################################
             template<>
             struct GetIdx<
@@ -123,7 +125,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The threads accelerator 3D grid blocks index get trait specialization.
+            //! The threads accelerator 3D grid block index get trait specialization.
             //#############################################################################
             template<>
             struct GetIdx<

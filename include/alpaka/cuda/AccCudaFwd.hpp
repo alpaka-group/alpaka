@@ -46,6 +46,16 @@ namespace alpaka
         namespace acc
         {
             //#############################################################################
+            //! The CUDA accelerator accelerator type trait specialization.
+            //#############################################################################
+            template<>
+            struct GetAcc<
+                cuda::detail::AccCuda>
+            {
+                using type = cuda::detail::AccCuda;
+            };
+
+            //#############################################################################
             //! The CUDA accelerator name trait specialization.
             //#############################################################################
             template<>

@@ -123,7 +123,8 @@ namespace alpaka
             //#############################################################################
             struct GetAccName
             {
-                template<typename TAcc> 
+                template<
+                    typename TAcc> 
                 ALPAKA_FCT_HOST void operator()(TAcc, std::ostream & os)
                 {
                     os << acc::getAccName<TAcc>();

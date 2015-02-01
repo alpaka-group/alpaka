@@ -46,6 +46,16 @@ namespace alpaka
         namespace acc
         {
             //#############################################################################
+            //! The threads accelerator accelerator type trait specialization.
+            //#############################################################################
+            template<>
+            struct GetAcc<
+                threads::detail::AccThreads>
+            {
+                using type = threads::detail::AccThreads;
+            };
+
+            //#############################################################################
             //! The threads accelerator name trait specialization.
             //#############################################################################
             template<>

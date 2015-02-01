@@ -68,9 +68,9 @@ ENDIF()
 ################################################################################
 # Debug option.
 ################################################################################
-OPTION(ALPAKA_DEBUG "Enables additional logging" OFF)
+OPTION(ALPAKA_DEBUG "Debug level [0,1,2]" 0)
 IF(ALPAKA_DEBUG)
-    LIST(APPEND ALPAKA_COMPILE_DEFINITIONS ALPAKA_DEBUG)
+    LIST(APPEND ALPAKA_COMPILE_DEFINITIONS "ALPAKA_DEBUG=${ALPAKA_DEBUG}")
 ENDIF()
 
 ################################################################################
@@ -93,7 +93,6 @@ IF(NOT MSVC)    # On non MSVC targets the general attribute is not added.
     list_add_prefix("general;" Boost_LIBRARIES)
 ENDIF()
 LIST(APPEND ALPAKA_LIBRARY_DEPENDENCIES ${Boost_LIBRARIES})
-
 
 ################################################################################
 # Find OpenMP.
@@ -122,10 +121,6 @@ IF(ALPAKA_CUDA_ENABLE)
         MESSAGE(FATAL_ERROR "CUDA Toolkit < 6.5 detected!")
     ENDIF()
 
-    IF(CUDA_VERSION VERSION_LESS 7.0)
-        LIST(APPEND ALPAKA_COMPILE_DEFINITIONS ALPAKA_NVCC_FRIEND_ACCESS_BUG)
-    ENDIF()
-
     SET(CUDA_ARCH sm_20 CACHE STRING "Set GPU architecture")
     STRING(COMPARE EQUAL ${CUDA_ARCH} "sm_10" IS_CUDA_ARCH_UNSUPPORTED)
     STRING(COMPARE EQUAL ${CUDA_ARCH} "sm_11" IS_CUDA_ARCH_UNSUPPORTED)
@@ -136,13 +131,15 @@ IF(ALPAKA_CUDA_ENABLE)
         MESSAGE(FATAL_ERROR "Unsupported CUDA architecture ${CUDA_ARCH} specified. SM 2.0 or higher is required.")
     ENDIF(IS_CUDA_ARCH_UNSUPPORTED)
     
-    LIST(APPEND CUDA_NVCC_FLAGS -std=c++11)
-    SET(CUDA_HOST_COMPILER ${CMAKE_CXX_COMPILER})
-
+    IF(NOT MSVC)
+        LIST(APPEND CUDA_NVCC_FLAGS -std=c++11)
+        SET(CUDA_HOST_COMPILER ${CMAKE_CXX_COMPILER})
+    ENDIF()
+    
     SET(CUDA_FTZ "--ftz=false" CACHE STRING "Set flush to zero for GPU")
     SET(CUDA_MATH --use_fast_math CACHE STRING "Enable fast-math")
 
-    LIST(APPEND CUDA_NVCC_FLAGS ${nvcc_flags} -arch=${CUDA_ARCH} ${CUDA_MATH} ${CUDA_FTZ})
+    LIST(APPEND CUDA_NVCC_FLAGS -arch=${CUDA_ARCH} ${CUDA_MATH} ${CUDA_FTZ})
 
     OPTION(CUDA_SHOW_REGISTER "Show kernel registers and create PTX" OFF)
     IF(CUDA_SHOW_REGISTER)

@@ -46,6 +46,16 @@ namespace alpaka
         namespace acc
         {
             //#############################################################################
+            //! The OpenMP accelerator accelerator type trait specialization.
+            //#############################################################################
+            template<>
+            struct GetAcc<
+                openmp::detail::AccOpenMp>
+            {
+                using type = openmp::detail::AccOpenMp;
+            };
+
+            //#############################################################################
             //! The OpenMP accelerator name trait specialization.
             //#############################################################################
             template<>

@@ -25,6 +25,8 @@
 
 #include <alpaka/core/Vec.hpp>          // Vec
 
+#include <iosfwd>						// std::ostream
+
 namespace alpaka
 {
     namespace workdiv
@@ -42,7 +44,11 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Constructor from values.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST explicit BasicWorkDiv(
+            ALPAKA_FCT_HOST
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
+            explicit 
+#endif
+            BasicWorkDiv(
                 Vec<3u> const & v3uiGridBlocksExtent, 
                 Vec<3u> const & v3uiBlockKernelsExtents) :
                 m_v3uiGridBlocksExtents(v3uiGridBlocksExtent),
@@ -51,7 +57,11 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST explicit BasicWorkDiv(
+            ALPAKA_FCT_HOST
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
+            explicit
+#endif
+            BasicWorkDiv(
                 BasicWorkDiv const & other) :
                     m_v3uiGridBlocksExtents(getWorkDiv<Grid, Blocks, dim::Dim3>(other)),
                     m_v3uiBlockKernelsExtents(getWorkDiv<Block, Kernels, dim::Dim3>(other))
@@ -61,15 +71,21 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TWorkDiv>
-            ALPAKA_FCT_HOST explicit BasicWorkDiv(
+            ALPAKA_FCT_HOST
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
+            explicit
+#endif
+            BasicWorkDiv(
                 TWorkDiv const & other) :
                     m_v3uiGridBlocksExtents(getWorkDiv<Grid, Blocks, dim::Dim3>(other)),
                     m_v3uiBlockKernelsExtents(getWorkDiv<Block, Kernels, dim::Dim3>(other))
             {}
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST BasicWorkDiv(BasicWorkDiv &&) = default;
+#endif
             //-----------------------------------------------------------------------------
             //! Copy assignment.
             //-----------------------------------------------------------------------------

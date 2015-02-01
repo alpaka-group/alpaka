@@ -28,6 +28,9 @@
 #include <cassert>                  // assert
 #include <type_traits>              // std::enable_if
 
+#include <boost/mpl/and.hpp>        // boost::mpl::and_
+//#include <boost/type_traits/is_convertible.hpp>
+
 // workarounds
 #include <boost/predef.h>
 
@@ -38,7 +41,8 @@ namespace alpaka
     //#############################################################################
     template<
         std::size_t TuiDim, 
-        typename TValue = std::size_t>
+        // NOTE: Setting the value type to std::size_t leads to invalid data on CUDA devices (at least witch VC12).
+        typename TValue = std::uint32_t>
     class Vec final
     {
     public:
@@ -60,7 +64,6 @@ namespace alpaka
                 m_auiData[i] = 0;
             }
         }
-
         //-----------------------------------------------------------------------------
         //! Value-constructor.
         //! This constructor is only available if the number of parameters matches the vector size.
@@ -68,7 +71,11 @@ namespace alpaka
         template<
             typename TFirstArg, 
             typename... TArgs, 
-            typename = typename std::enable_if<sizeof...(TArgs) == (TuiDim-1)>::type>
+            typename = typename std::enable_if<
+                (sizeof...(TArgs) == (TuiDim-1))
+                && std::is_convertible<typename std::decay<TFirstArg>::type, TValue>::value
+                //&& boost::mpl::and_<boost::mpl::true_, boost::mpl::true_, std::is_convertible<typename std::decay<TArgs>::type, TValue>...>::value
+            >::type>
         ALPAKA_FCT_HOST_ACC Vec(TFirstArg && val, TArgs && ... values)
 #if !(BOOST_COMP_MSVC /*<= BOOST_VERSION_NUMBER(14, 0, 22512)*/)   // MSVC does not compile the basic array initialization: "error C2536: 'alpaka::Vec<0x03>::alpaka::Vec<0x03>::m_auiData': cannot specify explicit initializer for arrays"
             :
@@ -87,10 +94,12 @@ namespace alpaka
         //! Copy constructor.
         //-----------------------------------------------------------------------------
         ALPAKA_FCT_HOST_ACC Vec(Vec const &) = default;
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
         //-----------------------------------------------------------------------------
         //! Move constructor.
         //-----------------------------------------------------------------------------
         ALPAKA_FCT_HOST_ACC Vec(Vec &&) = default;
+#endif
         //-----------------------------------------------------------------------------
         //! Copy assignment.
         //-----------------------------------------------------------------------------

@@ -28,6 +28,7 @@
 #include <alpaka/core/BasicExtents.hpp>     // extent::BasicExtents<TDim>
 
 #include <alpaka/host/MemSpace.hpp>         // MemSpaceHost
+#include <alpaka/host/Stream.hpp>           // StreamHost
 
 #include <cstring>                          // std::memcpy, std::memset
 #include <cassert>                          // assert
@@ -61,17 +62,13 @@ namespace alpaka
                 template<
                     typename TExtents>
                 MemBufHost(
-                    TExtents const & extents):
+                    TExtents const & extents) :
                         Extent(extents),
-                        m_spMem(
-                            new TElem[computeElementCount(extents)],
-                            [](TElem * pBuffer)
-                            {
-                                assert(pBuffer);
-                                delete[] pBuffer;
-                            }),
+                        m_spMem(new TElem[computeElementCount(extents)], &MemBufHost::freeBuffer),
                         m_uiPitchBytes(extent::getWidth(extents) * sizeof(TElem))
-                {}
+                {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+                }
 
             private:
                 //-----------------------------------------------------------------------------
@@ -86,6 +83,17 @@ namespace alpaka
                     assert(uiExtentsElementCount>0);
 
                     return uiExtentsElementCount;
+                }
+                //-----------------------------------------------------------------------------
+                //! Frees the shared buffer.
+                //-----------------------------------------------------------------------------
+                static void freeBuffer(
+                    TElem * pBuffer)
+                {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                    assert(pBuffer);
+                    delete[] pBuffer;
                 }
 
             public:
@@ -282,6 +290,8 @@ namespace alpaka
                 static host::detail::MemBufHost<TElem, TDim> memAlloc(
                     TExtents const & extents)
                 {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
                     return host::detail::MemBufHost<TElem, TDim>(extents);
                 }
             };
@@ -310,6 +320,8 @@ namespace alpaka
                     TMemBufSrc const & memBufSrc, 
                     TExtents const & extents)
                 {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
                     static_assert(
                         std::is_same<alpaka::dim::GetDimT<TMemBufDst>, alpaka::dim::GetDimT<TMemBufSrc>>::value,
                         "The source and the destination buffers are required to have the same dimensionality!");
@@ -394,6 +406,25 @@ namespace alpaka
                         }
                     }
                 }
+                //-----------------------------------------------------------------------------
+                //! 
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TExtents, 
+                    typename TMemBufSrc, 
+                    typename TMemBufDst>
+                static void memCopy(
+                    TMemBufDst & memBufDst, 
+                    TMemBufSrc const & memBufSrc, 
+                    TExtents const & extents,
+                    host::detail::StreamHost const &)
+                {
+                    // \TODO: Implement asynchronous host memCopy.
+                    memCopy(
+                        memBufDst,
+                        memBufSrc,
+                        extents);
+                }
             };
 
             //#############################################################################
@@ -416,6 +447,8 @@ namespace alpaka
                     std::uint8_t const & byte, 
                     TExtents const & extents)
                 {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
                     using Elem = alpaka::mem::GetMemElemT<TMemBuf>;
 
                     static_assert(
@@ -489,8 +522,8 @@ namespace alpaka
                 static void memSet(
                     TMemBuf & memBuf, 
                     std::uint8_t const & byte, 
-                    TExtents const & extents, 
-                    TStream const & stream)
+                    TExtents const & extents,
+                    host::detail::StreamHost const &)
                 {
                     // \TODO: Implement asynchronous host memSet.
                     memSet(

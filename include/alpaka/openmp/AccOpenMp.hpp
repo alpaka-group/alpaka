@@ -48,9 +48,6 @@
 #include <stdexcept>                                // std::except
 #include <string>                                   // std::to_string
 #include <algorithm>                                // std::min, std::max
-#ifdef ALPAKA_DEBUG
-    #include <iostream>                             // std::cout
-#endif
 
 #include <boost/mpl/apply.hpp>                      // boost::mpl::apply
 
@@ -103,11 +100,14 @@ namespace alpaka
                     m_v3uiGridBlockIdx(),
                     m_vvuiSharedMem(),
                     m_vuiExternalSharedMem()
-                {}
+                {
+                }
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA AccOpenMp(AccOpenMp &&) = default;
+#endif
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
@@ -244,22 +244,20 @@ namespace alpaka
                     TKernelConstrArgs && ... args) :
                     TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
                 {
-#ifdef ALPAKA_DEBUG
-                    std::cout << "[+] AccOpenMp::KernelExecutorOpenMp()" << std::endl;
-#endif
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
                     (*static_cast<WorkDivOpenMp *>(this)) = workDiv;
-#ifdef ALPAKA_DEBUG
-                    std::cout << "[-] AccOpenMp::KernelExecutorOpenMp()" << std::endl;
-#endif
                 }
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecutorOpenMp(KernelExecutorOpenMp const &) = default;
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecutorOpenMp(KernelExecutorOpenMp &&) = default;
+#endif
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
@@ -281,9 +279,8 @@ namespace alpaka
                 ALPAKA_FCT_HOST void operator()(
                     TArgs && ... args) const
                 {
-#ifdef ALPAKA_DEBUG
-                    std::cout << "[+] AccOpenMp::KernelExecutorOpenMp::operator()" << std::endl;
-#endif
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
                     Vec<3u> const v3uiGridBlocksExtents(this->AccOpenMp::getWorkDiv<Grid, Blocks, dim::Dim3>());
                     Vec<3u> const v3uiBlockKernelsExtents(this->AccOpenMp::getWorkDiv<Block, Kernels, dim::Dim3>());
 
@@ -318,11 +315,11 @@ namespace alpaka
                                 // \TODO: Does this hinder executing multiple kernels in parallel because their block sizes/omp thread numbers are interfering? Is this num_threads global? Is this a real use case? 
                                 #pragma omp parallel num_threads(static_cast<int>(uiNumKernelsInBlock))
                                 {
-#ifdef ALPAKA_DEBUG
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                                     if((::omp_get_thread_num() == 0) && (bz == 0) && (by == 0) && (bx == 0))
                                     {
                                         assert(::omp_get_num_threads()>=0);
-                                        auto const uiNumThreads(static_cast<std::uint32_t>(::omp_get_num_threads()));
+                                        auto const uiNumThreads(static_cast<decltype(uiNumKernelsInBlock)>(::omp_get_num_threads()));
                                         std::cout << "omp_get_num_threads: " << uiNumThreads << std::endl;
                                         if(uiNumThreads != uiNumKernelsInBlock)
                                         {
@@ -345,9 +342,6 @@ namespace alpaka
                     }
                     // After all blocks have been processed, the external shared memory can be deleted.
                     this->AccOpenMp::m_vuiExternalSharedMem.reset();
-#ifdef ALPAKA_DEBUG
-                    std::cout << "[-] AccOpenMp::KernelExecutorOpenMp::operator()" << std::endl;
-#endif
                 }
             };
         }

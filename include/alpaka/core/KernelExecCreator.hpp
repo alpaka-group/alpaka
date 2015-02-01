@@ -49,6 +49,8 @@ namespace alpaka
                 }
             };
 
+            // Bug: https://connect.microsoft.com/VisualStudio/feedback/details/1085630/template-alias-internal-error-in-the-compiler-because-of-tmp-c-integer-sequence-for-c-11
+#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
             template<bool TbNegative, bool TbZero, class TIntCon, class TIntSeq>
             struct make_integer_sequence_helper
             {
@@ -65,8 +67,31 @@ namespace alpaka
                 make_integer_sequence_helper<false, TIdx == 1, std::integral_constant<T, TIdx - 1>, integer_sequence<T, TIdx - 1, TVals...> >
             {};
 
-            template<class T, T TSize>
-            using make_integer_sequence = typename make_integer_sequence_helper<(TSize < 0), (TSize == 0), std::integral_constant<T, TSize>, integer_sequence<T> >::type;
+            template<class T, T TuiSize>
+            struct make_integer_sequence
+            {
+                using type = typename make_integer_sequence_helper<(TuiSize < 0), (TuiSize == 0), std::integral_constant<T, TuiSize>, integer_sequence<T> >::type;
+            };
+#else
+            template<bool TbNegative, bool TbZero, class TIntCon, class TIntSeq>
+            struct make_integer_sequence_helper
+            {
+                static_assert(!TbNegative, "make_integer_sequence<T, N> requires N to be non-negative.");
+            };
+
+            template<class T, T... TVals>
+            struct make_integer_sequence_helper<false, true, std::integral_constant<T, 0>, integer_sequence<T, TVals...> > :
+                integer_sequence<T, TVals...>
+            {};
+
+            template<class T, T TIdx, T... TVals>
+            struct make_integer_sequence_helper<false, false, std::integral_constant<T, TIdx>, integer_sequence<T, TVals...> > :
+                make_integer_sequence_helper<false, TIdx == 1, std::integral_constant<T, TIdx - 1>, integer_sequence<T, TIdx - 1, TVals...> >
+            {};
+
+            template<class T, T TuiSize>
+            using make_integer_sequence = typename make_integer_sequence_helper<(TuiSize < 0), (TuiSize == 0), std::integral_constant<T, TuiSize>, integer_sequence<T> >::type;
+#endif
 
             template<std::size_t... TVals>
             using index_sequence = integer_sequence<std::size_t, TVals...>;
@@ -97,10 +122,12 @@ namespace alpaka
             //! Copy constructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST KernelExecutorExtent(KernelExecutorExtent const &) = default;
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST KernelExecutorExtent(KernelExecutorExtent &&) = default;
+#endif
             //-----------------------------------------------------------------------------
             //! Copy assignment.
             //-----------------------------------------------------------------------------
@@ -174,7 +201,11 @@ namespace alpaka
 
         private:
             std::tuple<TKernelConstrArgs...> m_tupleKernelConstrArgs;
+#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
+            using KernelConstrArgsIdxSequence = typename std_extension::make_index_sequence<sizeof...(TKernelConstrArgs)>::type;
+#else
             using KernelConstrArgsIdxSequence = std_extension::make_index_sequence<sizeof...(TKernelConstrArgs)>;
+#endif
         };
 
         //#############################################################################

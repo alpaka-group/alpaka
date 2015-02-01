@@ -57,10 +57,12 @@ namespace alpaka
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST DeviceFibers(DeviceFibers const &) = default;
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST DeviceFibers(DeviceFibers &&) = default;
+#endif
                 //-----------------------------------------------------------------------------
                 //! Assignment operator.
                 //-----------------------------------------------------------------------------
@@ -173,7 +175,7 @@ namespace alpaka
                     devProps.m_sName = host::getCpuName();
                     devProps.m_uiMultiProcessorCount = std::thread::hardware_concurrency(); // \TODO: This may be inaccurate.
                     devProps.m_uiBlockKernelsCountMax = 64u; // \TODO: What is the maximum? Just set a reasonable value?
-                    devProps.m_v3uiBlockKernelsExtentsMax = Vec<3u>(devProps.m_uiBlockKernelsCountMax, devProps.m_uiBlockKernelsCountMax, devProps.m_uiBlockKernelsCountMax);
+                    devProps.m_v3uiBlockKernelsExtentsMax = Vec<3u>(static_cast<Vec<3u>::Value>(devProps.m_uiBlockKernelsCountMax), static_cast<Vec<3u>::Value>(devProps.m_uiBlockKernelsCountMax), static_cast<Vec<3u>::Value>(devProps.m_uiBlockKernelsCountMax));
                     devProps.m_v3uiGridBlocksExtentsMax = Vec<3u>(std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max());
                     devProps.m_uiGlobalMemSizeBytes = host::getGlobalMemSizeBytes();
                     //devProps.m_uiMaxClockFrequencyHz = TODO;

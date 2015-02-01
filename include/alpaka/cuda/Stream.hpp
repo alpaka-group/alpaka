@@ -28,6 +28,8 @@
 #include <alpaka/cuda/AccCudaFwd.hpp>   // AccCuda
 #include <alpaka/cuda/Common.hpp>       // ALPAKA_CUDA_CHECK
 
+#include <memory>                       // std::shared_ptr
+
 namespace alpaka
 {
     namespace cuda
@@ -43,19 +45,24 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST StreamCuda()
+                ALPAKA_FCT_HOST StreamCuda() :
+                    m_spCudaStream(new cudaStream_t, &StreamCuda::destroyStream)
                 {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
                     ALPAKA_CUDA_CHECK(cudaStreamCreate(
-                        &m_cudaStream));
+                        m_spCudaStream.get()));
                 }
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST StreamCuda(StreamCuda const &) = default;
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST StreamCuda(StreamCuda &&) = default;
+#endif
                 //-----------------------------------------------------------------------------
                 //! Assignment operator.
                 //-----------------------------------------------------------------------------
@@ -65,7 +72,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST bool operator==(StreamCuda const & rhs) const
                 {
-                    return m_cudaStream == rhs.m_cudaStream;
+                    return (*m_spCudaStream.get()) == (*rhs.m_spCudaStream.get());
                 }
                 //-----------------------------------------------------------------------------
                 //! Equality comparison operator.
@@ -77,12 +84,25 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST virtual ~StreamCuda() noexcept
+                ALPAKA_FCT_HOST /*virtual*/ ~StreamCuda() noexcept = default;
+                
+            private:
+                //-----------------------------------------------------------------------------
+                //! Destroys the shared stream.
+                //-----------------------------------------------------------------------------
+                static void destroyStream(
+                    cudaStream_t * stream)
                 {
-                    ALPAKA_CUDA_CHECK(cudaStreamDestroy(m_cudaStream));
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                    // In case the device is still doing work in the stream when cudaStreamDestroy() is called, the function will return immediately 
+                    // and the resources associated with stream will be released automatically once the device has completed all work in stream.
+                    // -> No need to synchronize here.
+                    ALPAKA_CUDA_CHECK(cudaStreamDestroy(*stream));
                 }
 
-                cudaStream_t m_cudaStream;
+            public:
+                std::shared_ptr<cudaStream_t> m_spCudaStream;
             };
         }
     }
@@ -124,7 +144,11 @@ namespace alpaka
                 ALPAKA_FCT_HOST static bool streamTest(
                     cuda::detail::StreamCuda const & stream)
                 {
-                    auto const ret(cudaStreamQuery(stream.m_cudaStream));
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                    auto const ret(
+                        cudaStreamQuery(
+                            *stream.m_spCudaStream.get()));
                     if(ret == cudaSuccess)
                     {
                         return true;
@@ -135,7 +159,7 @@ namespace alpaka
                     }
                     else
                     {
-                        throw std::runtime_error(("Unexpected return value '" + std::string(cudaGetErrorString(ret)) + "'from cudaStreamQuery!").c_str());
+                        throw std::runtime_error(("Unexpected return value '" + std::string(cudaGetErrorString(ret)) + "'from cudaStreamQuery!"));
                     }
                 }
             };
@@ -153,8 +177,10 @@ namespace alpaka
                 ALPAKA_FCT_HOST static void currentThreadWaitFor(
                     cuda::detail::StreamCuda const & stream)
                 {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
                     ALPAKA_CUDA_CHECK(cudaStreamSynchronize(
-                        stream.m_cudaStream));
+                        *stream.m_spCudaStream.get()));
                 }
             };
         }

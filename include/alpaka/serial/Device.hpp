@@ -56,10 +56,12 @@ namespace alpaka
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST DeviceSerial(DeviceSerial const &) = default;
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST DeviceSerial(DeviceSerial &&) = default;
+#endif
                 //-----------------------------------------------------------------------------
                 //! Assignment operator.
                 //-----------------------------------------------------------------------------
@@ -67,7 +69,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Equality comparison operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST bool operator==(DeviceSerial const & rhs) const
+                ALPAKA_FCT_HOST bool operator==(DeviceSerial const &) const
                 {
                     return true;
                 }
@@ -172,7 +174,7 @@ namespace alpaka
                     devProps.m_uiMultiProcessorCount = 1;
                     devProps.m_uiBlockKernelsCountMax = 1;
                     devProps.m_v3uiBlockKernelsExtentsMax = Vec<3u>(1u, 1u, 1u);
-                    devProps.m_v3uiGridBlocksExtentsMax = Vec<3u>(std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max(), std::numeric_limits<std::size_t>::max());
+                    devProps.m_v3uiGridBlocksExtentsMax = Vec<3u>(std::numeric_limits<Vec<1u>::Value>::max(), std::numeric_limits<Vec<1u>::Value>::max(), std::numeric_limits<Vec<1u>::Value>::max());
                     devProps.m_uiGlobalMemSizeBytes = host::getGlobalMemSizeBytes();
                     //devProps.m_uiMaxClockFrequencyHz = TODO;
 

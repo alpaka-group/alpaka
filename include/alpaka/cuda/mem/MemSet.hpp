@@ -61,6 +61,8 @@ namespace alpaka
                     std::uint8_t const & byte, 
                     TExtents const & extents)
                 {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
                     static_assert(
                         std::is_same<alpaka::dim::GetDimT<TMemBuf>, alpaka::dim::Dim1>::value,
                         "The destination buffer is required to have the dimensionality alpaka::dim::Dim1 for this specialization!");
@@ -77,7 +79,7 @@ namespace alpaka
                         cudaMemset(
                             reinterpret_cast<void *>(alpaka::mem::getNativePtr(memBuf)),
                             static_cast<int>(byte),
-                            uiExtentWidth * sizeof(alpaka::mem::GetMemElemT<TMemBuf>))));
+                            uiExtentWidth * sizeof(alpaka::mem::GetMemElemT<TMemBuf>)));
                 }
                 //-----------------------------------------------------------------------------
                 //! 
@@ -91,6 +93,8 @@ namespace alpaka
                     TExtents const & extents,
                     cuda::detail::StreamCuda const & stream)
                 {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
                     static_assert(
                         std::is_same<alpaka::dim::GetDimT<TMemBuf>, alpaka::dim::Dim1>::value,
                         "The destination buffer is required to have the dimensionality alpaka::dim::Dim1 for this specialization!");
@@ -108,7 +112,7 @@ namespace alpaka
                             reinterpret_cast<void *>(alpaka::mem::getNativePtr(memBuf)),
                             static_cast<int>(byte),
                             uiExtentWidth * sizeof(alpaka::mem::GetMemElemT<TMemBuf>),
-                            stream.m_cudaStream));
+                            *stream.m_spCudaStream.get()));
                 }
             };
             //#############################################################################
@@ -130,6 +134,8 @@ namespace alpaka
                     std::uint8_t const & byte, 
                     TExtents const & extents)
                 {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
                     static_assert(
                         std::is_same<alpaka::dim::GetDimT<TMemBuf>, alpaka::dim::Dim2>::value,
                         "The destination buffer is required to have the dimensionality alpaka::dim::Dim2 for this specialization!");
@@ -165,6 +171,8 @@ namespace alpaka
                     TExtents const & extents,
                     cuda::detail::StreamCuda const & stream)
                 {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
                     static_assert(
                         std::is_same<alpaka::dim::GetDimT<TMemBuf>, alpaka::dim::Dim2>::value,
                         "The destination buffer is required to have the dimensionality alpaka::dim::Dim2 for this specialization!");
@@ -187,7 +195,7 @@ namespace alpaka
                             static_cast<int>(byte),
                             uiExtentWidth * sizeof(alpaka::mem::GetMemElemT<TMemBuf>),
                             uiExtentHeight,
-                            stream.m_cudaStream));
+                            *stream.m_spCudaStream.get()));
                 }
             };
             //#############################################################################
@@ -209,6 +217,8 @@ namespace alpaka
                     std::uint8_t const & byte, 
                     TExtents const & extents)
                 {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
                     static_assert(
                         std::is_same<alpaka::dim::GetDimT<TMemBuf>, alpaka::dim::Dim3>::value,
                         "The destination buffer is required to have the dimensionality alpaka::dim::Dim3 for this specialization!");
@@ -259,6 +269,8 @@ namespace alpaka
                     TExtents const & extents,
                     cuda::detail::StreamCuda const & stream)
                 {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
                     static_assert(
                         std::is_same<alpaka::dim::GetDimT<TMemBuf>, alpaka::dim::Dim3>::value,
                         "The destination buffer is required to have the dimensionality alpaka::dim::Dim3 for this specialization!");
@@ -296,7 +308,7 @@ namespace alpaka
                             cudaPitchedPtrVal,
                             static_cast<int>(byte),
                             cudaExtentVal,
-                            stream.m_cudaStream));
+                            *stream.m_spCudaStream.get()));
                 }
             };
         }

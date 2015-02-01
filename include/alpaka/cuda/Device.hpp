@@ -56,10 +56,12 @@ namespace alpaka
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST DeviceCuda(DeviceCuda const &) = default;
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST DeviceCuda(DeviceCuda &&) = default;
+#endif
                 //-----------------------------------------------------------------------------
                 //! Assignment operator.
                 //-----------------------------------------------------------------------------
@@ -147,9 +149,8 @@ namespace alpaka
                 ALPAKA_FCT_HOST static void setCurrentDevice(
                     cuda::detail::DeviceCuda const & device)
                 {
-    #ifdef ALPAKA_DEBUG
-                    std::cout << "[+] DeviceManagerCuda::setCurrentDevice()" << std::endl;
-    #endif
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
                     std::size_t uiNumDevices(getDeviceCount());
                     if(uiNumDevices < 1)
                     {
@@ -169,11 +170,11 @@ namespace alpaka
                     {
                         ALPAKA_CUDA_CHECK(cudaSetDevice(device.m_iDevice));
                         std::cout << "Set device to " << device.m_iDevice << ": " << std::endl;
-    #ifndef ALPAKA_DEBUG
-                        std::cout << devProp.name << std::endl;
-    #else
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                         printDeviceProperties(devProp);
-    #endif
+#else
+                        std::cout << devProp.name << std::endl;
+#endif
                     }
                     // Compute-exclusive-thread mode (Only one thread in one process will be able to use cudaSetDevice() with this device)
                     else if(devProp.computeMode == cudaComputeModeExclusive)
@@ -200,17 +201,14 @@ namespace alpaka
                     // Instruct CUDA to actively spin when waiting for results from the device.
                     // This can decrease latency when waiting for the device, but may lower the performance of CPU threads if they are performing work in parallel with the CUDA thread.
                     ALPAKA_CUDA_CHECK(cudaSetDeviceFlags(cudaDeviceScheduleSpin));
-    #ifdef ALPAKA_DEBUG
-                    std::cout << "[-] DeviceManagerCuda::setCurrentDevice()" << std::endl;
-    #endif
                 }
 
             private:
-    #ifdef ALPAKA_DEBUG
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 //-----------------------------------------------------------------------------
                 //! Prints all the device properties to std::cout.
                 //-----------------------------------------------------------------------------
-                static printDeviceProperties(
+                static void printDeviceProperties(
                     cudaDeviceProp const & devProp)
                 {
                     std::size_t const uiKiB(1024);
@@ -267,7 +265,7 @@ namespace alpaka
                     std::cout << "l2CacheSize: " << devProp.l2CacheSize << " B" << std::endl;
                     std::cout << "maxThreadsPerMultiProcessor: " << devProp.maxThreadsPerMultiProcessor << std::endl;
                 }
-    #endif
+#endif
             };
         }
     }
@@ -313,8 +311,8 @@ namespace alpaka
                     devProps.m_sName = cudaDevProp.name;
                     devProps.m_uiMultiProcessorCount = static_cast<std::size_t>(cudaDevProp.multiProcessorCount);
                     devProps.m_uiBlockKernelsCountMax = static_cast<std::size_t>(cudaDevProp.maxThreadsPerBlock);
-                    devProps.m_v3uiBlockKernelsExtentsMax = Vec<3u>(static_cast<std::size_t>(cudaDevProp.maxThreadsDim[0]), static_cast<std::size_t>(cudaDevProp.maxThreadsDim[1]), static_cast<std::size_t>(cudaDevProp.maxThreadsDim[2]));
-                    devProps.m_v3uiGridBlocksExtentsMax = Vec<3u>(static_cast<std::size_t>(cudaDevProp.maxGridSize[0]), static_cast<std::size_t>(cudaDevProp.maxGridSize[1]), static_cast<std::size_t>(cudaDevProp.maxGridSize[2]));
+                    devProps.m_v3uiBlockKernelsExtentsMax = Vec<3u>(static_cast<Vec<3u>::Value>(cudaDevProp.maxThreadsDim[0]), static_cast<Vec<3u>::Value>(cudaDevProp.maxThreadsDim[1]), static_cast<Vec<3u>::Value>(cudaDevProp.maxThreadsDim[2]));
+                    devProps.m_v3uiGridBlocksExtentsMax = Vec<3u>(static_cast<Vec<3u>::Value>(cudaDevProp.maxGridSize[0]), static_cast<Vec<3u>::Value>(cudaDevProp.maxGridSize[1]), static_cast<Vec<3u>::Value>(cudaDevProp.maxGridSize[2]));
                     devProps.m_uiGlobalMemSizeBytes = static_cast<std::size_t>(cudaDevProp.totalGlobalMem);
                     //devProps.m_uiMaxClockFrequencyHz = cudaDevProp.clockRate * 1000;
 

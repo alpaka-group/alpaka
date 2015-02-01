@@ -52,10 +52,12 @@ namespace alpaka
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA IdxOpenMp(IdxOpenMp const &) = default;
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA IdxOpenMp(IdxOpenMp &&) = default;
+#endif
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
@@ -91,7 +93,7 @@ namespace alpaka
                 {
                     // We assume that the thread id is positive.
                     assert(::omp_get_thread_num() >= 0);
-                    auto const uiThreadId(static_cast<std::uint32_t>(::omp_get_thread_num()));
+                    auto const uiThreadId(static_cast<Vec<1u>::Value>(::omp_get_thread_num()));
                     return Vec<1u>(uiThreadId);
                 }
                 //-----------------------------------------------------------------------------
@@ -113,7 +115,7 @@ namespace alpaka
         namespace idx
         {
             //#############################################################################
-            //! The OpenMP accelerator 3D block kernels index get trait specialization.
+            //! The OpenMP accelerator 3D block kernel index get trait specialization.
             //#############################################################################
             template<>
             struct GetIdx<
@@ -136,7 +138,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The OpenMP accelerator 1D block kernels index get trait specialization.
+            //! The OpenMP accelerator 1D block kernel index get trait specialization.
             //#############################################################################
             template<>
             struct GetIdx<
@@ -159,7 +161,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The OpenMP accelerator 3D grid blocks index get trait specialization.
+            //! The OpenMP accelerator 3D grid block index get trait specialization.
             //#############################################################################
             template<>
             struct GetIdx<

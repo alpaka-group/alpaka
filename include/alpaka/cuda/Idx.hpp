@@ -43,10 +43,12 @@ namespace alpaka
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_CUDA_ONLY IdxCuda(IdxCuda const &) = default;
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_CUDA_ONLY IdxCuda(IdxCuda &&) = default;
+#endif
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
@@ -61,14 +63,14 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_CUDA_ONLY Vec<3u> getIdxBlockKernel() const
                 {
-                    return {threadIdx.x, threadIdx.y, threadIdx.z};
+                    return Vec<3u>(threadIdx.x, threadIdx.y, threadIdx.z);
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The block index of the currently executed kernel.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_CUDA_ONLY Vec<3u> getIdxGridBlock() const
                 {
-                    return {blockIdx.x, blockIdx.y, blockIdx.z};
+                    return Vec<3u>(blockIdx.x, blockIdx.y, blockIdx.z);
                 }
             };
         }
@@ -79,7 +81,7 @@ namespace alpaka
         namespace idx
         {
             //#############################################################################
-            //! The CUDA accelerator 3D block kernels index get trait specialization.
+            //! The CUDA accelerator 3D block kernel index get trait specialization.
             //#############################################################################
             template<>
             struct GetIdx<
@@ -102,7 +104,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The CUDA accelerator 3D grid blocks index get trait specialization.
+            //! The CUDA accelerator 3D grid block index get trait specialization.
             //#############################################################################
             template<>
             struct GetIdx<

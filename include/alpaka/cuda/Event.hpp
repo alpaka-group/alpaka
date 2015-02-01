@@ -27,6 +27,8 @@
 #include <alpaka/cuda/AccCudaFwd.hpp>   // AccCuda
 #include <alpaka/cuda/Common.hpp>       // ALPAKA_CUDA_CHECK
 
+#include <memory>                       // std::shared_ptr
+
 namespace alpaka
 {
     namespace cuda
@@ -42,37 +44,69 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST EventCuda(bool bBusyWait = true)
+                ALPAKA_FCT_HOST EventCuda(bool bBusyWait = true) :
+                    m_spCudaEvent(new cudaEvent_t, &EventCuda::destroyEvent)
                 {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
                     // Creates an event object with the specified flags. Valid flags include:
                     //  cudaEventDefault: Default event creation flag.
                     //  cudaEventBlockingSync : Specifies that event should use blocking synchronization.A host thread that uses cudaEventSynchronize() to wait on an event created with this flag will block until the event actually completes.
                     //  cudaEventDisableTiming : Specifies that the created event does not need to record timing data.Events created with this flag specified and the cudaEventBlockingSync flag not specified will provide the best performance when used with cudaStreamWaitEvent() and cudaEventQuery().
                     ALPAKA_CUDA_CHECK(cudaEventCreateWithFlags(
-                        &m_cudaEvent,
+                        m_spCudaEvent.get(),
                         (bBusyWait ? cudaEventDefault : cudaEventBlockingSync) | cudaEventDisableTiming));
                 }
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST EventCuda(EventCuda const &) = default;
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST EventCuda(EventCuda &&) = default;
+#endif
                 //-----------------------------------------------------------------------------
                 //! Assignment operator.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST EventCuda & operator=(EventCuda const &) = default;
                 //-----------------------------------------------------------------------------
+                //! Equality comparison operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST bool operator==(EventCuda const & rhs) const
+                {
+                    return (*m_spCudaEvent.get()) == (*rhs.m_spCudaEvent.get());
+                }
+                //-----------------------------------------------------------------------------
+                //! Equality comparison operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST bool operator!=(EventCuda const & rhs) const
+                {
+                    return !((*this) == rhs);
+                }
+                //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST virtual ~EventCuda() noexcept
+                ALPAKA_FCT_HOST /*virtual*/ ~EventCuda() noexcept = default;
+                
+            private:
+                //-----------------------------------------------------------------------------
+                //! Destroys the shared event.
+                //-----------------------------------------------------------------------------
+                static void destroyEvent(
+                    cudaEvent_t * event)
                 {
-                    ALPAKA_CUDA_CHECK(cudaEventDestroy(m_cudaEvent));
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                    // In case event has been recorded but has not yet been completed when cudaEventDestroy() is called, the function will return immediately 
+                    // and the resources associated with event will be released automatically once the device has completed event.
+                    // -> No need to synchronize here.
+                    ALPAKA_CUDA_CHECK(cudaEventDestroy(*event));
                 }
 
-                cudaEvent_t m_cudaEvent;
+            public:
+                std::shared_ptr<cudaEvent_t> m_spCudaEvent;
             };
         }
     }
@@ -114,8 +148,10 @@ namespace alpaka
                 ALPAKA_FCT_HOST static void defaultStreamEnqueueEvent(
                     cuda::detail::EventCuda const & event)
                 {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
                     ALPAKA_CUDA_CHECK(cudaEventRecord(
-                        event.m_cudaEvent,
+                        *event.m_spCudaEvent.get(),
                         nullptr));
                 }
             };
@@ -130,7 +166,11 @@ namespace alpaka
                 ALPAKA_FCT_HOST static bool eventTest(
                     cuda::detail::EventCuda const & event)
                 {
-                    auto const ret(cudaEventQuery(event.m_cudaEvent));
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                    auto const ret(
+                        cudaEventQuery(
+                            *event.m_spCudaEvent.get()));
                     if(ret == cudaSuccess)
                     {
                         return true;
@@ -141,7 +181,7 @@ namespace alpaka
                     }
                     else
                     {
-                        throw std::runtime_error(("Unexpected return value '" + std::string(cudaGetErrorString(ret)) + "'from cudaEventQuery!").c_str());
+                        throw std::runtime_error(("Unexpected return value '" + std::string(cudaGetErrorString(ret)) + "'from cudaEventQuery!"));
                     }
                 }
             };
@@ -159,7 +199,9 @@ namespace alpaka
                 ALPAKA_FCT_HOST static void currentThreadWaitFor(
                     cuda::detail::EventCuda const & event)
                 {
-                    ALPAKA_CUDA_CHECK(cudaEventSynchronize(event.m_cudaEvent));
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                    ALPAKA_CUDA_CHECK(cudaEventSynchronize(*event.m_spCudaEvent.get()));
                 }
             };
         }

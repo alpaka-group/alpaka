@@ -179,10 +179,22 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TMemBuf>
-            std::size_t getPitchBytes(
+        ALPAKA_FCT_HOST std::size_t getPitchBytes(
             TMemBuf const & memBuf)
         {
             return traits::mem::GetPitchBytes<TMemBuf>::getPitchBytes(memBuf);
+        }
+
+        //-----------------------------------------------------------------------------
+        //! \return The pitch in elements. This is the distance between two consecutive rows.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TMemBuf>
+        ALPAKA_FCT_HOST std::size_t getPitchElements(
+            TMemBuf const & memBuf)
+        {
+            assert((getPitchBytes(memBuf) % sizeof(GetMemElemT<TMemBuf>)) == 0u);
+            return getPitchBytes(memBuf) / sizeof(GetMemElemT<TMemBuf>);
         }
 
         //-----------------------------------------------------------------------------

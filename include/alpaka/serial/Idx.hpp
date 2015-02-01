@@ -46,10 +46,12 @@ namespace alpaka
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA IdxSerial(IdxSerial const &) = default;
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA IdxSerial(IdxSerial &&) = default;
+#endif
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
@@ -64,7 +66,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA Vec<3u> getIdxBlockKernel() const
                 {
-                    return {0, 0, 0};
+                    return Vec<3u>(0u, 0u, 0u);
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The block index of the currently executed kernel.
@@ -85,7 +87,7 @@ namespace alpaka
         namespace idx
         {
             //#############################################################################
-            //! The serial accelerator 3D block kernels index get trait specialization.
+            //! The serial accelerator 3D block kernel index get trait specialization.
             //#############################################################################
             template<>
             struct GetIdx<
@@ -108,7 +110,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The serial accelerator 3D grid blocks index get trait specialization.
+            //! The serial accelerator 3D grid block index get trait specialization.
             //#############################################################################
             template<>
             struct GetIdx<

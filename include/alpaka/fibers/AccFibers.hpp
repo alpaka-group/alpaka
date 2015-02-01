@@ -21,8 +21,12 @@
 
 #pragma once
 
-//#define ALPAKA_FIBERS_NO_POOL     // Define this to recreate all of the fibers between executing blocks.
-                                    // NOTE: Using the fiber pool should be massively faster in nearly every case!
+//#define ALPAKA_FIBERS_NO_POOL // Define this to recreate all of the fibers between executing blocks.
+                                // NOTE: Using the fiber pool should be massively faster in nearly every case!
+
+#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
+    #define ALPAKA_FIBERS_NO_POOL
+#endif
 
 // Base classes.
 #include <alpaka/fibers/AccFibersFwd.hpp>
@@ -115,10 +119,12 @@ namespace alpaka
                     m_vvuiSharedMem(),
                     m_vuiExternalSharedMem()
                 {}
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA AccFibers(AccFibers &&) = default;
+#endif
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
@@ -321,31 +327,39 @@ namespace alpaka
                     TWorkDiv const & workDiv, 
                     StreamFibers const &,
                     TKernelConstrArgs && ... args):
-                    TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
+                        TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
 #ifdef ALPAKA_FIBERS_NO_POOL
-                    m_vFibersInBlock()
+                        m_vFibersInBlock()
 #else
-                    m_vFuturesInBlock()
+                        m_vFuturesInBlock()
 #endif
                 {
-#ifdef ALPAKA_DEBUG
-                    std::cout << "[+] AccFibers::KernelExecutorFibers()" << std::endl;
-#endif
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
                     (*static_cast<WorkDivFibers *>(this)) = workDiv;
 
                     this->AccFibers::m_uiNumKernelsPerBlock = workdiv::getWorkDiv<Block, Kernels, dim::Dim1>(workDiv)[0];
-#ifdef ALPAKA_DEBUG
-                    std::cout << "[-] AccFibers::KernelExecutorFibers()" << std::endl;
-#endif
                 }
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST KernelExecutorFibers(KernelExecutorFibers const &) = default;
+                ALPAKA_FCT_HOST KernelExecutorFibers(
+                    KernelExecutorFibers const & other):
+                        TAcceleratedKernel(other),
+#ifdef ALPAKA_FIBERS_NO_POOL
+                        m_vFibersInBlock()
+#else
+                        m_vFuturesInBlock()
+#endif
+                {
+
+                }
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecutorFibers(KernelExecutorFibers &&) = default;
+#endif
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
@@ -367,9 +381,8 @@ namespace alpaka
                 ALPAKA_FCT_HOST void operator()(
                     TArgs && ... args) const
                 {
-#ifdef ALPAKA_DEBUG
-                    std::cout << "[+] AccFibers::KernelExecutorFibers::operator()" << std::endl;
-#endif
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
                     Vec<3u> const v3uiGridBlocksExtents(this->AccFibers::getWorkDiv<Grid, Blocks, dim::Dim3>());
                     Vec<3u> const v3uiBlockKernelsExtents(this->AccFibers::getWorkDiv<Block, Kernels, dim::Dim3>());
 
@@ -418,21 +431,37 @@ namespace alpaka
 
                                             // Create a fiber.
                                             // The v3uiBlockKernelIdx is required to be copied in from the environment because if the fiber is immediately suspended the variable is already changed for the next iteration/thread.
-//#if BOOST_COMP_MSVC //<= BOOST_VERSION_NUMBER(14, 0, 22310)    MSVC does not compile the boost::fibers::fiber constructor because the type of the member function template is missing the this pointer as first argument.
-                                            auto fiberKernelFct([this](Vec<3u> const v3uiBlockKernelIdx, TArgs ... args) {fiberKernel<TArgs...>(v3uiBlockKernelIdx, std::forward<TArgs>(args)...); });
-    #ifdef ALPAKA_FIBERS_NO_POOL
-                                            m_vFibersInBlock.push_back(boost::fibers::fiber(fiberKernelFct, v3uiBlockKernelIdx, args...));
+    
+#if BOOST_COMP_MSVC     // VC is missing the this pointer type in the signature of &KernelExecutorFibers::fiberKernel<TArgs...>
+                                            auto fiberKernelFct = 
+                                                [&, v3uiBlockKernelIdx]()
+                                                {
+                                                    fiberKernel<TArgs...>(v3uiBlockKernelIdx, std::forward<TArgs>(args)...); 
+                                                };
+    #ifdef ALPAKA_THREADS_NO_POOL
+                                            m_vFibersInBlock.push_back(std::thread(fiberKernelFct));
+    #else
+                                            m_vFuturesInBlock.emplace_back(pool.enqueueTask(fiberKernelFct));
+    #endif
+#elif BOOST_COMP_GNUC   // But GCC < 4.9.0 can not compile variadic templates inside lambdas correctly if the variadic argument is not in the parameter list.
+                                            auto fiberKernelFct(
+                                                [this](Vec<3u> const v3uiBlockKernelIdx, TArgs ... args)
+                                                {
+                                                    fiberKernel<TArgs...>(v3uiBlockKernelIdx, std::forward<TArgs>(args)...); 
+                                                });
+    #ifdef ALPAKA_THREADS_NO_POOL
+                                            m_vFibersInBlock.push_back(std::thread(fiberKernelFct, v3uiBlockKernelIdx, args...));
     #else
                                             m_vFuturesInBlock.emplace_back(pool.enqueueTask(fiberKernelFct, v3uiBlockKernelIdx, args...));
     #endif
-/*#else
-    #ifdef ALPAKA_FIBERS_NO_POOL
-                                            m_vFibersInBlock.push_back(boost::fibers::fiber(&KernelExecutorFibers::fiberKernel<TArgs...>, this, v3uiBlockKernelIdx, args...));
+#else
+    #ifdef ALPAKA_THREADS_NO_POOL
+                                            m_vFibersInBlock.push_back(std::thread(&KernelExecutorFibers::fiberKernel<TArgs...>, this, v3uiBlockKernelIdx, std::forward<TArgs>(args)...));
     #else
-                                            // FIXME: Currently this does not work!
-                                            m_vFuturesInBlock.emplace_back(pool.enqueueTask(&KernelExecutorFibers::fiberKernel<TArgs...>, this, v3uiBlockKernelIdx, args...));
+                                            m_vFuturesInBlock.emplace_back(pool.enqueueTask(&KernelExecutorFibers::fiberKernel<TArgs...>, this, v3uiBlockKernelIdx, std::forward<TArgs>(args)...));
     #endif
-#endif*/
+#endif
+
                                         }
                                     }
                                 }
@@ -467,9 +496,6 @@ namespace alpaka
                     }
                     // After all blocks have been processed, the external shared memory can be deleted.
                     this->AccFibers::m_vuiExternalSharedMem.reset();
-#ifdef ALPAKA_DEBUG
-                    std::cout << "[-] AccFibers::KernelExecutorFibers::operator()" << std::endl;
-#endif
                 }
             private:
                 //-----------------------------------------------------------------------------
@@ -478,7 +504,7 @@ namespace alpaka
                 template<
                     typename... TArgs>
                 ALPAKA_FCT_HOST void fiberKernel(
-                    Vec<3u> const v3uiBlockKernelIdx, 
+                    Vec<3u> const & v3uiBlockKernelIdx, 
                     TArgs && ... args) const
                 {
                     // We have to store the fiber data before the kernel is calling any of the methods of this class depending on them.
@@ -495,12 +521,12 @@ namespace alpaka
                     std::map<boost::fibers::fiber::id, std::size_t>::iterator itFiberToBarrier;
 
                     // Save the fiber id, and index.
-#if BOOST_COMP_GNUC <= BOOST_VERSION_NUMBER(4, 7, 2) // GCC <= 4.7.2 is not standard conformant and has no member emplace.
-                    this->AccFibers::m_mFibersToIndices.emplace(idFiber, v3uiBlockKernelIdx);
-                    itFiberToBarrier = this->AccFibers::m_mFibersToBarrier.emplace(idFiber, 0).first;
-#else
+#if BOOST_COMP_GNUC && (BOOST_COMP_GNUC <= BOOST_VERSION_NUMBER(4, 7, 2)) // GCC <= 4.7.2 is not standard conformant and has no member emplace.
                     this->AccFibers::m_mFibersToIndices.insert(std::pair<boost::fibers::fiber::id, Vec<3u>>(idFiber, v3uiBlockKernelIdx));
                     itFiberToBarrier = this->AccFibers::m_mFibersToBarrier.insert(std::pair<boost::fibers::fiber::id, Vec<3u>>(idFiber, 0)).first;
+#else
+                    this->AccFibers::m_mFibersToIndices.emplace(idFiber, v3uiBlockKernelIdx);
+                    itFiberToBarrier = this->AccFibers::m_mFibersToBarrier.emplace(idFiber, 0).first;
 #endif
                     // Sync all threads so that the maps with thread id's are complete and not changed after here.
                     this->AccFibers::syncBlockKernels(itFiberToBarrier);

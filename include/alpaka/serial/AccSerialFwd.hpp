@@ -46,6 +46,16 @@ namespace alpaka
         namespace acc
         {
             //#############################################################################
+            //! The serial accelerator accelerator type trait specialization.
+            //#############################################################################
+            template<>
+            struct GetAcc<
+                serial::detail::AccSerial>
+            {
+                using type = serial::detail::AccSerial;
+            };
+
+            //#############################################################################
             //! The serial accelerator name trait specialization.
             //#############################################################################
             template<>

@@ -93,7 +93,7 @@ namespace alpaka
                 ALPAKA_FCT_HOST_ACC static alpaka::dim::DimToVecT<alpaka::dim::Dim1> getWorkDiv(
                     TWorkDiv const & workDiv)
                 {
-                    return GetWorkDiv<TWorkDiv, origin::Block, unit::Kernels, alpaka::dim::Dim3>::getWorkDiv(workDiv).prod();
+                    return alpaka::workdiv::getWorkDiv<origin::Block, unit::Kernels, alpaka::dim::Dim3>(workDiv).prod();
                 }
             };
             //#############################################################################
@@ -113,8 +113,8 @@ namespace alpaka
                 ALPAKA_FCT_HOST_ACC static alpaka::dim::DimToVecT<alpaka::dim::Dim3> getWorkDiv(
                     TWorkDiv const & workDiv)
                 {
-                    return GetWorkDiv<TWorkDiv, origin::Grid, unit::Blocks, alpaka::dim::Dim3>::getWorkDiv(workDiv)
-                        * GetWorkDiv<TWorkDiv, origin::Block, unit::Kernels, alpaka::dim::Dim3>::getWorkDiv(workDiv);
+                    return alpaka::workdiv::getWorkDiv<origin::Grid, unit::Blocks, alpaka::dim::Dim3>(workDiv)
+                        * alpaka::workdiv::getWorkDiv<origin::Block, unit::Kernels, alpaka::dim::Dim3>(workDiv);
                 }
             };
             //#############################################################################
@@ -134,7 +134,7 @@ namespace alpaka
                 ALPAKA_FCT_HOST_ACC static alpaka::dim::DimToVecT<alpaka::dim::Dim1> getWorkDiv(
                     TWorkDiv const & workDiv)
                 {
-                    return GetWorkDiv<TWorkDiv, origin::Grid, unit::Kernels, alpaka::dim::Dim3>::getWorkDiv(workDiv).prod();
+                    return alpaka::workdiv::getWorkDiv<origin::Grid, unit::Kernels, alpaka::dim::Dim3>(workDiv).prod();
                 }
             };
             //#############################################################################
@@ -154,7 +154,7 @@ namespace alpaka
                 ALPAKA_FCT_HOST_ACC static alpaka::dim::DimToVecT<alpaka::dim::Dim1> getWorkDiv(
                     TWorkDiv const & workDiv)
                 {
-                    return GetWorkDiv<TWorkDiv, origin::Grid, unit::Blocks, alpaka::dim::Dim3>::getWorkDiv(workDiv).prod();
+                    return alpaka::workdiv::getWorkDiv<origin::Grid, unit::Blocks, alpaka::dim::Dim3>(workDiv).prod();
                 }
             };
         }

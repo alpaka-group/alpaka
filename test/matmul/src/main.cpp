@@ -28,9 +28,9 @@
 #include <typeinfo>						// typeid
 #include <utility>						// std::forward
 #include <functional>					// std::placeholders
-#include <typeindex>					// std::type_index
 #include <unordered_map>				// std::unordered_map
 
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
 #if BOOST_COMP_MSVC
  #pragma warning(push)
  #pragma warning(disable: 4512)			// boost/program_options/options_description.hpp(265): warning C4512: 'boost::program_options::options_description': assignment operator was implicitly defined as deleted
@@ -40,6 +40,7 @@
 
 #if BOOST_COMP_MSVC
  #pragma warning(pop)
+#endif
 #endif
 
 #include <boost/mpl/for_each.hpp>       // boost::mpl::for_each
@@ -65,99 +66,116 @@ public:
     //! \param B The pointer to the matrix B data.
     //! \param C The pointer to the matrix C data.
     //-----------------------------------------------------------------------------
-	template<
-        typename TElem>
-	ALPAKA_FCT_ACC void operator()(
+    template<
+        typename TElem,
+        typename TIndex>
+    ALPAKA_FCT_ACC void operator()(
         TAcc const & acc,
-		std::size_t const n,
-		TElem const * const A,
-		TElem const * const B,
-		TElem * const C) const
-	{
-		// Column and row of C to calculate.
-		auto const v2uiGridKernelIdx(acc.template getIdx<alpaka::Grid, alpaka::Kernels>().template subvec<2u>());
-		auto const & cx(v2uiGridKernelIdx[0]);
-		auto const & cy(v2uiGridKernelIdx[1]);
-		// Column and row inside the block of C to calculate.
-		auto const v2uiBlockKernelIdx(acc.template getIdx<alpaka::Block, alpaka::Kernels>().template subvec<2u>());
-		auto const & col(v2uiBlockKernelIdx[0]);
-		auto const & row(v2uiBlockKernelIdx[1]);
+        TIndex const & n,
+        TElem const * const A,
+        TIndex const & uiPitchElemA,
+        TElem const * const B,
+        TIndex const & uiPitchElemB,
+        TElem * const C,
+        TIndex const & uiPitchElemC) const
+    {
+        // Column and row of C to calculate.
+        auto const v2uiGridKernelIdx(acc.template getIdx<alpaka::Grid, alpaka::Kernels>().template subvec<2u>());
+        auto const & cx(v2uiGridKernelIdx[0u]);
+        auto const & cy(v2uiGridKernelIdx[1u]);
+        // Column and row inside the block of C to calculate.
+        auto const v2uiBlockKernelIdx(acc.template getIdx<alpaka::Block, alpaka::Kernels>().template subvec<2u>());
+        auto const & col(v2uiBlockKernelIdx[0u]);
+        auto const & row(v2uiBlockKernelIdx[1u]);
 
-		auto const v2uiBlockKernelsExtent(acc.template getWorkDiv<alpaka::Block,alpaka::Kernels>().template subvec<2u>());
-		auto const & uiBlockKernelsExtentX(v2uiBlockKernelsExtent[0]);
-		auto const & uiBlockKernelsExtentY(v2uiBlockKernelsExtent[1]);
-		auto const uiBlockSizeLin(uiBlockKernelsExtentX * uiBlockKernelsExtentY);
+        // The block kernels extents.
+        auto const v2uiBlockKernelsExtent(acc.template getWorkDiv<alpaka::Block, alpaka::Kernels>().template subvec<2u>());
+        auto const & uiBlockKernelsExtentX(v2uiBlockKernelsExtent[0u]);
+        auto const & uiBlockKernelsExtentY(v2uiBlockKernelsExtent[1u]);
+        auto const uiBlockKernelsExtent1d(uiBlockKernelsExtentX * uiBlockKernelsExtentY);
 
-		// Shared memory used to store the current blocks of A and B.
-		auto * const pBlockSharedA(acc.template getBlockSharedExternMem<TElem>());
-		auto * const pBlockSharedB(pBlockSharedA + uiBlockSizeLin);
+        // Shared memory used to store the current blocks of A and B.
+        auto * const pBlockSharedA(acc.template getBlockSharedExternMem<TElem>());
+        auto * const pBlockSharedB(pBlockSharedA + uiBlockKernelsExtent1d);
 
-		TElem fCSum(0);
+        // If the element is outside of the matrix, write zero into the shared block and prevent out-of-bounds access to A and B
+        bool const bOutsideMatrix((cx >= n) || (cy >= n));
 
-		// If the element is outside of the matrix, write zero into the shared block and prevent out-of-bounds access to A and B
-		bool const bOutsideMatrix((cx >= n) || (cy >= n));
+        auto const uiGridBlockExtentX(acc.template getWorkDiv<alpaka::Grid, alpaka::Blocks>()[0u]);
 
-		// Loop over all blocks of A and B that are required to compute the C block.
-		auto const uiGridSizeX(acc.template getWorkDiv<alpaka::Grid, alpaka::Blocks>()[0]);
-		for(std::size_t l(0); l < uiGridSizeX; ++l)
-		{
-			// Copy data to shared memory.
-			auto const uiIdxA(cy * n + l * uiBlockKernelsExtentX + col);
-			pBlockSharedA[row * uiBlockKernelsExtentX + col] = bOutsideMatrix
-				? 0
-				: A[uiIdxA];
-			auto const uiIdxB((l * uiBlockKernelsExtentX + row) * n + cx);
-			pBlockSharedB[row * uiBlockKernelsExtentX + col] = bOutsideMatrix
-				? 0
-				: B[uiIdxB];
+        auto const uiSharedBlockIdx1d(row * uiBlockKernelsExtentX + col);
 
-			// Synchronize to make sure the sub-matrices are loaded before starting the computation.
+        TElem fCSum(0);
+
+        // Loop over all blocks of A and B that are required to compute the C block.
+        for(TIndex l(0u); l < uiGridBlockExtentX; ++l)
+        {
+            // Copy data to shared memory.
+            auto const uiIdxA(cy * uiPitchElemA + l * uiBlockKernelsExtentX + col);
+            
+            //printf("%lu %u ", uiIdxA, A[uiIdxA]);
+
+            pBlockSharedA[uiSharedBlockIdx1d] = 
+                bOutsideMatrix 
+                ? 0
+                : A[uiIdxA];
+            auto const uiIdxB((l * uiBlockKernelsExtentX + row) * uiPitchElemB + cx);
+            pBlockSharedB[uiSharedBlockIdx1d] = 
+                bOutsideMatrix
+                ? 0
+                : B[uiIdxB];
+
+            // Synchronize to make sure the sub-matrices are loaded before starting the computation.
             acc.syncBlockKernels();
 
-			// Dyadic product within shared memory.
-			for(std::uint32_t k(0); k < uiBlockKernelsExtentY; ++k)
-			{
-				fCSum += pBlockSharedA[row * uiBlockKernelsExtentX + k]
-					* pBlockSharedB[k * uiBlockKernelsExtentX + col];
-			}
+            // Dyadic product within shared memory.
+            for(TIndex k(0); k < uiBlockKernelsExtentY; ++k)
+            {
+                fCSum += pBlockSharedA[row * uiBlockKernelsExtentX + k]
+                    * pBlockSharedB[k * uiBlockKernelsExtentX + col];
+            }
 
-			// Synchronize to make sure that the preceding computation is done before loading two new sub-matrices of A and B in the next iteration.
+            // Synchronize to make sure that the preceding computation is done before loading two new sub-matrices of A and B in the next iteration.
             acc.syncBlockKernels();
-		}
+        }
 
-		if(!bOutsideMatrix)
-		{
-			C[cy * n + cx] += fCSum;
-		}
-	}
+        if(!bOutsideMatrix)
+        {
+            C[cy * uiPitchElemC + cx] += fCSum;
+        }
+    }
 };
 
 namespace alpaka
 {
-	//#############################################################################
-	//! The trait for getting the size of the block shared extern memory for a kernel.
-	//#############################################################################
-	template<
+    //#############################################################################
+    //! The trait for getting the size of the block shared extern memory for a kernel.
+    //#############################################################################
+    template<
         typename TAcc>
-	struct BlockSharedExternMemSizeBytes<
+    struct BlockSharedExternMemSizeBytes<
         MatMulKernel<TAcc>>
-	{
-		//-----------------------------------------------------------------------------
-		//! \return The size of the shared memory allocated for a block.
-		//-----------------------------------------------------------------------------
-		template<
-            typename TElem>
-		ALPAKA_FCT_HOST static std::size_t getBlockSharedExternMemSizeBytes(
-			alpaka::Vec<3u> const & v3uiBlockKernelsExtents,
-			std::size_t const,
-			TElem const * const,
-			TElem const * const,
-			TElem * const)
-		{
-			// Reserve the buffer for the two blocks of A and B.
-			return 2u * v3uiBlockKernelsExtents.prod() * sizeof(TElem);
-		}
-	};
+    {
+        //-----------------------------------------------------------------------------
+        //! \return The size of the shared memory allocated for a block.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TElem,
+            typename TIndex>
+        ALPAKA_FCT_HOST static std::size_t getBlockSharedExternMemSizeBytes(
+            alpaka::Vec<3u> const & v3uiBlockKernelsExtents,
+            TIndex const &,
+            TElem const * const,
+            TIndex const &,
+            TElem const * const,
+            TIndex const &,
+            TElem * const,
+            TIndex const &)
+        {
+            // Reserve the buffer for the two blocks of A and B.
+            return 2u * v3uiBlockKernelsExtents.prod() * sizeof(TElem);
+        }
+    };
 }
 
 //-----------------------------------------------------------------------------
@@ -168,32 +186,28 @@ template<
     typename TStream,
     typename... TArgs>
 void profileAcceleratedKernel(
-	TExec const & exec,
+    TExec const & exec,
     TStream const & stream, // \TODO: Add a getStream Method to the kernel executor and do not require this parameter!
-	TArgs && ... args)
+    TArgs && ... args)
 {
-	std::cout
-		<< "profileAcceleratedKernel("
-		<< " kernelExecutor: " << typeid(TExec).name()
-		<< ")" << std::endl;
+    std::cout
+        << "profileAcceleratedKernel("
+        << " kernelExecutor: " << typeid(TExec).name()
+        << ")" << std::endl;
 
-    // Create an event to wait for. This allows synchronization after the (possibly) asynchronous kernel execution.
-    alpaka::event::GetEventT<alpaka::acc::GetAccT<TExec>> ev;
+    auto const tpStart(std::chrono::high_resolution_clock::now());
 
-	auto const tpStart(std::chrono::high_resolution_clock::now());
+    // Execute the accelerated kernel.
+    exec(std::forward<TArgs>(args)...);
+    
+    // Wait for the stream to finish the kernel execution to measure its run time.
+    alpaka::wait::wait(stream);
 
-	// Execute the accelerated kernel.
-	exec(std::forward<TArgs>(args) ...);
+    auto const tpEnd(std::chrono::high_resolution_clock::now());
 
-    // Enqueue the event in the same stream the kernel has been enqueued to.
-	alpaka::event::enqueue(ev, stream);
-	alpaka::wait::wait(ev);
+    auto const durElapsed(tpEnd - tpStart);
 
-	auto const tpEnd(std::chrono::high_resolution_clock::now());
-
-	auto const durElapsed(tpEnd - tpStart);
-
-	std::cout << "Execution time: " << std::chrono::duration_cast<std::chrono::milliseconds>(durElapsed).count() << " ms" << std::endl;
+    std::cout << "Execution time: " << std::chrono::duration_cast<std::chrono::milliseconds>(durElapsed).count() << " ms" << std::endl;
 }
 
 //-----------------------------------------------------------------------------
@@ -201,37 +215,37 @@ void profileAcceleratedKernel(
 //-----------------------------------------------------------------------------
 struct ProfileAcceleratedMatMulKernel
 {
-	template<
+    template<
         typename TAcc>
-	void operator()(
-		TAcc,
-		std::size_t const & uiMatrixSize,
-		bool const & bAdaptiveBlockKernelsExtent)
-	{
-		std::cout << std::endl;
-		std::cout << "################################################################################" << std::endl;
+    void operator()(
+        TAcc,
+        std::size_t const & uiMatrixSize,
+        bool const & bAdaptiveBlockKernelsExtent)
+    {
+        std::cout << std::endl;
+        std::cout << "################################################################################" << std::endl;
 
         using Kernel = MatMulKernel<>;
 
-		// Let alpaka calculate good block and grid sizes given our full problem extents.
-        alpaka::Vec<3u> v3uiGridKernels(uiMatrixSize, uiMatrixSize, 1u);
-		alpaka::workdiv::BasicWorkDiv const workDiv(
+        // Let alpaka calculate good block and grid sizes given our full problem extents.
+        alpaka::Vec<3u> v3uiGridKernels(static_cast<alpaka::Vec<3u>::Value>(uiMatrixSize), static_cast<alpaka::Vec<3u>::Value>(uiMatrixSize), static_cast<alpaka::Vec<3u>::Value>(1u));
+        alpaka::workdiv::BasicWorkDiv const workDiv(
             bAdaptiveBlockKernelsExtent
             ? alpaka::workdiv::getValidWorkDiv<boost::mpl::vector<TAcc>>(v3uiGridKernels)
             : alpaka::workdiv::getValidWorkDiv<alpaka::acc::EnabledAccelerators>(v3uiGridKernels));
 
-		std::cout
-			<< "profileAcceleratedMatMulKernel("
-			<< " uiMatrixSize:" << uiMatrixSize
-			<< ", accelerator: " << alpaka::acc::getAccName<TAcc>()
-			<< ", kernel: " << typeid(Kernel).name()
-			<< ", workDiv: " << workDiv
-			<< ")" << std::endl;
+        std::cout
+            << "profileAcceleratedMatMulKernel("
+            << " uiMatrixSize:" << uiMatrixSize
+            << ", accelerator: " << alpaka::acc::getAccName<TAcc>()
+            << ", kernel: " << typeid(Kernel).name()
+            << ", workDiv: " << workDiv
+            << ")" << std::endl;
 
-		alpaka::extent::BasicExtents<alpaka::dim::Dim2> extents(
+        alpaka::extent::BasicExtents<alpaka::dim::Dim2> const extents(
             uiMatrixSize,
             uiMatrixSize
-		);
+        );
 
         // Allocate the A and B matrices as st::vectors because this allows them to be filled with uint32_t(1).
         // alpaka::mem::set only supports setting all bytes leading to a value of 16843009 in all elements.
@@ -254,134 +268,147 @@ struct ProfileAcceleratedMatMulKernel
 
         // Allocate the buffers on the accelerator.
         using AccMemSpace = typename alpaka::mem::GetMemSpaceT<TAcc>;
-		auto memBufAAcc(alpaka::mem::alloc<std::uint32_t, AccMemSpace>(extents));
-		auto memBufBAcc(alpaka::mem::alloc<std::uint32_t, AccMemSpace>(extents));
-		auto memBufCAcc(alpaka::mem::alloc<std::uint32_t, AccMemSpace>(extents));
+        auto memBufAAcc(alpaka::mem::alloc<std::uint32_t, AccMemSpace>(extents));
+        auto memBufBAcc(alpaka::mem::alloc<std::uint32_t, AccMemSpace>(extents));
+        auto memBufCAcc(alpaka::mem::alloc<std::uint32_t, AccMemSpace>(extents));
+
+        // Get a new stream.
+        alpaka::stream::GetStreamT<TAcc> stream;
 
         // Copy Host -> Acc.
-		alpaka::mem::copy(memBufAAcc, memBufAHost, extents);
-		alpaka::mem::copy(memBufBAcc, memBufBHost, extents);
-		alpaka::mem::copy(memBufCAcc, memBufCHost, extents);
+        alpaka::mem::copy(memBufAAcc, memBufAHost, extents, stream);
+        alpaka::mem::copy(memBufBAcc, memBufBHost, extents, stream);
+        alpaka::mem::copy(memBufCAcc, memBufCHost, extents, stream);
 
-		// Build the kernel executor.
-		auto exec(alpaka::createKernelExecutor<TAcc, Kernel>());
-		// Get a new stream.
-		alpaka::stream::GetStreamT<TAcc> stream;
-		// Profile the kernel execution.
-		profileAcceleratedKernel(exec(workDiv, stream),
+        // Build the kernel executor.
+        auto exec(alpaka::createKernelExecutor<TAcc, Kernel>());
+        // Profile the kernel execution.
+        profileAcceleratedKernel(exec(workDiv, stream),
             stream,
-			uiMatrixSize,
-			alpaka::mem::getNativePtr(memBufAAcc),
-			alpaka::mem::getNativePtr(memBufBAcc),
-			alpaka::mem::getNativePtr(memBufCAcc));
+            static_cast<std::uint32_t>(uiMatrixSize),
+            alpaka::mem::getNativePtr(memBufAAcc),
+            static_cast<std::uint32_t>(alpaka::mem::getPitchElements(memBufAAcc)),
+            alpaka::mem::getNativePtr(memBufBAcc),
+            static_cast<std::uint32_t>(alpaka::mem::getPitchElements(memBufBAcc)),
+            alpaka::mem::getNativePtr(memBufCAcc),
+            static_cast<std::uint32_t>(alpaka::mem::getPitchElements(memBufCAcc)));
 
-		// Copy back the result.
-		alpaka::mem::copy(memBufCHost, memBufCAcc, extents);
+        // Copy back the result.
+        alpaka::mem::copy(memBufCHost, memBufCAcc, extents, stream);
+        
+        // Wait for the stream to finish the memory operation.
+        alpaka::wait::wait(stream);
 
-		// Assert that the results are correct.
-		// When multiplying square matrices filled with ones, the result of each cell is the size of the matrix.
-		std::uint32_t const uiCorrectResult(static_cast<std::uint32_t>(uiMatrixSize));
+        // Assert that the results are correct.
+        // When multiplying square matrices filled with ones, the result of each cell is the size of the matrix.
+        std::uint32_t const uiCorrectResult(static_cast<std::uint32_t>(uiMatrixSize));
 
-		bool bResultCorrect(true);
+        bool bResultCorrect(true);
         auto const pHostData(alpaka::mem::getNativePtr(memBufCHost));
-		for(std::size_t i(0u);
-			i < uiMatrixSize * uiMatrixSize;
-			++i)
-		{
+        for(std::size_t i(0u);
+            i < uiMatrixSize * uiMatrixSize;
+            ++i)
+        {
             auto const uiVal(pHostData[i]);
-			if(uiVal != uiCorrectResult)
-			{
-				std::cout << "C[" << i << "] == " << uiVal << " != " << uiCorrectResult << std::endl;
-				bResultCorrect = false;
-			}
-		}
+            if(uiVal != uiCorrectResult)
+            {
+                std::cout << "C[" << i << "] == " << uiVal << " != " << uiCorrectResult << std::endl;
+                bResultCorrect = false;
+            }
+        }
 
-		if(bResultCorrect)
-		{
-			std::cout << "Execution results correct!" << std::endl;
-		}
+        if(bResultCorrect)
+        {
+            std::cout << "Execution results correct!" << std::endl;
+        }
 
-		std::cout << "################################################################################" << std::endl;
-	}
+        std::cout << "################################################################################" << std::endl;
+    }
 };
 
 //-----------------------------------------------------------------------------
 //! Program entry point.
 //-----------------------------------------------------------------------------
 int main(
-	int argc,
-	char * argv[])
+    int argc,
+    char * argv[])
 {
-	try
-	{
-		// Declare the supported options.
-		boost::program_options::options_description desc("Available options");
-		desc.add_options()
-			("help",
-			"Prints the help message.")
-			("adaptiveBlockKernelsExtent,a",
-			boost::program_options::value<bool>()->default_value(true),
-			"If the size of a block is the minimum of all enabled accelerators (false), or adaptive to the current accelerator (true).")
-		;
-		boost::program_options::variables_map vm;
-		boost::program_options::store(boost::program_options::parse_command_line(argc, argv, desc), vm);
-		boost::program_options::notify(vm);
+    try
+    {
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
+        // Declare the supported options.
+        boost::program_options::options_description desc("Available options");
+        desc.add_options()
+            ("help",
+            "Prints the help message.")
+            ("adaptiveBlockKernelsExtent,a",
+            boost::program_options::value<bool>()->default_value(true),
+            "If the size of a block is the minimum of all enabled accelerators (false), or adaptive to the current accelerator (true).")
+        ;
+        boost::program_options::variables_map vm;
+        boost::program_options::store(boost::program_options::parse_command_line(argc, argv, desc), vm);
+        boost::program_options::notify(vm);
 
-		if(vm.count("help") > 0u)
-		{
-			std::cout << desc << std::endl;
-			return EXIT_FAILURE;
-		}
-		else
-		{
-			std::cout << std::endl;
-			std::cout << "################################################################################" << std::endl;
-			std::cout << "                              alpaka matmul test                                " << std::endl;
-			std::cout << "################################################################################" << std::endl;
-			std::cout << std::endl;
+        if(vm.count("help") > 0u)
+        {
+            std::cout << desc << std::endl;
+            return EXIT_FAILURE;
+        }
+        else
+#endif
+        {
+            std::cout << std::endl;
+            std::cout << "################################################################################" << std::endl;
+            std::cout << "                              alpaka matmul test                                " << std::endl;
+            std::cout << "################################################################################" << std::endl;
+            std::cout << std::endl;
 
-			// Logs the enabled accelerators.
-			alpaka::acc::writeEnabledAccelerators(std::cout);
+            // Logs the enabled accelerators.
+            alpaka::acc::writeEnabledAccelerators(std::cout);
 
-			std::cout << std::endl;
+            std::cout << std::endl;
 
-			assert(vm.count("adaptiveBlockKernelsExtent") > 0);
-			bool const bAdaptiveBlockKernelsExtent(vm["adaptiveBlockKernelsExtent"].as<bool>());
-			std::cout << "Adaptive block kernel size:" << bAdaptiveBlockKernelsExtent << std::endl;
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
+            assert(vm.count("adaptiveBlockKernelsExtent") > 0);
+            bool const bAdaptiveBlockKernelsExtent(vm["adaptiveBlockKernelsExtent"].as<bool>());
+#else
+            bool const bAdaptiveBlockKernelsExtent(true);
+#endif
+            std::cout << "Adaptive block kernel size:" << bAdaptiveBlockKernelsExtent << std::endl;
 
 #ifdef ALPAKA_CUDA_ENABLED
-			// Select the first CUDA device.
-			// NOTE: This is not required to run any kernels on the CUDA accelerator because all accelerators have a default device. This only shows the possibility.
-			alpaka::dev::GetDevManT<alpaka::AccCuda>::setCurrentDevice(
-				alpaka::dev::GetDevManT<alpaka::AccCuda>::getCurrentDevice());
+            // Select the first CUDA device.
+            // NOTE: This is not required to run any kernels on the CUDA accelerator because all accelerators have a default device. This only shows the possibility.
+            alpaka::dev::GetDevManT<alpaka::AccCuda>::setCurrentDevice(
+                alpaka::dev::GetDevManT<alpaka::AccCuda>::getCurrentDevice());
 #endif
-			// For different matrix sizes.
-			for(std::size_t uiMatrixSize(16u);
-				uiMatrixSize < 1024u;
-				uiMatrixSize *= 2u)
-			{
-				std::cout << std::endl;
+            // For different matrix sizes.
+            for(std::size_t uiMatrixSize(16u);
+                uiMatrixSize < 1024u;
+                uiMatrixSize *= 2u)
+            {
+                std::cout << std::endl;
 
-				// Execute the kernel on all enabled accelerators.
-				boost::mpl::for_each<alpaka::acc::EnabledAccelerators>(
-					std::bind(
-					ProfileAcceleratedMatMulKernel(),
-					std::placeholders::_1,
-					uiMatrixSize,
-					bAdaptiveBlockKernelsExtent)
-					);
-			}
-		}
-		return EXIT_SUCCESS;
-	}
-	catch(std::exception const & e)
-	{
-		std::cerr << e.what() << std::endl;
-		return EXIT_FAILURE;
-	}
-	catch(...)
-	{
-		std::cerr << "Unknown Exception" << std::endl;
-		return EXIT_FAILURE;
-	}
+                // Execute the kernel on all enabled accelerators.
+                boost::mpl::for_each<alpaka::acc::EnabledAccelerators>(
+                    std::bind(
+                    ProfileAcceleratedMatMulKernel(),
+                    std::placeholders::_1,
+                    uiMatrixSize,
+                    bAdaptiveBlockKernelsExtent)
+                    );
+            }
+        }
+        return EXIT_SUCCESS;
+    }
+    catch(std::exception const & e)
+    {
+        std::cerr << e.what() << std::endl;
+        return EXIT_FAILURE;
+    }
+    catch(...)
+    {
+        std::cerr << "Unknown Exception" << std::endl;
+        return EXIT_FAILURE;
+    }
 }

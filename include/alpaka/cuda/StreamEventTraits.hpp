@@ -43,9 +43,11 @@ namespace alpaka
                     cuda::detail::EventCuda const & event,
                     cuda::detail::StreamCuda const & stream)
                 {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
                     ALPAKA_CUDA_CHECK(cudaEventRecord(
-                        event.m_cudaEvent,
-                        stream.m_cudaStream));
+                        *event.m_spCudaEvent.get(),
+                        *stream.m_spCudaStream.get()));
                 }
             };
         }
@@ -64,9 +66,11 @@ namespace alpaka
                     cuda::detail::StreamCuda const & stream,
                     cuda::detail::EventCuda const & event)
                 {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
                     ALPAKA_CUDA_CHECK(cudaStreamWaitEvent(
-                        stream.m_cudaStream,
-                        event.m_cudaEvent,
+                        *stream.m_spCudaStream.get(),
+                        *event.m_spCudaEvent.get(),
                         0));
                 }
             };

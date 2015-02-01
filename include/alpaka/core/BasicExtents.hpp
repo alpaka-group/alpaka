@@ -69,11 +69,13 @@ namespace alpaka
             ALPAKA_FCT_HOST_ACC explicit BasicExtents(
                 TExtents const & other) :
                     m_uiWidth(getWidth(other))
-            {}
+			{}
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST_ACC BasicExtents(BasicExtents &&) = default;
+#endif
             //-----------------------------------------------------------------------------
             //! Copy assignment.
             //-----------------------------------------------------------------------------
@@ -132,11 +134,13 @@ namespace alpaka
                 TExtents const & other) :
                     m_uiWidth(getWidth(other)),
                     m_uiHeight(getHeight(other))
-            {}
+			{}
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST_ACC BasicExtents(BasicExtents &&) = default;
+#endif
             //-----------------------------------------------------------------------------
             //! Copy assignment.
             //-----------------------------------------------------------------------------
@@ -202,11 +206,13 @@ namespace alpaka
                     m_uiWidth(getWidth(other)),
                     m_uiHeight(getHeight(other)),
                     m_uiDepth(getDepth(other))
-            {}
+			{}
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST_ACC BasicExtents(BasicExtents &&) = default;
+#endif
             //-----------------------------------------------------------------------------
             //! Copy assignment.
             //-----------------------------------------------------------------------------

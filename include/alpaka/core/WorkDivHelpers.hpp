@@ -28,6 +28,7 @@
 #include <alpaka/traits/Device.hpp>         // dev::GetDevManT, getDevProps
 
 #include <algorithm>                        // std::min
+#include <functional>                       // std::bind
 
 #include <boost/mpl/for_each.hpp>           // boost::mpl::for_each
 #include <boost/mpl/vector.hpp>             // boost::mpl::vector
@@ -76,9 +77,9 @@ namespace alpaka
             static_assert(boost::mpl::is_sequence<TAccSeq>::value, "TAccSeq is required to be a mpl::sequence!");
 
             Vec<3u> v3uiMaxBlockKernelExtents(
-                std::numeric_limits<std::size_t>::max(),
-                std::numeric_limits<std::size_t>::max(),
-                std::numeric_limits<std::size_t>::max());
+                std::numeric_limits<Vec<3u>::Value>::max(),
+                std::numeric_limits<Vec<3u>::Value>::max(),
+                std::numeric_limits<Vec<3u>::Value>::max());
 
             boost::mpl::for_each<TAccSeq>(
                 std::bind(detail::CorrectMaxBlockKernelExtents(), std::placeholders::_1, std::ref(v3uiMaxBlockKernelExtents))
@@ -99,7 +100,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TAcc>
-                    void operator()(
+                ALPAKA_FCT_HOST void operator()(
                     TAcc,
                     std::size_t & uiBlockKernelCount)
                 {
@@ -139,11 +140,14 @@ namespace alpaka
             //!     1) uiDividend/ret==0
             //!     2) ret<=uiMaxDivisor
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST std::size_t nextLowerOrEqualFactor(
-                std::size_t const & uiMaxDivisor, 
-                std::size_t const & uiDividend)
+            template<
+                typename T,
+                typename = typename std::enable_if<std::is_integral<T>::value && std::is_unsigned<T>::value>::type>
+            ALPAKA_FCT_HOST T nextLowerOrEqualFactor(
+                T const & uiMaxDivisor, 
+                T const & uiDividend)
             {
-                std::size_t uiDivisor(uiMaxDivisor);
+                T uiDivisor(uiMaxDivisor);
                 // \TODO: This is not very efficient. Replace with a better algorithm.
                 while((uiDividend%uiDivisor) != 0)
                 {
@@ -177,14 +181,13 @@ namespace alpaka
                 // 2. If the block kernels extents require more kernels then available on the accelerator, clip it.
                 if(v3uiBlockKernelsExtents.prod() > uiMaxBlockKernelsCount)
                 {
-                    // Very primitive clipping. Just halve it until it fits.
-                    // \TODO: Use a better algorithm for clipping.
+                    std::size_t uiDim(0);
+                    // Very primitive clipping. Just halve it until it fits dimension by dimension.
                     while(v3uiBlockKernelsExtents.prod() > uiMaxBlockKernelsCount)
                     {
-                        v3uiBlockKernelsExtents = Vec<3u>(
-                            std::max(static_cast<std::size_t>(1u), static_cast<std::size_t>(v3uiBlockKernelsExtents[0u] / 2u)),
-                            std::max(static_cast<std::size_t>(1u), static_cast<std::size_t>(v3uiBlockKernelsExtents[1u] / 2u)),
-                            std::max(static_cast<std::size_t>(1u), static_cast<std::size_t>(v3uiBlockKernelsExtents[2u] / 2u)));
+                        v3uiBlockKernelsExtents[uiDim] = std::max(static_cast<Vec<3u>::Value>(1u), static_cast<Vec<3u>::Value>(v3uiBlockKernelsExtents[uiDim] / 2u));
+                        ++uiDim;
+                        uiDim = uiDim % 3;
                     }
                 }
 

@@ -63,22 +63,31 @@ namespace alpaka
                 template<
                     typename TExtents>
                 MemBufCuda(
-                    TElem * pMem,
+                    TElem * const pMem,
                     std::size_t const & uiPitchBytes,
                     TExtents const & extents) :
                         Extent(extents),
-                        m_spMem(
-                            pMem,
-                            [](TElem * pBuffer)
-                            {
-                                assert(pBuffer);
-                                cudaFree(reinterpret_cast<void *>(pBuffer));
-                            }),
+                        m_spMem(pMem, &MemBufCuda::freeBuffer),
                         m_uiPitchBytes(uiPitchBytes)
                 {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
                     static_assert(
                         std::is_same<TDim, dim::GetDimT<TExtents>>::value,
                         "The extents are required to have the same dimensionality as the MemBufCuda!");
+                }
+
+            private:
+                //-----------------------------------------------------------------------------
+                //! Frees the shared buffer.
+                //-----------------------------------------------------------------------------
+                static void freeBuffer(
+                    TElem * pBuffer)
+                {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                    assert(pBuffer);
+                    cudaFree(reinterpret_cast<void *>(pBuffer));
                 }
 
             public:
@@ -258,7 +267,8 @@ namespace alpaka
             //#############################################################################
             //! The CUDA 1D memory allocation trait specialization.
             //#############################################################################
-            template<typename T>
+            template<
+                typename T>
             struct MemAlloc<
                 T, 
                 alpaka::dim::Dim1, 
@@ -272,6 +282,8 @@ namespace alpaka
                 static alpaka::cuda::detail::MemBufCuda<T, alpaka::dim::Dim1> memAlloc(
                     TExtents const & extents)
                 {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
                     auto const uiWidth(alpaka::extent::getWidth(extents));
                     assert(uiWidth>0);
                     auto const uiWidthBytes(uiWidth * sizeof(T));
@@ -282,7 +294,14 @@ namespace alpaka
                         &pBuffer, 
                         uiWidthBytes));
                     assert((pBuffer));
-
+                    
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                    std::cout << BOOST_CURRENT_FUNCTION
+                        << " ew: " << uiWidth
+                        << " ewb: " << uiWidthBytes
+                        << " ptr: " << pBuffer
+                        << std::endl;
+#endif
                     return
                         alpaka::cuda::detail::MemBufCuda<T, alpaka::dim::Dim1>(
                             reinterpret_cast<T *>(pBuffer),
@@ -294,7 +313,8 @@ namespace alpaka
             //#############################################################################
             //! The CUDA 2D memory allocation trait specialization.
             //#############################################################################
-            template<typename T>
+            template<
+                typename T>
             struct MemAlloc<
                 T, 
                 alpaka::dim::Dim2, 
@@ -308,6 +328,8 @@ namespace alpaka
                 static alpaka::cuda::detail::MemBufCuda<T, alpaka::dim::Dim2> memAlloc(
                     TExtents const & extents)
                 {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
                     auto const uiWidth(alpaka::extent::getWidth(extents));
                     auto const uiWidthBytes(uiWidth * sizeof(T));
                     assert(uiWidthBytes>0);
@@ -323,8 +345,17 @@ namespace alpaka
                         uiWidthBytes,
                         uiHeight));
                     assert(pBuffer);
-                    assert(uiPitch>uiWidthBytes);
+                    assert(uiPitch>=uiWidthBytes);
                     
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                    std::cout << BOOST_CURRENT_FUNCTION
+                        << " ew: " << uiWidth
+                        << " eh: " << uiHeight
+                        << " ewb: " << uiWidthBytes
+                        << " ptr: " << pBuffer
+                        << " pitch: " << uiPitch
+                        << std::endl;
+#endif
                     return
                         alpaka::cuda::detail::MemBufCuda<T, alpaka::dim::Dim2>(
                             reinterpret_cast<T *>(pBuffer),
@@ -336,7 +367,8 @@ namespace alpaka
             //#############################################################################
             //! The CUDA 3D memory allocation trait specialization.
             //#############################################################################
-            template<typename T>
+            template<
+                typename T>
             struct MemAlloc<
                 T, 
                 alpaka::dim::Dim3, 
@@ -350,9 +382,11 @@ namespace alpaka
                 static alpaka::cuda::detail::MemBufCuda<T, alpaka::dim::Dim3> memAlloc(
                     TExtents const & extents)
                 {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
                     cudaExtent const cudaExtentVal(
                         make_cudaExtent(
-                            alpaka::extent::getWidth(extents),
+                            alpaka::extent::getWidth(extents) * sizeof(T),
                             alpaka::extent::getHeight(extents),
                             alpaka::extent::getDepth(extents)));
                     
@@ -363,6 +397,18 @@ namespace alpaka
 
                     assert(cudaPitchedPtrVal.ptr);
                     
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                    std::cout << BOOST_CURRENT_FUNCTION
+                        << " ew: " << alpaka::extent::getWidth(extents)
+                        << " eh: " << cudaExtentVal.height
+                        << " ed: " << cudaExtentVal.depth
+                        << " ewb: " << cudaExtentVal.width
+                        << " ptr: " << cudaPitchedPtrVal.ptr
+                        << " pitch: " << cudaPitchedPtrVal.pitch
+                        << " wb: " << cudaPitchedPtrVal.xsize
+                        << " h: " << cudaPitchedPtrVal.ysize
+                        << std::endl;
+#endif
                     return
                         alpaka::cuda::detail::MemBufCuda<T, alpaka::dim::Dim3>(
                             reinterpret_cast<T *>(cudaPitchedPtrVal.ptr),

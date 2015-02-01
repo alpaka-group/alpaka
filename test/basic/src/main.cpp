@@ -160,18 +160,14 @@ void profileAcceleratedKernel(
         << "profileAcceleratedKernel("
         << " kernelExecutor: " << typeid(TExec).name()
         << ")" << std::endl;
-
-    // Create an event to wait for. This allows synchronization after the (possibly) asynchronous kernel execution.
-    alpaka::event::GetEventT<alpaka::acc::GetAccT<TExec>> ev;
     
     auto const tpStart(std::chrono::high_resolution_clock::now());
 
     // Execute the accelerated kernel.
     exec(std::forward<TArgs>(args)...);
 
-    // Enqueue the event in the same stream the kernel has been enqueued to.
-    alpaka::event::enqueue(ev, stream);
-    alpaka::wait::wait(ev);
+    // Wait for the stream to finish the kernel execution to measure its run time.
+    alpaka::wait::wait(stream);
 
     auto const tpEnd(std::chrono::high_resolution_clock::now());
 

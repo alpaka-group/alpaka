@@ -24,6 +24,10 @@
 //#define ALPAKA_THREADS_NO_POOL    // Define this to recreate all of the threads between executing blocks.
                                     // NOTE: Using the thread pool should be massively faster in nearly every case!
 
+#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
+    #define ALPAKA_THREADS_NO_POOL
+#endif
+
 // Base classes.
 #include <alpaka/threads/AccThreadsFwd.hpp>
 #include <alpaka/threads/WorkDiv.hpp>               // WorkDivThreads
@@ -57,9 +61,6 @@
 #include <cassert>                                  // assert
 #include <stdexcept>                                // std::runtime_error
 #include <string>                                   // std::to_string
-#ifdef ALPAKA_DEBUG
-    #include <iostream>                             // std::cout
-#endif
 
 #include <boost/mpl/apply.hpp>                      // boost::mpl::apply
 
@@ -120,10 +121,12 @@ namespace alpaka
                     m_vvuiSharedMem(),
                     m_vuiExternalSharedMem()
                 {}
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA AccThreads(AccThreads &&) = default;
+#endif
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
@@ -340,15 +343,11 @@ namespace alpaka
 #endif
                     m_mtxMapInsert()
                 {
-#ifdef ALPAKA_DEBUG
-                    std::cout << "[+] AccThreads::KernelExecutorThreads()" << std::endl;
-#endif
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
                     (*static_cast<WorkDivThreads *>(this)) = workDiv;
 
                     this->AccThreads::m_uiNumKernelsPerBlock = workdiv::getWorkDiv<Block, Kernels, dim::Dim1>(workDiv)[0];
-#ifdef ALPAKA_DEBUG
-                    std::cout << "[-] AccThreads::KernelExecutorThreads()" << std::endl;
-#endif
                 }
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
@@ -397,9 +396,8 @@ KernelExecutorThreads && other) :
                 ALPAKA_FCT_HOST void operator()(
                     TArgs && ... args) const
                 {
-#ifdef ALPAKA_DEBUG
-                    std::cout << "[+] AccThreads::KernelExecutorThreads::operator()" << std::endl;
-#endif
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
                     Vec<3u> const v3uiGridBlocksExtents(this->AccThreads::getWorkDiv<Grid, Blocks, dim::Dim3>());
                     Vec<3u> const v3uiBlockKernelsExtents(this->AccThreads::getWorkDiv<Block, Kernels, dim::Dim3>());
 
@@ -444,21 +442,36 @@ KernelExecutorThreads && other) :
 
                                             // Create a thread.
                                             // The v3uiBlockKernelIdx is required to be copied in from the environment because if the thread is immediately suspended the variable is already changed for the next iteration/thread.
-//#if BOOST_COMP_MSVC //<= BOOST_VERSION_NUMBER(14, 0, 22310)    MSVC does not compile the std::thread constructor because the type of the member function template is missing the this pointer as first argument.
-                                            auto threadKernelFct([this](Vec<3u> const v3uiBlockKernelIdx, TArgs ... args) {threadKernel<TArgs...>(v3uiBlockKernelIdx, std::forward<TArgs>(args)...); });
+
+#if BOOST_COMP_MSVC     // VC is missing the this pointer type in the signature of &KernelExecutorThreads::threadKernel<TArgs...>
+                                            auto threadKernelFct = 
+                                                [&, v3uiBlockKernelIdx]()
+                                                {
+                                                    threadKernel<TArgs...>(v3uiBlockKernelIdx, std::forward<TArgs>(args)...); 
+                                                };
+    #ifdef ALPAKA_THREADS_NO_POOL
+                                            m_vThreadsInBlock.push_back(std::thread(threadKernelFct));
+    #else
+                                            m_vFuturesInBlock.emplace_back(pool.enqueueTask(threadKernelFct));
+    #endif
+#elif BOOST_COMP_GNUC   // But GCC < 4.9.0 can not compile variadic templates inside lambdas correctly if the variadic argument is not in the parameter list.
+                                            auto threadKernelFct(
+                                                [this](Vec<3u> const v3uiBlockKernelIdx, TArgs ... args)
+                                                {
+                                                    threadKernel<TArgs...>(v3uiBlockKernelIdx, std::forward<TArgs>(args)...); 
+                                                });
     #ifdef ALPAKA_THREADS_NO_POOL
                                             m_vThreadsInBlock.push_back(std::thread(threadKernelFct, v3uiBlockKernelIdx, args...));
     #else
                                             m_vFuturesInBlock.emplace_back(pool.enqueueTask(threadKernelFct, v3uiBlockKernelIdx, args...));
     #endif
-/*#else
+#else
     #ifdef ALPAKA_THREADS_NO_POOL
-                                            m_vThreadsInBlock.push_back(std::thread(&KernelExecutorThreads::threadKernel<TArgs...>, this, v3uiBlockKernelIdx, args...));
+                                            m_vThreadsInBlock.push_back(std::thread(&KernelExecutorThreads::threadKernel<TArgs...>, this, v3uiBlockKernelIdx, std::forward<TArgs>(args)...));
     #else
-                                            // FIXME: Currently this does not work!
-                                            m_vFuturesInBlock.emplace_back(pool.enqueueTask(&KernelExecutorThreads::threadKernel<TArgs...>, this, v3uiBlockKernelIdx, args...));
+                                            m_vFuturesInBlock.emplace_back(pool.enqueueTask(&KernelExecutorThreads::threadKernel<TArgs...>, this, v3uiBlockKernelIdx, std::forward<TArgs>(args)...));
     #endif
-#endif*/
+#endif
                                         }
                                     }
                                 }
@@ -493,9 +506,6 @@ KernelExecutorThreads && other) :
                     }
                     // After all blocks have been processed, the external shared memory can be deleted.
                     this->AccThreads::m_vuiExternalSharedMem.reset();
-#ifdef ALPAKA_DEBUG
-                    std::cout << "[-] AccThreads::KernelExecutorThreads::operator()" << std::endl;
-#endif
                 }
             private:
                 //-----------------------------------------------------------------------------
@@ -504,7 +514,7 @@ KernelExecutorThreads && other) :
                 template<
                     typename... TArgs>
                 ALPAKA_FCT_HOST void threadKernel(
-                    Vec<3u> const v3uiBlockKernelIdx, 
+                    Vec<3u> const & v3uiBlockKernelIdx, 
                     TArgs && ... args) const
                 {
                     // We have to store the thread data before the kernel is calling any of the methods of this class depending on them.
@@ -525,12 +535,12 @@ KernelExecutorThreads && other) :
                         std::lock_guard<std::mutex> lock(m_mtxMapInsert);
 
                         // Save the thread id, and index.
-#if BOOST_COMP_GNUC <= BOOST_VERSION_NUMBER(4, 7, 2) // GCC <= 4.7.2 is not standard conformant and has no member emplace.
-                        this->AccThreads::m_mThreadsToIndices.emplace(idThread, v3uiBlockKernelIdx);
-                        itThreadToBarrier = this->AccThreads::m_mThreadsToBarrier.emplace(idThread, 0).first;
-#else
+#if BOOST_COMP_GNUC && (BOOST_COMP_GNUC <= BOOST_VERSION_NUMBER(4, 7, 2)) // GCC <= 4.7.2 is not standard conformant and has no member emplace.
                         this->AccThreads::m_mThreadsToIndices.insert(std::make_pair(idThread, v3uiBlockKernelIdx));
                         itThreadToBarrier = this->AccThreads::m_mThreadsToBarrier.insert(std::make_pair(idThread, 0)).first;
+#else
+                        this->AccThreads::m_mThreadsToIndices.emplace(idThread, v3uiBlockKernelIdx);
+                        itThreadToBarrier = this->AccThreads::m_mThreadsToBarrier.emplace(idThread, 0).first;
 #endif
                     }
 

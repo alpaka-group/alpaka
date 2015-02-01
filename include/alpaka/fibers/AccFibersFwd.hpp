@@ -46,6 +46,16 @@ namespace alpaka
         namespace acc
         {
             //#############################################################################
+            //! The fibers accelerator accelerator type trait specialization.
+            //#############################################################################
+            template<>
+            struct GetAcc<
+                fibers::detail::AccFibers>
+            {
+                using type = fibers::detail::AccFibers;
+            };
+
+            //#############################################################################
             //! The fibers accelerator name trait specialization.
             //#############################################################################
             template<>

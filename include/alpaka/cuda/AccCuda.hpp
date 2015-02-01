@@ -49,9 +49,6 @@
 #include <string>                                   // std::to_string
 #include <utility>                                  // std::forward
 #include <tuple>                                    // std::tuple
-#ifdef ALPAKA_DEBUG
-    #include <iostream>                             // std::cout
-#endif
 
 #include <boost/mpl/apply.hpp>                      // boost::mpl::apply
 
@@ -98,10 +95,12 @@ namespace alpaka
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_CUDA_ONLY AccCuda(AccCuda const &) = default;
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_CUDA_ONLY AccCuda(AccCuda &&) = default;
+#endif
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
@@ -113,6 +112,19 @@ namespace alpaka
 
             protected:
                 //-----------------------------------------------------------------------------
+                //! \return The requested extents.
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TOrigin,
+                    typename TUnit,
+                    typename TDimensionality = dim::Dim3>
+                ALPAKA_FCT_ACC_CUDA_ONLY typename dim::DimToVecT<TDimensionality> getWorkDiv() const
+                {
+                    return workdiv::getWorkDiv<TOrigin, TUnit, TDimensionality>(
+                        *static_cast<WorkDivCuda const *>(this));
+                }
+
+                //-----------------------------------------------------------------------------
                 //! \return The requested indices.
                 //-----------------------------------------------------------------------------
                 template<
@@ -123,19 +135,6 @@ namespace alpaka
                 {
                     return idx::getIdx<TOrigin, TUnit, TDimensionality>(
                         *static_cast<IdxCuda const *>(this),
-                        *static_cast<WorkDivCuda const *>(this));
-                }
-
-                //-----------------------------------------------------------------------------
-                //! \return The requested extents.
-                //-----------------------------------------------------------------------------
-                template<
-                    typename TOrigin,
-                    typename TUnit,
-                    typename TDimensionality = dim::Dim3>
-                ALPAKA_FCT_ACC_CUDA_ONLY typename dim::DimToVecT<TDimensionality> getWorkDiv() const
-                {
-                    return workdiv::getWorkDiv<TOrigin, TUnit, TDimensionality>(
                         *static_cast<WorkDivCuda const *>(this));
                 }
 
@@ -175,7 +174,7 @@ namespace alpaka
                     static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
 
                     __shared__ T shMem[TuiNumElements];
-                    return &shMem;
+                    return shMem;
                 }
 
                 //-----------------------------------------------------------------------------
@@ -185,8 +184,13 @@ namespace alpaka
                     typename T>
                 ALPAKA_FCT_ACC_CUDA_ONLY T * getBlockSharedExternMem() const
                 {
-                    extern __shared__ uint8_t shMem[];
-                    return reinterpret_cast<T*>(shMem);
+                    // Because unaligned access to variables is not allowed in device code, 
+                    // we have to use the widest possible type to have all types aligned correctly. 
+                    // See: http://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#shared
+                    // http://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#vector-types
+                    extern __shared__ float4 shMem[];
+                    //printf("s %p\n", shMem);
+                    return reinterpret_cast<T *>(shMem);
                 }
             };
         }
@@ -273,6 +277,31 @@ namespace alpaka
         }
     };
     
+    namespace detail
+    {
+        //-----------------------------------------------------------------------------
+        //! Holds a value of true if the given number is a power of two, false else.
+        //-----------------------------------------------------------------------------
+        template<
+            std::size_t TuiVal>
+        struct IsPowerOfTwo : 
+            std::integral_constant<bool, ((TuiVal != 0) && ((TuiVal & (~TuiVal + 1)) == TuiVal))>
+        {};
+
+        //-----------------------------------------------------------------------------
+        //! Holds a value with the pointer aligned by rounding upwards.
+        //-----------------------------------------------------------------------------
+        template<
+            std::uintptr_t TuiAddress,
+            std::size_t TuiAlignment>
+        struct AlignUp : 
+            std::integral_constant<std::uintptr_t, (TuiAddress + (TuiAlignment-1)) & ~(TuiAlignment-1)>
+        {
+            static_assert(TuiAlignment > 0, "The given alignment has to be greater zero!");
+            static_assert(IsPowerOfTwo<TuiAlignment>::value, "The given alignment has to be a power of two!");
+        };
+    }
+
     namespace cuda
     {
         namespace detail
@@ -284,13 +313,14 @@ namespace alpaka
                 typename TAcceleratedKernel,
                 typename... TArgs>
             __global__ void cudaKernel(
-                IAcc<AccCuda> acc,
                 TAcceleratedKernel accedKernel,
                 TArgs ... args)
             {
 #if defined(__CUDA_ARCH__) && (__CUDA_ARCH__ < 200)
     #error "Cuda device capability >= 2.0 is required!"
 #endif
+                IAcc<AccCuda> acc;
+
                 accedKernel(
                     acc,
                     std::forward<TArgs>(args)...);
@@ -302,8 +332,8 @@ namespace alpaka
             template<
                 typename TAcceleratedKernel>
             class KernelExecutorCuda :
-                private TAcceleratedKernel,
-                private IAcc<AccCuda>
+                private TAcceleratedKernel/*,
+                private IAcc<AccCuda>*/
             {
 #if (!BOOST_COMP_GNUC) || (BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(5, 0, 0))
                 static_assert(std::is_trivially_copyable<TAcceleratedKernel>::value, "The given kernel functor has to fulfill is_trivially_copyable!");
@@ -320,28 +350,26 @@ namespace alpaka
                     TWorkDiv const & workDiv, 
                     StreamCuda const & stream, 
                     TKernelConstrArgs && ... args) :
-                    TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
+                    TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
+                    m_Stream(stream)
                 {
-#ifdef ALPAKA_DEBUG
-                    std::cout << "[+] AccCuda::KernelExecutorCuda()" << std::endl;
-#endif
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
                     m_v3uiGridBlocksExtents = workdiv::getWorkDiv<Grid, Blocks, dim::Dim3>(workDiv);
                     m_v3uiBlockKernelsExtents = workdiv::getWorkDiv<Block, Kernels, dim::Dim3>(workDiv);
 
                     // TODO: Check that (sizeof(TAcceleratedKernel) * m_v3uiBlockKernelsExtents.prod()) < available memory size
-
-#ifdef ALPAKA_DEBUG
-                    std::cout << "[-] AccCuda::KernelExecutorCuda()" << std::endl;
-#endif
                 }
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecutorCuda(KernelExecutorCuda const &) = default;
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecutorCuda(KernelExecutorCuda &&) = default;
+#endif
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
@@ -363,19 +391,72 @@ namespace alpaka
                 ALPAKA_FCT_HOST void operator()(
                     TArgs && ... args) const
                 {
-                    dim3 gridDim(m_v3uiGridBlocksExtents[0], m_v3uiGridBlocksExtents[1], m_v3uiGridBlocksExtents[2]);
-                    dim3 blockDim(m_v3uiBlockKernelsExtents[0], m_v3uiBlockKernelsExtents[1], m_v3uiBlockKernelsExtents[2]);
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(m_v3uiBlockKernelsExtents, std::forward<TArgs>(args)...));
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                    std::size_t uiPrintfFifoSize;
+                    cudaDeviceGetLimit(&uiPrintfFifoSize, cudaLimitPrintfFifoSize);
+                    //std::cout << "uiPrintfFifoSize: " << uiPrintfFifoSize << std::endl;
+                    cudaDeviceSetLimit(cudaLimitPrintfFifoSize, uiPrintfFifoSize*100);
+                    //cudaDeviceGetLimit(&uiPrintfFifoSize, cudaLimitPrintfFifoSize);
+                    //std::cout << "uiPrintfFifoSize: " <<  uiPrintfFifoSize << std::endl;
+#endif
 
-                    ALPAKA_CUDA_CHECK(cudaConfigureCall(gridDim, blockDim, uiBlockSharedExternMemSizeBytes, m_Stream.m_cudaStream));
-                    pushCudaKernelArgument<0>(
-                        (*static_cast<IAcc<AccCuda> const *>(this)),
-                        std::ref(*static_cast<TAcceleratedKernel const *>(this)), 
-                        std::forward<TArgs>(args)...);
-                    ALPAKA_CUDA_CHECK(cudaLaunch(cudaKernel<TAcceleratedKernel, TArgs...>));
-#ifdef ALPAKA_DEBUG
-                    std::cout << "[-] AccCuda::KernelExecutorCuda::operator()" << std::endl;
+                    dim3 gridDim(
+                        static_cast<unsigned int>(m_v3uiGridBlocksExtents[0u]), 
+                        static_cast<unsigned int>(m_v3uiGridBlocksExtents[1u]), 
+                        static_cast<unsigned int>(m_v3uiGridBlocksExtents[2u]));
+                    dim3 blockDim(
+                        static_cast<unsigned int>(m_v3uiBlockKernelsExtents[0u]), 
+                        static_cast<unsigned int>(m_v3uiBlockKernelsExtents[1u]), 
+                        static_cast<unsigned int>(m_v3uiBlockKernelsExtents[2u]));
+                    
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                    std::cout << "v3uiBlockKernelsExtents: " <<  gridDim.x << " " <<  gridDim.y << " " <<  gridDim.z << std::endl;
+                    std::cout << "v3uiBlockKernelsExtents: " <<  blockDim.x << " " <<  blockDim.y << " " <<  blockDim.z << std::endl;
+#endif
+
+                    // Get the size of the block shared extern memory.
+                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(
+                        m_v3uiBlockKernelsExtents, 
+                        std::forward<TArgs>(args)...));
+
+                    // \TODO: The following block should be in a lock.
+                    {
+                        // Set the environment settings of the following cuda kernel invocation.
+                        ALPAKA_CUDA_CHECK(cudaConfigureCall(
+                            gridDim,
+                            blockDim,
+                            uiBlockSharedExternMemSizeBytes,
+                            *m_Stream.m_spCudaStream.get()));
+                        // Push the arguments.
+                        pushCudaKernelArgument<0>(
+                            *static_cast<TAcceleratedKernel const *>(this),
+                            std::forward<TArgs>(args)...);
+                        // And execute it.
+                        ALPAKA_CUDA_CHECK(cudaLaunch(
+                            cudaKernel<TAcceleratedKernel, TArgs...>));
+
+                        /*cudaKernel<TAcceleratedKernel, TArgs...><<<
+                            gridDim,
+                            blockDim,
+                            uiBlockSharedExternMemSizeBytes,
+                            *m_Stream.m_spCudaStream.get()>>>(
+                                *static_cast<TAcceleratedKernel const *>(this),
+                                std::forward<TArgs>(args)...);*/
+                    }
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+                    // Wait for the kernel execution to finish but do not check error return of this call.
+                    // Do not use the alpaka::wait method because it checks the error itself but we want to give a custom error message.
+                    cudaStreamSynchronize(*m_Stream.m_spCudaStream.get());
+                    cudaDeviceSynchronize();
+                    cudaError_t const error(cudaGetLastError());
+                    if(error != cudaSuccess)
+                    {
+                        std::string const sError("The execution of kernel '" + std::string(typeid(TAcceleratedKernel).name()) + " failed with error: '" + std::string(cudaGetErrorString(error)) + "'"); \
+                        std::cerr << sError << std::endl;\
+                        throw std::runtime_error(sError);\
+                    }
 #endif
                 }
 
@@ -401,10 +482,16 @@ namespace alpaka
                     TArgs && ... args) const
                 {
                     // Push the first argument.
-                    ALPAKA_CUDA_CHECK(cudaSetupArgument(&arg0, sizeof(arg0), TuiOffset));
+                    ALPAKA_CUDA_CHECK(cudaSetupArgument(
+                        &arg0, 
+                        sizeof(typename std::decay<T0>::type), 
+                        alpaka::detail::AlignUp<TuiOffset, ALPAKA_ALIGNOF(typename std::decay<T0>::type)>::value));
 
                     // Push the rest of the arguments recursively.
-                    pushCudaKernelArgument<TuiOffset+sizeof(arg0)>(std::forward<TArgs>(args)...);
+                    pushCudaKernelArgument<
+                        alpaka::detail::AlignUp<TuiOffset, ALPAKA_ALIGNOF(typename std::decay<T0>::type)>::value
+                        + sizeof(typename std::decay<T0>::type)>(
+                            std::forward<TArgs>(args)...);
                 }
 
             private:

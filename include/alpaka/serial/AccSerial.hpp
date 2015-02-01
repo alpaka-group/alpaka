@@ -46,7 +46,7 @@
 #include <stdexcept>                                // std::except
 #include <utility>                                  // std::forward
 #include <string>                                   // std::to_string
-#ifdef ALPAKA_DEBUG
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
     #include <iostream>                             // std::cout
 #endif
 
@@ -101,11 +101,14 @@ namespace alpaka
                     m_v3uiGridBlockIdx(),
                     m_vvuiSharedMem(),
                     m_vuiExternalSharedMem()
-                {}
+                {
+                }
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA AccSerial(AccSerial &&) = default;
+#endif
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
@@ -233,22 +236,20 @@ namespace alpaka
                     TKernelConstrArgs && ... args) :
                     TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
                 {
-#ifdef ALPAKA_DEBUG
-                    std::cout << "[+] AccSerial::KernelExecutorSerial()" << std::endl;
-#endif
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
                     (*static_cast<WorkDivSerial *>(this)) = workDiv;
-#ifdef ALPAKA_DEBUG
-                    std::cout << "[-] AccSerial::KernelExecutorSerial()" << std::endl;
-#endif
                 }
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecutorSerial(KernelExecutorSerial const &) = default;
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecutorSerial(KernelExecutorSerial &&) = default;
+#endif
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
@@ -270,9 +271,8 @@ namespace alpaka
                 ALPAKA_FCT_HOST void operator()(
                     TArgs && ... args) const
                 {
-#ifdef ALPAKA_DEBUG
-                    std::cout << "[+] AccSerial::KernelExecutorSerial::operator()" << std::endl;
-#endif
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
                     Vec<3u> const v3uiGridBlocksExtents(this->AccSerial::getWorkDiv<Grid, Blocks, dim::Dim3>());
                     Vec<3u> const v3uiBlockKernelsExtents(this->AccSerial::getWorkDiv<Block, Kernels, dim::Dim3>());
 
@@ -307,9 +307,6 @@ namespace alpaka
                     }
                     // After all blocks have been processed, the external shared memory can be deleted.
                     this->AccSerial::m_vuiExternalSharedMem.reset();
-#ifdef ALPAKA_DEBUG
-                    std::cout << "[-] AccSerial::KernelExecutorSerial::operator()" << std::endl;
-#endif
                 }
             };
         }

@@ -45,10 +45,12 @@ namespace alpaka
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_CUDA_ONLY WorkDivCuda(WorkDivCuda const &) = default;
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_CUDA_ONLY WorkDivCuda(WorkDivCuda &&) = default;
+#endif
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
@@ -63,14 +65,14 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_CUDA_ONLY Vec<3u> getGridBlocksExtents() const
                 {
-                    return {gridDim.x, gridDim.y, gridDim.z};
+                    return Vec<3u>(gridDim.x, gridDim.y, gridDim.z);
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The block kernels extents of the currently executed kernel.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_CUDA_ONLY Vec<3u> getBlockKernelsExtents() const
                 {
-                    return {blockDim.x, blockDim.y, blockDim.z};
+                    return Vec<3u>(blockDim.x, blockDim.y, blockDim.z);
                 }
             };
         }
