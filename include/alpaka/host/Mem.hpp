@@ -339,10 +339,14 @@ namespace alpaka
                     auto const uiExtentDepth(alpaka::extent::getDepth(extents));
                     auto const uiDstWidth(alpaka::extent::getWidth(memBufDst));
                     auto const uiDstHeight(alpaka::extent::getHeight(memBufDst));
+#ifndef NDEBUG
                     auto const uiDstDepth(alpaka::extent::getDepth(memBufDst));
+#endif
                     auto const uiSrcWidth(alpaka::extent::getWidth(memBufSrc));
                     auto const uiSrcHeight(alpaka::extent::getHeight(memBufSrc));
+#ifndef NDEBUG
                     auto const uiSrcDepth(alpaka::extent::getDepth(memBufSrc));
+#endif
                     assert(uiExtentWidth <= uiDstWidth);
                     assert(uiExtentHeight <= uiDstHeight);
                     assert(uiExtentDepth <= uiDstDepth);
@@ -460,11 +464,13 @@ namespace alpaka
                     auto const uiExtentDepth(alpaka::extent::getDepth(extents));
                     auto const uiDstWidth(alpaka::extent::getWidth(memBuf));
                     auto const uiDstHeight(alpaka::extent::getHeight(memBuf));
+#ifndef NDEBUG
                     auto const uiDstDepth(alpaka::extent::getDepth(memBuf));
+#endif
                     assert(uiExtentWidth <= uiDstWidth);
                     assert(uiExtentHeight <= uiDstHeight);
                     assert(uiExtentDepth <= uiDstDepth);
-
+                       
                     auto const uiExtentWidthBytes(uiExtentWidth * sizeof(Elem));
                     auto const uiDstPitchBytes(alpaka::mem::getPitchBytes(memBuf));
                     assert(uiExtentWidthBytes <= uiDstPitchBytes);

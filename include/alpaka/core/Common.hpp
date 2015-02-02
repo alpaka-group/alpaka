@@ -76,7 +76,7 @@
 #endif
 
 //-----------------------------------------------------------------------------
-//! MSVC 2013 does not support noexcept
+// MSVC 2013 does not support noexcept
 //-----------------------------------------------------------------------------
 #if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
     #define noexcept

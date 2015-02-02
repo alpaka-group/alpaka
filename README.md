@@ -25,10 +25,14 @@ Supported Compilers
 This library uses a subset of C++11 supported by many compilers to keep the code clean and readable.
 
 Supported (but not necessarily tested) compilers are:
-- gcc 4.7+
+- gcc 4.8+
 - clang 3.4+
 - icc 15.0+
-- MSVC 2015+
+- MSVC 2013+
+
+Build status master branch: [![Build Status](https://travis-ci.org/ComputationalRadiationPhysics/alpaka.svg?branch=master)](https://travis-ci.org/ComputationalRadiationPhysics/alpaka)
+
+Build status develop branch: [![Build Status](https://travis-ci.org/ComputationalRadiationPhysics/alpaka.svg?branch=develop)](https://travis-ci.org/ComputationalRadiationPhysics/alpaka)
 
 Accelerators
 ------------

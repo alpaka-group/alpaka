@@ -78,8 +78,9 @@ namespace alpaka
                 typename std::enable_if<std::is_base_of<host::detail::EventHost, TEvent>::value>::type>
             {
                 ALPAKA_FCT_HOST static void defaultStreamEnqueueEvent(
-                    host::detail::EventHost const &)
+                    host::detail::EventHost const & event)
                 {
+                    boost::ignore_unused(event);
                     // Because host calls are not asynchronous, this call never has to enqueue anything.
                 }
             };
@@ -98,9 +99,11 @@ namespace alpaka
                     && std::is_same<typename alpaka::acc::GetAccT<TEvent>, typename alpaka::acc::GetAccT<TStream>>::value>::type>
             {
                 ALPAKA_FCT_HOST static void streamEnqueueEvent(
-                    host::detail::EventHost const &, 
-                    TStream const &)
+                    host::detail::EventHost const & event, 
+                    TStream const & stream)
                 {
+                    boost::ignore_unused(event);
+                    boost::ignore_unused(stream);
                     // Because host calls are not asynchronous, this call never has to enqueue anything.
                 }
             };
@@ -115,9 +118,9 @@ namespace alpaka
                 typename std::enable_if<std::is_base_of<host::detail::EventHost, TEvent>::value>::type>
             {
                 ALPAKA_FCT_HOST static bool eventTest(
-                    host::detail::EventHost const &, 
-                    bool &)
+                    host::detail::EventHost const & event)
                 {
+                    boost::ignore_unused(event);
                     // Because host calls are not asynchronous, this call always returns true.
                     return true;
                 }
@@ -136,8 +139,9 @@ namespace alpaka
                 typename std::enable_if<std::is_base_of<host::detail::EventHost, TEvent>::value>::type>
             {
                 ALPAKA_FCT_HOST static void currentThreadWaitFor(
-                    TEvent const &)
+                    TEvent const & event)
                 {
+                    boost::ignore_unused(event);
                     // Because host calls are not asynchronous, this call never has to wait.
                 }
             };

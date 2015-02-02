@@ -521,13 +521,9 @@ namespace alpaka
                     std::map<boost::fibers::fiber::id, std::size_t>::iterator itFiberToBarrier;
 
                     // Save the fiber id, and index.
-#if BOOST_COMP_GNUC && (BOOST_COMP_GNUC <= BOOST_VERSION_NUMBER(4, 7, 2)) // GCC <= 4.7.2 is not standard conformant and has no member emplace.
-                    this->AccFibers::m_mFibersToIndices.insert(std::pair<boost::fibers::fiber::id, Vec<3u>>(idFiber, v3uiBlockKernelIdx));
-                    itFiberToBarrier = this->AccFibers::m_mFibersToBarrier.insert(std::pair<boost::fibers::fiber::id, Vec<3u>>(idFiber, 0)).first;
-#else
                     this->AccFibers::m_mFibersToIndices.emplace(idFiber, v3uiBlockKernelIdx);
                     itFiberToBarrier = this->AccFibers::m_mFibersToBarrier.emplace(idFiber, 0).first;
-#endif
+
                     // Sync all threads so that the maps with thread id's are complete and not changed after here.
                     this->AccFibers::syncBlockKernels(itFiberToBarrier);
 

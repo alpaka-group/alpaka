@@ -86,6 +86,20 @@ namespace alpaka
             {
                 std::cout << "[-] " << m_sScope << std::endl;
             }
+            //-----------------------------------------------------------------------------
+            //! Copy constructor.
+            //-----------------------------------------------------------------------------
+            ScopeLogStdOut(ScopeLogStdOut const &) = delete;
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
+            //-----------------------------------------------------------------------------
+            //! Move constructor.
+            //-----------------------------------------------------------------------------
+            ScopeLogStdOut(ScopeLogStdOut &&) = delete;
+#endif
+            //-----------------------------------------------------------------------------
+            //! Assignment operator.
+            //-----------------------------------------------------------------------------
+            ScopeLogStdOut & operator=(ScopeLogStdOut const &) = delete;
 
         private:
             std::string const m_sScope;
@@ -130,10 +144,10 @@ namespace alpaka
     #define ALPAKA_DEBUG_BREAK
 #endif
 
-/*//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 //! Error checking with log and exception.
 //-----------------------------------------------------------------------------
-#define ALPAKA_ASSERT_MSG_EXCP1(assertionExpression)\
+/*#define ALPAKA_ASSERT_MSG_EXCP1(assertionExpression)\
     {\
         bool const error(assertionExpression);\
         if(error != cudaSuccess)\

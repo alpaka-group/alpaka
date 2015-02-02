@@ -199,7 +199,7 @@ struct ProfileAcceleratedExampleKernel
 
         std::cout
             << "AcceleratedExampleKernelProfiler("
-            << " accelerator: " << typeid(TAcc).name()
+            << " accelerator: " << alpaka::acc::getAccName<TAcc>()
             << ", kernel: " << typeid(Kernel).name()
             << ", workDiv: " << workDiv
             << ")" << std::endl;
@@ -222,7 +222,11 @@ struct ProfileAcceleratedExampleKernel
         // Get a new stream.
         alpaka::stream::GetStreamT<TAcc> stream;
         // Profile the kernel execution.
-        profileAcceleratedKernel(exec(workDiv, stream), alpaka::mem::getNativePtr(blockRetValsAcc), uiMult2);
+        profileAcceleratedKernel(
+		    exec(workDiv, stream), 
+		    stream,
+		    alpaka::mem::getNativePtr(blockRetValsAcc),
+		    uiMult2);
 
         // Copy back the result.
         alpaka::mem::copy(vuiBlockRetVals, blockRetValsAcc, uiSizeElements);

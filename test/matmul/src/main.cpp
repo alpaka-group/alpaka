@@ -31,16 +31,16 @@
 #include <unordered_map>				// std::unordered_map
 
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
-#if BOOST_COMP_MSVC
- #pragma warning(push)
- #pragma warning(disable: 4512)			// boost/program_options/options_description.hpp(265): warning C4512: 'boost::program_options::options_description': assignment operator was implicitly defined as deleted
-#endif
+    #if BOOST_COMP_MSVC
+        #pragma warning(push)
+        #pragma warning(disable: 4512)			// boost/program_options/options_description.hpp(265): warning C4512: 'boost::program_options::options_description': assignment operator was implicitly defined as deleted
+    #endif
 
-#include <boost/program_options.hpp>	// boost::program_options
+    #include <boost/program_options.hpp>	// boost::program_options
 
-#if BOOST_COMP_MSVC
- #pragma warning(pop)
-#endif
+    #if BOOST_COMP_MSVC
+        #pragma warning(pop)
+    #endif
 #endif
 
 #include <boost/mpl/for_each.hpp>       // boost::mpl::for_each
@@ -384,7 +384,7 @@ int main(
 #endif
             // For different matrix sizes.
             for(std::size_t uiMatrixSize(16u);
-                uiMatrixSize < 1024u;
+                uiMatrixSize <= 256u;
                 uiMatrixSize *= 2u)
             {
                 std::cout << std::endl;

@@ -1,0 +1,192 @@
+################################################################################
+#
+################################################################################
+language:
+  - cpp
+
+################################################################################
+#
+################################################################################
+compiler: 
+  - g++
+  #- clang++
+  
+################################################################################
+# \TODO: Test full matrix and not only specific combinations
+# \TODO: boost bootstrap fails for 1.55.0
+# \TODO: Test combinations of ALPAKA_XXX_ENABLE
+################################################################################
+env: 
+  matrix:
+    - CMAKE_BUILD_TYPE=DEBUG   ALPAKA_DEBUG=2 OMP_NUM_THREADS=4 ALPAKA_GCC_VER=4.8 ALPAKA_CLANG_VER=3.4 ALPAKA_BOOST_VER=1.56.0 ALPAKA_CMAKE_VER=3.1.0    ALPAKA_CUDA_ENABLE=ON
+    - CMAKE_BUILD_TYPE=DEBUG   ALPAKA_DEBUG=2 OMP_NUM_THREADS=4 ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.5 ALPAKA_BOOST_VER=1.56.0 ALPAKA_CMAKE_VER=3.1.1    ALPAKA_CUDA_ENABLE=OFF
+    - CMAKE_BUILD_TYPE=DEBUG   ALPAKA_DEBUG=2 OMP_NUM_THREADS=1 ALPAKA_GCC_VER=4.8 ALPAKA_CLANG_VER=3.4 ALPAKA_BOOST_VER=1.57.0 ALPAKA_CMAKE_VER=3.1.0    ALPAKA_CUDA_ENABLE=ON
+    - CMAKE_BUILD_TYPE=DEBUG   ALPAKA_DEBUG=2 OMP_NUM_THREADS=1 ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.5 ALPAKA_BOOST_VER=1.57.0 ALPAKA_CMAKE_VER=3.1.1    ALPAKA_CUDA_ENABLE=OFF
+    - CMAKE_BUILD_TYPE=DEBUG   ALPAKA_DEBUG=1 OMP_NUM_THREADS=4 ALPAKA_GCC_VER=4.8 ALPAKA_CLANG_VER=3.4 ALPAKA_BOOST_VER=1.56.0 ALPAKA_CMAKE_VER=3.1.0    ALPAKA_CUDA_ENABLE=ON
+    - CMAKE_BUILD_TYPE=DEBUG   ALPAKA_DEBUG=0 OMP_NUM_THREADS=4 ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.5 ALPAKA_BOOST_VER=1.57.0 ALPAKA_CMAKE_VER=3.1.1    ALPAKA_CUDA_ENABLE=OFF
+    
+    - CMAKE_BUILD_TYPE=RELEASE ALPAKA_DEBUG=2 OMP_NUM_THREADS=4 ALPAKA_GCC_VER=4.8 ALPAKA_CLANG_VER=3.4 ALPAKA_BOOST_VER=1.56.0 ALPAKA_CMAKE_VER=2.8.12.2 ALPAKA_CUDA_ENABLE=ON
+    - CMAKE_BUILD_TYPE=RELEASE ALPAKA_DEBUG=2 OMP_NUM_THREADS=4 ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.5 ALPAKA_BOOST_VER=1.56.0 ALPAKA_CMAKE_VER=3.0.0    ALPAKA_CUDA_ENABLE=OFF
+    - CMAKE_BUILD_TYPE=RELEASE ALPAKA_DEBUG=2 OMP_NUM_THREADS=1 ALPAKA_GCC_VER=4.8 ALPAKA_CLANG_VER=3.4 ALPAKA_BOOST_VER=1.57.0 ALPAKA_CMAKE_VER=3.0.1    ALPAKA_CUDA_ENABLE=ON
+    - CMAKE_BUILD_TYPE=RELEASE ALPAKA_DEBUG=2 OMP_NUM_THREADS=1 ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.5 ALPAKA_BOOST_VER=1.57.0 ALPAKA_CMAKE_VER=3.0.2    ALPAKA_CUDA_ENABLE=OFF
+    - CMAKE_BUILD_TYPE=RELEASE ALPAKA_DEBUG=1 OMP_NUM_THREADS=4 ALPAKA_GCC_VER=4.8 ALPAKA_CLANG_VER=3.4 ALPAKA_BOOST_VER=1.56.0 ALPAKA_CMAKE_VER=3.1.0    ALPAKA_CUDA_ENABLE=ON
+    - CMAKE_BUILD_TYPE=RELEASE ALPAKA_DEBUG=0 OMP_NUM_THREADS=4 ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.5 ALPAKA_BOOST_VER=1.57.0 ALPAKA_CMAKE_VER=3.1.1    ALPAKA_CUDA_ENABLE=OFF
+    
+  global:
+   - ALPAKA_SERIAL_ENABLE=ON
+   - ALPAKA_THREADS_ENABLE=ON
+   - ALPAKA_FIBERS_ENABLE=ON
+   - ALPAKA_OPENMP_ENABLE=ON
+
+################################################################################
+# Use this to prepare the system to install prerequisites or dependencies.
+################################################################################
+before_install:
+  - if [ "$CXX" == "g++" ]; then sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test; fi
+  - if [ "$CXX" == "clang++" ]; then sudo add-apt-repository -y ppa:h-rayflood/llvm; fi
+  - sudo add-apt-repository -y ppa:git-core/ppa
+  - sudo apt-get update
+  #- sudo apt-get upgrade
+
+################################################################################
+# Use this to install any prerequisites or dependencies necessary to run your build.
+################################################################################
+install:
+  # Step out of the alpaka directory.
+  - cd ../../
+  
+  # Get the curent gcc version.
+  - git --version 
+  - sudo apt-get install git
+  - git --version 
+
+  # gcc 4.6 is too old...
+  - if [ "$CXX" == "g++" ]; then 
+        sudo apt-get install g++-$ALPAKA_GCC_VER
+        && sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-$ALPAKA_GCC_VER 50
+        && sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-$ALPAKA_GCC_VER 50
+    ;fi
+    #export CXX="g++-$ALPAKA_GCC_VER" CC="gcc-$ALPAKA_GCC_VER"
+  
+  # Install clang.
+  - if [ "$CXX" == "clang++" ]; then 
+        sudo apt-get install --allow-unauthenticated clang-$ALPAKA_CLANG_VER
+        && sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-3.4 50
+        && sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-3.4 50
+    ;fi
+    #export CXX="clang++-$ALPAKA_CLANG_VER" CC="clang-$ALPAKA_CLANG_VER"
+  
+  # CMake 2.8.7 is too old...
+  # Remove the old version.
+  - sudo apt-get remove cmake
+  # Extract the version number.
+  - ALPAKA_CMAKE_VER=$ALPAKA_CMAKE_VER
+  - ALPAKA_CMAKE_VER_MAJOR=${ALPAKA_CMAKE_VER:0:1}
+  - ALPAKA_CMAKE_VER_MINOR=${ALPAKA_CMAKE_VER:2:1}
+  # NOTE: Older versions have to be built from source because CMake does not provide older x64 binaries.
+  - if (( (( ${ALPAKA_CMAKE_VER_MAJOR} < 3 ))  || ( (( ${ALPAKA_CMAKE_VER_MAJOR} == 3 )) && (( ${ALPAKA_CMAKE_VER_MINOR} < 1 )) ) )); then 
+        wget "http://www.cmake.org/files/v${ALPAKA_CMAKE_VER_MAJOR}.${ALPAKA_CMAKE_VER_MINOR}/cmake-${ALPAKA_CMAKE_VER}.tar.gz"
+        && tar -xzf "cmake-${ALPAKA_CMAKE_VER}.tar.gz"
+        && "./cmake-${ALPAKA_CMAKE_VER}/bootstrap" --prefix=/usr
+        && make
+        && sudo make install
+    ;else
+        wget "http://www.cmake.org/files/v${ALPAKA_CMAKE_VER_MAJOR}.${ALPAKA_CMAKE_VER_MINOR}/cmake-${ALPAKA_CMAKE_VER}-Linux-x86_64.tar.gz"
+        && tar -xzf "cmake-${ALPAKA_CMAKE_VER}-Linux-x86_64.tar.gz"
+        && sudo cp -fR cmake-${ALPAKA_CMAKE_VER}-Linux-x86_64/* /usr
+    ;fi
+  
+  
+  # Boost 1.55 is the minimum requirement.
+  # Extract the version number.
+  - mkdir boost && cd boost
+  - mkdir trunk
+  - git clone -b boost-$ALPAKA_BOOST_VER --single-branch --depth 1 --recursive https://github.com/boostorg/boost.git trunk
+  - cd trunk
+  - if [ "$ALPAKA_FIBERS_ENABLE" == "ON" ]; then
+        cd libs
+        && git clone -b develop --single-branch --depth 1 https://github.com/olk/boost-fiber.git fiber
+        && cd ../
+    ;fi
+  # Get boost build dev branch because 1.55 release is buggy. EVEN THIS DOES NOT WORK!
+  #- cd tools/build/
+  #- git checkout develop
+  #- cd ../../
+  # Build b2.
+  - sudo ./bootstrap.sh --with-toolset=$CC 
+  # Create file links.
+  - sudo ./b2 headers
+  # Build boost if necessary
+  - if [ "$ALPAKA_FIBERS_ENABLE" == "ON" ]; then
+        cd ../
+        && mkdir lib && cd lib
+        && mkdir x64
+        && cd ../trunk/
+        && sudo ./b2 -j2 --layout=versioned --toolset=$CC --with-program_options --with-fiber --with-coroutine --with-context --with-system --with-atomic --with-chrono --with-date_time --with-regex --with-thread --build-type=complete architecture=x86 address-model=64 --stagedir=../lib/x64 variant=debug
+        && sudo ./b2 -j2 --layout=versioned --toolset=$CC --with-program_options --with-fiber --with-coroutine --with-context --with-system --with-atomic --with-chrono --with-date_time --with-regex --with-thread --build-type=complete architecture=x86 address-model=64 --stagedir=../lib/x64 variant=release
+    ;fi
+  - cd ..
+    
+  # Install nvcc
+  - if [ "$ALPAKA_CUDA_ENABLE" == "ON" ]; then 
+        wget http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1204/x86_64/cuda-repo-ubuntu1204_6.5-14_amd64.deb
+        && sudo dpkg -i cuda-repo-ubuntu1204_6.5-14_amd64.deb
+        && sudo apt-get -y update
+        && sudo apt-get -y install cuda 
+        && export PATH=/usr/local/cuda-6.5/bin:$PATH
+        && export LD_LIBRARY_PATH=/usr/local/cuda-6.5/lib64:$LD_LIBRARY_PATH
+    ;fi
+    ##Maybe only the minimal packages? cuda-core-6-5 cuda-cublas-6-5 cuda-cublas-dev-6-5 cuda-cudart-6-5 cuda-cudart-dev-6-5 cuda-curand-6-5 cuda-curand-dev-6-5
+    ## Create CUDA symlink at /usr/local/cuda (This would normally be created by the CUDA installer, but we create it manually since we did a partial installation.)
+    #ln -s /usr/local/cuda-6.5 /usr/local/cuda
+    
+################################################################################
+# Use this to prepare your build for testing.
+################################################################################
+before_script:
+  - cd $TRAVIS_BUILD_DIR/
+  - which cmake
+  - cmake --version
+  - which $CXX
+  - $CXX -v
+  - if [ "$ALPAKA_CUDA_ENABLE" == "ON" ]; then 
+        which nvcc
+        && nvcc -V
+    ;fi
+    
+################################################################################
+# All commands must exit with code 0 on success. Anything else is considered failure.
+################################################################################
+script:
+  - cd test/
+  
+  - cd matmul/
+  - mkdir build/
+  - cd build/
+  - mkdir make/
+  - cd make/
+  - cmake -G "Unix Makefiles" -DBOOST_ROOT="$TRAVIS_BUILD_DIR/../../boost/trunk" -DBOOST_LIBRARYDIR="$TRAVIS_BUILD_DIR/../../boost/lib/x64/lib" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DALPAKA_SERIAL_ENABLE=$ALPAKA_SERIAL_ENABLE -DALPAKA_THREADS_ENABLE=$ALPAKA_THREADS_ENABLE -DALPAKA_FIBERS_ENABLE=$ALPAKA_FIBERS_ENABLE -DALPAKA_OPENMP_ENABLE=$ALPAKA_OPENMP_ENABLE -DALPAKA_CUDA_ENABLE=$ALPAKA_CUDA_ENABLE -DALPAKA_DEBUG=$ALPAKA_DEBUG "../../"
+  - make
+  - if [ "$ALPAKA_CUDA_ENABLE" == "OFF" ]; then 
+        ./matmul
+    ;fi
+  - cd ../../../
+  
+  - cd basic/
+  - mkdir build/
+  - cd build/
+  - mkdir make/
+  - cd make/
+  - cmake -G "Unix Makefiles" -DBOOST_ROOT="$TRAVIS_BUILD_DIR/../../boost/trunk" -DBOOST_LIBRARYDIR="$TRAVIS_BUILD_DIR/../../boost/lib/x64/lib" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DALPAKA_SERIAL_ENABLE=$ALPAKA_SERIAL_ENABLE -DALPAKA_THREADS_ENABLE=$ALPAKA_THREADS_ENABLE -DALPAKA_FIBERS_ENABLE=$ALPAKA_FIBERS_ENABLE -DALPAKA_OPENMP_ENABLE=$ALPAKA_OPENMP_ENABLE -DALPAKA_CUDA_ENABLE=$ALPAKA_CUDA_ENABLE -DALPAKA_DEBUG=$ALPAKA_DEBUG "../../"
+  - make
+  - if [ "$ALPAKA_CUDA_ENABLE" == "OFF" ]; then 
+        ./basic
+    ;fi
+  - cd ../../../
+  
+################################################################################
+# 
+################################################################################
+notifications:
+  email: false
+  

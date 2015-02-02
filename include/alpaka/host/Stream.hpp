@@ -27,6 +27,8 @@
 
 #include <type_traits>                  // std::is_base
 
+#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+
 namespace alpaka
 {
     namespace host
@@ -93,8 +95,9 @@ namespace alpaka
                 typename std::enable_if<std::is_base_of<host::detail::StreamHost, TStream>::value>::type>
             {
                 ALPAKA_FCT_HOST static bool streamTest(
-                    TStream const &)
+                    TStream const & stream)
                 {
+                    boost::ignore_unused(stream);
                     // Because host calls are not asynchronous, this call always returns true.
                     return true;
                 }
@@ -115,6 +118,7 @@ namespace alpaka
                 ALPAKA_FCT_HOST static void currentThreadWaitFor(
                     TStream const & stream)
                 {
+                    boost::ignore_unused(stream);
                     // Because host calls are not asynchronous, this call never has to wait.
                 }
             };
@@ -136,6 +140,8 @@ namespace alpaka
                     TStream const & stream,
                     TEvent const & event)
                 {
+                    boost::ignore_unused(stream);
+                    boost::ignore_unused(event);
                     // Because host calls are not asynchronous, this call never has to let a stream wait.
                 }
             };

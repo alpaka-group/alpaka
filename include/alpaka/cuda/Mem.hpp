@@ -334,7 +334,9 @@ namespace alpaka
                     auto const uiWidthBytes(uiWidth * sizeof(T));
                     assert(uiWidthBytes>0);
                     auto const uiHeight(alpaka::extent::getHeight(extents));
+#ifndef NDEBUG
                     auto const uiElementCount(uiWidth * uiHeight);
+#endif
                     assert(uiElementCount>0);
 
                     void * pBuffer;

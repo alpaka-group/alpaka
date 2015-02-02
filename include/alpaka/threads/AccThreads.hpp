@@ -535,13 +535,8 @@ KernelExecutorThreads && other) :
                         std::lock_guard<std::mutex> lock(m_mtxMapInsert);
 
                         // Save the thread id, and index.
-#if BOOST_COMP_GNUC && (BOOST_COMP_GNUC <= BOOST_VERSION_NUMBER(4, 7, 2)) // GCC <= 4.7.2 is not standard conformant and has no member emplace.
-                        this->AccThreads::m_mThreadsToIndices.insert(std::make_pair(idThread, v3uiBlockKernelIdx));
-                        itThreadToBarrier = this->AccThreads::m_mThreadsToBarrier.insert(std::make_pair(idThread, 0)).first;
-#else
                         this->AccThreads::m_mThreadsToIndices.emplace(idThread, v3uiBlockKernelIdx);
                         itThreadToBarrier = this->AccThreads::m_mThreadsToBarrier.emplace(idThread, 0).first;
-#endif
                     }
 
                     // Sync all fibers so that the maps with fiber id's are complete and not changed after here.

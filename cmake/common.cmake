@@ -121,7 +121,7 @@ ENDFUNCTION()
 
 #------------------------------------------------------------------------------
 # void list_add_prefix(string prefix, list<string>* list_of_items);
-# - returns list_of_items with prefix prepended to all items
+# - returns The list_of_items with prefix prepended to all items.
 # - original list is modified
 #------------------------------------------------------------------------------
 FUNCTION(list_add_prefix prefix list_of_items)
@@ -136,7 +136,7 @@ ENDFUNCTION()
 
 #------------------------------------------------------------------------------
 # void list_add_prefix(string prefix, string item_to_prefix, list<string>* list_of_items);
-# - returns list_of_items with prefix prepended to all items
+# - returns list_of_items with prefix prepended to all items matching item_to_prefix.
 # - original list is modified
 #------------------------------------------------------------------------------
 FUNCTION(list_add_prefix_to prefix item_to_prefix list_of_items)

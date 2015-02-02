@@ -111,6 +111,8 @@ namespace alpaka
             typename... TKernelConstrArgs>
         class KernelExecutorExtent
         {
+            using Acc = acc::GetAccT<TKernelExecutor>;
+            using Stream = stream::GetStreamT<Acc>;
         public:
             //-----------------------------------------------------------------------------
             //! Constructor.
@@ -141,16 +143,14 @@ namespace alpaka
             //! \return An KernelExecutor with the given extents.
             //-----------------------------------------------------------------------------
             template<
-                typename TWorkDiv,
-                typename TStream,
-                typename std::enable_if<std::is_same<typename acc::GetAccT<TStream>, typename acc::GetAccT<TKernelExecutor>>::value, int>::type = 0>
+                typename TWorkDiv>
             ALPAKA_FCT_HOST TKernelExecutor operator()(
                 TWorkDiv const & workDiv, 
-                TStream const & stream) const
+                Stream const & stream) const
             {
-                if(!workdiv::isValidWorkDiv<acc::GetAccT<TKernelExecutor>>(workDiv))
+                if(!workdiv::isValidWorkDiv<Acc>(workDiv))
                 {
-                    throw std::runtime_error("The given work division is not supported by " + acc::getAccName<acc::GetAccT<TKernelExecutor>>() + "!");
+                    throw std::runtime_error("The given work division is not supported by the " + acc::getAccName<Acc>() + " accelerator!");
                 }
 
                 return createKernelExecutor(workDiv, stream, KernelConstrArgsIdxSequence());
@@ -159,13 +159,11 @@ namespace alpaka
             //! \return An KernelExecutor with the given extents.
             //-----------------------------------------------------------------------------
             template<
-                typename TWorkDiv,
-                typename TStream,
-                typename std::enable_if<std::is_same<typename acc::GetAccT<TStream>, typename acc::GetAccT<TKernelExecutor>>::value, int>::type = 0>
+                typename TWorkDiv>
             ALPAKA_FCT_HOST TKernelExecutor operator()(
                 Vec<3u> const & v3uiGridBlocksExtent,
                 Vec<3u> const & v3uiBlockKernelsExtents, 
-                TStream const & stream) const
+                Stream const & stream) const
             {
                 return this->operator()(workdiv::BasicWorkDiv(v3uiGridBlocksExtent, v3uiBlockKernelsExtents), stream);
             }
@@ -176,11 +174,10 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TWorkDiv,
-                typename TStream,
                 std::size_t... TIndices>
             ALPAKA_FCT_HOST TKernelExecutor createKernelExecutor(
                 TWorkDiv const & workDiv, 
-                TStream const & stream,
+                Stream const & stream,
 #if !BOOST_COMP_MSVC     // MSVC 190022512 introduced a new bug with alias templates: error C3520: 'TIndices': parameter pack must be expanded in this context
                 std_extension::index_sequence<TIndices...> const &) const
 #else
