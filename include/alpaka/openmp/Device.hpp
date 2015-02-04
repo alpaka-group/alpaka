@@ -179,7 +179,7 @@ namespace alpaka
 
                     devProps.m_sName = host::getCpuName();
                     devProps.m_uiMultiProcessorCount = 1u;
-#ifdef ALPAKA_INTEGRATION_TEST
+#if ALPAKA_INTEGRATION_TEST
                     devProps.m_uiBlockKernelsCountMax = 4u;
 #else
                     // HACK: ::omp_get_max_threads() does not return the real limit of the underlying OpenMP runtime:

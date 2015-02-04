@@ -164,7 +164,7 @@ namespace alpaka
             ALPAKA_FCT_HOST BasicWorkDiv subdivideGridKernels(
                 Vec<3u> const & v3uiGridKernelsExtents,
                 Vec<3u> const & v3uiMaxBlockKernelsExtents,
-                std::size_t uiMaxBlockKernelsCount)
+                std::size_t const & uiMaxBlockKernelsCount)
             {
                 assert(v3uiGridKernelsExtents[0u]>0);
                 assert(v3uiGridKernelsExtents[1u]>0);
@@ -181,13 +181,13 @@ namespace alpaka
                 // 2. If the block kernels extents require more kernels then available on the accelerator, clip it.
                 if(v3uiBlockKernelsExtents.prod() > uiMaxBlockKernelsCount)
                 {
-                    std::size_t uiDim(0);
-                    // Very primitive clipping. Just halve it until it fits dimension by dimension.
+                    // Begin in z dimension.
+                    std::size_t uiDim(2);
+                    // Very primitive clipping. Just halve it until it fits repeatedly iterating over the dimensions.
                     while(v3uiBlockKernelsExtents.prod() > uiMaxBlockKernelsCount)
                     {
                         v3uiBlockKernelsExtents[uiDim] = std::max(static_cast<Vec<3u>::Value>(1u), static_cast<Vec<3u>::Value>(v3uiBlockKernelsExtents[uiDim] / 2u));
-                        ++uiDim;
-                        uiDim = uiDim % 3;
+                        uiDim = (uiDim+2) % 3;
                     }
                 }
 

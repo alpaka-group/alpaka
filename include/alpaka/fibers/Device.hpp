@@ -174,8 +174,8 @@ namespace alpaka
 
                     devProps.m_sName = host::getCpuName();
                     devProps.m_uiMultiProcessorCount = std::thread::hardware_concurrency(); // \TODO: This may be inaccurate.
-#ifdef ALPAKA_INTEGRATION_TEST
-                    devProps.m_uiBlockKernelsCountMax = 4u;
+#if ALPAKA_INTEGRATION_TEST
+                    devProps.m_uiBlockKernelsCountMax = 24u;
 #else
                     devProps.m_uiBlockKernelsCountMax = 32u; // \TODO: What is the maximum? Just set a reasonable value?
 #endif

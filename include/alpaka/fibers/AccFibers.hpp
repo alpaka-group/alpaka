@@ -439,7 +439,7 @@ namespace alpaka
                                                     fiberKernel<TArgs...>(v3uiBlockKernelIdx, std::forward<TArgs>(args)...); 
                                                 };
     #ifdef ALPAKA_THREADS_NO_POOL
-                                            m_vFibersInBlock.push_back(std::thread(fiberKernelFct));
+                                            m_vFibersInBlock.push_back(boost::fibers::fiber(fiberKernelFct));
     #else
                                             m_vFuturesInBlock.emplace_back(pool.enqueueTask(fiberKernelFct));
     #endif
@@ -450,13 +450,13 @@ namespace alpaka
                                                     fiberKernel<TArgs...>(v3uiBlockKernelIdx, std::forward<TArgs>(args)...); 
                                                 });
     #ifdef ALPAKA_THREADS_NO_POOL
-                                            m_vFibersInBlock.push_back(std::thread(fiberKernelFct, v3uiBlockKernelIdx, args...));
+                                            m_vFibersInBlock.push_back(boost::fibers::fiber(fiberKernelFct, v3uiBlockKernelIdx, args...));
     #else
                                             m_vFuturesInBlock.emplace_back(pool.enqueueTask(fiberKernelFct, v3uiBlockKernelIdx, args...));
     #endif
 #else
     #ifdef ALPAKA_THREADS_NO_POOL
-                                            m_vFibersInBlock.push_back(std::thread(&KernelExecutorFibers::fiberKernel<TArgs...>, this, v3uiBlockKernelIdx, std::forward<TArgs>(args)...));
+                                            m_vFibersInBlock.push_back(boost::fibers::fiber(&KernelExecutorFibers::fiberKernel<TArgs...>, this, v3uiBlockKernelIdx, std::forward<TArgs>(args)...));
     #else
                                             m_vFuturesInBlock.emplace_back(pool.enqueueTask(&KernelExecutorFibers::fiberKernel<TArgs...>, this, v3uiBlockKernelIdx, std::forward<TArgs>(args)...));
     #endif

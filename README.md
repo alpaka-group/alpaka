@@ -25,10 +25,10 @@ Supported Compilers
 This library uses a subset of C++11 supported by many compilers to keep the code clean and readable.
 
 Supported (but not necessarily tested) compilers are:
-- gcc 4.8+
+- gcc 4.8+ (boost-fibers only supported in gcc 4.9+)
 - clang 3.4+
 - icc 15.0+
-- MSVC 2013+
+- MSVC 2013+ (boost-fibers only supported in MSVC 2015)
 
 Build status master branch: [![Build Status](https://travis-ci.org/ComputationalRadiationPhysics/alpaka.svg?branch=master)](https://travis-ci.org/ComputationalRadiationPhysics/alpaka)
 

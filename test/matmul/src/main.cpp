@@ -213,7 +213,7 @@ void profileAcceleratedKernel(
 //-----------------------------------------------------------------------------
 //! Profiles the example kernel and checks the result.
 //-----------------------------------------------------------------------------
-struct ProfileAcceleratedMatMulKernel
+struct MatMulTester
 {
     template<
         typename TAcc>
@@ -323,7 +323,12 @@ struct ProfileAcceleratedMatMulKernel
         }
 
         std::cout << "################################################################################" << std::endl;
+
+        bAllResultsCorrect = bAllResultsCorrect && bResultCorrect;
     }
+
+public:
+    bool bAllResultsCorrect = true;
 };
 
 //-----------------------------------------------------------------------------
@@ -382,6 +387,8 @@ int main(
             alpaka::dev::GetDevManT<alpaka::AccCuda>::setCurrentDevice(
                 alpaka::dev::GetDevManT<alpaka::AccCuda>::getCurrentDevice());
 #endif
+            MatMulTester matMulTester;
+
             // For different matrix sizes.
             for(std::size_t uiMatrixSize(16u);
                 uiMatrixSize <= 256u;
@@ -392,14 +399,14 @@ int main(
                 // Execute the kernel on all enabled accelerators.
                 boost::mpl::for_each<alpaka::acc::EnabledAccelerators>(
                     std::bind(
-                    ProfileAcceleratedMatMulKernel(),
+                    matMulTester,
                     std::placeholders::_1,
                     uiMatrixSize,
                     bAdaptiveBlockKernelsExtent)
                     );
             }
+            return matMulTester.bAllResultsCorrect ? EXIT_SUCCESS : EXIT_FAILURE;
         }
-        return EXIT_SUCCESS;
     }
     catch(std::exception const & e)
     {
