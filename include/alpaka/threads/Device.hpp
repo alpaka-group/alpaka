@@ -175,7 +175,11 @@ namespace alpaka
                     devProps.m_uiMultiProcessorCount = 1u;
                     // \TODO: Magic number. What is the maximum? Just set a reasonable value? There is a implementation defined maximum where the creation of a new thread crashes.
                     // std::thread::hardware_concurrency  can return 0, so a default for this case?
+#ifdef ALPAKA_INTEGRATION_TEST
+                    devProps.m_uiBlockKernelsCountMax = 4u;
+#else
                     devProps.m_uiBlockKernelsCountMax = std::thread::hardware_concurrency() * 8u;
+#endif
                     devProps.m_v3uiBlockKernelsExtentsMax = Vec<3u>(static_cast<Vec<3u>::Value>(devProps.m_uiBlockKernelsCountMax), static_cast<Vec<3u>::Value>(devProps.m_uiBlockKernelsCountMax), static_cast<Vec<3u>::Value>(devProps.m_uiBlockKernelsCountMax));
                     devProps.m_v3uiGridBlocksExtentsMax = Vec<3u>(std::numeric_limits<Vec<3u>::Value>::max(), std::numeric_limits<Vec<3u>::Value>::max(), std::numeric_limits<Vec<3u>::Value>::max());
                     devProps.m_uiGlobalMemSizeBytes = host::getGlobalMemSizeBytes();
