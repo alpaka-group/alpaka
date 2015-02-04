@@ -22,6 +22,10 @@
 #pragma once
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FCT_ACC, ALPAKA_ALIGN
+#include <alpaka/core/BasicDims.hpp>// dim::Dim<N>
+
+#include <alpaka/traits/Dim.hpp>    // traits::getDim
+#include <alpaka/traits/Extents.hpp>// traits::getWidth, ...
 
 #include <cstdint>                  // std::uint32_t
 #include <ostream>                  // std::ostream
@@ -43,7 +47,7 @@ namespace alpaka
         std::size_t TuiDim, 
         // NOTE: Setting the value type to std::size_t leads to invalid data on CUDA devices (at least witch VC12).
         typename TValue = std::uint32_t>
-    class Vec final
+    class Vec
     {
     public:
         static_assert(TuiDim>0, "Size of the vector is required to be greater then zero!");
@@ -271,5 +275,141 @@ namespace alpaka
         os << ")";
 
         return os;
+    }
+    
+    namespace detail
+    {
+        //#############################################################################
+        //! The dimension to vector type transformation trait.
+        //#############################################################################
+        template<
+            typename TDim>
+        struct DimToVec
+        {
+            using type = Vec<TDim::value>;
+        };
+    }
+
+    //#############################################################################
+    //! The dimension to vector type alias template to remove the ::type.
+    //#############################################################################
+    template<
+        typename TDim>
+    using DimToVecT = typename detail::DimToVec<TDim>::type;
+
+    namespace traits
+    {
+        namespace dim
+        {
+            //#############################################################################
+            //! The Vec<TuiDim> dimension get trait specialization.
+            //#############################################################################
+            template<
+                std::size_t TuiDim>
+            struct GetDim<
+                alpaka::Vec<TuiDim>>
+            {
+                using type = alpaka::dim::Dim<TuiDim>;
+            };
+        }
+
+        namespace extent
+        {
+            //#############################################################################
+            //! The Vec<TuiDim> width get trait specialization.
+            //#############################################################################
+            template<
+                std::size_t TuiDim>
+            struct GetWidth<
+                alpaka::Vec<TuiDim>,
+                typename std::enable_if<(TuiDim >= 1u) && (TuiDim <= 3u)>::type>
+            {
+                ALPAKA_FCT_HOST_ACC static std::size_t getWidth(
+                    alpaka::Vec<TuiDim> const & extent)
+                {
+                    return extent[0u];
+                }
+            };
+            //#############################################################################
+            //! The Vec<TuiDim> width set trait specialization.
+            //#############################################################################
+            template<
+                std::size_t TuiDim>
+            struct SetWidth<
+                alpaka::Vec<TuiDim>,
+                typename std::enable_if<(TuiDim >= 1u) && (TuiDim <= 3u)>::type>
+            {
+                ALPAKA_FCT_HOST_ACC static std::size_t setWidth(
+                    alpaka::Vec<TuiDim> & extent,
+                    std::size_t const & width)
+                {
+                    return extent[0u] = width;
+                }
+            };
+
+            //#############################################################################
+            //! The Vec<TuiDim> height get trait specialization.
+            //#############################################################################
+            template<
+                std::size_t TuiDim>
+            struct GetHeight<
+                alpaka::Vec<TuiDim>,
+                typename std::enable_if<(TuiDim >= 2u) && (TuiDim <= 3u)>::type>
+            {
+                ALPAKA_FCT_HOST_ACC static std::size_t getHeight(
+                    alpaka::Vec<TuiDim> const & extent)
+                {
+                    return extent[1u];
+                }
+            };
+            //#############################################################################
+            //! The Vec<TuiDim> height set trait specialization.
+            //#############################################################################
+            template<
+                std::size_t TuiDim>
+            struct SetHeight<
+                alpaka::Vec<TuiDim>,
+                typename std::enable_if<(TuiDim >= 2u) && (TuiDim <= 3u)>::type>
+            {
+                ALPAKA_FCT_HOST_ACC static std::size_t setHeight(
+                    alpaka::Vec<TuiDim> & extent,
+                    std::size_t const & height)
+                {
+                    return extent[1u] = height;
+                }
+            };
+
+            //#############################################################################
+            //! The Vec<TuiDim> depth get trait specialization.
+            //#############################################################################
+            template<
+                std::size_t TuiDim>
+            struct GetDepth<
+                alpaka::Vec<TuiDim>,
+                typename std::enable_if<(TuiDim >= 3u) && (TuiDim <= 3u)>::type>
+            {
+                ALPAKA_FCT_HOST_ACC static std::size_t getDepth(
+                    alpaka::Vec<TuiDim> const & extent)
+                {
+                    return extent[2u];
+                }
+            };
+            //#############################################################################
+            //! The Vec<TuiDim> depth set trait specialization.
+            //#############################################################################
+            template<
+                std::size_t TuiDim>
+            struct SetDepth<
+                alpaka::Vec<TuiDim>,
+                typename std::enable_if<(TuiDim >= 3u) && (TuiDim <= 3u)>::type>
+            {
+                ALPAKA_FCT_HOST_ACC static std::size_t setDepth(
+                    alpaka::Vec<TuiDim> & extent,
+                    std::size_t const & depth)
+                {
+                    return extent[2u] = depth;
+                }
+            };
+        }
     }
 }

@@ -21,9 +21,12 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC
+#include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST_ACC
 
-#include <cstdint>                  // std::size_t
+#include <alpaka/traits/Dim.hpp>        // dim::GetDim
+
+#include <cstdint>                      // std::size_t
+#include <type_traits>                  // std::enable_if
 
 namespace alpaka
 {

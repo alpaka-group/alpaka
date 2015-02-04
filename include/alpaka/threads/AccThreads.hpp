@@ -147,10 +147,10 @@ namespace alpaka
                 template<
                     typename TOrigin, 
                     typename TUnit, 
-                    typename TDimensionality = dim::Dim3>
-                ALPAKA_FCT_ACC_NO_CUDA typename dim::DimToVecT<TDimensionality> getIdx() const
+                    typename TDim = dim::Dim3>
+                ALPAKA_FCT_ACC_NO_CUDA DimToVecT<TDim> getIdx() const
                 {
-                    return idx::getIdx<TOrigin, TUnit, TDimensionality>(
+                    return idx::getIdx<TOrigin, TUnit, TDim>(
                         *static_cast<IdxThreads const *>(this),
                         *static_cast<WorkDivThreads const *>(this));
                 }
@@ -161,10 +161,10 @@ namespace alpaka
                 template<
                     typename TOrigin,
                     typename TUnit,
-                    typename TDimensionality = dim::Dim3>
-                ALPAKA_FCT_ACC_NO_CUDA typename dim::DimToVecT<TDimensionality> getWorkDiv() const
+                    typename TDim = dim::Dim3>
+                ALPAKA_FCT_ACC_NO_CUDA DimToVecT<TDim> getWorkDiv() const
                 {
-                    return workdiv::getWorkDiv<TOrigin, TUnit, TDimensionality>(
+                    return workdiv::getWorkDiv<TOrigin, TUnit, TDim>(
                         *static_cast<WorkDivThreads const *>(this));
                 }
 

@@ -25,7 +25,6 @@
 #include <alpaka/traits/Extents.hpp>        // traits::getXXX
 
 #include <alpaka/core/BasicDims.hpp>        // dim::Dim<N>
-#include <alpaka/core/BasicExtents.hpp>     // extent::BasicExtents<TDim>
 
 namespace alpaka
 {
@@ -38,11 +37,9 @@ namespace alpaka
             typename TMemSpace,
             typename TElem,
             typename TDim>
-        class MemBufPlainPtrWrapper :
-            public extent::BasicExtents<TDim>
+        class MemBufPlainPtrWrapper
         {
         private:
-            using Extent = extent::BasicExtents<TDim>;
             using MemSpace = TMemSpace;
             using Elem = TElem;
             using Dim = TDim;
@@ -56,7 +53,7 @@ namespace alpaka
             MemBufPlainPtrWrapper(
                 TElem * pMem,
                 TExtents const & extents) :
-                    Extent(extents),
+                    m_vExtents(extents),
                     m_pMem(pMem),
                     m_uiPitchBytes(extent::getWidth(extents) * sizeof(TElem))
             {}
@@ -70,12 +67,13 @@ namespace alpaka
                 TElem * pMem,
                 std::size_t const & uiPitch,
                 TExtents const & extents) :
-                    Extent(extents),
+                    m_vExtents(extents),
                     m_pMem(pMem),
                     m_uiPitchBytes(uiPitch)
             {}
 
         public:
+            Vec<TDim::value> m_vExtents;
             TElem * m_pMem;
             std::size_t m_uiPitchBytes;
         };
@@ -118,7 +116,7 @@ namespace alpaka
                 static std::size_t getWidth(
                     alpaka::mem::MemBufPlainPtrWrapper<TMemSpace, TElem, TDim> const & extent)
                 {
-                    return extent.m_uiWidth;
+                    return extent.m_vExtents[0u];
                 }
             };
 
@@ -136,7 +134,7 @@ namespace alpaka
                 static std::size_t getHeight(
                     alpaka::mem::MemBufPlainPtrWrapper<TMemSpace, TElem, TDim> const & extent)
                 {
-                    return extent.m_uiHeight;
+                    return extent.m_vExtents[1u];
                 }
             };
             //#############################################################################
@@ -153,7 +151,7 @@ namespace alpaka
                 static std::size_t getDepth(
                     alpaka::mem::MemBufPlainPtrWrapper<TMemSpace, TElem, TDim> const & extent)
                 {
-                    return extent.m_uiDepth;
+                    return extent.m_vExtents[2u];
                 }
             };
         }

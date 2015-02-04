@@ -95,7 +95,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of kernels in each dimension of a block.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY static alpaka::dim::DimToVecT<alpaka::dim::Dim3> getWorkDiv(
+                ALPAKA_FCT_ACC_CUDA_ONLY static alpaka::DimToVecT<alpaka::dim::Dim3> getWorkDiv(
                     cuda::detail::WorkDivCuda const & workDiv)
                 {
                     return workDiv.getBlockKernelsExtents();
@@ -115,7 +115,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of blocks in each dimension of the grid.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY static alpaka::dim::DimToVecT<alpaka::dim::Dim3> getWorkDiv(
+                ALPAKA_FCT_ACC_CUDA_ONLY static alpaka::DimToVecT<alpaka::dim::Dim3> getWorkDiv(
                     cuda::detail::WorkDivCuda const & workDiv)
                 {
                     return workDiv.getGridBlocksExtents();

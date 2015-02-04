@@ -29,7 +29,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
 ################################################################################
 
 # Set project macros.
-SET( TARGET_NAME "basic" )
+SET( TARGET_NAME "sharedMem" )
 SET( INCLUDE_DIR "include/" )
 SET( SUFFIXED_INCLUDE_DIR "${INCLUDE_DIR}${TARGET_NAME}/" )
 SET( SUFFIXED_SOURCE_DIR "src/" )

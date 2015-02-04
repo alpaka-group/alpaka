@@ -21,10 +21,11 @@
 
 #pragma once
 
-#include <alpaka/traits/Dim.hpp>            // dim::DimToVecT
+#include <alpaka/traits/Dim.hpp>            // Dim
 #include <alpaka/traits/WorkDiv.hpp>        // workdiv::getWorkDiv
 #include <alpaka/traits/Idx.hpp>            // idx::getIdx
 
+#include <alpaka/core/Vec.hpp>              // DimToVecT
 #include <alpaka/core/BasicDims.hpp>        // dim::Dim<N>
 #include <alpaka/core/Positioning.hpp>      // origin::Grid/Blocks, unit::Blocks, unit::Kernels
 #include <alpaka/core/Common.hpp>           // ALPAKA_FCT_ACC
@@ -47,7 +48,7 @@ namespace alpaka
                 typename TIdx,
                 typename TOrigin,
                 typename TUnit,
-                typename TDimensionality>
+                typename TDim>
             struct GetIdx;
 
         }
@@ -64,14 +65,14 @@ namespace alpaka
         template<
             typename TOrigin,
             typename TUnit,
-            typename TDimensionality = dim::Dim3,
+            typename TDim = dim::Dim3,
             typename TIdx = void,
             typename TWorkDiv = void>
-        ALPAKA_FCT_ACC typename dim::DimToVecT<TDimensionality> getIdx(
+        ALPAKA_FCT_ACC DimToVecT<TDim> getIdx(
             TIdx const & index,
             TWorkDiv const & workDiv)
         {
-            return traits::idx::GetIdx<TIdx, TOrigin, TUnit, TDimensionality>::getIdx(
+            return traits::idx::GetIdx<TIdx, TOrigin, TUnit, TDim>::getIdx(
                 index,
                 workDiv);
         }
@@ -97,7 +98,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
-                ALPAKA_FCT_ACC static alpaka::dim::DimToVecT<alpaka::dim::Dim1> getIdx(
+                ALPAKA_FCT_ACC static alpaka::DimToVecT<alpaka::dim::Dim1> getIdx(
                     TIdx const & index,
                     TWorkDiv const & workDiv)
                 {
@@ -122,7 +123,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
-                ALPAKA_FCT_ACC static alpaka::dim::DimToVecT<alpaka::dim::Dim3> getIdx(
+                ALPAKA_FCT_ACC static alpaka::DimToVecT<alpaka::dim::Dim3> getIdx(
                     TIdx const & index,
                     TWorkDiv const & workDiv)
                 {
@@ -147,7 +148,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
-                ALPAKA_FCT_ACC static alpaka::dim::DimToVecT<alpaka::dim::Dim1> getIdx(
+                ALPAKA_FCT_ACC static alpaka::DimToVecT<alpaka::dim::Dim1> getIdx(
                     TIdx const & index,
                     TWorkDiv const & workDiv)
                 {
@@ -172,7 +173,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
-                ALPAKA_FCT_ACC static alpaka::dim::DimToVecT<alpaka::dim::Dim1> getIdx(
+                ALPAKA_FCT_ACC static alpaka::DimToVecT<alpaka::dim::Dim1> getIdx(
                     TIdx const & index,
                     TWorkDiv const & workDiv)
                 {

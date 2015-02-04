@@ -21,9 +21,10 @@
 
 #pragma once
 
-#include <alpaka/traits/Dim.hpp>        // dim::DimToVecT
+#include <alpaka/traits/Dim.hpp>        // Dim
 
 #include <alpaka/core/BasicDims.hpp>    // dim::Dim<N>
+#include <alpaka/core/Vec.hpp>          // Vec<N>, DimToVecT
 #include <alpaka/core/Positioning.hpp>  // origin::Grid/Blocks, unit::Blocks, unit::Kernels
 #include <alpaka/core/Common.hpp>       // ALPAKA_FCT_ACC
 
@@ -45,7 +46,7 @@ namespace alpaka
                 typename TWorkDiv,
                 typename TOrigin,
                 typename TUnit,
-                typename TDimensionality,
+                typename TDim,
                 typename TSfinae = void>
             struct GetWorkDiv;
         }
@@ -62,12 +63,12 @@ namespace alpaka
         template<
             typename TOrigin,
             typename TUnit,
-            typename TDimensionality = dim::Dim3,
+            typename TDim = dim::Dim3,
             typename TWorkDiv = void>
-        ALPAKA_FCT_HOST_ACC typename dim::DimToVecT<TDimensionality> getWorkDiv(
+        ALPAKA_FCT_HOST_ACC DimToVecT<TDim> getWorkDiv(
             TWorkDiv const & workDiv)
         {
-            return traits::workdiv::GetWorkDiv<TWorkDiv, TOrigin, TUnit, TDimensionality>::getWorkDiv(
+            return traits::workdiv::GetWorkDiv<TWorkDiv, TOrigin, TUnit, TDim>::getWorkDiv(
                 workDiv);
         }
     }
@@ -90,7 +91,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of kernels in a block.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST_ACC static alpaka::dim::DimToVecT<alpaka::dim::Dim1> getWorkDiv(
+                ALPAKA_FCT_HOST_ACC static alpaka::DimToVecT<alpaka::dim::Dim1> getWorkDiv(
                     TWorkDiv const & workDiv)
                 {
                     return alpaka::workdiv::getWorkDiv<origin::Block, unit::Kernels, alpaka::dim::Dim3>(workDiv).prod();
@@ -110,7 +111,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of kernels in each dimension of the grid.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST_ACC static alpaka::dim::DimToVecT<alpaka::dim::Dim3> getWorkDiv(
+                ALPAKA_FCT_HOST_ACC static alpaka::DimToVecT<alpaka::dim::Dim3> getWorkDiv(
                     TWorkDiv const & workDiv)
                 {
                     return alpaka::workdiv::getWorkDiv<origin::Grid, unit::Blocks, alpaka::dim::Dim3>(workDiv)
@@ -131,7 +132,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of kernels in the grid.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST_ACC static alpaka::dim::DimToVecT<alpaka::dim::Dim1> getWorkDiv(
+                ALPAKA_FCT_HOST_ACC static alpaka::DimToVecT<alpaka::dim::Dim1> getWorkDiv(
                     TWorkDiv const & workDiv)
                 {
                     return alpaka::workdiv::getWorkDiv<origin::Grid, unit::Kernels, alpaka::dim::Dim3>(workDiv).prod();
@@ -151,7 +152,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of blocks in the grid.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST_ACC static alpaka::dim::DimToVecT<alpaka::dim::Dim1> getWorkDiv(
+                ALPAKA_FCT_HOST_ACC static alpaka::DimToVecT<alpaka::dim::Dim1> getWorkDiv(
                     TWorkDiv const & workDiv)
                 {
                     return alpaka::workdiv::getWorkDiv<origin::Grid, unit::Blocks, alpaka::dim::Dim3>(workDiv).prod();

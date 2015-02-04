@@ -39,13 +39,13 @@
 template<
     typename TuiNumUselessWork, 
     typename TAcc = alpaka::IAcc<>>
-class ExampleAcceleratedKernel
+class SharedMemKernel
 {
 public:
     //-----------------------------------------------------------------------------
     //! Constructor.
     //-----------------------------------------------------------------------------
-    ExampleAcceleratedKernel(
+    SharedMemKernel(
         std::uint32_t const uiMult = 2) :
         m_uiMult(uiMult)
     {}
@@ -129,7 +129,7 @@ namespace alpaka
         class TuiNumUselessWork, 
         class TAcc>
     struct BlockSharedExternMemSizeBytes<
-        ExampleAcceleratedKernel<TuiNumUselessWork, TAcc>>
+        SharedMemKernel<TuiNumUselessWork, TAcc>>
     {
         //-----------------------------------------------------------------------------
         //! \return The size of the shared memory allocated for a block.
@@ -181,7 +181,7 @@ void profileAcceleratedKernel(
 //-----------------------------------------------------------------------------
 template<
     typename TuiNumUselessWork>
-struct ProfileAcceleratedExampleKernel
+struct SharedMemTester
 {
     template<
         typename TAcc, 
@@ -194,7 +194,7 @@ struct ProfileAcceleratedExampleKernel
         std::cout << std::endl;
         std::cout << "################################################################################" << std::endl;
         
-        using Kernel = ExampleAcceleratedKernel<TuiNumUselessWork>;
+        using Kernel = SharedMemKernel<TuiNumUselessWork>;
         using AccMemSpace = typename alpaka::mem::GetMemSpaceT<TAcc>;
 
         std::cout
@@ -250,7 +250,12 @@ struct ProfileAcceleratedExampleKernel
         }
         
         std::cout << "################################################################################" << std::endl;
+
+        bAllResultsCorrect = bAllResultsCorrect && bResultCorrect;
     }
+
+public:
+    bool bAllResultsCorrect = true;
 };
 
 //-----------------------------------------------------------------------------
@@ -262,7 +267,7 @@ int main()
     {
         std::cout << std::endl;
         std::cout << "################################################################################" << std::endl;
-        std::cout << "                              alpaka basic test                                 " << std::endl;
+        std::cout << "                            alpaka sharedMem test                               " << std::endl;
         std::cout << "################################################################################" << std::endl;
         std::cout << std::endl;
 
@@ -286,12 +291,17 @@ int main()
         using TuiNumUselessWork = boost::mpl::int_<100u>;
         std::uint32_t const uiMult2(5u);
 
+        SharedMemTester<TuiNumUselessWork> sharedMemTester;
+            
         // Execute the kernel on all enabled accelerators.
         boost::mpl::for_each<alpaka::acc::EnabledAccelerators>(
-            std::bind(ProfileAcceleratedExampleKernel<TuiNumUselessWork>(), std::placeholders::_1, workDiv, uiMult2)
-        );
+            std::bind(
+                sharedMemTester, 
+                std::placeholders::_1, 
+                workDiv, 
+                uiMult2));
 
-        return EXIT_SUCCESS;
+        return sharedMemTester.bAllResultsCorrect ? EXIT_SUCCESS : EXIT_FAILURE;
     }
     catch(std::exception const & e)
     {

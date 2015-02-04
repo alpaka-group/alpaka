@@ -61,7 +61,8 @@ install:
   - git --version 
 
   # gcc 4.6 is too old...
-  - if [ "$CXX" == "g++" ]; then 
+  - if [ "$CXX" == "g++" ]
+    ;then 
         sudo apt-get install g++-$ALPAKA_GCC_VER
         && sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-$ALPAKA_GCC_VER 50
         && sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-$ALPAKA_GCC_VER 50
@@ -69,7 +70,8 @@ install:
     #export CXX="g++-$ALPAKA_GCC_VER" CC="gcc-$ALPAKA_GCC_VER"
   
   # Install clang.
-  - if [ "$CXX" == "clang++" ]; then 
+  - if [ "$CXX" == "clang++" ]
+    ;then 
         sudo apt-get install --allow-unauthenticated clang-$ALPAKA_CLANG_VER
         && sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-3.4 50
         && sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-3.4 50
@@ -84,7 +86,8 @@ install:
   - ALPAKA_CMAKE_VER_MAJOR=${ALPAKA_CMAKE_VER:0:1}
   - ALPAKA_CMAKE_VER_MINOR=${ALPAKA_CMAKE_VER:2:1}
   # NOTE: Older versions have to be built from source because CMake does not provide older x64 binaries.
-  - if (( (( ${ALPAKA_CMAKE_VER_MAJOR} < 3 ))  || ( (( ${ALPAKA_CMAKE_VER_MAJOR} == 3 )) && (( ${ALPAKA_CMAKE_VER_MINOR} < 1 )) ) )); then 
+  - if (( (( ${ALPAKA_CMAKE_VER_MAJOR} < 3 ))  || ( (( ${ALPAKA_CMAKE_VER_MAJOR} == 3 )) && (( ${ALPAKA_CMAKE_VER_MINOR} < 1 )) ) ))
+    ;then 
         wget "http://www.cmake.org/files/v${ALPAKA_CMAKE_VER_MAJOR}.${ALPAKA_CMAKE_VER_MINOR}/cmake-${ALPAKA_CMAKE_VER}.tar.gz"
         && tar -xzf "cmake-${ALPAKA_CMAKE_VER}.tar.gz"
         && "./cmake-${ALPAKA_CMAKE_VER}/bootstrap" --prefix=/usr
@@ -103,7 +106,8 @@ install:
   - mkdir trunk
   - git clone -b boost-$ALPAKA_BOOST_VER --single-branch --depth 1 --recursive https://github.com/boostorg/boost.git trunk
   - cd trunk
-  - if [ "$ALPAKA_FIBERS_ENABLE" == "ON" ]; then
+  - if [ "$ALPAKA_FIBERS_ENABLE" == "ON" ]
+    ;then
         cd libs
         && git clone -b develop --single-branch --depth 1 https://github.com/olk/boost-fiber.git fiber
         && cd ../
@@ -117,28 +121,36 @@ install:
   # Create file links.
   - sudo ./b2 headers
   # Build boost if necessary
-  - if [ "$ALPAKA_FIBERS_ENABLE" == "ON" ]; then
-        cd ../
-        && mkdir lib && cd lib
-        && mkdir x64
-        && cd ../trunk/
-        && sudo ./b2 -j2 --layout=versioned --toolset=$CC --with-program_options --with-fiber --with-coroutine --with-context --with-system --with-atomic --with-chrono --with-date_time --with-regex --with-thread --build-type=complete architecture=x86 address-model=64 --stagedir=../lib/x64 variant=debug
+  - cd ../
+  - mkdir lib
+  - cd lib
+  - mkdir x64
+  - cd ../trunk/
+  - if [ "$ALPAKA_FIBERS_ENABLE" == "ON" ]
+    ;then
+        sudo ./b2 -j2 --layout=versioned --toolset=$CC --with-program_options --with-fiber --with-coroutine --with-context --with-system --with-atomic --with-chrono --with-date_time --with-regex --with-thread --build-type=complete architecture=x86 address-model=64 --stagedir=../lib/x64 variant=debug
         && sudo ./b2 -j2 --layout=versioned --toolset=$CC --with-program_options --with-fiber --with-coroutine --with-context --with-system --with-atomic --with-chrono --with-date_time --with-regex --with-thread --build-type=complete architecture=x86 address-model=64 --stagedir=../lib/x64 variant=release
+    ;else
+        sudo ./b2 -j2 --layout=versioned --toolset=$CC --with-program_options --build-type=complete architecture=x86 address-model=64 --stagedir=../lib/x64 variant=debug
+        && sudo ./b2 -j2 --layout=versioned --toolset=$CC --with-program_options --build-type=complete architecture=x86 address-model=64 --stagedir=../lib/x64 variant=release
     ;fi
   - cd ..
     
   # Install nvcc
-  - if [ "$ALPAKA_CUDA_ENABLE" == "ON" ]; then 
+  - if [ "$ALPAKA_CUDA_ENABLE" == "ON" ]
+    ;then 
         wget http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1204/x86_64/cuda-repo-ubuntu1204_6.5-14_amd64.deb
         && sudo dpkg -i cuda-repo-ubuntu1204_6.5-14_amd64.deb
         && sudo apt-get -y update
-        && sudo apt-get -y install cuda 
+        && sudo apt-get -y install cuda-core-6-5 cuda-cudart-6-5 cuda-cudart-dev-6-5 cuda-runtime-6-5
+        && sudo ln -s /usr/local/cuda-6.5 /usr/local/cuda
         && export PATH=/usr/local/cuda-6.5/bin:$PATH
         && export LD_LIBRARY_PATH=/usr/local/cuda-6.5/lib64:$LD_LIBRARY_PATH
     ;fi
-    ##Maybe only the minimal packages? cuda-core-6-5 cuda-cublas-6-5 cuda-cublas-dev-6-5 cuda-cudart-6-5 cuda-cudart-dev-6-5 cuda-curand-6-5 cuda-curand-dev-6-5 cuda-runtime-6-5
-    ## Create CUDA symlink at /usr/local/cuda (This would normally be created by the CUDA installer, but we create it manually since we did a partial installation.)
-    #ln -s /usr/local/cuda-6.5 /usr/local/cuda
+    # Currently we do not install CUDA fully:
+    #&& sudo apt-get -y install cuda 
+    # We only install the minimal packages. cuda-cublas-6-5 cuda-cublas-dev-6-5 cuda-curand-6-5 cuda-curand-dev-6-5 ?
+    # Because of our manual partial installation we have to create a symlink at /usr/local/cuda
     
 ################################################################################
 # Use this to prepare your build for testing.
@@ -149,7 +161,8 @@ before_script:
   - cmake --version
   - which $CXX
   - $CXX -v
-  - if [ "$ALPAKA_CUDA_ENABLE" == "ON" ]; then 
+  - if [ "$ALPAKA_CUDA_ENABLE" == "ON" ]
+    ;then 
         which nvcc
         && nvcc -V
     ;fi
@@ -160,27 +173,42 @@ before_script:
 script:
   - cd test/
   
-  - cd matmul/
+  - cd matMul/
   - mkdir build/
   - cd build/
   - mkdir make/
   - cd make/
   - cmake -G "Unix Makefiles" -DBOOST_ROOT="$TRAVIS_BUILD_DIR/../../boost/trunk" -DBOOST_LIBRARYDIR="$TRAVIS_BUILD_DIR/../../boost/lib/x64/lib" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DALPAKA_SERIAL_ENABLE=$ALPAKA_SERIAL_ENABLE -DALPAKA_THREADS_ENABLE=$ALPAKA_THREADS_ENABLE -DALPAKA_FIBERS_ENABLE=$ALPAKA_FIBERS_ENABLE -DALPAKA_OPENMP_ENABLE=$ALPAKA_OPENMP_ENABLE -DALPAKA_CUDA_ENABLE=$ALPAKA_CUDA_ENABLE -DALPAKA_DEBUG=$ALPAKA_DEBUG -DALPAKA_INTEGRATION_TEST=$ALPAKA_INTEGRATION_TEST "../../"
   - make
-  - if [ "$ALPAKA_CUDA_ENABLE" == "OFF" ]; then 
-        ./matmul
+  - if [ "$ALPAKA_CUDA_ENABLE" == "OFF" ]
+    ;then 
+        ./matMul
     ;fi
   - cd ../../../
   
-  - cd basic/
+  - cd sharedMem/
   - mkdir build/
   - cd build/
   - mkdir make/
   - cd make/
   - cmake -G "Unix Makefiles" -DBOOST_ROOT="$TRAVIS_BUILD_DIR/../../boost/trunk" -DBOOST_LIBRARYDIR="$TRAVIS_BUILD_DIR/../../boost/lib/x64/lib" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DALPAKA_SERIAL_ENABLE=$ALPAKA_SERIAL_ENABLE -DALPAKA_THREADS_ENABLE=$ALPAKA_THREADS_ENABLE -DALPAKA_FIBERS_ENABLE=$ALPAKA_FIBERS_ENABLE -DALPAKA_OPENMP_ENABLE=$ALPAKA_OPENMP_ENABLE -DALPAKA_CUDA_ENABLE=$ALPAKA_CUDA_ENABLE -DALPAKA_DEBUG=$ALPAKA_DEBUG -DALPAKA_INTEGRATION_TEST=$ALPAKA_INTEGRATION_TEST "../../"
   - make
-  - if [ "$ALPAKA_CUDA_ENABLE" == "OFF" ]; then 
-        ./basic
+  - if [ "$ALPAKA_CUDA_ENABLE" == "OFF" ]
+    ;then 
+        ./sharedMem
+    ;fi
+  - cd ../../../
+  
+  - cd mandelbrot/
+  - mkdir build/
+  - cd build/
+  - mkdir make/
+  - cd make/
+  - cmake -G "Unix Makefiles" -DBOOST_ROOT="$TRAVIS_BUILD_DIR/../../boost/trunk" -DBOOST_LIBRARYDIR="$TRAVIS_BUILD_DIR/../../boost/lib/x64/lib" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DALPAKA_SERIAL_ENABLE=$ALPAKA_SERIAL_ENABLE -DALPAKA_THREADS_ENABLE=$ALPAKA_THREADS_ENABLE -DALPAKA_FIBERS_ENABLE=$ALPAKA_FIBERS_ENABLE -DALPAKA_OPENMP_ENABLE=$ALPAKA_OPENMP_ENABLE -DALPAKA_CUDA_ENABLE=$ALPAKA_CUDA_ENABLE -DALPAKA_DEBUG=$ALPAKA_DEBUG -DALPAKA_INTEGRATION_TEST=$ALPAKA_INTEGRATION_TEST "../../"
+  - make
+  - if [ "$ALPAKA_CUDA_ENABLE" == "OFF" ]
+    ;then 
+        ./mandelbrot
     ;fi
   - cd ../../../
   

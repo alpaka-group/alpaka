@@ -117,10 +117,10 @@ namespace alpaka
                 template<
                     typename TOrigin,
                     typename TUnit,
-                    typename TDimensionality = dim::Dim3>
-                ALPAKA_FCT_ACC_CUDA_ONLY typename dim::DimToVecT<TDimensionality> getWorkDiv() const
+                    typename TDim = dim::Dim3>
+                ALPAKA_FCT_ACC_CUDA_ONLY DimToVecT<TDim> getWorkDiv() const
                 {
-                    return workdiv::getWorkDiv<TOrigin, TUnit, TDimensionality>(
+                    return workdiv::getWorkDiv<TOrigin, TUnit, TDim>(
                         *static_cast<WorkDivCuda const *>(this));
                 }
 
@@ -130,10 +130,10 @@ namespace alpaka
                 template<
                     typename TOrigin, 
                     typename TUnit, 
-                    typename TDimensionality = dim::Dim3>
-                ALPAKA_FCT_ACC_CUDA_ONLY typename dim::DimToVecT<TDimensionality> getIdx() const
+                    typename TDim = dim::Dim3>
+                ALPAKA_FCT_ACC_CUDA_ONLY DimToVecT<TDim> getIdx() const
                 {
-                    return idx::getIdx<TOrigin, TUnit, TDimensionality>(
+                    return idx::getIdx<TOrigin, TUnit, TDim>(
                         *static_cast<IdxCuda const *>(this),
                         *static_cast<WorkDivCuda const *>(this));
                 }
@@ -213,10 +213,10 @@ namespace alpaka
         template<
             typename TOrigin, 
             typename TUnit, 
-            typename TDimensionality = dim::Dim3>
-        ALPAKA_FCT_ACC_CUDA_ONLY typename dim::DimToVecT<TDimensionality> getWorkDiv() const
+            typename TDim = dim::Dim3>
+        ALPAKA_FCT_ACC_CUDA_ONLY DimToVecT<TDim> getWorkDiv() const
         {
-            return AccCuda::getWorkDiv<TOrigin, TUnit, TDimensionality>();
+            return AccCuda::getWorkDiv<TOrigin, TUnit, TDim>();
         }
 
         //-----------------------------------------------------------------------------
@@ -225,10 +225,10 @@ namespace alpaka
         template<
             typename TOrigin, 
             typename TUnit, 
-            typename TDimensionality = dim::Dim3>
-        ALPAKA_FCT_ACC_CUDA_ONLY typename dim::DimToVecT<TDimensionality> getIdx() const
+            typename TDim = dim::Dim3>
+        ALPAKA_FCT_ACC_CUDA_ONLY DimToVecT<TDim> getIdx() const
         {
-            return AccCuda::getIdx<TOrigin, TUnit, TDimensionality>();
+            return AccCuda::getIdx<TOrigin, TUnit, TDim>();
         }
 
         //-----------------------------------------------------------------------------

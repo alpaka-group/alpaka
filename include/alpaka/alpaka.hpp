@@ -22,7 +22,6 @@
 #pragma once
 
 #include <alpaka/core/BasicDims.hpp>
-#include <alpaka/core/BasicExtents.hpp>
 #include <alpaka/core/BasicWorkDiv.hpp>
 #include <alpaka/core/BasicMem.hpp>
 #include <alpaka/core/Common.hpp>

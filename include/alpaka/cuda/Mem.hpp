@@ -22,7 +22,7 @@
 #pragma once
 
 #include <alpaka/core/BasicDims.hpp>        // dim::Dim<N>
-#include <alpaka/core/BasicExtents.hpp>     // extent::BasicExtents<TDim>
+#include <alpaka/core/Vec.hpp>              // Vec<TDim::value>
 
 #include <alpaka/traits/Mem.hpp>            // traits::MemCopy
 #include <alpaka/traits/Extents.hpp>        // traits::getXXX
@@ -48,11 +48,9 @@ namespace alpaka
             template<
                 typename TElem, 
                 typename TDim>
-            class MemBufCuda :
-                public extent::BasicExtents<TDim>
+            class MemBufCuda
             {
             private:
-                using Extent = extent::BasicExtents<TDim>;
                 using Elem = TElem;
                 using Dim = TDim;
 
@@ -66,7 +64,7 @@ namespace alpaka
                     TElem * const pMem,
                     std::size_t const & uiPitchBytes,
                     TExtents const & extents) :
-                        Extent(extents),
+                        m_vExtents(extents),
                         m_spMem(pMem, &MemBufCuda::freeBuffer),
                         m_uiPitchBytes(uiPitchBytes)
                 {
@@ -91,8 +89,8 @@ namespace alpaka
                 }
 
             public:
+                Vec<TDim::value> m_vExtents;
                 std::shared_ptr<TElem> m_spMem;
-
                 std::size_t m_uiPitchBytes; // \TODO: By using class specialization for Dim1 we could remove this value in this case.
             };
         }
@@ -136,7 +134,7 @@ namespace alpaka
                 static std::size_t getWidth(
                     cuda::detail::MemBufCuda<TElem, TDim> const & extent)
                 {
-                    return extent.m_uiWidth;
+                    return extent.m_vExtents[0u];
                 }
             };
 
@@ -156,7 +154,7 @@ namespace alpaka
                 static std::size_t getHeight(
                     cuda::detail::MemBufCuda<TElem, TDim> const & extent)
                 {
-                    return extent.m_uiHeight;
+                    return extent.m_vExtents[1u];
                 }
             };
             //#############################################################################
@@ -175,7 +173,7 @@ namespace alpaka
                 static std::size_t getDepth(
                     cuda::detail::MemBufCuda<TElem, TDim> const & extent)
                 {
-                    return extent.m_uiDepth;
+                    return extent.m_vExtents[2u];
                 }
             };
         }

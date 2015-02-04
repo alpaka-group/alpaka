@@ -95,7 +95,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
-                ALPAKA_FCT_ACC_CUDA_ONLY static alpaka::dim::DimToVecT<alpaka::dim::Dim3> getIdx(
+                ALPAKA_FCT_ACC_CUDA_ONLY static alpaka::DimToVecT<alpaka::dim::Dim3> getIdx(
                     cuda::detail::IdxCuda const & index,
                     TWorkDiv const &)
                 {
@@ -118,7 +118,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
-                ALPAKA_FCT_ACC_CUDA_ONLY static alpaka::dim::DimToVecT<alpaka::dim::Dim3> getIdx(
+                ALPAKA_FCT_ACC_CUDA_ONLY static alpaka::DimToVecT<alpaka::dim::Dim3> getIdx(
                     cuda::detail::IdxCuda const & index,
                     TWorkDiv const &)
                 {

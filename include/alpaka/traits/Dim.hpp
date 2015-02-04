@@ -22,7 +22,6 @@
 #pragma once
 
 #include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST
-#include <alpaka/core/Vec.hpp>          // Vec
 #include <alpaka/core/BasicDims.hpp>    // dim::Dim<N>
 
 #include <cstdint>                      // std::size_t
@@ -43,16 +42,6 @@ namespace alpaka
                 typename T, 
                 typename TSfinae = void>
             struct GetDim;
-
-            //#############################################################################
-            //! The dimension to vector type transformation trait.
-            //#############################################################################
-            template<
-                typename TDim>
-            struct DimToVec
-            {
-                using type = Vec<TDim::value>;
-            };
         }
     }
 
@@ -76,12 +65,5 @@ namespace alpaka
         {
             return GetDimT<T>::value;
         }
-
-        //#############################################################################
-        //! The dimension to vector type alias template to remove the ::type.
-        //#############################################################################
-        template<
-            typename TDim>
-        using DimToVecT = typename traits::dim::DimToVec<TDim>::type;
     }
 }

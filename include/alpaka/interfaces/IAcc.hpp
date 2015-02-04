@@ -50,11 +50,11 @@ namespace alpaka
         template<
             typename TOrigin, 
             typename TUnit, 
-            typename TDimensionality = dim::Dim3>
-        ALPAKA_FCT_ACC typename dim::DimToVecT<TDimensionality> getWorkDiv() const
+            typename TDim = dim::Dim3>
+        ALPAKA_FCT_ACC DimToVecT<TDim> getWorkDiv() const
         {
 #ifndef __CUDA_ARCH__
-            return TAcc::template getWorkDiv<TOrigin, TUnit, TDimensionality>();
+            return TAcc::template getWorkDiv<TOrigin, TUnit, TDim>();
 #else
             return {};
 #endif
@@ -66,11 +66,11 @@ namespace alpaka
         template<
             typename TOrigin,
             typename TUnit, 
-            typename TDimensionality = dim::Dim3>
-        ALPAKA_FCT_ACC typename dim::DimToVecT<TDimensionality> getIdx() const
+            typename TDim = dim::Dim3>
+        ALPAKA_FCT_ACC DimToVecT<TDim> getIdx() const
         {
 #ifndef __CUDA_ARCH__
-            return TAcc::template getIdx<TOrigin, TUnit, TDimensionality>();
+            return TAcc::template getIdx<TOrigin, TUnit, TDim>();
 #else
             return {};
 #endif

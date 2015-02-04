@@ -101,7 +101,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
-                ALPAKA_FCT_ACC_NO_CUDA static alpaka::dim::DimToVecT<alpaka::dim::Dim3> getIdx(
+                ALPAKA_FCT_ACC_NO_CUDA static alpaka::DimToVecT<alpaka::dim::Dim3> getIdx(
                     serial::detail::IdxSerial const & index,
                     TWorkDiv const &)
                 {
@@ -124,7 +124,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
-                ALPAKA_FCT_ACC_NO_CUDA static alpaka::dim::DimToVecT<alpaka::dim::Dim3> getIdx(
+                ALPAKA_FCT_ACC_NO_CUDA static alpaka::DimToVecT<alpaka::dim::Dim3> getIdx(
                     serial::detail::IdxSerial const & index,
                     TWorkDiv const &)
                 {

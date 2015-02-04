@@ -25,7 +25,7 @@
 
 #include <alpaka/core/Vec.hpp>          // Vec
 
-#include <iosfwd>						// std::ostream
+#include <iosfwd>                       // std::ostream
 
 namespace alpaka
 {
@@ -161,7 +161,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of kernels in each dimension of a block.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST_ACC static alpaka::dim::DimToVecT<alpaka::dim::Dim3> getWorkDiv(
+                ALPAKA_FCT_HOST_ACC static alpaka::DimToVecT<alpaka::dim::Dim3> getWorkDiv(
                     alpaka::workdiv::BasicWorkDiv const & workDiv)
                 {
                     return workDiv.getBlockKernelsExtents();
@@ -181,7 +181,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of blocks in each dimension of the grid.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST_ACC static alpaka::dim::DimToVecT<alpaka::dim::Dim3> getWorkDiv(
+                ALPAKA_FCT_HOST_ACC static alpaka::DimToVecT<alpaka::dim::Dim3> getWorkDiv(
                     alpaka::workdiv::BasicWorkDiv const & workDiv)
                 {
                     return workDiv.getGridBlocksExtents();

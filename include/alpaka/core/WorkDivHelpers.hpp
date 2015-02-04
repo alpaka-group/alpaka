@@ -27,6 +27,7 @@
 
 #include <alpaka/traits/Device.hpp>         // dev::GetDevManT, getDevProps
 
+#include <cmath>                            // std::ceil
 #include <algorithm>                        // std::min
 #include <functional>                       // std::bind
 
@@ -160,11 +161,27 @@ namespace alpaka
             //! Subdivides the given grid kernels extents into blocks restricted by:
             //! 1. the maximum block kernels extents and 
             //! 2. the maximum block kernels count.
+            //!
+            //! \param v3uiGridKernelsExtents
+            //!     The full extents of kernels in the grid.
+            //! \param v3uiMaxBlockKernelsExtents
+            //!     The maximum extents of kernels in a block.
+            //! \param uiMaxBlockKernelsCount
+            //!     The maximum number of kernels in a block.
+            //! \param bRequireBlockKernelsExtentsToDivideGridKernelsExtents
+            //!     If this is true, the grid kernels extents will be multiples of the corresponding block kernels extents.
+            //!     NOTE: If v3uiGridKernelsExtents is prime (or otherwise bad chosen) in a dimension, the block kernels extent will be one in this dimension.
+            //! \param bUniformBlockKernelsExtentsClipping
+            //!     If this is true, the block kernels extents will be clipped uniformly.
+            //!     This means that all values of the extent will be processed uniformly at the same time.
+            //!     This can lead to smaller blocks but allows to keep the ratio between dimensions (in some limits due to integer rounding).
             //#############################################################################
             ALPAKA_FCT_HOST BasicWorkDiv subdivideGridKernels(
                 Vec<3u> const & v3uiGridKernelsExtents,
                 Vec<3u> const & v3uiMaxBlockKernelsExtents,
-                std::size_t const & uiMaxBlockKernelsCount)
+                std::size_t const & uiMaxBlockKernelsCount,
+                bool bRequireBlockKernelsExtentsToDivideGridKernelsExtents = true,
+                bool bUniformBlockKernelsExtentsClipping = false)
             {
                 assert(v3uiGridKernelsExtents[0u]>0);
                 assert(v3uiGridKernelsExtents[1u]>0);
@@ -181,27 +198,43 @@ namespace alpaka
                 // 2. If the block kernels extents require more kernels then available on the accelerator, clip it.
                 if(v3uiBlockKernelsExtents.prod() > uiMaxBlockKernelsCount)
                 {
-                    // Begin in z dimension.
-                    std::size_t uiDim(2);
-                    // Very primitive clipping. Just halve it until it fits repeatedly iterating over the dimensions.
-                    while(v3uiBlockKernelsExtents.prod() > uiMaxBlockKernelsCount)
+                    if(bUniformBlockKernelsExtentsClipping)
                     {
-                        v3uiBlockKernelsExtents[uiDim] = std::max(static_cast<Vec<3u>::Value>(1u), static_cast<Vec<3u>::Value>(v3uiBlockKernelsExtents[uiDim] / 2u));
-                        uiDim = (uiDim+2) % 3;
+                        // Very primitive clipping. Just halve it until it fits repeatedly all dimensions at once.
+                        while(v3uiBlockKernelsExtents.prod() > uiMaxBlockKernelsCount)
+                        {
+                            v3uiBlockKernelsExtents[0u] = std::max(static_cast<Vec<3u>::Value>(1u), static_cast<Vec<3u>::Value>(v3uiBlockKernelsExtents[0u] / 2u));
+                            v3uiBlockKernelsExtents[1u] = std::max(static_cast<Vec<3u>::Value>(1u), static_cast<Vec<3u>::Value>(v3uiBlockKernelsExtents[1u] / 2u));
+                            v3uiBlockKernelsExtents[2u] = std::max(static_cast<Vec<3u>::Value>(1u), static_cast<Vec<3u>::Value>(v3uiBlockKernelsExtents[2u] / 2u));
+                        }
+                    }
+                    else
+                    {
+                        // Begin in z dimension.
+                        std::size_t uiDim(2);
+                        // Very primitive clipping. Just halve it until it fits repeatedly iterating over the dimensions.
+                        while(v3uiBlockKernelsExtents.prod() > uiMaxBlockKernelsCount)
+                        {
+                            v3uiBlockKernelsExtents[uiDim] = std::max(static_cast<Vec<3u>::Value>(1u), static_cast<Vec<3u>::Value>(v3uiBlockKernelsExtents[uiDim] / 2u));
+                            uiDim = (uiDim+2) % 3;
+                        }
                     }
                 }
 
-                // Make the block kernels extents divide the grid kernels extents.
-                v3uiBlockKernelsExtents = Vec<3u>(
-                    detail::nextLowerOrEqualFactor(v3uiBlockKernelsExtents[0u], v3uiGridKernelsExtents[0u]),
-                    detail::nextLowerOrEqualFactor(v3uiBlockKernelsExtents[1u], v3uiGridKernelsExtents[1u]),
-                    detail::nextLowerOrEqualFactor(v3uiBlockKernelsExtents[2u], v3uiGridKernelsExtents[2u]));
+                if(bRequireBlockKernelsExtentsToDivideGridKernelsExtents)
+                {
+                    // Make the block kernels extents divide the grid kernels extents.
+                    v3uiBlockKernelsExtents = Vec<3u>(
+                        detail::nextLowerOrEqualFactor(v3uiBlockKernelsExtents[0u], v3uiGridKernelsExtents[0u]),
+                        detail::nextLowerOrEqualFactor(v3uiBlockKernelsExtents[1u], v3uiGridKernelsExtents[1u]),
+                        detail::nextLowerOrEqualFactor(v3uiBlockKernelsExtents[2u], v3uiGridKernelsExtents[2u]));
+                }
 
-                // Set the grid blocks extents.
+                // Set the grid blocks extents (rounded to the next integer not less then the quotient.
                 Vec<3u> const v3uiGridBlocksExtents(
-                    v3uiGridKernelsExtents[0u] / v3uiBlockKernelsExtents[0u],
-                    v3uiGridKernelsExtents[1u] / v3uiBlockKernelsExtents[1u],
-                    v3uiGridKernelsExtents[2u] / v3uiBlockKernelsExtents[2u]);
+                    static_cast<Vec<3u>::Value>(std::ceil(static_cast<double>(v3uiGridKernelsExtents[0u]) / static_cast<double>(v3uiBlockKernelsExtents[0u]))),
+                    static_cast<Vec<3u>::Value>(std::ceil(static_cast<double>(v3uiGridKernelsExtents[1u]) / static_cast<double>(v3uiBlockKernelsExtents[1u]))),
+                    static_cast<Vec<3u>::Value>(std::ceil(static_cast<double>(v3uiGridKernelsExtents[2u]) / static_cast<double>(v3uiBlockKernelsExtents[2u]))));
 
                 return BasicWorkDiv(v3uiGridBlocksExtents, v3uiBlockKernelsExtents);
             }
@@ -215,14 +248,18 @@ namespace alpaka
         template<
             typename TAccSeq>
         ALPAKA_FCT_HOST BasicWorkDiv getValidWorkDiv(
-            Vec<3u> const & v3uiGridKernelsExtents)
+            Vec<3u> const & v3uiGridKernelsExtents,
+            bool bRequireBlockKernelsExtentsToDivideGridKernelsExtents = true,
+            bool bUniformBlockKernelsExtentsClipping = false)
         {
             static_assert(boost::mpl::is_sequence<TAccSeq>::value, "TAccSeq is required to be a mpl::sequence!");
 
             return detail::subdivideGridKernels(
                 v3uiGridKernelsExtents,
                 getMaxBlockKernelExtentsAccelerators<TAccSeq>(),
-                getMaxBlockKernelCountAccelerators<TAccSeq>());
+                getMaxBlockKernelCountAccelerators<TAccSeq>(),
+                bRequireBlockKernelsExtentsToDivideGridKernelsExtents,
+                bUniformBlockKernelsExtentsClipping);
         }
 
         //-----------------------------------------------------------------------------

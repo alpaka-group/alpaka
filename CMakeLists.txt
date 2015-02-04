@@ -22,7 +22,7 @@
 # Required CMake version.
 ################################################################################
 
-#CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
 
 SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
 
@@ -66,11 +66,15 @@ IF(ALPAKA_CUDA_ENABLE)
 ENDIF()
 
 ################################################################################
-# Debug option.
+# Debug options.
 ################################################################################
 OPTION(ALPAKA_DEBUG "Debug level [0,1,2]" 0)
 IF(ALPAKA_DEBUG)
     LIST(APPEND ALPAKA_COMPILE_DEFINITIONS "ALPAKA_DEBUG=${ALPAKA_DEBUG}")
+ENDIF()
+
+IF(ALPAKA_INTEGRATION_TEST)
+    LIST(APPEND ALPAKA_COMPILE_DEFINITIONS "ALPAKA_INTEGRATION_TEST=1")
 ENDIF()
 
 ################################################################################

@@ -29,7 +29,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8.5)
 ################################################################################
 
 # Set project macros.
-SET(TARGET_NAME matmul)
+SET(TARGET_NAME mandelbrot)
 SET(INCLUDE_DIR "include/")
 SET(SUFFIXED_INCLUDE_DIR "${INCLUDE_DIR}${TARGET_NAME}/")
 SET(SUFFIXED_SOURCE_DIR "src/")
@@ -39,8 +39,6 @@ SET(SUFFIXED_SOURCE_DIR "src/")
 ################################################################################
 
 PROJECT(${TARGET_NAME})
-
-SET(BOOST_REQUIRED_COMPONENTS program_options)
 
 # Include the alpaka library.
 INCLUDE("${CMAKE_CURRENT_LIST_DIR}/../../CMakeLists.txt")
@@ -60,7 +58,7 @@ INCLUDE_DIRECTORIES(${INCLUDE_DIR})
 # Always add all files to the target executable build call to add them to the build project.
 IF(ALPAKA_CUDA_ENABLE)
     # Force the .cpp files to be recognized as headers and not be compiled so there wont be a second entry point.
-	SET_SOURCE_FILES_PROPERTIES(${CPP_FILES_ALL} PROPERTIES HEADER_FILE_ONLY TRUE)
+    SET_SOURCE_FILES_PROPERTIES(${CPP_FILES_ALL} PROPERTIES HEADER_FILE_ONLY TRUE)
     CMAKE_POLICY(SET CMP0023 OLD)   # CUDA_ADD_EXECUTABLE calls TARGET_LINK_LIBRARIES without keywords.
     CUDA_ADD_EXECUTABLE(${TARGET_NAME}
         ${HPP_FILES_ALL}
@@ -69,13 +67,13 @@ IF(ALPAKA_CUDA_ENABLE)
     )
 ELSE()
     # Force the .cu files to be recognized as headers and not be compiled so there wont be a second entry point.
-	IF(NOT ALPAKA_CUDA_ENABLE)
-		SET_SOURCE_FILES_PROPERTIES(${CU_FILES_ALL} PROPERTIES HEADER_FILE_ONLY TRUE)
-	ENDIF()
+    IF(NOT ALPAKA_CUDA_ENABLE)
+        SET_SOURCE_FILES_PROPERTIES(${CU_FILES_ALL} PROPERTIES HEADER_FILE_ONLY TRUE)
+    ENDIF()
     ADD_EXECUTABLE(${TARGET_NAME}
         ${HPP_FILES_ALL}
         ${CPP_FILES_ALL}
-		${CU_FILES_ALL}
+        ${CU_FILES_ALL}
     )
 ENDIF()
 

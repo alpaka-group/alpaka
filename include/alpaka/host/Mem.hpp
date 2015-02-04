@@ -25,7 +25,7 @@
 #include <alpaka/traits/Extents.hpp>        // traits::getXXX
 
 #include <alpaka/core/BasicDims.hpp>        // dim::Dim<N>
-#include <alpaka/core/BasicExtents.hpp>     // extent::BasicExtents<TDim>
+#include <alpaka/core/Vec.hpp>              // Vec<TDim::value>
 
 #include <alpaka/host/MemSpace.hpp>         // MemSpaceHost
 #include <alpaka/host/Stream.hpp>           // StreamHost
@@ -47,11 +47,9 @@ namespace alpaka
             template<
                 typename TElem,
                 typename TDim>
-            class MemBufHost :
-                public extent::BasicExtents<TDim>
+            class MemBufHost
             {
             private:
-                using Extent = extent::BasicExtents<TDim>;
                 using Elem = TElem;
                 using Dim = TDim;
 
@@ -63,7 +61,7 @@ namespace alpaka
                     typename TExtents>
                 MemBufHost(
                     TExtents const & extents) :
-                        Extent(extents),
+                        m_vExtents(extents),
                         m_spMem(new TElem[computeElementCount(extents)], &MemBufHost::freeBuffer),
                         m_uiPitchBytes(extent::getWidth(extents) * sizeof(TElem))
                 {
@@ -98,7 +96,7 @@ namespace alpaka
 
             public:
                 std::shared_ptr<TElem> m_spMem;
-
+                Vec<TDim::value> m_vExtents;
                 std::size_t m_uiPitchBytes;
             };
         }
@@ -142,7 +140,7 @@ namespace alpaka
                 static std::size_t getWidth(
                     host::detail::MemBufHost<TElem, TDim> const & extent)
                 {
-                    return extent.m_uiWidth;
+                    return extent.m_vExtents[0u];
                 }
             };
 
@@ -162,7 +160,7 @@ namespace alpaka
                 static std::size_t getHeight(
                     host::detail::MemBufHost<TElem, TDim> const & extent)
                 {
-                    return extent.m_uiHeight;
+                    return extent.m_vExtents[1u];
                 }
             };
             //#############################################################################
@@ -181,7 +179,7 @@ namespace alpaka
                 static std::size_t getDepth(
                     host::detail::MemBufHost<TElem, TDim> const & extent)
                 {
-                    return extent.m_uiDepth;
+                    return extent.m_vExtents[2u];
                 }
             };
         }
