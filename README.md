@@ -19,20 +19,37 @@ Software License
 
 *alpaka* is licensed under the **LGPLv3+**.
 
+
 Supported Compilers
 -------------------
 
 This library uses a subset of C++11 supported by many compilers to keep the code clean and readable.
 
-Supported (but not necessarily tested) compilers are:
+Supported compilers are:
 - gcc 4.8+ (boost-fibers only supported in gcc 4.9+)
-- clang 3.4+
-- icc 15.0+
 - MSVC 2013+ (boost-fibers only supported in MSVC 2015)
 
 Build status master branch: [![Build Status](https://travis-ci.org/ComputationalRadiationPhysics/alpaka.svg?branch=master)](https://travis-ci.org/ComputationalRadiationPhysics/alpaka)
 
 Build status develop branch: [![Build Status](https://travis-ci.org/ComputationalRadiationPhysics/alpaka.svg?branch=develop)](https://travis-ci.org/ComputationalRadiationPhysics/alpaka)
+
+Untested but possibly functional:
+- clang 3.4+ (OpenMP only supported in `clang-omp` currently)
+- icc 15.0+
+
+
+Requirements
+------------
+
+[Boost](http://boost.org/) 1.55+ is the only required external dependency.
+By default just header-only libraries are used.
+
+When the **Fibers-Accelerator** is enabled, `boost-coroutine`, `boost-context` and the proposed boost library [`boost-fibers`](https://github.com/olk/boost-fiber) (develop branch) are required to be build.
+
+When the **CUDA-Accelerator** is enabled, version *6.5* of the *CUDA SDK* is the minimum requirement.
+
+When the **OpenMP-Accelerator** is enabled, the compiler and the platform have to support *OpenMP 2.0* or newer.
+
 
 Accelerators
 ------------
@@ -49,23 +66,12 @@ Accelerators
 |Execution strategy grid-blocks|sequential|sequential|sequential|sequential|undefined|
 |Execution strategy block-kernels|sequential|preemptive multitasking|cooperative multithreading|preemptive multitasking|lock-step within warps|
 
-Requirements
-------------
-
-[Boost](http://boost.org/) 1.55+ is the only required external dependency.
-By default only header-only libraries are used.
-
-When the **Fibers-Accelerator** is enabled, `boost-coroutine`, `boost-context` and the proposed boost library [`boost-fibers`](https://github.com/olk/boost-fiber) (develop branch) are required to be build.
-
-When the **CUDA-Accelerator** is enabled, version *6.5* of the *CUDA SDK* is the minimum requirement.
-
-When the **OpenMP-Accelerator** is enabled, the compiler and the platform have to support *OpenMP 2.0* or newer.
 
 Usage
 -----
 
 The library is header only so nothing has to be build.
-Only the include path (`-I` or `export CPLUS_INCLUDE_PATH=`) has to be set to `<PATH-TO-LIB>/include/`.
+Only the include path (`-I` or `export CPLUS_INCLUDE_PATH=`) has to be set to `<PATH-TO-ALPAKA-LIB>/include/`.
 This allows the usage of header inclusion in the following way:
 
 ```c++
@@ -78,6 +84,7 @@ If you are building with the **CUDA-Accelerator** enabled, your source files are
 When the **CUDA-Accelerator** is disabled, this is not required and a `.cpp` extension is enough.
 To allow both use-cases, it is desirable to have both, a `.cpp` file with the implementation and a `.cu` file containing only `#include <PATH/TO/IMPL.cpp>` to forward to the implementation.
 The build system then has to use the `.cu` files when the **CUDA-Accelerator** is enabled and the `.cpp` files else.
+
 
 Authors
 -------
