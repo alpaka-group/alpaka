@@ -36,7 +36,8 @@ env:
    - ALPAKA_SERIAL_ENABLE=ON
    - ALPAKA_THREADS_ENABLE=ON
    - ALPAKA_OPENMP_ENABLE=ON
-   - ALPAKA_INTEGRATION_TEST=1
+   - ALPAKA_INTEGRATION_TEST=ON
+   - ALPAKA_CUDA_VERSION=6.5
 
 ################################################################################
 # Use this to prepare the system to install prerequisites or dependencies.
@@ -106,17 +107,29 @@ install:
   - mkdir trunk
   - git clone -b boost-$ALPAKA_BOOST_VER --single-branch --depth 1 --recursive https://github.com/boostorg/boost.git trunk
   - cd trunk
+  - cd libs
+  # TODO: remove the reset and add back --depth 1 if the current head is functional again.
   - if [ "$ALPAKA_FIBERS_ENABLE" == "ON" ]
     ;then
-        cd libs
-        && git clone -b develop --single-branch --depth 1 https://github.com/olk/boost-fiber.git fiber
+        git clone -b develop --single-branch https://github.com/olk/boost-fiber.git fiber
+        && cd fiber
+        && git reset --hard 6a1257442bb82e9082a55cacc2c6ebe02b4aa540
         && cd ../
     ;fi
+    
+  # Switch to develop branch of context
+  #- cd context
+  #- git fetch
+  #- git checkout develop
+  #- cd ../
+  - cd ../
+  
   # Get boost build dev branch because 1.55 release is buggy. EVEN THIS DOES NOT WORK!
   #- cd tools/build/
   #- git checkout develop
   #- cd ../../
   # Build b2.
+  
   - sudo ./bootstrap.sh --with-toolset=$CC 
   # Create file links.
   - sudo ./b2 headers
@@ -128,8 +141,8 @@ install:
   - cd ../trunk/
   - if [ "$ALPAKA_FIBERS_ENABLE" == "ON" ]
     ;then
-        sudo ./b2 -j2 --layout=versioned --toolset=$CC --with-program_options --with-fiber --with-coroutine --with-context --with-system --with-atomic --with-chrono --with-date_time --with-regex --with-thread --build-type=complete architecture=x86 address-model=64 --stagedir=../lib/x64 variant=debug
-        && sudo ./b2 -j2 --layout=versioned --toolset=$CC --with-program_options --with-fiber --with-coroutine --with-context --with-system --with-atomic --with-chrono --with-date_time --with-regex --with-thread --build-type=complete architecture=x86 address-model=64 --stagedir=../lib/x64 variant=release
+        sudo ./b2 -j2 --layout=versioned --toolset=$CC --with-program_options --with-fiber --with-coroutine --with-context --with-thread --with-system --with-atomic --with-chrono --with-date_time --with-regex --build-type=complete architecture=x86 address-model=64 --stagedir=../lib/x64 variant=debug
+        && sudo ./b2 -j2 --layout=versioned --toolset=$CC --with-program_options --with-fiber --with-coroutine --with-context --with-thread --with-system --with-atomic --with-chrono --with-date_time --with-regex --build-type=complete architecture=x86 address-model=64 --stagedir=../lib/x64 variant=release
     ;else
         sudo ./b2 -j2 --layout=versioned --toolset=$CC --with-program_options --build-type=complete architecture=x86 address-model=64 --stagedir=../lib/x64 variant=debug
         && sudo ./b2 -j2 --layout=versioned --toolset=$CC --with-program_options --build-type=complete architecture=x86 address-model=64 --stagedir=../lib/x64 variant=release
@@ -142,14 +155,14 @@ install:
         wget http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1204/x86_64/cuda-repo-ubuntu1204_6.5-14_amd64.deb
         && sudo dpkg -i cuda-repo-ubuntu1204_6.5-14_amd64.deb
         && sudo apt-get -y update
-        && sudo apt-get -y install cuda-core-6-5 cuda-cudart-6-5 cuda-cudart-dev-6-5 cuda-runtime-6-5
+        && sudo apt-get -y install cuda-core-6-5 cuda-cudart-6-5 cuda-cudart-dev-6-5
         && sudo ln -s /usr/local/cuda-6.5 /usr/local/cuda
         && export PATH=/usr/local/cuda-6.5/bin:$PATH
         && export LD_LIBRARY_PATH=/usr/local/cuda-6.5/lib64:$LD_LIBRARY_PATH
     ;fi
     # Currently we do not install CUDA fully:
     #&& sudo apt-get -y install cuda 
-    # We only install the minimal packages. cuda-cublas-6-5 cuda-cublas-dev-6-5 cuda-curand-6-5 cuda-curand-dev-6-5 ?
+    # We only install the minimal packages. cuda-runtime-6-5 cuda-cublas-6-5 cuda-cublas-dev-6-5 cuda-curand-6-5 cuda-curand-dev-6-5 ?
     # Because of our manual partial installation we have to create a symlink at /usr/local/cuda
     
 ################################################################################
@@ -178,7 +191,7 @@ script:
   - cd build/
   - mkdir make/
   - cd make/
-  - cmake -G "Unix Makefiles" -DBOOST_ROOT="$TRAVIS_BUILD_DIR/../../boost/trunk" -DBOOST_LIBRARYDIR="$TRAVIS_BUILD_DIR/../../boost/lib/x64/lib" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DALPAKA_SERIAL_ENABLE=$ALPAKA_SERIAL_ENABLE -DALPAKA_THREADS_ENABLE=$ALPAKA_THREADS_ENABLE -DALPAKA_FIBERS_ENABLE=$ALPAKA_FIBERS_ENABLE -DALPAKA_OPENMP_ENABLE=$ALPAKA_OPENMP_ENABLE -DALPAKA_CUDA_ENABLE=$ALPAKA_CUDA_ENABLE -DALPAKA_DEBUG=$ALPAKA_DEBUG -DALPAKA_INTEGRATION_TEST=$ALPAKA_INTEGRATION_TEST "../../"
+  - cmake -G "Unix Makefiles" -DBOOST_ROOT="$TRAVIS_BUILD_DIR/../../boost/trunk" -DBOOST_LIBRARYDIR="$TRAVIS_BUILD_DIR/../../boost/lib/x64/lib" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DALPAKA_SERIAL_ENABLE=$ALPAKA_SERIAL_ENABLE -DALPAKA_THREADS_ENABLE=$ALPAKA_THREADS_ENABLE -DALPAKA_FIBERS_ENABLE=$ALPAKA_FIBERS_ENABLE -DALPAKA_OPENMP_ENABLE=$ALPAKA_OPENMP_ENABLE -DALPAKA_CUDA_ENABLE=$ALPAKA_CUDA_ENABLE -DALPAKA_DEBUG=$ALPAKA_DEBUG -DALPAKA_INTEGRATION_TEST=$ALPAKA_INTEGRATION_TEST -DALPAKA_CUDA_VERSION=$ALPAKA_CUDA_VERSION "../../"
   - make
   - if [ "$ALPAKA_CUDA_ENABLE" == "OFF" ]
     ;then 
@@ -191,7 +204,7 @@ script:
   - cd build/
   - mkdir make/
   - cd make/
-  - cmake -G "Unix Makefiles" -DBOOST_ROOT="$TRAVIS_BUILD_DIR/../../boost/trunk" -DBOOST_LIBRARYDIR="$TRAVIS_BUILD_DIR/../../boost/lib/x64/lib" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DALPAKA_SERIAL_ENABLE=$ALPAKA_SERIAL_ENABLE -DALPAKA_THREADS_ENABLE=$ALPAKA_THREADS_ENABLE -DALPAKA_FIBERS_ENABLE=$ALPAKA_FIBERS_ENABLE -DALPAKA_OPENMP_ENABLE=$ALPAKA_OPENMP_ENABLE -DALPAKA_CUDA_ENABLE=$ALPAKA_CUDA_ENABLE -DALPAKA_DEBUG=$ALPAKA_DEBUG -DALPAKA_INTEGRATION_TEST=$ALPAKA_INTEGRATION_TEST "../../"
+  - cmake -G "Unix Makefiles" -DBOOST_ROOT="$TRAVIS_BUILD_DIR/../../boost/trunk" -DBOOST_LIBRARYDIR="$TRAVIS_BUILD_DIR/../../boost/lib/x64/lib" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DALPAKA_SERIAL_ENABLE=$ALPAKA_SERIAL_ENABLE -DALPAKA_THREADS_ENABLE=$ALPAKA_THREADS_ENABLE -DALPAKA_FIBERS_ENABLE=$ALPAKA_FIBERS_ENABLE -DALPAKA_OPENMP_ENABLE=$ALPAKA_OPENMP_ENABLE -DALPAKA_CUDA_ENABLE=$ALPAKA_CUDA_ENABLE -DALPAKA_DEBUG=$ALPAKA_DEBUG -DALPAKA_INTEGRATION_TEST=$ALPAKA_INTEGRATION_TEST -DALPAKA_CUDA_VERSION=$ALPAKA_CUDA_VERSION "../../"
   - make
   - if [ "$ALPAKA_CUDA_ENABLE" == "OFF" ]
     ;then 
@@ -204,7 +217,7 @@ script:
   - cd build/
   - mkdir make/
   - cd make/
-  - cmake -G "Unix Makefiles" -DBOOST_ROOT="$TRAVIS_BUILD_DIR/../../boost/trunk" -DBOOST_LIBRARYDIR="$TRAVIS_BUILD_DIR/../../boost/lib/x64/lib" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DALPAKA_SERIAL_ENABLE=$ALPAKA_SERIAL_ENABLE -DALPAKA_THREADS_ENABLE=$ALPAKA_THREADS_ENABLE -DALPAKA_FIBERS_ENABLE=$ALPAKA_FIBERS_ENABLE -DALPAKA_OPENMP_ENABLE=$ALPAKA_OPENMP_ENABLE -DALPAKA_CUDA_ENABLE=$ALPAKA_CUDA_ENABLE -DALPAKA_DEBUG=$ALPAKA_DEBUG -DALPAKA_INTEGRATION_TEST=$ALPAKA_INTEGRATION_TEST "../../"
+  - cmake -G "Unix Makefiles" -DBOOST_ROOT="$TRAVIS_BUILD_DIR/../../boost/trunk" -DBOOST_LIBRARYDIR="$TRAVIS_BUILD_DIR/../../boost/lib/x64/lib" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DALPAKA_SERIAL_ENABLE=$ALPAKA_SERIAL_ENABLE -DALPAKA_THREADS_ENABLE=$ALPAKA_THREADS_ENABLE -DALPAKA_FIBERS_ENABLE=$ALPAKA_FIBERS_ENABLE -DALPAKA_OPENMP_ENABLE=$ALPAKA_OPENMP_ENABLE -DALPAKA_CUDA_ENABLE=$ALPAKA_CUDA_ENABLE -DALPAKA_DEBUG=$ALPAKA_DEBUG -DALPAKA_INTEGRATION_TEST=$ALPAKA_INTEGRATION_TEST -DALPAKA_CUDA_VERSION=$ALPAKA_CUDA_VERSION "../../"
   - make
   - if [ "$ALPAKA_CUDA_ENABLE" == "OFF" ]
     ;then 

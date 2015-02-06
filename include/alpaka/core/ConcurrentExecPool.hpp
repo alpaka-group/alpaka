@@ -306,7 +306,7 @@ namespace alpaka
             auto enqueueTask(
                 TFunc && task, 
                 TArgs && ... args)
-                -> typename std::result_of< decltype(&TPromise<typename std::result_of<TFunc(TArgs...)>::type>::get_future)(TPromise<typename std::result_of<TFunc(TArgs...)>::type>) >::type
+            -> typename std::result_of< decltype(&TPromise<typename std::result_of<TFunc(TArgs...)>::type>::get_future)(TPromise<typename std::result_of<TFunc(TArgs...)>::type>) >::type
             {
                 auto boundTask(std::bind(std::forward<TFunc>(task), std::forward<TArgs>(args)...));
 
@@ -518,7 +518,7 @@ namespace alpaka
             auto enqueueTask(
                 TFunc && task, 
                 TArgs && ... args)
-                -> typename std::result_of< decltype(&TPromise<typename std::result_of<TFunc(TArgs...)>::type>::get_future)(TPromise<typename std::result_of<TFunc(TArgs...)>::type>) >::type
+            -> typename std::result_of< decltype(&TPromise<typename std::result_of<TFunc(TArgs...)>::type>::get_future)(TPromise<typename std::result_of<TFunc(TArgs...)>::type>) >::type
             {
                 auto boundTask(std::bind(std::forward<TFunc>(task), std::forward<TArgs>(args)...));
 

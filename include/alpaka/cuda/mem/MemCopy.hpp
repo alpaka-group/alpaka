@@ -259,11 +259,11 @@ namespace alpaka
                         << " dw: " << uiDstWidth
                         << " dh: " << uiDstHeight
                         << " dptr: " << reinterpret_cast<void *>(mem::getNativePtr(memBufDst))
-                        << " dpitch: " << mem::getPitchBytes(memBufDst)
+                        << " dpitchb: " << mem::getPitchBytes(memBufDst)
                         << " sw: " << uiSrcWidth
                         << " sh: " << uiSrcHeight
                         << " sptr: " << reinterpret_cast<void const *>(mem::getNativePtr(memBufSrc))
-                        << " spitch: " << mem::getPitchBytes(memBufSrc)
+                        << " spitchb: " << mem::getPitchBytes(memBufSrc)
                         << std::endl;
 #endif
                 }
@@ -324,11 +324,11 @@ namespace alpaka
                         << " dw: " << uiDstWidth
                         << " dh: " << uiDstHeight
                         << " dptr: " << reinterpret_cast<void *>(mem::getNativePtr(memBufDst))
-                        << " dpitch: " << mem::getPitchBytes(memBufDst)
+                        << " dpitchb: " << mem::getPitchBytes(memBufDst)
                         << " sw: " << uiSrcWidth
                         << " sh: " << uiSrcHeight
                         << " sptr: " << reinterpret_cast<void const *>(mem::getNativePtr(memBufSrc))
-                        << " spitch: " << mem::getPitchBytes(memBufSrc)
+                        << " spitchb: " << mem::getPitchBytes(memBufSrc)
                         << std::endl;
 #endif
                 }
@@ -473,12 +473,12 @@ namespace alpaka
                         << " dh: " << uiDstHeight
                         << " dd: " << uiDstDepth
                         << " dptr: " << reinterpret_cast<void *>(mem::getNativePtr(memBufDst))
-                        << " dpitch: " << mem::getPitchBytes(memBufDst)
+                        << " dpitchb: " << mem::getPitchBytes(memBufDst)
                         << " sw: " << uiSrcWidth
                         << " sh: " << uiSrcHeight
                         << " sd: " << uiSrcDepth
                         << " sptr: " << reinterpret_cast<void const *>(mem::getNativePtr(memBufSrc))
-                        << " spitch: " << mem::getPitchBytes(memBufSrc)
+                        << " spitchb: " << mem::getPitchBytes(memBufSrc)
                         << std::endl;
 #endif
 

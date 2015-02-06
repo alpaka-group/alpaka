@@ -214,7 +214,7 @@ struct MatMulTester
     template<
         typename TAcc>
     void operator()(
-        TAcc,
+        TAcc const &,
         std::size_t const & uiMatrixSize,
         bool const & bAdaptiveBlockKernelsExtent)
     {

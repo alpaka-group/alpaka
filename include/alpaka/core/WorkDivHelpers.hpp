@@ -54,7 +54,7 @@ namespace alpaka
                 template<
                     typename TAcc>
                 ALPAKA_FCT_HOST void operator()(
-                    TAcc, 
+                    TAcc const &,
                     Vec<3u> & v3uiBlockKernelExtents)
                 {
                     auto const devProps(dev::getDevProps(dev::GetDevManT<TAcc>::getCurrentDevice()));
@@ -102,7 +102,7 @@ namespace alpaka
                 template<
                     typename TAcc>
                 ALPAKA_FCT_HOST void operator()(
-                    TAcc,
+                    TAcc const &,
                     std::size_t & uiBlockKernelCount)
                 {
                     auto const devProps(dev::getDevProps(dev::GetDevManT<TAcc>::getCurrentDevice()));

@@ -125,7 +125,7 @@ namespace alpaka
             {
                 template<
                     typename TAcc> 
-                ALPAKA_FCT_HOST void operator()(TAcc, std::ostream & os)
+                ALPAKA_FCT_HOST void operator()(TAcc &, std::ostream & os)
                 {
                     os << acc::getAccName<TAcc>();
                     os << " ";

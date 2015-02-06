@@ -104,26 +104,13 @@ namespace alpaka
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
-                // Do not copy most members because they are initialized by the executor for each accelerated execution.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA AccFibers(AccFibers const & ) :
-                    WorkDivFibers(),
-                    IdxFibers(m_mFibersToIndices, m_v3uiGridBlockIdx),
-                    AtomicFibers(),
-                    m_mFibersToIndices(),
-                    m_v3uiGridBlockIdx(),
-                    m_uiNumKernelsPerBlock(),
-                    m_mFibersToBarrier(),
-                    m_abarSyncFibers(),
-                    m_idMasterFiber(),
-                    m_vvuiSharedMem(),
-                    m_vuiExternalSharedMem()
-                {}
+                ALPAKA_FCT_ACC_NO_CUDA AccFibers(AccFibers const &) = delete;
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA AccFibers(AccFibers &&) = default;
+                ALPAKA_FCT_ACC_NO_CUDA AccFibers(AccFibers &&) = delete;
 #endif
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
@@ -301,7 +288,7 @@ namespace alpaka
                 //! \return The current exception.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA static auto current_exception()
-                    -> std::result_of<decltype(&boost::current_exception)()>::type
+                -> std::result_of<decltype(&boost::current_exception)()>::type
                 {
                     return boost::current_exception();
                 }
@@ -328,6 +315,7 @@ namespace alpaka
                     StreamFibers const &,
                     TKernelConstrArgs && ... args):
                         TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
+                        IAcc<AccFibers>(),
 #ifdef ALPAKA_FIBERS_NO_POOL
                         m_vFibersInBlock()
 #else
@@ -346,19 +334,35 @@ namespace alpaka
                 ALPAKA_FCT_HOST KernelExecutorFibers(
                     KernelExecutorFibers const & other):
                         TAcceleratedKernel(other),
+                        IAcc<AccFibers>(),
 #ifdef ALPAKA_FIBERS_NO_POOL
                         m_vFibersInBlock()
 #else
                         m_vFuturesInBlock()
 #endif
                 {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
+                    (*static_cast<WorkDivFibers *>(this)) = (*static_cast<WorkDivFibers *>(&other));
+
+                    this->AccFibers::m_uiNumKernelsPerBlock = other.getBlockKernelsExtents().prod();
+                    
                 }
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST KernelExecutorFibers(KernelExecutorFibers &&) = default;
+                ALPAKA_FCT_HOST KernelExecutorFibers(
+                    KernelExecutorFibers && other) :
+                        TAcceleratedKernel(std::move(other)),
+                        IAcc<AccFibers>()
+                {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                    (*static_cast<WorkDivFibers *>(this)) = (*static_cast<WorkDivFibers *>(&other));
+
+                    this->AccFibers::m_uiNumKernelsPerBlock = other.getBlockKernelsExtents().prod();
+                }
 #endif
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.

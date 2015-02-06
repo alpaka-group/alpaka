@@ -91,22 +91,13 @@ namespace alpaka
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
-                // Do not copy most members because they are initialized by the executor for each accelerated execution.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA AccOpenMp(AccOpenMp const &) :
-                    WorkDivOpenMp(),
-                    IdxOpenMp(m_v3uiGridBlockIdx),
-                    AtomicOpenMp(),
-                    m_v3uiGridBlockIdx(),
-                    m_vvuiSharedMem(),
-                    m_vuiExternalSharedMem()
-                {
-                }
+                ALPAKA_FCT_ACC_NO_CUDA AccOpenMp(AccOpenMp const &) = delete;
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA AccOpenMp(AccOpenMp &&) = default;
+                ALPAKA_FCT_ACC_NO_CUDA AccOpenMp(AccOpenMp &&) = delete;
 #endif
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
@@ -242,7 +233,8 @@ namespace alpaka
                     TWorkDiv const & workDiv, 
                     StreamOpenMp const &, 
                     TKernelConstrArgs && ... args) :
-                    TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
+                        TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
+                        IAcc<AccOpenMp>()
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -251,12 +243,28 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST KernelExecutorOpenMp(KernelExecutorOpenMp const &) = default;
+                ALPAKA_FCT_HOST KernelExecutorOpenMp(
+                    KernelExecutorOpenMp const & other) :
+                        TAcceleratedKernel(other),
+                        IAcc<AccOpenMp>()
+                {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                    (*static_cast<WorkDivOpenMp *>(this)) = (*static_cast<WorkDivOpenMp const *>(&other));
+                }
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST KernelExecutorOpenMp(KernelExecutorOpenMp &&) = default;
+                ALPAKA_FCT_HOST KernelExecutorOpenMp(
+                    KernelExecutorOpenMp && other) :
+                        TAcceleratedKernel(std::move(other)),
+                        IAcc<AccOpenMp>()
+                {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                    (*static_cast<WorkDivOpenMp *>(this)) = (*static_cast<WorkDivOpenMp const *>(&other));
+                }
 #endif
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.

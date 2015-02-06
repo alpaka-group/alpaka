@@ -46,17 +46,17 @@ public:
     //! Constructor.
     //-----------------------------------------------------------------------------
     ALPAKA_FCT_HOST_ACC SimpleComplex(
-        T a, 
-        T b ) : 
+        T const & a, 
+        T const & b) : 
             r(a), 
             i(b) 
     {}
     //-----------------------------------------------------------------------------
     //! 
     //-----------------------------------------------------------------------------
-    ALPAKA_FCT_HOST_ACC T abs()
+    ALPAKA_FCT_HOST_ACC T absSq()
     {
-        return std::sqrt(r*r + i*i);
+        return r*r + i*i;
     }
     //-----------------------------------------------------------------------------
     //! 
@@ -101,12 +101,12 @@ template<
 class MandelbrotKernel
 {
 public:
+#ifndef ALPAKA_MANDELBROT_TEST_CONTINOUS_COLOR_MAPPING
     //-----------------------------------------------------------------------------
     //! Constructor.
     //-----------------------------------------------------------------------------
     ALPAKA_FCT_ACC MandelbrotKernel()
     {
-#ifndef ALPAKA_MANDELBROT_TEST_CONTINOUS_COLOR_MAPPING
         // Banding can be prevented by a continuous color functions.
         m_aColors[0u] = convertRgbSingleToBgra(66, 30, 15);
         m_aColors[1u] = convertRgbSingleToBgra(25, 7, 26);
@@ -124,9 +124,9 @@ public:
         m_aColors[13u] = convertRgbSingleToBgra(204, 128, 0);
         m_aColors[14u] = convertRgbSingleToBgra(153, 87, 0);
         m_aColors[15u] = convertRgbSingleToBgra(106, 52, 3);
-#endif
     }
-
+#endif
+    
     //-----------------------------------------------------------------------------
     //! The kernel entry point.
     //!
@@ -141,7 +141,7 @@ public:
     ALPAKA_FCT_ACC void operator()(
         TAcc const & acc,
         std::uint32_t * const pColors,
-        std::uint32_t const & uiNumRows, 
+        std::uint32_t const & uiNumRows,
         std::uint32_t const & uiNumCols,
         std::uint32_t const & uiPitchElems,
         float const & fMinR,
@@ -156,12 +156,12 @@ public:
         if((uiGridKernelIdxY < uiNumRows) && (uiGridKernelIdxX < uiNumCols))
         {
             SimpleComplex<float> c(
-                (fMinR + (static_cast<float>(uiGridKernelIdxX)/float(uiNumCols-1)*(fMaxR - fMinR))) ,
+                (fMinR + (static_cast<float>(uiGridKernelIdxX)/float(uiNumCols-1)*(fMaxR - fMinR))),
                 (fMinI + (static_cast<float>(uiGridKernelIdxY)/float(uiNumRows-1)*(fMaxI - fMinI))));
 
             auto const uiIterationCount(iterateMandelbrot(c, uiMaxIterations));
 
-            pColors[uiGridKernelIdxY * uiPitchElems + uiGridKernelIdxX] = 
+            pColors[uiGridKernelIdxY*uiPitchElems + uiGridKernelIdxX] =
 #ifdef ALPAKA_MANDELBROT_TEST_CONTINOUS_COLOR_MAPPING
                 iterationCountToContinousColor(uiIterationCount, uiMaxIterations);
 #else
@@ -179,16 +179,15 @@ public:
         std::uint32_t const & uiMaxIterations)
     {
         SimpleComplex<float> z(0.0f, 0.0f);
-        std::uint32_t iterations(0);
-        for(; iterations<uiMaxIterations; ++iterations)
+        for(std::uint32_t iterations(0); iterations<uiMaxIterations; ++iterations)
         {
             z = z*z + c;
-            if(z.abs() > 2.0f)
+            if(z.absSq() > 4.0f)
             {
-                break;
+                return iterations;
             }
         }
-        return iterations;
+        return uiMaxIterations;
     }
     
     //-----------------------------------------------------------------------------
@@ -212,13 +211,13 @@ public:
         std::uint32_t const & uiMaxIterations)
     {
         // Map the iteration count on the 0..1 interval.
-	    float const t(static_cast<float>(uiIterationCount)/static_cast<float>(uiMaxIterations));
+        float const t(static_cast<float>(uiIterationCount)/static_cast<float>(uiMaxIterations));
         float const oneMinusT(1.0f-t);
-	    // Use some modified Bernstein polynomials for r, g, b.
-	    std::uint32_t const r(static_cast<std::uint32_t>(9.0f*oneMinusT*t*t*t*255.0f));
-	    std::uint32_t const g(static_cast<std::uint32_t>(15.0f*oneMinusT*oneMinusT*t*t*255.0f));
-	    std::uint32_t const b(static_cast<std::uint32_t>(8.5f*oneMinusT*oneMinusT*oneMinusT*t*255.0f));	
-	    return convertRgbSingleToBgra(r, g, b);
+        // Use some modified Bernstein polynomials for r, g, b.
+        std::uint32_t const r(static_cast<std::uint32_t>(9.0f*oneMinusT*t*t*t*255.0f));
+        std::uint32_t const g(static_cast<std::uint32_t>(15.0f*oneMinusT*oneMinusT*t*t*255.0f));
+        std::uint32_t const b(static_cast<std::uint32_t>(8.5f*oneMinusT*oneMinusT*oneMinusT*t*255.0f));    
+        return convertRgbSingleToBgra(r, g, b);
     }
 #else
     //-----------------------------------------------------------------------------
@@ -268,14 +267,14 @@ void profileAcceleratedKernel(
 }
 
 //-----------------------------------------------------------------------------
-//! Profiles the Mandelbrot kernel and checks the result.
+//! Profiles the Mandelbrot kernel.
 //-----------------------------------------------------------------------------
 struct MandelbrotKernelTester
 {
     template<
         typename TAcc>
     void operator()(
-        TAcc,
+        TAcc const &,
         std::size_t const & uiNumRows,
         std::size_t const & uiNumCols,
         float const & fMinR,
@@ -309,21 +308,12 @@ struct MandelbrotKernelTester
             << ")" << std::endl;
 
         // allocate host memory
-        std::vector<std::uint32_t> vColHost(uiNumRows * uiNumCols, 0u);
-        // Wrap the std::vectors into a memory buffer object.
-        // For 1D data this would not be required because alpaka::mem::copy is specialized for std::vector and std::array.
-        // For multi dimensional data you could directly create them using alpaka::mem::alloc<Type, MemSpaceHost>, which is not used here.
-        // Instead we use MemBufPlainPtrWrapper to wrap the data.
-        using MemBufWrapper = alpaka::mem::MemBufPlainPtrWrapper<
-            alpaka::mem::MemSpaceHost,
-            std::uint32_t,
-            alpaka::dim::Dim2>;
-        MemBufWrapper memBufColHost(vColHost.data(), v2uiExtents);
+        auto memBufColHost(alpaka::mem::alloc<std::uint32_t, alpaka::mem::MemSpaceHost>(v2uiExtents));
         
         // Allocate the buffer on the accelerator.
         using AccMemSpace = typename alpaka::mem::GetMemSpaceT<TAcc>;
         auto memBufColAcc(alpaka::mem::alloc<std::uint32_t, AccMemSpace>(v2uiExtents));
-        
+
         // Get a new stream.
         alpaka::stream::GetStreamT<TAcc> stream;
 
@@ -380,7 +370,7 @@ struct MandelbrotKernelTester
         ofs.put(0x20);                      // Image Pixel Size.
         ofs.put(0x20);                      // Image Descriptor Byte.
         // Write data.
-        ofs.write(reinterpret_cast<char*>(vColHost.data()), vColHost.size()*sizeof(std::uint32_t));
+        ofs.write(reinterpret_cast<char*>(alpaka::mem::getNativePtr(memBufColHost)), alpaka::extent::getProductOfExtents(memBufColHost)*sizeof(std::uint32_t));
 
         std::cout << "################################################################################" << std::endl;
     }
@@ -413,11 +403,11 @@ int main()
         MandelbrotKernelTester mandelbrotTester;
 
         // For different sizes.
-        for(std::size_t uiSize(1u<<8);
+        for(std::size_t uiSize(1u<<3u);
 #if ALPAKA_INTEGRATION_TEST
-            uiSize <= 1u<<8;
+            uiSize <= 1u<<8u;
 #else
-            uiSize <= 1u<<13;
+            uiSize <= 1u<<13u;
 #endif
             uiSize *= 2u)
         {

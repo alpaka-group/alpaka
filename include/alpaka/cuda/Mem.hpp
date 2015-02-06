@@ -60,7 +60,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TExtents>
-                MemBufCuda(
+                ALPAKA_FCT_HOST MemBufCuda(
                     TElem * const pMem,
                     std::size_t const & uiPitchBytes,
                     TExtents const & extents) :
@@ -79,7 +79,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Frees the shared buffer.
                 //-----------------------------------------------------------------------------
-                static void freeBuffer(
+                ALPAKA_FCT_HOST static void freeBuffer(
                     TElem * pBuffer)
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -131,7 +131,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                static std::size_t getWidth(
+                ALPAKA_FCT_HOST static std::size_t getWidth(
                     cuda::detail::MemBufCuda<TElem, TDim> const & extent)
                 {
                     return extent.m_vExtents[0u];
@@ -151,7 +151,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                static std::size_t getHeight(
+                ALPAKA_FCT_HOST static std::size_t getHeight(
                     cuda::detail::MemBufCuda<TElem, TDim> const & extent)
                 {
                     return extent.m_vExtents[1u];
@@ -170,7 +170,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                static std::size_t getDepth(
+                ALPAKA_FCT_HOST static std::size_t getDepth(
                     cuda::detail::MemBufCuda<TElem, TDim> const & extent)
                 {
                     return extent.m_vExtents[2u];
@@ -228,7 +228,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                static TElem const * getNativePtr(
+                ALPAKA_FCT_HOST static TElem const * getNativePtr(
                     cuda::detail::MemBufCuda<TElem, TDim> const & memBuf)
                 {
                     return memBuf.m_spMem.get();
@@ -236,7 +236,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                static TElem * getNativePtr(
+                ALPAKA_FCT_HOST static TElem * getNativePtr(
                     cuda::detail::MemBufCuda<TElem, TDim> & memBuf)
                 {
                     return memBuf.m_spMem.get();
@@ -255,7 +255,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                static std::size_t getPitchBytes(
+                ALPAKA_FCT_HOST static std::size_t getPitchBytes(
                     cuda::detail::MemBufCuda<TElem, TDim> const & memPitch)
                 {
                     return memPitch.m_uiPitchBytes;
@@ -277,7 +277,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TExtents>
-                static alpaka::cuda::detail::MemBufCuda<T, alpaka::dim::Dim1> memAlloc(
+                ALPAKA_FCT_HOST static alpaka::cuda::detail::MemBufCuda<T, alpaka::dim::Dim1> memAlloc(
                     TExtents const & extents)
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -323,7 +323,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TExtents>
-                static alpaka::cuda::detail::MemBufCuda<T, alpaka::dim::Dim2> memAlloc(
+                ALPAKA_FCT_HOST static alpaka::cuda::detail::MemBufCuda<T, alpaka::dim::Dim2> memAlloc(
                     TExtents const & extents)
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -379,7 +379,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TExtents>
-                static alpaka::cuda::detail::MemBufCuda<T, alpaka::dim::Dim3> memAlloc(
+                ALPAKA_FCT_HOST static alpaka::cuda::detail::MemBufCuda<T, alpaka::dim::Dim3> memAlloc(
                     TExtents const & extents)
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;

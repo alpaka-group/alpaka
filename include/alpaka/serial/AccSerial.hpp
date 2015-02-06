@@ -94,20 +94,12 @@ namespace alpaka
                 //! Copy constructor.
                 // Do not copy most members because they are initialized by the executor for each accelerated execution.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA AccSerial(AccSerial const &) :
-                    WorkDivSerial(),
-                    IdxSerial(m_v3uiGridBlockIdx),
-                    AtomicSerial(),
-                    m_v3uiGridBlockIdx(),
-                    m_vvuiSharedMem(),
-                    m_vuiExternalSharedMem()
-                {
-                }
+                ALPAKA_FCT_ACC_NO_CUDA AccSerial(AccSerial const &) = delete;
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA AccSerial(AccSerial &&) = default;
+                ALPAKA_FCT_ACC_NO_CUDA AccSerial(AccSerial &&) = delete;
 #endif
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
@@ -234,7 +226,8 @@ namespace alpaka
                     TWorkDiv const & workDiv, 
                     StreamSerial const &,
                     TKernelConstrArgs && ... args) :
-                    TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
+                        TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
+                        IAcc<AccSerial>()
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -243,12 +236,28 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST KernelExecutorSerial(KernelExecutorSerial const &) = default;
+                ALPAKA_FCT_HOST KernelExecutorSerial(
+                    KernelExecutorSerial const & other) :
+                        TAcceleratedKernel(other),
+                        IAcc<AccSerial>()
+                {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                    (*static_cast<WorkDivSerial *>(this)) = (*static_cast<WorkDivSerial const *>(&other));
+                }
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST KernelExecutorSerial(KernelExecutorSerial &&) = default;
+                ALPAKA_FCT_HOST KernelExecutorSerial(
+                    KernelExecutorSerial && other) :
+                        TAcceleratedKernel(std::move(other)),
+                        IAcc<AccSerial>()
+                {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                    (*static_cast<WorkDivSerial *>(this)) = (*static_cast<WorkDivSerial const *>(&other));
+                }
 #endif
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.

@@ -18,6 +18,21 @@
 # If not, see <http://www.gnu.org/licenses/>.
 #
 
+# Options:
+#    ALPAKA_SERIAL_ENABLE {ON, OFF}
+#    ALPAKA_THREADS_ENABLE {ON, OFF}
+#    ALPAKA_FIBERS_ENABLE {ON, OFF}
+#    ALPAKA_OPENMP_ENABLE {ON, OFF}
+#    ALPAKA_CUDA_ENABLE {ON, OFF}
+#    ALPAKA_CUDA_VERSION {6.5, 7.0, ...}
+#    ALPAKA_CUDA_ARCH {sm_20, sm...}
+#    ALPAKA_CUDA_SHOW_REGISTER {ON, OFF}
+#    ALPAKA_CUDA_KEEP_FILES {ON, OFF}
+#    ALPAKA_CUDA_SHOW_CODELINES {ON, OFF}
+#    ALPAKA_DEBUG {0, 1, 2}
+#    ALPAKA_INTEGRATION_TEST {ON, OFF}
+#    BOOST_REQUIRED_COMPONENTS {program_options, ...}
+
 ################################################################################
 # Required CMake version.
 ################################################################################
@@ -85,7 +100,7 @@ SET(Boost_USE_MULTITHREADED ON)
 SET(Boost_USE_STATIC_RUNTIME OFF)
 
 IF(ALPAKA_FIBERS_ENABLE)
-    LIST(APPEND BOOST_REQUIRED_COMPONENTS fiber coroutine context system atomic chrono date_time regex thread)
+    LIST(APPEND BOOST_REQUIRED_COMPONENTS fiber coroutine context system thread atomic chrono date_time regex)
 ELSE()
     # Empty addition to define the variable if it is not existing.
     LIST(APPEND BOOST_REQUIRED_COMPONENTS)
@@ -119,22 +134,32 @@ ENDIF()
 # Find CUDA.
 ################################################################################
 IF(ALPAKA_CUDA_ENABLE)
-    FIND_PACKAGE(CUDA 6.5 REQUIRED)
+
+    IF(NOT DEFINED ALPAKA_CUDA_VERSION)
+        SET(ALPAKA_CUDA_VERSION 7.0)
+    #ELSE()
+    #    STRING(COMPARE EQUAL "${ALPAKA_CUDA_VERSION}" "" IS_CUDA_VERSION_EMPTY)
+    #    IF(IS_CUDA_VERSION_EMPTY)
+    #        SET(ALPAKA_CUDA_VERSION 7.0)
+    #    ENDIF()
+    ENDIF()
+
+    IF(ALPAKA_CUDA_VERSION VERSION_LESS 6.5)
+        MESSAGE(FATAL_ERROR "CUDA Toolkit < 6.5 is not supported!")
+    ENDIF()
+
+    FIND_PACKAGE(CUDA ${ALPAKA_CUDA_VERSION} REQUIRED)
     #SET(CUDA_VERBOSE_BUILD ON)
     SET(CUDA_PROPAGATE_HOST_FLAGS ON)
 
-    IF(CUDA_VERSION VERSION_LESS 6.5)
-        MESSAGE(FATAL_ERROR "CUDA Toolkit < 6.5 detected!")
-    ENDIF()
-
-    SET(CUDA_ARCH sm_20 CACHE STRING "Set GPU architecture")
-    STRING(COMPARE EQUAL ${CUDA_ARCH} "sm_10" IS_CUDA_ARCH_UNSUPPORTED)
-    STRING(COMPARE EQUAL ${CUDA_ARCH} "sm_11" IS_CUDA_ARCH_UNSUPPORTED)
-    STRING(COMPARE EQUAL ${CUDA_ARCH} "sm_12" IS_CUDA_ARCH_UNSUPPORTED)
-    STRING(COMPARE EQUAL ${CUDA_ARCH} "sm_13" IS_CUDA_ARCH_UNSUPPORTED)
+    SET(ALPAKA_CUDA_ARCH sm_20 CACHE STRING "Set GPU architecture")
+    STRING(COMPARE EQUAL ${ALPAKA_CUDA_ARCH} "sm_10" IS_CUDA_ARCH_UNSUPPORTED)
+    STRING(COMPARE EQUAL ${ALPAKA_CUDA_ARCH} "sm_11" IS_CUDA_ARCH_UNSUPPORTED)
+    STRING(COMPARE EQUAL ${ALPAKA_CUDA_ARCH} "sm_12" IS_CUDA_ARCH_UNSUPPORTED)
+    STRING(COMPARE EQUAL ${ALPAKA_CUDA_ARCH} "sm_13" IS_CUDA_ARCH_UNSUPPORTED)
 
     IF(IS_CUDA_ARCH_UNSUPPORTED)
-        MESSAGE(FATAL_ERROR "Unsupported CUDA architecture ${CUDA_ARCH} specified. SM 2.0 or higher is required.")
+        MESSAGE(FATAL_ERROR "Unsupported CUDA architecture ${ALPAKA_CUDA_ARCH} specified. SM 2.0 or higher is required.")
     ENDIF(IS_CUDA_ARCH_UNSUPPORTED)
     
     IF(NOT MSVC)
@@ -143,26 +168,30 @@ IF(ALPAKA_CUDA_ENABLE)
     ENDIF()
     
     SET(CUDA_FTZ "--ftz=false" CACHE STRING "Set flush to zero for GPU")
-    SET(CUDA_MATH --use_fast_math CACHE STRING "Enable fast-math")
+    SET(CUDA_MATH "--use_fast_math" CACHE STRING "Enable fast-math")
+    
+    IF(ALPAKA_DEBUG)
+        LIST(APPEND CUDA_NVCC_FLAGS "-G")
+    ENDIF()
 
-    LIST(APPEND CUDA_NVCC_FLAGS -arch=${CUDA_ARCH} ${CUDA_MATH} ${CUDA_FTZ})
+    LIST(APPEND CUDA_NVCC_FLAGS -arch=${ALPAKA_CUDA_ARCH} ${CUDA_MATH} ${CUDA_FTZ})
 
-    OPTION(CUDA_SHOW_REGISTER "Show kernel registers and create PTX" OFF)
-    IF(CUDA_SHOW_REGISTER)
+    OPTION(ALPAKA_CUDA_SHOW_REGISTER "Show kernel registers and create PTX" OFF)
+    IF(ALPAKA_CUDA_SHOW_REGISTER)
         LIST(APPEND CUDA_NVCC_FLAGS -Xptxas=-v)
-    ENDIF(CUDA_SHOW_REGISTER)
+    ENDIF(ALPAKA_CUDA_SHOW_REGISTER)
 
-    OPTION(CUDA_KEEP_FILES "Keep all intermediate files that are generated during internal compilation steps (folder: nvcc_tmp)" OFF)
-    IF(CUDA_KEEP_FILES)
+    OPTION(ALPAKA_CUDA_KEEP_FILES "Keep all intermediate files that are generated during internal compilation steps (folder: nvcc_tmp)" OFF)
+    IF(ALPAKA_CUDA_KEEP_FILES)
         MAKE_DIRECTORY("${PROJECT_BINARY_DIR}/nvcc_tmp")
         LIST(APPEND CUDA_NVCC_FLAGS --keep --keep-dir "${PROJECT_BINARY_DIR}/nvcc_tmp")
-    ENDIF(CUDA_KEEP_FILES)
+    ENDIF(ALPAKA_CUDA_KEEP_FILES)
 
-    OPTION(CUDA_SHOW_CODELINES "Show kernel lines in cuda-gdb and cuda-memcheck" OFF)
-    IF(CUDA_SHOW_CODELINES)
+    OPTION(ALPAKA_CUDA_SHOW_CODELINES "Show kernel lines in cuda-gdb and cuda-memcheck" OFF)
+    IF(ALPAKA_CUDA_SHOW_CODELINES)
         LIST(APPEND CUDA_NVCC_FLAGS --source-in-ptx -Xcompiler -rdynamic -lineinfo)
-        SET(CUDA_KEEP_FILES ON CACHE BOOL "activate keep files" FORCE)
-    ENDIF(CUDA_SHOW_CODELINES)
+        SET(ALPAKA_CUDA_KEEP_FILES ON CACHE BOOL "activate keep files" FORCE)
+    ENDIF(ALPAKA_CUDA_SHOW_CODELINES)
 
     IF(${CUDA_CUDART_LIBRARY})
         LIST(APPEND ALPAKA_LIBRARY_DEPENDENCIES general ${CUDA_CUDART_LIBRARY})

@@ -106,26 +106,13 @@ namespace alpaka
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
-                // Do not copy most members because they are initialized by the executor for each accelerated execution.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA AccThreads(AccThreads const & ) :
-                    WorkDivThreads(),
-                    IdxThreads(m_mThreadsToIndices, m_v3uiGridBlockIdx),
-                    AtomicThreads(),
-                    m_mThreadsToIndices(),
-                    m_v3uiGridBlockIdx(),
-                    m_mThreadsToBarrier(),
-                    m_mtxBarrier(),
-                    m_abarSyncThreads(),
-                    m_idMasterThread(),
-                    m_vvuiSharedMem(),
-                    m_vuiExternalSharedMem()
-                {}
+                ALPAKA_FCT_ACC_NO_CUDA AccThreads(AccThreads const &) = delete;
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA AccThreads(AccThreads &&) = default;
+                ALPAKA_FCT_ACC_NO_CUDA AccThreads(AccThreads &&) = delete;
 #endif
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
@@ -309,7 +296,7 @@ namespace alpaka
                 //! \return The current exception.
                 //-----------------------------------------------------------------------------
                 static auto current_exception()
-                    -> std::result_of<decltype(&std::current_exception)()>::type
+                -> std::result_of<decltype(&std::current_exception)()>::type
                 {
                     return std::current_exception();
                 }
@@ -335,13 +322,14 @@ namespace alpaka
                     TWorkDiv const & workDiv, 
                     StreamThreads const &,
                     TKernelConstrArgs && ... args) :
-                    TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
+                        TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
+                        IAcc<AccThreads>(),
 #ifdef ALPAKA_THREADS_NO_POOL
-                    m_vThreadsInBlock(),
+                        m_vThreadsInBlock(),
 #else
-                    m_vFuturesInBlock(),
+                        m_vFuturesInBlock(),
 #endif
-                    m_mtxMapInsert()
+                        m_mtxMapInsert()
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -354,27 +342,41 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecutorThreads(
                     KernelExecutorThreads const & other) :
-                    TAcceleratedKernel(other),
+                        TAcceleratedKernel(other),
+                        IAcc<AccThreads>(),
 #ifdef ALPAKA_THREADS_NO_POOL
-                    m_vThreadsInBlock(),
+                        m_vThreadsInBlock(),
 #else
-                    m_vFuturesInBlock(),
+                        m_vFuturesInBlock(),
 #endif
-                    m_mtxMapInsert()
-                {}
+                        m_mtxMapInsert()
+                {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                    (*static_cast<WorkDivThreads *>(this)) = (*static_cast<WorkDivThreads const *>(&other));
+
+                    this->AccThreads::m_uiNumKernelsPerBlock = other.getBlockKernelsExtents().prod();
+                }
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecutorThreads(
-KernelExecutorThreads && other) :
-                    TAcceleratedKernel(std::move(other)),
+                    KernelExecutorThreads && other) :
+                        TAcceleratedKernel(std::move(other)),
+                        IAcc<AccThreads>(),
 #ifdef ALPAKA_THREADS_NO_POOL
-                    m_vThreadsInBlock(),
+                        m_vThreadsInBlock(),
 #else
-                    m_vFuturesInBlock(),
+                        m_vFuturesInBlock(),
 #endif
-                    m_mtxMapInsert()
-                {}
+                        m_mtxMapInsert()
+                {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                    (*static_cast<WorkDivThreads *>(this)) = (*static_cast<WorkDivThreads const *>(&other));
+
+                    this->AccThreads::m_uiNumKernelsPerBlock = other.getBlockKernelsExtents().prod();
+                }
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------

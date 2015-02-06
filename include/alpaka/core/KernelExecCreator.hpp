@@ -228,7 +228,7 @@ namespace alpaka
         typename... TKernelConstrArgs>
     auto createKernelExecutor(
         TKernelConstrArgs && ... args)
-        -> typename std::result_of<detail::KernelExecCreator<TAcc, TKernel, TKernelConstrArgs...>(TKernelConstrArgs...)>::type
+    -> typename std::result_of<detail::KernelExecCreator<TAcc, TKernel, TKernelConstrArgs...>(TKernelConstrArgs...)>::type
     {
 #if (!BOOST_COMP_GNUC) || (BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(5, 0, 0))
         static_assert(std::is_trivially_copyable<TKernel>::value, "The given kernel functor has to fulfill is_trivially_copyable!");

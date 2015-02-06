@@ -56,7 +56,7 @@ namespace alpaka
                 template<
                     typename TExtents, 
                     typename TMemBuf>
-                static void memSet(
+                ALPAKA_FCT_HOST static void memSet(
                     TMemBuf & memBuf, 
                     std::uint8_t const & byte, 
                     TExtents const & extents)
@@ -87,7 +87,7 @@ namespace alpaka
                 template<
                     typename TMemBuf, 
                     typename TExtents>
-                static void memSet(
+                ALPAKA_FCT_HOST static void memSet(
                     TMemBuf & memBuf, 
                     std::uint8_t const & byte, 
                     TExtents const & extents,
@@ -129,7 +129,7 @@ namespace alpaka
                 template<
                     typename TExtents, 
                     typename TMemBuf>
-                static void memSet(
+                ALPAKA_FCT_HOST static void memSet(
                     TMemBuf & memBuf, 
                     std::uint8_t const & byte, 
                     TExtents const & extents)
@@ -165,7 +165,7 @@ namespace alpaka
                 template<
                     typename TExtents, 
                     typename TMemBuf>
-                static void memSet(
+                ALPAKA_FCT_HOST static void memSet(
                     TMemBuf & memBuf, 
                     std::uint8_t const & byte, 
                     TExtents const & extents,
@@ -212,7 +212,7 @@ namespace alpaka
                 template<
                     typename TExtents, 
                     typename TMemBuf>
-                static void memSet(
+                ALPAKA_FCT_HOST static void memSet(
                     TMemBuf & memBuf, 
                     std::uint8_t const & byte, 
                     TExtents const & extents)
@@ -263,7 +263,7 @@ namespace alpaka
                 template<
                     typename TExtents, 
                     typename TMemBuf>
-                static void memSet(
+                ALPAKA_FCT_HOST static void memSet(
                     TMemBuf & memBuf, 
                     std::uint8_t const & byte, 
                     TExtents const & extents,

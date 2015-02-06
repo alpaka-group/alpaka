@@ -59,7 +59,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TExtents>
-                MemBufHost(
+                ALPAKA_FCT_HOST MemBufHost(
                     TExtents const & extents) :
                         m_vExtents(extents),
                         m_spMem(new TElem[computeElementCount(extents)], &MemBufHost::freeBuffer),
@@ -74,7 +74,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TExtents>
-                static std::size_t computeElementCount(
+                ALPAKA_FCT_HOST static std::size_t computeElementCount(
                     TExtents const & extents)
                 {
                     auto const uiExtentsElementCount(extent::getProductOfExtents(extents));
@@ -85,7 +85,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Frees the shared buffer.
                 //-----------------------------------------------------------------------------
-                static void freeBuffer(
+                ALPAKA_FCT_HOST static void freeBuffer(
                     TElem * pBuffer)
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -95,8 +95,8 @@ namespace alpaka
                 }
 
             public:
-                std::shared_ptr<TElem> m_spMem;
                 Vec<TDim::value> m_vExtents;
+                std::shared_ptr<TElem> m_spMem;
                 std::size_t m_uiPitchBytes;
             };
         }
@@ -137,7 +137,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                static std::size_t getWidth(
+                ALPAKA_FCT_HOST static std::size_t getWidth(
                     host::detail::MemBufHost<TElem, TDim> const & extent)
                 {
                     return extent.m_vExtents[0u];
@@ -157,7 +157,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                static std::size_t getHeight(
+                ALPAKA_FCT_HOST static std::size_t getHeight(
                     host::detail::MemBufHost<TElem, TDim> const & extent)
                 {
                     return extent.m_vExtents[1u];
@@ -176,7 +176,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                static std::size_t getDepth(
+                ALPAKA_FCT_HOST static std::size_t getDepth(
                     host::detail::MemBufHost<TElem, TDim> const & extent)
                 {
                     return extent.m_vExtents[2u];
@@ -234,7 +234,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                static TElem const * getNativePtr(
+                ALPAKA_FCT_HOST static TElem const * getNativePtr(
                     host::detail::MemBufHost<TElem, TDim> const & memBuf)
                 {
                     return memBuf.m_spMem.get();
@@ -242,7 +242,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                static TElem * getNativePtr(
+                ALPAKA_FCT_HOST static TElem * getNativePtr(
                     host::detail::MemBufHost<TElem, TDim> & memBuf)
                 {
                     return memBuf.m_spMem.get();
@@ -261,7 +261,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                static std::size_t getPitchBytes(
+                ALPAKA_FCT_HOST static std::size_t getPitchBytes(
                     host::detail::MemBufHost<TElem, TDim> const & memPitch)
                 {
                     // No pitch on the host currently.
@@ -285,7 +285,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TExtents>
-                static host::detail::MemBufHost<TElem, TDim> memAlloc(
+                ALPAKA_FCT_HOST static host::detail::MemBufHost<TElem, TDim> memAlloc(
                     TExtents const & extents)
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -313,7 +313,7 @@ namespace alpaka
                     typename TExtents, 
                     typename TMemBufSrc, 
                     typename TMemBufDst>
-                static void memCopy(
+                ALPAKA_FCT_HOST static void memCopy(
                     TMemBufDst & memBufDst, 
                     TMemBufSrc const & memBufSrc, 
                     TExtents const & extents)
@@ -415,7 +415,7 @@ namespace alpaka
                     typename TExtents, 
                     typename TMemBufSrc, 
                     typename TMemBufDst>
-                static void memCopy(
+                ALPAKA_FCT_HOST static void memCopy(
                     TMemBufDst & memBufDst, 
                     TMemBufSrc const & memBufSrc, 
                     TExtents const & extents,
@@ -444,7 +444,7 @@ namespace alpaka
                 template<
                     typename TMemBuf, 
                     typename TExtents>
-                static void memSet(
+                ALPAKA_FCT_HOST static void memSet(
                     TMemBuf & memBuf, 
                     std::uint8_t const & byte, 
                     TExtents const & extents)
@@ -523,7 +523,7 @@ namespace alpaka
                     typename TMemBuf, 
                     typename TExtents,
                     typename TStream>
-                static void memSet(
+                ALPAKA_FCT_HOST static void memSet(
                     TMemBuf & memBuf, 
                     std::uint8_t const & byte, 
                     TExtents const & extents,

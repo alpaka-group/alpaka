@@ -102,7 +102,7 @@ namespace alpaka
             template<
                 typename TWorkDiv>
             ALPAKA_FCT_HOST BasicWorkDiv & operator=(
-            TWorkDiv const & other)
+                TWorkDiv const & other)
             {
                 m_v3uiGridBlocksExtents = getWorkDiv<Grid, Blocks, dim::Dim3>(other);
                 m_v3uiBlockKernelsExtents = getWorkDiv<Block, Kernels, dim::Dim3>(other);

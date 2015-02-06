@@ -90,7 +90,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Destroys the shared stream.
                 //-----------------------------------------------------------------------------
-                static void destroyStream(
+                ALPAKA_FCT_HOST static void destroyStream(
                     cudaStream_t * stream)
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;

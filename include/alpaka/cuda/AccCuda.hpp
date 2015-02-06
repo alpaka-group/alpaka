@@ -94,12 +94,12 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY AccCuda(AccCuda const &) = default;
+                ALPAKA_FCT_ACC_CUDA_ONLY AccCuda(AccCuda const &) = delete;
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY AccCuda(AccCuda &&) = default;
+                ALPAKA_FCT_ACC_CUDA_ONLY AccCuda(AccCuda &&) = delete;
 #endif
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
@@ -207,6 +207,25 @@ namespace alpaka
             protected AccCuda
     {
     public:
+        //-----------------------------------------------------------------------------
+        //! Constructor.
+        //-----------------------------------------------------------------------------
+        ALPAKA_FCT_ACC_CUDA_ONLY IAcc() = default;
+        //-----------------------------------------------------------------------------
+        //! Copy constructor.
+        //-----------------------------------------------------------------------------
+        ALPAKA_FCT_ACC_CUDA_ONLY IAcc(IAcc const &) = delete;
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
+        //-----------------------------------------------------------------------------
+        //! Move constructor.
+        //-----------------------------------------------------------------------------
+        ALPAKA_FCT_ACC_CUDA_ONLY IAcc(IAcc &&) = delete;
+#endif
+        //-----------------------------------------------------------------------------
+        //! Copy assignment.
+        //-----------------------------------------------------------------------------
+        ALPAKA_FCT_ACC_CUDA_ONLY IAcc & operator=(IAcc const &) = delete;
+
         //-----------------------------------------------------------------------------
         //! \return The requested extents.
         //-----------------------------------------------------------------------------
@@ -323,7 +342,7 @@ namespace alpaka
 
                 accedKernel(
                     acc,
-                    std::forward<TArgs>(args)...);
+                    args...);
             }
 
             //#############################################################################
@@ -332,8 +351,7 @@ namespace alpaka
             template<
                 typename TAcceleratedKernel>
             class KernelExecutorCuda :
-                private TAcceleratedKernel/*,
-                private IAcc<AccCuda>*/
+                private TAcceleratedKernel
             {
 #if (!BOOST_COMP_GNUC) || (BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(5, 0, 0))
                 static_assert(std::is_trivially_copyable<TAcceleratedKernel>::value, "The given kernel functor has to fulfill is_trivially_copyable!");
@@ -350,8 +368,8 @@ namespace alpaka
                     TWorkDiv const & workDiv, 
                     StreamCuda const & stream, 
                     TKernelConstrArgs && ... args) :
-                    TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
-                    m_Stream(stream)
+                        TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
+                        m_Stream(stream)
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -389,15 +407,18 @@ namespace alpaka
                 template<
                     typename... TArgs>
                 ALPAKA_FCT_HOST void operator()(
-                    TArgs && ... args) const
+                    // \NOTE: No universal reference (&&) or const reference (const &) is allowed as the parameter type because the kernel launch language extension expects the arguments by value.
+                    // This forces the type of a float argument given with std::forward to this function to be of type float instead of e.g. "float const & __ptr64" (MSVC).
+                    // If not given by value, the kernel launch code does not copy the value but the pointer to the value location.
+                    TArgs ... args) const
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                    std::size_t uiPrintfFifoSize;
-                    cudaDeviceGetLimit(&uiPrintfFifoSize, cudaLimitPrintfFifoSize);
+                    //std::size_t uiPrintfFifoSize;
+                    //cudaDeviceGetLimit(&uiPrintfFifoSize, cudaLimitPrintfFifoSize);
                     //std::cout << "uiPrintfFifoSize: " << uiPrintfFifoSize << std::endl;
-                    cudaDeviceSetLimit(cudaLimitPrintfFifoSize, uiPrintfFifoSize*100);
+                    //cudaDeviceSetLimit(cudaLimitPrintfFifoSize, uiPrintfFifoSize*10);
                     //cudaDeviceGetLimit(&uiPrintfFifoSize, cudaLimitPrintfFifoSize);
                     //std::cout << "uiPrintfFifoSize: " <<  uiPrintfFifoSize << std::endl;
 #endif
@@ -423,77 +444,29 @@ namespace alpaka
 
                     // \TODO: The following block should be in a lock.
                     {
-                        // Set the environment settings of the following cuda kernel invocation.
-                        ALPAKA_CUDA_CHECK(cudaConfigureCall(
-                            gridDim,
-                            blockDim,
-                            uiBlockSharedExternMemSizeBytes,
-                            *m_Stream.m_spCudaStream.get()));
-                        // Push the arguments.
-                        pushCudaKernelArgument<0>(
-                            *static_cast<TAcceleratedKernel const *>(this),
-                            std::forward<TArgs>(args)...);
-                        // And execute it.
-                        ALPAKA_CUDA_CHECK(cudaLaunch(
-                            cudaKernel<TAcceleratedKernel, TArgs...>));
-
-                        /*cudaKernel<TAcceleratedKernel, TArgs...><<<
+                        cudaKernel<TAcceleratedKernel, TArgs...><<<
                             gridDim,
                             blockDim,
                             uiBlockSharedExternMemSizeBytes,
                             *m_Stream.m_spCudaStream.get()>>>(
                                 *static_cast<TAcceleratedKernel const *>(this),
-                                std::forward<TArgs>(args)...);*/
+                                args...);
                     }
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                     // Wait for the kernel execution to finish but do not check error return of this call.
                     // Do not use the alpaka::wait method because it checks the error itself but we want to give a custom error message.
                     cudaStreamSynchronize(*m_Stream.m_spCudaStream.get());
-                    cudaDeviceSynchronize();
+                    //cudaDeviceSynchronize();
                     cudaError_t const error(cudaGetLastError());
                     if(error != cudaSuccess)
                     {
-                        std::string const sError("The execution of kernel '" + std::string(typeid(TAcceleratedKernel).name()) + " failed with error: '" + std::string(cudaGetErrorString(error)) + "'"); \
-                        std::cerr << sError << std::endl;\
-                        throw std::runtime_error(sError);\
+                        std::string const sError("The execution of kernel '" + std::string(typeid(TAcceleratedKernel).name()) + " failed with error: '" + std::string(cudaGetErrorString(error)) + "'");
+                        std::cerr << sError << std::endl;
+                        ALPAKA_DEBUG_BREAK;
+                        throw std::runtime_error(sError);
                     }
 #endif
                 }
-
-            private:
-                //-----------------------------------------------------------------------------
-                //! Push kernel arguments.
-                //-----------------------------------------------------------------------------
-                template<
-                    std::size_t TuiOffset>
-                void pushCudaKernelArgument() const
-                {
-                    // The base case to push zero arguments.
-                }
-                //-----------------------------------------------------------------------------
-                //! Push kernel arguments.
-                //-----------------------------------------------------------------------------
-                template<
-                    std::size_t TuiOffset, 
-                    typename T0, 
-                    typename... TArgs>
-                void pushCudaKernelArgument(
-                    T0 && arg0, 
-                    TArgs && ... args) const
-                {
-                    // Push the first argument.
-                    ALPAKA_CUDA_CHECK(cudaSetupArgument(
-                        &arg0, 
-                        sizeof(typename std::decay<T0>::type), 
-                        alpaka::detail::AlignUp<TuiOffset, ALPAKA_ALIGNOF(typename std::decay<T0>::type)>::value));
-
-                    // Push the rest of the arguments recursively.
-                    pushCudaKernelArgument<
-                        alpaka::detail::AlignUp<TuiOffset, ALPAKA_ALIGNOF(typename std::decay<T0>::type)>::value
-                        + sizeof(typename std::decay<T0>::type)>(
-                            std::forward<TArgs>(args)...);
-                }
-
             private:
                 Vec<3u> m_v3uiGridBlocksExtents;
                 Vec<3u> m_v3uiBlockKernelsExtents;

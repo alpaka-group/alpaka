@@ -187,7 +187,7 @@ struct SharedMemTester
         typename TAcc, 
         typename TWorkDiv>
     void operator()(
-        TAcc, 
+        TAcc const &, 
         TWorkDiv const & workDiv, 
         std::uint32_t const uiMult2)
     {
