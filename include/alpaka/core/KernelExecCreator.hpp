@@ -153,19 +153,27 @@ namespace alpaka
                     throw std::runtime_error("The given work division is not supported by the " + acc::getAccName<Acc>() + " accelerator!");
                 }
 
-                return createKernelExecutor(workDiv, stream, KernelConstrArgsIdxSequence());
+                return createKernelExecutor(
+                    workDiv, 
+                    stream, 
+                    KernelConstrArgsIdxSequence());
             }
             //-----------------------------------------------------------------------------
             //! \return An KernelExecutor with the given extents.
             //-----------------------------------------------------------------------------
             template<
-                typename TWorkDiv>
+                typename TGridBlocksExtents,
+                typename TBlockKernelsExtents>
             ALPAKA_FCT_HOST TKernelExecutor operator()(
-                Vec<3u> const & v3uiGridBlocksExtent,
-                Vec<3u> const & v3uiBlockKernelsExtents, 
+                TGridBlocksExtents const & gridBlocksExtent,
+                TBlockKernelsExtents const & blockKernelsExtents, 
                 Stream const & stream) const
             {
-                return this->operator()(workdiv::BasicWorkDiv(v3uiGridBlocksExtent, v3uiBlockKernelsExtents), stream);
+                return this->operator()(
+                    workdiv::BasicWorkDiv(
+                        Vec<3u>(extent::getWidth(gridBlocksExtent), extent::getHeight(gridBlocksExtent), extent::getDepth(gridBlocksExtent)),
+                        Vec<3u>(extent::getWidth(blockKernelsExtents), extent::getHeight(blockKernelsExtents), extent::getDepth(blockKernelsExtents))), 
+                    stream);
             }
 
         private:

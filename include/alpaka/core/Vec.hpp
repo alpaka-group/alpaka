@@ -80,10 +80,12 @@ namespace alpaka
                 && std::is_convertible<typename std::decay<TFirstArg>::type, TValue>::value
                 //&& boost::mpl::and_<boost::mpl::true_, boost::mpl::true_, std::is_convertible<typename std::decay<TArgs>::type, TValue>...>::value
             >::type>
-        ALPAKA_FCT_HOST_ACC Vec(TFirstArg && val, TArgs && ... values)
+        ALPAKA_FCT_HOST_ACC Vec(
+            TFirstArg && val, 
+            TArgs && ... values)
 #if !(BOOST_COMP_MSVC /*<= BOOST_VERSION_NUMBER(14, 0, 22512)*/)   // MSVC does not compile the basic array initialization: "error C2536: 'alpaka::Vec<0x03>::alpaka::Vec<0x03>::m_auiData': cannot specify explicit initializer for arrays"
             :
-            m_auiData{std::forward<TFirstArg>(val), std::forward<TArgs>(values)...}
+                m_auiData{std::forward<TFirstArg>(val), std::forward<TArgs>(values)...}
 #endif
         {
 #if BOOST_COMP_MSVC //<= BOOST_VERSION_NUMBER(14, 0, 22512)
@@ -94,6 +96,48 @@ namespace alpaka
             }
 #endif
         }
+        //-----------------------------------------------------------------------------
+        //! Extents-constructor.
+        //-----------------------------------------------------------------------------
+        /*template<
+            typename TExtents,
+            typename = typename std::enable_if<
+                (TuiDim == 1)
+                && (!std::is_same<typename std::decay<TExtents>::type, Vec>::value)
+                && (!std::is_convertible<typename std::decay<TExtents>::type, TValue>::value)
+            >::type>
+        ALPAKA_FCT_HOST_ACC Vec(
+            TExtents const & extents) :
+                m_auiData{extent::getWidth(extents)}
+        {}*/
+        //-----------------------------------------------------------------------------
+        //! Extents-constructor.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TExtents,
+            typename = typename std::enable_if<
+                (TuiDim == 2)
+                && (!std::is_same<typename std::decay<TExtents>::type, Vec>::value)
+                && (!std::is_convertible<typename std::decay<TExtents>::type, TValue>::value)
+            >::type>
+        ALPAKA_FCT_HOST_ACC Vec(
+            TExtents const & extents) :
+                m_auiData{extent::getWidth(extents), extent::getHeight(extents)}
+        {}
+        //-----------------------------------------------------------------------------
+        //! Extents-constructor.
+        //-----------------------------------------------------------------------------
+        /*template<
+            typename TExtents,
+            typename = typename std::enable_if<
+                (TuiDim == 3)
+                && (!std::is_same<typename std::decay<TExtents>::type, Vec>::value)
+                && (!std::is_convertible<typename std::decay<TExtents>::type, TValue>::value)
+            >::type>
+        ALPAKA_FCT_HOST_ACC Vec(
+            TExtents const & extents) :
+                m_auiData{extent::getWidth(extents), extent::getHeight(extents), extent::getDepth(extents)}
+        {}*/
         //-----------------------------------------------------------------------------
         //! Copy constructor.
         //-----------------------------------------------------------------------------
@@ -111,7 +155,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Destructor.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC /*virtual*/ ~Vec() noexcept = default;
+        ALPAKA_FCT_HOST_ACC virtual ~Vec() noexcept = default;
 
         //-----------------------------------------------------------------------------
         //! Destructor.
