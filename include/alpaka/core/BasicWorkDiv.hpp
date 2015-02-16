@@ -128,7 +128,7 @@ namespace alpaka
                 return m_v3uiBlockKernelsExtents;
             }
 
-        private:
+        public:
             Vec<3u> m_v3uiGridBlocksExtents;
             Vec<3u> m_v3uiBlockKernelsExtents;
         };
@@ -140,7 +140,7 @@ namespace alpaka
             std::ostream & os,
             BasicWorkDiv const & workDiv)
         {
-            return (os << "{GridBlocks: " << workDiv.getGridBlocksExtents() << ", BlockKernels: " << workDiv.getBlockKernelsExtents() << "}");
+            return (os << "{GridBlocksExtents: " << workDiv.getGridBlocksExtents() << ", BlockKernelsExtents: " << workDiv.getBlockKernelsExtents() << "}");
         }
     }
 
