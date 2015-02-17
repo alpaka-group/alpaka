@@ -364,7 +364,7 @@ namespace alpaka
             //#############################################################################
             template<
                 typename AcceleratedKernel>
-            struct GetAcc<
+            struct AccType<
                 openmp::detail::KernelExecutorOpenMp<AcceleratedKernel>>
             {
                 using type = AccOpenMp;

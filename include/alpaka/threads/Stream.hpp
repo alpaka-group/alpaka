@@ -48,7 +48,7 @@ namespace alpaka
             //! The threads accelerator stream accelerator type trait specialization.
             //#############################################################################
             template<>
-            struct GetAcc<
+            struct AccType<
                 threads::detail::StreamThreads>
             {
                 using type = AccThreads;
@@ -61,7 +61,7 @@ namespace alpaka
             //! The threads accelerator stream type trait specialization.
             //#############################################################################
             template<>
-            struct GetStream<
+            struct StreamType<
                 AccThreads>
             {
                 using type = threads::detail::StreamThreads;

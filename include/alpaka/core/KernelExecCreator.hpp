@@ -111,8 +111,8 @@ namespace alpaka
             typename... TKernelConstrArgs>
         class KernelExecutorExtent
         {
-            using Acc = acc::GetAccT<TKernelExecutor>;
-            using Stream = stream::GetStreamT<Acc>;
+            using Acc = acc::AccT<TKernelExecutor>;
+            using Stream = stream::StreamT<Acc>;
         public:
             //-----------------------------------------------------------------------------
             //! Constructor.

@@ -559,7 +559,7 @@ namespace alpaka
             //#############################################################################
             template<
                 typename AcceleratedKernel>
-            struct GetAcc<
+            struct AccType<
                 fibers::detail::KernelExecutorFibers<AcceleratedKernel >>
             {
                 using type = AccFibers;

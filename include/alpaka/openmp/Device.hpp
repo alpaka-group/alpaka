@@ -28,7 +28,7 @@
 #include <alpaka/openmp/Common.hpp>
 
 #include <alpaka/traits/Wait.hpp>           // CurrentThreadWaitFor
-#include <alpaka/traits/Device.hpp>         // GetDev
+#include <alpaka/traits/Device.hpp>         // DevType
 
 #include <sstream>                          // std::stringstream
 #include <limits>                           // std::numeric_limits
@@ -150,7 +150,7 @@ namespace alpaka
             //! The OpenMP accelerator device type trait specialization.
             //#############################################################################
             template<>
-            struct GetDev<
+            struct DevType<
                 AccOpenMp>
             {
                 using type = openmp::detail::DeviceOpenMp;
@@ -159,7 +159,7 @@ namespace alpaka
             //! The OpenMP accelerator device manager device type trait specialization.
             //#############################################################################
             template<>
-            struct GetDev<
+            struct DevType<
                 openmp::detail::DeviceManagerOpenMp>
             {
                 using type = openmp::detail::DeviceOpenMp;
@@ -202,7 +202,7 @@ namespace alpaka
             //! The OpenMP accelerator device manager type trait specialization.
             //#############################################################################
             template<>
-            struct GetDevMan<
+            struct DevManType<
                 AccOpenMp>
             {
                 using type = openmp::detail::DeviceManagerOpenMp;
@@ -211,7 +211,7 @@ namespace alpaka
             //! The OpenMP accelerator device device manager type trait specialization.
             //#############################################################################
             template<>
-            struct GetDevMan<
+            struct DevManType<
                 openmp::detail::DeviceOpenMp>
             {
                 using type = openmp::detail::DeviceManagerOpenMp;

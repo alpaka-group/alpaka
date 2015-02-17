@@ -42,7 +42,7 @@ namespace alpaka
             template<
                 typename T,
                 typename TSfinae = void>
-            struct GetAcc;
+            struct AccType;
 
             //#############################################################################
             //! The accelerator name trait.
@@ -72,7 +72,7 @@ namespace alpaka
         //#############################################################################
         template<
             typename T>
-        using GetAccT = typename traits::acc::GetAcc<T>::type;
+        using AccT = typename traits::acc::AccType<T>::type;
 
         //-----------------------------------------------------------------------------
         //! Writes the accelerator name to the given stream.

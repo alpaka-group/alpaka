@@ -37,7 +37,7 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TAcc>
-            struct GetEvent;
+            struct EventType;
 
             //#############################################################################
             //! The event enqueuer trait.
@@ -76,7 +76,7 @@ namespace alpaka
         //#############################################################################
         template<
             typename TAcc>
-        using GetEventT = typename traits::event::GetEvent<TAcc>::type;
+        using EventT = typename traits::event::EventType<TAcc>::type;
 
         //-----------------------------------------------------------------------------
         //! Queues the given event in the stream zero.

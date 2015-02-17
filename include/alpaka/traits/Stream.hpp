@@ -39,7 +39,7 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TAcc>
-            struct GetStream;
+            struct StreamType;
 
             //#############################################################################
             //! The thread stream wait trait.
@@ -61,7 +61,7 @@ namespace alpaka
         //#############################################################################
         template<
             typename TAcc>
-        using GetStreamT = typename traits::stream::GetStream<TAcc>::type;
+        using StreamT = typename traits::stream::StreamType<TAcc>::type;
 
         //-----------------------------------------------------------------------------
         //! Tests if all ops in the given stream have been completed.

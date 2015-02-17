@@ -21,31 +21,35 @@
 
 #pragma once
 
-#include <alpaka/traits/Mem.hpp>        // MemSpaceType
-
 namespace alpaka
 {
-    namespace mem
-    {
-        //#############################################################################
-        //! The data space on the CUDA accelerator.
-        //#############################################################################
-        struct MemSpaceCuda;
-    }
-
     namespace traits
     {
+        //-----------------------------------------------------------------------------
+        //! The memory traits.
+        //-----------------------------------------------------------------------------
         namespace mem
         {
             //#############################################################################
-            //! The MemSpaceCuda memory space trait specialization.
+            //! The memory space trait.
             //#############################################################################
-            template<>
-            struct MemSpaceType<
-                alpaka::mem::MemSpaceCuda>
-            {
-                using type = alpaka::mem::MemSpaceCuda;
-            };
+            template<
+                typename T,
+                typename TSfinae = void>
+            struct MemSpaceType;
         }
+    }
+
+    //-----------------------------------------------------------------------------
+    //! The memory trait accessors.
+    //-----------------------------------------------------------------------------
+    namespace mem
+    {
+        //#############################################################################
+        //! The memory space trait alias template to remove the ::type.
+        //#############################################################################
+        template<
+            typename T>
+        using MemSpaceT = typename traits::mem::MemSpaceType<T>::type;
     }
 }

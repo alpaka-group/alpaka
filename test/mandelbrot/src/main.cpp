@@ -314,11 +314,11 @@ struct MandelbrotKernelTester
         auto memBufColHost(alpaka::mem::alloc<std::uint32_t, alpaka::mem::MemSpaceHost>(v2uiExtents));
         
         // Allocate the buffer on the accelerator.
-        using AccMemSpace = typename alpaka::mem::GetMemSpaceT<TAcc>;
+        using AccMemSpace = typename alpaka::mem::MemSpaceT<TAcc>;
         auto memBufColAcc(alpaka::mem::alloc<std::uint32_t, AccMemSpace>(v2uiExtents));
 
         // Get a new stream.
-        alpaka::stream::GetStreamT<TAcc> stream;
+        alpaka::stream::StreamT<TAcc> stream;
 
         // Copy Host -> Acc.
         alpaka::mem::copy(memBufColAcc, memBufColHost, v2uiExtents, stream);
@@ -400,8 +400,8 @@ int main()
 #ifdef ALPAKA_CUDA_ENABLED
         // Select the first CUDA device.
         // NOTE: This is not required to run any kernels on the CUDA accelerator because all accelerators have a default device. This only shows the possibility.
-        alpaka::dev::GetDevManT<alpaka::AccCuda>::setCurrentDevice(
-            alpaka::dev::GetDevManT<alpaka::AccCuda>::getCurrentDevice());
+        alpaka::dev::DevManT<alpaka::AccCuda>::setCurrentDevice(
+            alpaka::dev::DevManT<alpaka::AccCuda>::getCurrentDevice());
 #endif
         MandelbrotKernelTester mandelbrotTester;
 

@@ -41,7 +41,7 @@ namespace alpaka
             //! The MemSpaceHost memory space trait specialization.
             //#############################################################################
             template<>
-            struct GetMemSpace<
+            struct MemSpaceType<
                 alpaka::mem::MemSpaceHost>
             {
                 using type = alpaka::mem::MemSpaceHost;

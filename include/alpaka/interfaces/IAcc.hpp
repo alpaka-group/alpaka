@@ -163,7 +163,7 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TAcc>
-            struct GetAcc<
+            struct AccType<
                 IAcc<TAcc>>
             {
                 using type = TAcc;

@@ -26,6 +26,7 @@
 
 #include <alpaka/traits/Dim.hpp>    // traits::getDim
 #include <alpaka/traits/Extents.hpp>// traits::getWidth, ...
+#include <alpaka/traits/Offsets.hpp>// traits::getOffsetX, ...
 
 #include <cstdint>                  // std::uint32_t
 #include <ostream>                  // std::ostream
@@ -43,6 +44,7 @@ namespace alpaka
     //#############################################################################
     //! A n-dimensional vector.
     //#############################################################################
+    // \TODO: Replace the integer template parameter by a dimension type.
     template<
         std::size_t TuiDim, 
         // NOTE: Setting the value type to std::size_t leads to invalid data on CUDA devices (at least with VC12).
@@ -98,48 +100,88 @@ namespace alpaka
         }
         //-----------------------------------------------------------------------------
         //! Extents-constructor.
-        // \FIXME: enable this Extent constructor.
         //-----------------------------------------------------------------------------
-        /*template<
+        template<
             typename TExtents,
-            typename = typename std::enable_if<
-                (TuiDim == 1)
-                && (!std::is_same<typename std::decay<TExtents>::type, Vec>::value)
-                && (!std::is_convertible<typename std::decay<TExtents>::type, TValue>::value)
-            >::type>
-        ALPAKA_FCT_HOST_ACC Vec(
-            TExtents const & extents) :
-                m_auiData{extent::getWidth(extents)}
-        {}*/
+            std::size_t TuiDim2 = TuiDim,
+            typename = typename std::enable_if<TuiDim2 == 1>::type>
+        static Vec<1u, TValue> fromExtents(
+            TExtents const & extents)
+        {
+            return Vec<1u, TValue>(
+                extent::getWidth(extents));
+        }
         //-----------------------------------------------------------------------------
         //! Extents-constructor.
         //-----------------------------------------------------------------------------
         template<
             typename TExtents,
-            typename = typename std::enable_if<
-                (TuiDim == 2)
-                && (!std::is_same<typename std::decay<TExtents>::type, Vec>::value)
-                && (!std::is_convertible<typename std::decay<TExtents>::type, TValue>::value)
-            >::type>
-        ALPAKA_FCT_HOST_ACC Vec(
-            TExtents const & extents) :
-                m_auiData{extent::getWidth(extents), extent::getHeight(extents)}
-        {}
+            std::size_t TuiDim2 = TuiDim,
+            typename = typename std::enable_if<TuiDim2 == 2>::type>
+        static Vec<2u, TValue> fromExtents(
+            TExtents const & extents)
+        {
+            return Vec<2u, TValue>(
+                extent::getWidth(extents), 
+                extent::getHeight(extents));
+        }
         //-----------------------------------------------------------------------------
         //! Extents-constructor.
-        // \FIXME: enable this Extent constructor.
         //-----------------------------------------------------------------------------
-        /*template<
+        template<
             typename TExtents,
-            typename = typename std::enable_if<
-                (TuiDim == 3)
-                && (!std::is_same<typename std::decay<TExtents>::type, Vec>::value)
-                && (!std::is_convertible<typename std::decay<TExtents>::type, TValue>::value)
-            >::type>
-        ALPAKA_FCT_HOST_ACC Vec(
-            TExtents const & extents) :
-                m_auiData{extent::getWidth(extents), extent::getHeight(extents), extent::getDepth(extents)}
-        {}*/
+            std::size_t TuiDim2 = TuiDim,
+            typename = typename std::enable_if<TuiDim2 == 3>::type>
+        static Vec<3u, TValue> fromExtents(
+            TExtents const & extents)
+        {
+            return Vec<3u, TValue>(
+                extent::getWidth(extents), 
+                extent::getHeight(extents), 
+                extent::getDepth(extents));
+        }
+        //-----------------------------------------------------------------------------
+        //! Offsets-constructor.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TOffsets,
+            std::size_t TuiDim2 = TuiDim,
+            typename = typename std::enable_if<TuiDim2 == 1>::type>
+        static Vec<1u, TValue> fromOffsets(
+            TOffsets const & offsets)
+        {
+            return Vec<1u, TValue>(
+                offset::getOffsetX(offsets));
+        }
+        //-----------------------------------------------------------------------------
+        //! Offsets-constructor.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TOffsets,
+            std::size_t TuiDim2 = TuiDim,
+            typename = typename std::enable_if<TuiDim2 == 2>::type>
+        static Vec<2u, TValue> fromOffsets(
+            TOffsets const & offsets)
+        {
+            return Vec<2u, TValue>(
+                offset::getOffsetX(offsets), 
+                offset::getOffsetY(offsets));
+        }
+        //-----------------------------------------------------------------------------
+        //! Offsets-constructor.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TOffsets,
+            std::size_t TuiDim2 = TuiDim,
+            typename = typename std::enable_if<TuiDim2 == 3>::type>
+        static Vec<3u, TValue> fromOffsets(
+            TOffsets const & offsets)
+        {
+            return Vec<3u, TValue>(
+                offset::getOffsetX(offsets), 
+                offset::getOffsetY(offsets), 
+                offset::getOffsetZ(offsets));
+        }
         //-----------------------------------------------------------------------------
         //! Copy constructor.
         //-----------------------------------------------------------------------------
@@ -352,7 +394,7 @@ namespace alpaka
             //#############################################################################
             template<
                 std::size_t TuiDim>
-            struct GetDim<
+            struct DimType<
                 alpaka::Vec<TuiDim>>
             {
                 using type = alpaka::dim::Dim<TuiDim>;
@@ -450,6 +492,105 @@ namespace alpaka
                 typename std::enable_if<(TuiDim >= 3u) && (TuiDim <= 3u)>::type>
             {
                 ALPAKA_FCT_HOST_ACC static std::size_t setDepth(
+                    alpaka::Vec<TuiDim> & extent,
+                    std::size_t const & depth)
+                {
+                    return extent[2u] = depth;
+                }
+            };
+        }
+
+        namespace offset
+        {
+            //#############################################################################
+            //! The Vec<TuiDim> x offset get trait specialization.
+            //#############################################################################
+            template<
+                std::size_t TuiDim>
+            struct GetOffsetX<
+                alpaka::Vec<TuiDim>,
+                typename std::enable_if<(TuiDim >= 1u) && (TuiDim <= 3u)>::type>
+            {
+                ALPAKA_FCT_HOST_ACC static std::size_t getOffsetX(
+                    alpaka::Vec<TuiDim> const & extent)
+                {
+                    return extent[0u];
+                }
+            };
+            //#############################################################################
+            //! The Vec<TuiDim> x offset set trait specialization.
+            //#############################################################################
+            template<
+                std::size_t TuiDim>
+            struct SetOffsetX<
+                alpaka::Vec<TuiDim>,
+                typename std::enable_if<(TuiDim >= 1u) && (TuiDim <= 3u)>::type>
+            {
+                ALPAKA_FCT_HOST_ACC static std::size_t setOffsetX(
+                    alpaka::Vec<TuiDim> & extent,
+                    std::size_t const & width)
+                {
+                    return extent[0u] = width;
+                }
+            };
+
+            //#############################################################################
+            //! The Vec<TuiDim> y offset get trait specialization.
+            //#############################################################################
+            template<
+                std::size_t TuiDim>
+            struct GetOffsetY<
+                alpaka::Vec<TuiDim>,
+                typename std::enable_if<(TuiDim >= 2u) && (TuiDim <= 3u)>::type>
+            {
+                ALPAKA_FCT_HOST_ACC static std::size_t getOffsetY(
+                    alpaka::Vec<TuiDim> const & extent)
+                {
+                    return extent[1u];
+                }
+            };
+            //#############################################################################
+            //! The Vec<TuiDim> y offset set trait specialization.
+            //#############################################################################
+            template<
+                std::size_t TuiDim>
+            struct SetOffsetY<
+                alpaka::Vec<TuiDim>,
+                typename std::enable_if<(TuiDim >= 2u) && (TuiDim <= 3u)>::type>
+            {
+                ALPAKA_FCT_HOST_ACC static std::size_t setOffsetY(
+                    alpaka::Vec<TuiDim> & extent,
+                    std::size_t const & height)
+                {
+                    return extent[1u] = height;
+                }
+            };
+
+            //#############################################################################
+            //! The Vec<TuiDim> z offset get trait specialization.
+            //#############################################################################
+            template<
+                std::size_t TuiDim>
+            struct GetOffsetZ<
+                alpaka::Vec<TuiDim>,
+                typename std::enable_if<(TuiDim >= 3u) && (TuiDim <= 3u)>::type>
+            {
+                ALPAKA_FCT_HOST_ACC static std::size_t getOffsetZ(
+                    alpaka::Vec<TuiDim> const & extent)
+                {
+                    return extent[2u];
+                }
+            };
+            //#############################################################################
+            //! The Vec<TuiDim> z offset set trait specialization.
+            //#############################################################################
+            template<
+                std::size_t TuiDim>
+            struct SetOffsetZ<
+                alpaka::Vec<TuiDim>,
+                typename std::enable_if<(TuiDim >= 3u) && (TuiDim <= 3u)>::type>
+            {
+                ALPAKA_FCT_HOST_ACC static std::size_t setOffsetZ(
                     alpaka::Vec<TuiDim> & extent,
                     std::size_t const & depth)
                 {

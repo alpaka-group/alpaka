@@ -36,7 +36,7 @@
 
 // Specialized traits.
 #include <alpaka/core/KernelExecCreator.hpp>        // KernelExecCreator
-#include <alpaka/traits/Acc.hpp>                    // GetAcc
+#include <alpaka/traits/Acc.hpp>                    // AccType
 
 // Implementation details.
 #include <alpaka/cuda/Common.hpp>
@@ -485,7 +485,7 @@ namespace alpaka
             //#############################################################################
             template<
                 typename AcceleratedKernel>
-            struct GetAcc<
+            struct AccType<
                 cuda::detail::KernelExecutorCuda<AcceleratedKernel>>
             {
                 using type = AccCuda;

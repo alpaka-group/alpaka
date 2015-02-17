@@ -23,9 +23,9 @@
 
 #include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST
 
-#include <alpaka/traits/Dim.hpp>        // dim::GetDimT
+#include <alpaka/traits/Dim.hpp>        // dim::DimType
 #include <alpaka/traits/Extents.hpp>    // traits::getXXX
-#include <alpaka/traits/Mem.hpp>        // mem::GetMemSpace
+#include <alpaka/traits/Mem.hpp>        // mem::MemSpaceType
 
 #include <alpaka/host/MemSpace.hpp>     // MemSpaceHost
 #include <alpaka/cuda/MemSpace.hpp>     // MemSpaceCuda
@@ -51,7 +51,7 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TFixedSizeArray>
-            struct GetDim<
+            struct DimType<
                 TFixedSizeArray,
                 typename std::enable_if<std::is_array<TFixedSizeArray>::value>::type>
             {
@@ -128,7 +128,7 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TFixedSizeArray>
-            struct GetMemSpace<
+            struct MemSpaceType<
                 TFixedSizeArray,
                 typename std::enable_if<
                     std::is_array<TFixedSizeArray>::value>::type>
@@ -145,12 +145,32 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TFixedSizeArray>
-            struct GetMemElem<
+            struct MemElemType<
                 TFixedSizeArray,
                 typename std::enable_if<
                     std::is_array<TFixedSizeArray>::value>::type>
             {
                 using type = typename std::remove_all_extents<TFixedSizeArray>::type;
+            };
+
+            //#############################################################################
+            //! The fixed size array base buffer trait specialization.
+            //#############################################################################
+            template<
+                typename TFixedSizeArray>
+            struct GetMemBufBase<
+                TFixedSizeArray,
+                typename std::enable_if<
+                    std::is_array<TFixedSizeArray>::value>::type>
+            {
+                //-----------------------------------------------------------------------------
+                //! 
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static TFixedSizeArray getMemBufBase(
+                    TFixedSizeArray const & memBufBase)
+                {
+                    return memBufBase;
+                }
             };
 
             //#############################################################################
@@ -211,9 +231,9 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TElem,
-                std::size_t TSize>
-            struct GetDim<
-                std::array<TElem, TSize>>
+                std::size_t TuiSize>
+            struct DimType<
+                std::array<TElem, TuiSize>>
             {
                 using type = alpaka::dim::Dim1;
             };
@@ -226,12 +246,12 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TElem,
-                std::size_t TSize>
+                std::size_t TuiSize>
             struct GetWidth<
-                std::array<TElem, TSize> >
+                std::array<TElem, TuiSize>>
             {
                 ALPAKA_FCT_HOST_ACC static std::size_t getWidth(
-                    std::array<TElem, TSize> const & extent)
+                    std::array<TElem, TuiSize> const & extent)
                 {
                     return extent.size();
                 }
@@ -245,9 +265,9 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TElem,
-                std::size_t TSize>
-            struct GetMemSpace<
-                std::array<TElem, TSize>>
+                std::size_t TuiSize>
+            struct MemSpaceType<
+                std::array<TElem, TuiSize>>
             {
                 using type = alpaka::mem::MemSpaceHost;
             };
@@ -257,11 +277,30 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TElem,
-                std::size_t TSize>
-            struct GetMemElem<
-                std::array<TElem, TSize>>
+                std::size_t TuiSize>
+            struct MemElemType<
+                std::array<TElem, TuiSize>>
             {
                 using type = TElem;
+            };
+
+            //#############################################################################
+            //! The std::array base buffer trait specialization.
+            //#############################################################################
+            template<
+                typename TElem,
+                std::size_t TuiSize>
+            struct GetMemBufBase<
+                std::array<TElem, TuiSize>>
+            {
+                //-----------------------------------------------------------------------------
+                //! 
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static std::array<TElem, TuiSize> getMemBufBase(
+                    std::array<TElem, TuiSize> const & memBufBase)
+                {
+                    return memBufBase;
+                }
             };
 
             //#############################################################################
@@ -269,17 +308,17 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TElem,
-                std::size_t TSize>
+                std::size_t TuiSize>
             struct GetNativePtr<
-                std::array<TElem, TSize>>
+                std::array<TElem, TuiSize>>
             {
                 ALPAKA_FCT_HOST_ACC static TElem const * getNativePtr(
-                    std::array<TElem, TSize> const & memBuf)
+                    std::array<TElem, TuiSize> const & memBuf)
                 {
                     return memBuf.data();
                 }
                 ALPAKA_FCT_HOST_ACC static TElem * getNativePtr(
-                    std::array<TElem, TSize> & memBuf)
+                    std::array<TElem, TuiSize> & memBuf)
                 {
                     return memBuf.data();
                 }
@@ -290,12 +329,12 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TElem,
-                std::size_t TSize>
+                std::size_t TuiSize>
             struct GetPitchBytes<
-                std::array<TElem, TSize>>
+                std::array<TElem, TuiSize>>
             {
                 ALPAKA_FCT_HOST_ACC static std::size_t getPitchBytes(
-                    std::array<TElem, TSize> const & memPitch)
+                    std::array<TElem, TuiSize> const & memPitch)
                 {
                     return sizeof(TElem) * memPitch.size();
                 }
@@ -316,7 +355,7 @@ namespace alpaka
             template<
                 typename TElem,
                 typename Allocator>
-            struct GetDim<
+            struct DimType<
                 std::vector<TElem, Allocator>>
             {
                 using type = alpaka::dim::Dim1;
@@ -350,7 +389,7 @@ namespace alpaka
             template<
                 typename TElem,
                 typename Allocator>
-            struct GetMemSpace<
+            struct MemSpaceType<
                 std::vector<TElem, Allocator>>
             {
                 using type = alpaka::mem::MemSpaceHost;
@@ -362,10 +401,29 @@ namespace alpaka
             template<
                 typename TElem,
                 typename Allocator>
-            struct GetMemElem<
+            struct MemElemType<
                 std::vector<TElem, Allocator>>
             {
                 using type = TElem;
+            };
+
+            //#############################################################################
+            //! The std::vector base buffer trait specialization.
+            //#############################################################################
+            template<
+                typename TElem,
+                typename Allocator>
+            struct GetMemBufBase<
+                std::vector<TElem, Allocator>>
+            {
+                //-----------------------------------------------------------------------------
+                //! 
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static std::vector<TElem, Allocator> getMemBufBase(
+                    std::vector<TElem, Allocator> const & memBufBase)
+                {
+                    return memBufBase;
+                }
             };
 
             //#############################################################################

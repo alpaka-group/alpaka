@@ -25,7 +25,7 @@
 #include <alpaka/core/Vec.hpp>              // Vec
 #include <alpaka/core/BasicWorkDiv.hpp>     // workdiv::BasicWorkDiv
 
-#include <alpaka/traits/Device.hpp>         // dev::GetDevManT, getDevProps
+#include <alpaka/traits/Device.hpp>         // dev::DevManT, getDevProps
 
 #include <cmath>                            // std::ceil
 #include <algorithm>                        // std::min
@@ -57,7 +57,7 @@ namespace alpaka
                     TAcc const &,
                     Vec<3u> & v3uiBlockKernelExtents)
                 {
-                    auto const devProps(dev::getDevProps(dev::GetDevManT<TAcc>::getCurrentDevice()));
+                    auto const devProps(dev::getDevProps(dev::DevManT<TAcc>::getCurrentDevice()));
                     auto const & v3uiBlockKernelsExtentsMax(devProps.m_v3uiBlockKernelsExtentsMax);
 
                     v3uiBlockKernelExtents = Vec<3u>(
@@ -105,7 +105,7 @@ namespace alpaka
                     TAcc const &,
                     std::size_t & uiBlockKernelCount)
                 {
-                    auto const devProps(dev::getDevProps(dev::GetDevManT<TAcc>::getCurrentDevice()));
+                    auto const devProps(dev::getDevProps(dev::DevManT<TAcc>::getCurrentDevice()));
                     auto const & uiBlockKernelCountMax(devProps.m_uiBlockKernelsCountMax);
 
                     uiBlockKernelCount = std::min(uiBlockKernelCount, uiBlockKernelCountMax);
@@ -260,7 +260,7 @@ namespace alpaka
             auto const v3uiGridBlocksExtents(getWorkDiv<Grid, Blocks, dim::Dim3>(workDiv));
             auto const v3uiBlockKernelsExtents(getWorkDiv<Block, Kernels, dim::Dim3>(workDiv));
 
-            auto const devProps(dev::getDevProps(dev::GetDevManT<TAcc>::getCurrentDevice()));
+            auto const devProps(dev::getDevProps(dev::DevManT<TAcc>::getCurrentDevice()));
             auto const & v3uiBlockKernelsExtentsMax(devProps.m_v3uiBlockKernelsExtentsMax);
             auto const & uiBlockKernelCountMax(devProps.m_uiBlockKernelsCountMax);
 

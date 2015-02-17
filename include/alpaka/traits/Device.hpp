@@ -38,7 +38,7 @@ namespace alpaka
             template<
                 typename T,
                 typename TSfinae = void>
-            struct GetDev;
+            struct DevType;
 
             //#############################################################################
             //! The device manager type trait.
@@ -46,7 +46,7 @@ namespace alpaka
             template<
                 typename T,
                 typename TSfinae = void>
-            struct GetDevMan;
+            struct DevManType;
 
             //#############################################################################
             //! The device properties get trait.
@@ -68,14 +68,14 @@ namespace alpaka
         //#############################################################################
         template<
             typename T>
-        using GetDevT = typename traits::dev::GetDev<T>::type;
+        using DevT = typename traits::dev::DevType<T>::type;
 
         //#############################################################################
         //! The device manager type trait alias template to remove the ::type.
         //#############################################################################
         template<
             typename T>
-        using GetDevManT = typename traits::dev::GetDevMan<T>::type;
+        using DevManT = typename traits::dev::DevManType<T>::type;
 
         //-----------------------------------------------------------------------------
         //! \return The device properties.
@@ -93,10 +93,10 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TDevMan>
-        ALPAKA_FCT_HOST static std::vector<GetDevT<TDevMan>> getDevices(
+        ALPAKA_FCT_HOST static std::vector<DevT<TDevMan>> getDevices(
             TDevMan const & devMan)
         {
-            std::vector<GetDevT<TDevMan>> vDevices;
+            std::vector<DevT<TDevMan>> vDevices;
 
             std::size_t const uiDeviceCount(devMan.getDeviceCount());
             for(std::size_t uiDeviceIdx(0); uiDeviceIdx < uiDeviceCount; ++uiDeviceIdx)

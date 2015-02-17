@@ -23,7 +23,7 @@
 
 #include <alpaka/traits/Stream.hpp>     // traits::StreamEnqueueEvent, ...
 #include <alpaka/traits/Wait.hpp>       // CurrentThreadWaitFor, WaiterWaitFor
-#include <alpaka/traits/Acc.hpp>        // GetAccT
+#include <alpaka/traits/Acc.hpp>        // AccT
 
 #include <type_traits>                  // std::is_base
 
@@ -134,7 +134,7 @@ namespace alpaka
                 TEvent,
                 typename std::enable_if<
                     std::is_base_of<host::detail::StreamHost, TStream>::value
-                    && std::is_same<typename alpaka::acc::GetAccT<TStream>, typename alpaka::acc::GetAccT<TEvent>>::value>::type>
+                    && std::is_same<typename alpaka::acc::AccT<TStream>, typename alpaka::acc::AccT<TEvent>>::value>::type>
             {
                 ALPAKA_FCT_HOST static void waiterWaitFor(
                     TStream const & stream,

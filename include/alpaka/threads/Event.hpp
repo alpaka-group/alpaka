@@ -48,7 +48,7 @@ namespace alpaka
             //! The threads accelerator event accelerator type trait specialization.
             //#############################################################################
             template<>
-            struct GetAcc<
+            struct AccType<
                 threads::detail::EventThreads>
             {
                 using type = AccThreads;
@@ -61,7 +61,7 @@ namespace alpaka
             //! The threads accelerator event type trait specialization.
             //#############################################################################
             template<>
-            struct GetEvent<
+            struct EventType<
                 AccThreads>
             {
                 using type = threads::detail::EventThreads;

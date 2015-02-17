@@ -23,7 +23,7 @@
 
 #include <alpaka/traits/Stream.hpp>
 #include <alpaka/traits/Wait.hpp>       // CurrentThreadWaitFor, WaiterWaitFor
-#include <alpaka/traits/Acc.hpp>        // GetAcc
+#include <alpaka/traits/Acc.hpp>        // AccType
 
 #include <alpaka/cuda/AccCudaFwd.hpp>   // AccCuda
 #include <alpaka/cuda/Common.hpp>       // ALPAKA_CUDA_CHECK
@@ -115,7 +115,7 @@ namespace alpaka
             //! The CUDA accelerator stream accelerator type trait specialization.
             //#############################################################################
             template<>
-            struct GetAcc<
+            struct AccType<
                 cuda::detail::StreamCuda>
             {
                 using type = AccCuda;
@@ -128,7 +128,7 @@ namespace alpaka
             //! The CUDA accelerator stream type trait specialization.
             //#############################################################################
             template<>
-            struct GetStream<
+            struct StreamType<
                 AccCuda>
             {
                 using type = cuda::detail::StreamCuda;

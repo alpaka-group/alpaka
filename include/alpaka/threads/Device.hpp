@@ -26,7 +26,7 @@
 #include <alpaka/host/SysInfo.hpp>          // host::getCpuName, host::getGlobalMemSizeBytes
 
 #include <alpaka/traits/Wait.hpp>           // CurrentThreadWaitFor
-#include <alpaka/traits/Device.hpp>         // GetDev
+#include <alpaka/traits/Device.hpp>         // DevType
 
 #include <sstream>                          // std::stringstream
 #include <limits>                           // std::numeric_limits
@@ -144,7 +144,7 @@ namespace alpaka
             //! The threads accelerator device type trait specialization.
             //#############################################################################
             template<>
-            struct GetDev<
+            struct DevType<
                 AccThreads>
             {
                 using type = threads::detail::DeviceThreads;
@@ -153,7 +153,7 @@ namespace alpaka
             //! The threads accelerator device manager device type trait specialization.
             //#############################################################################
             template<>
-            struct GetDev<
+            struct DevType<
                 threads::detail::DeviceManagerThreads>
             {
                 using type = threads::detail::DeviceThreads;
@@ -193,7 +193,7 @@ namespace alpaka
             //! The threads accelerator device manager type trait specialization.
             //#############################################################################
             template<>
-            struct GetDevMan<
+            struct DevManType<
                 AccThreads>
             {
                 using type = threads::detail::DeviceManagerThreads;
@@ -202,7 +202,7 @@ namespace alpaka
             //! The threads accelerator device device manager type trait specialization.
             //#############################################################################
             template<>
-            struct GetDevMan<
+            struct DevManType<
                 threads::detail::DeviceThreads>
             {
                 using type = threads::detail::DeviceManagerThreads;

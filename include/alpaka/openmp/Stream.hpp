@@ -48,7 +48,7 @@ namespace alpaka
             //! The OpenMP accelerator stream accelerator type trait specialization.
             //#############################################################################
             template<>
-            struct GetAcc<
+            struct AccType<
                 openmp::detail::StreamOpenMp>
             {
                 using type = AccOpenMp;
@@ -61,7 +61,7 @@ namespace alpaka
             //! The OpenMP accelerator stream type trait specialization.
             //#############################################################################
             template<>
-            struct GetStream<
+            struct StreamType<
                 AccOpenMp>
             {
                 using type = alpaka::openmp::detail::StreamOpenMp;

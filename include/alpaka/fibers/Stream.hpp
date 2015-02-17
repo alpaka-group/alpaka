@@ -48,7 +48,7 @@ namespace alpaka
             //! The fibers accelerator stream accelerator type trait specialization.
             //#############################################################################
             template<>
-            struct GetAcc<
+            struct AccType<
                 fibers::detail::StreamFibers>
             {
                 using type = AccFibers;
@@ -61,7 +61,7 @@ namespace alpaka
             //! The fibers accelerator stream type trait specialization.
             //#############################################################################
             template<>
-            struct GetStream<
+            struct StreamType<
                 AccFibers>
             {
                 using type = alpaka::fibers::detail::StreamFibers;

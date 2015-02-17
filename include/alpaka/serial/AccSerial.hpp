@@ -330,7 +330,7 @@ namespace alpaka
             //#############################################################################
             template<
                 typename AcceleratedKernel>
-            struct GetAcc<
+            struct AccType<
                 serial::detail::KernelExecutorSerial<AcceleratedKernel>>
             {
                 using type = AccSerial;

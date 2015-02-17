@@ -143,13 +143,13 @@ struct VectorAddKernelTester
         }
 
         // Allocate the buffer on the accelerator.
-        using AccMemSpace = typename alpaka::mem::GetMemSpaceT<TAcc>;
+        using AccMemSpace = typename alpaka::mem::MemSpaceT<TAcc>;
         auto memBufAccA(alpaka::mem::alloc<float, AccMemSpace>(v1uiExtents));
         auto memBufAccB(alpaka::mem::alloc<float, AccMemSpace>(v1uiExtents));
         auto memBufAccC(alpaka::mem::alloc<float, AccMemSpace>(v1uiExtents));
 
         // Get a new stream.
-        alpaka::stream::GetStreamT<TAcc> stream;
+        alpaka::stream::StreamT<TAcc> stream;
 
         // Copy Host -> Acc.
         alpaka::mem::copy(memBufAccA, memBufHostA, v1uiExtents, stream);
@@ -221,19 +221,17 @@ int main()
 #ifdef ALPAKA_CUDA_ENABLED
         // Select the first CUDA device.
         // NOTE: This is not required to run any kernels on the CUDA accelerator because all accelerators have a default device. This only shows the possibility.
-        alpaka::dev::GetDevManT<alpaka::AccCuda>::setCurrentDevice(
-            alpaka::dev::GetDevManT<alpaka::AccCuda>::getCurrentDevice());
+        alpaka::dev::DevManT<alpaka::AccCuda>::setCurrentDevice(
+            alpaka::dev::DevManT<alpaka::AccCuda>::getCurrentDevice());
 #endif
         VectorAddKernelTester vectorAddKernelTester;
 
         // For different sizes.
-        for(std::size_t uiSize(1u);
 #if ALPAKA_INTEGRATION_TEST
-            uiSize <= 1u<<8u;
+        for(std::size_t uiSize(1u); uiSize <= 1u<<9u; uiSize *= 8u)
 #else
-            uiSize <= 1u<<16u;
+        for(std::size_t uiSize(1u); uiSize <= 1u<<16u; uiSize *= 2u)
 #endif
-            uiSize *= 2u)
         {
             std::cout << std::endl;
 

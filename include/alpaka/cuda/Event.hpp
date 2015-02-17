@@ -22,7 +22,7 @@
 
 #include <alpaka/traits/Event.hpp>
 #include <alpaka/traits/Wait.hpp>       // CurrentThreadWaitFor
-#include <alpaka/traits/Acc.hpp>        // GetAcc
+#include <alpaka/traits/Acc.hpp>        // AccType
 
 #include <alpaka/cuda/AccCudaFwd.hpp>   // AccCuda
 #include <alpaka/cuda/Common.hpp>       // ALPAKA_CUDA_CHECK
@@ -119,7 +119,7 @@ namespace alpaka
             //! The CUDA accelerator event accelerator type trait specialization.
             //#############################################################################
             template<>
-            struct GetAcc<
+            struct AccType<
                 cuda::detail::EventCuda>
             {
                 using type = AccCuda;
@@ -132,7 +132,7 @@ namespace alpaka
             //! The CUDA accelerator event type trait specialization.
             //#############################################################################
             template<>
-            struct GetEvent<
+            struct EventType<
                 AccCuda>
             {
                 using type = cuda::detail::EventCuda;

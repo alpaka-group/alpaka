@@ -26,7 +26,7 @@
 #include <alpaka/host/SysInfo.hpp>          // host::getCpuName, host::getGlobalMemSizeBytes
 
 #include <alpaka/traits/Wait.hpp>           // CurrentThreadWaitFor
-#include <alpaka/traits/Device.hpp>         // GetDev
+#include <alpaka/traits/Device.hpp>         // DevType
 
 #include <sstream>                          // std::stringstream
 #include <limits>                           // std::numeric_limits
@@ -143,7 +143,7 @@ namespace alpaka
             //! The serial accelerator device type trait specialization.
             //#############################################################################
             template<>
-            struct GetDev<
+            struct DevType<
                 AccSerial>
             {
                 using type = serial::detail::DeviceSerial;
@@ -152,7 +152,7 @@ namespace alpaka
             //! The serial accelerator device manager device type trait specialization.
             //#############################################################################
             template<>
-            struct GetDev<
+            struct DevType<
                 serial::detail::DeviceManagerSerial>
             {
                 using type = serial::detail::DeviceSerial;
@@ -186,7 +186,7 @@ namespace alpaka
             //! The serial accelerator device manager type trait specialization.
             //#############################################################################
             template<>
-            struct GetDevMan<
+            struct DevManType<
                 AccSerial>
             {
                 using type = serial::detail::DeviceManagerSerial;
@@ -195,7 +195,7 @@ namespace alpaka
             //! The serial accelerator device device manager type trait specialization.
             //#############################################################################
             template<>
-            struct GetDevMan<
+            struct DevManType<
                 serial::detail::DeviceSerial>
             {
                 using type = serial::detail::DeviceManagerSerial;

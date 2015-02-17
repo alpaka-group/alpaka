@@ -22,7 +22,7 @@
 #pragma once
 
 #include <alpaka/traits/Wait.hpp>       // CurrentThreadWaitFor
-#include <alpaka/traits/Device.hpp>     // GetDev
+#include <alpaka/traits/Device.hpp>     // DevType
 
 #include <alpaka/cuda/AccCudaFwd.hpp>   // AccCuda
 #include <alpaka/cuda/Common.hpp>
@@ -278,7 +278,7 @@ namespace alpaka
             //! The CUDA accelerator device type trait specialization.
             //#############################################################################
             template<>
-            struct GetDev<
+            struct DevType<
                 AccCuda>
             {
                 using type = cuda::detail::DeviceCuda;
@@ -287,7 +287,7 @@ namespace alpaka
             //! The CUDA accelerator device manager device type trait specialization.
             //#############################################################################
             template<>
-            struct GetDev<
+            struct DevType<
                 cuda::detail::DeviceManagerCuda>
             {
                 using type = cuda::detail::DeviceCuda;
@@ -324,7 +324,7 @@ namespace alpaka
             //! The CUDA accelerator device manager type trait specialization.
             //#############################################################################
             template<>
-            struct GetDevMan<
+            struct DevManType<
                 AccCuda>
             {
                 using type = cuda::detail::DeviceManagerCuda;
@@ -333,7 +333,7 @@ namespace alpaka
             //! The CUDA accelerator device device manager type trait specialization.
             //#############################################################################
             template<>
-            struct GetDevMan<
+            struct DevManType<
                 cuda::detail::DeviceCuda>
             {
                 using type = cuda::detail::DeviceManagerCuda;

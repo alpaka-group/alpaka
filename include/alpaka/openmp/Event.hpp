@@ -48,7 +48,7 @@ namespace alpaka
             //! The OpenMP accelerator event accelerator type trait specialization.
             //#############################################################################
             template<>
-            struct GetAcc<
+            struct AccType<
                 openmp::detail::EventOpenMp>
             {
                 using type = AccOpenMp;
@@ -61,7 +61,7 @@ namespace alpaka
             //! The OpenMP accelerator event type trait specialization.
             //#############################################################################
             template<>
-            struct GetEvent<
+            struct EventType<
                 AccOpenMp>
             {
                 using type = alpaka::openmp::detail::EventOpenMp;

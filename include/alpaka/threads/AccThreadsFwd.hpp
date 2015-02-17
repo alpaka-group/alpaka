@@ -22,7 +22,7 @@
 #pragma once
 
 #include <alpaka/traits/Acc.hpp>    // GetAccName
-#include <alpaka/traits/Mem.hpp>    // GetMemSpace
+#include <alpaka/traits/Mem.hpp>    // MemSpaceType
 
 #include <alpaka/host/MemSpace.hpp> // MemSpaceHost
 
@@ -49,7 +49,7 @@ namespace alpaka
             //! The threads accelerator accelerator type trait specialization.
             //#############################################################################
             template<>
-            struct GetAcc<
+            struct AccType<
                 threads::detail::AccThreads>
             {
                 using type = threads::detail::AccThreads;
@@ -75,7 +75,7 @@ namespace alpaka
             //! The threads accelerator memory space trait specialization.
             //#############################################################################
             template<>
-            struct GetMemSpace<
+            struct MemSpaceType<
                 threads::detail::AccThreads>
             {
                 using type = alpaka::mem::MemSpaceHost;

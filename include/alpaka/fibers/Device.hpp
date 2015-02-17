@@ -26,7 +26,7 @@
 #include <alpaka/host/SysInfo.hpp>          // host::getCpuName, host::getGlobalMemSizeBytes
 
 #include <alpaka/traits/Wait.hpp>           // CurrentThreadWaitFor
-#include <alpaka/traits/Device.hpp>         // GetDev
+#include <alpaka/traits/Device.hpp>         // DevType
 
 #include <sstream>                          // std::stringstream
 #include <limits>                           // std::numeric_limits
@@ -145,7 +145,7 @@ namespace alpaka
             //! The fibers accelerator device type trait specialization.
             //#############################################################################
             template<>
-            struct GetDev<
+            struct DevType<
                 AccFibers>
             {
                 using type = fibers::detail::DeviceFibers;
@@ -154,7 +154,7 @@ namespace alpaka
             //! The fibers accelerator device manager device type trait specialization.
             //#############################################################################
             template<>
-            struct GetDev<
+            struct DevType<
                 fibers::detail::DeviceManagerFibers>
             {
                 using type = fibers::detail::DeviceFibers;
@@ -192,7 +192,7 @@ namespace alpaka
             //! The fibers accelerator device manager type trait specialization.
             //#############################################################################
             template<>
-            struct GetDevMan<
+            struct DevManType<
                 AccFibers>
             {
                 using type = fibers::detail::DeviceManagerFibers;
@@ -201,7 +201,7 @@ namespace alpaka
             //! The fibers accelerator device device manager type trait specialization.
             //#############################################################################
             template<>
-            struct GetDevMan<
+            struct DevManType<
                 fibers::detail::DeviceFibers>
             {
                 using type = fibers::detail::DeviceManagerFibers;

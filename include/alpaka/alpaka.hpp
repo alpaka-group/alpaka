@@ -23,11 +23,12 @@
 
 #include <alpaka/core/BasicDims.hpp>
 #include <alpaka/core/BasicWorkDiv.hpp>
-#include <alpaka/core/BasicMem.hpp>
 #include <alpaka/core/Common.hpp>
 #include <alpaka/core/EnabledAccelerators.hpp>
 #include <alpaka/core/KernelExecCreator.hpp>
-#include <alpaka/core/MemBufPlainPtrWrapper.hpp>
+#include <alpaka/core/mem/MemBufBasePlainPtrWrapper.hpp>
+#include <alpaka/core/mem/MemBufBaseStdContainers.hpp>
+#include <alpaka/core/mem/MemBufView.hpp>
 #include <alpaka/core/Ops.hpp>
 #include <alpaka/core/Positioning.hpp>
 #include <alpaka/core/Vec.hpp>
@@ -46,6 +47,7 @@
 #include <alpaka/traits/Dim.hpp>
 #include <alpaka/traits/Event.hpp>
 #include <alpaka/traits/Extents.hpp>
+#include <alpaka/traits/Offsets.hpp>
 #include <alpaka/traits/Idx.hpp>
 #include <alpaka/traits/Mem.hpp>
 #include <alpaka/traits/Stream.hpp>

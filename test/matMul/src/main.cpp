@@ -291,8 +291,8 @@ struct MatMulTester
         // Wrap the std::vectors into a memory buffer object.
         // For 1D data this would not be required because alpaka::mem::copy is specialized for std::vector and std::array.
         // For multi dimensional data you could directly create them using alpaka::mem::alloc<Type, MemSpaceHost>, which is not used here.
-        // Instead we use MemBufPlainPtrWrapper to wrap the data.
-        using MemBufWrapper = alpaka::mem::MemBufPlainPtrWrapper<
+        // Instead we use MemBufBasePlainPtrWrapper to wrap the data.
+        using MemBufWrapper = alpaka::mem::MemBufBasePlainPtrWrapper<
             alpaka::mem::MemSpaceHost,
             std::uint32_t,
             alpaka::dim::Dim2>;
@@ -304,13 +304,13 @@ struct MatMulTester
         alpaka::mem::set(memBufCHost, 0u, v2uiExtentsC);
 
         // Allocate the buffers on the accelerator.
-        using AccMemSpace = typename alpaka::mem::GetMemSpaceT<TAcc>;
+        using AccMemSpace = typename alpaka::mem::MemSpaceT<TAcc>;
         auto memBufAAcc(alpaka::mem::alloc<std::uint32_t, AccMemSpace>(v2uiExtentsA));
         auto memBufBAcc(alpaka::mem::alloc<std::uint32_t, AccMemSpace>(v2uiExtentsB));
         auto memBufCAcc(alpaka::mem::alloc<std::uint32_t, AccMemSpace>(v2uiExtentsC));
 
         // Get a new stream.
-        alpaka::stream::GetStreamT<TAcc> stream;
+        alpaka::stream::StreamT<TAcc> stream;
 
         // Copy Host -> Acc.
         alpaka::mem::copy(memBufAAcc, memBufAHost, v2uiExtentsA, stream);
@@ -423,8 +423,8 @@ int main(
 #ifdef ALPAKA_CUDA_ENABLED
             // Select the first CUDA device.
             // NOTE: This is not required to run any kernels on the CUDA accelerator because all accelerators have a default device. This only shows the possibility.
-            alpaka::dev::GetDevManT<alpaka::AccCuda>::setCurrentDevice(
-                alpaka::dev::GetDevManT<alpaka::AccCuda>::getCurrentDevice());
+            alpaka::dev::DevManT<alpaka::AccCuda>::setCurrentDevice(
+                alpaka::dev::DevManT<alpaka::AccCuda>::getCurrentDevice());
 #endif
             MatMulTester matMulTester;
 
@@ -432,7 +432,7 @@ int main(
 #if ALPAKA_INTEGRATION_TEST
             for(std::size_t uiL(1u); uiL <= 64u; uiL *= 8u)
             {
-                for(std::size_t uiM(1u); uiM <= 256u; uiM *= 4u)
+                for(std::size_t uiM(1u); uiM <= 512u; uiM *= 8u)
                 {
                     for(std::size_t uiN(1u); uiN <= 64u; uiN *= 8u)
                     {

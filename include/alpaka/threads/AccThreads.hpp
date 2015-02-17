@@ -576,7 +576,7 @@ namespace alpaka
             //#############################################################################
             template<
                 typename AcceleratedKernel>
-            struct GetAcc<
+            struct AccType<
                 threads::detail::KernelExecutorThreads<AcceleratedKernel>>
             {
                 using type = AccThreads;

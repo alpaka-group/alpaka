@@ -24,7 +24,8 @@
 #include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST
 #include <alpaka/core/BasicDims.hpp>    // dim::Dim<N>
 
-#include <cstdint>                      // std::size_t
+#include <cstddef>                      // std::size_t
+#include <type_traits>                  // std::enable_if, std::is_integral, std::is_unsigned
 
 namespace alpaka
 {
@@ -41,7 +42,7 @@ namespace alpaka
             template<
                 typename T, 
                 typename TSfinae = void>
-            struct GetDim;
+            struct DimType;
         }
     }
 
@@ -55,7 +56,7 @@ namespace alpaka
         //#############################################################################
         template<
             typename T>
-        using GetDimT = typename traits::dim::GetDim<T>::type;
+        using DimT = typename traits::dim::DimType<T>::type;
         //-----------------------------------------------------------------------------
         //! \return The dimension.
         //-----------------------------------------------------------------------------
@@ -63,7 +64,28 @@ namespace alpaka
             typename T>
         ALPAKA_FCT_HOST_ACC std::size_t getDim()
         {
-            return GetDimT<T>::value;
+            return DimT<T>::value;
+        }
+    }
+
+    //-----------------------------------------------------------------------------
+    // Trait specializations for unsigned integral types.
+    //-----------------------------------------------------------------------------
+    namespace traits
+    {
+        namespace dim
+        {
+            //#############################################################################
+            //! The unsigned integral dimension getter trait specialization.
+            //#############################################################################
+            template<
+                typename T>
+            struct DimType<
+                T,
+                typename std::enable_if<std::is_integral<T>::value && std::is_unsigned<T>::value>::type>
+            {
+                using type = alpaka::dim::Dim1;
+            };
         }
     }
 }

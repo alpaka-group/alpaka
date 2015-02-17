@@ -48,7 +48,7 @@ namespace alpaka
             //! The fibers accelerator event accelerator type trait specialization.
             //#############################################################################
             template<>
-            struct GetAcc<
+            struct AccType<
                 fibers::detail::EventFibers>
             {
                 using type = AccFibers;
@@ -61,7 +61,7 @@ namespace alpaka
             //! The fibers accelerator event type trait specialization.
             //#############################################################################
             template<>
-            struct GetEvent<
+            struct EventType<
                 AccFibers>
             {
                 using type = alpaka::fibers::detail::EventFibers;
