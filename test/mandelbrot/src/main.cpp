@@ -130,12 +130,15 @@ public:
     //-----------------------------------------------------------------------------
     //! The kernel entry point.
     //!
-    //! \tparam TElem The matrix element type.
     //! \param acc The accelerator to be executed on.
     //! \param pColors The output image.
     //! \param uiNumRows The number of rows in the image
     //! \param uiNumCols The number of columns in the image.
     //! \param uiPitchElems The pitch size in elements in the image.
+    //! \param fMinR The left border.
+    //! \param fMaxR The right border.
+    //! \param fMinI The bottom border.
+    //! \param fMaxI The top border.
     //! \param uiMaxIterations The maximum number of iterations.
     //-----------------------------------------------------------------------------
     ALPAKA_FCT_ACC void operator()(
@@ -298,7 +301,7 @@ struct MandelbrotKernelTester
         alpaka::workdiv::BasicWorkDiv const workDiv(alpaka::workdiv::getValidWorkDiv<boost::mpl::vector<TAcc>>(v3uiGridKernels, false));
 
         std::cout
-            << "profileAcceleratedMatMulKernel("
+            << "MandelbrotKernelTester("
             << " uiNumRows:" << uiNumRows
             << ", uiNumCols:" << uiNumCols
             << ", uiMaxIterations:" << uiMaxIterations

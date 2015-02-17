@@ -348,7 +348,7 @@ struct MatMulTester
             i < uiL * uiN;
             ++i)
         {
-            auto const uiVal(pHostData[i]);
+            auto const & uiVal(pHostData[i]);
             if(uiVal != uiCorrectResult)
             {
                 std::cout << "C[" << i << "] == " << uiVal << " != " << uiCorrectResult << std::endl;
@@ -429,12 +429,21 @@ int main(
             MatMulTester matMulTester;
 
             // For different matrix sizes.
+#if ALPAKA_INTEGRATION_TEST
             for(std::size_t uiL(1u); uiL <= 64u; uiL *= 8u)
             {
-                for(std::size_t uiM(1u); uiM <= 512u; uiM *= 8u)
+                for(std::size_t uiM(1u); uiM <= 256u; uiM *= 4u)
                 {
                     for(std::size_t uiN(1u); uiN <= 64u; uiN *= 8u)
                     {
+#else
+            for(std::size_t uiL(1u); uiL <= 1024u; uiL *= 4u)
+            {
+                for(std::size_t uiM(1u); uiM <= 1024u; uiM *= 4u)
+                {
+                    for(std::size_t uiN(1u); uiN <= 1024u; uiN *= 4u)
+                    {
+#endif
                         std::cout << std::endl;
 
                         // Execute the kernel on all enabled accelerators.

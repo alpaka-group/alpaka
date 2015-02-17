@@ -198,7 +198,7 @@ struct SharedMemTester
         using AccMemSpace = typename alpaka::mem::GetMemSpaceT<TAcc>;
 
         std::cout
-            << "AcceleratedExampleKernelProfiler("
+            << "SharedMemTester("
             << " accelerator: " << alpaka::acc::getAccName<TAcc>()
             << ", kernel: " << typeid(Kernel).name()
             << ", workDiv: " << workDiv

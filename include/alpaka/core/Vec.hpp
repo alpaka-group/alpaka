@@ -45,7 +45,7 @@ namespace alpaka
     //#############################################################################
     template<
         std::size_t TuiDim, 
-        // NOTE: Setting the value type to std::size_t leads to invalid data on CUDA devices (at least witch VC12).
+        // NOTE: Setting the value type to std::size_t leads to invalid data on CUDA devices (at least with VC12).
         typename TValue = std::uint32_t>
     class Vec
     {
@@ -98,6 +98,7 @@ namespace alpaka
         }
         //-----------------------------------------------------------------------------
         //! Extents-constructor.
+        // \FIXME: enable this Extent constructor.
         //-----------------------------------------------------------------------------
         /*template<
             typename TExtents,
@@ -126,6 +127,7 @@ namespace alpaka
         {}
         //-----------------------------------------------------------------------------
         //! Extents-constructor.
+        // \FIXME: enable this Extent constructor.
         //-----------------------------------------------------------------------------
         /*template<
             typename TExtents,
