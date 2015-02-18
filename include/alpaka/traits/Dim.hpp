@@ -24,7 +24,6 @@
 #include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST
 #include <alpaka/core/BasicDims.hpp>    // dim::Dim<N>
 
-#include <cstddef>                      // std::size_t
 #include <type_traits>                  // std::enable_if, std::is_integral, std::is_unsigned
 
 namespace alpaka
@@ -57,12 +56,13 @@ namespace alpaka
         template<
             typename T>
         using DimT = typename traits::dim::DimType<T>::type;
+
         //-----------------------------------------------------------------------------
         //! \return The dimension.
         //-----------------------------------------------------------------------------
         template<
             typename T>
-        ALPAKA_FCT_HOST_ACC std::size_t getDim()
+        ALPAKA_FCT_HOST_ACC UInt getDim()
         {
             return DimT<T>::value;
         }

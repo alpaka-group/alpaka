@@ -21,13 +21,13 @@
 
 #pragma once
 
-#include <iostream>                                 // std::cerr
-#include <string>                                   // std::string
-#include <stdexcept>                                // std::runtime_error
-
 #include <cuda.h>                                   // cudaGetErrorString
 
 #include <boost/preprocessor/stringize.hpp>         // BOOST_PP_STRINGIZE
+
+#include <iostream>                                 // std::cerr
+#include <string>                                   // std::string
+#include <stdexcept>                                // std::runtime_error
 
 #if (!defined(CUDA_VERSION) || (CUDA_VERSION < 6050))
     #error "CUDA version 6.5 or greater required!"

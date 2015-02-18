@@ -30,6 +30,8 @@
 #include <alpaka/host/MemSpace.hpp>     // MemSpaceHost
 #include <alpaka/cuda/MemSpace.hpp>     // MemSpaceCuda
 
+#include <boost/predef.h>               // workarounds
+
 #include <type_traits>                  // std::enable_if, std::is_array, std::extent
 #include <vector>                       // std::vector
 #include <array>                        // std::array
@@ -62,6 +64,50 @@ namespace alpaka
         namespace extent
         {
             //#############################################################################
+            //! The fixed size array extents get trait specialization.
+            //#############################################################################
+            template<
+                typename TFixedSizeArray>
+            struct GetExtents<
+                TFixedSizeArray,
+                typename std::enable_if<std::is_array<TFixedSizeArray>::value>::type>
+            {
+                //-----------------------------------------------------------------------------
+                //! 
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static /*constexpr*/ Vec<alpaka::dim::DimT<TFixedSizeArray>::value> getExtents(
+                    TFixedSizeArray const & extents)
+                {
+                    return getExtentsInternal(
+                        extents,
+                        IdxSequence());
+                }
+
+            private:
+#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
+                using IdxSequence = typename alpaka::detail::make_index_sequence<std::rank<TFixedSizeArray>::value>::type;
+#else
+                using IdxSequence = alpaka::detail::make_index_sequence<std::rank<TFixedSizeArray>::value>;
+#endif
+                //-----------------------------------------------------------------------------
+                //! 
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TVal,
+                    UInt... TIndices>
+                ALPAKA_FCT_HOST static /*constexpr*/ Vec<alpaka::dim::DimT<TFixedSizeArray>::value> getExtentsInternal(
+                    TFixedSizeArray const & extents,
+#if !BOOST_COMP_MSVC     // MSVC 190022512 introduced a new bug with alias templates: error C3520: 'TIndices': parameter pack must be expanded in this context
+                alpaka::detail::index_sequence<TIndices...> const &)
+#else
+                alpaka::detail::integer_sequence<UInt, TIndices...> const &)
+#endif
+                {
+                    return {(std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value-(TIndices+1u)>::value)...};
+                }
+            };
+
+            //#############################################################################
             //! The fixed size array width get trait specialization.
             //#############################################################################
             template<
@@ -74,7 +120,7 @@ namespace alpaka
                     && (std::rank<TFixedSizeArray>::value <= 3u)
                     && (std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 1u>::value > 0u)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static std::size_t getWidth(
+                ALPAKA_FCT_HOST_ACC static constexpr UInt getWidth(
                     TFixedSizeArray const &)
                 {
                     return std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value-1u>::value;
@@ -94,7 +140,7 @@ namespace alpaka
                     && (std::rank<TFixedSizeArray>::value <= 3u)
                     && (std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 2u>::value > 0u)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static std::size_t getHeight(
+                ALPAKA_FCT_HOST_ACC static constexpr UInt getHeight(
                     TFixedSizeArray const &)
                 {
                     return std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 2u>::value;
@@ -113,10 +159,32 @@ namespace alpaka
                     && (std::rank<TFixedSizeArray>::value <= 3u)
                     && (std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 3u>::value > 0u)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static std::size_t getDepth(
+                ALPAKA_FCT_HOST_ACC static constexpr UInt getDepth(
                     TFixedSizeArray const &)
                 {
                     return std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 3u>::value;
+                }
+            };
+        }
+        
+        namespace offset
+        {
+            //#############################################################################
+            //! The fixed size array offsets get trait specialization.
+            //#############################################################################
+            template<
+                typename TFixedSizeArray>
+            struct GetOffsets<
+                TFixedSizeArray,
+                typename std::enable_if<std::is_array<TFixedSizeArray>::value>::type>
+            {
+                //-----------------------------------------------------------------------------
+                //! 
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static Vec<alpaka::dim::DimT<TFixedSizeArray>::value> getOffsets(
+                    TFixedSizeArray const &)
+                {
+                    return Vec<alpaka::dim::DimT<TFixedSizeArray>::value>();
                 }
             };
         }
@@ -231,7 +299,7 @@ namespace alpaka
             {
                 using TElem = typename std::remove_all_extents<TFixedSizeArray>::type;
 
-                ALPAKA_FCT_HOST_ACC static std::size_t getPitchBytes(
+                ALPAKA_FCT_HOST_ACC static constexpr UInt getPitchBytes(
                     TFixedSizeArray const &)
                 {
                     return sizeof(TElem) * std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 1u>::value;
@@ -252,7 +320,7 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TElem,
-                std::size_t TuiSize>
+                UInt TuiSize>
             struct DimType<
                 std::array<TElem, TuiSize>>
             {
@@ -263,18 +331,59 @@ namespace alpaka
         namespace extent
         {
             //#############################################################################
+            //! The std::array extents get trait specialization.
+            //#############################################################################
+            template<
+                typename TElem,
+                UInt TuiSize>
+            struct GetExtents<
+                std::array<TElem, TuiSize>>
+            {
+                //-----------------------------------------------------------------------------
+                //! 
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static /*constexpr*/ Vec<1u> getExtents(
+                    std::array<TElem, TuiSize> const & extents)
+                {
+                    return {TuiSize};
+                }
+            };
+
+            //#############################################################################
             //! The std::array width get trait specialization.
             //#############################################################################
             template<
                 typename TElem,
-                std::size_t TuiSize>
+                UInt TuiSize>
             struct GetWidth<
                 std::array<TElem, TuiSize>>
             {
-                ALPAKA_FCT_HOST_ACC static std::size_t getWidth(
+                ALPAKA_FCT_HOST_ACC static constexpr UInt getWidth(
                     std::array<TElem, TuiSize> const & extent)
                 {
-                    return extent.size();
+                    return TuiSize;
+                }
+            };
+        }
+        
+        namespace offset
+        {
+            //#############################################################################
+            //! The std::array offsets get trait specialization.
+            //#############################################################################
+            template<
+                typename TElem,
+                UInt TuiSize>
+            struct GetOffsets<
+                std::array<TElem, TuiSize>>
+            {
+                //-----------------------------------------------------------------------------
+                //! 
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static Vec<1u> getOffsets(
+                    std::array<TElem, TuiSize> const &)
+                {
+                    return Vec<1u>();
                 }
             };
         }
@@ -286,7 +395,7 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TElem,
-                std::size_t TuiSize>
+                UInt TuiSize>
             struct IsMemBufBase<
                 std::array<TElem, TuiSize>>
             {
@@ -298,7 +407,7 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TElem,
-                std::size_t TuiSize>
+                UInt TuiSize>
             struct MemSpaceType<
                 std::array<TElem, TuiSize>>
             {
@@ -310,7 +419,7 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TElem,
-                std::size_t TuiSize>
+                UInt TuiSize>
             struct MemElemType<
                 std::array<TElem, TuiSize>>
             {
@@ -322,7 +431,7 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TElem,
-                std::size_t TuiSize>
+                UInt TuiSize>
             struct GetMemBufBase<
                 std::array<TElem, TuiSize>>
             {
@@ -349,7 +458,7 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TElem,
-                std::size_t TuiSize>
+                UInt TuiSize>
             struct GetNativePtr<
                 std::array<TElem, TuiSize>>
             {
@@ -370,11 +479,11 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TElem,
-                std::size_t TuiSize>
+                UInt TuiSize>
             struct GetPitchBytes<
                 std::array<TElem, TuiSize>>
             {
-                ALPAKA_FCT_HOST_ACC static std::size_t getPitchBytes(
+                ALPAKA_FCT_HOST_ACC static UInt getPitchBytes(
                     std::array<TElem, TuiSize> const & memPitch)
                 {
                     return sizeof(TElem) * memPitch.size();
@@ -395,9 +504,9 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TElem,
-                typename Allocator>
+                typename TAllocator>
             struct DimType<
-                std::vector<TElem, Allocator>>
+                std::vector<TElem, TAllocator>>
             {
                 using type = alpaka::dim::Dim1;
             };
@@ -406,18 +515,59 @@ namespace alpaka
         namespace extent
         {
             //#############################################################################
+            //! The std::vector extents get trait specialization.
+            //#############################################################################
+            template<
+                typename TElem,
+                typename TAllocator>
+            struct GetExtents<
+                std::vector<TElem, TAllocator>>
+            {
+                //-----------------------------------------------------------------------------
+                //! 
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static Vec<1u> getExtents(
+                    std::vector<TElem, TAllocator> const & extent)
+                {
+                    return {extent.size()};
+                }
+            };
+
+            //#############################################################################
             //! The std::vector width get trait specialization.
             //#############################################################################
             template<
                 typename TElem,
-                typename Allocator>
+                typename TAllocator>
             struct GetWidth<
-                std::vector<TElem, Allocator>>
+                std::vector<TElem, TAllocator>>
             {
-                ALPAKA_FCT_HOST_ACC static std::size_t getWidth(
-                    std::vector<TElem, Allocator> const & extent)
+                ALPAKA_FCT_HOST_ACC static UInt getWidth(
+                    std::vector<TElem, TAllocator> const & extent)
                 {
                     return extent.size();
+                }
+            };
+        }
+        
+        namespace offset
+        {
+            //#############################################################################
+            //! The std::vector offsets get trait specialization.
+            //#############################################################################
+            template<
+                typename TElem,
+                typename TAllocator>
+            struct GetOffsets<
+                std::vector<TElem, TAllocator>>
+            {
+                //-----------------------------------------------------------------------------
+                //! 
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static Vec<1u> getOffsets(
+                    std::vector<TElem, TAllocator> const &)
+                {
+                    return Vec<1u>();
                 }
             };
         }
@@ -429,9 +579,9 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TElem,
-                typename Allocator>
+                typename TAllocator>
             struct IsMemBufBase<
-                std::vector<TElem, Allocator>>
+                std::vector<TElem, TAllocator>>
             {
                 static const bool value = true;
             };
@@ -441,9 +591,9 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TElem,
-                typename Allocator>
+                typename TAllocator>
             struct MemSpaceType<
-                std::vector<TElem, Allocator>>
+                std::vector<TElem, TAllocator>>
             {
                 using type = alpaka::mem::MemSpaceHost;
             };
@@ -453,9 +603,9 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TElem,
-                typename Allocator>
+                typename TAllocator>
             struct MemElemType<
-                std::vector<TElem, Allocator>>
+                std::vector<TElem, TAllocator>>
             {
                 using type = TElem;
             };
@@ -465,23 +615,23 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TElem,
-                typename Allocator>
+                typename TAllocator>
             struct GetMemBufBase<
-                std::vector<TElem, Allocator>>
+                std::vector<TElem, TAllocator>>
             {
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::vector<TElem, Allocator> const & getMemBufBase(
-                    std::vector<TElem, Allocator> const & memBufBase)
+                ALPAKA_FCT_HOST static std::vector<TElem, TAllocator> const & getMemBufBase(
+                    std::vector<TElem, TAllocator> const & memBufBase)
                 {
                     return memBufBase;
                 }
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::vector<TElem, Allocator> & getMemBufBase(
-                    std::vector<TElem, Allocator> & memBufBase)
+                ALPAKA_FCT_HOST static std::vector<TElem, TAllocator> & getMemBufBase(
+                    std::vector<TElem, TAllocator> & memBufBase)
                 {
                     return memBufBase;
                 }
@@ -492,17 +642,17 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TElem,
-                typename Allocator>
+                typename TAllocator>
             struct GetNativePtr<
-                std::vector<TElem, Allocator>>
+                std::vector<TElem, TAllocator>>
             {
                 ALPAKA_FCT_HOST_ACC static TElem const * getNativePtr(
-                    std::vector<TElem, Allocator> const & memBuf)
+                    std::vector<TElem, TAllocator> const & memBuf)
                 {
                     return memBuf.data();
                 }
                 ALPAKA_FCT_HOST_ACC static TElem * getNativePtr(
-                    std::vector<TElem, Allocator> & memBuf)
+                    std::vector<TElem, TAllocator> & memBuf)
                 {
                     return memBuf.data();
                 }
@@ -513,12 +663,12 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TElem,
-                typename Allocator>
+                typename TAllocator>
             struct GetPitchBytes<
-                std::vector<TElem, Allocator>>
+                std::vector<TElem, TAllocator>>
             {
-                ALPAKA_FCT_HOST_ACC static std::size_t getPitchBytes(
-                    std::vector<TElem, Allocator> const & memPitch)
+                ALPAKA_FCT_HOST_ACC static UInt getPitchBytes(
+                    std::vector<TElem, TAllocator> const & memPitch)
                 {
                     return sizeof(TElem) * memPitch.size();
                 }

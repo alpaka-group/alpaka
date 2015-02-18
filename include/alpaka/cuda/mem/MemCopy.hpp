@@ -33,7 +33,6 @@
 #include <alpaka/traits/Extents.hpp>        // traits::getXXX
 
 #include <cassert>                          // assert
-#include <cstddef>                          // std::size_t
 
 namespace alpaka
 {

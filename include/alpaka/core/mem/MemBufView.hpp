@@ -86,8 +86,8 @@ namespace alpaka
                     assert((alpaka::offset::getOffsetY(relativeOffsetsElements)+alpaka::offset::getOffsetY(memBuf)+alpaka::extent::getHeight(extentsElements)) <= alpaka::extent::getHeight(memBuf));
                     assert((alpaka::offset::getOffsetZ(relativeOffsetsElements)+alpaka::offset::getOffsetZ(memBuf)+alpaka::extent::getDepth(extentsElements)) <= alpaka::extent::getDepth(memBuf));
                 }
-
-            private:
+                
+            public:
                 MemBufBase m_memBufBase;
                 Vec<Dim::value> m_vOffsetsElements;
                 Vec<Dim::value> m_vExtentsElements;
@@ -118,6 +118,24 @@ namespace alpaka
         namespace extent
         {
             //#############################################################################
+            //! The MemBufView extents get trait specialization.
+            //#############################################################################
+            template<
+                typename TMemBuf>
+            struct GetExtents<
+                alpaka::mem::detail::MemBufView<TMemBuf>>
+            {
+                //-----------------------------------------------------------------------------
+                //! 
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static Vec<alpaka::dim::DimT<TMemBuf>::value> getExtents(
+                    alpaka::mem::detail::MemBufView<TMemBuf> const & extents)
+                {
+                    return {extents.m_vExtentsElements};
+                }
+            };
+
+            //#############################################################################
             //! The MemBufView width get trait specialization.
             //#############################################################################
             template<
@@ -129,7 +147,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::size_t getWidth(
+                ALPAKA_FCT_HOST static UInt getWidth(
                     alpaka::mem::detail::MemBufView<TMemBuf> const & extent)
                 {
                     return extent.m_vExtentsElements[0u];
@@ -148,7 +166,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::size_t getHeight(
+                ALPAKA_FCT_HOST static UInt getHeight(
                     alpaka::mem::detail::MemBufView<TMemBuf> const & extent)
                 {
                     return extent.m_vExtentsElements[1u];
@@ -166,7 +184,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::size_t getDepth(
+                ALPAKA_FCT_HOST static UInt getDepth(
                     alpaka::mem::detail::MemBufView<TMemBuf> const & extent)
                 {
                     return extent.m_vExtentsElements[2u];
@@ -206,7 +224,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::size_t getOffsetX(
+                ALPAKA_FCT_HOST static UInt getOffsetX(
                     alpaka::mem::detail::MemBufView<TMemBuf> const & offset)
                 {
                     return offset.m_vOffsetsElements[0u];
@@ -225,7 +243,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::size_t getOffsetY(
+                ALPAKA_FCT_HOST static UInt getOffsetY(
                     alpaka::mem::detail::MemBufView<TMemBuf> const & offset)
                 {
                     return offset.m_vOffsetsElements[1u];
@@ -243,7 +261,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::size_t getOffsetZ(
+                ALPAKA_FCT_HOST static UInt getOffsetZ(
                     alpaka::mem::detail::MemBufView<TMemBuf> const & offset)
                 {
                     return offset.m_vOffsetsElements[2u];
@@ -359,7 +377,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::size_t getPitchBytes(
+                ALPAKA_FCT_HOST static UInt getPitchBytes(
                     alpaka::mem::detail::MemBufView<TMemBuf> const & memBufView)
                 {
                     return alpaka::mem::getPitchElements(alpaka::mem::getMemBufBase(memBufView));

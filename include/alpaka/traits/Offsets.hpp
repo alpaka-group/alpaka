@@ -25,7 +25,6 @@
 
 #include <alpaka/traits/Dim.hpp>        // dim::DimType
 
-#include <cstddef>                      // std::size_t
 #include <type_traits>                  // std::enable_if
 
 namespace alpaka
@@ -55,10 +54,10 @@ namespace alpaka
                 typename TSfinae = void>
             struct GetOffsetX
             {
-                ALPAKA_FCT_HOST_ACC static std::size_t getOffsetX(
+                ALPAKA_FCT_HOST_ACC static UInt getOffsetX(
                     T const &)
                 {
-                    return 0u;
+                    return static_cast<UInt>(0u);
                 }
             };
             //#############################################################################
@@ -71,10 +70,10 @@ namespace alpaka
                 typename TSfinae = void>
             struct GetOffsetY
             {
-                ALPAKA_FCT_HOST_ACC static std::size_t getOffsetY(
+                ALPAKA_FCT_HOST_ACC static UInt getOffsetY(
                     T const &)
                 {
-                    return 0u;
+                    return static_cast<UInt>(0u);
                 }
             };
             //#############################################################################
@@ -87,10 +86,10 @@ namespace alpaka
                 typename TSfinae = void>
             struct GetOffsetZ
             {
-                ALPAKA_FCT_HOST_ACC static std::size_t getOffsetZ(
+                ALPAKA_FCT_HOST_ACC static UInt getOffsetZ(
                     T const &)
                 {
-                    return 0u;
+                    return static_cast<UInt>(0u);
                 }
             };
 
@@ -118,11 +117,6 @@ namespace alpaka
         }
     }
 
-   template<
-        std::size_t TuiDim, 
-        typename TValue>
-    class Vec;
-
     //-----------------------------------------------------------------------------
     //! The offset trait accessors.
     //-----------------------------------------------------------------------------
@@ -144,7 +138,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TOffsets>
-        ALPAKA_FCT_HOST_ACC std::size_t getOffsetX(
+        ALPAKA_FCT_HOST_ACC UInt getOffsetX(
             TOffsets const & offsets)
         {
             return traits::offset::GetOffsetX<TOffsets>::getOffsetX(offsets);
@@ -154,7 +148,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TOffsets>
-        ALPAKA_FCT_HOST_ACC std::size_t getOffsetY(
+        ALPAKA_FCT_HOST_ACC UInt getOffsetY(
             TOffsets const & offsets)
         {
             return traits::offset::GetOffsetY<TOffsets>::getOffsetY(offsets);
@@ -164,7 +158,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TOffsets>
-        ALPAKA_FCT_HOST_ACC std::size_t getOffsetZ(
+        ALPAKA_FCT_HOST_ACC UInt getOffsetZ(
             TOffsets const & offsets)
         {
             return traits::offset::GetOffsetZ<TOffsets>::getOffsetZ(offsets);
@@ -174,10 +168,11 @@ namespace alpaka
         //! Sets the x offset.
         //-----------------------------------------------------------------------------
         template<
-            typename TOffsets>
+            typename TOffsets,
+            typename TInt>
             ALPAKA_FCT_HOST_ACC void setOffsetX(
             TOffsets const & offsets,
-            std::size_t const & xOffset)
+            TInt const & xOffset)
         {
             traits::offset::SetOffsetX<TOffsets>::setOffsetX(offsets, xOffset);
         }
@@ -185,10 +180,11 @@ namespace alpaka
         //! Sets the y offset.
         //-----------------------------------------------------------------------------
         template<
-            typename TOffsets>
+            typename TOffsets,
+            typename TInt>
         ALPAKA_FCT_HOST_ACC void setOffsetY(
             TOffsets const & offsets,
-            std::size_t const & yOffset)
+            TInt const & yOffset)
         {
             traits::offset::SetOffsetY<TOffsets>::setOffsetY(offsets, yOffset);
         }
@@ -196,10 +192,11 @@ namespace alpaka
         //! Sets the z offset.
         //-----------------------------------------------------------------------------
         template<
-            typename TOffsets>
+            typename TOffsets,
+            typename TInt>
         ALPAKA_FCT_HOST_ACC void setOffsetZ(
             TOffsets const & offsets,
-            std::size_t const & zOffset)
+            TInt const & zOffset)
         {
             traits::offset::SetOffsetZ<TOffsets>::setOffsetZ(offsets, zOffset);
         }
@@ -221,10 +218,10 @@ namespace alpaka
                 T,
                 typename std::enable_if<std::is_integral<T>::value && std::is_unsigned<T>::value>::type>
             {
-                ALPAKA_FCT_HOST_ACC static std::size_t getOffsetX(
+                ALPAKA_FCT_HOST_ACC static UInt getOffsetX(
                     T const & offset)
                 {
-                    return static_cast<std::size_t>(offset);
+                    return static_cast<UInt>(offset);
                 }
             };
         }

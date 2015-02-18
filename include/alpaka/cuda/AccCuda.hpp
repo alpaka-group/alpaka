@@ -43,17 +43,14 @@
 #include <alpaka/interfaces/IAcc.hpp>               // IAcc
 #include <alpaka/traits/BlockSharedExternMemSizeBytes.hpp>
 
-#include <cstddef>                                  // std::size_t
+#include <boost/mpl/apply.hpp>                      // boost::mpl::apply
+#include <boost/predef.h>                           // workarounds
+
 #include <cstdint>                                  // std::uint32_t
 #include <stdexcept>                                // std::except
 #include <string>                                   // std::to_string
 #include <utility>                                  // std::forward
 #include <tuple>                                    // std::tuple
-
-#include <boost/mpl/apply.hpp>                      // boost::mpl::apply
-
-// Workarounds.
-#include <boost/predef.h>
 
 namespace alpaka
 {
@@ -168,7 +165,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename T, 
-                    std::size_t TuiNumElements>
+                    UInt TuiNumElements>
                 ALPAKA_FCT_ACC_CUDA_ONLY T * allocBlockSharedMem() const
                 {
                     static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
@@ -277,7 +274,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename T, 
-            std::size_t TuiNumElements>
+            UInt TuiNumElements>
         ALPAKA_FCT_ACC_CUDA_ONLY T * allocBlockSharedMem() const
         {
             static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
@@ -295,31 +292,6 @@ namespace alpaka
             return AccCuda::getBlockSharedExternMem<T>();
         }
     };
-    
-    namespace detail
-    {
-        //-----------------------------------------------------------------------------
-        //! Holds a value of true if the given number is a power of two, false else.
-        //-----------------------------------------------------------------------------
-        template<
-            std::size_t TuiVal>
-        struct IsPowerOfTwo : 
-            std::integral_constant<bool, ((TuiVal != 0) && ((TuiVal & (~TuiVal + 1)) == TuiVal))>
-        {};
-
-        //-----------------------------------------------------------------------------
-        //! Holds a value with the pointer aligned by rounding upwards.
-        //-----------------------------------------------------------------------------
-        template<
-            std::uintptr_t TuiAddress,
-            std::size_t TuiAlignment>
-        struct AlignUp : 
-            std::integral_constant<std::uintptr_t, (TuiAddress + (TuiAlignment-1)) & ~(TuiAlignment-1)>
-        {
-            static_assert(TuiAlignment > 0, "The given alignment has to be greater zero!");
-            static_assert(IsPowerOfTwo<TuiAlignment>::value, "The given alignment has to be a power of two!");
-        };
-    }
 
     namespace cuda
     {

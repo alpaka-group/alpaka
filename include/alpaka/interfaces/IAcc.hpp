@@ -128,7 +128,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename T, 
-            std::size_t TuiNumElements>
+            UInt TuiNumElements>
         ALPAKA_FCT_ACC T * allocBlockSharedMem() const
         {
             static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");

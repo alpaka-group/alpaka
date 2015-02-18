@@ -246,32 +246,32 @@ struct MatMulTester
         using Kernel = MatMulKernel<>;
         
         alpaka::Vec<2u> const v2uiExtentsA(
-            static_cast<alpaka::Vec<2u>::Value>(uiM),
-            static_cast<alpaka::Vec<2u>::Value>(uiL)
+            static_cast<alpaka::Vec<2u>::Val>(uiM),
+            static_cast<alpaka::Vec<2u>::Val>(uiL)
         );
 
         alpaka::Vec<2u> const v2uiExtentsB(
-            static_cast<alpaka::Vec<2u>::Value>(uiN),
-            static_cast<alpaka::Vec<2u>::Value>(uiM)
+            static_cast<alpaka::Vec<2u>::Val>(uiN),
+            static_cast<alpaka::Vec<2u>::Val>(uiM)
         );
 
         // Result matrix is LxN. We create one worker per result matrix cell.
         alpaka::Vec<2u> const v2uiExtentsC(
-            static_cast<alpaka::Vec<2u>::Value>(uiN),
-            static_cast<alpaka::Vec<2u>::Value>(uiL)
+            static_cast<alpaka::Vec<2u>::Val>(uiN),
+            static_cast<alpaka::Vec<2u>::Val>(uiL)
         );
         
         // Let alpaka calculate good block and grid sizes given our full problem extents.
-        alpaka::Vec<3u> v3uiGridKernels(static_cast<alpaka::Vec<3u>::Value>(uiN), static_cast<alpaka::Vec<3u>::Value>(uiL), static_cast<alpaka::Vec<3u>::Value>(1u));
+        alpaka::Vec<3u> v3uiGridKernels(static_cast<alpaka::Vec<3u>::Val>(uiN), static_cast<alpaka::Vec<3u>::Val>(uiL), static_cast<alpaka::Vec<3u>::Val>(1u));
         alpaka::workdiv::BasicWorkDiv workDiv(
             bAdaptiveBlockKernelsExtent
             ? alpaka::workdiv::getValidWorkDiv<boost::mpl::vector<TAcc>>(v3uiGridKernels, false)
             : alpaka::workdiv::getValidWorkDiv<alpaka::acc::EnabledAccelerators>(v3uiGridKernels, false));
         // Assure that the extents are square.
         auto const uiMinExtent(std::min(workDiv.m_v3uiBlockKernelsExtents[0u], workDiv.m_v3uiBlockKernelsExtents[1u]));
-        workDiv.m_v3uiGridBlocksExtents[0u] = static_cast<alpaka::Vec<3u>::Value>(std::ceil(static_cast<double>(uiN) / static_cast<double>(uiMinExtent)));
+        workDiv.m_v3uiGridBlocksExtents[0u] = static_cast<alpaka::Vec<3u>::Val>(std::ceil(static_cast<double>(uiN) / static_cast<double>(uiMinExtent)));
         workDiv.m_v3uiBlockKernelsExtents[0u] = uiMinExtent;
-        workDiv.m_v3uiGridBlocksExtents[1u] = static_cast<alpaka::Vec<3u>::Value>(std::ceil(static_cast<double>(uiL) / static_cast<double>(uiMinExtent)));
+        workDiv.m_v3uiGridBlocksExtents[1u] = static_cast<alpaka::Vec<3u>::Val>(std::ceil(static_cast<double>(uiL) / static_cast<double>(uiMinExtent)));
         workDiv.m_v3uiBlockKernelsExtents[1u] = uiMinExtent;
 
         std::cout

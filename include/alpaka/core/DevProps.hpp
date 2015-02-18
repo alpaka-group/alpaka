@@ -25,7 +25,6 @@
 
 #include <vector>               // std::vector
 #include <string>               // std::string
-#include <cstddef>              // std::size_t
 
 namespace alpaka
 {
@@ -40,8 +39,8 @@ namespace alpaka
         struct DevProps
         {
             std::string m_sName;                    //!< The name.
-            std::size_t m_uiMultiProcessorCount;    //!< The number of multiprocessors.
-            std::size_t m_uiBlockKernelsCountMax;   //!< The maximum number of kernels in a block.
+            UInt m_uiMultiProcessorCount;           //!< The number of multiprocessors.
+            UInt m_uiBlockKernelsCountMax;          //!< The maximum number of kernels in a block.
             Vec<3u> m_v3uiBlockKernelsExtentsMax;   //!< The maximum number of kernels in each dimension of a block.
             Vec<3u> m_v3uiGridBlocksExtentsMax;     //!< The maximum number of blocks in each dimension of the grid.
             std::size_t m_uiGlobalMemSizeBytes;     //!< Size of the global device memory in bytes.

@@ -40,7 +40,8 @@
 #include <alpaka/traits/BlockSharedExternMemSizeBytes.hpp>
 #include <alpaka/interfaces/IAcc.hpp>
 
-#include <cstddef>                                  // std::size_t
+#include <boost/mpl/apply.hpp>                      // boost::mpl::apply
+
 #include <vector>                                   // std::vector
 #include <cassert>                                  // assert
 #include <stdexcept>                                // std::except
@@ -49,8 +50,6 @@
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
     #include <iostream>                             // std::cout
 #endif
-
-#include <boost/mpl/apply.hpp>                      // boost::mpl::apply
 
 namespace alpaka
 {
@@ -168,7 +167,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename T, 
-                    std::size_t TuiNumElements>
+                    UInt TuiNumElements>
                 ALPAKA_FCT_ACC_NO_CUDA T * allocBlockSharedMem() const
                 {
                     static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");

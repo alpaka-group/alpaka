@@ -42,7 +42,7 @@ namespace alpaka
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA explicit FiberBarrier(
-                    std::size_t uiNumFibersToWaitFor = 0) :
+                    UInt uiNumFibersToWaitFor = 0) :
                     m_uiNumFibersToWaitFor{uiNumFibersToWaitFor}
                 {}
                 //-----------------------------------------------------------------------------
@@ -84,7 +84,7 @@ namespace alpaka
                 //! \return The number of fibers to wait for.
                 //! NOTE: The value almost always is invalid the time you get it.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA std::size_t getNumFibersToWaitFor() const
+                ALPAKA_FCT_ACC_NO_CUDA UInt getNumFibersToWaitFor() const
                 {
                     return m_uiNumFibersToWaitFor;
                 }
@@ -93,7 +93,7 @@ namespace alpaka
                 //! Resets the number of fibers to wait for to the given number.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA void reset(
-                    std::size_t uiNumFibersToWaitFor)
+                    UInt uiNumFibersToWaitFor)
                 {
                     // A lock is not required in the fiber implementation.
                     //boost::unique_lock<boost::fibers::mutex> lock(m_mtxBarrier);
@@ -103,7 +103,7 @@ namespace alpaka
             private:
                 boost::fibers::mutex m_mtxBarrier;
                 boost::fibers::condition_variable m_cvAllFibersReachedBarrier;
-                std::size_t m_uiNumFibersToWaitFor;
+                UInt m_uiNumFibersToWaitFor;
             };
         }
     }

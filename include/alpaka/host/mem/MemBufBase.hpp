@@ -32,7 +32,6 @@
 #include <alpaka/traits/Extents.hpp>        // traits::getXXX
 
 #include <cassert>                          // assert
-#include <cstddef>                          // std::size_t
 #include <memory>                           // std::shared_ptr
 
 namespace alpaka
@@ -74,7 +73,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TExtents>
-                ALPAKA_FCT_HOST static std::size_t computeElementCount(
+                ALPAKA_FCT_HOST static UInt computeElementCount(
                     TExtents const & extents)
                 {
                     auto const uiExtentsElementCount(extent::getProductOfExtents(extents));
@@ -97,7 +96,7 @@ namespace alpaka
             public:
                 Vec<TDim::value> m_vExtentsElements;
                 std::shared_ptr<TElem> m_spMem;
-                std::size_t m_uiPitchBytes;
+                UInt m_uiPitchBytes;
             };
         }
     }
@@ -125,6 +124,25 @@ namespace alpaka
         namespace extent
         {
             //#############################################################################
+            //! The MemBufBaseHost extents get trait specialization.
+            //#############################################################################
+            template<
+                typename TElem, 
+                typename TDim>
+            struct GetExtents<
+                host::detail::MemBufBaseHost<TElem, TDim>>
+            {
+                //-----------------------------------------------------------------------------
+                //! 
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static Vec<TDim::value> getExtents(
+                    host::detail::MemBufBaseHost<TElem, TDim> const & extents)
+                {
+                    return {extents.m_vExtentsElements};
+                }
+            };
+
+            //#############################################################################
             //! The MemBufBaseHost width get trait specialization.
             //#############################################################################
             template<
@@ -137,7 +155,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::size_t getWidth(
+                ALPAKA_FCT_HOST static UInt getWidth(
                     host::detail::MemBufBaseHost<TElem, TDim> const & extent)
                 {
                     return extent.m_vExtentsElements[0u];
@@ -157,7 +175,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::size_t getHeight(
+                ALPAKA_FCT_HOST static UInt getHeight(
                     host::detail::MemBufBaseHost<TElem, TDim> const & extent)
                 {
                     return extent.m_vExtentsElements[1u];
@@ -176,10 +194,32 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::size_t getDepth(
+                ALPAKA_FCT_HOST static UInt getDepth(
                     host::detail::MemBufBaseHost<TElem, TDim> const & extent)
                 {
                     return extent.m_vExtentsElements[2u];
+                }
+            };
+        }
+        
+        namespace offset
+        {
+            //#############################################################################
+            //! The MemBufBaseHost offsets get trait specialization.
+            //#############################################################################
+            template<
+                typename TElem, 
+                typename TDim>
+            struct GetOffsets<
+                host::detail::MemBufBaseHost<TElem, TDim>>
+            {
+                //-----------------------------------------------------------------------------
+                //! 
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static Vec<TDim::value> getOffsets(
+                    host::detail::MemBufBaseHost<TElem, TDim> const &)
+                {
+                    return Vec<TDim::value>();
                 }
             };
         }
@@ -288,7 +328,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::size_t getPitchBytes(
+                ALPAKA_FCT_HOST static UInt getPitchBytes(
                     host::detail::MemBufBaseHost<TElem, TDim> const & memPitch)
                 {
                     // No pitch on the host currently.

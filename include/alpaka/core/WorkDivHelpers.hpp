@@ -27,12 +27,12 @@
 
 #include <alpaka/traits/Device.hpp>         // dev::DevManT, getDevProps
 
+#include <boost/mpl/for_each.hpp>           // boost::mpl::for_each
+#include <boost/mpl/vector.hpp>             // boost::mpl::vector
+
 #include <cmath>                            // std::ceil
 #include <algorithm>                        // std::min
 #include <functional>                       // std::bind
-
-#include <boost/mpl/for_each.hpp>           // boost::mpl::for_each
-#include <boost/mpl/vector.hpp>             // boost::mpl::vector
 
 //-----------------------------------------------------------------------------
 //! The alpaka library.
@@ -78,9 +78,9 @@ namespace alpaka
             static_assert(boost::mpl::is_sequence<TAccSeq>::value, "TAccSeq is required to be a mpl::sequence!");
 
             Vec<3u> v3uiMaxBlockKernelExtents(
-                std::numeric_limits<Vec<3u>::Value>::max(),
-                std::numeric_limits<Vec<3u>::Value>::max(),
-                std::numeric_limits<Vec<3u>::Value>::max());
+                std::numeric_limits<UInt>::max(),
+                std::numeric_limits<UInt>::max(),
+                std::numeric_limits<UInt>::max());
 
             boost::mpl::for_each<TAccSeq>(
                 std::bind(detail::CorrectMaxBlockKernelExtents(), std::placeholders::_1, std::ref(v3uiMaxBlockKernelExtents))
@@ -103,7 +103,7 @@ namespace alpaka
                     typename TAcc>
                 ALPAKA_FCT_HOST void operator()(
                     TAcc const &,
-                    std::size_t & uiBlockKernelCount)
+                    UInt & uiBlockKernelCount)
                 {
                     auto const devProps(dev::getDevProps(dev::DevManT<TAcc>::getCurrentDevice()));
                     auto const & uiBlockKernelCountMax(devProps.m_uiBlockKernelsCountMax);
@@ -118,12 +118,12 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TAccSeq>
-        ALPAKA_FCT_HOST std::size_t getMaxBlockKernelCountAccelerators()
+        ALPAKA_FCT_HOST UInt getMaxBlockKernelCountAccelerators()
         {
             static_assert(boost::mpl::is_sequence<TAccSeq>::value, "TAccSeq is required to be a mpl::sequence!");
 
-            std::size_t uiMaxBlockKernelCount(
-                std::numeric_limits<std::size_t>::max());
+            UInt uiMaxBlockKernelCount(
+                std::numeric_limits<UInt>::max());
 
             boost::mpl::for_each<TAccSeq>(
                 std::bind(detail::CorrectMaxBlockKernelCount(), std::placeholders::_1, std::ref(uiMaxBlockKernelCount))
@@ -179,7 +179,7 @@ namespace alpaka
             ALPAKA_FCT_HOST BasicWorkDiv subdivideGridKernels(
                 Vec<3u> const & v3uiGridKernelsExtents,
                 Vec<3u> const & v3uiMaxBlockKernelsExtents,
-                std::size_t const & uiMaxBlockKernelsCount,
+                UInt const & uiMaxBlockKernelsCount,
                 bool bRequireBlockKernelsExtentsToDivideGridKernelsExtents = true)
             {
                 assert(v3uiGridKernelsExtents[0u]>0);
@@ -198,11 +198,11 @@ namespace alpaka
                 if(v3uiBlockKernelsExtents.prod() > uiMaxBlockKernelsCount)
                 {
                     // Begin in z dimension.
-                    std::size_t uiDim(2);
+                    UInt uiDim(2);
                     // Very primitive clipping. Just halve it until it fits repeatedly iterating over the dimensions.
                     while(v3uiBlockKernelsExtents.prod() > uiMaxBlockKernelsCount)
                     {
-                        v3uiBlockKernelsExtents[uiDim] = std::max(static_cast<Vec<3u>::Value>(1u), static_cast<Vec<3u>::Value>(v3uiBlockKernelsExtents[uiDim] / 2u));
+                        v3uiBlockKernelsExtents[uiDim] = std::max(static_cast<UInt>(1u), static_cast<UInt>(v3uiBlockKernelsExtents[uiDim] / 2u));
                         uiDim = (uiDim+2) % 3;
                     }
                 }
@@ -218,9 +218,9 @@ namespace alpaka
 
                 // Set the grid blocks extents (rounded to the next integer not less then the quotient.
                 Vec<3u> const v3uiGridBlocksExtents(
-                    static_cast<Vec<3u>::Value>(std::ceil(static_cast<double>(v3uiGridKernelsExtents[0u]) / static_cast<double>(v3uiBlockKernelsExtents[0u]))),
-                    static_cast<Vec<3u>::Value>(std::ceil(static_cast<double>(v3uiGridKernelsExtents[1u]) / static_cast<double>(v3uiBlockKernelsExtents[1u]))),
-                    static_cast<Vec<3u>::Value>(std::ceil(static_cast<double>(v3uiGridKernelsExtents[2u]) / static_cast<double>(v3uiBlockKernelsExtents[2u]))));
+                    static_cast<UInt>(std::ceil(static_cast<double>(v3uiGridKernelsExtents[0u]) / static_cast<double>(v3uiBlockKernelsExtents[0u]))),
+                    static_cast<UInt>(std::ceil(static_cast<double>(v3uiGridKernelsExtents[1u]) / static_cast<double>(v3uiBlockKernelsExtents[1u]))),
+                    static_cast<UInt>(std::ceil(static_cast<double>(v3uiGridKernelsExtents[2u]) / static_cast<double>(v3uiBlockKernelsExtents[2u]))));
 
                 return BasicWorkDiv(v3uiGridBlocksExtents, v3uiBlockKernelsExtents);
             }

@@ -155,7 +155,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TMemBuf>
-        ALPAKA_FCT_HOST std::size_t getPitchBytes(
+        ALPAKA_FCT_HOST UInt getPitchBytes(
             TMemBuf const & memBuf)
         {
             return traits::mem::GetPitchBytes<TMemBuf>::getPitchBytes(memBuf);
@@ -166,7 +166,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TMemBuf>
-        ALPAKA_FCT_HOST std::size_t getPitchElements(
+        ALPAKA_FCT_HOST UInt getPitchElements(
             TMemBuf const & memBuf)
         {
             assert((getPitchBytes(memBuf) % sizeof(MemElemT<TMemBuf>)) == 0u);

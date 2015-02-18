@@ -24,8 +24,6 @@
 #include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST
 #include <alpaka/core/Vec.hpp>      // Vec
 
-#include <cstddef>                  // std::size_t
-
 namespace alpaka
 {
     namespace detail
@@ -36,8 +34,8 @@ namespace alpaka
         //! \tparam TuiDim dimension of the position to map to.
         //#############################################################################
         template<
-            std::size_t TuiIdxDimDst, 
-            std::size_t TuiIdxDimSrc>
+            UInt TuiIdxDimDst, 
+            UInt TuiIdxDimSrc>
         struct MapIdx;
         //#############################################################################
         //! Maps a linear index to a 3 dimensional index.
@@ -109,8 +107,8 @@ namespace alpaka
     //! \tparam TElem type of the elements of the index vector to map from.
     //#############################################################################
     template<
-        std::size_t TuiIdxDimDst, 
-        std::size_t TuiIdxDimSrc, 
+        UInt TuiIdxDimDst, 
+        UInt TuiIdxDimSrc, 
         typename TElem>
     Vec<TuiIdxDimDst> mapIdx(
         Vec<TuiIdxDimSrc, TElem> const & index, 

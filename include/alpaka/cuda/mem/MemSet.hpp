@@ -30,7 +30,6 @@
 #include <alpaka/traits/mem/MemBufBase.hpp> // traits::MemSet
 #include <alpaka/traits/Extents.hpp>        // traits::getXXX
 
-#include <cstddef>                          // std::size_t
 #include <cassert>                          // assert
 
 namespace alpaka

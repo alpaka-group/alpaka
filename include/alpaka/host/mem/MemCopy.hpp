@@ -31,7 +31,6 @@
 #include <alpaka/traits/Extents.hpp>        // traits::getXXX
 
 #include <cassert>                          // assert
-#include <cstddef>                          // std::size_t
 #include <cstring>                          // std::memcpy
 
 namespace alpaka
@@ -141,7 +140,7 @@ namespace alpaka
                     }
                     else
                     {
-                        for(std::size_t z(0); z < uiExtentDepth; ++z)
+                        for(UInt z(0); z < uiExtentDepth; ++z)
                         {
                             // If:
                             // - the copy extents width is identical to the dst and src extents width
@@ -161,7 +160,7 @@ namespace alpaka
                             }
                             else
                             {
-                                for(std::size_t y(0); y < uiExtentHeight; ++y)
+                                for(UInt y(0); y < uiExtentHeight; ++y)
                                 {
                                     std::memcpy(
                                         reinterpret_cast<void *>(pDstNative + y*uiDstPitchBytes + z*uiDstSliceSizeBytes),

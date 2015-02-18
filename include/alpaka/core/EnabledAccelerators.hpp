@@ -158,7 +158,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The maximum block kernels count supported by all of the enabled accelerators.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST std::size_t getMaxBlockKernelCountEnabledAccelerators()
+        ALPAKA_FCT_HOST UInt getMaxBlockKernelCountEnabledAccelerators()
         {
             return workdiv::getMaxBlockKernelCountAccelerators<acc::EnabledAccelerators>();
         }

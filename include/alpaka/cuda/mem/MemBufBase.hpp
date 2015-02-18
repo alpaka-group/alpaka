@@ -31,7 +31,6 @@
 #include <alpaka/traits/mem/MemBufBase.hpp> // traits::MemCopy
 #include <alpaka/traits/Extents.hpp>        // traits::getXXX
 
-#include <cstddef>                          // std::size_t
 #include <cassert>                          // assert
 #include <memory>                           // std::shared_ptr
 
@@ -61,7 +60,7 @@ namespace alpaka
                     typename TExtents>
                 ALPAKA_FCT_HOST MemBufBaseCuda(
                     TElem * const pMem,
-                    std::size_t const & uiPitchBytes,
+                    UInt const & uiPitchBytes,
                     TExtents const & extents) :
                         m_vExtentsElements(Vec<TDim::value>::fromExtents(extents)),
                         m_spMem(pMem, &MemBufBaseCuda::freeBuffer),
@@ -90,7 +89,7 @@ namespace alpaka
             public:
                 Vec<TDim::value> m_vExtentsElements;
                 std::shared_ptr<TElem> m_spMem;
-                std::size_t m_uiPitchBytes;
+                UInt m_uiPitchBytes;
             };
         }
     }
@@ -118,6 +117,25 @@ namespace alpaka
         namespace extent
         {
             //#############################################################################
+            //! The MemBufBaseCuda extents get trait specialization.
+            //#############################################################################
+            template<
+                typename TElem, 
+                typename TDim>
+            struct GetExtents<
+                cuda::detail::MemBufBaseCuda<TElem, TDim>>
+            {
+                //-----------------------------------------------------------------------------
+                //! 
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static Vec<TDim::value> getExtents(
+                    cuda::detail::MemBufBaseCuda<TElem, TDim> const & extents)
+                {
+                    return {extents.m_vExtentsElements};
+                }
+            };
+
+            //#############################################################################
             //! The MemBufBaseCuda width get trait specialization.
             //#############################################################################
             template<
@@ -130,7 +148,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::size_t getWidth(
+                ALPAKA_FCT_HOST static UInt getWidth(
                     cuda::detail::MemBufBaseCuda<TElem, TDim> const & extent)
                 {
                     return extent.m_vExtentsElements[0u];
@@ -150,7 +168,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::size_t getHeight(
+                ALPAKA_FCT_HOST static UInt getHeight(
                     cuda::detail::MemBufBaseCuda<TElem, TDim> const & extent)
                 {
                     return extent.m_vExtentsElements[1u];
@@ -169,10 +187,32 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::size_t getDepth(
+                ALPAKA_FCT_HOST static UInt getDepth(
                     cuda::detail::MemBufBaseCuda<TElem, TDim> const & extent)
                 {
                     return extent.m_vExtentsElements[2u];
+                }
+            };
+        }
+        
+        namespace offset
+        {
+            //#############################################################################
+            //! The MemBufBaseCuda offsets get trait specialization.
+            //#############################################################################
+            template<
+                typename TElem, 
+                typename TDim>
+            struct GetOffsets<
+                cuda::detail::MemBufBaseCuda<TElem, TDim>>
+            {
+                //-----------------------------------------------------------------------------
+                //! 
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static Vec<TDim::value> getOffsets(
+                    cuda::detail::MemBufBaseCuda<TElem, TDim> const &)
+                {
+                    return Vec<TDim::value>();
                 }
             };
         }
@@ -281,7 +321,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::size_t getPitchBytes(
+                ALPAKA_FCT_HOST static UInt getPitchBytes(
                     cuda::detail::MemBufBaseCuda<TElem, TDim> const & memPitch)
                 {
                     return memPitch.m_uiPitchBytes;
@@ -385,7 +425,7 @@ namespace alpaka
                     return
                         alpaka::cuda::detail::MemBufBaseCuda<T, alpaka::dim::Dim2>(
                             reinterpret_cast<T *>(pBuffer),
-                            uiPitch,
+                            static_cast<UInt>(uiPitch),
                             extents);
                 }
             };
@@ -438,7 +478,7 @@ namespace alpaka
                     return
                         alpaka::cuda::detail::MemBufBaseCuda<T, alpaka::dim::Dim3>(
                             reinterpret_cast<T *>(cudaPitchedPtrVal.ptr),
-                            static_cast<std::size_t>(cudaPitchedPtrVal.pitch),
+                            static_cast<UInt>(cudaPitchedPtrVal.pitch),
                             extents);
                 }
             };

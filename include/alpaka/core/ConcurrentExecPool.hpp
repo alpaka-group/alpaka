@@ -21,15 +21,6 @@
 
 #pragma once
 
-#include <cstddef>  // std::size_t
-#include <vector>   // std::vector
-#include <exception>// std::runtime_error
-#include <utility>  // std::forward
-#include <atomic>   // std::atomic
-#include <future>   // std::future
-
-#include <boost/predef.h>
-
 #if BOOST_COMP_MSVC
     #pragma warning(push)
     #pragma warning(disable: 4244)  // boost/lockfree/detail/tagged_ptr_ptrcompression.hpp(59): warning C4244: '=': conversion from 'int' to 'boost::lockfree::detail::tagged_ptr<boost::lockfree::detail::freelist_stack<T,Alloc>::freelist_node>::tag_t', possible loss of data
@@ -40,6 +31,14 @@
 #if BOOST_COMP_MSVC
     #pragma warning(pop)
 #endif
+
+#include <boost/predef.h>   // workarounds
+
+#include <vector>           // std::vector
+#include <exception>        // std::runtime_error
+#include <utility>          // std::forward
+#include <atomic>           // std::atomic
+#include <future>           // std::future
 
 namespace alpaka
 {
@@ -222,8 +221,8 @@ namespace alpaka
             //!                     Currently running tasks do not belong to the queue anymore.
             //-----------------------------------------------------------------------------
             ConcurrentExecPool(
-                std::size_t uiConcurrentExecutionCount,
-                std::size_t uiQueueSize = 128) :
+                UInt uiConcurrentExecutionCount,
+                UInt uiQueueSize = 128) :
                 m_vConcurrentExecutors(),
                 m_bShutdownFlag(false),
                 m_qTasks(uiQueueSize)
@@ -329,7 +328,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! \return The number of concurrent executors available.
             //-----------------------------------------------------------------------------
-            std::size_t getConcurrentExecutionCount() const
+            UInt getConcurrentExecutionCount() const
             {
                 return m_vConcurrentExecutors.size();
             }
@@ -430,8 +429,8 @@ namespace alpaka
             //!                     Currently running tasks do not belong to the queue anymore.
             //-----------------------------------------------------------------------------
             ConcurrentExecPool(
-                std::size_t uiConcurrentExecutionCount,
-                std::size_t uiQueueSize = 128) :
+                UInt uiConcurrentExecutionCount,
+                UInt uiQueueSize = 128) :
                 m_vConcurrentExecutors(),
                 m_bShutdownFlag(false),
                 m_qTasks(uiQueueSize),
@@ -543,7 +542,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! \return The number of concurrent executors available.
             //-----------------------------------------------------------------------------
-            std::size_t getConcurrentExecutionCount() const
+            UInt getConcurrentExecutionCount() const
             {
                 return m_vConcurrentExecutors.size();
             }

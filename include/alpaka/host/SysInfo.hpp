@@ -21,10 +21,6 @@
 
 #pragma once
 
-#include <string>           // std::string
-
-#include <boost/predef.h>   // BOOST_XXX
-
 #if BOOST_OS_WINDOWS || BOOST_OS_CYGWIN
     #define NOMINMAX
     #define WIN32_LEAN_AND_MEAN
@@ -39,6 +35,10 @@
         #include <sys/sysctl.h>
     #endif
 #endif
+
+#include <boost/predef.h>   // BOOST_XXX
+
+#include <string>           // std::string
 
 namespace alpaka
 {

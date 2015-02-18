@@ -24,85 +24,12 @@
 #include <alpaka/interfaces/IAcc.hpp>        // IAcc
 
 #include <alpaka/core/WorkDivHelpers.hpp>    // workdiv::isValidWorkDiv
+#include <alpaka/core/IntegerSequence.hpp>   // workdiv::isValidWorkDiv
 
 namespace alpaka
 {
     namespace detail
     {
-        //#############################################################################
-        //! Extensions to the standard library.
-        //#############################################################################
-        namespace std_extension
-        {
-            // This could be replaced with c++14 std::integer_sequence if we raise the minimum.
-            template<class T, T... TVals>
-            struct integer_sequence
-            {
-                static_assert(std::is_integral<T>::value, "integer_sequence<T, I...> requires T to be an integral type.");
-
-                typedef integer_sequence<T, TVals...> type;
-                typedef T value_type;
-
-                static std::size_t size() noexcept
-                {
-                    return (sizeof...(TVals));
-                }
-            };
-
-            // Bug: https://connect.microsoft.com/VisualStudio/feedback/details/1085630/template-alias-internal-error-in-the-compiler-because-of-tmp-c-integer-sequence-for-c-11
-#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-            template<bool TbNegative, bool TbZero, class TIntCon, class TIntSeq>
-            struct make_integer_sequence_helper
-            {
-                static_assert(!TbNegative, "make_integer_sequence<T, N> requires N to be non-negative.");
-            };
-
-            template<class T, T... TVals>
-            struct make_integer_sequence_helper<false, true, std::integral_constant<T, 0>, integer_sequence<T, TVals...> > :
-                integer_sequence<T, TVals...>
-            {};
-
-            template<class T, T TIdx, T... TVals>
-            struct make_integer_sequence_helper<false, false, std::integral_constant<T, TIdx>, integer_sequence<T, TVals...> > :
-                make_integer_sequence_helper<false, TIdx == 1, std::integral_constant<T, TIdx - 1>, integer_sequence<T, TIdx - 1, TVals...> >
-            {};
-
-            template<class T, T TuiSize>
-            struct make_integer_sequence
-            {
-                using type = typename make_integer_sequence_helper<(TuiSize < 0), (TuiSize == 0), std::integral_constant<T, TuiSize>, integer_sequence<T> >::type;
-            };
-#else
-            template<bool TbNegative, bool TbZero, class TIntCon, class TIntSeq>
-            struct make_integer_sequence_helper
-            {
-                static_assert(!TbNegative, "make_integer_sequence<T, N> requires N to be non-negative.");
-            };
-
-            template<class T, T... TVals>
-            struct make_integer_sequence_helper<false, true, std::integral_constant<T, 0>, integer_sequence<T, TVals...> > :
-                integer_sequence<T, TVals...>
-            {};
-
-            template<class T, T TIdx, T... TVals>
-            struct make_integer_sequence_helper<false, false, std::integral_constant<T, TIdx>, integer_sequence<T, TVals...> > :
-                make_integer_sequence_helper<false, TIdx == 1, std::integral_constant<T, TIdx - 1>, integer_sequence<T, TIdx - 1, TVals...> >
-            {};
-
-            template<class T, T TuiSize>
-            using make_integer_sequence = typename make_integer_sequence_helper<(TuiSize < 0), (TuiSize == 0), std::integral_constant<T, TuiSize>, integer_sequence<T> >::type;
-#endif
-
-            template<std::size_t... TVals>
-            using index_sequence = integer_sequence<std::size_t, TVals...>;
-
-            template<std::size_t TuiSize>
-            using make_index_sequence = make_integer_sequence<std::size_t, TuiSize>;
-
-            template<typename... Ts>
-            using index_sequence_for = make_index_sequence<sizeof...(Ts)>;
-        }
-
         //#############################################################################
         //! The executor for an accelerated serial kernel.
         //#############################################################################
@@ -187,9 +114,9 @@ namespace alpaka
                 TWorkDiv const & workDiv, 
                 Stream const & stream,
 #if !BOOST_COMP_MSVC     // MSVC 190022512 introduced a new bug with alias templates: error C3520: 'TIndices': parameter pack must be expanded in this context
-                std_extension::index_sequence<TIndices...> const &) const
+                index_sequence<TIndices...> const &) const
 #else
-                std_extension::integer_sequence<std::size_t, TIndices...> const &) const
+                integer_sequence<std::size_t, TIndices...> const &) const
 #endif
             {
                 if(workdiv::getWorkDiv<Grid, Blocks, dim::Dim1>(workDiv)[0] == 0u)
@@ -207,9 +134,9 @@ namespace alpaka
         private:
             std::tuple<TKernelConstrArgs...> m_tupleKernelConstrArgs;
 #if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-            using KernelConstrArgsIdxSequence = typename std_extension::make_index_sequence<sizeof...(TKernelConstrArgs)>::type;
+            using KernelConstrArgsIdxSequence = typename make_index_sequence<sizeof...(TKernelConstrArgs)>::type;
 #else
-            using KernelConstrArgsIdxSequence = std_extension::make_index_sequence<sizeof...(TKernelConstrArgs)>;
+            using KernelConstrArgsIdxSequence = make_index_sequence<sizeof...(TKernelConstrArgs)>;
 #endif
         };
 

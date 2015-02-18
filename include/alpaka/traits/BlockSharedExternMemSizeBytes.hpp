@@ -49,7 +49,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename... TArgs>
-        ALPAKA_FCT_HOST static std::size_t getBlockSharedExternMemSizeBytes(
+        ALPAKA_FCT_HOST static UInt getBlockSharedExternMemSizeBytes(
             Vec<3u> const & v3uiBlockKernelsExtents, 
             TArgs && ... )
         {

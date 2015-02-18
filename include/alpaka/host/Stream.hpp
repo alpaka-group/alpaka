@@ -25,9 +25,9 @@
 #include <alpaka/traits/Wait.hpp>       // CurrentThreadWaitFor, WaiterWaitFor
 #include <alpaka/traits/Acc.hpp>        // AccT
 
-#include <type_traits>                  // std::is_base
-
 #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+
+#include <type_traits>                  // std::is_base
 
 namespace alpaka
 {

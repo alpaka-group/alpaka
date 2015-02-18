@@ -21,16 +21,13 @@
 
 #pragma once
 
-#include <string>   // std::string
-#include <iostream> // std::cout
-/*
-#include <stdexcept>                        // std::runtime_error
-
-#include <boost/preprocessor/stringize.hpp> // BOOST_PP_STRINGIZE*/
-
 #include <boost/current_function.hpp>
+#include <boost/predef.h>                   // workarounds
+/*#include <boost/preprocessor/stringize.hpp> // BOOST_PP_STRINGIZE
 
-#include <boost/predef.h>                   // Workarounds
+#include <stdexcept>                        // std::runtime_error*/
+#include <string>                           // std::string
+#include <iostream>                         // std::cout
 
 //-----------------------------------------------------------------------------
 //! The no debug level.

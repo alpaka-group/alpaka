@@ -23,9 +23,9 @@
 
 #include <alpaka/traits/Atomic.hpp> // AtomicOp
 
-#include <mutex>                    // std::mutex, std::lock_guard
+#include <boost/predef.h>           // workarounds
 
-#include <boost/predef.h>            // workarounds
+#include <mutex>                    // std::mutex, std::lock_guard
 
 namespace alpaka
 {

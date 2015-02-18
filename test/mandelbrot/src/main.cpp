@@ -21,6 +21,8 @@
 
 #include <alpaka/alpaka.hpp>                // alpaka::createKernelExecutor<...>
 
+#include <boost/mpl/for_each.hpp>           // boost::mpl::for_each
+
 #include <chrono>                           // std::chrono::high_resolution_clock
 #include <cassert>                          // assert
 #include <iostream>                         // std::cout
@@ -28,11 +30,7 @@
 #include <utility>                          // std::forward
 #include <fstream>                          // std::ofstream
 
-#include <boost/mpl/for_each.hpp>           // boost::mpl::for_each
-
-
 //#define ALPAKA_MANDELBROT_TEST_CONTINOUS_COLOR_MAPPING  // Define this to enable the continuous color mapping.
-
 
 //#############################################################################
 //! Complex Number.
@@ -292,12 +290,12 @@ struct MandelbrotKernelTester
         using Kernel = MandelbrotKernel<>;
         
         alpaka::Vec<2u> const v2uiExtents(
-            static_cast<alpaka::Vec<2u>::Value>(uiNumCols),
-            static_cast<alpaka::Vec<2u>::Value>(uiNumRows)
+            static_cast<alpaka::Vec<2u>::Val>(uiNumCols),
+            static_cast<alpaka::Vec<2u>::Val>(uiNumRows)
         );
 
         // Let alpaka calculate good block and grid sizes given our full problem extents.
-        alpaka::Vec<3u> v3uiGridKernels(static_cast<alpaka::Vec<3u>::Value>(uiNumCols), static_cast<alpaka::Vec<3u>::Value>(uiNumRows), static_cast<alpaka::Vec<3u>::Value>(1u));
+        alpaka::Vec<3u> v3uiGridKernels(static_cast<alpaka::Vec<3u>::Val>(uiNumCols), static_cast<alpaka::Vec<3u>::Val>(uiNumRows), static_cast<alpaka::Vec<3u>::Val>(1u));
         alpaka::workdiv::BasicWorkDiv const workDiv(alpaka::workdiv::getValidWorkDiv<boost::mpl::vector<TAcc>>(v3uiGridKernels, false));
 
         std::cout
@@ -373,7 +371,9 @@ struct MandelbrotKernelTester
         ofs.put(0x20);                      // Image Pixel Size.
         ofs.put(0x20);                      // Image Descriptor Byte.
         // Write data.
-        ofs.write(reinterpret_cast<char*>(alpaka::mem::getNativePtr(memBufColHost)), alpaka::extent::getProductOfExtents(memBufColHost)*sizeof(std::uint32_t));
+        ofs.write(
+            reinterpret_cast<char*>(alpaka::mem::getNativePtr(memBufColHost)), 
+            static_cast<std::size_t>(alpaka::extent::getProductOfExtents(memBufColHost))*sizeof(std::uint32_t));
 
         std::cout << "################################################################################" << std::endl;
     }

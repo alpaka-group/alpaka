@@ -21,12 +21,11 @@
 
 #pragma once
 
-#include <cstddef>      // std::size_t
-
 #include <alpaka/core/Debug.hpp>
 
-// workarounds
-#include <boost/predef.h>
+#include <boost/predef.h>           // workarounds
+
+#include <cstddef>                  // std::size_t, std::uint32_t
 
 //-----------------------------------------------------------------------------
 //! Disable nvcc warning:
@@ -84,6 +83,12 @@
 
 namespace alpaka
 {
+    //-----------------------------------------------------------------------------
+    //! Defines the default index type.
+    //-----------------------------------------------------------------------------
+    // NOTE: Setting the value type to std::size_t leads to invalid data on CUDA devices (at least with VC12).
+    using UInt = std::uint32_t;
+
     //-----------------------------------------------------------------------------
     //! Defines implementation details that should not be used directly by the user.
     //-----------------------------------------------------------------------------

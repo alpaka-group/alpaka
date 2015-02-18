@@ -115,11 +115,11 @@ struct VectorAddKernelTester
         using Kernel = VectorAddKernel<>;
         
         alpaka::Vec<1u> const v1uiExtents(
-            static_cast<alpaka::Vec<1u>::Value>(uiNumElements)
+            static_cast<alpaka::Vec<1u>::Val>(uiNumElements)
         );
 
         // Let alpaka calculate good block and grid sizes given our full problem extents.
-        alpaka::Vec<3u> v3uiGridKernels(static_cast<alpaka::Vec<3u>::Value>(uiNumElements), static_cast<alpaka::Vec<3u>::Value>(1u), static_cast<alpaka::Vec<3u>::Value>(1u));
+        alpaka::Vec<3u> v3uiGridKernels(static_cast<alpaka::Vec<3u>::Val>(uiNumElements), static_cast<alpaka::Vec<3u>::Val>(1u), static_cast<alpaka::Vec<3u>::Val>(1u));
         alpaka::workdiv::BasicWorkDiv const workDiv(alpaka::workdiv::getValidWorkDiv<boost::mpl::vector<TAcc>>(v3uiGridKernels, false));
 
         std::cout

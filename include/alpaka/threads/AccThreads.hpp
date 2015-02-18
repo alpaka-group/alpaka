@@ -51,8 +51,9 @@
     #include <alpaka/core/ConcurrentExecPool.hpp>  // ConcurrentExecPool
 #endif
 
-#include <cstddef>                                  // std::size_t
-#include <cstdint>                                  // std::uint32_t
+#include <boost/mpl/apply.hpp>                      // boost::mpl::apply
+#include <boost/predef.h>                           // workarounds
+
 #include <vector>                                   // std::vector
 #include <thread>                                   // std::thread
 #include <map>                                      // std::map
@@ -61,11 +62,6 @@
 #include <cassert>                                  // assert
 #include <stdexcept>                                // std::runtime_error
 #include <string>                                   // std::to_string
-
-#include <boost/mpl/apply.hpp>                      // boost::mpl::apply
-
-// workarounds
-#include <boost/predef.h>
 
 namespace alpaka
 {
@@ -187,12 +183,12 @@ namespace alpaka
                 //! Syncs all kernels in the current block.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA void syncBlockKernels(
-                    std::map<std::thread::id, std::size_t>::iterator const & itFind) const
+                    std::map<std::thread::id, UInt>::iterator const & itFind) const
                 {
                     assert(itFind != m_mThreadsToBarrier.end());
 
                     auto & uiBarIdx(itFind->second);
-                    std::size_t const uiBarrierIdx(uiBarIdx % 2);
+                    UInt const uiBarrierIdx(uiBarIdx % 2);
 
                     auto & bar(m_abarSyncThreads[uiBarrierIdx]);
 
@@ -216,7 +212,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename T, 
-                    std::size_t TuiNumElements>
+                    UInt TuiNumElements>
                 ALPAKA_FCT_ACC_NO_CUDA T * allocBlockSharedMem() const
                 {
                     static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
@@ -257,10 +253,10 @@ namespace alpaka
                 Vec<3u> mutable m_v3uiGridBlockIdx;                         //!< The index of the currently executed block.
 
                 // syncBlockKernels
-                std::size_t mutable m_uiNumKernelsPerBlock;                 //!< The number of kernels per block the barrier has to wait for.
+                UInt mutable m_uiNumKernelsPerBlock;                        //!< The number of kernels per block the barrier has to wait for.
                 std::map<
                     std::thread::id,
-                    std::size_t> mutable m_mThreadsToBarrier;               //!< The mapping of thread id's to their current barrier.
+                    UInt> mutable m_mThreadsToBarrier;                      //!< The mapping of thread id's to their current barrier.
                 std::mutex mutable m_mtxBarrier;
                 detail::ThreadBarrier mutable m_abarSyncThreads[2];         //!< The barriers for the synchronization of threads. 
                 //!< We have to keep the current and the last barrier because one of the threads can reach the next barrier before a other thread was wakeup from the last one and has checked if it can run.
@@ -420,25 +416,25 @@ namespace alpaka
                     ThreadPool pool(uiNumKernelsInBlock[0], uiNumKernelsInBlock[0]);
 #endif
                     // Execute the blocks serially.
-                    for(std::uint32_t bz(0); bz<v3uiGridBlocksExtents[2]; ++bz)
+                    for(UInt bz(0); bz<v3uiGridBlocksExtents[2]; ++bz)
                     {
                         this->AccThreads::m_v3uiGridBlockIdx[2] = bz;
-                        for(std::uint32_t by(0); by<v3uiGridBlocksExtents[1]; ++by)
+                        for(UInt by(0); by<v3uiGridBlocksExtents[1]; ++by)
                         {
                             this->AccThreads::m_v3uiGridBlockIdx[1] = by;
-                            for(std::uint32_t bx(0); bx<v3uiGridBlocksExtents[0]; ++bx)
+                            for(UInt bx(0); bx<v3uiGridBlocksExtents[0]; ++bx)
                             {
                                 this->AccThreads::m_v3uiGridBlockIdx[0] = bx;
 
                                 // Execute the kernels in parallel threads.
                                 Vec<3u> v3uiBlockKernelIdx;
-                                for(std::uint32_t tz(0); tz<v3uiBlockKernelsExtents[2]; ++tz)
+                                for(UInt tz(0); tz<v3uiBlockKernelsExtents[2]; ++tz)
                                 {
                                     v3uiBlockKernelIdx[2] = tz;
-                                    for(std::uint32_t ty(0); ty<v3uiBlockKernelsExtents[1]; ++ty)
+                                    for(UInt ty(0); ty<v3uiBlockKernelsExtents[1]; ++ty)
                                     {
                                         v3uiBlockKernelIdx[1] = ty;
-                                        for(std::uint32_t tx(0); tx<v3uiBlockKernelsExtents[0]; ++tx)
+                                        for(UInt tx(0); tx<v3uiBlockKernelsExtents[0]; ++tx)
                                         {
                                             v3uiBlockKernelIdx[0] = tx;
 
@@ -530,7 +526,7 @@ namespace alpaka
 
                     // We can not use the default syncBlockKernels here because it searches inside m_mThreadsToBarrier for the thread id. 
                     // Concurrently searching while others use emplace is unsafe!
-                    std::map<std::thread::id, std::size_t>::iterator itThreadToBarrier;
+                    std::map<std::thread::id, UInt>::iterator itThreadToBarrier;
 
                     {
                         // The insertion of elements has to be done one thread at a time.

@@ -179,8 +179,8 @@ namespace alpaka
 #else
                     devProps.m_uiBlockKernelsCountMax = 32u; // \TODO: What is the maximum? Just set a reasonable value?
 #endif
-                    devProps.m_v3uiBlockKernelsExtentsMax = Vec<3u>(static_cast<Vec<3u>::Value>(devProps.m_uiBlockKernelsCountMax), static_cast<Vec<3u>::Value>(devProps.m_uiBlockKernelsCountMax), static_cast<Vec<3u>::Value>(devProps.m_uiBlockKernelsCountMax));
-                    devProps.m_v3uiGridBlocksExtentsMax = Vec<3u>(std::numeric_limits<Vec<3u>::Value>::max(), std::numeric_limits<Vec<3u>::Value>::max(), std::numeric_limits<Vec<3u>::Value>::max());
+                    devProps.m_v3uiBlockKernelsExtentsMax = Vec<3u>(devProps.m_uiBlockKernelsCountMax, devProps.m_uiBlockKernelsCountMax, devProps.m_uiBlockKernelsCountMax);
+                    devProps.m_v3uiGridBlocksExtentsMax = Vec<3u>(std::numeric_limits<UInt>::max(), std::numeric_limits<UInt>::max(), std::numeric_limits<UInt>::max());
                     devProps.m_uiGlobalMemSizeBytes = host::getGlobalMemSizeBytes();
                     //devProps.m_uiMaxClockFrequencyHz = TODO;
 

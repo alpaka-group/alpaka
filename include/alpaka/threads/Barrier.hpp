@@ -42,7 +42,7 @@ namespace alpaka
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA explicit ThreadBarrier(
-                    std::size_t const uiNumThreadsToWaitFor = 0) :
+                    UInt const uiNumThreadsToWaitFor = 0) :
                     m_uiNumThreadsToWaitFor(uiNumThreadsToWaitFor)
                 {}
                 //-----------------------------------------------------------------------------
@@ -92,7 +92,7 @@ namespace alpaka
                 //! \return The number of threads to wait for.
                 //! NOTE: The value almost always is invalid the time you get it.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA std::size_t getNumThreadsToWaitFor() const
+                ALPAKA_FCT_ACC_NO_CUDA UInt getNumThreadsToWaitFor() const
                 {
                     return m_uiNumThreadsToWaitFor;
                 }
@@ -101,7 +101,7 @@ namespace alpaka
                 //! Resets the number of threads to wait for to the given number.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA void reset(
-                    std::size_t const uiNumThreadsToWaitFor)
+                    UInt const uiNumThreadsToWaitFor)
                 {
                     std::lock_guard<std::mutex> lock(m_mtxBarrier);
                     m_uiNumThreadsToWaitFor = uiNumThreadsToWaitFor;
@@ -110,7 +110,7 @@ namespace alpaka
             private:
                 std::mutex m_mtxBarrier;
                 std::condition_variable m_cvAllThreadsReachedBarrier;
-                std::size_t m_uiNumThreadsToWaitFor;
+                UInt m_uiNumThreadsToWaitFor;
             };
         }
     }

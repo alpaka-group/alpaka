@@ -21,8 +21,9 @@
 
 #pragma once
 
+#include <alpaka/core/Common.hpp>       // UInt
+
 #include <boost/mpl/integral_c.hpp>     // boost::mpl::integral_c
-#include <cstddef>                      // std::size_t
 
 namespace alpaka
 {
@@ -32,20 +33,20 @@ namespace alpaka
         // N dimensions.
         //-----------------------------------------------------------------------------
         template<
-            std::size_t N>
-        using Dim = boost::mpl::integral_c<std::size_t, N>;
+            UInt N>
+        using Dim = boost::mpl::integral_c<UInt, N>;
 
         //-----------------------------------------------------------------------------
         //! One dimension.
         //-----------------------------------------------------------------------------
-        using Dim1 = Dim<1>;
+        using Dim1 = Dim<1u>;
         //-----------------------------------------------------------------------------
         //! Two dimensions.
         //-----------------------------------------------------------------------------
-        using Dim2 = Dim<2>;
+        using Dim2 = Dim<2u>;
         //-----------------------------------------------------------------------------
         //! Three dimensions.
         //-----------------------------------------------------------------------------
-        using Dim3 = Dim<3>;
+        using Dim3 = Dim<3u>;
     }
 }

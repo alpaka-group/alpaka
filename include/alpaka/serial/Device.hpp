@@ -174,7 +174,7 @@ namespace alpaka
                     devProps.m_uiMultiProcessorCount = 1u;
                     devProps.m_uiBlockKernelsCountMax = 1u;
                     devProps.m_v3uiBlockKernelsExtentsMax = Vec<3u>(1u, 1u, 1u);
-                    devProps.m_v3uiGridBlocksExtentsMax = Vec<3u>(std::numeric_limits<Vec<1u>::Value>::max(), std::numeric_limits<Vec<1u>::Value>::max(), std::numeric_limits<Vec<1u>::Value>::max());
+                    devProps.m_v3uiGridBlocksExtentsMax = Vec<3u>(std::numeric_limits<Vec<1u>::Val>::max(), std::numeric_limits<Vec<1u>::Val>::max(), std::numeric_limits<Vec<1u>::Val>::max());
                     devProps.m_uiGlobalMemSizeBytes = host::getGlobalMemSizeBytes();
                     //devProps.m_uiMaxClockFrequencyHz = TODO;
 

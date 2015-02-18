@@ -93,7 +93,7 @@ namespace alpaka
                 {
                     // We assume that the thread id is positive.
                     assert(::omp_get_thread_num() >= 0);
-                    auto const uiThreadId(static_cast<Vec<1u>::Value>(::omp_get_thread_num()));
+                    auto const uiThreadId(static_cast<Vec<1u>::Val>(::omp_get_thread_num()));
                     return Vec<1u>(uiThreadId);
                 }
                 //-----------------------------------------------------------------------------

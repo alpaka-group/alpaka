@@ -30,7 +30,6 @@
 #include <alpaka/traits/Extents.hpp>        // traits::getXXX
 
 #include <cassert>                          // assert
-#include <cstddef>                          // std::size_t
 #include <cstring>                          // std::memset
 
 namespace alpaka
@@ -104,7 +103,7 @@ namespace alpaka
                     }
                     else
                     {
-                        for(std::size_t z(0); z < uiExtentDepth; ++z)
+                        for(UInt z(0); z < uiExtentDepth; ++z)
                         {
                             // If: 
                             // - the set extents width is identical to the dst extents width
@@ -118,7 +117,7 @@ namespace alpaka
                             }
                             else
                             {
-                                for(std::size_t y(0); y < uiExtentHeight; ++y)
+                                for(UInt y(0); y < uiExtentHeight; ++y)
                                 {
                                     std::memset(
                                         reinterpret_cast<void *>(pDstNative + y*uiDstPitchBytes + z*uiDstSliceSizeBytes),
