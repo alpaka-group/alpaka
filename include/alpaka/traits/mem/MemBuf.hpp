@@ -93,14 +93,29 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Gets the base memory buffer.
         //!
-        //! \param memBufView The memory buffer view to get the base buffer of.
+        //! \param memBuf The memory buffer.
         //! \return The base buffer.
         //-----------------------------------------------------------------------------
         template<
             typename TMemBuf>
         ALPAKA_FCT_HOST auto getMemBufBase(
             TMemBuf const & memBuf)
-            -> decltype(traits::mem::GetMemBufBase<TMemBuf>::getMemBufBase(std::declval<TMemBuf>()))
+            -> decltype(traits::mem::GetMemBufBase<TMemBuf>::getMemBufBase(std::declval<TMemBuf const &>()))
+        {
+            return traits::mem::GetMemBufBase<TMemBuf>::getMemBufBase(memBuf);
+        }
+
+        //-----------------------------------------------------------------------------
+        //! Gets the base memory buffer.
+        //!
+        //! \param memBuf The memory buffer.
+        //! \return The base buffer.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TMemBuf>
+        ALPAKA_FCT_HOST auto getMemBufBase(
+            TMemBuf & memBuf)
+            -> decltype(traits::mem::GetMemBufBase<TMemBuf>::getMemBufBase(std::declval<TMemBuf &>()))
         {
             return traits::mem::GetMemBufBase<TMemBuf>::getMemBufBase(memBuf);
         }
@@ -108,7 +123,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Gets the native pointer of the memory buffer.
         //!
-        //! \param memBuf The memory buffer to fill.
+        //! \param memBuf The memory buffer.
         //! \return The native pointer.
         //-----------------------------------------------------------------------------
         template<
@@ -123,7 +138,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Gets the native pointer of the memory buffer.
         //!
-        //! \param memBuf The memory buffer to fill.
+        //! \param memBuf The memory buffer.
         //! \return The native pointer.
         //-----------------------------------------------------------------------------
         template<

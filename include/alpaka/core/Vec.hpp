@@ -427,11 +427,11 @@ namespace alpaka
                 alpaka::Vec<TuiDim>,
                 typename std::enable_if<(TuiDim >= 1u) && (TuiDim <= 3u)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static std::size_t setWidth(
+                ALPAKA_FCT_HOST_ACC static void setWidth(
                     alpaka::Vec<TuiDim> & extent,
                     std::size_t const & width)
                 {
-                    return extent[0u] = width;
+                    extent[0u] = width;
                 }
             };
 
@@ -459,11 +459,11 @@ namespace alpaka
                 alpaka::Vec<TuiDim>,
                 typename std::enable_if<(TuiDim >= 2u) && (TuiDim <= 3u)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static std::size_t setHeight(
+                ALPAKA_FCT_HOST_ACC static void setHeight(
                     alpaka::Vec<TuiDim> & extent,
                     std::size_t const & height)
                 {
-                    return extent[1u] = height;
+                    extent[1u] = height;
                 }
             };
 
@@ -491,11 +491,11 @@ namespace alpaka
                 alpaka::Vec<TuiDim>,
                 typename std::enable_if<(TuiDim >= 3u) && (TuiDim <= 3u)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static std::size_t setDepth(
+                ALPAKA_FCT_HOST_ACC static void setDepth(
                     alpaka::Vec<TuiDim> & extent,
                     std::size_t const & depth)
                 {
-                    return extent[2u] = depth;
+                    extent[2u] = depth;
                 }
             };
         }
@@ -530,7 +530,7 @@ namespace alpaka
                     alpaka::Vec<TuiDim> & extent,
                     std::size_t const & width)
                 {
-                    return extent[0u] = width;
+                    extent[0u] = width;
                 }
             };
 
@@ -558,11 +558,11 @@ namespace alpaka
                 alpaka::Vec<TuiDim>,
                 typename std::enable_if<(TuiDim >= 2u) && (TuiDim <= 3u)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static std::size_t setOffsetY(
+                ALPAKA_FCT_HOST_ACC static void setOffsetY(
                     alpaka::Vec<TuiDim> & extent,
                     std::size_t const & height)
                 {
-                    return extent[1u] = height;
+                    extent[1u] = height;
                 }
             };
 
@@ -575,7 +575,7 @@ namespace alpaka
                 alpaka::Vec<TuiDim>,
                 typename std::enable_if<(TuiDim >= 3u) && (TuiDim <= 3u)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static std::size_t getOffsetZ(
+                ALPAKA_FCT_HOST_ACC static void getOffsetZ(
                     alpaka::Vec<TuiDim> const & extent)
                 {
                     return extent[2u];
@@ -590,11 +590,11 @@ namespace alpaka
                 alpaka::Vec<TuiDim>,
                 typename std::enable_if<(TuiDim >= 3u) && (TuiDim <= 3u)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static std::size_t setOffsetZ(
+                ALPAKA_FCT_HOST_ACC static void setOffsetZ(
                     alpaka::Vec<TuiDim> & extent,
                     std::size_t const & depth)
                 {
-                    return extent[2u] = depth;
+                    extent[2u] = depth;
                 }
             };
         }

@@ -124,6 +124,19 @@ namespace alpaka
         namespace mem
         {
             //#############################################################################
+            //! The fixed size array base memory buffer trait specialization.
+            //#############################################################################
+            template<
+                typename TFixedSizeArray>
+            struct IsMemBufBase<
+                TFixedSizeArray,
+                typename std::enable_if<
+                    std::is_array<TFixedSizeArray>::value>::type>
+            {
+                static const bool value = true;
+            };
+
+            //#############################################################################
             //! The fixed size array memory space trait specialization.
             //#############################################################################
             template<
@@ -166,8 +179,16 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static TFixedSizeArray getMemBufBase(
+                ALPAKA_FCT_HOST static TFixedSizeArray const & getMemBufBase(
                     TFixedSizeArray const & memBufBase)
+                {
+                    return memBufBase;
+                }
+                //-----------------------------------------------------------------------------
+                //! 
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static TFixedSizeArray & getMemBufBase(
+                    TFixedSizeArray & memBufBase)
                 {
                     return memBufBase;
                 }
@@ -261,6 +282,18 @@ namespace alpaka
         namespace mem
         {
             //#############################################################################
+            //! The std::array base memory buffer trait specialization.
+            //#############################################################################
+            template<
+                typename TElem,
+                std::size_t TuiSize>
+            struct IsMemBufBase<
+                std::array<TElem, TuiSize>>
+            {
+                static const bool value = true;
+            };
+
+            //#############################################################################
             //! The std::array memory space trait specialization.
             //#############################################################################
             template<
@@ -296,8 +329,16 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::array<TElem, TuiSize> getMemBufBase(
+                ALPAKA_FCT_HOST static std::array<TElem, TuiSize> const & getMemBufBase(
                     std::array<TElem, TuiSize> const & memBufBase)
+                {
+                    return memBufBase;
+                }
+                //-----------------------------------------------------------------------------
+                //! 
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static std::array<TElem, TuiSize> & getMemBufBase(
+                    std::array<TElem, TuiSize> & memBufBase)
                 {
                     return memBufBase;
                 }
@@ -384,6 +425,18 @@ namespace alpaka
         namespace mem
         {
             //#############################################################################
+            //! The std::vector base memory buffer trait specialization.
+            //#############################################################################
+            template<
+                typename TElem,
+                typename Allocator>
+            struct IsMemBufBase<
+                std::vector<TElem, Allocator>>
+            {
+                static const bool value = true;
+            };
+
+            //#############################################################################
             //! The std::vector memory space trait specialization.
             //#############################################################################
             template<
@@ -419,8 +472,16 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::vector<TElem, Allocator> getMemBufBase(
+                ALPAKA_FCT_HOST static std::vector<TElem, Allocator> const & getMemBufBase(
                     std::vector<TElem, Allocator> const & memBufBase)
+                {
+                    return memBufBase;
+                }
+                //-----------------------------------------------------------------------------
+                //! 
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static std::vector<TElem, Allocator> & getMemBufBase(
+                    std::vector<TElem, Allocator> & memBufBase)
                 {
                     return memBufBase;
                 }

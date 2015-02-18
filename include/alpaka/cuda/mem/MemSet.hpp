@@ -57,12 +57,15 @@ namespace alpaka
                     typename TExtents, 
                     typename TMemBufBase>
                 ALPAKA_FCT_HOST static void memSet(
-                    TMemBufBase & memBuf, 
+                    TMemBufBase & memBufBase, 
                     std::uint8_t const & byte, 
                     TExtents const & extents)
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
+                    
+                    static_assert(
+                        alpaka::mem::IsMemBufBase<TMemBufBase>::value,
+                        "The buffer has to be a base buffer!");
                     static_assert(
                         std::is_same<alpaka::dim::DimT<TMemBufBase>, alpaka::dim::Dim1>::value,
                         "The destination buffer is required to have the dimensionality alpaka::dim::Dim1 for this specialization!");
@@ -71,13 +74,13 @@ namespace alpaka
                         "The destination buffer and the extents are required to have the same dimensionality!");
 
                     auto const uiExtentWidth(alpaka::extent::getWidth(extents));
-                    auto const uiDstWidth(alpaka::extent::getWidth(memBuf));
+                    auto const uiDstWidth(alpaka::extent::getWidth(memBufBase));
                     assert(uiExtentWidth <= uiDstWidth);
                     
                     // Initiate the memory set.
                     ALPAKA_CUDA_CHECK(
                         cudaMemset(
-                            reinterpret_cast<void *>(alpaka::mem::getNativePtr(memBuf)),
+                            reinterpret_cast<void *>(alpaka::mem::getNativePtr(memBufBase)),
                             static_cast<int>(byte),
                             uiExtentWidth * sizeof(alpaka::mem::MemElemT<TMemBufBase>)));
                 }
@@ -88,13 +91,16 @@ namespace alpaka
                     typename TMemBufBase, 
                     typename TExtents>
                 ALPAKA_FCT_HOST static void memSet(
-                    TMemBufBase & memBuf, 
+                    TMemBufBase & memBufBase, 
                     std::uint8_t const & byte, 
                     TExtents const & extents,
                     cuda::detail::StreamCuda const & stream)
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
+                    
+                    static_assert(
+                        alpaka::mem::IsMemBufBase<TMemBufBase>::value,
+                        "The buffer has to be a base buffer!");
                     static_assert(
                         std::is_same<alpaka::dim::DimT<TMemBufBase>, alpaka::dim::Dim1>::value,
                         "The destination buffer is required to have the dimensionality alpaka::dim::Dim1 for this specialization!");
@@ -103,13 +109,13 @@ namespace alpaka
                         "The destination buffer and the extents are required to have the same dimensionality!");
 
                     auto const uiExtentWidth(alpaka::extent::getWidth(extents));
-                    auto const uiDstWidth(alpaka::extent::getWidth(memBuf));
+                    auto const uiDstWidth(alpaka::extent::getWidth(memBufBase));
                     assert(uiExtentWidth <= uiDstWidth);
                     
                     // Initiate the memory set.
                     ALPAKA_CUDA_CHECK(
                         cudaMemsetAsync(
-                            reinterpret_cast<void *>(alpaka::mem::getNativePtr(memBuf)),
+                            reinterpret_cast<void *>(alpaka::mem::getNativePtr(memBufBase)),
                             static_cast<int>(byte),
                             uiExtentWidth * sizeof(alpaka::mem::MemElemT<TMemBufBase>),
                             *stream.m_spCudaStream.get()));
@@ -130,12 +136,15 @@ namespace alpaka
                     typename TExtents, 
                     typename TMemBufBase>
                 ALPAKA_FCT_HOST static void memSet(
-                    TMemBufBase & memBuf, 
+                    TMemBufBase & memBufBase, 
                     std::uint8_t const & byte, 
                     TExtents const & extents)
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
+                    
+                    static_assert(
+                        alpaka::mem::IsMemBufBase<TMemBufBase>::value,
+                        "The buffer has to be a base buffer!");
                     static_assert(
                         std::is_same<alpaka::dim::DimT<TMemBufBase>, alpaka::dim::Dim2>::value,
                         "The destination buffer is required to have the dimensionality alpaka::dim::Dim2 for this specialization!");
@@ -145,16 +154,16 @@ namespace alpaka
 
                     auto const uiExtentWidth(alpaka::extent::getWidth(extents));
                     auto const uiExtentHeight(alpaka::extent::getHeight(extents));
-                    auto const uiDstWidth(alpaka::extent::getWidth(memBuf));
-                    auto const uiDstHeight(alpaka::extent::getHeight(memBuf));
+                    auto const uiDstWidth(alpaka::extent::getWidth(memBufBase));
+                    auto const uiDstHeight(alpaka::extent::getHeight(memBufBase));
                     assert(uiExtentWidth <= uiDstWidth);
                     assert(uiExtentHeight <= uiDstHeight);
 
                     // Initiate the memory set.
                     ALPAKA_CUDA_CHECK(
                         cudaMemset2D(
-                            reinterpret_cast<void *>(alpaka::mem::getNativePtr(memBuf)),
-                            alpaka::mem::getPitchBytes(memBuf),
+                            reinterpret_cast<void *>(alpaka::mem::getNativePtr(memBufBase)),
+                            alpaka::mem::getPitchBytes(memBufBase),
                             static_cast<int>(byte),
                             uiExtentWidth * sizeof(alpaka::mem::MemElemT<TMemBufBase>),
                             uiExtentHeight));
@@ -166,13 +175,16 @@ namespace alpaka
                     typename TExtents, 
                     typename TMemBufBase>
                 ALPAKA_FCT_HOST static void memSet(
-                    TMemBufBase & memBuf, 
+                    TMemBufBase & memBufBase, 
                     std::uint8_t const & byte, 
                     TExtents const & extents,
                     cuda::detail::StreamCuda const & stream)
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
+                    
+                    static_assert(
+                        alpaka::mem::IsMemBufBase<TMemBufBase>::value,
+                        "The buffer has to be a base buffer!");
                     static_assert(
                         std::is_same<alpaka::dim::DimT<TMemBufBase>, alpaka::dim::Dim2>::value,
                         "The destination buffer is required to have the dimensionality alpaka::dim::Dim2 for this specialization!");
@@ -182,16 +194,16 @@ namespace alpaka
 
                     auto const uiExtentWidth(alpaka::extent::getWidth(extents));
                     auto const uiExtentHeight(alpaka::extent::getHeight(extents));
-                    auto const uiDstWidth(alpaka::extent::getWidth(memBuf));
-                    auto const uiDstHeight(alpaka::extent::getHeight(memBuf));
+                    auto const uiDstWidth(alpaka::extent::getWidth(memBufBase));
+                    auto const uiDstHeight(alpaka::extent::getHeight(memBufBase));
                     assert(uiExtentWidth <= uiDstWidth);
                     assert(uiExtentHeight <= uiDstHeight);
 
                     // Initiate the memory set.
                     ALPAKA_CUDA_CHECK(
                         cudaMemset2DAsync(
-                            reinterpret_cast<void *>(alpaka::mem::getNativePtr(memBuf)),
-                            alpaka::mem::getPitchBytes(memBuf),
+                            reinterpret_cast<void *>(alpaka::mem::getNativePtr(memBufBase)),
+                            alpaka::mem::getPitchBytes(memBufBase),
                             static_cast<int>(byte),
                             uiExtentWidth * sizeof(alpaka::mem::MemElemT<TMemBufBase>),
                             uiExtentHeight,
@@ -213,12 +225,15 @@ namespace alpaka
                     typename TExtents, 
                     typename TMemBufBase>
                 ALPAKA_FCT_HOST static void memSet(
-                    TMemBufBase & memBuf, 
+                    TMemBufBase & memBufBase, 
                     std::uint8_t const & byte, 
                     TExtents const & extents)
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
+                    
+                    static_assert(
+                        alpaka::mem::IsMemBufBase<TMemBufBase>::value,
+                        "The buffer has to be a base buffer!");
                     static_assert(
                         std::is_same<alpaka::dim::DimT<TMemBufBase>, alpaka::dim::Dim3>::value,
                         "The destination base buffer is required to have the dimensionality alpaka::dim::Dim3 for this specialization!");
@@ -229,9 +244,9 @@ namespace alpaka
                     auto const uiExtentWidth(alpaka::extent::getWidth(extents));
                     auto const uiExtentHeight(alpaka::extent::getHeight(extents));
                     auto const uiExtentDepth(alpaka::extent::getDepth(extents));
-                    auto const uiDstWidth(alpaka::extent::getWidth(memBuf));
-                    auto const uiDstHeight(alpaka::extent::getHeight(memBuf));
-                    auto const uiDstDepth(alpaka::extent::getDepth(memBuf));
+                    auto const uiDstWidth(alpaka::extent::getWidth(memBufBase));
+                    auto const uiDstHeight(alpaka::extent::getHeight(memBufBase));
+                    auto const uiDstDepth(alpaka::extent::getDepth(memBufBase));
                     assert(uiExtentWidth <= uiDstWidth);
                     assert(uiExtentHeight <= uiDstHeight);
                     assert(uiExtentDepth <= uiDstDepth);
@@ -239,8 +254,8 @@ namespace alpaka
                     // Fill CUDA parameter structures.
                     cudaPitchedPtr const cudaPitchedPtrVal(
                         make_cudaPitchedPtr(
-                            reinterpret_cast<void *>(alpaka::mem::getNativePtr(memBuf)),
-                            alpaka::mem::getPitchBytes(memBuf),
+                            reinterpret_cast<void *>(alpaka::mem::getNativePtr(memBufBase)),
+                            alpaka::mem::getPitchBytes(memBufBase),
                             uiDstWidth,
                             uiDstHeight));
                     
@@ -264,13 +279,16 @@ namespace alpaka
                     typename TExtents, 
                     typename TMemBufBase>
                 ALPAKA_FCT_HOST static void memSet(
-                    TMemBufBase & memBuf, 
+                    TMemBufBase & memBufBase, 
                     std::uint8_t const & byte, 
                     TExtents const & extents,
                     cuda::detail::StreamCuda const & stream)
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
+                    
+                    static_assert(
+                        alpaka::mem::IsMemBufBase<TMemBufBase>::value,
+                        "The buffer has to be a base buffer!");
                     static_assert(
                         std::is_same<alpaka::dim::DimT<TMemBufBase>, alpaka::dim::Dim3>::value,
                         "The destination base buffer is required to have the dimensionality alpaka::dim::Dim3 for this specialization!");
@@ -281,9 +299,9 @@ namespace alpaka
                     auto const uiExtentWidth(alpaka::extent::getWidth(extents));
                     auto const uiExtentHeight(alpaka::extent::getHeight(extents));
                     auto const uiExtentDepth(alpaka::extent::getDepth(extents));
-                    auto const uiDstWidth(alpaka::extent::getWidth(memBuf));
-                    auto const uiDstHeight(alpaka::extent::getHeight(memBuf));
-                    auto const uiDstDepth(alpaka::extent::getDepth(memBuf));
+                    auto const uiDstWidth(alpaka::extent::getWidth(memBufBase));
+                    auto const uiDstHeight(alpaka::extent::getHeight(memBufBase));
+                    auto const uiDstDepth(alpaka::extent::getDepth(memBufBase));
                     assert(uiExtentWidth <= uiDstWidth);
                     assert(uiExtentHeight <= uiDstHeight);
                     assert(uiExtentDepth <= uiDstDepth);
@@ -291,8 +309,8 @@ namespace alpaka
                     // Fill CUDA parameter structures.
                     cudaPitchedPtr const cudaPitchedPtrVal(
                         make_cudaPitchedPtr(
-                            reinterpret_cast<void *>(alpaka::mem::getNativePtr(memBuf)),
-                            alpaka::mem::getPitchBytes(memBuf),
+                            reinterpret_cast<void *>(alpaka::mem::getNativePtr(memBufBase)),
+                            alpaka::mem::getPitchBytes(memBufBase),
                             uiDstWidth,
                             uiDstHeight));
                     

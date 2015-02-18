@@ -36,6 +36,17 @@ namespace alpaka
         namespace mem
         {
             //#############################################################################
+            //! The memory buffer base trait.
+            //#############################################################################
+            template<
+                typename TMemBuf, 
+                typename TSfinae = void>
+            struct IsMemBufBase
+            {
+                static const bool value = false;
+            };
+
+            //#############################################################################
             //! The memory allocator trait.
             //#############################################################################
             template<
@@ -57,9 +68,17 @@ namespace alpaka
             struct MemSet;
         }
     }
-
+    
     namespace mem
     {
+        //#############################################################################
+        //! The memory buffer base trait.
+        //#############################################################################
+        template<
+            typename TMemBuf, 
+            typename TSfinae = void>
+        using IsMemBufBase = traits::mem::IsMemBufBase<TMemBuf>;
+
         //-----------------------------------------------------------------------------
         //! Allocates memory in the given memory space.
         //!
@@ -96,6 +115,9 @@ namespace alpaka
             TExtents const & extents)
         {
             static_assert(
+                mem::IsMemBufBase<TMemBufBase>::value,
+                "The buffer has to be a base buffer!");
+            static_assert(
                 std::is_same<dim::DimT<TMemBufBase>, dim::DimT<TExtents>>::value,
                 "The buffer and the extents are required to have the same dimensionality!");
 
@@ -122,6 +144,9 @@ namespace alpaka
             TExtents const & extents,
             TStream const & stream)
         {
+            static_assert(
+                mem::IsMemBufBase<TMemBufBase>::value,
+                "The buffer has to be a base buffer!");
             static_assert(
                 std::is_same<dim::DimT<TMemBufBase>, dim::DimT<TExtents>>::value,
                 "The buffer and the extents are required to have the same dimensionality!");

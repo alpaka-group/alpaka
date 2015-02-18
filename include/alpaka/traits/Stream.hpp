@@ -38,7 +38,8 @@ namespace alpaka
             //! The stream type trait.
             //#############################################################################
             template<
-                typename TAcc>
+                typename TAcc, 
+                typename TSfinae = void>
             struct StreamType;
 
             //#############################################################################

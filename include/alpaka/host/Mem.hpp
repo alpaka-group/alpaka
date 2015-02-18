@@ -58,6 +58,19 @@ namespace alpaka
             {
                 using type = alpaka::mem::detail::MemBufView<host::detail::MemBufBaseHost<TElem, TDim>>;
             };
+
+            /*//#############################################################################
+            //! The memory buffer view creation type trait.
+            //#############################################################################
+            template<
+                typename TMemBuf,
+                typename TExtents,
+                typename TOffsets>
+            struct CreateMemBufView<
+                TExtents,
+                TOffsets>
+            {
+            };*/
         }
     }
 }

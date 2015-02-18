@@ -52,38 +52,41 @@ namespace alpaka
                 //! 
                 //-----------------------------------------------------------------------------
                 template<
-                    typename TMemBuf, 
+                    typename TMemBufBase, 
                     typename TExtents>
                 ALPAKA_FCT_HOST static void memSet(
-                    TMemBuf & memBuf, 
+                    TMemBufBase & memBufBase, 
                     std::uint8_t const & byte, 
                     TExtents const & extents)
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    using Elem = alpaka::mem::MemElemT<TMemBuf>;
+                    using Elem = alpaka::mem::MemElemT<TMemBufBase>;
 
                     static_assert(
-                        std::is_same<alpaka::dim::DimT<TMemBuf>, alpaka::dim::DimT<TExtents>>::value,
+                        alpaka::mem::IsMemBufBase<TMemBufBase>::value,
+                        "The buffer has to be a base buffer!");
+                    static_assert(
+                        std::is_same<alpaka::dim::DimT<TMemBufBase>, alpaka::dim::DimT<TExtents>>::value,
                         "The destination buffer and the extents are required to have the same dimensionality!");
 
                     auto const uiExtentWidth(alpaka::extent::getWidth(extents));
                     auto const uiExtentHeight(alpaka::extent::getHeight(extents));
                     auto const uiExtentDepth(alpaka::extent::getDepth(extents));
-                    auto const uiDstWidth(alpaka::extent::getWidth(memBuf));
-                    auto const uiDstHeight(alpaka::extent::getHeight(memBuf));
+                    auto const uiDstWidth(alpaka::extent::getWidth(memBufBase));
+                    auto const uiDstHeight(alpaka::extent::getHeight(memBufBase));
 #ifndef NDEBUG
-                    auto const uiDstDepth(alpaka::extent::getDepth(memBuf));
+                    auto const uiDstDepth(alpaka::extent::getDepth(memBufBase));
 #endif
                     assert(uiExtentWidth <= uiDstWidth);
                     assert(uiExtentHeight <= uiDstHeight);
                     assert(uiExtentDepth <= uiDstDepth);
                        
                     auto const uiExtentWidthBytes(uiExtentWidth * sizeof(Elem));
-                    auto const uiDstPitchBytes(alpaka::mem::getPitchBytes(memBuf));
+                    auto const uiDstPitchBytes(alpaka::mem::getPitchBytes(memBufBase));
                     assert(uiExtentWidthBytes <= uiDstPitchBytes);
 
-                    auto const pDstNative(reinterpret_cast<std::uint8_t *>(alpaka::mem::getNativePtr(memBuf)));
+                    auto const pDstNative(reinterpret_cast<std::uint8_t *>(alpaka::mem::getNativePtr(memBufBase)));
                     auto const uiDstSliceSizeBytes(uiDstPitchBytes * uiDstHeight);
 
                     int iByte(static_cast<int>(byte));
@@ -130,18 +133,18 @@ namespace alpaka
                 //! 
                 //-----------------------------------------------------------------------------
                 template<
-                    typename TMemBuf, 
+                    typename TMemBufBase, 
                     typename TExtents,
                     typename TStream>
                 ALPAKA_FCT_HOST static void memSet(
-                    TMemBuf & memBuf, 
+                    TMemBufBase & memBufBase, 
                     std::uint8_t const & byte, 
                     TExtents const & extents,
                     host::detail::StreamHost const &)
                 {
                     // \TODO: Implement asynchronous host memSet.
                     memSet(
-                        memBuf,
+                        memBufBase,
                         byte,
                         extents);
                 }

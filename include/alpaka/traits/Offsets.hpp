@@ -38,6 +38,14 @@ namespace alpaka
         namespace offset
         {
             //#############################################################################
+            //! The offsets get trait.
+            //#############################################################################
+            template<
+                typename T, 
+                typename TSfinae = void>
+            struct GetOffsets;
+
+            //#############################################################################
             //! The x offset get trait.
             //!
             //! If not specialized explicitly it returns 0.
@@ -110,11 +118,27 @@ namespace alpaka
         }
     }
 
+   template<
+        std::size_t TuiDim, 
+        typename TValue>
+    class Vec;
+
     //-----------------------------------------------------------------------------
     //! The offset trait accessors.
     //-----------------------------------------------------------------------------
     namespace offset
     {
+        //-----------------------------------------------------------------------------
+        //! \return The offsets.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TOffsets>
+        ALPAKA_FCT_HOST_ACC auto getOffsets(
+            TOffsets const & offsets)
+            -> decltype(traits::offset::GetOffsets<TOffsets>::getOffsets(std::declval<TOffsets>()))
+        {
+            return traits::offset::GetOffsets<TOffsets>::getOffsets(offsets);
+        }
         //-----------------------------------------------------------------------------
         //! \return The x offset.
         //-----------------------------------------------------------------------------
@@ -155,29 +179,29 @@ namespace alpaka
             TOffsets const & offsets,
             std::size_t const & xOffset)
         {
-            return traits::offset::SetOffsetX<TOffsets>::setOffsetX(offsets, xOffset);
+            traits::offset::SetOffsetX<TOffsets>::setOffsetX(offsets, xOffset);
         }
         //-----------------------------------------------------------------------------
         //! Sets the y offset.
         //-----------------------------------------------------------------------------
         template<
             typename TOffsets>
-        ALPAKA_FCT_HOST_ACC std::size_t setOffsetY(
+        ALPAKA_FCT_HOST_ACC void setOffsetY(
             TOffsets const & offsets,
             std::size_t const & yOffset)
         {
-            return traits::offset::SetOffsetY<TOffsets>::setOffsetY(offsets, yOffset);
+            traits::offset::SetOffsetY<TOffsets>::setOffsetY(offsets, yOffset);
         }
         //-----------------------------------------------------------------------------
         //! Sets the z offset.
         //-----------------------------------------------------------------------------
         template<
             typename TOffsets>
-        ALPAKA_FCT_HOST_ACC std::size_t setOffsetZ(
+        ALPAKA_FCT_HOST_ACC void setOffsetZ(
             TOffsets const & offsets,
             std::size_t const & zOffset)
         {
-            return traits::offset::SetOffsetZ<TOffsets>::setOffsetZ(offsets, zOffset);
+            traits::offset::SetOffsetZ<TOffsets>::setOffsetZ(offsets, zOffset);
         }
     }
 

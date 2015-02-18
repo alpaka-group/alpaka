@@ -187,6 +187,18 @@ namespace alpaka
         namespace mem
         {
             //#############################################################################
+            //! The MemBufBaseHost base memory buffer trait specialization.
+            //#############################################################################
+            template<
+                typename TElem, 
+                typename TDim>
+            struct IsMemBufBase<
+                host::detail::MemBufBaseHost<TElem, TDim>>
+            {
+                static const bool value = true;
+            };
+
+            //#############################################################################
             //! The MemBufBaseHost memory space trait specialization.
             //#############################################################################
             template<
@@ -222,8 +234,16 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static host::detail::MemBufBaseHost<TElem, TDim> getMemBufBase(
+                ALPAKA_FCT_HOST static host::detail::MemBufBaseHost<TElem, TDim> const & getMemBufBase(
                     host::detail::MemBufBaseHost<TElem, TDim> const & memBufBase)
+                {
+                    return memBufBase;
+                }
+                //-----------------------------------------------------------------------------
+                //! 
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static host::detail::MemBufBaseHost<TElem, TDim> & getMemBufBase(
+                    host::detail::MemBufBaseHost<TElem, TDim> & memBufBase)
                 {
                     return memBufBase;
                 }

@@ -36,7 +36,8 @@ namespace alpaka
     //! The default implementation returns 0.
     //#############################################################################
     template<
-        typename TAccelereatedKernel>
+        typename TAccelereatedKernel, 
+        typename TSfinae = void>
     struct BlockSharedExternMemSizeBytes
     {
         //-----------------------------------------------------------------------------

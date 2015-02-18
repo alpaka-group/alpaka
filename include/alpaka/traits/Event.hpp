@@ -36,7 +36,8 @@ namespace alpaka
             //! The event type trait.
             //#############################################################################
             template<
-                typename TAcc>
+                typename TAcc, 
+                typename TSfinae = void>
             struct EventType;
 
             //#############################################################################

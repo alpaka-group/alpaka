@@ -112,8 +112,8 @@ namespace alpaka
                     auto const uiDstSliceSizeBytes(uiDstPitchBytes * uiDstHeight);
                     auto const uiSrcSliceSizeBytes(uiSrcPitchBytes * uiSrcHeight);
                     
-                    auto const dstMemBufBase(alpaka::mem::getMemBufBase(memBufDst));
-                    auto const srcMemBufBase(alpaka::mem::getMemBufBase(memBufSrc));
+                    auto const & dstMemBufBase(alpaka::mem::getMemBufBase(memBufDst));
+                    auto const & srcMemBufBase(alpaka::mem::getMemBufBase(memBufSrc));
                     auto const uiDstMemBufBaseWidth(alpaka::extent::getWidth(dstMemBufBase));
                     auto const uiSrcMemBufBaseWidth(alpaka::extent::getWidth(srcMemBufBase));
                     auto const uiDstMemBufBaseHeight(alpaka::extent::getHeight(dstMemBufBase));

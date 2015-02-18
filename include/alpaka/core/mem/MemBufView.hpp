@@ -50,6 +50,17 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //! \param memBuf This can be either a memory buffer base or a memory buffer view itself.
+                //-----------------------------------------------------------------------------
+                MemBufView(
+                    TMemBuf const & memBuf) :
+                        m_memBufBase(alpaka::mem::getMemBufBase(memBuf)),
+                        m_vOffsetsElements(Vec<Dim::value>::fromOffsets(memBuf)),
+                        m_vExtentsElements(Vec<Dim::value>::fromExtents(memBuf))
+                {}
+
+                //-----------------------------------------------------------------------------
+                //! Constructor.
+                //! \param memBuf This can be either a memory buffer base or a memory buffer view itself.
                 //! \param offsetsElements The offsets in elements.
                 //! \param extentsElements The extents in elements.
                 //-----------------------------------------------------------------------------
@@ -58,8 +69,8 @@ namespace alpaka
                     typename TExtents>
                 MemBufView(
                     TMemBuf const & memBuf,
-                    TOffsets const & relativeOffsetsElements,
-                    TExtents const & extentsElements) :
+                    TExtents const & extentsElements,
+                    TOffsets const & relativeOffsetsElements = TOffsets()) :
                         m_memBufBase(alpaka::mem::getMemBufBase(memBuf)),
                         m_vOffsetsElements(Vec<Dim::value>::fromOffsets(relativeOffsetsElements)+Vec<Dim::value>::fromOffsets(memBuf)),
                         m_vExtentsElements(Vec<Dim::value>::fromExtents(extentsElements))
@@ -86,7 +97,7 @@ namespace alpaka
 
     
     //-----------------------------------------------------------------------------
-    // Trait specializations for mem::MemBufView.
+    // Trait specializations for MemBufView.
     //-----------------------------------------------------------------------------
     namespace traits
     {
@@ -166,6 +177,24 @@ namespace alpaka
         namespace offset
         {
             //#############################################################################
+            //! The MemBufView offsets get trait specialization.
+            //#############################################################################
+            template<
+                typename TMemBuf>
+            struct GetOffsets<
+                alpaka::mem::detail::MemBufView<TMemBuf>>
+            {
+                //-----------------------------------------------------------------------------
+                //! 
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static Vec<alpaka::dim::DimT<TMemBuf>::value> getOffsets(
+                    alpaka::mem::detail::MemBufView<TMemBuf> const & offsets)
+                {
+                    return offsets.m_vOffsetsElements;
+                }
+            };
+
+            //#############################################################################
             //! The MemBufView x offset get trait specialization.
             //#############################################################################
             template<
@@ -178,9 +207,9 @@ namespace alpaka
                 //! 
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static std::size_t getOffsetX(
-                    alpaka::mem::detail::MemBufView<TMemBuf> const & extent)
+                    alpaka::mem::detail::MemBufView<TMemBuf> const & offset)
                 {
-                    return extent.m_vOffsetsElements[0u];
+                    return offset.m_vOffsetsElements[0u];
                 }
             };
 
@@ -197,9 +226,9 @@ namespace alpaka
                 //! 
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static std::size_t getOffsetY(
-                    alpaka::mem::detail::MemBufView<TMemBuf> const & extent)
+                    alpaka::mem::detail::MemBufView<TMemBuf> const & offset)
                 {
-                    return extent.m_vOffsetsElements[1u];
+                    return offset.m_vOffsetsElements[1u];
                 }
             };
             //#############################################################################
@@ -215,9 +244,9 @@ namespace alpaka
                 //! 
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static std::size_t getOffsetZ(
-                    alpaka::mem::detail::MemBufView<TMemBuf> const & extent)
+                    alpaka::mem::detail::MemBufView<TMemBuf> const & offset)
                 {
-                    return extent.m_vOffsetsElements[2u];
+                    return offset.m_vOffsetsElements[2u];
                 }
             };
         }
@@ -268,8 +297,16 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static TMemBuf getMemBufBase(
+                ALPAKA_FCT_HOST static TMemBuf const & getMemBufBase(
                     alpaka::mem::detail::MemBufView<TMemBuf> const & memBufView)
+                {
+                    return memBufView.m_memBufBase;
+                }
+                //-----------------------------------------------------------------------------
+                //! 
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static TMemBuf & getMemBufBase(
+                    alpaka::mem::detail::MemBufView<TMemBuf> & memBufView)
                 {
                     return memBufView.m_memBufBase;
                 }
@@ -323,7 +360,7 @@ namespace alpaka
                 //! 
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static std::size_t getPitchBytes(
-                    alpaka::mem::detail::MemBufView<TMemBuf> & memBufView)
+                    alpaka::mem::detail::MemBufView<TMemBuf> const & memBufView)
                 {
                     return alpaka::mem::getPitchElements(alpaka::mem::getMemBufBase(memBufView));
                 }

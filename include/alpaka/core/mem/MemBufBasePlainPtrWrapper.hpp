@@ -162,6 +162,19 @@ namespace alpaka
         namespace mem
         {
             //#############################################################################
+            //! The MemBufBasePlainPtrWrapper base memory buffer trait specialization.
+            //#############################################################################
+            template<
+                typename TMemSpace,
+                typename TElem,
+                typename TDim>
+            struct IsMemBufBase<
+                alpaka::mem::MemBufBasePlainPtrWrapper<TMemSpace, TElem, TDim>>
+            {
+                static const bool value = true;
+            };
+
+            //#############################################################################
             //! The MemBufBasePlainPtrWrapper memory space trait specialization.
             //#############################################################################
             template<
@@ -200,8 +213,16 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static alpaka::mem::MemBufBasePlainPtrWrapper<TMemSpace, TElem, TDim> getMemBufBase(
+                ALPAKA_FCT_HOST static alpaka::mem::MemBufBasePlainPtrWrapper<TMemSpace, TElem, TDim> const & getMemBufBase(
                     alpaka::mem::MemBufBasePlainPtrWrapper<TMemSpace, TElem, TDim> const & memBufBase)
+                {
+                    return memBufBase;
+                }
+                //-----------------------------------------------------------------------------
+                //! 
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static alpaka::mem::MemBufBasePlainPtrWrapper<TMemSpace, TElem, TDim> & getMemBufBase(
+                    alpaka::mem::MemBufBasePlainPtrWrapper<TMemSpace, TElem, TDim> & memBufBase)
                 {
                     return memBufBase;
                 }

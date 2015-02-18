@@ -36,6 +36,16 @@ namespace alpaka
                 typename TMemBuf,
                 typename TSfinae = void>
             struct MemBufViewType;
+
+            /*//#############################################################################
+            //! The memory buffer view creation type trait.
+            //#############################################################################
+            template<
+                typename TMemBuf,
+                typename TExtents,
+                typename TOffsets,
+                typename TSfinae = void>
+            struct CreateMemBufView;*/
         }
     }
 
@@ -47,5 +57,27 @@ namespace alpaka
         template<
             typename TMemBuf>
         using MemBufViewT = typename traits::mem::MemBufViewType<TMemBuf>::type;
+
+        /*//-----------------------------------------------------------------------------
+        //! Constructor.
+        //! \param memBuf This can be either a memory buffer base or a memory buffer view itself.
+        //! \param offsetsElements The offsets in elements.
+        //! \param extentsElements The extents in elements.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TMemBuf,
+            typename TExtents,
+            typename TOffsets>
+        createMemBufView(
+            TMemBuf const & memBuf,
+            TExtents const & extentsElements,
+            TOffsets const & relativeOffsetsElements)
+            -> decltype(traits::mem::CreateMemBufView<TMemBuf, TExtents, TOffsets>::createMemBufView(std::declval<TMemBuf>(), std::declval<TExtents>(), std::declval<TOffsets>()))
+        {
+            traits::mem::CreateMemBufView<TMemBuf, TExtents, TOffsets>::createMemBufView(
+                memBuf,
+                extentsElements,
+                relativeOffsetsElements)
+        }*/
     }
 }

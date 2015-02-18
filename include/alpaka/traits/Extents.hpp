@@ -168,29 +168,29 @@ namespace alpaka
             TExtents const & extents,
             std::size_t const & width)
         {
-            return traits::extent::SetWidth<TExtents>::setWidth(extents, width);
+            traits::extent::SetWidth<TExtents>::setWidth(extents, width);
         }
         //-----------------------------------------------------------------------------
         //! Sets the height.
         //-----------------------------------------------------------------------------
         template<
             typename TExtents>
-        ALPAKA_FCT_HOST_ACC std::size_t setHeight(
+        ALPAKA_FCT_HOST_ACC void setHeight(
             TExtents const & extents,
             std::size_t const & height)
         {
-            return traits::extent::SetHeight<TExtents>::setHeight(extents, height);
+            traits::extent::SetHeight<TExtents>::setHeight(extents, height);
         }
         //-----------------------------------------------------------------------------
         //! Sets the depth.
         //-----------------------------------------------------------------------------
         template<
             typename TExtents>
-        ALPAKA_FCT_HOST_ACC std::size_t setDepth(
+        ALPAKA_FCT_HOST_ACC void setDepth(
             TExtents const & extents,
             std::size_t const & depth)
         {
-            return traits::extent::SetDepth<TExtents>::setDepth(extents, depth);
+            traits::extent::SetDepth<TExtents>::setDepth(extents, depth);
         }
     }
 
