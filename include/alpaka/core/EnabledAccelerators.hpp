@@ -39,7 +39,7 @@
 
 #include <alpaka/traits/Acc.hpp>            // traits::GetAccName
 
-#include <alpaka/core/WorkDivHelpers.hpp>   // getMaxBlockKernelExtentsAccelerators
+#include <alpaka/core/WorkDivHelpers.hpp>   // getMaxBlockThreadExtentsAccelerators
 
 #include <boost/mpl/vector.hpp>             // boost::mpl::vector
 #include <boost/mpl/filter_view.hpp>        // boost::mpl::filter_view
@@ -148,19 +148,19 @@ namespace alpaka
         }
 
         //-----------------------------------------------------------------------------
-        //! \return The maximum block kernels extents supported by all of the enabled accelerators.
+        //! \return The maximum block threads extents supported by all of the enabled accelerators.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST Vec<3u> getMaxBlockKernelExtentsEnabledAccelerators()
+        ALPAKA_FCT_HOST Vec<3u> getMaxBlockThreadExtentsEnabledAccelerators()
         {
-            return workdiv::getMaxBlockKernelExtentsAccelerators<acc::EnabledAccelerators>();
+            return workdiv::getMaxBlockThreadExtentsAccelerators<acc::EnabledAccelerators>();
         }
 
         //-----------------------------------------------------------------------------
-        //! \return The maximum block kernels count supported by all of the enabled accelerators.
+        //! \return The maximum block threads count supported by all of the enabled accelerators.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST UInt getMaxBlockKernelCountEnabledAccelerators()
+        ALPAKA_FCT_HOST UInt getMaxBlockThreadCountEnabledAccelerators()
         {
-            return workdiv::getMaxBlockKernelCountAccelerators<acc::EnabledAccelerators>();
+            return workdiv::getMaxBlockThreadCountAccelerators<acc::EnabledAccelerators>();
         }
     }
 }

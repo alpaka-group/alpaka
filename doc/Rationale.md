@@ -106,7 +106,7 @@ This fibers pool is local to the invocation because making it local to the Kerne
 
 #### Execution
 
-Parallel execution of the kernels in a block is required because when syncBlockKernels is called all of them have to be done with their work up to this line.
+Parallel execution of the kernels in a block is required because when syncBlockThreads is called all of them have to be done with their work up to this line.
 So we have to spawn one real thread per kernel in a block.
 `omp for` is not useful because it is meant for cases where multiple iterations are executed by one thread but in our case a 1:1 mapping is required.
 Therefore we use `omp parallel` with the specified number of threads in a block.

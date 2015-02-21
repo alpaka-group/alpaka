@@ -151,18 +151,19 @@ public:
         float const & fMaxI,
         std::uint32_t const & uiMaxIterations) const
     {
-        auto const uiGridKernelIdxX(acc.template getIdx<alpaka::Grid, alpaka::Kernels>()[0u]);
-        auto const uiGridKernelIdxY(acc.template getIdx<alpaka::Grid, alpaka::Kernels>()[1u]);
+        auto const uiGridThreadIdx(acc.template getIdx<alpaka::Grid, alpaka::Threads>().template subvec<2u>());
+        auto const & uiGridThreadIdxX(uiGridThreadIdx[0u]);
+        auto const & uiGridThreadIdxY(uiGridThreadIdx[1u]);
 
-        if((uiGridKernelIdxY < uiNumRows) && (uiGridKernelIdxX < uiNumCols))
+        if((uiGridThreadIdxY < uiNumRows) && (uiGridThreadIdxX < uiNumCols))
         {
             SimpleComplex<float> c(
-                (fMinR + (static_cast<float>(uiGridKernelIdxX)/float(uiNumCols-1)*(fMaxR - fMinR))),
-                (fMinI + (static_cast<float>(uiGridKernelIdxY)/float(uiNumRows-1)*(fMaxI - fMinI))));
+                (fMinR + (static_cast<float>(uiGridThreadIdxX)/float(uiNumCols-1)*(fMaxR - fMinR))),
+                (fMinI + (static_cast<float>(uiGridThreadIdxY)/float(uiNumRows-1)*(fMaxI - fMinI))));
 
             auto const uiIterationCount(iterateMandelbrot(c, uiMaxIterations));
 
-            pColors[uiGridKernelIdxY*uiPitchElems + uiGridKernelIdxX] =
+            pColors[uiGridThreadIdxY*uiPitchElems + uiGridThreadIdxX] =
 #ifdef ALPAKA_MANDELBROT_TEST_CONTINOUS_COLOR_MAPPING
                 iterationCountToContinousColor(uiIterationCount, uiMaxIterations);
 #else
@@ -295,8 +296,8 @@ struct MandelbrotKernelTester
         );
 
         // Let alpaka calculate good block and grid sizes given our full problem extents.
-        alpaka::Vec<3u> v3uiGridKernels(static_cast<alpaka::Vec<3u>::Val>(uiNumCols), static_cast<alpaka::Vec<3u>::Val>(uiNumRows), static_cast<alpaka::Vec<3u>::Val>(1u));
-        alpaka::workdiv::BasicWorkDiv const workDiv(alpaka::workdiv::getValidWorkDiv<boost::mpl::vector<TAcc>>(v3uiGridKernels, false));
+        alpaka::Vec<3u> v3uiGridThreads(static_cast<alpaka::Vec<3u>::Val>(uiNumCols), static_cast<alpaka::Vec<3u>::Val>(uiNumRows), static_cast<alpaka::Vec<3u>::Val>(1u));
+        alpaka::workdiv::BasicWorkDiv const workDiv(alpaka::workdiv::getValidWorkDiv<boost::mpl::vector<TAcc>>(v3uiGridThreads, false));
 
         std::cout
             << "MandelbrotKernelTester("

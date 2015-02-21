@@ -114,12 +114,12 @@ namespace alpaka
         }
 
         //-----------------------------------------------------------------------------
-        //! Syncs all kernels in the current block.
+        //! Syncs all threads in the current block.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_ACC void syncBlockKernels() const
+        ALPAKA_FCT_ACC void syncBlockThreads() const
         {
 #ifndef __CUDA_ARCH__
-            return TAcc::syncBlockKernels();
+            return TAcc::syncBlockThreads();
 #endif
         }
 

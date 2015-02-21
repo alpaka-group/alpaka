@@ -32,7 +32,7 @@
 
 //#############################################################################
 //! An accelerated test kernel.
-//! Uses atomicOp(), syncBlockKernels(), shared memory, getIdx, getExtents, global memory to compute a (useless) result.
+//! Uses atomicOp(), syncBlockThreads(), shared memory, getIdx, getExtents, global memory to compute a (useless) result.
 //! \tparam TAcc The accelerator environment to be executed on.
 //! \tparam TuiNumUselessWork The number of useless calculations done in each kernel execution.
 //#############################################################################
@@ -58,8 +58,8 @@ public:
         std::uint32_t * const puiBlockRetVals, 
         std::uint32_t const uiMult2) const
     {
-        // The number of kernels in this block.
-        std::size_t const uiNumKernelsInBlock(acc.template getWorkDiv<alpaka::Block, alpaka::Kernels, alpaka::dim::Dim1>()[0u]);
+        // The number of threads in this block.
+        std::size_t const uiNumKernelsInBlock(acc.template getWorkDiv<alpaka::Block, alpaka::Threads, alpaka::dim::Dim1>()[0u]);
 
         // Get the extern allocated shared memory.
         std::uint32_t * const pBlockShared(acc.template getBlockSharedExternMem<std::uint32_t>());
@@ -68,46 +68,46 @@ public:
         //std::uint32_t * const pBlockShared1(acc.template allocBlockSharedMem<std::uint32_t, TuiNumUselessWork::value>());
         //std::uint32_t * const pBlockShared2(acc.template allocBlockSharedMem<std::uint32_t, TuiNumUselessWork::value>());
 
-        // Calculate linearized index of the kernel in the block.
-        std::size_t const uiIdxBlockKernelsLin(acc.template getIdx<alpaka::Block, alpaka::Kernels, alpaka::dim::Dim1>()[0u]);
+        // Calculate linearized index of the thread in the block.
+        std::size_t const uiIdxBlockThreadsLin(acc.template getIdx<alpaka::Block, alpaka::Threads, alpaka::dim::Dim1>()[0u]);
 
 
-        // Fill the shared block with the kernel ids [1+X, 2+X, 3+X, ..., #Threads+X].
-        std::uint32_t iSum1(static_cast<std::uint32_t>(uiIdxBlockKernelsLin+1));
+        // Fill the shared block with the thread ids [1+X, 2+X, 3+X, ..., #Threads+X].
+        std::uint32_t iSum1(static_cast<std::uint32_t>(uiIdxBlockThreadsLin+1));
         for(std::uint32_t i(0); i<TuiNumUselessWork::value; ++i)
         {
             iSum1 += i;
         }
-        pBlockShared[uiIdxBlockKernelsLin] = iSum1;
+        pBlockShared[uiIdxBlockThreadsLin] = iSum1;
 
 
-        // Synchronize all kernels because now we are writing to the memory again but inverse.
-        acc.syncBlockKernels();
+        // Synchronize all threads because now we are writing to the memory again but inverse.
+        acc.syncBlockThreads();
 
         // Do something useless.
-        std::uint32_t iSum2(static_cast<std::uint32_t>(uiIdxBlockKernelsLin));
+        std::uint32_t iSum2(static_cast<std::uint32_t>(uiIdxBlockThreadsLin));
         for(std::uint32_t i(0); i<TuiNumUselessWork::value; ++i)
         {
             iSum2 -= i;
         }
-        // Add the inverse so that every cell is filled with [#Kernels, #Kernels, ..., #Kernels].
-        pBlockShared[(uiNumKernelsInBlock-1)-uiIdxBlockKernelsLin] += iSum2;
+        // Add the inverse so that every cell is filled with [#Threads, #Threads, ..., #Threads].
+        pBlockShared[(uiNumKernelsInBlock-1)-uiIdxBlockThreadsLin] += iSum2;
 
 
-        // Synchronize all kernels again.
-        acc.syncBlockKernels();
+        // Synchronize all threads again.
+        acc.syncBlockThreads();
 
         // Now add up all the cells atomically and write the result to cell 0 of the shared memory.
-        if(uiIdxBlockKernelsLin > 0)
+        if(uiIdxBlockThreadsLin > 0)
         {
-            acc.template atomicOp<alpaka::ops::Add>(&pBlockShared[0], pBlockShared[uiIdxBlockKernelsLin]);
+            acc.template atomicOp<alpaka::ops::Add>(&pBlockShared[0], pBlockShared[uiIdxBlockThreadsLin]);
         }
 
 
-        acc.syncBlockKernels();
+        acc.syncBlockThreads();
 
         // Only master writes result to global memory.
-        if(uiIdxBlockKernelsLin==0)
+        if(uiIdxBlockThreadsLin==0)
         {
             // Calculate linearized block id.
             std::size_t const uiblockIdx(acc.template getIdx<alpaka::Grid, alpaka::Blocks, alpaka::dim::Dim1>()[0u]);
@@ -136,10 +136,10 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<typename... TArgs>
         ALPAKA_FCT_HOST static std::size_t getBlockSharedExternMemSizeBytes(
-            alpaka::Vec<3u> const & v3uiBlockKernelsExtents, 
+            alpaka::Vec<3u> const & v3uiBlockThreadsExtents, 
             TArgs && ...)
         {
-            return v3uiBlockKernelsExtents.prod() * sizeof(std::uint32_t);
+            return v3uiBlockThreadsExtents.prod() * sizeof(std::uint32_t);
         }
     };
 }
@@ -205,7 +205,7 @@ struct SharedMemTester
             << ")" << std::endl;
 
         std::size_t const uiGridBlocksCount(alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Blocks, alpaka::dim::Dim1>(workDiv)[0u]);
-        std::size_t const uiBlockKernelsCount(alpaka::workdiv::getWorkDiv<alpaka::Block, alpaka::Kernels, alpaka::dim::Dim1>(workDiv)[0u]);
+        std::size_t const uiBlockThreadsCount(alpaka::workdiv::getWorkDiv<alpaka::Block, alpaka::Threads, alpaka::dim::Dim1>(workDiv)[0u]);
 
         // An array for the return values calculated by the blocks.
         std::vector<std::uint32_t> vuiBlockRetVals(uiGridBlocksCount, 0);
@@ -232,7 +232,7 @@ struct SharedMemTester
         alpaka::mem::copy(vuiBlockRetVals, blockRetValsAcc, uiSizeElements);
 
         // Assert that the results are correct.
-        std::uint32_t const uiCorrectResult(static_cast<std::uint32_t>(uiBlockKernelsCount*uiBlockKernelsCount) * m_uiMult * uiMult2);
+        std::uint32_t const uiCorrectResult(static_cast<std::uint32_t>(uiBlockThreadsCount*uiBlockThreadsCount) * m_uiMult * uiMult2);
 
         bool bResultCorrect(true);
         for(std::size_t i(0); i<uiGridBlocksCount; ++i)

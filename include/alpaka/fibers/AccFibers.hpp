@@ -75,7 +75,7 @@ namespace alpaka
             //! This accelerator allows parallel kernel execution on the host.
             //! It uses boost::fibers to implement the cooperative parallelism.
             //! By using fibers the shared memory can reside in the closest memory/cache available.
-            //! Furthermore there is no false sharing between neighboring kernels as it is the case in real multi-threading. 
+            //! Furthermore there is no false sharing between neighboring threads as it is the case in real multi-threading. 
             //#############################################################################
             class AccFibers :
                 protected WorkDivFibers,
@@ -163,21 +163,21 @@ namespace alpaka
                 }
 
                 //-----------------------------------------------------------------------------
-                //! Syncs all kernels in the current block.
+                //! Syncs all threads in the current block.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA void syncBlockKernels() const
+                ALPAKA_FCT_ACC_NO_CUDA void syncBlockThreads() const
                 {
                     auto const idFiber(boost::this_fiber::get_id());
                     auto const itFind(m_mFibersToBarrier.find(idFiber));
 
-                    syncBlockKernels(itFind);
+                    syncBlockThreads(itFind);
                 }
 
             private:
                 //-----------------------------------------------------------------------------
-                //! Syncs all kernels in the current block.
+                //! Syncs all threads in the current block.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA void syncBlockKernels(
+                ALPAKA_FCT_ACC_NO_CUDA void syncBlockThreads(
                     std::map<boost::fibers::fiber::id, UInt>::iterator const & itFind) const
                 {
                     assert(itFind != m_mFibersToBarrier.end());
@@ -191,7 +191,7 @@ namespace alpaka
                     if(bar.getNumFibersToWaitFor() == 0)
                     {
                         // No DCLP required because there can not be an interruption in between the check and the reset.
-                        bar.reset(m_uiNumKernelsPerBlock);
+                        bar.reset(m_uiNumThreadsPerBlock);
                     }
 
                     // Wait for the barrier.
@@ -211,7 +211,7 @@ namespace alpaka
                     static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
 
                     // Assure that all fibers have executed the return of the last allocBlockSharedMem function (if there was one before).
-                    syncBlockKernels();
+                    syncBlockThreads();
 
                     // Arbitrary decision: The fiber that was created first has to allocate the memory.
                     if(m_idMasterFiber == boost::this_fiber::get_id())
@@ -221,7 +221,7 @@ namespace alpaka
                             std::unique_ptr<uint8_t[]>(
                                 reinterpret_cast<uint8_t*>(new T[TuiNumElements])));
                     }
-                    syncBlockKernels();
+                    syncBlockThreads();
 
                     return reinterpret_cast<T*>(m_vvuiSharedMem.back().get());
                 }
@@ -245,8 +245,8 @@ namespace alpaka
                 FiberIdToIdxMap mutable m_mFibersToIndices;                 //!< The mapping of fibers id's to fibers indices.
                 Vec<3u> mutable m_v3uiGridBlockIdx;                         //!< The index of the currently executed block.
 
-                // syncBlockKernels
-                UInt mutable m_uiNumKernelsPerBlock;                        //!< The number of kernels per block the barrier has to wait for.
+                // syncBlockThreads
+                UInt mutable m_uiNumThreadsPerBlock;                        //!< The number of threads per block the barrier has to wait for.
                 std::map<
                     boost::fibers::fiber::id,
                     UInt> mutable m_mFibersToBarrier;                       //!< The mapping of fibers id's to their current barrier.
@@ -322,7 +322,7 @@ namespace alpaka
 
                     (*static_cast<WorkDivFibers *>(this)) = workDiv;
 
-                    this->AccFibers::m_uiNumKernelsPerBlock = workdiv::getWorkDiv<Block, Kernels, dim::Dim1>(workDiv)[0];
+                    this->AccFibers::m_uiNumThreadsPerBlock = workdiv::getWorkDiv<Block, Threads, dim::Dim1>(workDiv)[0];
                 }
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
@@ -341,7 +341,7 @@ namespace alpaka
 
                     (*static_cast<WorkDivFibers *>(this)) = (*static_cast<WorkDivFibers *>(&other));
 
-                    this->AccFibers::m_uiNumKernelsPerBlock = other.getBlockKernelsExtents().prod();
+                    this->AccFibers::m_uiNumThreadsPerBlock = other.getBlockThreadExtents().prod();
                     
                 }
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
@@ -357,7 +357,7 @@ namespace alpaka
 
                     (*static_cast<WorkDivFibers *>(this)) = (*static_cast<WorkDivFibers *>(&other));
 
-                    this->AccFibers::m_uiNumKernelsPerBlock = other.getBlockKernelsExtents().prod();
+                    this->AccFibers::m_uiNumThreadsPerBlock = other.getBlockThreadExtents().prod();
                 }
 #endif
                 //-----------------------------------------------------------------------------
@@ -383,15 +383,15 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    Vec<3u> const v3uiGridBlocksExtents(this->AccFibers::getWorkDiv<Grid, Blocks, dim::Dim3>());
-                    Vec<3u> const v3uiBlockKernelsExtents(this->AccFibers::getWorkDiv<Block, Kernels, dim::Dim3>());
+                    Vec<3u> const v3uiGridBlockExtents(this->AccFibers::getWorkDiv<Grid, Blocks, dim::Dim3>());
+                    Vec<3u> const v3uiBlockThreadExtents(this->AccFibers::getWorkDiv<Block, Threads, dim::Dim3>());
 
-                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiBlockKernelsExtents, std::forward<TArgs>(args)...));
+                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiBlockThreadExtents, std::forward<TArgs>(args)...));
                     this->AccFibers::m_vuiExternalSharedMem.reset(
                         new uint8_t[uiBlockSharedExternMemSizeBytes]);
 
 #ifndef ALPAKA_FIBERS_NO_POOL
-                    auto const uiNumKernelsInBlock(this->AccFibers::getWorkDiv<Block, Kernels, dim::Dim1>());
+                    auto const uiNumThreadsInBlock(this->AccFibers::getWorkDiv<Block, Threads, dim::Dim1>());
                     // Yielding is not faster for fibers. Therefore we use condition variables. 
                     // It is better to wake them up when the conditions are fulfilled because this does not cost as much as for real threads.
                     using FiberPool = alpaka::detail::ConcurrentExecPool<
@@ -403,40 +403,40 @@ namespace alpaka
                         boost::unique_lock,                 // The unique lock type to use. Only required if TbYield is true.
                         boost::fibers::condition_variable,  // The condition variable type to use. Only required if TbYield is true.
                         false>;                             // If the threads should yield.
-                    FiberPool pool(uiNumKernelsInBlock[0], uiNumKernelsInBlock[0]);
+                    FiberPool pool(uiNumThreadsInBlock[0], uiNumThreadsInBlock[0]);
 #endif
 
                     // Execute the blocks serially.
-                    for(UInt bz(0); bz<v3uiGridBlocksExtents[2]; ++bz)
+                    for(UInt bz(0); bz<v3uiGridBlockExtents[2]; ++bz)
                     {
                         this->AccFibers::m_v3uiGridBlockIdx[2] = bz;
-                        for(UInt by(0); by<v3uiGridBlocksExtents[1]; ++by)
+                        for(UInt by(0); by<v3uiGridBlockExtents[1]; ++by)
                         {
                             this->AccFibers::m_v3uiGridBlockIdx[1] = by;
-                            for(UInt bx(0); bx<v3uiGridBlocksExtents[0]; ++bx)
+                            for(UInt bx(0); bx<v3uiGridBlockExtents[0]; ++bx)
                             {
                                 this->AccFibers::m_v3uiGridBlockIdx[0] = bx;
 
-                                // Execute the kernels in parallel using cooperative multi-threading.
-                                Vec<3u> v3uiBlockKernelIdx;
-                                for(UInt tz(0); tz<v3uiBlockKernelsExtents[2]; ++tz)
+                                // Execute the block threads in parallel using cooperative multi-threading.
+                                Vec<3u> v3uiBlockThreadIdx;
+                                for(UInt tz(0); tz<v3uiBlockThreadExtents[2]; ++tz)
                                 {
-                                    v3uiBlockKernelIdx[2] = tz;
-                                    for(UInt ty(0); ty<v3uiBlockKernelsExtents[1]; ++ty)
+                                    v3uiBlockThreadIdx[2] = tz;
+                                    for(UInt ty(0); ty<v3uiBlockThreadExtents[1]; ++ty)
                                     {
-                                        v3uiBlockKernelIdx[1] = ty;
-                                        for(UInt tx(0); tx<v3uiBlockKernelsExtents[0]; ++tx)
+                                        v3uiBlockThreadIdx[1] = ty;
+                                        for(UInt tx(0); tx<v3uiBlockThreadExtents[0]; ++tx)
                                         {
-                                            v3uiBlockKernelIdx[0] = tx;
+                                            v3uiBlockThreadIdx[0] = tx;
 
                                             // Create a fiber.
-                                            // The v3uiBlockKernelIdx is required to be copied in from the environment because if the fiber is immediately suspended the variable is already changed for the next iteration/thread.
+                                            // The v3uiBlockThreadIdx is required to be copied in from the environment because if the fiber is immediately suspended the variable is already changed for the next iteration/thread.
     
 #if BOOST_COMP_MSVC     // VC is missing the this pointer type in the signature of &KernelExecutorFibers::fiberKernel<TArgs...>
                                             auto fiberKernelFct = 
-                                                [&, v3uiBlockKernelIdx]()
+                                                [&, v3uiBlockThreadIdx]()
                                                 {
-                                                    fiberKernel<TArgs...>(v3uiBlockKernelIdx, std::forward<TArgs>(args)...); 
+                                                    fiberKernel<TArgs...>(v3uiBlockThreadIdx, std::forward<TArgs>(args)...); 
                                                 };
     #ifdef ALPAKA_THREADS_NO_POOL
                                             m_vFibersInBlock.push_back(boost::fibers::fiber(fiberKernelFct));
@@ -445,20 +445,20 @@ namespace alpaka
     #endif
 #elif BOOST_COMP_GNUC   // But GCC < 4.9.0 can not compile variadic templates inside lambdas correctly if the variadic argument is not in the parameter list.
                                             auto fiberKernelFct(
-                                                [this](Vec<3u> const v3uiBlockKernelIdx, TArgs ... args)
+                                                [this](Vec<3u> const v3uiBlockThreadIdx, TArgs ... args)
                                                 {
-                                                    fiberKernel<TArgs...>(v3uiBlockKernelIdx, std::forward<TArgs>(args)...); 
+                                                    fiberKernel<TArgs...>(v3uiBlockThreadIdx, std::forward<TArgs>(args)...); 
                                                 });
     #ifdef ALPAKA_THREADS_NO_POOL
-                                            m_vFibersInBlock.push_back(boost::fibers::fiber(fiberKernelFct, v3uiBlockKernelIdx, args...));
+                                            m_vFibersInBlock.push_back(boost::fibers::fiber(fiberKernelFct, v3uiBlockThreadIdx, args...));
     #else
-                                            m_vFuturesInBlock.emplace_back(pool.enqueueTask(fiberKernelFct, v3uiBlockKernelIdx, args...));
+                                            m_vFuturesInBlock.emplace_back(pool.enqueueTask(fiberKernelFct, v3uiBlockThreadIdx, args...));
     #endif
 #else
     #ifdef ALPAKA_THREADS_NO_POOL
-                                            m_vFibersInBlock.push_back(boost::fibers::fiber(&KernelExecutorFibers::fiberKernel<TArgs...>, this, v3uiBlockKernelIdx, std::forward<TArgs>(args)...));
+                                            m_vFibersInBlock.push_back(boost::fibers::fiber(&KernelExecutorFibers::fiberKernel<TArgs...>, this, v3uiBlockThreadIdx, std::forward<TArgs>(args)...));
     #else
-                                            m_vFuturesInBlock.emplace_back(pool.enqueueTask(&KernelExecutorFibers::fiberKernel<TArgs...>, this, v3uiBlockKernelIdx, std::forward<TArgs>(args)...));
+                                            m_vFuturesInBlock.emplace_back(pool.enqueueTask(&KernelExecutorFibers::fiberKernel<TArgs...>, this, v3uiBlockThreadIdx, std::forward<TArgs>(args)...));
     #endif
 #endif
 
@@ -504,28 +504,28 @@ namespace alpaka
                 template<
                     typename... TArgs>
                 ALPAKA_FCT_HOST void fiberKernel(
-                    Vec<3u> const & v3uiBlockKernelIdx, 
+                    Vec<3u> const & v3uiBlockThreadIdx, 
                     TArgs && ... args) const
                 {
                     // We have to store the fiber data before the kernel is calling any of the methods of this class depending on them.
                     auto const idFiber(boost::this_fiber::get_id());
 
                     // Set the master thread id.
-                    if(v3uiBlockKernelIdx[0] == 0 && v3uiBlockKernelIdx[1] == 0 && v3uiBlockKernelIdx[2] == 0)
+                    if(v3uiBlockThreadIdx[0] == 0 && v3uiBlockThreadIdx[1] == 0 && v3uiBlockThreadIdx[2] == 0)
                     {
                         this->AccFibers::m_idMasterFiber = idFiber;
                     }
 
-                    // We can not use the default syncBlockKernels here because it searches inside m_mFibersToBarrier for the thread id. 
+                    // We can not use the default syncBlockThreads here because it searches inside m_mFibersToBarrier for the thread id. 
                     // Concurrently searching while others use emplace is unsafe!
                     std::map<boost::fibers::fiber::id, UInt>::iterator itFiberToBarrier;
 
                     // Save the fiber id, and index.
-                    this->AccFibers::m_mFibersToIndices.emplace(idFiber, v3uiBlockKernelIdx);
+                    this->AccFibers::m_mFibersToIndices.emplace(idFiber, v3uiBlockThreadIdx);
                     itFiberToBarrier = this->AccFibers::m_mFibersToBarrier.emplace(idFiber, 0).first;
 
                     // Sync all threads so that the maps with thread id's are complete and not changed after here.
-                    this->AccFibers::syncBlockKernels(itFiberToBarrier);
+                    this->AccFibers::syncBlockThreads(itFiberToBarrier);
 
                     // Execute the kernel itself.
                     this->TAcceleratedKernel::operator()(
@@ -533,7 +533,7 @@ namespace alpaka
                         std::forward<TArgs>(args)...);
 
                     // We have to sync all fibers here because if a fiber would finish before all fibers have been started, the new fiber could get a recycled (then duplicate) fiber id!
-                    this->AccFibers::syncBlockKernels(itFiberToBarrier);
+                    this->AccFibers::syncBlockThreads(itFiberToBarrier);
                 }
 
             private:

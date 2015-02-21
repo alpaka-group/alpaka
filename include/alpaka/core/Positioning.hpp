@@ -43,9 +43,9 @@ namespace alpaka
     namespace unit
     {
         //#############################################################################
-        //! This type is used to get the extents/indices in units of kernels.
+        //! This type is used to get the extents/indices in units of The number of threads.
         //#############################################################################
-        struct Kernels;
+        struct Threads;
         //#############################################################################
         //! This type is used to get the extents/indices in units of blocks.
         //#############################################################################

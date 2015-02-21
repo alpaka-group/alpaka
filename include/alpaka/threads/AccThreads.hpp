@@ -169,20 +169,20 @@ namespace alpaka
                 }
 
                 //-----------------------------------------------------------------------------
-                //! Syncs all kernels in the current block.
+                //! Syncs all threads in the current block.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA void syncBlockKernels() const
+                ALPAKA_FCT_ACC_NO_CUDA void syncBlockThreads() const
                 {
                     auto const idThread(std::this_thread::get_id());
                     auto const itFind(m_mThreadsToBarrier.find(idThread));
 
-                    syncBlockKernels(itFind);
+                    syncBlockThreads(itFind);
                 }
             private:
                 //-----------------------------------------------------------------------------
-                //! Syncs all kernels in the current block.
+                //! Syncs all threads in the current block.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA void syncBlockKernels(
+                ALPAKA_FCT_ACC_NO_CUDA void syncBlockThreads(
                     std::map<std::thread::id, UInt>::iterator const & itFind) const
                 {
                     assert(itFind != m_mThreadsToBarrier.end());
@@ -198,7 +198,7 @@ namespace alpaka
                         std::lock_guard<std::mutex> lock(m_mtxBarrier);
                         if(bar.getNumThreadsToWaitFor() == 0)
                         {
-                            bar.reset(m_uiNumKernelsPerBlock);
+                            bar.reset(m_uiNumThreadsPerBlock);
                         }
                     }
 
@@ -218,7 +218,7 @@ namespace alpaka
                     static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
 
                     // Assure that all threads have executed the return of the last allocBlockSharedMem function (if there was one before).
-                    syncBlockKernels();
+                    syncBlockThreads();
 
                     // Arbitrary decision: The thread that was created first has to allocate the memory.
                     if(m_idMasterThread == std::this_thread::get_id())
@@ -228,7 +228,7 @@ namespace alpaka
                             std::unique_ptr<uint8_t[]>(
                                 reinterpret_cast<uint8_t*>(new T[TuiNumElements])));
                     }
-                    syncBlockKernels();
+                    syncBlockThreads();
 
                     return reinterpret_cast<T*>(m_vvuiSharedMem.back().get());
                 }
@@ -252,8 +252,8 @@ namespace alpaka
                 detail::ThreadIdToIdxMap mutable m_mThreadsToIndices;       //!< The mapping of thread id's to thread indices.
                 Vec<3u> mutable m_v3uiGridBlockIdx;                         //!< The index of the currently executed block.
 
-                // syncBlockKernels
-                UInt mutable m_uiNumKernelsPerBlock;                        //!< The number of kernels per block the barrier has to wait for.
+                // syncBlockThreads
+                UInt mutable m_uiNumThreadsPerBlock;                        //!< The number of threads per block the barrier has to wait for.
                 std::map<
                     std::thread::id,
                     UInt> mutable m_mThreadsToBarrier;                      //!< The mapping of thread id's to their current barrier.
@@ -331,7 +331,7 @@ namespace alpaka
 
                     (*static_cast<WorkDivThreads *>(this)) = workDiv;
 
-                    this->AccThreads::m_uiNumKernelsPerBlock = workdiv::getWorkDiv<Block, Kernels, dim::Dim1>(workDiv)[0];
+                    this->AccThreads::m_uiNumThreadsPerBlock = workdiv::getWorkDiv<Block, Threads, dim::Dim1>(workDiv)[0];
                 }
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
@@ -351,7 +351,7 @@ namespace alpaka
 
                     (*static_cast<WorkDivThreads *>(this)) = (*static_cast<WorkDivThreads const *>(&other));
 
-                    this->AccThreads::m_uiNumKernelsPerBlock = other.getBlockKernelsExtents().prod();
+                    this->AccThreads::m_uiNumThreadsPerBlock = other.getBlockThreadExtents().prod();
                 }
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
@@ -371,7 +371,7 @@ namespace alpaka
 
                     (*static_cast<WorkDivThreads *>(this)) = (*static_cast<WorkDivThreads const *>(&other));
 
-                    this->AccThreads::m_uiNumKernelsPerBlock = other.getBlockKernelsExtents().prod();
+                    this->AccThreads::m_uiNumThreadsPerBlock = other.getBlockThreadExtents().prod();
                 }
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
@@ -396,56 +396,56 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    Vec<3u> const v3uiGridBlocksExtents(this->AccThreads::getWorkDiv<Grid, Blocks, dim::Dim3>());
-                    Vec<3u> const v3uiBlockKernelsExtents(this->AccThreads::getWorkDiv<Block, Kernels, dim::Dim3>());
+                    Vec<3u> const v3uiGridBlockExtents(this->AccThreads::getWorkDiv<Grid, Blocks, dim::Dim3>());
+                    Vec<3u> const v3uiBlockThreadExtents(this->AccThreads::getWorkDiv<Block, Threads, dim::Dim3>());
 
-                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiBlockKernelsExtents, std::forward<TArgs>(args)...));
+                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiBlockThreadExtents, std::forward<TArgs>(args)...));
                     this->AccThreads::m_vuiExternalSharedMem.reset(
                         new uint8_t[uiBlockSharedExternMemSizeBytes]);
 
 #ifndef ALPAKA_THREADS_NO_POOL
-                    auto const uiNumKernelsInBlock(this->AccThreads::getWorkDiv<Block, Kernels, dim::Dim1>());
+                    auto const uiNumThreadsInBlock(this->AccThreads::getWorkDiv<Block, Threads, dim::Dim1>());
                     // When using the thread pool the threads are yielding because this is faster. 
                     // Using condition variables and going to sleep is very costly for real threads. 
-                    // Especially when the time to wait is really short (syncBlockKernels) yielding is much faster.
+                    // Especially when the time to wait is really short (syncBlockThreads) yielding is much faster.
                     using ThreadPool = alpaka::detail::ConcurrentExecPool<
                         std::thread,                // The concurrent execution type.
                         std::promise,               // The promise type.
                         ThreadPoolCurrentException, // The type returning the current exception.
                         ThreadPoolYield>;           // The type yielding the current concurrent execution.
-                    ThreadPool pool(uiNumKernelsInBlock[0], uiNumKernelsInBlock[0]);
+                    ThreadPool pool(uiNumThreadsInBlock[0], uiNumThreadsInBlock[0]);
 #endif
                     // Execute the blocks serially.
-                    for(UInt bz(0); bz<v3uiGridBlocksExtents[2]; ++bz)
+                    for(UInt bz(0); bz<v3uiGridBlockExtents[2]; ++bz)
                     {
                         this->AccThreads::m_v3uiGridBlockIdx[2] = bz;
-                        for(UInt by(0); by<v3uiGridBlocksExtents[1]; ++by)
+                        for(UInt by(0); by<v3uiGridBlockExtents[1]; ++by)
                         {
                             this->AccThreads::m_v3uiGridBlockIdx[1] = by;
-                            for(UInt bx(0); bx<v3uiGridBlocksExtents[0]; ++bx)
+                            for(UInt bx(0); bx<v3uiGridBlockExtents[0]; ++bx)
                             {
                                 this->AccThreads::m_v3uiGridBlockIdx[0] = bx;
 
-                                // Execute the kernels in parallel threads.
-                                Vec<3u> v3uiBlockKernelIdx;
-                                for(UInt tz(0); tz<v3uiBlockKernelsExtents[2]; ++tz)
+                                // Execute the threads in parallel threads.
+                                Vec<3u> v3uiBlockThreadIdx;
+                                for(UInt tz(0); tz<v3uiBlockThreadExtents[2]; ++tz)
                                 {
-                                    v3uiBlockKernelIdx[2] = tz;
-                                    for(UInt ty(0); ty<v3uiBlockKernelsExtents[1]; ++ty)
+                                    v3uiBlockThreadIdx[2] = tz;
+                                    for(UInt ty(0); ty<v3uiBlockThreadExtents[1]; ++ty)
                                     {
-                                        v3uiBlockKernelIdx[1] = ty;
-                                        for(UInt tx(0); tx<v3uiBlockKernelsExtents[0]; ++tx)
+                                        v3uiBlockThreadIdx[1] = ty;
+                                        for(UInt tx(0); tx<v3uiBlockThreadExtents[0]; ++tx)
                                         {
-                                            v3uiBlockKernelIdx[0] = tx;
+                                            v3uiBlockThreadIdx[0] = tx;
 
                                             // Create a thread.
-                                            // The v3uiBlockKernelIdx is required to be copied in from the environment because if the thread is immediately suspended the variable is already changed for the next iteration/thread.
+                                            // The v3uiBlockThreadIdx is required to be copied in from the environment because if the thread is immediately suspended the variable is already changed for the next iteration/thread.
 
 #if BOOST_COMP_MSVC     // VC is missing the this pointer type in the signature of &KernelExecutorThreads::threadKernel<TArgs...>
                                             auto threadKernelFct = 
-                                                [&, v3uiBlockKernelIdx]()
+                                                [&, v3uiBlockThreadIdx]()
                                                 {
-                                                    threadKernel<TArgs...>(v3uiBlockKernelIdx, std::forward<TArgs>(args)...); 
+                                                    threadKernel<TArgs...>(v3uiBlockThreadIdx, std::forward<TArgs>(args)...); 
                                                 };
     #ifdef ALPAKA_THREADS_NO_POOL
                                             m_vThreadsInBlock.push_back(std::thread(threadKernelFct));
@@ -454,20 +454,20 @@ namespace alpaka
     #endif
 #elif BOOST_COMP_GNUC   // But GCC < 4.9.0 can not compile variadic templates inside lambdas correctly if the variadic argument is not in the parameter list.
                                             auto threadKernelFct(
-                                                [this](Vec<3u> const v3uiBlockKernelIdx, TArgs ... args)
+                                                [this](Vec<3u> const v3uiBlockThreadIdx, TArgs ... args)
                                                 {
-                                                    threadKernel<TArgs...>(v3uiBlockKernelIdx, std::forward<TArgs>(args)...); 
+                                                    threadKernel<TArgs...>(v3uiBlockThreadIdx, std::forward<TArgs>(args)...); 
                                                 });
     #ifdef ALPAKA_THREADS_NO_POOL
-                                            m_vThreadsInBlock.push_back(std::thread(threadKernelFct, v3uiBlockKernelIdx, args...));
+                                            m_vThreadsInBlock.push_back(std::thread(threadKernelFct, v3uiBlockThreadIdx, args...));
     #else
-                                            m_vFuturesInBlock.emplace_back(pool.enqueueTask(threadKernelFct, v3uiBlockKernelIdx, args...));
+                                            m_vFuturesInBlock.emplace_back(pool.enqueueTask(threadKernelFct, v3uiBlockThreadIdx, args...));
     #endif
 #else
     #ifdef ALPAKA_THREADS_NO_POOL
-                                            m_vThreadsInBlock.push_back(std::thread(&KernelExecutorThreads::threadKernel<TArgs...>, this, v3uiBlockKernelIdx, std::forward<TArgs>(args)...));
+                                            m_vThreadsInBlock.push_back(std::thread(&KernelExecutorThreads::threadKernel<TArgs...>, this, v3uiBlockThreadIdx, std::forward<TArgs>(args)...));
     #else
-                                            m_vFuturesInBlock.emplace_back(pool.enqueueTask(&KernelExecutorThreads::threadKernel<TArgs...>, this, v3uiBlockKernelIdx, std::forward<TArgs>(args)...));
+                                            m_vFuturesInBlock.emplace_back(pool.enqueueTask(&KernelExecutorThreads::threadKernel<TArgs...>, this, v3uiBlockThreadIdx, std::forward<TArgs>(args)...));
     #endif
 #endif
                                         }
@@ -512,19 +512,19 @@ namespace alpaka
                 template<
                     typename... TArgs>
                 ALPAKA_FCT_HOST void threadKernel(
-                    Vec<3u> const & v3uiBlockKernelIdx, 
+                    Vec<3u> const & v3uiBlockThreadIdx, 
                     TArgs && ... args) const
                 {
                     // We have to store the thread data before the kernel is calling any of the methods of this class depending on them.
                     auto const idThread(std::this_thread::get_id());
 
                     // Set the master thread id.
-                    if(v3uiBlockKernelIdx[0] == 0 && v3uiBlockKernelIdx[1] == 0 && v3uiBlockKernelIdx[2] == 0)
+                    if(v3uiBlockThreadIdx[0] == 0 && v3uiBlockThreadIdx[1] == 0 && v3uiBlockThreadIdx[2] == 0)
                     {
                         this->AccThreads::m_idMasterThread = idThread;
                     }
 
-                    // We can not use the default syncBlockKernels here because it searches inside m_mThreadsToBarrier for the thread id. 
+                    // We can not use the default syncBlockThreads here because it searches inside m_mThreadsToBarrier for the thread id. 
                     // Concurrently searching while others use emplace is unsafe!
                     std::map<std::thread::id, UInt>::iterator itThreadToBarrier;
 
@@ -533,12 +533,12 @@ namespace alpaka
                         std::lock_guard<std::mutex> lock(m_mtxMapInsert);
 
                         // Save the thread id, and index.
-                        this->AccThreads::m_mThreadsToIndices.emplace(idThread, v3uiBlockKernelIdx);
+                        this->AccThreads::m_mThreadsToIndices.emplace(idThread, v3uiBlockThreadIdx);
                         itThreadToBarrier = this->AccThreads::m_mThreadsToBarrier.emplace(idThread, 0).first;
                     }
 
                     // Sync all fibers so that the maps with fiber id's are complete and not changed after here.
-                    this->AccThreads::syncBlockKernels(itThreadToBarrier);
+                    this->AccThreads::syncBlockThreads(itThreadToBarrier);
 
                     // Execute the kernel itself.
                     this->TAcceleratedKernel::operator()(
@@ -546,7 +546,7 @@ namespace alpaka
                         std::forward<TArgs>(args)...);
 
                     // We have to sync all threads here because if a thread would finish before all threads have been started, the new thread could get a recycled (then duplicate) thread id!
-                    this->AccThreads::syncBlockKernels(itThreadToBarrier);
+                    this->AccThreads::syncBlockThreads(itThreadToBarrier);
                 }
 
             private:
@@ -557,8 +557,8 @@ namespace alpaka
 #endif
                 std::mutex mutable m_mtxMapInsert;
 
-                Vec<3u> m_v3uiGridBlocksExtents;
-                Vec<3u> m_v3uiBlockKernelsExtents;
+                Vec<3u> m_v3uiGridBlockExtents;
+                Vec<3u> m_v3uiBlockThreadExtents;
             };
         }
     }

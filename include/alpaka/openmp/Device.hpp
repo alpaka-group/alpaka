@@ -180,17 +180,17 @@ namespace alpaka
                     devProps.m_sName = host::getCpuName();
                     devProps.m_uiMultiProcessorCount = 1u;
 #if ALPAKA_INTEGRATION_TEST
-                    devProps.m_uiBlockKernelsCountMax = 4u;
+                    devProps.m_uiBlockThreadsCountMax = 4u;
 #else
                     // HACK: ::omp_get_max_threads() does not return the real limit of the underlying OpenMP runtime:
                     // 'The omp_get_max_threads routine returns the value of the internal control variable, which is used to determine the number of threads that would form the new team, 
                     // if an active parallel region without a num_threads clause were to be encountered at that point in the program.'
                     // How to do this correctly? Is there even a way to get the hard limit apart from omp_set_num_threads(high_value) -> omp_get_max_threads()?
                     ::omp_set_num_threads(1024);
-                    devProps.m_uiBlockKernelsCountMax = ::omp_get_max_threads();
+                    devProps.m_uiBlockThreadsCountMax = ::omp_get_max_threads();
 #endif
-                    devProps.m_v3uiBlockKernelsExtentsMax = Vec<3u>(devProps.m_uiBlockKernelsCountMax, devProps.m_uiBlockKernelsCountMax, devProps.m_uiBlockKernelsCountMax);
-                    devProps.m_v3uiGridBlocksExtentsMax = Vec<3u>(std::numeric_limits<UInt>::max(), std::numeric_limits<UInt>::max(), std::numeric_limits<UInt>::max());
+                    devProps.m_v3uiBlockThreadExtentsMax = Vec<3u>(devProps.m_uiBlockThreadsCountMax, devProps.m_uiBlockThreadsCountMax, devProps.m_uiBlockThreadsCountMax);
+                    devProps.m_v3uiGridBlockExtentsMax = Vec<3u>(std::numeric_limits<UInt>::max(), std::numeric_limits<UInt>::max(), std::numeric_limits<UInt>::max());
                     devProps.m_uiGlobalMemSizeBytes = host::getGlobalMemSizeBytes();
                     //devProps.m_uiMaxClockFrequencyHz = TODO;
 

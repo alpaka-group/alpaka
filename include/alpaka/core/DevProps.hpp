@@ -40,9 +40,9 @@ namespace alpaka
         {
             std::string m_sName;                    //!< The name.
             UInt m_uiMultiProcessorCount;           //!< The number of multiprocessors.
-            UInt m_uiBlockKernelsCountMax;          //!< The maximum number of kernels in a block.
-            Vec<3u> m_v3uiBlockKernelsExtentsMax;   //!< The maximum number of kernels in each dimension of a block.
-            Vec<3u> m_v3uiGridBlocksExtentsMax;     //!< The maximum number of blocks in each dimension of the grid.
+            UInt m_uiBlockThreadsCountMax;          //!< The maximum number of threads in a block.
+            Vec<3u> m_v3uiBlockThreadExtentsMax;   //!< The maximum number of threads in each dimension of a block.
+            Vec<3u> m_v3uiGridBlockExtentsMax;     //!< The maximum number of blocks in each dimension of the grid.
             std::size_t m_uiGlobalMemSizeBytes;     //!< Size of the global device memory in bytes.
             //std::size_t m_uiSharedMemSizeBytes;   //!< Size of the available block shared memory in bytes. 
             //std::size_t m_uiMaxClockFrequencyHz;  //!< Maximum clock frequency of the device in Hz.

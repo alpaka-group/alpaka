@@ -153,9 +153,9 @@ namespace alpaka
                 }
 
                 //-----------------------------------------------------------------------------
-                //! Syncs all kernels in the current block.
+                //! Syncs all threads in the current block.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY void syncBlockKernels() const
+                ALPAKA_FCT_ACC_CUDA_ONLY void syncBlockThreads() const
                 {
                     __syncthreads();
                 }
@@ -262,11 +262,11 @@ namespace alpaka
         }
 
         //-----------------------------------------------------------------------------
-        //! Syncs all kernels in the current block.
+        //! Syncs all threads in the current block.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_ACC_CUDA_ONLY void syncBlockKernels() const
+        ALPAKA_FCT_ACC_CUDA_ONLY void syncBlockThreads() const
         {
-            return AccCuda::syncBlockKernels();
+            return AccCuda::syncBlockThreads();
         }
 
         //-----------------------------------------------------------------------------
@@ -345,10 +345,10 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    m_v3uiGridBlocksExtents = workdiv::getWorkDiv<Grid, Blocks, dim::Dim3>(workDiv);
-                    m_v3uiBlockKernelsExtents = workdiv::getWorkDiv<Block, Kernels, dim::Dim3>(workDiv);
+                    m_v3uiGridBlockExtents = workdiv::getWorkDiv<Grid, Blocks, dim::Dim3>(workDiv);
+                    m_v3uiBlockThreadExtents = workdiv::getWorkDiv<Block, Threads, dim::Dim3>(workDiv);
 
-                    // TODO: Check that (sizeof(TAcceleratedKernel) * m_v3uiBlockKernelsExtents.prod()) < available memory size
+                    // TODO: Check that (sizeof(TAcceleratedKernel) * m_v3uiBlockThreadExtents.prod()) < available memory size
                 }
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
@@ -396,22 +396,22 @@ namespace alpaka
 #endif
 
                     dim3 gridDim(
-                        static_cast<unsigned int>(m_v3uiGridBlocksExtents[0u]), 
-                        static_cast<unsigned int>(m_v3uiGridBlocksExtents[1u]), 
-                        static_cast<unsigned int>(m_v3uiGridBlocksExtents[2u]));
+                        static_cast<unsigned int>(m_v3uiGridBlockExtents[0u]), 
+                        static_cast<unsigned int>(m_v3uiGridBlockExtents[1u]), 
+                        static_cast<unsigned int>(m_v3uiGridBlockExtents[2u]));
                     dim3 blockDim(
-                        static_cast<unsigned int>(m_v3uiBlockKernelsExtents[0u]), 
-                        static_cast<unsigned int>(m_v3uiBlockKernelsExtents[1u]), 
-                        static_cast<unsigned int>(m_v3uiBlockKernelsExtents[2u]));
+                        static_cast<unsigned int>(m_v3uiBlockThreadExtents[0u]), 
+                        static_cast<unsigned int>(m_v3uiBlockThreadExtents[1u]), 
+                        static_cast<unsigned int>(m_v3uiBlockThreadExtents[2u]));
                     
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                    std::cout << "v3uiBlockKernelsExtents: " <<  gridDim.x << " " <<  gridDim.y << " " <<  gridDim.z << std::endl;
-                    std::cout << "v3uiBlockKernelsExtents: " <<  blockDim.x << " " <<  blockDim.y << " " <<  blockDim.z << std::endl;
+                    std::cout << "v3uiBlockThreadExtents: " <<  gridDim.x << " " <<  gridDim.y << " " <<  gridDim.z << std::endl;
+                    std::cout << "v3uiBlockThreadExtents: " <<  blockDim.x << " " <<  blockDim.y << " " <<  blockDim.z << std::endl;
 #endif
 
                     // Get the size of the block shared extern memory.
                     auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(
-                        m_v3uiBlockKernelsExtents, 
+                        m_v3uiBlockThreadExtents, 
                         std::forward<TArgs>(args)...));
 
                     // \TODO: The following block should be in a lock.
@@ -440,8 +440,8 @@ namespace alpaka
 #endif
                 }
             private:
-                Vec<3u> m_v3uiGridBlocksExtents;
-                Vec<3u> m_v3uiBlockKernelsExtents;
+                Vec<3u> m_v3uiGridBlockExtents;
+                Vec<3u> m_v3uiBlockThreadExtents;
 
                 StreamCuda m_Stream;
             };

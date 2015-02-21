@@ -155,9 +155,9 @@ namespace alpaka
                 }
 
                 //-----------------------------------------------------------------------------
-                //! Syncs all kernels in the current block.
+                //! Syncs all threads in the current block.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA void syncBlockKernels() const
+                ALPAKA_FCT_ACC_NO_CUDA void syncBlockThreads() const
                 {
                     // Nothing to do in here because only one thread in a group is allowed.
                 }
@@ -281,29 +281,29 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    Vec<3u> const v3uiGridBlocksExtents(this->AccSerial::getWorkDiv<Grid, Blocks, dim::Dim3>());
-                    Vec<3u> const v3uiBlockKernelsExtents(this->AccSerial::getWorkDiv<Block, Kernels, dim::Dim3>());
+                    Vec<3u> const v3uiGridBlockExtents(this->AccSerial::getWorkDiv<Grid, Blocks, dim::Dim3>());
+                    Vec<3u> const v3uiBlockThreadExtents(this->AccSerial::getWorkDiv<Block, Threads, dim::Dim3>());
 
-                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiBlockKernelsExtents, std::forward<TArgs>(args)...));
+                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiBlockThreadExtents, std::forward<TArgs>(args)...));
                     this->AccSerial::m_vuiExternalSharedMem.reset(
                         new uint8_t[uiBlockSharedExternMemSizeBytes]);
 
                     // Execute the blocks serially.
-                    for(std::uint32_t bz(0); bz<v3uiGridBlocksExtents[2]; ++bz)
+                    for(std::uint32_t bz(0); bz<v3uiGridBlockExtents[2]; ++bz)
                     {
                         this->AccSerial::m_v3uiGridBlockIdx[2] = bz;
-                        for(std::uint32_t by(0); by<v3uiGridBlocksExtents[1]; ++by)
+                        for(std::uint32_t by(0); by<v3uiGridBlockExtents[1]; ++by)
                         {
                             this->AccSerial::m_v3uiGridBlockIdx[1] = by;
-                            for(std::uint32_t bx(0); bx<v3uiGridBlocksExtents[0]; ++bx)
+                            for(std::uint32_t bx(0); bx<v3uiGridBlockExtents[0]; ++bx)
                             {
                                 this->AccSerial::m_v3uiGridBlockIdx[0] = bx;
 
-                                assert(v3uiBlockKernelsExtents[0] == 1);
-                                assert(v3uiBlockKernelsExtents[1] == 1);
-                                assert(v3uiBlockKernelsExtents[2] == 1);
+                                assert(v3uiBlockThreadExtents[0] == 1);
+                                assert(v3uiBlockThreadExtents[1] == 1);
+                                assert(v3uiBlockThreadExtents[2] == 1);
 
-                                // There is only ever one kernel in a block in the serial accelerator.
+                                // There is only ever one thread in a block in the serial accelerator.
                                 this->TAcceleratedKernel::operator()(
                                     (*static_cast<IAcc<AccSerial> const *>(this)),
                                     std::forward<TArgs>(args)...);

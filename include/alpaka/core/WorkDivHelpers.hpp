@@ -44,92 +44,92 @@ namespace alpaka
         namespace detail
         {
             //#############################################################################
-            //! The maximum block kernels extents correction wrapper.
+            //! The maximum block threads extents correction wrapper.
             //#############################################################################
-            struct CorrectMaxBlockKernelExtents
+            struct CorrectMaxBlockThreadExtents
             {
                 //-----------------------------------------------------------------------------
-                //! Corrects the maximum block kernels extents if it is larger then the one supported by the given accelerator type.
+                //! Corrects the maximum block threads extents if it is larger then the one supported by the given accelerator type.
                 //-----------------------------------------------------------------------------
                 template<
                     typename TAcc>
                 ALPAKA_FCT_HOST void operator()(
                     TAcc const &,
-                    Vec<3u> & v3uiBlockKernelExtents)
+                    Vec<3u> & v3uiBlockThreadExtents)
                 {
                     auto const devProps(dev::getDevProps(dev::DevManT<TAcc>::getCurrentDevice()));
-                    auto const & v3uiBlockKernelsExtentsMax(devProps.m_v3uiBlockKernelsExtentsMax);
+                    auto const & v3uiBlockThreadExtentsMax(devProps.m_v3uiBlockThreadExtentsMax);
 
-                    v3uiBlockKernelExtents = Vec<3u>(
-                        std::min(v3uiBlockKernelExtents[0u], v3uiBlockKernelsExtentsMax[0u]),
-                        std::min(v3uiBlockKernelExtents[1u], v3uiBlockKernelsExtentsMax[1u]),
-                        std::min(v3uiBlockKernelExtents[2u], v3uiBlockKernelsExtentsMax[2u]));
+                    v3uiBlockThreadExtents = Vec<3u>(
+                        std::min(v3uiBlockThreadExtents[0u], v3uiBlockThreadExtentsMax[0u]),
+                        std::min(v3uiBlockThreadExtents[1u], v3uiBlockThreadExtentsMax[1u]),
+                        std::min(v3uiBlockThreadExtents[2u], v3uiBlockThreadExtentsMax[2u]));
                 }
             };
         }
 
         //-----------------------------------------------------------------------------
-        //! \return The maximum block kernels extents supported by all of the given accelerators.
+        //! \return The maximum block threads extents supported by all of the given accelerators.
         //-----------------------------------------------------------------------------
         template<
             typename TAccSeq>
-        ALPAKA_FCT_HOST Vec<3u> getMaxBlockKernelExtentsAccelerators()
+        ALPAKA_FCT_HOST Vec<3u> getMaxBlockThreadExtentsAccelerators()
         {
             static_assert(boost::mpl::is_sequence<TAccSeq>::value, "TAccSeq is required to be a mpl::sequence!");
 
-            Vec<3u> v3uiMaxBlockKernelExtents(
+            Vec<3u> v3uiMaxBlockThreadExtents(
                 std::numeric_limits<UInt>::max(),
                 std::numeric_limits<UInt>::max(),
                 std::numeric_limits<UInt>::max());
 
             boost::mpl::for_each<TAccSeq>(
-                std::bind(detail::CorrectMaxBlockKernelExtents(), std::placeholders::_1, std::ref(v3uiMaxBlockKernelExtents))
+                std::bind(detail::CorrectMaxBlockThreadExtents(), std::placeholders::_1, std::ref(v3uiMaxBlockThreadExtents))
                 );
 
-            return v3uiMaxBlockKernelExtents;
+            return v3uiMaxBlockThreadExtents;
         }
 
         namespace detail
         {
             //#############################################################################
-            //! The maximum block kernels count correction wrapper.
+            //! The maximum block threads count correction wrapper.
             //#############################################################################
-            struct CorrectMaxBlockKernelCount
+            struct CorrectMaxBlockThreadCount
             {
                 //-----------------------------------------------------------------------------
-                //! Corrects the maximum block kernels count if it is larger then the one supported by the given accelerator type.
+                //! Corrects the maximum block threads count if it is larger then the one supported by the given accelerator type.
                 //-----------------------------------------------------------------------------
                 template<
                     typename TAcc>
                 ALPAKA_FCT_HOST void operator()(
                     TAcc const &,
-                    UInt & uiBlockKernelCount)
+                    UInt & uiBlockThreadCount)
                 {
                     auto const devProps(dev::getDevProps(dev::DevManT<TAcc>::getCurrentDevice()));
-                    auto const & uiBlockKernelCountMax(devProps.m_uiBlockKernelsCountMax);
+                    auto const & uiBlockThreadCountMax(devProps.m_uiBlockThreadsCountMax);
 
-                    uiBlockKernelCount = std::min(uiBlockKernelCount, uiBlockKernelCountMax);
+                    uiBlockThreadCount = std::min(uiBlockThreadCount, uiBlockThreadCountMax);
                 }
             };
         }
 
         //-----------------------------------------------------------------------------
-        //! \return The maximum block kernels count supported by all of the given accelerators.
+        //! \return The maximum block threads count supported by all of the given accelerators.
         //-----------------------------------------------------------------------------
         template<
             typename TAccSeq>
-        ALPAKA_FCT_HOST UInt getMaxBlockKernelCountAccelerators()
+        ALPAKA_FCT_HOST UInt getMaxBlockThreadCountAccelerators()
         {
             static_assert(boost::mpl::is_sequence<TAccSeq>::value, "TAccSeq is required to be a mpl::sequence!");
 
-            UInt uiMaxBlockKernelCount(
+            UInt uiMaxBlockThreadCount(
                 std::numeric_limits<UInt>::max());
 
             boost::mpl::for_each<TAccSeq>(
-                std::bind(detail::CorrectMaxBlockKernelCount(), std::placeholders::_1, std::ref(uiMaxBlockKernelCount))
+                std::bind(detail::CorrectMaxBlockThreadCount(), std::placeholders::_1, std::ref(uiMaxBlockThreadCount))
                 );
 
-            return uiMaxBlockKernelCount;
+            return uiMaxBlockThreadCount;
         }
 
         namespace detail
@@ -158,92 +158,92 @@ namespace alpaka
             }
 
             //#############################################################################
-            //! Subdivides the given grid kernels extents into blocks restricted by:
-            //! 1. the maximum block kernels extents and 
-            //! 2. the maximum block kernels count.
+            //! Subdivides the given grid threads extents into blocks restricted by:
+            //! 1. the maximum block threads extents and 
+            //! 2. the maximum block threads count.
             //!
-            //! \param v3uiGridKernelsExtents
-            //!     The full extents of kernels in the grid.
-            //! \param v3uiMaxBlockKernelsExtents
-            //!     The maximum extents of kernels in a block.
-            //! \param uiMaxBlockKernelsCount
-            //!     The maximum number of kernels in a block.
-            //! \param bRequireBlockKernelsExtentsToDivideGridKernelsExtents
-            //!     If this is true, the grid kernels extents will be multiples of the corresponding block kernels extents.
-            //!     NOTE: If v3uiGridKernelsExtents is prime (or otherwise bad chosen) in a dimension, the block kernels extent will be one in this dimension.
-            //! \param bUniformBlockKernelsExtentsClipping
-            //!     If this is true, the block kernels extents will be clipped uniformly.
+            //! \param v3uiGridThreadExtents
+            //!     The full extents of threads in the grid.
+            //! \param v3uiMaxBlockThreadExtents
+            //!     The maximum extents of threads in a block.
+            //! \param uiMaxBlockThreadsCount
+            //!     The maximum number of threads in a block.
+            //! \param bRequireBlockThreadExtentsToDivideGridThreadExtents
+            //!     If this is true, the grid threads extents will be multiples of the corresponding block threads extents.
+            //!     NOTE: If v3uiGridThreadExtents is prime (or otherwise bad chosen) in a dimension, the block threads extent will be one in this dimension.
+            //! \param bUniformBlockThreadExtentsClipping
+            //!     If this is true, the block threads extents will be clipped uniformly.
             //!     This means that all values of the extent will be processed uniformly at the same time.
             //!     This can lead to smaller blocks but allows to keep the ratio between dimensions (in some limits due to integer rounding).
             //#############################################################################
-            ALPAKA_FCT_HOST BasicWorkDiv subdivideGridKernels(
-                Vec<3u> const & v3uiGridKernelsExtents,
-                Vec<3u> const & v3uiMaxBlockKernelsExtents,
-                UInt const & uiMaxBlockKernelsCount,
-                bool bRequireBlockKernelsExtentsToDivideGridKernelsExtents = true)
+            ALPAKA_FCT_HOST BasicWorkDiv subdivideGridThreads(
+                Vec<3u> const & v3uiGridThreadExtents,
+                Vec<3u> const & v3uiMaxBlockThreadExtents,
+                UInt const & uiMaxBlockThreadsCount,
+                bool bRequireBlockThreadExtentsToDivideGridThreadExtents = true)
             {
-                assert(v3uiGridKernelsExtents[0u]>0);
-                assert(v3uiGridKernelsExtents[1u]>0);
-                assert(v3uiGridKernelsExtents[2u]>0);
+                assert(v3uiGridThreadExtents[0u]>0);
+                assert(v3uiGridThreadExtents[1u]>0);
+                assert(v3uiGridThreadExtents[2u]>0);
 
-                // 1. Restrict the max block kernels extents with the grid kernels extents.
-                // This removes dimensions not required in the given gird kernels extents.
-                // This has to be done before the uiMaxBlockKernelsCount clipping to get the maximum correctly.
-                Vec<3u> v3uiBlockKernelsExtents(
-                    std::min(v3uiMaxBlockKernelsExtents[0u], v3uiGridKernelsExtents[0u]),
-                    std::min(v3uiMaxBlockKernelsExtents[1u], v3uiGridKernelsExtents[1u]),
-                    std::min(v3uiMaxBlockKernelsExtents[2u], v3uiGridKernelsExtents[2u]));
+                // 1. Restrict the max block threads extents with the grid threads extents.
+                // This removes dimensions not required in the given gird threads extents.
+                // This has to be done before the uiMaxBlockThreadsCount clipping to get the maximum correctly.
+                Vec<3u> v3uiBlockThreadExtents(
+                    std::min(v3uiMaxBlockThreadExtents[0u], v3uiGridThreadExtents[0u]),
+                    std::min(v3uiMaxBlockThreadExtents[1u], v3uiGridThreadExtents[1u]),
+                    std::min(v3uiMaxBlockThreadExtents[2u], v3uiGridThreadExtents[2u]));
 
-                // 2. If the block kernels extents require more kernels then available on the accelerator, clip it.
-                if(v3uiBlockKernelsExtents.prod() > uiMaxBlockKernelsCount)
+                // 2. If the block threads extents require more threads then available on the accelerator, clip it.
+                if(v3uiBlockThreadExtents.prod() > uiMaxBlockThreadsCount)
                 {
                     // Begin in z dimension.
                     UInt uiDim(2);
                     // Very primitive clipping. Just halve it until it fits repeatedly iterating over the dimensions.
-                    while(v3uiBlockKernelsExtents.prod() > uiMaxBlockKernelsCount)
+                    while(v3uiBlockThreadExtents.prod() > uiMaxBlockThreadsCount)
                     {
-                        v3uiBlockKernelsExtents[uiDim] = std::max(static_cast<UInt>(1u), static_cast<UInt>(v3uiBlockKernelsExtents[uiDim] / 2u));
+                        v3uiBlockThreadExtents[uiDim] = std::max(static_cast<UInt>(1u), static_cast<UInt>(v3uiBlockThreadExtents[uiDim] / 2u));
                         uiDim = (uiDim+2) % 3;
                     }
                 }
 
-                if(bRequireBlockKernelsExtentsToDivideGridKernelsExtents)
+                if(bRequireBlockThreadExtentsToDivideGridThreadExtents)
                 {
-                    // Make the block kernels extents divide the grid kernels extents.
-                    v3uiBlockKernelsExtents = Vec<3u>(
-                        detail::nextLowerOrEqualFactor(v3uiBlockKernelsExtents[0u], v3uiGridKernelsExtents[0u]),
-                        detail::nextLowerOrEqualFactor(v3uiBlockKernelsExtents[1u], v3uiGridKernelsExtents[1u]),
-                        detail::nextLowerOrEqualFactor(v3uiBlockKernelsExtents[2u], v3uiGridKernelsExtents[2u]));
+                    // Make the block threads extents divide the grid threads extents.
+                    v3uiBlockThreadExtents = Vec<3u>(
+                        detail::nextLowerOrEqualFactor(v3uiBlockThreadExtents[0u], v3uiGridThreadExtents[0u]),
+                        detail::nextLowerOrEqualFactor(v3uiBlockThreadExtents[1u], v3uiGridThreadExtents[1u]),
+                        detail::nextLowerOrEqualFactor(v3uiBlockThreadExtents[2u], v3uiGridThreadExtents[2u]));
                 }
 
                 // Set the grid blocks extents (rounded to the next integer not less then the quotient.
-                Vec<3u> const v3uiGridBlocksExtents(
-                    static_cast<UInt>(std::ceil(static_cast<double>(v3uiGridKernelsExtents[0u]) / static_cast<double>(v3uiBlockKernelsExtents[0u]))),
-                    static_cast<UInt>(std::ceil(static_cast<double>(v3uiGridKernelsExtents[1u]) / static_cast<double>(v3uiBlockKernelsExtents[1u]))),
-                    static_cast<UInt>(std::ceil(static_cast<double>(v3uiGridKernelsExtents[2u]) / static_cast<double>(v3uiBlockKernelsExtents[2u]))));
+                Vec<3u> const v3uiGridBlockExtents(
+                    static_cast<UInt>(std::ceil(static_cast<double>(v3uiGridThreadExtents[0u]) / static_cast<double>(v3uiBlockThreadExtents[0u]))),
+                    static_cast<UInt>(std::ceil(static_cast<double>(v3uiGridThreadExtents[1u]) / static_cast<double>(v3uiBlockThreadExtents[1u]))),
+                    static_cast<UInt>(std::ceil(static_cast<double>(v3uiGridThreadExtents[2u]) / static_cast<double>(v3uiBlockThreadExtents[2u]))));
 
-                return BasicWorkDiv(v3uiGridBlocksExtents, v3uiBlockKernelsExtents);
+                return BasicWorkDiv(v3uiGridBlockExtents, v3uiBlockThreadExtents);
             }
         }
 
         //-----------------------------------------------------------------------------
         //! \tparam TAccs The accelerators for which this work division has to be valid.
-        //! \param v3uiGridKernelsExtents The full extents of kernels in the grid.
+        //! \param v3uiGridThreadExtents The full extents of threads in the grid.
         //! \return The work division.
         //-----------------------------------------------------------------------------
         template<
             typename TAccSeq>
         ALPAKA_FCT_HOST BasicWorkDiv getValidWorkDiv(
-            Vec<3u> const & v3uiGridKernelsExtents,
-            bool bRequireBlockKernelsExtentsToDivideGridKernelsExtents = true)
+            Vec<3u> const & v3uiGridThreadExtents,
+            bool bRequireBlockThreadExtentsToDivideGridThreadExtents = true)
         {
             static_assert(boost::mpl::is_sequence<TAccSeq>::value, "TAccSeq is required to be a mpl::sequence!");
 
-            return detail::subdivideGridKernels(
-                v3uiGridKernelsExtents,
-                getMaxBlockKernelExtentsAccelerators<TAccSeq>(),
-                getMaxBlockKernelCountAccelerators<TAccSeq>(),
-                bRequireBlockKernelsExtentsToDivideGridKernelsExtents);
+            return detail::subdivideGridThreads(
+                v3uiGridThreadExtents,
+                getMaxBlockThreadExtentsAccelerators<TAccSeq>(),
+                getMaxBlockThreadCountAccelerators<TAccSeq>(),
+                bRequireBlockThreadExtentsToDivideGridThreadExtents);
         }
 
         //-----------------------------------------------------------------------------
@@ -257,23 +257,23 @@ namespace alpaka
         ALPAKA_FCT_HOST bool isValidWorkDiv(
             TWorkDiv const & workDiv)
         {
-            auto const v3uiGridBlocksExtents(getWorkDiv<Grid, Blocks, dim::Dim3>(workDiv));
-            auto const v3uiBlockKernelsExtents(getWorkDiv<Block, Kernels, dim::Dim3>(workDiv));
+            auto const v3uiGridBlockExtents(getWorkDiv<Grid, Blocks, dim::Dim3>(workDiv));
+            auto const v3uiBlockThreadExtents(getWorkDiv<Block, Threads, dim::Dim3>(workDiv));
 
             auto const devProps(dev::getDevProps(dev::DevManT<TAcc>::getCurrentDevice()));
-            auto const & v3uiBlockKernelsExtentsMax(devProps.m_v3uiBlockKernelsExtentsMax);
-            auto const & uiBlockKernelCountMax(devProps.m_uiBlockKernelsCountMax);
+            auto const & v3uiBlockThreadExtentsMax(devProps.m_v3uiBlockThreadExtentsMax);
+            auto const & uiBlockThreadCountMax(devProps.m_uiBlockThreadsCountMax);
 
-            return !((v3uiGridBlocksExtents[0] == 0)
-                || (v3uiGridBlocksExtents[1] == 0)
-                || (v3uiGridBlocksExtents[2] == 0)
-                || (v3uiBlockKernelsExtents[0] == 0)
-                || (v3uiBlockKernelsExtents[1] == 0)
-                || (v3uiBlockKernelsExtents[2] == 0)
-                || (v3uiBlockKernelsExtentsMax[0] < v3uiBlockKernelsExtents[0])
-                || (v3uiBlockKernelsExtentsMax[1] < v3uiBlockKernelsExtents[1])
-                || (v3uiBlockKernelsExtentsMax[2] < v3uiBlockKernelsExtents[2])
-                || (uiBlockKernelCountMax < v3uiBlockKernelsExtents.prod()));
+            return !((v3uiGridBlockExtents[0] == 0)
+                || (v3uiGridBlockExtents[1] == 0)
+                || (v3uiGridBlockExtents[2] == 0)
+                || (v3uiBlockThreadExtents[0] == 0)
+                || (v3uiBlockThreadExtents[1] == 0)
+                || (v3uiBlockThreadExtents[2] == 0)
+                || (v3uiBlockThreadExtentsMax[0] < v3uiBlockThreadExtents[0])
+                || (v3uiBlockThreadExtentsMax[1] < v3uiBlockThreadExtents[1])
+                || (v3uiBlockThreadExtentsMax[2] < v3uiBlockThreadExtents[2])
+                || (uiBlockThreadCountMax < v3uiBlockThreadExtents.prod()));
         }
     }
 }

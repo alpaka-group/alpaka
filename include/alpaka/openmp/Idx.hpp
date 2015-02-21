@@ -68,28 +68,28 @@ namespace alpaka
                 ALPAKA_FCT_ACC_NO_CUDA virtual ~IdxOpenMp() noexcept = default;
 
                 //-----------------------------------------------------------------------------
-                //! \return The index of the currently executed kernel.
+                //! \return The index of the currently executed thread.
                 //
                 // \TODO: Would it be faster to precompute the 3 dimensional index and cache it inside an array?
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
-                ALPAKA_FCT_ACC_NO_CUDA Vec<3u> getIdxBlockKernel3d(TWorkDiv const & workDiv) const
+                ALPAKA_FCT_ACC_NO_CUDA Vec<3u> getIdxBlockThread3d(TWorkDiv const & workDiv) const
                 {
                     // We assume that the thread id is positive.
-                    auto const v1iIdxBlockKernel(getIdxBlockKernel1d());
-                    // Get the number of kernels in each dimension of the grid.
-                    auto const v3uiBlockKernelsExtents(workdiv::getWorkDiv<Block, Kernels, dim::Dim3>(workDiv));
-                    auto const v2uiBlockKernelsExtents(v3uiBlockKernelsExtents.template subvec<2u>());
+                    auto const v1iIdxBlockThread(getIdxBlockThread1d());
+                    // Get the number of threads in each dimension of the grid.
+                    auto const v3uiBlockThreadExtents(workdiv::getWorkDiv<Block, Threads, dim::Dim3>(workDiv));
+                    auto const v2uiBlockThreadExtents(v3uiBlockThreadExtents.template subvec<2u>());
 
                     return mapIdx<3>(
-                        v1iIdxBlockKernel,
-                        v2uiBlockKernelsExtents);
+                        v1iIdxBlockThread,
+                        v2uiBlockThreadExtents);
                 }
                 //-----------------------------------------------------------------------------
-                //! \return The index of the currently executed kernel.
+                //! \return The index of the currently executed thread.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA Vec<1u> getIdxBlockKernel1d() const
+                ALPAKA_FCT_ACC_NO_CUDA Vec<1u> getIdxBlockThread1d() const
                 {
                     // We assume that the thread id is positive.
                     assert(::omp_get_thread_num() >= 0);
@@ -97,7 +97,7 @@ namespace alpaka
                     return Vec<1u>(uiThreadId);
                 }
                 //-----------------------------------------------------------------------------
-                //! \return The block index of the currently executed kernel.
+                //! \return The block index of the currently executed thread.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA Vec<3u> getIdxGridBlock() const
                 {
@@ -115,17 +115,17 @@ namespace alpaka
         namespace idx
         {
             //#############################################################################
-            //! The OpenMP accelerator 3D block kernel index get trait specialization.
+            //! The OpenMP accelerator 3D block thread index get trait specialization.
             //#############################################################################
             template<>
             struct GetIdx<
                 openmp::detail::IdxOpenMp,
                 origin::Block,
-                unit::Kernels,
+                unit::Threads,
                 alpaka::dim::Dim3>
             {
                 //-----------------------------------------------------------------------------
-                //! \return The 3-dimensional index of the current kernel in the block.
+                //! \return The 3-dimensional index of the current thread in the block.
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
@@ -133,22 +133,22 @@ namespace alpaka
                     openmp::detail::IdxOpenMp const & index,
                     TWorkDiv const & workDiv)
                 {
-                    return index.getIdxBlockKernel3d(workDiv);
+                    return index.getIdxBlockThread3d(workDiv);
                 }
             };
 
             //#############################################################################
-            //! The OpenMP accelerator 1D block kernel index get trait specialization.
+            //! The OpenMP accelerator 1D block thread index get trait specialization.
             //#############################################################################
             template<>
             struct GetIdx<
                 openmp::detail::IdxOpenMp,
                 origin::Block,
-                unit::Kernels,
+                unit::Threads,
                 alpaka::dim::Dim1>
             {
                 //-----------------------------------------------------------------------------
-                //! \return The 3-dimensional index of the current kernel in the block.
+                //! \return The 3-dimensional index of the current thread in the block.
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
@@ -156,7 +156,7 @@ namespace alpaka
                     openmp::detail::IdxOpenMp const & index,
                     TWorkDiv const &)
                 {
-                    return index.getIdxBlockKernel1d();
+                    return index.getIdxBlockThread1d();
                 }
             };
 

@@ -59,14 +59,14 @@ namespace alpaka
                 ALPAKA_FCT_ACC_CUDA_ONLY /*virtual*/ ~IdxCuda() noexcept = default;
 
                 //-----------------------------------------------------------------------------
-                //! \return The index of the currently executed kernel.
+                //! \return The index of the currently executed thread.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY Vec<3u> getIdxBlockKernel() const
+                ALPAKA_FCT_ACC_CUDA_ONLY Vec<3u> getIdxBlockThread() const
                 {
                     return Vec<3u>(threadIdx.x, threadIdx.y, threadIdx.z);
                 }
                 //-----------------------------------------------------------------------------
-                //! \return The block index of the currently executed kernel.
+                //! \return The block index of the currently executed thread.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_CUDA_ONLY Vec<3u> getIdxGridBlock() const
                 {
@@ -81,17 +81,17 @@ namespace alpaka
         namespace idx
         {
             //#############################################################################
-            //! The CUDA accelerator 3D block kernel index get trait specialization.
+            //! The CUDA accelerator 3D block thread index get trait specialization.
             //#############################################################################
             template<>
             struct GetIdx<
                 cuda::detail::IdxCuda,
                 origin::Block,
-                unit::Kernels,
+                unit::Threads,
                 alpaka::dim::Dim3>
             {
                 //-----------------------------------------------------------------------------
-                //! \return The 3-dimensional index of the current kernel in the block.
+                //! \return The 3-dimensional index of the current thread in the block.
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
@@ -99,7 +99,7 @@ namespace alpaka
                     cuda::detail::IdxCuda const & index,
                     TWorkDiv const &)
                 {
-                    return index.getIdxBlockKernel();
+                    return index.getIdxBlockThread();
                 }
             };
 

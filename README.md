@@ -7,9 +7,10 @@ There is no need to write special CUDA, OpenMP or custom threading code.
 The supported accelerators can be selected at compile time but the decision which accelerator executes which kernel can be made at runtime.
 
 The abstraction used is very similar to the CUDA grid-blocks-threads division strategy.
-Algorithms that should be parallelized have to be divided into a 1, 2, or 3-dimensional grid consisting of small uniform work items called kernels.
-These kernels are organized in blocks.
-All kernels in a block are executed in parallel and can interact via fast shared memory.
+Algorithms that should be parallelized have to be divided into a 1, 2, or 3-dimensional grid consisting of small uniform work items.
+The function being executed by each of this threads is called a kernel. 
+The threads in the grid are organized in blocks.
+All threads in a block are executed in parallel and can interact via fast shared memory.
 Blocks are executed independently and can not interact in any way.
 The block execution order is unspecified and depends on the accelerator in use.
 By using this abstraction the execution can be optimally adapted to the available accelerators.
@@ -64,7 +65,7 @@ Accelerators
 |Devices|Host Core|Host Cores|Host Core|Host Cores|NVIDIA GPUs|
 |Lib/API|n/a| std::thread | boost::fibers::fiber |OpenMP 2.0|CUDA 6.5|
 |Execution strategy grid-blocks|sequential|sequential|sequential|sequential|undefined|
-|Execution strategy block-kernels|sequential|preemptive multitasking|cooperative multithreading|preemptive multitasking|lock-step within warps|
+|Execution strategy block-threads|sequential|preemptive multitasking|cooperative multithreading|preemptive multitasking|lock-step within warps|
 
 
 Usage

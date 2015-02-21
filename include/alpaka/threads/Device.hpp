@@ -176,12 +176,12 @@ namespace alpaka
                     // \TODO: Magic number. What is the maximum? Just set a reasonable value? There is a implementation defined maximum where the creation of a new thread crashes.
                     // std::thread::hardware_concurrency  can return 0, so a default for this case?
 #if ALPAKA_INTEGRATION_TEST
-                    devProps.m_uiBlockKernelsCountMax = 8u;
+                    devProps.m_uiBlockThreadsCountMax = 8u;
 #else
-                    devProps.m_uiBlockKernelsCountMax = std::thread::hardware_concurrency() * 8u;
+                    devProps.m_uiBlockThreadsCountMax = std::thread::hardware_concurrency() * 8u;
 #endif
-                    devProps.m_v3uiBlockKernelsExtentsMax = Vec<3u>(devProps.m_uiBlockKernelsCountMax, devProps.m_uiBlockKernelsCountMax, devProps.m_uiBlockKernelsCountMax);
-                    devProps.m_v3uiGridBlocksExtentsMax = Vec<3u>(std::numeric_limits<UInt>::max(), std::numeric_limits<UInt>::max(), std::numeric_limits<UInt>::max());
+                    devProps.m_v3uiBlockThreadExtentsMax = Vec<3u>(devProps.m_uiBlockThreadsCountMax, devProps.m_uiBlockThreadsCountMax, devProps.m_uiBlockThreadsCountMax);
+                    devProps.m_v3uiGridBlockExtentsMax = Vec<3u>(std::numeric_limits<UInt>::max(), std::numeric_limits<UInt>::max(), std::numeric_limits<UInt>::max());
                     devProps.m_uiGlobalMemSizeBytes = host::getGlobalMemSizeBytes();
                     //devProps.m_uiMaxClockFrequencyHz = TODO;
 

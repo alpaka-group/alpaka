@@ -69,9 +69,9 @@ namespace alpaka
                 ALPAKA_FCT_ACC_NO_CUDA virtual ~IdxFibers() noexcept = default;
 
                 //-----------------------------------------------------------------------------
-                //! \return The index of the currently executed kernel.
+                //! \return The index of the currently executed thread.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA Vec<3u> getIdxBlockKernel() const
+                ALPAKA_FCT_ACC_NO_CUDA Vec<3u> getIdxBlockThread() const
                 {
                     auto const idFiber(boost::this_fiber::get_id());
                     auto const itFind(m_mFibersToIndices.find(idFiber));
@@ -80,7 +80,7 @@ namespace alpaka
                     return itFind->second;
                 }
                 //-----------------------------------------------------------------------------
-                //! \return The index of the block of the currently executed kernel.
+                //! \return The index of the block of the currently executed thread.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA Vec<3u> getIdxGridBlock() const
                 {
@@ -99,17 +99,17 @@ namespace alpaka
         namespace idx
         {
             //#############################################################################
-            //! The fibers accelerator 3D block kernel index get trait specialization.
+            //! The fibers accelerator 3D block thread index get trait specialization.
             //#############################################################################
             template<>
             struct GetIdx<
                 fibers::detail::IdxFibers,
                 origin::Block,
-                unit::Kernels,
+                unit::Threads,
                 alpaka::dim::Dim3>
             {
                 //-----------------------------------------------------------------------------
-                //! \return The 3-dimensional index of the current kernel in the block.
+                //! \return The 3-dimensional index of the current thread in the block.
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
@@ -117,7 +117,7 @@ namespace alpaka
                     fibers::detail::IdxFibers const & index,
                     TWorkDiv const &)
                 {
-                    return index.getIdxBlockKernel();
+                    return index.getIdxBlockThread();
                 }
             };
 

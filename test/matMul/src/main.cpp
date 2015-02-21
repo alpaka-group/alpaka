@@ -87,75 +87,75 @@ public:
         TIndex const & uiPitchElemC) const
     {
         // Column and row of C to calculate.
-        auto const v2uiGridKernelIdx(acc.template getIdx<alpaka::Grid, alpaka::Kernels>().template subvec<2u>());
-        auto const & uiGridKernelIdxX(v2uiGridKernelIdx[0u]);
-        auto const & uiGridKernelIdxY(v2uiGridKernelIdx[1u]);
+        auto const v2uiGridThreadIdx(acc.template getIdx<alpaka::Grid, alpaka::Threads>().template subvec<2u>());
+        auto const & uiGridThreadIdxX(v2uiGridThreadIdx[0u]);
+        auto const & uiGridThreadIdxY(v2uiGridThreadIdx[1u]);
 
         // Column and row inside the block of C to calculate.
-        auto const v2uiBlockKernelIdx(acc.template getIdx<alpaka::Block, alpaka::Kernels>().template subvec<2u>());
-        auto const & uiBlockKernelIdxX(v2uiBlockKernelIdx[0u]);
-        auto const & uiBlockKernelIdxY(v2uiBlockKernelIdx[1u]);
+        auto const v2uiBlockThreadIdx(acc.template getIdx<alpaka::Block, alpaka::Threads>().template subvec<2u>());
+        auto const & uiBlockThreadIdxX(v2uiBlockThreadIdx[0u]);
+        auto const & uiBlockThreadIdxY(v2uiBlockThreadIdx[1u]);
 
-        // The block kernels extents.
-        auto const v2uiBlockKernelsExtents(acc.template getWorkDiv<alpaka::Block, alpaka::Kernels>().template subvec<2u>());
-        auto const & uiBlockKernelsExtentX(v2uiBlockKernelsExtents[0u]);
-        auto const & uiBlockKernelsExtentY(v2uiBlockKernelsExtents[1u]);
-        //assert(uiBlockKernelsExtentX == uiBlockKernelsExtentY);
-        auto const & uiBlockKernelsExtent(uiBlockKernelsExtentX);
+        // The block threads extents.
+        auto const v2uiBlockThreadsExtents(acc.template getWorkDiv<alpaka::Block, alpaka::Threads>().template subvec<2u>());
+        auto const & uiBlockThreadsExtentX(v2uiBlockThreadsExtents[0u]);
+        auto const & uiBlockThreadsExtentY(v2uiBlockThreadsExtents[1u]);
+        //assert(uiBlockThreadsExtentX == uiBlockThreadsExtentY);
+        auto const & uiBlockThreadsExtent(uiBlockThreadsExtentX);
 
         // Shared memory used to store the current blocks of A and B.
         auto * const pBlockSharedA(acc.template getBlockSharedExternMem<TElem>());
-        auto * const pBlockSharedB(pBlockSharedA + uiBlockKernelsExtentX*uiBlockKernelsExtentY);
+        auto * const pBlockSharedB(pBlockSharedA + uiBlockThreadsExtentX*uiBlockThreadsExtentY);
 
-        auto const uiSharedBlockIdx1d(uiBlockKernelIdxY*uiBlockKernelsExtentX + uiBlockKernelIdxX);
+        auto const uiSharedBlockIdx1d(uiBlockThreadIdxY*uiBlockThreadsExtentX + uiBlockThreadIdxX);
         
-        bool const bInsideA(uiGridKernelIdxY < uiL);
-        bool const bInsideB(uiGridKernelIdxX < uiN);
+        bool const bInsideA(uiGridThreadIdxY < uiL);
+        bool const bInsideB(uiGridThreadIdxX < uiN);
         bool const bInsideC(bInsideA && bInsideB);
 
         TElem fCSum(0);
 
         // Loop over all blocks of A and B that are required to compute the C block.
-        auto const uiBlockMulCount(static_cast<TIndex>(std::ceil(static_cast<float>(uiM)/static_cast<float>(uiBlockKernelsExtent))));
+        auto const uiBlockMulCount(static_cast<TIndex>(std::ceil(static_cast<float>(uiM)/static_cast<float>(uiBlockThreadsExtent))));
         for(TIndex l(0u); l < uiBlockMulCount; ++l)
         {
             // Copy data to shared memory.
-            auto const uiAIdxX(l*uiBlockKernelsExtentX + uiBlockKernelIdxX);
-            auto const uiAIdx1d(uiGridKernelIdxY*uiPitchElemA + uiAIdxX);
+            auto const uiAIdxX(l*uiBlockThreadsExtentX + uiBlockThreadIdxX);
+            auto const uiAIdx1d(uiGridThreadIdxY*uiPitchElemA + uiAIdxX);
             pBlockSharedA[uiSharedBlockIdx1d] = (
                 ((!bInsideA) || (uiAIdxX>=uiM))
                 ? static_cast<TElem>(0)
                 : A[uiAIdx1d]);
 
-            auto const uiBIdxY(l*uiBlockKernelsExtentY + uiBlockKernelIdxY);
-            auto const uiBIdx1d(uiBIdxY*uiPitchElemB + uiGridKernelIdxX);
+            auto const uiBIdxY(l*uiBlockThreadsExtentY + uiBlockThreadIdxY);
+            auto const uiBIdx1d(uiBIdxY*uiPitchElemB + uiGridThreadIdxX);
             pBlockSharedB[uiSharedBlockIdx1d] = (
                 ((!bInsideB) || (uiBIdxY>=uiM))
                 ? static_cast<TElem>(0)
                 : B[uiBIdx1d]);
 
             // Synchronize to make sure the sub-matrices are loaded before starting the computation.
-            acc.syncBlockKernels();
+            acc.syncBlockThreads();
 
             // Not really necessary because we wrote zeros into those cells.
             //if(bInsideC)
             //{
                 // Dyadic product within shared memory.
-                for(TIndex k(0); k < uiBlockKernelsExtent; ++k)
+                for(TIndex k(0); k < uiBlockThreadsExtent; ++k)
                 {
-                    fCSum += pBlockSharedA[uiBlockKernelIdxY*uiBlockKernelsExtentX + k]
-                        * pBlockSharedB[k*uiBlockKernelsExtentY + uiBlockKernelIdxX];
+                    fCSum += pBlockSharedA[uiBlockThreadIdxY*uiBlockThreadsExtentX + k]
+                        * pBlockSharedB[k*uiBlockThreadsExtentY + uiBlockThreadIdxX];
                 }
             //}
 
             // Synchronize to make sure that the preceding computation is done before loading two new sub-matrices of A and B in the next iteration.
-            acc.syncBlockKernels();
+            acc.syncBlockThreads();
         }
         
         // If the element is outside of the matrix it was only a helper thread that did not calculate any meaningful results
         if(bInsideC)
         {
-            C[uiGridKernelIdxY*uiPitchElemC + uiGridKernelIdxX] += fCSum;
+            C[uiGridThreadIdxY*uiPitchElemC + uiGridThreadIdxX] += fCSum;
         }
     }
 };
@@ -177,7 +177,7 @@ namespace alpaka
             typename TElem,
             typename TIndex>
         ALPAKA_FCT_HOST static std::size_t getBlockSharedExternMemSizeBytes(
-            alpaka::Vec<3u> const & v3uiBlockKernelsExtents,
+            alpaka::Vec<3u> const & v3uiBlockThreadsExtents,
             TIndex const &,
             TIndex const &,
             TIndex const &,
@@ -189,7 +189,7 @@ namespace alpaka
             TIndex const &)
         {
             // Reserve the buffer for the two blocks of A and B.
-            return 2u * v3uiBlockKernelsExtents.prod() * sizeof(TElem);
+            return 2u * v3uiBlockThreadsExtents.prod() * sizeof(TElem);
         }
     };
 }
@@ -238,7 +238,7 @@ struct MatMulTester
         std::size_t const & uiL,
         std::size_t const & uiM,
         std::size_t const & uiN,
-        bool const & bAdaptiveBlockKernelsExtent)
+        bool const & bAdaptiveBlockThreadExtent)
     {
         std::cout << std::endl;
         std::cout << "################################################################################" << std::endl;
@@ -262,17 +262,17 @@ struct MatMulTester
         );
         
         // Let alpaka calculate good block and grid sizes given our full problem extents.
-        alpaka::Vec<3u> v3uiGridKernels(static_cast<alpaka::Vec<3u>::Val>(uiN), static_cast<alpaka::Vec<3u>::Val>(uiL), static_cast<alpaka::Vec<3u>::Val>(1u));
+        alpaka::Vec<3u> v3uiGridThreads(static_cast<alpaka::Vec<3u>::Val>(uiN), static_cast<alpaka::Vec<3u>::Val>(uiL), static_cast<alpaka::Vec<3u>::Val>(1u));
         alpaka::workdiv::BasicWorkDiv workDiv(
-            bAdaptiveBlockKernelsExtent
-            ? alpaka::workdiv::getValidWorkDiv<boost::mpl::vector<TAcc>>(v3uiGridKernels, false)
-            : alpaka::workdiv::getValidWorkDiv<alpaka::acc::EnabledAccelerators>(v3uiGridKernels, false));
+            bAdaptiveBlockThreadExtent
+            ? alpaka::workdiv::getValidWorkDiv<boost::mpl::vector<TAcc>>(v3uiGridThreads, false)
+            : alpaka::workdiv::getValidWorkDiv<alpaka::acc::EnabledAccelerators>(v3uiGridThreads, false));
         // Assure that the extents are square.
-        auto const uiMinExtent(std::min(workDiv.m_v3uiBlockKernelsExtents[0u], workDiv.m_v3uiBlockKernelsExtents[1u]));
-        workDiv.m_v3uiGridBlocksExtents[0u] = static_cast<alpaka::Vec<3u>::Val>(std::ceil(static_cast<double>(uiN) / static_cast<double>(uiMinExtent)));
-        workDiv.m_v3uiBlockKernelsExtents[0u] = uiMinExtent;
-        workDiv.m_v3uiGridBlocksExtents[1u] = static_cast<alpaka::Vec<3u>::Val>(std::ceil(static_cast<double>(uiL) / static_cast<double>(uiMinExtent)));
-        workDiv.m_v3uiBlockKernelsExtents[1u] = uiMinExtent;
+        auto const uiMinExtent(std::min(workDiv.m_v3uiBlockThreadExtents[0u], workDiv.m_v3uiBlockThreadExtents[1u]));
+        workDiv.m_v3uiGridBlockExtents[0u] = static_cast<alpaka::Vec<3u>::Val>(std::ceil(static_cast<double>(uiN) / static_cast<double>(uiMinExtent)));
+        workDiv.m_v3uiBlockThreadExtents[0u] = uiMinExtent;
+        workDiv.m_v3uiGridBlockExtents[1u] = static_cast<alpaka::Vec<3u>::Val>(std::ceil(static_cast<double>(uiL) / static_cast<double>(uiMinExtent)));
+        workDiv.m_v3uiBlockThreadExtents[1u] = uiMinExtent;
 
         std::cout
             << "profileAcceleratedMatMulKernel("
@@ -385,7 +385,7 @@ int main(
         desc.add_options()
             ("help",
             "Prints the help message.")
-            ("adaptiveBlockKernelsExtent,a",
+            ("adaptiveBlockThreadExtent,a",
             boost::program_options::value<bool>()->default_value(true),
             "If the size of a block is the minimum of all enabled accelerators (false), or adaptive to the current accelerator (true).")
         ;
@@ -413,12 +413,12 @@ int main(
             std::cout << std::endl;
 
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
-            assert(vm.count("adaptiveBlockKernelsExtent") > 0);
-            bool const bAdaptiveBlockKernelsExtent(vm["adaptiveBlockKernelsExtent"].as<bool>());
+            assert(vm.count("adaptiveBlockThreadExtent") > 0);
+            bool const bAdaptiveBlockThreadExtent(vm["adaptiveBlockThreadExtent"].as<bool>());
 #else
-            bool const bAdaptiveBlockKernelsExtent(true);
+            bool const bAdaptiveBlockThreadExtent(true);
 #endif
-            std::cout << "Adaptive block kernel size:" << bAdaptiveBlockKernelsExtent << std::endl;
+            std::cout << "Adaptive block thread size:" << bAdaptiveBlockThreadExtent << std::endl;
 
 #ifdef ALPAKA_CUDA_ENABLED
             // Select the first CUDA device.
@@ -452,7 +452,7 @@ int main(
                                 matMulTester,
                                 std::placeholders::_1,
                                 uiL, uiM, uiN,
-                                bAdaptiveBlockKernelsExtent));
+                                bAdaptiveBlockThreadExtent));
                     }
                 }
             }

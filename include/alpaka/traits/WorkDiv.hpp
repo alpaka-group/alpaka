@@ -25,7 +25,7 @@
 
 #include <alpaka/core/BasicDims.hpp>    // dim::Dim<N>
 #include <alpaka/core/Vec.hpp>          // Vec<N>, DimToVecT
-#include <alpaka/core/Positioning.hpp>  // origin::Grid/Blocks, unit::Blocks, unit::Kernels
+#include <alpaka/core/Positioning.hpp>  // origin::Grid/Blocks, unit::Blocks, unit::Threads
 #include <alpaka/core/Common.hpp>       // ALPAKA_FCT_ACC
 
 #include <utility>                      // std::forward
@@ -78,64 +78,64 @@ namespace alpaka
         namespace workdiv
         {
             //#############################################################################
-            //! The work div block kernels 1D extents trait specialization.
+            //! The work div block threads 1D extents trait specialization.
             //#############################################################################
             template<
                 typename TWorkDiv>
             struct GetWorkDiv<
                 TWorkDiv,
                 origin::Block,
-                unit::Kernels,
+                unit::Threads,
                 alpaka::dim::Dim1>
             {
                 //-----------------------------------------------------------------------------
-                //! \return The number of kernels in a block.
+                //! \return The number of threads in a block.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST_ACC static alpaka::DimToVecT<alpaka::dim::Dim1> getWorkDiv(
                     TWorkDiv const & workDiv)
                 {
-                    return alpaka::workdiv::getWorkDiv<origin::Block, unit::Kernels, alpaka::dim::Dim3>(workDiv).prod();
+                    return alpaka::workdiv::getWorkDiv<origin::Block, unit::Threads, alpaka::dim::Dim3>(workDiv).prod();
                 }
             };
             //#############################################################################
-            //! The work div grid kernels 3D extents trait specialization.
+            //! The work div grid threads 3D extents trait specialization.
             //#############################################################################
             template<
                 typename TWorkDiv>
             struct GetWorkDiv<
                 TWorkDiv,
                 origin::Grid,
-                unit::Kernels,
+                unit::Threads,
                 alpaka::dim::Dim3>
             {
                 //-----------------------------------------------------------------------------
-                //! \return The number of kernels in each dimension of the grid.
+                //! \return The number of threads in each dimension of the grid.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST_ACC static alpaka::DimToVecT<alpaka::dim::Dim3> getWorkDiv(
                     TWorkDiv const & workDiv)
                 {
                     return alpaka::workdiv::getWorkDiv<origin::Grid, unit::Blocks, alpaka::dim::Dim3>(workDiv)
-                        * alpaka::workdiv::getWorkDiv<origin::Block, unit::Kernels, alpaka::dim::Dim3>(workDiv);
+                        * alpaka::workdiv::getWorkDiv<origin::Block, unit::Threads, alpaka::dim::Dim3>(workDiv);
                 }
             };
             //#############################################################################
-            //! The work div grid kernels 1D extents trait specialization.
+            //! The work div grid threads 1D extents trait specialization.
             //#############################################################################
             template<
                 typename TWorkDiv>
             struct GetWorkDiv<
                 TWorkDiv,
                 origin::Grid,
-                unit::Kernels,
+                unit::Threads,
                 alpaka::dim::Dim1>
             {
                 //-----------------------------------------------------------------------------
-                //! \return The number of kernels in the grid.
+                //! \return The number of threads in the grid.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST_ACC static alpaka::DimToVecT<alpaka::dim::Dim1> getWorkDiv(
                     TWorkDiv const & workDiv)
                 {
-                    return alpaka::workdiv::getWorkDiv<origin::Grid, unit::Kernels, alpaka::dim::Dim3>(workDiv).prod();
+                    return alpaka::workdiv::getWorkDiv<origin::Grid, unit::Threads, alpaka::dim::Dim3>(workDiv).prod();
                 }
             };
             //#############################################################################

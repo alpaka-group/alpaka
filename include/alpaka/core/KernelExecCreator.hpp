@@ -89,17 +89,17 @@ namespace alpaka
             //! \return An KernelExecutor with the given extents.
             //-----------------------------------------------------------------------------
             template<
-                typename TGridBlocksExtents,
-                typename TBlockKernelsExtents>
+                typename TGridBlockExtents,
+                typename TBlockThreadExtents>
             ALPAKA_FCT_HOST TKernelExecutor operator()(
-                TGridBlocksExtents const & gridBlocksExtent,
-                TBlockKernelsExtents const & blockKernelsExtents, 
+                TGridBlockExtents const & gridBlockExtent,
+                TBlockThreadExtents const & blockThreadExtents, 
                 Stream const & stream) const
             {
                 return this->operator()(
                     workdiv::BasicWorkDiv(
-                        Vec<3u>(extent::getWidth(gridBlocksExtent), extent::getHeight(gridBlocksExtent), extent::getDepth(gridBlocksExtent)),
-                        Vec<3u>(extent::getWidth(blockKernelsExtents), extent::getHeight(blockKernelsExtents), extent::getDepth(blockKernelsExtents))), 
+                        Vec<3u>(extent::getWidth(gridBlockExtent), extent::getHeight(gridBlockExtent), extent::getDepth(gridBlockExtent)),
+                        Vec<3u>(extent::getWidth(blockThreadExtents), extent::getHeight(blockThreadExtents), extent::getDepth(blockThreadExtents))), 
                     stream);
             }
 
@@ -123,9 +123,9 @@ namespace alpaka
                 {
                     throw std::runtime_error("The workDiv grid blocks extents is not allowed to be zero in any dimension!");
                 }
-                if(workdiv::getWorkDiv<Block, Kernels, dim::Dim1>(workDiv)[0] == 0u)
+                if(workdiv::getWorkDiv<Block, Threads, dim::Dim1>(workDiv)[0] == 0u)
                 {
-                    throw std::runtime_error("The workDiv block kernels extents is not allowed to be zero in any dimension!");
+                    throw std::runtime_error("The workDiv block threads extents is not allowed to be zero in any dimension!");
                 }
 
                 return TKernelExecutor(workDiv, stream, std::forward<TKernelConstrArgs>(std::get<TIndices>(m_tupleKernelConstrArgs))...);

@@ -62,14 +62,14 @@ namespace alpaka
                 ALPAKA_FCT_ACC_NO_CUDA virtual ~IdxSerial() noexcept = default;
 
                 //-----------------------------------------------------------------------------
-                //! \return The index of the currently executed kernel.
+                //! \return The index of the currently executed thread.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA Vec<3u> getIdxBlockKernel() const
+                ALPAKA_FCT_ACC_NO_CUDA Vec<3u> getIdxBlockThread() const
                 {
                     return Vec<3u>(0u, 0u, 0u);
                 }
                 //-----------------------------------------------------------------------------
-                //! \return The block index of the currently executed kernel.
+                //! \return The block index of the currently executed thread.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA Vec<3u> getIdxGridBlock() const
                 {
@@ -87,17 +87,17 @@ namespace alpaka
         namespace idx
         {
             //#############################################################################
-            //! The serial accelerator 3D block kernel index get trait specialization.
+            //! The serial accelerator 3D block thread index get trait specialization.
             //#############################################################################
             template<>
             struct GetIdx<
                 serial::detail::IdxSerial,
                 origin::Block,
-                unit::Kernels,
+                unit::Threads,
                 alpaka::dim::Dim3>
             {
                 //-----------------------------------------------------------------------------
-                //! \return The 3-dimensional index of the current kernel in the block.
+                //! \return The 3-dimensional index of the current thread in the block.
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
@@ -105,7 +105,7 @@ namespace alpaka
                     serial::detail::IdxSerial const & index,
                     TWorkDiv const &)
                 {
-                    return index.getIdxBlockKernel();
+                    return index.getIdxBlockThread();
                 }
             };
 

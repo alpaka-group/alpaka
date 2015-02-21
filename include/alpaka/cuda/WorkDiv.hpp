@@ -61,16 +61,16 @@ namespace alpaka
                 ALPAKA_FCT_ACC_CUDA_ONLY /*virtual*/ ~WorkDivCuda() noexcept = default;
 
                 //-----------------------------------------------------------------------------
-                //! \return The grid blocks extents of the currently executed kernel.
+                //! \return The grid blocks extents of the currently executed thread.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY Vec<3u> getGridBlocksExtents() const
+                ALPAKA_FCT_ACC_CUDA_ONLY Vec<3u> getGridBlockExtents() const
                 {
                     return Vec<3u>(gridDim.x, gridDim.y, gridDim.z);
                 }
                 //-----------------------------------------------------------------------------
-                //! \return The block kernels extents of the currently executed kernel.
+                //! \return The block threads extents of the currently executed thread.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY Vec<3u> getBlockKernelsExtents() const
+                ALPAKA_FCT_ACC_CUDA_ONLY Vec<3u> getBlockThreadExtents() const
                 {
                     return Vec<3u>(blockDim.x, blockDim.y, blockDim.z);
                 }
@@ -83,22 +83,22 @@ namespace alpaka
         namespace workdiv
         {
             //#############################################################################
-            //! The CUDA accelerator work div block kernels 3D extents trait specialization.
+            //! The CUDA accelerator work div block threads 3D extents trait specialization.
             //#############################################################################
             template<>
             struct GetWorkDiv<
                 cuda::detail::WorkDivCuda,
                 origin::Block,
-                unit::Kernels,
+                unit::Threads,
                 alpaka::dim::Dim3>
             {
                 //-----------------------------------------------------------------------------
-                //! \return The number of kernels in each dimension of a block.
+                //! \return The number of threads in each dimension of a block.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_CUDA_ONLY static alpaka::DimToVecT<alpaka::dim::Dim3> getWorkDiv(
                     cuda::detail::WorkDivCuda const & workDiv)
                 {
-                    return workDiv.getBlockKernelsExtents();
+                    return workDiv.getBlockThreadExtents();
                 }
             };
 
@@ -118,7 +118,7 @@ namespace alpaka
                 ALPAKA_FCT_ACC_CUDA_ONLY static alpaka::DimToVecT<alpaka::dim::Dim3> getWorkDiv(
                     cuda::detail::WorkDivCuda const & workDiv)
                 {
-                    return workDiv.getGridBlocksExtents();
+                    return workDiv.getGridBlockExtents();
                 }
             };
         }

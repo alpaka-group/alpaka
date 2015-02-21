@@ -153,9 +153,9 @@ namespace alpaka
                 }
 
                 //-----------------------------------------------------------------------------
-                //! Syncs all kernels in the current block.
+                //! Syncs all threads in the current block.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA void syncBlockKernels() const
+                ALPAKA_FCT_ACC_NO_CUDA void syncBlockThreads() const
                 {
                     #pragma omp barrier
                 }
@@ -171,7 +171,7 @@ namespace alpaka
                     static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
 
                     // Assure that all threads have executed the return of the last allocBlockSharedMem function (if there was one before).
-                    syncBlockKernels();
+                    syncBlockThreads();
 
                     // Arbitrary decision: The thread with id 0 has to allocate the memory.
                     if(::omp_get_thread_num() == 0)
@@ -181,7 +181,7 @@ namespace alpaka
                             std::unique_ptr<uint8_t[]>(
                                 reinterpret_cast<uint8_t*>(new T[TuiNumElements])));
                     }
-                    syncBlockKernels();
+                    syncBlockThreads();
 
                     return reinterpret_cast<T*>(m_vvuiSharedMem.back().get());
                 }
@@ -288,24 +288,24 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    Vec<3u> const v3uiGridBlocksExtents(this->AccOpenMp::getWorkDiv<Grid, Blocks, dim::Dim3>());
-                    Vec<3u> const v3uiBlockKernelsExtents(this->AccOpenMp::getWorkDiv<Block, Kernels, dim::Dim3>());
+                    Vec<3u> const v3uiGridBlockExtents(this->AccOpenMp::getWorkDiv<Grid, Blocks, dim::Dim3>());
+                    Vec<3u> const v3uiBlockThreadExtents(this->AccOpenMp::getWorkDiv<Block, Threads, dim::Dim3>());
 
-                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiBlockKernelsExtents, std::forward<TArgs>(args)...));
+                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiBlockThreadExtents, std::forward<TArgs>(args)...));
                     this->AccOpenMp::m_vuiExternalSharedMem.reset(
                         new uint8_t[uiBlockSharedExternMemSizeBytes]);
 
                     // The number of threads in this block.
-                    auto const uiNumKernelsInBlock(this->AccOpenMp::getWorkDiv<Block, Kernels, dim::Dim1>()[0]);
+                    auto const uiNumThreadsInBlock(this->AccOpenMp::getWorkDiv<Block, Threads, dim::Dim1>()[0]);
 
                     // Execute the blocks serially.
-                    for(std::uint32_t bz(0); bz<v3uiGridBlocksExtents[2]; ++bz)
+                    for(std::uint32_t bz(0); bz<v3uiGridBlockExtents[2]; ++bz)
                     {
                         this->AccOpenMp::m_v3uiGridBlockIdx[2] = bz;
-                        for(std::uint32_t by(0); by<v3uiGridBlocksExtents[1]; ++by)
+                        for(std::uint32_t by(0); by<v3uiGridBlockExtents[1]; ++by)
                         {
                             this->AccOpenMp::m_v3uiGridBlockIdx[1] = by;
-                            for(std::uint32_t bx(0); bx<v3uiGridBlocksExtents[0]; ++bx)
+                            for(std::uint32_t bx(0); bx<v3uiGridBlockExtents[0]; ++bx)
                             {
                                 this->AccOpenMp::m_v3uiGridBlockIdx[0] = bx;
 
@@ -314,21 +314,21 @@ namespace alpaka
                                 // Force the environment to use the given number of threads.
                                 ::omp_set_dynamic(0);
 
-                                // Parallel execution of the kernels in a block is required because when syncBlockKernels is called all of them have to be done with their work up to this line.
-                                // So we have to spawn one real thread per kernel in a block.
+                                // Parallel execution of the threads in a block is required because when syncBlockThreads is called all of them have to be done with their work up to this line.
+                                // So we have to spawn one OS thread per thread in a block.
                                 // 'omp for' is not useful because it is meant for cases where multiple iterations are executed by one thread but in our case a 1:1 mapping is required.
                                 // Therefore we use 'omp parallel' with the specified number of threads in a block.
                                 //
-                                // \TODO: Does this hinder executing multiple kernels in parallel because their block sizes/omp thread numbers are interfering? Is this num_threads global? Is this a real use case? 
-                                #pragma omp parallel num_threads(static_cast<int>(uiNumKernelsInBlock))
+                                // \TODO: Does this hinder executing multiple threads in parallel because their block sizes/omp thread numbers are interfering? Is this num_threads global? Is this a real use case? 
+                                #pragma omp parallel num_threads(static_cast<int>(uiNumThreadsInBlock))
                                 {
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                                     if((::omp_get_thread_num() == 0) && (bz == 0) && (by == 0) && (bx == 0))
                                     {
                                         assert(::omp_get_num_threads()>=0);
-                                        auto const uiNumThreads(static_cast<decltype(uiNumKernelsInBlock)>(::omp_get_num_threads()));
+                                        auto const uiNumThreads(static_cast<decltype(uiNumThreadsInBlock)>(::omp_get_num_threads()));
                                         std::cout << "omp_get_num_threads: " << uiNumThreads << std::endl;
-                                        if(uiNumThreads != uiNumKernelsInBlock)
+                                        if(uiNumThreads != uiNumThreadsInBlock)
                                         {
                                             throw std::runtime_error("The OpenMP runtime did not use the number of threads that had been required!");
                                         }
@@ -339,7 +339,7 @@ namespace alpaka
                                         std::forward<TArgs>(args)...);
 
                                     // Wait for all threads to finish before deleting the shared memory.
-                                    this->AccOpenMp::syncBlockKernels();
+                                    this->AccOpenMp::syncBlockThreads();
                                 }
 
                                 // After a block has been processed, the shared memory can be deleted.

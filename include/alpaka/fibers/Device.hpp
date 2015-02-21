@@ -175,12 +175,12 @@ namespace alpaka
                     devProps.m_sName = host::getCpuName();
                     devProps.m_uiMultiProcessorCount = std::thread::hardware_concurrency(); // \TODO: This may be inaccurate.
 #if ALPAKA_INTEGRATION_TEST
-                    devProps.m_uiBlockKernelsCountMax = 24u;
+                    devProps.m_uiBlockThreadsCountMax = 24u;
 #else
-                    devProps.m_uiBlockKernelsCountMax = 32u; // \TODO: What is the maximum? Just set a reasonable value?
+                    devProps.m_uiBlockThreadsCountMax = 32u; // \TODO: What is the maximum? Just set a reasonable value?
 #endif
-                    devProps.m_v3uiBlockKernelsExtentsMax = Vec<3u>(devProps.m_uiBlockKernelsCountMax, devProps.m_uiBlockKernelsCountMax, devProps.m_uiBlockKernelsCountMax);
-                    devProps.m_v3uiGridBlocksExtentsMax = Vec<3u>(std::numeric_limits<UInt>::max(), std::numeric_limits<UInt>::max(), std::numeric_limits<UInt>::max());
+                    devProps.m_v3uiBlockThreadExtentsMax = Vec<3u>(devProps.m_uiBlockThreadsCountMax, devProps.m_uiBlockThreadsCountMax, devProps.m_uiBlockThreadsCountMax);
+                    devProps.m_v3uiGridBlockExtentsMax = Vec<3u>(std::numeric_limits<UInt>::max(), std::numeric_limits<UInt>::max(), std::numeric_limits<UInt>::max());
                     devProps.m_uiGlobalMemSizeBytes = host::getGlobalMemSizeBytes();
                     //devProps.m_uiMaxClockFrequencyHz = TODO;
 

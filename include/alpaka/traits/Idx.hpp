@@ -27,7 +27,7 @@
 
 #include <alpaka/core/Vec.hpp>              // DimToVecT
 #include <alpaka/core/BasicDims.hpp>        // dim::Dim<N>
-#include <alpaka/core/Positioning.hpp>      // origin::Grid/Blocks, unit::Blocks, unit::Kernels
+#include <alpaka/core/Positioning.hpp>      // origin::Grid/Blocks, unit::Blocks, unit::Threads
 #include <alpaka/core/Common.hpp>           // ALPAKA_FCT_ACC
 
 #include <utility>                          // std::forward
@@ -83,18 +83,18 @@ namespace alpaka
         namespace idx
         {
             //#############################################################################
-            //! The 1D block kernel index get trait specialization.
+            //! The 1D block thread index get trait specialization.
             //#############################################################################
             template<
                 typename TIdx>
             struct GetIdx<
                 TIdx,
                 origin::Block,
-                unit::Kernels,
+                unit::Threads,
                 alpaka::dim::Dim1>
             {
                 //-----------------------------------------------------------------------------
-                //! \return The linearized index of the current kernel in the block.
+                //! \return The linearized index of the current thread in the block.
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
@@ -102,24 +102,24 @@ namespace alpaka
                     TIdx const & index,
                     TWorkDiv const & workDiv)
                 {
-                    auto const v3uiBlockKernelsExtents(alpaka::workdiv::getWorkDiv<origin::Block, unit::Kernels, alpaka::dim::Dim3>(workDiv));
-                    auto const v3uiBlockKernelIdx(alpaka::idx::getIdx<origin::Block, unit::Kernels, alpaka::dim::Dim3>(index, workDiv));
-                    return v3uiBlockKernelIdx[2] * v3uiBlockKernelsExtents[1] * v3uiBlockKernelsExtents[0] + v3uiBlockKernelIdx[1] * v3uiBlockKernelsExtents[0] + v3uiBlockKernelIdx[0];
+                    auto const v3uiBlockThreadExtents(alpaka::workdiv::getWorkDiv<origin::Block, unit::Threads, alpaka::dim::Dim3>(workDiv));
+                    auto const v3uiBlockThreadIdx(alpaka::idx::getIdx<origin::Block, unit::Threads, alpaka::dim::Dim3>(index, workDiv));
+                    return v3uiBlockThreadIdx[2] * v3uiBlockThreadExtents[1] * v3uiBlockThreadExtents[0] + v3uiBlockThreadIdx[1] * v3uiBlockThreadExtents[0] + v3uiBlockThreadIdx[0];
                 }
             };
             //#############################################################################
-            //! The 3D grid kernel index get trait specialization.
+            //! The 3D grid thread index get trait specialization.
             //#############################################################################
             template<
                 typename TIdx>
             struct GetIdx<
                 TIdx,
                 origin::Grid,
-                unit::Kernels,
+                unit::Threads,
                 alpaka::dim::Dim3>
             {
                 //-----------------------------------------------------------------------------
-                //! \return The 3-dimensional index of the current kernel in grid.
+                //! \return The 3-dimensional index of the current thread in grid.
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
@@ -128,23 +128,23 @@ namespace alpaka
                     TWorkDiv const & workDiv)
                 {
                     return alpaka::idx::getIdx<origin::Grid, unit::Blocks, alpaka::dim::Dim3>(index, workDiv)
-                        * alpaka::workdiv::getWorkDiv<origin::Block, unit::Kernels, alpaka::dim::Dim3>(workDiv)
-                        + alpaka::idx::getIdx<origin::Block, unit::Kernels, alpaka::dim::Dim3>(index, workDiv);
+                        * alpaka::workdiv::getWorkDiv<origin::Block, unit::Threads, alpaka::dim::Dim3>(workDiv)
+                        + alpaka::idx::getIdx<origin::Block, unit::Threads, alpaka::dim::Dim3>(index, workDiv);
                 }
             };
             //#############################################################################
-            //! The 1D grid kernel index get trait specialization.
+            //! The 1D grid thread index get trait specialization.
             //#############################################################################
             template<
                 typename TIdx>
             struct GetIdx<
                 TIdx,
                 origin::Grid,
-                unit::Kernels,
+                unit::Threads,
                 alpaka::dim::Dim1>
             {
                 //-----------------------------------------------------------------------------
-                //! \return The linearized index of the current kernel in the grid.
+                //! \return The linearized index of the current thread in the grid.
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
@@ -152,9 +152,9 @@ namespace alpaka
                     TIdx const & index,
                     TWorkDiv const & workDiv)
                 {
-                    auto const v3uiGridKernelSize(alpaka::workdiv::getWorkDiv<origin::Grid, unit::Kernels, alpaka::dim::Dim3>(workDiv));
-                    auto const v3uiGridKernelIdx(alpaka::idx::getIdx<origin::Grid, unit::Kernels, alpaka::dim::Dim3>(index, workDiv));
-                    return v3uiGridKernelIdx[2] * v3uiGridKernelSize[1] * v3uiGridKernelSize[0] + v3uiGridKernelIdx[1] * v3uiGridKernelSize[0] + v3uiGridKernelIdx[0];
+                    auto const v3uiGridThreadSize(alpaka::workdiv::getWorkDiv<origin::Grid, unit::Threads, alpaka::dim::Dim3>(workDiv));
+                    auto const v3uiGridThreadIdx(alpaka::idx::getIdx<origin::Grid, unit::Threads, alpaka::dim::Dim3>(index, workDiv));
+                    return v3uiGridThreadIdx[2] * v3uiGridThreadSize[1] * v3uiGridThreadSize[0] + v3uiGridThreadIdx[1] * v3uiGridThreadSize[0] + v3uiGridThreadIdx[0];
                 }
             };
             //#############################################################################
@@ -177,9 +177,9 @@ namespace alpaka
                     TIdx const & index,
                     TWorkDiv const & workDiv)
                 {
-                    auto const v3uiGridBlocksExtent(alpaka::workdiv::getWorkDiv<origin::Grid, unit::Blocks, alpaka::dim::Dim3>(workDiv));
+                    auto const v3uiGridBlockExtent(alpaka::workdiv::getWorkDiv<origin::Grid, unit::Blocks, alpaka::dim::Dim3>(workDiv));
                     auto const v3uiGridBlockIdx(alpaka::idx::getIdx<origin::Grid, unit::Blocks, alpaka::dim::Dim3>(index, workDiv));
-                    return v3uiGridBlockIdx[2] * v3uiGridBlocksExtent[1] * v3uiGridBlocksExtent[0] + v3uiGridBlockIdx[1] * v3uiGridBlocksExtent[0] + v3uiGridBlockIdx[0];
+                    return v3uiGridBlockIdx[2] * v3uiGridBlockExtent[1] * v3uiGridBlockExtent[0] + v3uiGridBlockIdx[1] * v3uiGridBlockExtent[0] + v3uiGridBlockIdx[0];
                 }
             };
         }

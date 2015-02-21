@@ -57,11 +57,11 @@ public:
         TElem * const C, 
         std::size_t const & uiNumElements) const
     {
-        auto const uiGridKernelIdxX(acc.template getIdx<alpaka::Grid, alpaka::Kernels>()[0u]);
+        auto const uiGridThreadIdxX(acc.template getIdx<alpaka::Grid, alpaka::Threads>()[0u]);
 
-        if (uiGridKernelIdxX < uiNumElements)
+        if (uiGridThreadIdxX < uiNumElements)
         {
-            C[uiGridKernelIdxX] = A[uiGridKernelIdxX] + B[uiGridKernelIdxX];
+            C[uiGridThreadIdxX] = A[uiGridThreadIdxX] + B[uiGridThreadIdxX];
         }
     }
 };
@@ -119,8 +119,8 @@ struct VectorAddKernelTester
         );
 
         // Let alpaka calculate good block and grid sizes given our full problem extents.
-        alpaka::Vec<3u> v3uiGridKernels(static_cast<alpaka::Vec<3u>::Val>(uiNumElements), static_cast<alpaka::Vec<3u>::Val>(1u), static_cast<alpaka::Vec<3u>::Val>(1u));
-        alpaka::workdiv::BasicWorkDiv const workDiv(alpaka::workdiv::getValidWorkDiv<boost::mpl::vector<TAcc>>(v3uiGridKernels, false));
+        alpaka::Vec<3u> v3uiGridThreads(static_cast<alpaka::Vec<3u>::Val>(uiNumElements), static_cast<alpaka::Vec<3u>::Val>(1u), static_cast<alpaka::Vec<3u>::Val>(1u));
+        alpaka::workdiv::BasicWorkDiv const workDiv(alpaka::workdiv::getValidWorkDiv<boost::mpl::vector<TAcc>>(v3uiGridThreads, false));
 
         std::cout
             << "VectorAddKernelTester("
