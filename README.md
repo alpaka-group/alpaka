@@ -29,14 +29,12 @@ This library uses a subset of C++11 supported by many compilers to keep the code
 Supported compilers are:
 - gcc 4.8+ (boost-fibers only supported in gcc 4.9+)
 - MSVC 2013+ (boost-fibers only supported in MSVC 2015)
+- clang 3.4+ (currently OpenMP only supported in `clang-omp` )
+- icc 15.0+ (untested)
 
 Build status master branch: [![Build Status](https://travis-ci.org/ComputationalRadiationPhysics/alpaka.svg?branch=master)](https://travis-ci.org/ComputationalRadiationPhysics/alpaka)
 
 Build status develop branch: [![Build Status](https://travis-ci.org/ComputationalRadiationPhysics/alpaka.svg?branch=develop)](https://travis-ci.org/ComputationalRadiationPhysics/alpaka)
-
-Untested but possibly functional:
-- clang 3.4+ (OpenMP only supported in `clang-omp` currently)
-- icc 15.0+
 
 
 Requirements
@@ -65,7 +63,7 @@ Accelerators
 |Devices|Host Core|Host Cores|Host Core|Host Cores|NVIDIA GPUs|
 |Lib/API|n/a| std::thread | boost::fibers::fiber |OpenMP 2.0|CUDA 6.5|
 |Execution strategy grid-blocks|sequential|sequential|sequential|sequential|undefined|
-|Execution strategy block-threads|sequential|preemptive multitasking|cooperative multithreading|preemptive multitasking|lock-step within warps|
+|Execution strategy block-threads|sequential|preemptive multitasking|cooperative multitasking|preemptive multitasking|lock-step within warps|
 
 
 Usage

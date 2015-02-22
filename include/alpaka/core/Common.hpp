@@ -25,6 +25,7 @@
 
 #include <boost/predef.h>           // workarounds
 
+#include <type_traits>              // std::remove_cv
 #include <cstddef>                  // std::size_t, std::uint32_t
 
 //-----------------------------------------------------------------------------
@@ -168,77 +169,77 @@ namespace alpaka
         //! Aligns the data optimally.
         //! You must align all arrays and structs which can used on accelerators.
         //-----------------------------------------------------------------------------
-        #define ALPAKA_ALIGN(type, name) alignas(ALPAKA_OPTIMAL_ALIGNMENT(sizeof(type))) type name
+        #define ALPAKA_ALIGN(TYPE, NAME) alignas(ALPAKA_OPTIMAL_ALIGNMENT(sizeof(typename std::remove_cv<type>::type))) TYPE NAME
         //-----------------------------------------------------------------------------
         //! Aligns the data at 8 bytes.
         //! You must align all arrays and structs which can used on accelerators.
         //-----------------------------------------------------------------------------
-        #define ALPAKA_ALIGN_8(type, name) alignas(8) type name
+        #define ALPAKA_ALIGN_8(TYPE, NAME) alignas(8) type NAME
     #else*/
         //-----------------------------------------------------------------------------
         //! Aligns the data optimally.
         //! You must align all arrays and structs which can used on accelerators.
         //-----------------------------------------------------------------------------
-        #define ALPAKA_ALIGN(type, name) __attribute__((aligned(ALPAKA_OPTIMAL_ALIGNMENT(sizeof(type))))) type name
+        #define ALPAKA_ALIGN(TYPE, NAME) __attribute__((aligned(ALPAKA_OPTIMAL_ALIGNMENT(sizeof(typename std::remove_cv<TYPE>::type))))) TYPE NAME
         //-----------------------------------------------------------------------------
         //! Aligns the data at 8 bytes.
         //! You must align all arrays and structs which can used on accelerators.
         //-----------------------------------------------------------------------------
-        #define ALPAKA_ALIGN_8(type, name) __attribute__((aligned(8))) type name
+        #define ALPAKA_ALIGN_8(TYPE, NAME) __attribute__((aligned(8))) TYPE NAME
     //#endif
 
     //-----------------------------------------------------------------------------
     //! \return The alignment of the type.
     //-----------------------------------------------------------------------------
-    #define ALPAKA_ALIGNOF(type) alignof(type)
+    #define ALPAKA_ALIGNOF(TYPE) alignof(TYPE)
 #elif BOOST_COMP_INTEL
     //-----------------------------------------------------------------------------
     //! Aligns the data optimally.
     //! You must align all arrays and structs which can used on accelerators.
     //-----------------------------------------------------------------------------
-    #define ALPAKA_ALIGN(type, name) alignas(ALPAKA_OPTIMAL_ALIGNMENT(sizeof(type))) type name
+    #define ALPAKA_ALIGN(TYPE, NAME) alignas(ALPAKA_OPTIMAL_ALIGNMENT(sizeof(typename std::remove_cv<TYPE>::type))) type NAME
     //-----------------------------------------------------------------------------
     //! Aligns the data at 8 bytes.
     //! You must align all arrays and structs which can used on accelerators.
     //-----------------------------------------------------------------------------
-    #define ALPAKA_ALIGN_8(type, name) alignas(8) type name
+    #define ALPAKA_ALIGN_8(TYPE, NAME) alignas(8) TYPE NAME
 
     //-----------------------------------------------------------------------------
     //! \return The alignment of the type.
     //-----------------------------------------------------------------------------
-    #define ALPAKA_ALIGNOF(type) alignof(type)
+    #define ALPAKA_ALIGNOF(TYPE) alignof(TYPE)
 #elif (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
     //-----------------------------------------------------------------------------
     //! Aligns the data optimally.
     //! You must align all arrays and structs which can used on accelerators.
     //-----------------------------------------------------------------------------
     // \FIXME: sizeof in __declspec(align( not allowed...
-    //#define ALPAKA_ALIGN(type, name) __declspec(align(ALPAKA_OPTIMAL_ALIGNMENT(sizeof(type)))) type name
-    #define ALPAKA_ALIGN(type, name) __declspec(align(16)) type name
+    //#define ALPAKA_ALIGN(TYPE, NAME) __declspec(align(ALPAKA_OPTIMAL_ALIGNMENT(sizeof(typename std::remove_cv<TYPE>::type)))) TYPE NAME
+    #define ALPAKA_ALIGN(TYPE, NAME) __declspec(align(16)) TYPE NAME
     //-----------------------------------------------------------------------------
     //! Aligns the data at 8 bytes.
     //! You must align all arrays and structs which can used on accelerators.
     //-----------------------------------------------------------------------------
-    #define ALPAKA_ALIGN_8(type, name) __declspec(align(8)) type name
+    #define ALPAKA_ALIGN_8(TYPE, NAME) __declspec(align(8)) TYPE NAME
 
     //-----------------------------------------------------------------------------
     //! \return The alignment of the type.
     //-----------------------------------------------------------------------------
-    #define ALPAKA_ALIGNOF(type) __alignof(type)
+    #define ALPAKA_ALIGNOF(TYPE) __alignof(TYPE)
 #else
     //-----------------------------------------------------------------------------
     //! Aligns the data optimally.
     //! You must align all arrays and structs which can used on accelerators.
     //-----------------------------------------------------------------------------
-    #define ALPAKA_ALIGN(type, name) alignas(alpaka::detail::OptimalAlignment<sizeof(type)>::value) type name
+    #define ALPAKA_ALIGN(TYPE, NAME) alignas(alpaka::detail::OptimalAlignment<sizeof(typename std::remove_cv<TYPE>::type)>::value) TYPE NAME
     //-----------------------------------------------------------------------------
     //! Aligns the data at 8 bytes.
     //! You must align all arrays and structs which can used on accelerators.
     //-----------------------------------------------------------------------------
-    #define ALPAKA_ALIGN_8(type, name) alignas(8) type name
+    #define ALPAKA_ALIGN_8(TYPE, NAME) alignas(8) TYPE NAME
 
     //-----------------------------------------------------------------------------
     //! \return The alignment of the type.
     //-----------------------------------------------------------------------------
-    #define ALPAKA_ALIGNOF(type) alignof(type)
+    #define ALPAKA_ALIGNOF(TYPE) alignof(TYPE)
 #endif
