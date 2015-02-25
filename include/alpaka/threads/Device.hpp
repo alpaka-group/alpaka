@@ -169,23 +169,26 @@ namespace alpaka
                 ALPAKA_FCT_HOST static alpaka::dev::DevProps getDevProps(
                     threads::detail::DeviceThreads const &)
                 {
-                    alpaka::dev::DevProps devProps;
-
-                    devProps.m_sName = host::getCpuName();
-                    devProps.m_uiMultiProcessorCount = 1u;
-                    // \TODO: Magic number. What is the maximum? Just set a reasonable value? There is a implementation defined maximum where the creation of a new thread crashes.
-                    // std::thread::hardware_concurrency  can return 0, so a default for this case?
 #if ALPAKA_INTEGRATION_TEST
-                    devProps.m_uiBlockThreadsCountMax = 8u;
+					UInt const uiBlockThreadsCountMax(8u);
 #else
-                    devProps.m_uiBlockThreadsCountMax = std::thread::hardware_concurrency() * 8u;
+					// \TODO: Magic number. What is the maximum? Just set a reasonable value? There is a implementation defined maximum where the creation of a new thread crashes.
+					// std::thread::hardware_concurrency  can return 0, so a default for this case?
+					UInt const uiBlockThreadsCountMax(std::thread::hardware_concurrency() * 8u);
 #endif
-                    devProps.m_v3uiBlockThreadExtentsMax = Vec<3u>(devProps.m_uiBlockThreadsCountMax, devProps.m_uiBlockThreadsCountMax, devProps.m_uiBlockThreadsCountMax);
-                    devProps.m_v3uiGridBlockExtentsMax = Vec<3u>(std::numeric_limits<UInt>::max(), std::numeric_limits<UInt>::max(), std::numeric_limits<UInt>::max());
-                    devProps.m_uiGlobalMemSizeBytes = host::getGlobalMemSizeBytes();
-                    //devProps.m_uiMaxClockFrequencyHz = TODO;
-
-                    return devProps;
+                    return alpaka::dev::DevProps(
+						// m_sName
+						host::getCpuName(),
+						// m_uiMultiProcessorCount
+						1u,
+						// m_uiBlockThreadsCountMax
+						uiBlockThreadsCountMax,
+						// m_v3uiBlockThreadExtentsMax
+						Vec<3u>(uiBlockThreadsCountMax, uiBlockThreadsCountMax, uiBlockThreadsCountMax),	
+						// m_v3uiGridBlockExtentsMax
+						Vec<3u>(std::numeric_limits<UInt>::max(), std::numeric_limits<UInt>::max(), std::numeric_limits<UInt>::max()),		
+						// m_uiGlobalMemSizeBytes
+						host::getGlobalMemSizeBytes());
                 }
             };
 

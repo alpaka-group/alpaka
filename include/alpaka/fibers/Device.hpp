@@ -170,21 +170,24 @@ namespace alpaka
                 ALPAKA_FCT_HOST static alpaka::dev::DevProps getDevProps(
                     fibers::detail::DeviceFibers const &)
                 {
-                    alpaka::dev::DevProps devProps;
-
-                    devProps.m_sName = host::getCpuName();
-                    devProps.m_uiMultiProcessorCount = std::thread::hardware_concurrency(); // \TODO: This may be inaccurate.
 #if ALPAKA_INTEGRATION_TEST
-                    devProps.m_uiBlockThreadsCountMax = 24u;
+					UInt const uiBlockThreadsCountMax(24u);
 #else
-                    devProps.m_uiBlockThreadsCountMax = 32u; // \TODO: What is the maximum? Just set a reasonable value?
+					UInt const uiBlockThreadsCountMax(32u); // \TODO: What is the maximum? Just set a reasonable value?
 #endif
-                    devProps.m_v3uiBlockThreadExtentsMax = Vec<3u>(devProps.m_uiBlockThreadsCountMax, devProps.m_uiBlockThreadsCountMax, devProps.m_uiBlockThreadsCountMax);
-                    devProps.m_v3uiGridBlockExtentsMax = Vec<3u>(std::numeric_limits<UInt>::max(), std::numeric_limits<UInt>::max(), std::numeric_limits<UInt>::max());
-                    devProps.m_uiGlobalMemSizeBytes = host::getGlobalMemSizeBytes();
-                    //devProps.m_uiMaxClockFrequencyHz = TODO;
-
-                    return devProps;
+                    return alpaka::dev::DevProps(
+						// m_sName
+						host::getCpuName(),
+						// m_uiMultiProcessorCount
+						std::thread::hardware_concurrency(), // \TODO: This may be inaccurate.
+						// m_uiBlockThreadsCountMax
+						uiBlockThreadsCountMax,
+						// m_v3uiBlockThreadExtentsMax
+						Vec<3u>(uiBlockThreadsCountMax, uiBlockThreadsCountMax, uiBlockThreadsCountMax),
+						// m_v3uiGridBlockExtentsMax
+						Vec<3u>(std::numeric_limits<UInt>::max(), std::numeric_limits<UInt>::max(), std::numeric_limits<UInt>::max()),
+						// m_uiGlobalMemSizeBytes
+						host::getGlobalMemSizeBytes());
                 }
             };
 

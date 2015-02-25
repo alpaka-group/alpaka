@@ -25,6 +25,7 @@
 #include <alpaka/core/BasicWorkDiv.hpp>
 #include <alpaka/core/Common.hpp>
 #include <alpaka/core/EnabledAccelerators.hpp>
+#include <alpaka/core/ForEachType.hpp>
 #include <alpaka/core/KernelExecCreator.hpp>
 #include <alpaka/core/mem/MemBufBasePlainPtrWrapper.hpp>
 #include <alpaka/core/mem/MemBufBaseStdContainers.hpp>

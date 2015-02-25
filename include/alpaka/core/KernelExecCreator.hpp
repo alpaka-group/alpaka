@@ -125,7 +125,7 @@ namespace alpaka
                 }
                 if(workdiv::getWorkDiv<Block, Threads, dim::Dim1>(workDiv)[0] == 0u)
                 {
-                    throw std::runtime_error("The workDiv block threads extents is not allowed to be zero in any dimension!");
+                    throw std::runtime_error("The workDiv block thread extents is not allowed to be zero in any dimension!");
                 }
 
                 return TKernelExecutor(workDiv, stream, std::forward<TKernelConstrArgs>(std::get<TIndices>(m_tupleKernelConstrArgs))...);

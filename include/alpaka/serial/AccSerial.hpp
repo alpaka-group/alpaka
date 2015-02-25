@@ -75,20 +75,27 @@ namespace alpaka
             {
             public:
                 using MemSpace = mem::MemSpaceHost;
+				
+				template<
+					typename TAcceleratedKernel>
+                friend class ::alpaka::serial::detail::KernelExecutorSerial;
 
-                template<
-                    typename TAcceleratedKernel>
-                friend class KernelExecutorSerial;
-
+			//private:	// TODO: Make private and only constructible from friend KernelExecutor. Not possible due to IAcc?
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA AccSerial() :
-                    WorkDivSerial(),
-                    IdxSerial(m_v3uiGridBlockIdx),
-                    AtomicSerial()
+				template<
+					typename TWorkDiv>
+                ALPAKA_FCT_ACC_NO_CUDA AccSerial(
+					TWorkDiv const & workDiv) :
+						WorkDivSerial(workDiv),
+						IdxSerial(m_v3uiGridBlockIdx),
+						AtomicSerial(),
+						m_v3uiGridBlockIdx(0u)
                 {}
+
+            public:
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 // Do not copy most members because they are initialized by the executor for each accelerated execution.
@@ -226,11 +233,9 @@ namespace alpaka
                     StreamSerial const &,
                     TKernelConstrArgs && ... args) :
                         TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
-                        IAcc<AccSerial>()
+                        IAcc<AccSerial>(workDiv)
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-                    (*static_cast<WorkDivSerial *>(this)) = workDiv;
                 }
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
@@ -238,11 +243,9 @@ namespace alpaka
                 ALPAKA_FCT_HOST KernelExecutorSerial(
                     KernelExecutorSerial const & other) :
                         TAcceleratedKernel(other),
-                        IAcc<AccSerial>()
+                        IAcc<AccSerial>(*static_cast<WorkDivSerial const *>(&other))
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-                    (*static_cast<WorkDivSerial *>(this)) = (*static_cast<WorkDivSerial const *>(&other));
                 }
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                 //-----------------------------------------------------------------------------
@@ -251,11 +254,9 @@ namespace alpaka
                 ALPAKA_FCT_HOST KernelExecutorSerial(
                     KernelExecutorSerial && other) :
                         TAcceleratedKernel(std::move(other)),
-                        IAcc<AccSerial>()
+                        IAcc<AccSerial>(*static_cast<WorkDivSerial const *>(&other))
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-                    (*static_cast<WorkDivSerial *>(this)) = (*static_cast<WorkDivSerial const *>(&other));
                 }
 #endif
                 //-----------------------------------------------------------------------------

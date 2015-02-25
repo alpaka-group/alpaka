@@ -38,11 +38,29 @@ namespace alpaka
         //#############################################################################
         struct DevProps
         {
+			//-----------------------------------------------------------------------------
+			//! Default-constructor
+			//-----------------------------------------------------------------------------
+			DevProps(
+				std::string const & sName,
+				UInt const & uiMultiProcessorCount,
+				UInt const & uiBlockThreadsCountMax,
+				Vec<3u> const & v3uiBlockThreadExtentsMax,
+				Vec<3u> const & v3uiGridBlockExtentsMax,
+				std::size_t const & uiGlobalMemSizeBytes) :
+					m_sName(sName),
+					m_uiMultiProcessorCount(uiMultiProcessorCount),
+					m_uiBlockThreadsCountMax(uiBlockThreadsCountMax),
+					m_v3uiBlockThreadExtentsMax(v3uiBlockThreadExtentsMax),
+					m_v3uiGridBlockExtentsMax(v3uiGridBlockExtentsMax),
+					m_uiGlobalMemSizeBytes(uiGlobalMemSizeBytes)
+			{}
+
             std::string m_sName;                    //!< The name.
             UInt m_uiMultiProcessorCount;           //!< The number of multiprocessors.
             UInt m_uiBlockThreadsCountMax;          //!< The maximum number of threads in a block.
-            Vec<3u> m_v3uiBlockThreadExtentsMax;   //!< The maximum number of threads in each dimension of a block.
-            Vec<3u> m_v3uiGridBlockExtentsMax;     //!< The maximum number of blocks in each dimension of the grid.
+            Vec<3u> m_v3uiBlockThreadExtentsMax;    //!< The maximum number of threads in each dimension of a block.
+            Vec<3u> m_v3uiGridBlockExtentsMax;      //!< The maximum number of blocks in each dimension of the grid.
             std::size_t m_uiGlobalMemSizeBytes;     //!< Size of the global device memory in bytes.
             //std::size_t m_uiSharedMemSizeBytes;   //!< Size of the available block shared memory in bytes. 
             //std::size_t m_uiMaxClockFrequencyHz;  //!< Maximum clock frequency of the device in Hz.

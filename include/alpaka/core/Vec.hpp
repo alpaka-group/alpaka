@@ -23,6 +23,7 @@
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FCT_ACC, ALPAKA_ALIGN
 #include <alpaka/core/BasicDims.hpp>// dim::Dim<N>
+#include <alpaka/core/IntegerSequence.hpp>	// 
 
 #include <alpaka/traits/Dim.hpp>    // traits::getDim
 #include <alpaka/traits/Extents.hpp>// traits::getWidth, ...
@@ -56,15 +57,26 @@ namespace alpaka
 
     public:
         //-----------------------------------------------------------------------------
-        //! Constructor.
+        //! Default-constructor.
         //! Every value is set to zero.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC Vec()
+        /*ALPAKA_FCT_HOST_ACC Vec()
         {
-            // NOTE: depending on the size this could be optimized with memset, intrinsics, etc. We trust in the compiler to do this.
             for(UInt i(0); i<TuiDim; ++i)
             {
                 m_auiData[i] = 0;
+            }
+        }*/
+        //-----------------------------------------------------------------------------
+        //! Constructor.
+        //! \param val The value every entry is set to.
+        //-----------------------------------------------------------------------------
+        ALPAKA_FCT_HOST_ACC Vec(
+			TVal const & val)
+        {
+            for(UInt i(0); i<TuiDim; ++i)
+            {
+                m_auiData[i] = val;
             }
         }
         //-----------------------------------------------------------------------------
@@ -82,12 +94,12 @@ namespace alpaka
         ALPAKA_FCT_HOST_ACC Vec(
             TFirstArg && val, 
             TArgs && ... values)
-#if !(BOOST_COMP_MSVC /*<= BOOST_VERSION_NUMBER(14, 0, 22512)*/)   // MSVC does not compile the basic array initialization: "error C2536: 'alpaka::Vec<0x03>::alpaka::Vec<0x03>::m_auiData': cannot specify explicit initializer for arrays"
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 22609))   // MSVC does not compile the basic array initialization: "error C2536: 'alpaka::Vec<0x03>::alpaka::Vec<0x03>::m_auiData': cannot specify explicit initializer for arrays"
             :
                 m_auiData{std::forward<TFirstArg>(val), std::forward<TArgs>(values)...}
 #endif
         {
-#if BOOST_COMP_MSVC //<= BOOST_VERSION_NUMBER(14, 0, 22512)
+#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 22609))
             TVal auiData2[TuiDim] = {std::forward<TFirstArg>(val), std::forward<TArgs>(values)...};
             for(UInt i(0); i<TuiDim; ++i)
             {
@@ -207,24 +219,36 @@ namespace alpaka
         }
 
         //-----------------------------------------------------------------------------
-        //! Constructor.
-        //! Every value is set to zero.
+        //! \return The sub-vector consisting of the first N elements of the source vector.
         //-----------------------------------------------------------------------------
         template<
             UInt TuiSubDim>
-        ALPAKA_FCT_HOST_ACC Vec<TuiSubDim, TVal> subvec() const
+        ALPAKA_FCT_HOST_ACC Vec<TuiSubDim, TVal> subVec() const
         {
-            static_assert(TuiSubDim <= TuiDim, "The sub vector has to be smaller then the origin vector.");
+            static_assert(TuiSubDim <= TuiDim, "The sub-vector has to be smaller (or same size) then the origin vector.");
+			
+#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
+			using IdxSequence = typename alpaka::detail::make_index_sequence<TuiSubDim>::type;
+#else
+			using IdxSequence = alpaka::detail::make_index_sequence<TuiSubDim>;
+#endif
+            return subVecFromIndices(IdxSequence());
+        }
+        //-----------------------------------------------------------------------------
+        //! \return The sub-vector consisting of the elements specified by the indices.
+        //-----------------------------------------------------------------------------
+        template<
+            size_t... TIndices>
+        ALPAKA_FCT_HOST_ACC Vec<sizeof...(TIndices), TVal> subVecFromIndices(
+#if !BOOST_COMP_MSVC     // MSVC 190022512 introduced a new bug with alias templates: error C3520: 'TIndices': parameter pack must be expanded in this context
+			detail::index_sequence<TIndices...> const &) const
+#else
+			detail::integer_sequence<std::size_t, TIndices...> const &) const
+#endif
+        {
+            static_assert(sizeof...(TIndices) <= TuiDim, "The sub-vector has to be smaller (or same size) then the origin vector.");
 
-            Vec<TuiSubDim, TVal> ret;
-
-            // NOTE: depending on the size this could be optimized with memset, intrinsics, etc. We trust in the compiler to do this.
-            for(UInt i(0); i<TuiSubDim; ++i)
-            {
-                ret[i] = (*this)[i];
-            }
-
-            return ret;
+            return Vec<sizeof...(TIndices), TVal>((*this)[TIndices]...);
         }
 
         //-----------------------------------------------------------------------------
@@ -312,7 +336,7 @@ namespace alpaka
         Vec<TuiDim, TVal> const & p, 
         Vec<TuiDim, TVal> const & q)
     {
-        Vec<TuiDim, TVal> vRet;
+        Vec<TuiDim, TVal> vRet(0u);
         for(UInt i(0); i<TuiDim; ++i)
         {
             vRet[i] = p[i] + q[i];
@@ -330,7 +354,7 @@ namespace alpaka
         Vec<TuiDim, TVal> const & p, 
         Vec<TuiDim, TVal> const & q)
     {
-        Vec<TuiDim, TVal> vRet;
+        Vec<TuiDim, TVal> vRet(0u);
         for(UInt i(0); i<TuiDim; ++i)
         {
             vRet[i] = p[i] * q[i];

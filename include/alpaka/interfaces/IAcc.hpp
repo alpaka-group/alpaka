@@ -45,9 +45,10 @@ namespace alpaka
     {
     public:
         //-----------------------------------------------------------------------------
-        //! Constructor.
+        //! Inherited constructors.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_ACC IAcc() = default;
+        using TAcc::TAcc;
+
         //-----------------------------------------------------------------------------
         //! Copy constructor.
         //-----------------------------------------------------------------------------
@@ -75,7 +76,7 @@ namespace alpaka
 #ifndef __CUDA_ARCH__
             return TAcc::template getWorkDiv<TOrigin, TUnit, TDim>();
 #else
-            return {};
+            return {0u};
 #endif
         }
 
@@ -91,7 +92,7 @@ namespace alpaka
 #ifndef __CUDA_ARCH__
             return TAcc::template getIdx<TOrigin, TUnit, TDim>();
 #else
-            return {};
+            return {0u};
 #endif
         }
 
@@ -109,7 +110,7 @@ namespace alpaka
 #ifndef __CUDA_ARCH__
             return TAcc::template atomicOp<TOp, T>(addr, value);
 #else
-            return {};
+            return {0u};
 #endif
         }
 

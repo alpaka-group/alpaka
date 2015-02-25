@@ -78,7 +78,7 @@ namespace alpaka
         namespace workdiv
         {
             //#############################################################################
-            //! The work div block threads 1D extents trait specialization.
+            //! The work div block thread 1D extents trait specialization.
             //#############################################################################
             template<
                 typename TWorkDiv>
@@ -98,7 +98,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The work div grid threads 3D extents trait specialization.
+            //! The work div grid thread 3D extents trait specialization.
             //#############################################################################
             template<
                 typename TWorkDiv>
@@ -119,7 +119,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The work div grid threads 1D extents trait specialization.
+            //! The work div grid thread 1D extents trait specialization.
             //#############################################################################
             template<
                 typename TWorkDiv>
@@ -139,7 +139,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The work div grid blocks 1D extents trait specialization.
+            //! The work div grid block 1D extents trait specialization.
             //#############################################################################
             template<
                 typename TWorkDiv>

@@ -94,13 +94,13 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TVal,
-                    UInt... TIndices>
+                    size_t... TIndices>
                 ALPAKA_FCT_HOST static /*constexpr*/ Vec<alpaka::dim::DimT<TFixedSizeArray>::value> getExtentsInternal(
                     TFixedSizeArray const & extents,
 #if !BOOST_COMP_MSVC     // MSVC 190022512 introduced a new bug with alias templates: error C3520: 'TIndices': parameter pack must be expanded in this context
                 alpaka::detail::index_sequence<TIndices...> const &)
 #else
-                alpaka::detail::integer_sequence<UInt, TIndices...> const &)
+                alpaka::detail::integer_sequence<std::size_t, TIndices...> const &)
 #endif
                 {
                     return {(std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value-(TIndices+1u)>::value)...};
@@ -184,7 +184,7 @@ namespace alpaka
                 ALPAKA_FCT_HOST static Vec<alpaka::dim::DimT<TFixedSizeArray>::value> getOffsets(
                     TFixedSizeArray const &)
                 {
-                    return Vec<alpaka::dim::DimT<TFixedSizeArray>::value>();
+                    return Vec<alpaka::dim::DimT<TFixedSizeArray>::value>(0u);
                 }
             };
         }
@@ -383,7 +383,7 @@ namespace alpaka
                 ALPAKA_FCT_HOST static Vec<1u> getOffsets(
                     std::array<TElem, TuiSize> const &)
                 {
-                    return Vec<1u>();
+                    return Vec<1u>(0u);
                 }
             };
         }
@@ -567,7 +567,7 @@ namespace alpaka
                 ALPAKA_FCT_HOST static Vec<1u> getOffsets(
                     std::vector<TElem, TAllocator> const &)
                 {
-                    return Vec<1u>();
+                    return Vec<1u>(0u);
                 }
             };
         }

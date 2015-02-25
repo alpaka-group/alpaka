@@ -74,11 +74,12 @@ namespace alpaka
             {
             public:
                 using MemSpace = mem::MemSpaceCuda;
-
-                template<
-                    typename TAcceleratedKernel>
-                friend class cuda::detail::KernelExecutorCuda;
-
+				
+				template<
+					typename TAcceleratedKernel>
+                friend class ::alpaka::cuda::detail::KernelExecutorCuda;
+				
+			//private:	// TODO: Make private and only constructible from friend KernelExecutor. Not possible due to IAcc?
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
@@ -88,6 +89,8 @@ namespace alpaka
                     IdxCuda(),
                     AtomicCuda()
                 {}
+
+            public:
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
@@ -341,12 +344,11 @@ namespace alpaka
                     StreamCuda const & stream, 
                     TKernelConstrArgs && ... args) :
                         TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
-                        m_Stream(stream)
+                        m_Stream(stream),
+						m_v3uiGridBlockExtents(workdiv::getWorkDiv<Grid, Blocks, dim::Dim3>(workDiv)),
+						m_v3uiBlockThreadExtents(workdiv::getWorkDiv<Block, Threads, dim::Dim3>(workDiv))
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-                    m_v3uiGridBlockExtents = workdiv::getWorkDiv<Grid, Blocks, dim::Dim3>(workDiv);
-                    m_v3uiBlockThreadExtents = workdiv::getWorkDiv<Block, Threads, dim::Dim3>(workDiv);
 
                     // TODO: Check that (sizeof(TAcceleratedKernel) * m_v3uiBlockThreadExtents.prod()) < available memory size
                 }
@@ -395,11 +397,11 @@ namespace alpaka
                     //std::cout << "uiPrintfFifoSize: " <<  uiPrintfFifoSize << std::endl;
 #endif
 
-                    dim3 gridDim(
+                    dim3 const gridDim(
                         static_cast<unsigned int>(m_v3uiGridBlockExtents[0u]), 
                         static_cast<unsigned int>(m_v3uiGridBlockExtents[1u]), 
                         static_cast<unsigned int>(m_v3uiGridBlockExtents[2u]));
-                    dim3 blockDim(
+                    dim3 const blockDim(
                         static_cast<unsigned int>(m_v3uiBlockThreadExtents[0u]), 
                         static_cast<unsigned int>(m_v3uiBlockThreadExtents[1u]), 
                         static_cast<unsigned int>(m_v3uiBlockThreadExtents[2u]));
@@ -440,8 +442,8 @@ namespace alpaka
 #endif
                 }
             private:
-                Vec<3u> m_v3uiGridBlockExtents;
-                Vec<3u> m_v3uiBlockThreadExtents;
+                Vec<3u> const m_v3uiGridBlockExtents;
+                Vec<3u> const m_v3uiBlockThreadExtents;
 
                 StreamCuda m_Stream;
             };

@@ -27,8 +27,6 @@
 #include <typeinfo>                         // typeid
 #include <utility>                          // std::forward
 
-#include <boost/mpl/for_each.hpp>           // boost::mpl::for_each
-
 //#############################################################################
 //! A vector addition kernel.
 //! \tparam TAcc The accelerator environment to be executed on.
@@ -106,7 +104,6 @@ struct VectorAddKernelTester
     template<
         typename TAcc>
     void operator()(
-        TAcc const &,
         std::size_t const & uiNumElements)
     {
         std::cout << std::endl;
@@ -236,11 +233,9 @@ int main()
             std::cout << std::endl;
 
             // Execute the kernel on all enabled accelerators.
-            boost::mpl::for_each<alpaka::acc::EnabledAccelerators>(
-                std::bind(
-                    vectorAddKernelTester,
-                    std::placeholders::_1,
-                    uiSize));
+            alpaka::ForEachType<alpaka::acc::EnabledAccelerators>(
+                vectorAddKernelTester,
+                uiSize);
         }
         return EXIT_SUCCESS;
     }

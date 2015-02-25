@@ -24,10 +24,10 @@
 #include <alpaka/core/Common.hpp>           // ALPAKA_FCT_HOST
 #include <alpaka/core/Vec.hpp>              // Vec
 #include <alpaka/core/BasicWorkDiv.hpp>     // workdiv::BasicWorkDiv
+#include <alpaka/core/ForEachType.hpp>      // ForEachType
 
 #include <alpaka/traits/Device.hpp>         // dev::DevManT, getDevProps
 
-#include <boost/mpl/for_each.hpp>           // boost::mpl::for_each
 #include <boost/mpl/vector.hpp>             // boost::mpl::vector
 
 #include <cmath>                            // std::ceil
@@ -44,17 +44,16 @@ namespace alpaka
         namespace detail
         {
             //#############################################################################
-            //! The maximum block threads extents correction wrapper.
+            //! The maximum block thread extents correction wrapper.
             //#############################################################################
             struct CorrectMaxBlockThreadExtents
             {
                 //-----------------------------------------------------------------------------
-                //! Corrects the maximum block threads extents if it is larger then the one supported by the given accelerator type.
+                //! Corrects the maximum block thread extents if it is larger then the one supported by the given accelerator type.
                 //-----------------------------------------------------------------------------
                 template<
                     typename TAcc>
                 ALPAKA_FCT_HOST void operator()(
-                    TAcc const &,
                     Vec<3u> & v3uiBlockThreadExtents)
                 {
                     auto const devProps(dev::getDevProps(dev::DevManT<TAcc>::getCurrentDevice()));
@@ -69,21 +68,24 @@ namespace alpaka
         }
 
         //-----------------------------------------------------------------------------
-        //! \return The maximum block threads extents supported by all of the given accelerators.
+        //! \return The maximum block thread extents supported by all of the given accelerators.
         //-----------------------------------------------------------------------------
         template<
             typename TAccSeq>
         ALPAKA_FCT_HOST Vec<3u> getMaxBlockThreadExtentsAccelerators()
         {
-            static_assert(boost::mpl::is_sequence<TAccSeq>::value, "TAccSeq is required to be a mpl::sequence!");
+            static_assert(
+				boost::mpl::is_sequence<TAccSeq>::value, 
+				"TAccSeq is required to be a mpl::sequence!");
 
             Vec<3u> v3uiMaxBlockThreadExtents(
                 std::numeric_limits<UInt>::max(),
                 std::numeric_limits<UInt>::max(),
                 std::numeric_limits<UInt>::max());
 
-            boost::mpl::for_each<TAccSeq>(
-                std::bind(detail::CorrectMaxBlockThreadExtents(), std::placeholders::_1, std::ref(v3uiMaxBlockThreadExtents))
+            ForEachType<TAccSeq>(
+				detail::CorrectMaxBlockThreadExtents(),
+				std::ref(v3uiMaxBlockThreadExtents)
                 );
 
             return v3uiMaxBlockThreadExtents;
@@ -92,17 +94,16 @@ namespace alpaka
         namespace detail
         {
             //#############################################################################
-            //! The maximum block threads count correction wrapper.
+            //! The maximum block thread count correction wrapper.
             //#############################################################################
             struct CorrectMaxBlockThreadCount
             {
                 //-----------------------------------------------------------------------------
-                //! Corrects the maximum block threads count if it is larger then the one supported by the given accelerator type.
+                //! Corrects the maximum block thread count if it is larger then the one supported by the given accelerator type.
                 //-----------------------------------------------------------------------------
                 template<
                     typename TAcc>
                 ALPAKA_FCT_HOST void operator()(
-                    TAcc const &,
                     UInt & uiBlockThreadCount)
                 {
                     auto const devProps(dev::getDevProps(dev::DevManT<TAcc>::getCurrentDevice()));
@@ -114,7 +115,7 @@ namespace alpaka
         }
 
         //-----------------------------------------------------------------------------
-        //! \return The maximum block threads count supported by all of the given accelerators.
+        //! \return The maximum block thread count supported by all of the given accelerators.
         //-----------------------------------------------------------------------------
         template<
             typename TAccSeq>
@@ -125,8 +126,9 @@ namespace alpaka
             UInt uiMaxBlockThreadCount(
                 std::numeric_limits<UInt>::max());
 
-            boost::mpl::for_each<TAccSeq>(
-                std::bind(detail::CorrectMaxBlockThreadCount(), std::placeholders::_1, std::ref(uiMaxBlockThreadCount))
+            ForEachType<TAccSeq>(
+				detail::CorrectMaxBlockThreadCount(),
+				std::ref(uiMaxBlockThreadCount)
                 );
 
             return uiMaxBlockThreadCount;
@@ -158,9 +160,9 @@ namespace alpaka
             }
 
             //#############################################################################
-            //! Subdivides the given grid threads extents into blocks restricted by:
-            //! 1. the maximum block threads extents and 
-            //! 2. the maximum block threads count.
+            //! Subdivides the given grid thread extents into blocks restricted by:
+            //! 1. the maximum block thread extents and 
+            //! 2. the maximum block thread count.
             //!
             //! \param v3uiGridThreadExtents
             //!     The full extents of threads in the grid.
@@ -169,10 +171,10 @@ namespace alpaka
             //! \param uiMaxBlockThreadsCount
             //!     The maximum number of threads in a block.
             //! \param bRequireBlockThreadExtentsToDivideGridThreadExtents
-            //!     If this is true, the grid threads extents will be multiples of the corresponding block threads extents.
-            //!     NOTE: If v3uiGridThreadExtents is prime (or otherwise bad chosen) in a dimension, the block threads extent will be one in this dimension.
+            //!     If this is true, the grid thread extents will be multiples of the corresponding block thread extents.
+            //!     NOTE: If v3uiGridThreadExtents is prime (or otherwise bad chosen) in a dimension, the block thread extent will be one in this dimension.
             //! \param bUniformBlockThreadExtentsClipping
-            //!     If this is true, the block threads extents will be clipped uniformly.
+            //!     If this is true, the block thread extents will be clipped uniformly.
             //!     This means that all values of the extent will be processed uniformly at the same time.
             //!     This can lead to smaller blocks but allows to keep the ratio between dimensions (in some limits due to integer rounding).
             //#############################################################################
@@ -186,15 +188,15 @@ namespace alpaka
                 assert(v3uiGridThreadExtents[1u]>0);
                 assert(v3uiGridThreadExtents[2u]>0);
 
-                // 1. Restrict the max block threads extents with the grid threads extents.
-                // This removes dimensions not required in the given gird threads extents.
+                // 1. Restrict the max block thread extents with the grid thread extents.
+                // This removes dimensions not required in the given grid thread extents.
                 // This has to be done before the uiMaxBlockThreadsCount clipping to get the maximum correctly.
                 Vec<3u> v3uiBlockThreadExtents(
                     std::min(v3uiMaxBlockThreadExtents[0u], v3uiGridThreadExtents[0u]),
                     std::min(v3uiMaxBlockThreadExtents[1u], v3uiGridThreadExtents[1u]),
                     std::min(v3uiMaxBlockThreadExtents[2u], v3uiGridThreadExtents[2u]));
 
-                // 2. If the block threads extents require more threads then available on the accelerator, clip it.
+                // 2. If the block thread extents require more threads then available on the accelerator, clip it.
                 if(v3uiBlockThreadExtents.prod() > uiMaxBlockThreadsCount)
                 {
                     // Begin in z dimension.
@@ -209,14 +211,14 @@ namespace alpaka
 
                 if(bRequireBlockThreadExtentsToDivideGridThreadExtents)
                 {
-                    // Make the block threads extents divide the grid threads extents.
+                    // Make the block thread extents divide the grid thread extents.
                     v3uiBlockThreadExtents = Vec<3u>(
                         detail::nextLowerOrEqualFactor(v3uiBlockThreadExtents[0u], v3uiGridThreadExtents[0u]),
                         detail::nextLowerOrEqualFactor(v3uiBlockThreadExtents[1u], v3uiGridThreadExtents[1u]),
                         detail::nextLowerOrEqualFactor(v3uiBlockThreadExtents[2u], v3uiGridThreadExtents[2u]));
                 }
 
-                // Set the grid blocks extents (rounded to the next integer not less then the quotient.
+                // Set the grid block extents (rounded to the next integer not less then the quotient.
                 Vec<3u> const v3uiGridBlockExtents(
                     static_cast<UInt>(std::ceil(static_cast<double>(v3uiGridThreadExtents[0u]) / static_cast<double>(v3uiBlockThreadExtents[0u]))),
                     static_cast<UInt>(std::ceil(static_cast<double>(v3uiGridThreadExtents[1u]) / static_cast<double>(v3uiBlockThreadExtents[1u]))),

@@ -28,8 +28,6 @@
 #include <typeinfo>                 // typeid
 #include <utility>                  // std::forward
 
-#include <boost/mpl/for_each.hpp>   // boost::mpl::for_each
-
 //#############################################################################
 //! An accelerated test kernel.
 //! Uses atomicOp(), syncBlockThreads(), shared memory, getIdx, getExtents, global memory to compute a (useless) result.
@@ -187,7 +185,6 @@ struct SharedMemTester
         typename TAcc, 
         typename TWorkDiv>
     void operator()(
-        TAcc const &, 
         TWorkDiv const & workDiv, 
         std::uint32_t const uiMult2)
     {
@@ -294,12 +291,10 @@ int main()
         SharedMemTester<TuiNumUselessWork> sharedMemTester;
             
         // Execute the kernel on all enabled accelerators.
-        boost::mpl::for_each<alpaka::acc::EnabledAccelerators>(
-            std::bind(
-                sharedMemTester, 
-                std::placeholders::_1, 
-                workDiv, 
-                uiMult2));
+        alpaka::ForEachType<alpaka::acc::EnabledAccelerators>(
+            sharedMemTester,  
+            workDiv, 
+            uiMult2);
 
         return sharedMemTester.bAllResultsCorrect ? EXIT_SUCCESS : EXIT_FAILURE;
     }

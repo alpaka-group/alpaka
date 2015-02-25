@@ -84,20 +84,28 @@ namespace alpaka
             {
             public:
                 using MemSpace = mem::MemSpaceHost;
-
-                template<
-                    typename TAcceleratedKernel>
-                friend class KernelExecutorFibers;
-
+				
+				template<
+					typename TAcceleratedKernel>
+                friend class ::alpaka::fibers::detail::KernelExecutorFibers;
+				
+			//private:	// TODO: Make private and only constructible from friend KernelExecutor. Not possible due to IAcc?
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA AccFibers() :
-                    WorkDivFibers(),
-                    IdxFibers(m_mFibersToIndices, m_v3uiGridBlockIdx),
-                    AtomicFibers()
+				template<
+					typename TWorkDiv>
+                ALPAKA_FCT_ACC_NO_CUDA AccFibers(
+					TWorkDiv const & workDiv) :
+						WorkDivFibers(workDiv),
+						IdxFibers(m_mFibersToIndices, m_v3uiGridBlockIdx),
+						AtomicFibers(),
+						m_v3uiGridBlockIdx(0u),
+						m_uiNumThreadsPerBlock(workdiv::getWorkDiv<Block, Threads, dim::Dim1>(workDiv)[0u])
                 {}
+
+            public:
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
@@ -246,7 +254,7 @@ namespace alpaka
                 Vec<3u> mutable m_v3uiGridBlockIdx;                         //!< The index of the currently executed block.
 
                 // syncBlockThreads
-                UInt mutable m_uiNumThreadsPerBlock;                        //!< The number of threads per block the barrier has to wait for.
+                UInt const m_uiNumThreadsPerBlock;							//!< The number of threads per block the barrier has to wait for.
                 std::map<
                     boost::fibers::fiber::id,
                     UInt> mutable m_mFibersToBarrier;                       //!< The mapping of fibers id's to their current barrier.
@@ -311,7 +319,7 @@ namespace alpaka
                     StreamFibers const &,
                     TKernelConstrArgs && ... args):
                         TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
-                        IAcc<AccFibers>(),
+                        IAcc<AccFibers>(workDiv),
 #ifdef ALPAKA_FIBERS_NO_POOL
                         m_vFibersInBlock()
 #else
@@ -319,10 +327,6 @@ namespace alpaka
 #endif
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-                    (*static_cast<WorkDivFibers *>(this)) = workDiv;
-
-                    this->AccFibers::m_uiNumThreadsPerBlock = workdiv::getWorkDiv<Block, Threads, dim::Dim1>(workDiv)[0];
                 }
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
@@ -330,7 +334,7 @@ namespace alpaka
                 ALPAKA_FCT_HOST KernelExecutorFibers(
                     KernelExecutorFibers const & other):
                         TAcceleratedKernel(other),
-                        IAcc<AccFibers>(),
+                        IAcc<AccFibers>(*static_cast<WorkDivFibers *>(&other)),
 #ifdef ALPAKA_FIBERS_NO_POOL
                         m_vFibersInBlock()
 #else
@@ -338,11 +342,6 @@ namespace alpaka
 #endif
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-                    (*static_cast<WorkDivFibers *>(this)) = (*static_cast<WorkDivFibers *>(&other));
-
-                    this->AccFibers::m_uiNumThreadsPerBlock = other.getBlockThreadExtents().prod();
-                    
                 }
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                 //-----------------------------------------------------------------------------
@@ -351,13 +350,9 @@ namespace alpaka
                 ALPAKA_FCT_HOST KernelExecutorFibers(
                     KernelExecutorFibers && other) :
                         TAcceleratedKernel(std::move(other)),
-                        IAcc<AccFibers>()
+                        IAcc<AccFibers>(*static_cast<WorkDivFibers *>(&other))
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-                    (*static_cast<WorkDivFibers *>(this)) = (*static_cast<WorkDivFibers *>(&other));
-
-                    this->AccFibers::m_uiNumThreadsPerBlock = other.getBlockThreadExtents().prod();
                 }
 #endif
                 //-----------------------------------------------------------------------------
@@ -417,8 +412,8 @@ namespace alpaka
                             {
                                 this->AccFibers::m_v3uiGridBlockIdx[0] = bx;
 
-                                // Execute the block threads in parallel using cooperative multi-threading.
-                                Vec<3u> v3uiBlockThreadIdx;
+                                // Execute the block thread in parallel using cooperative multi-threading.
+                                Vec<3u> v3uiBlockThreadIdx(0u);
                                 for(UInt tz(0); tz<v3uiBlockThreadExtents[2]; ++tz)
                                 {
                                     v3uiBlockThreadIdx[2] = tz;

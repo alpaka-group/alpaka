@@ -86,20 +86,28 @@ namespace alpaka
             {
             public:
                 using MemSpace = mem::MemSpaceHost;
-
-                template<
-                    typename TAcceleratedKernel>
-                friend class KernelExecutorThreads;
-
+				
+				template<
+					typename TAcceleratedKernel>
+                friend class ::alpaka::threads::detail::KernelExecutorThreads;
+				
+			//private:	// TODO: Make private and only constructible from friend KernelExecutor. Not possible due to IAcc?
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA AccThreads() :
-                    WorkDivThreads(),
-                    IdxThreads(m_mThreadsToIndices, m_v3uiGridBlockIdx),
-                    AtomicThreads()
+				template<
+					typename TWorkDiv>
+                ALPAKA_FCT_ACC_NO_CUDA AccThreads(
+					TWorkDiv const & workDiv) :
+						WorkDivThreads(workDiv),
+						IdxThreads(m_mThreadsToIndices, m_v3uiGridBlockIdx),
+						AtomicThreads(),
+						m_v3uiGridBlockIdx(0u),
+						m_uiNumThreadsPerBlock(workdiv::getWorkDiv<Block, Threads, dim::Dim1>(workDiv)[0u])
                 {}
+
+            public:
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
@@ -253,7 +261,7 @@ namespace alpaka
                 Vec<3u> mutable m_v3uiGridBlockIdx;                         //!< The index of the currently executed block.
 
                 // syncBlockThreads
-                UInt mutable m_uiNumThreadsPerBlock;                        //!< The number of threads per block the barrier has to wait for.
+                UInt const m_uiNumThreadsPerBlock;                          //!< The number of threads per block the barrier has to wait for.
                 std::map<
                     std::thread::id,
                     UInt> mutable m_mThreadsToBarrier;                      //!< The mapping of thread id's to their current barrier.
@@ -319,7 +327,7 @@ namespace alpaka
                     StreamThreads const &,
                     TKernelConstrArgs && ... args) :
                         TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
-                        IAcc<AccThreads>(),
+                        IAcc<AccThreads>(workDiv),
 #ifdef ALPAKA_THREADS_NO_POOL
                         m_vThreadsInBlock(),
 #else
@@ -328,10 +336,6 @@ namespace alpaka
                         m_mtxMapInsert()
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-                    (*static_cast<WorkDivThreads *>(this)) = workDiv;
-
-                    this->AccThreads::m_uiNumThreadsPerBlock = workdiv::getWorkDiv<Block, Threads, dim::Dim1>(workDiv)[0];
                 }
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
@@ -339,7 +343,7 @@ namespace alpaka
                 ALPAKA_FCT_HOST KernelExecutorThreads(
                     KernelExecutorThreads const & other) :
                         TAcceleratedKernel(other),
-                        IAcc<AccThreads>(),
+                        IAcc<AccThreads>(*static_cast<WorkDivThreads const *>(&other)),
 #ifdef ALPAKA_THREADS_NO_POOL
                         m_vThreadsInBlock(),
 #else
@@ -348,10 +352,6 @@ namespace alpaka
                         m_mtxMapInsert()
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-                    (*static_cast<WorkDivThreads *>(this)) = (*static_cast<WorkDivThreads const *>(&other));
-
-                    this->AccThreads::m_uiNumThreadsPerBlock = other.getBlockThreadExtents().prod();
                 }
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
@@ -359,7 +359,7 @@ namespace alpaka
                 ALPAKA_FCT_HOST KernelExecutorThreads(
                     KernelExecutorThreads && other) :
                         TAcceleratedKernel(std::move(other)),
-                        IAcc<AccThreads>(),
+                        IAcc<AccThreads>(*static_cast<WorkDivThreads const *>(&other)),
 #ifdef ALPAKA_THREADS_NO_POOL
                         m_vThreadsInBlock(),
 #else
@@ -368,10 +368,6 @@ namespace alpaka
                         m_mtxMapInsert()
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-                    (*static_cast<WorkDivThreads *>(this)) = (*static_cast<WorkDivThreads const *>(&other));
-
-                    this->AccThreads::m_uiNumThreadsPerBlock = other.getBlockThreadExtents().prod();
                 }
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
@@ -427,7 +423,7 @@ namespace alpaka
                                 this->AccThreads::m_v3uiGridBlockIdx[0] = bx;
 
                                 // Execute the threads in parallel threads.
-                                Vec<3u> v3uiBlockThreadIdx;
+                                Vec<3u> v3uiBlockThreadIdx(0u);
                                 for(UInt tz(0); tz<v3uiBlockThreadExtents[2]; ++tz)
                                 {
                                     v3uiBlockThreadIdx[2] = tz;
@@ -556,9 +552,6 @@ namespace alpaka
                 std::vector<std::future<void>> mutable m_vFuturesInBlock; //!< The futures of the threads in the current block.
 #endif
                 std::mutex mutable m_mtxMapInsert;
-
-                Vec<3u> m_v3uiGridBlockExtents;
-                Vec<3u> m_v3uiBlockThreadExtents;
             };
         }
     }

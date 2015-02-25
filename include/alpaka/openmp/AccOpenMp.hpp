@@ -74,20 +74,27 @@ namespace alpaka
             {
             public:
                 using MemSpace = mem::MemSpaceHost;
-
-                template<
-                    typename TAcceleratedKernel>
-                friend class KernelExecutorOpenMp;
-
+				
+				template<
+					typename TAcceleratedKernel>
+                friend class ::alpaka::openmp::detail::KernelExecutorOpenMp;
+				
+			//private:	// TODO: Make private and only constructible from friend KernelExecutor. Not possible due to IAcc?
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA AccOpenMp() :
-                    WorkDivOpenMp(),
-                    IdxOpenMp(m_v3uiGridBlockIdx),
-                    AtomicOpenMp()
+				template<
+					typename TWorkDiv>
+                ALPAKA_FCT_ACC_NO_CUDA AccOpenMp(
+					TWorkDiv const & workDiv) :
+						WorkDivOpenMp(workDiv),
+						IdxOpenMp(m_v3uiGridBlockIdx),
+						AtomicOpenMp(),
+						m_v3uiGridBlockIdx(0u)
                 {}
+
+            public:
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
@@ -233,11 +240,9 @@ namespace alpaka
                     StreamOpenMp const &, 
                     TKernelConstrArgs && ... args) :
                         TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
-                        IAcc<AccOpenMp>()
+                        IAcc<AccOpenMp>(workDiv)
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-                    (*static_cast<WorkDivOpenMp *>(this)) = workDiv;
                 }
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
@@ -245,11 +250,9 @@ namespace alpaka
                 ALPAKA_FCT_HOST KernelExecutorOpenMp(
                     KernelExecutorOpenMp const & other) :
                         TAcceleratedKernel(other),
-                        IAcc<AccOpenMp>()
+                        IAcc<AccOpenMp>(*static_cast<WorkDivOpenMp const *>(&other))
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-                    (*static_cast<WorkDivOpenMp *>(this)) = (*static_cast<WorkDivOpenMp const *>(&other));
                 }
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                 //-----------------------------------------------------------------------------
@@ -258,11 +261,9 @@ namespace alpaka
                 ALPAKA_FCT_HOST KernelExecutorOpenMp(
                     KernelExecutorOpenMp && other) :
                         TAcceleratedKernel(std::move(other)),
-                        IAcc<AccOpenMp>()
+                        IAcc<AccOpenMp>(*static_cast<WorkDivOpenMp const *>(&other))
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-                    (*static_cast<WorkDivOpenMp *>(this)) = (*static_cast<WorkDivOpenMp const *>(&other));
                 }
 #endif
                 //-----------------------------------------------------------------------------

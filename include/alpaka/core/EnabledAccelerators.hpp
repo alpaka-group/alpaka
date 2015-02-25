@@ -39,13 +39,13 @@
 
 #include <alpaka/traits/Acc.hpp>            // traits::GetAccName
 
+#include <alpaka/core/ForEachType.hpp>      // ForEachType
 #include <alpaka/core/WorkDivHelpers.hpp>   // getMaxBlockThreadExtentsAccelerators
 
 #include <boost/mpl/vector.hpp>             // boost::mpl::vector
 #include <boost/mpl/filter_view.hpp>        // boost::mpl::filter_view
 #include <boost/mpl/not.hpp>                // boost::not_
 #include <boost/type_traits/is_same.hpp>    // boost::is_same
-#include <boost/mpl/for_each.hpp>           // boost::mpl::for_each
 
 #include <iosfwd>                           // std::ostream
 
@@ -125,7 +125,7 @@ namespace alpaka
             {
                 template<
                     typename TAcc> 
-                ALPAKA_FCT_HOST void operator()(TAcc &, std::ostream & os)
+                ALPAKA_FCT_HOST void operator()(std::ostream & os)
                 {
                     os << acc::getAccName<TAcc>();
                     os << " ";
@@ -140,15 +140,16 @@ namespace alpaka
         {
             os << "Accelerators enabled: ";
 
-            boost::mpl::for_each<EnabledAccelerators>(
-                std::bind(detail::GetAccName(), std::placeholders::_1, std::ref(os))
+            ForEachType<EnabledAccelerators>(
+                detail::GetAccName(), 
+				std::ref(os)
                 );
 
             os << std::endl;
         }
 
         //-----------------------------------------------------------------------------
-        //! \return The maximum block threads extents supported by all of the enabled accelerators.
+        //! \return The maximum block thread extents supported by all of the enabled accelerators.
         //-----------------------------------------------------------------------------
         ALPAKA_FCT_HOST Vec<3u> getMaxBlockThreadExtentsEnabledAccelerators()
         {
@@ -156,7 +157,7 @@ namespace alpaka
         }
 
         //-----------------------------------------------------------------------------
-        //! \return The maximum block threads count supported by all of the enabled accelerators.
+        //! \return The maximum block thread count supported by all of the enabled accelerators.
         //-----------------------------------------------------------------------------
         ALPAKA_FCT_HOST UInt getMaxBlockThreadCountEnabledAccelerators()
         {

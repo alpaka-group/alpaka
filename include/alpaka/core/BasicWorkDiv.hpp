@@ -32,7 +32,7 @@ namespace alpaka
     namespace workdiv
     {
         //#############################################################################
-        //! A basic class holding the work division as grid blocks extents and block threads extents.
+        //! A basic class holding the work division as grid block extents and block thread extents.
         //#############################################################################
         class BasicWorkDiv
         {
@@ -40,7 +40,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Default constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST BasicWorkDiv() = default;
+            ALPAKA_FCT_HOST BasicWorkDiv() = delete;
             //-----------------------------------------------------------------------------
             //! Constructor from values.
             //-----------------------------------------------------------------------------
@@ -114,7 +114,7 @@ namespace alpaka
             //ALPAKA_FCT_HOST virtual ~BasicWorkDiv() noexcept = default;
 
             //-----------------------------------------------------------------------------
-            //! \return The grid blocks extents of the currently executed thread.
+            //! \return The grid block extents of the currently executed thread.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST Vec<3u> getGridBlockExtents() const
             {
@@ -149,7 +149,7 @@ namespace alpaka
         namespace workdiv
         {
             //#############################################################################
-            //! The work div block threads 3D extents trait specialization.
+            //! The work div block thread 3D extents trait specialization.
             //#############################################################################
             template<>
             struct GetWorkDiv<
@@ -169,7 +169,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The work div grid blocks 3D extents trait specialization.
+            //! The work div grid block 3D extents trait specialization.
             //#############################################################################
             template<>
             struct GetWorkDiv<

@@ -168,17 +168,19 @@ namespace alpaka
                 ALPAKA_FCT_HOST static alpaka::dev::DevProps getDevProps(
                     serial::detail::DeviceSerial const &)
                 {
-                    alpaka::dev::DevProps devProps;
-
-                    devProps.m_sName = host::getCpuName();
-                    devProps.m_uiMultiProcessorCount = 1u;
-                    devProps.m_uiBlockThreadsCountMax = 1u;
-                    devProps.m_v3uiBlockThreadExtentsMax = Vec<3u>(1u, 1u, 1u);
-                    devProps.m_v3uiGridBlockExtentsMax = Vec<3u>(std::numeric_limits<Vec<1u>::Val>::max(), std::numeric_limits<Vec<1u>::Val>::max(), std::numeric_limits<Vec<1u>::Val>::max());
-                    devProps.m_uiGlobalMemSizeBytes = host::getGlobalMemSizeBytes();
-                    //devProps.m_uiMaxClockFrequencyHz = TODO;
-
-                    return devProps;
+                    return alpaka::dev::DevProps(
+						// m_sName
+						host::getCpuName(),
+						// m_uiMultiProcessorCount
+						1u,
+						// m_uiBlockThreadsCountMax
+						1u,
+						// m_v3uiBlockThreadExtentsMax
+						Vec<3u>(1u, 1u, 1u),
+						// m_v3uiGridBlockExtentsMax
+						Vec<3u>(std::numeric_limits<Vec<1u>::Val>::max(), std::numeric_limits<Vec<1u>::Val>::max(), std::numeric_limits<Vec<1u>::Val>::max()),
+						// m_uiGlobalMemSizeBytes
+						host::getGlobalMemSizeBytes());
                 }
             };
 

@@ -43,8 +43,6 @@
     #endif
 #endif
 
-#include <boost/mpl/for_each.hpp>           // boost::mpl::for_each
-
 //#############################################################################
 //! A matrix multiplication kernel.
 //! Computes C += A*B. LxM * MxN -> LxN
@@ -87,17 +85,17 @@ public:
         TIndex const & uiPitchElemC) const
     {
         // Column and row of C to calculate.
-        auto const v2uiGridThreadIdx(acc.template getIdx<alpaka::Grid, alpaka::Threads>().template subvec<2u>());
+        auto const v2uiGridThreadIdx(acc.template getIdx<alpaka::Grid, alpaka::Threads>().template subVec<2u>());
         auto const & uiGridThreadIdxX(v2uiGridThreadIdx[0u]);
         auto const & uiGridThreadIdxY(v2uiGridThreadIdx[1u]);
 
         // Column and row inside the block of C to calculate.
-        auto const v2uiBlockThreadIdx(acc.template getIdx<alpaka::Block, alpaka::Threads>().template subvec<2u>());
+        auto const v2uiBlockThreadIdx(acc.template getIdx<alpaka::Block, alpaka::Threads>().template subVec<2u>());
         auto const & uiBlockThreadIdxX(v2uiBlockThreadIdx[0u]);
         auto const & uiBlockThreadIdxY(v2uiBlockThreadIdx[1u]);
 
         // The block threads extents.
-        auto const v2uiBlockThreadsExtents(acc.template getWorkDiv<alpaka::Block, alpaka::Threads>().template subvec<2u>());
+        auto const v2uiBlockThreadsExtents(acc.template getWorkDiv<alpaka::Block, alpaka::Threads>().template subVec<2u>());
         auto const & uiBlockThreadsExtentX(v2uiBlockThreadsExtents[0u]);
         auto const & uiBlockThreadsExtentY(v2uiBlockThreadsExtents[1u]);
         //assert(uiBlockThreadsExtentX == uiBlockThreadsExtentY);
@@ -234,7 +232,6 @@ struct MatMulTester
     template<
         typename TAcc>
     void operator()(
-        TAcc const &,
         std::size_t const & uiL,
         std::size_t const & uiM,
         std::size_t const & uiN,
@@ -447,12 +444,10 @@ int main(
                         std::cout << std::endl;
 
                         // Execute the kernel on all enabled accelerators.
-                        boost::mpl::for_each<alpaka::acc::EnabledAccelerators>(
-                            std::bind(
-                                matMulTester,
-                                std::placeholders::_1,
-                                uiL, uiM, uiN,
-                                bAdaptiveBlockThreadExtent));
+                        alpaka::ForEachType<alpaka::acc::EnabledAccelerators>(
+                            matMulTester,
+                            uiL, uiM, uiN,
+                            bAdaptiveBlockThreadExtent);
                     }
                 }
             }

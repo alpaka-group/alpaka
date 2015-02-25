@@ -61,14 +61,14 @@ namespace alpaka
                 ALPAKA_FCT_ACC_CUDA_ONLY /*virtual*/ ~WorkDivCuda() noexcept = default;
 
                 //-----------------------------------------------------------------------------
-                //! \return The grid blocks extents of the currently executed thread.
+                //! \return The grid block extents of the currently executed thread.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_CUDA_ONLY Vec<3u> getGridBlockExtents() const
                 {
                     return Vec<3u>(gridDim.x, gridDim.y, gridDim.z);
                 }
                 //-----------------------------------------------------------------------------
-                //! \return The block threads extents of the currently executed thread.
+                //! \return The block thread extents of the currently executed thread.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_CUDA_ONLY Vec<3u> getBlockThreadExtents() const
                 {
@@ -83,7 +83,7 @@ namespace alpaka
         namespace workdiv
         {
             //#############################################################################
-            //! The CUDA accelerator work div block threads 3D extents trait specialization.
+            //! The CUDA accelerator work div block thread 3D extents trait specialization.
             //#############################################################################
             template<>
             struct GetWorkDiv<
@@ -103,7 +103,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The CUDA accelerator work div grid blocks 3D extents trait specialization.
+            //! The CUDA accelerator work div grid block 3D extents trait specialization.
             //#############################################################################
             template<>
             struct GetWorkDiv<

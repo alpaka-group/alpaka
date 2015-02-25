@@ -303,20 +303,23 @@ namespace alpaka
                 ALPAKA_FCT_HOST static alpaka::dev::DevProps getDevProps(
                     cuda::detail::DeviceCuda const & device)
                 {
-                    alpaka::dev::DevProps devProps;
-
                     cudaDeviceProp cudaDevProp;
                     ALPAKA_CUDA_CHECK(cudaGetDeviceProperties(&cudaDevProp, device.m_iDevice));
 
-                    devProps.m_sName = cudaDevProp.name;
-                    devProps.m_uiMultiProcessorCount = static_cast<UInt>(cudaDevProp.multiProcessorCount);
-                    devProps.m_uiBlockThreadsCountMax = static_cast<UInt>(cudaDevProp.maxThreadsPerBlock);
-                    devProps.m_v3uiBlockThreadExtentsMax = Vec<3u>(static_cast<UInt>(cudaDevProp.maxThreadsDim[0]), static_cast<UInt>(cudaDevProp.maxThreadsDim[1]), static_cast<UInt>(cudaDevProp.maxThreadsDim[2]));
-                    devProps.m_v3uiGridBlockExtentsMax = Vec<3u>(static_cast<UInt>(cudaDevProp.maxGridSize[0]), static_cast<UInt>(cudaDevProp.maxGridSize[1]), static_cast<UInt>(cudaDevProp.maxGridSize[2]));
-                    devProps.m_uiGlobalMemSizeBytes = static_cast<std::size_t>(cudaDevProp.totalGlobalMem);
-                    //devProps.m_uiMaxClockFrequencyHz = cudaDevProp.clockRate * 1000;
-
-                    return devProps;
+                    return alpaka::dev::DevProps(
+						// m_sName
+						cudaDevProp.name,
+						// m_uiMultiProcessorCount
+						static_cast<UInt>(cudaDevProp.multiProcessorCount),
+						// m_uiBlockThreadsCountMax
+						static_cast<UInt>(cudaDevProp.maxThreadsPerBlock),
+						// m_v3uiBlockThreadExtentsMax
+						Vec<3u>(static_cast<UInt>(cudaDevProp.maxThreadsDim[0]), static_cast<UInt>(cudaDevProp.maxThreadsDim[1]), static_cast<UInt>(cudaDevProp.maxThreadsDim[2])),
+						// m_v3uiGridBlockExtentsMax
+						Vec<3u>(static_cast<UInt>(cudaDevProp.maxGridSize[0]), static_cast<UInt>(cudaDevProp.maxGridSize[1]), static_cast<UInt>(cudaDevProp.maxGridSize[2])),
+						// m_uiGlobalMemSizeBytes
+						static_cast<std::size_t>(cudaDevProp.totalGlobalMem));
+						//devProps.m_uiMaxClockFrequencyHz = cudaDevProp.clockRate * 1000;
                 }
             };
 

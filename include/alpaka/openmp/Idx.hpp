@@ -80,7 +80,7 @@ namespace alpaka
                     auto const v1iIdxBlockThread(getIdxBlockThread1d());
                     // Get the number of threads in each dimension of the grid.
                     auto const v3uiBlockThreadExtents(workdiv::getWorkDiv<Block, Threads, dim::Dim3>(workDiv));
-                    auto const v2uiBlockThreadExtents(v3uiBlockThreadExtents.template subvec<2u>());
+                    auto const v2uiBlockThreadExtents(v3uiBlockThreadExtents.template subVec<2u>());
 
                     return mapIdx<3>(
                         v1iIdxBlockThread,

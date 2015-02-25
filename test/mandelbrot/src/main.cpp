@@ -21,8 +21,6 @@
 
 #include <alpaka/alpaka.hpp>                // alpaka::createKernelExecutor<...>
 
-#include <boost/mpl/for_each.hpp>           // boost::mpl::for_each
-
 #include <chrono>                           // std::chrono::high_resolution_clock
 #include <cassert>                          // assert
 #include <iostream>                         // std::cout
@@ -151,7 +149,7 @@ public:
         float const & fMaxI,
         std::uint32_t const & uiMaxIterations) const
     {
-        auto const uiGridThreadIdx(acc.template getIdx<alpaka::Grid, alpaka::Threads>().template subvec<2u>());
+        auto const uiGridThreadIdx(acc.template getIdx<alpaka::Grid, alpaka::Threads>().template subVec<2u>());
         auto const & uiGridThreadIdxX(uiGridThreadIdx[0u]);
         auto const & uiGridThreadIdxY(uiGridThreadIdx[1u]);
 
@@ -276,7 +274,6 @@ struct MandelbrotKernelTester
     template<
         typename TAcc>
     void operator()(
-        TAcc const &,
         std::size_t const & uiNumRows,
         std::size_t const & uiNumCols,
         float const & fMinR,
@@ -347,7 +344,7 @@ struct MandelbrotKernelTester
         std::ofstream ofs(
             sFileName, 
             std::ofstream::out | std::ofstream::binary);
-        if (!ofs.is_open())
+        if(!ofs.is_open())
         {
             throw std::invalid_argument("Unable to open file: "+sFileName);
         }
@@ -418,17 +415,15 @@ int main()
             std::cout << std::endl;
 
             // Execute the kernel on all enabled accelerators.
-            boost::mpl::for_each<alpaka::acc::EnabledAccelerators>(
-                std::bind(
+            alpaka::ForEachType<alpaka::acc::EnabledAccelerators>(
                     mandelbrotTester,
-                    std::placeholders::_1,
                     uiSize,
                     uiSize,
                     -2.0f,
                     +1.0f,
                     -1.2f,
                     +1.2f,
-                    300u));
+                    300u);
         }
         return EXIT_SUCCESS;
     }
