@@ -117,7 +117,7 @@ This could be as little as 2 or 4 kernels but on a system with 4 cores with hype
 
 #### Index
 
-OpenMP only allows to read a linear thread index. This index is converted to a 3 dimensional index at runtime.
+OpenMP only provides a linear thread index. This index is converted to a 3 dimensional index at runtime.
 
 #### Atomic
 
@@ -126,8 +126,3 @@ Because we are implementing the CUDA atomic operations which return the old valu
 `omp_set_lock` is an alternative but is usually slower.
 
 ### CUDA
-
-#### Execution
-
-Instead of using the language extension for the kernel call (kernel<<<...>>>()), we use the runtime API (cudaConfigureCall, cudaSetupArgument, cudaLaunch).
-This allows us to get better error information.

@@ -85,12 +85,12 @@ namespace alpaka
                     auto const uiExtentDepth(alpaka::extent::getDepth(extents));
                     auto const uiDstWidth(alpaka::extent::getWidth(memBufDst));
                     auto const uiDstHeight(alpaka::extent::getHeight(memBufDst));
-#ifndef NDEBUG
+#if (!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
                     auto const uiDstDepth(alpaka::extent::getDepth(memBufDst));
 #endif
                     auto const uiSrcWidth(alpaka::extent::getWidth(memBufSrc));
                     auto const uiSrcHeight(alpaka::extent::getHeight(memBufSrc));
-#ifndef NDEBUG
+#if (!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
                     auto const uiSrcDepth(alpaka::extent::getDepth(memBufSrc));
 #endif
                     assert(uiExtentWidth <= uiDstWidth);
@@ -117,7 +117,29 @@ namespace alpaka
                     auto const uiSrcMemBufBaseWidth(alpaka::extent::getWidth(srcMemBufBase));
                     auto const uiDstMemBufBaseHeight(alpaka::extent::getHeight(dstMemBufBase));
                     auto const uiSrcMemBufBaseHeight(alpaka::extent::getHeight(srcMemBufBase));
-
+					
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                    std::cout << BOOST_CURRENT_FUNCTION
+                        << " ew: " << uiExtentWidth
+                        << " eh: " << uiExtentHeight
+                        << " ed: " << uiExtentDepth
+                        << " ewb: " << uiExtentWidthBytes
+                        << " dw: " << uiDstWidth
+                        << " dh: " << uiDstHeight
+                        << " dd: " << uiDstDepth
+                        << " dptr: " << reinterpret_cast<void *>(pDstNative)
+                        << " dpitchb: " << uiDstPitchBytes
+                        << " dbasew: " << uiDstMemBufBaseWidth
+                        << " dbaseh: " << uiDstMemBufBaseHeight
+                        << " sw: " << uiSrcWidth
+                        << " sh: " << uiSrcHeight
+                        << " sd: " << uiSrcDepth
+                        << " sptr: " << reinterpret_cast<void const *>(pSrcNative)
+                        << " spitchb: " << uiSrcPitchBytes
+                        << " sbasew: " << uiSrcMemBufBaseWidth
+                        << " sbaseh: " << uiSrcMemBufBaseHeight
+                        << std::endl;
+#endif
                     // If:
                     // - the copy extents width and height are identical to the dst and src extents width and height
                     // - the copy extents width and height are identical to the dst and src base memory buffer extents width and height

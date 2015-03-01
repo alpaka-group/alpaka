@@ -480,7 +480,6 @@ namespace alpaka
                         << " spitchb: " << mem::getPitchBytes(memBufSrc)
                         << std::endl;
 #endif
-
                     return l_cudaMemcpy3DParms;
                 }
             };
