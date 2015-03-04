@@ -46,9 +46,9 @@
 #include <cstdint>                                  // std::uint32_t
 #include <vector>                                   // std::vector
 #include <cassert>                                  // assert
-#include <stdexcept>                                // std::except
+#include <stdexcept>                                // std::runtime_error
 #include <string>                                   // std::to_string
-#include <algorithm>                                // std::min, std::max
+#include <utility>                                  // std::move, std::forward
 
 namespace alpaka
 {
@@ -225,8 +225,8 @@ namespace alpaka
             template<
                 typename TAcceleratedKernel>
             class KernelExecutorOpenMp :
-                private TAcceleratedKernel,
-                private IAcc<AccOpenMp>
+                private IAcc<AccOpenMp>,
+                private TAcceleratedKernel
             {
             public:
                 //-----------------------------------------------------------------------------
@@ -239,8 +239,8 @@ namespace alpaka
                     TWorkDiv const & workDiv, 
                     StreamOpenMp const &, 
                     TKernelConstrArgs && ... args) :
-                        TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
-                        IAcc<AccOpenMp>(workDiv)
+                        IAcc<AccOpenMp>(workDiv),
+                        TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                 }
@@ -249,8 +249,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecutorOpenMp(
                     KernelExecutorOpenMp const & other) :
-                        TAcceleratedKernel(other),
-                        IAcc<AccOpenMp>(*static_cast<WorkDivOpenMp const *>(&other))
+                        IAcc<AccOpenMp>(*static_cast<WorkDivOpenMp const *>(&other)),
+                        TAcceleratedKernel(other)
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                 }
@@ -260,8 +260,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecutorOpenMp(
                     KernelExecutorOpenMp && other) :
-                        TAcceleratedKernel(std::move(other)),
-                        IAcc<AccOpenMp>(*static_cast<WorkDivOpenMp const *>(&other))
+                        IAcc<AccOpenMp>(*static_cast<WorkDivOpenMp const *>(&other)),
+                        TAcceleratedKernel(std::move(other))
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                 }

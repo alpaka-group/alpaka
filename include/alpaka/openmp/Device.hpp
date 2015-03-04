@@ -30,6 +30,7 @@
 #include <alpaka/traits/Wait.hpp>           // CurrentThreadWaitFor
 #include <alpaka/traits/Device.hpp>         // DevType
 
+#include <stdexcept>                        // std::runtime_error
 #include <sstream>                          // std::stringstream
 #include <limits>                           // std::numeric_limits
 #include <thread>                           // std::thread

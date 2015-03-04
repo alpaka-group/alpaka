@@ -21,13 +21,6 @@
 
 #pragma once
 
-//#define ALPAKA_THREADS_NO_POOL    // Define this to recreate all of the threads between executing blocks.
-                                    // NOTE: Using the thread pool should be massively faster in nearly every case!
-
-#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-    #define ALPAKA_THREADS_NO_POOL
-#endif
-
 // Base classes.
 #include <alpaka/threads/AccThreadsFwd.hpp>
 #include <alpaka/threads/WorkDiv.hpp>               // WorkDivThreads
@@ -47,9 +40,7 @@
 // Implementation details.
 #include <alpaka/traits/BlockSharedExternMemSizeBytes.hpp>
 #include <alpaka/interfaces/IAcc.hpp>
-#ifndef ALPAKA_THREADS_NO_POOL
-    #include <alpaka/core/ConcurrentExecPool.hpp>  // ConcurrentExecPool
-#endif
+#include <alpaka/core/ConcurrentExecPool.hpp>       // ConcurrentExecPool
 
 #include <boost/mpl/apply.hpp>                      // boost::mpl::apply
 #include <boost/predef.h>                           // workarounds
@@ -60,7 +51,6 @@
 #include <algorithm>                                // std::for_each
 #include <array>                                    // std::array
 #include <cassert>                                  // assert
-#include <stdexcept>                                // std::runtime_error
 #include <string>                                   // std::to_string
 
 namespace alpaka
@@ -312,8 +302,8 @@ namespace alpaka
             template<
                 typename TAcceleratedKernel>
             class KernelExecutorThreads :
-                private TAcceleratedKernel,
-                private IAcc<AccThreads>
+                private IAcc<AccThreads>,
+                private TAcceleratedKernel
             {
             public:
                 //-----------------------------------------------------------------------------
@@ -326,13 +316,9 @@ namespace alpaka
                     TWorkDiv const & workDiv, 
                     StreamThreads const &,
                     TKernelConstrArgs && ... args) :
-                        TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
                         IAcc<AccThreads>(workDiv),
-#ifdef ALPAKA_THREADS_NO_POOL
-                        m_vThreadsInBlock(),
-#else
+                        TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
                         m_vFuturesInBlock(),
-#endif
                         m_mtxMapInsert()
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -342,13 +328,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecutorThreads(
                     KernelExecutorThreads const & other) :
-                        TAcceleratedKernel(other),
                         IAcc<AccThreads>(*static_cast<WorkDivThreads const *>(&other)),
-#ifdef ALPAKA_THREADS_NO_POOL
-                        m_vThreadsInBlock(),
-#else
+                        TAcceleratedKernel(other),
                         m_vFuturesInBlock(),
-#endif
                         m_mtxMapInsert()
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -358,13 +340,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecutorThreads(
                     KernelExecutorThreads && other) :
-                        TAcceleratedKernel(std::move(other)),
                         IAcc<AccThreads>(*static_cast<WorkDivThreads const *>(&other)),
-#ifdef ALPAKA_THREADS_NO_POOL
-                        m_vThreadsInBlock(),
-#else
+                        TAcceleratedKernel(std::move(other)),
                         m_vFuturesInBlock(),
-#endif
                         m_mtxMapInsert()
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -399,7 +377,6 @@ namespace alpaka
                     this->AccThreads::m_vuiExternalSharedMem.reset(
                         new uint8_t[uiBlockSharedExternMemSizeBytes]);
 
-#ifndef ALPAKA_THREADS_NO_POOL
                     auto const uiNumThreadsInBlock(this->AccThreads::getWorkDiv<Block, Threads, dim::Dim1>());
                     // When using the thread pool the threads are yielding because this is faster. 
                     // Using condition variables and going to sleep is very costly for real threads. 
@@ -410,7 +387,7 @@ namespace alpaka
                         ThreadPoolCurrentException, // The type returning the current exception.
                         ThreadPoolYield>;           // The type yielding the current concurrent execution.
                     ThreadPool pool(uiNumThreadsInBlock[0], uiNumThreadsInBlock[0]);
-#endif
+
                     // Execute the blocks serially.
                     for(UInt bz(0); bz<v3uiGridBlockExtents[2]; ++bz)
                     {
@@ -436,50 +413,25 @@ namespace alpaka
 
                                             // Create a thread.
                                             // The v3uiBlockThreadIdx is required to be copied in from the environment because if the thread is immediately suspended the variable is already changed for the next iteration/thread.
-
-#if BOOST_COMP_MSVC     // VC is missing the this pointer type in the signature of &KernelExecutorThreads::threadKernel<TArgs...>
-                                            auto threadKernelFct = 
-                                                [&, v3uiBlockThreadIdx]()
-                                                {
-                                                    threadKernel<TArgs...>(v3uiBlockThreadIdx, std::forward<TArgs>(args)...); 
-                                                };
-    #ifdef ALPAKA_THREADS_NO_POOL
-                                            m_vThreadsInBlock.push_back(std::thread(threadKernelFct));
-    #else
-                                            m_vFuturesInBlock.emplace_back(pool.enqueueTask(threadKernelFct));
-    #endif
-#elif BOOST_COMP_GNUC   // But GCC < 4.9.0 can not compile variadic templates inside lambdas correctly if the variadic argument is not in the parameter list.
+#if BOOST_COMP_GNUC   // GCC < 4.9.0 can not compile variadic templates inside lambdas correctly if the variadic argument is not in the parameter list.
                                             auto threadKernelFct(
                                                 [this](Vec<3u> const v3uiBlockThreadIdx, TArgs ... args)
                                                 {
                                                     threadKernel<TArgs...>(v3uiBlockThreadIdx, std::forward<TArgs>(args)...); 
                                                 });
-    #ifdef ALPAKA_THREADS_NO_POOL
-                                            m_vThreadsInBlock.push_back(std::thread(threadKernelFct, v3uiBlockThreadIdx, args...));
-    #else
                                             m_vFuturesInBlock.emplace_back(pool.enqueueTask(threadKernelFct, v3uiBlockThreadIdx, args...));
-    #endif
 #else
-    #ifdef ALPAKA_THREADS_NO_POOL
-                                            m_vThreadsInBlock.push_back(std::thread(&KernelExecutorThreads::threadKernel<TArgs...>, this, v3uiBlockThreadIdx, std::forward<TArgs>(args)...));
-    #else
-                                            m_vFuturesInBlock.emplace_back(pool.enqueueTask(&KernelExecutorThreads::threadKernel<TArgs...>, this, v3uiBlockThreadIdx, std::forward<TArgs>(args)...));
-    #endif
+                                            auto threadKernelFct = 
+                                                [&, v3uiBlockThreadIdx]()
+                                                {
+                                                    threadKernel<TArgs...>(v3uiBlockThreadIdx, std::forward<TArgs>(args)...); 
+                                                };
+                                            m_vFuturesInBlock.emplace_back(pool.enqueueTask(threadKernelFct));
 #endif
                                         }
                                     }
                                 }
-#ifdef ALPAKA_THREADS_NO_POOL
-                                // Join all the threads.
-                                std::for_each(m_vThreadsInBlock.begin(), m_vThreadsInBlock.end(),
-                                    [](std::thread & t)
-                                    {
-                                        t.join();
-                                    }
-                                );
-                                // Clean up.
-                                m_vThreadsInBlock.clear();
-#else
+
                                 // Join all the threads.
                                 std::for_each(m_vFuturesInBlock.begin(), m_vFuturesInBlock.end(),
                                     [](std::future<void> & t)
@@ -489,7 +441,7 @@ namespace alpaka
                                 );
                                 // Clean up.
                                 m_vFuturesInBlock.clear();
-#endif
+
                                 this->AccThreads::m_mThreadsToIndices.clear();
                                 this->AccThreads::m_mThreadsToBarrier.clear();
 
@@ -546,11 +498,8 @@ namespace alpaka
                 }
 
             private:
-#ifdef ALPAKA_THREADS_NO_POOL
-                std::vector<std::thread> mutable m_vThreadsInBlock;       //!< The threads executing the current block.
-#else
                 std::vector<std::future<void>> mutable m_vFuturesInBlock; //!< The futures of the threads in the current block.
-#endif
+
                 std::mutex mutable m_mtxMapInsert;
             };
         }

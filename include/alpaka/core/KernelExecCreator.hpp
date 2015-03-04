@@ -26,6 +26,8 @@
 #include <alpaka/core/WorkDivHelpers.hpp>    // workdiv::isValidWorkDiv
 #include <alpaka/core/IntegerSequence.hpp>   // workdiv::isValidWorkDiv
 
+#include <stdexcept>                         // std::runtime_error
+
 namespace alpaka
 {
     namespace detail

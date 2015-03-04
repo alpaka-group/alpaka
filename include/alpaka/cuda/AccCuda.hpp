@@ -47,7 +47,7 @@
 #include <boost/predef.h>                           // workarounds
 
 #include <cstdint>                                  // std::uint32_t
-#include <stdexcept>                                // std::except
+#include <stdexcept>                                // std::runtime_error
 #include <string>                                   // std::to_string
 #include <utility>                                  // std::forward
 #include <tuple>                                    // std::tuple

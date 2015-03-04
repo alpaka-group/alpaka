@@ -30,6 +30,7 @@
 #include <iostream>                     // std::cout
 #include <sstream>                      // std::stringstream
 #include <limits>                       // std::numeric_limits
+#include <stdexcept>                    // std::runtime_error
 
 namespace alpaka
 {

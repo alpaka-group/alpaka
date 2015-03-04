@@ -21,13 +21,6 @@
 
 #pragma once
 
-//#define ALPAKA_FIBERS_NO_POOL // Define this to recreate all of the fibers between executing blocks.
-                                // NOTE: Using the fiber pool should be massively faster in nearly every case!
-
-#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-    #define ALPAKA_FIBERS_NO_POOL
-#endif
-
 // Base classes.
 #include <alpaka/fibers/AccFibersFwd.hpp>
 #include <alpaka/fibers/WorkDiv.hpp>                // WorkDivFibers
@@ -48,9 +41,7 @@
 #include <alpaka/fibers/Common.hpp>
 #include <alpaka/traits/BlockSharedExternMemSizeBytes.hpp>
 #include <alpaka/interfaces/IAcc.hpp>
-#ifndef ALPAKA_FIBERS_NO_POOL
-    #include <alpaka/core/ConcurrentExecPool.hpp>  // ConcurrentExecPool
-#endif
+#include <alpaka/core/ConcurrentExecPool.hpp>       // ConcurrentExecPool
 #include <alpaka/core/WorkDivHelpers.hpp>           // isValidWorkDiv
 
 #include <boost/mpl/apply.hpp>                      // boost::mpl::apply
@@ -304,8 +295,8 @@ namespace alpaka
             template<
                 typename TAcceleratedKernel>
             class KernelExecutorFibers :
-                private TAcceleratedKernel,
-                private IAcc<AccFibers>
+                private IAcc<AccFibers>,
+                private TAcceleratedKernel
             {
             public:
                 //-----------------------------------------------------------------------------
@@ -318,13 +309,9 @@ namespace alpaka
                     TWorkDiv const & workDiv, 
                     StreamFibers const &,
                     TKernelConstrArgs && ... args):
-                        TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
                         IAcc<AccFibers>(workDiv),
-#ifdef ALPAKA_FIBERS_NO_POOL
-                        m_vFibersInBlock()
-#else
+                        TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
                         m_vFuturesInBlock()
-#endif
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                 }
@@ -333,13 +320,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecutorFibers(
                     KernelExecutorFibers const & other):
-                        TAcceleratedKernel(other),
                         IAcc<AccFibers>(*static_cast<WorkDivFibers *>(&other)),
-#ifdef ALPAKA_FIBERS_NO_POOL
-                        m_vFibersInBlock()
-#else
+                        TAcceleratedKernel(other),
                         m_vFuturesInBlock()
-#endif
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                 }
@@ -349,8 +332,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecutorFibers(
                     KernelExecutorFibers && other) :
-                        TAcceleratedKernel(std::move(other)),
-                        IAcc<AccFibers>(*static_cast<WorkDivFibers *>(&other))
+                        IAcc<AccFibers>(*static_cast<WorkDivFibers *>(&other)),
+                        TAcceleratedKernel(std::move(other))
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                 }
@@ -385,7 +368,6 @@ namespace alpaka
                     this->AccFibers::m_vuiExternalSharedMem.reset(
                         new uint8_t[uiBlockSharedExternMemSizeBytes]);
 
-#ifndef ALPAKA_FIBERS_NO_POOL
                     auto const uiNumThreadsInBlock(this->AccFibers::getWorkDiv<Block, Threads, dim::Dim1>());
                     // Yielding is not faster for fibers. Therefore we use condition variables. 
                     // It is better to wake them up when the conditions are fulfilled because this does not cost as much as for real threads.
@@ -399,7 +381,6 @@ namespace alpaka
                         boost::fibers::condition_variable,  // The condition variable type to use. Only required if TbYield is true.
                         false>;                             // If the threads should yield.
                     FiberPool pool(uiNumThreadsInBlock[0], uiNumThreadsInBlock[0]);
-#endif
 
                     // Execute the blocks serially.
                     for(UInt bz(0); bz<v3uiGridBlockExtents[2]; ++bz)
@@ -426,51 +407,26 @@ namespace alpaka
 
                                             // Create a fiber.
                                             // The v3uiBlockThreadIdx is required to be copied in from the environment because if the fiber is immediately suspended the variable is already changed for the next iteration/thread.
-    
-#if BOOST_COMP_MSVC     // VC is missing the this pointer type in the signature of &KernelExecutorFibers::fiberKernel<TArgs...>
-                                            auto fiberKernelFct = 
-                                                [&, v3uiBlockThreadIdx]()
-                                                {
-                                                    fiberKernel<TArgs...>(v3uiBlockThreadIdx, std::forward<TArgs>(args)...); 
-                                                };
-    #ifdef ALPAKA_THREADS_NO_POOL
-                                            m_vFibersInBlock.push_back(boost::fibers::fiber(fiberKernelFct));
-    #else
-                                            m_vFuturesInBlock.emplace_back(pool.enqueueTask(fiberKernelFct));
-    #endif
-#elif BOOST_COMP_GNUC   // But GCC < 4.9.0 can not compile variadic templates inside lambdas correctly if the variadic argument is not in the parameter list.
+#if BOOST_COMP_GNUC // GCC < 4.9.0 can not compile variadic templates inside lambdas correctly if the variadic argument is not in the parameter list.
                                             auto fiberKernelFct(
                                                 [this](Vec<3u> const v3uiBlockThreadIdx, TArgs ... args)
                                                 {
                                                     fiberKernel<TArgs...>(v3uiBlockThreadIdx, std::forward<TArgs>(args)...); 
                                                 });
-    #ifdef ALPAKA_THREADS_NO_POOL
-                                            m_vFibersInBlock.push_back(boost::fibers::fiber(fiberKernelFct, v3uiBlockThreadIdx, args...));
-    #else
                                             m_vFuturesInBlock.emplace_back(pool.enqueueTask(fiberKernelFct, v3uiBlockThreadIdx, args...));
-    #endif
 #else
-    #ifdef ALPAKA_THREADS_NO_POOL
-                                            m_vFibersInBlock.push_back(boost::fibers::fiber(&KernelExecutorFibers::fiberKernel<TArgs...>, this, v3uiBlockThreadIdx, std::forward<TArgs>(args)...));
-    #else
-                                            m_vFuturesInBlock.emplace_back(pool.enqueueTask(&KernelExecutorFibers::fiberKernel<TArgs...>, this, v3uiBlockThreadIdx, std::forward<TArgs>(args)...));
-    #endif
+                                            auto fiberKernelFct = 
+                                                [&, v3uiBlockThreadIdx]()
+                                                {
+                                                    fiberKernel<TArgs...>(v3uiBlockThreadIdx, std::forward<TArgs>(args)...); 
+                                                };
+                                            m_vFuturesInBlock.emplace_back(pool.enqueueTask(fiberKernelFct));
 #endif
 
                                         }
                                     }
                                 }
-#ifdef ALPAKA_FIBERS_NO_POOL
-                                // Join all the fibers.
-                                std::for_each(m_vFibersInBlock.begin(), m_vFibersInBlock.end(),
-                                    [](boost::fibers::fiber & f)
-                                    {
-                                        f.join();
-                                    }
-                                );
-                                // Clean up.
-                                m_vFibersInBlock.clear();
-#else
+
                                 // Join all the threads.
                                 std::for_each(m_vFuturesInBlock.begin(), m_vFuturesInBlock.end(),
                                     [](boost::fibers::future<void> & t)
@@ -480,7 +436,7 @@ namespace alpaka
                                 );
                                 // Clean up.
                                 m_vFuturesInBlock.clear();
-#endif
+
                                 this->AccFibers::m_mFibersToIndices.clear();
                                 this->AccFibers::m_mFibersToBarrier.clear();
 
@@ -532,11 +488,7 @@ namespace alpaka
                 }
 
             private:
-#ifdef ALPAKA_FIBERS_NO_POOL
-                std::vector<boost::fibers::fiber> mutable m_vFibersInBlock;         //!< The fibers executing the current block.
-#else
                 std::vector<boost::fibers::future<void>> mutable m_vFuturesInBlock; //!< The futures of the fibers in the current block.
-#endif
             };
         }
     }
@@ -551,7 +503,7 @@ namespace alpaka
             template<
                 typename AcceleratedKernel>
             struct AccType<
-                fibers::detail::KernelExecutorFibers<AcceleratedKernel >>
+                fibers::detail::KernelExecutorFibers<AcceleratedKernel>>
             {
                 using type = AccFibers;
             };

@@ -218,8 +218,8 @@ namespace alpaka
             template<
                 typename TAcceleratedKernel>
             class KernelExecutorSerial :
-                private TAcceleratedKernel,
-                private IAcc<AccSerial>
+                private IAcc<AccSerial>,
+                private TAcceleratedKernel
             {
             public:
                 //-----------------------------------------------------------------------------
@@ -232,8 +232,8 @@ namespace alpaka
                     TWorkDiv const & workDiv, 
                     StreamSerial const &,
                     TKernelConstrArgs && ... args) :
-                        TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
-                        IAcc<AccSerial>(workDiv)
+                        IAcc<AccSerial>(workDiv),
+                        TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                 }
@@ -242,8 +242,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecutorSerial(
                     KernelExecutorSerial const & other) :
-                        TAcceleratedKernel(other),
-                        IAcc<AccSerial>(*static_cast<WorkDivSerial const *>(&other))
+                        IAcc<AccSerial>(*static_cast<WorkDivSerial const *>(&other)),
+                        TAcceleratedKernel(other)
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                 }
@@ -253,8 +253,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecutorSerial(
                     KernelExecutorSerial && other) :
-                        TAcceleratedKernel(std::move(other)),
-                        IAcc<AccSerial>(*static_cast<WorkDivSerial const *>(&other))
+                        IAcc<AccSerial>(*static_cast<WorkDivSerial const *>(&other)),
+                        TAcceleratedKernel(std::move(other))
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                 }

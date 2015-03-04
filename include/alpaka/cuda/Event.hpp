@@ -27,6 +27,7 @@
 #include <alpaka/cuda/AccCudaFwd.hpp>   // AccCuda
 #include <alpaka/cuda/Common.hpp>       // ALPAKA_CUDA_CHECK
 
+#include <stdexcept>                    // std::runtime_error
 #include <memory>                       // std::shared_ptr
 
 namespace alpaka
