@@ -117,7 +117,7 @@ namespace alpaka
                     auto const uiSrcMemBufBaseWidth(alpaka::extent::getWidth(srcMemBufBase));
                     auto const uiDstMemBufBaseHeight(alpaka::extent::getHeight(dstMemBufBase));
                     auto const uiSrcMemBufBaseHeight(alpaka::extent::getHeight(srcMemBufBase));
-					
+                    
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                     std::cout << BOOST_CURRENT_FUNCTION
                         << " ew: " << uiExtentWidth

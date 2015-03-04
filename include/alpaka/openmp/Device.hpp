@@ -176,30 +176,30 @@ namespace alpaka
                     openmp::detail::DeviceOpenMp const &)
                 {
 #if ALPAKA_INTEGRATION_TEST
-						
-					UInt const uiBlockThreadsCountMax(4u);
+                        
+                    UInt const uiBlockThreadsCountMax(4u);
 #else
-					// m_uiBlockThreadsCountMax
-					// HACK: ::omp_get_max_threads() does not return the real limit of the underlying OpenMP runtime:
-					// 'The omp_get_max_threads routine returns the value of the internal control variable, which is used to determine the number of threads that would form the new team, 
-					// if an active parallel region without a num_threads clause were to be encountered at that point in the program.'
-					// How to do this correctly? Is there even a way to get the hard limit apart from omp_set_num_threads(high_value) -> omp_get_max_threads()?
-					::omp_set_num_threads(1024);
-					UInt const uiBlockThreadsCountMax(static_cast<UInt>(::omp_get_max_threads()));
+                    // m_uiBlockThreadsCountMax
+                    // HACK: ::omp_get_max_threads() does not return the real limit of the underlying OpenMP runtime:
+                    // 'The omp_get_max_threads routine returns the value of the internal control variable, which is used to determine the number of threads that would form the new team, 
+                    // if an active parallel region without a num_threads clause were to be encountered at that point in the program.'
+                    // How to do this correctly? Is there even a way to get the hard limit apart from omp_set_num_threads(high_value) -> omp_get_max_threads()?
+                    ::omp_set_num_threads(1024);
+                    UInt const uiBlockThreadsCountMax(static_cast<UInt>(::omp_get_max_threads()));
 #endif
                     return alpaka::dev::DevProps(
-						// m_sName
-						host::getCpuName(),
-						// m_uiMultiProcessorCount
-						1u,
-						// m_uiBlockThreadsCountMax
-						uiBlockThreadsCountMax,
-						// m_v3uiBlockThreadExtentsMax
-						Vec<3u>(uiBlockThreadsCountMax, uiBlockThreadsCountMax, uiBlockThreadsCountMax),
-						// m_v3uiGridBlockExtentsMax
-						Vec<3u>(std::numeric_limits<UInt>::max(), std::numeric_limits<UInt>::max(), std::numeric_limits<UInt>::max()),
-						// m_uiGlobalMemSizeBytes
-						host::getGlobalMemSizeBytes());
+                        // m_sName
+                        host::getCpuName(),
+                        // m_uiMultiProcessorCount
+                        1u,
+                        // m_uiBlockThreadsCountMax
+                        uiBlockThreadsCountMax,
+                        // m_v3uiBlockThreadExtentsMax
+                        Vec<3u>(uiBlockThreadsCountMax, uiBlockThreadsCountMax, uiBlockThreadsCountMax),
+                        // m_v3uiGridBlockExtentsMax
+                        Vec<3u>(std::numeric_limits<UInt>::max(), std::numeric_limits<UInt>::max(), std::numeric_limits<UInt>::max()),
+                        // m_uiGlobalMemSizeBytes
+                        host::getGlobalMemSizeBytes());
                 }
             };
 

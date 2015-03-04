@@ -135,7 +135,8 @@ namespace alpaka
     #elif BOOST_COMP_MSVC
         #define ALPAKA_DEBUG_BREAK ::__debugbreak()
     #else
-        #error debug-break for current compiler not implemented!
+        #define ALPAKA_DEBUG_BREAK
+        //#error debug-break for current compiler not implemented!
     #endif
 #else
     #define ALPAKA_DEBUG_BREAK

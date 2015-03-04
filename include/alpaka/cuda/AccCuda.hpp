@@ -74,12 +74,12 @@ namespace alpaka
             {
             public:
                 using MemSpace = mem::MemSpaceCuda;
-				
-				template<
-					typename TAcceleratedKernel>
+                
+                template<
+                    typename TAcceleratedKernel>
                 friend class ::alpaka::cuda::detail::KernelExecutorCuda;
-				
-			//private:	// TODO: Make private and only constructible from friend KernelExecutor. Not possible due to IAcc?
+                
+            //private:    // TODO: Make private and only constructible from friend KernelExecutor. Not possible due to IAcc?
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
@@ -345,8 +345,8 @@ namespace alpaka
                     TKernelConstrArgs && ... args) :
                         TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
                         m_Stream(stream),
-						m_v3uiGridBlockExtents(workdiv::getWorkDiv<Grid, Blocks, dim::Dim3>(workDiv)),
-						m_v3uiBlockThreadExtents(workdiv::getWorkDiv<Block, Threads, dim::Dim3>(workDiv))
+                        m_v3uiGridBlockExtents(workdiv::getWorkDiv<Grid, Blocks, dim::Dim3>(workDiv)),
+                        m_v3uiBlockThreadExtents(workdiv::getWorkDiv<Block, Threads, dim::Dim3>(workDiv))
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 

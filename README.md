@@ -27,7 +27,7 @@ Supported Compilers
 This library uses a subset of C++11 supported by many compilers to keep the code clean and readable.
 
 Supported compilers are:
-- gcc 4.8+ (boost-fibers only supported in gcc 4.9+)
+- gcc 4.8.2+ (boost-fibers only supported in gcc 4.9+)
 - MSVC 2013+ (boost-fibers only supported in MSVC 2015)
 - clang 3.4+ (currently OpenMP only supported in `clang-omp` )
 - icc 15.0+ (untested)

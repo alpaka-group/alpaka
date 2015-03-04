@@ -90,7 +90,7 @@ namespace alpaka
                     auto const uiDstMemBufBaseHeight(alpaka::extent::getHeight(dstMemBufBase));
 
                     int iByte(static_cast<int>(byte));
-					
+                    
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                     std::cout << BOOST_CURRENT_FUNCTION
                         << " ew: " << uiExtentWidth

@@ -75,8 +75,8 @@ namespace alpaka
         ALPAKA_FCT_HOST Vec<3u> getMaxBlockThreadExtentsAccelerators()
         {
             static_assert(
-				boost::mpl::is_sequence<TAccSeq>::value, 
-				"TAccSeq is required to be a mpl::sequence!");
+                boost::mpl::is_sequence<TAccSeq>::value, 
+                "TAccSeq is required to be a mpl::sequence!");
 
             Vec<3u> v3uiMaxBlockThreadExtents(
                 std::numeric_limits<UInt>::max(),
@@ -84,8 +84,8 @@ namespace alpaka
                 std::numeric_limits<UInt>::max());
 
             ForEachType<TAccSeq>(
-				detail::CorrectMaxBlockThreadExtents(),
-				std::ref(v3uiMaxBlockThreadExtents)
+                detail::CorrectMaxBlockThreadExtents(),
+                std::ref(v3uiMaxBlockThreadExtents)
                 );
 
             return v3uiMaxBlockThreadExtents;
@@ -127,8 +127,8 @@ namespace alpaka
                 std::numeric_limits<UInt>::max());
 
             ForEachType<TAccSeq>(
-				detail::CorrectMaxBlockThreadCount(),
-				std::ref(uiMaxBlockThreadCount)
+                detail::CorrectMaxBlockThreadCount(),
+                std::ref(uiMaxBlockThreadCount)
                 );
 
             return uiMaxBlockThreadCount;
@@ -161,8 +161,9 @@ namespace alpaka
 
             //#############################################################################
             //! Subdivides the given grid thread extents into blocks restricted by:
-            //! 1. the maximum block thread extents and 
-            //! 2. the maximum block thread count.
+            //! 1. The maximum block thread extents
+            //! 2. The maximum block thread count
+            //! 3. The requirement of the block thread extents to divide the grid thread extents without remainder
             //!
             //! \param v3uiGridThreadExtents
             //!     The full extents of threads in the grid.

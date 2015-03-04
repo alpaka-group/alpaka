@@ -142,7 +142,7 @@ namespace alpaka
 
             ForEachType<EnabledAccelerators>(
                 detail::GetAccName(), 
-				std::ref(os)
+                std::ref(os)
                 );
 
             os << std::endl;

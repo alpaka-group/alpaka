@@ -38,23 +38,23 @@ namespace alpaka
         //#############################################################################
         struct DevProps
         {
-			//-----------------------------------------------------------------------------
-			//! Default-constructor
-			//-----------------------------------------------------------------------------
-			DevProps(
-				std::string const & sName,
-				UInt const & uiMultiProcessorCount,
-				UInt const & uiBlockThreadsCountMax,
-				Vec<3u> const & v3uiBlockThreadExtentsMax,
-				Vec<3u> const & v3uiGridBlockExtentsMax,
-				std::size_t const & uiGlobalMemSizeBytes) :
-					m_sName(sName),
-					m_uiMultiProcessorCount(uiMultiProcessorCount),
-					m_uiBlockThreadsCountMax(uiBlockThreadsCountMax),
-					m_v3uiBlockThreadExtentsMax(v3uiBlockThreadExtentsMax),
-					m_v3uiGridBlockExtentsMax(v3uiGridBlockExtentsMax),
-					m_uiGlobalMemSizeBytes(uiGlobalMemSizeBytes)
-			{}
+            //-----------------------------------------------------------------------------
+            //! Default-constructor
+            //-----------------------------------------------------------------------------
+            DevProps(
+                std::string const & sName,
+                UInt const & uiMultiProcessorCount,
+                UInt const & uiBlockThreadsCountMax,
+                Vec<3u> const & v3uiBlockThreadExtentsMax,
+                Vec<3u> const & v3uiGridBlockExtentsMax,
+                std::size_t const & uiGlobalMemSizeBytes) :
+                    m_sName(sName),
+                    m_uiMultiProcessorCount(uiMultiProcessorCount),
+                    m_uiBlockThreadsCountMax(uiBlockThreadsCountMax),
+                    m_v3uiBlockThreadExtentsMax(v3uiBlockThreadExtentsMax),
+                    m_v3uiGridBlockExtentsMax(v3uiGridBlockExtentsMax),
+                    m_uiGlobalMemSizeBytes(uiGlobalMemSizeBytes)
+            {}
 
             std::string m_sName;                    //!< The name.
             UInt m_uiMultiProcessorCount;           //!< The number of multiprocessors.

@@ -169,18 +169,18 @@ namespace alpaka
                     serial::detail::DeviceSerial const &)
                 {
                     return alpaka::dev::DevProps(
-						// m_sName
-						host::getCpuName(),
-						// m_uiMultiProcessorCount
-						1u,
-						// m_uiBlockThreadsCountMax
-						1u,
-						// m_v3uiBlockThreadExtentsMax
-						Vec<3u>(1u, 1u, 1u),
-						// m_v3uiGridBlockExtentsMax
-						Vec<3u>(std::numeric_limits<Vec<1u>::Val>::max(), std::numeric_limits<Vec<1u>::Val>::max(), std::numeric_limits<Vec<1u>::Val>::max()),
-						// m_uiGlobalMemSizeBytes
-						host::getGlobalMemSizeBytes());
+                        // m_sName
+                        host::getCpuName(),
+                        // m_uiMultiProcessorCount
+                        1u,
+                        // m_uiBlockThreadsCountMax
+                        1u,
+                        // m_v3uiBlockThreadExtentsMax
+                        Vec<3u>(1u, 1u, 1u),
+                        // m_v3uiGridBlockExtentsMax
+                        Vec<3u>(std::numeric_limits<Vec<1u>::Val>::max(), std::numeric_limits<Vec<1u>::Val>::max(), std::numeric_limits<Vec<1u>::Val>::max()),
+                        // m_uiGlobalMemSizeBytes
+                        host::getGlobalMemSizeBytes());
                 }
             };
 

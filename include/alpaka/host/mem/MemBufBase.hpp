@@ -65,7 +65,7 @@ namespace alpaka
                         m_uiPitchBytes(extent::getWidth(extents) * sizeof(TElem))
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-					
+                    
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                     std::cout << BOOST_CURRENT_FUNCTION
                         << " e: " << m_vExtentsElements

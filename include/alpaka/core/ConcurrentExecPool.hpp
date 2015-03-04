@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include <boost/predef.h>   // workarounds
+
 #if BOOST_COMP_MSVC
     #pragma warning(push)
     #pragma warning(disable: 4244)  // boost/lockfree/detail/tagged_ptr_ptrcompression.hpp(59): warning C4244: '=': conversion from 'int' to 'boost::lockfree::detail::tagged_ptr<boost::lockfree::detail::freelist_stack<T,Alloc>::freelist_node>::tag_t', possible loss of data
@@ -31,8 +33,6 @@
 #if BOOST_COMP_MSVC
     #pragma warning(pop)
 #endif
-
-#include <boost/predef.h>   // workarounds
 
 #include <vector>           // std::vector
 #include <exception>        // std::runtime_error

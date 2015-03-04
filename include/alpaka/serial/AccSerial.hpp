@@ -75,24 +75,24 @@ namespace alpaka
             {
             public:
                 using MemSpace = mem::MemSpaceHost;
-				
-				template<
-					typename TAcceleratedKernel>
+                
+                template<
+                    typename TAcceleratedKernel>
                 friend class ::alpaka::serial::detail::KernelExecutorSerial;
 
-			//private:	// TODO: Make private and only constructible from friend KernelExecutor. Not possible due to IAcc?
+            //private:    // TODO: Make private and only constructible from friend KernelExecutor. Not possible due to IAcc?
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-				template<
-					typename TWorkDiv>
+                template<
+                    typename TWorkDiv>
                 ALPAKA_FCT_ACC_NO_CUDA AccSerial(
-					TWorkDiv const & workDiv) :
-						WorkDivSerial(workDiv),
-						IdxSerial(m_v3uiGridBlockIdx),
-						AtomicSerial(),
-						m_v3uiGridBlockIdx(0u)
+                    TWorkDiv const & workDiv) :
+                        WorkDivSerial(workDiv),
+                        IdxSerial(m_v3uiGridBlockIdx),
+                        AtomicSerial(),
+                        m_v3uiGridBlockIdx(0u)
                 {}
 
             public:

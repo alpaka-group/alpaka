@@ -170,25 +170,25 @@ namespace alpaka
                     threads::detail::DeviceThreads const &)
                 {
 #if ALPAKA_INTEGRATION_TEST
-					UInt const uiBlockThreadsCountMax(8u);
+                    UInt const uiBlockThreadsCountMax(8u);
 #else
-					// \TODO: Magic number. What is the maximum? Just set a reasonable value? There is a implementation defined maximum where the creation of a new thread crashes.
-					// std::thread::hardware_concurrency  can return 0, so a default for this case?
-					UInt const uiBlockThreadsCountMax(std::thread::hardware_concurrency() * 8u);
+                    // \TODO: Magic number. What is the maximum? Just set a reasonable value? There is a implementation defined maximum where the creation of a new thread crashes.
+                    // std::thread::hardware_concurrency  can return 0, so a default for this case?
+                    UInt const uiBlockThreadsCountMax(std::thread::hardware_concurrency() * 8u);
 #endif
                     return alpaka::dev::DevProps(
-						// m_sName
-						host::getCpuName(),
-						// m_uiMultiProcessorCount
-						1u,
-						// m_uiBlockThreadsCountMax
-						uiBlockThreadsCountMax,
-						// m_v3uiBlockThreadExtentsMax
-						Vec<3u>(uiBlockThreadsCountMax, uiBlockThreadsCountMax, uiBlockThreadsCountMax),	
-						// m_v3uiGridBlockExtentsMax
-						Vec<3u>(std::numeric_limits<UInt>::max(), std::numeric_limits<UInt>::max(), std::numeric_limits<UInt>::max()),		
-						// m_uiGlobalMemSizeBytes
-						host::getGlobalMemSizeBytes());
+                        // m_sName
+                        host::getCpuName(),
+                        // m_uiMultiProcessorCount
+                        1u,
+                        // m_uiBlockThreadsCountMax
+                        uiBlockThreadsCountMax,
+                        // m_v3uiBlockThreadExtentsMax
+                        Vec<3u>(uiBlockThreadsCountMax, uiBlockThreadsCountMax, uiBlockThreadsCountMax),    
+                        // m_v3uiGridBlockExtentsMax
+                        Vec<3u>(std::numeric_limits<UInt>::max(), std::numeric_limits<UInt>::max(), std::numeric_limits<UInt>::max()),        
+                        // m_uiGlobalMemSizeBytes
+                        host::getGlobalMemSizeBytes());
                 }
             };
 

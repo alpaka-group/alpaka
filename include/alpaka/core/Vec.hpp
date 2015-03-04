@@ -23,7 +23,7 @@
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FCT_ACC, ALPAKA_ALIGN
 #include <alpaka/core/BasicDims.hpp>// dim::Dim<N>
-#include <alpaka/core/IntegerSequence.hpp>	// 
+#include <alpaka/core/IntegerSequence.hpp>    // 
 
 #include <alpaka/traits/Dim.hpp>    // traits::getDim
 #include <alpaka/traits/Extents.hpp>// traits::getWidth, ...
@@ -72,7 +72,7 @@ namespace alpaka
         //! \param val The value every entry is set to.
         //-----------------------------------------------------------------------------
         ALPAKA_FCT_HOST_ACC Vec(
-			TVal const & val)
+            TVal const & val)
         {
             for(UInt i(0); i<TuiDim; ++i)
             {
@@ -226,11 +226,11 @@ namespace alpaka
         ALPAKA_FCT_HOST_ACC Vec<TuiSubDim, TVal> subVec() const
         {
             static_assert(TuiSubDim <= TuiDim, "The sub-vector has to be smaller (or same size) then the origin vector.");
-			
+            
 #if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-			using IdxSequence = typename alpaka::detail::make_index_sequence<TuiSubDim>::type;
+            using IdxSequence = typename alpaka::detail::make_index_sequence<TuiSubDim>::type;
 #else
-			using IdxSequence = alpaka::detail::make_index_sequence<TuiSubDim>;
+            using IdxSequence = alpaka::detail::make_index_sequence<TuiSubDim>;
 #endif
             return subVecFromIndices(IdxSequence());
         }
@@ -241,9 +241,9 @@ namespace alpaka
             size_t... TIndices>
         ALPAKA_FCT_HOST_ACC Vec<sizeof...(TIndices), TVal> subVecFromIndices(
 #if !BOOST_COMP_MSVC     // MSVC 190022512 introduced a new bug with alias templates: error C3520: 'TIndices': parameter pack must be expanded in this context
-			detail::index_sequence<TIndices...> const &) const
+            detail::index_sequence<TIndices...> const &) const
 #else
-			detail::integer_sequence<std::size_t, TIndices...> const &) const
+            detail::integer_sequence<std::size_t, TIndices...> const &) const
 #endif
         {
             static_assert(sizeof...(TIndices) <= TuiDim, "The sub-vector has to be smaller (or same size) then the origin vector.");

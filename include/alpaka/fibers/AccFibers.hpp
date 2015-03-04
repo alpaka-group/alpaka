@@ -84,25 +84,25 @@ namespace alpaka
             {
             public:
                 using MemSpace = mem::MemSpaceHost;
-				
-				template<
-					typename TAcceleratedKernel>
+                
+                template<
+                    typename TAcceleratedKernel>
                 friend class ::alpaka::fibers::detail::KernelExecutorFibers;
-				
-			//private:	// TODO: Make private and only constructible from friend KernelExecutor. Not possible due to IAcc?
+                
+            //private:    // TODO: Make private and only constructible from friend KernelExecutor. Not possible due to IAcc?
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-				template<
-					typename TWorkDiv>
+                template<
+                    typename TWorkDiv>
                 ALPAKA_FCT_ACC_NO_CUDA AccFibers(
-					TWorkDiv const & workDiv) :
-						WorkDivFibers(workDiv),
-						IdxFibers(m_mFibersToIndices, m_v3uiGridBlockIdx),
-						AtomicFibers(),
-						m_v3uiGridBlockIdx(0u),
-						m_uiNumThreadsPerBlock(workdiv::getWorkDiv<Block, Threads, dim::Dim1>(workDiv)[0u])
+                    TWorkDiv const & workDiv) :
+                        WorkDivFibers(workDiv),
+                        IdxFibers(m_mFibersToIndices, m_v3uiGridBlockIdx),
+                        AtomicFibers(),
+                        m_v3uiGridBlockIdx(0u),
+                        m_uiNumThreadsPerBlock(workdiv::getWorkDiv<Block, Threads, dim::Dim1>(workDiv)[0u])
                 {}
 
             public:
@@ -254,7 +254,7 @@ namespace alpaka
                 Vec<3u> mutable m_v3uiGridBlockIdx;                         //!< The index of the currently executed block.
 
                 // syncBlockThreads
-                UInt const m_uiNumThreadsPerBlock;							//!< The number of threads per block the barrier has to wait for.
+                UInt const m_uiNumThreadsPerBlock;                            //!< The number of threads per block the barrier has to wait for.
                 std::map<
                     boost::fibers::fiber::id,
                     UInt> mutable m_mFibersToBarrier;                       //!< The mapping of fibers id's to their current barrier.
