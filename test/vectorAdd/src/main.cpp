@@ -128,9 +128,9 @@ struct VectorAddKernelTester
             << ")" << std::endl;
 
         // Allocate host memory buffers.
-        auto memBufHostA(alpaka::mem::alloc<float, alpaka::mem::MemSpaceHost>(v1uiExtents));
-        auto memBufHostB(alpaka::mem::alloc<float, alpaka::mem::MemSpaceHost>(v1uiExtents));
-        auto memBufHostC(alpaka::mem::alloc<float, alpaka::mem::MemSpaceHost>(v1uiExtents));
+        auto memBufHostA(alpaka::mem::alloc<float, alpaka::mem::SpaceHost>(v1uiExtents));
+        auto memBufHostB(alpaka::mem::alloc<float, alpaka::mem::SpaceHost>(v1uiExtents));
+        auto memBufHostC(alpaka::mem::alloc<float, alpaka::mem::SpaceHost>(v1uiExtents));
         
         // Initialize the host input vectors
         for (std::size_t i(0); i < uiNumElements; ++i)
@@ -140,7 +140,7 @@ struct VectorAddKernelTester
         }
 
         // Allocate the buffer on the accelerator.
-        using AccMemSpace = typename alpaka::mem::MemSpaceT<TAcc>;
+        using AccMemSpace = typename alpaka::mem::SpaceT<TAcc>;
         auto memBufAccA(alpaka::mem::alloc<float, AccMemSpace>(v1uiExtents));
         auto memBufAccB(alpaka::mem::alloc<float, AccMemSpace>(v1uiExtents));
         auto memBufAccC(alpaka::mem::alloc<float, AccMemSpace>(v1uiExtents));
@@ -218,8 +218,8 @@ int main()
 #ifdef ALPAKA_CUDA_ENABLED
         // Select the first CUDA device.
         // NOTE: This is not required to run any kernels on the CUDA accelerator because all accelerators have a default device. This only shows the possibility.
-        alpaka::dev::DevManT<alpaka::AccCuda>::setCurrentDevice(
-            alpaka::dev::DevManT<alpaka::AccCuda>::getCurrentDevice());
+        alpaka::dev::DevManT<alpaka::AccCuda>::setCurrentDev(
+            alpaka::dev::DevManT<alpaka::AccCuda>::getCurrentDev());
 #endif
         VectorAddKernelTester vectorAddKernelTester;
 

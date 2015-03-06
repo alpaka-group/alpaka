@@ -21,12 +21,12 @@
 
 #pragma once
 
-#include <alpaka/host/MemSpace.hpp>     // mem::MemSpaceHost
+#include <alpaka/host/mem/Space.hpp>    // mem::SpaceHost
 
 #include <alpaka/core/BasicDims.hpp>    // dim::Dim<N>
 #include <alpaka/core/Vec.hpp>          // Vec<N>
 
-#include <alpaka/traits/Mem.hpp>        // traits::MemCopy, ...
+#include <alpaka/traits/Mem.hpp>        // traits::Copy, ...
 #include <alpaka/traits/Extents.hpp>    // traits::getXXX
 
 namespace alpaka
@@ -37,13 +37,13 @@ namespace alpaka
         //! The memory buffer wrapper used to wrap plain pointers.
         //#############################################################################
         template<
-            typename TMemSpace,
+            typename TSpace,
             typename TElem,
             typename TDim>
-        class MemBufBasePlainPtrWrapper
+        class BufPlainPtrWrapper
         {
         private:
-            using MemSpace = TMemSpace;
+            using MemSpace = SpaceT<TSpace>;
             using Elem = TElem;
             using Dim = TDim;
 
@@ -53,7 +53,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TExtents>
-            MemBufBasePlainPtrWrapper(
+            BufPlainPtrWrapper(
                 TElem * pMem,
                 TExtents const & extents) :
                     m_vExtentsElements(extents),
@@ -66,7 +66,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TExtents>
-            MemBufBasePlainPtrWrapper(
+            BufPlainPtrWrapper(
                 TElem * pMem,
                 UInt const & uiPitch,
                 TExtents const & extents) :
@@ -83,21 +83,21 @@ namespace alpaka
     }
 
     //-----------------------------------------------------------------------------
-    // Trait specializations for MemBufBasePlainPtrWrapper.
+    // Trait specializations for BufPlainPtrWrapper.
     //-----------------------------------------------------------------------------
     namespace traits
     {
         namespace dim
         {
             //#############################################################################
-            //! The MemBufBasePlainPtrWrapper dimension getter trait.
+            //! The BufPlainPtrWrapper dimension getter trait.
             //#############################################################################
             template<
-                typename TMemSpace,
+                typename TSpace,
                 typename TElem,
                 typename TDim>
             struct DimType<
-                alpaka::mem::MemBufBasePlainPtrWrapper<TMemSpace, TElem, TDim>>
+                alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim>>
             {
                 using type = TDim;
             };
@@ -106,73 +106,73 @@ namespace alpaka
         namespace extent
         {
             //#############################################################################
-            //! The MemBufBasePlainPtrWrapper extents get trait specialization.
+            //! The BufPlainPtrWrapper extents get trait specialization.
             //#############################################################################
             template<
-                typename TMemSpace,
+                typename TSpace,
                 typename TElem,
                 typename TDim>
             struct GetExtents<
-                alpaka::mem::MemBufBasePlainPtrWrapper<TMemSpace, TElem, TDim>>
+                alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim>>
             {
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static Vec<TDim::value> getExtents(
-                    alpaka::mem::MemBufBasePlainPtrWrapper<TMemSpace, TElem, TDim> const & extents)
+                    alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim> const & extents)
                 {
                     return {extents.m_vExtentsElements};
                 }
             };
 
             //#############################################################################
-            //! The MemBufBasePlainPtrWrapper width get trait specialization.
+            //! The BufPlainPtrWrapper width get trait specialization.
             //#############################################################################
             template<
-                typename TMemSpace,
+                typename TSpace,
                 typename TElem,
                 typename TDim>
             struct GetWidth<
-                alpaka::mem::MemBufBasePlainPtrWrapper<TMemSpace, TElem, TDim>,
+                alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim>,
                 typename std::enable_if<(TDim::value >= 1u) && (TDim::value <= 3u)>::type>
             {
                 static UInt getWidth(
-                    alpaka::mem::MemBufBasePlainPtrWrapper<TMemSpace, TElem, TDim> const & extent)
+                    alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim> const & extent)
                 {
                     return extent.m_vExtentsElements[0u];
                 }
             };
 
             //#############################################################################
-            //! The MemBufBasePlainPtrWrapper height get trait specialization.
+            //! The BufPlainPtrWrapper height get trait specialization.
             //#############################################################################
             template<
-                typename TMemSpace,
+                typename TSpace,
                 typename TElem,
                 typename TDim>
             struct GetHeight<
-                alpaka::mem::MemBufBasePlainPtrWrapper<TMemSpace, TElem, TDim>,
+                alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim>,
                 typename std::enable_if<(TDim::value >= 2u) && (TDim::value <= 3u)>::type>
             {
                 static UInt getHeight(
-                    alpaka::mem::MemBufBasePlainPtrWrapper<TMemSpace, TElem, TDim> const & extent)
+                    alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim> const & extent)
                 {
                     return extent.m_vExtentsElements[1u];
                 }
             };
             //#############################################################################
-            //! The MemBufBasePlainPtrWrapper depth get trait specialization.
+            //! The BufPlainPtrWrapper depth get trait specialization.
             //#############################################################################
             template<
-                typename TMemSpace,
+                typename TSpace,
                 typename TElem,
                 typename TDim>
             struct GetDepth<
-                alpaka::mem::MemBufBasePlainPtrWrapper<TMemSpace, TElem, TDim>,
+                alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim>,
                 typename std::enable_if<(TDim::value >= 3u) && (TDim::value <= 3u)>::type>
             {
                 static UInt getDepth(
-                    alpaka::mem::MemBufBasePlainPtrWrapper<TMemSpace, TElem, TDim> const & extent)
+                    alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim> const & extent)
                 {
                     return extent.m_vExtentsElements[2u];
                 }
@@ -182,20 +182,20 @@ namespace alpaka
         namespace offset
         {
             //#############################################################################
-            //! The MemBufBasePlainPtrWrapper offsets get trait specialization.
+            //! The BufPlainPtrWrapper offsets get trait specialization.
             //#############################################################################
             template<
-                typename TMemSpace,
+                typename TSpace,
                 typename TElem,
                 typename TDim>
             struct GetOffsets<
-                alpaka::mem::MemBufBasePlainPtrWrapper<TMemSpace, TElem, TDim>>
+                alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim>>
             {
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static Vec<TDim::value> getOffsets(
-                    alpaka::mem::MemBufBasePlainPtrWrapper<TMemSpace, TElem, TDim> const &)
+                    alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim> const &)
                 {
                     return Vec<TDim::value>();
                 }
@@ -205,108 +205,95 @@ namespace alpaka
         namespace mem
         {
             //#############################################################################
-            //! The MemBufBasePlainPtrWrapper base memory buffer trait specialization.
+            //! The BufPlainPtrWrapper memory space trait specialization.
             //#############################################################################
             template<
-                typename TMemSpace,
+                typename TSpace,
                 typename TElem,
                 typename TDim>
-            struct IsMemBufBase<
-                alpaka::mem::MemBufBasePlainPtrWrapper<TMemSpace, TElem, TDim>>
+            struct SpaceType<
+                alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim>>
             {
-                static const bool value = true;
+                using type = TSpace;
             };
 
             //#############################################################################
-            //! The MemBufBasePlainPtrWrapper memory space trait specialization.
+            //! The BufPlainPtrWrapper memory element type get trait specialization.
             //#############################################################################
             template<
-                typename TMemSpace,
+                typename TSpace,
                 typename TElem,
                 typename TDim>
-            struct MemSpaceType<
-                alpaka::mem::MemBufBasePlainPtrWrapper<TMemSpace, TElem, TDim>>
-            {
-                using type = alpaka::mem::MemSpaceHost;
-            };
-
-            //#############################################################################
-            //! The MemBufBasePlainPtrWrapper memory element type get trait specialization.
-            //#############################################################################
-            template<
-                typename TMemSpace,
-                typename TElem,
-                typename TDim>
-            struct MemElemType<
-                alpaka::mem::MemBufBasePlainPtrWrapper<TMemSpace, TElem, TDim>>
+            struct ElemType<
+                alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim>>
             {
                 using type = TElem;
             };
 
             //#############################################################################
-            //! The MemBufBasePlainPtrWrapper base buffer trait specialization.
+            //! The BufPlainPtrWrapper base buffer trait specialization.
             //#############################################################################
             template<
-                typename TMemSpace,
+                typename TSpace,
                 typename TElem,
                 typename TDim>
-            struct GetMemBufBase<
-                alpaka::mem::MemBufBasePlainPtrWrapper<TMemSpace, TElem, TDim>>
+            struct GetBuf<
+                alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim>>
             {
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static alpaka::mem::MemBufBasePlainPtrWrapper<TMemSpace, TElem, TDim> const & getMemBufBase(
-                    alpaka::mem::MemBufBasePlainPtrWrapper<TMemSpace, TElem, TDim> const & memBufBase)
+                ALPAKA_FCT_HOST static alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim> const & getBuf(
+                    alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim> const & buf)
                 {
-                    return memBufBase;
+                    return buf;
                 }
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static alpaka::mem::MemBufBasePlainPtrWrapper<TMemSpace, TElem, TDim> & getMemBufBase(
-                    alpaka::mem::MemBufBasePlainPtrWrapper<TMemSpace, TElem, TDim> & memBufBase)
+                ALPAKA_FCT_HOST static alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim> & getBuf(
+                    alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim> & buf)
                 {
-                    return memBufBase;
+                    return buf;
                 }
             };
 
             //#############################################################################
-            //! The MemBufBasePlainPtrWrapper native pointer get trait specialization.
+            //! The BufPlainPtrWrapper native pointer get trait specialization.
             //#############################################################################
             template<
-                typename TMemSpace,
+                typename TSpace,
                 typename TElem,
                 typename TDim>
             struct GetNativePtr<
-                alpaka::mem::MemBufBasePlainPtrWrapper<TMemSpace, TElem, TDim>>
+                alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim>>
             {
                 static TElem const * getNativePtr(
-                    alpaka::mem::MemBufBasePlainPtrWrapper<TMemSpace, TElem, TDim> const & memBuf)
+                    alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim> const & buf)
                 {
-                    return memBuf.m_pMem;
+                    return buf.m_pMem;
                 }
                 static TElem * getNativePtr(
-                    alpaka::mem::MemBufBasePlainPtrWrapper<TMemSpace, TElem, TDim> & memBuf)
+                    alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim> & buf)
                 {
-                    return memBuf.m_pMem;
+                    return buf.m_pMem;
                 }
             };
 
             //#############################################################################
-            //! The MemBufBasePlainPtrWrapper memory pitch get trait specialization.
+            //! The BufPlainPtrWrapper memory pitch get trait specialization.
             //#############################################################################
             template<
-                typename TMemSpace,
+                typename TSpace,
                 typename TElem,
                 typename TDim>
             struct GetPitchBytes<
-                alpaka::mem::MemBufBasePlainPtrWrapper<TMemSpace, TElem, TDim>>
+                alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim>>
             {
                 static UInt getPitchBytes(
-                    alpaka::mem::MemBufBasePlainPtrWrapper<TMemSpace, TElem, TDim> const & memPitch)
+                    alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim> const & pitch)
                 {
-                    return memPitch.m_uiPitchBytes;
+                    return pitch.m_uiPitchBytes;
                 }
             };
         }

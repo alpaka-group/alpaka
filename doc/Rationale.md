@@ -1,6 +1,8 @@
-# Rationale
+Rationale
+=========
 
-## Kernels
+Kernels
+-------
 
 ### Requirements
 
@@ -35,15 +37,13 @@ There are two possible ways to tell the kernel about the accelerator type:
     Casting this to the accelerator type and giving it as parameter is too much to require from the user.
   * b) and has a reference to the accelerator as parameter.
     * + This allows to use the accelerator in accelerator functions called from the kernel (and not within the kernel class itself) to access the accelerator methods in the same way the kernel entry point function can.
-    * - This would require an additional object in device memory taking up valuable CUDA registers.
-    * TODO: Will all the device functions be inlined nevertheless (because we do not use run-time polymorphism)? This would make it a non-reason.
+    * - This would require an additional object (the accelerator) in device memory taking up valuable CUDA registers (opposed to the inheritance solution). At least on CUDA all the accelerator functions could be inlined nevertheless.
  2. The `operator()` is templated on the accelerator type and has a reference to the accelerator as parameter.
   * + The kernel can be an arbitrary function object with ALPAKA_FCT_HOST_ACC attributes.
   * + This would allow to instantiate the accelerator independent kernel and set its members before execution.
   * +/- C++14 provides polymorphic lambdas. All compilers (even MSVC) support this. Inheriting from a non capturing lambda for the KernelExecutor is allowed. (TODO: How to check for a non capturing lambda?)
   * - The `operator()` could be overloaded on the accelerator type but not the kernel itself, so it always has the same members.
-  * - This would require an additional object in device memory taking up valuable CUDA registers.
-    TODO: Will all the device functions be inlined nevertheless (because we do not use run-time polymorphism)? This would make it a non-reason.
+  * - This would require an additional object (the accelerator) in device memory taking up valuable CUDA registers (opposed to the inheritance solution). At least on CUDA all the accelerator functions could be inlined nevertheless.
 
 ### Implementation Notes
 
@@ -67,7 +67,8 @@ TODO: Why?
 
 TODO: Explain trait.
 
-## Accelerators
+Accelerators
+------------
 
 All the accelerators are restricted by the possibilities of CUDA.
 
@@ -80,7 +81,8 @@ Private inheritance is not possible, because the `KernelExecutor` implementation
 
 TODO: Add note about ALPAKA_FCT_HOST_ACC!
 
-## Accelerator Implementation Notes
+Accelerator Implementation Notes
+--------------------------------
 
 ### Serial
 

@@ -21,22 +21,22 @@
 
 #pragma once
 
-#include <alpaka/host/MemSpace.hpp>         // MemSpaceHost
-#include <alpaka/host/mem/MemBufBase.hpp>   // MemBufBaseHost
-#include <alpaka/host/Stream.hpp>           // StreamHost
+#include <alpaka/host/mem/Space.hpp>    // SpaceHost
+#include <alpaka/host/mem/Buf.hpp>      // BufHost
+#include <alpaka/host/Stream.hpp>       // StreamHost
 
-#include <alpaka/core/BasicDims.hpp>        // dim::Dim<N>
+#include <alpaka/core/BasicDims.hpp>    // dim::Dim<N>
 
-#include <alpaka/traits/Mem.hpp>            // traits::MemCopy, ...
-#include <alpaka/traits/Extents.hpp>        // traits::getXXX
+#include <alpaka/traits/Mem.hpp>        // traits::Copy, ...
+#include <alpaka/traits/Extents.hpp>    // traits::getXXX
 
-#include <cassert>                          // assert
-#include <cstring>                          // std::memcpy
+#include <cassert>                      // assert
+#include <cstring>                      // std::memcpy
 
 namespace alpaka
 {
     //-----------------------------------------------------------------------------
-    // Trait specializations for host::detail::MemBufBaseHost.
+    // Trait specializations for host::detail::BufHost.
     //-----------------------------------------------------------------------------
     namespace traits
     {
@@ -49,36 +49,36 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TDim>
-            struct MemCopy<
+            struct Copy<
                 TDim, 
-                alpaka::mem::MemSpaceHost,
-                alpaka::mem::MemSpaceHost>
+                alpaka::mem::SpaceHost,
+                alpaka::mem::SpaceHost>
             {
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
                 template<
                     typename TExtents, 
-                    typename TMemBufSrc, 
-                    typename TMemBufDst>
-                ALPAKA_FCT_HOST static void memCopy(
-                    TMemBufDst & memBufDst, 
-                    TMemBufSrc const & memBufSrc, 
+                    typename TBufSrc, 
+                    typename TBufDst>
+                ALPAKA_FCT_HOST static void copy(
+                    TBufDst & memBufDst, 
+                    TBufSrc const & memBufSrc, 
                     TExtents const & extents)
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                     static_assert(
-                        std::is_same<alpaka::dim::DimT<TMemBufDst>, alpaka::dim::DimT<TMemBufSrc>>::value,
+                        std::is_same<alpaka::dim::DimT<TBufDst>, alpaka::dim::DimT<TBufSrc>>::value,
                         "The source and the destination buffers are required to have the same dimensionality!");
                     static_assert(
-                        std::is_same<alpaka::dim::DimT<TMemBufDst>, alpaka::dim::DimT<TExtents>>::value,
+                        std::is_same<alpaka::dim::DimT<TBufDst>, alpaka::dim::DimT<TExtents>>::value,
                         "The buffers and the extents are required to have the same dimensionality!");
                     static_assert(
-                        std::is_same<alpaka::mem::MemElemT<TMemBufDst>, alpaka::mem::MemElemT<TMemBufSrc>>::value,
+                        std::is_same<alpaka::mem::ElemT<TBufDst>, alpaka::mem::ElemT<TBufSrc>>::value,
                         "The source and the destination buffers are required to have the same element type!");
 
-                    using Elem = alpaka::mem::MemElemT<TMemBufDst>;
+                    using Elem = alpaka::mem::ElemT<TBufDst>;
 
                     auto const uiExtentWidth(alpaka::extent::getWidth(extents));
                     auto const uiExtentHeight(alpaka::extent::getHeight(extents));
@@ -111,12 +111,12 @@ namespace alpaka
                     auto const uiDstSliceSizeBytes(uiDstPitchBytes * uiDstHeight);
                     auto const uiSrcSliceSizeBytes(uiSrcPitchBytes * uiSrcHeight);
                     
-                    auto const & dstMemBufBase(alpaka::mem::getMemBufBase(memBufDst));
-                    auto const & srcMemBufBase(alpaka::mem::getMemBufBase(memBufSrc));
-                    auto const uiDstMemBufBaseWidth(alpaka::extent::getWidth(dstMemBufBase));
-                    auto const uiSrcMemBufBaseWidth(alpaka::extent::getWidth(srcMemBufBase));
-                    auto const uiDstMemBufBaseHeight(alpaka::extent::getHeight(dstMemBufBase));
-                    auto const uiSrcMemBufBaseHeight(alpaka::extent::getHeight(srcMemBufBase));
+                    auto const & dstBuf(alpaka::mem::getBuf(memBufDst));
+                    auto const & srcBuf(alpaka::mem::getBuf(memBufSrc));
+                    auto const uiDstBufWidth(alpaka::extent::getWidth(dstBuf));
+                    auto const uiSrcBufWidth(alpaka::extent::getWidth(srcBuf));
+                    auto const uiDstBufHeight(alpaka::extent::getHeight(dstBuf));
+                    auto const uiSrcBufHeight(alpaka::extent::getHeight(srcBuf));
                     
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                     std::cout << BOOST_CURRENT_FUNCTION
@@ -129,15 +129,15 @@ namespace alpaka
                         << " dd: " << uiDstDepth
                         << " dptr: " << reinterpret_cast<void *>(pDstNative)
                         << " dpitchb: " << uiDstPitchBytes
-                        << " dbasew: " << uiDstMemBufBaseWidth
-                        << " dbaseh: " << uiDstMemBufBaseHeight
+                        << " dbasew: " << uiDstBufWidth
+                        << " dbaseh: " << uiDstBufHeight
                         << " sw: " << uiSrcWidth
                         << " sh: " << uiSrcHeight
                         << " sd: " << uiSrcDepth
                         << " sptr: " << reinterpret_cast<void const *>(pSrcNative)
                         << " spitchb: " << uiSrcPitchBytes
-                        << " sbasew: " << uiSrcMemBufBaseWidth
-                        << " sbaseh: " << uiSrcMemBufBaseHeight
+                        << " sbasew: " << uiSrcBufWidth
+                        << " sbaseh: " << uiSrcBufHeight
                         << std::endl;
 #endif
                     // If:
@@ -149,10 +149,10 @@ namespace alpaka
                         && (uiExtentWidth == uiSrcWidth)
                         && (uiExtentHeight == uiDstHeight)
                         && (uiExtentHeight == uiSrcHeight)
-                        && (uiExtentWidth == uiDstMemBufBaseWidth)
-                        && (uiExtentWidth == uiSrcMemBufBaseWidth)
-                        && (uiExtentHeight == uiDstMemBufBaseHeight)
-                        && (uiExtentHeight == uiSrcMemBufBaseHeight)
+                        && (uiExtentWidth == uiDstBufWidth)
+                        && (uiExtentWidth == uiSrcBufWidth)
+                        && (uiExtentHeight == uiDstBufHeight)
+                        && (uiExtentHeight == uiSrcBufHeight)
                         && (uiDstSliceSizeBytes == uiSrcSliceSizeBytes))
                     {
                         std::memcpy(
@@ -171,8 +171,8 @@ namespace alpaka
                             // -> we can copy whole slices at once overwriting the pitch bytes
                             if((uiExtentWidth == uiDstWidth)
                                 && (uiExtentWidth == uiSrcWidth)
-                                && (uiExtentWidth == uiDstMemBufBaseWidth)
-                                && (uiExtentWidth == uiSrcMemBufBaseWidth)
+                                && (uiExtentWidth == uiDstBufWidth)
+                                && (uiExtentWidth == uiSrcBufWidth)
                                 && (uiDstPitchBytes == uiSrcPitchBytes))
                             {
                                 std::memcpy(
@@ -198,16 +198,16 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TExtents, 
-                    typename TMemBufSrc, 
-                    typename TMemBufDst>
-                ALPAKA_FCT_HOST static void memCopy(
-                    TMemBufDst & memBufDst, 
-                    TMemBufSrc const & memBufSrc, 
+                    typename TBufSrc, 
+                    typename TBufDst>
+                ALPAKA_FCT_HOST static void copy(
+                    TBufDst & memBufDst, 
+                    TBufSrc const & memBufSrc, 
                     TExtents const & extents,
                     host::detail::StreamHost const &)
                 {
-                    // \TODO: Implement asynchronous host memCopy.
-                    memCopy(
+                    // \TODO: Implement asynchronous host copy.
+                    copy(
                         memBufDst,
                         memBufSrc,
                         extents);

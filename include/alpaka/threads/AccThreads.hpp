@@ -29,7 +29,7 @@
 #include <alpaka/threads/Barrier.hpp>               // BarrierThreads
 
 // User functionality.
-#include <alpaka/host/Mem.hpp>                      // MemCopy
+#include <alpaka/host/Mem.hpp>                      // Copy
 #include <alpaka/threads/Stream.hpp>                // StreamThreads
 #include <alpaka/threads/Event.hpp>                 // EventThreads
 #include <alpaka/threads/Device.hpp>                // Devices
@@ -75,7 +75,7 @@ namespace alpaka
                 protected AtomicThreads
             {
             public:
-                using MemSpace = mem::MemSpaceHost;
+                using MemSpace = mem::SpaceHost;
                 
                 template<
                     typename TAcceleratedKernel>
@@ -185,10 +185,10 @@ namespace alpaka
                 {
                     assert(itFind != m_mThreadsToBarrier.end());
 
-                    auto & uiBarIdx(itFind->second);
-                    UInt const uiBarrierIdx(uiBarIdx % 2);
+                    auto & uiBarrierIdx(itFind->second);
+                    std::size_t const uiModBarrierIdx(uiBarrierIdx % 2);
 
-                    auto & bar(m_abarSyncThreads[uiBarrierIdx]);
+                    auto & bar(m_abarSyncThreads[uiModBarrierIdx]);
 
                     // (Re)initialize a barrier if this is the first thread to reach it.
                     if(bar.getNumThreadsToWaitFor() == 0)
@@ -202,7 +202,7 @@ namespace alpaka
 
                     // Wait for the barrier.
                     bar.wait();
-                    ++uiBarIdx;
+                    ++uiBarrierIdx;
                 }
             protected:
                 //-----------------------------------------------------------------------------
@@ -411,7 +411,6 @@ namespace alpaka
                                         {
                                             v3uiBlockThreadIdx[0] = tx;
 
-                                            // Create a thread.
                                             // The v3uiBlockThreadIdx is required to be copied in from the environment because if the thread is immediately suspended the variable is already changed for the next iteration/thread.
 #if BOOST_COMP_GNUC   // GCC < 4.9.0 can not compile variadic templates inside lambdas correctly if the variadic argument is not in the parameter list.
                                             auto threadKernelFct(

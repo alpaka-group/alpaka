@@ -21,30 +21,30 @@
 
 #pragma once
 
-#include <alpaka/traits/Mem.hpp>
+#include <alpaka/traits/mem/Space.hpp>
 
 namespace alpaka
 {
     namespace mem
     {
         //#############################################################################
-        //! The data space on the host.
+        //! The data space on the CUDA accelerator.
         //#############################################################################
-        struct MemSpaceHost;
+        struct SpaceCuda;
     }
-    
+
     namespace traits
     {
         namespace mem
         {
             //#############################################################################
-            //! The MemSpaceHost memory space trait specialization.
+            //! The SpaceCuda memory space trait specialization.
             //#############################################################################
             template<>
-            struct MemSpaceType<
-                alpaka::mem::MemSpaceHost>
+            struct SpaceType<
+                alpaka::mem::SpaceCuda>
             {
-                using type = alpaka::mem::MemSpaceHost;
+                using type = alpaka::mem::SpaceCuda;
             };
         }
     }

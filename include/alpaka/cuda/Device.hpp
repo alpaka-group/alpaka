@@ -39,45 +39,45 @@ namespace alpaka
         namespace detail
         {
             // Forward declaration.
-            class DeviceManagerCuda;
+            class DevManCuda;
 
             //#############################################################################
             //! The CUDA accelerator device handle.
             //#############################################################################
-            class DeviceCuda
+            class DevCuda
             {
-                friend class DeviceManagerCuda;
+                friend class DevManCuda;
             protected:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceCuda() = default;
+                ALPAKA_FCT_HOST DevCuda() = default;
             public:
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceCuda(DeviceCuda const &) = default;
+                ALPAKA_FCT_HOST DevCuda(DevCuda const &) = default;
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceCuda(DeviceCuda &&) = default;
+                ALPAKA_FCT_HOST DevCuda(DevCuda &&) = default;
 #endif
                 //-----------------------------------------------------------------------------
                 //! Assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceCuda & operator=(DeviceCuda const &) = default;
+                ALPAKA_FCT_HOST DevCuda & operator=(DevCuda const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Equality comparison operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST bool operator==(DeviceCuda const & rhs) const
+                ALPAKA_FCT_HOST bool operator==(DevCuda const & rhs) const
                 {
                     return m_iDevice == rhs.m_iDevice;
                 }
                 //-----------------------------------------------------------------------------
                 //! Inequality comparison operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST bool operator!=(DeviceCuda const & rhs) const
+                ALPAKA_FCT_HOST bool operator!=(DevCuda const & rhs) const
                 {
                     return !((*this) == rhs);
                 }
@@ -95,18 +95,18 @@ namespace alpaka
             //#############################################################################
             //! The CUDA accelerator device manager.
             //#############################################################################
-            class DeviceManagerCuda
+            class DevManCuda
             {
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceManagerCuda() = delete;
+                ALPAKA_FCT_HOST DevManCuda() = delete;
 
                 //-----------------------------------------------------------------------------
                 //! \return The number of devices available.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::size_t getDeviceCount()
+                ALPAKA_FCT_HOST static std::size_t getDevCount()
                 {
                     int iNumDevices(0);
                     ALPAKA_CUDA_CHECK(cudaGetDeviceCount(&iNumDevices));
@@ -116,13 +116,13 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of devices available.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static cuda::detail::DeviceCuda getDeviceByIdx(
+                ALPAKA_FCT_HOST static cuda::detail::DevCuda getDevByIdx(
                     std::size_t const & uiIdx)
                 {
-                    cuda::detail::DeviceCuda device;
+                    cuda::detail::DevCuda device;
 
-                    std::size_t const uiNumDevices(getDeviceCount());
-                    if(uiIdx < getDeviceCount())
+                    std::size_t const uiNumDevices(getDevCount());
+                    if(uiIdx < uiNumDevices)
                     {
                         device.m_iDevice = static_cast<int>(uiIdx);
                     }
@@ -138,21 +138,21 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The handle to the currently used device.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static cuda::detail::DeviceCuda getCurrentDevice()
+                ALPAKA_FCT_HOST static cuda::detail::DevCuda getCurrentDev()
                 {
-                    cuda::detail::DeviceCuda device;
+                    cuda::detail::DevCuda device;
                     ALPAKA_CUDA_CHECK(cudaGetDevice(&device.m_iDevice));
                     return device;
                 }
                 //-----------------------------------------------------------------------------
                 //! Sets the device to use with this accelerator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static void setCurrentDevice(
-                    cuda::detail::DeviceCuda const & device)
+                ALPAKA_FCT_HOST static void setCurrentDev(
+                    cuda::detail::DevCuda const & device)
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    std::size_t uiNumDevices(getDeviceCount());
+                    std::size_t uiNumDevices(getDevCount());
                     if(uiNumDevices < 1)
                     {
                         throw std::runtime_error("No CUDA capable devices detected!");
@@ -282,16 +282,16 @@ namespace alpaka
             struct DevType<
                 AccCuda>
             {
-                using type = cuda::detail::DeviceCuda;
+                using type = cuda::detail::DevCuda;
             };
             //#############################################################################
             //! The CUDA accelerator device manager device type trait specialization.
             //#############################################################################
             template<>
             struct DevType<
-                cuda::detail::DeviceManagerCuda>
+                cuda::detail::DevManCuda>
             {
-                using type = cuda::detail::DeviceCuda;
+                using type = cuda::detail::DevCuda;
             };
 
             //#############################################################################
@@ -299,10 +299,10 @@ namespace alpaka
             //#############################################################################
             template<>
             struct GetDevProps<
-                cuda::detail::DeviceCuda>
+                cuda::detail::DevCuda>
             {
                 ALPAKA_FCT_HOST static alpaka::dev::DevProps getDevProps(
-                    cuda::detail::DeviceCuda const & device)
+                    cuda::detail::DevCuda const & device)
                 {
                     cudaDeviceProp cudaDevProp;
                     ALPAKA_CUDA_CHECK(cudaGetDeviceProperties(&cudaDevProp, device.m_iDevice));
@@ -331,16 +331,16 @@ namespace alpaka
             struct DevManType<
                 AccCuda>
             {
-                using type = cuda::detail::DeviceManagerCuda;
+                using type = cuda::detail::DevManCuda;
             };
             //#############################################################################
             //! The CUDA accelerator device device manager type trait specialization.
             //#############################################################################
             template<>
             struct DevManType<
-                cuda::detail::DeviceCuda>
+                cuda::detail::DevCuda>
             {
-                using type = cuda::detail::DeviceManagerCuda;
+                using type = cuda::detail::DevManCuda;
             };
         }
 
@@ -351,25 +351,25 @@ namespace alpaka
             //#############################################################################
             template<>
             struct CurrentThreadWaitFor<
-                cuda::detail::DeviceCuda>
+                cuda::detail::DevCuda>
             {
                 ALPAKA_FCT_HOST static void currentThreadWaitFor(
-                    cuda::detail::DeviceCuda const & device)
+                    cuda::detail::DevCuda const & device)
                 {
                     // \TODO: This should be secured by a lock.
 
-                    auto const oldDevice(cuda::detail::DeviceManagerCuda::getCurrentDevice());
+                    auto const oldDevice(cuda::detail::DevManCuda::getCurrentDev());
 
                     if(oldDevice != device)
                     {
-                        cuda::detail::DeviceManagerCuda::setCurrentDevice(device);
+                        cuda::detail::DevManCuda::setCurrentDev(device);
                     }
 
                     ALPAKA_CUDA_CHECK(cudaDeviceSynchronize());
 
                     if(oldDevice != device)
                     {
-                        cuda::detail::DeviceManagerCuda::setCurrentDevice(oldDevice);
+                        cuda::detail::DevManCuda::setCurrentDev(oldDevice);
                     }
                 }
             };

@@ -192,7 +192,7 @@ struct SharedMemTester
         std::cout << "################################################################################" << std::endl;
         
         using Kernel = SharedMemKernel<TuiNumUselessWork>;
-        using AccMemSpace = typename alpaka::mem::MemSpaceT<TAcc>;
+        using AccMemSpace = typename alpaka::mem::SpaceT<TAcc>;
 
         std::cout
             << "SharedMemTester("
@@ -276,8 +276,8 @@ int main()
 #ifdef ALPAKA_CUDA_ENABLED
         // Select the first CUDA device. 
         // NOTE: This is not required to run any kernels on the CUDA accelerator because all accelerators have a default device. This only shows the possibility.
-        alpaka::dev::DevManT<alpaka::AccCuda>::setCurrentDevice(
-            alpaka::dev::DevManT<alpaka::AccCuda>::getCurrentDevice());
+        alpaka::dev::DevManT<alpaka::AccCuda>::setCurrentDev(
+            alpaka::dev::DevManT<alpaka::AccCuda>::getCurrentDev());
 #endif
 
         // Set the grid blocks extent.

@@ -21,13 +21,13 @@
 
 #pragma once
 
-#include <alpaka/cuda/MemSpace.hpp>         // MemSpaceCuda
-#include <alpaka/cuda/mem/MemCopy.hpp>      // MemCopy
-#include <alpaka/cuda/mem/MemBufBase.hpp>   // MemBufBaseCuda
+#include <alpaka/cuda/mem/Space.hpp>// SpaceCuda
+#include <alpaka/cuda/mem/Copy.hpp> // Copy
+#include <alpaka/cuda/mem/Buf.hpp>  // BufCuda
 
-#include <alpaka/core/mem/MemBufView.hpp>   // MemBufView
+#include <alpaka/core/mem/View.hpp> // View
 
-#include <alpaka/traits/Mem.hpp>            // traits::mem::MemBufBaseType
+#include <alpaka/traits/Mem.hpp>    // traits::mem::BufT
 
 namespace alpaka
 {
@@ -36,27 +36,27 @@ namespace alpaka
         namespace mem
         {
             //#############################################################################
-            //! The MemBufBaseCuda memory buffer type trait specialization.
+            //! The BufCuda memory buffer type trait specialization.
             //#############################################################################
             template<
                 typename TElem,
                 typename TDim>
-            struct MemBufBaseType<
-                TElem, TDim, alpaka::mem::MemSpaceCuda>
+            struct BufType<
+                TElem, TDim, alpaka::mem::SpaceCuda>
             {
-                using type = cuda::detail::MemBufBaseCuda<TElem, TDim>;
+                using type = cuda::detail::BufCuda<TElem, TDim>;
             };
 
             //#############################################################################
-            //! The MemBufBaseCuda memory buffer type trait specialization.
+            //! The BufCuda memory buffer type trait specialization.
             //#############################################################################
             template<
                 typename TElem,
                 typename TDim>
-            struct MemBufViewType<
-                cuda::detail::MemBufBaseCuda<TElem, TDim>>
+            struct ViewType<
+                cuda::detail::BufCuda<TElem, TDim>>
             {
-                using type = alpaka::mem::detail::MemBufView<cuda::detail::MemBufBaseCuda<TElem, TDim>>;
+                using type = alpaka::mem::detail::View<cuda::detail::BufCuda<TElem, TDim>>;
             };
         }
     }

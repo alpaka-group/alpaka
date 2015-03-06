@@ -300,4 +300,8 @@ IF(${ALPAKA_DEBUG} GREATER 0)
 ENDIF()
 TARGET_LINK_LIBRARIES(alpaka ${ALPAKA_LIBRARY_DEPENDENCIES})
 
+# Because there are no source files we have to specify the linker language by hand to prevent a cmake error.
+SET_TARGET_PROPERTIES(alpaka PROPERTIES LINKER_LANGUAGE CPP)
+SET(CMAKE_CPP_CREATE_STATIC_LIBRARY on) 
+
 MESSAGE(STATUS "### alpaka done ###")

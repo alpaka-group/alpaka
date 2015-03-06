@@ -21,9 +21,9 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>       // UInt
+#include <alpaka/core/Common.hpp>   // UInt
 
-#include <boost/mpl/integral_c.hpp>     // boost::mpl::integral_c
+#include <type_traits>              // std::integral_constant
 
 namespace alpaka
 {
@@ -34,7 +34,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             UInt N>
-        using Dim = boost::mpl::integral_c<UInt, N>;
+        using Dim = std::integral_constant<UInt, N>;
 
         //-----------------------------------------------------------------------------
         //! One dimension.

@@ -28,7 +28,7 @@
 #include <alpaka/cuda/Atomic.hpp>                   // AtomicCuda
 
 // User functionality.
-#include <alpaka/cuda/Mem.hpp>                      // MemCopy
+#include <alpaka/cuda/Mem.hpp>                      // Copy
 #include <alpaka/cuda/Stream.hpp>                   // StreamCuda
 #include <alpaka/cuda/Event.hpp>                    // EventCuda
 #include <alpaka/cuda/StreamEventTraits.hpp>        // StreamCuda & EventCuda
@@ -73,7 +73,7 @@ namespace alpaka
                 protected AtomicCuda
             {
             public:
-                using MemSpace = mem::MemSpaceCuda;
+                using MemSpace = mem::SpaceCuda;
                 
                 template<
                     typename TAcceleratedKernel>

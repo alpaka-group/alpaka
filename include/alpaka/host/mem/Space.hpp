@@ -21,35 +21,31 @@
 
 #pragma once
 
+#include <alpaka/traits/mem/Space.hpp>
+
 namespace alpaka
 {
-    namespace traits
-    {
-        //-----------------------------------------------------------------------------
-        //! The memory traits.
-        //-----------------------------------------------------------------------------
-        namespace mem
-        {
-            //#############################################################################
-            //! The memory space trait.
-            //#############################################################################
-            template<
-                typename T,
-                typename TSfinae = void>
-            struct MemSpaceType;
-        }
-    }
-
-    //-----------------------------------------------------------------------------
-    //! The memory trait accessors.
-    //-----------------------------------------------------------------------------
     namespace mem
     {
         //#############################################################################
-        //! The memory space trait alias template to remove the ::type.
+        //! The data space on the host.
         //#############################################################################
-        template<
-            typename T>
-        using MemSpaceT = typename traits::mem::MemSpaceType<T>::type;
+        struct SpaceHost;
+    }
+    
+    namespace traits
+    {
+        namespace mem
+        {
+            //#############################################################################
+            //! The SpaceHost memory space trait specialization.
+            //#############################################################################
+            template<>
+            struct SpaceType<
+                alpaka::mem::SpaceHost>
+            {
+                using type = alpaka::mem::SpaceHost;
+            };
+        }
     }
 }

@@ -21,16 +21,16 @@
 
 #pragma once
 
-#include <alpaka/host/MemSpace.hpp>         // MemSpaceHost
-#include <alpaka/host/Stream.hpp>           // StreamHost
+#include <alpaka/host/mem/Space.hpp>    // SpaceHost
+#include <alpaka/host/Stream.hpp>       // StreamHost
 
-#include <alpaka/core/BasicDims.hpp>        // dim::Dim<N>
+#include <alpaka/core/BasicDims.hpp>    // dim::Dim<N>
 
-#include <alpaka/traits/mem/MemBufBase.hpp> // traits::MemAlloc, ...
-#include <alpaka/traits/Extents.hpp>        // traits::getXXX
+#include <alpaka/traits/mem/Buf.hpp>    // traits::Alloc, ...
+#include <alpaka/traits/Extents.hpp>    // traits::getXXX
 
-#include <cassert>                          // assert
-#include <cstring>                          // std::memset
+#include <cassert>                      // assert
+#include <cstring>                      // std::memset
 
 namespace alpaka
 {
@@ -43,27 +43,27 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TDim>
-            struct MemSet<
+            struct Set<
                 TDim, 
-                alpaka::mem::MemSpaceHost>
+                alpaka::mem::SpaceHost>
             {
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
                 template<
-                    typename TMemBufBase, 
+                    typename TBuf, 
                     typename TExtents>
-                ALPAKA_FCT_HOST static void memSet(
-                    TMemBufBase & memBufDst, 
+                ALPAKA_FCT_HOST static void set(
+                    TBuf & memBufDst, 
                     std::uint8_t const & byte, 
                     TExtents const & extents)
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    using Elem = alpaka::mem::MemElemT<TMemBufBase>;
+                    using Elem = alpaka::mem::ElemT<TBuf>;
 
                     static_assert(
-                        std::is_same<alpaka::dim::DimT<TMemBufBase>, alpaka::dim::DimT<TExtents>>::value,
+                        std::is_same<alpaka::dim::DimT<TBuf>, alpaka::dim::DimT<TExtents>>::value,
                         "The destination buffer and the extents are required to have the same dimensionality!");
 
                     auto const uiExtentWidth(alpaka::extent::getWidth(extents));
@@ -85,9 +85,9 @@ namespace alpaka
                     auto const pDstNative(reinterpret_cast<std::uint8_t *>(alpaka::mem::getNativePtr(memBufDst)));
                     auto const uiDstSliceSizeBytes(uiDstPitchBytes * uiDstHeight);
                     
-                    auto const & dstMemBufBase(alpaka::mem::getMemBufBase(memBufDst));
-                    auto const uiDstMemBufBaseWidth(alpaka::extent::getWidth(dstMemBufBase));
-                    auto const uiDstMemBufBaseHeight(alpaka::extent::getHeight(dstMemBufBase));
+                    auto const & dstBuf(alpaka::mem::getBuf(memBufDst));
+                    auto const uiDstBufWidth(alpaka::extent::getWidth(dstBuf));
+                    auto const uiDstBufHeight(alpaka::extent::getHeight(dstBuf));
 
                     int iByte(static_cast<int>(byte));
                     
@@ -102,8 +102,8 @@ namespace alpaka
                         << " dd: " << uiDstDepth
                         << " dptr: " << reinterpret_cast<void *>(pDstNative)
                         << " dpitchb: " << uiDstPitchBytes
-                        << " dbasew: " << uiDstMemBufBaseWidth
-                        << " dbaseh: " << uiDstMemBufBaseHeight
+                        << " dbasew: " << uiDstBufWidth
+                        << " dbaseh: " << uiDstBufHeight
                         << std::endl;
 #endif
                     // If:
@@ -111,8 +111,8 @@ namespace alpaka
                     // -> we can set the whole memory at once overwriting the pitch bytes
                     if((uiExtentWidth == uiDstWidth)
                         && (uiExtentHeight == uiDstHeight)
-                        && (uiExtentWidth == uiDstMemBufBaseWidth)
-                        && (uiExtentHeight == uiDstMemBufBaseHeight))
+                        && (uiExtentWidth == uiDstBufWidth)
+                        && (uiExtentHeight == uiDstBufHeight))
                     {
                         std::memset(
                             reinterpret_cast<void *>(pDstNative),
@@ -127,7 +127,7 @@ namespace alpaka
                             // - the set extents width is identical to the dst extents width
                             // -> we can set whole slices at once overwriting the pitch bytes
                             if((uiExtentWidth == uiDstWidth)
-                                && (uiExtentWidth == uiDstMemBufBaseWidth))
+                                && (uiExtentWidth == uiDstBufWidth))
                             {
                                 std::memset(
                                     reinterpret_cast<void *>(pDstNative + z*uiDstSliceSizeBytes),
@@ -151,17 +151,17 @@ namespace alpaka
                 //! 
                 //-----------------------------------------------------------------------------
                 template<
-                    typename TMemBufBase, 
+                    typename TBuf, 
                     typename TExtents,
                     typename TStream>
-                ALPAKA_FCT_HOST static void memSet(
-                    TMemBufBase & memBufDst, 
+                ALPAKA_FCT_HOST static void set(
+                    TBuf & memBufDst, 
                     std::uint8_t const & byte, 
                     TExtents const & extents,
                     host::detail::StreamHost const &)
                 {
-                    // \TODO: Implement asynchronous host memSet.
-                    memSet(
+                    // \TODO: Implement asynchronous host set.
+                    set(
                         memBufDst,
                         byte,
                         extents);

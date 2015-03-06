@@ -98,10 +98,10 @@ namespace alpaka
         {
             std::vector<DevT<TDevMan>> vDevices;
 
-            std::size_t const uiDeviceCount(devMan.getDeviceCount());
+            std::size_t const uiDeviceCount(devMan.getDevCount());
             for(std::size_t uiDeviceIdx(0); uiDeviceIdx < uiDeviceCount; ++uiDeviceIdx)
             {
-                vDevices.push_back(devMan.getDeviceByIdx(uiDeviceIdx));
+                vDevices.push_back(devMan.getDevByIdx(uiDeviceIdx));
             }
 
             return vDevices;

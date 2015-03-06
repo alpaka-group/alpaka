@@ -39,45 +39,45 @@ namespace alpaka
         namespace detail
         {
             // Forward declaration.
-            class DeviceManagerFibers;
+            class DevManFibers;
 
             //#############################################################################
             //! The fibers accelerator device handle.
             //#############################################################################
-            class DeviceFibers
+            class DevFibers
             {
-                friend class DeviceManagerFibers;
+                friend class DevManFibers;
             protected:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceFibers() = default;
+                ALPAKA_FCT_HOST DevFibers() = default;
             public:
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceFibers(DeviceFibers const &) = default;
+                ALPAKA_FCT_HOST DevFibers(DevFibers const &) = default;
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceFibers(DeviceFibers &&) = default;
+                ALPAKA_FCT_HOST DevFibers(DevFibers &&) = default;
 #endif
                 //-----------------------------------------------------------------------------
                 //! Assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceFibers & operator=(DeviceFibers const &) = default;
+                ALPAKA_FCT_HOST DevFibers & operator=(DevFibers const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Equality comparison operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST bool operator==(DeviceFibers const &) const
+                ALPAKA_FCT_HOST bool operator==(DevFibers const &) const
                 {
                     return true;
                 }
                 //-----------------------------------------------------------------------------
                 //! Inequality comparison operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST bool operator!=(DeviceFibers const & rhs) const
+                ALPAKA_FCT_HOST bool operator!=(DevFibers const & rhs) const
                 {
                     return !((*this) == rhs);
                 }
@@ -86,28 +86,28 @@ namespace alpaka
             //#############################################################################
             //! The fibers accelerator device manager.
             //#############################################################################
-            class DeviceManagerFibers
+            class DevManFibers
             {
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceManagerFibers() = delete;
+                ALPAKA_FCT_HOST DevManFibers() = delete;
 
                 //-----------------------------------------------------------------------------
                 //! \return The number of devices available.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::size_t getDeviceCount()
+                ALPAKA_FCT_HOST static std::size_t getDevCount()
                 {
                     return 1;
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The number of devices available.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static fibers::detail::DeviceFibers getDeviceByIdx(
+                ALPAKA_FCT_HOST static fibers::detail::DevFibers getDevByIdx(
                     std::size_t const & uiIdx)
                 {
-                    std::size_t const uiNumDevices(getDeviceCount());
+                    std::size_t const uiNumDevices(getDevCount());
                     if(uiIdx >= uiNumDevices)
                     {
                         std::stringstream ssErr;
@@ -120,15 +120,15 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The handle to the currently used device.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static fibers::detail::DeviceFibers getCurrentDevice()
+                ALPAKA_FCT_HOST static fibers::detail::DevFibers getCurrentDev()
                 {
                     return {};
                 }
                 //-----------------------------------------------------------------------------
                 //! Sets the device to use with this accelerator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static void setCurrentDevice(
-                    fibers::detail::DeviceFibers const & )
+                ALPAKA_FCT_HOST static void setCurrentDev(
+                    fibers::detail::DevFibers const & )
                 {
                     // The code is already running on this device.
                 }
@@ -148,16 +148,16 @@ namespace alpaka
             struct DevType<
                 AccFibers>
             {
-                using type = fibers::detail::DeviceFibers;
+                using type = fibers::detail::DevFibers;
             };
             //#############################################################################
             //! The fibers accelerator device manager device type trait specialization.
             //#############################################################################
             template<>
             struct DevType<
-                fibers::detail::DeviceManagerFibers>
+                fibers::detail::DevManFibers>
             {
-                using type = fibers::detail::DeviceFibers;
+                using type = fibers::detail::DevFibers;
             };
 
             //#############################################################################
@@ -165,10 +165,10 @@ namespace alpaka
             //#############################################################################
             template<>
             struct GetDevProps<
-                fibers::detail::DeviceFibers>
+                fibers::detail::DevFibers>
             {
                 ALPAKA_FCT_HOST static alpaka::dev::DevProps getDevProps(
-                    fibers::detail::DeviceFibers const &)
+                    fibers::detail::DevFibers const &)
                 {
 #if ALPAKA_INTEGRATION_TEST
                     UInt const uiBlockThreadsCountMax(24u);
@@ -198,16 +198,16 @@ namespace alpaka
             struct DevManType<
                 AccFibers>
             {
-                using type = fibers::detail::DeviceManagerFibers;
+                using type = fibers::detail::DevManFibers;
             };
             //#############################################################################
             //! The fibers accelerator device device manager type trait specialization.
             //#############################################################################
             template<>
             struct DevManType<
-                fibers::detail::DeviceFibers>
+                fibers::detail::DevFibers>
             {
-                using type = fibers::detail::DeviceManagerFibers;
+                using type = fibers::detail::DevManFibers;
             };
         }
 
@@ -218,10 +218,10 @@ namespace alpaka
             //#############################################################################
             template<>
             struct CurrentThreadWaitFor<
-                fibers::detail::DeviceFibers>
+                fibers::detail::DevFibers>
             {
                 ALPAKA_FCT_HOST static void currentThreadWaitFor(
-                    fibers::detail::DeviceFibers const &)
+                    fibers::detail::DevFibers const &)
                 {
                     // Because host calls are not asynchronous, this call never has to wait.
                 }

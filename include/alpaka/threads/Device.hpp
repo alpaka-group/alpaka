@@ -40,45 +40,45 @@ namespace alpaka
         namespace detail
         {
             // Forward declaration.
-            class DeviceManagerThreads;
+            class DevManThreads;
 
             //#############################################################################
             //! The threads accelerator device handle.
             //#############################################################################
-            class DeviceThreads
+            class DevThreads
             {
-                friend class DeviceManagerThreads;
+                friend class DevManThreads;
             protected:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceThreads() = default;
+                ALPAKA_FCT_HOST DevThreads() = default;
             public:
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceThreads(DeviceThreads const &) = default;
+                ALPAKA_FCT_HOST DevThreads(DevThreads const &) = default;
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceThreads(DeviceThreads &&) = default;
+                ALPAKA_FCT_HOST DevThreads(DevThreads &&) = default;
 #endif
                 //-----------------------------------------------------------------------------
                 //! Assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceThreads & operator=(DeviceThreads const &) = default;
+                ALPAKA_FCT_HOST DevThreads & operator=(DevThreads const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Equality comparison operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST bool operator==(DeviceThreads const &) const
+                ALPAKA_FCT_HOST bool operator==(DevThreads const &) const
                 {
                     return true;
                 }
                 //-----------------------------------------------------------------------------
                 //! Inequality comparison operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST bool operator!=(DeviceThreads const & rhs) const
+                ALPAKA_FCT_HOST bool operator!=(DevThreads const & rhs) const
                 {
                     return !((*this) == rhs);
                 }
@@ -87,28 +87,28 @@ namespace alpaka
             //#############################################################################
             //! The threads accelerator device manager.
             //#############################################################################
-            class DeviceManagerThreads
+            class DevManThreads
             {
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceManagerThreads() = delete;
+                ALPAKA_FCT_HOST DevManThreads() = delete;
 
                 //-----------------------------------------------------------------------------
                 //! \return The number of devices available.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::size_t getDeviceCount()
+                ALPAKA_FCT_HOST static std::size_t getDevCount()
                 {
                     return 1;
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The number of devices available.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static threads::detail::DeviceThreads getDeviceByIdx(
+                ALPAKA_FCT_HOST static threads::detail::DevThreads getDevByIdx(
                     std::size_t const & uiIdx)
                 {
-                    std::size_t const uiNumDevices(getDeviceCount());
+                    std::size_t const uiNumDevices(getDevCount());
                     if(uiIdx >= uiNumDevices)
                     {
                         std::stringstream ssErr;
@@ -121,15 +121,15 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The handle to the currently used device.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static threads::detail::DeviceThreads getCurrentDevice()
+                ALPAKA_FCT_HOST static threads::detail::DevThreads getCurrentDev()
                 {
                     return {};
                 }
                 //-----------------------------------------------------------------------------
                 //! Sets the device to use with this accelerator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static void setCurrentDevice(
-                    threads::detail::DeviceThreads const & )
+                ALPAKA_FCT_HOST static void setCurrentDev(
+                    threads::detail::DevThreads const & )
                 {
                     // The code is already running on this device.
                 }
@@ -148,16 +148,16 @@ namespace alpaka
             struct DevType<
                 AccThreads>
             {
-                using type = threads::detail::DeviceThreads;
+                using type = threads::detail::DevThreads;
             };
             //#############################################################################
             //! The threads accelerator device manager device type trait specialization.
             //#############################################################################
             template<>
             struct DevType<
-                threads::detail::DeviceManagerThreads>
+                threads::detail::DevManThreads>
             {
-                using type = threads::detail::DeviceThreads;
+                using type = threads::detail::DevThreads;
             };
 
             //#############################################################################
@@ -165,10 +165,10 @@ namespace alpaka
             //#############################################################################
             template<>
             struct GetDevProps<
-                threads::detail::DeviceThreads>
+                threads::detail::DevThreads>
             {
                 ALPAKA_FCT_HOST static alpaka::dev::DevProps getDevProps(
-                    threads::detail::DeviceThreads const &)
+                    threads::detail::DevThreads const &)
                 {
 #if ALPAKA_INTEGRATION_TEST
                     UInt const uiBlockThreadsCountMax(8u);
@@ -200,16 +200,16 @@ namespace alpaka
             struct DevManType<
                 AccThreads>
             {
-                using type = threads::detail::DeviceManagerThreads;
+                using type = threads::detail::DevManThreads;
             };
             //#############################################################################
             //! The threads accelerator device device manager type trait specialization.
             //#############################################################################
             template<>
             struct DevManType<
-                threads::detail::DeviceThreads>
+                threads::detail::DevThreads>
             {
-                using type = threads::detail::DeviceManagerThreads;
+                using type = threads::detail::DevManThreads;
             };
         }
 
@@ -220,10 +220,10 @@ namespace alpaka
             //#############################################################################
             template<>
             struct CurrentThreadWaitFor<
-                threads::detail::DeviceThreads>
+                threads::detail::DevThreads>
             {
                 ALPAKA_FCT_HOST static void currentThreadWaitFor(
-                    threads::detail::DeviceThreads const &)
+                    threads::detail::DevThreads const &)
                 {
                     // Because host calls are not asynchronous, this call never has to wait.
                 }

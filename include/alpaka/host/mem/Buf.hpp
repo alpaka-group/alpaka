@@ -21,14 +21,14 @@
 
 #pragma once
 
-#include <alpaka/cuda/MemSpace.hpp>         // MemSpaceCuda
-#include <alpaka/cuda/mem/MemSet.hpp>       // MemSet
-#include <alpaka/cuda/Common.hpp>
+#include <alpaka/host/mem/Space.hpp>        // SpaceHost
+#include <alpaka/host/mem/Set.hpp>          // Set
+#include <alpaka/host/Stream.hpp>           // StreamHost
 
 #include <alpaka/core/BasicDims.hpp>        // dim::Dim<N>
 #include <alpaka/core/Vec.hpp>              // Vec<TDim::value>
 
-#include <alpaka/traits/mem/MemBufBase.hpp> // traits::MemCopy
+#include <alpaka/traits/mem/Buf.hpp>        // traits::Alloc, ...
 #include <alpaka/traits/Extents.hpp>        // traits::getXXX
 
 #include <cassert>                          // assert
@@ -36,17 +36,17 @@
 
 namespace alpaka
 {
-    namespace cuda
+    namespace host
     {
         namespace detail
         {
             //#############################################################################
-            //! The CUDA memory buffer.
+            //! The host memory buffer.
             //#############################################################################
             template<
-                typename TElem, 
+                typename TElem,
                 typename TDim>
-            class MemBufBaseCuda
+            class BufHost
             {
             private:
                 using Elem = TElem;
@@ -58,22 +58,37 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TExtents>
-                ALPAKA_FCT_HOST MemBufBaseCuda(
-                    TElem * const pMem,
-                    UInt const & uiPitchBytes,
+                ALPAKA_FCT_HOST BufHost(
                     TExtents const & extents) :
                         m_vExtentsElements(Vec<TDim::value>::fromExtents(extents)),
-                        m_spMem(pMem, &MemBufBaseCuda::freeBuffer),
-                        m_uiPitchBytes(uiPitchBytes)
+                        m_spMem(new TElem[computeElementCount(extents)], &BufHost::freeBuffer),
+                        m_uiPitchBytes(extent::getWidth(extents) * sizeof(TElem))
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-                    static_assert(
-                        std::is_same<TDim, dim::DimT<TExtents>>::value,
-                        "The extents are required to have the same dimensionality as the MemBufBaseCuda!");
+                    
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                    std::cout << BOOST_CURRENT_FUNCTION
+                        << " e: " << m_vExtentsElements
+                        << " ptr: " << static_cast<void *>(m_spMem.get())
+                        << " pitch: " << m_uiPitchBytes
+                        << std::endl;
+#endif
                 }
 
             private:
+                //-----------------------------------------------------------------------------
+                //! \return The number of elements to allocate.
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TExtents>
+                ALPAKA_FCT_HOST static UInt computeElementCount(
+                    TExtents const & extents)
+                {
+                    auto const uiExtentsElementCount(extent::getProductOfExtents(extents));
+                    assert(uiExtentsElementCount>0);
+
+                    return uiExtentsElementCount;
+                }
                 //-----------------------------------------------------------------------------
                 //! Frees the shared buffer.
                 //-----------------------------------------------------------------------------
@@ -83,7 +98,7 @@ namespace alpaka
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                     assert(pBuffer);
-                    cudaFree(reinterpret_cast<void *>(pBuffer));
+                    delete[] pBuffer;
                 }
 
             public:
@@ -95,20 +110,20 @@ namespace alpaka
     }
 
     //-----------------------------------------------------------------------------
-    // Trait specializations for cuda::detail::MemBufBaseCuda.
+    // Trait specializations for host::detail::BufHost.
     //-----------------------------------------------------------------------------
     namespace traits
     {
         namespace dim
         {
             //#############################################################################
-            //! The MemBufBaseCuda dimension getter trait specialization.
+            //! The BufHost dimension getter trait.
             //#############################################################################
             template<
-                typename TElem,
+                typename TElem, 
                 typename TDim>
             struct DimType<
-                cuda::detail::MemBufBaseCuda<TElem, TDim>>
+                host::detail::BufHost<TElem, TDim>>
             {
                 using type = TDim;
             };
@@ -117,78 +132,78 @@ namespace alpaka
         namespace extent
         {
             //#############################################################################
-            //! The MemBufBaseCuda extents get trait specialization.
+            //! The BufHost extents get trait specialization.
             //#############################################################################
             template<
                 typename TElem, 
                 typename TDim>
             struct GetExtents<
-                cuda::detail::MemBufBaseCuda<TElem, TDim>>
+                host::detail::BufHost<TElem, TDim>>
             {
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static Vec<TDim::value> getExtents(
-                    cuda::detail::MemBufBaseCuda<TElem, TDim> const & extents)
+                    host::detail::BufHost<TElem, TDim> const & extents)
                 {
                     return {extents.m_vExtentsElements};
                 }
             };
 
             //#############################################################################
-            //! The MemBufBaseCuda width get trait specialization.
+            //! The BufHost width get trait specialization.
             //#############################################################################
             template<
-                typename TElem,
+                typename TElem, 
                 typename TDim>
             struct GetWidth<
-                cuda::detail::MemBufBaseCuda<TElem, TDim>,
+                host::detail::BufHost<TElem, TDim>,
                 typename std::enable_if<(TDim::value >= 1u) && (TDim::value <= 3u)>::type>
             {
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static UInt getWidth(
-                    cuda::detail::MemBufBaseCuda<TElem, TDim> const & extent)
+                    host::detail::BufHost<TElem, TDim> const & extent)
                 {
                     return extent.m_vExtentsElements[0u];
                 }
             };
 
             //#############################################################################
-            //! The MemBufBaseCuda height get trait specialization.
+            //! The BufHost height get trait specialization.
             //#############################################################################
             template<
-                typename TElem,
+                typename TElem, 
                 typename TDim>
             struct GetHeight<
-                cuda::detail::MemBufBaseCuda<TElem, TDim>,
+                host::detail::BufHost<TElem, TDim>,
                 typename std::enable_if<(TDim::value >= 2u) && (TDim::value <= 3u)>::type>
             {
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static UInt getHeight(
-                    cuda::detail::MemBufBaseCuda<TElem, TDim> const & extent)
+                    host::detail::BufHost<TElem, TDim> const & extent)
                 {
                     return extent.m_vExtentsElements[1u];
                 }
             };
             //#############################################################################
-            //! The MemBufBaseCuda depth get trait specialization.
+            //! The BufHost depth get trait specialization.
             //#############################################################################
             template<
                 typename TElem, 
                 typename TDim>
             struct GetDepth<
-                cuda::detail::MemBufBaseCuda<TElem, TDim>,
+                host::detail::BufHost<TElem, TDim>,
                 typename std::enable_if<(TDim::value >= 3u) && (TDim::value <= 3u)>::type>
             {
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static UInt getDepth(
-                    cuda::detail::MemBufBaseCuda<TElem, TDim> const & extent)
+                    host::detail::BufHost<TElem, TDim> const & extent)
                 {
                     return extent.m_vExtentsElements[2u];
                 }
@@ -198,19 +213,19 @@ namespace alpaka
         namespace offset
         {
             //#############################################################################
-            //! The MemBufBaseCuda offsets get trait specialization.
+            //! The BufHost offsets get trait specialization.
             //#############################################################################
             template<
                 typename TElem, 
                 typename TDim>
             struct GetOffsets<
-                cuda::detail::MemBufBaseCuda<TElem, TDim>>
+                host::detail::BufHost<TElem, TDim>>
             {
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static Vec<TDim::value> getOffsets(
-                    cuda::detail::MemBufBaseCuda<TElem, TDim> const &)
+                    host::detail::BufHost<TElem, TDim> const &)
                 {
                     return Vec<TDim::value>();
                 }
@@ -220,266 +235,125 @@ namespace alpaka
         namespace mem
         {
             //#############################################################################
-            //! The MemBufBaseCuda base memory buffer trait specialization.
+            //! The BufHost memory space trait specialization.
             //#############################################################################
             template<
                 typename TElem, 
                 typename TDim>
-            struct IsMemBufBase<
-                cuda::detail::MemBufBaseCuda<TElem, TDim>>
+            struct SpaceType<
+                host::detail::BufHost<TElem, TDim>>
             {
-                static const bool value = true;
+                using type = alpaka::mem::SpaceHost;
             };
 
             //#############################################################################
-            //! The MemBufBaseCuda memory space trait specialization.
+            //! The BufHost memory element type get trait specialization.
             //#############################################################################
             template<
                 typename TElem, 
                 typename TDim>
-            struct MemSpaceType<
-                cuda::detail::MemBufBaseCuda<TElem, TDim>>
-            {
-                using type = alpaka::mem::MemSpaceCuda;
-            };
-
-            //#############################################################################
-            //! The MemBufBaseCuda memory element type get trait specialization.
-            //#############################################################################
-            template<
-                typename TElem, 
-                typename TDim>
-            struct MemElemType<
-                cuda::detail::MemBufBaseCuda<TElem, TDim>>
+            struct ElemType<
+                host::detail::BufHost<TElem, TDim>>
             {
                 using type = TElem;
             };
 
             //#############################################################################
-            //! The MemBufBaseCuda base buffer trait specialization.
+            //! The BufHost base buffer trait specialization.
             //#############################################################################
             template<
                 typename TElem,
                 typename TDim>
-            struct GetMemBufBase<
-                cuda::detail::MemBufBaseCuda<TElem, TDim>>
+            struct GetBuf<
+                host::detail::BufHost<TElem, TDim>>
             {
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static cuda::detail::MemBufBaseCuda<TElem, TDim> const & getMemBufBase(
-                    cuda::detail::MemBufBaseCuda<TElem, TDim> const & memBufBase)
+                ALPAKA_FCT_HOST static host::detail::BufHost<TElem, TDim> const & getBuf(
+                    host::detail::BufHost<TElem, TDim> const & buf)
                 {
-                    return memBufBase;
+                    return buf;
                 }
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static cuda::detail::MemBufBaseCuda<TElem, TDim> & getMemBufBase(
-                    cuda::detail::MemBufBaseCuda<TElem, TDim> & memBufBase)
+                ALPAKA_FCT_HOST static host::detail::BufHost<TElem, TDim> & getBuf(
+                    host::detail::BufHost<TElem, TDim> & buf)
                 {
-                    return memBufBase;
+                    return buf;
                 }
             };
 
             //#############################################################################
-            //! The MemBufBaseCuda native pointer get trait specialization.
+            //! The BufHost native pointer get trait specialization.
             //#############################################################################
             template<
                 typename TElem, 
                 typename TDim>
             struct GetNativePtr<
-                cuda::detail::MemBufBaseCuda<TElem, TDim>>
+                host::detail::BufHost<TElem, TDim>>
             {
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static TElem const * getNativePtr(
-                    cuda::detail::MemBufBaseCuda<TElem, TDim> const & memBuf)
+                    host::detail::BufHost<TElem, TDim> const & buf)
                 {
-                    return memBuf.m_spMem.get();
+                    return buf.m_spMem.get();
                 }
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static TElem * getNativePtr(
-                    cuda::detail::MemBufBaseCuda<TElem, TDim> & memBuf)
+                    host::detail::BufHost<TElem, TDim> & buf)
                 {
-                    return memBuf.m_spMem.get();
+                    return buf.m_spMem.get();
                 }
             };
 
             //#############################################################################
-            //! The CUDA buffer pitch get trait specialization.
+            //! The BufHost pitch get trait specialization.
             //#############################################################################
             template<
                 typename TElem,
                 typename TDim>
             struct GetPitchBytes<
-                cuda::detail::MemBufBaseCuda<TElem, TDim>>
+                host::detail::BufHost<TElem, TDim>>
             {
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static UInt getPitchBytes(
-                    cuda::detail::MemBufBaseCuda<TElem, TDim> const & memPitch)
+                    host::detail::BufHost<TElem, TDim> const & pitch)
                 {
-                    return memPitch.m_uiPitchBytes;
+                    // No pitch on the host currently.
+                    return pitch.m_uiPitchBytes;
                 }
             };
 
             //#############################################################################
-            //! The CUDA 1D memory allocation trait specialization.
+            //! The host accelerators memory allocation trait specialization.
             //#############################################################################
             template<
-                typename T>
-            struct MemAlloc<
-                T, 
-                alpaka::dim::Dim1, 
-                alpaka::mem::MemSpaceCuda>
+                typename TElem, 
+                typename TDim>
+            struct Alloc<
+                TElem,
+                TDim,
+                alpaka::mem::SpaceHost>
             {
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
                 template<
                     typename TExtents>
-                ALPAKA_FCT_HOST static alpaka::cuda::detail::MemBufBaseCuda<T, alpaka::dim::Dim1> memAlloc(
+                ALPAKA_FCT_HOST static host::detail::BufHost<TElem, TDim> alloc(
                     TExtents const & extents)
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    auto const uiWidth(alpaka::extent::getWidth(extents));
-                    assert(uiWidth>0);
-                    auto const uiWidthBytes(uiWidth * sizeof(T));
-                    assert(uiWidthBytes>0);
-
-                    void * pBuffer;
-                    ALPAKA_CUDA_CHECK(cudaMalloc(
-                        &pBuffer, 
-                        uiWidthBytes));
-                    assert((pBuffer));
-                    
-#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                    std::cout << BOOST_CURRENT_FUNCTION
-                        << " ew: " << uiWidth
-                        << " ewb: " << uiWidthBytes
-                        << " ptr: " << pBuffer
-                        << std::endl;
-#endif
-                    return
-                        alpaka::cuda::detail::MemBufBaseCuda<T, alpaka::dim::Dim1>(
-                            reinterpret_cast<T *>(pBuffer),
-                            uiWidthBytes,
-                            extents);
-                }
-            };
-
-            //#############################################################################
-            //! The CUDA 2D memory allocation trait specialization.
-            //#############################################################################
-            template<
-                typename T>
-            struct MemAlloc<
-                T, 
-                alpaka::dim::Dim2, 
-                alpaka::mem::MemSpaceCuda>
-            {
-                //-----------------------------------------------------------------------------
-                //! 
-                //-----------------------------------------------------------------------------
-                template<
-                    typename TExtents>
-                ALPAKA_FCT_HOST static alpaka::cuda::detail::MemBufBaseCuda<T, alpaka::dim::Dim2> memAlloc(
-                    TExtents const & extents)
-                {
-                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-                    auto const uiWidth(alpaka::extent::getWidth(extents));
-                    auto const uiWidthBytes(uiWidth * sizeof(T));
-                    assert(uiWidthBytes>0);
-                    auto const uiHeight(alpaka::extent::getHeight(extents));
-#ifndef NDEBUG
-                    auto const uiElementCount(uiWidth * uiHeight);
-#endif
-                    assert(uiElementCount>0);
-
-                    void * pBuffer;
-                    std::size_t uiPitch;
-                    ALPAKA_CUDA_CHECK(cudaMallocPitch(
-                        &pBuffer,
-                        &uiPitch,
-                        uiWidthBytes,
-                        uiHeight));
-                    assert(pBuffer);
-                    assert(uiPitch>=uiWidthBytes);
-                    
-#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                    std::cout << BOOST_CURRENT_FUNCTION
-                        << " ew: " << uiWidth
-                        << " eh: " << uiHeight
-                        << " ewb: " << uiWidthBytes
-                        << " ptr: " << pBuffer
-                        << " pitch: " << uiPitch
-                        << std::endl;
-#endif
-                    return
-                        alpaka::cuda::detail::MemBufBaseCuda<T, alpaka::dim::Dim2>(
-                            reinterpret_cast<T *>(pBuffer),
-                            static_cast<UInt>(uiPitch),
-                            extents);
-                }
-            };
-
-            //#############################################################################
-            //! The CUDA 3D memory allocation trait specialization.
-            //#############################################################################
-            template<
-                typename T>
-            struct MemAlloc<
-                T, 
-                alpaka::dim::Dim3, 
-                alpaka::mem::MemSpaceCuda>
-            {
-                //-----------------------------------------------------------------------------
-                //! 
-                //-----------------------------------------------------------------------------
-                template<
-                    typename TExtents>
-                ALPAKA_FCT_HOST static alpaka::cuda::detail::MemBufBaseCuda<T, alpaka::dim::Dim3> memAlloc(
-                    TExtents const & extents)
-                {
-                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-                    cudaExtent const cudaExtentVal(
-                        make_cudaExtent(
-                            alpaka::extent::getWidth(extents) * sizeof(T),
-                            alpaka::extent::getHeight(extents),
-                            alpaka::extent::getDepth(extents)));
-                    
-                    cudaPitchedPtr cudaPitchedPtrVal;
-                    ALPAKA_CUDA_CHECK(cudaMalloc3D(
-                        &cudaPitchedPtrVal,
-                        cudaExtentVal));
-
-                    assert(cudaPitchedPtrVal.ptr);
-                    
-#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                    std::cout << BOOST_CURRENT_FUNCTION
-                        << " ew: " << alpaka::extent::getWidth(extents)
-                        << " eh: " << cudaExtentVal.height
-                        << " ed: " << cudaExtentVal.depth
-                        << " ewb: " << cudaExtentVal.width
-                        << " ptr: " << cudaPitchedPtrVal.ptr
-                        << " pitch: " << cudaPitchedPtrVal.pitch
-                        << " wb: " << cudaPitchedPtrVal.xsize
-                        << " h: " << cudaPitchedPtrVal.ysize
-                        << std::endl;
-#endif
-                    return
-                        alpaka::cuda::detail::MemBufBaseCuda<T, alpaka::dim::Dim3>(
-                            reinterpret_cast<T *>(cudaPitchedPtrVal.ptr),
-                            static_cast<UInt>(cudaPitchedPtrVal.pitch),
-                            extents);
+                    return host::detail::BufHost<TElem, TDim>(extents);
                 }
             };
         }

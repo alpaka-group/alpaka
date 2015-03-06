@@ -28,7 +28,7 @@
 #include <alpaka/serial/Atomic.hpp>                 // AtomicSerial
 
 // User functionality.
-#include <alpaka/host/Mem.hpp>                      // MemCopy
+#include <alpaka/host/Mem.hpp>                      // Copy
 #include <alpaka/serial/Stream.hpp>                 // StreamSerial
 #include <alpaka/serial/Event.hpp>                  // EventSerial
 #include <alpaka/serial/Device.hpp>                 // Devices
@@ -74,7 +74,7 @@ namespace alpaka
                 protected AtomicSerial
             {
             public:
-                using MemSpace = mem::MemSpaceHost;
+                using MemSpace = mem::SpaceHost;
                 
                 template<
                     typename TAcceleratedKernel>

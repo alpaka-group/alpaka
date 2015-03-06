@@ -39,45 +39,45 @@ namespace alpaka
         namespace detail
         {
             // Forward declaration.
-            class DeviceManagerSerial;
+            class DevManSerial;
 
             //#############################################################################
             //! The serial accelerator device handle.
             //#############################################################################
-            class DeviceSerial
+            class DevSerial
             {
-                friend class DeviceManagerSerial;
+                friend class DevManSerial;
             protected:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceSerial() = default;
+                ALPAKA_FCT_HOST DevSerial() = default;
             public:
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceSerial(DeviceSerial const &) = default;
+                ALPAKA_FCT_HOST DevSerial(DevSerial const &) = default;
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceSerial(DeviceSerial &&) = default;
+                ALPAKA_FCT_HOST DevSerial(DevSerial &&) = default;
 #endif
                 //-----------------------------------------------------------------------------
                 //! Assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceSerial & operator=(DeviceSerial const &) = default;
+                ALPAKA_FCT_HOST DevSerial & operator=(DevSerial const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Equality comparison operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST bool operator==(DeviceSerial const &) const
+                ALPAKA_FCT_HOST bool operator==(DevSerial const &) const
                 {
                     return true;
                 }
                 //-----------------------------------------------------------------------------
                 //! Inequality comparison operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST bool operator!=(DeviceSerial const & rhs) const
+                ALPAKA_FCT_HOST bool operator!=(DevSerial const & rhs) const
                 {
                     return !((*this) == rhs);
                 }
@@ -86,28 +86,28 @@ namespace alpaka
             //#############################################################################
             //! The serial accelerator device manager.
             //#############################################################################
-            class DeviceManagerSerial
+            class DevManSerial
             {
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceManagerSerial() = delete;
+                ALPAKA_FCT_HOST DevManSerial() = delete;
 
                 //-----------------------------------------------------------------------------
                 //! \return The number of devices available.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::size_t getDeviceCount()
+                ALPAKA_FCT_HOST static std::size_t getDevCount()
                 {
                     return 1;
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The number of devices available.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static serial::detail::DeviceSerial getDeviceByIdx(
+                ALPAKA_FCT_HOST static serial::detail::DevSerial getDevByIdx(
                     std::size_t const & uiIdx)
                 {
-                    std::size_t const uiNumDevices(getDeviceCount());
+                    std::size_t const uiNumDevices(getDevCount());
                     if(uiIdx >= uiNumDevices)
                     {
                         std::stringstream ssErr;
@@ -120,15 +120,15 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The handle to the currently used device.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static serial::detail::DeviceSerial getCurrentDevice()
+                ALPAKA_FCT_HOST static serial::detail::DevSerial getCurrentDev()
                 {
                     return {};
                 }
                 //-----------------------------------------------------------------------------
                 //! Sets the device to use with this accelerator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static void setCurrentDevice(
-                    serial::detail::DeviceSerial const & )
+                ALPAKA_FCT_HOST static void setCurrentDev(
+                    serial::detail::DevSerial const & )
                 {
                     // The code is already running on this device.
                 }
@@ -147,16 +147,16 @@ namespace alpaka
             struct DevType<
                 AccSerial>
             {
-                using type = serial::detail::DeviceSerial;
+                using type = serial::detail::DevSerial;
             };
             //#############################################################################
             //! The serial accelerator device manager device type trait specialization.
             //#############################################################################
             template<>
             struct DevType<
-                serial::detail::DeviceManagerSerial>
+                serial::detail::DevManSerial>
             {
-                using type = serial::detail::DeviceSerial;
+                using type = serial::detail::DevSerial;
             };
 
             //#############################################################################
@@ -164,10 +164,10 @@ namespace alpaka
             //#############################################################################
             template<>
             struct GetDevProps<
-                serial::detail::DeviceSerial>
+                serial::detail::DevSerial>
             {
                 ALPAKA_FCT_HOST static alpaka::dev::DevProps getDevProps(
-                    serial::detail::DeviceSerial const &)
+                    serial::detail::DevSerial const &)
                 {
                     return alpaka::dev::DevProps(
                         // m_sName
@@ -192,16 +192,16 @@ namespace alpaka
             struct DevManType<
                 AccSerial>
             {
-                using type = serial::detail::DeviceManagerSerial;
+                using type = serial::detail::DevManSerial;
             };
             //#############################################################################
             //! The serial accelerator device device manager type trait specialization.
             //#############################################################################
             template<>
             struct DevManType<
-                serial::detail::DeviceSerial>
+                serial::detail::DevSerial>
             {
-                using type = serial::detail::DeviceManagerSerial;
+                using type = serial::detail::DevManSerial;
             };
         }
 
@@ -212,10 +212,10 @@ namespace alpaka
             //#############################################################################
             template<>
             struct CurrentThreadWaitFor<
-                serial::detail::DeviceSerial>
+                serial::detail::DevSerial>
             {
                 ALPAKA_FCT_HOST static void currentThreadWaitFor(
-                    serial::detail::DeviceSerial const &)
+                    serial::detail::DevSerial const &)
                 {
                     // Because host calls are not asynchronous, this call never has to wait.
                 }

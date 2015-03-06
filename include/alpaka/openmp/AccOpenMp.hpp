@@ -28,7 +28,7 @@
 #include <alpaka/openmp/Atomic.hpp>                 // AtomicOpenMp
 
 // User functionality.
-#include <alpaka/host/Mem.hpp>                      // MemCopy
+#include <alpaka/host/Mem.hpp>                      // Copy
 #include <alpaka/openmp/Stream.hpp>                 // StreamOpenMp
 #include <alpaka/openmp/Event.hpp>                  // EventOpenMp
 #include <alpaka/openmp/Device.hpp>                 // Devices
@@ -73,7 +73,7 @@ namespace alpaka
                 protected AtomicOpenMp
             {
             public:
-                using MemSpace = mem::MemSpaceHost;
+                using MemSpace = mem::SpaceHost;
                 
                 template<
                     typename TAcceleratedKernel>

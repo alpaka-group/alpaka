@@ -56,7 +56,7 @@ namespace alpaka
                 ALPAKA_FCT_HOST void operator()(
                     Vec<3u> & v3uiBlockThreadExtents)
                 {
-                    auto const devProps(dev::getDevProps(dev::DevManT<TAcc>::getCurrentDevice()));
+                    auto const devProps(dev::getDevProps(dev::DevManT<TAcc>::getCurrentDev()));
                     auto const & v3uiBlockThreadExtentsMax(devProps.m_v3uiBlockThreadExtentsMax);
 
                     v3uiBlockThreadExtents = Vec<3u>(
@@ -106,7 +106,7 @@ namespace alpaka
                 ALPAKA_FCT_HOST void operator()(
                     UInt & uiBlockThreadCount)
                 {
-                    auto const devProps(dev::getDevProps(dev::DevManT<TAcc>::getCurrentDevice()));
+                    auto const devProps(dev::getDevProps(dev::DevManT<TAcc>::getCurrentDev()));
                     auto const & uiBlockThreadCountMax(devProps.m_uiBlockThreadsCountMax);
 
                     uiBlockThreadCount = std::min(uiBlockThreadCount, uiBlockThreadCountMax);
@@ -263,7 +263,7 @@ namespace alpaka
             auto const v3uiGridBlockExtents(getWorkDiv<Grid, Blocks, dim::Dim3>(workDiv));
             auto const v3uiBlockThreadExtents(getWorkDiv<Block, Threads, dim::Dim3>(workDiv));
 
-            auto const devProps(dev::getDevProps(dev::DevManT<TAcc>::getCurrentDevice()));
+            auto const devProps(dev::getDevProps(dev::DevManT<TAcc>::getCurrentDev()));
             auto const & v3uiBlockThreadExtentsMax(devProps.m_v3uiBlockThreadExtentsMax);
             auto const & uiBlockThreadCountMax(devProps.m_uiBlockThreadsCountMax);
 

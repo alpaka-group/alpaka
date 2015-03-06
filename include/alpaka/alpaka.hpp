@@ -21,15 +21,17 @@
 
 #pragma once
 
+#define ALPAKA_VERSION 1
+
 #include <alpaka/core/BasicDims.hpp>
 #include <alpaka/core/BasicWorkDiv.hpp>
 #include <alpaka/core/Common.hpp>
 #include <alpaka/core/EnabledAccelerators.hpp>
 #include <alpaka/core/ForEachType.hpp>
 #include <alpaka/core/KernelExecCreator.hpp>
-#include <alpaka/core/mem/MemBufBasePlainPtrWrapper.hpp>
-#include <alpaka/core/mem/MemBufBaseStdContainers.hpp>
-#include <alpaka/core/mem/MemBufView.hpp>
+#include <alpaka/core/mem/BufPlainPtrWrapper.hpp>
+#include <alpaka/core/mem/BufStdContainers.hpp>
+#include <alpaka/core/mem/View.hpp>
 #include <alpaka/core/Ops.hpp>
 #include <alpaka/core/Positioning.hpp>
 #include <alpaka/core/Vec.hpp>
@@ -38,7 +40,6 @@
 #include <alpaka/interfaces/IAcc.hpp>
 
 #include <alpaka/host/Mem.hpp>
-#include <alpaka/host/MemSpace.hpp>
 #include <alpaka/host/SysInfo.hpp>
 
 #include <alpaka/traits/Acc.hpp>

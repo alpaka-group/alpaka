@@ -42,45 +42,45 @@ namespace alpaka
         namespace detail
         {
             // Forward declaration.
-            class DeviceManagerOpenMp;
+            class DevManOpenMp;
 
             //#############################################################################
             //! The OpenMP accelerator device handle.
             //#############################################################################
-            class DeviceOpenMp
+            class DevOpenMp
             {
-                friend class DeviceManagerOpenMp;
+                friend class DevManOpenMp;
             protected:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceOpenMp() = default;
+                ALPAKA_FCT_HOST DevOpenMp() = default;
             public:
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceOpenMp(DeviceOpenMp const &) = default;
+                ALPAKA_FCT_HOST DevOpenMp(DevOpenMp const &) = default;
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceOpenMp(DeviceOpenMp &&) = default;
+                ALPAKA_FCT_HOST DevOpenMp(DevOpenMp &&) = default;
 #endif
                 //-----------------------------------------------------------------------------
                 //! Assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceOpenMp & operator=(DeviceOpenMp const &) = default;
+                ALPAKA_FCT_HOST DevOpenMp & operator=(DevOpenMp const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Equality comparison operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST bool operator==(DeviceOpenMp const &) const
+                ALPAKA_FCT_HOST bool operator==(DevOpenMp const &) const
                 {
                     return true;
                 }
                 //-----------------------------------------------------------------------------
                 //! Inequality comparison operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST bool operator!=(DeviceOpenMp const & rhs) const
+                ALPAKA_FCT_HOST bool operator!=(DevOpenMp const & rhs) const
                 {
                     return !((*this) == rhs);
                 }
@@ -93,28 +93,28 @@ namespace alpaka
             //! The OpenMP accelerator device manager.
             // \TODO: Add ability to offload to Xeon Phi.
             //#############################################################################
-            class DeviceManagerOpenMp
+            class DevManOpenMp
             {
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DeviceManagerOpenMp() = delete;
+                ALPAKA_FCT_HOST DevManOpenMp() = delete;
 
                 //-----------------------------------------------------------------------------
                 //! \return The number of devices available.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::size_t getDeviceCount()
+                ALPAKA_FCT_HOST static std::size_t getDevCount()
                 {
                     return 1;
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The number of devices available.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static openmp::detail::DeviceOpenMp getDeviceByIdx(
+                ALPAKA_FCT_HOST static openmp::detail::DevOpenMp getDevByIdx(
                     std::size_t const & uiIdx)
                 {
-                    std::size_t const uiNumDevices(getDeviceCount());
+                    std::size_t const uiNumDevices(getDevCount());
                     if(uiIdx >= uiNumDevices)
                     {
                         std::stringstream ssErr;
@@ -127,15 +127,15 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The handle to the currently used device.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static openmp::detail::DeviceOpenMp getCurrentDevice()
+                ALPAKA_FCT_HOST static openmp::detail::DevOpenMp getCurrentDev()
                 {
                     return {};
                 }
                 //-----------------------------------------------------------------------------
                 //! Sets the device to use with this accelerator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static void setCurrentDevice(
-                    openmp::detail::DeviceOpenMp const & )
+                ALPAKA_FCT_HOST static void setCurrentDev(
+                    openmp::detail::DevOpenMp const & )
                 {
                     // The code is already running on this device.
                 }
@@ -154,16 +154,16 @@ namespace alpaka
             struct DevType<
                 AccOpenMp>
             {
-                using type = openmp::detail::DeviceOpenMp;
+                using type = openmp::detail::DevOpenMp;
             };
             //#############################################################################
             //! The OpenMP accelerator device manager device type trait specialization.
             //#############################################################################
             template<>
             struct DevType<
-                openmp::detail::DeviceManagerOpenMp>
+                openmp::detail::DevManOpenMp>
             {
-                using type = openmp::detail::DeviceOpenMp;
+                using type = openmp::detail::DevOpenMp;
             };
 
             //#############################################################################
@@ -171,10 +171,10 @@ namespace alpaka
             //#############################################################################
             template<>
             struct GetDevProps<
-                openmp::detail::DeviceOpenMp>
+                openmp::detail::DevOpenMp>
             {
                 ALPAKA_FCT_HOST static alpaka::dev::DevProps getDevProps(
-                    openmp::detail::DeviceOpenMp const &)
+                    openmp::detail::DevOpenMp const &)
                 {
 #if ALPAKA_INTEGRATION_TEST
                         
@@ -211,16 +211,16 @@ namespace alpaka
             struct DevManType<
                 AccOpenMp>
             {
-                using type = openmp::detail::DeviceManagerOpenMp;
+                using type = openmp::detail::DevManOpenMp;
             };
             //#############################################################################
             //! The OpenMP accelerator device device manager type trait specialization.
             //#############################################################################
             template<>
             struct DevManType<
-                openmp::detail::DeviceOpenMp>
+                openmp::detail::DevOpenMp>
             {
-                using type = openmp::detail::DeviceManagerOpenMp;
+                using type = openmp::detail::DevManOpenMp;
             };
         }
 
@@ -231,10 +231,10 @@ namespace alpaka
             //#############################################################################
             template<>
             struct CurrentThreadWaitFor<
-                openmp::detail::DeviceOpenMp>
+                openmp::detail::DevOpenMp>
             {
                 ALPAKA_FCT_HOST static void currentThreadWaitFor(
-                    openmp::detail::DeviceOpenMp const &)
+                    openmp::detail::DevOpenMp const &)
                 {
                     // Because host calls are not asynchronous, this call never has to wait.
                 }

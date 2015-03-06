@@ -21,13 +21,13 @@
 
 #pragma once
 
-#include <alpaka/host/MemSpace.hpp>         // MemSpaceHost
-#include <alpaka/host/mem/MemCopy.hpp>      // MemCopy
-#include <alpaka/host/mem/MemBufBase.hpp>   // MemBufBaseHost
+#include <alpaka/host/mem/Space.hpp>// SpaceHost
+#include <alpaka/host/mem/Copy.hpp> // Copy
+#include <alpaka/host/mem/Buf.hpp>  // BufHost
 
-#include <alpaka/core/mem/MemBufView.hpp>   // MemBufView
+#include <alpaka/core/mem/View.hpp> // View
 
-#include <alpaka/traits/Mem.hpp>            // traits::mem::MemBufBaseType
+#include <alpaka/traits/Mem.hpp>    // traits::mem::BufType
 
 namespace alpaka
 {
@@ -36,37 +36,37 @@ namespace alpaka
         namespace mem
         {
             //#############################################################################
-            //! The MemBufBaseHost memory buffer type trait specialization.
+            //! The BufHost memory buffer type trait specialization.
             //#############################################################################
             template<
                 typename TElem,
                 typename TDim>
-            struct MemBufBaseType<
-                TElem, TDim, alpaka::mem::MemSpaceHost>
+            struct BufType<
+                TElem, TDim, alpaka::mem::SpaceHost>
             {
-                using type = host::detail::MemBufBaseHost<TElem, TDim>;
+                using type = host::detail::BufHost<TElem, TDim>;
             };
 
             //#############################################################################
-            //! The MemBufBaseCuda memory buffer type trait specialization.
+            //! The BufCuda memory buffer type trait specialization.
             //#############################################################################
             template<
                 typename TElem,
                 typename TDim>
-            struct MemBufViewType<
-                host::detail::MemBufBaseHost<TElem, TDim>>
+            struct ViewType<
+                host::detail::BufHost<TElem, TDim>>
             {
-                using type = alpaka::mem::detail::MemBufView<host::detail::MemBufBaseHost<TElem, TDim>>;
+                using type = alpaka::mem::detail::View<host::detail::BufHost<TElem, TDim>>;
             };
 
             /*//#############################################################################
             //! The memory buffer view creation type trait.
             //#############################################################################
             template<
-                typename TMemBuf,
+                typename TBuf,
                 typename TExtents,
                 typename TOffsets>
-            struct CreateMemBufView<
+            struct CreateView<
                 TExtents,
                 TOffsets>
             {

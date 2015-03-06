@@ -287,21 +287,21 @@ struct MatMulTester
         std::vector<std::uint32_t> vuiB(uiM * uiN, 1u);
         // Wrap the std::vectors into a memory buffer object.
         // For 1D data this would not be required because alpaka::mem::copy is specialized for std::vector and std::array.
-        // For multi dimensional data you could directly create them using alpaka::mem::alloc<Type, MemSpaceHost>, which is not used here.
-        // Instead we use MemBufBasePlainPtrWrapper to wrap the data.
-        using MemBufWrapper = alpaka::mem::MemBufBasePlainPtrWrapper<
-            alpaka::mem::MemSpaceHost,
+        // For multi dimensional data you could directly create them using alpaka::mem::alloc<Type, SpaceHost>, which is not used here.
+        // Instead we use BufPlainPtrWrapper to wrap the data.
+        using MemBufWrapper = alpaka::mem::BufPlainPtrWrapper<
+            alpaka::mem::SpaceHost,
             std::uint32_t,
             alpaka::dim::Dim2>;
         MemBufWrapper memBufAHost(vuiA.data(), v2uiExtentsA);
         MemBufWrapper memBufBHost(vuiB.data(), v2uiExtentsB);
 
         // Allocate C and set it to zero.
-        auto memBufCHost(alpaka::mem::alloc<std::uint32_t, alpaka::mem::MemSpaceHost>(v2uiExtentsC));
+        auto memBufCHost(alpaka::mem::alloc<std::uint32_t, alpaka::mem::SpaceHost>(v2uiExtentsC));
         alpaka::mem::set(memBufCHost, 0u, v2uiExtentsC);
 
         // Allocate the buffers on the accelerator.
-        using AccMemSpace = typename alpaka::mem::MemSpaceT<TAcc>;
+        using AccMemSpace = typename alpaka::mem::SpaceT<TAcc>;
         auto memBufAAcc(alpaka::mem::alloc<std::uint32_t, AccMemSpace>(v2uiExtentsA));
         auto memBufBAcc(alpaka::mem::alloc<std::uint32_t, AccMemSpace>(v2uiExtentsB));
         auto memBufCAcc(alpaka::mem::alloc<std::uint32_t, AccMemSpace>(v2uiExtentsC));
@@ -420,8 +420,8 @@ int main(
 #ifdef ALPAKA_CUDA_ENABLED
             // Select the first CUDA device.
             // NOTE: This is not required to run any kernels on the CUDA accelerator because all accelerators have a default device. This only shows the possibility.
-            alpaka::dev::DevManT<alpaka::AccCuda>::setCurrentDevice(
-                alpaka::dev::DevManT<alpaka::AccCuda>::getCurrentDevice());
+            alpaka::dev::DevManT<alpaka::AccCuda>::setCurrentDev(
+                alpaka::dev::DevManT<alpaka::AccCuda>::getCurrentDev());
 #endif
             MatMulTester matMulTester;
 

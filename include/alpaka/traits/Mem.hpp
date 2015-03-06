@@ -21,9 +21,9 @@
 
 #pragma once
 
-#include <alpaka/traits/mem/MemSpace.hpp>   // MemSpaceT
-#include <alpaka/traits/mem/MemBufBase.hpp> // MemAlloc
-#include <alpaka/traits/mem/MemBufView.hpp> // MemBufViewType
+#include <alpaka/traits/mem/Space.hpp>  // SpaceT
+#include <alpaka/traits/mem/Buf.hpp>    // Alloc
+#include <alpaka/traits/mem/View.hpp>   // ViewType
 
 namespace alpaka
 {
@@ -38,11 +38,11 @@ namespace alpaka
             //! The memory buffer base type trait.
             //#############################################################################
             template<
-                typename TMemSpace,
+                typename TSpace,
                 typename TElem,
                 typename TDim,
                 typename TSfinae = void>
-            struct MemBufBaseType;
+            struct BufType;
         }
     }
 
@@ -57,7 +57,7 @@ namespace alpaka
         template<
             typename TElem,
             typename TDim,
-            typename TMemSpace>
-        using MemBufBaseT = typename traits::mem::MemBufBaseType<TElem, TDim, MemSpaceT<TMemSpace>>::type;
+            typename TSpace>
+        using BufT = typename traits::mem::BufType<TElem, TDim, SpaceT<TSpace>>::type;
     }
 }

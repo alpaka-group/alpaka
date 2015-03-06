@@ -21,13 +21,13 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>           // ALPAKA_FCT_HOST
-#include <alpaka/core/Vec.hpp>              // Vec
+#include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST
+#include <alpaka/core/Vec.hpp>          // Vec
 
-#include <alpaka/traits/Dim.hpp>            // DimT
-#include <alpaka/traits/Extents.hpp>        // traits::getXXX
-#include <alpaka/traits/Offsets.hpp>        // traits::getOffsetX
-#include <alpaka/traits/mem/MemBufView.hpp> // MemSpaceT, ...
+#include <alpaka/traits/Dim.hpp>        // DimT
+#include <alpaka/traits/Extents.hpp>    // traits::getXXX
+#include <alpaka/traits/Offsets.hpp>    // traits::getOffsetX
+#include <alpaka/traits/mem/View.hpp>   // SpaceT, ...
 
 namespace alpaka
 {
@@ -39,56 +39,57 @@ namespace alpaka
             //! A memory buffer view.
             //#############################################################################
             template<
-                typename TMemBuf>
-            class MemBufView
+                typename TBuf>
+            class View
             {
             private:
-                using Dim = dim::DimT<TMemBuf>;
-                using MemBufBase = alpaka::mem::MemBufBaseT<MemElemT<TMemBuf>, Dim, MemSpaceT<TMemBuf>>;
+                using Dim = dim::DimT<TBuf>;
+                using Buf = BufT<ElemT<TBuf>, Dim, SpaceT<TBuf>>;
+                using MemSpace = SpaceT<TBuf>;
 
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
-                //! \param memBuf This can be either a memory buffer base or a memory buffer view itself.
+                //! \param buf This can be either a memory buffer base or a memory buffer view itself.
                 //-----------------------------------------------------------------------------
-                MemBufView(
-                    TMemBuf const & memBuf) :
-                        m_memBufBase(alpaka::mem::getMemBufBase(memBuf)),
-                        m_vOffsetsElements(Vec<Dim::value>::fromOffsets(memBuf)),
-                        m_vExtentsElements(Vec<Dim::value>::fromExtents(memBuf))
+                View(
+                    TBuf const & buf) :
+                        m_buf(getBuf(buf)),
+                        m_vOffsetsElements(Vec<Dim::value>::fromOffsets(buf)),
+                        m_vExtentsElements(Vec<Dim::value>::fromExtents(buf))
                 {}
 
                 //-----------------------------------------------------------------------------
                 //! Constructor.
-                //! \param memBuf This can be either a memory buffer base or a memory buffer view itself.
+                //! \param buf This can be either a memory buffer base or a memory buffer view itself.
                 //! \param offsetsElements The offsets in elements.
                 //! \param extentsElements The extents in elements.
                 //-----------------------------------------------------------------------------
                 template<
                     typename TOffsets,
                     typename TExtents>
-                MemBufView(
-                    TMemBuf const & memBuf,
+                View(
+                    TBuf const & buf,
                     TExtents const & extentsElements,
                     TOffsets const & relativeOffsetsElements = TOffsets()) :
-                        m_memBufBase(alpaka::mem::getMemBufBase(memBuf)),
-                        m_vOffsetsElements(Vec<Dim::value>::fromOffsets(relativeOffsetsElements)+Vec<Dim::value>::fromOffsets(memBuf)),
+                        m_buf(getBuf(buf)),
+                        m_vOffsetsElements(Vec<Dim::value>::fromOffsets(relativeOffsetsElements)+Vec<Dim::value>::fromOffsets(buf)),
                         m_vExtentsElements(Vec<Dim::value>::fromExtents(extentsElements))
                 {
                     static_assert(
                         std::is_same<Dim, dim::DimT<TExtents>>::value,
                         "The base buffer and the extents are required to have the same dimensionality!");
                 
-                    assert(alpaka::extent::getWidth(relativeOffsetsElements) <= alpaka::extent::getWidth(memBuf));
-                    assert(alpaka::extent::getHeight(relativeOffsetsElements) <= alpaka::extent::getHeight(memBuf));
-                    assert(alpaka::extent::getDepth(relativeOffsetsElements) <= alpaka::extent::getDepth(memBuf));
-                    assert((alpaka::offset::getOffsetX(relativeOffsetsElements)+alpaka::offset::getOffsetX(memBuf)+alpaka::extent::getWidth(extentsElements)) <= alpaka::extent::getWidth(memBuf));
-                    assert((alpaka::offset::getOffsetY(relativeOffsetsElements)+alpaka::offset::getOffsetY(memBuf)+alpaka::extent::getHeight(extentsElements)) <= alpaka::extent::getHeight(memBuf));
-                    assert((alpaka::offset::getOffsetZ(relativeOffsetsElements)+alpaka::offset::getOffsetZ(memBuf)+alpaka::extent::getDepth(extentsElements)) <= alpaka::extent::getDepth(memBuf));
+                    assert(extent::getWidth(relativeOffsetsElements) <= extent::getWidth(buf));
+                    assert(extent::getHeight(relativeOffsetsElements) <= extent::getHeight(buf));
+                    assert(extent::getDepth(relativeOffsetsElements) <= extent::getDepth(buf));
+                    assert((offset::getOffsetX(relativeOffsetsElements)+offset::getOffsetX(buf)+extent::getWidth(extentsElements)) <= extent::getWidth(buf));
+                    assert((offset::getOffsetY(relativeOffsetsElements)+offset::getOffsetY(buf)+extent::getHeight(extentsElements)) <= extent::getHeight(buf));
+                    assert((offset::getOffsetZ(relativeOffsetsElements)+offset::getOffsetZ(buf)+extent::getDepth(extentsElements)) <= extent::getDepth(buf));
                 }
                 
             public:
-                MemBufBase m_memBufBase;
+                Buf m_buf;
                 Vec<Dim::value> m_vOffsetsElements;
                 Vec<Dim::value> m_vExtentsElements;
             };
@@ -97,95 +98,95 @@ namespace alpaka
 
     
     //-----------------------------------------------------------------------------
-    // Trait specializations for MemBufView.
+    // Trait specializations for View.
     //-----------------------------------------------------------------------------
     namespace traits
     {
         namespace dim
         {
             //#############################################################################
-            //! The MemBufView dimension getter trait specialization.
+            //! The View dimension getter trait specialization.
             //#############################################################################
             template<
-                typename TMemBuf>
+                typename TBuf>
             struct DimType<
-                alpaka::mem::detail::MemBufView<TMemBuf>>
+                alpaka::mem::detail::View<TBuf>>
             {
-                using type = alpaka::dim::DimT<TMemBuf>;
+                using type = alpaka::dim::DimT<TBuf>;
             };
         }
 
         namespace extent
         {
             //#############################################################################
-            //! The MemBufView extents get trait specialization.
+            //! The View extents get trait specialization.
             //#############################################################################
             template<
-                typename TMemBuf>
+                typename TBuf>
             struct GetExtents<
-                alpaka::mem::detail::MemBufView<TMemBuf>>
+                alpaka::mem::detail::View<TBuf>>
             {
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static Vec<alpaka::dim::DimT<TMemBuf>::value> getExtents(
-                    alpaka::mem::detail::MemBufView<TMemBuf> const & extents)
+                ALPAKA_FCT_HOST static Vec<alpaka::dim::DimT<TBuf>::value> getExtents(
+                    alpaka::mem::detail::View<TBuf> const & extents)
                 {
                     return {extents.m_vExtentsElements};
                 }
             };
 
             //#############################################################################
-            //! The MemBufView width get trait specialization.
+            //! The View width get trait specialization.
             //#############################################################################
             template<
-                typename TMemBuf>
+                typename TBuf>
             struct GetWidth<
-                alpaka::mem::detail::MemBufView<TMemBuf>,
-                typename std::enable_if<(alpaka::dim::DimT<TMemBuf>::value >= 1u) && (alpaka::dim::DimT<TMemBuf>::value <= 3u)>::type>
+                alpaka::mem::detail::View<TBuf>,
+                typename std::enable_if<(alpaka::dim::DimT<TBuf>::value >= 1u) && (alpaka::dim::DimT<TBuf>::value <= 3u)>::type>
             {
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static UInt getWidth(
-                    alpaka::mem::detail::MemBufView<TMemBuf> const & extent)
+                    alpaka::mem::detail::View<TBuf> const & extent)
                 {
                     return extent.m_vExtentsElements[0u];
                 }
             };
 
             //#############################################################################
-            //! The MemBufView height get trait specialization.
+            //! The View height get trait specialization.
             //#############################################################################
             template<
-                typename TMemBuf>
+                typename TBuf>
             struct GetHeight<
-                alpaka::mem::detail::MemBufView<TMemBuf>,
-                typename std::enable_if<(alpaka::dim::DimT<TMemBuf>::value >= 2u) && (alpaka::dim::DimT<TMemBuf>::value <= 3u)>::type>
+                alpaka::mem::detail::View<TBuf>,
+                typename std::enable_if<(alpaka::dim::DimT<TBuf>::value >= 2u) && (alpaka::dim::DimT<TBuf>::value <= 3u)>::type>
             {
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static UInt getHeight(
-                    alpaka::mem::detail::MemBufView<TMemBuf> const & extent)
+                    alpaka::mem::detail::View<TBuf> const & extent)
                 {
                     return extent.m_vExtentsElements[1u];
                 }
             };
             //#############################################################################
-            //! The MemBufView depth get trait specialization.
+            //! The View depth get trait specialization.
             //#############################################################################
             template<
-                typename TMemBuf>
+                typename TBuf>
             struct GetDepth<
-                alpaka::mem::detail::MemBufView<TMemBuf>,
-                typename std::enable_if<(alpaka::dim::DimT<TMemBuf>::value >= 3u) && (alpaka::dim::DimT<TMemBuf>::value <= 3u)>::type>
+                alpaka::mem::detail::View<TBuf>,
+                typename std::enable_if<(alpaka::dim::DimT<TBuf>::value >= 3u) && (alpaka::dim::DimT<TBuf>::value <= 3u)>::type>
             {
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static UInt getDepth(
-                    alpaka::mem::detail::MemBufView<TMemBuf> const & extent)
+                    alpaka::mem::detail::View<TBuf> const & extent)
                 {
                     return extent.m_vExtentsElements[2u];
                 }
@@ -195,74 +196,74 @@ namespace alpaka
         namespace offset
         {
             //#############################################################################
-            //! The MemBufView offsets get trait specialization.
+            //! The View offsets get trait specialization.
             //#############################################################################
             template<
-                typename TMemBuf>
+                typename TBuf>
             struct GetOffsets<
-                alpaka::mem::detail::MemBufView<TMemBuf>>
+                alpaka::mem::detail::View<TBuf>>
             {
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static Vec<alpaka::dim::DimT<TMemBuf>::value> getOffsets(
-                    alpaka::mem::detail::MemBufView<TMemBuf> const & offsets)
+                ALPAKA_FCT_HOST static Vec<alpaka::dim::DimT<TBuf>::value> getOffsets(
+                    alpaka::mem::detail::View<TBuf> const & offsets)
                 {
                     return offsets.m_vOffsetsElements;
                 }
             };
 
             //#############################################################################
-            //! The MemBufView x offset get trait specialization.
+            //! The View x offset get trait specialization.
             //#############################################################################
             template<
-                typename TMemBuf>
+                typename TBuf>
             struct GetOffsetX<
-                alpaka::mem::detail::MemBufView<TMemBuf>,
-                typename std::enable_if<(alpaka::dim::DimT<TMemBuf>::value >= 1u) && (alpaka::dim::DimT<TMemBuf>::value <= 3u)>::type>
+                alpaka::mem::detail::View<TBuf>,
+                typename std::enable_if<(alpaka::dim::DimT<TBuf>::value >= 1u) && (alpaka::dim::DimT<TBuf>::value <= 3u)>::type>
             {
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static UInt getOffsetX(
-                    alpaka::mem::detail::MemBufView<TMemBuf> const & offset)
+                    alpaka::mem::detail::View<TBuf> const & offset)
                 {
                     return offset.m_vOffsetsElements[0u];
                 }
             };
 
             //#############################################################################
-            //! The MemBufView y offset get trait specialization.
+            //! The View y offset get trait specialization.
             //#############################################################################
             template<
-                typename TMemBuf>
+                typename TBuf>
             struct GetOffsetY<
-                alpaka::mem::detail::MemBufView<TMemBuf>,
-                typename std::enable_if<(alpaka::dim::DimT<TMemBuf>::value >= 2u) && (alpaka::dim::DimT<TMemBuf>::value <= 3u)>::type>
+                alpaka::mem::detail::View<TBuf>,
+                typename std::enable_if<(alpaka::dim::DimT<TBuf>::value >= 2u) && (alpaka::dim::DimT<TBuf>::value <= 3u)>::type>
             {
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static UInt getOffsetY(
-                    alpaka::mem::detail::MemBufView<TMemBuf> const & offset)
+                    alpaka::mem::detail::View<TBuf> const & offset)
                 {
                     return offset.m_vOffsetsElements[1u];
                 }
             };
             //#############################################################################
-            //! The MemBufView z offset get trait specialization.
+            //! The View z offset get trait specialization.
             //#############################################################################
             template<
-                typename TMemBuf>
+                typename TBuf>
             struct GetOffsetZ<
-                alpaka::mem::detail::MemBufView<TMemBuf>,
-                typename std::enable_if<(alpaka::dim::DimT<TMemBuf>::value >= 3u) && (alpaka::dim::DimT<TMemBuf>::value <= 3u)>::type>
+                alpaka::mem::detail::View<TBuf>,
+                typename std::enable_if<(alpaka::dim::DimT<TBuf>::value >= 3u) && (alpaka::dim::DimT<TBuf>::value <= 3u)>::type>
             {
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static UInt getOffsetZ(
-                    alpaka::mem::detail::MemBufView<TMemBuf> const & offset)
+                    alpaka::mem::detail::View<TBuf> const & offset)
                 {
                     return offset.m_vOffsetsElements[2u];
                 }
@@ -272,97 +273,97 @@ namespace alpaka
         namespace mem
         {
             //#############################################################################
-            //! The MemBufView memory space trait specialization.
+            //! The View memory space trait specialization.
             //#############################################################################
             template<
-                typename TMemBuf>
-            struct MemSpaceType<
-                alpaka::mem::detail::MemBufView<TMemBuf>>
+                typename TBuf>
+            struct SpaceType<
+                alpaka::mem::detail::View<TBuf>>
             {
-                using type = alpaka::mem::MemSpaceT<TMemBuf>;
+                using type = alpaka::mem::SpaceT<TBuf>;
             };
 
             //#############################################################################
-            //! The MemBufView memory element type get trait specialization.
+            //! The View memory element type get trait specialization.
             //#############################################################################
             template<
-                typename TMemBuf>
-            struct MemElemType<
-                alpaka::mem::detail::MemBufView<TMemBuf>>
+                typename TBuf>
+            struct ElemType<
+                alpaka::mem::detail::View<TBuf>>
             {
-                using type = alpaka::mem::MemElemT<TMemBuf>;
+                using type = alpaka::mem::ElemT<TBuf>;
             };
 
             //#############################################################################
-            //! The MemBufBaseCuda memory buffer type trait specialization.
+            //! The BufCuda memory buffer type trait specialization.
             //#############################################################################
             template<
-                typename TMemBuf>
-            struct MemBufViewType<
-                alpaka::mem::detail::MemBufView<TMemBuf>>
+                typename TBuf>
+            struct ViewType<
+                alpaka::mem::detail::View<TBuf>>
             {
-                using type = alpaka::mem::MemBufViewT<TMemBuf>;
+                using type = alpaka::mem::ViewT<TBuf>;
             };
 
             //#############################################################################
-            //! The MemBufView base buffer trait specialization.
+            //! The View base buffer trait specialization.
             //#############################################################################
             template<
-                typename TMemBuf>
-            struct GetMemBufBase<
-                alpaka::mem::detail::MemBufView<TMemBuf>>
+                typename TBuf>
+            struct GetBuf<
+                alpaka::mem::detail::View<TBuf>>
             {
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static TMemBuf const & getMemBufBase(
-                    alpaka::mem::detail::MemBufView<TMemBuf> const & memBufView)
+                ALPAKA_FCT_HOST static TBuf const & getBuf(
+                    alpaka::mem::detail::View<TBuf> const & memBufView)
                 {
-                    return memBufView.m_memBufBase;
+                    return memBufView.m_buf;
                 }
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static TMemBuf & getMemBufBase(
-                    alpaka::mem::detail::MemBufView<TMemBuf> & memBufView)
+                ALPAKA_FCT_HOST static TBuf & getBuf(
+                    alpaka::mem::detail::View<TBuf> & memBufView)
                 {
-                    return memBufView.m_memBufBase;
+                    return memBufView.m_buf;
                 }
             };
 
             //#############################################################################
-            //! The MemBufView native pointer get trait specialization.
+            //! The View native pointer get trait specialization.
             //#############################################################################
             template<
-                typename TMemBuf>
+                typename TBuf>
             struct GetNativePtr<
-                alpaka::mem::detail::MemBufView<TMemBuf>>
+                alpaka::mem::detail::View<TBuf>>
             {
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static alpaka::mem::MemElemT<TMemBuf> const * getNativePtr(
-                    alpaka::mem::detail::MemBufView<TMemBuf> const & memBufView)
+                ALPAKA_FCT_HOST static alpaka::mem::ElemT<TBuf> const * getNativePtr(
+                    alpaka::mem::detail::View<TBuf> const & memBufView)
                 {
                     // \TODO: Precalculate this pointer for faster execution.
                     auto const uiPitchElements(alpaka::mem::getPitchElements(memBufView));
-                    return alpaka::mem::getNativePtr(alpaka::mem::getMemBufBase(memBufView))
+                    return alpaka::mem::getNativePtr(alpaka::mem::getBuf(memBufView))
                         + alpaka::offset::getOffsetX(memBufView)
                         + alpaka::offset::getOffsetY(memBufView) * uiPitchElements
-                        + alpaka::offset::getOffsetZ(memBufView) * uiPitchElements * alpaka::extent::getHeight(alpaka::mem::getMemBufBase(memBufView));
+                        + alpaka::offset::getOffsetZ(memBufView) * uiPitchElements * alpaka::extent::getHeight(alpaka::mem::getBuf(memBufView));
                 }
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static alpaka::mem::MemElemT<TMemBuf> * getNativePtr(
-                    alpaka::mem::detail::MemBufView<TMemBuf> & memBufView)
+                ALPAKA_FCT_HOST static alpaka::mem::ElemT<TBuf> * getNativePtr(
+                    alpaka::mem::detail::View<TBuf> & memBufView)
                 {
                     // \TODO: Precalculate this pointer for faster execution.
                     auto const uiPitchElements(alpaka::mem::getPitchElements(memBufView));
-                    return alpaka::mem::getNativePtr(alpaka::mem::getMemBufBase(memBufView))
+                    return alpaka::mem::getNativePtr(alpaka::mem::getBuf(memBufView))
                         + alpaka::offset::getOffsetX(memBufView)
                         + alpaka::offset::getOffsetY(memBufView) * uiPitchElements
-                        + alpaka::offset::getOffsetZ(memBufView) * uiPitchElements * alpaka::extent::getHeight(alpaka::mem::getMemBufBase(memBufView));
+                        + alpaka::offset::getOffsetZ(memBufView) * uiPitchElements * alpaka::extent::getHeight(alpaka::mem::getBuf(memBufView));
                 }
             };
 
@@ -370,17 +371,17 @@ namespace alpaka
             //! The CUDA buffer pitch get trait specialization.
             //#############################################################################
             template<
-                typename TMemBuf>
+                typename TBuf>
             struct GetPitchBytes<
-                alpaka::mem::detail::MemBufView<TMemBuf>>
+                alpaka::mem::detail::View<TBuf>>
             {
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static UInt getPitchBytes(
-                    alpaka::mem::detail::MemBufView<TMemBuf> const & memBufView)
+                    alpaka::mem::detail::View<TBuf> const & memBufView)
                 {
-                    return alpaka::mem::getPitchElements(alpaka::mem::getMemBufBase(memBufView));
+                    return alpaka::mem::getPitchElements(alpaka::mem::getBuf(memBufView));
                 }
             };
         }

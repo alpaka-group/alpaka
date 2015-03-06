@@ -22,9 +22,9 @@
 #pragma once
 
 #include <alpaka/traits/Acc.hpp>    // GetAccName
-#include <alpaka/traits/Mem.hpp>    // MemSpaceType
+#include <alpaka/traits/Mem.hpp>    // SpaceType
 
-#include <alpaka/cuda/MemSpace.hpp> // MemSpaceCuda
+#include <alpaka/cuda/mem/Space.hpp>// SpaceCuda
 
 namespace alpaka
 {
@@ -75,10 +75,10 @@ namespace alpaka
             //! The CUDA accelerator memory space trait specialization.
             //#############################################################################
             template<>
-            struct MemSpaceType<
+            struct SpaceType<
                 cuda::detail::AccCuda>
             {
-                using type = alpaka::mem::MemSpaceCuda;
+                using type = alpaka::mem::SpaceCuda;
             };
         }
     }
