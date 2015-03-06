@@ -1,0 +1,4 @@
+var structalpaka_1_1traits_1_1wait_1_1CurrentThreadWaitFor_3_01TStream_00_01typename_01std_1_1enableb55f1ca6ed89fc5eebcad4e170b36cf3 =
+[
+    [ "currentThreadWaitFor", "structalpaka_1_1traits_1_1wait_1_1CurrentThreadWaitFor_3_01TStream_00_01typename_01std_1_1enableb55f1ca6ed89fc5eebcad4e170b36cf3.html#ac7ec5e579f4cc65dc39a19cce98d32e1", null ]
+];

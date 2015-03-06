@@ -1,0 +1,4 @@
+var structalpaka_1_1traits_1_1stream_1_1StreamTest_3_01TStream_00_01typename_01std_1_1enable__if_3_0145c03a4becbb80b1a0d076b6c01ff67 =
+[
+    [ "streamTest", "structalpaka_1_1traits_1_1stream_1_1StreamTest_3_01TStream_00_01typename_01std_1_1enable__if_3_0145c03a4becbb80b1a0d076b6c01ff67.html#a34c344f84474e555fb6d0de171cba324", null ]
+];

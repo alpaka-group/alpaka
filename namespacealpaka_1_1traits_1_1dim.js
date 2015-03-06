@@ -1,0 +1,13 @@
+var namespacealpaka_1_1traits_1_1dim =
+[
+    [ "DimType", "structalpaka_1_1traits_1_1dim_1_1DimType.html", null ],
+    [ "DimType< alpaka::mem::BufPlainPtrWrapper< TSpace, TElem, TDim > >", "structalpaka_1_1traits_1_1dim_1_1DimType_3_01alpaka_1_1mem_1_1BufPlainPtrWrapper_3_01TSpace_00_01TElem_00_01TDim_01_4_01_4.html", "structalpaka_1_1traits_1_1dim_1_1DimType_3_01alpaka_1_1mem_1_1BufPlainPtrWrapper_3_01TSpace_00_01TElem_00_01TDim_01_4_01_4" ],
+    [ "DimType< alpaka::mem::detail::View< TBuf > >", "structalpaka_1_1traits_1_1dim_1_1DimType_3_01alpaka_1_1mem_1_1detail_1_1View_3_01TBuf_01_4_01_4.html", "structalpaka_1_1traits_1_1dim_1_1DimType_3_01alpaka_1_1mem_1_1detail_1_1View_3_01TBuf_01_4_01_4" ],
+    [ "DimType< alpaka::Vec< TuiDim, TVal > >", "structalpaka_1_1traits_1_1dim_1_1DimType_3_01alpaka_1_1Vec_3_01TuiDim_00_01TVal_01_4_01_4.html", "structalpaka_1_1traits_1_1dim_1_1DimType_3_01alpaka_1_1Vec_3_01TuiDim_00_01TVal_01_4_01_4" ],
+    [ "DimType< cuda::detail::BufCuda< TElem, TDim > >", "structalpaka_1_1traits_1_1dim_1_1DimType_3_01cuda_1_1detail_1_1BufCuda_3_01TElem_00_01TDim_01_4_01_4.html", "structalpaka_1_1traits_1_1dim_1_1DimType_3_01cuda_1_1detail_1_1BufCuda_3_01TElem_00_01TDim_01_4_01_4" ],
+    [ "DimType< host::detail::BufHost< TElem, TDim > >", "structalpaka_1_1traits_1_1dim_1_1DimType_3_01host_1_1detail_1_1BufHost_3_01TElem_00_01TDim_01_4_01_4.html", "structalpaka_1_1traits_1_1dim_1_1DimType_3_01host_1_1detail_1_1BufHost_3_01TElem_00_01TDim_01_4_01_4" ],
+    [ "DimType< std::array< TElem, TuiSize > >", "structalpaka_1_1traits_1_1dim_1_1DimType_3_01std_1_1array_3_01TElem_00_01TuiSize_01_4_01_4.html", "structalpaka_1_1traits_1_1dim_1_1DimType_3_01std_1_1array_3_01TElem_00_01TuiSize_01_4_01_4" ],
+    [ "DimType< std::vector< TElem, TAllocator > >", "structalpaka_1_1traits_1_1dim_1_1DimType_3_01std_1_1vector_3_01TElem_00_01TAllocator_01_4_01_4.html", "structalpaka_1_1traits_1_1dim_1_1DimType_3_01std_1_1vector_3_01TElem_00_01TAllocator_01_4_01_4" ],
+    [ "DimType< T, typename std::enable_if< std::is_integral< T >::value &&std::is_unsigned< T >::value >::type >", "structalpaka_1_1traits_1_1dim_1_1DimType_3_01T_00_01typename_01std_1_1enable__if_3_01std_1_1is__92740465b99107bdef2b23b8b297a379.html", "structalpaka_1_1traits_1_1dim_1_1DimType_3_01T_00_01typename_01std_1_1enable__if_3_01std_1_1is__92740465b99107bdef2b23b8b297a379" ],
+    [ "DimType< TFixedSizeArray, typename std::enable_if< std::is_array< TFixedSizeArray >::value >::type >", "structalpaka_1_1traits_1_1dim_1_1DimType_3_01TFixedSizeArray_00_01typename_01std_1_1enable__if_31b3469e73f9d7a8667ed6d14f420c665.html", "structalpaka_1_1traits_1_1dim_1_1DimType_3_01TFixedSizeArray_00_01typename_01std_1_1enable__if_31b3469e73f9d7a8667ed6d14f420c665" ]
+];

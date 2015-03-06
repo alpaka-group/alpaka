@@ -1,0 +1,4 @@
+var structalpaka_1_1traits_1_1extent_1_1GetExtents_3_01alpaka_1_1mem_1_1detail_1_1View_3_01TBuf_01_4_01_4 =
+[
+    [ "getExtents", "structalpaka_1_1traits_1_1extent_1_1GetExtents_3_01alpaka_1_1mem_1_1detail_1_1View_3_01TBuf_01_4_01_4.html#ac549c97bdd159b2b503796291727dd1b", null ]
+];

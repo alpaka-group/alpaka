@@ -1,0 +1,4 @@
+var structalpaka_1_1traits_1_1acc_1_1AccType_3_01openmp_1_1detail_1_1KernelExecutorOpenMp_3_01AcceleratedKernel_01_4_01_4 =
+[
+    [ "type", "structalpaka_1_1traits_1_1acc_1_1AccType_3_01openmp_1_1detail_1_1KernelExecutorOpenMp_3_01AcceleratedKernel_01_4_01_4.html#a34c02f8ab9b759e8063cea9a6ddc7f86", null ]
+];

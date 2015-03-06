@@ -1,0 +1,4 @@
+var structalpaka_1_1traits_1_1extent_1_1SetWidth_3_01alpaka_1_1Vec_3_01TuiDim_00_01TVal_01_4_00_01ty2aaf99abf16aad875fe1b6164c57e245 =
+[
+    [ "setWidth", "structalpaka_1_1traits_1_1extent_1_1SetWidth_3_01alpaka_1_1Vec_3_01TuiDim_00_01TVal_01_4_00_01ty2aaf99abf16aad875fe1b6164c57e245.html#a27f9c8d3eaf6b692749f95f084532393", null ]
+];

@@ -1,0 +1,4 @@
+var structalpaka_1_1traits_1_1extent_1_1GetHeight_3_01alpaka_1_1mem_1_1BufPlainPtrWrapper_3_01TSpace4f2959f58b1fd19b50a01b0f2d185a52 =
+[
+    [ "getHeight", "structalpaka_1_1traits_1_1extent_1_1GetHeight_3_01alpaka_1_1mem_1_1BufPlainPtrWrapper_3_01TSpace4f2959f58b1fd19b50a01b0f2d185a52.html#a5516295cd5eac7aa1a7ff4b8d195ded3", null ]
+];

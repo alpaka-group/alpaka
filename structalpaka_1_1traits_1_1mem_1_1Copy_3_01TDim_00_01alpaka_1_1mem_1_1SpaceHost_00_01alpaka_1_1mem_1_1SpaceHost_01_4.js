@@ -1,0 +1,5 @@
+var structalpaka_1_1traits_1_1mem_1_1Copy_3_01TDim_00_01alpaka_1_1mem_1_1SpaceHost_00_01alpaka_1_1mem_1_1SpaceHost_01_4 =
+[
+    [ "copy", "structalpaka_1_1traits_1_1mem_1_1Copy_3_01TDim_00_01alpaka_1_1mem_1_1SpaceHost_00_01alpaka_1_1mem_1_1SpaceHost_01_4.html#a200c3fe9feb40ad4224abaf2b2fdf119", null ],
+    [ "copy", "structalpaka_1_1traits_1_1mem_1_1Copy_3_01TDim_00_01alpaka_1_1mem_1_1SpaceHost_00_01alpaka_1_1mem_1_1SpaceHost_01_4.html#ad819d12dcb969d9aec69d513a72193da", null ]
+];

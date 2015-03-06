@@ -1,0 +1,7 @@
+var searchData=
+[
+  ['waiterwaitfor',['WaiterWaitFor',['../structalpaka_1_1traits_1_1wait_1_1WaiterWaitFor.html',1,'alpaka::traits::wait']]],
+  ['waiterwaitfor_3c_20cuda_3a_3adetail_3a_3astreamcuda_2c_20cuda_3a_3adetail_3a_3aeventcuda_20_3e',['WaiterWaitFor&lt; cuda::detail::StreamCuda, cuda::detail::EventCuda &gt;',['../structalpaka_1_1traits_1_1wait_1_1WaiterWaitFor_3_01cuda_1_1detail_1_1StreamCuda_00_01cuda_1_1detail_1_1EventCuda_01_4.html',1,'alpaka::traits::wait']]],
+  ['waiterwaitfor_3c_20tstream_2c_20tevent_2c_20typename_20std_3a_3aenable_5fif_3c_20std_3a_3ais_5fbase_5fof_3c_20host_3a_3adetail_3a_3astreamhost_2c_20tstream_20_3e_3a_3avalue_20_26_26std_3a_3ais_5fsame_3c_20typename_20alpaka_3a_3aacc_3a_3aacct_3c_20tstream_20_3e_2c_20typename_20alpaka_3a_3aacc_3a_3aacct_3c_20tevent_20_3e_20_3e_3a_3avalue_20_3e_3a_3atype_20_3e',['WaiterWaitFor&lt; TStream, TEvent, typename std::enable_if&lt; std::is_base_of&lt; host::detail::StreamHost, TStream &gt;::value &amp;&amp;std::is_same&lt; typename alpaka::acc::AccT&lt; TStream &gt;, typename alpaka::acc::AccT&lt; TEvent &gt; &gt;::value &gt;::type &gt;',['../structalpaka_1_1traits_1_1wait_1_1WaiterWaitFor_3_01TStream_00_01TEvent_00_01typename_01std_1_1ef34ad563662e0308973328a762deefc8.html',1,'alpaka::traits::wait']]],
+  ['workdivcuda',['WorkDivCuda',['../classalpaka_1_1cuda_1_1detail_1_1WorkDivCuda.html',1,'alpaka::cuda::detail']]]
+];
