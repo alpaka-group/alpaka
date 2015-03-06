@@ -17,7 +17,7 @@ Kernels
    4. Has no non-trivial move assignment operators
    5. Has a trivial destructor
 
-### Implementation Variants
+### Implementation variants
 
 There are two possible ways to tell the kernel about the accelerator type:
  1. The kernel is templated on the accelerator type
@@ -35,7 +35,7 @@ There are two possible ways to tell the kernel about the accelerator type:
     * - The kernel itself has to inherit at least protected from the accelerator to allow the KernelExecutor to access the Accelerator.
     * - How do accelerator functions called from the kernel (and not within the kernel class itself) access the accelerator methods?
     Casting this to the accelerator type and giving it as parameter is too much to require from the user.
-  * b) and has a reference to the accelerator as parameter.
+  * b) and the `operator()` has a reference to the accelerator as parameter.
     * + This allows to use the accelerator in accelerator functions called from the kernel (and not within the kernel class itself) to access the accelerator methods in the same way the kernel entry point function can.
     * - This would require an additional object (the accelerator) in device memory taking up valuable CUDA registers (opposed to the inheritance solution). At least on CUDA all the accelerator functions could be inlined nevertheless.
  2. The `operator()` is templated on the accelerator type and has a reference to the accelerator as parameter.
@@ -45,7 +45,7 @@ There are two possible ways to tell the kernel about the accelerator type:
   * - The `operator()` could be overloaded on the accelerator type but not the kernel itself, so it always has the same members.
   * - This would require an additional object (the accelerator) in device memory taking up valuable CUDA registers (opposed to the inheritance solution). At least on CUDA all the accelerator functions could be inlined nevertheless.
 
-### Implementation Notes
+### Implementation notes
 
 Currently we implement version 1b).
 

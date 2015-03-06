@@ -289,8 +289,8 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Copies memory possibly between different memory spaces.
         //!
-        //! \param memBufDst The destination memory buffer.
-        //! \param memBufSrc The source memory buffer.
+        //! \param bufDst The destination memory buffer.
+        //! \param bufSrc The source memory buffer.
         //! \param extents The extents of the buffer to copy.
         //-----------------------------------------------------------------------------
         template<
@@ -298,8 +298,8 @@ namespace alpaka
             typename TBufSrc, 
             typename TExtents>
         ALPAKA_FCT_HOST void copy(
-            TBufDst & memBufDst, 
-            TBufSrc const & memBufSrc, 
+            TBufDst & bufDst, 
+            TBufSrc const & bufSrc, 
             TExtents const & extents)
         {
             static_assert(
@@ -313,16 +313,16 @@ namespace alpaka
                 "The source and the destination buffers are required to have the same element type!");
 
             traits::mem::Copy<dim::DimT<TBufDst>, SpaceT<TBufDst>, SpaceT<TBufSrc>>::copy(
-                memBufDst,
-                memBufSrc,
+                bufDst,
+                bufSrc,
                 extents);
         }
 
         //-----------------------------------------------------------------------------
         //! Copies memory possibly between different memory spaces asynchronously.
         //!
-        //! \param memBufDst The destination memory buffer.
-        //! \param memBufSrc The source memory buffer.
+        //! \param bufDst The destination memory buffer.
+        //! \param bufSrc The source memory buffer.
         //! \param extents The extents of the buffer to copy.
         //-----------------------------------------------------------------------------
         template<
@@ -331,8 +331,8 @@ namespace alpaka
             typename TExtents,
             typename TStream>
         ALPAKA_FCT_HOST void copy(
-            TBufDst & memBufDst, 
-            TBufSrc const & memBufSrc, 
+            TBufDst & bufDst, 
+            TBufSrc const & bufSrc, 
             TExtents const & extents,
             TStream const & stream)
         {
@@ -347,8 +347,8 @@ namespace alpaka
                 "The source and the destination buffers are required to have the same element type!");
 
             traits::mem::Copy<dim::DimT<TBufDst>, SpaceT<TBufDst>, SpaceT<TBufSrc>>::copy(
-                memBufDst,
-                memBufSrc,
+                bufDst,
+                bufSrc,
                 extents,
                 stream);
         }

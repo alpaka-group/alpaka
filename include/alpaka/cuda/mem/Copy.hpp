@@ -101,8 +101,8 @@ namespace alpaka
                     typename TBufSrc, 
                     typename TBufDst>
                 static void memCopyCuda(
-                    TBufDst & memBufDst, 
-                    TBufSrc const & memBufSrc, 
+                    TBufDst & bufDst, 
+                    TBufSrc const & bufSrc, 
                     TExtents const & extents, 
                     cudaMemcpyKind const & p_cudaMemcpyKind)
                 {
@@ -119,16 +119,16 @@ namespace alpaka
                         "The source and the destination buffers are required to have the same element type!");
 
                     auto const uiExtentWidth(extent::getWidth(extents));
-                    auto const uiDstWidth(extent::getWidth(memBufDst));
-                    auto const uiSrcWidth(extent::getWidth(memBufSrc));
+                    auto const uiDstWidth(extent::getWidth(bufDst));
+                    auto const uiSrcWidth(extent::getWidth(bufSrc));
                     assert(uiExtentWidth <= uiDstWidth);
                     assert(uiExtentWidth <= uiSrcWidth);
 
                     // Initiate the memory copy.
                     ALPAKA_CUDA_CHECK(
                         cudaMemcpy(
-                            reinterpret_cast<void *>(mem::getNativePtr(memBufDst)),
-                            reinterpret_cast<void const *>(mem::getNativePtr(memBufSrc)),
+                            reinterpret_cast<void *>(mem::getNativePtr(bufDst)),
+                            reinterpret_cast<void const *>(mem::getNativePtr(bufSrc)),
                             uiExtentWidth * sizeof(mem::ElemT<TBufDst>),
                             p_cudaMemcpyKind));
 
@@ -137,9 +137,9 @@ namespace alpaka
                         << " ew: " << uiExtentWidth
                         << " ewb: " << uiExtentWidth * sizeof(mem::ElemT<TBufDst>)
                         << " dw: " << uiDstWidth
-                        << " dptr: " << reinterpret_cast<void *>(mem::getNativePtr(memBufDst))
+                        << " dptr: " << reinterpret_cast<void *>(mem::getNativePtr(bufDst))
                         << " sw: " << uiSrcWidth
-                        << " sptr: " << reinterpret_cast<void const *>(mem::getNativePtr(memBufSrc))
+                        << " sptr: " << reinterpret_cast<void const *>(mem::getNativePtr(bufSrc))
                         << std::endl;
 #endif
                 }
@@ -151,8 +151,8 @@ namespace alpaka
                     typename TBufSrc, 
                     typename TBufDst>
                 static void memCopyCuda(
-                    TBufDst & memBufDst, 
-                    TBufSrc const & memBufSrc, 
+                    TBufDst & bufDst, 
+                    TBufSrc const & bufSrc, 
                     TExtents const & extents, 
                     cudaMemcpyKind const & p_cudaMemcpyKind,
                     cuda::detail::StreamCuda const & stream)
@@ -170,16 +170,16 @@ namespace alpaka
                         "The source and the destination buffers are required to have the same element type!");
 
                     auto const uiExtentWidth(extent::getWidth(extents));
-                    auto const uiDstWidth(extent::getWidth(memBufDst));
-                    auto const uiSrcWidth(extent::getWidth(memBufSrc));
+                    auto const uiDstWidth(extent::getWidth(bufDst));
+                    auto const uiSrcWidth(extent::getWidth(bufSrc));
                     assert(uiExtentWidth <= uiDstWidth);
                     assert(uiExtentWidth <= uiSrcWidth);
 
                     // Initiate the memory copy.
                     ALPAKA_CUDA_CHECK(
                         cudaMemcpyAsync(
-                            reinterpret_cast<void *>(mem::getNativePtr(memBufDst)),
-                            reinterpret_cast<void const *>(mem::getNativePtr(memBufSrc)),
+                            reinterpret_cast<void *>(mem::getNativePtr(bufDst)),
+                            reinterpret_cast<void const *>(mem::getNativePtr(bufSrc)),
                             uiExtentWidth * sizeof(mem::ElemT<TBufDst>),
                             p_cudaMemcpyKind,
                             *stream.m_spCudaStream.get()));
@@ -189,9 +189,9 @@ namespace alpaka
                         << " ew: " << uiExtentWidth
                         << " ewb: " << uiExtentWidth * sizeof(mem::ElemT<TBufDst>)
                         << " dw: " << uiDstWidth
-                        << " dptr: " << reinterpret_cast<void *>(mem::getNativePtr(memBufDst))
+                        << " dptr: " << reinterpret_cast<void *>(mem::getNativePtr(bufDst))
                         << " sw: " << uiSrcWidth
-                        << " sptr: " << reinterpret_cast<void const *>(mem::getNativePtr(memBufSrc))
+                        << " sptr: " << reinterpret_cast<void const *>(mem::getNativePtr(bufSrc))
                         << std::endl;
 #endif
                 }
@@ -211,8 +211,8 @@ namespace alpaka
                     typename TBufSrc, 
                     typename TBufDst>
                 static void memCopyCuda(
-                    TBufDst & memBufDst, 
-                    TBufSrc const & memBufSrc, 
+                    TBufDst & bufDst, 
+                    TBufSrc const & bufSrc, 
                     TExtents const & extents, 
                     cudaMemcpyKind const & p_cudaMemcpyKind)
                 {
@@ -230,10 +230,10 @@ namespace alpaka
 
                     auto const uiExtentWidth(extent::getWidth(extents));
                     auto const uiExtentHeight(extent::getHeight(extents));
-                    auto const uiDstWidth(extent::getWidth(memBufDst));
-                    auto const uiDstHeight(extent::getHeight(memBufDst));
-                    auto const uiSrcWidth(extent::getWidth(memBufSrc));
-                    auto const uiSrcHeight(extent::getHeight(memBufSrc));
+                    auto const uiDstWidth(extent::getWidth(bufDst));
+                    auto const uiDstHeight(extent::getHeight(bufDst));
+                    auto const uiSrcWidth(extent::getWidth(bufSrc));
+                    auto const uiSrcHeight(extent::getHeight(bufSrc));
                     assert(uiExtentWidth <= uiDstWidth);
                     assert(uiExtentHeight <= uiDstHeight);
                     assert(uiExtentWidth <= uiSrcWidth);
@@ -242,10 +242,10 @@ namespace alpaka
                     // Initiate the memory copy.
                     ALPAKA_CUDA_CHECK(
                         cudaMemcpy2D(
-                            reinterpret_cast<void *>(mem::getNativePtr(memBufDst)),
-                            mem::getPitchBytes(memBufDst),
-                            reinterpret_cast<void const *>(mem::getNativePtr(memBufSrc)),
-                            mem::getPitchBytes(memBufSrc),
+                            reinterpret_cast<void *>(mem::getNativePtr(bufDst)),
+                            mem::getPitchBytes(bufDst),
+                            reinterpret_cast<void const *>(mem::getNativePtr(bufSrc)),
+                            mem::getPitchBytes(bufSrc),
                             uiExtentWidth * sizeof(mem::ElemT<TBufDst>),
                             uiExtentHeight,
                             p_cudaMemcpyKind));
@@ -257,12 +257,12 @@ namespace alpaka
                         << " ewb: " << uiExtentWidth * sizeof(mem::ElemT<TBufDst>)
                         << " dw: " << uiDstWidth
                         << " dh: " << uiDstHeight
-                        << " dptr: " << reinterpret_cast<void *>(mem::getNativePtr(memBufDst))
-                        << " dpitchb: " << mem::getPitchBytes(memBufDst)
+                        << " dptr: " << reinterpret_cast<void *>(mem::getNativePtr(bufDst))
+                        << " dpitchb: " << mem::getPitchBytes(bufDst)
                         << " sw: " << uiSrcWidth
                         << " sh: " << uiSrcHeight
-                        << " sptr: " << reinterpret_cast<void const *>(mem::getNativePtr(memBufSrc))
-                        << " spitchb: " << mem::getPitchBytes(memBufSrc)
+                        << " sptr: " << reinterpret_cast<void const *>(mem::getNativePtr(bufSrc))
+                        << " spitchb: " << mem::getPitchBytes(bufSrc)
                         << std::endl;
 #endif
                 }
@@ -274,8 +274,8 @@ namespace alpaka
                     typename TBufSrc, 
                     typename TBufDst>
                 static void memCopyCuda(
-                    TBufDst & memBufDst, 
-                    TBufSrc const & memBufSrc, 
+                    TBufDst & bufDst, 
+                    TBufSrc const & bufSrc, 
                     TExtents const & extents, 
                     cudaMemcpyKind const & p_cudaMemcpyKind,
                     cuda::detail::StreamCuda const & stream)
@@ -294,10 +294,10 @@ namespace alpaka
 
                     auto const uiExtentWidth(extent::getWidth(extents));
                     auto const uiExtentHeight(extent::getHeight(extents));
-                    auto const uiDstWidth(extent::getWidth(memBufDst));
-                    auto const uiDstHeight(extent::getHeight(memBufDst));
-                    auto const uiSrcWidth(extent::getWidth(memBufSrc));
-                    auto const uiSrcHeight(extent::getHeight(memBufSrc));
+                    auto const uiDstWidth(extent::getWidth(bufDst));
+                    auto const uiDstHeight(extent::getHeight(bufDst));
+                    auto const uiSrcWidth(extent::getWidth(bufSrc));
+                    auto const uiSrcHeight(extent::getHeight(bufSrc));
                     assert(uiExtentWidth <= uiDstWidth);
                     assert(uiExtentHeight <= uiDstHeight);
                     assert(uiExtentWidth <= uiSrcWidth);
@@ -306,10 +306,10 @@ namespace alpaka
                     // Initiate the memory copy.
                     ALPAKA_CUDA_CHECK(
                         cudaMemcpy2DAsync(
-                            reinterpret_cast<void *>(mem::getNativePtr(memBufDst)),
-                            mem::getPitchBytes(memBufDst),
-                            reinterpret_cast<void const *>(mem::getNativePtr(memBufSrc)),
-                            mem::getPitchBytes(memBufSrc),
+                            reinterpret_cast<void *>(mem::getNativePtr(bufDst)),
+                            mem::getPitchBytes(bufDst),
+                            reinterpret_cast<void const *>(mem::getNativePtr(bufSrc)),
+                            mem::getPitchBytes(bufSrc),
                             uiExtentWidth * sizeof(mem::ElemT<TBufDst>),
                             uiExtentHeight,
                             p_cudaMemcpyKind,
@@ -322,12 +322,12 @@ namespace alpaka
                         << " ewb: " << uiExtentWidth * sizeof(mem::ElemT<TBufDst>)
                         << " dw: " << uiDstWidth
                         << " dh: " << uiDstHeight
-                        << " dptr: " << reinterpret_cast<void *>(mem::getNativePtr(memBufDst))
-                        << " dpitchb: " << mem::getPitchBytes(memBufDst)
+                        << " dptr: " << reinterpret_cast<void *>(mem::getNativePtr(bufDst))
+                        << " dpitchb: " << mem::getPitchBytes(bufDst)
                         << " sw: " << uiSrcWidth
                         << " sh: " << uiSrcHeight
-                        << " sptr: " << reinterpret_cast<void const *>(mem::getNativePtr(memBufSrc))
-                        << " spitchb: " << mem::getPitchBytes(memBufSrc)
+                        << " sptr: " << reinterpret_cast<void const *>(mem::getNativePtr(bufSrc))
+                        << " spitchb: " << mem::getPitchBytes(bufSrc)
                         << std::endl;
 #endif
                 }
@@ -347,8 +347,8 @@ namespace alpaka
                     typename TBufSrc, 
                     typename TBufDst>
                 static void memCopyCuda(
-                    TBufDst & memBufDst, 
-                    TBufSrc const & memBufSrc, 
+                    TBufDst & bufDst, 
+                    TBufSrc const & bufSrc, 
                     TExtents const & extents, 
                     cudaMemcpyKind const & p_cudaMemcpyKind)
                 {
@@ -356,8 +356,8 @@ namespace alpaka
 
                     cudaMemcpy3DParms const l_cudaMemcpy3DParms(
                         buildCudaMemcpy3DParms(
-                            memBufDst,
-                            memBufSrc,
+                            bufDst,
+                            bufSrc,
                             extents,
                             p_cudaMemcpyKind));
 
@@ -374,8 +374,8 @@ namespace alpaka
                     typename TBufSrc, 
                     typename TBufDst>
                 static void memCopyCuda(
-                    TBufDst & memBufDst, 
-                    TBufSrc const & memBufSrc, 
+                    TBufDst & bufDst, 
+                    TBufSrc const & bufSrc, 
                     TExtents const & extents, 
                     cudaMemcpyKind const & p_cudaMemcpyKind,
                     cuda::detail::StreamCuda const & stream)
@@ -384,8 +384,8 @@ namespace alpaka
 
                     cudaMemcpy3DParms const l_cudaMemcpy3DParms(
                         buildCudaMemcpy3DParms(
-                            memBufDst,
-                            memBufSrc,
+                            bufDst,
+                            bufSrc,
                             extents,
                             p_cudaMemcpyKind));
 
@@ -404,8 +404,8 @@ namespace alpaka
                     typename TBufSrc, 
                     typename TBufDst>
                 static cudaMemcpy3DParms buildCudaMemcpy3DParms(
-                    TBufDst & memBufDst, 
-                    TBufSrc const & memBufSrc, 
+                    TBufDst & bufDst, 
+                    TBufSrc const & bufSrc, 
                     TExtents const & extents, 
                     cudaMemcpyKind const & p_cudaMemcpyKind)
                 {
@@ -424,12 +424,12 @@ namespace alpaka
                     auto const uiExtentWidth(extent::getWidth(extents));
                     auto const uiExtentHeight(extent::getHeight(extents));
                     auto const uiExtentDepth(extent::getDepth(extents));
-                    auto const uiDstWidth(extent::getWidth(memBufDst));
-                    auto const uiDstHeight(extent::getHeight(memBufDst));
-                    auto const uiDstDepth(extent::getDepth(memBufDst));
-                    auto const uiSrcWidth(extent::getWidth(memBufSrc));
-                    auto const uiSrcHeight(extent::getHeight(memBufSrc));
-                    auto const uiSrcDepth(extent::getDepth(memBufSrc));
+                    auto const uiDstWidth(extent::getWidth(bufDst));
+                    auto const uiDstHeight(extent::getHeight(bufDst));
+                    auto const uiDstDepth(extent::getDepth(bufDst));
+                    auto const uiSrcWidth(extent::getWidth(bufSrc));
+                    auto const uiSrcHeight(extent::getHeight(bufSrc));
+                    auto const uiSrcDepth(extent::getDepth(bufSrc));
                     assert(uiExtentWidth <= uiDstWidth);
                     assert(uiExtentHeight <= uiDstHeight);
                     assert(uiExtentDepth <= uiDstDepth);
@@ -443,16 +443,16 @@ namespace alpaka
                     //l_cudaMemcpy3DParms.srcPos;       // Optional. Offset in bytes.
                     l_cudaMemcpy3DParms.srcPtr = 
                         make_cudaPitchedPtr(
-                            reinterpret_cast<void *>(mem::getNativePtr(memBufSrc)),
-                            mem::getPitchBytes(memBufSrc),
+                            reinterpret_cast<void *>(mem::getNativePtr(bufSrc)),
+                            mem::getPitchBytes(bufSrc),
                             uiSrcWidth,
                             uiSrcHeight);
                     //l_cudaMemcpy3DParms.dstArray;     // Either dstArray or dstPtr.
                     //l_cudaMemcpy3DParms.dstPos;       // Optional. Offset in bytes.
                     l_cudaMemcpy3DParms.dstPtr = 
                         make_cudaPitchedPtr(
-                            reinterpret_cast<void *>(mem::getNativePtr(memBufDst)),
-                            mem::getPitchBytes(memBufDst),
+                            reinterpret_cast<void *>(mem::getNativePtr(bufDst)),
+                            mem::getPitchBytes(bufDst),
                             uiDstWidth,
                             uiDstHeight);
                     l_cudaMemcpy3DParms.extent = 
@@ -471,13 +471,13 @@ namespace alpaka
                         << " dw: " << uiDstWidth
                         << " dh: " << uiDstHeight
                         << " dd: " << uiDstDepth
-                        << " dptr: " << reinterpret_cast<void *>(mem::getNativePtr(memBufDst))
-                        << " dpitchb: " << mem::getPitchBytes(memBufDst)
+                        << " dptr: " << reinterpret_cast<void *>(mem::getNativePtr(bufDst))
+                        << " dpitchb: " << mem::getPitchBytes(bufDst)
                         << " sw: " << uiSrcWidth
                         << " sh: " << uiSrcHeight
                         << " sd: " << uiSrcDepth
-                        << " sptr: " << reinterpret_cast<void const *>(mem::getNativePtr(memBufSrc))
-                        << " spitchb: " << mem::getPitchBytes(memBufSrc)
+                        << " sptr: " << reinterpret_cast<void const *>(mem::getNativePtr(bufSrc))
+                        << " spitchb: " << mem::getPitchBytes(bufSrc)
                         << std::endl;
 #endif
                     return l_cudaMemcpy3DParms;
@@ -511,22 +511,22 @@ namespace alpaka
                     typename TBufSrc, 
                     typename TBufDst>
                 static void copy(
-                    TBufDst & memBufDst,
-                    TBufSrc const & memBufSrc,
+                    TBufDst & bufDst,
+                    TBufSrc const & bufSrc,
                     TExtents const & extents)
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                     // \TODO: Is memory pinning really useful for synchronous copies?
-                    //cuda::detail::pageLockHostMem(memBufDst);
+                    //cuda::detail::pageLockHostMem(bufDst);
 
                     alpaka::cuda::detail::MemCopyCuda<TDim>::memCopyCuda(
-                        memBufDst,
-                        memBufSrc,
+                        bufDst,
+                        bufSrc,
                         extents,
                         cudaMemcpyDeviceToHost);
 
-                    //cuda::detail::unPageLockHostMem(memBufDst);
+                    //cuda::detail::unPageLockHostMem(bufDst);
                 }
                 //-----------------------------------------------------------------------------
                 //! 
@@ -536,23 +536,23 @@ namespace alpaka
                     typename TBufSrc, 
                     typename TBufDst>
                 static void copy(
-                    TBufDst & memBufDst,
-                    TBufSrc const & memBufSrc,
+                    TBufDst & bufDst,
+                    TBufSrc const & bufSrc,
                     TExtents const & extents,
                     cuda::detail::StreamCuda const & stream)
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                    //cuda::detail::pageLockHostMem(memBufDst);
+                    //cuda::detail::pageLockHostMem(bufDst);
 
                     alpaka::cuda::detail::MemCopyCuda<TDim>::memCopyCuda(
-                        memBufDst,
-                        memBufSrc,
+                        bufDst,
+                        bufSrc,
                         extents,
                         cudaMemcpyDeviceToHost,
                         stream);
 
-                    //cuda::detail::unPageLockHostMem(memBufDst);
+                    //cuda::detail::unPageLockHostMem(bufDst);
                 }
             };
             //#############################################################################
@@ -573,22 +573,22 @@ namespace alpaka
                     typename TBufSrc, 
                     typename TBufDst>
                 static void copy(
-                    TBufDst & memBufDst, 
-                    TBufSrc const & memBufSrc, 
+                    TBufDst & bufDst, 
+                    TBufSrc const & bufSrc, 
                     TExtents const & extents)
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                     // \TODO: Is memory pinning really useful for synchronous copies?
-                    //cuda::detail::pageLockHostMem(memBufSrc);
+                    //cuda::detail::pageLockHostMem(bufSrc);
 
                     alpaka::cuda::detail::MemCopyCuda<TDim>::memCopyCuda(
-                        memBufDst,
-                        memBufSrc,
+                        bufDst,
+                        bufSrc,
                         extents,
                         cudaMemcpyHostToDevice);
 
-                    //cuda::detail::unPageLockHostMem(memBufSrc);
+                    //cuda::detail::unPageLockHostMem(bufSrc);
                 }
                 //-----------------------------------------------------------------------------
                 //! 
@@ -598,23 +598,23 @@ namespace alpaka
                     typename TBufSrc, 
                     typename TBufDst>
                 static void copy(
-                    TBufDst & memBufDst, 
-                    TBufSrc const & memBufSrc, 
+                    TBufDst & bufDst, 
+                    TBufSrc const & bufSrc, 
                     TExtents const & extents,
                     cuda::detail::StreamCuda const & stream)
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                    //cuda::detail::pageLockHostMem(memBufSrc);
+                    //cuda::detail::pageLockHostMem(bufSrc);
 
                     alpaka::cuda::detail::MemCopyCuda<TDim>::memCopyCuda(
-                        memBufDst,
-                        memBufSrc,
+                        bufDst,
+                        bufSrc,
                         extents,
                         cudaMemcpyHostToDevice,
                         stream);
 
-                    //cuda::detail::unPageLockHostMem(memBufSrc);
+                    //cuda::detail::unPageLockHostMem(bufSrc);
                 }
             };
             //#############################################################################
@@ -635,15 +635,15 @@ namespace alpaka
                     typename TBufSrc, 
                     typename TBufDst>
                 static void copy(
-                    TBufDst & memBufDst, 
-                    TBufSrc const & memBufSrc, 
+                    TBufDst & bufDst, 
+                    TBufSrc const & bufSrc, 
                     TExtents const & extents)
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                     alpaka::cuda::detail::MemCopyCuda<TDim>::memCopyCuda(
-                        memBufDst,
-                        memBufSrc,
+                        bufDst,
+                        bufSrc,
                         extents,
                         cudaMemcpyDeviceToDevice);
                 }
@@ -655,16 +655,16 @@ namespace alpaka
                     typename TBufSrc, 
                     typename TBufDst>
                 static void copy(
-                    TBufDst & memBufDst, 
-                    TBufSrc const & memBufSrc, 
+                    TBufDst & bufDst, 
+                    TBufSrc const & bufSrc, 
                     TExtents const & extents,
                     cuda::detail::StreamCuda const & stream)
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                     alpaka::cuda::detail::MemCopyCuda<TDim>::memCopyCuda(
-                        memBufDst,
-                        memBufSrc,
+                        bufDst,
+                        bufSrc,
                         extents,
                         cudaMemcpyDeviceToDevice,
                         stream);

@@ -317,17 +317,17 @@ namespace alpaka
                 //! 
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static TBuf const & getBuf(
-                    alpaka::mem::detail::View<TBuf> const & memBufView)
+                    alpaka::mem::detail::View<TBuf> const & bufView)
                 {
-                    return memBufView.m_buf;
+                    return bufView.m_buf;
                 }
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static TBuf & getBuf(
-                    alpaka::mem::detail::View<TBuf> & memBufView)
+                    alpaka::mem::detail::View<TBuf> & bufView)
                 {
-                    return memBufView.m_buf;
+                    return bufView.m_buf;
                 }
             };
 
@@ -343,27 +343,27 @@ namespace alpaka
                 //! 
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static alpaka::mem::ElemT<TBuf> const * getNativePtr(
-                    alpaka::mem::detail::View<TBuf> const & memBufView)
+                    alpaka::mem::detail::View<TBuf> const & bufView)
                 {
                     // \TODO: Precalculate this pointer for faster execution.
-                    auto const uiPitchElements(alpaka::mem::getPitchElements(memBufView));
-                    return alpaka::mem::getNativePtr(alpaka::mem::getBuf(memBufView))
-                        + alpaka::offset::getOffsetX(memBufView)
-                        + alpaka::offset::getOffsetY(memBufView) * uiPitchElements
-                        + alpaka::offset::getOffsetZ(memBufView) * uiPitchElements * alpaka::extent::getHeight(alpaka::mem::getBuf(memBufView));
+                    auto const uiPitchElements(alpaka::mem::getPitchElements(bufView));
+                    return alpaka::mem::getNativePtr(alpaka::mem::getBuf(bufView))
+                        + alpaka::offset::getOffsetX(bufView)
+                        + alpaka::offset::getOffsetY(bufView) * uiPitchElements
+                        + alpaka::offset::getOffsetZ(bufView) * uiPitchElements * alpaka::extent::getHeight(alpaka::mem::getBuf(bufView));
                 }
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static alpaka::mem::ElemT<TBuf> * getNativePtr(
-                    alpaka::mem::detail::View<TBuf> & memBufView)
+                    alpaka::mem::detail::View<TBuf> & bufView)
                 {
                     // \TODO: Precalculate this pointer for faster execution.
-                    auto const uiPitchElements(alpaka::mem::getPitchElements(memBufView));
-                    return alpaka::mem::getNativePtr(alpaka::mem::getBuf(memBufView))
-                        + alpaka::offset::getOffsetX(memBufView)
-                        + alpaka::offset::getOffsetY(memBufView) * uiPitchElements
-                        + alpaka::offset::getOffsetZ(memBufView) * uiPitchElements * alpaka::extent::getHeight(alpaka::mem::getBuf(memBufView));
+                    auto const uiPitchElements(alpaka::mem::getPitchElements(bufView));
+                    return alpaka::mem::getNativePtr(alpaka::mem::getBuf(bufView))
+                        + alpaka::offset::getOffsetX(bufView)
+                        + alpaka::offset::getOffsetY(bufView) * uiPitchElements
+                        + alpaka::offset::getOffsetZ(bufView) * uiPitchElements * alpaka::extent::getHeight(alpaka::mem::getBuf(bufView));
                 }
             };
 
@@ -379,9 +379,9 @@ namespace alpaka
                 //! 
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static UInt getPitchBytes(
-                    alpaka::mem::detail::View<TBuf> const & memBufView)
+                    alpaka::mem::detail::View<TBuf> const & bufView)
                 {
-                    return alpaka::mem::getPitchElements(alpaka::mem::getBuf(memBufView));
+                    return alpaka::mem::getPitchElements(alpaka::mem::getBuf(bufView));
                 }
             };
         }

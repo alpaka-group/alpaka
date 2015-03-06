@@ -21,6 +21,12 @@ Software License
 *alpaka* is licensed under the **LGPLv3+**.
 
 
+Documentation
+-------------
+
+The source code documentation generated with [doxygen](www.doxygen.org) is available [here](http://computationalradiationphysics.github.io/alpaka/).
+
+
 Supported Compilers
 -------------------
 

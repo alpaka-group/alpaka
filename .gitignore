@@ -1,5 +1,4 @@
 ~data
-doc/doxygen
+/doc/doxygen/*
+!/doc/doxygen/Doxyfile
 **/build
-
-*.exe

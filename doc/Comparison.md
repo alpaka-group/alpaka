@@ -4,10 +4,8 @@ Distinction and Comparison
 There are multiple other projects which pretend to achieve full performance portability.
 Many do not satisfy the requirement for full c++ support that is needed because of the usage of template magic for method specialization.
 
-In the following a differentiation to these APIs and Languages is given.
 
-
-*CUDA*
+CUDA
 ------
 
 ### Positive
@@ -18,7 +16,7 @@ In the following a differentiation to these APIs and Languages is given.
 * Not compiler independent / language extension. The nvcc compiler driver is required to understand the language constructs that are used inside the kernel methods. The back-end compiler has to be one of the supported ones.
 
 
-*OpenMP*
+OpenMP
 --------
 
 ### Negative
@@ -26,7 +24,7 @@ In the following a differentiation to these APIs and Languages is given.
 * Only compiler hints, no direct control over result.
 
 
-*OpenACC*
+OpenACC
 ---------
 
 ### Positive
@@ -37,7 +35,7 @@ In the following a differentiation to these APIs and Languages is given.
 * Only compiler hints, no direct control over result.
 
 
-*OpenCl*
+OpenCl
 --------
 
 ### Positive
@@ -45,26 +43,25 @@ In the following a differentiation to these APIs and Languages is given.
 
 ### Negative
 * No full C++ support.
-* Runtime compilation -> No direct inclusion into the source (syntax highlighting?, static analysis?, debugging?, templates?)
+* Runtime compilation -> No direct inclusion into the source (syntax highlighting?, static analysis?, debugging?, templated kernels?)
 
 
-*C++ AMP*
+C++ AMP
 ---------
 
 ### Positive
 * Open specification
-* C++ code can run on all GPUs
+* Annotated C++ code can run on multiple accelerators.
 
 ### Negative
 * Language extension
 * Compiler dependent (currently not supported by many compilers)
 
 
-
-*PGI CUDA-X86
+PGI CUDA-X86
 -------------
-`When run on x86-based systems without a GPU, PGI CUDA C applications use multiple cores and the streaming SIMD (Single Instruction Multiple Data) capabilities of Intel and AMD CPUs for parallel execution.`
-`At run-time, CUDA C programs compiled for x86 executes each CUDA thread block using a single host core, eliminating synchronization where possible.`
+When run on x86-based systems without a GPU, PGI CUDA C applications use multiple cores and the streaming SIMD (Single Instruction Multiple Data) capabilities of Intel and AMD CPUs for parallelvectorized execution.
+At run-time, CUDA C programs compiled for x86 executes each CUDA thread block using a single host core, eliminating synchronization where possible.
 
 ### Positive
 * Lets you write standard CUDA code and execute it on x86.
@@ -73,33 +70,36 @@ In the following a differentiation to these APIs and Languages is given.
 * Not actively developed.
 
 
-
-*LLVM* backends (PTX, R600)
+LLVM backends (PTX, R600)
 ---------------------------
 
 ### Negative
-* Those back-ends never got really mature.
+* Those back-ends never got really mature and up-to-date.
 
 
-[*KOKKOS*](https://github.com/trilinos/trilinos/tree/master/packages/kokkos)
+KOKKOS
 -------------
 See [here](https://www.xsede.org/documents/271087/586927/Edwards-2013-XSCALE13-Kokkos.pdf)
 [here](http://trilinos.org/oldsite/events/trilinos_user_group_2013/presentations/2013-11-TUG-Kokkos-Tutorial.pdf)
-[here]()http://on-demand.gputechconf.com/supercomputing/2013/presentation/SC3103_Towards-Performance-Portable-Applications-Kokkos.pdf
+[here](http://on-demand.gputechconf.com/supercomputing/2013/presentation/SC3103_Towards-Performance-Portable-Applications-Kokkos.pdf)
 and  [here](http://dx.doi.org/10.3233/SPR-2012-0343).
-Similar to *alpaka* in the way it abstracts the kernel as functor. The parameters are required to be given to the functor constructor coupling algorithm and data together.
-The implementation of accelerator methods (atomics, ...) is selected via macros defined by the nvcc compiler. So there is no way to select between different x86 implementations for different x86 accelerators. 
+Source is available [here](https://github.com/trilinos/trilinos/tree/master/packages/kokkos).
+The project is similar to *alpaka* in the way it abstracts the kernel as templated functor. 
 It provides parallel_for, parallel_reduce, etc. similar to thrust.
-Offers buffer views with a neutral indexing scheme that maps to the underlying hardware (row/col-major, blocking, ...). 
+
+### Positive
+* Offers buffer views with a neutral indexing scheme that maps to the underlying hardware (row/col-major, blocking, ...). 
 
 ### Negative
 * License.
-* No official source repository available?
+* The parameters are required to be given to the functor constructor coupling algorithm and data together.
+* The implementation of accelerator methods (atomics, ...) is selected via macros defined by the nvcc compiler. So there is no way to select between different x86 implementations for different x86 accelerators. 
 
 
-[*Phalanx*](http://www.mgarland.org/files/papers/phalanx-sc12-preprint.pdf)
+Phalanx
 -----------
-Very similar to *alpaka* in the way it abstracts the accelerators.
+See [here](http://www.mgarland.org/files/papers/phalanx-sc12-preprint.pdf).
+It is very similar to *alpaka* in the way it abstracts the accelerators.
 
 ### Positive
 * C++ Interface provides CUDA, OpenMP, and GASNet back-ends

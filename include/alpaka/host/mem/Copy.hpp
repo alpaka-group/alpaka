@@ -62,8 +62,8 @@ namespace alpaka
                     typename TBufSrc, 
                     typename TBufDst>
                 ALPAKA_FCT_HOST static void copy(
-                    TBufDst & memBufDst, 
-                    TBufSrc const & memBufSrc, 
+                    TBufDst & bufDst, 
+                    TBufSrc const & bufSrc, 
                     TExtents const & extents)
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -83,15 +83,15 @@ namespace alpaka
                     auto const uiExtentWidth(alpaka::extent::getWidth(extents));
                     auto const uiExtentHeight(alpaka::extent::getHeight(extents));
                     auto const uiExtentDepth(alpaka::extent::getDepth(extents));
-                    auto const uiDstWidth(alpaka::extent::getWidth(memBufDst));
-                    auto const uiDstHeight(alpaka::extent::getHeight(memBufDst));
+                    auto const uiDstWidth(alpaka::extent::getWidth(bufDst));
+                    auto const uiDstHeight(alpaka::extent::getHeight(bufDst));
 #if (!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
-                    auto const uiDstDepth(alpaka::extent::getDepth(memBufDst));
+                    auto const uiDstDepth(alpaka::extent::getDepth(bufDst));
 #endif
-                    auto const uiSrcWidth(alpaka::extent::getWidth(memBufSrc));
-                    auto const uiSrcHeight(alpaka::extent::getHeight(memBufSrc));
+                    auto const uiSrcWidth(alpaka::extent::getWidth(bufSrc));
+                    auto const uiSrcHeight(alpaka::extent::getHeight(bufSrc));
 #if (!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
-                    auto const uiSrcDepth(alpaka::extent::getDepth(memBufSrc));
+                    auto const uiSrcDepth(alpaka::extent::getDepth(bufSrc));
 #endif
                     assert(uiExtentWidth <= uiDstWidth);
                     assert(uiExtentHeight <= uiDstHeight);
@@ -101,18 +101,18 @@ namespace alpaka
                     assert(uiExtentDepth <= uiSrcDepth);
 
                     auto const uiExtentWidthBytes(uiExtentWidth * sizeof(Elem));
-                    auto const uiDstPitchBytes(alpaka::mem::getPitchBytes(memBufDst));
-                    auto const uiSrcPitchBytes(alpaka::mem::getPitchBytes(memBufSrc));
+                    auto const uiDstPitchBytes(alpaka::mem::getPitchBytes(bufDst));
+                    auto const uiSrcPitchBytes(alpaka::mem::getPitchBytes(bufSrc));
                     assert(uiExtentWidthBytes <= uiDstPitchBytes);
                     assert(uiExtentWidthBytes <= uiSrcPitchBytes);
 
-                    auto const pDstNative(reinterpret_cast<std::uint8_t *>(alpaka::mem::getNativePtr(memBufDst)));
-                    auto const pSrcNative(reinterpret_cast<std::uint8_t const *>(alpaka::mem::getNativePtr(memBufSrc)));
+                    auto const pDstNative(reinterpret_cast<std::uint8_t *>(alpaka::mem::getNativePtr(bufDst)));
+                    auto const pSrcNative(reinterpret_cast<std::uint8_t const *>(alpaka::mem::getNativePtr(bufSrc)));
                     auto const uiDstSliceSizeBytes(uiDstPitchBytes * uiDstHeight);
                     auto const uiSrcSliceSizeBytes(uiSrcPitchBytes * uiSrcHeight);
                     
-                    auto const & dstBuf(alpaka::mem::getBuf(memBufDst));
-                    auto const & srcBuf(alpaka::mem::getBuf(memBufSrc));
+                    auto const & dstBuf(alpaka::mem::getBuf(bufDst));
+                    auto const & srcBuf(alpaka::mem::getBuf(bufSrc));
                     auto const uiDstBufWidth(alpaka::extent::getWidth(dstBuf));
                     auto const uiSrcBufWidth(alpaka::extent::getWidth(srcBuf));
                     auto const uiDstBufHeight(alpaka::extent::getHeight(dstBuf));
@@ -201,15 +201,15 @@ namespace alpaka
                     typename TBufSrc, 
                     typename TBufDst>
                 ALPAKA_FCT_HOST static void copy(
-                    TBufDst & memBufDst, 
-                    TBufSrc const & memBufSrc, 
+                    TBufDst & bufDst, 
+                    TBufSrc const & bufSrc, 
                     TExtents const & extents,
                     host::detail::StreamHost const &)
                 {
                     // \TODO: Implement asynchronous host copy.
                     copy(
-                        memBufDst,
-                        memBufSrc,
+                        bufDst,
+                        bufSrc,
                         extents);
                 }
             };

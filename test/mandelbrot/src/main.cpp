@@ -307,27 +307,27 @@ struct MandelbrotKernelTester
             << ")" << std::endl;
 
         // allocate host memory
-        auto memBufColHost(alpaka::mem::alloc<std::uint32_t, alpaka::mem::SpaceHost>(v2uiExtents));
+        auto bufColorHost(alpaka::mem::alloc<std::uint32_t, alpaka::mem::SpaceHost>(v2uiExtents));
         
         // Allocate the buffer on the accelerator.
         using AccMemSpace = typename alpaka::mem::SpaceT<TAcc>;
-        auto memBufColAcc(alpaka::mem::alloc<std::uint32_t, AccMemSpace>(v2uiExtents));
+        auto bufColorAcc(alpaka::mem::alloc<std::uint32_t, AccMemSpace>(v2uiExtents));
 
         // Get a new stream.
         alpaka::stream::StreamT<TAcc> stream;
 
         // Copy Host -> Acc.
-        alpaka::mem::copy(memBufColAcc, memBufColHost, v2uiExtents, stream);
+        alpaka::mem::copy(bufColorAcc, bufColorHost, v2uiExtents, stream);
         
         // Build the kernel executor.
         auto exec(alpaka::createKernelExecutor<TAcc, Kernel>());
         // Profile the kernel execution.
         profileAcceleratedKernel(exec(workDiv, stream),
             stream,
-            alpaka::mem::getNativePtr(memBufColAcc),
+            alpaka::mem::getNativePtr(bufColorAcc),
             static_cast<std::uint32_t>(uiNumRows),
             static_cast<std::uint32_t>(uiNumCols),
-            static_cast<std::uint32_t>(alpaka::mem::getPitchElements(memBufColAcc)),
+            static_cast<std::uint32_t>(alpaka::mem::getPitchElements(bufColorAcc)),
             fMinR,
             fMaxR,
             fMinI,
@@ -335,7 +335,7 @@ struct MandelbrotKernelTester
             static_cast<std::uint32_t>(uiMaxIterations));
 
         // Copy back the result.
-        alpaka::mem::copy(memBufColHost, memBufColAcc, v2uiExtents, stream);
+        alpaka::mem::copy(bufColorHost, bufColorAcc, v2uiExtents, stream);
         
         // Wait for the stream to finish the memory operation.
         alpaka::wait::wait(stream);
@@ -370,8 +370,8 @@ struct MandelbrotKernelTester
         ofs.put(0x20);                      // Image Descriptor Byte.
         // Write data.
         ofs.write(
-            reinterpret_cast<char*>(alpaka::mem::getNativePtr(memBufColHost)), 
-            static_cast<std::size_t>(alpaka::extent::getProductOfExtents(memBufColHost))*sizeof(std::uint32_t));
+            reinterpret_cast<char*>(alpaka::mem::getNativePtr(bufColorHost)), 
+            static_cast<std::size_t>(alpaka::extent::getProductOfExtents(bufColorHost))*sizeof(std::uint32_t));
 
         std::cout << "################################################################################" << std::endl;
     }
