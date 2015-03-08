@@ -22,7 +22,7 @@ Clone ourself
 *NOTE:* This has to be done once per cloned alpaka repository that is used to deploy the doxygen documentation!
 
 On working branch:
-- Clone the full repo inside the deploy folder: git clone -b gh-pages git@github.com:ComputationalRadiationPhysics/alpaka.git doc/doxygen/html
+- Clone the repo on the gh-pages branch inside the deploy folder: git clone -b gh-pages git@github.com:ComputationalRadiationPhysics/alpaka.git doc/doxygen/html
 
 Update
 ------
