@@ -189,7 +189,7 @@ namespace alpaka
         //#############################################################################
         //! ConcurrentExecPool using yield.
         //!
-        //! \tparam TConcurrentExecutor The type of concurrent executor (for example std::thread). 
+        //! \tparam TConcurrentExec The type of concurrent executor (for example std::thread). 
         //! \tparam TPromise The promise type returned by the task.
         //! \tparam TCurrentException Must have a static method "current_exception()" that returns the current exception.
         //! \tparam TYield The type is required to have a static method "void yield()" to yield the current thread if there is no work.
@@ -199,7 +199,7 @@ namespace alpaka
         //! \tparam TbYield Booleam value the threads should yield instead of wait for a condition variable.
         //#############################################################################
         template<
-            typename TConcurrentExecutor, 
+            typename TConcurrentExec, 
             template<typename TFuncReturn> class TPromise, 
             typename TCurrentException, 
             typename TYield, 
@@ -223,16 +223,16 @@ namespace alpaka
             ConcurrentExecPool(
                 UInt uiConcurrentExecutionCount,
                 UInt uiQueueSize = 128) :
-                m_vConcurrentExecutors(),
+                m_vConcurrentExecs(),
                 m_bShutdownFlag(false),
                 m_qTasks(uiQueueSize)
             {
-                m_vConcurrentExecutors.reserve(uiConcurrentExecutionCount);
+                m_vConcurrentExecs.reserve(uiConcurrentExecutionCount);
 
                 // Create all concurrent executors.
-                for(size_t uiConcurrentExecutor(0); uiConcurrentExecutor < uiConcurrentExecutionCount; ++uiConcurrentExecutor)
+                for(size_t uiConcurrentExec(0); uiConcurrentExec < uiConcurrentExecutionCount; ++uiConcurrentExec)
                 {
-                    m_vConcurrentExecutors.emplace_back(&ConcurrentExecPool::concurrentExecutorFunc, this);
+                    m_vConcurrentExecs.emplace_back(&ConcurrentExecPool::concurrentExecFunc, this);
                 }
             }
             //-----------------------------------------------------------------------------
@@ -263,7 +263,7 @@ namespace alpaka
                 // Signal that concurrent executors should not perform any new work
                 m_bShutdownFlag.store(true);
 
-                joinAllConcurrentExecutors();
+                joinAllConcurrentExecs();
 
                 auto currentTaskPackage(std::unique_ptr<ITaskPkg<TCurrentException>>{nullptr});
 
@@ -330,14 +330,14 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             UInt getConcurrentExecutionCount() const
             {
-                return m_vConcurrentExecutors.size();
+                return m_vConcurrentExecs.size();
             }
 
         private:
             //-----------------------------------------------------------------------------
             //! The function the concurrent executors are executing.
             //-----------------------------------------------------------------------------
-            void concurrentExecutorFunc()
+            void concurrentExecFunc()
             {
                 // Checks whether pool is being destroyed, if so, stop running.
                 while(!m_bShutdownFlag.load(std::memory_order_relaxed))
@@ -359,11 +359,11 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Joins all concurrent executors.
             //-----------------------------------------------------------------------------
-            void joinAllConcurrentExecutors()
+            void joinAllConcurrentExecs()
             {
-                for(auto && concurrentExecutor : m_vConcurrentExecutors)
+                for(auto && concurrentExec : m_vConcurrentExecs)
                 {
-                    concurrentExecutor.join();
+                    concurrentExec.join();
                 }
             }
             //-----------------------------------------------------------------------------
@@ -383,7 +383,7 @@ namespace alpaka
             }
 
         private:
-            std::vector<TConcurrentExecutor> m_vConcurrentExecutors;
+            std::vector<TConcurrentExec> m_vConcurrentExecs;
             std::atomic<bool> m_bShutdownFlag;
             boost::lockfree::queue<ITaskPkg<TCurrentException> *> m_qTasks;
         };
@@ -391,7 +391,7 @@ namespace alpaka
         //#############################################################################
         //! ConcurrentExecPool using a condition variable to wait for new work.
         //!
-        //! \tparam TConcurrentExecutor The type of concurrent executor (for example std::thread). 
+        //! \tparam TConcurrentExec The type of concurrent executor (for example std::thread). 
         //! \tparam TPromise The promise type returned by the task.
         //! \tparam TCurrentException Must have a static method "current_exception()" that returns the current exception.
         //! \tparam TYield Unused. The type is required to have a static method "void yield()" to yield the current thread if there is no work.
@@ -400,7 +400,7 @@ namespace alpaka
         //! \tparam TCondVar The condition variable type used to make the threads wait if there is no work. Uses the TUniqueLock.
         //#############################################################################
         template<
-            typename TConcurrentExecutor, 
+            typename TConcurrentExec, 
             template<typename TFuncReturn> class TPromise, 
             typename TCurrentException, 
             typename TYield, 
@@ -408,7 +408,7 @@ namespace alpaka
             template<typename TMutex2> class TUniqueLock, 
             typename TCondVar>
         class ConcurrentExecPool<
-            TConcurrentExecutor, 
+            TConcurrentExec, 
             TPromise, 
             TCurrentException, 
             TYield, 
@@ -431,18 +431,18 @@ namespace alpaka
             ConcurrentExecPool(
                 UInt uiConcurrentExecutionCount,
                 UInt uiQueueSize = 128) :
-                m_vConcurrentExecutors(),
+                m_vConcurrentExecs(),
                 m_bShutdownFlag(false),
                 m_qTasks(uiQueueSize),
                 m_cvWakeup(),
                 m_mtxWakeup()
             {
-                m_vConcurrentExecutors.reserve(uiConcurrentExecutionCount);
+                m_vConcurrentExecs.reserve(uiConcurrentExecutionCount);
 
                 // Create all concurrent executors.
-                for(size_t uiConcurrentExecutor(0); uiConcurrentExecutor < uiConcurrentExecutionCount; ++uiConcurrentExecutor)
+                for(size_t uiConcurrentExec(0); uiConcurrentExec < uiConcurrentExecutionCount; ++uiConcurrentExec)
                 {
-                    m_vConcurrentExecutors.emplace_back(&ConcurrentExecPool::concurrentExecutorFunc, this);
+                    m_vConcurrentExecs.emplace_back(&ConcurrentExecPool::concurrentExecFunc, this);
                 }
             }
             //-----------------------------------------------------------------------------
@@ -475,7 +475,7 @@ namespace alpaka
 
                 m_cvWakeup.notify_all();
 
-                joinAllConcurrentExecutors();
+                joinAllConcurrentExecs();
 
                 auto currentTaskPackage(std::unique_ptr<ITaskPkg<TCurrentException>>{nullptr});
 
@@ -544,14 +544,14 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             UInt getConcurrentExecutionCount() const
             {
-                return m_vConcurrentExecutors.size();
+                return m_vConcurrentExecs.size();
             }
 
         private:
             //-----------------------------------------------------------------------------
             //! The function the concurrent executors are executing.
             //-----------------------------------------------------------------------------
-            void concurrentExecutorFunc()
+            void concurrentExecFunc()
             {
                 // Checks whether pool is being destroyed, if so, stop running.
                 while(!m_bShutdownFlag.load(std::memory_order_relaxed))
@@ -575,11 +575,11 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Joins all concurrent executors.
             //-----------------------------------------------------------------------------
-            void joinAllConcurrentExecutors()
+            void joinAllConcurrentExecs()
             {
-                for(auto && concurrentExecutor : m_vConcurrentExecutors)
+                for(auto && concurrentExec : m_vConcurrentExecs)
                 {
-                    concurrentExecutor.join();
+                    concurrentExec.join();
                 }
             }
             //-----------------------------------------------------------------------------
@@ -599,7 +599,7 @@ namespace alpaka
             }
 
         private:
-            std::vector<TConcurrentExecutor> m_vConcurrentExecutors;
+            std::vector<TConcurrentExec> m_vConcurrentExecs;
             std::atomic<bool> m_bShutdownFlag;
             boost::lockfree::queue<ITaskPkg<TCurrentException> *> m_qTasks;
 

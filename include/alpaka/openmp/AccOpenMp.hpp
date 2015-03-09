@@ -34,14 +34,13 @@
 #include <alpaka/openmp/Device.hpp>                 // Devices
 
 // Specialized traits.
-#include <alpaka/core/KernelExecCreator.hpp>        // KernelExecCreator
+#include <alpaka/traits/Acc.hpp>                    // AccType
+#include <alpaka/traits/Exec.hpp>                   // ExecType
 
 // Implementation details.
 #include <alpaka/openmp/Common.hpp>
 #include <alpaka/traits/BlockSharedExternMemSizeBytes.hpp>
 #include <alpaka/interfaces/IAcc.hpp>
-
-#include <boost/mpl/apply.hpp>                      // boost::mpl::apply
 
 #include <cstdint>                                  // std::uint32_t
 #include <vector>                                   // std::vector
@@ -56,9 +55,7 @@ namespace alpaka
     {
         namespace detail
         {
-            template<
-                typename TAcceleratedKernel>
-            class KernelExecutorOpenMp;
+            class KernelExecOpenMp;
 
             //#############################################################################
             //! The OpenMP accelerator.
@@ -75,11 +72,9 @@ namespace alpaka
             public:
                 using MemSpace = mem::SpaceHost;
                 
-                template<
-                    typename TAcceleratedKernel>
-                friend class ::alpaka::openmp::detail::KernelExecutorOpenMp;
+                friend class ::alpaka::openmp::detail::KernelExecOpenMp;
                 
-            //private:    // TODO: Make private and only constructible from friend KernelExecutor. Not possible due to IAcc?
+            //private:    // TODO: Make private and only constructible from friend KernelExec. Not possible due to IAcc?
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
@@ -222,35 +217,28 @@ namespace alpaka
             //#############################################################################
             //! The OpenMP accelerator executor.
             //#############################################################################
-            template<
-                typename TAcceleratedKernel>
-            class KernelExecutorOpenMp :
-                private IAcc<AccOpenMp>,
-                private TAcceleratedKernel
+            class KernelExecOpenMp :
+                private IAcc<AccOpenMp>
             {
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 template<
-                    typename TWorkDiv, 
-                    typename... TKernelConstrArgs>
-                ALPAKA_FCT_HOST KernelExecutorOpenMp(
+                    typename TWorkDiv>
+                ALPAKA_FCT_HOST KernelExecOpenMp(
                     TWorkDiv const & workDiv, 
-                    StreamOpenMp const &, 
-                    TKernelConstrArgs && ... args) :
-                        IAcc<AccOpenMp>(workDiv),
-                        TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...)
+                    StreamOpenMp const &) :
+                        IAcc<AccOpenMp>(workDiv)
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                 }
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST KernelExecutorOpenMp(
-                    KernelExecutorOpenMp const & other) :
-                        IAcc<AccOpenMp>(*static_cast<WorkDivOpenMp const *>(&other)),
-                        TAcceleratedKernel(other)
+                ALPAKA_FCT_HOST KernelExecOpenMp(
+                    KernelExecOpenMp const & other) :
+                        IAcc<AccOpenMp>(static_cast<WorkDivOpenMp const &>(other))
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                 }
@@ -258,10 +246,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST KernelExecutorOpenMp(
-                    KernelExecutorOpenMp && other) :
-                        IAcc<AccOpenMp>(*static_cast<WorkDivOpenMp const *>(&other)),
-                        TAcceleratedKernel(std::move(other))
+                ALPAKA_FCT_HOST KernelExecOpenMp(
+                    KernelExecOpenMp && other) :
+                        IAcc<AccOpenMp>(static_cast<WorkDivOpenMp &&>(other))
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                 }
@@ -269,22 +256,24 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST KernelExecutorOpenMp & operator=(KernelExecutorOpenMp const &) = delete;
+                ALPAKA_FCT_HOST KernelExecOpenMp & operator=(KernelExecOpenMp const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
 #if BOOST_COMP_INTEL
-                ALPAKA_FCT_HOST virtual ~KernelExecutorOpenMp() = default;
+                ALPAKA_FCT_HOST virtual ~KernelExecOpenMp() = default;
 #else
-                ALPAKA_FCT_HOST virtual ~KernelExecutorOpenMp() noexcept = default;
+                ALPAKA_FCT_HOST virtual ~KernelExecOpenMp() noexcept = default;
 #endif
 
                 //-----------------------------------------------------------------------------
-                //! Executes the accelerated kernel.
+                //! Executes the kernel functor.
                 //-----------------------------------------------------------------------------
                 template<
+                    typename TKernelFunctor,
                     typename... TArgs>
                 ALPAKA_FCT_HOST void operator()(
+                    TKernelFunctor && kernelFunctor,
                     TArgs && ... args) const
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -292,7 +281,9 @@ namespace alpaka
                     Vec<3u> const v3uiGridBlockExtents(this->AccOpenMp::getWorkDiv<Grid, Blocks, dim::Dim3>());
                     Vec<3u> const v3uiBlockThreadExtents(this->AccOpenMp::getWorkDiv<Block, Threads, dim::Dim3>());
 
-                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiBlockThreadExtents, std::forward<TArgs>(args)...));
+                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TKernelFunctor>::template getBlockSharedExternMemSizeBytes<AccOpenMp>(
+                        v3uiBlockThreadExtents, 
+                        std::forward<TArgs>(args)...));
                     this->AccOpenMp::m_vuiExternalSharedMem.reset(
                         new uint8_t[uiBlockSharedExternMemSizeBytes]);
 
@@ -300,17 +291,13 @@ namespace alpaka
                     auto const uiNumThreadsInBlock(this->AccOpenMp::getWorkDiv<Block, Threads, dim::Dim1>()[0]);
 
                     // Execute the blocks serially.
-                    for(std::uint32_t bz(0); bz<v3uiGridBlockExtents[2]; ++bz)
+                    for(this->AccOpenMp::m_v3uiGridBlockIdx[2] = 0; this->AccOpenMp::m_v3uiGridBlockIdx[2]<v3uiGridBlockExtents[2]; ++this->AccOpenMp::m_v3uiGridBlockIdx[2])
                     {
-                        this->AccOpenMp::m_v3uiGridBlockIdx[2] = bz;
-                        for(std::uint32_t by(0); by<v3uiGridBlockExtents[1]; ++by)
+                        for(this->AccOpenMp::m_v3uiGridBlockIdx[1] = 0; this->AccOpenMp::m_v3uiGridBlockIdx[1]<v3uiGridBlockExtents[1]; ++this->AccOpenMp::m_v3uiGridBlockIdx[1])
                         {
-                            this->AccOpenMp::m_v3uiGridBlockIdx[1] = by;
-                            for(std::uint32_t bx(0); bx<v3uiGridBlockExtents[0]; ++bx)
+                            for(this->AccOpenMp::m_v3uiGridBlockIdx[0] = 0; this->AccOpenMp::m_v3uiGridBlockIdx[0]<v3uiGridBlockExtents[0]; ++this->AccOpenMp::m_v3uiGridBlockIdx[0])
                             {
-                                this->AccOpenMp::m_v3uiGridBlockIdx[0] = bx;
-
-                                // Execute the threads in parallel threads.
+                                // Execute the threads in parallel.
 
                                 // Force the environment to use the given number of threads.
                                 ::omp_set_dynamic(0);
@@ -324,7 +311,7 @@ namespace alpaka
                                 #pragma omp parallel num_threads(static_cast<int>(uiNumThreadsInBlock))
                                 {
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                                    if((::omp_get_thread_num() == 0) && (bz == 0) && (by == 0) && (bx == 0))
+                                    if((::omp_get_thread_num() == 0) && (this->AccOpenMp::m_v3uiGridBlockIdx[2] == 0) && (this->AccOpenMp::m_v3uiGridBlockIdx[1] == 0) && (this->AccOpenMp::m_v3uiGridBlockIdx[0] == 0))
                                     {
                                         assert(::omp_get_num_threads()>=0);
                                         auto const uiNumThreads(static_cast<decltype(uiNumThreadsInBlock)>(::omp_get_num_threads()));
@@ -335,7 +322,7 @@ namespace alpaka
                                         }
                                     }
 #endif
-                                    this->TAcceleratedKernel::operator()(
+                                    std::forward<TKernelFunctor>(kernelFunctor)(
                                         (*static_cast<IAcc<AccOpenMp> const *>(this)),
                                         std::forward<TArgs>(args)...);
 
@@ -362,41 +349,25 @@ namespace alpaka
             //#############################################################################
             //! The OpenMP accelerator kernel executor accelerator type trait specialization.
             //#############################################################################
-            template<
-                typename AcceleratedKernel>
+            template<>
             struct AccType<
-                openmp::detail::KernelExecutorOpenMp<AcceleratedKernel>>
+                openmp::detail::KernelExecOpenMp>
             {
                 using type = AccOpenMp;
             };
         }
-    }
 
-    namespace detail
-    {
-        //#############################################################################
-        //! The OpenMP accelerator kernel executor builder.
-        //#############################################################################
-        template<
-            typename TKernel, 
-            typename... TKernelConstrArgs>
-        class KernelExecCreator<
-            AccOpenMp, 
-            TKernel, 
-            TKernelConstrArgs...>
+        namespace exec
         {
-        public:
-            using AcceleratedKernel = typename boost::mpl::apply<TKernel, AccOpenMp>::type;
-            using AcceleratedKernelExecutorExtent = KernelExecutorExtent<openmp::detail::KernelExecutorOpenMp<AcceleratedKernel>, TKernelConstrArgs...>;
-
-            //-----------------------------------------------------------------------------
-            //! Creates an kernel executor for the serial accelerator.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST AcceleratedKernelExecutorExtent operator()(
-                TKernelConstrArgs && ... args) const
+            //#############################################################################
+            //! The OpenMP accelerator executor type trait specialization.
+            //#############################################################################
+            template<>
+            struct ExecType<
+                AccOpenMp>
             {
-                return AcceleratedKernelExecutorExtent(std::forward<TKernelConstrArgs>(args)...);
-            }
-        };
+                using type = openmp::detail::KernelExecOpenMp;
+            };
+        }
     }
 }

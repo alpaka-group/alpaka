@@ -35,15 +35,14 @@
 #include <alpaka/cuda/Device.hpp>                   // Devices
 
 // Specialized traits.
-#include <alpaka/core/KernelExecCreator.hpp>        // KernelExecCreator
 #include <alpaka/traits/Acc.hpp>                    // AccType
+#include <alpaka/traits/Exec.hpp>                   // ExecType
 
 // Implementation details.
 #include <alpaka/cuda/Common.hpp>
 #include <alpaka/interfaces/IAcc.hpp>               // IAcc
 #include <alpaka/traits/BlockSharedExternMemSizeBytes.hpp>
 
-#include <boost/mpl/apply.hpp>                      // boost::mpl::apply
 #include <boost/predef.h>                           // workarounds
 
 #include <cstdint>                                  // std::uint32_t
@@ -58,9 +57,7 @@ namespace alpaka
     {
         namespace detail
         {
-            template<
-                typename TAcceleratedKernel>
-            class KernelExecutorCuda;
+            class KernelExecCuda;
 
             //#############################################################################
             //! The CUDA accelerator.
@@ -75,11 +72,9 @@ namespace alpaka
             public:
                 using MemSpace = mem::SpaceCuda;
                 
-                template<
-                    typename TAcceleratedKernel>
-                friend class ::alpaka::cuda::detail::KernelExecutorCuda;
+                friend class ::alpaka::cuda::detail::KernelExecCuda;
                 
-            //private:    // TODO: Make private and only constructible from friend KernelExecutor. Not possible due to IAcc?
+            //private:    // TODO: Make private and only constructible from friend KernelExec. Not possible due to IAcc?
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
@@ -304,10 +299,10 @@ namespace alpaka
             //! The CUDA kernel entry point.
             //-----------------------------------------------------------------------------
             template<
-                typename TAcceleratedKernel,
+                typename TKernelFunctor,
                 typename... TArgs>
             __global__ void cudaKernel(
-                TAcceleratedKernel accedKernel,
+                TKernelFunctor kernelFunctor,
                 TArgs ... args)
             {
 #if defined(__CUDA_ARCH__) && (__CUDA_ARCH__ < 200)
@@ -315,7 +310,7 @@ namespace alpaka
 #endif
                 IAcc<AccCuda> acc;
 
-                accedKernel(
+                kernelFunctor(
                     acc,
                     args...);
             }
@@ -323,13 +318,10 @@ namespace alpaka
             //#############################################################################
             //! The CUDA accelerator executor.
             //#############################################################################
-            template<
-                typename TAcceleratedKernel>
-            class KernelExecutorCuda :
-                private TAcceleratedKernel
+            class KernelExecCuda
             {
 #if (!BOOST_COMP_GNUC) || (BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(5, 0, 0))
-                static_assert(std::is_trivially_copyable<TAcceleratedKernel>::value, "The given kernel functor has to fulfill is_trivially_copyable!");
+                static_assert(std::is_trivially_copyable<TKernelFunctor>::value, "The given kernel functor has to fulfill is_trivially_copyable!");
 #endif
 
             public:
@@ -337,55 +329,57 @@ namespace alpaka
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 template<
-                    typename TWorkDiv, 
-                    typename... TKernelConstrArgs>
-                ALPAKA_FCT_HOST KernelExecutorCuda(
+                    typename TWorkDiv>
+                ALPAKA_FCT_HOST KernelExecCuda(
                     TWorkDiv const & workDiv, 
-                    StreamCuda const & stream, 
-                    TKernelConstrArgs && ... args) :
-                        TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
+                    StreamCuda const & stream) :
                         m_Stream(stream),
                         m_v3uiGridBlockExtents(workdiv::getWorkDiv<Grid, Blocks, dim::Dim3>(workDiv)),
                         m_v3uiBlockThreadExtents(workdiv::getWorkDiv<Block, Threads, dim::Dim3>(workDiv))
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-                    // TODO: Check that (sizeof(TAcceleratedKernel) * m_v3uiBlockThreadExtents.prod()) < available memory size
                 }
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST KernelExecutorCuda(KernelExecutorCuda const &) = default;
+                ALPAKA_FCT_HOST KernelExecCuda(KernelExecCuda const &) = default;
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST KernelExecutorCuda(KernelExecutorCuda &&) = default;
+                ALPAKA_FCT_HOST KernelExecCuda(KernelExecCuda &&) = default;
 #endif
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST KernelExecutorCuda & operator=(KernelExecutorCuda const &) = delete;
+                ALPAKA_FCT_HOST KernelExecCuda & operator=(KernelExecCuda const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
 #if BOOST_COMP_INTEL
-                ALPAKA_FCT_HOST virtual ~KernelExecutorCuda() = default;
+                ALPAKA_FCT_HOST virtual ~KernelExecCuda() = default;
 #else
-                ALPAKA_FCT_HOST virtual ~KernelExecutorCuda() noexcept = default;
+                ALPAKA_FCT_HOST virtual ~KernelExecCuda() noexcept = default;
 #endif
 
                 //-----------------------------------------------------------------------------
-                //! Executes the accelerated kernel.
+                //! Executes the kernel functor.
                 //-----------------------------------------------------------------------------
                 template<
+                    typename TKernelFunctor,
                     typename... TArgs>
                 ALPAKA_FCT_HOST void operator()(
                     // \NOTE: No universal reference (&&) or const reference (const &) is allowed as the parameter type because the kernel launch language extension expects the arguments by value.
                     // This forces the type of a float argument given with std::forward to this function to be of type float instead of e.g. "float const & __ptr64" (MSVC).
                     // If not given by value, the kernel launch code does not copy the value but the pointer to the value location.
+                    TKernelFunctor kernelFunctor,
                     TArgs ... args) const
                 {
+#if (!__GLIBCXX__) // libstdc++ even for gcc-4.9 does not support std::is_trivially_copyable.
+                    static_assert(std::is_trivially_copyable<TKernelFunctor>::value, "The given kernel functor has to fulfill is_trivially_copyable!");
+#endif
+                    // TODO: Check that (sizeof(TKernelFunctor) * m_v3uiBlockThreadExtents.prod()) < available memory size
+
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -412,18 +406,18 @@ namespace alpaka
 #endif
 
                     // Get the size of the block shared extern memory.
-                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(
+                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TKernelFunctor>::template getBlockSharedExternMemSizeBytes<AccCuda>(
                         m_v3uiBlockThreadExtents, 
                         std::forward<TArgs>(args)...));
 
                     // \TODO: The following block should be in a lock.
                     {
-                        cudaKernel<TAcceleratedKernel, TArgs...><<<
+                        cudaKernel<TKernelFunctor, TArgs...><<<
                             gridDim,
                             blockDim,
                             uiBlockSharedExternMemSizeBytes,
                             *m_Stream.m_spCudaStream.get()>>>(
-                                *static_cast<TAcceleratedKernel const *>(this),
+                                kernelFunctor,
                                 args...);
                     }
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
@@ -434,7 +428,7 @@ namespace alpaka
                     cudaError_t const error(cudaGetLastError());
                     if(error != cudaSuccess)
                     {
-                        std::string const sError("The execution of kernel '" + std::string(typeid(TAcceleratedKernel).name()) + " failed with error: '" + std::string(cudaGetErrorString(error)) + "'");
+                        std::string const sError("The execution of kernel '" + std::string(typeid(TKernelFunctor).name()) + " failed with error: '" + std::string(cudaGetErrorString(error)) + "'");
                         std::cerr << sError << std::endl;
                         ALPAKA_DEBUG_BREAK;
                         throw std::runtime_error(sError);
@@ -457,42 +451,25 @@ namespace alpaka
             //#############################################################################
             //! The CUDA accelerator kernel executor accelerator type trait specialization.
             //#############################################################################
-            template<
-                typename AcceleratedKernel>
+            template<>
             struct AccType<
-                cuda::detail::KernelExecutorCuda<AcceleratedKernel>>
+                cuda::detail::KernelExecCuda>
             {
                 using type = AccCuda;
             };
         }
-    }
 
-    namespace detail
-    {
-        //#############################################################################
-        //! The CUDA accelerator kernel executor builder.
-        // \TODO: How to assure that the kernel does not hold pointers to host memory?
-        //#############################################################################
-        template<
-            typename TKernel, 
-            typename... TKernelConstrArgs>
-        class KernelExecCreator<
-            AccCuda, 
-            TKernel, 
-            TKernelConstrArgs...>
+        namespace exec
         {
-        public:
-            using AcceleratedKernel = typename boost::mpl::apply<TKernel, AccCuda>::type;
-            using AcceleratedKernelExecutorExtent = KernelExecutorExtent<cuda::detail::KernelExecutorCuda<AcceleratedKernel>, TKernelConstrArgs...>;
-
-            //-----------------------------------------------------------------------------
-            //! Creates an kernel executor for the serial accelerator.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST AcceleratedKernelExecutorExtent operator()(
-                TKernelConstrArgs && ... args) const
+            //#############################################################################
+            //! The CUDA accelerator executor type trait specialization.
+            //#############################################################################
+            template<>
+            struct ExecType<
+                AccCuda>
             {
-                return AcceleratedKernelExecutorExtent(std::forward<TKernelConstrArgs>(args)...);
-            }
-        };
+                using type = cuda::detail::KernelExecCuda;
+            };
+        }
     }
 }

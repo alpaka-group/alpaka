@@ -24,8 +24,6 @@
 #include <alpaka/core/Vec.hpp>          // Vec
 #include <alpaka/core/Positioning.hpp>  // origin::Grid/Blocks
 
-#include <boost/mpl/placeholders.hpp>   // boost::mpl::_1
-
 //-----------------------------------------------------------------------------
 //! The name space for the accelerator library.
 //-----------------------------------------------------------------------------
@@ -39,7 +37,7 @@ namespace alpaka
     // These device functions are not implemented and will not call the underlying implementation for the device code, because this will never be executed and would not compile.
     //#############################################################################
     template<
-        typename TAcc = boost::mpl::_1>
+        typename TAcc>
     class IAcc :
         protected TAcc
     {

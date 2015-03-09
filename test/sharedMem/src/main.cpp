@@ -19,7 +19,7 @@
 * If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <alpaka/alpaka.hpp>        // alpaka::createKernelExecutor<...>
+#include <alpaka/alpaka.hpp>        // alpaka::exec::create
 
 #include <chrono>                   // std::chrono::high_resolution_clock
 #include <cassert>                  // assert
@@ -35,8 +35,7 @@
 //! \tparam TuiNumUselessWork The number of useless calculations done in each kernel execution.
 //#############################################################################
 template<
-    typename TuiNumUselessWork, 
-    typename TAcc = alpaka::IAcc<>>
+    typename TuiNumUselessWork>
 class SharedMemKernel
 {
 public:
@@ -51,6 +50,8 @@ public:
     //-----------------------------------------------------------------------------
     //! The kernel.
     //-----------------------------------------------------------------------------
+    template<
+        typename TAcc>
     ALPAKA_FCT_ACC void operator()(
         TAcc const & acc,
         std::uint32_t * const puiBlockRetVals, 
@@ -124,15 +125,16 @@ namespace alpaka
     //! The trait for getting the size of the block shared extern memory for a kernel.
     //#############################################################################
     template<
-        class TuiNumUselessWork, 
-        class TAcc>
+        typename TuiNumUselessWork>
     struct BlockSharedExternMemSizeBytes<
-        SharedMemKernel<TuiNumUselessWork, TAcc>>
+        SharedMemKernel<TuiNumUselessWork>>
     {
         //-----------------------------------------------------------------------------
         //! \return The size of the shared memory allocated for a block.
         //-----------------------------------------------------------------------------
-        template<typename... TArgs>
+        template<
+            typename TAcc,
+            typename... TArgs>
         ALPAKA_FCT_HOST static std::size_t getBlockSharedExternMemSizeBytes(
             alpaka::Vec<3u> const & v3uiBlockThreadsExtents, 
             TArgs && ...)
@@ -149,19 +151,19 @@ template<
     typename TExec, 
     typename TStream,
     typename... TArgs>
-void profileAcceleratedKernel(
+void profileKernelExec(
     TExec const & exec, 
     TStream const & stream, // \TODO: Add a getStream Method to the kernel executor and do not require this parameter!
     TArgs && ... args)
 {
     std::cout
-        << "profileAcceleratedKernel("
+        << "profileKernelExec("
         << " kernelExecutor: " << typeid(TExec).name()
         << ")" << std::endl;
     
     auto const tpStart(std::chrono::high_resolution_clock::now());
 
-    // Execute the accelerated kernel.
+    // Execute the kernel functor.
     exec(std::forward<TArgs>(args)...);
 
     // Wait for the stream to finish the kernel execution to measure its run time.
@@ -191,13 +193,15 @@ struct SharedMemTester
         std::cout << std::endl;
         std::cout << "################################################################################" << std::endl;
         
-        using Kernel = SharedMemKernel<TuiNumUselessWork>;
         using AccMemSpace = typename alpaka::mem::SpaceT<TAcc>;
+        
+        // Create the kernel functor.
+        SharedMemKernel<TuiNumUselessWork> kernel(42);
 
         std::cout
             << "SharedMemTester("
             << " accelerator: " << alpaka::acc::getAccName<TAcc>()
-            << ", kernel: " << typeid(Kernel).name()
+            << ", kernel: " << typeid(kernel).name()
             << ", workDiv: " << workDiv
             << ")" << std::endl;
 
@@ -212,16 +216,16 @@ struct SharedMemTester
         auto blockRetValsAcc(alpaka::mem::alloc<std::uint32_t, AccMemSpace>(uiSizeElements));
         alpaka::mem::copy(blockRetValsAcc, vuiBlockRetVals, uiSizeElements);
 
-        std::uint32_t const m_uiMult(42);
-
-        // Build the kernel executor.
-        auto exec(alpaka::createKernelExecutor<TAcc, Kernel>(m_uiMult));
         // Get a new stream.
         alpaka::stream::StreamT<TAcc> stream;
+        
+        // Create the kernel executor.
+        auto exec(alpaka::exec::create<TAcc>(workDiv, stream));
         // Profile the kernel execution.
-        profileAcceleratedKernel(
-		    exec(workDiv, stream), 
+        profileKernelExec(
+		    exec, 
 		    stream,
+            kernel,
 		    alpaka::mem::getNativePtr(blockRetValsAcc),
 		    uiMult2);
 
@@ -229,7 +233,7 @@ struct SharedMemTester
         alpaka::mem::copy(vuiBlockRetVals, blockRetValsAcc, uiSizeElements);
 
         // Assert that the results are correct.
-        std::uint32_t const uiCorrectResult(static_cast<std::uint32_t>(uiBlockThreadsCount*uiBlockThreadsCount) * m_uiMult * uiMult2);
+        std::uint32_t const uiCorrectResult(static_cast<std::uint32_t>(uiBlockThreadsCount*uiBlockThreadsCount) * kernel.m_uiMult * uiMult2);
 
         bool bResultCorrect(true);
         for(std::size_t i(0); i<uiGridBlocksCount; ++i)

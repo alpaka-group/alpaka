@@ -1,7 +1,7 @@
-alpaka - Abstraction Library for Parallel Kernel Acceleration
+**alpaka** - Abstraction Library for Parallel Kernel Acceleration
 =============================================================
 
-The alpaka library allows users to utilize a multitude of different accelerator types that require different libraries/compilers by providing a uniform kernel interface.
+The **alpaka** library allows users to utilize a multitude of different accelerator types that require different libraries/compilers by providing a uniform kernel interface.
 Users have to write only one implementation of their algorithms and can benefit from all supported accelerators.
 There is no need to write special CUDA, OpenMP or custom threading code.
 The supported accelerators can be selected at compile time but the decision which accelerator executes which kernel can be made at runtime.
@@ -15,10 +15,17 @@ Blocks are executed independently and can not interact in any way.
 The block execution order is unspecified and depends on the accelerator in use.
 By using this abstraction the execution can be optimally adapted to the available accelerators.
 
+**alpaka** provides:
+ - Accelerator offloading
+ - Write once, run everywhere
+ - Performance portability
+ - Platform independence
+ - Standard C++11
+ 
 Software License
 ----------------
 
-*alpaka* is licensed under the **LGPLv3+**.
+**alpaka** is licensed under the **LGPLv3+**.
 
 
 Documentation
@@ -49,20 +56,20 @@ Requirements
 [Boost](http://boost.org/) 1.55+ is the only required external dependency.
 By default just header-only libraries are used.
 
-When the **Fibers-Accelerator** is enabled, `boost-coroutine`, `boost-context` and the proposed boost library [`boost-fibers`](https://github.com/olk/boost-fiber) (develop branch commit 6a1257442bb82e9082a55cacc2c6ebe02b4aa540) are required to be build.
+When the *Fibers-Accelerator* is enabled, `boost-coroutine`, `boost-context` and the proposed boost library [`boost-fibers`](https://github.com/olk/boost-fiber) (develop branch commit 6a1257442bb82e9082a55cacc2c6ebe02b4aa540) are required to be build.
 
-When the **CUDA-Accelerator** is enabled, version *6.5* of the *CUDA SDK* is the minimum requirement.
+When the *CUDA-Accelerator* is enabled, version *6.5* of the *CUDA SDK* is the minimum requirement.
 
-When the **OpenMP-Accelerator** is enabled, the compiler and the platform have to support *OpenMP 2.0* or newer.
+When the *OpenMP-Accelerator* is enabled, the compiler and the platform have to support *OpenMP 2.0* or newer.
 
 
 Accelerators
 ------------
-- **Serial-Accelerator**
-- **Threads-Accelerator**
-- **Fibers-Accelerator**
-- **OpenMP-Accelerator**
-- **CUDA-Accelerator**
+- *Serial-Accelerator*
+- *Threads-Accelerator*
+- *Fibers-Accelerator*
+- *OpenMP-Accelerator*
+- *CUDA-Accelerator*
 
 |-|serial|threads|fibers|OpenMP|CUDA|
 |---|---|---|---|---|---|
@@ -85,10 +92,10 @@ This allows the usage of header inclusion in the following way:
 
 Code not intended to be utilized by users is hidden in the `detail` namespace.
 
-If you are building with the **CUDA-Accelerator** enabled, your source files are required to have the ending `.cu` to comply with the nvcc (NVIDIA CUDA C++ compiler) rules for code files using CUDA.
-When the **CUDA-Accelerator** is disabled, this is not required and a `.cpp` extension is enough.
+If you are building with the *CUDA-Accelerator* enabled, your source files are required to have the ending `.cu` to comply with the nvcc (NVIDIA CUDA C++ compiler) rules for code files using CUDA.
+When the *CUDA-Accelerator* is disabled, this is not required and a `.cpp` extension is enough.
 To allow both use-cases, it is desirable to have both, a `.cpp` file with the implementation and a `.cu` file containing only `#include <PATH/TO/IMPL.cpp>` to forward to the implementation.
-The build system then has to use the `.cu` files when the **CUDA-Accelerator** is enabled and the `.cpp` files else.
+The build system then has to use the `.cu` files when the *CUDA-Accelerator* is enabled and the `.cpp` files else.
 
 
 Authors

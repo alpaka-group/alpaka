@@ -35,14 +35,14 @@
 #include <alpaka/threads/Device.hpp>                // Devices
 
 // Specialized traits.
-#include <alpaka/core/KernelExecCreator.hpp>        // KernelExecCreator
+#include <alpaka/traits/Acc.hpp>                    // AccType
+#include <alpaka/traits/Exec.hpp>                   // ExecType
 
 // Implementation details.
 #include <alpaka/traits/BlockSharedExternMemSizeBytes.hpp>
 #include <alpaka/interfaces/IAcc.hpp>
 #include <alpaka/core/ConcurrentExecPool.hpp>       // ConcurrentExecPool
 
-#include <boost/mpl/apply.hpp>                      // boost::mpl::apply
 #include <boost/predef.h>                           // workarounds
 
 #include <vector>                                   // std::vector
@@ -59,9 +59,7 @@ namespace alpaka
     {
         namespace detail
         {
-            template<
-                typename TAcceleratedKernel>
-            class KernelExecutorThreads;
+            class KernelExecThreads;
 
             //#############################################################################
             //! The threads accelerator.
@@ -77,11 +75,9 @@ namespace alpaka
             public:
                 using MemSpace = mem::SpaceHost;
                 
-                template<
-                    typename TAcceleratedKernel>
-                friend class ::alpaka::threads::detail::KernelExecutorThreads;
+                friend class ::alpaka::threads::detail::KernelExecThreads;
                 
-            //private:    // TODO: Make private and only constructible from friend KernelExecutor. Not possible due to IAcc?
+            //private:    // TODO: Make private and only constructible from friend KernelExec. Not possible due to IAcc?
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
@@ -299,25 +295,19 @@ namespace alpaka
             //#############################################################################
             //! The threads accelerator executor.
             //#############################################################################
-            template<
-                typename TAcceleratedKernel>
-            class KernelExecutorThreads :
-                private IAcc<AccThreads>,
-                private TAcceleratedKernel
+            class KernelExecThreads :
+                private IAcc<AccThreads>
             {
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 template<
-                    typename TWorkDiv, 
-                    typename... TKernelConstrArgs>
-                ALPAKA_FCT_HOST KernelExecutorThreads(
+                    typename TWorkDiv>
+                ALPAKA_FCT_HOST KernelExecThreads(
                     TWorkDiv const & workDiv, 
-                    StreamThreads const &,
-                    TKernelConstrArgs && ... args) :
+                    StreamThreads const &) :
                         IAcc<AccThreads>(workDiv),
-                        TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
                         m_vFuturesInBlock(),
                         m_mtxMapInsert()
                 {
@@ -326,10 +316,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST KernelExecutorThreads(
-                    KernelExecutorThreads const & other) :
-                        IAcc<AccThreads>(*static_cast<WorkDivThreads const *>(&other)),
-                        TAcceleratedKernel(other),
+                ALPAKA_FCT_HOST KernelExecThreads(
+                    KernelExecThreads const & other) :
+                        IAcc<AccThreads>(static_cast<WorkDivThreads const &>(other)),
                         m_vFuturesInBlock(),
                         m_mtxMapInsert()
                 {
@@ -338,10 +327,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST KernelExecutorThreads(
-                    KernelExecutorThreads && other) :
-                        IAcc<AccThreads>(*static_cast<WorkDivThreads const *>(&other)),
-                        TAcceleratedKernel(std::move(other)),
+                ALPAKA_FCT_HOST KernelExecThreads(
+                    KernelExecThreads && other) :
+                        IAcc<AccThreads>(static_cast<WorkDivThreads &&>(other)),
                         m_vFuturesInBlock(),
                         m_mtxMapInsert()
                 {
@@ -350,22 +338,24 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST KernelExecutorThreads & operator=(KernelExecutorThreads const &) = delete;
+                ALPAKA_FCT_HOST KernelExecThreads & operator=(KernelExecThreads const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
 #if BOOST_COMP_INTEL
-                ALPAKA_FCT_HOST virtual ~KernelExecutorThreads() = default;
+                ALPAKA_FCT_HOST virtual ~KernelExecThreads() = default;
 #else
-                ALPAKA_FCT_HOST virtual ~KernelExecutorThreads() noexcept = default;
+                ALPAKA_FCT_HOST virtual ~KernelExecThreads() noexcept = default;
 #endif
 
                 //-----------------------------------------------------------------------------
-                //! Executes the accelerated kernel.
+                //! Executes the kernel functor.
                 //-----------------------------------------------------------------------------
                 template<
+                    typename TKernelFunctor,
                     typename... TArgs>
                 ALPAKA_FCT_HOST void operator()(
+                    TKernelFunctor && kernelFunctor,
                     TArgs && ... args) const
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -373,7 +363,9 @@ namespace alpaka
                     Vec<3u> const v3uiGridBlockExtents(this->AccThreads::getWorkDiv<Grid, Blocks, dim::Dim3>());
                     Vec<3u> const v3uiBlockThreadExtents(this->AccThreads::getWorkDiv<Block, Threads, dim::Dim3>());
 
-                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiBlockThreadExtents, std::forward<TArgs>(args)...));
+                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TKernelFunctor>::template getBlockSharedExternMemSizeBytes<AccThreads>(
+                        v3uiBlockThreadExtents, 
+                        std::forward<TArgs>(args)...));
                     this->AccThreads::m_vuiExternalSharedMem.reset(
                         new uint8_t[uiBlockSharedExternMemSizeBytes]);
 
@@ -389,43 +381,47 @@ namespace alpaka
                     ThreadPool pool(uiNumThreadsInBlock[0], uiNumThreadsInBlock[0]);
 
                     // Execute the blocks serially.
-                    for(UInt bz(0); bz<v3uiGridBlockExtents[2]; ++bz)
+                    for(this->AccThreads::m_v3uiGridBlockIdx[2] = 0; this->AccThreads::m_v3uiGridBlockIdx[2]<v3uiGridBlockExtents[2]; ++this->AccThreads::m_v3uiGridBlockIdx[2])
                     {
-                        this->AccThreads::m_v3uiGridBlockIdx[2] = bz;
-                        for(UInt by(0); by<v3uiGridBlockExtents[1]; ++by)
+                        for(this->AccThreads::m_v3uiGridBlockIdx[1] = 0; this->AccThreads::m_v3uiGridBlockIdx[1]<v3uiGridBlockExtents[1]; ++this->AccThreads::m_v3uiGridBlockIdx[1])
                         {
-                            this->AccThreads::m_v3uiGridBlockIdx[1] = by;
-                            for(UInt bx(0); bx<v3uiGridBlockExtents[0]; ++bx)
+                            for(this->AccThreads::m_v3uiGridBlockIdx[0] = 0; this->AccThreads::m_v3uiGridBlockIdx[0]<v3uiGridBlockExtents[0]; ++this->AccThreads::m_v3uiGridBlockIdx[0])
                             {
-                                this->AccThreads::m_v3uiGridBlockIdx[0] = bx;
-
-                                // Execute the threads in parallel threads.
+                                // Execute the threads in parallel.
                                 Vec<3u> v3uiBlockThreadIdx(0u);
-                                for(UInt tz(0); tz<v3uiBlockThreadExtents[2]; ++tz)
+                                for(v3uiBlockThreadIdx[2] = 0; v3uiBlockThreadIdx[2]<v3uiBlockThreadExtents[2]; ++v3uiBlockThreadIdx[2])
                                 {
-                                    v3uiBlockThreadIdx[2] = tz;
-                                    for(UInt ty(0); ty<v3uiBlockThreadExtents[1]; ++ty)
+                                    for(v3uiBlockThreadIdx[1] = 0; v3uiBlockThreadIdx[1]<v3uiBlockThreadExtents[1]; ++v3uiBlockThreadIdx[1])
                                     {
-                                        v3uiBlockThreadIdx[1] = ty;
-                                        for(UInt tx(0); tx<v3uiBlockThreadExtents[0]; ++tx)
+                                        for(v3uiBlockThreadIdx[0] = 0; v3uiBlockThreadIdx[0]<v3uiBlockThreadExtents[0]; ++v3uiBlockThreadIdx[0])
                                         {
-                                            v3uiBlockThreadIdx[0] = tx;
-
                                             // The v3uiBlockThreadIdx is required to be copied in from the environment because if the thread is immediately suspended the variable is already changed for the next iteration/thread.
-#if BOOST_COMP_GNUC   // GCC < 4.9.0 can not compile variadic templates inside lambdas correctly if the variadic argument is not in the parameter list.
+#if BOOST_COMP_GNUC // GCC < 4.9.0 can not compile variadic types inside lambdas correctly if the variadic type is not in the lambda parameter list.
                                             auto threadKernelFct(
-                                                [this](Vec<3u> const v3uiBlockThreadIdx, TArgs ... args)
+                                                [&, v3uiBlockThreadIdx](
+                                                    TArgs const & ... args)
                                                 {
-                                                    threadKernel<TArgs...>(v3uiBlockThreadIdx, std::forward<TArgs>(args)...); 
+                                                    threadKernel(
+                                                        v3uiBlockThreadIdx, 
+                                                        std::forward<TKernelFunctor>(kernelFunctor), 
+                                                        args...); 
                                                 });
-                                            m_vFuturesInBlock.emplace_back(pool.enqueueTask(threadKernelFct, v3uiBlockThreadIdx, args...));
+                                            m_vFuturesInBlock.emplace_back(
+                                                pool.enqueueTask(
+                                                    threadKernelFct, 
+                                                    std::forward<TArgs>(args)...));
 #else
                                             auto threadKernelFct = 
                                                 [&, v3uiBlockThreadIdx]()
                                                 {
-                                                    threadKernel<TArgs...>(v3uiBlockThreadIdx, std::forward<TArgs>(args)...); 
+                                                    threadKernel(
+                                                        v3uiBlockThreadIdx, 
+                                                        std::forward<TKernelFunctor>(kernelFunctor), 
+                                                        std::forward<TArgs>(args)...); 
                                                 };
-                                            m_vFuturesInBlock.emplace_back(pool.enqueueTask(threadKernelFct));
+                                            m_vFuturesInBlock.emplace_back(
+                                                pool.enqueueTask(
+                                                    threadKernelFct));
 #endif
                                         }
                                     }
@@ -457,9 +453,11 @@ namespace alpaka
                 //! The thread entry point.
                 //-----------------------------------------------------------------------------
                 template<
+                    typename TKernelFunctor,
                     typename... TArgs>
                 ALPAKA_FCT_HOST void threadKernel(
                     Vec<3u> const & v3uiBlockThreadIdx, 
+                    TKernelFunctor && kernelFunctor, 
                     TArgs && ... args) const
                 {
                     // We have to store the thread data before the kernel is calling any of the methods of this class depending on them.
@@ -488,7 +486,7 @@ namespace alpaka
                     this->AccThreads::syncBlockThreads(itThreadToBarrier);
 
                     // Execute the kernel itself.
-                    this->TAcceleratedKernel::operator()(
+                    std::forward<TKernelFunctor>(kernelFunctor)(
                         (*static_cast<IAcc<AccThreads> const *>(this)),
                         std::forward<TArgs>(args)...);
 
@@ -511,41 +509,25 @@ namespace alpaka
             //#############################################################################
             //! The threads accelerator kernel executor accelerator type trait specialization.
             //#############################################################################
-            template<
-                typename AcceleratedKernel>
+            template<>
             struct AccType<
-                threads::detail::KernelExecutorThreads<AcceleratedKernel>>
+                threads::detail::KernelExecThreads>
             {
                 using type = AccThreads;
             };
         }
-    }
 
-    namespace detail
-    {
-        //#############################################################################
-        //! The threads accelerator kernel executor builder.
-        //#############################################################################
-        template<
-            typename TKernel, 
-            typename... TKernelConstrArgs>
-        class KernelExecCreator<
-            AccThreads, 
-            TKernel, 
-            TKernelConstrArgs...>
+        namespace exec
         {
-        public:
-            using AcceleratedKernel = typename boost::mpl::apply<TKernel, AccThreads>::type;
-            using AcceleratedKernelExecutorExtent = KernelExecutorExtent<threads::detail::KernelExecutorThreads<AcceleratedKernel>, TKernelConstrArgs...>;
-
-            //-----------------------------------------------------------------------------
-            //! Creates an kernel executor for the serial accelerator.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST AcceleratedKernelExecutorExtent operator()(
-                TKernelConstrArgs && ... args) const
+            //#############################################################################
+            //! The threads accelerator executor type trait specialization.
+            //#############################################################################
+            template<>
+            struct ExecType<
+                AccThreads>
             {
-                return AcceleratedKernelExecutorExtent(std::forward<TKernelConstrArgs>(args)...);
-            }
-        };
+                using type = threads::detail::KernelExecThreads;
+            };
+        }
     }
 }

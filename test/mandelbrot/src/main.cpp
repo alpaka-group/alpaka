@@ -19,7 +19,7 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <alpaka/alpaka.hpp>                // alpaka::createKernelExecutor<...>
+#include <alpaka/alpaka.hpp>                // alpaka::exec::create
 
 #include <chrono>                           // std::chrono::high_resolution_clock
 #include <cassert>                          // assert
@@ -92,8 +92,6 @@ public:
 //! A Mandelbrot kernel.
 //! \tparam TAcc The accelerator environment to be executed on.
 //#############################################################################
-template<
-    typename TAcc = alpaka::IAcc<>>
 class MandelbrotKernel
 {
 public:
@@ -137,6 +135,8 @@ public:
     //! \param fMaxI The top border.
     //! \param uiMaxIterations The maximum number of iterations.
     //-----------------------------------------------------------------------------
+    template<
+        typename TAcc>
     ALPAKA_FCT_ACC void operator()(
         TAcc const & acc,
         std::uint32_t * const pColors,
@@ -241,19 +241,19 @@ template<
     typename TExec,
     typename TStream,
     typename... TArgs>
-void profileAcceleratedKernel(
+void profileKernelExec(
     TExec const & exec,
     TStream const & stream, // \TODO: Add a getStream Method to the kernel executor and do not require this parameter!
     TArgs && ... args)
 {
     std::cout
-        << "profileAcceleratedKernel("
+        << "profileKernelExec("
         << " kernelExecutor: " << typeid(TExec).name()
         << ")" << std::endl;
 
     auto const tpStart(std::chrono::high_resolution_clock::now());
 
-    // Execute the accelerated kernel.
+    // Execute the kernel functor.
     exec(std::forward<TArgs>(args)...);
     
     // Wait for the stream to finish the kernel execution to measure its run time.
@@ -285,7 +285,8 @@ struct MandelbrotKernelTester
         std::cout << std::endl;
         std::cout << "################################################################################" << std::endl;
 
-        using Kernel = MandelbrotKernel<>;
+        // Create the kernel functor.
+        MandelbrotKernel kernel;
         
         alpaka::Vec<2u> const v2uiExtents(
             static_cast<alpaka::Vec<2u>::Val>(uiNumCols),
@@ -302,7 +303,7 @@ struct MandelbrotKernelTester
             << ", uiNumCols:" << uiNumCols
             << ", uiMaxIterations:" << uiMaxIterations
             << ", accelerator: " << alpaka::acc::getAccName<TAcc>()
-            << ", kernel: " << typeid(Kernel).name()
+            << ", kernel: " << typeid(kernel).name()
             << ", workDiv: " << workDiv
             << ")" << std::endl;
 
@@ -319,11 +320,13 @@ struct MandelbrotKernelTester
         // Copy Host -> Acc.
         alpaka::mem::copy(bufColorAcc, bufColorHost, v2uiExtents, stream);
         
-        // Build the kernel executor.
-        auto exec(alpaka::createKernelExecutor<TAcc, Kernel>());
+        // Create the kernel executor.
+        auto exec(alpaka::exec::create<TAcc>(workDiv, stream));
         // Profile the kernel execution.
-        profileAcceleratedKernel(exec(workDiv, stream),
+        profileKernelExec(
+            exec,
             stream,
+            kernel,
             alpaka::mem::getNativePtr(bufColorAcc),
             static_cast<std::uint32_t>(uiNumRows),
             static_cast<std::uint32_t>(uiNumCols),

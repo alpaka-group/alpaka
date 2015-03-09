@@ -45,6 +45,7 @@
 #include <boost/mpl/vector.hpp>             // boost::mpl::vector
 #include <boost/mpl/filter_view.hpp>        // boost::mpl::filter_view
 #include <boost/mpl/not.hpp>                // boost::not_
+#include <boost/mpl/placeholders.hpp>       // boost::mpl::_1
 #include <boost/type_traits/is_same.hpp>    // boost::is_same
 
 #include <iosfwd>                           // std::ostream

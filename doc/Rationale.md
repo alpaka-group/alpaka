@@ -29,7 +29,7 @@ There are two possible ways to tell the kernel about the accelerator type:
   The only way to allow this would be to require the user to implement a templated copy constructor for every kernel.
   This is not allowed for kernels that should be copyable to a CUDA device because std::is_trivially_copyable requires the kernel to have no non-trivial copy constructors.
   * a) and inherits from the accelerator. 
-    * +/- To give a device function called from the kernel functor access to the accelerator methods, these methods have to be templated on the accelerated kernel and get a reference to the accelerator.
+    * +/- To give a device function called from the kernel functor access to the accelerator methods, these methods have to be templated on the kernel functor and get a reference to the accelerator.
     This allows to give them access not only to the accelerator methods but also to the other kernel methods.
     This is inconsistent because the kernel uses inheritance and subsequent function calls get a parameter.
     * - The kernel itself has to inherit at least protected from the accelerator to allow the KernelExecutor to access the Accelerator.
@@ -47,25 +47,21 @@ There are two possible ways to tell the kernel about the accelerator type:
 
 ### Implementation notes
 
-Currently we implement version 1b).
+Currently we implement version 2).
 
-Kernels bound to an accelerator can be built with the `createKernelExecutor` template function.
-This function returns an object that stores the given kernel type and the constructor argumnts..
-To separate the kernel execution attributes (grid/block-extents, stream) from the invocation arguments, the first call to `operator()` returns a kernel executor with stored execution attributes.
-The returned executor can then be executed with the `operator()` leading to `createKernelExecutor<TAcc, TKernel>(TKernelConstrArgs ... args)(<grid/block>-extents, stream = 0)(invocation-args ...)` for a complete kernel invocation.
-
-TODO: Why do we require the user to have a default template argument `template<typename TAcc = alpaka::IAcc<>>` for the kernel? 
- - Because we can not create a kernel before binding it to an accelerator we could just make it a simple template `template<typename TAcc>` and make IAcc an implementation detail. 
- - If it is because the possible use of boost::mpl::_1, would it be better to not require the usage of IAcc and make it an implementation detail requiring the user to use `template<typename TAcc = boost::mpl::_1>` directly?
- - Why is boost::mpl::_1 even required in this case?
+A kernel executor can be obtained by calling `alpaka::exec::create<TAcc>(TWorkDiv, TStream)` with the execution attributes (grid/block-extents, stream).
+This separates the kernel execution attributes (grid/block-extents, stream) from the invocation arguments.
+The returned executor can then be called with the `operator()` leading to `alpaka::exec::create<TAcc>(TWorkDiv, TStream)(invocation-args ...)` for a complete kernel invocation.
  
+
 ### External Block Shared Memory
 
 The size of the external block shared memory has to be available at compile time.
 
-TODO: Why?
+**TODO**: Why?
 
-TODO: Explain trait.
+**TODO**: Explain trait.
+
 
 Accelerators
 ------------
@@ -79,7 +75,8 @@ To deliver a common accelerator interface static polymorphism is used instead.
 The accelerator interface IAcc hides all implementation details of the underlying accelerator base class by protected inheritance.
 Private inheritance is not possible, because the `KernelExecutor` implementation for a special accelerator sometimes needs access to the accelerator itself in `KernelExecutor<IAcc<Acc>>`.
 
-TODO: Add note about ALPAKA_FCT_HOST_ACC!
+**TODO**: Add note about ALPAKA_FCT_HOST_ACC!
+
 
 Accelerator Implementation Notes
 --------------------------------

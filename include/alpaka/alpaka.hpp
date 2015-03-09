@@ -28,7 +28,6 @@
 #include <alpaka/core/Common.hpp>
 #include <alpaka/core/EnabledAccelerators.hpp>
 #include <alpaka/core/ForEachType.hpp>
-#include <alpaka/core/KernelExecCreator.hpp>
 #include <alpaka/core/mem/BufPlainPtrWrapper.hpp>
 #include <alpaka/core/mem/BufStdContainers.hpp>
 #include <alpaka/core/mem/View.hpp>
@@ -48,6 +47,7 @@
 #include <alpaka/traits/Device.hpp>
 #include <alpaka/traits/Dim.hpp>
 #include <alpaka/traits/Event.hpp>
+#include <alpaka/traits/Exec.hpp>
 #include <alpaka/traits/Extents.hpp>
 #include <alpaka/traits/Offsets.hpp>
 #include <alpaka/traits/Idx.hpp>

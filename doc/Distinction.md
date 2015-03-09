@@ -1,8 +1,8 @@
-Distinction and Comparison
-==========================
+Distinction
+===========
 
 There are multiple other projects which pretend to achieve full performance portability.
-Many do not satisfy the requirement for full c++ support that is needed because of the usage of template magic for method specialization.
+Many do not satisfy the requirement for full c++ support that is needed because of the usage of template meta-programming for method specialization to avoid runtime-polymorphism.
 
 
 CUDA
@@ -12,8 +12,9 @@ CUDA
 * Full control over memory, caches and execution.
 
 ### Negative
-* Not platform independent: requires NVIDIA GPUs
-* Not compiler independent / language extension. The nvcc compiler driver is required to understand the language constructs that are used inside the kernel methods. The back-end compiler has to be one of the supported ones.
+* Not platform independent: NVIDIA GPUs are required. No execution on other manufacturers GPUs or even standard CPUs.
+* Language extension: The nvcc compiler driver is required to understand the language constructs that are used inside the kernel methods.
+* Not compiler independent: The back-end compiler has to be one of the supported ones.
 
 
 OpenMP

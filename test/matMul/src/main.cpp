@@ -19,7 +19,7 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <alpaka/alpaka.hpp>                // alpaka::createKernelExecutor<...>
+#include <alpaka/alpaka.hpp>                // alpaka::exec::create
 
 #include <chrono>                           // std::chrono::high_resolution_clock
 #include <cassert>                          // assert
@@ -49,8 +49,6 @@
 //! This is an adaption of the algorithm from the CUDA developers guide.
 //! \tparam TAcc The accelerator environment to be executed on.
 //#############################################################################
-template<
-    typename TAcc = alpaka::IAcc<>>
 class MatMulKernel
 {
 public:
@@ -70,6 +68,7 @@ public:
     //! \param uiPitchElemC The pitch of the C matrix in elements.
     //-----------------------------------------------------------------------------
     template<
+        typename TAcc,
         typename TElem,
         typename TIndex>
     ALPAKA_FCT_ACC void operator()(
@@ -163,15 +162,15 @@ namespace alpaka
     //#############################################################################
     //! The trait for getting the size of the block shared extern memory for a kernel.
     //#############################################################################
-    template<
-        typename TAcc>
+    template<>
     struct BlockSharedExternMemSizeBytes<
-        MatMulKernel<TAcc>>
+        MatMulKernel>
     {
         //-----------------------------------------------------------------------------
         //! \return The size of the shared memory allocated for a block.
         //-----------------------------------------------------------------------------
         template<
+            typename TAcc,
             typename TElem,
             typename TIndex>
         ALPAKA_FCT_HOST static std::size_t getBlockSharedExternMemSizeBytes(
@@ -199,19 +198,19 @@ template<
     typename TExec,
     typename TStream,
     typename... TArgs>
-void profileAcceleratedKernel(
+void profileKernelExec(
     TExec const & exec,
     TStream const & stream, // \TODO: Add a getStream Method to the kernel executor and do not require this parameter!
     TArgs && ... args)
 {
     std::cout
-        << "profileAcceleratedKernel("
+        << "profileKernelExec("
         << " kernelExecutor: " << typeid(TExec).name()
         << ")" << std::endl;
 
     auto const tpStart(std::chrono::high_resolution_clock::now());
 
-    // Execute the accelerated kernel.
+    // Execute the kernel functor.
     exec(std::forward<TArgs>(args)...);
     
     // Wait for the stream to finish the kernel execution to measure its run time.
@@ -240,7 +239,8 @@ struct MatMulTester
         std::cout << std::endl;
         std::cout << "################################################################################" << std::endl;
 
-        using Kernel = MatMulKernel<>;
+        // Create the kernel functor.
+        MatMulKernel kernel;
         
         alpaka::Vec<2u> const v2uiExtentsA(
             static_cast<alpaka::Vec<2u>::Val>(uiM),
@@ -277,7 +277,7 @@ struct MatMulTester
             << " uiM:" << uiM
             << " uiN:" << uiN
             << ", accelerator: " << alpaka::acc::getAccName<TAcc>()
-            << ", kernel: " << typeid(Kernel).name()
+            << ", kernel: " << typeid(kernel).name()
             << ", workDiv: " << workDiv
             << ")" << std::endl;
 
@@ -314,11 +314,13 @@ struct MatMulTester
         alpaka::mem::copy(memBufBAcc, memBufBHost, v2uiExtentsB, stream);
         alpaka::mem::copy(memBufCAcc, memBufCHost, v2uiExtentsC, stream);
 
-        // Build the kernel executor.
-        auto exec(alpaka::createKernelExecutor<TAcc, Kernel>());
+        // Create the kernel executor.
+        auto exec(alpaka::exec::create<TAcc>(workDiv, stream));
         // Profile the kernel execution.
-        profileAcceleratedKernel(exec(workDiv, stream),
+        profileKernelExec(
+            exec,
             stream,
+            kernel,
             static_cast<std::uint32_t>(uiL),
             static_cast<std::uint32_t>(uiM),
             static_cast<std::uint32_t>(uiN),

@@ -35,7 +35,8 @@
 #include <alpaka/fibers/Device.hpp>                 // Devices
 
 // Specialized traits.
-#include <alpaka/core/KernelExecCreator.hpp>        // KernelExecCreator
+#include <alpaka/traits/Acc.hpp>                    // AccType
+#include <alpaka/traits/Exec.hpp>                   // ExecType
 
 // Implementation details.
 #include <alpaka/fibers/Common.hpp>
@@ -44,7 +45,6 @@
 #include <alpaka/core/ConcurrentExecPool.hpp>       // ConcurrentExecPool
 #include <alpaka/core/WorkDivHelpers.hpp>           // isValidWorkDiv
 
-#include <boost/mpl/apply.hpp>                      // boost::mpl::apply
 #include <boost/predef.h>                           // workarounds
 
 #include <cassert>                                  // assert
@@ -56,9 +56,7 @@ namespace alpaka
     {
         namespace detail
         {
-            template<
-                typename TAcceleratedKernel>
-            class KernelExecutorFibers;
+            class KernelExecFibers;
 
             //#############################################################################
             //! The fibers accelerator.
@@ -76,11 +74,9 @@ namespace alpaka
             public:
                 using MemSpace = mem::SpaceHost;
                 
-                template<
-                    typename TAcceleratedKernel>
-                friend class ::alpaka::fibers::detail::KernelExecutorFibers;
+                friend class ::alpaka::fibers::detail::KernelExecFibers;
                 
-            //private:    // TODO: Make private and only constructible from friend KernelExecutor. Not possible due to IAcc?
+            //private:    // TODO: Make private and only constructible from friend KernelExec. Not possible due to IAcc?
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
@@ -292,25 +288,19 @@ namespace alpaka
             //#############################################################################
             //! The fibers accelerator executor.
             //#############################################################################
-            template<
-                typename TAcceleratedKernel>
-            class KernelExecutorFibers :
-                private IAcc<AccFibers>,
-                private TAcceleratedKernel
+            class KernelExecFibers :
+                private IAcc<AccFibers>
             {
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 template<
-                    typename TWorkDiv, 
-                    typename... TKernelConstrArgs>
-                ALPAKA_FCT_HOST KernelExecutorFibers(
+                    typename TWorkDiv>
+                ALPAKA_FCT_HOST KernelExecFibers(
                     TWorkDiv const & workDiv, 
-                    StreamFibers const &,
-                    TKernelConstrArgs && ... args):
+                    StreamFibers const &):
                         IAcc<AccFibers>(workDiv),
-                        TAcceleratedKernel(std::forward<TKernelConstrArgs>(args)...),
                         m_vFuturesInBlock()
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -318,10 +308,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST KernelExecutorFibers(
-                    KernelExecutorFibers const & other):
-                        IAcc<AccFibers>(*static_cast<WorkDivFibers *>(&other)),
-                        TAcceleratedKernel(other),
+                ALPAKA_FCT_HOST KernelExecFibers(
+                    KernelExecFibers const & other):
+                        IAcc<AccFibers>(static_cast<WorkDivFibers const &>(other)),
                         m_vFuturesInBlock()
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -330,10 +319,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST KernelExecutorFibers(
-                    KernelExecutorFibers && other) :
-                        IAcc<AccFibers>(*static_cast<WorkDivFibers *>(&other)),
-                        TAcceleratedKernel(std::move(other))
+                ALPAKA_FCT_HOST KernelExecFibers(
+                    KernelExecFibers && other) :
+                        IAcc<AccFibers>(static_cast<WorkDivFibers &&>(other))
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                 }
@@ -341,22 +329,24 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST KernelExecutorFibers & operator=(KernelExecutorFibers const &) = delete;
+                ALPAKA_FCT_HOST KernelExecFibers & operator=(KernelExecFibers const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
 #if BOOST_COMP_INTEL
-                ALPAKA_FCT_HOST virtual ~KernelExecutorFibers() = default;
+                ALPAKA_FCT_HOST virtual ~KernelExecFibers() = default;
 #else
-                ALPAKA_FCT_HOST virtual ~KernelExecutorFibers() noexcept = default;
+                ALPAKA_FCT_HOST virtual ~KernelExecFibers() noexcept = default;
 #endif
 
                 //-----------------------------------------------------------------------------
-                //! Executes the accelerated kernel.
+                //! Executes the kernel functor.
                 //-----------------------------------------------------------------------------
                 template<
+                    typename TKernelFunctor,
                     typename... TArgs>
                 ALPAKA_FCT_HOST void operator()(
+                    TKernelFunctor && kernelFunctor,
                     TArgs && ... args) const
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -364,7 +354,9 @@ namespace alpaka
                     Vec<3u> const v3uiGridBlockExtents(this->AccFibers::getWorkDiv<Grid, Blocks, dim::Dim3>());
                     Vec<3u> const v3uiBlockThreadExtents(this->AccFibers::getWorkDiv<Block, Threads, dim::Dim3>());
 
-                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TAcceleratedKernel>::getBlockSharedExternMemSizeBytes(v3uiBlockThreadExtents, std::forward<TArgs>(args)...));
+                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TKernelFunctor>::template getBlockSharedExternMemSizeBytes<AccFibers>(
+                        v3uiBlockThreadExtents, 
+                        std::forward<TArgs>(args)...));
                     this->AccFibers::m_vuiExternalSharedMem.reset(
                         new uint8_t[uiBlockSharedExternMemSizeBytes]);
 
@@ -383,43 +375,47 @@ namespace alpaka
                     FiberPool pool(uiNumThreadsInBlock[0], uiNumThreadsInBlock[0]);
 
                     // Execute the blocks serially.
-                    for(UInt bz(0); bz<v3uiGridBlockExtents[2]; ++bz)
+                    for(this->AccFibers::m_v3uiGridBlockIdx[2] = 0; this->AccFibers::m_v3uiGridBlockIdx[2]<v3uiGridBlockExtents[2]; ++this->AccFibers::m_v3uiGridBlockIdx[2])
                     {
-                        this->AccFibers::m_v3uiGridBlockIdx[2] = bz;
-                        for(UInt by(0); by<v3uiGridBlockExtents[1]; ++by)
+                        for(this->AccFibers::m_v3uiGridBlockIdx[1] = 0; this->AccFibers::m_v3uiGridBlockIdx[1]<v3uiGridBlockExtents[1]; ++this->AccFibers::m_v3uiGridBlockIdx[1])
                         {
-                            this->AccFibers::m_v3uiGridBlockIdx[1] = by;
-                            for(UInt bx(0); bx<v3uiGridBlockExtents[0]; ++bx)
+                            for(this->AccFibers::m_v3uiGridBlockIdx[0] = 0; this->AccFibers::m_v3uiGridBlockIdx[0]<v3uiGridBlockExtents[0]; ++this->AccFibers::m_v3uiGridBlockIdx[0])
                             {
-                                this->AccFibers::m_v3uiGridBlockIdx[0] = bx;
-
                                 // Execute the block thread in parallel using cooperative multi-threading.
                                 Vec<3u> v3uiBlockThreadIdx(0u);
-                                for(UInt tz(0); tz<v3uiBlockThreadExtents[2]; ++tz)
+                                for(v3uiBlockThreadIdx[2] = 0; v3uiBlockThreadIdx[2]<v3uiBlockThreadExtents[2]; ++v3uiBlockThreadIdx[2])
                                 {
-                                    v3uiBlockThreadIdx[2] = tz;
-                                    for(UInt ty(0); ty<v3uiBlockThreadExtents[1]; ++ty)
+                                    for(v3uiBlockThreadIdx[1] = 0; v3uiBlockThreadIdx[1]<v3uiBlockThreadExtents[1]; ++v3uiBlockThreadIdx[1])
                                     {
-                                        v3uiBlockThreadIdx[1] = ty;
-                                        for(UInt tx(0); tx<v3uiBlockThreadExtents[0]; ++tx)
+                                        for(v3uiBlockThreadIdx[0] = 0; v3uiBlockThreadIdx[0]<v3uiBlockThreadExtents[0]; ++v3uiBlockThreadIdx[0])
                                         {
-                                            v3uiBlockThreadIdx[0] = tx;
-
                                             // The v3uiBlockThreadIdx is required to be copied in from the environment because if the fiber is immediately suspended the variable is already changed for the next iteration/thread.
-#if BOOST_COMP_GNUC // GCC < 4.9.0 can not compile variadic templates inside lambdas correctly if the variadic argument is not in the parameter list.
+#if BOOST_COMP_GNUC // GCC < 4.9.0 can not compile variadic types inside lambdas correctly if the variadic type is not in the lambda parameter list.
                                             auto fiberKernelFct(
-                                                [this](Vec<3u> const v3uiBlockThreadIdx, TArgs ... args)
+                                                [&, v3uiBlockThreadIdx](
+                                                    TArgs const & ... args)
                                                 {
-                                                    fiberKernel<TArgs...>(v3uiBlockThreadIdx, std::forward<TArgs>(args)...); 
+                                                    fiberKernel(
+                                                        v3uiBlockThreadIdx, 
+                                                        std::forward<TKernelFunctor>(kernelFunctor), 
+                                                        args...); 
                                                 });
-                                            m_vFuturesInBlock.emplace_back(pool.enqueueTask(fiberKernelFct, v3uiBlockThreadIdx, args...));
+                                            m_vFuturesInBlock.emplace_back(
+                                                pool.enqueueTask(
+                                                    fiberKernelFct,
+                                                    std::forward<TArgs>(args)...));
 #else
                                             auto fiberKernelFct = 
                                                 [&, v3uiBlockThreadIdx]()
                                                 {
-                                                    fiberKernel<TArgs...>(v3uiBlockThreadIdx, std::forward<TArgs>(args)...); 
+                                                    fiberKernel(
+                                                        v3uiBlockThreadIdx, 
+                                                        std::forward<TKernelFunctor>(kernelFunctor), 
+                                                        std::forward<TArgs>(args)...); 
                                                 };
-                                            m_vFuturesInBlock.emplace_back(pool.enqueueTask(fiberKernelFct));
+                                            m_vFuturesInBlock.emplace_back(
+                                                pool.enqueueTask(
+                                                    fiberKernelFct));
 #endif
                                         }
                                     }
@@ -451,9 +447,11 @@ namespace alpaka
                 //! The fiber entry point.
                 //-----------------------------------------------------------------------------
                 template<
+                    typename TKernelFunctor,
                     typename... TArgs>
                 ALPAKA_FCT_HOST void fiberKernel(
-                    Vec<3u> const & v3uiBlockThreadIdx, 
+                    Vec<3u> const & v3uiBlockThreadIdx,
+                    TKernelFunctor && kernelFunctor, 
                     TArgs && ... args) const
                 {
                     // We have to store the fiber data before the kernel is calling any of the methods of this class depending on them.
@@ -477,7 +475,7 @@ namespace alpaka
                     this->AccFibers::syncBlockThreads(itFiberToBarrier);
 
                     // Execute the kernel itself.
-                    this->TAcceleratedKernel::operator()(
+                    kernelFunctor(
                         (*static_cast<IAcc<AccFibers> const *>(this)),
                         std::forward<TArgs>(args)...);
 
@@ -498,41 +496,25 @@ namespace alpaka
             //#############################################################################
             //! The fibers accelerator kernel executor accelerator type trait specialization.
             //#############################################################################
-            template<
-                typename AcceleratedKernel>
+            template<>
             struct AccType<
-                fibers::detail::KernelExecutorFibers<AcceleratedKernel>>
+                fibers::detail::KernelExecFibers>
             {
                 using type = AccFibers;
             };
         }
-    }
 
-    namespace detail
-    {
-        //#############################################################################
-        //! The fibers accelerator kernel executor builder.
-        //#############################################################################
-        template<
-            typename TKernel, 
-            typename... TKernelConstrArgs>
-        class KernelExecCreator<
-            AccFibers, 
-            TKernel, 
-            TKernelConstrArgs...>
+        namespace exec
         {
-        public:
-            using AcceleratedKernel = typename boost::mpl::apply<TKernel, AccFibers>::type;
-            using AcceleratedKernelExecutorExtent = KernelExecutorExtent<fibers::detail::KernelExecutorFibers<AcceleratedKernel>, TKernelConstrArgs...>;
-
-            //-----------------------------------------------------------------------------
-            //! Creates an kernel executor for the serial accelerator.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST AcceleratedKernelExecutorExtent operator()(
-                TKernelConstrArgs && ... args) const
+            //#############################################################################
+            //! The fibers accelerator executor type trait specialization.
+            //#############################################################################
+            template<>
+            struct ExecType<
+                AccFibers>
             {
-                return AcceleratedKernelExecutorExtent(std::forward<TKernelConstrArgs>(args)...);
-            }
-        };
+                using type = fibers::detail::KernelExecFibers;
+            };
+        }
     }
 }

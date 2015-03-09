@@ -48,6 +48,7 @@ namespace alpaka
         //! The default version always returns zero.
         //-----------------------------------------------------------------------------
         template<
+            typename TAcc,
             typename... TArgs>
         ALPAKA_FCT_HOST static UInt getBlockSharedExternMemSizeBytes(
             Vec<3u> const & v3uiBlockThreadExtents, 
