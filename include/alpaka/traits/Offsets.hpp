@@ -131,7 +131,10 @@ namespace alpaka
             TOffsets const & offsets)
             -> decltype(traits::offset::GetOffsets<TOffsets>::getOffsets(std::declval<TOffsets>()))
         {
-            return traits::offset::GetOffsets<TOffsets>::getOffsets(offsets);
+            return traits::offset::GetOffsets<
+                TOffsets>
+            ::getOffsets(
+                offsets);
         }
         //-----------------------------------------------------------------------------
         //! \return The x offset.
@@ -141,7 +144,10 @@ namespace alpaka
         ALPAKA_FCT_HOST_ACC UInt getOffsetX(
             TOffsets const & offsets)
         {
-            return traits::offset::GetOffsetX<TOffsets>::getOffsetX(offsets);
+            return traits::offset::GetOffsetX<
+                TOffsets>
+            ::getOffsetX(
+                offsets);
         }
         //-----------------------------------------------------------------------------
         //! \return The y offset.
@@ -151,7 +157,10 @@ namespace alpaka
         ALPAKA_FCT_HOST_ACC UInt getOffsetY(
             TOffsets const & offsets)
         {
-            return traits::offset::GetOffsetY<TOffsets>::getOffsetY(offsets);
+            return traits::offset::GetOffsetY<
+                TOffsets>
+            ::getOffsetY(
+                offsets);
         }
         //-----------------------------------------------------------------------------
         //! \return The z offset.
@@ -161,7 +170,10 @@ namespace alpaka
         ALPAKA_FCT_HOST_ACC UInt getOffsetZ(
             TOffsets const & offsets)
         {
-            return traits::offset::GetOffsetZ<TOffsets>::getOffsetZ(offsets);
+            return traits::offset::GetOffsetZ<
+                TOffsets>
+            ::getOffsetZ(
+                offsets);
         }
 
         //-----------------------------------------------------------------------------
@@ -174,7 +186,11 @@ namespace alpaka
             TOffsets const & offsets,
             TInt const & xOffset)
         {
-            traits::offset::SetOffsetX<TOffsets>::setOffsetX(offsets, xOffset);
+            traits::offset::SetOffsetX<
+                TOffsets>
+            ::setOffsetX(
+                offsets, 
+                xOffset);
         }
         //-----------------------------------------------------------------------------
         //! Sets the y offset.
@@ -186,7 +202,11 @@ namespace alpaka
             TOffsets const & offsets,
             TInt const & yOffset)
         {
-            traits::offset::SetOffsetY<TOffsets>::setOffsetY(offsets, yOffset);
+            traits::offset::SetOffsetY<
+                TOffsets>
+            ::setOffsetY(
+                offsets, 
+                yOffset);
         }
         //-----------------------------------------------------------------------------
         //! Sets the z offset.
@@ -198,7 +218,11 @@ namespace alpaka
             TOffsets const & offsets,
             TInt const & zOffset)
         {
-            traits::offset::SetOffsetZ<TOffsets>::setOffsetZ(offsets, zOffset);
+            traits::offset::SetOffsetZ<
+                TOffsets>
+            ::setOffsetZ(
+                offsets, 
+                zOffset);
         }
     }
 

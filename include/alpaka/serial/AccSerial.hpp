@@ -39,7 +39,6 @@
 
 // Implementation details.
 #include <alpaka/traits/BlockSharedExternMemSizeBytes.hpp>
-#include <alpaka/interfaces/IAcc.hpp>
 
 #include <vector>                                   // std::vector
 #include <cassert>                                  // assert
@@ -75,8 +74,7 @@ namespace alpaka
                 
                 friend class ::alpaka::serial::detail::KernelExecSerial;
 
-            //private:    // TODO: Make private and only constructible from friend KernelExec. Not possible due to IAcc?
-            public:
+            private:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
@@ -111,7 +109,6 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA virtual ~AccSerial() noexcept = default;
 
-            protected:
                 //-----------------------------------------------------------------------------
                 //! \return The requested indices.
                 //-----------------------------------------------------------------------------
@@ -211,7 +208,7 @@ namespace alpaka
             //! The serial accelerator executor.
             //#############################################################################
             class KernelExecSerial :
-                private IAcc<AccSerial>
+                private AccSerial
             {
             public:
                 //-----------------------------------------------------------------------------
@@ -222,7 +219,7 @@ namespace alpaka
                 ALPAKA_FCT_HOST KernelExecSerial(
                     TWorkDiv const & workDiv, 
                     StreamSerial const &) :
-                        IAcc<AccSerial>(workDiv)
+                        AccSerial(workDiv)
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                 }
@@ -231,7 +228,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecSerial(
                     KernelExecSerial const & other) :
-                        IAcc<AccSerial>(static_cast<WorkDivSerial const &>(other))
+                        AccSerial(static_cast<WorkDivSerial const &>(other))
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                 }
@@ -241,7 +238,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecSerial(
                     KernelExecSerial && other) :
-                        IAcc<AccSerial>(static_cast<WorkDivSerial &&>(other))
+                        AccSerial(static_cast<WorkDivSerial &&>(other))
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                 }
@@ -274,9 +271,14 @@ namespace alpaka
                     Vec<3u> const v3uiGridBlockExtents(this->AccSerial::getWorkDiv<Grid, Blocks, dim::Dim3>());
                     Vec<3u> const v3uiBlockThreadExtents(this->AccSerial::getWorkDiv<Block, Threads, dim::Dim3>());
 
-                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TKernelFunctor>::template getBlockSharedExternMemSizeBytes<AccSerial>(
+                    auto const uiBlockSharedExternMemSizeBytes(getBlockSharedExternMemSizeBytes<typename std::decay<TKernelFunctor>::type, AccSerial>(
                         v3uiBlockThreadExtents, 
                         std::forward<TArgs>(args)...));
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                    std::cout << BOOST_CURRENT_FUNCTION
+                        << " BlockSharedExternMemSizeBytes: " << uiBlockSharedExternMemSizeBytes << " B"
+                        << std::endl;
+#endif
                     this->AccSerial::m_vuiExternalSharedMem.reset(
                         new uint8_t[uiBlockSharedExternMemSizeBytes]);
 
@@ -293,7 +295,7 @@ namespace alpaka
 
                                 // There is only ever one thread in a block in the serial accelerator.
                                 std::forward<TKernelFunctor>(kernelFunctor)(
-                                    (*static_cast<IAcc<AccSerial> const *>(this)),
+                                    (*static_cast<AccSerial const *>(this)),
                                     std::forward<TArgs>(args)...);
 
                                 // After a block has been processed, the shared memory can be deleted.
@@ -333,6 +335,24 @@ namespace alpaka
                 AccSerial>
             {
                 using type = serial::detail::KernelExecSerial;
+            };
+        }
+
+        namespace stream
+        {
+            //#############################################################################
+            //! The serial accelerator kernel executor stream get trait specialization.
+            //#############################################################################
+            template<>
+            struct GetStream<
+                serial::detail::KernelExecSerial>
+            {
+                ALPAKA_FCT_HOST static auto getStream(
+                    serial::detail::KernelExecSerial const &)
+                -> serial::detail::StreamSerial
+                {
+                    return serial::detail::StreamSerial();
+                }
             };
         }
     }

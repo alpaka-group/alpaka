@@ -49,6 +49,7 @@ namespace alpaka
         //!
         //! \tparam TCurrentException Must have a static method "current_exception()" that returns the current exception.
         //#############################################################################
+        // \TODO: Replace with std::packaged_task which was buggy in MSVC 12.
         template<
             typename TCurrentException>
         class ITaskPkg

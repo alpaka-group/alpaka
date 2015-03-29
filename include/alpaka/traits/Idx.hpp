@@ -50,7 +50,6 @@ namespace alpaka
                 typename TUnit,
                 typename TDim>
             struct GetIdx;
-
         }
     }
 
@@ -72,7 +71,12 @@ namespace alpaka
             TIdx const & index,
             TWorkDiv const & workDiv)
         {
-            return traits::idx::GetIdx<TIdx, TOrigin, TUnit, TDim>::getIdx(
+            return traits::idx::GetIdx<
+                TIdx,
+                TOrigin,
+                TUnit, 
+                TDim>
+            ::getIdx(
                 index,
                 workDiv);
         }

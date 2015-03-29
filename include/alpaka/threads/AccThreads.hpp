@@ -40,7 +40,6 @@
 
 // Implementation details.
 #include <alpaka/traits/BlockSharedExternMemSizeBytes.hpp>
-#include <alpaka/interfaces/IAcc.hpp>
 #include <alpaka/core/ConcurrentExecPool.hpp>       // ConcurrentExecPool
 
 #include <boost/predef.h>                           // workarounds
@@ -77,8 +76,7 @@ namespace alpaka
                 
                 friend class ::alpaka::threads::detail::KernelExecThreads;
                 
-            //private:    // TODO: Make private and only constructible from friend KernelExec. Not possible due to IAcc?
-            public:
+            private:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
@@ -117,7 +115,6 @@ namespace alpaka
                 ALPAKA_FCT_ACC_NO_CUDA virtual ~AccThreads() noexcept = default;
 #endif
 
-            protected:
                 //-----------------------------------------------------------------------------
                 //! \return The requested indices.
                 //-----------------------------------------------------------------------------
@@ -200,7 +197,7 @@ namespace alpaka
                     bar.wait();
                     ++uiBarrierIdx;
                 }
-            protected:
+            public:
                 //-----------------------------------------------------------------------------
                 //! \return Allocates block shared memory.
                 //-----------------------------------------------------------------------------
@@ -296,7 +293,7 @@ namespace alpaka
             //! The threads accelerator executor.
             //#############################################################################
             class KernelExecThreads :
-                private IAcc<AccThreads>
+                private AccThreads
             {
             public:
                 //-----------------------------------------------------------------------------
@@ -307,7 +304,7 @@ namespace alpaka
                 ALPAKA_FCT_HOST KernelExecThreads(
                     TWorkDiv const & workDiv, 
                     StreamThreads const &) :
-                        IAcc<AccThreads>(workDiv),
+                        AccThreads(workDiv),
                         m_vFuturesInBlock(),
                         m_mtxMapInsert()
                 {
@@ -318,7 +315,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecThreads(
                     KernelExecThreads const & other) :
-                        IAcc<AccThreads>(static_cast<WorkDivThreads const &>(other)),
+                        AccThreads(static_cast<WorkDivThreads const &>(other)),
                         m_vFuturesInBlock(),
                         m_mtxMapInsert()
                 {
@@ -329,7 +326,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecThreads(
                     KernelExecThreads && other) :
-                        IAcc<AccThreads>(static_cast<WorkDivThreads &&>(other)),
+                        AccThreads(static_cast<WorkDivThreads &&>(other)),
                         m_vFuturesInBlock(),
                         m_mtxMapInsert()
                 {
@@ -363,9 +360,14 @@ namespace alpaka
                     Vec<3u> const v3uiGridBlockExtents(this->AccThreads::getWorkDiv<Grid, Blocks, dim::Dim3>());
                     Vec<3u> const v3uiBlockThreadExtents(this->AccThreads::getWorkDiv<Block, Threads, dim::Dim3>());
 
-                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TKernelFunctor>::template getBlockSharedExternMemSizeBytes<AccThreads>(
+                    auto const uiBlockSharedExternMemSizeBytes(getBlockSharedExternMemSizeBytes<typename std::decay<TKernelFunctor>::type, AccThreads>(
                         v3uiBlockThreadExtents, 
                         std::forward<TArgs>(args)...));
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                    std::cout << BOOST_CURRENT_FUNCTION
+                        << " BlockSharedExternMemSizeBytes: " << uiBlockSharedExternMemSizeBytes << " B"
+                        << std::endl;
+#endif
                     this->AccThreads::m_vuiExternalSharedMem.reset(
                         new uint8_t[uiBlockSharedExternMemSizeBytes]);
 
@@ -396,21 +398,6 @@ namespace alpaka
                                         for(v3uiBlockThreadIdx[0] = 0; v3uiBlockThreadIdx[0]<v3uiBlockThreadExtents[0]; ++v3uiBlockThreadIdx[0])
                                         {
                                             // The v3uiBlockThreadIdx is required to be copied in from the environment because if the thread is immediately suspended the variable is already changed for the next iteration/thread.
-#if BOOST_COMP_GNUC // GCC < 4.9.0 can not compile variadic types inside lambdas correctly if the variadic type is not in the lambda parameter list.
-                                            auto threadKernelFct(
-                                                [&, v3uiBlockThreadIdx](
-                                                    TArgs const & ... args)
-                                                {
-                                                    threadKernel(
-                                                        v3uiBlockThreadIdx, 
-                                                        std::forward<TKernelFunctor>(kernelFunctor), 
-                                                        args...); 
-                                                });
-                                            m_vFuturesInBlock.emplace_back(
-                                                pool.enqueueTask(
-                                                    threadKernelFct, 
-                                                    std::forward<TArgs>(args)...));
-#else
                                             auto threadKernelFct = 
                                                 [&, v3uiBlockThreadIdx]()
                                                 {
@@ -422,7 +409,6 @@ namespace alpaka
                                             m_vFuturesInBlock.emplace_back(
                                                 pool.enqueueTask(
                                                     threadKernelFct));
-#endif
                                         }
                                     }
                                 }
@@ -487,7 +473,7 @@ namespace alpaka
 
                     // Execute the kernel itself.
                     std::forward<TKernelFunctor>(kernelFunctor)(
-                        (*static_cast<IAcc<AccThreads> const *>(this)),
+                        (*static_cast<AccThreads const *>(this)),
                         std::forward<TArgs>(args)...);
 
                     // We have to sync all threads here because if a thread would finish before all threads have been started, the new thread could get a recycled (then duplicate) thread id!
@@ -527,6 +513,24 @@ namespace alpaka
                 AccThreads>
             {
                 using type = threads::detail::KernelExecThreads;
+            };
+        }
+
+        namespace stream
+        {
+            //#############################################################################
+            //! The threads accelerator kernel executor stream get trait specialization.
+            //#############################################################################
+            template<>
+            struct GetStream<
+                threads::detail::KernelExecThreads>
+            {
+                ALPAKA_FCT_HOST static auto getStream(
+                    threads::detail::KernelExecThreads const &)
+                -> threads::detail::StreamThreads
+                {
+                    return threads::detail::StreamThreads();
+                }
             };
         }
     }

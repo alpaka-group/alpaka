@@ -83,7 +83,9 @@ namespace alpaka
             typename TAcc>
         ALPAKA_FCT_HOST std::string getAccName()
         {
-            return traits::acc::GetAccName<TAcc>::getAccName();
+            return traits::acc::GetAccName<
+                TAcc>
+            ::getAccName();
         }
     }
 }

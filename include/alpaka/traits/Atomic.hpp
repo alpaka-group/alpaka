@@ -66,7 +66,11 @@ namespace alpaka
             unsigned int const & value,
             TAtomic const & atomic)
         {
-            return traits::atomic::AtomicOp<TAtomic, TOp, T>::atomicOp(atomic, addr, value);
+            return traits::atomic::AtomicOp<
+                TAtomic, 
+                TOp, 
+                T>
+            ::atomicOp(atomic, addr, value);
         }
     }
 }

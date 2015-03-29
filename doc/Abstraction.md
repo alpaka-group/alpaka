@@ -1,7 +1,7 @@
 Abstraction
 ===========
 
-Parallelism and memory hierarchies at all levels need to be exploited in order to achieve good performance across various types of accelerators.
+Parallelism and memory hierarchies at all levels need to be exploited in order to achieve performance portability across various types of accelerators.
 
 On the hardware side we have nodes with multiple sockets/processors extended by accelerators like GPUs or Intel XeonPhi each with their own processing units.
 Within a CPU or a Intel XeonPhi there are cores with hyper-threads and vector units, within a GPU there are many small cores.
@@ -99,4 +99,4 @@ CPUs in turn are not (currently) capable of running thousands of threads concurr
 Furthermore CPUs do not have an equivalently fast inter-thread synchronization and shared memory access as GPUs do.
 
 A major point of the *redundant hierarchical parallelism* abstraction is to ignore specific unsupported levels and utilize only the ones supported on a specific accelerator.
-Furthermore the hierarchy allows a mapping to various accelerators in a variety of ways enabling optimal usage of the underlying compute and memory capabilities.
+Furthermore the hierarchy allows a mapping to various current and future accelerators in a variety of ways enabling optimal usage of the underlying compute and memory capabilities.

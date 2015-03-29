@@ -239,11 +239,11 @@ public:
 //-----------------------------------------------------------------------------
 template<
     typename TExec,
-    typename TStream,
+    typename TKernelFunctor,
     typename... TArgs>
 void profileKernelExec(
     TExec const & exec,
-    TStream const & stream, // \TODO: Add a getStream Method to the kernel executor and do not require this parameter!
+    TKernelFunctor && kernelFunctor,
     TArgs && ... args)
 {
     std::cout
@@ -254,10 +254,10 @@ void profileKernelExec(
     auto const tpStart(std::chrono::high_resolution_clock::now());
 
     // Execute the kernel functor.
-    exec(std::forward<TArgs>(args)...);
+    exec(std::forward<TKernelFunctor>(kernelFunctor), std::forward<TArgs>(args)...);
     
     // Wait for the stream to finish the kernel execution to measure its run time.
-    alpaka::wait::wait(stream);
+    alpaka::wait::wait(alpaka::stream::getStream(exec));
 
     auto const tpEnd(std::chrono::high_resolution_clock::now());
 
@@ -325,7 +325,6 @@ struct MandelbrotKernelTester
         // Profile the kernel execution.
         profileKernelExec(
             exec,
-            stream,
             kernel,
             alpaka::mem::getNativePtr(bufColorAcc),
             static_cast<std::uint32_t>(uiNumRows),

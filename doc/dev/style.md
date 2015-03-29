@@ -1,0 +1,108 @@
+Style
+=====
+
+Naming
+------
+* Types are always in PascalCase (KernlExecCuda, BufT, ...)
+* Variables are always camelCase (memBufHost, ...)
+* There are no two consecutive upper case letters (AccOpenMp, HtmlRenderer, IoHandler, ...). This makes names more easily readable.
+
+
+Types
+-----
+
+* Always use integral types with known width (`int32_t`, `uin64_t`, ...).
+Never use `int`, `unisgned long`, etc.
+
+
+Type Qualifiers
+---------------------
+
+The order of  type qualifiers should be:
+```Type const * const``` for a const pointer to a const Type.
+```Type const &``` for a reference to a const Type.
+
+The reason is that types can be read from right to left correctly without jumping back and forth.
+```const Type * const``` and ```const Type &``` would require jumping in either way to read them correctly.
+
+
+Variables
+---------
+
+* Variables should always be initialized on construction because this can produce hard to debug errors.
+This can (nearly) always be done even in performance critical code without sacrificing speed by using a functional programming style.
+* Variables should (nearly) always be `const` to make the code more easy to understand.
+This is equivalent to functional programming and the SSA (static single assignment) style used by LLVM.
+This should have no speed implication as every half baked compiler analyses the usage of variables and reuses registers.  
+* Variable definitions should be differentiated from assignments by using either `(...)` or `{...}` but never `=` for definitions. 
+Use `uint32_t const iUsageOfThisVariable(42);` instead of `uint32_t const iUsageOfThisVariable = 42;`
+
+
+Indentation
+-----------
+
+* Always indent everything by *one level* (namespace body, class members, function body, ...)
+* Do not use more indentation e.g. to align function parameters.
+
+
+Functions
+---------
+
+* Always use the trailing return type syntax with the return type on a new line even if the return type is void: 
+```
+auto func() 
+-> bool
+```
+  * This makes it easier to see the return type because it is on its own line.
+  * This leads to a consistent style for lambdas, functions templates with dependent return types and standard functions.
+
+* Each function parameter is on a new indented line:
+```
+auto func(
+    float f1,
+    float f2) 
+-> bool
+{
+    return true
+}
+```
+```
+func(
+    1.0f,
+    2.0f);
+```
+  * Makes it easier to see how many parameters there are and which position they have. 
+
+
+Templates
+---------  
+
+* Template parameters are prefixed with `T` to differentiate them from class or function local typedefs.
+
+* Each template parameter is on a new indented line:
+```
+template<
+    typename TParam,
+    typename TArgs...>
+auto func() 
+-> bool
+```
+  * Makes it easier to see how many template parameters there are and which position they have. 
+
+* Always use ```typename``` for template parameters. There is NO difference to class and typename matches the intent better.
+
+
+Traits
+------
+
+* Trait classes always have one more template parameter (with default parameter) then is required for enabling SFINAE in the specialization:
+```
+template<
+    typename T, 
+    typename TSfinae = void>
+struct GetOffsets;
+```
+
+* Template trait aliases always end with a `T` e.g. `BufT` while the corresponding trait ends with Type e.g. `BufType`
+
+* Traits for implementations always have the same name as the accessor function but in PascalCase while the member function is camelCase again: `sin(){...}` and `Sin{sin(){...}};`

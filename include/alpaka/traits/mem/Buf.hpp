@@ -141,7 +141,10 @@ namespace alpaka
             TBuf const & buf)
             -> decltype(traits::mem::GetBuf<TBuf>::getBuf(std::declval<TBuf const &>()))
         {
-            return traits::mem::GetBuf<TBuf>::getBuf(buf);
+            return traits::mem::GetBuf<
+                TBuf>
+            ::getBuf(
+                buf);
         }
 
         //-----------------------------------------------------------------------------
@@ -156,7 +159,10 @@ namespace alpaka
             TBuf & buf)
             -> decltype(traits::mem::GetBuf<TBuf>::getBuf(std::declval<TBuf &>()))
         {
-            return traits::mem::GetBuf<TBuf>::getBuf(buf);
+            return traits::mem::GetBuf<
+                TBuf>
+            ::getBuf(
+                buf);
         }
 
         //-----------------------------------------------------------------------------
@@ -171,7 +177,10 @@ namespace alpaka
             TBuf const & buf)
             -> ElemT<TBuf> const *
         {
-            return traits::mem::GetNativePtr<TBuf>::getNativePtr(buf);
+            return traits::mem::GetNativePtr<
+                TBuf>
+            ::getNativePtr(
+                buf);
         }
 
         //-----------------------------------------------------------------------------
@@ -186,7 +195,10 @@ namespace alpaka
             TBuf & buf)
             -> ElemT<TBuf> *
         {
-            return traits::mem::GetNativePtr<TBuf>::getNativePtr(buf);
+            return traits::mem::GetNativePtr<
+                TBuf>
+            ::getNativePtr(
+                buf);
         }
 
         //-----------------------------------------------------------------------------
@@ -197,7 +209,10 @@ namespace alpaka
         ALPAKA_FCT_HOST UInt getPitchBytes(
             TBuf const & buf)
         {
-            return traits::mem::GetPitchBytes<TBuf>::getPitchBytes(buf);
+            return traits::mem::GetPitchBytes<
+                TBuf>
+            ::getPitchBytes(
+                buf);
         }
 
         //-----------------------------------------------------------------------------
@@ -228,7 +243,11 @@ namespace alpaka
             TExtents const & extents = TExtents())
             -> decltype(traits::mem::Alloc<TElem, dim::DimT<TExtents>, SpaceT<TSpace>>::alloc(std::declval<TExtents>()))
         {
-            return traits::mem::Alloc<TElem, dim::DimT<TExtents>, SpaceT<TSpace>>::alloc(
+            return traits::mem::Alloc<
+                TElem, 
+                dim::DimT<TExtents>, 
+                SpaceT<TSpace>>
+            ::alloc(
                 extents);
         }
 
@@ -251,7 +270,10 @@ namespace alpaka
                 std::is_same<dim::DimT<TBuf>, dim::DimT<TExtents>>::value,
                 "The buffer and the extents are required to have the same dimensionality!");
 
-            traits::mem::Set<dim::DimT<TBuf>, SpaceT<TBuf>>::set(
+            traits::mem::Set<
+                dim::DimT<TBuf>, 
+                SpaceT<TBuf>>
+            ::set(
                 buf,
                 byte,
                 extents);
@@ -279,7 +301,11 @@ namespace alpaka
                 std::is_same<dim::DimT<TBuf>, dim::DimT<TExtents>>::value,
                 "The buffer and the extents are required to have the same dimensionality!");
 
-            traits::mem::Set<dim::DimT<TBuf>, SpaceT<TBuf>, TStream>::memSetAsync(
+            traits::mem::Set<
+                dim::DimT<TBuf>, 
+                SpaceT<TBuf>, 
+                TStream>
+            ::memSetAsync(
                 buf,
                 byte,
                 extents,
@@ -312,7 +338,11 @@ namespace alpaka
                 std::is_same<ElemT<TBufDst>, ElemT<TBufSrc>>::value,
                 "The source and the destination buffers are required to have the same element type!");
 
-            traits::mem::Copy<dim::DimT<TBufDst>, SpaceT<TBufDst>, SpaceT<TBufSrc>>::copy(
+            traits::mem::Copy<
+                dim::DimT<TBufDst>, 
+                SpaceT<TBufDst>, 
+                SpaceT<TBufSrc>>
+            ::copy(
                 bufDst,
                 bufSrc,
                 extents);
@@ -346,7 +376,11 @@ namespace alpaka
                 std::is_same<ElemT<TBufDst>, ElemT<TBufSrc>>::value,
                 "The source and the destination buffers are required to have the same element type!");
 
-            traits::mem::Copy<dim::DimT<TBufDst>, SpaceT<TBufDst>, SpaceT<TBufSrc>>::copy(
+            traits::mem::Copy<
+                dim::DimT<TBufDst>, 
+                SpaceT<TBufDst>, 
+                SpaceT<TBufSrc>>
+            ::copy(
                 bufDst,
                 bufSrc,
                 extents,

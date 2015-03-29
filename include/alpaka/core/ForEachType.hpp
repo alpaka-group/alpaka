@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST_ACC
+
 #include <boost/mpl/is_sequence.hpp>	// boost::mpl::is_sequence
 #include <boost/mpl/begin_end.hpp>      // boost::mpl::begin/end
 #include <boost/mpl/deref.hpp>          // boost::mpl::deref
@@ -85,9 +87,13 @@ namespace alpaka
 #endif
                 // Recurse to the next element.
                 using NextIt = typename boost::mpl::next<TElemIt>::type;
-                ForEachTypeImpl<std::is_same<NextIt, TLastIt>::value>::template forEachTypeImpl<NextIt, TLastIt>(
-                    std::forward<TFunctor>(f),
-                    std::forward<TArgs>(args)...);
+                ForEachTypeImpl<
+                    std::is_same<NextIt, TLastIt>::value>
+                ::template forEachTypeImpl<
+                    NextIt, 
+                    TLastIt>(
+                        std::forward<TFunctor>(f),
+                        std::forward<TArgs>(args)...);
             }
         };
     }
@@ -111,8 +117,12 @@ namespace alpaka
         using FirstIt = typename boost::mpl::begin<TSequence>::type;
         using LastIt = typename boost::mpl::end<TSequence>::type;
 
-        detail::ForEachTypeImpl<std::is_same<FirstIt, LastIt>::value>::template forEachTypeImpl<FirstIt, LastIt>(
-            std::forward<TFunctor>(f),
-            std::forward<TArgs>(args)...);
+        detail::ForEachTypeImpl<
+            std::is_same<FirstIt, LastIt>::value>
+        ::template forEachTypeImpl<
+            FirstIt, 
+            LastIt>(
+                std::forward<TFunctor>(f),
+                std::forward<TArgs>(args)...);
     }
 }

@@ -161,46 +161,16 @@ namespace alpaka
         ((byte)<=64?64:128\
         )))))))
 
-// Older versions of GCC < 4.8 do not support alignas.
-// But even newer GCC versions do not support constant expressions as parameters: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=58109
-#if BOOST_COMP_GNUC
-    /*#if BOOST_COMP_GNUC >= BOOST_VERSION_NUMBER(4, 8, 0)
-        //-----------------------------------------------------------------------------
-        //! Aligns the data optimally.
-        //! You must align all arrays and structs which can used on accelerators.
-        //-----------------------------------------------------------------------------
-        #define ALPAKA_ALIGN(TYPE, NAME) alignas(ALPAKA_OPTIMAL_ALIGNMENT(sizeof(typename std::remove_cv<type>::type))) TYPE NAME
-        //-----------------------------------------------------------------------------
-        //! Aligns the data at 8 bytes.
-        //! You must align all arrays and structs which can used on accelerators.
-        //-----------------------------------------------------------------------------
-        #define ALPAKA_ALIGN_8(TYPE, NAME) alignas(8) type NAME
-    #else*/
-        //-----------------------------------------------------------------------------
-        //! Aligns the data optimally.
-        //! You must align all arrays and structs which can used on accelerators.
-        //-----------------------------------------------------------------------------
-        #define ALPAKA_ALIGN(TYPE, NAME) __attribute__((aligned(ALPAKA_OPTIMAL_ALIGNMENT(sizeof(typename std::remove_cv<TYPE>::type))))) TYPE NAME
-        //-----------------------------------------------------------------------------
-        //! Aligns the data at 8 bytes.
-        //! You must align all arrays and structs which can used on accelerators.
-        //-----------------------------------------------------------------------------
-        #define ALPAKA_ALIGN_8(TYPE, NAME) __attribute__((aligned(8))) TYPE NAME
-    //#endif
-
-    //-----------------------------------------------------------------------------
-    //! \return The alignment of the type.
-    //-----------------------------------------------------------------------------
-    #define ALPAKA_ALIGNOF(TYPE) alignof(TYPE)
-#elif BOOST_COMP_INTEL
+// Newer GCC versions >= 4.9 do not support constant expressions as parameters: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=58109
+#if BOOST_COMP_GNUC || BOOST_COMP_INTEL
     //-----------------------------------------------------------------------------
     //! Aligns the data optimally.
-    //! You must align all arrays and structs which can used on accelerators.
+    //! You must align all arrays and structs which can be used on accelerators.
     //-----------------------------------------------------------------------------
-    #define ALPAKA_ALIGN(TYPE, NAME) alignas(ALPAKA_OPTIMAL_ALIGNMENT(sizeof(typename std::remove_cv<TYPE>::type))) type NAME
+    #define ALPAKA_ALIGN(TYPE, NAME) alignas(ALPAKA_OPTIMAL_ALIGNMENT(sizeof(typename std::remove_cv<TYPE>::type))) TYPE NAME
     //-----------------------------------------------------------------------------
     //! Aligns the data at 8 bytes.
-    //! You must align all arrays and structs which can used on accelerators.
+    //! You must align all arrays and structs which can be used on accelerators.
     //-----------------------------------------------------------------------------
     #define ALPAKA_ALIGN_8(TYPE, NAME) alignas(8) TYPE NAME
 
@@ -211,14 +181,14 @@ namespace alpaka
 #elif (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
     //-----------------------------------------------------------------------------
     //! Aligns the data optimally.
-    //! You must align all arrays and structs which can used on accelerators.
+    //! You must align all arrays and structs which can be used on accelerators.
     //-----------------------------------------------------------------------------
     // \FIXME: sizeof in __declspec(align( not allowed...
     //#define ALPAKA_ALIGN(TYPE, NAME) __declspec(align(ALPAKA_OPTIMAL_ALIGNMENT(sizeof(typename std::remove_cv<TYPE>::type)))) TYPE NAME
     #define ALPAKA_ALIGN(TYPE, NAME) __declspec(align(16)) TYPE NAME
     //-----------------------------------------------------------------------------
     //! Aligns the data at 8 bytes.
-    //! You must align all arrays and structs which can used on accelerators.
+    //! You must align all arrays and structs which can be used on accelerators.
     //-----------------------------------------------------------------------------
     #define ALPAKA_ALIGN_8(TYPE, NAME) __declspec(align(8)) TYPE NAME
 
@@ -229,12 +199,12 @@ namespace alpaka
 #else
     //-----------------------------------------------------------------------------
     //! Aligns the data optimally.
-    //! You must align all arrays and structs which can used on accelerators.
+    //! You must align all arrays and structs which can be used on accelerators.
     //-----------------------------------------------------------------------------
     #define ALPAKA_ALIGN(TYPE, NAME) alignas(alpaka::detail::OptimalAlignment<sizeof(typename std::remove_cv<TYPE>::type)>::value) TYPE NAME
     //-----------------------------------------------------------------------------
     //! Aligns the data at 8 bytes.
-    //! You must align all arrays and structs which can used on accelerators.
+    //! You must align all arrays and structs which can be used on accelerators.
     //-----------------------------------------------------------------------------
     #define ALPAKA_ALIGN_8(TYPE, NAME) alignas(8) TYPE NAME
 

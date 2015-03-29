@@ -21,7 +21,18 @@
 
 #pragma once
 
-#define ALPAKA_VERSION 1
+//#############################################################################
+// Define the version number.
+//#############################################################################
+
+#include <boost/predef/version_number.h>    // BOOST_VERSION_NUMBER
+
+//! The alpaka library version number
+#define ALPAKA_VERSION BOOST_VERSION_NUMBER(1, 0, 0)
+
+//#############################################################################
+// Include the whole library.
+//#############################################################################
 
 #include <alpaka/core/BasicDims.hpp>
 #include <alpaka/core/BasicWorkDiv.hpp>
@@ -35,8 +46,6 @@
 #include <alpaka/core/Positioning.hpp>
 #include <alpaka/core/Vec.hpp>
 #include <alpaka/core/WorkDivHelpers.hpp>
-
-#include <alpaka/interfaces/IAcc.hpp>
 
 #include <alpaka/host/Mem.hpp>
 #include <alpaka/host/SysInfo.hpp>

@@ -72,7 +72,11 @@ namespace alpaka
             TOffsets const & relativeOffsetsElements)
             -> decltype(traits::mem::CreateView<TBuf, TExtents, TOffsets>::createBufView(std::declval<TBuf>(), std::declval<TExtents>(), std::declval<TOffsets>()))
         {
-            traits::mem::CreateView<TBuf, TExtents, TOffsets>::createBufView(
+            traits::mem::CreateView<
+                TBuf, 
+                TExtents, 
+                TOffsets>
+            ::createBufView(
                 buf,
                 extentsElements,
                 relativeOffsetsElements)

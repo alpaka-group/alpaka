@@ -131,7 +131,10 @@ namespace alpaka
             TExtents const & extents = TExtents())
             -> decltype(traits::extent::GetExtents<TExtents>::getExtents(std::declval<TExtents>()))
         {
-            return traits::extent::GetExtents<TExtents>::template getExtents(extents);
+            return traits::extent::GetExtents<
+                TExtents>
+            ::template getExtents(
+                extents);
         }
 
         //-----------------------------------------------------------------------------
@@ -142,7 +145,10 @@ namespace alpaka
         ALPAKA_FCT_HOST_ACC UInt getWidth(
             TExtents const & extents = TExtents())
         {
-            return traits::extent::GetWidth<TExtents>::getWidth(extents);
+            return traits::extent::GetWidth<
+                TExtents>
+            ::getWidth(
+                extents);
         }
         //-----------------------------------------------------------------------------
         //! \return The height.
@@ -152,7 +158,10 @@ namespace alpaka
         ALPAKA_FCT_HOST_ACC UInt getHeight(
             TExtents const & extents = TExtents())
         {
-            return traits::extent::GetHeight<TExtents>::getHeight(extents);
+            return traits::extent::GetHeight<
+                TExtents>
+            ::getHeight(
+                extents);
         }
         //-----------------------------------------------------------------------------
         //! \return The depth.
@@ -162,7 +171,10 @@ namespace alpaka
         ALPAKA_FCT_HOST_ACC UInt getDepth(
             TExtents const & extents = TExtents())
         {
-            return traits::extent::GetDepth<TExtents>::getDepth(extents);
+            return traits::extent::GetDepth<
+                TExtents>
+            ::getDepth(
+                extents);
         }
         //-----------------------------------------------------------------------------
         //! \return The product of the extents.
@@ -188,7 +200,11 @@ namespace alpaka
             TExtents const & extents,
             TInt const & width)
         {
-            traits::extent::SetWidth<TExtents>::setWidth(extents, width);
+            traits::extent::SetWidth<
+                TExtents>
+            ::setWidth(
+                extents, 
+                width);
         }
         //-----------------------------------------------------------------------------
         //! Sets the height.
@@ -200,7 +216,11 @@ namespace alpaka
             TExtents const & extents,
             TInt const & height)
         {
-            traits::extent::SetHeight<TExtents>::setHeight(extents, height);
+            traits::extent::SetHeight<
+                TExtents>
+            ::setHeight(
+                extents, 
+                height);
         }
         //-----------------------------------------------------------------------------
         //! Sets the depth.
@@ -212,7 +232,11 @@ namespace alpaka
             TExtents const & extents,
             TInt const & depth)
         {
-            traits::extent::SetDepth<TExtents>::setDepth(extents, depth);
+            traits::extent::SetDepth<
+                TExtents>
+            ::setDepth(
+                extents, 
+                depth);
         }
     }
 

@@ -1,5 +1,5 @@
 **alpaka** - Abstraction Library for Parallel Kernel Acceleration
-=============================================================
+=================================================================
 
 The **alpaka** library allows users to utilize a multitude of different accelerator types that require different libraries/compilers by providing a uniform kernel interface.
 Users have to write only one implementation of their algorithms and can benefit from all supported accelerators.
@@ -25,24 +25,24 @@ By using this abstraction the execution can be optimally adapted to the availabl
 Software License
 ----------------
 
-**alpaka** is licensed under the **LGPLv3+**.
+**alpaka** is licensed under **LGPLv3** or later.
 
 
 Documentation
 -------------
 
-The source code documentation generated with [doxygen](www.doxygen.org) is available [here](http://computationalradiationphysics.github.io/alpaka/).
+The source code documentation generated with [doxygen](http://www.doxygen.org) is available [here](http://computationalradiationphysics.github.io/alpaka/).
 
 
 Supported Compilers
 -------------------
 
-This library uses a subset of C++11 supported by many compilers to keep the code clean and readable.
+This library uses a subset of C++11 to keep the code clean and readable.
 
 Supported compilers are:
-- gcc 4.8.2+ (boost-fibers only supported in gcc 4.9+)
+- gcc 4.9.2+
 - MSVC 2013+ (boost-fibers only supported in MSVC 2015)
-- clang 3.4+ (currently OpenMP only supported in `clang-omp` )
+- clang 3.5+ (currently OpenMP only supported in `clang-omp` )
 - icc 15.0+ (untested)
 
 Build status master branch: [![Build Status](https://travis-ci.org/ComputationalRadiationPhysics/alpaka.svg?branch=master)](https://travis-ci.org/ComputationalRadiationPhysics/alpaka)
@@ -53,12 +53,12 @@ Build status develop branch: [![Build Status](https://travis-ci.org/Computationa
 Requirements
 ------------
 
-[Boost](http://boost.org/) 1.55+ is the only required external dependency.
+[Boost](http://boost.org/) 1.56+ is the only required external dependency.
 By default just header-only libraries are used.
 
 When the *Fibers-Accelerator* is enabled, `boost-coroutine`, `boost-context` and the proposed boost library [`boost-fibers`](https://github.com/olk/boost-fiber) (develop branch commit 6a1257442bb82e9082a55cacc2c6ebe02b4aa540) are required to be build.
 
-When the *CUDA-Accelerator* is enabled, version *6.5* of the *CUDA SDK* is the minimum requirement.
+When the *CUDA-Accelerator* is enabled, version *7.0* of the *CUDA SDK* is the minimum requirement.
 
 When the *OpenMP-Accelerator* is enabled, the compiler and the platform have to support *OpenMP 2.0* or newer.
 
@@ -74,7 +74,7 @@ Accelerators
 |-|serial|threads|fibers|OpenMP|CUDA|
 |---|---|---|---|---|---|
 |Devices|Host Core|Host Cores|Host Core|Host Cores|NVIDIA GPUs|
-|Lib/API|n/a| std::thread | boost::fibers::fiber |OpenMP 2.0|CUDA 6.5|
+|Lib/API|n/a| std::thread | boost::fibers::fiber |OpenMP 2.0|CUDA 7.0|
 |Execution strategy grid-blocks|sequential|sequential|sequential|sequential|undefined|
 |Execution strategy block-threads|sequential|preemptive multitasking|cooperative multitasking|preemptive multitasking|lock-step within warps|
 
@@ -84,11 +84,7 @@ Usage
 
 The library is header only so nothing has to be build.
 Only the include path (`-I` or `export CPLUS_INCLUDE_PATH=`) has to be set to `<PATH-TO-ALPAKA-LIB>/include/`.
-This allows the usage of header inclusion in the following way:
-
-```c++
-#include <alpaka/alpaka.hpp>
-```
+This allows to include the whole alpaka library with: `c++#include <alpaka/alpaka.hpp>`
 
 Code not intended to be utilized by users is hidden in the `detail` namespace.
 

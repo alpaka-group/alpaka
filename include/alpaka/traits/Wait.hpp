@@ -64,7 +64,10 @@ namespace alpaka
         ALPAKA_FCT_HOST void wait(
             TAwaited const & awaited)
         {
-            traits::wait::CurrentThreadWaitFor<TAwaited>::currentThreadWaitFor(awaited);
+            traits::wait::CurrentThreadWaitFor<
+                TAwaited>
+            ::currentThreadWaitFor(
+                awaited);
         }
 
         //-----------------------------------------------------------------------------
@@ -77,7 +80,12 @@ namespace alpaka
             TWaiter const & waiter,
             TAwaited const & awaited)
         {
-            traits::wait::WaiterWaitFor<TWaiter, TAwaited>::waiterWaitFor(waiter, awaited);
+            traits::wait::WaiterWaitFor<
+                TWaiter, 
+                TAwaited>
+            ::waiterWaitFor(
+                waiter, 
+                awaited);
         }
     }
 }

@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST
+#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC
 #include <alpaka/core/Vec.hpp>      // Vec
 
 namespace alpaka
@@ -114,6 +114,11 @@ namespace alpaka
         Vec<TuiIdxDimSrc, TElem> const & index, 
         Vec<TuiIdxDimDst-1u, TElem> const & extents)
     {
-        return detail::MapIdx<TuiIdxDimDst, TuiIdxDimSrc>::mapIdx(index, extents);
+        return detail::MapIdx<
+            TuiIdxDimDst, 
+            TuiIdxDimSrc>
+        ::mapIdx(
+            index, 
+            extents);
     }
 }

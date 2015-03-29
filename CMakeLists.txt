@@ -24,7 +24,7 @@
 #    ALPAKA_FIBERS_ENABLE {ON, OFF}
 #    ALPAKA_OPENMP_ENABLE {ON, OFF}
 #    ALPAKA_CUDA_ENABLE {ON, OFF}
-#    ALPAKA_CUDA_VERSION {6.5, 7.0, ...}
+#    ALPAKA_CUDA_VERSION {7.0, ...}
 #    ALPAKA_CUDA_ARCH {sm_20, sm...}
 #    ALPAKA_CUDA_SHOW_REGISTER {ON, OFF}
 #    ALPAKA_CUDA_KEEP_FILES {ON, OFF}
@@ -145,15 +145,10 @@ IF(ALPAKA_CUDA_ENABLE)
 
     IF(NOT DEFINED ALPAKA_CUDA_VERSION)
         SET(ALPAKA_CUDA_VERSION 7.0)
-    #ELSE()
-    #    STRING(COMPARE EQUAL "${ALPAKA_CUDA_VERSION}" "" IS_CUDA_VERSION_EMPTY)
-    #    IF(IS_CUDA_VERSION_EMPTY)
-    #        SET(ALPAKA_CUDA_VERSION 7.0)
-    #    ENDIF()
     ENDIF()
 
-    IF(ALPAKA_CUDA_VERSION VERSION_LESS 6.5)
-        MESSAGE(FATAL_ERROR "CUDA Toolkit < 6.5 is not supported!")
+    IF(ALPAKA_CUDA_VERSION VERSION_LESS 7.0)
+        MESSAGE(FATAL_ERROR "CUDA Toolkit < 7.0 is not supported!")
     ENDIF()
 
     FIND_PACKAGE(CUDA ${ALPAKA_CUDA_VERSION} REQUIRED)
@@ -227,7 +222,7 @@ ELSE()
     # Clang or AppleClang
     ELSEIF(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         LIST(APPEND ALPAKA_COMPILE_OPTIONS "-Wall")
-        #Clang 3.7 seems to require libr: undefined reference to `clock_gettime'
+        #Clang 3.7 seems to require librt: undefined reference to `clock_gettime'
         # \TODO: Remove when using fiber develop.
         #LIST(APPEND ALPAKA_LIBRARY_DEPENDENCIES "general;lrt")
     # ICC

@@ -40,7 +40,6 @@
 // Implementation details.
 #include <alpaka/openmp/Common.hpp>
 #include <alpaka/traits/BlockSharedExternMemSizeBytes.hpp>
-#include <alpaka/interfaces/IAcc.hpp>
 
 #include <cstdint>                                  // std::uint32_t
 #include <vector>                                   // std::vector
@@ -74,8 +73,7 @@ namespace alpaka
                 
                 friend class ::alpaka::openmp::detail::KernelExecOpenMp;
                 
-            //private:    // TODO: Make private and only constructible from friend KernelExec. Not possible due to IAcc?
-            public:
+            private:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
@@ -109,7 +107,6 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA virtual ~AccOpenMp() noexcept = default;
 
-            protected:
                 //-----------------------------------------------------------------------------
                 //! \return The requested indices.
                 //-----------------------------------------------------------------------------
@@ -218,7 +215,7 @@ namespace alpaka
             //! The OpenMP accelerator executor.
             //#############################################################################
             class KernelExecOpenMp :
-                private IAcc<AccOpenMp>
+                private AccOpenMp
             {
             public:
                 //-----------------------------------------------------------------------------
@@ -229,7 +226,7 @@ namespace alpaka
                 ALPAKA_FCT_HOST KernelExecOpenMp(
                     TWorkDiv const & workDiv, 
                     StreamOpenMp const &) :
-                        IAcc<AccOpenMp>(workDiv)
+                        AccOpenMp(workDiv)
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                 }
@@ -238,7 +235,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecOpenMp(
                     KernelExecOpenMp const & other) :
-                        IAcc<AccOpenMp>(static_cast<WorkDivOpenMp const &>(other))
+                        AccOpenMp(static_cast<WorkDivOpenMp const &>(other))
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                 }
@@ -248,7 +245,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST KernelExecOpenMp(
                     KernelExecOpenMp && other) :
-                        IAcc<AccOpenMp>(static_cast<WorkDivOpenMp &&>(other))
+                        AccOpenMp(static_cast<WorkDivOpenMp &&>(other))
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                 }
@@ -281,9 +278,14 @@ namespace alpaka
                     Vec<3u> const v3uiGridBlockExtents(this->AccOpenMp::getWorkDiv<Grid, Blocks, dim::Dim3>());
                     Vec<3u> const v3uiBlockThreadExtents(this->AccOpenMp::getWorkDiv<Block, Threads, dim::Dim3>());
 
-                    auto const uiBlockSharedExternMemSizeBytes(BlockSharedExternMemSizeBytes<TKernelFunctor>::template getBlockSharedExternMemSizeBytes<AccOpenMp>(
+                    auto const uiBlockSharedExternMemSizeBytes(getBlockSharedExternMemSizeBytes<typename std::decay<TKernelFunctor>::type, AccOpenMp>(
                         v3uiBlockThreadExtents, 
                         std::forward<TArgs>(args)...));
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                    std::cout << BOOST_CURRENT_FUNCTION
+                        << " BlockSharedExternMemSizeBytes: " << uiBlockSharedExternMemSizeBytes << " B"
+                        << std::endl;
+#endif
                     this->AccOpenMp::m_vuiExternalSharedMem.reset(
                         new uint8_t[uiBlockSharedExternMemSizeBytes]);
 
@@ -323,7 +325,7 @@ namespace alpaka
                                     }
 #endif
                                     std::forward<TKernelFunctor>(kernelFunctor)(
-                                        (*static_cast<IAcc<AccOpenMp> const *>(this)),
+                                        (*static_cast<AccOpenMp const *>(this)),
                                         std::forward<TArgs>(args)...);
 
                                     // Wait for all threads to finish before deleting the shared memory.
@@ -367,6 +369,24 @@ namespace alpaka
                 AccOpenMp>
             {
                 using type = openmp::detail::KernelExecOpenMp;
+            };
+        }
+
+        namespace stream
+        {
+            //#############################################################################
+            //! The OpenMP accelerator kernel executor stream get trait specialization.
+            //#############################################################################
+            template<>
+            struct GetStream<
+                openmp::detail::KernelExecOpenMp>
+            {
+                ALPAKA_FCT_HOST static auto getStream(
+                    openmp::detail::KernelExecOpenMp const &)
+                -> openmp::detail::StreamOpenMp
+                {
+                    return openmp::detail::StreamOpenMp();
+                }
             };
         }
     }

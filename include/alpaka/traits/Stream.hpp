@@ -43,12 +43,20 @@ namespace alpaka
             struct StreamType;
 
             //#############################################################################
-            //! The thread stream wait trait.
+            //! The stream test trait.
             //#############################################################################
             template<
                 typename TStream, 
                 typename TSfinae = void>
             struct StreamTest;
+
+            //#############################################################################
+            //! The stream get trait.
+            //#############################################################################
+            template<
+                typename T, 
+                typename TSfinae = void>
+            struct GetStream;
         }
     }
 
@@ -72,7 +80,25 @@ namespace alpaka
         ALPAKA_FCT_HOST bool test(
             TStream const & stream)
         {
-            return traits::stream::StreamTest<TStream>::streamTest(stream);
+            return traits::stream::StreamTest<
+                TStream>
+            ::streamTest(
+                stream);
+        }
+
+        //-----------------------------------------------------------------------------
+        //! \return The stream.
+        //-----------------------------------------------------------------------------
+        template<
+            typename T>
+        ALPAKA_FCT_HOST_ACC auto getStream(
+            T const & type)
+        -> decltype(traits::stream::GetStream<T>::getStream(std::declval<T const &>()))
+        {
+            return traits::stream::GetStream<
+                T>
+            ::getStream(
+                type);
         }
     }
 }

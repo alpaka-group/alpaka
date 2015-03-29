@@ -121,27 +121,32 @@ public:
 
 namespace alpaka
 {
-    //#############################################################################
-    //! The trait for getting the size of the block shared extern memory for a kernel.
-    //#############################################################################
-    template<
-        typename TuiNumUselessWork>
-    struct BlockSharedExternMemSizeBytes<
-        SharedMemKernel<TuiNumUselessWork>>
+    namespace traits
     {
-        //-----------------------------------------------------------------------------
-        //! \return The size of the shared memory allocated for a block.
-        //-----------------------------------------------------------------------------
+        //#############################################################################
+        //! The trait for getting the size of the block shared extern memory for a kernel.
+        //#############################################################################
         template<
-            typename TAcc,
-            typename... TArgs>
-        ALPAKA_FCT_HOST static std::size_t getBlockSharedExternMemSizeBytes(
-            alpaka::Vec<3u> const & v3uiBlockThreadsExtents, 
-            TArgs && ...)
+            typename TuiNumUselessWork,
+            typename TAcc>
+        struct BlockSharedExternMemSizeBytes<
+            SharedMemKernel<TuiNumUselessWork>,
+            TAcc>
         {
-            return v3uiBlockThreadsExtents.prod() * sizeof(std::uint32_t);
-        }
-    };
+            //-----------------------------------------------------------------------------
+            //! \return The size of the shared memory allocated for a block.
+            //-----------------------------------------------------------------------------
+            template<
+                typename... TArgs>
+            ALPAKA_FCT_HOST static auto getBlockSharedExternMemSizeBytes(
+                alpaka::Vec<3u> const & v3uiBlockThreadsExtents, 
+                TArgs && ...)
+            -> UInt
+            {
+                return v3uiBlockThreadsExtents.prod() * sizeof(std::uint32_t);
+            }
+        };
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -149,12 +154,13 @@ namespace alpaka
 //-----------------------------------------------------------------------------
 template<
     typename TExec, 
-    typename TStream,
+    typename TKernelFunctor,
     typename... TArgs>
-void profileKernelExec(
+auto profileKernelExec(
     TExec const & exec, 
-    TStream const & stream, // \TODO: Add a getStream Method to the kernel executor and do not require this parameter!
+    TKernelFunctor && kernelFunctor,
     TArgs && ... args)
+-> void
 {
     std::cout
         << "profileKernelExec("
@@ -164,10 +170,10 @@ void profileKernelExec(
     auto const tpStart(std::chrono::high_resolution_clock::now());
 
     // Execute the kernel functor.
-    exec(std::forward<TArgs>(args)...);
+    exec(std::forward<TKernelFunctor>(kernelFunctor), std::forward<TArgs>(args)...);
 
     // Wait for the stream to finish the kernel execution to measure its run time.
-    alpaka::wait::wait(stream);
+    alpaka::wait::wait(alpaka::stream::getStream(exec));
 
     auto const tpEnd(std::chrono::high_resolution_clock::now());
 
@@ -224,7 +230,6 @@ struct SharedMemTester
         // Profile the kernel execution.
         profileKernelExec(
 		    exec, 
-		    stream,
             kernel,
 		    alpaka::mem::getNativePtr(blockRetValsAcc),
 		    uiMult2);

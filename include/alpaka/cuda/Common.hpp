@@ -29,8 +29,8 @@
 #include <string>                                   // std::string
 #include <stdexcept>                                // std::runtime_error
 
-#if (!defined(CUDA_VERSION) || (CUDA_VERSION < 6050))
-    #error "CUDA version 6.5 or greater required!"
+#if (!defined(CUDA_VERSION) || (CUDA_VERSION < 7000))
+    #error "CUDA version 7.0 or greater required!"
 #endif
 
 //-----------------------------------------------------------------------------

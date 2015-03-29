@@ -159,36 +159,41 @@ public:
 
 namespace alpaka
 {
-    //#############################################################################
-    //! The trait for getting the size of the block shared extern memory for a kernel.
-    //#############################################################################
-    template<>
-    struct BlockSharedExternMemSizeBytes<
-        MatMulKernel>
+    namespace traits
     {
-        //-----------------------------------------------------------------------------
-        //! \return The size of the shared memory allocated for a block.
-        //-----------------------------------------------------------------------------
+        //#############################################################################
+        //! The trait for getting the size of the block shared extern memory for a kernel.
+        //#############################################################################
         template<
-            typename TAcc,
-            typename TElem,
-            typename TIndex>
-        ALPAKA_FCT_HOST static std::size_t getBlockSharedExternMemSizeBytes(
-            alpaka::Vec<3u> const & v3uiBlockThreadsExtents,
-            TIndex const &,
-            TIndex const &,
-            TIndex const &,
-            TElem const * const,
-            TIndex const &,
-            TElem const * const,
-            TIndex const &,
-            TElem * const,
-            TIndex const &)
+            typename TAcc>
+        struct BlockSharedExternMemSizeBytes<
+            MatMulKernel,
+            TAcc>
         {
-            // Reserve the buffer for the two blocks of A and B.
-            return 2u * v3uiBlockThreadsExtents.prod() * sizeof(TElem);
-        }
-    };
+            //-----------------------------------------------------------------------------
+            //! \return The size of the shared memory allocated for a block.
+            //-----------------------------------------------------------------------------
+            template<
+                typename TIndex,
+                typename TElem>
+            ALPAKA_FCT_HOST static auto getBlockSharedExternMemSizeBytes(
+                alpaka::Vec<3u> const & v3uiBlockThreadsExtents,
+                TIndex const &,
+                TIndex const &,
+                TIndex const &,
+                TElem const * const,
+                TIndex const &,
+                TElem const * const,
+                TIndex const &,
+                TElem * const,
+                TIndex const &)
+            -> UInt
+            {
+                // Reserve the buffer for the two blocks of A and B.
+                return 2u * v3uiBlockThreadsExtents.prod() * sizeof(TElem);
+            }
+        };
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -196,12 +201,13 @@ namespace alpaka
 //-----------------------------------------------------------------------------
 template<
     typename TExec,
-    typename TStream,
+    typename TKernelFunctor,
     typename... TArgs>
-void profileKernelExec(
+auto profileKernelExec(
     TExec const & exec,
-    TStream const & stream, // \TODO: Add a getStream Method to the kernel executor and do not require this parameter!
+    TKernelFunctor && kernelFunctor,
     TArgs && ... args)
+-> void
 {
     std::cout
         << "profileKernelExec("
@@ -211,10 +217,10 @@ void profileKernelExec(
     auto const tpStart(std::chrono::high_resolution_clock::now());
 
     // Execute the kernel functor.
-    exec(std::forward<TArgs>(args)...);
+    exec(std::forward<TKernelFunctor>(kernelFunctor), std::forward<TArgs>(args)...);
     
     // Wait for the stream to finish the kernel execution to measure its run time.
-    alpaka::wait::wait(stream);
+    alpaka::wait::wait(alpaka::stream::getStream(exec));
 
     auto const tpEnd(std::chrono::high_resolution_clock::now());
 
@@ -273,9 +279,9 @@ struct MatMulTester
 
         std::cout
             << "profileAcceleratedMatMulKernel("
-            << " uiL:" << uiL
-            << " uiM:" << uiM
-            << " uiN:" << uiN
+            << "uiL:" << uiL
+            << ", uiM:" << uiM
+            << ", uiN:" << uiN
             << ", accelerator: " << alpaka::acc::getAccName<TAcc>()
             << ", kernel: " << typeid(kernel).name()
             << ", workDiv: " << workDiv
@@ -319,7 +325,6 @@ struct MatMulTester
         // Profile the kernel execution.
         profileKernelExec(
             exec,
-            stream,
             kernel,
             static_cast<std::uint32_t>(uiL),
             static_cast<std::uint32_t>(uiM),
