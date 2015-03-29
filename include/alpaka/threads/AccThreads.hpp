@@ -105,7 +105,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA AccThreads & operator=(AccThreads const &) = delete;
+                ALPAKA_FCT_ACC_NO_CUDA auto operator=(AccThreads const &) -> AccThreads & = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
@@ -122,7 +122,8 @@ namespace alpaka
                     typename TOrigin, 
                     typename TUnit, 
                     typename TDim = dim::Dim3>
-                ALPAKA_FCT_ACC_NO_CUDA DimToVecT<TDim> getIdx() const
+                ALPAKA_FCT_ACC_NO_CUDA auto getIdx() const
+                -> DimToVecT<TDim>
                 {
                     return idx::getIdx<TOrigin, TUnit, TDim>(
                         *static_cast<IdxThreads const *>(this),
@@ -136,7 +137,8 @@ namespace alpaka
                     typename TOrigin,
                     typename TUnit,
                     typename TDim = dim::Dim3>
-                ALPAKA_FCT_ACC_NO_CUDA DimToVecT<TDim> getWorkDiv() const
+                ALPAKA_FCT_ACC_NO_CUDA auto getWorkDiv() const
+                -> DimToVecT<TDim>
                 {
                     return workdiv::getWorkDiv<TOrigin, TUnit, TDim>(
                         *static_cast<WorkDivThreads const *>(this));
@@ -149,9 +151,10 @@ namespace alpaka
                 template<
                     typename TOp,
                     typename T>
-                ALPAKA_FCT_ACC T atomicOp(
+                ALPAKA_FCT_ACC auto atomicOp(
                     T * const addr,
                     T const & value) const
+                -> T
                 {
                     return atomic::atomicOp<TOp, T>(
                         addr,
@@ -162,7 +165,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Syncs all threads in the current block.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA void syncBlockThreads() const
+                ALPAKA_FCT_ACC_NO_CUDA auto syncBlockThreads() const
+                -> void
                 {
                     auto const idThread(std::this_thread::get_id());
                     auto const itFind(m_mThreadsToBarrier.find(idThread));
@@ -173,8 +177,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Syncs all threads in the current block.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA void syncBlockThreads(
+                ALPAKA_FCT_ACC_NO_CUDA auto syncBlockThreads(
                     std::map<std::thread::id, UInt>::iterator const & itFind) const
+                -> void
                 {
                     assert(itFind != m_mThreadsToBarrier.end());
 
@@ -204,7 +209,8 @@ namespace alpaka
                 template<
                     typename T, 
                     UInt TuiNumElements>
-                ALPAKA_FCT_ACC_NO_CUDA T * allocBlockSharedMem() const
+                ALPAKA_FCT_ACC_NO_CUDA auto allocBlockSharedMem() const
+                -> T *
                 {
                     static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
 
@@ -229,7 +235,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename T>
-                ALPAKA_FCT_ACC_NO_CUDA T * getBlockSharedExternMem() const
+                ALPAKA_FCT_ACC_NO_CUDA auto getBlockSharedExternMem() const
+                -> T *
                 {
                     return reinterpret_cast<T*>(m_vuiExternalSharedMem.get());
                 }
@@ -269,7 +276,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Yields the current thread.
                 //-----------------------------------------------------------------------------
-                static void yield()
+                static auto yield()
+                -> void
                 {
                     std::this_thread::yield();
                 }
@@ -335,7 +343,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST KernelExecThreads & operator=(KernelExecThreads const &) = delete;
+                ALPAKA_FCT_HOST auto operator=(KernelExecThreads const &) -> KernelExecThreads & = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
@@ -351,9 +359,10 @@ namespace alpaka
                 template<
                     typename TKernelFunctor,
                     typename... TArgs>
-                ALPAKA_FCT_HOST void operator()(
+                ALPAKA_FCT_HOST auto operator()(
                     TKernelFunctor && kernelFunctor,
                     TArgs && ... args) const
+                -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -441,10 +450,11 @@ namespace alpaka
                 template<
                     typename TKernelFunctor,
                     typename... TArgs>
-                ALPAKA_FCT_HOST void threadKernel(
+                ALPAKA_FCT_HOST auto threadKernel(
                     Vec<3u> const & v3uiBlockThreadIdx, 
                     TKernelFunctor && kernelFunctor, 
                     TArgs && ... args) const
+                -> void
                 {
                     // We have to store the thread data before the kernel is calling any of the methods of this class depending on them.
                     auto const idThread(std::this_thread::get_id());

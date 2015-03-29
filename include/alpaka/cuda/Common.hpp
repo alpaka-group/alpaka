@@ -58,8 +58,9 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename T0>
-        bool firstArgumentEqualsOneOfFollowing(
+        auto firstArgumentEqualsOneOfFollowing(
             T0 &&)
+        -> bool
         {
             return false;
         }
@@ -70,10 +71,11 @@ namespace alpaka
             typename T0,
             typename T1,
             typename... TArgs>
-        bool firstArgumentEqualsOneOfFollowing(
+        auto firstArgumentEqualsOneOfFollowing(
             T0 && val0,
             T1 && val1,
             TArgs && ... args)
+        -> bool
         {
             return (val0 == val1) 
                 || firstArgumentEqualsOneOfFollowing(std::forward<T0>(val0), std::forward<TArgs>(args)...);

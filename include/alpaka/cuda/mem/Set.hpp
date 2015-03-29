@@ -55,10 +55,11 @@ namespace alpaka
                 template<
                     typename TExtents, 
                     typename TBuf>
-                ALPAKA_FCT_HOST static void set(
+                ALPAKA_FCT_HOST static auto set(
                     TBuf & buf, 
                     std::uint8_t const & byte, 
                     TExtents const & extents)
+                -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                     
@@ -89,11 +90,12 @@ namespace alpaka
                 template<
                     typename TBuf, 
                     typename TExtents>
-                ALPAKA_FCT_HOST static void set(
+                ALPAKA_FCT_HOST static auto set(
                     TBuf & buf, 
                     std::uint8_t const & byte, 
                     TExtents const & extents,
                     cuda::detail::StreamCuda const & stream)
+                -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                     
@@ -134,10 +136,11 @@ namespace alpaka
                 template<
                     typename TExtents, 
                     typename TBuf>
-                ALPAKA_FCT_HOST static void set(
+                ALPAKA_FCT_HOST static auto set(
                     TBuf & buf, 
                     std::uint8_t const & byte, 
                     TExtents const & extents)
+                -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                     
@@ -173,11 +176,12 @@ namespace alpaka
                 template<
                     typename TExtents, 
                     typename TBuf>
-                ALPAKA_FCT_HOST static void set(
+                ALPAKA_FCT_HOST static auto set(
                     TBuf & buf, 
                     std::uint8_t const & byte, 
                     TExtents const & extents,
                     cuda::detail::StreamCuda const & stream)
+                -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                     
@@ -223,10 +227,11 @@ namespace alpaka
                 template<
                     typename TExtents, 
                     typename TBuf>
-                ALPAKA_FCT_HOST static void set(
+                ALPAKA_FCT_HOST static auto set(
                     TBuf & buf, 
                     std::uint8_t const & byte, 
                     TExtents const & extents)
+                -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                     
@@ -277,11 +282,12 @@ namespace alpaka
                 template<
                     typename TExtents, 
                     typename TBuf>
-                ALPAKA_FCT_HOST static void set(
+                ALPAKA_FCT_HOST static auto set(
                     TBuf & buf, 
                     std::uint8_t const & byte, 
                     TExtents const & extents,
                     cuda::detail::StreamCuda const & stream)
+                -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                     

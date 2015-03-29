@@ -69,18 +69,20 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DevOpenMp & operator=(DevOpenMp const &) = default;
+                ALPAKA_FCT_HOST auto operator=(DevOpenMp const &) -> DevOpenMp & = default;
                 //-----------------------------------------------------------------------------
                 //! Equality comparison operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST bool operator==(DevOpenMp const &) const
+                ALPAKA_FCT_HOST auto operator==(DevOpenMp const &) const
+                -> bool
                 {
                     return true;
                 }
                 //-----------------------------------------------------------------------------
                 //! Inequality comparison operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST bool operator!=(DevOpenMp const & rhs) const
+                ALPAKA_FCT_HOST auto operator!=(DevOpenMp const & rhs) const
+                -> bool
                 {
                     return !((*this) == rhs);
                 }
@@ -104,15 +106,17 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of devices available.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::size_t getDevCount()
+                ALPAKA_FCT_HOST static auto getDevCount()
+                -> std::size_t
                 {
                     return 1;
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The number of devices available.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static openmp::detail::DevOpenMp getDevByIdx(
+                ALPAKA_FCT_HOST static auto getDevByIdx(
                     std::size_t const & uiIdx)
+                -> openmp::detail::DevOpenMp
                 {
                     std::size_t const uiNumDevices(getDevCount());
                     if(uiIdx >= uiNumDevices)
@@ -127,15 +131,17 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The handle to the currently used device.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static openmp::detail::DevOpenMp getCurrentDev()
+                ALPAKA_FCT_HOST static auto getCurrentDev()
+                -> openmp::detail::DevOpenMp
                 {
                     return {};
                 }
                 //-----------------------------------------------------------------------------
                 //! Sets the device to use with this accelerator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static void setCurrentDev(
+                ALPAKA_FCT_HOST static auto setCurrentDev(
                     openmp::detail::DevOpenMp const & )
+                -> void
                 {
                     // The code is already running on this device.
                 }
@@ -173,8 +179,9 @@ namespace alpaka
             struct GetDevProps<
                 openmp::detail::DevOpenMp>
             {
-                ALPAKA_FCT_HOST static alpaka::dev::DevProps getDevProps(
+                ALPAKA_FCT_HOST static auto getDevProps(
                     openmp::detail::DevOpenMp const &)
+                -> alpaka::dev::DevProps
                 {
 #if ALPAKA_INTEGRATION_TEST
                         
@@ -233,8 +240,9 @@ namespace alpaka
             struct CurrentThreadWaitFor<
                 openmp::detail::DevOpenMp>
             {
-                ALPAKA_FCT_HOST static void currentThreadWaitFor(
+                ALPAKA_FCT_HOST static auto currentThreadWaitFor(
                     openmp::detail::DevOpenMp const &)
+                -> void
                 {
                     // Because host calls are not asynchronous, this call never has to wait.
                 }

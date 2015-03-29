@@ -62,7 +62,8 @@ namespace alpaka
             struct GetAccName<
                 serial::detail::AccSerial>
             {
-                static std::string getAccName()
+                static auto getAccName()
+                -> std::string
                 {
                     return "AccSerial";
                 }

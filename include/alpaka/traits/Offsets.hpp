@@ -54,8 +54,9 @@ namespace alpaka
                 typename TSfinae = void>
             struct GetOffsetX
             {
-                ALPAKA_FCT_HOST_ACC static UInt getOffsetX(
+                ALPAKA_FCT_HOST_ACC static auto getOffsetX(
                     T const &)
+                -> UInt
                 {
                     return static_cast<UInt>(0u);
                 }
@@ -70,8 +71,9 @@ namespace alpaka
                 typename TSfinae = void>
             struct GetOffsetY
             {
-                ALPAKA_FCT_HOST_ACC static UInt getOffsetY(
+                ALPAKA_FCT_HOST_ACC static auto getOffsetY(
                     T const &)
+                -> UInt
                 {
                     return static_cast<UInt>(0u);
                 }
@@ -86,8 +88,9 @@ namespace alpaka
                 typename TSfinae = void>
             struct GetOffsetZ
             {
-                ALPAKA_FCT_HOST_ACC static UInt getOffsetZ(
+                ALPAKA_FCT_HOST_ACC static auto getOffsetZ(
                     T const &)
+                -> UInt
                 {
                     return static_cast<UInt>(0u);
                 }
@@ -129,7 +132,7 @@ namespace alpaka
             typename TOffsets>
         ALPAKA_FCT_HOST_ACC auto getOffsets(
             TOffsets const & offsets)
-            -> decltype(traits::offset::GetOffsets<TOffsets>::getOffsets(std::declval<TOffsets>()))
+        -> decltype(traits::offset::GetOffsets<TOffsets>::getOffsets(std::declval<TOffsets const &>()))
         {
             return traits::offset::GetOffsets<
                 TOffsets>
@@ -141,8 +144,9 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TOffsets>
-        ALPAKA_FCT_HOST_ACC UInt getOffsetX(
+        ALPAKA_FCT_HOST_ACC auto getOffsetX(
             TOffsets const & offsets)
+        -> UInt
         {
             return traits::offset::GetOffsetX<
                 TOffsets>
@@ -154,8 +158,9 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TOffsets>
-        ALPAKA_FCT_HOST_ACC UInt getOffsetY(
+        ALPAKA_FCT_HOST_ACC auto getOffsetY(
             TOffsets const & offsets)
+        -> UInt
         {
             return traits::offset::GetOffsetY<
                 TOffsets>
@@ -167,8 +172,9 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TOffsets>
-        ALPAKA_FCT_HOST_ACC UInt getOffsetZ(
+        ALPAKA_FCT_HOST_ACC auto getOffsetZ(
             TOffsets const & offsets)
+        -> UInt
         {
             return traits::offset::GetOffsetZ<
                 TOffsets>
@@ -182,9 +188,10 @@ namespace alpaka
         template<
             typename TOffsets,
             typename TInt>
-            ALPAKA_FCT_HOST_ACC void setOffsetX(
+        ALPAKA_FCT_HOST_ACC auto setOffsetX(
             TOffsets const & offsets,
             TInt const & xOffset)
+        -> void
         {
             traits::offset::SetOffsetX<
                 TOffsets>
@@ -198,9 +205,10 @@ namespace alpaka
         template<
             typename TOffsets,
             typename TInt>
-        ALPAKA_FCT_HOST_ACC void setOffsetY(
+        ALPAKA_FCT_HOST_ACC auto setOffsetY(
             TOffsets const & offsets,
             TInt const & yOffset)
+        -> void
         {
             traits::offset::SetOffsetY<
                 TOffsets>
@@ -214,9 +222,10 @@ namespace alpaka
         template<
             typename TOffsets,
             typename TInt>
-        ALPAKA_FCT_HOST_ACC void setOffsetZ(
+        ALPAKA_FCT_HOST_ACC auto setOffsetZ(
             TOffsets const & offsets,
             TInt const & zOffset)
+        -> void
         {
             traits::offset::SetOffsetZ<
                 TOffsets>
@@ -242,8 +251,9 @@ namespace alpaka
                 T,
                 typename std::enable_if<std::is_integral<T>::value && std::is_unsigned<T>::value>::type>
             {
-                ALPAKA_FCT_HOST_ACC static UInt getOffsetX(
+                ALPAKA_FCT_HOST_ACC static auto getOffsetX(
                     T const & offset)
+                -> UInt
                 {
                     return static_cast<UInt>(offset);
                 }

@@ -45,8 +45,9 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             /*template<
                 typename TBuf>
-            void pageLockHostMem(
+            auto pageLockHostMem(
                 TBuf const & buf)
+            -> void
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
@@ -69,8 +70,9 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TBuf>
-            void unPageLockHostMem(
+            auto unPageLockHostMem(
                 TBuf const & buf)
+            -> void
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
@@ -100,11 +102,12 @@ namespace alpaka
                     typename TExtents, 
                     typename TBufSrc, 
                     typename TBufDst>
-                static void memCopyCuda(
+                ALPAKA_FCT_HOST static auto memCopyCuda(
                     TBufDst & bufDst, 
                     TBufSrc const & bufSrc, 
                     TExtents const & extents, 
                     cudaMemcpyKind const & p_cudaMemcpyKind)
+                -> void
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
@@ -150,12 +153,13 @@ namespace alpaka
                     typename TExtents, 
                     typename TBufSrc, 
                     typename TBufDst>
-                static void memCopyCuda(
+                ALPAKA_FCT_HOST static auto memCopyCuda(
                     TBufDst & bufDst, 
                     TBufSrc const & bufSrc, 
                     TExtents const & extents, 
                     cudaMemcpyKind const & p_cudaMemcpyKind,
                     cuda::detail::StreamCuda const & stream)
+                -> void
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
@@ -210,11 +214,12 @@ namespace alpaka
                     typename TExtents, 
                     typename TBufSrc, 
                     typename TBufDst>
-                static void memCopyCuda(
+                ALPAKA_FCT_HOST static auto memCopyCuda(
                     TBufDst & bufDst, 
                     TBufSrc const & bufSrc, 
                     TExtents const & extents, 
                     cudaMemcpyKind const & p_cudaMemcpyKind)
+                -> void
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
@@ -273,12 +278,13 @@ namespace alpaka
                     typename TExtents, 
                     typename TBufSrc, 
                     typename TBufDst>
-                static void memCopyCuda(
+                ALPAKA_FCT_HOST static auto memCopyCuda(
                     TBufDst & bufDst, 
                     TBufSrc const & bufSrc, 
                     TExtents const & extents, 
                     cudaMemcpyKind const & p_cudaMemcpyKind,
                     cuda::detail::StreamCuda const & stream)
+                -> void
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
@@ -346,11 +352,12 @@ namespace alpaka
                     typename TExtents, 
                     typename TBufSrc, 
                     typename TBufDst>
-                static void memCopyCuda(
+                ALPAKA_FCT_HOST static auto memCopyCuda(
                     TBufDst & bufDst, 
                     TBufSrc const & bufSrc, 
                     TExtents const & extents, 
                     cudaMemcpyKind const & p_cudaMemcpyKind)
+                -> void
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
@@ -373,12 +380,13 @@ namespace alpaka
                     typename TExtents, 
                     typename TBufSrc, 
                     typename TBufDst>
-                static void memCopyCuda(
+                ALPAKA_FCT_HOST static auto memCopyCuda(
                     TBufDst & bufDst, 
                     TBufSrc const & bufSrc, 
                     TExtents const & extents, 
                     cudaMemcpyKind const & p_cudaMemcpyKind,
                     cuda::detail::StreamCuda const & stream)
+                -> void
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
@@ -403,11 +411,12 @@ namespace alpaka
                     typename TExtents, 
                     typename TBufSrc, 
                     typename TBufDst>
-                static cudaMemcpy3DParms buildCudaMemcpy3DParms(
+                ALPAKA_FCT_HOST static auto buildCudaMemcpy3DParms(
                     TBufDst & bufDst, 
                     TBufSrc const & bufSrc, 
                     TExtents const & extents, 
                     cudaMemcpyKind const & p_cudaMemcpyKind)
+                -> cudaMemcpy3DParms
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
@@ -510,10 +519,11 @@ namespace alpaka
                     typename TExtents, 
                     typename TBufSrc, 
                     typename TBufDst>
-                static void copy(
+                ALPAKA_FCT_HOST static auto copy(
                     TBufDst & bufDst,
                     TBufSrc const & bufSrc,
                     TExtents const & extents)
+                -> void
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
@@ -535,11 +545,12 @@ namespace alpaka
                     typename TExtents, 
                     typename TBufSrc, 
                     typename TBufDst>
-                static void copy(
+                ALPAKA_FCT_HOST static auto copy(
                     TBufDst & bufDst,
                     TBufSrc const & bufSrc,
                     TExtents const & extents,
                     cuda::detail::StreamCuda const & stream)
+                -> void
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
@@ -572,10 +583,11 @@ namespace alpaka
                     typename TExtents, 
                     typename TBufSrc, 
                     typename TBufDst>
-                static void copy(
+                ALPAKA_FCT_HOST static auto copy(
                     TBufDst & bufDst, 
                     TBufSrc const & bufSrc, 
                     TExtents const & extents)
+                -> void
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
@@ -597,11 +609,12 @@ namespace alpaka
                     typename TExtents, 
                     typename TBufSrc, 
                     typename TBufDst>
-                static void copy(
+                ALPAKA_FCT_HOST static auto copy(
                     TBufDst & bufDst, 
                     TBufSrc const & bufSrc, 
                     TExtents const & extents,
                     cuda::detail::StreamCuda const & stream)
+                -> void
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
@@ -634,10 +647,11 @@ namespace alpaka
                     typename TExtents, 
                     typename TBufSrc, 
                     typename TBufDst>
-                static void copy(
+                ALPAKA_FCT_HOST static auto copy(
                     TBufDst & bufDst, 
                     TBufSrc const & bufSrc, 
                     TExtents const & extents)
+                -> void
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
@@ -654,11 +668,12 @@ namespace alpaka
                     typename TExtents, 
                     typename TBufSrc, 
                     typename TBufDst>
-                static void copy(
+                ALPAKA_FCT_HOST static auto copy(
                     TBufDst & bufDst, 
                     TBufSrc const & bufSrc, 
                     TExtents const & extents,
                     cuda::detail::StreamCuda const & stream)
+                -> void
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 

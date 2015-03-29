@@ -126,7 +126,8 @@ namespace alpaka
             {
                 template<
                     typename TAcc> 
-                ALPAKA_FCT_HOST void operator()(std::ostream & os)
+                ALPAKA_FCT_HOST auto operator()(std::ostream & os)
+                -> void
                 {
                     os << acc::getAccName<TAcc>();
                     os << " ";
@@ -137,7 +138,8 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Writes the enabled accelerators to the given stream.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST void writeEnabledAccelerators(std::ostream & os)
+        ALPAKA_FCT_HOST auto writeEnabledAccelerators(std::ostream & os)
+        -> void
         {
             os << "Accelerators enabled: ";
 
@@ -152,7 +154,8 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The maximum block thread extents supported by all of the enabled accelerators.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST Vec<3u> getMaxBlockThreadExtentsEnabledAccelerators()
+        ALPAKA_FCT_HOST auto getMaxBlockThreadExtentsEnabledAccelerators()
+        -> Vec<3u>
         {
             return workdiv::getMaxBlockThreadExtentsAccelerators<acc::EnabledAccelerators>();
         }
@@ -160,7 +163,8 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The maximum block thread count supported by all of the enabled accelerators.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST UInt getMaxBlockThreadCountEnabledAccelerators()
+        ALPAKA_FCT_HOST auto getMaxBlockThreadCountEnabledAccelerators()
+        -> UInt
         {
             return workdiv::getMaxBlockThreadCountAccelerators<acc::EnabledAccelerators>();
         }

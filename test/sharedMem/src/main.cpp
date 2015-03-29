@@ -52,10 +52,11 @@ public:
     //-----------------------------------------------------------------------------
     template<
         typename TAcc>
-    ALPAKA_FCT_ACC void operator()(
+    ALPAKA_FCT_ACC auto operator()(
         TAcc const & acc,
         std::uint32_t * const puiBlockRetVals, 
         std::uint32_t const uiMult2) const
+    -> void
     {
         // The number of threads in this block.
         std::size_t const uiNumKernelsInBlock(acc.template getWorkDiv<alpaka::Block, alpaka::Threads, alpaka::dim::Dim1>()[0u]);
@@ -192,9 +193,10 @@ struct SharedMemTester
     template<
         typename TAcc, 
         typename TWorkDiv>
-    void operator()(
+    auto operator()(
         TWorkDiv const & workDiv, 
         std::uint32_t const uiMult2)
+    -> void
     {
         std::cout << std::endl;
         std::cout << "################################################################################" << std::endl;
@@ -267,7 +269,8 @@ public:
 //-----------------------------------------------------------------------------
 //! Program entry point.
 //-----------------------------------------------------------------------------
-int main()
+auto main()
+-> int
 {
     try
     {

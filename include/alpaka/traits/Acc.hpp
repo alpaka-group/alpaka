@@ -54,7 +54,8 @@ namespace alpaka
                 typename TSfinae = void>
             struct GetAccName
             {
-                ALPAKA_FCT_HOST static std::string getAccName()
+                ALPAKA_FCT_HOST static auto getAccName()
+                -> std::string
                 {
                     return typeid(TAcc).name();
                 }
@@ -81,7 +82,8 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TAcc>
-        ALPAKA_FCT_HOST std::string getAccName()
+        ALPAKA_FCT_HOST auto getAccName()
+        -> std::string
         {
             return traits::acc::GetAccName<
                 TAcc>

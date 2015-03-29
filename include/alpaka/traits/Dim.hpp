@@ -62,7 +62,8 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename T>
-        ALPAKA_FCT_HOST_ACC UInt getDim()
+        ALPAKA_FCT_HOST_ACC auto getDim()
+        -> UInt
         {
             return DimT<T>::value;
         }

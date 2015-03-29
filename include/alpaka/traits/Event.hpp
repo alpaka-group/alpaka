@@ -87,10 +87,14 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TEvent>
-        ALPAKA_FCT_HOST void enqueue(
+        ALPAKA_FCT_HOST auto enqueue(
             TEvent const & event)
+        -> void
         {
-            traits::event::DefaultStreamEnqueueEvent<TEvent>::defaultStreamEnqueueEvent(event);
+            traits::event::DefaultStreamEnqueueEvent<
+                TEvent>
+            ::defaultStreamEnqueueEvent(
+                event);
         }
 
         //-----------------------------------------------------------------------------
@@ -102,11 +106,17 @@ namespace alpaka
         template<
             typename TEvent,
             typename TStream>
-        ALPAKA_FCT_HOST void enqueue(
+        ALPAKA_FCT_HOST auto enqueue(
             TEvent const & event,
             TStream const & stream)
+        -> void
         {
-            traits::event::StreamEnqueueEvent<TEvent, TStream>::streamEnqueueEvent(event, stream);
+            traits::event::StreamEnqueueEvent<
+                TEvent, 
+                TStream>
+            ::streamEnqueueEvent(
+                event, 
+                stream);
         }
 
         //-----------------------------------------------------------------------------
@@ -114,10 +124,14 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TEvent>
-        ALPAKA_FCT_HOST bool test(
+        ALPAKA_FCT_HOST auto test(
             TEvent const & event)
+        -> bool
         {
-            return traits::event::EventTest<TEvent>::eventTest(event);
+            return traits::event::EventTest<
+                TEvent>
+            ::eventTest(
+                event);
         }
     }
 }

@@ -112,7 +112,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY AccCuda & operator=(AccCuda const &) = delete;
+                ALPAKA_FCT_ACC_CUDA_ONLY auto operator=(AccCuda const &) -> AccCuda & = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
@@ -125,7 +125,8 @@ namespace alpaka
                     typename TOrigin,
                     typename TUnit,
                     typename TDim = dim::Dim3>
-                ALPAKA_FCT_ACC_CUDA_ONLY DimToVecT<TDim> getWorkDiv() const
+                ALPAKA_FCT_ACC_CUDA_ONLY auto getWorkDiv() const
+                -> DimToVecT<TDim>
                 {
                     return workdiv::getWorkDiv<TOrigin, TUnit, TDim>(
                         *static_cast<WorkDivCuda const *>(this));
@@ -138,7 +139,8 @@ namespace alpaka
                     typename TOrigin, 
                     typename TUnit, 
                     typename TDim = dim::Dim3>
-                ALPAKA_FCT_ACC_CUDA_ONLY DimToVecT<TDim> getIdx() const
+                ALPAKA_FCT_ACC_CUDA_ONLY auto getIdx() const
+                -> DimToVecT<TDim>
                 {
                     return idx::getIdx<TOrigin, TUnit, TDim>(
                         *static_cast<IdxCuda const *>(this),
@@ -152,9 +154,10 @@ namespace alpaka
                 template<
                     typename TOp,
                     typename T>
-                ALPAKA_FCT_ACC T atomicOp(
+                ALPAKA_FCT_ACC auto atomicOp(
                     T * const addr,
                     T const & value) const
+                -> T
                 {
                     return atomic::atomicOp<TOp, T>(
                         addr,
@@ -165,7 +168,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Syncs all threads in the current block.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY void syncBlockThreads() const
+                ALPAKA_FCT_ACC_CUDA_ONLY auto syncBlockThreads() const
+                -> void
                 {
                     __syncthreads();
                 }
@@ -176,7 +180,8 @@ namespace alpaka
                 template<
                     typename T, 
                     UInt TuiNumElements>
-                ALPAKA_FCT_ACC_CUDA_ONLY T * allocBlockSharedMem() const
+                ALPAKA_FCT_ACC_CUDA_ONLY auto allocBlockSharedMem() const
+                -> T *
                 {
                     static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
 
@@ -189,7 +194,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename T>
-                ALPAKA_FCT_ACC_CUDA_ONLY T * getBlockSharedExternMem() const
+                ALPAKA_FCT_ACC_CUDA_ONLY auto getBlockSharedExternMem() const
+                -> T *
                 {
                     // Because unaligned access to variables is not allowed in device code, 
                     // we have to use the widest possible type to have all types aligned correctly. 
@@ -259,7 +265,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST KernelExecCuda & operator=(KernelExecCuda const &) = delete;
+                ALPAKA_FCT_HOST auto operator=(KernelExecCuda const &) -> KernelExecCuda & = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
@@ -275,12 +281,13 @@ namespace alpaka
                 template<
                     typename TKernelFunctor,
                     typename... TArgs>
-                ALPAKA_FCT_HOST void operator()(
+                ALPAKA_FCT_HOST auto operator()(
                     // \NOTE: No universal reference (&&) or const reference (const &) is allowed as the parameter type because the kernel launch language extension expects the arguments by value.
                     // This forces the type of a float argument given with std::forward to this function to be of type float instead of e.g. "float const & __ptr64" (MSVC).
                     // If not given by value, the kernel launch code does not copy the value but the pointer to the value location.
                     TKernelFunctor kernelFunctor,
                     TArgs ... args) const
+                -> void
                 {
 #if (!__GLIBCXX__) // libstdc++ even for gcc-4.9 does not support std::is_trivially_copyable.
                     static_assert(std::is_trivially_copyable<TKernelFunctor>::value, "The given kernel functor has to fulfill is_trivially_copyable!");

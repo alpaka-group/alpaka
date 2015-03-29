@@ -103,7 +103,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA AccSerial & operator=(AccSerial const &) = delete;
+                ALPAKA_FCT_ACC_NO_CUDA auto operator=(AccSerial const &) -> AccSerial & = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
@@ -116,7 +116,8 @@ namespace alpaka
                     typename TOrigin, 
                     typename TUnit, 
                     typename TDim = dim::Dim3>
-                ALPAKA_FCT_ACC_NO_CUDA DimToVecT<TDim> getIdx() const
+                ALPAKA_FCT_ACC_NO_CUDA auto getIdx() const
+                -> DimToVecT<TDim>
                 {
                     return idx::getIdx<TOrigin, TUnit, TDim>(
                         *static_cast<IdxSerial const *>(this),
@@ -130,7 +131,8 @@ namespace alpaka
                     typename TOrigin,
                     typename TUnit,
                     typename TDim = dim::Dim3>
-                ALPAKA_FCT_ACC_NO_CUDA DimToVecT<TDim> getWorkDiv() const
+                ALPAKA_FCT_ACC_NO_CUDA auto getWorkDiv() const
+                -> DimToVecT<TDim>
                 {
                     return workdiv::getWorkDiv<TOrigin, TUnit, TDim>(
                         *static_cast<WorkDivSerial const *>(this));
@@ -143,9 +145,10 @@ namespace alpaka
                 template<
                     typename TOp,
                     typename T>
-                ALPAKA_FCT_ACC T atomicOp(
+                ALPAKA_FCT_ACC auto atomicOp(
                     T * const addr,
                     T const & value) const
+                -> T
                 {
                     return atomic::atomicOp<TOp, T>(
                         addr,
@@ -167,7 +170,8 @@ namespace alpaka
                 template<
                     typename T, 
                     UInt TuiNumElements>
-                ALPAKA_FCT_ACC_NO_CUDA T * allocBlockSharedMem() const
+                ALPAKA_FCT_ACC_NO_CUDA auto allocBlockSharedMem() const
+                -> T *
                 {
                     static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
 
@@ -183,7 +187,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename T>
-                ALPAKA_FCT_ACC_NO_CUDA T * getBlockSharedExternMem() const
+                ALPAKA_FCT_ACC_NO_CUDA auto getBlockSharedExternMem() const
+                -> T *
                 {
                     return reinterpret_cast<T*>(m_vuiExternalSharedMem.get());
                 }
@@ -246,7 +251,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST KernelExecSerial & operator=(KernelExecSerial const &) = delete;
+                ALPAKA_FCT_HOST auto operator=(KernelExecSerial const &) -> KernelExecSerial & = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
@@ -262,9 +267,10 @@ namespace alpaka
                 template<
                     typename TKernelFunctor,
                     typename... TArgs>
-                ALPAKA_FCT_HOST void operator()(
+                ALPAKA_FCT_HOST auto operator()(
                     TKernelFunctor && kernelFunctor,
                     TArgs && ... args) const
+                -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 

@@ -77,8 +77,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Frees the shared buffer.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static void freeBuffer(
+                ALPAKA_FCT_HOST static auto freeBuffer(
                     TElem * pBuffer)
+                -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -128,8 +129,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static Vec<TDim::value> getExtents(
+                ALPAKA_FCT_HOST static auto getExtents(
                     cuda::detail::BufCuda<TElem, TDim> const & extents)
+                -> Vec<TDim::value>
                 {
                     return {extents.m_vExtentsElements};
                 }
@@ -148,8 +150,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static UInt getWidth(
+                ALPAKA_FCT_HOST static auto getWidth(
                     cuda::detail::BufCuda<TElem, TDim> const & extent)
+                -> UInt
                 {
                     return extent.m_vExtentsElements[0u];
                 }
@@ -168,8 +171,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static UInt getHeight(
+                ALPAKA_FCT_HOST static auto getHeight(
                     cuda::detail::BufCuda<TElem, TDim> const & extent)
+                -> UInt
                 {
                     return extent.m_vExtentsElements[1u];
                 }
@@ -187,8 +191,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static UInt getDepth(
+                ALPAKA_FCT_HOST static auto getDepth(
                     cuda::detail::BufCuda<TElem, TDim> const & extent)
+                -> UInt
                 {
                     return extent.m_vExtentsElements[2u];
                 }
@@ -209,8 +214,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static Vec<TDim::value> getOffsets(
+                ALPAKA_FCT_HOST static auto getOffsets(
                     cuda::detail::BufCuda<TElem, TDim> const &)
+                -> Vec<TDim::value>
                 {
                     return Vec<TDim::value>();
                 }
@@ -266,16 +272,18 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static cuda::detail::BufCuda<TElem, TDim> const & getBuf(
+                ALPAKA_FCT_HOST static auto getBuf(
                     cuda::detail::BufCuda<TElem, TDim> const & buf)
+                -> cuda::detail::BufCuda<TElem, TDim> const &
                 {
                     return buf;
                 }
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static cuda::detail::BufCuda<TElem, TDim> & getBuf(
+                ALPAKA_FCT_HOST static auto getBuf(
                     cuda::detail::BufCuda<TElem, TDim> & buf)
+                -> cuda::detail::BufCuda<TElem, TDim> &
                 {
                     return buf;
                 }
@@ -293,16 +301,18 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static TElem const * getNativePtr(
+                ALPAKA_FCT_HOST static auto getNativePtr(
                     cuda::detail::BufCuda<TElem, TDim> const & buf)
+                -> TElem const *
                 {
                     return buf.m_spMem.get();
                 }
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static TElem * getNativePtr(
+                ALPAKA_FCT_HOST static auto getNativePtr(
                     cuda::detail::BufCuda<TElem, TDim> & buf)
+                -> TElem *
                 {
                     return buf.m_spMem.get();
                 }
@@ -320,8 +330,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static UInt getPitchBytes(
+                ALPAKA_FCT_HOST static auto getPitchBytes(
                     cuda::detail::BufCuda<TElem, TDim> const & pitch)
+                -> UInt
                 {
                     return pitch.m_uiPitchBytes;
                 }
@@ -342,8 +353,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TExtents>
-                ALPAKA_FCT_HOST static alpaka::cuda::detail::BufCuda<T, alpaka::dim::Dim1> alloc(
+                ALPAKA_FCT_HOST static auto alloc(
                     TExtents const & extents)
+                -> alpaka::cuda::detail::BufCuda<T, alpaka::dim::Dim1>
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -388,8 +400,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TExtents>
-                ALPAKA_FCT_HOST static alpaka::cuda::detail::BufCuda<T, alpaka::dim::Dim2> alloc(
+                ALPAKA_FCT_HOST static auto alloc(
                     TExtents const & extents)
+                -> alpaka::cuda::detail::BufCuda<T, alpaka::dim::Dim2>
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -444,8 +457,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TExtents>
-                ALPAKA_FCT_HOST static alpaka::cuda::detail::BufCuda<T, alpaka::dim::Dim3> alloc(
+                ALPAKA_FCT_HOST static auto alloc(
                     TExtents const & extents)
+                -> alpaka::cuda::detail::BufCuda<T, alpaka::dim::Dim3>
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 

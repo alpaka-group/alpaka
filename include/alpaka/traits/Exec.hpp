@@ -64,9 +64,10 @@ namespace alpaka
         template<
             typename TAcc,
             typename TWorkDiv>
-        ExecT<TAcc> create(
+        ALPAKA_FCT_HOST auto create(
             TWorkDiv const & workDiv, 
             stream::StreamT<TAcc> const & stream)
+        -> ExecT<TAcc>
         {
             // Some basic tests.
             if(workdiv::getWorkDiv<Grid, Blocks, dim::Dim1>(workDiv)[0] == 0u)
@@ -93,10 +94,11 @@ namespace alpaka
             typename TAcc,
             typename TGridBlockExtents,
             typename TBlockThreadExtents>
-        ExecT<TAcc> create(
+        ALPAKA_FCT_HOST auto create(
             TGridBlockExtents const & gridBlockExtent,
             TBlockThreadExtents const & blockThreadExtents, 
             stream::StreamT<TAcc> const & stream)
+        -> ExecT<TAcc>
         {
             return create(
                 workdiv::BasicWorkDiv(

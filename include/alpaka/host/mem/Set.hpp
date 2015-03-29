@@ -53,10 +53,11 @@ namespace alpaka
                 template<
                     typename TBuf, 
                     typename TExtents>
-                ALPAKA_FCT_HOST static void set(
+                ALPAKA_FCT_HOST static auto set(
                     TBuf & bufDst, 
                     std::uint8_t const & byte, 
                     TExtents const & extents)
+                -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -154,11 +155,12 @@ namespace alpaka
                     typename TBuf, 
                     typename TExtents,
                     typename TStream>
-                ALPAKA_FCT_HOST static void set(
+                ALPAKA_FCT_HOST static auto set(
                     TBuf & bufDst, 
                     std::uint8_t const & byte, 
                     TExtents const & extents,
                     host::detail::StreamHost const &)
+                -> void
                 {
                     // \TODO: Implement asynchronous host set.
                     set(

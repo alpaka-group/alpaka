@@ -73,7 +73,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA AtomicOpenMp & operator=(AtomicOpenMp const &) = delete;
+                ALPAKA_FCT_ACC_NO_CUDA auto operator=(AtomicOpenMp const &) -> AtomicOpenMp & = delete;
 
 #ifdef ALPAKA_OPENMP_ATOMIC_OPS_LOCK
                 //-----------------------------------------------------------------------------
@@ -114,10 +114,11 @@ namespace alpaka
                 T>
             {
 #ifdef ALPAKA_OPENMP_ATOMIC_OPS_LOCK
-                ALPAKA_FCT_ACC_NO_CUDA static T atomicOp(
+                ALPAKA_FCT_ACC_NO_CUDA static auto atomicOp(
                     openmp::detail::AtomicOpenMp const & atomic,
                     T * const addr,
                     T const & value)
+                -> T
                 {
                     omp_set_lock(&atomic.m_ompLock);
                     auto const old(TOp()(addr, value));
@@ -125,10 +126,11 @@ namespace alpaka
                     return old;
                 }
 #else
-                ALPAKA_FCT_ACC_NO_CUDA static T atomicOp(
+                ALPAKA_FCT_ACC_NO_CUDA static auto atomicOp(
                     openmp::detail::AtomicOpenMp const &,
                     T * const addr,
                     T const & value)
+                -> T
                 {
                     T old;
                     #pragma omp critical (AtomicOp)

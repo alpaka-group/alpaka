@@ -50,35 +50,40 @@ public:
     //-----------------------------------------------------------------------------
     //! 
     //-----------------------------------------------------------------------------
-    ALPAKA_FCT_HOST_ACC T absSq()
+    ALPAKA_FCT_HOST_ACC auto absSq()
+    -> T
     {
         return r*r + i*i;
     }
     //-----------------------------------------------------------------------------
     //! 
     //-----------------------------------------------------------------------------
-    ALPAKA_FCT_HOST_ACC SimpleComplex operator*(SimpleComplex const & a)
+    ALPAKA_FCT_HOST_ACC auto operator*(SimpleComplex const & a)
+    -> SimpleComplex
     {
         return SimpleComplex(r*a.r - i*a.i, i*a.r + r*a.i);
     }
     //-----------------------------------------------------------------------------
     //! 
     //-----------------------------------------------------------------------------
-    ALPAKA_FCT_HOST_ACC SimpleComplex operator*(float const & a)
+    ALPAKA_FCT_HOST_ACC auto operator*(float const & a)
+    -> SimpleComplex
     {
         return SimpleComplex(r*a, i*a);
     }
     //-----------------------------------------------------------------------------
     //! 
     //-----------------------------------------------------------------------------
-    ALPAKA_FCT_HOST_ACC SimpleComplex operator+(SimpleComplex const & a)
+    ALPAKA_FCT_HOST_ACC auto operator+(SimpleComplex const & a)
+    -> SimpleComplex
     {
         return SimpleComplex(r+a.r, i+a.i);
     }
     //-----------------------------------------------------------------------------
     //! 
     //-----------------------------------------------------------------------------
-    ALPAKA_FCT_HOST_ACC SimpleComplex operator+(float const & a)
+    ALPAKA_FCT_HOST_ACC auto operator+(float const & a)
+    -> SimpleComplex
     {
         return SimpleComplex(r+a, i);
     }
@@ -137,7 +142,7 @@ public:
     //-----------------------------------------------------------------------------
     template<
         typename TAcc>
-    ALPAKA_FCT_ACC void operator()(
+    ALPAKA_FCT_ACC auto operator()(
         TAcc const & acc,
         std::uint32_t * const pColors,
         std::uint32_t const & uiNumRows,
@@ -148,6 +153,7 @@ public:
         float const & fMinI,
         float const & fMaxI,
         std::uint32_t const & uiMaxIterations) const
+    -> void
     {
         auto const uiGridThreadIdx(acc.template getIdx<alpaka::Grid, alpaka::Threads>().template subVec<2u>());
         auto const & uiGridThreadIdxX(uiGridThreadIdx[0u]);
@@ -174,9 +180,10 @@ public:
     //!     The number of iterations until the Mandelbrot iteration with the given Value reaches the absolute value of 2.
     //!     Only does uiMaxIterations steps and returns uiMaxIterations if the value would be higher.
     //-----------------------------------------------------------------------------
-    ALPAKA_FCT_ACC static std::uint32_t iterateMandelbrot(
+    ALPAKA_FCT_ACC static auto iterateMandelbrot(
         SimpleComplex<float> const & c,
         std::uint32_t const & uiMaxIterations)
+    -> std::uint32_t
     {
         SimpleComplex<float> z(0.0f, 0.0f);
         for(std::uint32_t iterations(0); iterations<uiMaxIterations; ++iterations)
@@ -193,10 +200,11 @@ public:
     //-----------------------------------------------------------------------------
     //! 
     //-----------------------------------------------------------------------------
-    ALPAKA_FCT_ACC static std::uint32_t convertRgbSingleToBgra(
+    ALPAKA_FCT_ACC static auto convertRgbSingleToBgra(
         std::uint32_t const & r,
         std::uint32_t const & g,
         std::uint32_t const & b)
+    -> std::uint32_t
     {
         return 0xFF000000 | (r<<16) | (g<<8) | b;
     }
@@ -206,9 +214,10 @@ public:
     //! This uses a simple mapping from iteration count to colors.
     //! This leads to banding but allows a all pixels to be colored.
     //-----------------------------------------------------------------------------
-    ALPAKA_FCT_ACC static std::uint32_t iterationCountToContinousColor(
+    ALPAKA_FCT_ACC static auto iterationCountToContinousColor(
         std::uint32_t const & uiIterationCount,
         std::uint32_t const & uiMaxIterations)
+    -> std::uint32_t
     {
         // Map the iteration count on the 0..1 interval.
         float const t(static_cast<float>(uiIterationCount)/static_cast<float>(uiMaxIterations));
@@ -224,8 +233,9 @@ public:
     //! This uses a simple mapping from iteration count to colors.
     //! This leads to banding but allows a all pixels to be colored.
     //-----------------------------------------------------------------------------
-    ALPAKA_FCT_ACC std::uint32_t iterationCountToRepeatedColor(
+    ALPAKA_FCT_ACC auto iterationCountToRepeatedColor(
         std::uint32_t const & uiIterationCount) const
+    -> std::uint32_t
     {
         return m_aColors[uiIterationCount%16];
     }
@@ -241,10 +251,11 @@ template<
     typename TExec,
     typename TKernelFunctor,
     typename... TArgs>
-void profileKernelExec(
+auto profileKernelExec(
     TExec const & exec,
     TKernelFunctor && kernelFunctor,
     TArgs && ... args)
+-> void
 {
     std::cout
         << "profileKernelExec("
@@ -273,7 +284,7 @@ struct MandelbrotKernelTester
 {
     template<
         typename TAcc>
-    void operator()(
+    auto operator()(
         std::size_t const & uiNumRows,
         std::size_t const & uiNumCols,
         float const & fMinR,
@@ -281,6 +292,7 @@ struct MandelbrotKernelTester
         float const & fMinI,
         float const & fMaxI,
         std::size_t const & uiMaxIterations)
+    -> void
     {
         std::cout << std::endl;
         std::cout << "################################################################################" << std::endl;
@@ -382,7 +394,8 @@ struct MandelbrotKernelTester
 //-----------------------------------------------------------------------------
 //! Program entry point.
 //-----------------------------------------------------------------------------
-int main()
+auto main()
+-> int
 {
     try
     {

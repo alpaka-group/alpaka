@@ -139,7 +139,7 @@ namespace alpaka
             typename TBuf>
         ALPAKA_FCT_HOST auto getBuf(
             TBuf const & buf)
-            -> decltype(traits::mem::GetBuf<TBuf>::getBuf(std::declval<TBuf const &>()))
+        -> decltype(traits::mem::GetBuf<TBuf>::getBuf(std::declval<TBuf const &>()))
         {
             return traits::mem::GetBuf<
                 TBuf>
@@ -157,7 +157,7 @@ namespace alpaka
             typename TBuf>
         ALPAKA_FCT_HOST auto getBuf(
             TBuf & buf)
-            -> decltype(traits::mem::GetBuf<TBuf>::getBuf(std::declval<TBuf &>()))
+        -> decltype(traits::mem::GetBuf<TBuf>::getBuf(std::declval<TBuf &>()))
         {
             return traits::mem::GetBuf<
                 TBuf>
@@ -175,7 +175,7 @@ namespace alpaka
             typename TBuf>
         ALPAKA_FCT_HOST auto getNativePtr(
             TBuf const & buf)
-            -> ElemT<TBuf> const *
+        -> ElemT<TBuf> const *
         {
             return traits::mem::GetNativePtr<
                 TBuf>
@@ -193,7 +193,7 @@ namespace alpaka
             typename TBuf>
         ALPAKA_FCT_HOST auto getNativePtr(
             TBuf & buf)
-            -> ElemT<TBuf> *
+        -> ElemT<TBuf> *
         {
             return traits::mem::GetNativePtr<
                 TBuf>
@@ -206,8 +206,9 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TBuf>
-        ALPAKA_FCT_HOST UInt getPitchBytes(
+        ALPAKA_FCT_HOST auto getPitchBytes(
             TBuf const & buf)
+        -> UInt
         {
             return traits::mem::GetPitchBytes<
                 TBuf>
@@ -220,8 +221,9 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TBuf>
-        ALPAKA_FCT_HOST UInt getPitchElements(
+        ALPAKA_FCT_HOST auto getPitchElements(
             TBuf const & buf)
+        -> UInt
         {
             assert((getPitchBytes(buf) % sizeof(ElemT<TBuf>)) == 0u);
             return getPitchBytes(buf) / sizeof(ElemT<TBuf>);
@@ -241,7 +243,7 @@ namespace alpaka
             typename TExtents>
         ALPAKA_FCT_HOST auto alloc(
             TExtents const & extents = TExtents())
-            -> decltype(traits::mem::Alloc<TElem, dim::DimT<TExtents>, SpaceT<TSpace>>::alloc(std::declval<TExtents>()))
+        -> decltype(traits::mem::Alloc<TElem, dim::DimT<TExtents>, SpaceT<TSpace>>::alloc(std::declval<TExtents const &>()))
         {
             return traits::mem::Alloc<
                 TElem, 
@@ -261,10 +263,11 @@ namespace alpaka
         template<
             typename TBuf, 
             typename TExtents>
-        ALPAKA_FCT_HOST void set(
+        ALPAKA_FCT_HOST auto set(
             TBuf & buf, 
             std::uint8_t const & byte, 
             TExtents const & extents)
+        -> void
         {
             static_assert(
                 std::is_same<dim::DimT<TBuf>, dim::DimT<TExtents>>::value,
@@ -291,11 +294,12 @@ namespace alpaka
             typename TBuf, 
             typename TExtents,
             typename TStream>
-        ALPAKA_FCT_HOST void set(
+        ALPAKA_FCT_HOST auto set(
             TBuf & buf, 
             std::uint8_t const & byte, 
             TExtents const & extents,
             TStream const & stream)
+        -> void
         {
             static_assert(
                 std::is_same<dim::DimT<TBuf>, dim::DimT<TExtents>>::value,
@@ -323,10 +327,11 @@ namespace alpaka
             typename TBufDst, 
             typename TBufSrc, 
             typename TExtents>
-        ALPAKA_FCT_HOST void copy(
+        ALPAKA_FCT_HOST auto copy(
             TBufDst & bufDst, 
             TBufSrc const & bufSrc, 
             TExtents const & extents)
+        -> void
         {
             static_assert(
                 std::is_same<dim::DimT<TBufDst>, dim::DimT<TBufSrc>>::value,
@@ -360,11 +365,12 @@ namespace alpaka
             typename TBufSrc, 
             typename TExtents,
             typename TStream>
-        ALPAKA_FCT_HOST void copy(
+        ALPAKA_FCT_HOST auto copy(
             TBufDst & bufDst, 
             TBufSrc const & bufSrc, 
             TExtents const & extents,
             TStream const & stream)
+        -> void
         {
             static_assert(
                 std::is_same<dim::DimT<TBufDst>, dim::DimT<TBufSrc>>::value,

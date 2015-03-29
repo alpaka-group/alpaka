@@ -96,7 +96,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Assignment operator.
             //-----------------------------------------------------------------------------
-            ScopeLogStdOut & operator=(ScopeLogStdOut const &) = delete;
+            auto operator=(ScopeLogStdOut const &) -> ScopeLogStdOut & = delete;
 
         private:
             std::string const m_sScope;

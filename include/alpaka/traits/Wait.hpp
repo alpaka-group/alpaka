@@ -61,8 +61,9 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TAwaited>
-        ALPAKA_FCT_HOST void wait(
+        ALPAKA_FCT_HOST auto wait(
             TAwaited const & awaited)
+        -> void
         {
             traits::wait::CurrentThreadWaitFor<
                 TAwaited>
@@ -76,9 +77,10 @@ namespace alpaka
         template<
             typename TWaiter,
             typename TAwaited>
-        ALPAKA_FCT_HOST void wait(
+        ALPAKA_FCT_HOST auto wait(
             TWaiter const & waiter,
             TAwaited const & awaited)
+        -> void
         {
             traits::wait::WaiterWaitFor<
                 TWaiter, 

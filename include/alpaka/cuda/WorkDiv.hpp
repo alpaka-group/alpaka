@@ -54,7 +54,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY WorkDivCuda & operator=(WorkDivCuda const &) = delete;
+                ALPAKA_FCT_ACC_CUDA_ONLY auto operator=(WorkDivCuda const &) -> WorkDivCuda & = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
@@ -63,14 +63,16 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The grid block extents of the currently executed thread.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY Vec<3u> getGridBlockExtents() const
+                ALPAKA_FCT_ACC_CUDA_ONLY auto getGridBlockExtents() const
+                -> Vec<3u>
                 {
                     return Vec<3u>(gridDim.x, gridDim.y, gridDim.z);
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The block thread extents of the currently executed thread.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY Vec<3u> getBlockThreadExtents() const
+                ALPAKA_FCT_ACC_CUDA_ONLY auto getBlockThreadExtents() const
+                -> Vec<3u>
                 {
                     return Vec<3u>(blockDim.x, blockDim.y, blockDim.z);
                 }
@@ -95,8 +97,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of threads in each dimension of a block.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY static alpaka::DimToVecT<alpaka::dim::Dim3> getWorkDiv(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto getWorkDiv(
                     cuda::detail::WorkDivCuda const & workDiv)
+                -> alpaka::DimToVecT<alpaka::dim::Dim3>
                 {
                     return workDiv.getBlockThreadExtents();
                 }
@@ -115,8 +118,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of blocks in each dimension of the grid.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY static alpaka::DimToVecT<alpaka::dim::Dim3> getWorkDiv(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto getWorkDiv(
                     cuda::detail::WorkDivCuda const & workDiv)
+                -> alpaka::DimToVecT<alpaka::dim::Dim3>
                 {
                     return workDiv.getGridBlockExtents();
                 }

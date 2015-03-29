@@ -47,12 +47,13 @@ public:
     template<
         typename TAcc,
         typename TElem>
-    ALPAKA_FCT_ACC void operator()(
+    ALPAKA_FCT_ACC auto operator()(
         TAcc const & acc, 
         TElem const * const A, 
         TElem const * const B, 
         TElem * const C, 
         std::size_t const & uiNumElements) const
+    -> void
     {
         auto const uiGridThreadIdxX(acc.template getIdx<alpaka::Grid, alpaka::Threads>()[0u]);
 
@@ -70,10 +71,11 @@ template<
     typename TExec,
     typename TKernelFunctor,
     typename... TArgs>
-void profileKernelExec(
+auto profileKernelExec(
     TExec const & exec,
     TKernelFunctor && kernelFunctor,
     TArgs && ... args)
+-> void
 {
     std::cout
         << "profileKernelExec("
@@ -102,8 +104,9 @@ struct VectorAddKernelTester
 {
     template<
         typename TAcc>
-    void operator()(
+    auto operator()(
         std::size_t const & uiNumElements)
+    -> void
     {
         std::cout << std::endl;
         std::cout << "################################################################################" << std::endl;
@@ -201,7 +204,8 @@ public:
 //-----------------------------------------------------------------------------
 //! Program entry point.
 //-----------------------------------------------------------------------------
-int main()
+auto main()
+-> int
 {
     try
     {

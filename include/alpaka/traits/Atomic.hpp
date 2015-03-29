@@ -61,10 +61,11 @@ namespace alpaka
             typename TOp,
             typename T,
             typename TAtomic>
-        ALPAKA_FCT_ACC T atomicOp(
+        ALPAKA_FCT_ACC auto atomicOp(
             unsigned int * const addr,
             unsigned int const & value,
             TAtomic const & atomic)
+        -> T
         {
             return traits::atomic::AtomicOp<
                 TAtomic, 

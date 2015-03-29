@@ -114,8 +114,9 @@ namespace alpaka
             typename TExtents,
             UInt TuiDim2 = TuiDim,
             typename = typename std::enable_if<TuiDim2 == 1>::type>
-        static Vec<1u, TVal> fromExtents(
+        ALPAKA_FCT_HOST_ACC static auto fromExtents(
             TExtents const & extents)
+        -> Vec<1u, TVal>
         {
             return Vec<1u, TVal>(
                 extent::getWidth(extents));
@@ -127,8 +128,9 @@ namespace alpaka
             typename TExtents,
             UInt TuiDim2 = TuiDim,
             typename = typename std::enable_if<TuiDim2 == 2>::type>
-        static Vec<2u, TVal> fromExtents(
+        ALPAKA_FCT_HOST_ACC static auto fromExtents(
             TExtents const & extents)
+        -> Vec<2u, TVal>
         {
             return Vec<2u, TVal>(
                 extent::getWidth(extents), 
@@ -141,8 +143,9 @@ namespace alpaka
             typename TExtents,
             UInt TuiDim2 = TuiDim,
             typename = typename std::enable_if<TuiDim2 == 3>::type>
-        static Vec<3u, TVal> fromExtents(
+        ALPAKA_FCT_HOST_ACC static auto fromExtents(
             TExtents const & extents)
+        -> Vec<3u, TVal>
         {
             return Vec<3u, TVal>(
                 extent::getWidth(extents), 
@@ -156,8 +159,9 @@ namespace alpaka
             typename TOffsets,
             UInt TuiDim2 = TuiDim,
             typename = typename std::enable_if<TuiDim2 == 1>::type>
-        static Vec<1u, TVal> fromOffsets(
+        ALPAKA_FCT_HOST_ACC static auto fromOffsets(
             TOffsets const & offsets)
+        -> Vec<1u, TVal>
         {
             return Vec<1u, TVal>(
                 offset::getOffsetX(offsets));
@@ -169,8 +173,9 @@ namespace alpaka
             typename TOffsets,
             UInt TuiDim2 = TuiDim,
             typename = typename std::enable_if<TuiDim2 == 2>::type>
-        static Vec<2u, TVal> fromOffsets(
+        ALPAKA_FCT_HOST_ACC static auto fromOffsets(
             TOffsets const & offsets)
+        -> Vec<2u, TVal>
         {
             return Vec<2u, TVal>(
                 offset::getOffsetX(offsets), 
@@ -183,8 +188,9 @@ namespace alpaka
             typename TOffsets,
             UInt TuiDim2 = TuiDim,
             typename = typename std::enable_if<TuiDim2 == 3>::type>
-        static Vec<3u, TVal> fromOffsets(
+        ALPAKA_FCT_HOST_ACC static auto fromOffsets(
             TOffsets const & offsets)
+        -> Vec<3u, TVal>
         {
             return Vec<3u, TVal>(
                 offset::getOffsetX(offsets), 
@@ -204,7 +210,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Copy assignment.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC Vec & operator=(Vec const &) = default;
+        ALPAKA_FCT_HOST_ACC auto operator=(Vec const &) -> Vec & = default;
         //-----------------------------------------------------------------------------
         //! Destructor.
         //-----------------------------------------------------------------------------
@@ -213,7 +219,8 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Destructor.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC int getDim() const
+        ALPAKA_FCT_HOST_ACC auto getDim() const
+        -> UInt
         {
             return TuiDim;
         }
@@ -223,7 +230,8 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             UInt TuiSubDim>
-        ALPAKA_FCT_HOST_ACC Vec<TuiSubDim, TVal> subVec() const
+        ALPAKA_FCT_HOST_ACC auto subVec() const
+        -> Vec<TuiSubDim, TVal>
         {
             static_assert(TuiSubDim <= TuiDim, "The sub-vector has to be smaller (or same size) then the origin vector.");
             
@@ -239,12 +247,13 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             size_t... TIndices>
-        ALPAKA_FCT_HOST_ACC Vec<sizeof...(TIndices), TVal> subVecFromIndices(
+        ALPAKA_FCT_HOST_ACC auto subVecFromIndices(
 #if !BOOST_COMP_MSVC     // MSVC 190022512 introduced a new bug with alias templates: error C3520: 'TIndices': parameter pack must be expanded in this context
             detail::index_sequence<TIndices...> const &) const
 #else
             detail::integer_sequence<std::size_t, TIndices...> const &) const
 #endif
+        -> Vec<sizeof...(TIndices), TVal>
         {
             static_assert(sizeof...(TIndices) <= TuiDim, "The sub-vector has to be smaller (or same size) then the origin vector.");
 
@@ -254,8 +263,9 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return A reference to the value at the given index.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC TVal & operator[](
+        ALPAKA_FCT_HOST_ACC auto operator[](
             UInt const uiIdx)
+        -> TVal &
         {
             assert(uiIdx<TuiDim);
             return m_auiData[uiIdx];
@@ -263,8 +273,9 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The value at the given index.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC TVal operator[](
+        ALPAKA_FCT_HOST_ACC auto operator[](
             UInt const uiIdx) const
+        -> TVal
         {
             assert(uiIdx<TuiDim);
             return m_auiData[uiIdx];
@@ -273,8 +284,9 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         // Equality comparison operator.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC bool operator==(
+        ALPAKA_FCT_HOST_ACC auto operator==(
             Vec const & rhs) const
+        -> bool
         {
             for(UInt i(0); i < TuiDim; i++)
             {
@@ -288,8 +300,9 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         // Inequality comparison operator.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC bool operator!=(
+        ALPAKA_FCT_HOST_ACC auto operator!=(
             Vec const & rhs) const
+        -> bool
         {
             return !((*this) == rhs);
         }
@@ -297,7 +310,8 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The product of all values.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC TVal prod() const
+        ALPAKA_FCT_HOST_ACC auto prod() const
+        -> TVal
         {
             TVal uiProd(m_auiData[0]);
             for(UInt i(1); i<TuiDim; ++i)
@@ -310,9 +324,10 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Calculates the dot product of two vectors.
         //-----------------------------------------------------------------------------
-        /*ALPAKA_FCT_HOST_ACC static TVal dotProduct(
+        /*ALPAKA_FCT_HOST_ACC static auto dotProduct(
             Vec const & p,
             Vec const & q)
+        -> TVal
         {
             TVal uiProd(0);
             for(size_t i(0); i<TuiDim; ++i)
@@ -332,9 +347,10 @@ namespace alpaka
     template<
         UInt TuiDim, 
         typename TVal>
-    ALPAKA_FCT_HOST_ACC Vec<TuiDim, TVal> operator+(
+    ALPAKA_FCT_HOST_ACC auto operator+(
         Vec<TuiDim, TVal> const & p, 
         Vec<TuiDim, TVal> const & q)
+    -> Vec<TuiDim, TVal>
     {
         Vec<TuiDim, TVal> vRet(0u);
         for(UInt i(0); i<TuiDim; ++i)
@@ -350,9 +366,10 @@ namespace alpaka
     template<
         UInt TuiDim, 
         typename TVal>
-    ALPAKA_FCT_HOST_ACC Vec<TuiDim, TVal> operator*(
+    ALPAKA_FCT_HOST_ACC auto operator*(
         Vec<TuiDim, TVal> const & p, 
         Vec<TuiDim, TVal> const & q)
+    -> Vec<TuiDim, TVal>
     {
         Vec<TuiDim, TVal> vRet(0u);
         for(UInt i(0); i<TuiDim; ++i)
@@ -368,9 +385,10 @@ namespace alpaka
     template<
         UInt TuiDim, 
         typename TVal>
-    ALPAKA_FCT_HOST std::ostream & operator<<(
+    ALPAKA_FCT_HOST auto operator<<(
         std::ostream & os, 
         Vec<TuiDim, TVal> const & v)
+    -> std::ostream &
     {
         os << "(";
         for(UInt i(0); i<TuiDim; ++i)
@@ -435,8 +453,9 @@ namespace alpaka
                 alpaka::Vec<TuiDim, TVal>,
                 typename std::enable_if<(TuiDim >= 1u) && (TuiDim <= 3u)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static TVal getWidth(
+                ALPAKA_FCT_HOST_ACC static auto getWidth(
                     alpaka::Vec<TuiDim, TVal> const & extent)
+                -> TVal
                 {
                     return extent[0u];
                 }
@@ -451,9 +470,10 @@ namespace alpaka
                 alpaka::Vec<TuiDim, TVal>,
                 typename std::enable_if<(TuiDim >= 1u) && (TuiDim <= 3u)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static void setWidth(
+                ALPAKA_FCT_HOST_ACC static auto setWidth(
                     alpaka::Vec<TuiDim, TVal> & extent,
                     TVal const & width)
+                -> void
                 {
                     extent[0u] = width;
                 }
@@ -469,8 +489,9 @@ namespace alpaka
                 alpaka::Vec<TuiDim, TVal>,
                 typename std::enable_if<(TuiDim >= 2u) && (TuiDim <= 3u)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static TVal getHeight(
+                ALPAKA_FCT_HOST_ACC static auto getHeight(
                     alpaka::Vec<TuiDim, TVal> const & extent)
+                -> TVal
                 {
                     return extent[1u];
                 }
@@ -485,9 +506,10 @@ namespace alpaka
                 alpaka::Vec<TuiDim, TVal>,
                 typename std::enable_if<(TuiDim >= 2u) && (TuiDim <= 3u)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static void setHeight(
+                ALPAKA_FCT_HOST_ACC static auto setHeight(
                     alpaka::Vec<TuiDim, TVal> & extent,
                     TVal const & height)
+                -> void
                 {
                     extent[1u] = height;
                 }
@@ -503,8 +525,9 @@ namespace alpaka
                 alpaka::Vec<TuiDim, TVal>,
                 typename std::enable_if<(TuiDim >= 3u) && (TuiDim <= 3u)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static TVal getDepth(
+                ALPAKA_FCT_HOST_ACC static auto getDepth(
                     alpaka::Vec<TuiDim, TVal> const & extent)
+                -> TVal
                 {
                     return extent[2u];
                 }
@@ -519,9 +542,10 @@ namespace alpaka
                 alpaka::Vec<TuiDim, TVal>,
                 typename std::enable_if<(TuiDim >= 3u) && (TuiDim <= 3u)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static void setDepth(
+                ALPAKA_FCT_HOST_ACC static auto setDepth(
                     alpaka::Vec<TuiDim, TVal> & extent,
                     TVal const & depth)
+                -> void
                 {
                     extent[2u] = depth;
                 }
@@ -540,8 +564,9 @@ namespace alpaka
                 alpaka::Vec<TuiDim, TVal>,
                 typename std::enable_if<(TuiDim >= 1u) && (TuiDim <= 3u)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static TVal getOffsetX(
+                ALPAKA_FCT_HOST_ACC static auto getOffsetX(
                     alpaka::Vec<TuiDim, TVal> const & extent)
+                -> TVal
                 {
                     return extent[0u];
                 }
@@ -556,9 +581,10 @@ namespace alpaka
                 alpaka::Vec<TuiDim, TVal>,
                 typename std::enable_if<(TuiDim >= 1u) && (TuiDim <= 3u)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static void setOffsetX(
+                ALPAKA_FCT_HOST_ACC static auto setOffsetX(
                     alpaka::Vec<TuiDim, TVal> & extent,
                     TVal const & width)
+                -> void
                 {
                     extent[0u] = width;
                 }
@@ -574,8 +600,9 @@ namespace alpaka
                 alpaka::Vec<TuiDim, TVal>,
                 typename std::enable_if<(TuiDim >= 2u) && (TuiDim <= 3u)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static TVal getOffsetY(
+                ALPAKA_FCT_HOST_ACC static auto getOffsetY(
                     alpaka::Vec<TuiDim, TVal> const & extent)
+                -> TVal
                 {
                     return extent[1u];
                 }
@@ -590,9 +617,10 @@ namespace alpaka
                 alpaka::Vec<TuiDim, TVal>,
                 typename std::enable_if<(TuiDim >= 2u) && (TuiDim <= 3u)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static void setOffsetY(
+                ALPAKA_FCT_HOST_ACC static auto setOffsetY(
                     alpaka::Vec<TuiDim, TVal> & extent,
                     TVal const & height)
+                -> void
                 {
                     extent[1u] = height;
                 }
@@ -608,8 +636,9 @@ namespace alpaka
                 alpaka::Vec<TuiDim, TVal>,
                 typename std::enable_if<(TuiDim >= 3u) && (TuiDim <= 3u)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static TVal getOffsetZ(
+                ALPAKA_FCT_HOST_ACC static auto getOffsetZ(
                     alpaka::Vec<TuiDim, TVal> const & extent)
+                -> TVal
                 {
                     return extent[2u];
                 }
@@ -624,9 +653,10 @@ namespace alpaka
                 alpaka::Vec<TuiDim, TVal>,
                 typename std::enable_if<(TuiDim >= 3u) && (TuiDim <= 3u)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static void setOffsetZ(
+                ALPAKA_FCT_HOST_ACC static auto setOffsetZ(
                     alpaka::Vec<TuiDim, TVal> & extent,
                     TVal const & depth)
+                -> void
                 {
                     extent[2u] = depth;
                 }

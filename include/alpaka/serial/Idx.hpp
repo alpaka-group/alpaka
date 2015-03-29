@@ -55,7 +55,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA IdxSerial & operator=(IdxSerial const &) = delete;
+                ALPAKA_FCT_ACC_NO_CUDA auto operator=(IdxSerial const &) -> IdxSerial & = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
@@ -64,14 +64,16 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The index of the currently executed thread.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA Vec<3u> getIdxBlockThread() const
+                ALPAKA_FCT_ACC_NO_CUDA auto getIdxBlockThread() const
+                -> Vec<3u>
                 {
                     return Vec<3u>(0u, 0u, 0u);
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The block index of the currently executed thread.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA Vec<3u> getIdxGridBlock() const
+                ALPAKA_FCT_ACC_NO_CUDA auto getIdxGridBlock() const
+                -> Vec<3u>
                 {
                     return m_v3uiGridBlockIdx;
                 }
@@ -101,9 +103,10 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
-                ALPAKA_FCT_ACC_NO_CUDA static alpaka::DimToVecT<alpaka::dim::Dim3> getIdx(
+                ALPAKA_FCT_ACC_NO_CUDA static auto getIdx(
                     serial::detail::IdxSerial const & index,
                     TWorkDiv const &)
+                -> alpaka::DimToVecT<alpaka::dim::Dim3>
                 {
                     return index.getIdxBlockThread();
                 }
@@ -124,9 +127,10 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
-                ALPAKA_FCT_ACC_NO_CUDA static alpaka::DimToVecT<alpaka::dim::Dim3> getIdx(
+                ALPAKA_FCT_ACC_NO_CUDA static auto getIdx(
                     serial::detail::IdxSerial const & index,
                     TWorkDiv const &)
+                -> alpaka::DimToVecT<alpaka::dim::Dim3>
                 {
                     return index.getIdxGridBlock();
                 }

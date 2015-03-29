@@ -62,7 +62,8 @@ namespace alpaka
             struct GetAccName<
                 fibers::detail::AccFibers>
             {
-                static std::string getAccName()
+                static auto getAccName()
+                -> std::string
                 {
                     return "AccFibers";
                 }

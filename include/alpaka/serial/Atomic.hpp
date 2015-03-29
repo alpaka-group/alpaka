@@ -52,7 +52,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA AtomicSerial & operator=(AtomicSerial const &) = delete;
+                ALPAKA_FCT_ACC_NO_CUDA auto operator=(AtomicSerial const &) -> AtomicSerial & = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
@@ -77,10 +77,11 @@ namespace alpaka
                 TOp,
                 T>
             {
-                ALPAKA_FCT_ACC_NO_CUDA static T atomicOp(
+                ALPAKA_FCT_ACC_NO_CUDA static auto atomicOp(
                     serial::detail::AtomicSerial const &,
                     T * const addr,
                     T const & value)
+                -> T
                 {
                     return TOp()(addr, value);
                 }

@@ -77,8 +77,9 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TStream>
-        ALPAKA_FCT_HOST bool test(
+        ALPAKA_FCT_HOST auto test(
             TStream const & stream)
+        -> bool
         {
             return traits::stream::StreamTest<
                 TStream>

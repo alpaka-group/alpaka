@@ -55,7 +55,8 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //!
             //-----------------------------------------------------------------------------
-            void cpuid(std::uint32_t const level, std::uint32_t const subfunction, std::uint32_t ex[4])
+            auto cpuid(std::uint32_t const level, std::uint32_t const subfunction, std::uint32_t ex[4])
+            -> void
             {
                 __cpuid_count(level, subfunction, ex[0], ex[1], ex[2], ex[3]);
             }
@@ -65,7 +66,8 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! 
             //-----------------------------------------------------------------------------
-            void cpuid(std::uint32_t const level, std::uint32_t const subfunction, std::uint32_t ex[4])
+            auto cpuid(std::uint32_t const level, std::uint32_t const subfunction, std::uint32_t ex[4])
+            -> void
             {
                 __cpuidex(reinterpret_cast<int*>(ex), level, subfunction);
             }
@@ -75,7 +77,8 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The name of the CPU the host code is running on.
         //-----------------------------------------------------------------------------
-        inline std::string getCpuName()
+        inline auto getCpuName()
+        -> std::string
         {
 #if BOOST_ARCH_X86
             // Get extended ids.
@@ -112,7 +115,8 @@ namespace alpaka
         //! \return The frequency of the CPU the host code is running on.
         //-----------------------------------------------------------------------------
         // TODO: implement!
-        /*inline std::size_t getCpuFrequency()
+        /*inline auto getCpuFrequency()
+        -> std::size_t
         {
             return 0;
         }*/
@@ -120,7 +124,8 @@ namespace alpaka
         //! \return The number of bytes of global memory.
         //! Adapted from David Robert Nadeau: http://nadeausoftware.com/articles/2012/09/c_c_tip_how_get_physical_memory_size_system
         //-----------------------------------------------------------------------------
-        inline std::size_t getGlobalMemSizeBytes()
+        inline auto getGlobalMemSizeBytes()
+        -> std::size_t
         {
 #if BOOST_OS_WINDOWS
             MEMORYSTATUSEX status;

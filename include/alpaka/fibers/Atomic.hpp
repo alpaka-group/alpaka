@@ -52,7 +52,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA AtomicFibers & operator=(AtomicFibers const &) = delete;
+                ALPAKA_FCT_ACC_NO_CUDA auto operator=(AtomicFibers const &) -> AtomicFibers & = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
@@ -76,10 +76,11 @@ namespace alpaka
                 TOp,
                 T>
             {
-                ALPAKA_FCT_ACC_NO_CUDA static T atomicOp(
+                ALPAKA_FCT_ACC_NO_CUDA static auto atomicOp(
                     fibers::detail::AtomicFibers const &,
                     T * const addr,
                     T const & value)
+                -> T
                 {
                     return TOp()(addr, value);
                 }

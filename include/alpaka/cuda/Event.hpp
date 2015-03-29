@@ -71,18 +71,20 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST EventCuda & operator=(EventCuda const &) = default;
+                ALPAKA_FCT_HOST auto operator=(EventCuda const &) -> EventCuda & = default;
                 //-----------------------------------------------------------------------------
                 //! Equality comparison operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST bool operator==(EventCuda const & rhs) const
+                ALPAKA_FCT_HOST auto operator==(EventCuda const & rhs) const
+                -> bool
                 {
                     return (*m_spCudaEvent.get()) == (*rhs.m_spCudaEvent.get());
                 }
                 //-----------------------------------------------------------------------------
                 //! Equality comparison operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST bool operator!=(EventCuda const & rhs) const
+                ALPAKA_FCT_HOST auto operator!=(EventCuda const & rhs) const
+                -> bool
                 {
                     return !((*this) == rhs);
                 }
@@ -95,8 +97,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Destroys the shared event.
                 //-----------------------------------------------------------------------------
-                static void destroyEvent(
+                static auto destroyEvent(
                     cudaEvent_t * event)
+                -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -146,8 +149,9 @@ namespace alpaka
             struct DefaultStreamEnqueueEvent<
                 cuda::detail::EventCuda>
             {
-                ALPAKA_FCT_HOST static void defaultStreamEnqueueEvent(
+                ALPAKA_FCT_HOST static auto defaultStreamEnqueueEvent(
                     cuda::detail::EventCuda const & event)
+                -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -164,8 +168,9 @@ namespace alpaka
             struct EventTest<
                 cuda::detail::EventCuda>
             {
-                ALPAKA_FCT_HOST static bool eventTest(
+                ALPAKA_FCT_HOST static auto eventTest(
                     cuda::detail::EventCuda const & event)
+                -> bool
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -197,8 +202,9 @@ namespace alpaka
             struct CurrentThreadWaitFor<
                 cuda::detail::EventCuda>
             {
-                ALPAKA_FCT_HOST static void currentThreadWaitFor(
+                ALPAKA_FCT_HOST static auto currentThreadWaitFor(
                     cuda::detail::EventCuda const & event)
+                -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 

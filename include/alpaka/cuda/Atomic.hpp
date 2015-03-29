@@ -58,7 +58,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY AtomicCuda & operator=(AtomicCuda const &) = delete;
+                ALPAKA_FCT_ACC_CUDA_ONLY auto operator=(AtomicCuda const &) -> AtomicCuda & = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
@@ -87,10 +87,11 @@ namespace alpaka
                 ops::Add,
                 int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static int atomicOp(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
                     cuda::detail::AtomicCuda const &,
                     int * const addr,
                     int const & value)
+                -> int
                 {
                     return atomicAdd(addr, value);
                 }
@@ -104,10 +105,11 @@ namespace alpaka
                 ops::Add,
                 unsigned int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static unsigned int atomicOp(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
                     cuda::detail::AtomicCuda const &,
                     unsigned int * const addr,
                     unsigned int const & value)
+                -> unsigned int
                 {
                     return atomicAdd(addr, value);
                 }
@@ -121,10 +123,11 @@ namespace alpaka
                 ops::Add,
                 unsigned long long int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static unsigned long long int atomicOp(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
                     cuda::detail::AtomicCuda const &,
                     unsigned long long int * const addr,
                     unsigned long long int const & value)
+                -> unsigned long long int
                 {
                     return atomicAdd(addr, value);
                 }
@@ -138,10 +141,11 @@ namespace alpaka
                 ops::Add,
                 float>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static float atomicOp(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
                     cuda::detail::AtomicCuda const &,
                     float * const addr,
                     float const & value)
+                -> float
                 {
                     return atomicAdd(addr, value);
                 }
@@ -155,10 +159,11 @@ namespace alpaka
                 ops::Add,
                 double>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static double atomicOp(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
                     cuda::detail::AtomicCuda const &,
                     double * const addr,
                     double const & value)
+                -> double
                 {
                     // Code from: http://docs.nvidia.com/cuda/cuda-c-programming-guide/#atomic-functions
 
@@ -187,10 +192,11 @@ namespace alpaka
                 ops::Sub,
                 int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static int atomicOp(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
                     cuda::detail::AtomicCuda const &,
                     int * const addr,
                     int const & value)
+                -> int
                 {
                     return atomicSub(addr, value);
                 }
@@ -204,10 +210,11 @@ namespace alpaka
                 ops::Sub,
                 unsigned int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static unsigned int atomicOp(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
                     cuda::detail::AtomicCuda const &,
                     unsigned int * const addr,
                     unsigned int const & value)
+                -> unsigned int
                 {
                     return atomicSub(addr, value);
                 }
@@ -224,10 +231,11 @@ namespace alpaka
                 ops::Min,
                 int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static int atomicOp(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
                     cuda::detail::AtomicCuda const &,
                     int * const addr,
                     int const & value)
+                -> int
                 {
                     return atomicMin(addr, value);
                 }
@@ -241,10 +249,11 @@ namespace alpaka
                 ops::Min,
                 unsigned int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static unsigned int atomicOp(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
                     cuda::detail::AtomicCuda const &,
                     unsigned int * const addr,
                     unsigned int const & value)
+                -> unsigned int
                 {
                     return atomicMin(addr, value);
                 }
@@ -258,10 +267,11 @@ namespace alpaka
                 ops::Min,
                 unsigned long long int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static unsigned long long int atomicOp(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
                     cuda::detail::AtomicCuda const &, 
                     unsigned long long int * const addr, 
                     unsigned long long int const & value)
+                -> unsigned long long int
                 {
                     return atomicMin(addr, value);
                 }
@@ -278,10 +288,11 @@ namespace alpaka
                 ops::Max,
                 int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static int atomicOp(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
                     cuda::detail::AtomicCuda const &,
                     int * const addr,
                     int const & value)
+                -> int
                 {
                     return atomicMax(addr, value);
                 }
@@ -295,10 +306,11 @@ namespace alpaka
                 ops::Max,
                 unsigned int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static unsigned int atomicOp(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
                     cuda::detail::AtomicCuda const &,
                     unsigned int * const addr,
                     unsigned int const & value)
+                -> unsigned int
                 {
                     return atomicMax(addr, value);
                 }
@@ -312,10 +324,11 @@ namespace alpaka
                 ops::Max,
                 unsigned long long int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static unsigned long long int atomicOp(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
                     cuda::detail::AtomicCuda const &, 
                     unsigned long long int * const addr, 
                     unsigned long long int const & value)
+                -> unsigned long long int
                 {
                     return atomicMax(addr, value);
                 }
@@ -332,10 +345,11 @@ namespace alpaka
                 ops::Exch,
                 int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static int atomicOp(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
                     cuda::detail::AtomicCuda const &,
                     int * const addr,
                     int const & value)
+                -> int
                 {
                     return atomicExch(addr, value);
                 }
@@ -349,10 +363,11 @@ namespace alpaka
                 ops::Exch,
                 unsigned int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static unsigned int atomicOp(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
                     cuda::detail::AtomicCuda const &,
                     unsigned int * const addr,
                     unsigned int const & value)
+                -> unsigned int
                 {
                     return atomicExch(addr, value);
                 }
@@ -366,10 +381,11 @@ namespace alpaka
                 ops::Exch,
                 unsigned long long int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static unsigned long long int atomicOp(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
                     cuda::detail::AtomicCuda const &,
                     unsigned long long int * const addr,
                     unsigned long long int const & value)
+                -> unsigned long long int
                 {
                     return atomicExch(addr, value);
                 }
@@ -383,10 +399,11 @@ namespace alpaka
                 ops::Exch,
                 float>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static float atomicOp(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
                     cuda::detail::AtomicCuda const &,
                     float * const addr,
                     float const & value)
+                -> float
                 {
                     return atomicExch(addr, value);
                 }
@@ -403,10 +420,11 @@ namespace alpaka
                 ops::Inc,
                 unsigned int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static unsigned int atomicOp(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
                     cuda::detail::AtomicCuda const &,
                     unsigned int * const addr,
                     unsigned int const & value)
+                -> unsigned int
                 {
                     return atomicInc(addr, value);
                 }
@@ -423,10 +441,11 @@ namespace alpaka
                 ops::Dec,
                 unsigned int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static unsigned int atomicOp(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
                     cuda::detail::AtomicCuda const &,
                     unsigned int * const addr,
                     unsigned int const & value)
+                -> unsigned int
                 {
                     return atomicDec(addr, value);
                 }
@@ -443,10 +462,11 @@ namespace alpaka
                 ops::And,
                 int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static int atomicOp(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
                     cuda::detail::AtomicCuda const &,
                     int * const addr,
                     int const & value)
+                -> int
                 {
                     return atomicAnd(addr, value);
                 }
@@ -460,10 +480,11 @@ namespace alpaka
                 ops::And,
                 unsigned int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static unsigned int atomicOp(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
                     cuda::detail::AtomicCuda const &,
                     unsigned int * const addr,
                     unsigned int const & value)
+                -> unsigned int
                 {
                     return atomicAnd(addr, value);
                 }
@@ -477,10 +498,11 @@ namespace alpaka
                 ops::And,
                 unsigned long long int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static unsigned long long int atomicOp(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
                     cuda::detail::AtomicCuda const &, 
                     unsigned long long int * const addr, 
                     unsigned long long int const & value)
+                -> unsigned long long int
                 {
                     return atomicAnd(addr, value);
                 }
@@ -497,10 +519,11 @@ namespace alpaka
             ops::Or,
             int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static int atomicOp(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
                     cuda::detail::AtomicCuda const &,
                     int * const addr,
                     int const & value)
+                -> int
                 {
                     return atomicOr(addr, value);
                 }
@@ -514,10 +537,11 @@ namespace alpaka
                 ops::Or,
                 unsigned int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static unsigned int atomicOp(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
                     cuda::detail::AtomicCuda const &,
                     unsigned int * const addr,
                     unsigned int const & value)
+                -> unsigned int
                 {
                     return atomicOr(addr, value);
                 }
@@ -531,10 +555,11 @@ namespace alpaka
                 ops::Or,
                 unsigned long long int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static unsigned long long int atomicOp(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
                     cuda::detail::AtomicCuda const &, 
                     unsigned long long int * const addr, 
                     unsigned long long int const & value)
+                -> unsigned long long int
                 {
                     return atomicOr(addr, value);
                 }
@@ -551,10 +576,11 @@ namespace alpaka
                 ops::Xor,
                 int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static int atomicOp(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
                     cuda::detail::AtomicCuda const &,
                     int * const addr,
                     int const & value)
+                -> int
                 {
                     return atomicXor(addr, value);
                 }
@@ -568,10 +594,11 @@ namespace alpaka
                 ops::Xor,
                 unsigned int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static unsigned int atomicOp(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
                     cuda::detail::AtomicCuda const &,
                     unsigned int * const addr,
                     unsigned int const & value)
+                -> unsigned int
                 {
                     return atomicXor(addr, value);
                 }
@@ -585,10 +612,11 @@ namespace alpaka
                 ops::Xor,
                 unsigned long long int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static unsigned long long int atomicOp(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
                     cuda::detail::AtomicCuda const &, 
                     unsigned long long int * const addr, 
                     unsigned long long int const & value)
+                -> unsigned long long int
                 {
                     return atomicXor(addr, value);
                 }
@@ -605,11 +633,12 @@ namespace alpaka
                 ops::Cas,
                 int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static int atomicOp(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
                     cuda::detail::AtomicCuda const &,
                     int * const addr,
                     int const & compare,
                     int const & value)
+                -> int
                 {
                     return atomicCAS(addr, compare, value);
                 }
@@ -623,11 +652,12 @@ namespace alpaka
                 ops::Cas,
                 unsigned int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static unsigned int atomicOp(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
                     cuda::detail::AtomicCuda const &,
                     unsigned int * const addr,
                     unsigned int const & compare,
                     unsigned int const & value)
+                -> unsigned int
                 {
                     return atomicCAS(addr, compare, value);
                 }
@@ -641,11 +671,12 @@ namespace alpaka
                 ops::Cas,
                 unsigned long long int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static unsigned long long int atomicOp(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
                     cuda::detail::AtomicCuda const &,
                     unsigned long long int * const addr,
                     unsigned long long int const & compare,
                     unsigned long long int const & value)
+                -> unsigned long long int
                 {
                     return atomicCAS(addr, compare, value);
                 }

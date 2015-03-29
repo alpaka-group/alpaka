@@ -52,9 +52,10 @@ namespace alpaka
                 typename TLastIt, 
                 typename TFunctor, 
                 typename... TArgs>
-            static void forEachTypeImpl(
+            ALPAKA_FCT_HOST_ACC static auto forEachTypeImpl(
                 TFunctor &&,
                 TArgs && ...)
+            -> void
             {}
         };
         
@@ -73,9 +74,10 @@ namespace alpaka
                 typename TLastIt, 
                 typename TFunctor, 
                 typename... TArgs>
-            static void forEachTypeImpl(
+            ALPAKA_FCT_HOST_ACC static auto forEachTypeImpl(
                 TFunctor && f,
                 TArgs && ... args)
+            -> void
             {
                 using Elem = typename boost::mpl::deref<TElemIt>::type;
 
@@ -106,9 +108,10 @@ namespace alpaka
         typename TSequence, 
         typename TFunctor, 
         typename... TArgs>
-    void ForEachType(
+    ALPAKA_FCT_HOST_ACC auto ForEachType(
         TFunctor && f,
         TArgs && ... args)
+    -> void
     {
         static_assert(
             boost::mpl::is_sequence<TSequence>::value, 

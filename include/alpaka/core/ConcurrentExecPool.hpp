@@ -61,7 +61,8 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Runs this task.
             //-----------------------------------------------------------------------------
-            void runTask() noexcept
+            auto runTask() noexcept
+            -> void
             {
                 try
                 {
@@ -78,13 +79,14 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The execution function.
             //-----------------------------------------------------------------------------
-            virtual void run() = 0;
+            virtual auto run() -> void = 0;
+
         public:
             //-----------------------------------------------------------------------------
             //! Sets an exception.
             //-----------------------------------------------------------------------------
-            virtual void setException(
-                ExceptionPtr exceptPtr) = 0;
+            virtual auto setException(
+                ExceptionPtr exceptPtr) -> void = 0;
         };
 
         //#############################################################################
@@ -117,7 +119,8 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The execution function.
             //-----------------------------------------------------------------------------
-            virtual void run() final
+            virtual auto run()
+            -> void final
             {
                 m_Promise.set_value(m_Func());
             }
@@ -125,8 +128,9 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Sets an exception.
             //-----------------------------------------------------------------------------
-            virtual void setException(
-                typename ITaskPkg<TCurrentException>::ExceptionPtr exceptPtr) final
+            virtual auto setException(
+                typename ITaskPkg<TCurrentException>::ExceptionPtr exceptPtr)
+            -> void final
             {
                 m_Promise.set_exception(exceptPtr);
             }
@@ -168,7 +172,8 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The execution function.
             //-----------------------------------------------------------------------------
-            virtual void run() final
+            virtual auto run()
+            -> void final
             {
                 m_Func();
                 m_Promise.set_value();
@@ -177,7 +182,9 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Sets an exception.
             //-----------------------------------------------------------------------------
-            virtual void setException(typename ITaskPkg<TCurrentException>::ExceptionPtr exceptPtr) final
+            virtual auto setException(
+                typename ITaskPkg<TCurrentException>::ExceptionPtr exceptPtr)
+            -> void final
             {
                 m_Promise.set_exception(exceptPtr);
             }
@@ -247,11 +254,11 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Copy assignment.
             //-----------------------------------------------------------------------------
-            ConcurrentExecPool & operator=(ConcurrentExecPool const &) = delete;
+            auto operator=(ConcurrentExecPool const &) -> ConcurrentExecPool & = delete;
             //-----------------------------------------------------------------------------
             //! Move assignment.
             //-----------------------------------------------------------------------------
-            ConcurrentExecPool & operator=(ConcurrentExecPool &&) = delete;
+            auto operator=(ConcurrentExecPool &&) -> ConcurrentExecPool & = delete;
 
             //-----------------------------------------------------------------------------
             //! Destructor
@@ -329,7 +336,8 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! \return The number of concurrent executors available.
             //-----------------------------------------------------------------------------
-            UInt getConcurrentExecutionCount() const
+            auto getConcurrentExecutionCount() const
+            -> UInt
             {
                 return m_vConcurrentExecs.size();
             }
@@ -370,8 +378,9 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Pops a task from the queue.
             //-----------------------------------------------------------------------------
-            bool popTask(
+            auto popTask(
                 std::unique_ptr<ITaskPkg<TCurrentException>> & out)
+            -> bool
             {
                 ITaskPkg<TCurrentException> * tempPtr(nullptr);
 
@@ -457,11 +466,11 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Copy assignment.
             //-----------------------------------------------------------------------------
-            ConcurrentExecPool & operator=(ConcurrentExecPool const &) = delete;
+            auto operator=(ConcurrentExecPool const &) -> ConcurrentExecPool & = delete;
             //-----------------------------------------------------------------------------
             //! Move assignment.
             //-----------------------------------------------------------------------------
-            ConcurrentExecPool & operator=(ConcurrentExecPool &&) = delete;
+            auto operator=(ConcurrentExecPool &&) -> ConcurrentExecPool & = delete;
 
             //-----------------------------------------------------------------------------
             //! Destructor
@@ -543,7 +552,8 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! \return The number of concurrent executors available.
             //-----------------------------------------------------------------------------
-            UInt getConcurrentExecutionCount() const
+            auto getConcurrentExecutionCount() const
+            -> UInt
             {
                 return m_vConcurrentExecs.size();
             }
@@ -586,8 +596,9 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Pops a task from the queue.
             //-----------------------------------------------------------------------------
-            bool popTask(
+            auto popTask(
                 std::unique_ptr<ITaskPkg<TCurrentException>> & out)
+            -> bool
             {
                 ITaskPkg<TCurrentException> * tempPtr(nullptr);
 

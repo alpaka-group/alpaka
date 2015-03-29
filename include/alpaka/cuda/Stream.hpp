@@ -67,18 +67,20 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST StreamCuda & operator=(StreamCuda const &) = default;
+                ALPAKA_FCT_HOST auto operator=(StreamCuda const &) -> StreamCuda & = default;
                 //-----------------------------------------------------------------------------
                 //! Equality comparison operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST bool operator==(StreamCuda const & rhs) const
+                ALPAKA_FCT_HOST auto operator==(StreamCuda const & rhs) const
+                -> bool
                 {
                     return (*m_spCudaStream.get()) == (*rhs.m_spCudaStream.get());
                 }
                 //-----------------------------------------------------------------------------
                 //! Equality comparison operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST bool operator!=(StreamCuda const & rhs) const
+                ALPAKA_FCT_HOST auto operator!=(StreamCuda const & rhs) const
+                -> bool
                 {
                     return !((*this) == rhs);
                 }
@@ -91,8 +93,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Destroys the shared stream.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static void destroyStream(
+                ALPAKA_FCT_HOST static auto destroyStream(
                     cudaStream_t * stream)
+                -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -142,8 +145,9 @@ namespace alpaka
             struct StreamTest<
                 cuda::detail::StreamCuda>
             {
-                ALPAKA_FCT_HOST static bool streamTest(
+                ALPAKA_FCT_HOST static auto streamTest(
                     cuda::detail::StreamCuda const & stream)
+                -> bool
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -175,8 +179,9 @@ namespace alpaka
             struct CurrentThreadWaitFor<
                 cuda::detail::StreamCuda>
             {
-                ALPAKA_FCT_HOST static void currentThreadWaitFor(
+                ALPAKA_FCT_HOST static auto currentThreadWaitFor(
                     cuda::detail::StreamCuda const & stream)
+                -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 

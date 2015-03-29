@@ -129,8 +129,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static Vec<alpaka::dim::DimT<TBuf>::value> getExtents(
+                ALPAKA_FCT_HOST static auto getExtents(
                     alpaka::mem::detail::View<TBuf> const & extents)
+                -> Vec<alpaka::dim::DimT<TBuf>::value>
                 {
                     return {extents.m_vExtentsElements};
                 }
@@ -148,8 +149,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static UInt getWidth(
+                ALPAKA_FCT_HOST static auto getWidth(
                     alpaka::mem::detail::View<TBuf> const & extent)
+                -> UInt
                 {
                     return extent.m_vExtentsElements[0u];
                 }
@@ -167,8 +169,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static UInt getHeight(
+                ALPAKA_FCT_HOST static auto getHeight(
                     alpaka::mem::detail::View<TBuf> const & extent)
+                -> UInt
                 {
                     return extent.m_vExtentsElements[1u];
                 }
@@ -185,8 +188,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static UInt getDepth(
+                ALPAKA_FCT_HOST static auto getDepth(
                     alpaka::mem::detail::View<TBuf> const & extent)
+                -> UInt
                 {
                     return extent.m_vExtentsElements[2u];
                 }
@@ -206,8 +210,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static Vec<alpaka::dim::DimT<TBuf>::value> getOffsets(
+                ALPAKA_FCT_HOST static auto getOffsets(
                     alpaka::mem::detail::View<TBuf> const & offsets)
+                -> Vec<alpaka::dim::DimT<TBuf>::value>
                 {
                     return offsets.m_vOffsetsElements;
                 }
@@ -225,8 +230,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static UInt getOffsetX(
+                ALPAKA_FCT_HOST static auto getOffsetX(
                     alpaka::mem::detail::View<TBuf> const & offset)
+                -> UInt
                 {
                     return offset.m_vOffsetsElements[0u];
                 }
@@ -244,8 +250,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static UInt getOffsetY(
+                ALPAKA_FCT_HOST static auto getOffsetY(
                     alpaka::mem::detail::View<TBuf> const & offset)
+                -> UInt
                 {
                     return offset.m_vOffsetsElements[1u];
                 }
@@ -262,8 +269,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static UInt getOffsetZ(
+                ALPAKA_FCT_HOST static auto getOffsetZ(
                     alpaka::mem::detail::View<TBuf> const & offset)
+                -> UInt
                 {
                     return offset.m_vOffsetsElements[2u];
                 }
@@ -316,16 +324,18 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static TBuf const & getBuf(
+                ALPAKA_FCT_HOST static auto getBuf(
                     alpaka::mem::detail::View<TBuf> const & bufView)
+                -> TBuf const &
                 {
                     return bufView.m_buf;
                 }
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static TBuf & getBuf(
+                ALPAKA_FCT_HOST static auto getBuf(
                     alpaka::mem::detail::View<TBuf> & bufView)
+                -> TBuf &
                 {
                     return bufView.m_buf;
                 }
@@ -342,8 +352,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static alpaka::mem::ElemT<TBuf> const * getNativePtr(
+                ALPAKA_FCT_HOST static auto getNativePtr(
                     alpaka::mem::detail::View<TBuf> const & bufView)
+                -> alpaka::mem::ElemT<TBuf> const *
                 {
                     // \TODO: Precalculate this pointer for faster execution.
                     auto const uiPitchElements(alpaka::mem::getPitchElements(bufView));
@@ -355,8 +366,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static alpaka::mem::ElemT<TBuf> * getNativePtr(
+                ALPAKA_FCT_HOST static auto getNativePtr(
                     alpaka::mem::detail::View<TBuf> & bufView)
+                -> alpaka::mem::ElemT<TBuf> *
                 {
                     // \TODO: Precalculate this pointer for faster execution.
                     auto const uiPitchElements(alpaka::mem::getPitchElements(bufView));
@@ -378,8 +390,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static UInt getPitchBytes(
+                ALPAKA_FCT_HOST static auto getPitchBytes(
                     alpaka::mem::detail::View<TBuf> const & bufView)
+                -> UInt
                 {
                     return alpaka::mem::getPitchElements(alpaka::mem::getBuf(bufView));
                 }

@@ -52,7 +52,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY IdxCuda & operator=(IdxCuda const & ) = delete;
+                ALPAKA_FCT_ACC_CUDA_ONLY auto operator=(IdxCuda const & ) -> IdxCuda & = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
@@ -61,14 +61,16 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The index of the currently executed thread.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY Vec<3u> getIdxBlockThread() const
+                ALPAKA_FCT_ACC_CUDA_ONLY auto getIdxBlockThread() const
+                -> Vec<3u>
                 {
                     return Vec<3u>(threadIdx.x, threadIdx.y, threadIdx.z);
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The block index of the currently executed thread.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY Vec<3u> getIdxGridBlock() const
+                ALPAKA_FCT_ACC_CUDA_ONLY auto getIdxGridBlock() const
+                -> Vec<3u>
                 {
                     return Vec<3u>(blockIdx.x, blockIdx.y, blockIdx.z);
                 }
@@ -95,9 +97,10 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
-                ALPAKA_FCT_ACC_CUDA_ONLY static alpaka::DimToVecT<alpaka::dim::Dim3> getIdx(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto getIdx(
                     cuda::detail::IdxCuda const & index,
                     TWorkDiv const &)
+                -> alpaka::DimToVecT<alpaka::dim::Dim3>
                 {
                     return index.getIdxBlockThread();
                 }
@@ -118,9 +121,10 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
-                ALPAKA_FCT_ACC_CUDA_ONLY static alpaka::DimToVecT<alpaka::dim::Dim3> getIdx(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto getIdx(
                     cuda::detail::IdxCuda const & index,
                     TWorkDiv const &)
+                -> alpaka::DimToVecT<alpaka::dim::Dim3>
                 {
                     return index.getIdxGridBlock();
                 }

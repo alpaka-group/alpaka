@@ -39,9 +39,10 @@ namespace alpaka
                 cuda::detail::EventCuda,
                 cuda::detail::StreamCuda>
             {
-                ALPAKA_FCT_HOST static void streamEnqueueEvent(
+                ALPAKA_FCT_HOST static auto streamEnqueueEvent(
                     cuda::detail::EventCuda const & event,
                     cuda::detail::StreamCuda const & stream)
+                -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -62,9 +63,10 @@ namespace alpaka
                 cuda::detail::StreamCuda,
                 cuda::detail::EventCuda>
             {
-                ALPAKA_FCT_HOST static void waiterWaitFor(
+                ALPAKA_FCT_HOST static auto waiterWaitFor(
                     cuda::detail::StreamCuda const & stream,
                     cuda::detail::EventCuda const & event)
+                -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 

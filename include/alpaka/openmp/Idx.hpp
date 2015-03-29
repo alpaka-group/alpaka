@@ -61,7 +61,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA IdxOpenMp & operator=(IdxOpenMp const &) = delete;
+                ALPAKA_FCT_ACC_NO_CUDA auto operator=(IdxOpenMp const &) -> IdxOpenMp & = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
@@ -74,7 +74,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
-                ALPAKA_FCT_ACC_NO_CUDA Vec<3u> getIdxBlockThread3d(TWorkDiv const & workDiv) const
+                ALPAKA_FCT_ACC_NO_CUDA auto getIdxBlockThread3d(TWorkDiv const & workDiv) const
+                -> Vec<3u>
                 {
                     // We assume that the thread id is positive.
                     auto const v1iIdxBlockThread(getIdxBlockThread1d());
@@ -89,7 +90,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The index of the currently executed thread.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA Vec<1u> getIdxBlockThread1d() const
+                ALPAKA_FCT_ACC_NO_CUDA auto getIdxBlockThread1d() const
+                -> Vec<1u>
                 {
                     // We assume that the thread id is positive.
                     assert(::omp_get_thread_num() >= 0);
@@ -99,7 +101,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The block index of the currently executed thread.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA Vec<3u> getIdxGridBlock() const
+                ALPAKA_FCT_ACC_NO_CUDA auto getIdxGridBlock() const
+                -> Vec<3u>
                 {
                     return m_v3uiGridBlockIdx;
                 }
@@ -129,9 +132,10 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
-                ALPAKA_FCT_ACC_NO_CUDA static alpaka::DimToVecT<alpaka::dim::Dim3> getIdx(
+                ALPAKA_FCT_ACC_NO_CUDA static auto getIdx(
                     openmp::detail::IdxOpenMp const & index,
                     TWorkDiv const & workDiv)
+                -> alpaka::DimToVecT<alpaka::dim::Dim3>
                 {
                     return index.getIdxBlockThread3d(workDiv);
                 }
@@ -152,9 +156,10 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
-                ALPAKA_FCT_ACC_NO_CUDA static alpaka::DimToVecT<alpaka::dim::Dim1> getIdx(
+                ALPAKA_FCT_ACC_NO_CUDA static auto getIdx(
                     openmp::detail::IdxOpenMp const & index,
                     TWorkDiv const &)
+                -> alpaka::DimToVecT<alpaka::dim::Dim1>
                 {
                     return index.getIdxBlockThread1d();
                 }
@@ -175,9 +180,10 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
-                ALPAKA_FCT_ACC_NO_CUDA static alpaka::DimToVecT<alpaka::dim::Dim3> getIdx(
+                ALPAKA_FCT_ACC_NO_CUDA static auto getIdx(
                     openmp::detail::IdxOpenMp const & index,
                     TWorkDiv const &)
+                -> alpaka::DimToVecT<alpaka::dim::Dim3>
                 {
                     return index.getIdxGridBlock();
                 }

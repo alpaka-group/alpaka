@@ -68,24 +68,27 @@ namespace alpaka
         //#############################################################################
         template<
             typename T>
-        using DevT = typename traits::dev::DevType<T>::type;
+        using DevT = typename traits::dev::DevType<typename std::decay<T>::type>::type;
 
         //#############################################################################
         //! The device manager type trait alias template to remove the ::type.
         //#############################################################################
         template<
             typename T>
-        using DevManT = typename traits::dev::DevManType<T>::type;
+        using DevManT = typename traits::dev::DevManType<typename std::decay<T>::type>::type;
 
         //-----------------------------------------------------------------------------
         //! \return The device properties.
         //-----------------------------------------------------------------------------
         template<
             typename TDev>
-        ALPAKA_FCT_HOST DevProps getDevProps(
+        ALPAKA_FCT_HOST auto getDevProps(
             TDev const & device)
+        -> DevProps
         {
-            return traits::dev::GetDevProps<TDev>::getDevProps(device);
+            return traits::dev::GetDevProps<
+                TDev>
+            ::getDevProps(device);
         }
 
         //-----------------------------------------------------------------------------
@@ -93,8 +96,9 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TDevMan>
-        ALPAKA_FCT_HOST static std::vector<DevT<TDevMan>> getDevices(
+        ALPAKA_FCT_HOST auto getDevices(
             TDevMan const & devMan)
+        -> std::vector<DevT<TDevMan>>
         {
             std::vector<DevT<TDevMan>> vDevices;
 

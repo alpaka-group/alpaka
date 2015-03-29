@@ -62,7 +62,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA ThreadBarrier & operator=(ThreadBarrier const &) = delete;
+                ALPAKA_FCT_ACC_NO_CUDA auto operator=(ThreadBarrier const &) -> ThreadBarrier & = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
@@ -75,7 +75,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Waits for all the other threads to reach the barrier.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA void wait()
+                ALPAKA_FCT_ACC_NO_CUDA auto wait()
+                -> void
                 {
                     std::unique_lock<std::mutex> lock(m_mtxBarrier);
                     if(--m_uiNumThreadsToWaitFor == 0)
@@ -92,7 +93,8 @@ namespace alpaka
                 //! \return The number of threads to wait for.
                 //! NOTE: The value almost always is invalid the time you get it.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA UInt getNumThreadsToWaitFor() const
+                ALPAKA_FCT_ACC_NO_CUDA auto getNumThreadsToWaitFor() const
+                -> UInt
                 {
                     return m_uiNumThreadsToWaitFor;
                 }
@@ -100,8 +102,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Resets the number of threads to wait for to the given number.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA void reset(
+                ALPAKA_FCT_ACC_NO_CUDA auto reset(
                     UInt const uiNumThreadsToWaitFor)
+                -> void
                 {
                     std::lock_guard<std::mutex> lock(m_mtxBarrier);
                     m_uiNumThreadsToWaitFor = uiNumThreadsToWaitFor;

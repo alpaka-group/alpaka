@@ -55,7 +55,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST EventHost & operator=(EventHost const &) = default;
+                ALPAKA_FCT_HOST auto operator=(EventHost const &) -> EventHost & = default;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
@@ -77,8 +77,9 @@ namespace alpaka
                 TEvent,
                 typename std::enable_if<std::is_base_of<host::detail::EventHost, TEvent>::value>::type>
             {
-                ALPAKA_FCT_HOST static void defaultStreamEnqueueEvent(
+                ALPAKA_FCT_HOST static auto defaultStreamEnqueueEvent(
                     host::detail::EventHost const & event)
+                -> void
                 {
                     boost::ignore_unused(event);
                     // Because host calls are not asynchronous, this call never has to enqueue anything.
@@ -98,9 +99,10 @@ namespace alpaka
                     std::is_base_of<host::detail::EventHost, TEvent>::value 
                     && std::is_same<typename alpaka::acc::AccT<TEvent>, typename alpaka::acc::AccT<TStream>>::value>::type>
             {
-                ALPAKA_FCT_HOST static void streamEnqueueEvent(
+                ALPAKA_FCT_HOST static auto streamEnqueueEvent(
                     host::detail::EventHost const & event, 
                     TStream const & stream)
+                -> void
                 {
                     boost::ignore_unused(event);
                     boost::ignore_unused(stream);
@@ -117,8 +119,9 @@ namespace alpaka
                 TEvent,
                 typename std::enable_if<std::is_base_of<host::detail::EventHost, TEvent>::value>::type>
             {
-                ALPAKA_FCT_HOST static bool eventTest(
+                ALPAKA_FCT_HOST static auto eventTest(
                     host::detail::EventHost const & event)
+                -> bool
                 {
                     boost::ignore_unused(event);
                     // Because host calls are not asynchronous, this call always returns true.
@@ -138,8 +141,9 @@ namespace alpaka
                 TEvent,
                 typename std::enable_if<std::is_base_of<host::detail::EventHost, TEvent>::value>::type>
             {
-                ALPAKA_FCT_HOST static void currentThreadWaitFor(
+                ALPAKA_FCT_HOST static auto currentThreadWaitFor(
                     TEvent const & event)
+                -> void
                 {
                     boost::ignore_unused(event);
                     // Because host calls are not asynchronous, this call never has to wait.

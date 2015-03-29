@@ -65,8 +65,9 @@ namespace alpaka
             typename TUnit,
             typename TDim = dim::Dim3,
             typename TWorkDiv = void>
-        ALPAKA_FCT_HOST_ACC DimToVecT<TDim> getWorkDiv(
+        ALPAKA_FCT_HOST_ACC auto getWorkDiv(
             TWorkDiv const & workDiv)
+        -> DimToVecT<TDim>
         {
             return traits::workdiv::GetWorkDiv<TWorkDiv, TOrigin, TUnit, TDim>::getWorkDiv(
                 workDiv);
@@ -91,8 +92,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of threads in a block.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST_ACC static alpaka::DimToVecT<alpaka::dim::Dim1> getWorkDiv(
+                ALPAKA_FCT_HOST_ACC static auto getWorkDiv(
                     TWorkDiv const & workDiv)
+                -> alpaka::DimToVecT<alpaka::dim::Dim1>
                 {
                     return alpaka::workdiv::getWorkDiv<origin::Block, unit::Threads, alpaka::dim::Dim3>(workDiv).prod();
                 }
@@ -111,8 +113,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of threads in each dimension of the grid.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST_ACC static alpaka::DimToVecT<alpaka::dim::Dim3> getWorkDiv(
+                ALPAKA_FCT_HOST_ACC static auto getWorkDiv(
                     TWorkDiv const & workDiv)
+                -> alpaka::DimToVecT<alpaka::dim::Dim3>
                 {
                     return alpaka::workdiv::getWorkDiv<origin::Grid, unit::Blocks, alpaka::dim::Dim3>(workDiv)
                         * alpaka::workdiv::getWorkDiv<origin::Block, unit::Threads, alpaka::dim::Dim3>(workDiv);
@@ -132,8 +135,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of threads in the grid.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST_ACC static alpaka::DimToVecT<alpaka::dim::Dim1> getWorkDiv(
+                ALPAKA_FCT_HOST_ACC static auto getWorkDiv(
                     TWorkDiv const & workDiv)
+                -> alpaka::DimToVecT<alpaka::dim::Dim1>
                 {
                     return alpaka::workdiv::getWorkDiv<origin::Grid, unit::Threads, alpaka::dim::Dim3>(workDiv).prod();
                 }
@@ -152,8 +156,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of blocks in the grid.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST_ACC static alpaka::DimToVecT<alpaka::dim::Dim1> getWorkDiv(
+                ALPAKA_FCT_HOST_ACC static auto getWorkDiv(
                     TWorkDiv const & workDiv)
+                -> alpaka::DimToVecT<alpaka::dim::Dim1>
                 {
                     return alpaka::workdiv::getWorkDiv<origin::Grid, unit::Blocks, alpaka::dim::Dim3>(workDiv).prod();
                 }

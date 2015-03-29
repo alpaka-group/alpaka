@@ -62,7 +62,8 @@ namespace alpaka
             struct GetAccName<
                 threads::detail::AccThreads>
             {
-                static std::string getAccName()
+                static auto getAccName()
+                -> std::string
                 {
                     return "AccThreads";
                 }

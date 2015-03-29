@@ -53,7 +53,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TExtents>
-            BufPlainPtrWrapper(
+            ALPAKA_FCT_HOST_ACC BufPlainPtrWrapper(
                 TElem * pMem,
                 TExtents const & extents) :
                     m_vExtentsElements(extents),
@@ -66,7 +66,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TExtents>
-            BufPlainPtrWrapper(
+            ALPAKA_FCT_HOST_ACC BufPlainPtrWrapper(
                 TElem * pMem,
                 UInt const & uiPitch,
                 TExtents const & extents) :
@@ -118,8 +118,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static Vec<TDim::value> getExtents(
+                ALPAKA_FCT_HOST_ACC static auto getExtents(
                     alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim> const & extents)
+                -> Vec<TDim::value>
                 {
                     return {extents.m_vExtentsElements};
                 }
@@ -136,8 +137,9 @@ namespace alpaka
                 alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim>,
                 typename std::enable_if<(TDim::value >= 1u) && (TDim::value <= 3u)>::type>
             {
-                static UInt getWidth(
+                ALPAKA_FCT_HOST_ACC static auto getWidth(
                     alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim> const & extent)
+                -> UInt
                 {
                     return extent.m_vExtentsElements[0u];
                 }
@@ -154,8 +156,9 @@ namespace alpaka
                 alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim>,
                 typename std::enable_if<(TDim::value >= 2u) && (TDim::value <= 3u)>::type>
             {
-                static UInt getHeight(
+                ALPAKA_FCT_HOST_ACC static auto getHeight(
                     alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim> const & extent)
+                -> UInt
                 {
                     return extent.m_vExtentsElements[1u];
                 }
@@ -171,8 +174,9 @@ namespace alpaka
                 alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim>,
                 typename std::enable_if<(TDim::value >= 3u) && (TDim::value <= 3u)>::type>
             {
-                static UInt getDepth(
+                ALPAKA_FCT_HOST_ACC static auto getDepth(
                     alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim> const & extent)
+                -> UInt
                 {
                     return extent.m_vExtentsElements[2u];
                 }
@@ -194,8 +198,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static Vec<TDim::value> getOffsets(
+                ALPAKA_FCT_HOST_ACC static auto getOffsets(
                     alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim> const &)
+                -> Vec<TDim::value>
                 {
                     return Vec<TDim::value>();
                 }
@@ -243,16 +248,18 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim> const & getBuf(
+                ALPAKA_FCT_HOST_ACC static auto getBuf(
                     alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim> const & buf)
+                -> alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim> const &
                 {
                     return buf;
                 }
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim> & getBuf(
+                ALPAKA_FCT_HOST_ACC static auto getBuf(
                     alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim> & buf)
+                -> alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim> &
                 {
                     return buf;
                 }
@@ -268,13 +275,15 @@ namespace alpaka
             struct GetNativePtr<
                 alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim>>
             {
-                static TElem const * getNativePtr(
+                ALPAKA_FCT_HOST_ACC static auto getNativePtr(
                     alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim> const & buf)
+                -> TElem const *
                 {
                     return buf.m_pMem;
                 }
-                static TElem * getNativePtr(
+                ALPAKA_FCT_HOST_ACC static auto getNativePtr(
                     alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim> & buf)
+                -> TElem *
                 {
                     return buf.m_pMem;
                 }
@@ -290,8 +299,9 @@ namespace alpaka
             struct GetPitchBytes<
                 alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim>>
             {
-                static UInt getPitchBytes(
+                ALPAKA_FCT_HOST_ACC static auto getPitchBytes(
                     alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim> const & pitch)
+                -> UInt
                 {
                     return pitch.m_uiPitchBytes;
                 }

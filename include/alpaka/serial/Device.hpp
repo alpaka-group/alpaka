@@ -66,18 +66,20 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DevSerial & operator=(DevSerial const &) = default;
+                ALPAKA_FCT_HOST auto operator=(DevSerial const &) -> DevSerial & = default;
                 //-----------------------------------------------------------------------------
                 //! Equality comparison operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST bool operator==(DevSerial const &) const
+                ALPAKA_FCT_HOST auto operator==(DevSerial const &) const
+                -> bool
                 {
                     return true;
                 }
                 //-----------------------------------------------------------------------------
                 //! Inequality comparison operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST bool operator!=(DevSerial const & rhs) const
+                ALPAKA_FCT_HOST auto operator!=(DevSerial const & rhs) const
+                -> bool
                 {
                     return !((*this) == rhs);
                 }
@@ -97,15 +99,17 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of devices available.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::size_t getDevCount()
+                ALPAKA_FCT_HOST static auto getDevCount()
+                -> std::size_t
                 {
                     return 1;
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The number of devices available.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static serial::detail::DevSerial getDevByIdx(
+                ALPAKA_FCT_HOST static auto getDevByIdx(
                     std::size_t const & uiIdx)
+                -> serial::detail::DevSerial
                 {
                     std::size_t const uiNumDevices(getDevCount());
                     if(uiIdx >= uiNumDevices)
@@ -120,15 +124,17 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The handle to the currently used device.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static serial::detail::DevSerial getCurrentDev()
+                ALPAKA_FCT_HOST static auto getCurrentDev()
+                -> serial::detail::DevSerial
                 {
                     return {};
                 }
                 //-----------------------------------------------------------------------------
                 //! Sets the device to use with this accelerator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static void setCurrentDev(
+                ALPAKA_FCT_HOST static auto setCurrentDev(
                     serial::detail::DevSerial const & )
+                -> void
                 {
                     // The code is already running on this device.
                 }
@@ -166,8 +172,9 @@ namespace alpaka
             struct GetDevProps<
                 serial::detail::DevSerial>
             {
-                ALPAKA_FCT_HOST static alpaka::dev::DevProps getDevProps(
+                ALPAKA_FCT_HOST static auto getDevProps(
                     serial::detail::DevSerial const &)
+                -> alpaka::dev::DevProps
                 {
                     return alpaka::dev::DevProps(
                         // m_sName
@@ -214,8 +221,9 @@ namespace alpaka
             struct CurrentThreadWaitFor<
                 serial::detail::DevSerial>
             {
-                ALPAKA_FCT_HOST static void currentThreadWaitFor(
+                ALPAKA_FCT_HOST static auto currentThreadWaitFor(
                     serial::detail::DevSerial const &)
+                -> void
                 {
                     // Because host calls are not asynchronous, this call never has to wait.
                 }

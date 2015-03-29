@@ -53,9 +53,10 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TElem>
-            ALPAKA_FCT_HOST_ACC static Vec<3u> mapIdx(
+            ALPAKA_FCT_HOST_ACC static auto mapIdx(
                 Vec<1u, TElem> const & index, 
                 Vec<2u, TElem> const & extents)
+            -> Vec<3u>
             {
                 auto const & uiIdx(index[0]);
                 auto const uiExtentXyLin(extents.prod());
@@ -84,9 +85,10 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TElem>
-            ALPAKA_FCT_HOST_ACC static Vec<2u> mapIdx(
+            ALPAKA_FCT_HOST_ACC static auto mapIdx(
                 Vec<1u, TElem> const & index, 
                 Vec<1u, TElem> const & extents)
+            -> Vec<2u>
             {
                 auto const & uiIdx(index[0]);
                 auto const & uiExtentX(extents[0]);
@@ -110,9 +112,10 @@ namespace alpaka
         UInt TuiIdxDimDst, 
         UInt TuiIdxDimSrc, 
         typename TElem>
-    Vec<TuiIdxDimDst> mapIdx(
+    ALPAKA_FCT_HOST_ACC auto mapIdx(
         Vec<TuiIdxDimSrc, TElem> const & index, 
         Vec<TuiIdxDimDst-1u, TElem> const & extents)
+    -> Vec<TuiIdxDimDst>
     {
         return detail::MapIdx<
             TuiIdxDimDst, 

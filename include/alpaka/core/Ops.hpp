@@ -41,9 +41,10 @@ namespace alpaka
         {
             template<
                 typename T>
-            ALPAKA_FCT_HOST_ACC T operator()(
+            ALPAKA_FCT_HOST_ACC auto operator()(
                 T * const addr, 
                 T const & value) const
+            -> T
             {
                 auto const old(*addr);
                 auto & ref(*addr);
@@ -60,9 +61,10 @@ namespace alpaka
         {
             template<
                 typename T>
-            ALPAKA_FCT_HOST_ACC T operator()(
+            ALPAKA_FCT_HOST_ACC auto operator()(
                 T * const addr, 
                 T const & value) const
+            -> T
             {
                 auto const old(*addr);
                 auto & ref(*addr);
@@ -79,9 +81,10 @@ namespace alpaka
         {
             template<
                 typename T>
-            ALPAKA_FCT_HOST_ACC T operator()(
+            ALPAKA_FCT_HOST_ACC auto operator()(
                 T * const addr, 
                 T const & value) const
+            -> T
             {
                 auto const old(*addr);
                 auto & ref(*addr);
@@ -98,9 +101,10 @@ namespace alpaka
         {
             template<
                 typename T>
-            ALPAKA_FCT_HOST_ACC T operator()(
+            ALPAKA_FCT_HOST_ACC auto operator()(
                 T * const addr, 
                 T const & value) const
+            -> T
             {
                 auto const old(*addr);
                 auto & ref(*addr);
@@ -117,9 +121,10 @@ namespace alpaka
         {
             template<
                 typename T>
-            ALPAKA_FCT_HOST_ACC T operator()(
+            ALPAKA_FCT_HOST_ACC auto operator()(
                 T * const addr, 
                 T const & value) const
+            -> T
             {
                 auto const old(*addr);
                 auto & ref(*addr);
@@ -138,9 +143,10 @@ namespace alpaka
         {
             template<
                 typename T>
-            ALPAKA_FCT_HOST_ACC T operator()(
+            ALPAKA_FCT_HOST_ACC auto operator()(
                 T * const addr, 
                 T const & value) const
+            -> T
             {
                 auto const old(*addr);
                 auto & ref(*addr);
@@ -159,9 +165,10 @@ namespace alpaka
         {
             template<
                 typename T>
-            ALPAKA_FCT_HOST_ACC T operator()(
+            ALPAKA_FCT_HOST_ACC auto operator()(
                 T * const addr, 
                 T const & value) const
+            -> T
             {
                 auto const old(*addr);
                 auto & ref(*addr);
@@ -178,9 +185,10 @@ namespace alpaka
         {
             template<
                 typename T>
-            ALPAKA_FCT_HOST_ACC T operator()(
+            ALPAKA_FCT_HOST_ACC auto operator()(
                 T * const addr, 
                 T const & value) const
+            -> T
             {
                 auto const old(*addr);
                 auto & ref(*addr);
@@ -197,9 +205,10 @@ namespace alpaka
         {
             template<
                 typename T>
-            ALPAKA_FCT_HOST_ACC T operator()(
+            ALPAKA_FCT_HOST_ACC auto operator()(
                 T * const addr, 
                 T const & value) const
+            -> T
             {
                 auto const old(*addr);
                 auto & ref(*addr);
@@ -216,9 +225,10 @@ namespace alpaka
         {
             template<
                 typename T>
-            ALPAKA_FCT_HOST_ACC T operator()(
+            ALPAKA_FCT_HOST_ACC auto operator()(
                 T * const addr,
                 T const & value) const
+            -> T
             {
                 auto const old(*addr);
                 auto & ref(*addr);
@@ -235,10 +245,11 @@ namespace alpaka
         {
             template<
                 typename T>
-            ALPAKA_FCT_HOST_ACC T operator()(
+            ALPAKA_FCT_HOST_ACC auto operator()(
                 T * addr, 
                 T const & compare, 
                 T const & value) const
+            -> T
             {
                 auto const old(*addr);
                 auto & ref(*addr);

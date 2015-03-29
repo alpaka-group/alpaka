@@ -62,7 +62,8 @@ namespace alpaka
             struct GetAccName<
                 cuda::detail::AccCuda>
             {
-                static std::string getAccName()
+                static auto getAccName()
+                -> std::string
                 {
                     return "AccCuda";
                 }

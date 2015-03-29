@@ -67,18 +67,20 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DevThreads & operator=(DevThreads const &) = default;
+                ALPAKA_FCT_HOST auto operator=(DevThreads const &) -> DevThreads & = default;
                 //-----------------------------------------------------------------------------
                 //! Equality comparison operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST bool operator==(DevThreads const &) const
+                ALPAKA_FCT_HOST auto operator==(DevThreads const &) const
+                -> bool
                 {
                     return true;
                 }
                 //-----------------------------------------------------------------------------
                 //! Inequality comparison operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST bool operator!=(DevThreads const & rhs) const
+                ALPAKA_FCT_HOST auto operator!=(DevThreads const & rhs) const
+                -> bool
                 {
                     return !((*this) == rhs);
                 }
@@ -98,15 +100,17 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of devices available.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::size_t getDevCount()
+                ALPAKA_FCT_HOST static auto getDevCount()
+                -> std::size_t
                 {
                     return 1;
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The number of devices available.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static threads::detail::DevThreads getDevByIdx(
+                ALPAKA_FCT_HOST static auto getDevByIdx(
                     std::size_t const & uiIdx)
+                -> threads::detail::DevThreads
                 {
                     std::size_t const uiNumDevices(getDevCount());
                     if(uiIdx >= uiNumDevices)
@@ -121,15 +125,17 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The handle to the currently used device.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static threads::detail::DevThreads getCurrentDev()
+                ALPAKA_FCT_HOST static auto getCurrentDev()
+                -> threads::detail::DevThreads
                 {
                     return {};
                 }
                 //-----------------------------------------------------------------------------
                 //! Sets the device to use with this accelerator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static void setCurrentDev(
-                    threads::detail::DevThreads const & )
+                ALPAKA_FCT_HOST static auto setCurrentDev(
+                    threads::detail::DevThreads const &)
+                -> void
                 {
                     // The code is already running on this device.
                 }
@@ -167,8 +173,9 @@ namespace alpaka
             struct GetDevProps<
                 threads::detail::DevThreads>
             {
-                ALPAKA_FCT_HOST static alpaka::dev::DevProps getDevProps(
+                ALPAKA_FCT_HOST static auto getDevProps(
                     threads::detail::DevThreads const &)
+                -> alpaka::dev::DevProps
                 {
 #if ALPAKA_INTEGRATION_TEST
                     UInt const uiBlockThreadsCountMax(8u);
@@ -222,8 +229,9 @@ namespace alpaka
             struct CurrentThreadWaitFor<
                 threads::detail::DevThreads>
             {
-                ALPAKA_FCT_HOST static void currentThreadWaitFor(
+                ALPAKA_FCT_HOST static auto currentThreadWaitFor(
                     threads::detail::DevThreads const &)
+                -> void
                 {
                     // Because host calls are not asynchronous, this call never has to wait.
                 }

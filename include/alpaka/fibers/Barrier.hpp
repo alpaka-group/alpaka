@@ -58,7 +58,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy assignment.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA FiberBarrier & operator=(FiberBarrier const &) = delete;
+                ALPAKA_FCT_ACC_NO_CUDA auto operator=(FiberBarrier const &) -> FiberBarrier & = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
@@ -67,7 +67,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Waits for all the other fibers to reach the barrier.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA void wait()
+                ALPAKA_FCT_ACC_NO_CUDA auto wait()
+                -> void
                 {
                     boost::unique_lock<boost::fibers::mutex> lock(m_mtxBarrier);
                     if(--m_uiNumFibersToWaitFor == 0)
@@ -84,7 +85,8 @@ namespace alpaka
                 //! \return The number of fibers to wait for.
                 //! NOTE: The value almost always is invalid the time you get it.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA UInt getNumFibersToWaitFor() const
+                ALPAKA_FCT_ACC_NO_CUDA auto getNumFibersToWaitFor() const
+                -> UInt
                 {
                     return m_uiNumFibersToWaitFor;
                 }
@@ -92,8 +94,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Resets the number of fibers to wait for to the given number.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA void reset(
+                ALPAKA_FCT_ACC_NO_CUDA auto reset(
                     UInt uiNumFibersToWaitFor)
+                -> void
                 {
                     // A lock is not required in the fiber implementation.
                     //boost::unique_lock<boost::fibers::mutex> lock(m_mtxBarrier);

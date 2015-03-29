@@ -54,8 +54,9 @@ namespace alpaka
                 typename TSfinae = void>
             struct GetWidth
             {
-                ALPAKA_FCT_HOST_ACC static UInt getWidth(
+                ALPAKA_FCT_HOST_ACC static auto getWidth(
                     T const &)
+                -> UInt
                 {
                     return static_cast<UInt>(1u);
                 }
@@ -70,8 +71,9 @@ namespace alpaka
                 typename TSfinae = void>
             struct GetHeight
             {
-                ALPAKA_FCT_HOST_ACC static UInt getHeight(
+                ALPAKA_FCT_HOST_ACC static auto getHeight(
                     T const &)
+                -> UInt
                 {
                     return static_cast<UInt>(1u);
                 }
@@ -86,8 +88,9 @@ namespace alpaka
                 typename TSfinae = void>
             struct GetDepth
             {
-                ALPAKA_FCT_HOST_ACC static UInt getDepth(
+                ALPAKA_FCT_HOST_ACC static auto getDepth(
                     T const &)
+                -> UInt
                 {
                     return static_cast<UInt>(1u);
                 }
@@ -129,7 +132,7 @@ namespace alpaka
             typename TExtents>
         ALPAKA_FCT_HOST_ACC auto getExtents(
             TExtents const & extents = TExtents())
-            -> decltype(traits::extent::GetExtents<TExtents>::getExtents(std::declval<TExtents>()))
+        -> decltype(traits::extent::GetExtents<TExtents>::getExtents(std::declval<TExtents const &>()))
         {
             return traits::extent::GetExtents<
                 TExtents>
@@ -142,8 +145,9 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TExtents>
-        ALPAKA_FCT_HOST_ACC UInt getWidth(
+        ALPAKA_FCT_HOST_ACC auto getWidth(
             TExtents const & extents = TExtents())
+        -> UInt
         {
             return traits::extent::GetWidth<
                 TExtents>
@@ -155,8 +159,9 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TExtents>
-        ALPAKA_FCT_HOST_ACC UInt getHeight(
+        ALPAKA_FCT_HOST_ACC auto getHeight(
             TExtents const & extents = TExtents())
+        -> UInt
         {
             return traits::extent::GetHeight<
                 TExtents>
@@ -168,8 +173,9 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TExtents>
-        ALPAKA_FCT_HOST_ACC UInt getDepth(
+        ALPAKA_FCT_HOST_ACC auto getDepth(
             TExtents const & extents = TExtents())
+        -> UInt
         {
             return traits::extent::GetDepth<
                 TExtents>
@@ -181,8 +187,9 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TExtents>
-        ALPAKA_FCT_HOST_ACC UInt getProductOfExtents(
+        ALPAKA_FCT_HOST_ACC auto getProductOfExtents(
             TExtents const & extents = TExtents())
+        -> UInt
         {
             return
                 getWidth(extents)
@@ -196,9 +203,10 @@ namespace alpaka
         template<
             typename TExtents,
             typename TInt>
-            ALPAKA_FCT_HOST_ACC void setWidth(
+        ALPAKA_FCT_HOST_ACC auto setWidth(
             TExtents const & extents,
             TInt const & width)
+        -> void
         {
             traits::extent::SetWidth<
                 TExtents>
@@ -212,9 +220,10 @@ namespace alpaka
         template<
             typename TExtents,
             typename TInt>
-        ALPAKA_FCT_HOST_ACC void setHeight(
+        ALPAKA_FCT_HOST_ACC auto setHeight(
             TExtents const & extents,
             TInt const & height)
+        -> void
         {
             traits::extent::SetHeight<
                 TExtents>
@@ -228,9 +237,10 @@ namespace alpaka
         template<
             typename TExtents,
             typename TInt>
-        ALPAKA_FCT_HOST_ACC void setDepth(
+        ALPAKA_FCT_HOST_ACC auto setDepth(
             TExtents const & extents,
             TInt const & depth)
+        -> void
         {
             traits::extent::SetDepth<
                 TExtents>
@@ -256,8 +266,9 @@ namespace alpaka
                 T,
                 typename std::enable_if<std::is_integral<T>::value && std::is_unsigned<T>::value>::type>
             {
-                ALPAKA_FCT_HOST_ACC static UInt getWidth(
+                ALPAKA_FCT_HOST_ACC static auto getWidth(
                     T const & extent)
+                -> UInt
                 {
                     return static_cast<UInt>(extent);
                 }

@@ -61,10 +61,11 @@ namespace alpaka
                     typename TExtents, 
                     typename TBufSrc, 
                     typename TBufDst>
-                ALPAKA_FCT_HOST static void copy(
+                ALPAKA_FCT_HOST static auto copy(
                     TBufDst & bufDst, 
                     TBufSrc const & bufSrc, 
                     TExtents const & extents)
+                -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -200,11 +201,12 @@ namespace alpaka
                     typename TExtents, 
                     typename TBufSrc, 
                     typename TBufDst>
-                ALPAKA_FCT_HOST static void copy(
+                ALPAKA_FCT_HOST static auto copy(
                     TBufDst & bufDst, 
                     TBufSrc const & bufSrc, 
                     TExtents const & extents,
                     host::detail::StreamHost const &)
+                -> void
                 {
                     // \TODO: Implement asynchronous host copy.
                     copy(

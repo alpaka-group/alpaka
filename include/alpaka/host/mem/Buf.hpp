@@ -81,8 +81,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TExtents>
-                ALPAKA_FCT_HOST static UInt computeElementCount(
+                ALPAKA_FCT_HOST static auto computeElementCount(
                     TExtents const & extents)
+                -> UInt
                 {
                     auto const uiExtentsElementCount(extent::getProductOfExtents(extents));
                     assert(uiExtentsElementCount>0);
@@ -92,8 +93,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Frees the shared buffer.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static void freeBuffer(
+                ALPAKA_FCT_HOST static auto freeBuffer(
                     TElem * pBuffer)
+                -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -143,8 +145,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static Vec<TDim::value> getExtents(
+                ALPAKA_FCT_HOST static auto getExtents(
                     host::detail::BufHost<TElem, TDim> const & extents)
+                -> Vec<TDim::value>
                 {
                     return {extents.m_vExtentsElements};
                 }
@@ -163,8 +166,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static UInt getWidth(
+                ALPAKA_FCT_HOST static auto getWidth(
                     host::detail::BufHost<TElem, TDim> const & extent)
+                -> UInt
                 {
                     return extent.m_vExtentsElements[0u];
                 }
@@ -183,8 +187,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static UInt getHeight(
+                ALPAKA_FCT_HOST static auto getHeight(
                     host::detail::BufHost<TElem, TDim> const & extent)
+                -> UInt
                 {
                     return extent.m_vExtentsElements[1u];
                 }
@@ -202,8 +207,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static UInt getDepth(
+                ALPAKA_FCT_HOST static auto getDepth(
                     host::detail::BufHost<TElem, TDim> const & extent)
+                -> UInt
                 {
                     return extent.m_vExtentsElements[2u];
                 }
@@ -224,8 +230,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static Vec<TDim::value> getOffsets(
+                ALPAKA_FCT_HOST static auto getOffsets(
                     host::detail::BufHost<TElem, TDim> const &)
+                -> Vec<TDim::value>
                 {
                     return Vec<TDim::value>();
                 }
@@ -270,16 +277,18 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static host::detail::BufHost<TElem, TDim> const & getBuf(
+                ALPAKA_FCT_HOST static auto getBuf(
                     host::detail::BufHost<TElem, TDim> const & buf)
+                -> host::detail::BufHost<TElem, TDim> const &
                 {
                     return buf;
                 }
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static host::detail::BufHost<TElem, TDim> & getBuf(
+                ALPAKA_FCT_HOST static auto getBuf(
                     host::detail::BufHost<TElem, TDim> & buf)
+                -> host::detail::BufHost<TElem, TDim> &
                 {
                     return buf;
                 }
@@ -297,16 +306,18 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static TElem const * getNativePtr(
+                ALPAKA_FCT_HOST static auto getNativePtr(
                     host::detail::BufHost<TElem, TDim> const & buf)
+                -> TElem const *
                 {
                     return buf.m_spMem.get();
                 }
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static TElem * getNativePtr(
+                ALPAKA_FCT_HOST static auto getNativePtr(
                     host::detail::BufHost<TElem, TDim> & buf)
+                -> TElem *
                 {
                     return buf.m_spMem.get();
                 }
@@ -324,8 +335,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static UInt getPitchBytes(
+                ALPAKA_FCT_HOST static auto getPitchBytes(
                     host::detail::BufHost<TElem, TDim> const & pitch)
+                -> UInt
                 {
                     // No pitch on the host currently.
                     return pitch.m_uiPitchBytes;
@@ -348,8 +360,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TExtents>
-                ALPAKA_FCT_HOST static host::detail::BufHost<TElem, TDim> alloc(
+                ALPAKA_FCT_HOST static auto alloc(
                     TExtents const & extents)
+                -> host::detail::BufHost<TElem, TDim>
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 

@@ -75,8 +75,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static /*constexpr*/ Vec<alpaka::dim::DimT<TFixedSizeArray>::value> getExtents(
+                ALPAKA_FCT_HOST static /*constexpr*/ auto getExtents(
                     TFixedSizeArray const & extents)
+                -> Vec<alpaka::dim::DimT<TFixedSizeArray>::value>
                 {
                     return getExtentsInternal(
                         extents,
@@ -95,13 +96,14 @@ namespace alpaka
                 template<
                     typename TVal,
                     size_t... TIndices>
-                ALPAKA_FCT_HOST static /*constexpr*/ Vec<alpaka::dim::DimT<TFixedSizeArray>::value> getExtentsInternal(
+                ALPAKA_FCT_HOST static /*constexpr*/ auto getExtentsInternal(
                     TFixedSizeArray const & extents,
 #if !BOOST_COMP_MSVC     // MSVC 190022512 introduced a new bug with alias templates: error C3520: 'TIndices': parameter pack must be expanded in this context
                 alpaka::detail::index_sequence<TIndices...> const &)
 #else
                 alpaka::detail::integer_sequence<std::size_t, TIndices...> const &)
 #endif
+                -> Vec<alpaka::dim::DimT<TFixedSizeArray>::value>
                 {
                     return {(std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value-(TIndices+1u)>::value)...};
                 }
@@ -120,8 +122,9 @@ namespace alpaka
                     && (std::rank<TFixedSizeArray>::value <= 3u)
                     && (std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 1u>::value > 0u)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static constexpr UInt getWidth(
+                ALPAKA_FCT_HOST_ACC static constexpr auto getWidth(
                     TFixedSizeArray const &)
+                -> UInt
                 {
                     return std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value-1u>::value;
                 }
@@ -140,8 +143,9 @@ namespace alpaka
                     && (std::rank<TFixedSizeArray>::value <= 3u)
                     && (std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 2u>::value > 0u)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static constexpr UInt getHeight(
+                ALPAKA_FCT_HOST_ACC static constexpr auto getHeight(
                     TFixedSizeArray const &)
+                -> UInt
                 {
                     return std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 2u>::value;
                 }
@@ -159,8 +163,9 @@ namespace alpaka
                     && (std::rank<TFixedSizeArray>::value <= 3u)
                     && (std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 3u>::value > 0u)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static constexpr UInt getDepth(
+                ALPAKA_FCT_HOST_ACC static constexpr auto getDepth(
                     TFixedSizeArray const &)
+                -> UInt
                 {
                     return std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 3u>::value;
                 }
@@ -181,8 +186,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static Vec<alpaka::dim::DimT<TFixedSizeArray>::value> getOffsets(
+                ALPAKA_FCT_HOST static auto getOffsets(
                     TFixedSizeArray const &)
+                -> Vec<alpaka::dim::DimT<TFixedSizeArray>::value>
                 {
                     return Vec<alpaka::dim::DimT<TFixedSizeArray>::value>(0u);
                 }
@@ -234,16 +240,18 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static TFixedSizeArray const & getBuf(
+                ALPAKA_FCT_HOST static auto getBuf(
                     TFixedSizeArray const & buf)
+                -> TFixedSizeArray const &
                 {
                     return buf;
                 }
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static TFixedSizeArray & getBuf(
+                ALPAKA_FCT_HOST static auto getBuf(
                     TFixedSizeArray & buf)
+                -> TFixedSizeArray &
                 {
                     return buf;
                 }
@@ -261,13 +269,15 @@ namespace alpaka
             {
                 using TElem = typename std::remove_all_extents<TFixedSizeArray>::type;
 
-                ALPAKA_FCT_HOST_ACC static TElem const * getNativePtr(
+                ALPAKA_FCT_HOST_ACC static auto getNativePtr(
                     TFixedSizeArray const & buf)
+                -> TElem const *
                 {
                     return buf;
                 }
-                ALPAKA_FCT_HOST_ACC static TElem * getNativePtr(
+                ALPAKA_FCT_HOST_ACC static auto getNativePtr(
                     TFixedSizeArray & buf)
+                -> TElem *
                 {
                     return buf;
                 }
@@ -286,8 +296,9 @@ namespace alpaka
             {
                 using TElem = typename std::remove_all_extents<TFixedSizeArray>::type;
 
-                ALPAKA_FCT_HOST_ACC static constexpr UInt getPitchBytes(
+                ALPAKA_FCT_HOST_ACC static constexpr auto getPitchBytes(
                     TFixedSizeArray const &)
+                -> UInt
                 {
                     return sizeof(TElem) * std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 1u>::value;
                 }
@@ -329,8 +340,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static /*constexpr*/ Vec<1u> getExtents(
+                ALPAKA_FCT_HOST static /*constexpr*/ auto getExtents(
                     std::array<TElem, TuiSize> const & extents)
+                -> Vec<1u>
                 {
                     return {TuiSize};
                 }
@@ -345,8 +357,9 @@ namespace alpaka
             struct GetWidth<
                 std::array<TElem, TuiSize>>
             {
-                ALPAKA_FCT_HOST_ACC static constexpr UInt getWidth(
+                ALPAKA_FCT_HOST_ACC static constexpr auto getWidth(
                     std::array<TElem, TuiSize> const & extent)
+                -> UInt
                 {
                     return TuiSize;
                 }
@@ -367,8 +380,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static Vec<1u> getOffsets(
+                ALPAKA_FCT_HOST static auto getOffsets(
                     std::array<TElem, TuiSize> const &)
+                -> Vec<1u>
                 {
                     return Vec<1u>(0u);
                 }
@@ -413,16 +427,18 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::array<TElem, TuiSize> const & getBuf(
+                ALPAKA_FCT_HOST static auto getBuf(
                     std::array<TElem, TuiSize> const & buf)
+                -> std::array<TElem, TuiSize> const &
                 {
                     return buf;
                 }
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::array<TElem, TuiSize> & getBuf(
+                ALPAKA_FCT_HOST static auto getBuf(
                     std::array<TElem, TuiSize> & buf)
+                -> std::array<TElem, TuiSize> &
                 {
                     return buf;
                 }
@@ -437,13 +453,15 @@ namespace alpaka
             struct GetNativePtr<
                 std::array<TElem, TuiSize>>
             {
-                ALPAKA_FCT_HOST_ACC static TElem const * getNativePtr(
+                ALPAKA_FCT_HOST_ACC static auto getNativePtr(
                     std::array<TElem, TuiSize> const & buf)
+                -> TElem const *
                 {
                     return buf.data();
                 }
-                ALPAKA_FCT_HOST_ACC static TElem * getNativePtr(
+                ALPAKA_FCT_HOST_ACC static auto getNativePtr(
                     std::array<TElem, TuiSize> & buf)
+                -> TElem *
                 {
                     return buf.data();
                 }
@@ -458,8 +476,9 @@ namespace alpaka
             struct GetPitchBytes<
                 std::array<TElem, TuiSize>>
             {
-                ALPAKA_FCT_HOST_ACC static UInt getPitchBytes(
+                ALPAKA_FCT_HOST_ACC static auto getPitchBytes(
                     std::array<TElem, TuiSize> const & pitch)
+                -> UInt
                 {
                     return sizeof(TElem) * pitch.size();
                 }
@@ -501,8 +520,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static Vec<1u> getExtents(
+                ALPAKA_FCT_HOST static auto getExtents(
                     std::vector<TElem, TAllocator> const & extent)
+                -> Vec<1u>
                 {
                     return {extent.size()};
                 }
@@ -517,8 +537,9 @@ namespace alpaka
             struct GetWidth<
                 std::vector<TElem, TAllocator>>
             {
-                ALPAKA_FCT_HOST_ACC static UInt getWidth(
+                ALPAKA_FCT_HOST_ACC static auto getWidth(
                     std::vector<TElem, TAllocator> const & extent)
+                -> UInt
                 {
                     return extent.size();
                 }
@@ -539,8 +560,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static Vec<1u> getOffsets(
+                ALPAKA_FCT_HOST static auto getOffsets(
                     std::vector<TElem, TAllocator> const &)
+                -> Vec<1u>
                 {
                     return Vec<1u>(0u);
                 }
@@ -585,16 +607,18 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::vector<TElem, TAllocator> const & getBuf(
+                ALPAKA_FCT_HOST static auto getBuf(
                     std::vector<TElem, TAllocator> const & buf)
+                -> std::vector<TElem, TAllocator> const &
                 {
                     return buf;
                 }
                 //-----------------------------------------------------------------------------
                 //! 
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::vector<TElem, TAllocator> & getBuf(
+                ALPAKA_FCT_HOST static auto getBuf(
                     std::vector<TElem, TAllocator> & buf)
+                -> std::vector<TElem, TAllocator> &
                 {
                     return buf;
                 }
@@ -609,13 +633,15 @@ namespace alpaka
             struct GetNativePtr<
                 std::vector<TElem, TAllocator>>
             {
-                ALPAKA_FCT_HOST_ACC static TElem const * getNativePtr(
+                ALPAKA_FCT_HOST_ACC static auto getNativePtr(
                     std::vector<TElem, TAllocator> const & buf)
+                -> TElem const *
                 {
                     return buf.data();
                 }
-                ALPAKA_FCT_HOST_ACC static TElem * getNativePtr(
+                ALPAKA_FCT_HOST_ACC static auto getNativePtr(
                     std::vector<TElem, TAllocator> & buf)
+                -> TElem *
                 {
                     return buf.data();
                 }
@@ -630,8 +656,9 @@ namespace alpaka
             struct GetPitchBytes<
                 std::vector<TElem, TAllocator>>
             {
-                ALPAKA_FCT_HOST_ACC static UInt getPitchBytes(
+                ALPAKA_FCT_HOST_ACC static auto getPitchBytes(
                     std::vector<TElem, TAllocator> const & pitch)
+                -> UInt
                 {
                     return sizeof(TElem) * pitch.size();
                 }

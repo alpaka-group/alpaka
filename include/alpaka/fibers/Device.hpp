@@ -66,18 +66,20 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DevFibers & operator=(DevFibers const &) = default;
+                ALPAKA_FCT_HOST auto operator=(DevFibers const &) -> DevFibers & = default;
                 //-----------------------------------------------------------------------------
                 //! Equality comparison operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST bool operator==(DevFibers const &) const
+                ALPAKA_FCT_HOST auto operator==(DevFibers const &) const
+                -> bool
                 {
                     return true;
                 }
                 //-----------------------------------------------------------------------------
                 //! Inequality comparison operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST bool operator!=(DevFibers const & rhs) const
+                ALPAKA_FCT_HOST auto operator!=(DevFibers const & rhs) const
+                -> bool
                 {
                     return !((*this) == rhs);
                 }
@@ -97,15 +99,17 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of devices available.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::size_t getDevCount()
+                ALPAKA_FCT_HOST static auto getDevCount()
+                -> std::size_t
                 {
                     return 1;
                 }
                 //-----------------------------------------------------------------------------
                 //! \return The number of devices available.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static fibers::detail::DevFibers getDevByIdx(
+                ALPAKA_FCT_HOST static auto getDevByIdx(
                     std::size_t const & uiIdx)
+                -> fibers::detail::DevFibers
                 {
                     std::size_t const uiNumDevices(getDevCount());
                     if(uiIdx >= uiNumDevices)
@@ -120,15 +124,17 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The handle to the currently used device.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static fibers::detail::DevFibers getCurrentDev()
+                ALPAKA_FCT_HOST static auto getCurrentDev()
+                -> fibers::detail::DevFibers
                 {
                     return {};
                 }
                 //-----------------------------------------------------------------------------
                 //! Sets the device to use with this accelerator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static void setCurrentDev(
+                ALPAKA_FCT_HOST static auto setCurrentDev(
                     fibers::detail::DevFibers const & )
+                -> void
                 {
                     // The code is already running on this device.
                 }
@@ -167,8 +173,9 @@ namespace alpaka
             struct GetDevProps<
                 fibers::detail::DevFibers>
             {
-                ALPAKA_FCT_HOST static alpaka::dev::DevProps getDevProps(
+                ALPAKA_FCT_HOST static auto getDevProps(
                     fibers::detail::DevFibers const &)
+                -> alpaka::dev::DevProps
                 {
 #if ALPAKA_INTEGRATION_TEST
                     UInt const uiBlockThreadsCountMax(24u);
@@ -220,8 +227,9 @@ namespace alpaka
             struct CurrentThreadWaitFor<
                 fibers::detail::DevFibers>
             {
-                ALPAKA_FCT_HOST static void currentThreadWaitFor(
+                ALPAKA_FCT_HOST static auto currentThreadWaitFor(
                     fibers::detail::DevFibers const &)
+                -> void
                 {
                     // Because host calls are not asynchronous, this call never has to wait.
                 }

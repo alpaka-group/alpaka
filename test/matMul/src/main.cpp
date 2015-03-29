@@ -71,7 +71,7 @@ public:
         typename TAcc,
         typename TElem,
         typename TIndex>
-    ALPAKA_FCT_ACC void operator()(
+    ALPAKA_FCT_ACC auto operator()(
         TAcc const & acc,
         TIndex const & uiL,
         TIndex const & uiM,
@@ -82,6 +82,7 @@ public:
         TIndex const & uiPitchElemB,
         TElem * const C,
         TIndex const & uiPitchElemC) const
+    -> void
     {
         // Column and row of C to calculate.
         auto const v2uiGridThreadIdx(acc.template getIdx<alpaka::Grid, alpaka::Threads>().template subVec<2u>());
@@ -236,11 +237,12 @@ struct MatMulTester
 {
     template<
         typename TAcc>
-    void operator()(
+    auto operator()(
         std::size_t const & uiL,
         std::size_t const & uiM,
         std::size_t const & uiN,
         bool const & bAdaptiveBlockThreadExtent)
+    -> void
     {
         std::cout << std::endl;
         std::cout << "################################################################################" << std::endl;
@@ -377,9 +379,10 @@ public:
 //-----------------------------------------------------------------------------
 //! Program entry point.
 //-----------------------------------------------------------------------------
-int main(
+auto main(
     int argc,
     char * argv[])
+-> int
 {
     try
     {

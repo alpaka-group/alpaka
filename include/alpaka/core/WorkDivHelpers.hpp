@@ -53,8 +53,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TAcc>
-                ALPAKA_FCT_HOST void operator()(
+                ALPAKA_FCT_HOST auto operator()(
                     Vec<3u> & v3uiBlockThreadExtents)
+                -> void
                 {
                     auto const devProps(dev::getDevProps(dev::DevManT<TAcc>::getCurrentDev()));
                     auto const & v3uiBlockThreadExtentsMax(devProps.m_v3uiBlockThreadExtentsMax);
@@ -72,7 +73,8 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TAccSeq>
-        ALPAKA_FCT_HOST Vec<3u> getMaxBlockThreadExtentsAccelerators()
+        ALPAKA_FCT_HOST auto getMaxBlockThreadExtentsAccelerators()
+        -> Vec<3u>
         {
             static_assert(
                 boost::mpl::is_sequence<TAccSeq>::value, 
@@ -103,8 +105,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TAcc>
-                ALPAKA_FCT_HOST void operator()(
+                ALPAKA_FCT_HOST auto operator()(
                     UInt & uiBlockThreadCount)
+                -> void
                 {
                     auto const devProps(dev::getDevProps(dev::DevManT<TAcc>::getCurrentDev()));
                     auto const & uiBlockThreadCountMax(devProps.m_uiBlockThreadsCountMax);
@@ -119,7 +122,8 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TAccSeq>
-        ALPAKA_FCT_HOST UInt getMaxBlockThreadCountAccelerators()
+        ALPAKA_FCT_HOST auto getMaxBlockThreadCountAccelerators()
+        -> UInt
         {
             static_assert(boost::mpl::is_sequence<TAccSeq>::value, "TAccSeq is required to be a mpl::sequence!");
 
@@ -146,9 +150,10 @@ namespace alpaka
             template<
                 typename T,
                 typename = typename std::enable_if<std::is_integral<T>::value && std::is_unsigned<T>::value>::type>
-            ALPAKA_FCT_HOST T nextLowerOrEqualFactor(
+            ALPAKA_FCT_HOST auto nextLowerOrEqualFactor(
                 T const & uiMaxDivisor, 
                 T const & uiDividend)
+            -> T
             {
                 T uiDivisor(uiMaxDivisor);
                 // \TODO: This is not very efficient. Replace with a better algorithm.
@@ -179,11 +184,12 @@ namespace alpaka
             //!     This means that all values of the extent will be processed uniformly at the same time.
             //!     This can lead to smaller blocks but allows to keep the ratio between dimensions (in some limits due to integer rounding).
             //#############################################################################
-            ALPAKA_FCT_HOST BasicWorkDiv subdivideGridThreads(
+            ALPAKA_FCT_HOST auto subdivideGridThreads(
                 Vec<3u> const & v3uiGridThreadExtents,
                 Vec<3u> const & v3uiMaxBlockThreadExtents,
                 UInt const & uiMaxBlockThreadsCount,
                 bool bRequireBlockThreadExtentsToDivideGridThreadExtents = true)
+            -> BasicWorkDiv
             {
                 assert(v3uiGridThreadExtents[0u]>0);
                 assert(v3uiGridThreadExtents[1u]>0);
@@ -236,9 +242,10 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TAccSeq>
-        ALPAKA_FCT_HOST BasicWorkDiv getValidWorkDiv(
+        ALPAKA_FCT_HOST auto getValidWorkDiv(
             Vec<3u> const & v3uiGridThreadExtents,
             bool bRequireBlockThreadExtentsToDivideGridThreadExtents = true)
+        -> BasicWorkDiv
         {
             static_assert(boost::mpl::is_sequence<TAccSeq>::value, "TAccSeq is required to be a mpl::sequence!");
 
@@ -257,8 +264,9 @@ namespace alpaka
         template<
             typename TAcc,
             typename TWorkDiv>
-        ALPAKA_FCT_HOST bool isValidWorkDiv(
+        ALPAKA_FCT_HOST auto isValidWorkDiv(
             TWorkDiv const & workDiv)
+        -> bool
         {
             auto const v3uiGridBlockExtents(getWorkDiv<Grid, Blocks, dim::Dim3>(workDiv));
             auto const v3uiBlockThreadExtents(getWorkDiv<Block, Threads, dim::Dim3>(workDiv));

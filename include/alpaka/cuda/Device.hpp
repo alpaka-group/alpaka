@@ -66,18 +66,20 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DevCuda & operator=(DevCuda const &) = default;
+                ALPAKA_FCT_HOST auto operator=(DevCuda const &) -> DevCuda & = default;
                 //-----------------------------------------------------------------------------
                 //! Equality comparison operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST bool operator==(DevCuda const & rhs) const
+                ALPAKA_FCT_HOST auto operator==(DevCuda const & rhs) const
+                -> bool
                 {
                     return m_iDevice == rhs.m_iDevice;
                 }
                 //-----------------------------------------------------------------------------
                 //! Inequality comparison operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST bool operator!=(DevCuda const & rhs) const
+                ALPAKA_FCT_HOST auto operator!=(DevCuda const & rhs) const
+                -> bool
                 {
                     return !((*this) == rhs);
                 }
@@ -106,7 +108,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of devices available.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static std::size_t getDevCount()
+                ALPAKA_FCT_HOST static auto getDevCount()
+                -> std::size_t
                 {
                     int iNumDevices(0);
                     ALPAKA_CUDA_CHECK(cudaGetDeviceCount(&iNumDevices));
@@ -116,8 +119,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of devices available.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static cuda::detail::DevCuda getDevByIdx(
+                ALPAKA_FCT_HOST static auto getDevByIdx(
                     std::size_t const & uiIdx)
+                -> cuda::detail::DevCuda
                 {
                     cuda::detail::DevCuda device;
 
@@ -138,7 +142,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The handle to the currently used device.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static cuda::detail::DevCuda getCurrentDev()
+                ALPAKA_FCT_HOST static auto getCurrentDev()
+                -> cuda::detail::DevCuda
                 {
                     cuda::detail::DevCuda device;
                     ALPAKA_CUDA_CHECK(cudaGetDevice(&device.m_iDevice));
@@ -147,8 +152,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Sets the device to use with this accelerator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static void setCurrentDev(
+                ALPAKA_FCT_HOST static auto setCurrentDev(
                     cuda::detail::DevCuda const & device)
+                -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -209,8 +215,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Prints all the device properties to std::cout.
                 //-----------------------------------------------------------------------------
-                static void printDeviceProperties(
+                static auto printDeviceProperties(
                     cudaDeviceProp const & devProp)
+                -> void
                 {
                     std::size_t const uiKiB(1024);
                     std::size_t const uiMiB(uiKiB * uiKiB);
@@ -301,8 +308,9 @@ namespace alpaka
             struct GetDevProps<
                 cuda::detail::DevCuda>
             {
-                ALPAKA_FCT_HOST static alpaka::dev::DevProps getDevProps(
+                ALPAKA_FCT_HOST static auto getDevProps(
                     cuda::detail::DevCuda const & device)
+                -> alpaka::dev::DevProps
                 {
                     cudaDeviceProp cudaDevProp;
                     ALPAKA_CUDA_CHECK(cudaGetDeviceProperties(&cudaDevProp, device.m_iDevice));
@@ -353,8 +361,9 @@ namespace alpaka
             struct CurrentThreadWaitFor<
                 cuda::detail::DevCuda>
             {
-                ALPAKA_FCT_HOST static void currentThreadWaitFor(
+                ALPAKA_FCT_HOST static auto currentThreadWaitFor(
                     cuda::detail::DevCuda const & device)
+                -> void
                 {
                     // \TODO: This should be secured by a lock.
 

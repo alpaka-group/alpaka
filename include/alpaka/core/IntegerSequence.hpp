@@ -41,7 +41,8 @@ namespace alpaka
             typedef integer_sequence<T, TVals...> type;
             typedef T value_type;
 
-            static std::size_t size() noexcept
+            static auto size() noexcept
+            -> std::size_t
             {
                 return (sizeof...(TVals));
             }

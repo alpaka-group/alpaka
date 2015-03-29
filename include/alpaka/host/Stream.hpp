@@ -58,18 +58,20 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST StreamHost & operator=(StreamHost const &) = default;
+                ALPAKA_FCT_HOST auto operator=(StreamHost const &) -> StreamHost & = default;
                 //-----------------------------------------------------------------------------
                 //! Equality comparison operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST bool operator==(StreamHost const &) const
+                ALPAKA_FCT_HOST auto operator==(StreamHost const &) const
+                -> bool
                 {
                     return true;
                 }
                 //-----------------------------------------------------------------------------
                 //! Inequality comparison operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST bool operator!=(StreamHost const & rhs) const
+                ALPAKA_FCT_HOST auto operator!=(StreamHost const & rhs) const
+                -> bool
                 {
                     return !((*this) == rhs);
                 }
@@ -94,8 +96,9 @@ namespace alpaka
                 TStream,
                 typename std::enable_if<std::is_base_of<host::detail::StreamHost, TStream>::value>::type>
             {
-                ALPAKA_FCT_HOST static bool streamTest(
+                ALPAKA_FCT_HOST static auto streamTest(
                     TStream const & stream)
+                -> bool
                 {
                     boost::ignore_unused(stream);
                     // Because host calls are not asynchronous, this call always returns true.
@@ -115,8 +118,9 @@ namespace alpaka
                 TStream,
                 typename std::enable_if<std::is_base_of<host::detail::StreamHost, TStream>::value>::type>
             {
-                ALPAKA_FCT_HOST static void currentThreadWaitFor(
+                ALPAKA_FCT_HOST static auto currentThreadWaitFor(
                     TStream const & stream)
+                -> void
                 {
                     boost::ignore_unused(stream);
                     // Because host calls are not asynchronous, this call never has to wait.
@@ -136,9 +140,10 @@ namespace alpaka
                     std::is_base_of<host::detail::StreamHost, TStream>::value
                     && std::is_same<typename alpaka::acc::AccT<TStream>, typename alpaka::acc::AccT<TEvent>>::value>::type>
             {
-                ALPAKA_FCT_HOST static void waiterWaitFor(
+                ALPAKA_FCT_HOST static auto waiterWaitFor(
                     TStream const & stream,
                     TEvent const & event)
+                -> void
                 {
                     boost::ignore_unused(stream);
                     boost::ignore_unused(event);

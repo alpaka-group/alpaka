@@ -89,8 +89,9 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Copy assignment.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST BasicWorkDiv & operator=(
+            ALPAKA_FCT_HOST auto operator=(
                 BasicWorkDiv const & other)
+            -> BasicWorkDiv &
             {
                 m_v3uiGridBlockExtents = getWorkDiv<Grid, Blocks, dim::Dim3>(other);
                 m_v3uiBlockThreadExtents = getWorkDiv<Block, Threads, dim::Dim3>(other);
@@ -101,8 +102,9 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TWorkDiv>
-            ALPAKA_FCT_HOST BasicWorkDiv & operator=(
+            ALPAKA_FCT_HOST auto operator=(
                 TWorkDiv const & other)
+            -> BasicWorkDiv &
             {
                 m_v3uiGridBlockExtents = getWorkDiv<Grid, Blocks, dim::Dim3>(other);
                 m_v3uiBlockThreadExtents = getWorkDiv<Block, Threads, dim::Dim3>(other);
@@ -116,14 +118,16 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! \return The grid block extents of the currently executed thread.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST Vec<3u> getGridBlockExtents() const
+            ALPAKA_FCT_HOST auto getGridBlockExtents() const
+            -> Vec<3u>
             {
                 return m_v3uiGridBlockExtents;
             }
             //-----------------------------------------------------------------------------
             //! \return The block threads extents of the currently executed thread.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST Vec<3u> getBlockThreadExtents() const
+            ALPAKA_FCT_HOST auto getBlockThreadExtents() const
+            -> Vec<3u>
             {
                 return m_v3uiBlockThreadExtents;
             }
@@ -136,11 +140,15 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Stream out operator.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST std::ostream & operator<<(
+        ALPAKA_FCT_HOST auto operator<<(
             std::ostream & os,
             BasicWorkDiv const & workDiv)
+        -> std::ostream &
         {
-            return (os << "{GridBlockExtents: " << workDiv.getGridBlockExtents() << ", BlockThreadExtents: " << workDiv.getBlockThreadExtents() << "}");
+            return (os 
+                << "{GridBlockExtents: " << workDiv.getGridBlockExtents() 
+                << ", BlockThreadExtents: " << workDiv.getBlockThreadExtents() 
+                << "}");
         }
     }
 
@@ -161,8 +169,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of threads in each dimension of a block.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST_ACC static alpaka::DimToVecT<alpaka::dim::Dim3> getWorkDiv(
+                ALPAKA_FCT_HOST_ACC static auto getWorkDiv(
                     alpaka::workdiv::BasicWorkDiv const & workDiv)
+                -> alpaka::DimToVecT<alpaka::dim::Dim3>
                 {
                     return workDiv.getBlockThreadExtents();
                 }
@@ -181,8 +190,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of blocks in each dimension of the grid.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST_ACC static alpaka::DimToVecT<alpaka::dim::Dim3> getWorkDiv(
+                ALPAKA_FCT_HOST_ACC static auto getWorkDiv(
                     alpaka::workdiv::BasicWorkDiv const & workDiv)
+                -> alpaka::DimToVecT<alpaka::dim::Dim3>
                 {
                     return workDiv.getGridBlockExtents();
                 }
