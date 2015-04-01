@@ -19,19 +19,20 @@
 #
 
 # Options:
-#    ALPAKA_SERIAL_ENABLE {ON, OFF}
-#    ALPAKA_THREADS_ENABLE {ON, OFF}
-#    ALPAKA_FIBERS_ENABLE {ON, OFF}
-#    ALPAKA_OPENMP_ENABLE {ON, OFF}
-#    ALPAKA_CUDA_ENABLE {ON, OFF}
-#    ALPAKA_CUDA_VERSION {7.0, ...}
-#    ALPAKA_CUDA_ARCH {sm_20, sm...}
-#    ALPAKA_CUDA_SHOW_REGISTER {ON, OFF}
-#    ALPAKA_CUDA_KEEP_FILES {ON, OFF}
-#    ALPAKA_CUDA_SHOW_CODELINES {ON, OFF}
-#    ALPAKA_DEBUG {0, 1, 2}
-#    ALPAKA_INTEGRATION_TEST {ON, OFF}
-#    BOOST_REQUIRED_COMPONENTS {program_options, ...}
+#   ALPAKA_SERIAL_ENABLE {ON, OFF}
+#   ALPAKA_THREADS_ENABLE {ON, OFF}
+#   ALPAKA_FIBERS_ENABLE {ON, OFF}
+#   ALPAKA_OPENMP_ENABLE {ON, OFF}
+#   ALPAKA_CUDA_ENABLE {ON, OFF}
+#   ALPAKA_CUDA_VERSION {7.0, ...}
+#   ALPAKA_CUDA_ARCH {sm_20, sm...}
+#    ALPAKA_CUDA_FAST_MATH {ON, OFF}
+#   ALPAKA_CUDA_SHOW_REGISTER {ON, OFF}
+#   ALPAKA_CUDA_KEEP_FILES {ON, OFF}
+#   ALPAKA_CUDA_SHOW_CODELINES {ON, OFF}
+#   ALPAKA_DEBUG {0, 1, 2}
+#   ALPAKA_INTEGRATION_TEST {ON, OFF}
+#   BOOST_REQUIRED_COMPONENTS {program_options, ...}
 
 ################################################################################
 # Required CMake version.
@@ -89,7 +90,7 @@ ENDIF()
 # Debug options.
 ################################################################################
 OPTION(ALPAKA_DEBUG "Debug level [0,1,2]" 0)
-IF(ALPAKA_DEBUG)
+IF(${ALPAKA_DEBUG} GREATER 0)
     LIST(APPEND ALPAKA_COMPILE_DEFINITIONS "ALPAKA_DEBUG=${ALPAKA_DEBUG}")
     LIST(APPEND ALPAKA_COMPILE_DEFINITIONS "NDEBUG")
 ELSE()
@@ -162,39 +163,51 @@ IF(ALPAKA_CUDA_ENABLE)
     STRING(COMPARE EQUAL ${ALPAKA_CUDA_ARCH} "sm_13" IS_CUDA_ARCH_UNSUPPORTED)
 
     IF(IS_CUDA_ARCH_UNSUPPORTED)
-        MESSAGE(FATAL_ERROR "Unsupported CUDA architecture ${ALPAKA_CUDA_ARCH} specified. SM 2.0 or higher is required.")
+        MESSAGE(FATAL_ERROR "Unsupported CUDA architecture ${ALPAKA_CUDA_ARCH} specified. SM 2.0 or higher is required for CUDA 7.0.")
     ENDIF(IS_CUDA_ARCH_UNSUPPORTED)
+
+    LIST(APPEND CUDA_NVCC_FLAGS -arch=${ALPAKA_CUDA_ARCH})
     
     IF(NOT MSVC)
         LIST(APPEND CUDA_NVCC_FLAGS -std=c++11)
         SET(CUDA_HOST_COMPILER ${CMAKE_CXX_COMPILER})
     ENDIF()
     
-    SET(CUDA_FTZ "--ftz=false" CACHE STRING "Set flush to zero for GPU")
-    SET(CUDA_MATH "--use_fast_math" CACHE STRING "Enable fast-math")
-    
-    IF(ALPAKA_DEBUG)
-        LIST(APPEND CUDA_NVCC_FLAGS "-G")
+    IF(CMAKE_BUILD_TYPE MATCHES "Debug")
+        LIST(APPEND CUDA_NVCC_FLAGS -g -G)
     ENDIF()
 
-    LIST(APPEND CUDA_NVCC_FLAGS -arch=${ALPAKA_CUDA_ARCH} ${CUDA_MATH} ${CUDA_FTZ})
+    OPTION(ALPAKA_CUDA_FAST_MATH "Enable fast-math" ON)
+    IF(ALPAKA_CUDA_FAST_MATH)
+        LIST(APPEND CUDA_NVCC_FLAGS --use_fast_math)
+    ENDIF()
 
+    OPTION(ALPAKA_CUDA_FAST_MATH "Set flush to zero for GPU" OFF)
+    IF(ALPAKA_CUDA_FAST_MATH)
+        LIST(APPEND CUDA_NVCC_FLAGS --ftz=true)
+    ELSE()
+        LIST(APPEND CUDA_NVCC_FLAGS --ftz=false)
+    ENDIF()
+    
     OPTION(ALPAKA_CUDA_SHOW_REGISTER "Show kernel registers and create PTX" OFF)
     IF(ALPAKA_CUDA_SHOW_REGISTER)
         LIST(APPEND CUDA_NVCC_FLAGS -Xptxas=-v)
-    ENDIF(ALPAKA_CUDA_SHOW_REGISTER)
+    ENDIF()
 
     OPTION(ALPAKA_CUDA_KEEP_FILES "Keep all intermediate files that are generated during internal compilation steps (folder: nvcc_tmp)" OFF)
     IF(ALPAKA_CUDA_KEEP_FILES)
         MAKE_DIRECTORY("${PROJECT_BINARY_DIR}/nvcc_tmp")
         LIST(APPEND CUDA_NVCC_FLAGS --keep --keep-dir "${PROJECT_BINARY_DIR}/nvcc_tmp")
-    ENDIF(ALPAKA_CUDA_KEEP_FILES)
+    ENDIF()
 
     OPTION(ALPAKA_CUDA_SHOW_CODELINES "Show kernel lines in cuda-gdb and cuda-memcheck" OFF)
     IF(ALPAKA_CUDA_SHOW_CODELINES)
-        LIST(APPEND CUDA_NVCC_FLAGS --source-in-ptx -Xcompiler -rdynamic -lineinfo)
+        LIST(APPEND CUDA_NVCC_FLAGS --source-in-ptx -lineinfo)
+        IF(NOT MSVC)
+            LIST(APPEND CUDA_NVCC_FLAGS -Xcompiler -rdynamic)
+        ENDIF()
         SET(ALPAKA_CUDA_KEEP_FILES ON CACHE BOOL "activate keep files" FORCE)
-    ENDIF(ALPAKA_CUDA_SHOW_CODELINES)
+    ENDIF()
 
     IF(${CUDA_CUDART_LIBRARY})
         LIST(APPEND ALPAKA_LIBRARY_DEPENDENCIES general ${CUDA_CUDART_LIBRARY})

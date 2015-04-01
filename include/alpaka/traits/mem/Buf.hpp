@@ -24,7 +24,7 @@
 #include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST
 
 #include <alpaka/traits/Dim.hpp>        // DimT
-#include <alpaka/traits/Extents.hpp>    // traits::getXXX
+#include <alpaka/traits/Extent.hpp>     // traits::getXXX
 #include <alpaka/traits/mem/Space.hpp>  // SpaceT
 #include <alpaka/traits/mem/Buf.hpp>    // Alloc
 #include <alpaka/traits/mem/View.hpp>   // ViewType

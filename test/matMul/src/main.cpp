@@ -267,11 +267,10 @@ struct MatMulTester
         );
         
         // Let alpaka calculate good block and grid sizes given our full problem extents.
-        alpaka::Vec<3u> v3uiGridThreads(static_cast<alpaka::Vec<3u>::Val>(uiN), static_cast<alpaka::Vec<3u>::Val>(uiL), static_cast<alpaka::Vec<3u>::Val>(1u));
         alpaka::workdiv::BasicWorkDiv workDiv(
             bAdaptiveBlockThreadExtent
-            ? alpaka::workdiv::getValidWorkDiv<boost::mpl::vector<TAcc>>(v3uiGridThreads, false)
-            : alpaka::workdiv::getValidWorkDiv<alpaka::acc::EnabledAccelerators>(v3uiGridThreads, false));
+            ? alpaka::workdiv::getValidWorkDiv<boost::mpl::vector<TAcc>>(v2uiExtentsC, false)
+            : alpaka::workdiv::getValidWorkDiv<alpaka::acc::EnabledAccelerators>(v2uiExtentsC, false));
         // Assure that the extents are square.
         auto const uiMinExtent(std::min(workDiv.m_v3uiBlockThreadExtents[0u], workDiv.m_v3uiBlockThreadExtents[1u]));
         workDiv.m_v3uiGridBlockExtents[0u] = static_cast<alpaka::Vec<3u>::Val>(std::ceil(static_cast<double>(uiN) / static_cast<double>(uiMinExtent)));
@@ -454,7 +453,7 @@ auto main(
                         std::cout << std::endl;
 
                         // Execute the kernel on all enabled accelerators.
-                        alpaka::ForEachType<alpaka::acc::EnabledAccelerators>(
+                        alpaka::forEachType<alpaka::acc::EnabledAccelerators>(
                             matMulTester,
                             uiL, uiM, uiN,
                             bAdaptiveBlockThreadExtent);

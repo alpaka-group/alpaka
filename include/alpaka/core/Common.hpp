@@ -26,7 +26,8 @@
 #include <boost/predef.h>           // workarounds
 
 #include <type_traits>              // std::remove_cv
-#include <cstddef>                  // std::size_t, std::uint32_t
+#include <cstddef>                  // std::size_t
+#include <cstdint>                    // std::uint32_t
 
 //-----------------------------------------------------------------------------
 //! Disable nvcc warning:

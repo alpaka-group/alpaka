@@ -44,15 +44,18 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Constructor from values.
             //-----------------------------------------------------------------------------
+            template<
+                typename TGridBlockExtents,
+                typename TBlockThreadExtents>
             ALPAKA_FCT_HOST
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
             explicit 
 #endif
             BasicWorkDiv(
-                Vec<3u> const & v3uiGridBlockExtent, 
-                Vec<3u> const & v3uiBlockThreadExtents) :
-                m_v3uiGridBlockExtents(v3uiGridBlockExtent),
-                m_v3uiBlockThreadExtents(v3uiBlockThreadExtents)
+                TGridBlockExtents const & gridBlockExtent = TGridBlockExtents(),
+                TBlockThreadExtents const & blockThreadExtents = TBlockThreadExtents()) :
+                m_v3uiGridBlockExtents(Vec<3u>::fromExtents(gridBlockExtent)),
+                m_v3uiBlockThreadExtents(Vec<3u>::fromExtents(blockThreadExtents))
             {}
             //-----------------------------------------------------------------------------
             //! Copy constructor.

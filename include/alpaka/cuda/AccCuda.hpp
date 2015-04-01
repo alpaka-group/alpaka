@@ -202,7 +202,6 @@ namespace alpaka
                     // See: http://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#shared
                     // http://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#vector-types
                     extern __shared__ float4 shMem[];
-                    //printf("s %p\n", shMem);
                     return reinterpret_cast<T *>(shMem);
                 }
             };
@@ -233,10 +232,6 @@ namespace alpaka
             //#############################################################################
             class KernelExecCuda
             {
-#if (!__GLIBCXX__) // libstdc++ even for gcc-4.9 does not support std::is_trivially_copyable.
-                static_assert(std::is_trivially_copyable<TKernelFunctor>::value, "The given kernel functor has to fulfill is_trivially_copyable!");
-#endif
-
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
@@ -324,21 +319,34 @@ namespace alpaka
                         m_v3uiBlockThreadExtents, 
                         std::forward<TArgs>(args)...));
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                    // Log the block shared memory size.
                     std::cout << BOOST_CURRENT_FUNCTION
                         << " BlockSharedExternMemSizeBytes: " << uiBlockSharedExternMemSizeBytes << " B"
                         << std::endl;
 #endif
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                    // Log the function attributes.
+                    cudaFuncAttributes funcAttrs;
+                    cudaFuncGetAttributes(&funcAttrs, cudaKernel<TKernelFunctor, TArgs...>);
+                    std::cout << BOOST_CURRENT_FUNCTION
+                        << "binaryVersion: " << funcAttrs.binaryVersion
+                        << "constSizeBytes: " << funcAttrs.constSizeBytes << " B"
+                        << "localSizeBytes: " << funcAttrs.localSizeBytes << " B"
+                        << "maxThreadsPerBlock: " << funcAttrs.maxThreadsPerBlock
+                        << "numRegs: " << funcAttrs.numRegs
+                        << "ptxVersion: " << funcAttrs.ptxVersion
+                        << "sharedSizeBytes: " << funcAttrs.sharedSizeBytes << " B"
+                        << std::endl;
+#endif
 
-                    // \TODO: The following block should be in a lock.
-                    {
-                        cudaKernel<TKernelFunctor, TArgs...><<<
-                            gridDim,
-                            blockDim,
-                            uiBlockSharedExternMemSizeBytes,
-                            *m_Stream.m_spCudaStream.get()>>>(
-                                kernelFunctor,
-                                args...);
-                    }
+                    cudaKernel<TKernelFunctor, TArgs...><<<
+                        gridDim,
+                        blockDim,
+                        uiBlockSharedExternMemSizeBytes,
+                        *m_Stream.m_spCudaStream.get()>>>(
+                            kernelFunctor,
+                            args...);
+                    
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                     // Wait for the kernel execution to finish but do not check error return of this call.
                     // Do not use the alpaka::wait method because it checks the error itself but we want to give a custom error message.

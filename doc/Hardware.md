@@ -2,7 +2,7 @@ Hardware
 ========
 
 Before the abstraction can be defined all possible ways parallelism can be utilised in current and in future hardware has to be considered.
-On the one side there are current multi-core multi-socket CPUs and on the other hand there are special many-core accelerators like GPUs, the Intel XeonPhi and many more.
+On the one side there are current multi-core multi-socket CPUs and on the other hand there are special many-core accelerators like GPUs, the Intel Xeon Phi and many more.
 
 **alpaka** defines an abstract acceleration model that treats and allows to program all of these hardware types in the same way.
 
@@ -13,6 +13,8 @@ GPUs
 ### CUDA
 
 **TODO**
+
+**TODO**: Memory Coalescing
 
 
 CPUs

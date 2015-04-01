@@ -39,7 +39,7 @@
 
 #include <alpaka/traits/Acc.hpp>            // traits::GetAccName
 
-#include <alpaka/core/ForEachType.hpp>      // ForEachType
+#include <alpaka/core/ForEachType.hpp>      // forEachType
 #include <alpaka/core/WorkDivHelpers.hpp>   // getMaxBlockThreadExtentsAccelerators
 
 #include <boost/mpl/vector.hpp>             // boost::mpl::vector
@@ -143,7 +143,7 @@ namespace alpaka
         {
             os << "Accelerators enabled: ";
 
-            ForEachType<EnabledAccelerators>(
+            forEachType<EnabledAccelerators>(
                 detail::GetAccName(), 
                 std::ref(os)
                 );

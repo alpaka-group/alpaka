@@ -26,8 +26,8 @@
 #include <alpaka/core/IntegerSequence.hpp>    // 
 
 #include <alpaka/traits/Dim.hpp>    // traits::getDim
-#include <alpaka/traits/Extents.hpp>// traits::getWidth, ...
-#include <alpaka/traits/Offsets.hpp>// traits::getOffsetX, ...
+#include <alpaka/traits/Extent.hpp> // traits::getWidth, ...
+#include <alpaka/traits/Offset.hpp> // traits::getOffsetX, ...
 
 #include <boost/mpl/and.hpp>        // boost::mpl::and_
 //#include <boost/type_traits/is_convertible.hpp>
@@ -112,8 +112,8 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TExtents,
-            UInt TuiDim2 = TuiDim,
-            typename = typename std::enable_if<TuiDim2 == 1>::type>
+            UInt TuiDimSfinae = TuiDim,
+            typename = typename std::enable_if<TuiDimSfinae == 1>::type>
         ALPAKA_FCT_HOST_ACC static auto fromExtents(
             TExtents const & extents)
         -> Vec<1u, TVal>
@@ -126,8 +126,8 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TExtents,
-            UInt TuiDim2 = TuiDim,
-            typename = typename std::enable_if<TuiDim2 == 2>::type>
+            UInt TuiDimSfinae = TuiDim,
+            typename = typename std::enable_if<TuiDimSfinae == 2>::type>
         ALPAKA_FCT_HOST_ACC static auto fromExtents(
             TExtents const & extents)
         -> Vec<2u, TVal>
@@ -141,8 +141,8 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TExtents,
-            UInt TuiDim2 = TuiDim,
-            typename = typename std::enable_if<TuiDim2 == 3>::type>
+            UInt TuiDimSfinae = TuiDim,
+            typename = typename std::enable_if<TuiDimSfinae == 3>::type>
         ALPAKA_FCT_HOST_ACC static auto fromExtents(
             TExtents const & extents)
         -> Vec<3u, TVal>
@@ -157,8 +157,8 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TOffsets,
-            UInt TuiDim2 = TuiDim,
-            typename = typename std::enable_if<TuiDim2 == 1>::type>
+            UInt TuiDimSfinae = TuiDim,
+            typename = typename std::enable_if<TuiDimSfinae == 1>::type>
         ALPAKA_FCT_HOST_ACC static auto fromOffsets(
             TOffsets const & offsets)
         -> Vec<1u, TVal>
@@ -171,8 +171,8 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TOffsets,
-            UInt TuiDim2 = TuiDim,
-            typename = typename std::enable_if<TuiDim2 == 2>::type>
+            UInt TuiDimSfinae = TuiDim,
+            typename = typename std::enable_if<TuiDimSfinae == 2>::type>
         ALPAKA_FCT_HOST_ACC static auto fromOffsets(
             TOffsets const & offsets)
         -> Vec<2u, TVal>
@@ -219,7 +219,11 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Destructor.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC auto getDim() const
+#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
+        ALPAKA_FCT_HOST_ACC auto static getDim()
+#else
+        ALPAKA_FCT_HOST_ACC auto static constexpr getDim()
+#endif
         -> UInt
         {
             return TuiDim;

@@ -69,7 +69,12 @@ namespace alpaka
             TWorkDiv const & workDiv)
         -> DimToVecT<TDim>
         {
-            return traits::workdiv::GetWorkDiv<TWorkDiv, TOrigin, TUnit, TDim>::getWorkDiv(
+            return traits::workdiv::GetWorkDiv<
+                TWorkDiv, 
+                TOrigin, 
+                TUnit, 
+                TDim>
+            ::getWorkDiv(
                 workDiv);
         }
     }

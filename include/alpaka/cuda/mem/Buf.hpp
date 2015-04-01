@@ -29,7 +29,7 @@
 #include <alpaka/core/Vec.hpp>          // Vec<TDim::value>
 
 #include <alpaka/traits/mem/Buf.hpp>    // traits::Copy
-#include <alpaka/traits/Extents.hpp>    // traits::getXXX
+#include <alpaka/traits/Extent.hpp>     // traits::getXXX
 
 #include <cassert>                      // assert
 #include <memory>                       // std::shared_ptr

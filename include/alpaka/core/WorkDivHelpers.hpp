@@ -24,7 +24,7 @@
 #include <alpaka/core/Common.hpp>           // ALPAKA_FCT_HOST
 #include <alpaka/core/Vec.hpp>              // Vec
 #include <alpaka/core/BasicWorkDiv.hpp>     // workdiv::BasicWorkDiv
-#include <alpaka/core/ForEachType.hpp>      // ForEachType
+#include <alpaka/core/ForEachType.hpp>      // forEachType
 
 #include <alpaka/traits/Device.hpp>         // dev::DevManT, getDevProps
 
@@ -85,7 +85,7 @@ namespace alpaka
                 std::numeric_limits<UInt>::max(),
                 std::numeric_limits<UInt>::max());
 
-            ForEachType<TAccSeq>(
+            forEachType<TAccSeq>(
                 detail::CorrectMaxBlockThreadExtents(),
                 std::ref(v3uiMaxBlockThreadExtents)
                 );
@@ -130,7 +130,7 @@ namespace alpaka
             UInt uiMaxBlockThreadCount(
                 std::numeric_limits<UInt>::max());
 
-            ForEachType<TAccSeq>(
+            forEachType<TAccSeq>(
                 detail::CorrectMaxBlockThreadCount(),
                 std::ref(uiMaxBlockThreadCount)
                 );
@@ -237,20 +237,26 @@ namespace alpaka
 
         //-----------------------------------------------------------------------------
         //! \tparam TAccs The accelerators for which this work division has to be valid.
-        //! \param v3uiGridThreadExtents The full extents of threads in the grid.
+        //! \param gridThreadExtents The full extents of threads in the grid.
         //! \return The work division.
         //-----------------------------------------------------------------------------
         template<
-            typename TAccSeq>
+            typename TAccSeq,
+            typename TExtents>
         ALPAKA_FCT_HOST auto getValidWorkDiv(
-            Vec<3u> const & v3uiGridThreadExtents,
+            TExtents const & gridThreadExtents = TExtents(),
             bool bRequireBlockThreadExtentsToDivideGridThreadExtents = true)
         -> BasicWorkDiv
         {
-            static_assert(boost::mpl::is_sequence<TAccSeq>::value, "TAccSeq is required to be a mpl::sequence!");
+            static_assert(
+                boost::mpl::is_sequence<TAccSeq>::value, 
+                "TAccSeq is required to be a mpl::sequence!");
+            static_assert(
+                dim::DimT<TExtents>::value <= 3, 
+                "TExtents is required to have less than or equal 3 dimensions!");
 
             return detail::subdivideGridThreads(
-                v3uiGridThreadExtents,
+                Vec<3u>::fromExtents(gridThreadExtents),
                 getMaxBlockThreadExtentsAccelerators<TAccSeq>(),
                 getMaxBlockThreadCountAccelerators<TAccSeq>(),
                 bRequireBlockThreadExtentsToDivideGridThreadExtents);

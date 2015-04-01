@@ -23,8 +23,6 @@
 
 #include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST_ACC
 
-#include <alpaka/traits/Dim.hpp>        // dim::DimType
-
 #include <type_traits>                  // std::enable_if
 
 namespace alpaka
@@ -32,206 +30,220 @@ namespace alpaka
     namespace traits
     {
         //-----------------------------------------------------------------------------
-        //! The offset traits.
+        //! The extent traits.
         //-----------------------------------------------------------------------------
-        namespace offset
+        namespace extent
         {
             //#############################################################################
-            //! The offsets get trait.
+            //! The extents get trait.
             //#############################################################################
             template<
                 typename T, 
                 typename TSfinae = void>
-            struct GetOffsets;
+            struct GetExtents;
 
             //#############################################################################
-            //! The x offset get trait.
+            //! The width get trait.
             //!
-            //! If not specialized explicitly it returns 0.
+            //! If not specialized explicitly it returns 1.
             //#############################################################################
             template<
                 typename T, 
                 typename TSfinae = void>
-            struct GetOffsetX
+            struct GetWidth
             {
-                ALPAKA_FCT_HOST_ACC static auto getOffsetX(
+                ALPAKA_FCT_HOST_ACC static auto getWidth(
                     T const &)
                 -> UInt
                 {
-                    return static_cast<UInt>(0u);
+                    return static_cast<UInt>(1u);
                 }
             };
             //#############################################################################
-            //! The y offset get trait.
+            //! The height get trait.
             //!
-            //! If not specialized explicitly it returns 0.
+            //! If not specialized explicitly it returns 1.
             //#############################################################################
             template<
                 typename T, 
                 typename TSfinae = void>
-            struct GetOffsetY
+            struct GetHeight
             {
-                ALPAKA_FCT_HOST_ACC static auto getOffsetY(
+                ALPAKA_FCT_HOST_ACC static auto getHeight(
                     T const &)
                 -> UInt
                 {
-                    return static_cast<UInt>(0u);
+                    return static_cast<UInt>(1u);
                 }
             };
             //#############################################################################
-            //! The z offset get trait.
+            //! The depth get trait.
             //!
-            //! If not specialized explicitly it returns 0.
+            //! If not specialized explicitly it returns 1.
             //#############################################################################
             template<
                 typename T, 
                 typename TSfinae = void>
-            struct GetOffsetZ
+            struct GetDepth
             {
-                ALPAKA_FCT_HOST_ACC static auto getOffsetZ(
+                ALPAKA_FCT_HOST_ACC static auto getDepth(
                     T const &)
                 -> UInt
                 {
-                    return static_cast<UInt>(0u);
+                    return static_cast<UInt>(1u);
                 }
             };
 
             //#############################################################################
-            //! The x offset set trait.
+            //! The width set trait.
             //#############################################################################
             template<
                 typename T, 
                 typename TSfinae = void>
-            struct SetOffsetX;
+            struct SetWidth;
             //#############################################################################
-            //! The y offset set trait.
-            //#############################################################################
-            template<
-                typename T, 
-                typename TSfinae = void>
-            struct SetOffsetY;
-            //#############################################################################
-            //! The z offset set trait.
+            //! The height set trait.
             //#############################################################################
             template<
                 typename T, 
                 typename TSfinae = void>
-            struct SetOffsetZ;
+            struct SetHeight;
+            //#############################################################################
+            //! The depth set trait.
+            //#############################################################################
+            template<
+                typename T, 
+                typename TSfinae = void>
+            struct SetDepth;
         }
     }
 
     //-----------------------------------------------------------------------------
-    //! The offset trait accessors.
+    //! The extent trait accessors.
     //-----------------------------------------------------------------------------
-    namespace offset
+    namespace extent
     {
         //-----------------------------------------------------------------------------
-        //! \return The offsets.
+        //! \return The extents.
         //-----------------------------------------------------------------------------
         template<
-            typename TOffsets>
-        ALPAKA_FCT_HOST_ACC auto getOffsets(
-            TOffsets const & offsets)
-        -> decltype(traits::offset::GetOffsets<TOffsets>::getOffsets(std::declval<TOffsets const &>()))
+            typename TExtents>
+        ALPAKA_FCT_HOST_ACC auto getExtents(
+            TExtents const & extents = TExtents())
+        -> decltype(traits::extent::GetExtents<TExtents>::getExtents(std::declval<TExtents const &>()))
         {
-            return traits::offset::GetOffsets<
-                TOffsets>
-            ::getOffsets(
-                offsets);
+            return traits::extent::GetExtents<
+                TExtents>
+            ::template getExtents(
+                extents);
         }
         //-----------------------------------------------------------------------------
-        //! \return The x offset.
+        //! \return The width.
         //-----------------------------------------------------------------------------
         template<
-            typename TOffsets>
-        ALPAKA_FCT_HOST_ACC auto getOffsetX(
-            TOffsets const & offsets)
+            typename TExtents>
+        ALPAKA_FCT_HOST_ACC auto getWidth(
+            TExtents const & extents = TExtents())
         -> UInt
         {
-            return traits::offset::GetOffsetX<
-                TOffsets>
-            ::getOffsetX(
-                offsets);
+            return traits::extent::GetWidth<
+                TExtents>
+            ::getWidth(
+                extents);
         }
         //-----------------------------------------------------------------------------
-        //! \return The y offset.
+        //! \return The height.
         //-----------------------------------------------------------------------------
         template<
-            typename TOffsets>
-        ALPAKA_FCT_HOST_ACC auto getOffsetY(
-            TOffsets const & offsets)
+            typename TExtents>
+        ALPAKA_FCT_HOST_ACC auto getHeight(
+            TExtents const & extents = TExtents())
         -> UInt
         {
-            return traits::offset::GetOffsetY<
-                TOffsets>
-            ::getOffsetY(
-                offsets);
+            return traits::extent::GetHeight<
+                TExtents>
+            ::getHeight(
+                extents);
         }
         //-----------------------------------------------------------------------------
-        //! \return The z offset.
+        //! \return The depth.
         //-----------------------------------------------------------------------------
         template<
-            typename TOffsets>
-        ALPAKA_FCT_HOST_ACC auto getOffsetZ(
-            TOffsets const & offsets)
+            typename TExtents>
+        ALPAKA_FCT_HOST_ACC auto getDepth(
+            TExtents const & extents = TExtents())
         -> UInt
         {
-            return traits::offset::GetOffsetZ<
-                TOffsets>
-            ::getOffsetZ(
-                offsets);
+            return traits::extent::GetDepth<
+                TExtents>
+            ::getDepth(
+                extents);
+        }
+        //-----------------------------------------------------------------------------
+        //! \return The product of the extents.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TExtents>
+        ALPAKA_FCT_HOST_ACC auto getProductOfExtents(
+            TExtents const & extents = TExtents())
+        -> UInt
+        {
+            return
+                getWidth(extents)
+                * getHeight(extents)
+                * getDepth(extents);
         }
 
         //-----------------------------------------------------------------------------
-        //! Sets the x offset.
+        //! Sets the width.
         //-----------------------------------------------------------------------------
         template<
-            typename TOffsets,
+            typename TExtents,
             typename TInt>
-        ALPAKA_FCT_HOST_ACC auto setOffsetX(
-            TOffsets const & offsets,
-            TInt const & xOffset)
+        ALPAKA_FCT_HOST_ACC auto setWidth(
+            TExtents const & extents,
+            TInt const & width)
         -> void
         {
-            traits::offset::SetOffsetX<
-                TOffsets>
-            ::setOffsetX(
-                offsets, 
-                xOffset);
+            traits::extent::SetWidth<
+                TExtents>
+            ::setWidth(
+                extents, 
+                width);
         }
         //-----------------------------------------------------------------------------
-        //! Sets the y offset.
+        //! Sets the height.
         //-----------------------------------------------------------------------------
         template<
-            typename TOffsets,
+            typename TExtents,
             typename TInt>
-        ALPAKA_FCT_HOST_ACC auto setOffsetY(
-            TOffsets const & offsets,
-            TInt const & yOffset)
+        ALPAKA_FCT_HOST_ACC auto setHeight(
+            TExtents const & extents,
+            TInt const & height)
         -> void
         {
-            traits::offset::SetOffsetY<
-                TOffsets>
-            ::setOffsetY(
-                offsets, 
-                yOffset);
+            traits::extent::SetHeight<
+                TExtents>
+            ::setHeight(
+                extents, 
+                height);
         }
         //-----------------------------------------------------------------------------
-        //! Sets the z offset.
+        //! Sets the depth.
         //-----------------------------------------------------------------------------
         template<
-            typename TOffsets,
+            typename TExtents,
             typename TInt>
-        ALPAKA_FCT_HOST_ACC auto setOffsetZ(
-            TOffsets const & offsets,
-            TInt const & zOffset)
+        ALPAKA_FCT_HOST_ACC auto setDepth(
+            TExtents const & extents,
+            TInt const & depth)
         -> void
         {
-            traits::offset::SetOffsetZ<
-                TOffsets>
-            ::setOffsetZ(
-                offsets, 
-                zOffset);
+            traits::extent::SetDepth<
+                TExtents>
+            ::setDepth(
+                extents, 
+                depth);
         }
     }
 
@@ -240,22 +252,22 @@ namespace alpaka
     //-----------------------------------------------------------------------------
     namespace traits
     {
-        namespace offset
+        namespace extent
         {
             //#############################################################################
-            //! The unsigned integral x offset get trait specialization.
+            //! The unsigned integral width get trait specialization.
             //#############################################################################
             template<
                 typename T>
-            struct GetOffsetX<
+            struct GetWidth<
                 T,
                 typename std::enable_if<std::is_integral<T>::value && std::is_unsigned<T>::value>::type>
             {
-                ALPAKA_FCT_HOST_ACC static auto getOffsetX(
-                    T const & offset)
+                ALPAKA_FCT_HOST_ACC static auto getWidth(
+                    T const & extent)
                 -> UInt
                 {
-                    return static_cast<UInt>(offset);
+                    return static_cast<UInt>(extent);
                 }
             };
         }

@@ -78,6 +78,7 @@ Accelerators
 |Execution strategy grid-blocks|sequential|sequential|sequential|sequential|undefined|
 |Execution strategy block-threads|sequential|preemptive multitasking|cooperative multitasking|preemptive multitasking|lock-step within warps|
 
+**NOTE**: Currently the CUDA-Accelerator can not be enabled together with the Threads-Accelerator or Fibers-Accelerator.
 
 Usage
 -----

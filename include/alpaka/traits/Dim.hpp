@@ -62,7 +62,11 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename T>
+#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
         ALPAKA_FCT_HOST_ACC auto getDim()
+#else
+        ALPAKA_FCT_HOST_ACC auto constexpr getDim()
+#endif
         -> UInt
         {
             return DimT<T>::value;

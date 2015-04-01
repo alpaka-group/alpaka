@@ -24,7 +24,7 @@
 #include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST
 
 #include <alpaka/traits/Dim.hpp>        // dim::DimType
-#include <alpaka/traits/Extents.hpp>    // traits::getXXX
+#include <alpaka/traits/Extent.hpp>     // traits::getXXX
 #include <alpaka/traits/Mem.hpp>        // mem::SpaceType
 
 #include <alpaka/host/mem/Space.hpp>    // SpaceHost
@@ -122,7 +122,11 @@ namespace alpaka
                     && (std::rank<TFixedSizeArray>::value <= 3u)
                     && (std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 1u>::value > 0u)>::type>
             {
+#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
+                ALPAKA_FCT_HOST_ACC static auto getWidth(
+#else
                 ALPAKA_FCT_HOST_ACC static constexpr auto getWidth(
+#endif
                     TFixedSizeArray const &)
                 -> UInt
                 {
@@ -143,7 +147,11 @@ namespace alpaka
                     && (std::rank<TFixedSizeArray>::value <= 3u)
                     && (std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 2u>::value > 0u)>::type>
             {
+#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
+                ALPAKA_FCT_HOST_ACC static auto getHeight(
+#else
                 ALPAKA_FCT_HOST_ACC static constexpr auto getHeight(
+#endif
                     TFixedSizeArray const &)
                 -> UInt
                 {
@@ -163,7 +171,11 @@ namespace alpaka
                     && (std::rank<TFixedSizeArray>::value <= 3u)
                     && (std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 3u>::value > 0u)>::type>
             {
+#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
+                ALPAKA_FCT_HOST_ACC static auto getDepth(
+#else
                 ALPAKA_FCT_HOST_ACC static constexpr auto getDepth(
+#endif
                     TFixedSizeArray const &)
                 -> UInt
                 {
@@ -296,7 +308,11 @@ namespace alpaka
             {
                 using TElem = typename std::remove_all_extents<TFixedSizeArray>::type;
 
+#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
+                ALPAKA_FCT_HOST_ACC static auto getPitchBytes(
+#else
                 ALPAKA_FCT_HOST_ACC static constexpr auto getPitchBytes(
+#endif
                     TFixedSizeArray const &)
                 -> UInt
                 {
@@ -357,7 +373,11 @@ namespace alpaka
             struct GetWidth<
                 std::array<TElem, TuiSize>>
             {
+#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
+                ALPAKA_FCT_HOST_ACC static auto getWidth(
+#else
                 ALPAKA_FCT_HOST_ACC static constexpr auto getWidth(
+#endif
                     std::array<TElem, TuiSize> const & extent)
                 -> UInt
                 {

@@ -23,7 +23,7 @@
 
 #include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST_ACC
 
-#include <boost/mpl/is_sequence.hpp>	// boost::mpl::is_sequence
+#include <boost/mpl/is_sequence.hpp>    // boost::mpl::is_sequence
 #include <boost/mpl/begin_end.hpp>      // boost::mpl::begin/end
 #include <boost/mpl/deref.hpp>          // boost::mpl::deref
 #include <boost/mpl/next.hpp>           // boost::mpl::next
@@ -32,6 +32,7 @@
 #include <boost/predef.h>               // Workarounds.
 
 #include <type_traits>                  // std::is_same
+#include <utility>                      // std::forward
 
 namespace alpaka
 {
@@ -83,9 +84,11 @@ namespace alpaka
 
                 // Call the functor template call operator.
 #if BOOST_COMP_MSVC
-                boost::mpl::aux::unwrap(f, 0).operator()<Elem>(std::forward<TArgs>(args)...);
+                boost::mpl::aux::unwrap(f, 0).operator()<Elem>(
+                    std::forward<TArgs>(args)...);
 #else
-                boost::mpl::aux::unwrap(f, 0).template operator()<Elem>(std::forward<TArgs>(args)...);
+                boost::mpl::aux::unwrap(f, 0).template operator()<Elem>(
+                    std::forward<TArgs>(args)...);
 #endif
                 // Recurse to the next element.
                 using NextIt = typename boost::mpl::next<TElemIt>::type;
@@ -108,7 +111,7 @@ namespace alpaka
         typename TSequence, 
         typename TFunctor, 
         typename... TArgs>
-    ALPAKA_FCT_HOST_ACC auto ForEachType(
+    ALPAKA_FCT_HOST_ACC auto forEachType(
         TFunctor && f,
         TArgs && ... args)
     -> void

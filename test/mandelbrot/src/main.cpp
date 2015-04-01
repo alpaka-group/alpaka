@@ -306,8 +306,7 @@ struct MandelbrotKernelTester
         );
 
         // Let alpaka calculate good block and grid sizes given our full problem extents.
-        alpaka::Vec<3u> v3uiGridThreads(static_cast<alpaka::Vec<3u>::Val>(uiNumCols), static_cast<alpaka::Vec<3u>::Val>(uiNumRows), static_cast<alpaka::Vec<3u>::Val>(1u));
-        alpaka::workdiv::BasicWorkDiv const workDiv(alpaka::workdiv::getValidWorkDiv<boost::mpl::vector<TAcc>>(v3uiGridThreads, false));
+        alpaka::workdiv::BasicWorkDiv const workDiv(alpaka::workdiv::getValidWorkDiv<boost::mpl::vector<TAcc>>(v2uiExtents, false));
 
         std::cout
             << "MandelbrotKernelTester("
@@ -430,7 +429,7 @@ auto main()
             std::cout << std::endl;
 
             // Execute the kernel on all enabled accelerators.
-            alpaka::ForEachType<alpaka::acc::EnabledAccelerators>(
+            alpaka::forEachType<alpaka::acc::EnabledAccelerators>(
                     mandelbrotTester,
                     uiSize,
                     uiSize,

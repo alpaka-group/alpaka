@@ -57,8 +57,8 @@
 #include <alpaka/traits/Dim.hpp>
 #include <alpaka/traits/Event.hpp>
 #include <alpaka/traits/Exec.hpp>
-#include <alpaka/traits/Extents.hpp>
-#include <alpaka/traits/Offsets.hpp>
+#include <alpaka/traits/Extent.hpp>
+#include <alpaka/traits/Offset.hpp>
 #include <alpaka/traits/Idx.hpp>
 #include <alpaka/traits/Mem.hpp>
 #include <alpaka/traits/Stream.hpp>

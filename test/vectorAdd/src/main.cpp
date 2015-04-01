@@ -119,8 +119,7 @@ struct VectorAddKernelTester
         );
 
         // Let alpaka calculate good block and grid sizes given our full problem extents.
-        alpaka::Vec<3u> v3uiGridThreads(static_cast<alpaka::Vec<3u>::Val>(uiNumElements), static_cast<alpaka::Vec<3u>::Val>(1u), static_cast<alpaka::Vec<3u>::Val>(1u));
-        alpaka::workdiv::BasicWorkDiv const workDiv(alpaka::workdiv::getValidWorkDiv<boost::mpl::vector<TAcc>>(v3uiGridThreads, false));
+        alpaka::workdiv::BasicWorkDiv const workDiv(alpaka::workdiv::getValidWorkDiv<boost::mpl::vector<TAcc>>(v1uiExtents, false));
 
         std::cout
             << "VectorAddKernelTester("
@@ -238,7 +237,7 @@ auto main()
             std::cout << std::endl;
 
             // Execute the kernel on all enabled accelerators.
-            alpaka::ForEachType<alpaka::acc::EnabledAccelerators>(
+            alpaka::forEachType<alpaka::acc::EnabledAccelerators>(
                 vectorAddKernelTester,
                 uiSize);
         }

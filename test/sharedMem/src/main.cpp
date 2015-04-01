@@ -303,7 +303,7 @@ auto main()
         SharedMemTester<TuiNumUselessWork> sharedMemTester;
             
         // Execute the kernel on all enabled accelerators.
-        alpaka::ForEachType<alpaka::acc::EnabledAccelerators>(
+        alpaka::forEachType<alpaka::acc::EnabledAccelerators>(
             sharedMemTester,  
             workDiv, 
             uiMult2);

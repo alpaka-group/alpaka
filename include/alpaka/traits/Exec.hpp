@@ -23,7 +23,7 @@
 
 #include <alpaka/traits/Acc.hpp>            // acc::getAccName
 #include <alpaka/traits/Stream.hpp>         // stream::StreamT
-#include <alpaka/traits/Extents.hpp>        // extent::getXXX
+#include <alpaka/traits/Extent.hpp>         // extent::getXXX
 #include <alpaka/traits/WorkDiv.hpp>        // workdiv::getWorkDiv
 
 #include <alpaka/core/WorkDivHelpers.hpp>   // workdiv::isValidWorkDiv

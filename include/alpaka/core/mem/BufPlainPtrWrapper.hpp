@@ -27,7 +27,7 @@
 #include <alpaka/core/Vec.hpp>          // Vec<N>
 
 #include <alpaka/traits/Mem.hpp>        // traits::Copy, ...
-#include <alpaka/traits/Extents.hpp>    // traits::getXXX
+#include <alpaka/traits/Extent.hpp>     // traits::getXXX
 
 namespace alpaka
 {

@@ -3,8 +3,8 @@ Abstraction
 
 Parallelism and memory hierarchies at all levels need to be exploited in order to achieve performance portability across various types of accelerators.
 
-On the hardware side we have nodes with multiple sockets/processors extended by accelerators like GPUs or Intel XeonPhi each with their own processing units.
-Within a CPU or a Intel XeonPhi there are cores with hyper-threads and vector units, within a GPU there are many small cores.
+On the hardware side we have nodes with multiple sockets/processors extended by accelerators like GPUs or Intel Xeon Phi each with their own processing units.
+Within a CPU or a Intel Xeon Phi there are cores with hyper-threads and vector units, within a GPU there are many small cores.
 Each of those entities has access to different memories in the hierarchy.
 For example each socket/processor manages its RAM and the cores additionally have access to L3, L2 and L1 caches.
 On a GPU there is global, constant and shared memory.
@@ -17,9 +17,9 @@ The library itself only abstracts the task and data parallel execution on the pr
 It does not provide any primitives for inter-node communication but such libraries can build upon **alpaka**.
 The process always has a main thread and is by definition running on the host.
 It can access the host memory and various accelerator devices.
-Such accelerator devices can be GPUs, Intel XeonPhi, the host itself or other hardware.
+Such accelerator devices can be GPUs, Intel Xeon Phi, the host itself or other hardware.
 Thus the host not necessarily has to be different from the accelerator device used to compute on.
-For example a Intel XeonPhi simultaneously can be the host and the accelerator device.
+For example a Intel Xeon Phi simultaneously can be the host and the accelerator device.
 **alpaka** also allows the parallel execution on nodes without any accelerator hardware.
 The node the process is running on can itself be used as an accelerator device.
 
@@ -38,31 +38,35 @@ Data Parallelism
 
 The main part of **alpaka** is the way it abstracts data parallelism.
 The work is divided into a 1 to 3 dimensional grid of uniform threads appropriate to the problem at hand.
-Only these threads can be explicitly defined in code.
-All higher levels are hidden in the internals of the accelerator implementations.
 The uniform function executed by each of the threads is called a kernel.
+
+The threads are organized hierarchically and can access local memory at each of the hierarchy levels.
+All these higher levels are hidden in the internals of the accelerator implementations and their execution order can not be controlled.
 
 The abstraction used extends the CUDA grid-blocks-threads division strategy explained below by further allowing to facilitate vectorization.
 This extended *redundant hierarchical parallelism* scheme is discussed in the paper [The Future of Accelerator Programming: Abstraction, Performance or Can We Have Both?](http://dx.doi.org/10.1109/ICPADS.2013.76) ([PDF](http://olab.is.s.u-tokyo.ac.jp/~kamil.rocki/rocki_burtscher_sac14.pdf)).
 
-### Grid
+### Thread Hierarchy
+
+#### Grid
 
 The whole grid consists of uniform threads each executing the same kernel.
 By default threads do not have a cheap way to communicate safely within the whole grid.
-This forces decoupling of threads and avoidance of global interaction and global dependencies.
+This forces decoupling of threads and avoids global interaction and global dependencies.
 This independence allows scattering of work blocks within the grid of worker threads and their independent execution on separate processing units. 
 Utilizing this property on the higher level allows applications to scale very well.
-
 All threads within the grid can access a global memory.
 
-### Block
+#### Block
 
-On the block level the threads can synchronize and have a fast but small shared memory.
+A block is a group of threads.
+The whole grid is subdivided into equal sized blocks.
+Threads within a block can synchronize and have a fast but small shared memory.
 This allows for fast interaction on a local scale.
 
 **TODO**: Why blocks?
 
-### Thread
+#### Thread
 
 Each thread executes the same kernel.
 The only difference is the index into the grid which allows each thread to compute a different part of the solution.
@@ -83,6 +87,27 @@ By executing 4 fibers inside such a vectorization kernel-thread we would allow s
 
 The only possible usage of vectorization is one where we create a kernel-thread for e.g. each 4th thread in a block but do not loop over the 4 threads ourself but rely on the user to implement loops that can be vectorized safely.
 
+### Memory Hierarchy
+
+#### Global Memory
+
+The global memory can be accessed from every thread executing on an accelerator.
+This is typically the largest but also the slowest memory available.
+
+#### Shared Memory
+
+Each block has its own shared memory.
+This memory can only be accessed by threads within the same block and gets discarded after the complete block finished its calculation.
+This memory is typically very fast but also very small.
+Sharing has to be done explicitly.
+No variables are shared between kernels by default.
+
+#### Registers
+
+This memory is local to each thread.
+All variables with default scope defined inside a kernel are automatically saved in registers and not shared automatically.
+
+**TODO**: Constant Memory, Texture Memory?
 
 Mapping *Redundant Hierarchical Parallelism* onto Hardware
 --------------------------------------------------------

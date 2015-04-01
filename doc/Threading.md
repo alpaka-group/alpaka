@@ -29,6 +29,7 @@ OpenMP
 
 Kernel-Threads
 --------------
+
 std::thread, pthread, ...
 
 ### Positive
@@ -41,10 +42,11 @@ std::thread, pthread, ...
 
 Fibers
 ------
+
 A fiber is a user-space thread with cooperative context-switch.
 They are implemented on top of coroutines. A coroutine is a function that can be suspended and resumed but has not necessarily a stack.
 boost::fiber = stackful coroutine + scheduler + sync (no wait → next fiber in thread)
-C++17: N3858, N3985, (N4134 stackless coroutines ‚await‘)
+C++17: N3858, N3985, (N4134 stackless coroutines 'await')
 
 ### Positive
 * Less cost of creation.

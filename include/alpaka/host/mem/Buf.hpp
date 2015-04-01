@@ -21,18 +21,18 @@
 
 #pragma once
 
-#include <alpaka/host/mem/Space.hpp>        // SpaceHost
-#include <alpaka/host/mem/Set.hpp>          // Set
-#include <alpaka/host/Stream.hpp>           // StreamHost
+#include <alpaka/host/mem/Space.hpp>    // SpaceHost
+#include <alpaka/host/mem/Set.hpp>      // Set
+#include <alpaka/host/Stream.hpp>       // StreamHost
 
-#include <alpaka/core/BasicDims.hpp>        // dim::Dim<N>
-#include <alpaka/core/Vec.hpp>              // Vec<TDim::value>
+#include <alpaka/core/BasicDims.hpp>    // dim::Dim<N>
+#include <alpaka/core/Vec.hpp>          // Vec<TDim::value>
 
-#include <alpaka/traits/mem/Buf.hpp>        // traits::Alloc, ...
-#include <alpaka/traits/Extents.hpp>        // traits::getXXX
+#include <alpaka/traits/mem/Buf.hpp>    // traits::Alloc, ...
+#include <alpaka/traits/Extent.hpp>     // traits::getXXX
 
-#include <cassert>                          // assert
-#include <memory>                           // std::shared_ptr
+#include <cassert>                      // assert
+#include <memory>                       // std::shared_ptr
 
 namespace alpaka
 {
