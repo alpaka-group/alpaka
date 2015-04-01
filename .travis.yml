@@ -200,12 +200,27 @@ install:
     # CUDA 7.0 does not support gcc > 4.9.2
     - if [ "${ALPAKA_CUDA_ENABLE}" == "ON" ]
       ;then
-        if (( (( ${ALPAKA_GCC_VER_MAJOR} > 4 ))  || ( (( ${ALPAKA_GCC_VER_MAJOR} == 4 )) && (( ${ALPAKA_GCC_VER_MINOR} > 9 )) ) ))
-          ;then 
-            if (( (( ${ALPAKA_CUDA_VER_MAJOR} == 7 )) && (( ${ALPAKA_CUDA_VER_MINOR} == 0 )) ))
+        if [ "${CXX}" == "g++" ] 
+        ;then
+            if (( (( ${ALPAKA_GCC_VER_MAJOR} > 4 ))  || ( (( ${ALPAKA_GCC_VER_MAJOR} == 4 )) && (( ${ALPAKA_GCC_VER_MINOR} > 9 )) ) ))
+              ;then 
+                if (( (( ${ALPAKA_CUDA_VER_MAJOR} == 7 )) && (( ${ALPAKA_CUDA_VER_MINOR} == 0 )) ))
+                  ;then 
+                    export ALPAKA_CUDA_ENABLE=OFF
+                    && echo ALPAKA_CUDA_ENABLE=${ALPAKA_CUDA_ENABLE} because CUDA 7.0 does not support the gcc version!
+                  ;fi
+              ;fi
+          ;fi
+      ;fi
+    # clang is not a supported compiler for CUDA on linux
+    - if [ "${ALPAKA_CUDA_ENABLE}" == "ON" ]
+      ;then
+        if [ "${CXX}" == "clang++" ] 
+        ;then
+            if [ ${TRAVIS_OS_NAME} == "linux" ]
               ;then 
                 export ALPAKA_CUDA_ENABLE=OFF
-                && echo ALPAKA_CUDA_ENABLE=${ALPAKA_CUDA_ENABLE} because nvcc 7.0 does not support the gcc version!
+                && echo ALPAKA_CUDA_ENABLE=${ALPAKA_CUDA_ENABLE} because clang is not a supported compiler for CUDA on linux!
               ;fi
           ;fi
       ;fi
@@ -357,27 +372,27 @@ script:
 
     #-------------------------------------------------------------------------------
     # analysis
-    - if [ "${ALPAKA_ANALYSIS}" == "ON" -a "${CXX}" == "clang++" ] ;then export CCC_CC=clang ;fi
-    - if [ "${ALPAKA_ANALYSIS}" == "ON" -a "${CXX}" == "clang++" ] ;then export CCC_CXX=clang++ ;fi
-    - if [ "${ALPAKA_ANALYSIS}" == "ON" -a "${CXX}" == "clang++" ] 
-      ;then
-        cd mandelbrot/
-        && mkdir build/
-        && cd build/
-        && mkdir analyze/
-        && cd analyze/
-        && scan-build -h
-        && scan-build -analyze-headers cmake 
-          -G "Unix Makefiles" 
-          -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang 
-          -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} 
-          -DBOOST_ROOT="${ALPAKA_BOOST_ROOT_DIR}" -DBOOST_LIBRARYDIR="${ALPAKA_BOOST_LIB_DIR}" -DBoost_COMPILER=${ALPAKA_BOOST_COMPILER} 
-          -DALPAKA_SERIAL_ENABLE=${ALPAKA_SERIAL_ENABLE} -DALPAKA_THREADS_ENABLE=${ALPAKA_THREADS_ENABLE} -DALPAKA_FIBERS_ENABLE=${ALPAKA_FIBERS_ENABLE} -DALPAKA_OPENMP_ENABLE=${ALPAKA_OPENMP_ENABLE} -DALPAKA_CUDA_ENABLE=${ALPAKA_CUDA_ENABLE} 
-          -DALPAKA_DEBUG=${ALPAKA_DEBUG} -DALPAKA_INTEGRATION_TEST=${ALPAKA_INTEGRATION_TEST} -DALPAKA_CUDA_VERSION=${ALPAKA_CUDA_VERSION} 
-          "../../"
-        && scan-build -analyze-headers --status-bugs make VERBOSE=1
-        && cd ../../../
-      ;fi
+    #- if [ "${ALPAKA_ANALYSIS}" == "ON" -a "${CXX}" == "clang++" ] ;then export CCC_CC=clang ;fi
+    #- if [ "${ALPAKA_ANALYSIS}" == "ON" -a "${CXX}" == "clang++" ] ;then export CCC_CXX=clang++ ;fi
+    #- if [ "${ALPAKA_ANALYSIS}" == "ON" -a "${CXX}" == "clang++" ] 
+    #  ;then
+    #    cd mandelbrot/
+    #    && mkdir build/
+    #    && cd build/
+    #    && mkdir analyze/
+    #    && cd analyze/
+    #    && scan-build -h
+    #    && scan-build -analyze-headers cmake 
+    #      -G "Unix Makefiles" 
+    #      -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang 
+    #      -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} 
+    #      -DBOOST_ROOT="${ALPAKA_BOOST_ROOT_DIR}" -DBOOST_LIBRARYDIR="${ALPAKA_BOOST_LIB_DIR}" -DBoost_COMPILER=${ALPAKA_BOOST_COMPILER} 
+    #      -DALPAKA_SERIAL_ENABLE=${ALPAKA_SERIAL_ENABLE} -DALPAKA_THREADS_ENABLE=${ALPAKA_THREADS_ENABLE} -DALPAKA_FIBERS_ENABLE=${ALPAKA_FIBERS_ENABLE} -DALPAKA_OPENMP_ENABLE=${ALPAKA_OPENMP_ENABLE} -DALPAKA_CUDA_ENABLE=${ALPAKA_CUDA_ENABLE} 
+    #      -DALPAKA_DEBUG=${ALPAKA_DEBUG} -DALPAKA_INTEGRATION_TEST=${ALPAKA_INTEGRATION_TEST} -DALPAKA_CUDA_VERSION=${ALPAKA_CUDA_VERSION} 
+    #      "../../"
+    #    && scan-build -analyze-headers --status-bugs make VERBOSE=1
+    #    && cd ../../../
+    #  ;fi
 
     #-------------------------------------------------------------------------------
     - cd mandelbrot/
