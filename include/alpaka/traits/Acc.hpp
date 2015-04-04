@@ -21,8 +21,10 @@
 
 #pragma once
 
-#include <string>   // std::string
-#include <typeinfo> // typeid
+#include <string>                   // std::string
+#include <typeinfo>                 // typeid
+
+#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST
 
 namespace alpaka
 {

@@ -40,10 +40,10 @@ FUNCTION(append_recursive_relative_subdirectories In_RelativeRootDir Out_Variabl
         #MESSAGE("In_RelativeRootDir: ${In_RelativeRootDir}")
         #MESSAGE("CMAKE_CURRENT_LIST_DIR: ${CMAKE_CURRENT_LIST_DIR}")
     SET(rootDir "${CMAKE_CURRENT_LIST_DIR}/${In_RelativeRootDir}")
-    # Get all the recursive files with their relative paths. 
+    # Get all the recursive files with their relative paths.
     FILE(GLOB_RECURSE recursiveFilePathsList RELATIVE ${rootDir} "${rootDir}*")
         #MESSAGE("recursiveFilePathsList: ${recursiveFilePathsList}")
-        
+
     # Get the paths to all the recursive files.
     SET(allSubDirPathsList "")    # Create empty list for the case of no subdirectries being present.
     FOREACH(filePath ${recursiveFilePathsList})
@@ -51,20 +51,20 @@ FUNCTION(append_recursive_relative_subdirectories In_RelativeRootDir Out_Variabl
         SET(allSubDirPathsList ${allSubDirPathsList} ${dirPath})
     ENDFOREACH()
         #MESSAGE("allSubDirPathsList: ${allSubDirPathsList}")
-    
+
     # If the list is not empty.
     IF(allSubDirPathsList)
         # Remove duplicates from the list.
         LIST(REMOVE_DUPLICATES allSubDirPathsList)
             #MESSAGE("allSubDirPathsList: ${allSubDirPathsList}")
-            
+
         # Append "/" to all the paths.
         SET(allSubDirsList "")
         FOREACH(filePath ${allSubDirPathsList})
             LIST(APPEND allSubDirsList "${filePath}/")
         ENDFOREACH()
             #MESSAGE("allSubDirsList: ${allSubDirsList}")
-        
+
         # Set the return value.
             #MESSAGE("${Out_VariableAllSubDirPathsList}")
         SET(${Out_VariableAllSubDirPathsList} ${${Out_VariableAllSubDirPathsList}} "${allSubDirsList}" PARENT_SCOPE)
@@ -89,7 +89,7 @@ FUNCTION(add_recursive_files_to_source_group In_RelativeRootDir In_FileExtension
             #MESSAGE("wildcardFilePath: ${wildcardFilePath}")
         FILE(GLOB filesInSubDirList ${wildcardFilePath})
             #MESSAGE("filesInSubDirList: ${filesInSubDirList}")
-            
+
         # Group the include files into a project sub-folder analogously to the filesystem hierarchy.
         SET(groupExpression "${In_RelativeRootDir}${currentRelativeSubDir}")
             #MESSAGE("groupExpression: ${groupExpression}")

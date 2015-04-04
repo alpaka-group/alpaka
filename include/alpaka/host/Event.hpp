@@ -25,6 +25,7 @@
 
 #include <alpaka/traits/Event.hpp>      // StreamEnqueueEvent, ...
 #include <alpaka/traits/Wait.hpp>       // CurrentThreadWaitFor
+#include <alpaka/traits/Dev.hpp>        // GetDev
 
 namespace alpaka
 {
@@ -35,13 +36,18 @@ namespace alpaka
             //#############################################################################
             //! The host accelerators event.
             //#############################################################################
+            template<
+                typename TDev>
             class EventHost
             {
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST EventHost() = default;
+                ALPAKA_FCT_HOST EventHost(
+                    TDev const & dev) :
+                        m_Dev(dev)
+                {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
@@ -57,51 +63,99 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST auto operator=(EventHost const &) -> EventHost & = default;
                 //-----------------------------------------------------------------------------
+                //! Equality comparison operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST auto operator==(EventHost const & rhs) const
+                -> bool
+                {
+                    return (m_Dev == rhs.m_Dev);
+                }
+                //-----------------------------------------------------------------------------
+                //! Inequality comparison operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST auto operator!=(EventHost const & rhs) const
+                -> bool
+                {
+                    return !((*this) == rhs);
+                }
+                //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST virtual ~EventHost() noexcept = default;
+
+            public:
+                TDev m_Dev;
             };
+
+            template<
+                typename TDev>
+            class StreamHost;
         }
     }
 
     namespace traits
     {
+        namespace dev
+        {
+            //#############################################################################
+            //! The host accelerators event device get trait specialization.
+            //#############################################################################
+            template<
+                typename TDev>
+            struct GetDev<
+                host::detail::EventHost<TDev>>
+            {
+                ALPAKA_FCT_HOST static auto getDev(
+                    host::detail::EventHost<TDev> const & event)
+                -> TDev
+                {
+                    return event.m_Dev;
+                }
+            };
+        }
+
         namespace event
         {
             //#############################################################################
-            //! The host accelerators event enqueue trait specialization.
+            //! The host accelerators event event type trait specialization.
             //#############################################################################
             template<
-                typename TEvent>
-            struct DefaultStreamEnqueueEvent<
-                TEvent,
-                typename std::enable_if<std::is_base_of<host::detail::EventHost, TEvent>::value>::type>
+                typename TDev>
+            struct EventType<
+                host::detail::EventHost<TDev>>
             {
-                ALPAKA_FCT_HOST static auto defaultStreamEnqueueEvent(
-                    host::detail::EventHost const & event)
-                -> void
-                {
-                    boost::ignore_unused(event);
-                    // Because host calls are not asynchronous, this call never has to enqueue anything.
-                }
+                using type = host::detail::EventHost<TDev>;
             };
 
             //#############################################################################
             //! The host accelerators event enqueue trait specialization.
             //#############################################################################
+            /*template<
+                typename TDev>
+            struct DefaultStreamEnqueueEvent<
+                host::detail::EventHost<TDev>>
+            {
+                ALPAKA_FCT_HOST static auto defaultStreamEnqueueEvent(
+                    host::detail::EventHost<TDev> const & event)
+                -> void
+                {
+                    boost::ignore_unused(event);
+                    // Because host calls are not asynchronous, this call never has to enqueue anything.
+                }
+            };*/
+
+            //#############################################################################
+            //! The host accelerators event enqueue trait specialization.
+            //#############################################################################
             template<
-                typename TEvent, 
-                typename TStream>
+                typename TDev>
             struct StreamEnqueueEvent<
-                TEvent,
-                TStream,
-                typename std::enable_if<
-                    std::is_base_of<host::detail::EventHost, TEvent>::value 
-                    && std::is_same<typename alpaka::acc::AccT<TEvent>, typename alpaka::acc::AccT<TStream>>::value>::type>
+                host::detail::EventHost<TDev>,
+                host::detail::StreamHost<TDev>>
             {
                 ALPAKA_FCT_HOST static auto streamEnqueueEvent(
-                    host::detail::EventHost const & event, 
-                    TStream const & stream)
+                    host::detail::EventHost<TDev> const & event,
+                    host::detail::StreamHost<TDev> const & stream)
                 -> void
                 {
                     boost::ignore_unused(event);
@@ -114,13 +168,12 @@ namespace alpaka
             //! The host accelerators event test trait specialization.
             //#############################################################################
             template<
-                typename TEvent>
+                typename TDev>
             struct EventTest<
-                TEvent,
-                typename std::enable_if<std::is_base_of<host::detail::EventHost, TEvent>::value>::type>
+                host::detail::EventHost<TDev>>
             {
                 ALPAKA_FCT_HOST static auto eventTest(
-                    host::detail::EventHost const & event)
+                    host::detail::EventHost<TDev> const & event)
                 -> bool
                 {
                     boost::ignore_unused(event);
@@ -136,13 +189,12 @@ namespace alpaka
             //! The host accelerator event thread wait trait specialization.
             //#############################################################################
             template<
-                typename TEvent>
+                typename TDev>
             struct CurrentThreadWaitFor<
-                TEvent,
-                typename std::enable_if<std::is_base_of<host::detail::EventHost, TEvent>::value>::type>
+                host::detail::EventHost<TDev>>
             {
                 ALPAKA_FCT_HOST static auto currentThreadWaitFor(
-                    TEvent const & event)
+                    host::detail::EventHost<TDev> const & event)
                 -> void
                 {
                     boost::ignore_unused(event);

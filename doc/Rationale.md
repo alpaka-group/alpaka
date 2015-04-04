@@ -97,6 +97,10 @@ Internally these wrappers would call trait templates that are specialized for th
 
 The second version is easier to understand and usually shorter to use in user code.
 
+CUDA always tracks some implicit state like the current device in host code or the current thread and block index in kernel code.
+This implicit state hides dependencies and can produce bugs if the wrong device is active during a memory operation or similar things.
+In alpaka this is always made explicit.
+Streams, events and memory always require a device parameter for their creation.
 
 Accelerator Implementation Notes
 --------------------------------

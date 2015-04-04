@@ -249,28 +249,36 @@ struct MatMulTester
 
         // Create the kernel functor.
         MatMulKernel kernel;
-        
+
+        // Get the host device.
+        auto const devHost(alpaka::host::getDev());
+
+        // Select a device to execute on.
+        alpaka::dev::DevT<TAcc> const devAcc(
+            alpaka::dev::DevManT<TAcc>::getDevByIdx(0));
+            
+        // Get a stream on this device.
+        alpaka::stream::StreamT<TAcc> const stream(
+            alpaka::stream::create(devAcc));
+            
         alpaka::Vec<2u> const v2uiExtentsA(
             static_cast<alpaka::Vec<2u>::Val>(uiM),
-            static_cast<alpaka::Vec<2u>::Val>(uiL)
-        );
+            static_cast<alpaka::Vec<2u>::Val>(uiL));
 
         alpaka::Vec<2u> const v2uiExtentsB(
             static_cast<alpaka::Vec<2u>::Val>(uiN),
-            static_cast<alpaka::Vec<2u>::Val>(uiM)
-        );
+            static_cast<alpaka::Vec<2u>::Val>(uiM));
 
         // Result matrix is LxN. We create one worker per result matrix cell.
         alpaka::Vec<2u> const v2uiExtentsC(
             static_cast<alpaka::Vec<2u>::Val>(uiN),
-            static_cast<alpaka::Vec<2u>::Val>(uiL)
-        );
+            static_cast<alpaka::Vec<2u>::Val>(uiL));
         
         // Let alpaka calculate good block and grid sizes given our full problem extents.
         alpaka::workdiv::BasicWorkDiv workDiv(
             bAdaptiveBlockThreadExtent
             ? alpaka::workdiv::getValidWorkDiv<boost::mpl::vector<TAcc>>(v2uiExtentsC, false)
-            : alpaka::workdiv::getValidWorkDiv<alpaka::acc::EnabledAccelerators>(v2uiExtentsC, false));
+            : alpaka::workdiv::getValidWorkDiv<alpaka::accs::EnabledAccs>(v2uiExtentsC, false));
         // Assure that the extents are square.
         auto const uiMinExtent(std::min(workDiv.m_v3uiBlockThreadExtents[0u], workDiv.m_v3uiBlockThreadExtents[1u]));
         workDiv.m_v3uiGridBlockExtents[0u] = static_cast<alpaka::Vec<3u>::Val>(std::ceil(static_cast<double>(uiN) / static_cast<double>(uiMinExtent)));
@@ -304,17 +312,13 @@ struct MatMulTester
         MemBufWrapper memBufBHost(vuiB.data(), v2uiExtentsB);
 
         // Allocate C and set it to zero.
-        auto memBufCHost(alpaka::mem::alloc<std::uint32_t, alpaka::mem::SpaceHost>(v2uiExtentsC));
+        auto memBufCHost(alpaka::mem::alloc<std::uint32_t>(devHost, v2uiExtentsC));
         alpaka::mem::set(memBufCHost, 0u, v2uiExtentsC);
 
         // Allocate the buffers on the accelerator.
-        using AccMemSpace = typename alpaka::mem::SpaceT<TAcc>;
-        auto memBufAAcc(alpaka::mem::alloc<std::uint32_t, AccMemSpace>(v2uiExtentsA));
-        auto memBufBAcc(alpaka::mem::alloc<std::uint32_t, AccMemSpace>(v2uiExtentsB));
-        auto memBufCAcc(alpaka::mem::alloc<std::uint32_t, AccMemSpace>(v2uiExtentsC));
-
-        // Get a new stream.
-        alpaka::stream::StreamT<TAcc> stream;
+        auto memBufAAcc(alpaka::mem::alloc<std::uint32_t>(devAcc, v2uiExtentsA));
+        auto memBufBAcc(alpaka::mem::alloc<std::uint32_t>(devAcc, v2uiExtentsB));
+        auto memBufCAcc(alpaka::mem::alloc<std::uint32_t>(devAcc, v2uiExtentsC));
 
         // Copy Host -> Acc.
         alpaka::mem::copy(memBufAAcc, memBufAHost, v2uiExtentsA, stream);
@@ -414,7 +418,7 @@ auto main(
             std::cout << std::endl;
 
             // Logs the enabled accelerators.
-            alpaka::acc::writeEnabledAccelerators(std::cout);
+            alpaka::accs::writeEnabledAccs(std::cout);
 
             std::cout << std::endl;
 
@@ -426,12 +430,6 @@ auto main(
 #endif
             std::cout << "Adaptive block thread size:" << bAdaptiveBlockThreadExtent << std::endl;
 
-#ifdef ALPAKA_CUDA_ENABLED
-            // Select the first CUDA device.
-            // NOTE: This is not required to run any kernels on the CUDA accelerator because all accelerators have a default device. This only shows the possibility.
-            alpaka::dev::DevManT<alpaka::AccCuda>::setCurrentDev(
-                alpaka::dev::DevManT<alpaka::AccCuda>::getCurrentDev());
-#endif
             MatMulTester matMulTester;
 
             // For different matrix sizes.
@@ -453,7 +451,7 @@ auto main(
                         std::cout << std::endl;
 
                         // Execute the kernel on all enabled accelerators.
-                        alpaka::forEachType<alpaka::acc::EnabledAccelerators>(
+                        alpaka::forEachType<alpaka::accs::EnabledAccs>(
                             matMulTester,
                             uiL, uiM, uiN,
                             bAdaptiveBlockThreadExtent);

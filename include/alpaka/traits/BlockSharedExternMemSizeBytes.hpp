@@ -36,31 +36,32 @@ namespace alpaka
         //! The trait for getting the size of the block shared extern memory of a kernel.
         //!
         //! \tparam TKernelFunctor The kernel functor.
-        //! \tparam TKernelFunctor The accelerator.
+        //! \tparam TAcc The accelerator.
         //!
         //! The default implementation returns 0.
         //#############################################################################
         template<
             typename TKernelFunctor,
-            typename TAcc, 
+            typename TAcc,
             typename TSfinae = void>
         struct BlockSharedExternMemSizeBytes
         {
             //-----------------------------------------------------------------------------
             //! \param v3uiBlockThreadExtents The size of the blocks for which the block shared memory size should be calculated.
             //! \tparam TArgs The kernel invocation argument types pack.
-            //! \param ... The kernel invocation arguments for which the block shared memory size should be calculated.
+            //! \param args,... The kernel invocation arguments for which the block shared memory size should be calculated.
             //! \return The size of the shared memory allocated for a block in bytes.
             //! The default version always returns zero.
             //-----------------------------------------------------------------------------
             template<
                 typename... TArgs>
             ALPAKA_FCT_HOST static auto getBlockSharedExternMemSizeBytes(
-                Vec<3u> const & v3uiBlockThreadExtents, 
-                TArgs && ... )
+                Vec<3u> const & v3uiBlockThreadExtents,
+                TArgs && ... args)
             -> UInt
             {
                 boost::ignore_unused(v3uiBlockThreadExtents);
+                boost::ignore_unused(args...);
 
                 return 0;
             }
@@ -70,7 +71,7 @@ namespace alpaka
     //-----------------------------------------------------------------------------
     //! \param v3uiBlockThreadExtents The size of the blocks for which the block shared memory size should be calculated.
     //! \tparam TArgs The kernel invocation argument types pack.
-    //! \param ... The kernel invocation arguments for which the block shared memory size should be calculated.
+    //! \param args,... The kernel invocation arguments for which the block shared memory size should be calculated.
     //! \return The size of the shared memory allocated for a block in bytes.
     //! The default version always returns zero.
     //-----------------------------------------------------------------------------
@@ -79,12 +80,12 @@ namespace alpaka
         typename TAcc,
         typename... TArgs>
     ALPAKA_FCT_HOST auto getBlockSharedExternMemSizeBytes(
-        Vec<3u> const & v3uiBlockThreadExtents, 
-        TArgs && ... args )
+        Vec<3u> const & v3uiBlockThreadExtents,
+        TArgs && ... args)
     -> UInt
     {
         return traits::BlockSharedExternMemSizeBytes<
-            TKernelFunctor, 
+            TKernelFunctor,
             TAcc>
         ::getBlockSharedExternMemSizeBytes(
             v3uiBlockThreadExtents,

@@ -64,7 +64,7 @@ namespace alpaka
     #elif BOOST_COMP_MSVC || BOOST_COMP_INTEL
         #include <intrin.h>
             //-----------------------------------------------------------------------------
-            //! 
+            //!
             //-----------------------------------------------------------------------------
             auto cpuid(std::uint32_t const level, std::uint32_t const subfunction, std::uint32_t ex[4])
             -> void

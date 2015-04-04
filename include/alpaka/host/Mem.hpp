@@ -39,24 +39,26 @@ namespace alpaka
             //! The BufHost memory buffer type trait specialization.
             //#############################################################################
             template<
+                typename TDev,
                 typename TElem,
                 typename TDim>
             struct BufType<
-                TElem, TDim, alpaka::mem::SpaceHost>
+                TDev, TElem, TDim, alpaka::mem::SpaceHost>
             {
-                using type = host::detail::BufHost<TElem, TDim>;
+                using type = host::detail::BufHost<TDev, TElem, TDim>;
             };
 
             //#############################################################################
             //! The BufCuda memory buffer type trait specialization.
             //#############################################################################
             template<
+                typename TDev,
                 typename TElem,
                 typename TDim>
             struct ViewType<
-                host::detail::BufHost<TElem, TDim>>
+                host::detail::BufHost<TDev, TElem, TDim>>
             {
-                using type = alpaka::mem::detail::View<host::detail::BufHost<TElem, TDim>>;
+                using type = alpaka::mem::detail::View<host::detail::BufHost<TDev, TElem, TDim>>;
             };
 
             /*//#############################################################################

@@ -75,7 +75,7 @@ namespace alpaka
             return traits::idx::GetIdx<
                 TIdx,
                 TOrigin,
-                TUnit, 
+                TUnit,
                 TDim>
             ::getIdx(
                 index,

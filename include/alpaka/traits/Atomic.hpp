@@ -56,6 +56,7 @@ namespace alpaka
         //! \tparam TAtomic The atomic implementation type.
         //! \param addr The value to change atomically.
         //! \param value The value used in the atomic operation.
+        //! \param atomic The atomic implementation.
         //-----------------------------------------------------------------------------
         template<
             typename TOp,
@@ -68,8 +69,8 @@ namespace alpaka
         -> T
         {
             return traits::atomic::AtomicOp<
-                TAtomic, 
-                TOp, 
+                TAtomic,
+                TOp,
                 T>
             ::atomicOp(atomic, addr, value);
         }

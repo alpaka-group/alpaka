@@ -25,6 +25,7 @@
 #include <alpaka/core/Vec.hpp>          // Vec
 
 #include <alpaka/traits/Dim.hpp>        // DimT
+#include <alpaka/traits/Dev.hpp>        // DevT
 #include <alpaka/traits/Extent.hpp>     // traits::getXXX
 #include <alpaka/traits/Offset.hpp>     // traits::getOffsetX
 #include <alpaka/traits/mem/View.hpp>   // SpaceT, ...
@@ -44,7 +45,7 @@ namespace alpaka
             {
             private:
                 using Dim = dim::DimT<TBuf>;
-                using Buf = BufT<ElemT<TBuf>, Dim, SpaceT<TBuf>>;
+                using Buf = BufT<dev::DevT<TBuf>, ElemT<TBuf>, Dim, SpaceT<TBuf>>;
                 using MemSpace = SpaceT<TBuf>;
 
             public:
@@ -79,7 +80,7 @@ namespace alpaka
                     static_assert(
                         std::is_same<Dim, dim::DimT<TExtents>>::value,
                         "The base buffer and the extents are required to have the same dimensionality!");
-                
+
                     assert(extent::getWidth(relativeOffsetsElements) <= extent::getWidth(buf));
                     assert(extent::getHeight(relativeOffsetsElements) <= extent::getHeight(buf));
                     assert(extent::getDepth(relativeOffsetsElements) <= extent::getDepth(buf));
@@ -87,7 +88,7 @@ namespace alpaka
                     assert((offset::getOffsetY(relativeOffsetsElements)+offset::getOffsetY(buf)+extent::getHeight(extentsElements)) <= extent::getHeight(buf));
                     assert((offset::getOffsetZ(relativeOffsetsElements)+offset::getOffsetZ(buf)+extent::getDepth(extentsElements)) <= extent::getDepth(buf));
                 }
-                
+
             public:
                 Buf m_buf;
                 Vec<Dim::value> m_vOffsetsElements;
@@ -96,12 +97,44 @@ namespace alpaka
         }
     }
 
-    
+
     //-----------------------------------------------------------------------------
     // Trait specializations for View.
     //-----------------------------------------------------------------------------
     namespace traits
     {
+        namespace dev
+        {
+            //#############################################################################
+            //! The View device type trait specialization.
+            //#############################################################################
+            template<
+                typename TBuf>
+            struct DevType<
+                alpaka::mem::detail::View<TBuf>>
+            {
+                using type = alpaka::dev::DevT<TBuf>;
+            };
+
+            //#############################################################################
+            //! The View device get trait specialization.
+            //#############################################################################
+            template<
+                typename TBuf>
+            struct GetDev<
+                alpaka::mem::detail::View<TBuf>>
+            {
+                ALPAKA_FCT_HOST static auto getDev(
+                    alpaka::mem::detail::View<TBuf> const & bufView)
+                -> alpaka::dev::DevT<TBuf>
+                {
+                    return 
+                        alpaka::dev::getDev(
+                            alpaka::mem::getBuf(bufView));
+                }
+            };
+        }
+
         namespace dim
         {
             //#############################################################################
@@ -127,7 +160,7 @@ namespace alpaka
                 alpaka::mem::detail::View<TBuf>>
             {
                 //-----------------------------------------------------------------------------
-                //! 
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getExtents(
                     alpaka::mem::detail::View<TBuf> const & extents)
@@ -151,7 +184,7 @@ namespace alpaka
 #endif
             {
                 //-----------------------------------------------------------------------------
-                //! 
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getWidth(
                     alpaka::mem::detail::View<TBuf> const & extent)
@@ -175,7 +208,7 @@ namespace alpaka
 #endif
             {
                 //-----------------------------------------------------------------------------
-                //! 
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getHeight(
                     alpaka::mem::detail::View<TBuf> const & extent)
@@ -198,7 +231,7 @@ namespace alpaka
 #endif
             {
                 //-----------------------------------------------------------------------------
-                //! 
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getDepth(
                     alpaka::mem::detail::View<TBuf> const & extent)
@@ -220,7 +253,7 @@ namespace alpaka
                 alpaka::mem::detail::View<TBuf>>
             {
                 //-----------------------------------------------------------------------------
-                //! 
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getOffsets(
                     alpaka::mem::detail::View<TBuf> const & offsets)
@@ -244,7 +277,7 @@ namespace alpaka
 #endif
             {
                 //-----------------------------------------------------------------------------
-                //! 
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getOffsetX(
                     alpaka::mem::detail::View<TBuf> const & offset)
@@ -268,7 +301,7 @@ namespace alpaka
 #endif
             {
                 //-----------------------------------------------------------------------------
-                //! 
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getOffsetY(
                     alpaka::mem::detail::View<TBuf> const & offset)
@@ -291,7 +324,7 @@ namespace alpaka
 #endif
             {
                 //-----------------------------------------------------------------------------
-                //! 
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getOffsetZ(
                     alpaka::mem::detail::View<TBuf> const & offset)
@@ -327,7 +360,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The BufCuda memory buffer type trait specialization.
+            //! The View memory buffer type trait specialization.
             //#############################################################################
             template<
                 typename TBuf>
@@ -346,7 +379,7 @@ namespace alpaka
                 alpaka::mem::detail::View<TBuf>>
             {
                 //-----------------------------------------------------------------------------
-                //! 
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getBuf(
                     alpaka::mem::detail::View<TBuf> const & bufView)
@@ -355,7 +388,7 @@ namespace alpaka
                     return bufView.m_buf;
                 }
                 //-----------------------------------------------------------------------------
-                //! 
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getBuf(
                     alpaka::mem::detail::View<TBuf> & bufView)
@@ -367,6 +400,7 @@ namespace alpaka
 
             //#############################################################################
             //! The View native pointer get trait specialization.
+            // \TODO: Optimize by specializing per dim!
             //#############################################################################
             template<
                 typename TBuf>
@@ -374,7 +408,7 @@ namespace alpaka
                 alpaka::mem::detail::View<TBuf>>
             {
                 //-----------------------------------------------------------------------------
-                //! 
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getNativePtr(
                     alpaka::mem::detail::View<TBuf> const & bufView)
@@ -388,7 +422,7 @@ namespace alpaka
                         + alpaka::offset::getOffsetZ(bufView) * uiPitchElements * alpaka::extent::getHeight(alpaka::mem::getBuf(bufView));
                 }
                 //-----------------------------------------------------------------------------
-                //! 
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getNativePtr(
                     alpaka::mem::detail::View<TBuf> & bufView)
@@ -404,7 +438,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The CUDA buffer pitch get trait specialization.
+            //! The View pitch get trait specialization.
             //#############################################################################
             template<
                 typename TBuf>
@@ -412,7 +446,7 @@ namespace alpaka
                 alpaka::mem::detail::View<TBuf>>
             {
                 //-----------------------------------------------------------------------------
-                //! 
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getPitchBytes(
                     alpaka::mem::detail::View<TBuf> const & bufView)

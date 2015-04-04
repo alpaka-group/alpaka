@@ -200,11 +200,20 @@ struct SharedMemTester
     {
         std::cout << std::endl;
         std::cout << "################################################################################" << std::endl;
-        
-        using AccMemSpace = typename alpaka::mem::SpaceT<TAcc>;
-        
+            
         // Create the kernel functor.
         SharedMemKernel<TuiNumUselessWork> kernel(42);
+
+        // Get the host device.
+        auto const devHost(alpaka::host::getDev());
+
+        // Select a device to execute on.
+        alpaka::dev::DevT<TAcc> const devAcc(
+            alpaka::dev::DevManT<TAcc>::getDevByIdx(0));
+            
+        // Get a stream on this device.
+        alpaka::stream::StreamT<TAcc> const stream(
+            alpaka::stream::create(devAcc));
 
         std::cout
             << "SharedMemTester("
@@ -221,11 +230,8 @@ struct SharedMemTester
 
         // Allocate accelerator buffers and copy.
         std::size_t const uiSizeElements(uiGridBlocksCount);
-        auto blockRetValsAcc(alpaka::mem::alloc<std::uint32_t, AccMemSpace>(uiSizeElements));
+        auto blockRetValsAcc(alpaka::mem::alloc<std::uint32_t>(devAcc, uiSizeElements));
         alpaka::mem::copy(blockRetValsAcc, vuiBlockRetVals, uiSizeElements);
-
-        // Get a new stream.
-        alpaka::stream::StreamT<TAcc> stream;
         
         // Create the kernel executor.
         auto exec(alpaka::exec::create<TAcc>(workDiv, stream));
@@ -281,20 +287,13 @@ auto main()
         std::cout << std::endl;
 
         // Logs the enabled accelerators.
-        alpaka::acc::writeEnabledAccelerators(std::cout);
+        alpaka::accs::writeEnabledAccs(std::cout);
 
         std::cout << std::endl;
-        
-#ifdef ALPAKA_CUDA_ENABLED
-        // Select the first CUDA device. 
-        // NOTE: This is not required to run any kernels on the CUDA accelerator because all accelerators have a default device. This only shows the possibility.
-        alpaka::dev::DevManT<alpaka::AccCuda>::setCurrentDev(
-            alpaka::dev::DevManT<alpaka::AccCuda>::getCurrentDev());
-#endif
 
         // Set the grid blocks extent.
         alpaka::workdiv::BasicWorkDiv const workDiv(
-            alpaka::workdiv::getValidWorkDiv<alpaka::acc::EnabledAccelerators>(
+            alpaka::workdiv::getValidWorkDiv<alpaka::accs::EnabledAccs>(
                 alpaka::Vec<3u>(16u, 8u, 4u)));
 
         using TuiNumUselessWork = boost::mpl::int_<100u>;
@@ -303,7 +302,7 @@ auto main()
         SharedMemTester<TuiNumUselessWork> sharedMemTester;
             
         // Execute the kernel on all enabled accelerators.
-        alpaka::forEachType<alpaka::acc::EnabledAccelerators>(
+        alpaka::forEachType<alpaka::accs::EnabledAccs>(
             sharedMemTester,  
             workDiv, 
             uiMult2);

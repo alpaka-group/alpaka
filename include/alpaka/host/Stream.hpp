@@ -24,6 +24,7 @@
 #include <alpaka/traits/Stream.hpp>     // traits::StreamEnqueueEvent, ...
 #include <alpaka/traits/Wait.hpp>       // CurrentThreadWaitFor, WaiterWaitFor
 #include <alpaka/traits/Acc.hpp>        // AccT
+#include <alpaka/traits/Dev.hpp>        // GetDev
 
 #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 
@@ -38,13 +39,18 @@ namespace alpaka
             //#############################################################################
             //! The host accelerators stream.
             //#############################################################################
+            template<
+                typename TDev>
             class StreamHost
             {
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST StreamHost() = default;
+                ALPAKA_FCT_HOST StreamHost(
+                    TDev const & dev) :
+                        m_Dev(dev)
+                {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
@@ -62,10 +68,10 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Equality comparison operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST auto operator==(StreamHost const &) const
+                ALPAKA_FCT_HOST auto operator==(StreamHost const & rhs) const
                 -> bool
                 {
-                    return true;
+                    return (m_Dev == rhs.m_Dev);
                 }
                 //-----------------------------------------------------------------------------
                 //! Inequality comparison operator.
@@ -79,25 +85,61 @@ namespace alpaka
                 //! Destructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST virtual ~StreamHost() noexcept = default;
+
+            public:
+                TDev m_Dev;
             };
+
+            template<
+                typename TDev>
+            class EventHost;
         }
     }
 
     namespace traits
     {
+        namespace dev
+        {
+            //#############################################################################
+            //! The host accelerators stream device get trait specialization.
+            //#############################################################################
+            template<
+                typename TDev>
+            struct GetDev<
+                host::detail::StreamHost<TDev>>
+            {
+                ALPAKA_FCT_HOST static auto getDev(
+                    host::detail::StreamHost<TDev> const & stream)
+                -> TDev
+                {
+                    return stream.m_Dev;
+                }
+            };
+        }
+
         namespace stream
         {
             //#############################################################################
-            //! Tests if all ops in the given stream have been completed.
+            //! The host accelerators stream stream type trait specialization.
             //#############################################################################
             template<
-                typename TStream>
+                typename TDev>
+            struct StreamType<
+                host::detail::StreamHost<TDev>>
+            {
+                using type = host::detail::StreamHost<TDev>;
+            };
+
+            //#############################################################################
+            //! The host accelerators stream test trait specialization.
+            //#############################################################################
+            template<
+                typename TDev>
             struct StreamTest<
-                TStream,
-                typename std::enable_if<std::is_base_of<host::detail::StreamHost, TStream>::value>::type>
+                host::detail::StreamHost<TDev>>
             {
                 ALPAKA_FCT_HOST static auto streamTest(
-                    TStream const & stream)
+                    host::detail::StreamHost<TDev> const & stream)
                 -> bool
                 {
                     boost::ignore_unused(stream);
@@ -113,13 +155,12 @@ namespace alpaka
             //! The host accelerators stream thread wait trait specialization.
             //#############################################################################
             template<
-                typename TStream>
+                typename TDev>
             struct CurrentThreadWaitFor<
-                TStream,
-                typename std::enable_if<std::is_base_of<host::detail::StreamHost, TStream>::value>::type>
+                host::detail::StreamHost<TDev>>
             {
                 ALPAKA_FCT_HOST static auto currentThreadWaitFor(
-                    TStream const & stream)
+                    host::detail::StreamHost<TDev> const & stream)
                 -> void
                 {
                     boost::ignore_unused(stream);
@@ -128,21 +169,17 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The CUDA accelerator stream event wait trait specialization.
+            //! The host accelerators stream event wait trait specialization.
             //#############################################################################
             template<
-                typename TStream,
-                typename TEvent>
+                typename TDev>
             struct WaiterWaitFor<
-                TStream,
-                TEvent,
-                typename std::enable_if<
-                    std::is_base_of<host::detail::StreamHost, TStream>::value
-                    && std::is_same<typename alpaka::acc::AccT<TStream>, typename alpaka::acc::AccT<TEvent>>::value>::type>
+                host::detail::StreamHost<TDev>,
+                host::detail::EventHost<TDev>>
             {
                 ALPAKA_FCT_HOST static auto waiterWaitFor(
-                    TStream const & stream,
-                    TEvent const & event)
+                    host::detail::StreamHost<TDev> const & stream,
+                    host::detail::EventHost<TDev> const & event)
                 -> void
                 {
                     boost::ignore_unused(stream);

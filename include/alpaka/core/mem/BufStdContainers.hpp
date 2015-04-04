@@ -21,20 +21,20 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST
+#include <alpaka/core/Common.hpp>           // ALPAKA_FCT_HOST
 
-#include <alpaka/traits/Dim.hpp>        // dim::DimType
-#include <alpaka/traits/Extent.hpp>     // traits::getXXX
-#include <alpaka/traits/Mem.hpp>        // mem::SpaceType
+#include <alpaka/traits/Dim.hpp>            // dim::DimType
+#include <alpaka/traits/Extent.hpp>         // traits::getXXX
+#include <alpaka/traits/Mem.hpp>            // mem::SpaceType
 
-#include <alpaka/host/mem/Space.hpp>    // SpaceHost
-#include <alpaka/cuda/mem/Space.hpp>    // SpaceCuda
+#include <alpaka/host/mem/Space.hpp>        // SpaceHost
+#include <alpaka/accs/cuda/mem/Space.hpp>   // SpaceCuda
 
-#include <boost/predef.h>               // workarounds
+#include <boost/predef.h>                   // workarounds
 
-#include <type_traits>                  // std::enable_if, std::is_array, std::extent
-#include <vector>                       // std::vector
-#include <array>                        // std::array
+#include <type_traits>                      // std::enable_if, std::is_array, std::extent
+#include <vector>                           // std::vector
+#include <array>                            // std::array
 
 namespace alpaka
 {
@@ -73,7 +73,7 @@ namespace alpaka
                 typename std::enable_if<std::is_array<TFixedSizeArray>::value>::type>
             {
                 //-----------------------------------------------------------------------------
-                //! 
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static /*constexpr*/ auto getExtents(
                     TFixedSizeArray const & extents)
@@ -91,7 +91,7 @@ namespace alpaka
                 using IdxSequence = alpaka::detail::make_index_sequence<std::rank<TFixedSizeArray>::value>;
 #endif
                 //-----------------------------------------------------------------------------
-                //! 
+                //!
                 //-----------------------------------------------------------------------------
                 template<
                     typename TVal,
@@ -183,7 +183,7 @@ namespace alpaka
                 }
             };
         }
-        
+
         namespace offset
         {
             //#############################################################################
@@ -196,7 +196,7 @@ namespace alpaka
                 typename std::enable_if<std::is_array<TFixedSizeArray>::value>::type>
             {
                 //-----------------------------------------------------------------------------
-                //! 
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getOffsets(
                     TFixedSizeArray const &)
@@ -250,7 +250,7 @@ namespace alpaka
                     std::is_array<TFixedSizeArray>::value>::type>
             {
                 //-----------------------------------------------------------------------------
-                //! 
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getBuf(
                     TFixedSizeArray const & buf)
@@ -259,7 +259,7 @@ namespace alpaka
                     return buf;
                 }
                 //-----------------------------------------------------------------------------
-                //! 
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getBuf(
                     TFixedSizeArray & buf)
@@ -354,7 +354,7 @@ namespace alpaka
                 std::array<TElem, TuiSize>>
             {
                 //-----------------------------------------------------------------------------
-                //! 
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static /*constexpr*/ auto getExtents(
                     std::array<TElem, TuiSize> const & extents)
@@ -385,7 +385,7 @@ namespace alpaka
                 }
             };
         }
-        
+
         namespace offset
         {
             //#############################################################################
@@ -398,7 +398,7 @@ namespace alpaka
                 std::array<TElem, TuiSize>>
             {
                 //-----------------------------------------------------------------------------
-                //! 
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getOffsets(
                     std::array<TElem, TuiSize> const &)
@@ -445,7 +445,7 @@ namespace alpaka
                 std::array<TElem, TuiSize>>
             {
                 //-----------------------------------------------------------------------------
-                //! 
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getBuf(
                     std::array<TElem, TuiSize> const & buf)
@@ -454,7 +454,7 @@ namespace alpaka
                     return buf;
                 }
                 //-----------------------------------------------------------------------------
-                //! 
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getBuf(
                     std::array<TElem, TuiSize> & buf)
@@ -538,7 +538,7 @@ namespace alpaka
                 std::vector<TElem, TAllocator>>
             {
                 //-----------------------------------------------------------------------------
-                //! 
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getExtents(
                     std::vector<TElem, TAllocator> const & extent)
@@ -565,7 +565,7 @@ namespace alpaka
                 }
             };
         }
-        
+
         namespace offset
         {
             //#############################################################################
@@ -578,7 +578,7 @@ namespace alpaka
                 std::vector<TElem, TAllocator>>
             {
                 //-----------------------------------------------------------------------------
-                //! 
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getOffsets(
                     std::vector<TElem, TAllocator> const &)
@@ -625,7 +625,7 @@ namespace alpaka
                 std::vector<TElem, TAllocator>>
             {
                 //-----------------------------------------------------------------------------
-                //! 
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getBuf(
                     std::vector<TElem, TAllocator> const & buf)
@@ -634,7 +634,7 @@ namespace alpaka
                     return buf;
                 }
                 //-----------------------------------------------------------------------------
-                //! 
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getBuf(
                     std::vector<TElem, TAllocator> & buf)

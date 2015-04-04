@@ -19,7 +19,6 @@
 #
 
 # Options:
-#   ALPAKA_SERIAL_ENABLE {ON, OFF}
 #   ALPAKA_THREADS_ENABLE {ON, OFF}
 #   ALPAKA_FIBERS_ENABLE {ON, OFF}
 #   ALPAKA_OPENMP_ENABLE {ON, OFF}
@@ -60,11 +59,6 @@ SET(CMAKE_PREFIX_PATH "/usr/lib/x86_64-linux-gnu/" "$ENV{CUDA_ROOT}" "$ENV{BOOST
 SET(ALPAKA_RESURSIVE_FILE_FUNCTIONS_FILE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake/common.cmake")
 INCLUDE(${ALPAKA_RESURSIVE_FILE_FUNCTIONS_FILE_PATH})
 
-OPTION(ALPAKA_SERIAL_ENABLE "Enable the serial accelerator" ON)
-IF(ALPAKA_SERIAL_ENABLE)
-    LIST(APPEND ALPAKA_COMPILE_DEFINITIONS ALPAKA_SERIAL_ENABLED)
-    MESSAGE(STATUS ALPAKA_SERIAL_ENABLED)
-ENDIF()
 OPTION(ALPAKA_THREADS_ENABLE "Enable the threads accelerator" ON)
 IF(ALPAKA_THREADS_ENABLE)
     LIST(APPEND ALPAKA_COMPILE_DEFINITIONS ALPAKA_THREADS_ENABLED)
@@ -167,12 +161,12 @@ IF(ALPAKA_CUDA_ENABLE)
     ENDIF(IS_CUDA_ARCH_UNSUPPORTED)
 
     LIST(APPEND CUDA_NVCC_FLAGS -arch=${ALPAKA_CUDA_ARCH})
-    
+
     IF(NOT MSVC)
         LIST(APPEND CUDA_NVCC_FLAGS -std=c++11)
         SET(CUDA_HOST_COMPILER ${CMAKE_CXX_COMPILER})
     ENDIF()
-    
+
     IF(CMAKE_BUILD_TYPE MATCHES "Debug")
         LIST(APPEND CUDA_NVCC_FLAGS -g -G)
     ENDIF()
@@ -188,7 +182,7 @@ IF(ALPAKA_CUDA_ENABLE)
     ELSE()
         LIST(APPEND CUDA_NVCC_FLAGS --ftz=false)
     ENDIF()
-    
+
     OPTION(ALPAKA_CUDA_SHOW_REGISTER "Show kernel registers and create PTX" OFF)
     IF(ALPAKA_CUDA_SHOW_REGISTER)
         LIST(APPEND CUDA_NVCC_FLAGS -Xptxas=-v)
@@ -232,12 +226,13 @@ ELSE()
         LIST(APPEND ALPAKA_COMPILE_OPTIONS "-Wall")
         LIST(APPEND ALPAKA_COMPILE_OPTIONS "-pedantic")
         LIST(APPEND ALPAKA_COMPILE_OPTIONS "-Wextra")
+        # librt: undefined reference to `clock_gettime'
+        LIST(APPEND ALPAKA_LIBRARY_DEPENDENCIES "general;rt")
     # Clang or AppleClang
     ELSEIF(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         LIST(APPEND ALPAKA_COMPILE_OPTIONS "-Wall")
-        #Clang 3.7 seems to require librt: undefined reference to `clock_gettime'
-        # \TODO: Remove when using fiber develop.
-        #LIST(APPEND ALPAKA_LIBRARY_DEPENDENCIES "general;lrt")
+        # librt: undefined reference to `clock_gettime'
+        LIST(APPEND ALPAKA_LIBRARY_DEPENDENCIES "general;rt")
     # ICC
     ELSEIF(${CMAKE_CXX_COMPILER_ID} STREQUAL "Intel")
         LIST(APPEND ALPAKA_COMPILE_OPTIONS "-Wall")
@@ -245,16 +240,16 @@ ELSE()
     ELSEIF(${CMAKE_CXX_COMPILER_ID} STREQUAL "PGI")
         LIST(APPEND ALPAKA_COMPILE_OPTIONS "-Minform=inform")
     ENDIF()
-    
+
     # Select C++ standard version.
     LIST(APPEND ALPAKA_COMPILE_OPTIONS "-std=c++11")
-    
+
     # Add linker options.
     IF(ALPAKA_THREADS_ENABLE)
         LIST(APPEND ALPAKA_LIBRARY_DEPENDENCIES "general;pthread")
     ENDIF()
 ENDIF()
-  
+
 ################################################################################
 # Compile & Link.
 ################################################################################
@@ -273,7 +268,7 @@ append_recursive_files_add_to_source_group(${ALPAKA_SUFFIXED_REALTIVE_INCLUDE_DI
 SET(ALPAKA_CMAKE_FILES_ALL ${CMAKE_CURRENT_LIST_FILE} ${ALPAKA_RESURSIVE_FILE_FUNCTIONS_FILE_PATH})
 
 ADD_LIBRARY(
-    alpaka 
+    alpaka
     ${ALPAKA_HEADER_FILES_ALL}
     ${ALPAKA_SOURCE_FILES_ALL}
     ${ALPAKA_CMAKE_FILES_ALL})
@@ -287,7 +282,7 @@ IF(ALPAKA_CUDA_ENABLE)
     list_add_prefix("-D" ALPAKA_COMPILE_DEFINITIONS_COPY)
     ADD_DEFINITIONS(${ALPAKA_COMPILE_DEFINITIONS_COPY})
 ENDIF()
-   
+
 list_add_prefix("PUBLIC;" ALPAKA_COMPILE_OPTIONS)
 IF(${ALPAKA_DEBUG} GREATER 0)
     MESSAGE(STATUS "ALPAKA_COMPILE_OPTIONS: ${ALPAKA_COMPILE_OPTIONS}")

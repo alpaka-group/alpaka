@@ -98,9 +98,9 @@ namespace alpaka
         //! \tparam TFuncReturn The return type of the TFunc. Used for class specialization.
         //#############################################################################
         template<
-            typename TCurrentException, 
-            template<typename TFuncReturn> class TPromise, 
-            typename TFunc, 
+            typename TCurrentException,
+            template<typename TFuncReturn> class TPromise,
+            typename TFunc,
             typename TFuncReturn>
         class TaskPkg :
             public ITaskPkg<TCurrentException>
@@ -148,13 +148,13 @@ namespace alpaka
         //! \tparam TFunc The type of the function to execute.
         //#############################################################################
         template<
-            typename TCurrentException, 
-            template<typename TFuncReturn> class TPromise, 
+            typename TCurrentException,
+            template<typename TFuncReturn> class TPromise,
             typename TFunc>
         class TaskPkg<
-            TCurrentException, 
-            TPromise, 
-            TFunc, 
+            TCurrentException,
+            TPromise,
+            TFunc,
             void> :
             public ITaskPkg<TCurrentException>
         {
@@ -197,7 +197,7 @@ namespace alpaka
         //#############################################################################
         //! ConcurrentExecPool using yield.
         //!
-        //! \tparam TConcurrentExec The type of concurrent executor (for example std::thread). 
+        //! \tparam TConcurrentExec The type of concurrent executor (for example std::thread).
         //! \tparam TPromise The promise type returned by the task.
         //! \tparam TCurrentException Must have a static method "current_exception()" that returns the current exception.
         //! \tparam TYield The type is required to have a static method "void yield()" to yield the current thread if there is no work.
@@ -207,13 +207,13 @@ namespace alpaka
         //! \tparam TbYield Booleam value the threads should yield instead of wait for a condition variable.
         //#############################################################################
         template<
-            typename TConcurrentExec, 
-            template<typename TFuncReturn> class TPromise, 
-            typename TCurrentException, 
-            typename TYield, 
-            typename TMutex = void, 
-            template<typename TMutex2> class TUniqueLock = std::atomic, 
-            typename TCondVar = void, 
+            typename TConcurrentExec,
+            template<typename TFuncReturn> class TPromise,
+            typename TCurrentException,
+            typename TYield,
+            typename TMutex = void,
+            template<typename TMutex2> class TUniqueLock = std::atomic,
+            typename TCondVar = void,
             bool TbYield = true>
         class ConcurrentExecPool
         {
@@ -223,7 +223,7 @@ namespace alpaka
             //!
             //! Creates a concurrent executor pool with a specific number of concurrent executors and a maximum number of queued tasks.
             //!
-            //! \param uiConcurrentExecutionCount   The guaranteed number of concurrent executors used in the pool. 
+            //! \param uiConcurrentExecutionCount   The guaranteed number of concurrent executors used in the pool.
             //!                                     This is also the maximum number of tasks worked on concurrently.
             //! \param uiQueueSize  The maximum number of tasks that can be queued for completion.
             //!                     Currently running tasks do not belong to the queue anymore.
@@ -296,22 +296,22 @@ namespace alpaka
 
             //-----------------------------------------------------------------------------
             //! Runs the given function on one of the pool in First In First Out (FIFO) order.
-            //! 
+            //!
             //! \tparam TFunc   The function type.
             //! \param task     Function or functor to be called on the pool.
             //!                 Takes an arbitrary number of arguments and arbitrary return type.
             //! \tparam TArgs   The argument types pack.
-            //! \param args     Arguments for task, cannot be moved. 
+            //! \param args     Arguments for task, cannot be moved.
             //!                 If such parameters must be used, use a lambda and capture via move then move the lambda.
-            //! 
-            //! \return Signals when the task has completed with either success or an exception. 
+            //!
+            //! \return Signals when the task has completed with either success or an exception.
             //!         Also results in an exception if the pool is destroyed before execution has begun.
             //-----------------------------------------------------------------------------
             template<
-                typename TFunc, 
+                typename TFunc,
                 typename ... TArgs>
             auto enqueueTask(
-                TFunc && task, 
+                TFunc && task,
                 TArgs && ... args)
             -> typename std::result_of< decltype(&TPromise<typename std::result_of<TFunc(TArgs...)>::type>::get_future)(TPromise<typename std::result_of<TFunc(TArgs...)>::type>) >::type
             {
@@ -401,7 +401,7 @@ namespace alpaka
         //#############################################################################
         //! ConcurrentExecPool using a condition variable to wait for new work.
         //!
-        //! \tparam TConcurrentExec The type of concurrent executor (for example std::thread). 
+        //! \tparam TConcurrentExec The type of concurrent executor (for example std::thread).
         //! \tparam TPromise The promise type returned by the task.
         //! \tparam TCurrentException Must have a static method "current_exception()" that returns the current exception.
         //! \tparam TYield Unused. The type is required to have a static method "void yield()" to yield the current thread if there is no work.
@@ -410,21 +410,21 @@ namespace alpaka
         //! \tparam TCondVar The condition variable type used to make the threads wait if there is no work. Uses the TUniqueLock.
         //#############################################################################
         template<
-            typename TConcurrentExec, 
-            template<typename TFuncReturn> class TPromise, 
-            typename TCurrentException, 
-            typename TYield, 
-            typename TMutex, 
-            template<typename TMutex2> class TUniqueLock, 
+            typename TConcurrentExec,
+            template<typename TFuncReturn> class TPromise,
+            typename TCurrentException,
+            typename TYield,
+            typename TMutex,
+            template<typename TMutex2> class TUniqueLock,
             typename TCondVar>
         class ConcurrentExecPool<
-            TConcurrentExec, 
-            TPromise, 
-            TCurrentException, 
-            TYield, 
-            TMutex, 
-            TUniqueLock, 
-            TCondVar, 
+            TConcurrentExec,
+            TPromise,
+            TCurrentException,
+            TYield,
+            TMutex,
+            TUniqueLock,
+            TCondVar,
             false>
         {
         public:
@@ -433,7 +433,7 @@ namespace alpaka
             //!
             //! Creates a concurrent executor pool with a specific number of concurrent executors and a maximum number of queued tasks.
             //!
-            //! \param uiConcurrentExecutionCount   The guaranteed number of concurrent executors used in the pool. 
+            //! \param uiConcurrentExecutionCount   The guaranteed number of concurrent executors used in the pool.
             //!                                     This is also the maximum number of tasks worked on concurrently.
             //! \param uiQueueSize  The maximum number of tasks that can be queued for completion.
             //!                     Currently running tasks do not belong to the queue anymore.
@@ -510,22 +510,22 @@ namespace alpaka
 
             //-----------------------------------------------------------------------------
             //! Runs the given function on one of the pool in First In First Out (FIFO) order.
-            //! 
+            //!
             //! \tparam TFunc   The function type.
             //! \param task     Function or functor to be called on the pool.
             //!                 Takes an arbitrary number of arguments and arbitrary return type.
             //! \tparam TArgs   The argument types pack.
-            //! \param args     Arguments for task, cannot be moved. 
+            //! \param args     Arguments for task, cannot be moved.
             //!                 If such parameters must be used, use a lambda and capture via move then move the lambda.
-            //! 
-            //! \return Signals when the task has completed with either success or an exception. 
+            //!
+            //! \return Signals when the task has completed with either success or an exception.
             //!         Also results in an exception if the pool is destroyed before execution has begun.
             //-----------------------------------------------------------------------------
             template<
-                typename TFunc, 
+                typename TFunc,
                 typename ... TArgs>
             auto enqueueTask(
-                TFunc && task, 
+                TFunc && task,
                 TArgs && ... args)
             -> typename std::result_of< decltype(&TPromise<typename std::result_of<TFunc(TArgs...)>::type>::get_future)(TPromise<typename std::result_of<TFunc(TArgs...)>::type>) >::type
             {
@@ -544,7 +544,7 @@ namespace alpaka
 
                 // No longer in danger, can revoke ownership so m_qTasks is not left with dangling reference.
                 packagePtr.release();
-                                    
+
                 m_cvWakeup.notify_one();
 
                 return future;

@@ -32,7 +32,7 @@ namespace alpaka
         //#############################################################################
         struct SpaceHost;
     }
-    
+
     namespace traits
     {
         namespace mem

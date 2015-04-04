@@ -42,13 +42,13 @@ public:
     //! Constructor.
     //-----------------------------------------------------------------------------
     ALPAKA_FCT_HOST_ACC SimpleComplex(
-        T const & a, 
-        T const & b) : 
-            r(a), 
-            i(b) 
+        T const & a,
+        T const & b) :
+            r(a),
+            i(b)
     {}
     //-----------------------------------------------------------------------------
-    //! 
+    //!
     //-----------------------------------------------------------------------------
     ALPAKA_FCT_HOST_ACC auto absSq()
     -> T
@@ -56,7 +56,7 @@ public:
         return r*r + i*i;
     }
     //-----------------------------------------------------------------------------
-    //! 
+    //!
     //-----------------------------------------------------------------------------
     ALPAKA_FCT_HOST_ACC auto operator*(SimpleComplex const & a)
     -> SimpleComplex
@@ -64,7 +64,7 @@ public:
         return SimpleComplex(r*a.r - i*a.i, i*a.r + r*a.i);
     }
     //-----------------------------------------------------------------------------
-    //! 
+    //!
     //-----------------------------------------------------------------------------
     ALPAKA_FCT_HOST_ACC auto operator*(float const & a)
     -> SimpleComplex
@@ -72,7 +72,7 @@ public:
         return SimpleComplex(r*a, i*a);
     }
     //-----------------------------------------------------------------------------
-    //! 
+    //!
     //-----------------------------------------------------------------------------
     ALPAKA_FCT_HOST_ACC auto operator+(SimpleComplex const & a)
     -> SimpleComplex
@@ -80,7 +80,7 @@ public:
         return SimpleComplex(r+a.r, i+a.i);
     }
     //-----------------------------------------------------------------------------
-    //! 
+    //!
     //-----------------------------------------------------------------------------
     ALPAKA_FCT_HOST_ACC auto operator+(float const & a)
     -> SimpleComplex
@@ -125,7 +125,7 @@ public:
         m_aColors[15u] = convertRgbSingleToBgra(106, 52, 3);
     }
 #endif
-    
+
     //-----------------------------------------------------------------------------
     //! The kernel entry point.
     //!
@@ -176,7 +176,7 @@ public:
         }
     }
     //-----------------------------------------------------------------------------
-    //! \return 
+    //! \return
     //!     The number of iterations until the Mandelbrot iteration with the given Value reaches the absolute value of 2.
     //!     Only does uiMaxIterations steps and returns uiMaxIterations if the value would be higher.
     //-----------------------------------------------------------------------------
@@ -196,9 +196,9 @@ public:
         }
         return uiMaxIterations;
     }
-    
+
     //-----------------------------------------------------------------------------
-    //! 
+    //!
     //-----------------------------------------------------------------------------
     ALPAKA_FCT_ACC static auto convertRgbSingleToBgra(
         std::uint32_t const & r,
@@ -225,7 +225,7 @@ public:
         // Use some modified Bernstein polynomials for r, g, b.
         std::uint32_t const r(static_cast<std::uint32_t>(9.0f*oneMinusT*t*t*t*255.0f));
         std::uint32_t const g(static_cast<std::uint32_t>(15.0f*oneMinusT*oneMinusT*t*t*255.0f));
-        std::uint32_t const b(static_cast<std::uint32_t>(8.5f*oneMinusT*oneMinusT*oneMinusT*t*255.0f));    
+        std::uint32_t const b(static_cast<std::uint32_t>(8.5f*oneMinusT*oneMinusT*oneMinusT*t*255.0f));
         return convertRgbSingleToBgra(r, g, b);
     }
 #else
@@ -266,7 +266,7 @@ auto profileKernelExec(
 
     // Execute the kernel functor.
     exec(std::forward<TKernelFunctor>(kernelFunctor), std::forward<TArgs>(args)...);
-    
+
     // Wait for the stream to finish the kernel execution to measure its run time.
     alpaka::wait::wait(alpaka::stream::getStream(exec));
 
@@ -275,6 +275,86 @@ auto profileKernelExec(
     auto const durElapsed(tpEnd - tpStart);
 
     std::cout << "Execution time: " << std::chrono::duration_cast<std::chrono::milliseconds>(durElapsed).count() << " ms" << std::endl;
+}
+
+
+//-----------------------------------------------------------------------------
+//! Writes the buffer color data to a file.
+//-----------------------------------------------------------------------------
+template<
+    typename TBuf>
+auto writeTgaColorImage(
+    std::string const & sFileName,
+    TBuf const & bufRgba)
+-> void
+{
+    static_assert(
+        alpaka::dim::DimT<TBuf>::value == 2,
+        "The buffer has to be 2 dimensional!");
+    static_assert(
+        std::is_integral<alpaka::mem::ElemT<TBuf>>::value,
+        "The buffer element type has to be integral!");
+
+    // The width of the input buffer is in input elements.
+    auto const uiBufWidthElems(alpaka::extent::getWidth(bufRgba));
+    auto const uiBufWidthBytes(uiBufWidthElems * sizeof(alpaka::mem::ElemT<TBuf>));
+    // The row width in bytes has to be dividable by 4 Bytes (RGBA).
+    assert(uiBufWidthBytes % sizeof(std::uint32_t) == 0);
+    // The number of colors in a row.
+    auto const uiBufWidthColors(uiBufWidthBytes / sizeof(std::uint32_t));
+    assert(uiBufWidthColors >= 1);
+    auto const uiBufHeightColors(alpaka::extent::getHeight(bufRgba));
+    assert(uiBufHeightColors >= 1);
+    auto const uiBufPitchBytes(alpaka::mem::getPitchBytes(bufRgba));
+    assert(uiBufPitchBytes >= uiBufWidthBytes);
+
+    std::ofstream ofs(
+        sFileName,
+        std::ofstream::out | std::ofstream::binary);
+    if(!ofs.is_open())
+    {
+        throw std::invalid_argument("Unable to open file: "+sFileName);
+    }
+
+    // Write tga image header.
+    ofs.put(0x00);                      // Number of Characters in Identification Field.
+    ofs.put(0x00);                      // Color Map Type.
+    ofs.put(0x02);                      // Image Type Code.
+    ofs.put(0x00);                      // Color Map Origin.
+    ofs.put(0x00);
+    ofs.put(0x00);                      // Color Map Length.
+    ofs.put(0x00);
+    ofs.put(0x00);                      // Color Map Entry Size.
+    ofs.put(0x00);                      // X Origin of Image.
+    ofs.put(0x00);
+    ofs.put(0x00);                      // Y Origin of Image.
+    ofs.put(0x00);
+    ofs.put((uiBufWidthColors & 0xFF)); // Width of Image.
+    ofs.put((uiBufWidthColors >> 8) & 0xFF);
+    ofs.put((uiBufHeightColors & 0xFF));// Height of Image.
+    ofs.put((uiBufHeightColors >> 8) & 0xFF);
+    ofs.put(0x20);                      // Image Pixel Size.
+    ofs.put(0x20);                      // Image Descriptor Byte.
+
+    // Write the data.
+    char const * pData(reinterpret_cast<char const *>(alpaka::mem::getNativePtr(bufRgba)));
+    // If there is no padding, we can directly write the whole buffer data ...
+    if(uiBufPitchBytes == uiBufWidthBytes)
+    {
+        ofs.write(
+            pData,
+            uiBufWidthColors*uiBufHeightColors);
+    }
+    // ... else we have to write row by row.
+    else
+    {
+        for(std::size_t uiRow(0u); uiRow<uiBufHeightColors; ++uiRow)
+        {
+            ofs.write(
+                pData + uiBufPitchBytes*uiRow,
+                uiBufWidthColors);
+        }
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -299,14 +379,25 @@ struct MandelbrotKernelTester
 
         // Create the kernel functor.
         MandelbrotKernel kernel;
-        
+
+        // Get the host device.
+        auto const devHost(alpaka::host::getDev());
+
+        // Select a device to execute on.
+        alpaka::dev::DevT<TAcc> const devAcc(
+            alpaka::dev::DevManT<TAcc>::getDevByIdx(0));
+
+        // Get a stream on this device.
+        alpaka::stream::StreamT<TAcc> const stream(
+            alpaka::stream::create(devAcc));
+
         alpaka::Vec<2u> const v2uiExtents(
             static_cast<alpaka::Vec<2u>::Val>(uiNumCols),
-            static_cast<alpaka::Vec<2u>::Val>(uiNumRows)
-        );
+            static_cast<alpaka::Vec<2u>::Val>(uiNumRows));
 
         // Let alpaka calculate good block and grid sizes given our full problem extents.
-        alpaka::workdiv::BasicWorkDiv const workDiv(alpaka::workdiv::getValidWorkDiv<boost::mpl::vector<TAcc>>(v2uiExtents, false));
+        alpaka::workdiv::BasicWorkDiv const workDiv(
+            alpaka::workdiv::getValidWorkDiv<boost::mpl::vector<TAcc>>(v2uiExtents, false));
 
         std::cout
             << "MandelbrotKernelTester("
@@ -319,18 +410,16 @@ struct MandelbrotKernelTester
             << ")" << std::endl;
 
         // allocate host memory
-        auto bufColorHost(alpaka::mem::alloc<std::uint32_t, alpaka::mem::SpaceHost>(v2uiExtents));
-        
-        // Allocate the buffer on the accelerator.
-        using AccMemSpace = typename alpaka::mem::SpaceT<TAcc>;
-        auto bufColorAcc(alpaka::mem::alloc<std::uint32_t, AccMemSpace>(v2uiExtents));
+        auto bufColorHost(
+            alpaka::mem::alloc<std::uint32_t>(devHost, v2uiExtents));
 
-        // Get a new stream.
-        alpaka::stream::StreamT<TAcc> stream;
+        // Allocate the buffer on the accelerator.
+        auto bufColorAcc(
+            alpaka::mem::alloc<std::uint32_t>(devAcc, v2uiExtents));
 
         // Copy Host -> Acc.
         alpaka::mem::copy(bufColorAcc, bufColorHost, v2uiExtents, stream);
-        
+
         // Create the kernel executor.
         auto exec(alpaka::exec::create<TAcc>(workDiv, stream));
         // Profile the kernel execution.
@@ -349,42 +438,15 @@ struct MandelbrotKernelTester
 
         // Copy back the result.
         alpaka::mem::copy(bufColorHost, bufColorAcc, v2uiExtents, stream);
-        
+
         // Wait for the stream to finish the memory operation.
         alpaka::wait::wait(stream);
-        
-        std::string const sFileName("mandelbrot"+std::to_string(uiNumCols)+"x"+std::to_string(uiNumRows)+"_"+alpaka::acc::getAccName<TAcc>()+".tga");
-        std::ofstream ofs(
-            sFileName, 
-            std::ofstream::out | std::ofstream::binary);
-        if(!ofs.is_open())
-        {
-            throw std::invalid_argument("Unable to open file: "+sFileName);
-        }
 
-        // Write tga image header.
-        ofs.put(0x00);                      // Number of Characters in Identification Field.
-        ofs.put(0x00);                      // Color Map Type.
-        ofs.put(0x02);                      // Image Type Code.
-        ofs.put(0x00);                      // Color Map Origin.
-        ofs.put(0x00);
-        ofs.put(0x00);                      // Color Map Length.
-        ofs.put(0x00);
-        ofs.put(0x00);                      // Color Map Entry Size.
-        ofs.put(0x00);                      // X Origin of Image.
-        ofs.put(0x00);
-        ofs.put(0x00);                      // Y Origin of Image.
-        ofs.put(0x00);
-        ofs.put((uiNumCols & 0xFF));        // Width of Image.
-        ofs.put((uiNumCols >> 8) & 0xFF);
-        ofs.put((uiNumRows & 0xFF));        // Height of Image.
-        ofs.put((uiNumRows >> 8) & 0xFF);
-        ofs.put(0x20);                      // Image Pixel Size.
-        ofs.put(0x20);                      // Image Descriptor Byte.
-        // Write data.
-        ofs.write(
-            reinterpret_cast<char*>(alpaka::mem::getNativePtr(bufColorHost)), 
-            static_cast<std::size_t>(alpaka::extent::getProductOfExtents(bufColorHost))*sizeof(std::uint32_t));
+        // Write the image to a file.
+        std::string const sFileName("mandelbrot"+std::to_string(uiNumCols)+"x"+std::to_string(uiNumRows)+"_"+alpaka::acc::getAccName<TAcc>()+".tga");
+        writeTgaColorImage(
+            sFileName,
+            bufColorHost);
 
         std::cout << "################################################################################" << std::endl;
     }
@@ -405,16 +467,10 @@ auto main()
         std::cout << std::endl;
 
         // Logs the enabled accelerators.
-        alpaka::acc::writeEnabledAccelerators(std::cout);
+        alpaka::accs::writeEnabledAccs(std::cout);
 
         std::cout << std::endl;
 
-#ifdef ALPAKA_CUDA_ENABLED
-        // Select the first CUDA device.
-        // NOTE: This is not required to run any kernels on the CUDA accelerator because all accelerators have a default device. This only shows the possibility.
-        alpaka::dev::DevManT<alpaka::AccCuda>::setCurrentDev(
-            alpaka::dev::DevManT<alpaka::AccCuda>::getCurrentDev());
-#endif
         MandelbrotKernelTester mandelbrotTester;
 
         // For different sizes.
@@ -429,7 +485,7 @@ auto main()
             std::cout << std::endl;
 
             // Execute the kernel on all enabled accelerators.
-            alpaka::forEachType<alpaka::acc::EnabledAccelerators>(
+            alpaka::forEachType<alpaka::accs::EnabledAccs>(
                     mandelbrotTester,
                     uiSize,
                     uiSize,

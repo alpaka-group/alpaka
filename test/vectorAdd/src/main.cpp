@@ -113,10 +113,20 @@ struct VectorAddKernelTester
 
         // Create the kernel functor.
         VectorAddKernel kernel;
+
+        // Get the host device.
+        auto const devHost(alpaka::host::getDev());
+
+        // Select a device to execute on.
+        alpaka::dev::DevT<TAcc> const devAcc(
+            alpaka::dev::DevManT<TAcc>::getDevByIdx(0));
+            
+        // Get a stream on this device.
+        alpaka::stream::StreamT<TAcc> const stream(
+            alpaka::stream::create(devAcc));
         
         alpaka::Vec<1u> const v1uiExtents(
-            static_cast<alpaka::Vec<1u>::Val>(uiNumElements)
-        );
+            static_cast<alpaka::Vec<1u>::Val>(uiNumElements));
 
         // Let alpaka calculate good block and grid sizes given our full problem extents.
         alpaka::workdiv::BasicWorkDiv const workDiv(alpaka::workdiv::getValidWorkDiv<boost::mpl::vector<TAcc>>(v1uiExtents, false));
@@ -130,9 +140,9 @@ struct VectorAddKernelTester
             << ")" << std::endl;
 
         // Allocate host memory buffers.
-        auto memBufHostA(alpaka::mem::alloc<float, alpaka::mem::SpaceHost>(v1uiExtents));
-        auto memBufHostB(alpaka::mem::alloc<float, alpaka::mem::SpaceHost>(v1uiExtents));
-        auto memBufHostC(alpaka::mem::alloc<float, alpaka::mem::SpaceHost>(v1uiExtents));
+        auto memBufHostA(alpaka::mem::alloc<float>(devHost, v1uiExtents));
+        auto memBufHostB(alpaka::mem::alloc<float>(devHost, v1uiExtents));
+        auto memBufHostC(alpaka::mem::alloc<float>(devHost, v1uiExtents));
         
         // Initialize the host input vectors
         for (std::size_t i(0); i < uiNumElements; ++i)
@@ -142,13 +152,9 @@ struct VectorAddKernelTester
         }
 
         // Allocate the buffer on the accelerator.
-        using AccMemSpace = typename alpaka::mem::SpaceT<TAcc>;
-        auto memBufAccA(alpaka::mem::alloc<float, AccMemSpace>(v1uiExtents));
-        auto memBufAccB(alpaka::mem::alloc<float, AccMemSpace>(v1uiExtents));
-        auto memBufAccC(alpaka::mem::alloc<float, AccMemSpace>(v1uiExtents));
-
-        // Get a new stream.
-        alpaka::stream::StreamT<TAcc> stream;
+        auto memBufAccA(alpaka::mem::alloc<float>(devAcc, v1uiExtents));
+        auto memBufAccB(alpaka::mem::alloc<float>(devAcc, v1uiExtents));
+        auto memBufAccC(alpaka::mem::alloc<float>(devAcc, v1uiExtents));
 
         // Copy Host -> Acc.
         alpaka::mem::copy(memBufAccA, memBufHostA, v1uiExtents, stream);
@@ -215,16 +221,10 @@ auto main()
         std::cout << std::endl;
 
         // Logs the enabled accelerators.
-        alpaka::acc::writeEnabledAccelerators(std::cout);
+        alpaka::accs::writeEnabledAccs(std::cout);
 
         std::cout << std::endl;
 
-#ifdef ALPAKA_CUDA_ENABLED
-        // Select the first CUDA device.
-        // NOTE: This is not required to run any kernels on the CUDA accelerator because all accelerators have a default device. This only shows the possibility.
-        alpaka::dev::DevManT<alpaka::AccCuda>::setCurrentDev(
-            alpaka::dev::DevManT<alpaka::AccCuda>::getCurrentDev());
-#endif
         VectorAddKernelTester vectorAddKernelTester;
 
         // For different sizes.
@@ -237,7 +237,7 @@ auto main()
             std::cout << std::endl;
 
             // Execute the kernel on all enabled accelerators.
-            alpaka::forEachType<alpaka::acc::EnabledAccelerators>(
+            alpaka::forEachType<alpaka::accs::EnabledAccs>(
                 vectorAddKernelTester,
                 uiSize);
         }

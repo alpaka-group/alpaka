@@ -35,7 +35,7 @@ SET(SUFFIXED_INCLUDE_DIR "${INCLUDE_DIR}${TARGET_NAME}/")
 SET(SUFFIXED_SOURCE_DIR "src/")
 
 ################################################################################
-# Project 
+# Project
 ################################################################################
 
 PROJECT(${TARGET_NAME})

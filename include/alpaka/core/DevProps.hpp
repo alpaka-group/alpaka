@@ -62,7 +62,7 @@ namespace alpaka
             Vec<3u> m_v3uiBlockThreadExtentsMax;    //!< The maximum number of threads in each dimension of a block.
             Vec<3u> m_v3uiGridBlockExtentsMax;      //!< The maximum number of blocks in each dimension of the grid.
             std::size_t m_uiGlobalMemSizeBytes;     //!< Size of the global device memory in bytes.
-            //std::size_t m_uiSharedMemSizeBytes;   //!< Size of the available block shared memory in bytes. 
+            //std::size_t m_uiSharedMemSizeBytes;   //!< Size of the available block shared memory in bytes.
             //std::size_t m_uiMaxClockFrequencyHz;  //!< Maximum clock frequency of the device in Hz.
         };
     }

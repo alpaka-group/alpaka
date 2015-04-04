@@ -38,7 +38,7 @@ namespace alpaka
             //! The extents get trait.
             //#############################################################################
             template<
-                typename T, 
+                typename T,
                 typename TSfinae = void>
             struct GetExtents;
 
@@ -48,7 +48,7 @@ namespace alpaka
             //! If not specialized explicitly it returns 1.
             //#############################################################################
             template<
-                typename T, 
+                typename T,
                 typename TSfinae = void>
             struct GetWidth
             {
@@ -65,7 +65,7 @@ namespace alpaka
             //! If not specialized explicitly it returns 1.
             //#############################################################################
             template<
-                typename T, 
+                typename T,
                 typename TSfinae = void>
             struct GetHeight
             {
@@ -82,7 +82,7 @@ namespace alpaka
             //! If not specialized explicitly it returns 1.
             //#############################################################################
             template<
-                typename T, 
+                typename T,
                 typename TSfinae = void>
             struct GetDepth
             {
@@ -98,21 +98,21 @@ namespace alpaka
             //! The width set trait.
             //#############################################################################
             template<
-                typename T, 
+                typename T,
                 typename TSfinae = void>
             struct SetWidth;
             //#############################################################################
             //! The height set trait.
             //#############################################################################
             template<
-                typename T, 
+                typename T,
                 typename TSfinae = void>
             struct SetHeight;
             //#############################################################################
             //! The depth set trait.
             //#############################################################################
             template<
-                typename T, 
+                typename T,
                 typename TSfinae = void>
             struct SetDepth;
         }
@@ -208,7 +208,7 @@ namespace alpaka
             traits::extent::SetWidth<
                 TExtents>
             ::setWidth(
-                extents, 
+                extents,
                 width);
         }
         //-----------------------------------------------------------------------------
@@ -225,7 +225,7 @@ namespace alpaka
             traits::extent::SetHeight<
                 TExtents>
             ::setHeight(
-                extents, 
+                extents,
                 height);
         }
         //-----------------------------------------------------------------------------
@@ -242,7 +242,7 @@ namespace alpaka
             traits::extent::SetDepth<
                 TExtents>
             ::setDepth(
-                extents, 
+                extents,
                 depth);
         }
     }

@@ -34,10 +34,11 @@
 // Include the whole library.
 //#############################################################################
 
+#include <alpaka/accs/Accs.hpp>
+
 #include <alpaka/core/BasicDims.hpp>
 #include <alpaka/core/BasicWorkDiv.hpp>
 #include <alpaka/core/Common.hpp>
-#include <alpaka/core/EnabledAccelerators.hpp>
 #include <alpaka/core/ForEachType.hpp>
 #include <alpaka/core/mem/BufPlainPtrWrapper.hpp>
 #include <alpaka/core/mem/BufStdContainers.hpp>
@@ -47,13 +48,14 @@
 #include <alpaka/core/Vec.hpp>
 #include <alpaka/core/WorkDivHelpers.hpp>
 
+#include <alpaka/host/Dev.hpp>
 #include <alpaka/host/Mem.hpp>
 #include <alpaka/host/SysInfo.hpp>
 
 #include <alpaka/traits/Acc.hpp>
 #include <alpaka/traits/Atomic.hpp>
 #include <alpaka/traits/BlockSharedExternMemSizeBytes.hpp>
-#include <alpaka/traits/Device.hpp>
+#include <alpaka/traits/Dev.hpp>
 #include <alpaka/traits/Dim.hpp>
 #include <alpaka/traits/Event.hpp>
 #include <alpaka/traits/Exec.hpp>

@@ -50,20 +50,20 @@ namespace alpaka
             template<
                 typename TDim>
             struct Copy<
-                TDim, 
+                TDim,
                 alpaka::mem::SpaceHost,
                 alpaka::mem::SpaceHost>
             {
                 //-----------------------------------------------------------------------------
-                //! 
+                //!
                 //-----------------------------------------------------------------------------
                 template<
-                    typename TExtents, 
-                    typename TBufSrc, 
+                    typename TExtents,
+                    typename TBufSrc,
                     typename TBufDst>
                 ALPAKA_FCT_HOST static auto copy(
-                    TBufDst & bufDst, 
-                    TBufSrc const & bufSrc, 
+                    TBufDst & bufDst,
+                    TBufSrc const & bufSrc,
                     TExtents const & extents)
                 -> void
                 {
@@ -111,14 +111,14 @@ namespace alpaka
                     auto const pSrcNative(reinterpret_cast<std::uint8_t const *>(alpaka::mem::getNativePtr(bufSrc)));
                     auto const uiDstSliceSizeBytes(uiDstPitchBytes * uiDstHeight);
                     auto const uiSrcSliceSizeBytes(uiSrcPitchBytes * uiSrcHeight);
-                    
+
                     auto const & dstBuf(alpaka::mem::getBuf(bufDst));
                     auto const & srcBuf(alpaka::mem::getBuf(bufSrc));
                     auto const uiDstBufWidth(alpaka::extent::getWidth(dstBuf));
                     auto const uiSrcBufWidth(alpaka::extent::getWidth(srcBuf));
                     auto const uiDstBufHeight(alpaka::extent::getHeight(dstBuf));
                     auto const uiSrcBufHeight(alpaka::extent::getHeight(srcBuf));
-                    
+
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                     std::cout << BOOST_CURRENT_FUNCTION
                         << " ew: " << uiExtentWidth
@@ -144,7 +144,7 @@ namespace alpaka
                     // If:
                     // - the copy extents width and height are identical to the dst and src extents width and height
                     // - the copy extents width and height are identical to the dst and src base memory buffer extents width and height
-                    // - the src and dst slice size is identical 
+                    // - the src and dst slice size is identical
                     // -> we can copy the whole memory at once overwriting the pitch bytes
                     if((uiExtentWidth == uiDstWidth)
                         && (uiExtentWidth == uiSrcWidth)
@@ -168,7 +168,7 @@ namespace alpaka
                             // If:
                             // - the copy extents width is identical to the dst and src extents width
                             // - the copy extents width is identical to the dst and src base memory buffer extents width
-                            // - the src and dst pitch is identical 
+                            // - the src and dst pitch is identical
                             // -> we can copy whole slices at once overwriting the pitch bytes
                             if((uiExtentWidth == uiDstWidth)
                                 && (uiExtentWidth == uiSrcWidth)
@@ -195,20 +195,23 @@ namespace alpaka
                     }
                 }
                 //-----------------------------------------------------------------------------
-                //! 
+                //!
+                // \TODO: Implement asynchronous host copy.
                 //-----------------------------------------------------------------------------
                 template<
-                    typename TExtents, 
-                    typename TBufSrc, 
-                    typename TBufDst>
+                    typename TExtents,
+                    typename TBufSrc,
+                    typename TBufDst,
+                    typename TDev>
                 ALPAKA_FCT_HOST static auto copy(
-                    TBufDst & bufDst, 
-                    TBufSrc const & bufSrc, 
+                    TBufDst & bufDst,
+                    TBufSrc const & bufSrc,
                     TExtents const & extents,
-                    host::detail::StreamHost const &)
+                    host::detail::StreamHost<TDev> const &)
                 -> void
                 {
-                    // \TODO: Implement asynchronous host copy.
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
                     copy(
                         bufDst,
                         bufSrc,

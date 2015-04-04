@@ -26,7 +26,7 @@
 #include <alpaka/core/BasicWorkDiv.hpp>     // workdiv::BasicWorkDiv
 #include <alpaka/core/ForEachType.hpp>      // forEachType
 
-#include <alpaka/traits/Device.hpp>         // dev::DevManT, getDevProps
+#include <alpaka/traits/Dev.hpp>            // dev::DevManT, getDevProps
 
 #include <boost/mpl/vector.hpp>             // boost::mpl::vector
 
@@ -57,13 +57,17 @@ namespace alpaka
                     Vec<3u> & v3uiBlockThreadExtents)
                 -> void
                 {
-                    auto const devProps(dev::getDevProps(dev::DevManT<TAcc>::getCurrentDev()));
-                    auto const & v3uiBlockThreadExtentsMax(devProps.m_v3uiBlockThreadExtentsMax);
+                    auto const vDevs(dev::getDevices<dev::DevManT<TAcc>>());
+                    for(auto const & dev : vDevs)
+                    {
+                        auto const devProps(dev::getDevProps(dev));
+                        auto const & v3uiBlockThreadExtentsMax(devProps.m_v3uiBlockThreadExtentsMax);
 
-                    v3uiBlockThreadExtents = Vec<3u>(
-                        std::min(v3uiBlockThreadExtents[0u], v3uiBlockThreadExtentsMax[0u]),
-                        std::min(v3uiBlockThreadExtents[1u], v3uiBlockThreadExtentsMax[1u]),
-                        std::min(v3uiBlockThreadExtents[2u], v3uiBlockThreadExtentsMax[2u]));
+                        v3uiBlockThreadExtents = Vec<3u>(
+                            std::min(v3uiBlockThreadExtents[0u], v3uiBlockThreadExtentsMax[0u]),
+                            std::min(v3uiBlockThreadExtents[1u], v3uiBlockThreadExtentsMax[1u]),
+                            std::min(v3uiBlockThreadExtents[2u], v3uiBlockThreadExtentsMax[2u]));
+                    }
                 }
             };
         }
@@ -73,11 +77,11 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TAccSeq>
-        ALPAKA_FCT_HOST auto getMaxBlockThreadExtentsAccelerators()
+        ALPAKA_FCT_HOST auto getMaxBlockThreadExtentsAccsDevices()
         -> Vec<3u>
         {
             static_assert(
-                boost::mpl::is_sequence<TAccSeq>::value, 
+                boost::mpl::is_sequence<TAccSeq>::value,
                 "TAccSeq is required to be a mpl::sequence!");
 
             Vec<3u> v3uiMaxBlockThreadExtents(
@@ -109,10 +113,14 @@ namespace alpaka
                     UInt & uiBlockThreadCount)
                 -> void
                 {
-                    auto const devProps(dev::getDevProps(dev::DevManT<TAcc>::getCurrentDev()));
-                    auto const & uiBlockThreadCountMax(devProps.m_uiBlockThreadsCountMax);
+                    auto const vDevs(dev::getDevices<dev::DevManT<TAcc>>());
+                    for(auto const & dev : vDevs)
+                    {
+                        auto const devProps(dev::getDevProps(dev));
+                        auto const & uiBlockThreadCountMax(devProps.m_uiBlockThreadsCountMax);
 
-                    uiBlockThreadCount = std::min(uiBlockThreadCount, uiBlockThreadCountMax);
+                        uiBlockThreadCount = std::min(uiBlockThreadCount, uiBlockThreadCountMax);
+                    }
                 }
             };
         }
@@ -122,7 +130,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TAccSeq>
-        ALPAKA_FCT_HOST auto getMaxBlockThreadCountAccelerators()
+        ALPAKA_FCT_HOST auto getMaxBlockThreadCountAccsDevices()
         -> UInt
         {
             static_assert(boost::mpl::is_sequence<TAccSeq>::value, "TAccSeq is required to be a mpl::sequence!");
@@ -151,7 +159,7 @@ namespace alpaka
                 typename T,
                 typename = typename std::enable_if<std::is_integral<T>::value && std::is_unsigned<T>::value>::type>
             ALPAKA_FCT_HOST auto nextLowerOrEqualFactor(
-                T const & uiMaxDivisor, 
+                T const & uiMaxDivisor,
                 T const & uiDividend)
             -> T
             {
@@ -179,10 +187,6 @@ namespace alpaka
             //! \param bRequireBlockThreadExtentsToDivideGridThreadExtents
             //!     If this is true, the grid thread extents will be multiples of the corresponding block thread extents.
             //!     NOTE: If v3uiGridThreadExtents is prime (or otherwise bad chosen) in a dimension, the block thread extent will be one in this dimension.
-            //! \param bUniformBlockThreadExtentsClipping
-            //!     If this is true, the block thread extents will be clipped uniformly.
-            //!     This means that all values of the extent will be processed uniformly at the same time.
-            //!     This can lead to smaller blocks but allows to keep the ratio between dimensions (in some limits due to integer rounding).
             //#############################################################################
             ALPAKA_FCT_HOST auto subdivideGridThreads(
                 Vec<3u> const & v3uiGridThreadExtents,
@@ -238,6 +242,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \tparam TAccs The accelerators for which this work division has to be valid.
         //! \param gridThreadExtents The full extents of threads in the grid.
+        //! \param bRequireBlockThreadExtentsToDivideGridThreadExtents If the grid thread extents have to be a multiple of the block thread extents.
         //! \return The work division.
         //-----------------------------------------------------------------------------
         template<
@@ -249,35 +254,37 @@ namespace alpaka
         -> BasicWorkDiv
         {
             static_assert(
-                boost::mpl::is_sequence<TAccSeq>::value, 
+                boost::mpl::is_sequence<TAccSeq>::value,
                 "TAccSeq is required to be a mpl::sequence!");
             static_assert(
-                dim::DimT<TExtents>::value <= 3, 
+                dim::DimT<TExtents>::value <= 3,
                 "TExtents is required to have less than or equal 3 dimensions!");
 
             return detail::subdivideGridThreads(
                 Vec<3u>::fromExtents(gridThreadExtents),
-                getMaxBlockThreadExtentsAccelerators<TAccSeq>(),
-                getMaxBlockThreadCountAccelerators<TAccSeq>(),
+                getMaxBlockThreadExtentsAccsDevices<TAccSeq>(),
+                getMaxBlockThreadCountAccsDevices<TAccSeq>(),
                 bRequireBlockThreadExtentsToDivideGridThreadExtents);
         }
 
         //-----------------------------------------------------------------------------
         //! \tparam TAcc The accelerator to test the validity on.
+        //! \param dev The device to test the work div to for validity on.
         //! \param workDiv The work div to test for validity.
         //! \return If the work division is valid on this accelerator.
         //-----------------------------------------------------------------------------
         template<
-            typename TAcc,
+            typename TDev,
             typename TWorkDiv>
         ALPAKA_FCT_HOST auto isValidWorkDiv(
+            TDev const & dev,
             TWorkDiv const & workDiv)
         -> bool
         {
             auto const v3uiGridBlockExtents(getWorkDiv<Grid, Blocks, dim::Dim3>(workDiv));
             auto const v3uiBlockThreadExtents(getWorkDiv<Block, Threads, dim::Dim3>(workDiv));
 
-            auto const devProps(dev::getDevProps(dev::DevManT<TAcc>::getCurrentDev()));
+            auto const devProps(dev::getDevProps(dev));
             auto const & v3uiBlockThreadExtentsMax(devProps.m_v3uiBlockThreadExtentsMax);
             auto const & uiBlockThreadCountMax(devProps.m_uiBlockThreadsCountMax);
 

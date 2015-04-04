@@ -49,9 +49,9 @@ namespace alpaka
             //!
             //-----------------------------------------------------------------------------
             template<
-                typename TElemIt, 
-                typename TLastIt, 
-                typename TFunctor, 
+                typename TElemIt,
+                typename TLastIt,
+                typename TFunctor,
                 typename... TArgs>
             ALPAKA_FCT_HOST_ACC static auto forEachTypeImpl(
                 TFunctor &&,
@@ -59,7 +59,7 @@ namespace alpaka
             -> void
             {}
         };
-        
+
         //#############################################################################
         //!
         //#############################################################################
@@ -71,9 +71,9 @@ namespace alpaka
             //!
             //-----------------------------------------------------------------------------
             template<
-                typename TElemIt, 
-                typename TLastIt, 
-                typename TFunctor, 
+                typename TElemIt,
+                typename TLastIt,
+                typename TFunctor,
                 typename... TArgs>
             ALPAKA_FCT_HOST_ACC static auto forEachTypeImpl(
                 TFunctor && f,
@@ -95,7 +95,7 @@ namespace alpaka
                 ForEachTypeImpl<
                     std::is_same<NextIt, TLastIt>::value>
                 ::template forEachTypeImpl<
-                    NextIt, 
+                    NextIt,
                     TLastIt>(
                         std::forward<TFunctor>(f),
                         std::forward<TArgs>(args)...);
@@ -108,8 +108,8 @@ namespace alpaka
     //! This function does not create instances of the types instead it passes the types as template parameter.
     //-----------------------------------------------------------------------------
     template<
-        typename TSequence, 
-        typename TFunctor, 
+        typename TSequence,
+        typename TFunctor,
         typename... TArgs>
     ALPAKA_FCT_HOST_ACC auto forEachType(
         TFunctor && f,
@@ -117,7 +117,7 @@ namespace alpaka
     -> void
     {
         static_assert(
-            boost::mpl::is_sequence<TSequence>::value, 
+            boost::mpl::is_sequence<TSequence>::value,
             "for_each_type requires the TSequence to satisfy boost::mpl::is_sequence!");
 
         using FirstIt = typename boost::mpl::begin<TSequence>::type;
@@ -126,7 +126,7 @@ namespace alpaka
         detail::ForEachTypeImpl<
             std::is_same<FirstIt, LastIt>::value>
         ::template forEachTypeImpl<
-            FirstIt, 
+            FirstIt,
             LastIt>(
                 std::forward<TFunctor>(f),
                 std::forward<TArgs>(args)...);

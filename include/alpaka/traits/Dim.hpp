@@ -39,7 +39,7 @@ namespace alpaka
             //! The dimension getter type trait.
             //#############################################################################
             template<
-                typename T, 
+                typename T,
                 typename TSfinae = void>
             struct DimType;
         }

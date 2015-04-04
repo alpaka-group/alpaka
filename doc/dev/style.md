@@ -3,8 +3,10 @@ Style
 
 Naming
 ------
-* Types are always in PascalCase (KernlExecCuda, BufT, ...)
-* Variables are always camelCase (memBufHost, ...)
+
+* Types are always in PascalCase (KernlExecCuda, BufT, ...) and singular.
+* Variables are always in camelCase (memBufHost, ...) and plural for collections and singular else.
+* Namespaces are always in lowercase and singular is preferred.
 * There are no two consecutive upper case letters (AccOpenMp, HtmlRenderer, IoHandler, ...). This makes names more easily readable.
 
 
@@ -106,3 +108,11 @@ struct GetOffsets;
 * Template trait aliases always end with a `T` e.g. `BufT` while the corresponding trait ends with Type e.g. `BufType`
 
 * Traits for implementations always have the same name as the accessor function but in PascalCase while the member function is camelCase again: `sin(){...}` and `Sin{sin(){...}};`
+
+Includes
+--------
+
+* The order of includes is from the most specialized header to the most general one.
+This order helps to find missing includes in more specialized headers becausethe general ones are always included afterwards.
+
+* A comment with the types or functions included by a include file make it easier to find out why a special header is included.

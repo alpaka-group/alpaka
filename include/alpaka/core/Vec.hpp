@@ -23,7 +23,7 @@
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FCT_ACC, ALPAKA_ALIGN
 #include <alpaka/core/BasicDims.hpp>// dim::Dim<N>
-#include <alpaka/core/IntegerSequence.hpp>    // 
+#include <alpaka/core/IntegerSequence.hpp>    //
 
 #include <alpaka/traits/Dim.hpp>    // traits::getDim
 #include <alpaka/traits/Extent.hpp> // traits::getWidth, ...
@@ -45,7 +45,7 @@ namespace alpaka
     //#############################################################################
     // \TODO: Replace the integer template parameter by a dimension type.
     template<
-        UInt TuiDim, 
+        UInt TuiDim,
         typename TVal = UInt>
     class Vec
     {
@@ -84,15 +84,15 @@ namespace alpaka
         //! This constructor is only available if the number of parameters matches the vector size.
         //-----------------------------------------------------------------------------
         template<
-            typename TFirstArg, 
-            typename... TArgs, 
+            typename TFirstArg,
+            typename... TArgs,
             typename = typename std::enable_if<
                 (sizeof...(TArgs) == (TuiDim-1))
                 && std::is_convertible<typename std::decay<TFirstArg>::type, TVal>::value
                 //&& boost::mpl::and_<boost::mpl::true_, boost::mpl::true_, std::is_convertible<typename std::decay<TArgs>::type, TVal>...>::value
             >::type>
         ALPAKA_FCT_HOST_ACC Vec(
-            TFirstArg && val, 
+            TFirstArg && val,
             TArgs && ... values)
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 22609))   // MSVC does not compile the basic array initialization: "error C2536: 'alpaka::Vec<0x03>::alpaka::Vec<0x03>::m_auiData': cannot specify explicit initializer for arrays"
             :
@@ -133,7 +133,7 @@ namespace alpaka
         -> Vec<2u, TVal>
         {
             return Vec<2u, TVal>(
-                extent::getWidth(extents), 
+                extent::getWidth(extents),
                 extent::getHeight(extents));
         }
         //-----------------------------------------------------------------------------
@@ -148,8 +148,8 @@ namespace alpaka
         -> Vec<3u, TVal>
         {
             return Vec<3u, TVal>(
-                extent::getWidth(extents), 
-                extent::getHeight(extents), 
+                extent::getWidth(extents),
+                extent::getHeight(extents),
                 extent::getDepth(extents));
         }
         //-----------------------------------------------------------------------------
@@ -178,7 +178,7 @@ namespace alpaka
         -> Vec<2u, TVal>
         {
             return Vec<2u, TVal>(
-                offset::getOffsetX(offsets), 
+                offset::getOffsetX(offsets),
                 offset::getOffsetY(offsets));
         }
         //-----------------------------------------------------------------------------
@@ -193,8 +193,8 @@ namespace alpaka
         -> Vec<3u, TVal>
         {
             return Vec<3u, TVal>(
-                offset::getOffsetX(offsets), 
-                offset::getOffsetY(offsets), 
+                offset::getOffsetX(offsets),
+                offset::getOffsetY(offsets),
                 offset::getOffsetZ(offsets));
         }
         //-----------------------------------------------------------------------------
@@ -238,7 +238,7 @@ namespace alpaka
         -> Vec<TuiSubDim, TVal>
         {
             static_assert(TuiSubDim <= TuiDim, "The sub-vector has to be smaller (or same size) then the origin vector.");
-            
+
 #if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
             using IdxSequence = typename alpaka::detail::make_index_sequence<TuiSubDim>::type;
 #else
@@ -349,10 +349,10 @@ namespace alpaka
     //! \return The element wise sum of two vectors.
     //-----------------------------------------------------------------------------
     template<
-        UInt TuiDim, 
+        UInt TuiDim,
         typename TVal>
     ALPAKA_FCT_HOST_ACC auto operator+(
-        Vec<TuiDim, TVal> const & p, 
+        Vec<TuiDim, TVal> const & p,
         Vec<TuiDim, TVal> const & q)
     -> Vec<TuiDim, TVal>
     {
@@ -368,10 +368,10 @@ namespace alpaka
     //! \return The element wise product of two vectors.
     //-----------------------------------------------------------------------------
     template<
-        UInt TuiDim, 
+        UInt TuiDim,
         typename TVal>
     ALPAKA_FCT_HOST_ACC auto operator*(
-        Vec<TuiDim, TVal> const & p, 
+        Vec<TuiDim, TVal> const & p,
         Vec<TuiDim, TVal> const & q)
     -> Vec<TuiDim, TVal>
     {
@@ -387,10 +387,10 @@ namespace alpaka
     //! Stream out operator.
     //-----------------------------------------------------------------------------
     template<
-        UInt TuiDim, 
+        UInt TuiDim,
         typename TVal>
     ALPAKA_FCT_HOST auto operator<<(
-        std::ostream & os, 
+        std::ostream & os,
         Vec<TuiDim, TVal> const & v)
     -> std::ostream &
     {
@@ -407,7 +407,7 @@ namespace alpaka
 
         return os;
     }
-    
+
     namespace detail
     {
         //#############################################################################
@@ -436,7 +436,7 @@ namespace alpaka
             //! The Vec<TuiDim> dimension get trait specialization.
             //#############################################################################
             template<
-                UInt TuiDim, 
+                UInt TuiDim,
                 typename TVal>
             struct DimType<
                 alpaka::Vec<TuiDim, TVal>>
@@ -451,7 +451,7 @@ namespace alpaka
             //! The Vec<TuiDim> width get trait specialization.
             //#############################################################################
             template<
-                UInt TuiDim, 
+                UInt TuiDim,
                 typename TVal>
             struct GetWidth<
                 alpaka::Vec<TuiDim, TVal>,
@@ -468,7 +468,7 @@ namespace alpaka
             //! The Vec<TuiDim> width set trait specialization.
             //#############################################################################
             template<
-                UInt TuiDim, 
+                UInt TuiDim,
                 typename TVal>
             struct SetWidth<
                 alpaka::Vec<TuiDim, TVal>,
@@ -487,7 +487,7 @@ namespace alpaka
             //! The Vec<TuiDim> height get trait specialization.
             //#############################################################################
             template<
-                UInt TuiDim, 
+                UInt TuiDim,
                 typename TVal>
             struct GetHeight<
                 alpaka::Vec<TuiDim, TVal>,
@@ -504,7 +504,7 @@ namespace alpaka
             //! The Vec<TuiDim> height set trait specialization.
             //#############################################################################
             template<
-                UInt TuiDim, 
+                UInt TuiDim,
                 typename TVal>
             struct SetHeight<
                 alpaka::Vec<TuiDim, TVal>,
@@ -523,7 +523,7 @@ namespace alpaka
             //! The Vec<TuiDim> depth get trait specialization.
             //#############################################################################
             template<
-                UInt TuiDim, 
+                UInt TuiDim,
                 typename TVal>
             struct GetDepth<
                 alpaka::Vec<TuiDim, TVal>,
@@ -540,7 +540,7 @@ namespace alpaka
             //! The Vec<TuiDim> depth set trait specialization.
             //#############################################################################
             template<
-                UInt TuiDim, 
+                UInt TuiDim,
                 typename TVal>
             struct SetDepth<
                 alpaka::Vec<TuiDim, TVal>,
@@ -562,7 +562,7 @@ namespace alpaka
             //! The Vec<TuiDim> x offset get trait specialization.
             //#############################################################################
             template<
-                UInt TuiDim, 
+                UInt TuiDim,
                 typename TVal>
             struct GetOffsetX<
                 alpaka::Vec<TuiDim, TVal>,
@@ -579,7 +579,7 @@ namespace alpaka
             //! The Vec<TuiDim> x offset set trait specialization.
             //#############################################################################
             template<
-                UInt TuiDim, 
+                UInt TuiDim,
                 typename TVal>
             struct SetOffsetX<
                 alpaka::Vec<TuiDim, TVal>,
@@ -598,7 +598,7 @@ namespace alpaka
             //! The Vec<TuiDim> y offset get trait specialization.
             //#############################################################################
             template<
-                UInt TuiDim, 
+                UInt TuiDim,
                 typename TVal>
             struct GetOffsetY<
                 alpaka::Vec<TuiDim, TVal>,
@@ -615,7 +615,7 @@ namespace alpaka
             //! The Vec<TuiDim> y offset set trait specialization.
             //#############################################################################
             template<
-                UInt TuiDim, 
+                UInt TuiDim,
                 typename TVal>
             struct SetOffsetY<
                 alpaka::Vec<TuiDim, TVal>,
@@ -634,7 +634,7 @@ namespace alpaka
             //! The Vec<TuiDim> z offset get trait specialization.
             //#############################################################################
             template<
-                UInt TuiDim, 
+                UInt TuiDim,
                 typename TVal>
             struct GetOffsetZ<
                 alpaka::Vec<TuiDim, TVal>,
@@ -651,7 +651,7 @@ namespace alpaka
             //! The Vec<TuiDim> z offset set trait specialization.
             //#############################################################################
             template<
-                UInt TuiDim, 
+                UInt TuiDim,
                 typename TVal>
             struct SetOffsetZ<
                 alpaka::Vec<TuiDim, TVal>,

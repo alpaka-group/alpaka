@@ -65,7 +65,7 @@ namespace alpaka
             typename TAcc,
             typename TWorkDiv>
         ALPAKA_FCT_HOST auto create(
-            TWorkDiv const & workDiv, 
+            TWorkDiv const & workDiv,
             stream::StreamT<TAcc> const & stream)
         -> ExecT<TAcc>
         {
@@ -80,7 +80,7 @@ namespace alpaka
             }
 
             // This checks for the compliance with the maxima of the accelerator.
-            if(!workdiv::isValidWorkDiv<TAcc>(workDiv))
+            if(!workdiv::isValidWorkDiv(dev::getDev(stream), workDiv))
             {
                 throw std::runtime_error("The given work division is not supported by the " + acc::getAccName<TAcc>() + " accelerator!");
             }
@@ -96,14 +96,14 @@ namespace alpaka
             typename TBlockThreadExtents>
         ALPAKA_FCT_HOST auto create(
             TGridBlockExtents const & gridBlockExtent,
-            TBlockThreadExtents const & blockThreadExtents, 
+            TBlockThreadExtents const & blockThreadExtents,
             stream::StreamT<TAcc> const & stream)
         -> ExecT<TAcc>
         {
             return create(
                 workdiv::BasicWorkDiv(
                     Vec<3u>(extent::getWidth(gridBlockExtent), extent::getHeight(gridBlockExtent), extent::getDepth(gridBlockExtent)),
-                    Vec<3u>(extent::getWidth(blockThreadExtents), extent::getHeight(blockThreadExtents), extent::getDepth(blockThreadExtents))), 
+                    Vec<3u>(extent::getWidth(blockThreadExtents), extent::getHeight(blockThreadExtents), extent::getDepth(blockThreadExtents))),
                 stream);
         }
     }

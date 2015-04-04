@@ -1,3 +1,4 @@
 /doc/doxygen/*
 !/doc/doxygen/Doxyfile
+/doc/latex/*
 **/build

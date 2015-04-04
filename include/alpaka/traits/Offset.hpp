@@ -38,7 +38,7 @@ namespace alpaka
             //! The offsets get trait.
             //#############################################################################
             template<
-                typename T, 
+                typename T,
                 typename TSfinae = void>
             struct GetOffsets;
 
@@ -48,7 +48,7 @@ namespace alpaka
             //! If not specialized explicitly it returns 0.
             //#############################################################################
             template<
-                typename T, 
+                typename T,
                 typename TSfinae = void>
             struct GetOffsetX
             {
@@ -65,7 +65,7 @@ namespace alpaka
             //! If not specialized explicitly it returns 0.
             //#############################################################################
             template<
-                typename T, 
+                typename T,
                 typename TSfinae = void>
             struct GetOffsetY
             {
@@ -82,7 +82,7 @@ namespace alpaka
             //! If not specialized explicitly it returns 0.
             //#############################################################################
             template<
-                typename T, 
+                typename T,
                 typename TSfinae = void>
             struct GetOffsetZ
             {
@@ -98,21 +98,21 @@ namespace alpaka
             //! The x offset set trait.
             //#############################################################################
             template<
-                typename T, 
+                typename T,
                 typename TSfinae = void>
             struct SetOffsetX;
             //#############################################################################
             //! The y offset set trait.
             //#############################################################################
             template<
-                typename T, 
+                typename T,
                 typename TSfinae = void>
             struct SetOffsetY;
             //#############################################################################
             //! The z offset set trait.
             //#############################################################################
             template<
-                typename T, 
+                typename T,
                 typename TSfinae = void>
             struct SetOffsetZ;
         }
@@ -194,7 +194,7 @@ namespace alpaka
             traits::offset::SetOffsetX<
                 TOffsets>
             ::setOffsetX(
-                offsets, 
+                offsets,
                 xOffset);
         }
         //-----------------------------------------------------------------------------
@@ -211,7 +211,7 @@ namespace alpaka
             traits::offset::SetOffsetY<
                 TOffsets>
             ::setOffsetY(
-                offsets, 
+                offsets,
                 yOffset);
         }
         //-----------------------------------------------------------------------------
@@ -228,7 +228,7 @@ namespace alpaka
             traits::offset::SetOffsetZ<
                 TOffsets>
             ::setOffsetZ(
-                offsets, 
+                offsets,
                 zOffset);
         }
     }

@@ -44,18 +44,18 @@ namespace alpaka
             template<
                 typename TDim>
             struct Set<
-                TDim, 
+                TDim,
                 alpaka::mem::SpaceHost>
             {
                 //-----------------------------------------------------------------------------
-                //! 
+                //!
                 //-----------------------------------------------------------------------------
                 template<
-                    typename TBuf, 
+                    typename TBuf,
                     typename TExtents>
                 ALPAKA_FCT_HOST static auto set(
-                    TBuf & bufDst, 
-                    std::uint8_t const & byte, 
+                    TBuf & bufDst,
+                    std::uint8_t const & byte,
                     TExtents const & extents)
                 -> void
                 {
@@ -78,20 +78,20 @@ namespace alpaka
                     assert(uiExtentWidth <= uiDstWidth);
                     assert(uiExtentHeight <= uiDstHeight);
                     assert(uiExtentDepth <= uiDstDepth);
-                       
+
                     auto const uiExtentWidthBytes(uiExtentWidth * sizeof(Elem));
                     auto const uiDstPitchBytes(alpaka::mem::getPitchBytes(bufDst));
                     assert(uiExtentWidthBytes <= uiDstPitchBytes);
 
                     auto const pDstNative(reinterpret_cast<std::uint8_t *>(alpaka::mem::getNativePtr(bufDst)));
                     auto const uiDstSliceSizeBytes(uiDstPitchBytes * uiDstHeight);
-                    
+
                     auto const & dstBuf(alpaka::mem::getBuf(bufDst));
                     auto const uiDstBufWidth(alpaka::extent::getWidth(dstBuf));
                     auto const uiDstBufHeight(alpaka::extent::getHeight(dstBuf));
 
                     int iByte(static_cast<int>(byte));
-                    
+
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                     std::cout << BOOST_CURRENT_FUNCTION
                         << " ew: " << uiExtentWidth
@@ -124,7 +124,7 @@ namespace alpaka
                     {
                         for(UInt z(0); z < uiExtentDepth; ++z)
                         {
-                            // If: 
+                            // If:
                             // - the set extents width is identical to the dst extents width
                             // -> we can set whole slices at once overwriting the pitch bytes
                             if((uiExtentWidth == uiDstWidth)
@@ -149,21 +149,23 @@ namespace alpaka
                     }
                 }
                 //-----------------------------------------------------------------------------
-                //! 
+                //!
+                // \TODO: Implement asynchronous host set.
                 //-----------------------------------------------------------------------------
                 template<
-                    typename TBuf, 
+                    typename TBuf,
                     typename TExtents,
-                    typename TStream>
+                    typename TDev>
                 ALPAKA_FCT_HOST static auto set(
-                    TBuf & bufDst, 
-                    std::uint8_t const & byte, 
+                    TBuf & bufDst,
+                    std::uint8_t const & byte,
                     TExtents const & extents,
-                    host::detail::StreamHost const &)
+                    host::detail::StreamHost<TDev> const &)
                 -> void
                 {
-                    // \TODO: Implement asynchronous host set.
-                    set(
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                    copy(
                         bufDst,
                         byte,
                         extents);

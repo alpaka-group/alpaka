@@ -32,7 +32,7 @@ namespace alpaka
     {
         // This could be replaced with c++14 std::integer_sequence if we raise the minimum.
         template<
-            class T, 
+            class T,
             T... TVals>
         struct integer_sequence
         {

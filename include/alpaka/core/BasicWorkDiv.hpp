@@ -49,7 +49,7 @@ namespace alpaka
                 typename TBlockThreadExtents>
             ALPAKA_FCT_HOST
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
-            explicit 
+            explicit
 #endif
             BasicWorkDiv(
                 TGridBlockExtents const & gridBlockExtent = TGridBlockExtents(),
@@ -148,9 +148,9 @@ namespace alpaka
             BasicWorkDiv const & workDiv)
         -> std::ostream &
         {
-            return (os 
-                << "{GridBlockExtents: " << workDiv.getGridBlockExtents() 
-                << ", BlockThreadExtents: " << workDiv.getBlockThreadExtents() 
+            return (os
+                << "{GridBlockExtents: " << workDiv.getGridBlockExtents()
+                << ", BlockThreadExtents: " << workDiv.getBlockThreadExtents()
                 << "}");
         }
     }

@@ -85,7 +85,7 @@ Usage
 
 The library is header only so nothing has to be build.
 Only the include path (`-I` or `export CPLUS_INCLUDE_PATH=`) has to be set to `<PATH-TO-ALPAKA-LIB>/include/`.
-This allows to include the whole alpaka library with: `c++#include <alpaka/alpaka.hpp>`
+This allows to include the whole alpaka library with: `#include <alpaka/alpaka.hpp>`
 
 Code not intended to be utilized by users is hidden in the `detail` namespace.
 

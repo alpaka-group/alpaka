@@ -38,9 +38,10 @@ namespace alpaka
             //! The memory buffer base type trait.
             //#############################################################################
             template<
-                typename TSpace,
+                typename TDev,
                 typename TElem,
                 typename TDim,
+                typename TSpace,
                 typename TSfinae = void>
             struct BufType;
         }
@@ -55,9 +56,10 @@ namespace alpaka
         //! The memory buffer base type trait alias template to remove the ::type.
         //#############################################################################
         template<
+            typename TDev,
             typename TElem,
             typename TDim,
             typename TSpace>
-        using BufT = typename traits::mem::BufType<TElem, TDim, SpaceT<TSpace>>::type;
+        using BufT = typename traits::mem::BufType<TDev, TElem, TDim, SpaceT<TSpace>>::type;
     }
 }

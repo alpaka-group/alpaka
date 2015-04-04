@@ -36,24 +36,24 @@ namespace alpaka
             //! The event type trait.
             //#############################################################################
             template<
-                typename TAcc, 
+                typename TAcc,
                 typename TSfinae = void>
             struct EventType;
 
             //#############################################################################
             //! The event enqueuer trait.
             //#############################################################################
-            template<
-                typename TEvent, 
+            /*template<
+                typename TEvent,
                 typename TSfinae = void>
-            struct DefaultStreamEnqueueEvent;
+            struct DefaultStreamEnqueueEvent;*/
 
             //#############################################################################
             //! The event enqueuer trait.
             //#############################################################################
             template<
-                typename TEvent, 
-                typename TStream, 
+                typename TEvent,
+                typename TStream,
                 typename TSfinae = void>
             struct StreamEnqueueEvent;
 
@@ -61,7 +61,7 @@ namespace alpaka
             //! The event tester trait.
             //#############################################################################
             template<
-                typename TEvent, 
+                typename TEvent,
                 typename TSfinae = void>
             struct EventTest;
         }
@@ -80,12 +80,24 @@ namespace alpaka
         using EventT = typename traits::event::EventType<TAcc>::type;
 
         //-----------------------------------------------------------------------------
-        //! Queues the given event in the stream zero.
-        //!
-        //! If it has previously been queued, then this call will overwrite any existing state of the event. 
-        //! Any subsequent calls which examine the status of event will only examine the completion of this most recent call to enqueue.
+        //! Creates an event on a device.
         //-----------------------------------------------------------------------------
         template<
+            typename TDev>
+        ALPAKA_FCT_HOST auto create(
+            TDev const & dev)
+        -> EventT<TDev>
+        {
+            return EventT<TDev>(dev);
+        }
+
+        //-----------------------------------------------------------------------------
+        //! Queues the given event in the stream zero.
+        //!
+        //! If it has previously been queued, then this call will overwrite any existing state of the event.
+        //! Any subsequent calls which examine the status of event will only examine the completion of this most recent call to enqueue.
+        //-----------------------------------------------------------------------------
+        /*template<
             typename TEvent>
         ALPAKA_FCT_HOST auto enqueue(
             TEvent const & event)
@@ -95,12 +107,12 @@ namespace alpaka
                 TEvent>
             ::defaultStreamEnqueueEvent(
                 event);
-        }
+        }*/
 
         //-----------------------------------------------------------------------------
         //! Queues the given event in the given stream.
         //!
-        //! If it has previously been queued, then this call will overwrite any existing state of the event. 
+        //! If it has previously been queued, then this call will overwrite any existing state of the event.
         //! Any subsequent calls which examine the status of event will only examine the completion of this most recent call to enqueue.
         //-----------------------------------------------------------------------------
         template<
@@ -112,10 +124,10 @@ namespace alpaka
         -> void
         {
             traits::event::StreamEnqueueEvent<
-                TEvent, 
+                TEvent,
                 TStream>
             ::streamEnqueueEvent(
-                event, 
+                event,
                 stream);
         }
 

@@ -116,7 +116,7 @@ namespace alpaka
                 alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim>>
             {
                 //-----------------------------------------------------------------------------
-                //! 
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST_ACC static auto getExtents(
                     alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim> const & extents)
@@ -182,7 +182,7 @@ namespace alpaka
                 }
             };
         }
-        
+
         namespace offset
         {
             //#############################################################################
@@ -196,7 +196,7 @@ namespace alpaka
                 alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim>>
             {
                 //-----------------------------------------------------------------------------
-                //! 
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST_ACC static auto getOffsets(
                     alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim> const &)
@@ -246,7 +246,7 @@ namespace alpaka
                 alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim>>
             {
                 //-----------------------------------------------------------------------------
-                //! 
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST_ACC static auto getBuf(
                     alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim> const & buf)
@@ -255,7 +255,7 @@ namespace alpaka
                     return buf;
                 }
                 //-----------------------------------------------------------------------------
-                //! 
+                //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST_ACC static auto getBuf(
                     alpaka::mem::BufPlainPtrWrapper<TSpace, TElem, TDim> & buf)

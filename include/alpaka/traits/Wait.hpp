@@ -83,10 +83,10 @@ namespace alpaka
         -> void
         {
             traits::wait::WaiterWaitFor<
-                TWaiter, 
+                TWaiter,
                 TAwaited>
             ::waiterWaitFor(
-                waiter, 
+                waiter,
                 awaited);
         }
     }

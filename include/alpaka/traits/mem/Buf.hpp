@@ -23,6 +23,7 @@
 
 #include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST
 
+#include <alpaka/traits/Acc.hpp>        // AccT
 #include <alpaka/traits/Dim.hpp>        // DimT
 #include <alpaka/traits/Extent.hpp>     // traits::getXXX
 #include <alpaka/traits/mem/Space.hpp>  // SpaceT
@@ -39,7 +40,7 @@ namespace alpaka
             //! The memory element type trait.
             //#############################################################################
             template<
-                typename TBuf, 
+                typename TBuf,
                 typename TSfinae = void>
             struct ElemType;
 
@@ -47,7 +48,7 @@ namespace alpaka
             //! The base buffer trait.
             //#############################################################################
             template<
-                typename TBuf, 
+                typename TBuf,
                 typename TSfinae = void>
             struct GetBuf;
 
@@ -55,7 +56,7 @@ namespace alpaka
             //! The native pointer get trait.
             //#############################################################################
             template<
-                typename TBuf, 
+                typename TBuf,
                 typename TSfinae = void>
             struct GetNativePtr;
 
@@ -68,23 +69,13 @@ namespace alpaka
             struct GetPitchBytes;
 
             //#############################################################################
-            //! The memory buffer base trait.
-            //#############################################################################
-            //! \TODO: remove!
-            template<
-                typename TBuf, 
-                typename TSfinae = void>
-            struct IsBufBase :
-                std::false_type
-            {};
-
-            //#############################################################################
             //! The memory allocator trait.
             //#############################################################################
             template<
-                typename TElem, 
-                typename TDim, 
-                typename TSpace, 
+                typename TDev,
+                typename TElem,
+                typename TDim,
+                typename TSpace,
                 typename TSfinae = void>
             struct Alloc;
 
@@ -94,8 +85,8 @@ namespace alpaka
             //! Fills the buffer with data.
             //#############################################################################
             template<
-                typename TDim, 
-                typename TSpace, 
+                typename TDim,
+                typename TSpace,
                 typename TSfinae = void>
             struct Set;
 
@@ -105,9 +96,9 @@ namespace alpaka
             //! Copies memory from one buffer into another buffer possibly in a different memory space.
             //#############################################################################
             template<
-                typename TDim, 
-                typename TSpaceDst, 
-                typename TSpaceSrc, 
+                typename TDim,
+                typename TSpaceDst,
+                typename TSpaceSrc,
                 typename TSfinae = void>
             struct Copy;
         }
@@ -121,13 +112,6 @@ namespace alpaka
         template<
             typename TBuf>
         using ElemT = typename traits::mem::ElemType<TBuf>::type;
-
-        //#############################################################################
-        //! The memory buffer base trait.
-        //#############################################################################
-        template<
-            typename TBuf>
-        using IsBufBase = typename traits::mem::IsBufBase<TBuf>;
 
         //-----------------------------------------------------------------------------
         //! Gets the base memory buffer.
@@ -232,24 +216,29 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Allocates memory in the given memory space.
         //!
-        //! \tparam T The type of the returned buffer.
-        //! \tparam TSpace The memory space to allocate in.
+        //! \tparam TElem The element type of the returned buffer.
+        //! \tparam TExtents The extents of the buffer.
+        //! \tparam TDev The type of device the buffer is allocated on.
+        //! \param dev The device to allocate the buffer on.
         //! \param extents The extents of the buffer.
-        //! \return Pointer to newly allocated buffer.
+        //! \return The newly allocated buffer.
         //-----------------------------------------------------------------------------
         template<
-            typename TElem, 
-            typename TSpace, 
-            typename TExtents>
+            typename TElem,
+            typename TExtents,
+            typename TDev>
         ALPAKA_FCT_HOST auto alloc(
+            TDev const & dev,
             TExtents const & extents = TExtents())
-        -> decltype(traits::mem::Alloc<TElem, dim::DimT<TExtents>, SpaceT<TSpace>>::alloc(std::declval<TExtents const &>()))
+        -> decltype(traits::mem::Alloc<TDev, TElem, dim::DimT<TExtents>, SpaceT<acc::AccT<TDev>>>::alloc(std::declval<TDev const &>(), std::declval<TExtents const &>()))
         {
             return traits::mem::Alloc<
-                TElem, 
-                dim::DimT<TExtents>, 
-                SpaceT<TSpace>>
+                TDev,
+                TElem,
+                dim::DimT<TExtents>,
+                SpaceT<acc::AccT<TDev>>>
             ::alloc(
+                dev,
                 extents);
         }
 
@@ -261,11 +250,11 @@ namespace alpaka
         //! \param extents The extents of the buffer to fill.
         //-----------------------------------------------------------------------------
         template<
-            typename TBuf, 
+            typename TBuf,
             typename TExtents>
         ALPAKA_FCT_HOST auto set(
-            TBuf & buf, 
-            std::uint8_t const & byte, 
+            TBuf & buf,
+            std::uint8_t const & byte,
             TExtents const & extents)
         -> void
         {
@@ -274,7 +263,7 @@ namespace alpaka
                 "The buffer and the extents are required to have the same dimensionality!");
 
             traits::mem::Set<
-                dim::DimT<TBuf>, 
+                dim::DimT<TBuf>,
                 SpaceT<TBuf>>
             ::set(
                 buf,
@@ -291,12 +280,12 @@ namespace alpaka
         //! \param stream The stream to enqueue the buffer fill task into.
         //-----------------------------------------------------------------------------
         template<
-            typename TBuf, 
+            typename TBuf,
             typename TExtents,
             typename TStream>
         ALPAKA_FCT_HOST auto set(
-            TBuf & buf, 
-            std::uint8_t const & byte, 
+            TBuf & buf,
+            std::uint8_t const & byte,
             TExtents const & extents,
             TStream const & stream)
         -> void
@@ -306,8 +295,8 @@ namespace alpaka
                 "The buffer and the extents are required to have the same dimensionality!");
 
             traits::mem::Set<
-                dim::DimT<TBuf>, 
-                SpaceT<TBuf>, 
+                dim::DimT<TBuf>,
+                SpaceT<TBuf>,
                 TStream>
             ::memSetAsync(
                 buf,
@@ -324,12 +313,12 @@ namespace alpaka
         //! \param extents The extents of the buffer to copy.
         //-----------------------------------------------------------------------------
         template<
-            typename TBufDst, 
-            typename TBufSrc, 
+            typename TBufDst,
+            typename TBufSrc,
             typename TExtents>
         ALPAKA_FCT_HOST auto copy(
-            TBufDst & bufDst, 
-            TBufSrc const & bufSrc, 
+            TBufDst & bufDst,
+            TBufSrc const & bufSrc,
             TExtents const & extents)
         -> void
         {
@@ -344,8 +333,8 @@ namespace alpaka
                 "The source and the destination buffers are required to have the same element type!");
 
             traits::mem::Copy<
-                dim::DimT<TBufDst>, 
-                SpaceT<TBufDst>, 
+                dim::DimT<TBufDst>,
+                SpaceT<TBufDst>,
                 SpaceT<TBufSrc>>
             ::copy(
                 bufDst,
@@ -359,15 +348,16 @@ namespace alpaka
         //! \param bufDst The destination memory buffer.
         //! \param bufSrc The source memory buffer.
         //! \param extents The extents of the buffer to copy.
+        //! \param stream The stream to enqueue the buffer fill task into.
         //-----------------------------------------------------------------------------
         template<
-            typename TBufDst, 
-            typename TBufSrc, 
+            typename TBufDst,
+            typename TBufSrc,
             typename TExtents,
             typename TStream>
         ALPAKA_FCT_HOST auto copy(
-            TBufDst & bufDst, 
-            TBufSrc const & bufSrc, 
+            TBufDst & bufDst,
+            TBufSrc const & bufSrc,
             TExtents const & extents,
             TStream const & stream)
         -> void
@@ -383,8 +373,8 @@ namespace alpaka
                 "The source and the destination buffers are required to have the same element type!");
 
             traits::mem::Copy<
-                dim::DimT<TBufDst>, 
-                SpaceT<TBufDst>, 
+                dim::DimT<TBufDst>,
+                SpaceT<TBufDst>,
                 SpaceT<TBufSrc>>
             ::copy(
                 bufDst,

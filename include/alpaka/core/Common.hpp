@@ -32,12 +32,12 @@
 //-----------------------------------------------------------------------------
 //! Disable nvcc warning:
 //! calling a __host__ function from __host__ __device__ function.
-//! 
+//!
 //! Usage:
-//! ALPAKA_NO_HOST_ACC_WARNING 
+//! ALPAKA_NO_HOST_ACC_WARNING
 //! __device__ __host__ function_declaration()
-//! 
-//! It is not possible to disable the warning for a __host__ function if there are calls of virtual functions inside. 
+//!
+//! It is not possible to disable the warning for a __host__ function if there are calls of virtual functions inside.
 //! For this case use a wrapper function.
 //! WARNING: only use this method if there is no other way to create runnable code.
 //! Most cases can solved by #ifdef __CUDA_ARCH__ or #ifdef __CUDACC__.
@@ -105,7 +105,7 @@ namespace alpaka
         struct RoundUpToPowerOfTwo;
 
         template<
-            unsigned N, 
+            unsigned N,
             bool isPowerTwo>
         struct RoundUpToPowerOfTwoH
         {

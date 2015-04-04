@@ -38,7 +38,7 @@ namespace alpaka
             //! The stream type trait.
             //#############################################################################
             template<
-                typename TAcc, 
+                typename TAcc,
                 typename TSfinae = void>
             struct StreamType;
 
@@ -46,7 +46,7 @@ namespace alpaka
             //! The stream test trait.
             //#############################################################################
             template<
-                typename TStream, 
+                typename TStream,
                 typename TSfinae = void>
             struct StreamTest;
 
@@ -54,7 +54,7 @@ namespace alpaka
             //! The stream get trait.
             //#############################################################################
             template<
-                typename T, 
+                typename T,
                 typename TSfinae = void>
             struct GetStream;
         }
@@ -71,6 +71,18 @@ namespace alpaka
         template<
             typename TAcc>
         using StreamT = typename traits::stream::StreamType<TAcc>::type;
+
+        //-----------------------------------------------------------------------------
+        //! Creates a stream on a device.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TDev>
+        ALPAKA_FCT_HOST auto create(
+            TDev const & dev)
+        -> StreamT<TDev>
+        {
+            return StreamT<TDev>(dev);
+        }
 
         //-----------------------------------------------------------------------------
         //! Tests if all ops in the given stream have been completed.

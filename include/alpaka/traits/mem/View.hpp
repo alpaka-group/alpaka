@@ -35,10 +35,10 @@ namespace alpaka
                 typename TSfinae = void>
             struct ViewType;
 
-            /*//#############################################################################
+            //#############################################################################
             //! The memory buffer view creation type trait.
             //#############################################################################
-            template<
+            /*template<
                 typename TBuf,
                 typename TExtents,
                 typename TOffsets,
@@ -56,13 +56,13 @@ namespace alpaka
             typename TBuf>
         using ViewT = typename traits::mem::ViewType<TBuf>::type;
 
-        /*//-----------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------
         //! Constructor.
         //! \param buf This can be either a memory buffer base or a memory buffer view itself.
         //! \param offsetsElements The offsets in elements.
         //! \param extentsElements The extents in elements.
         //-----------------------------------------------------------------------------
-        template<
+        /*template<
             typename TBuf,
             typename TExtents,
             typename TOffsets>
@@ -73,8 +73,8 @@ namespace alpaka
         -> decltype(traits::mem::CreateView<TBuf, TExtents, TOffsets>::createBufView(std::declval<TBuf const &>(), std::declval<TExtents const &>(), std::declval<TOffsets const &>()))
         {
             traits::mem::CreateView<
-                TBuf, 
-                TExtents, 
+                TBuf,
+                TExtents,
                 TOffsets>
             ::createBufView(
                 buf,
