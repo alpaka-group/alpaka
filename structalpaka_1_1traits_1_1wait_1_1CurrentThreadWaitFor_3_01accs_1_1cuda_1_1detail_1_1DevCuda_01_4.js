@@ -1,0 +1,4 @@
+var structalpaka_1_1traits_1_1wait_1_1CurrentThreadWaitFor_3_01accs_1_1cuda_1_1detail_1_1DevCuda_01_4 =
+[
+    [ "currentThreadWaitFor", "structalpaka_1_1traits_1_1wait_1_1CurrentThreadWaitFor_3_01accs_1_1cuda_1_1detail_1_1DevCuda_01_4.html#af00ee6fbaf3b7a242813caf7123c93c3", null ]
+];

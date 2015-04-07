@@ -1,4 +1,4 @@
 var structalpaka_1_1traits_1_1mem_1_1GetPitchBytes_3_01alpaka_1_1mem_1_1BufPlainPtrWrapper_3_01TSpacb2350028a9efd9a14b936bf132ac9368 =
 [
-    [ "getPitchBytes", "structalpaka_1_1traits_1_1mem_1_1GetPitchBytes_3_01alpaka_1_1mem_1_1BufPlainPtrWrapper_3_01TSpacb2350028a9efd9a14b936bf132ac9368.html#ad355b0c68b9f7852c7f01a9690f78bba", null ]
+    [ "getPitchBytes", "structalpaka_1_1traits_1_1mem_1_1GetPitchBytes_3_01alpaka_1_1mem_1_1BufPlainPtrWrapper_3_01TSpacb2350028a9efd9a14b936bf132ac9368.html#a7269ce4c6bfc1db109fa4295e738a1e8", null ]
 ];

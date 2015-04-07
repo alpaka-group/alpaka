@@ -1,4 +1,4 @@
 var structalpaka_1_1traits_1_1workdiv_1_1GetWorkDiv_3_01TWorkDiv_00_01origin_1_1Grid_00_01unit_1_1Theb9071f251b3464f960328f9b5e39f10 =
 [
-    [ "getWorkDiv", "structalpaka_1_1traits_1_1workdiv_1_1GetWorkDiv_3_01TWorkDiv_00_01origin_1_1Grid_00_01unit_1_1Theb9071f251b3464f960328f9b5e39f10.html#afc89b870d612581e5010ad7be09309ee", null ]
+    [ "getWorkDiv", "structalpaka_1_1traits_1_1workdiv_1_1GetWorkDiv_3_01TWorkDiv_00_01origin_1_1Grid_00_01unit_1_1Theb9071f251b3464f960328f9b5e39f10.html#aa06d7435767b35da372e5f2bcef51d0c", null ]
 ];

@@ -132,54 +132,66 @@ $(document).ready(function(){initNavTree('alpaka_8hpp_source.html','');});
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="alpaka_8hpp.html#a9639bc6e4b859663f62c4c64a8855ff0">   24</a></span>&#160;<span class="preprocessor">#define ALPAKA_VERSION 1</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="BasicDims_8hpp.html">alpaka/core/BasicDims.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="BasicWorkDiv_8hpp.html">alpaka/core/BasicWorkDiv.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="core_2Common_8hpp.html">alpaka/core/Common.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="EnabledAccelerators_8hpp.html">alpaka/core/EnabledAccelerators.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="ForEachType_8hpp.html">alpaka/core/ForEachType.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="KernelExecCreator_8hpp.html">alpaka/core/KernelExecCreator.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="BufPlainPtrWrapper_8hpp.html">alpaka/core/mem/BufPlainPtrWrapper.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="BufStdContainers_8hpp.html">alpaka/core/mem/BufStdContainers.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="core_2mem_2View_8hpp.html">alpaka/core/mem/View.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Ops_8hpp.html">alpaka/core/Ops.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Positioning_8hpp.html">alpaka/core/Positioning.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Vec_8hpp.html">alpaka/core/Vec.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="WorkDivHelpers_8hpp.html">alpaka/core/WorkDivHelpers.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="IAcc_8hpp.html">alpaka/interfaces/IAcc.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="host_2Mem_8hpp.html">alpaka/host/Mem.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="SysInfo_8hpp.html">alpaka/host/SysInfo.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Acc_8hpp.html">alpaka/traits/Acc.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="traits_2Atomic_8hpp.html">alpaka/traits/Atomic.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="BlockSharedExternMemSizeBytes_8hpp.html">alpaka/traits/BlockSharedExternMemSizeBytes.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="traits_2Device_8hpp.html">alpaka/traits/Device.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Dim_8hpp.html">alpaka/traits/Dim.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="traits_2Event_8hpp.html">alpaka/traits/Event.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Extents_8hpp.html">alpaka/traits/Extents.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Offsets_8hpp.html">alpaka/traits/Offsets.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="traits_2Idx_8hpp.html">alpaka/traits/Idx.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="traits_2Mem_8hpp.html">alpaka/traits/Mem.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="traits_2Stream_8hpp.html">alpaka/traits/Stream.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Wait_8hpp.html">alpaka/traits/Wait.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="traits_2WorkDiv_8hpp.html">alpaka/traits/WorkDiv.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">//#############################################################################</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">// Define the version number.</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="comment">//#############################################################################</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;boost/predef/version_number.h&gt;</span>    <span class="comment">// BOOST_VERSION_NUMBER</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">//! The alpaka library version number</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="alpaka_8hpp.html#a9639bc6e4b859663f62c4c64a8855ff0">   31</a></span>&#160;<span class="comment"></span><span class="preprocessor">#define ALPAKA_VERSION BOOST_VERSION_NUMBER(1, 0, 0)</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">//#############################################################################</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">// Include the whole library.</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">//#############################################################################</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Accs_8hpp.html">alpaka/accs/Accs.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="BasicDims_8hpp.html">alpaka/core/BasicDims.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="BasicWorkDiv_8hpp.html">alpaka/core/BasicWorkDiv.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="core_2Common_8hpp.html">alpaka/core/Common.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="ForEachType_8hpp.html">alpaka/core/ForEachType.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="BufPlainPtrWrapper_8hpp.html">alpaka/core/mem/BufPlainPtrWrapper.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="BufStdContainers_8hpp.html">alpaka/core/mem/BufStdContainers.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="core_2mem_2View_8hpp.html">alpaka/core/mem/View.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Ops_8hpp.html">alpaka/core/Ops.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Positioning_8hpp.html">alpaka/core/Positioning.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Vec_8hpp.html">alpaka/core/Vec.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="WorkDivHelpers_8hpp.html">alpaka/core/WorkDivHelpers.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="host_2Dev_8hpp.html">alpaka/host/Dev.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="host_2Mem_8hpp.html">alpaka/host/Mem.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="SysInfo_8hpp.html">alpaka/host/SysInfo.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Acc_8hpp.html">alpaka/traits/Acc.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="traits_2Atomic_8hpp.html">alpaka/traits/Atomic.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="BlockSharedExternMemSizeBytes_8hpp.html">alpaka/traits/BlockSharedExternMemSizeBytes.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="traits_2Dev_8hpp.html">alpaka/traits/Dev.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Dim_8hpp.html">alpaka/traits/Dim.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="traits_2Event_8hpp.html">alpaka/traits/Event.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Exec_8hpp.html">alpaka/traits/Exec.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Extent_8hpp.html">alpaka/traits/Extent.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Offset_8hpp.html">alpaka/traits/Offset.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="traits_2Idx_8hpp.html">alpaka/traits/Idx.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="traits_2Mem_8hpp.html">alpaka/traits/Mem.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="traits_2Stream_8hpp.html">alpaka/traits/Stream.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Wait_8hpp.html">alpaka/traits/Wait.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="traits_2WorkDiv_8hpp.html">alpaka/traits/WorkDiv.hpp</a>&gt;</span></div>
 <div class="ttc" id="Dim_8hpp_html"><div class="ttname"><a href="Dim_8hpp.html">Dim.hpp</a></div></div>
 <div class="ttc" id="host_2Mem_8hpp_html"><div class="ttname"><a href="host_2Mem_8hpp.html">Mem.hpp</a></div></div>
-<div class="ttc" id="IAcc_8hpp_html"><div class="ttname"><a href="IAcc_8hpp.html">IAcc.hpp</a></div></div>
-<div class="ttc" id="Offsets_8hpp_html"><div class="ttname"><a href="Offsets_8hpp.html">Offsets.hpp</a></div></div>
 <div class="ttc" id="traits_2Atomic_8hpp_html"><div class="ttname"><a href="traits_2Atomic_8hpp.html">Atomic.hpp</a></div></div>
+<div class="ttc" id="Accs_8hpp_html"><div class="ttname"><a href="Accs_8hpp.html">Accs.hpp</a></div></div>
 <div class="ttc" id="BufStdContainers_8hpp_html"><div class="ttname"><a href="BufStdContainers_8hpp.html">BufStdContainers.hpp</a></div></div>
 <div class="ttc" id="Acc_8hpp_html"><div class="ttname"><a href="Acc_8hpp.html">Acc.hpp</a></div></div>
 <div class="ttc" id="traits_2Idx_8hpp_html"><div class="ttname"><a href="traits_2Idx_8hpp.html">Idx.hpp</a></div></div>
-<div class="ttc" id="EnabledAccelerators_8hpp_html"><div class="ttname"><a href="EnabledAccelerators_8hpp.html">EnabledAccelerators.hpp</a></div></div>
-<div class="ttc" id="KernelExecCreator_8hpp_html"><div class="ttname"><a href="KernelExecCreator_8hpp.html">KernelExecCreator.hpp</a></div></div>
+<div class="ttc" id="traits_2Dev_8hpp_html"><div class="ttname"><a href="traits_2Dev_8hpp.html">Dev.hpp</a></div></div>
+<div class="ttc" id="Offset_8hpp_html"><div class="ttname"><a href="Offset_8hpp.html">Offset.hpp</a></div></div>
 <div class="ttc" id="traits_2Event_8hpp_html"><div class="ttname"><a href="traits_2Event_8hpp.html">Event.hpp</a></div></div>
-<div class="ttc" id="traits_2Device_8hpp_html"><div class="ttname"><a href="traits_2Device_8hpp.html">Device.hpp</a></div></div>
 <div class="ttc" id="Wait_8hpp_html"><div class="ttname"><a href="Wait_8hpp.html">Wait.hpp</a></div></div>
+<div class="ttc" id="host_2Dev_8hpp_html"><div class="ttname"><a href="host_2Dev_8hpp.html">Dev.hpp</a></div></div>
+<div class="ttc" id="Extent_8hpp_html"><div class="ttname"><a href="Extent_8hpp.html">Extent.hpp</a></div></div>
 <div class="ttc" id="traits_2Mem_8hpp_html"><div class="ttname"><a href="traits_2Mem_8hpp.html">Mem.hpp</a></div></div>
+<div class="ttc" id="Exec_8hpp_html"><div class="ttname"><a href="Exec_8hpp.html">Exec.hpp</a></div></div>
 <div class="ttc" id="core_2mem_2View_8hpp_html"><div class="ttname"><a href="core_2mem_2View_8hpp.html">View.hpp</a></div></div>
 <div class="ttc" id="BasicWorkDiv_8hpp_html"><div class="ttname"><a href="BasicWorkDiv_8hpp.html">BasicWorkDiv.hpp</a></div></div>
 <div class="ttc" id="ForEachType_8hpp_html"><div class="ttname"><a href="ForEachType_8hpp.html">ForEachType.hpp</a></div></div>
@@ -192,7 +204,6 @@ $(document).ready(function(){initNavTree('alpaka_8hpp_source.html','');});
 <div class="ttc" id="BlockSharedExternMemSizeBytes_8hpp_html"><div class="ttname"><a href="BlockSharedExternMemSizeBytes_8hpp.html">BlockSharedExternMemSizeBytes.hpp</a></div></div>
 <div class="ttc" id="Positioning_8hpp_html"><div class="ttname"><a href="Positioning_8hpp.html">Positioning.hpp</a></div></div>
 <div class="ttc" id="core_2Common_8hpp_html"><div class="ttname"><a href="core_2Common_8hpp.html">Common.hpp</a></div></div>
-<div class="ttc" id="Extents_8hpp_html"><div class="ttname"><a href="Extents_8hpp.html">Extents.hpp</a></div></div>
 <div class="ttc" id="Ops_8hpp_html"><div class="ttname"><a href="Ops_8hpp.html">Ops.hpp</a></div></div>
 <div class="ttc" id="BufPlainPtrWrapper_8hpp_html"><div class="ttname"><a href="BufPlainPtrWrapper_8hpp.html">BufPlainPtrWrapper.hpp</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
@@ -201,7 +212,7 @@ $(document).ready(function(){initNavTree('alpaka_8hpp_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="alpaka_8hpp.html">alpaka.hpp</a></li>
-    <li class="footer">Generated on Fri Mar 6 2015 23:52:32 for alpaka by
+    <li class="footer">Generated on Tue Apr 7 2015 09:20:05 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

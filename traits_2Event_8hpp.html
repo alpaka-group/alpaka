@@ -120,9 +120,6 @@ $(document).ready(function(){initNavTree('traits_2Event_8hpp.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1event_1_1DefaultStreamEnqueueEvent.html">alpaka::traits::event::DefaultStreamEnqueueEvent&lt; TEvent, TSfinae &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The event enqueuer trait.  <a href="structalpaka_1_1traits_1_1event_1_1DefaultStreamEnqueueEvent.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1event_1_1EventTest.html">alpaka::traits::event::EventTest&lt; TEvent, TSfinae &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The event tester trait.  <a href="structalpaka_1_1traits_1_1event_1_1EventTest.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -157,18 +154,18 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ae6a1796acd848215ed7aa2be833ffccd"><td class="memTemplParams" colspan="2">template&lt;typename TEvent &gt; </td></tr>
-<tr class="memitem:ae6a1796acd848215ed7aa2be833ffccd"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1event.html#ae6a1796acd848215ed7aa2be833ffccd">alpaka::event::enqueue</a> (TEvent const &amp;event)</td></tr>
-<tr class="memdesc:ae6a1796acd848215ed7aa2be833ffccd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queues the given event in the stream zero.  <a href="#ae6a1796acd848215ed7aa2be833ffccd">More...</a><br /></td></tr>
-<tr class="separator:ae6a1796acd848215ed7aa2be833ffccd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4244d0aab06223840ba070abf1fcc872"><td class="memTemplParams" colspan="2">template&lt;typename TEvent , typename TStream &gt; </td></tr>
-<tr class="memitem:a4244d0aab06223840ba070abf1fcc872"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1event.html#a4244d0aab06223840ba070abf1fcc872">alpaka::event::enqueue</a> (TEvent const &amp;event, TStream const &amp;stream)</td></tr>
-<tr class="memdesc:a4244d0aab06223840ba070abf1fcc872"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queues the given event in the given stream.  <a href="#a4244d0aab06223840ba070abf1fcc872">More...</a><br /></td></tr>
-<tr class="separator:a4244d0aab06223840ba070abf1fcc872"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d8ea730440ede2c1554b7b9f6b4a943"><td class="memTemplParams" colspan="2">template&lt;typename TEvent &gt; </td></tr>
-<tr class="memitem:a5d8ea730440ede2c1554b7b9f6b4a943"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1event.html#a5d8ea730440ede2c1554b7b9f6b4a943">alpaka::event::test</a> (TEvent const &amp;event)</td></tr>
-<tr class="memdesc:a5d8ea730440ede2c1554b7b9f6b4a943"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tests if the given event has already be completed.  <a href="#a5d8ea730440ede2c1554b7b9f6b4a943">More...</a><br /></td></tr>
-<tr class="separator:a5d8ea730440ede2c1554b7b9f6b4a943"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14b43f58e81783a36f17689272f6d504"><td class="memTemplParams" colspan="2">template&lt;typename TDev &gt; </td></tr>
+<tr class="memitem:a14b43f58e81783a36f17689272f6d504"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1event.html#a14b43f58e81783a36f17689272f6d504">alpaka::event::create</a> (TDev const &amp;dev) -&gt; EventT&lt; TDev &gt;</td></tr>
+<tr class="memdesc:a14b43f58e81783a36f17689272f6d504"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an event on a device.  <a href="#a14b43f58e81783a36f17689272f6d504">More...</a><br /></td></tr>
+<tr class="separator:a14b43f58e81783a36f17689272f6d504"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a180ae3b5b8d405cebb248d9e2a6a5c3a"><td class="memTemplParams" colspan="2">template&lt;typename TEvent , typename TStream &gt; </td></tr>
+<tr class="memitem:a180ae3b5b8d405cebb248d9e2a6a5c3a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1event.html#a180ae3b5b8d405cebb248d9e2a6a5c3a">alpaka::event::enqueue</a> (TEvent const &amp;event, TStream const &amp;stream) -&gt; void</td></tr>
+<tr class="memdesc:a180ae3b5b8d405cebb248d9e2a6a5c3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queues the given event in the stream zero.  <a href="#a180ae3b5b8d405cebb248d9e2a6a5c3a">More...</a><br /></td></tr>
+<tr class="separator:a180ae3b5b8d405cebb248d9e2a6a5c3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae5c1edae98afd948fddbb7da8a2ff1d"><td class="memTemplParams" colspan="2">template&lt;typename TEvent &gt; </td></tr>
+<tr class="memitem:aae5c1edae98afd948fddbb7da8a2ff1d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1event.html#aae5c1edae98afd948fddbb7da8a2ff1d">alpaka::event::test</a> (TEvent const &amp;event) -&gt; bool</td></tr>
+<tr class="memdesc:aae5c1edae98afd948fddbb7da8a2ff1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tests if the given event has already be completed.  <a href="#aae5c1edae98afd948fddbb7da8a2ff1d">More...</a><br /></td></tr>
+<tr class="separator:aae5c1edae98afd948fddbb7da8a2ff1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Copyright 2014-2015 Benjamin Worpitz</p>
@@ -184,7 +181,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_704b24238599043534bfd555c7616f8b.html">traits</a></li><li class="navelem"><a class="el" href="traits_2Event_8hpp.html">Event.hpp</a></li>
-    <li class="footer">Generated on Fri Mar 6 2015 23:52:34 for alpaka by
+    <li class="footer">Generated on Tue Apr 7 2015 09:20:05 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

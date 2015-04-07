@@ -1,0 +1,4 @@
+var structalpaka_1_1traits_1_1event_1_1EventTest_3_01host_1_1detail_1_1EventHost_3_01TDev_01_4_01_4 =
+[
+    [ "eventTest", "structalpaka_1_1traits_1_1event_1_1EventTest_3_01host_1_1detail_1_1EventHost_3_01TDev_01_4_01_4.html#a3322c829cea1111fd3c347b75cf1af5c", null ]
+];

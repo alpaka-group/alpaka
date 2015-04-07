@@ -139,12 +139,12 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a3fe16f2b76423ebb93b61a86b69d8c3f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1detail_1_1ITaskPkg.html#a3fe16f2b76423ebb93b61a86b69d8c3f">runTask</a> () noexcept</td></tr>
-<tr class="memdesc:a3fe16f2b76423ebb93b61a86b69d8c3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs this task.  <a href="#a3fe16f2b76423ebb93b61a86b69d8c3f">More...</a><br /></td></tr>
-<tr class="separator:a3fe16f2b76423ebb93b61a86b69d8c3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d8cf4d7202b665c1b04d37045409fc1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1detail_1_1ITaskPkg.html#a5d8cf4d7202b665c1b04d37045409fc1">setException</a> (<a class="el" href="classalpaka_1_1detail_1_1ITaskPkg.html#a19b9847d71fd10274ff7415a18c380d6">ExceptionPtr</a> exceptPtr)=0</td></tr>
-<tr class="memdesc:a5d8cf4d7202b665c1b04d37045409fc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets an exception.  <a href="#a5d8cf4d7202b665c1b04d37045409fc1">More...</a><br /></td></tr>
-<tr class="separator:a5d8cf4d7202b665c1b04d37045409fc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e0f3e3391de44a69067f23ddaa5ffda"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1detail_1_1ITaskPkg.html#a2e0f3e3391de44a69067f23ddaa5ffda">runTask</a> () noexcept-&gt; void</td></tr>
+<tr class="memdesc:a2e0f3e3391de44a69067f23ddaa5ffda"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs this task.  <a href="#a2e0f3e3391de44a69067f23ddaa5ffda">More...</a><br /></td></tr>
+<tr class="separator:a2e0f3e3391de44a69067f23ddaa5ffda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10904667234d825366e53ca310f3df2a"><td class="memItemLeft" align="right" valign="top">virtual auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1detail_1_1ITaskPkg.html#a10904667234d825366e53ca310f3df2a">setException</a> (<a class="el" href="classalpaka_1_1detail_1_1ITaskPkg.html#a19b9847d71fd10274ff7415a18c380d6">ExceptionPtr</a> exceptPtr) -&gt; void=0</td></tr>
+<tr class="memdesc:a10904667234d825366e53ca310f3df2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets an exception.  <a href="#a10904667234d825366e53ca310f3df2a">More...</a><br /></td></tr>
+<tr class="separator:a10904667234d825366e53ca310f3df2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename TCurrentException&gt;<br />
@@ -158,7 +158,7 @@ class alpaka::detail::ITaskPkg&lt; TCurrentException &gt;</h3>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00054">54</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00055">55</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a class="anchor" id="a19b9847d71fd10274ff7415a18c380d6"></a>
 <div class="memitem">
@@ -172,12 +172,12 @@ template&lt;typename TCurrentException&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00057">57</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00058">58</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a3fe16f2b76423ebb93b61a86b69d8c3f"></a>
+<a class="anchor" id="a2e0f3e3391de44a69067f23ddaa5ffda"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -187,10 +187,11 @@ template&lt;typename TCurrentException&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classalpaka_1_1detail_1_1ITaskPkg.html">alpaka::detail::ITaskPkg</a>&lt; TCurrentException &gt;::runTask </td>
+          <td class="memname">auto <a class="el" href="classalpaka_1_1detail_1_1ITaskPkg.html">alpaka::detail::ITaskPkg</a>&lt; TCurrentException &gt;::runTask </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> -&gt; void
+            </td>
         </tr>
       </table>
   </td>
@@ -202,11 +203,11 @@ template&lt;typename TCurrentException&gt; </div>
 
 <p>Runs this task. </p>
 
-<p>Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00063">63</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
+<p>Definition at line <a class="el" href="ConcurrentExecPool_8hpp_source.html#l00064">64</a> of file <a class="el" href="ConcurrentExecPool_8hpp_source.html">ConcurrentExecPool.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a5d8cf4d7202b665c1b04d37045409fc1"></a>
+<a class="anchor" id="a10904667234d825366e53ca310f3df2a"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -216,11 +217,11 @@ template&lt;typename TCurrentException&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void <a class="el" href="classalpaka_1_1detail_1_1ITaskPkg.html">alpaka::detail::ITaskPkg</a>&lt; TCurrentException &gt;::setException </td>
+          <td class="memname">virtual auto <a class="el" href="classalpaka_1_1detail_1_1ITaskPkg.html">alpaka::detail::ITaskPkg</a>&lt; TCurrentException &gt;::setException </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classalpaka_1_1detail_1_1ITaskPkg.html#a19b9847d71fd10274ff7415a18c380d6">ExceptionPtr</a>&#160;</td>
           <td class="paramname"><em>exceptPtr</em></td><td>)</td>
-          <td></td>
+          <td> -&gt;  void</td>
         </tr>
       </table>
   </td>
@@ -243,7 +244,7 @@ template&lt;typename TCurrentException&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1detail.html">detail</a></li><li class="navelem"><a class="el" href="classalpaka_1_1detail_1_1ITaskPkg.html">ITaskPkg</a></li>
-    <li class="footer">Generated on Fri Mar 6 2015 23:52:35 for alpaka by
+    <li class="footer">Generated on Tue Apr 7 2015 09:20:07 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

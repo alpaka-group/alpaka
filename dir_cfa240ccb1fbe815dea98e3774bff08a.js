@@ -6,7 +6,7 @@ var dir_cfa240ccb1fbe815dea98e3774bff08a =
     [ "Common.hpp", "core_2Common_8hpp.html", "core_2Common_8hpp" ],
     [ "ConcurrentExecPool.hpp", "ConcurrentExecPool_8hpp.html", [
       [ "ConcurrentExecPool", "classalpaka_1_1detail_1_1ConcurrentExecPool.html", "classalpaka_1_1detail_1_1ConcurrentExecPool" ],
-      [ "ConcurrentExecPool< TConcurrentExecutor, TPromise, TCurrentException, TYield, TMutex, TUniqueLock, TCondVar, false >", "classalpaka_1_1detail_1_1ConcurrentExecPool_3_01TConcurrentExecutor_00_01TPromise_00_01TCurrentEe8efb6b1c29d089c08af90cf3c122709.html", "classalpaka_1_1detail_1_1ConcurrentExecPool_3_01TConcurrentExecutor_00_01TPromise_00_01TCurrentEe8efb6b1c29d089c08af90cf3c122709" ],
+      [ "ConcurrentExecPool< TConcurrentExec, TPromise, TCurrentException, TYield, TMutex, TUniqueLock, TCondVar, false >", "classalpaka_1_1detail_1_1ConcurrentExecPool_3_01TConcurrentExec_00_01TPromise_00_01TCurrentExcep53306791c16fe288a45bb138e5455b4f.html", "classalpaka_1_1detail_1_1ConcurrentExecPool_3_01TConcurrentExec_00_01TPromise_00_01TCurrentExcep53306791c16fe288a45bb138e5455b4f" ],
       [ "ITaskPkg", "classalpaka_1_1detail_1_1ITaskPkg.html", "classalpaka_1_1detail_1_1ITaskPkg" ],
       [ "TaskPkg", "classalpaka_1_1detail_1_1TaskPkg.html", "classalpaka_1_1detail_1_1TaskPkg" ],
       [ "TaskPkg< TCurrentException, TPromise, TFunc, void >", "classalpaka_1_1detail_1_1TaskPkg_3_01TCurrentException_00_01TPromise_00_01TFunc_00_01void_01_4.html", "classalpaka_1_1detail_1_1TaskPkg_3_01TCurrentException_00_01TPromise_00_01TFunc_00_01void_01_4" ]
@@ -16,11 +16,9 @@ var dir_cfa240ccb1fbe815dea98e3774bff08a =
       [ "DevProps", "structalpaka_1_1dev_1_1DevProps.html", "structalpaka_1_1dev_1_1DevProps" ]
     ] ],
     [ "Dummy.cpp", "Dummy_8cpp.html", null ],
-    [ "EnabledAccelerators.hpp", "EnabledAccelerators_8hpp.html", "EnabledAccelerators_8hpp" ],
     [ "ForEachType.hpp", "ForEachType_8hpp.html", "ForEachType_8hpp" ],
     [ "IdxMapping.hpp", "IdxMapping_8hpp.html", "IdxMapping_8hpp" ],
     [ "IntegerSequence.hpp", "IntegerSequence_8hpp.html", "IntegerSequence_8hpp" ],
-    [ "KernelExecCreator.hpp", "KernelExecCreator_8hpp.html", "KernelExecCreator_8hpp" ],
     [ "Ops.hpp", "Ops_8hpp.html", [
       [ "Add", "structalpaka_1_1ops_1_1Add.html", "structalpaka_1_1ops_1_1Add" ],
       [ "And", "structalpaka_1_1ops_1_1And.html", "structalpaka_1_1ops_1_1And" ],

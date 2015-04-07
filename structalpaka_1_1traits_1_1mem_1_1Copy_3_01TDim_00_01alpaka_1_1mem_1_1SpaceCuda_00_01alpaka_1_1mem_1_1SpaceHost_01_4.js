@@ -1,5 +1,5 @@
 var structalpaka_1_1traits_1_1mem_1_1Copy_3_01TDim_00_01alpaka_1_1mem_1_1SpaceCuda_00_01alpaka_1_1mem_1_1SpaceHost_01_4 =
 [
-    [ "copy", "structalpaka_1_1traits_1_1mem_1_1Copy_3_01TDim_00_01alpaka_1_1mem_1_1SpaceCuda_00_01alpaka_1_1mem_1_1SpaceHost_01_4.html#a7140af2fcc740f572880cffcd0a63798", null ],
-    [ "copy", "structalpaka_1_1traits_1_1mem_1_1Copy_3_01TDim_00_01alpaka_1_1mem_1_1SpaceCuda_00_01alpaka_1_1mem_1_1SpaceHost_01_4.html#a2ae4af23fbfd0590cb76449e1f59ae5a", null ]
+    [ "copy", "structalpaka_1_1traits_1_1mem_1_1Copy_3_01TDim_00_01alpaka_1_1mem_1_1SpaceCuda_00_01alpaka_1_1mem_1_1SpaceHost_01_4.html#a86d493e69250053b6bc0bacf10192318", null ],
+    [ "copy", "structalpaka_1_1traits_1_1mem_1_1Copy_3_01TDim_00_01alpaka_1_1mem_1_1SpaceCuda_00_01alpaka_1_1mem_1_1SpaceHost_01_4.html#a615f2f55ef946a3cc7e0c1f7c3d90728", null ]
 ];

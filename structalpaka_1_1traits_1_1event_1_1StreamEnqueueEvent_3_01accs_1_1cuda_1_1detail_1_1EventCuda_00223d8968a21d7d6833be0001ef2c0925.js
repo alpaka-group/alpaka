@@ -1,0 +1,4 @@
+var structalpaka_1_1traits_1_1event_1_1StreamEnqueueEvent_3_01accs_1_1cuda_1_1detail_1_1EventCuda_00223d8968a21d7d6833be0001ef2c0925 =
+[
+    [ "streamEnqueueEvent", "structalpaka_1_1traits_1_1event_1_1StreamEnqueueEvent_3_01accs_1_1cuda_1_1detail_1_1EventCuda_00223d8968a21d7d6833be0001ef2c0925.html#aa2227cb9a77db006e0fec5927e088127", null ]
+];

@@ -109,10 +109,10 @@ $(document).ready(function(){initNavTree('README_8md.html','');});
 <div class="title">C:/dev/alpaka/README.md</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="README_8md.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;alpaka - Abstraction Library for Parallel Kernel Acceleration</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;=============================================================</div>
+<a href="README_8md.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;**alpaka** - Abstraction Library for Parallel Kernel Acceleration</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;=================================================================</div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;</div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;The alpaka library allows users to utilize a multitude of different accelerator types that require different libraries/compilers by providing a uniform kernel interface.</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;The **alpaka** library allows users to utilize a multitude of different accelerator types that require different libraries/compilers by providing a uniform kernel interface.</div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;Users have to write only one implementation of their algorithms and can benefit from all supported accelerators.</div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;There is no need to write special CUDA, OpenMP or custom threading code.</div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;The supported accelerators can be selected at compile time but the decision which accelerator executes which kernel can be made at runtime.</div>
@@ -126,98 +126,108 @@ $(document).ready(function(){initNavTree('README_8md.html','');});
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;The block execution order is unspecified and depends on the accelerator in use.</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;By using this abstraction the execution can be optimally adapted to the available accelerators.</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;Software License</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;----------------</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;*alpaka* is licensed under the **LGPLv3+**.</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;Supported Compilers</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;-------------------</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;This library uses a subset of C++11 supported by many compilers to keep the code clean and readable.</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;Supported compilers are:</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;- gcc 4.8.2+ (boost-fibers only supported in gcc 4.9+)</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;- MSVC 2013+ (boost-fibers only supported in MSVC 2015)</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;- clang 3.4+ (currently OpenMP only supported in `clang-omp` )</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;- icc 15.0+ (untested)</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;Build status master branch: [![Build Status](https://travis-ci.org/ComputationalRadiationPhysics/alpaka.svg?branch=master)](https://travis-ci.org/ComputationalRadiationPhysics/alpaka)</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;**alpaka** provides:</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; - Accelerator offloading</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; - Write once, run everywhere</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; - Performance portability</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; - Platform independence</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; - Standard C++11</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;Software License</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;----------------</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;**alpaka** is licensed under **LGPLv3** or later.</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;Documentation</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;-------------</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;The source code documentation generated with [doxygen](http://www.doxygen.org) is available [here](http://computationalradiationphysics.github.io/alpaka/).</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;Build status develop branch: [![Build Status](https://travis-ci.org/ComputationalRadiationPhysics/alpaka.svg?branch=develop)](https://travis-ci.org/ComputationalRadiationPhysics/alpaka)</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;Supported Compilers</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;-------------------</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;Requirements</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;------------</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;[Boost](http://boost.org/) 1.55+ is the only required external dependency.</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;By default just header-only libraries are used.</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;When the **Fibers-Accelerator** is enabled, `boost-coroutine`, `boost-context` and the proposed boost library [`boost-fibers`](https://github.com/olk/boost-fiber) (develop branch commit 6a1257442bb82e9082a55cacc2c6ebe02b4aa540) are required to be build.</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;This library uses a subset of C++11 to keep the code clean and readable.</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;Supported compilers are:</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;- gcc 4.9.2+</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;- MSVC 2013+ (boost-fibers only supported in MSVC 2015)</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;- clang 3.5+ (currently OpenMP only supported in `clang-omp` )</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;- icc 15.0+ (untested)</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;When the **CUDA-Accelerator** is enabled, version *6.5* of the *CUDA SDK* is the minimum requirement.</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;Build status master branch: [![Build Status](https://travis-ci.org/ComputationalRadiationPhysics/alpaka.svg?branch=master)](https://travis-ci.org/ComputationalRadiationPhysics/alpaka)</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;When the **OpenMP-Accelerator** is enabled, the compiler and the platform have to support *OpenMP 2.0* or newer.</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;Build status develop branch: [![Build Status](https://travis-ci.org/ComputationalRadiationPhysics/alpaka.svg?branch=develop)](https://travis-ci.org/ComputationalRadiationPhysics/alpaka)</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;Accelerators</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;Requirements</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;------------</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;- **Serial-Accelerator**</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;- **Threads-Accelerator**</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;- **Fibers-Accelerator**</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;- **OpenMP-Accelerator**</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;- **CUDA-Accelerator**</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;[Boost](http://boost.org/) 1.56+ is the only required external dependency.</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;By default just header-only libraries are used.</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;When the *Fibers-Accelerator* is enabled, `boost-coroutine`, `boost-context` and the proposed boost library [`boost-fibers`](https://github.com/olk/boost-fiber) (develop branch commit 6a1257442bb82e9082a55cacc2c6ebe02b4aa540) are required to be build.</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;|-|serial|threads|fibers|OpenMP|CUDA|</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;|---|---|---|---|---|---|</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;|Devices|Host Core|Host Cores|Host Core|Host Cores|NVIDIA GPUs|</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;|Lib/API|n/a| std::thread | boost::fibers::fiber |OpenMP 2.0|CUDA 6.5|</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;|Execution strategy grid-blocks|sequential|sequential|sequential|sequential|undefined|</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;|Execution strategy block-threads|sequential|preemptive multitasking|cooperative multitasking|preemptive multitasking|lock-step within warps|</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;Usage</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;-----</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;The library is header only so nothing has to be build.</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;Only the include path (`-I` or `export CPLUS_INCLUDE_PATH=`) has to be set to `&lt;PATH-TO-ALPAKA-LIB&gt;/include/`.</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;This allows the usage of header inclusion in the following way:</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;```c++</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;#include &lt;alpaka/alpaka.hpp&gt;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;```</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;Code not intended to be utilized by users is hidden in the `detail` namespace.</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;If you are building with the **CUDA-Accelerator** enabled, your source files are required to have the ending `.cu` to comply with the nvcc (NVIDIA CUDA C++ compiler) rules for code files using CUDA.</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;When the **CUDA-Accelerator** is disabled, this is not required and a `.cpp` extension is enough.</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;To allow both use-cases, it is desirable to have both, a `.cpp` file with the implementation and a `.cu` file containing only `#include &lt;PATH/TO/IMPL.cpp&gt;` to forward to the implementation.</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;The build system then has to use the `.cu` files when the **CUDA-Accelerator** is enabled and the `.cpp` files else.</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;Authors</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;-------</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;### Maintainers and core developers</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;- Benjamin Worpitz</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;### Scientific Supervision</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;When the *CUDA-Accelerator* is enabled, version *7.0* of the *CUDA SDK* is the minimum requirement.</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;When the *OpenMP-Accelerator* is enabled, the compiler and the platform have to support *OpenMP 2.0* or newer.</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;Accelerators</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;------------</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;- *Serial-Accelerator*</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;- *Threads-Accelerator*</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;- *Fibers-Accelerator*</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;- *OpenMP-Accelerator*</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;- *CUDA-Accelerator*</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;|-|serial|threads|fibers|OpenMP|CUDA|</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;|---|---|---|---|---|---|</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;|Devices|Host Core|Host Cores|Host Core|Host Cores|NVIDIA GPUs|</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;|Lib/API|n/a| std::thread | boost::fibers::fiber |OpenMP 2.0|CUDA 7.0|</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;|Execution strategy grid-blocks|sequential|sequential|sequential|sequential|undefined|</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;|Execution strategy block-threads|sequential|preemptive multitasking|cooperative multitasking|preemptive multitasking|lock-step within warps|</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;**NOTE**: Currently the CUDA-Accelerator can not be enabled together with the Threads-Accelerator or Fibers-Accelerator.</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;Usage</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;-----</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;The library is header only so nothing has to be build.</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;Only the include path (`-I` or `export CPLUS_INCLUDE_PATH=`) has to be set to `&lt;PATH-TO-ALPAKA-LIB&gt;/include/`.</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;This allows to include the whole alpaka library with: `c++#include &lt;alpaka/alpaka.hpp&gt;`</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;Code not intended to be utilized by users is hidden in the `detail` namespace.</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;If you are building with the *CUDA-Accelerator* enabled, your source files are required to have the ending `.cu` to comply with the nvcc (NVIDIA CUDA C++ compiler) rules for code files using CUDA.</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;When the *CUDA-Accelerator* is disabled, this is not required and a `.cpp` extension is enough.</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;To allow both use-cases, it is desirable to have both, a `.cpp` file with the implementation and a `.cu` file containing only `#include &lt;PATH/TO/IMPL.cpp&gt;` to forward to the implementation.</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;The build system then has to use the `.cu` files when the *CUDA-Accelerator* is enabled and the `.cpp` files else.</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;- Dr. Michael Bussmann</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;### Participants, Former Members and Thanks</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;Authors</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;-------</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;- Rene Widera</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;- Axel Huebl</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;### Maintainers and core developers</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;- Benjamin Worpitz</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;### Scientific Supervision</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;- Dr. Michael Bussmann</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;### Participants, Former Members and Thanks</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;- Rene Widera</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;- Axel Huebl</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="README_8md.html">README.md</a></li>
-    <li class="footer">Generated on Fri Mar 6 2015 23:52:33 for alpaka by
+    <li class="footer">Generated on Tue Apr 7 2015 09:20:05 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

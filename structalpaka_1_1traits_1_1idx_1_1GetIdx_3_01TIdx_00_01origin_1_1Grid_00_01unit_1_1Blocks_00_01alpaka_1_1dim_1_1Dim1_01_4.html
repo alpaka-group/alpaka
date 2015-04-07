@@ -121,9 +121,9 @@ $(document).ready(function(){initNavTree('structalpaka_1_1traits_1_1idx_1_1GetId
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ac31f0ea30836db60f6f260af467a8de0"><td class="memTemplParams" colspan="2">template&lt;typename TWorkDiv &gt; </td></tr>
-<tr class="memitem:ac31f0ea30836db60f6f260af467a8de0"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="core_2Common_8hpp.html#a5f7933db4117e5cf67c10b559b645656">ALPAKA_FCT_ACC</a> <a class="el" href="namespacealpaka.html#a6d800c7a55753e7a74482d8c3c7c2afc">alpaka::DimToVecT</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#adfe56c20847b0ca61e47408cbaec071a">alpaka::dim::Dim1</a> &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1idx_1_1GetIdx_3_01TIdx_00_01origin_1_1Grid_00_01unit_1_1Blocks_00_01alpaka_1_1dim_1_1Dim1_01_4.html#ac31f0ea30836db60f6f260af467a8de0">getIdx</a> (TIdx const &amp;index, TWorkDiv const &amp;workDiv)</td></tr>
-<tr class="separator:ac31f0ea30836db60f6f260af467a8de0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54c1dc1c7f62acdf45ee11bded1f96ea"><td class="memTemplParams" colspan="2">template&lt;typename TWorkDiv &gt; </td></tr>
+<tr class="memitem:a54c1dc1c7f62acdf45ee11bded1f96ea"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="core_2Common_8hpp.html#a5f7933db4117e5cf67c10b559b645656">ALPAKA_FCT_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1idx_1_1GetIdx_3_01TIdx_00_01origin_1_1Grid_00_01unit_1_1Blocks_00_01alpaka_1_1dim_1_1Dim1_01_4.html#a54c1dc1c7f62acdf45ee11bded1f96ea">getIdx</a> (TIdx const &amp;index, TWorkDiv const &amp;workDiv) -&gt; <a class="el" href="namespacealpaka.html#a6d800c7a55753e7a74482d8c3c7c2afc">alpaka::DimToVecT</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#adfe56c20847b0ca61e47408cbaec071a">alpaka::dim::Dim1</a> &gt;</td></tr>
+<tr class="separator:a54c1dc1c7f62acdf45ee11bded1f96ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename TIdx&gt;<br />
@@ -131,9 +131,9 @@ struct alpaka::traits::idx::GetIdx&lt; TIdx, origin::Grid, unit::Blocks, alpaka:
 
 <p>The 1D grid block index get trait specialization. </p>
 
-<p>Definition at line <a class="el" href="traits_2Idx_8hpp_source.html#l00165">165</a> of file <a class="el" href="traits_2Idx_8hpp_source.html">Idx.hpp</a>.</p>
+<p>Definition at line <a class="el" href="traits_2Idx_8hpp_source.html#l00173">173</a> of file <a class="el" href="traits_2Idx_8hpp_source.html">Idx.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="ac31f0ea30836db60f6f260af467a8de0"></a>
+<a class="anchor" id="a54c1dc1c7f62acdf45ee11bded1f96ea"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -145,7 +145,7 @@ template&lt;typename TWorkDiv &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static <a class="el" href="core_2Common_8hpp.html#a5f7933db4117e5cf67c10b559b645656">ALPAKA_FCT_ACC</a> <a class="el" href="namespacealpaka.html#a6d800c7a55753e7a74482d8c3c7c2afc">alpaka::DimToVecT</a>&lt;<a class="el" href="namespacealpaka_1_1dim.html#adfe56c20847b0ca61e47408cbaec071a">alpaka::dim::Dim1</a>&gt; <a class="el" href="structalpaka_1_1traits_1_1idx_1_1GetIdx.html">alpaka::traits::idx::GetIdx</a>&lt; TIdx, origin::Grid, unit::Blocks, <a class="el" href="namespacealpaka_1_1dim.html#adfe56c20847b0ca61e47408cbaec071a">alpaka::dim::Dim1</a> &gt;::getIdx </td>
+          <td class="memname">static <a class="el" href="core_2Common_8hpp.html#a5f7933db4117e5cf67c10b559b645656">ALPAKA_FCT_ACC</a> auto <a class="el" href="structalpaka_1_1traits_1_1idx_1_1GetIdx.html">alpaka::traits::idx::GetIdx</a>&lt; TIdx, origin::Grid, unit::Blocks, <a class="el" href="namespacealpaka_1_1dim.html#adfe56c20847b0ca61e47408cbaec071a">alpaka::dim::Dim1</a> &gt;::getIdx </td>
           <td>(</td>
           <td class="paramtype">TIdx const &amp;&#160;</td>
           <td class="paramname"><em>index</em>, </td>
@@ -159,7 +159,8 @@ template&lt;typename TWorkDiv &gt; </div>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td></td>
+          <td></td><td> -&gt; <a class="el" href="namespacealpaka.html#a6d800c7a55753e7a74482d8c3c7c2afc">alpaka::DimToVecT</a>&lt;<a class="el" href="namespacealpaka_1_1dim.html#adfe56c20847b0ca61e47408cbaec071a">alpaka::dim::Dim1</a>&gt;
+                </td>
         </tr>
       </table>
   </td>
@@ -170,7 +171,7 @@ template&lt;typename TWorkDiv &gt; </div>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The linearized index of the current block in the grid. </dd></dl>
 
-<p>Definition at line <a class="el" href="traits_2Idx_8hpp_source.html#l00176">176</a> of file <a class="el" href="traits_2Idx_8hpp_source.html">Idx.hpp</a>.</p>
+<p>Definition at line <a class="el" href="traits_2Idx_8hpp_source.html#l00184">184</a> of file <a class="el" href="traits_2Idx_8hpp_source.html">Idx.hpp</a>.</p>
 
 </div>
 </div>
@@ -183,7 +184,7 @@ template&lt;typename TWorkDiv &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1traits.html">traits</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1traits_1_1idx.html">idx</a></li><li class="navelem"><a class="el" href="structalpaka_1_1traits_1_1idx_1_1GetIdx_3_01TIdx_00_01origin_1_1Grid_00_01unit_1_1Blocks_00_01alpaka_1_1dim_1_1Dim1_01_4.html">GetIdx&lt; TIdx, origin::Grid, unit::Blocks, alpaka::dim::Dim1 &gt;</a></li>
-    <li class="footer">Generated on Fri Mar 6 2015 23:52:39 for alpaka by
+    <li class="footer">Generated on Tue Apr 7 2015 09:20:11 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

@@ -143,18 +143,18 @@ $(document).ready(function(){initNavTree('functions_func_e.html','');});
 
 <h3><a class="anchor" id="index_e"></a>- e -</h3><ul>
 <li>enqueueTask()
-: <a class="el" href="classalpaka_1_1detail_1_1ConcurrentExecPool.html#a4e8b9a9706f5ffb47bd919b215ec0326">alpaka::detail::ConcurrentExecPool&lt; TConcurrentExecutor, TPromise, TCurrentException, TYield, TMutex, TUniqueLock, TCondVar, TbYield &gt;</a>
-, <a class="el" href="classalpaka_1_1detail_1_1ConcurrentExecPool_3_01TConcurrentExecutor_00_01TPromise_00_01TCurrentEe8efb6b1c29d089c08af90cf3c122709.html#af33c665d359472851a34654b8febe8f7">alpaka::detail::ConcurrentExecPool&lt; TConcurrentExecutor, TPromise, TCurrentException, TYield, TMutex, TUniqueLock, TCondVar, false &gt;</a>
+: <a class="el" href="classalpaka_1_1detail_1_1ConcurrentExecPool.html#a003619a8194271fe8a5f3ac38276c290">alpaka::detail::ConcurrentExecPool&lt; TConcurrentExec, TPromise, TCurrentException, TYield, TMutex, TUniqueLock, TCondVar, TbYield &gt;</a>
+, <a class="el" href="classalpaka_1_1detail_1_1ConcurrentExecPool_3_01TConcurrentExec_00_01TPromise_00_01TCurrentExcep53306791c16fe288a45bb138e5455b4f.html#a8b937c13fca783620fac771bc9d2d87d">alpaka::detail::ConcurrentExecPool&lt; TConcurrentExec, TPromise, TCurrentException, TYield, TMutex, TUniqueLock, TCondVar, false &gt;</a>
 </li>
 <li>EventCuda()
-: <a class="el" href="classalpaka_1_1cuda_1_1detail_1_1EventCuda.html#a56c5aa5610c9c5f3622021d6a8c24b3f">alpaka::cuda::detail::EventCuda</a>
+: <a class="el" href="classalpaka_1_1accs_1_1cuda_1_1detail_1_1EventCuda.html#a8cca047e18a36a564087c531bce485f1">alpaka::accs::cuda::detail::EventCuda</a>
 </li>
 <li>EventHost()
-: <a class="el" href="classalpaka_1_1host_1_1detail_1_1EventHost.html#a6f929e762b4cbe40229ee2f85e0abded">alpaka::host::detail::EventHost</a>
+: <a class="el" href="classalpaka_1_1host_1_1detail_1_1EventHost.html#aab97eebef77c192f2ecae780345458c6">alpaka::host::detail::EventHost&lt; TDev &gt;</a>
 </li>
 <li>eventTest()
-: <a class="el" href="structalpaka_1_1traits_1_1event_1_1EventTest_3_01cuda_1_1detail_1_1EventCuda_01_4.html#ab0794fa2c071896a4074556f3aa03c4e">alpaka::traits::event::EventTest&lt; cuda::detail::EventCuda &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1event_1_1EventTest_3_01TEvent_00_01typename_01std_1_1enable__if_3_01st4755ef53133f0284f2eedaf0801c1a4d.html#aebb77f33da70767145fd993225d2bb28">alpaka::traits::event::EventTest&lt; TEvent, typename std::enable_if&lt; std::is_base_of&lt; host::detail::EventHost, TEvent &gt;::value &gt;::type &gt;</a>
+: <a class="el" href="structalpaka_1_1traits_1_1event_1_1EventTest_3_01accs_1_1cuda_1_1detail_1_1EventCuda_01_4.html#adccad05f11af49929fee95c84786bdbc">alpaka::traits::event::EventTest&lt; accs::cuda::detail::EventCuda &gt;</a>
+, <a class="el" href="structalpaka_1_1traits_1_1event_1_1EventTest_3_01host_1_1detail_1_1EventHost_3_01TDev_01_4_01_4.html#a3322c829cea1111fd3c347b75cf1af5c">alpaka::traits::event::EventTest&lt; host::detail::EventHost&lt; TDev &gt; &gt;</a>
 </li>
 </ul>
 </div><!-- contents -->
@@ -162,7 +162,7 @@ $(document).ready(function(){initNavTree('functions_func_e.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Mar 6 2015 23:52:43 for alpaka by
+    <li class="footer">Generated on Tue Apr 7 2015 09:20:14 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

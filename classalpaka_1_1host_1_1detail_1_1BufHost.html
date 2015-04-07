@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.9"/>
-<title>alpaka: alpaka::host::detail::BufHost&lt; TElem, TDim &gt; Class Template Reference</title>
+<title>alpaka: alpaka::host::detail::BufHost&lt; TDev, TElem, TDim &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -111,7 +111,7 @@ $(document).ready(function(){initNavTree('classalpaka_1_1host_1_1detail_1_1BufHo
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classalpaka_1_1host_1_1detail_1_1BufHost-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">alpaka::host::detail::BufHost&lt; TElem, TDim &gt; Class Template Reference</div>  </div>
+<div class="title">alpaka::host::detail::BufHost&lt; TDev, TElem, TDim &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -122,33 +122,35 @@ $(document).ready(function(){initNavTree('classalpaka_1_1host_1_1detail_1_1BufHo
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:acec849d512bb0c0efc565667434385df"><td class="memTemplParams" colspan="2">template&lt;typename TExtents &gt; </td></tr>
-<tr class="memitem:acec849d512bb0c0efc565667434385df"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1host_1_1detail_1_1BufHost.html#acec849d512bb0c0efc565667434385df">BufHost</a> (TExtents const &amp;extents)</td></tr>
-<tr class="memdesc:acec849d512bb0c0efc565667434385df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#acec849d512bb0c0efc565667434385df">More...</a><br /></td></tr>
-<tr class="separator:acec849d512bb0c0efc565667434385df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6473bcebd6ae9bd2474505e61c39ef8"><td class="memTemplParams" colspan="2">template&lt;typename TExtents &gt; </td></tr>
+<tr class="memitem:aa6473bcebd6ae9bd2474505e61c39ef8"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1host_1_1detail_1_1BufHost.html#aa6473bcebd6ae9bd2474505e61c39ef8">BufHost</a> (TDev const &amp;dev, TExtents const &amp;extents)</td></tr>
+<tr class="memdesc:aa6473bcebd6ae9bd2474505e61c39ef8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#aa6473bcebd6ae9bd2474505e61c39ef8">More...</a><br /></td></tr>
+<tr class="separator:aa6473bcebd6ae9bd2474505e61c39ef8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:addf080e501d80237694a022250aace07"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; TElem &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1host_1_1detail_1_1BufHost.html#addf080e501d80237694a022250aace07">m_spMem</a></td></tr>
-<tr class="separator:addf080e501d80237694a022250aace07"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48c638722fdc8b5fcb3312e0fd23d263"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5">UInt</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1host_1_1detail_1_1BufHost.html#a48c638722fdc8b5fcb3312e0fd23d263">m_uiPitchBytes</a></td></tr>
-<tr class="separator:a48c638722fdc8b5fcb3312e0fd23d263"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab90e005b450c6b92d5bc945ca6a9ab6d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim::value &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1host_1_1detail_1_1BufHost.html#ab90e005b450c6b92d5bc945ca6a9ab6d">m_vExtentsElements</a></td></tr>
-<tr class="separator:ab90e005b450c6b92d5bc945ca6a9ab6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ba91bf28b56b875ea1f35ae72318583"><td class="memItemLeft" align="right" valign="top">TDev&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1host_1_1detail_1_1BufHost.html#a1ba91bf28b56b875ea1f35ae72318583">m_Dev</a></td></tr>
+<tr class="separator:a1ba91bf28b56b875ea1f35ae72318583"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adaf3d30149abd2ecdeb7cdcb84c96964"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; TElem &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1host_1_1detail_1_1BufHost.html#adaf3d30149abd2ecdeb7cdcb84c96964">m_spMem</a></td></tr>
+<tr class="separator:adaf3d30149abd2ecdeb7cdcb84c96964"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29639df6e42aac409675427bc361c974"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5">UInt</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1host_1_1detail_1_1BufHost.html#a29639df6e42aac409675427bc361c974">m_uiPitchBytes</a></td></tr>
+<tr class="separator:a29639df6e42aac409675427bc361c974"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b5665f0af9671bf4645fbb65902fb42"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim::value &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1host_1_1detail_1_1BufHost.html#a7b5665f0af9671bf4645fbb65902fb42">m_vExtentsElements</a></td></tr>
+<tr class="separator:a7b5665f0af9671bf4645fbb65902fb42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;typename TElem, typename TDim&gt;<br />
-class alpaka::host::detail::BufHost&lt; TElem, TDim &gt;</h3>
+<div class="textblock"><h3>template&lt;typename TDev, typename TElem, typename TDim&gt;<br />
+class alpaka::host::detail::BufHost&lt; TDev, TElem, TDim &gt;</h3>
 
 <p>The host memory buffer. </p>
 
-<p>Definition at line <a class="el" href="host_2mem_2Buf_8hpp_source.html#l00049">49</a> of file <a class="el" href="host_2mem_2Buf_8hpp_source.html">Buf.hpp</a>.</p>
+<p>Definition at line <a class="el" href="host_2mem_2Buf_8hpp_source.html#l00050">50</a> of file <a class="el" href="host_2mem_2Buf_8hpp_source.html">Buf.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="acec849d512bb0c0efc565667434385df"></a>
+<a class="anchor" id="aa6473bcebd6ae9bd2474505e61c39ef8"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TElem, typename TDim&gt; </div>
+template&lt;typename TDev, typename TElem, typename TDim&gt; </div>
 <div class="memtemplate">
 template&lt;typename TExtents &gt; </div>
 <table class="mlabels">
@@ -156,11 +158,21 @@ template&lt;typename TExtents &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> <a class="el" href="classalpaka_1_1host_1_1detail_1_1BufHost.html">alpaka::host::detail::BufHost</a>&lt; TElem, TDim &gt;::<a class="el" href="classalpaka_1_1host_1_1detail_1_1BufHost.html">BufHost</a> </td>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> <a class="el" href="classalpaka_1_1host_1_1detail_1_1BufHost.html">alpaka::host::detail::BufHost</a>&lt; TDev, TElem, TDim &gt;::<a class="el" href="classalpaka_1_1host_1_1detail_1_1BufHost.html">BufHost</a> </td>
           <td>(</td>
-          <td class="paramtype">TExtents const &amp;&#160;</td>
-          <td class="paramname"><em>extents</em></td><td>)</td>
+          <td class="paramtype">TDev const &amp;&#160;</td>
+          <td class="paramname"><em>dev</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">TExtents const &amp;&#160;</td>
+          <td class="paramname"><em>extents</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -172,56 +184,72 @@ template&lt;typename TExtents &gt; </div>
 
 <p>Constructor. </p>
 
-<p>Definition at line <a class="el" href="host_2mem_2Buf_8hpp_source.html#l00061">61</a> of file <a class="el" href="host_2mem_2Buf_8hpp_source.html">Buf.hpp</a>.</p>
+<p>Definition at line <a class="el" href="host_2mem_2Buf_8hpp_source.html#l00063">63</a> of file <a class="el" href="host_2mem_2Buf_8hpp_source.html">Buf.hpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="addf080e501d80237694a022250aace07"></a>
+<a class="anchor" id="a1ba91bf28b56b875ea1f35ae72318583"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TElem, typename TDim&gt; </div>
+template&lt;typename TDev, typename TElem, typename TDim&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::shared_ptr&lt;TElem&gt; <a class="el" href="classalpaka_1_1host_1_1detail_1_1BufHost.html">alpaka::host::detail::BufHost</a>&lt; TElem, TDim &gt;::m_spMem</td>
+          <td class="memname">TDev <a class="el" href="classalpaka_1_1host_1_1detail_1_1BufHost.html">alpaka::host::detail::BufHost</a>&lt; TDev, TElem, TDim &gt;::m_Dev</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="host_2mem_2Buf_8hpp_source.html#l00106">106</a> of file <a class="el" href="host_2mem_2Buf_8hpp_source.html">Buf.hpp</a>.</p>
+<p>Definition at line <a class="el" href="host_2mem_2Buf_8hpp_source.html#l00111">111</a> of file <a class="el" href="host_2mem_2Buf_8hpp_source.html">Buf.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a48c638722fdc8b5fcb3312e0fd23d263"></a>
+<a class="anchor" id="adaf3d30149abd2ecdeb7cdcb84c96964"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TElem, typename TDim&gt; </div>
+template&lt;typename TDev, typename TElem, typename TDim&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5">UInt</a> <a class="el" href="classalpaka_1_1host_1_1detail_1_1BufHost.html">alpaka::host::detail::BufHost</a>&lt; TElem, TDim &gt;::m_uiPitchBytes</td>
+          <td class="memname">std::shared_ptr&lt;TElem&gt; <a class="el" href="classalpaka_1_1host_1_1detail_1_1BufHost.html">alpaka::host::detail::BufHost</a>&lt; TDev, TElem, TDim &gt;::m_spMem</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="host_2mem_2Buf_8hpp_source.html#l00107">107</a> of file <a class="el" href="host_2mem_2Buf_8hpp_source.html">Buf.hpp</a>.</p>
+<p>Definition at line <a class="el" href="host_2mem_2Buf_8hpp_source.html#l00113">113</a> of file <a class="el" href="host_2mem_2Buf_8hpp_source.html">Buf.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ab90e005b450c6b92d5bc945ca6a9ab6d"></a>
+<a class="anchor" id="a29639df6e42aac409675427bc361c974"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TElem, typename TDim&gt; </div>
+template&lt;typename TDev, typename TElem, typename TDim&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;TDim::value&gt; <a class="el" href="classalpaka_1_1host_1_1detail_1_1BufHost.html">alpaka::host::detail::BufHost</a>&lt; TElem, TDim &gt;::m_vExtentsElements</td>
+          <td class="memname"><a class="el" href="namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5">UInt</a> <a class="el" href="classalpaka_1_1host_1_1detail_1_1BufHost.html">alpaka::host::detail::BufHost</a>&lt; TDev, TElem, TDim &gt;::m_uiPitchBytes</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="host_2mem_2Buf_8hpp_source.html#l00105">105</a> of file <a class="el" href="host_2mem_2Buf_8hpp_source.html">Buf.hpp</a>.</p>
+<p>Definition at line <a class="el" href="host_2mem_2Buf_8hpp_source.html#l00114">114</a> of file <a class="el" href="host_2mem_2Buf_8hpp_source.html">Buf.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a7b5665f0af9671bf4645fbb65902fb42"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDev, typename TElem, typename TDim&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;TDim::value&gt; <a class="el" href="classalpaka_1_1host_1_1detail_1_1BufHost.html">alpaka::host::detail::BufHost</a>&lt; TDev, TElem, TDim &gt;::m_vExtentsElements</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="host_2mem_2Buf_8hpp_source.html#l00112">112</a> of file <a class="el" href="host_2mem_2Buf_8hpp_source.html">Buf.hpp</a>.</p>
 
 </div>
 </div>
@@ -234,7 +262,7 @@ template&lt;typename TElem, typename TDim&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1host.html">host</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1host_1_1detail.html">detail</a></li><li class="navelem"><a class="el" href="classalpaka_1_1host_1_1detail_1_1BufHost.html">BufHost</a></li>
-    <li class="footer">Generated on Fri Mar 6 2015 23:52:35 for alpaka by
+    <li class="footer">Generated on Tue Apr 7 2015 09:20:07 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

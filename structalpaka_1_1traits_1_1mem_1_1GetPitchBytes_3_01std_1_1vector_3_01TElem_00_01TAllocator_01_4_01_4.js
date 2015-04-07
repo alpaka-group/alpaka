@@ -1,4 +1,4 @@
 var structalpaka_1_1traits_1_1mem_1_1GetPitchBytes_3_01std_1_1vector_3_01TElem_00_01TAllocator_01_4_01_4 =
 [
-    [ "getPitchBytes", "structalpaka_1_1traits_1_1mem_1_1GetPitchBytes_3_01std_1_1vector_3_01TElem_00_01TAllocator_01_4_01_4.html#ac476c450cf13ba621ef9203a56c3ae25", null ]
+    [ "getPitchBytes", "structalpaka_1_1traits_1_1mem_1_1GetPitchBytes_3_01std_1_1vector_3_01TElem_00_01TAllocator_01_4_01_4.html#a084e701f5dd84ea9f97eeb5cfcde23a5", null ]
 ];

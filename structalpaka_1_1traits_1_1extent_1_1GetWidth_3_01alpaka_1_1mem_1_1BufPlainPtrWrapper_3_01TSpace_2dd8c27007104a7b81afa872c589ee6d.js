@@ -1,4 +1,4 @@
 var structalpaka_1_1traits_1_1extent_1_1GetWidth_3_01alpaka_1_1mem_1_1BufPlainPtrWrapper_3_01TSpace_2dd8c27007104a7b81afa872c589ee6d =
 [
-    [ "getWidth", "structalpaka_1_1traits_1_1extent_1_1GetWidth_3_01alpaka_1_1mem_1_1BufPlainPtrWrapper_3_01TSpace_2dd8c27007104a7b81afa872c589ee6d.html#af5ba02881948ee0ebc2432433b6b07f7", null ]
+    [ "getWidth", "structalpaka_1_1traits_1_1extent_1_1GetWidth_3_01alpaka_1_1mem_1_1BufPlainPtrWrapper_3_01TSpace_2dd8c27007104a7b81afa872c589ee6d.html#a628bb63dbafd4e8159d781f6c126c903", null ]
 ];

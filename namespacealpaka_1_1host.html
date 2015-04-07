@@ -123,15 +123,17 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:abd188fcf40f1d89e00df4776ad0d340b"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1host.html#abd188fcf40f1d89e00df4776ad0d340b">getCpuName</a> ()</td></tr>
-<tr class="separator:abd188fcf40f1d89e00df4776ad0d340b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a357f2e077f091ac60ee4432674853a2a"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1host.html#a357f2e077f091ac60ee4432674853a2a">getGlobalMemSizeBytes</a> ()</td></tr>
-<tr class="separator:a357f2e077f091ac60ee4432674853a2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65ad34e012e6f8fdbbbed5607f61000e"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1host.html#a65ad34e012e6f8fdbbbed5607f61000e">getCpuName</a> () -&gt; std::string</td></tr>
+<tr class="separator:a65ad34e012e6f8fdbbbed5607f61000e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ed0210071b0fc0b5d790bd4d7b5f1ad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1host.html#a5ed0210071b0fc0b5d790bd4d7b5f1ad">getDev</a> () -&gt; decltype(<a class="el" href="namespacealpaka_1_1dev.html#a8bb8422f0ce90eb5550e38f28abed70e">dev::DevManT</a>&lt; <a class="el" href="classalpaka_1_1accs_1_1serial_1_1detail_1_1AccSerial.html">accs::serial::detail::AccSerial</a> &gt;::getDevByIdx(std::declval&lt; std::size_t const &amp; &gt;()))</td></tr>
+<tr class="separator:a5ed0210071b0fc0b5d790bd4d7b5f1ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a217cc01511c1198bdf47a62f9aa4b307"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1host.html#a217cc01511c1198bdf47a62f9aa4b307">getGlobalMemSizeBytes</a> () -&gt; std::size_t</td></tr>
+<tr class="separator:a217cc01511c1198bdf47a62f9aa4b307"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The host and host accelerators functionality. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="abd188fcf40f1d89e00df4776ad0d340b"></a>
+<a class="anchor" id="a65ad34e012e6f8fdbbbed5607f61000e"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -139,10 +141,11 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::string alpaka::host::getCpuName </td>
+          <td class="memname">auto alpaka::host::getCpuName </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> -&gt; std::string
+        </td>
         </tr>
       </table>
   </td>
@@ -153,11 +156,30 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The name of the CPU the host code is running on. </dd></dl>
 
-<p>Definition at line <a class="el" href="SysInfo_8hpp_source.html#l00078">78</a> of file <a class="el" href="SysInfo_8hpp_source.html">SysInfo.hpp</a>.</p>
+<p>Definition at line <a class="el" href="SysInfo_8hpp_source.html#l00080">80</a> of file <a class="el" href="SysInfo_8hpp_source.html">SysInfo.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a357f2e077f091ac60ee4432674853a2a"></a>
+<a class="anchor" id="a5ed0210071b0fc0b5d790bd4d7b5f1ad"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto alpaka::host::getDev </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> -&gt; decltype(<a class="el" href="namespacealpaka_1_1dev.html#a8bb8422f0ce90eb5550e38f28abed70e">dev::DevManT</a>&lt;<a class="el" href="classalpaka_1_1accs_1_1serial_1_1detail_1_1AccSerial.html">accs::serial::detail::AccSerial</a>&gt;::getDevByIdx(std::declval&lt;std::size_t const &amp;&gt;()))
+        </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>The device this object is bound to. </dd></dl>
+
+<p>Definition at line <a class="el" href="host_2Dev_8hpp_source.html#l00033">33</a> of file <a class="el" href="host_2Dev_8hpp_source.html">Dev.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a217cc01511c1198bdf47a62f9aa4b307"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -165,10 +187,11 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::size_t alpaka::host::getGlobalMemSizeBytes </td>
+          <td class="memname">auto alpaka::host::getGlobalMemSizeBytes </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> -&gt; std::size_t
+        </td>
         </tr>
       </table>
   </td>
@@ -181,7 +204,7 @@ Functions</h2></td></tr>
 <dd>
 The number of bytes of global memory. Adapted from David Robert Nadeau: <a href="http://nadeausoftware.com/articles/2012/09/c_c_tip_how_get_physical_memory_size_system">http://nadeausoftware.com/articles/2012/09/c_c_tip_how_get_physical_memory_size_system</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="SysInfo_8hpp_source.html#l00123">123</a> of file <a class="el" href="SysInfo_8hpp_source.html">SysInfo.hpp</a>.</p>
+<p>Definition at line <a class="el" href="SysInfo_8hpp_source.html#l00127">127</a> of file <a class="el" href="SysInfo_8hpp_source.html">SysInfo.hpp</a>.</p>
 
 </div>
 </div>
@@ -191,7 +214,7 @@ The number of bytes of global memory. Adapted from David Robert Nadeau: <a href=
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1host.html">host</a></li>
-    <li class="footer">Generated on Fri Mar 6 2015 23:52:35 for alpaka by
+    <li class="footer">Generated on Tue Apr 7 2015 09:20:07 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

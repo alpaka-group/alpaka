@@ -114,25 +114,25 @@ $(document).ready(function(){initNavTree('structalpaka_1_1traits_1_1mem_1_1GetPi
 </div><!--header-->
 <div class="contents">
 
-<p>The CUDA buffer pitch get trait specialization.  
+<p>The View pitch get trait specialization.  
  <a href="structalpaka_1_1traits_1_1mem_1_1GetPitchBytes_3_01alpaka_1_1mem_1_1detail_1_1View_3_01TBuf_01_4_01_4.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="core_2mem_2View_8hpp_source.html">View.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a217c276a15acb402492b85fca036cee4"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> <a class="el" href="namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5">UInt</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1mem_1_1GetPitchBytes_3_01alpaka_1_1mem_1_1detail_1_1View_3_01TBuf_01_4_01_4.html#a217c276a15acb402492b85fca036cee4">getPitchBytes</a> (<a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html">alpaka::mem::detail::View</a>&lt; TBuf &gt; const &amp;memBufView)</td></tr>
-<tr class="separator:a217c276a15acb402492b85fca036cee4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a903ee8b0495571c5bcbf877c07a3f55f"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1mem_1_1GetPitchBytes_3_01alpaka_1_1mem_1_1detail_1_1View_3_01TBuf_01_4_01_4.html#a903ee8b0495571c5bcbf877c07a3f55f">getPitchBytes</a> (<a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html">alpaka::mem::detail::View</a>&lt; TBuf &gt; const &amp;bufView) -&gt; <a class="el" href="namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5">UInt</a></td></tr>
+<tr class="separator:a903ee8b0495571c5bcbf877c07a3f55f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename TBuf&gt;<br />
 struct alpaka::traits::mem::GetPitchBytes&lt; alpaka::mem::detail::View&lt; TBuf &gt; &gt;</h3>
 
-<p>The CUDA buffer pitch get trait specialization. </p>
+<p>The View pitch get trait specialization. </p>
 
-<p>Definition at line <a class="el" href="core_2mem_2View_8hpp_source.html#l00375">375</a> of file <a class="el" href="core_2mem_2View_8hpp_source.html">View.hpp</a>.</p>
+<p>Definition at line <a class="el" href="core_2mem_2View_8hpp_source.html#l00445">445</a> of file <a class="el" href="core_2mem_2View_8hpp_source.html">View.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a217c276a15acb402492b85fca036cee4"></a>
+<a class="anchor" id="a903ee8b0495571c5bcbf877c07a3f55f"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -142,11 +142,12 @@ template&lt;typename TBuf &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static <a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> <a class="el" href="namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5">UInt</a> <a class="el" href="structalpaka_1_1traits_1_1mem_1_1GetPitchBytes.html">alpaka::traits::mem::GetPitchBytes</a>&lt; <a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html">alpaka::mem::detail::View</a>&lt; TBuf &gt; &gt;::getPitchBytes </td>
+          <td class="memname">static <a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto <a class="el" href="structalpaka_1_1traits_1_1mem_1_1GetPitchBytes.html">alpaka::traits::mem::GetPitchBytes</a>&lt; <a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html">alpaka::mem::detail::View</a>&lt; TBuf &gt; &gt;::getPitchBytes </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html">alpaka::mem::detail::View</a>&lt; TBuf &gt; const &amp;&#160;</td>
-          <td class="paramname"><em>memBufView</em></td><td>)</td>
-          <td></td>
+          <td class="paramname"><em>bufView</em></td><td>)</td>
+          <td> -&gt; <a class="el" href="namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5">UInt</a>
+                </td>
         </tr>
       </table>
   </td>
@@ -156,7 +157,7 @@ template&lt;typename TBuf &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="core_2mem_2View_8hpp_source.html#l00381">381</a> of file <a class="el" href="core_2mem_2View_8hpp_source.html">View.hpp</a>.</p>
+<p>Definition at line <a class="el" href="core_2mem_2View_8hpp_source.html#l00451">451</a> of file <a class="el" href="core_2mem_2View_8hpp_source.html">View.hpp</a>.</p>
 
 </div>
 </div>
@@ -169,7 +170,7 @@ template&lt;typename TBuf &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1traits.html">traits</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1traits_1_1mem.html">mem</a></li><li class="navelem"><a class="el" href="structalpaka_1_1traits_1_1mem_1_1GetPitchBytes_3_01alpaka_1_1mem_1_1detail_1_1View_3_01TBuf_01_4_01_4.html">GetPitchBytes&lt; alpaka::mem::detail::View&lt; TBuf &gt; &gt;</a></li>
-    <li class="footer">Generated on Fri Mar 6 2015 23:52:40 for alpaka by
+    <li class="footer">Generated on Tue Apr 7 2015 09:20:12 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

@@ -1,4 +1,0 @@
-var structalpaka_1_1traits_1_1extent_1_1GetWidth_3_01cuda_1_1detail_1_1BufCuda_3_01TElem_00_01TDim_0053f3ea50543bf15b885b6e5746264fb =
-[
-    [ "getWidth", "structalpaka_1_1traits_1_1extent_1_1GetWidth_3_01cuda_1_1detail_1_1BufCuda_3_01TElem_00_01TDim_0053f3ea50543bf15b885b6e5746264fb.html#ab1d1da2c5bd995c5619075775d3f596c", null ]
-];

@@ -1,4 +1,4 @@
 var structalpaka_1_1traits_1_1workdiv_1_1GetWorkDiv_3_01TWorkDiv_00_01origin_1_1Block_00_01unit_1_1Tf5ec91e8fdb52f1786b544c7bbc35138 =
 [
-    [ "getWorkDiv", "structalpaka_1_1traits_1_1workdiv_1_1GetWorkDiv_3_01TWorkDiv_00_01origin_1_1Block_00_01unit_1_1Tf5ec91e8fdb52f1786b544c7bbc35138.html#a51647eb9360931be37b3baebdaed8fc3", null ]
+    [ "getWorkDiv", "structalpaka_1_1traits_1_1workdiv_1_1GetWorkDiv_3_01TWorkDiv_00_01origin_1_1Block_00_01unit_1_1Tf5ec91e8fdb52f1786b544c7bbc35138.html#af9c6860a91a1c728c27faeddf895574b", null ]
 ];

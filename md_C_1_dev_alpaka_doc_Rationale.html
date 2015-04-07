@@ -103,7 +103,8 @@ $(document).ready(function(){initNavTree('md_C_1_dev_alpaka_doc_Rationale.html',
 <div class="title">Rationale </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h2>Kernels </h2>
+<div class="textblock"><p>This document gives reasons why some implementation details are the way they are.</p>
+<h2>Kernel Interface </h2>
 <h3>Requirements</h3>
 <ul>
 <li>User kernels should be implemented independent of the accelerator.</li>
@@ -118,19 +119,19 @@ $(document).ready(function(){initNavTree('md_C_1_dev_alpaka_doc_Rationale.html',
 </ol>
 </li>
 </ul>
-<h3>Implementation Variants</h3>
+<h3>Implementation variants</h3>
 <p>There are two possible ways to tell the kernel about the accelerator type:</p><ol type="1">
 <li>The kernel is templated on the accelerator type<ul>
 <li>+ This allows users to specialize them for different accelerators. (Is this is really necessary or desired?)</li>
 <li>- The kernel has to be a class template. This does not allow C++ lambdas to be used as kernels because they are no templates themselves (but only their <code>operator()</code> can be templated in C++14).</li>
-<li>- This prevents the user from instantiating an accelerator independent kernel before executing it and then adapting it to the given accelerator on execution. Because the memory layout in inheritance hierarchies is undefined a simple copy of the user kernel or its members to its specialized type is not possible platform independently. This would require a copy from UserKernel&lt;TDummyAcc&gt; to UserKernel&lt;TAcc&gt; to be possible. The only way to allow this would be to require the user to implement a templated copy constructor for every kernel. This is not allowed for kernels that should be copyable to a CUDA device because std::is_trivially_copyable requires the kernel to have no non-trivial copy constructors.</li>
+<li>- This prevents the user from instantiating an accelerator independent kernel before executing it. Because the memory layout in inheritance hierarchies is undefined a simple copy of the user kernel or its members to its specialized type is not possible platform independently. This would require a copy from UserKernel&lt;TDummyAcc&gt; to UserKernel&lt;TAcc&gt; to be possible. The only way to allow this would be to require the user to implement a templated copy constructor for every kernel. This is not allowed for kernels that should be copyable to a CUDA device because std::is_trivially_copyable requires the kernel to have no non-trivial copy constructors.</li>
 <li>a) and inherits from the accelerator.<ul>
-<li>+/- To give a device function called from the kernel functor access to the accelerator methods, these methods have to be templated on the accelerated kernel and get a reference to the accelerator. This allows to give them access not only to the accelerator methods but also to the other kernel methods. This is inconsistent because the kernel uses inheritance and subsequent function calls get a parameter.</li>
+<li>+/- To give a device function called from the kernel functor access to the accelerator methods, these methods have to be templated on the kernel functor and get a reference to the accelerator. This allows to give them access not only to the accelerator methods but also to the other kernel methods. This is inconsistent because the kernel uses inheritance and subsequent function calls get a parameter.</li>
 <li>- The kernel itself has to inherit at least protected from the accelerator to allow the KernelExecutor to access the Accelerator.</li>
 <li>- How do accelerator functions called from the kernel (and not within the kernel class itself) access the accelerator methods? Casting this to the accelerator type and giving it as parameter is too much to require from the user.</li>
 </ul>
 </li>
-<li>b) and has a reference to the accelerator as parameter.<ul>
+<li>b) and the <code>operator()</code> has a reference to the accelerator as parameter.<ul>
 <li>+ This allows to use the accelerator in accelerator functions called from the kernel (and not within the kernel class itself) to access the accelerator methods in the same way the kernel entry point function can.</li>
 <li>- This would require an additional object (the accelerator) in device memory taking up valuable CUDA registers (opposed to the inheritance solution). At least on CUDA all the accelerator functions could be inlined nevertheless.</li>
 </ul>
@@ -146,47 +147,52 @@ $(document).ready(function(){initNavTree('md_C_1_dev_alpaka_doc_Rationale.html',
 </ul>
 </li>
 </ol>
-<h3>Implementation Notes</h3>
-<p>Currently we implement version 1b).</p>
-<p>Kernels bound to an accelerator can be built with the <code>createKernelExecutor</code> template function. This function returns an object that stores the given kernel type and the constructor argumnts.. To separate the kernel execution attributes (grid/block-extents, stream) from the invocation arguments, the first call to <code>operator()</code> returns a kernel executor with stored execution attributes. The returned executor can then be executed with the <code>operator()</code> leading to <code>createKernelExecutor&lt;TAcc, TKernel&gt;(TKernelConstrArgs ... args)(&lt;grid/block&gt;-extents, stream = 0)(invocation-args ...)</code> for a complete kernel invocation.</p>
-<p>TODO: Why do we require the user to have a default template argument <code>template&lt;typename TAcc = <a class="el" href="classalpaka_1_1IAcc.html" title="The accelerator interface. ">alpaka::IAcc</a>&lt;&gt;&gt;</code> for the kernel?</p><ul>
-<li>Because we can not create a kernel before binding it to an accelerator we could just make it a simple template <code>template&lt;typename TAcc&gt;</code> and make IAcc an implementation detail.</li>
-<li>If it is because the possible use of boost::mpl::_1, would it be better to not require the usage of IAcc and make it an implementation detail requiring the user to use <code>template&lt;typename TAcc = boost::mpl::_1&gt;</code> directly?</li>
-<li>Why is boost::mpl::_1 even required in this case?</li>
-</ul>
+<h3>Implementation notes</h3>
+<p>Currently we implement version 2.</p>
+<p>A kernel executor can be obtained by calling <code><a class="el" href="namespacealpaka_1_1exec.html#a04f0b5863362b0facb959fb33769d0e9">alpaka::exec::create</a>&lt;TAcc&gt;(TWorkDiv, TStream)</code> with the execution attributes (grid/block-extents, stream). This separates the kernel execution attributes (grid/block-extents, stream) from the invocation arguments. The returned executor can then be called with the <code>operator()</code> leading to <code><a class="el" href="namespacealpaka_1_1exec.html#a04f0b5863362b0facb959fb33769d0e9">alpaka::exec::create</a>&lt;TAcc&gt;(TWorkDiv, TStream)(invocation-args ...)</code> for a complete kernel invocation.</p>
+<h2>Block Shared Memory </h2>
+<h3>Internal Block Shared Memory</h3>
+<p>The size of block shared memory that is allocated inside the kernel is required to be given as compile time constant. This is due to CUDA not allowing to allocate block shared memory inside a kernel at runtime.</p>
 <h3>External Block Shared Memory</h3>
-<p>The size of the external block shared memory has to be available at compile time.</p>
-<p>TODO: Why?</p>
-<p>TODO: Explain trait.</p>
+<p>The size of the external block shared memory is obtained from a trait that can be specialized for each kernel. The trait is called with the current kernel invocation parameters and the block size prior to each kernel execution. Because the block shared memory size is only ever constant or dependent on the block size or the parameters of the invocation this has multiple advantages:</p><ul>
+<li>It forces the separation of the kernel invocation from the calculation of the required block shared memory size.</li>
+<li>It lets the user write this calculation once instead of multiple time spread across the code.</li>
+</ul>
 <h2>Accelerators </h2>
 <p>All the accelerators are restricted by the possibilities of CUDA.</p>
-<p>The library does not use a common accelerator base class with virtual functions from which all accelerator implementations inherit (run-time polymorphism). This is required because in the case of CUDA copying objects (kernels inheriting from the accelerator) with virtual functions into device memory is not viable because of possibly incompatible object layout (std::is_trivially_copyable). To deliver a common accelerator interface static polymorphism is used instead.</p>
-<p>The accelerator interface IAcc hides all implementation details of the underlying accelerator base class by protected inheritance. Private inheritance is not possible, because the <code>KernelExecutor</code> implementation for a special accelerator sometimes needs access to the accelerator itself in <code>KernelExecutor&lt;IAcc&lt;Acc&gt;&gt;</code>.</p>
-<p>TODO: Add note about ALPAKA_FCT_HOST_ACC!</p>
+<p>The library does not use a common accelerator base class with virtual functions from which all accelerator implementations inherit (run time polymorphism). This reduces runtime overhead because everything can be checked at compile time.</p>
+<p><b>TODO</b>: Add note about ALPAKA_FCT_HOST_ACC!</p>
+<h2>Accelerator Methods </h2>
+<p>There are two possible ways to implement access to accelerator dependent functionality inside a kernel:</p><ul>
+<li>Making the functions/templates members of the accelerator (maybe by inheritance) and calling them like <code>acc.syncThreads()</code> or <code>acc.template getIdx&lt;Grid, Thread, Dim1&gt;()</code>. This would require the user to know and understand when to use the template keyword inside function calls.</li>
+<li>The functions are only light wrappers around traits that can be specialized taking the accelerator as first value (it can not be the last value because of the potential use of variadic arguments). The resulting code would look like <code>sync(acc)</code> or <code>getIdx&lt;Grid, Thread, Dim1&gt;(acc)</code>. Internally these wrappers would call trait templates that are specialized for the specific accelerator e.g. <code>template&lt;typename TAcc&gt; Sync{...};</code></li>
+</ul>
+<p>The second version is easier to understand and usually shorter to use in user code.</p>
+<p>CUDA always tracks some implicit state like the current device in host code or the current thread and block index in kernel code. This implicit state hides dependencies and can produce bugs if the wrong device is active during a memory operation or similar things. In alpaka this is always made explicit. Streams, events and memory always require a device parameter for their creation.</p>
 <h2>Accelerator Implementation Notes </h2>
 <h3>Serial</h3>
 <p>The serial accelerator is only for debugging purposes because it only allows blocks with exactly one kernel. Therefore it does not implement real synchronization or atomic primitives.</p>
 <h3>Threads</h3>
 <h4>Execution</h4>
-<p>To prevent recreation of the threads between execution of different blocks in the grid, the threads are stored inside a thread pool. This thread pool is local to the invocation because making it local to the KernelExecutor could mean a heavy memory usage and lots of idling threads when there are multiple KernelExecutors around. Because the default policy of the threads in the pool is to yield instead of waiting, this would also slow down the system immensely.</p>
+<p>To prevent recreation of the threads between execution of different blocks in the grid, the threads are stored inside a thread pool. This thread pool is local to the invocation because making it local to the KernelExecutor could mean a heavy memory usage and lots of idling kernel-threads when there are multiple KernelExecutors around. Because the default policy of the threads in the pool is to yield instead of waiting, this would also slow down the system immensely.</p>
 <h3>Fibers</h3>
 <h4>Execution</h4>
-<p>To prevent recreation of the fibers between execution of different blocks in the grid, the fibers are stored inside a fibers pool. This fibers pool is local to the invocation because making it local to the KernelExecutor could mean a heavy memory usage when there are multiple KernelExecutors around.</p>
+<p>To prevent recreation of the fibers between execution of different blocks in the grid, the fibers are stored inside a fibers pool. This fiber pool is local to the invocation because making it local to the KernelExecutor could mean a heavy memory usage when there are multiple KernelExecutors around.</p>
 <h3>OpenMP</h3>
 <h4>Execution</h4>
 <p>Parallel execution of the kernels in a block is required because when syncBlockThreads is called all of them have to be done with their work up to this line. So we have to spawn one real thread per kernel in a block. <code>omp for</code> is not useful because it is meant for cases where multiple iterations are executed by one thread but in our case a 1:1 mapping is required. Therefore we use <code>omp parallel</code> with the specified number of threads in a block. Another reason for not using <code>omp for</code> like <code>#pragma omp parallel for collapse(3) num_threads(blockDim.x*blockDim.y*blockDim.z)</code> is that <code>#pragma omp barrier</code> used for intra block synchronization is not allowed inside <code>omp for</code> blocks.</p>
-<p>Because OpenMP is designed for a 1:1 abstraction of hardware to software threads, the block size is restricted by the number of OpenMP threads allowed by the runtime. This could be as little as 2 or 4 kernels but on a system with 4 cores with hyperthreading OpenMP can for example also allow a maximum of 64 threads.</p>
+<p>Because OpenMP is designed for a 1:1 abstraction of hardware to software threads, the block size is restricted by the number of OpenMP threads allowed by the runtime. This could be as little as 2 or 4 kernels but on a system with 4 cores and hyper-threading OpenMP can also allow 64 threads.</p>
 <h4>Index</h4>
 <p>OpenMP only provides a linear thread index. This index is converted to a 3 dimensional index at runtime.</p>
 <h4>Atomic</h4>
-<p>We can not use '#pragma omp atomic' because braces or calling other functions directly after <code>#pragma omp atomic</code> are not allowed! Because we are implementing the CUDA atomic operations which return the old value, this requires <code>#pragma omp critical</code> to be used. <code>omp_set_lock</code> is an alternative but is usually slower.</p>
+<p>We can not use '#pragma omp atomic' because braces or calling other functions directly after <code>#pragma omp atomic</code> are not allowed. Because we are implementing the CUDA atomic operations which return the old value, this requires <code>#pragma omp critical</code> to be used. <code>omp_set_lock</code> is an alternative but is usually slower.</p>
 <h3>CUDA</h3>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Mar 6 2015 23:52:34 for alpaka by
+    <li class="footer">Generated on Tue Apr 7 2015 09:20:06 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

@@ -16,7 +16,7 @@ var Vec_8hpp =
     [ "SetOffsetZ< alpaka::Vec< TuiDim, TVal >, typename std::enable_if<(TuiDim >=3u)&&(TuiDim<=3u)>::type >", "structalpaka_1_1traits_1_1offset_1_1SetOffsetZ_3_01alpaka_1_1Vec_3_01TuiDim_00_01TVal_01_4_00_011517212ce3112c822e8048551e7bd02b.html", "structalpaka_1_1traits_1_1offset_1_1SetOffsetZ_3_01alpaka_1_1Vec_3_01TuiDim_00_01TVal_01_4_00_011517212ce3112c822e8048551e7bd02b" ],
     [ "Vec", "classalpaka_1_1Vec.html", "classalpaka_1_1Vec" ],
     [ "DimToVecT", "Vec_8hpp.html#a6d800c7a55753e7a74482d8c3c7c2afc", null ],
-    [ "operator*", "Vec_8hpp.html#a34251387916741c92e32af9081e95fdb", null ],
-    [ "operator+", "Vec_8hpp.html#a98d9446f6b1781b8c567a1b3b0b37a0d", null ],
-    [ "operator<<", "Vec_8hpp.html#a8d86633643fd4aae83e00c702c677841", null ]
+    [ "operator*", "Vec_8hpp.html#a7cd8cae675d0e0012d968ea9e6b04cd5", null ],
+    [ "operator+", "Vec_8hpp.html#ab91bb130f54045cf6b55a29b74281370", null ],
+    [ "operator<<", "Vec_8hpp.html#a9dbc493c840de7ff14be998586b77703", null ]
 ];

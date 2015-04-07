@@ -2,10 +2,10 @@ var WorkDivHelpers_8hpp =
 [
     [ "CorrectMaxBlockThreadCount", "structalpaka_1_1workdiv_1_1detail_1_1CorrectMaxBlockThreadCount.html", "structalpaka_1_1workdiv_1_1detail_1_1CorrectMaxBlockThreadCount" ],
     [ "CorrectMaxBlockThreadExtents", "structalpaka_1_1workdiv_1_1detail_1_1CorrectMaxBlockThreadExtents.html", "structalpaka_1_1workdiv_1_1detail_1_1CorrectMaxBlockThreadExtents" ],
-    [ "getMaxBlockThreadCountAccelerators", "WorkDivHelpers_8hpp.html#a865381cd2635c78a04c836d1650a564d", null ],
-    [ "getMaxBlockThreadExtentsAccelerators", "WorkDivHelpers_8hpp.html#a85548156858cb6512a5b0812a8403ba5", null ],
-    [ "getValidWorkDiv", "WorkDivHelpers_8hpp.html#a01de1f630b20c9523be011bd3ad29389", null ],
-    [ "isValidWorkDiv", "WorkDivHelpers_8hpp.html#a68d8f4db03fd56690f10fb0afb7c9edd", null ],
-    [ "nextLowerOrEqualFactor", "WorkDivHelpers_8hpp.html#a6d053e6e8a70d19975cadb16f5dff28a", null ],
-    [ "subdivideGridThreads", "WorkDivHelpers_8hpp.html#a0811ec447250a8a23371b3d80bef7372", null ]
+    [ "getMaxBlockThreadCountAccsDevices", "WorkDivHelpers_8hpp.html#a32c6297d57c4989f6b487f0823a2ca71", null ],
+    [ "getMaxBlockThreadExtentsAccsDevices", "WorkDivHelpers_8hpp.html#ac83a18095f0f7c0e2509f42f33312a22", null ],
+    [ "getValidWorkDiv", "WorkDivHelpers_8hpp.html#a521e8ef14557a19c5950231950663a69", null ],
+    [ "isValidWorkDiv", "WorkDivHelpers_8hpp.html#a45af332c68fb45fc5b566dd0dee3a968", null ],
+    [ "nextLowerOrEqualFactor", "WorkDivHelpers_8hpp.html#a21bb2264ae48912f73c3f36c6461f562", null ],
+    [ "subdivideGridThreads", "WorkDivHelpers_8hpp.html#ada11e0c08a3ae6e260f0719e581d1c87", null ]
 ];

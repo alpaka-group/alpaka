@@ -146,8 +146,16 @@ $(document).ready(function(){initNavTree('functions_m.html','');});
 <li>m_buf
 : <a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html#ac0c5c018ae82112b6d5f03af161939b1">alpaka::mem::detail::View&lt; TBuf &gt;</a>
 </li>
+<li>m_Dev
+: <a class="el" href="classalpaka_1_1accs_1_1cuda_1_1detail_1_1BufCuda.html#a39f5fe59dd5bcb92b2f71cd5b702d23f">alpaka::accs::cuda::detail::BufCuda&lt; TElem, TDim &gt;</a>
+, <a class="el" href="classalpaka_1_1accs_1_1cuda_1_1detail_1_1EventCuda.html#aa4402558fc89db4bd3bdc414bb10b741">alpaka::accs::cuda::detail::EventCuda</a>
+, <a class="el" href="classalpaka_1_1accs_1_1cuda_1_1detail_1_1StreamCuda.html#ad74b1ca750cdb9560ca8d56f7a6331b6">alpaka::accs::cuda::detail::StreamCuda</a>
+, <a class="el" href="classalpaka_1_1host_1_1detail_1_1BufHost.html#a1ba91bf28b56b875ea1f35ae72318583">alpaka::host::detail::BufHost&lt; TDev, TElem, TDim &gt;</a>
+, <a class="el" href="classalpaka_1_1host_1_1detail_1_1EventHost.html#a827a67b518ddc14c719feece3fd26fa6">alpaka::host::detail::EventHost&lt; TDev &gt;</a>
+, <a class="el" href="classalpaka_1_1host_1_1detail_1_1StreamHost.html#a718d19612e7fb517ede6df1f0a52a0a0">alpaka::host::detail::StreamHost&lt; TDev &gt;</a>
+</li>
 <li>m_iDevice
-: <a class="el" href="classalpaka_1_1cuda_1_1detail_1_1DevCuda.html#a8cead17cee2d49148d055fcea17d7272">alpaka::cuda::detail::DevCuda</a>
+: <a class="el" href="classalpaka_1_1accs_1_1cuda_1_1detail_1_1DevCuda.html#a440fe50c2d0778d2dc1c7bd147d1f85c">alpaka::accs::cuda::detail::DevCuda</a>
 </li>
 <li>m_pMem
 : <a class="el" href="classalpaka_1_1mem_1_1BufPlainPtrWrapper.html#a6025d54d1b92a31eb2af839f2eb9178e">alpaka::mem::BufPlainPtrWrapper&lt; TSpace, TElem, TDim &gt;</a>
@@ -160,14 +168,17 @@ $(document).ready(function(){initNavTree('functions_m.html','');});
 : <a class="el" href="structalpaka_1_1dev_1_1DevProps.html#a0d28d077222478492c7361cf0ea7336f">alpaka::dev::DevProps</a>
 </li>
 <li>m_spCudaEvent
-: <a class="el" href="classalpaka_1_1cuda_1_1detail_1_1EventCuda.html#aed7829b2ff2d8d35e49691ce06ecc912">alpaka::cuda::detail::EventCuda</a>
+: <a class="el" href="classalpaka_1_1accs_1_1cuda_1_1detail_1_1EventCuda.html#a01dac8dff51523467cd2ef556eac3f73">alpaka::accs::cuda::detail::EventCuda</a>
 </li>
 <li>m_spCudaStream
-: <a class="el" href="classalpaka_1_1cuda_1_1detail_1_1StreamCuda.html#a7677b7e3729a89d1412ea4044c4dc44d">alpaka::cuda::detail::StreamCuda</a>
+: <a class="el" href="classalpaka_1_1accs_1_1cuda_1_1detail_1_1StreamCuda.html#a6817c3e07e859a49ef0cc7bcdbcd508a">alpaka::accs::cuda::detail::StreamCuda</a>
 </li>
 <li>m_spMem
-: <a class="el" href="classalpaka_1_1cuda_1_1detail_1_1BufCuda.html#a18e0b804632e55d9fcd096311730f940">alpaka::cuda::detail::BufCuda&lt; TElem, TDim &gt;</a>
-, <a class="el" href="classalpaka_1_1host_1_1detail_1_1BufHost.html#addf080e501d80237694a022250aace07">alpaka::host::detail::BufHost&lt; TElem, TDim &gt;</a>
+: <a class="el" href="classalpaka_1_1accs_1_1cuda_1_1detail_1_1BufCuda.html#a72a770209b78f9a9c603b71fc92161cd">alpaka::accs::cuda::detail::BufCuda&lt; TElem, TDim &gt;</a>
+, <a class="el" href="classalpaka_1_1host_1_1detail_1_1BufHost.html#adaf3d30149abd2ecdeb7cdcb84c96964">alpaka::host::detail::BufHost&lt; TDev, TElem, TDim &gt;</a>
+</li>
+<li>m_Stream
+: <a class="el" href="classalpaka_1_1accs_1_1cuda_1_1detail_1_1KernelExecCuda.html#a0ee806d79fb1f3cffafe617354eec0b3">alpaka::accs::cuda::detail::KernelExecCuda</a>
 </li>
 <li>m_uiBlockThreadsCountMax
 : <a class="el" href="structalpaka_1_1dev_1_1DevProps.html#a568594f8c9d386c9744b1d9698f0e788">alpaka::dev::DevProps</a>
@@ -179,8 +190,8 @@ $(document).ready(function(){initNavTree('functions_m.html','');});
 : <a class="el" href="structalpaka_1_1dev_1_1DevProps.html#a69a34e89c3b64f34c0684948ca380413">alpaka::dev::DevProps</a>
 </li>
 <li>m_uiPitchBytes
-: <a class="el" href="classalpaka_1_1cuda_1_1detail_1_1BufCuda.html#a83270cfa0992af0b899553501a9da6d4">alpaka::cuda::detail::BufCuda&lt; TElem, TDim &gt;</a>
-, <a class="el" href="classalpaka_1_1host_1_1detail_1_1BufHost.html#a48c638722fdc8b5fcb3312e0fd23d263">alpaka::host::detail::BufHost&lt; TElem, TDim &gt;</a>
+: <a class="el" href="classalpaka_1_1accs_1_1cuda_1_1detail_1_1BufCuda.html#a385f7efd2bca5404d7a424bcaf265c38">alpaka::accs::cuda::detail::BufCuda&lt; TElem, TDim &gt;</a>
+, <a class="el" href="classalpaka_1_1host_1_1detail_1_1BufHost.html#a29639df6e42aac409675427bc361c974">alpaka::host::detail::BufHost&lt; TDev, TElem, TDim &gt;</a>
 , <a class="el" href="classalpaka_1_1mem_1_1BufPlainPtrWrapper.html#a263cf0b5336292c661d935edbefcc63c">alpaka::mem::BufPlainPtrWrapper&lt; TSpace, TElem, TDim &gt;</a>
 </li>
 <li>m_v3uiBlockThreadExtents
@@ -196,8 +207,8 @@ $(document).ready(function(){initNavTree('functions_m.html','');});
 : <a class="el" href="structalpaka_1_1dev_1_1DevProps.html#aac5b3b28d013227c390e94c00657d9dd">alpaka::dev::DevProps</a>
 </li>
 <li>m_vExtentsElements
-: <a class="el" href="classalpaka_1_1cuda_1_1detail_1_1BufCuda.html#af26d5ba458c70cfcf4dcc4743cacfe34">alpaka::cuda::detail::BufCuda&lt; TElem, TDim &gt;</a>
-, <a class="el" href="classalpaka_1_1host_1_1detail_1_1BufHost.html#ab90e005b450c6b92d5bc945ca6a9ab6d">alpaka::host::detail::BufHost&lt; TElem, TDim &gt;</a>
+: <a class="el" href="classalpaka_1_1accs_1_1cuda_1_1detail_1_1BufCuda.html#a2acfb59d6fb954fb48ddbe445c06fa4a">alpaka::accs::cuda::detail::BufCuda&lt; TElem, TDim &gt;</a>
+, <a class="el" href="classalpaka_1_1host_1_1detail_1_1BufHost.html#a7b5665f0af9671bf4645fbb65902fb42">alpaka::host::detail::BufHost&lt; TDev, TElem, TDim &gt;</a>
 , <a class="el" href="classalpaka_1_1mem_1_1BufPlainPtrWrapper.html#a175305171306b8e64cb744029968f110">alpaka::mem::BufPlainPtrWrapper&lt; TSpace, TElem, TDim &gt;</a>
 , <a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html#af35f6bdc125a43eabb023eb07ff19fa0">alpaka::mem::detail::View&lt; TBuf &gt;</a>
 </li>
@@ -205,20 +216,25 @@ $(document).ready(function(){initNavTree('functions_m.html','');});
 : <a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html#ab6d5b98ab3adb2288a41ba83c7853a64">alpaka::mem::detail::View&lt; TBuf &gt;</a>
 </li>
 <li>mapIdx()
-: <a class="el" href="structalpaka_1_1detail_1_1MapIdx_3_012u_00_011u_01_4.html#a80d8cf9a67588255f03eb19d1cf4c5ef">alpaka::detail::MapIdx&lt; 2u, 1u &gt;</a>
-, <a class="el" href="structalpaka_1_1detail_1_1MapIdx_3_013u_00_011u_01_4.html#a5dd0164da96464a99c6042a61568c047">alpaka::detail::MapIdx&lt; 3u, 1u &gt;</a>
+: <a class="el" href="structalpaka_1_1detail_1_1MapIdx_3_012u_00_011u_01_4.html#a60feebd5dac4ef3f93adaa61e42a947a">alpaka::detail::MapIdx&lt; 2u, 1u &gt;</a>
+, <a class="el" href="structalpaka_1_1detail_1_1MapIdx_3_013u_00_011u_01_4.html#a0b7c2eea2a8273a7f5dce183f25ee3dc">alpaka::detail::MapIdx&lt; 3u, 1u &gt;</a>
 </li>
 <li>memCopyCuda()
-: <a class="el" href="structalpaka_1_1cuda_1_1detail_1_1MemCopyCuda_3_01alpaka_1_1dim_1_1Dim3_01_4.html#a6e7ba79613a48449107beb49b436d101">alpaka::cuda::detail::MemCopyCuda&lt; alpaka::dim::Dim3 &gt;</a>
-, <a class="el" href="structalpaka_1_1cuda_1_1detail_1_1MemCopyCuda_3_01dim_1_1Dim1_01_4.html#a3a1ff4487cfa526c700554111cf0385c">alpaka::cuda::detail::MemCopyCuda&lt; dim::Dim1 &gt;</a>
-, <a class="el" href="structalpaka_1_1cuda_1_1detail_1_1MemCopyCuda_3_01dim_1_1Dim2_01_4.html#a33612650e6406985443a8a38edf42fcd">alpaka::cuda::detail::MemCopyCuda&lt; dim::Dim2 &gt;</a>
+: <a class="el" href="structalpaka_1_1accs_1_1cuda_1_1detail_1_1MemCopyCuda_3_01alpaka_1_1dim_1_1Dim3_01_4.html#a10ad660a81e0e903ec1504d7aecd1a05">alpaka::accs::cuda::detail::MemCopyCuda&lt; alpaka::dim::Dim3 &gt;</a>
+, <a class="el" href="structalpaka_1_1accs_1_1cuda_1_1detail_1_1MemCopyCuda_3_01dim_1_1Dim1_01_4.html#a02da1caf317f94e5977e4423bb5c1832">alpaka::accs::cuda::detail::MemCopyCuda&lt; dim::Dim1 &gt;</a>
+, <a class="el" href="structalpaka_1_1accs_1_1cuda_1_1detail_1_1MemCopyCuda_3_01dim_1_1Dim2_01_4.html#a6fb95df89c94789646e4a43949c82a96">alpaka::accs::cuda::detail::MemCopyCuda&lt; dim::Dim2 &gt;</a>
+</li>
+<li>memCopyCudaPeer()
+: <a class="el" href="structalpaka_1_1accs_1_1cuda_1_1detail_1_1MemCopyCudaPeer_3_01dim_1_1Dim1_01_4.html#a40c83285c6652fe803a499481cc7091b">alpaka::accs::cuda::detail::MemCopyCudaPeer&lt; dim::Dim1 &gt;</a>
+, <a class="el" href="structalpaka_1_1accs_1_1cuda_1_1detail_1_1MemCopyCudaPeer_3_01dim_1_1Dim2_01_4.html#abb71db374e3438b54a4cc8f89ec92c34">alpaka::accs::cuda::detail::MemCopyCudaPeer&lt; dim::Dim2 &gt;</a>
+, <a class="el" href="structalpaka_1_1accs_1_1cuda_1_1detail_1_1MemCopyCudaPeer_3_01dim_1_1Dim3_01_4.html#a5288e73e1b133bcfe163ec4eb9cc6d91">alpaka::accs::cuda::detail::MemCopyCudaPeer&lt; dim::Dim3 &gt;</a>
 </li>
 <li>MemSpace
-: <a class="el" href="classalpaka_1_1cuda_1_1detail_1_1AccCuda.html#ae7142d918376f74f094d0ef134f3bb05">alpaka::cuda::detail::AccCuda</a>
-, <a class="el" href="classalpaka_1_1fibers_1_1detail_1_1AccFibers.html#ad3b0a25514ec631cc9e886dee7b11ec9">alpaka::fibers::detail::AccFibers</a>
-, <a class="el" href="classalpaka_1_1openmp_1_1detail_1_1AccOpenMp.html#a4efb0af4d44f872faaa25f7fcfe64605">alpaka::openmp::detail::AccOpenMp</a>
-, <a class="el" href="classalpaka_1_1serial_1_1detail_1_1AccSerial.html#a4c4ba0fb9d917e1c4e409a4637f326e2">alpaka::serial::detail::AccSerial</a>
-, <a class="el" href="classalpaka_1_1threads_1_1detail_1_1AccThreads.html#ae11e4193c527b0ebdb012b7edefd6d89">alpaka::threads::detail::AccThreads</a>
+: <a class="el" href="classalpaka_1_1accs_1_1cuda_1_1detail_1_1AccCuda.html#a57d27d41fe2e2cc731df2b5f1dcc3943">alpaka::accs::cuda::detail::AccCuda</a>
+, <a class="el" href="classalpaka_1_1accs_1_1fibers_1_1detail_1_1AccFibers.html#ac6e28e7fb874c282ba4a613e3d1b79db">alpaka::accs::fibers::detail::AccFibers</a>
+, <a class="el" href="classalpaka_1_1accs_1_1omp_1_1omp2_1_1detail_1_1AccOmp2.html#a93192dc1ab21e8918c2d7a100cc701c9">alpaka::accs::omp::omp2::detail::AccOmp2</a>
+, <a class="el" href="classalpaka_1_1accs_1_1serial_1_1detail_1_1AccSerial.html#a3575273bc19f92b1e71eeec0f664da94">alpaka::accs::serial::detail::AccSerial</a>
+, <a class="el" href="classalpaka_1_1accs_1_1threads_1_1detail_1_1AccThreads.html#a32bb403af2d6f8ded75ea8d4ffedf5ac">alpaka::accs::threads::detail::AccThreads</a>
 </li>
 </ul>
 </div><!-- contents -->
@@ -226,7 +242,7 @@ $(document).ready(function(){initNavTree('functions_m.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Mar 6 2015 23:52:43 for alpaka by
+    <li class="footer">Generated on Tue Apr 7 2015 09:20:14 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

@@ -1,4 +1,0 @@
-var structalpaka_1_1traits_1_1extent_1_1GetDepth_3_01host_1_1detail_1_1BufHost_3_01TElem_00_01TDim_06598c5574994e647ae401b6b9a2d1860 =
-[
-    [ "getDepth", "structalpaka_1_1traits_1_1extent_1_1GetDepth_3_01host_1_1detail_1_1BufHost_3_01TElem_00_01TDim_06598c5574994e647ae401b6b9a2d1860.html#a2929f7d4b1f9254f54aaa18e88389b8a", null ]
-];

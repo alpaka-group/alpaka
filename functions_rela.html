@@ -117,38 +117,35 @@ $(document).ready(function(){initNavTree('functions_rela.html','');});
 
 <div class="contents">
 &#160;<ul>
-<li>::alpaka::cuda::detail::KernelExecutorCuda
-: <a class="el" href="classalpaka_1_1cuda_1_1detail_1_1AccCuda.html#a7e33fb880c82442ec86ab135bfc065e4">alpaka::cuda::detail::AccCuda</a>
+<li>::alpaka::accs::fibers::detail::KernelExecFibers
+: <a class="el" href="classalpaka_1_1accs_1_1fibers_1_1detail_1_1AccFibers.html#aed05ada83abb0817843cca275bb9edfd">alpaka::accs::fibers::detail::AccFibers</a>
 </li>
-<li>::alpaka::fibers::detail::KernelExecutorFibers
-: <a class="el" href="classalpaka_1_1fibers_1_1detail_1_1AccFibers.html#a733355a6b0426e8291a0af85e9e56f80">alpaka::fibers::detail::AccFibers</a>
+<li>::alpaka::accs::omp::omp2::detail::KernelExecOmp2
+: <a class="el" href="classalpaka_1_1accs_1_1omp_1_1omp2_1_1detail_1_1AccOmp2.html#ab305b847d01a016f66b06bccd46b9f72">alpaka::accs::omp::omp2::detail::AccOmp2</a>
 </li>
-<li>::alpaka::openmp::detail::KernelExecutorOpenMp
-: <a class="el" href="classalpaka_1_1openmp_1_1detail_1_1AccOpenMp.html#afcae0c000961f53dd82acaff46d58e79">alpaka::openmp::detail::AccOpenMp</a>
+<li>::alpaka::accs::serial::detail::KernelExecSerial
+: <a class="el" href="classalpaka_1_1accs_1_1serial_1_1detail_1_1AccSerial.html#a249d6084aca9ab380e548995d8608c13">alpaka::accs::serial::detail::AccSerial</a>
 </li>
-<li>::alpaka::serial::detail::KernelExecutorSerial
-: <a class="el" href="classalpaka_1_1serial_1_1detail_1_1AccSerial.html#af2f3b3acfd7d4d9ee75aba7401d1ec39">alpaka::serial::detail::AccSerial</a>
-</li>
-<li>::alpaka::threads::detail::KernelExecutorThreads
-: <a class="el" href="classalpaka_1_1threads_1_1detail_1_1AccThreads.html#ac247b1deb29e3c78532c60805d28cbe9">alpaka::threads::detail::AccThreads</a>
+<li>::alpaka::accs::threads::detail::KernelExecThreads
+: <a class="el" href="classalpaka_1_1accs_1_1threads_1_1detail_1_1AccThreads.html#ad8c0f30d68613d3f22089d5b6b719e36">alpaka::accs::threads::detail::AccThreads</a>
 </li>
 <li>alpaka::traits::atomic::AtomicOp
-: <a class="el" href="classalpaka_1_1threads_1_1detail_1_1AtomicThreads.html#abe67d5723bd2009cdca7659d696719e8">alpaka::threads::detail::AtomicThreads</a>
+: <a class="el" href="classalpaka_1_1accs_1_1threads_1_1detail_1_1AtomicThreads.html#abe67d5723bd2009cdca7659d696719e8">alpaka::accs::threads::detail::AtomicThreads</a>
 </li>
 <li>DevManCuda
-: <a class="el" href="classalpaka_1_1cuda_1_1detail_1_1DevCuda.html#a692bf768825fc65880c4ca07a7fdbd0d">alpaka::cuda::detail::DevCuda</a>
+: <a class="el" href="classalpaka_1_1accs_1_1cuda_1_1detail_1_1DevCuda.html#a692bf768825fc65880c4ca07a7fdbd0d">alpaka::accs::cuda::detail::DevCuda</a>
 </li>
 <li>DevManFibers
-: <a class="el" href="classalpaka_1_1fibers_1_1detail_1_1DevFibers.html#a521a15a4336ff461676583206593f37f">alpaka::fibers::detail::DevFibers</a>
+: <a class="el" href="classalpaka_1_1accs_1_1fibers_1_1detail_1_1DevFibers.html#a521a15a4336ff461676583206593f37f">alpaka::accs::fibers::detail::DevFibers</a>
 </li>
-<li>DevManOpenMp
-: <a class="el" href="classalpaka_1_1openmp_1_1detail_1_1DevOpenMp.html#aaf1a399472ec640422bd1d64c6bdbb0f">alpaka::openmp::detail::DevOpenMp</a>
+<li>DevManOmp2
+: <a class="el" href="classalpaka_1_1accs_1_1omp_1_1omp2_1_1detail_1_1DevOmp2.html#a6f16fe345c577df350dc08e45dbc8863">alpaka::accs::omp::omp2::detail::DevOmp2</a>
 </li>
 <li>DevManSerial
-: <a class="el" href="classalpaka_1_1serial_1_1detail_1_1DevSerial.html#a52ed645655458adc4ef79a933a2bdcc5">alpaka::serial::detail::DevSerial</a>
+: <a class="el" href="classalpaka_1_1accs_1_1serial_1_1detail_1_1DevSerial.html#a52ed645655458adc4ef79a933a2bdcc5">alpaka::accs::serial::detail::DevSerial</a>
 </li>
 <li>DevManThreads
-: <a class="el" href="classalpaka_1_1threads_1_1detail_1_1DevThreads.html#a3647317c0f90b315ac422eb23bdee00a">alpaka::threads::detail::DevThreads</a>
+: <a class="el" href="classalpaka_1_1accs_1_1threads_1_1detail_1_1DevThreads.html#a3647317c0f90b315ac422eb23bdee00a">alpaka::accs::threads::detail::DevThreads</a>
 </li>
 </ul>
 </div><!-- contents -->
@@ -156,7 +153,7 @@ $(document).ready(function(){initNavTree('functions_rela.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Mar 6 2015 23:52:43 for alpaka by
+    <li class="footer">Generated on Tue Apr 7 2015 09:20:14 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

@@ -1,9 +1,12 @@
 var NAVTREE =
 [
   [ "alpaka", "index.html", [
-    [ "Distinction and Comparison", "md_C_1_dev_alpaka_doc_Comparison.html", null ],
-    [ "Rationale", "md_C_1_dev_alpaka_doc_Rationale.html", null ],
+    [ "**alpaka** - Abstraction Library for Parallel Kernel Acceleration", "md_C_1_dev_alpaka_doc_Abstract.html", null ],
+    [ "Distinction", "md_C_1_dev_alpaka_doc_Distinction.html", null ],
+    [ "Hardware", "md_C_1_dev_alpaka_doc_Hardware.html", null ],
+    [ "Abstraction", "md_C_1_dev_alpaka_doc_Abstraction.html", null ],
     [ "Threading", "md_C_1_dev_alpaka_doc_Threading.html", null ],
+    [ "Rationale", "md_C_1_dev_alpaka_doc_Rationale.html", null ],
     [ "Namespaces", null, [
       [ "Namespace List", "namespaces.html", "namespaces" ],
       [ "Namespace Members", "namespacemembers.html", [
@@ -36,13 +39,13 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"AccCudaFwd_8hpp.html",
-"classalpaka_1_1cuda_1_1detail_1_1KernelExecutorCuda.html#ac05c25370c1be3e522f00a9c55d820d8",
-"classalpaka_1_1serial_1_1detail_1_1DevManSerial.html#aa83943a3d7f416950967e232184ec60d",
-"namespacealpaka_1_1acc_1_1detail.html",
-"structalpaka_1_1traits_1_1atomic_1_1AtomicOp_3_01cuda_1_1detail_1_1AtomicCuda_00_01ops_1_1Add_00_01int_01_4.html#ac43b28cc7aecbdac29665bb086014173",
-"structalpaka_1_1traits_1_1idx_1_1GetIdx_3_01threads_1_1detail_1_1IdxThreads_00_01origin_1_1Block09f69052e96047c1bf07f77095ca8b81.html",
-"structalpaka_1_1traits_1_1workdiv_1_1GetWorkDiv_3_01TWorkDiv_00_01origin_1_1Grid_00_01unit_1_1Theb9071f251b3464f960328f9b5e39f10.html#afc89b870d612581e5010ad7be09309ee"
+"AccCuda_8hpp.html",
+"classalpaka_1_1Vec.html#adb3cd5296b01b264b8d68e75bffccac7",
+"classalpaka_1_1accs_1_1threads_1_1detail_1_1AtomicThreads.html#a18e0544db831bd81771b0085d95444f1",
+"namespacealpaka_1_1accs_1_1serial.html",
+"structalpaka_1_1traits_1_1atomic_1_1AtomicOp_3_01accs_1_1cuda_1_1detail_1_1AtomicCuda_00_01ops_1_1Max_00_01int_01_4.html",
+"structalpaka_1_1traits_1_1idx_1_1GetIdx_3_01accs_1_1cuda_1_1detail_1_1IdxCuda_00_01origin_1_1Blo127952bc02777ed2462d1f8b23e8ef77.html#a9cdd2da4740776cadb2bcedfe50cffda",
+"structalpaka_1_1traits_1_1stream_1_1StreamType_3_01accs_1_1serial_1_1detail_1_1DevSerial_01_4.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

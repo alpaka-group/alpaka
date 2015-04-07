@@ -132,7 +132,7 @@ $(document).ready(function(){initNavTree('IdxMapping_8hpp_source.html','');});
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="core_2Common_8hpp.html">alpaka/core/Common.hpp</a>&gt;</span>   <span class="comment">// ALPAKA_FCT_HOST</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="core_2Common_8hpp.html">alpaka/core/Common.hpp</a>&gt;</span>   <span class="comment">// ALPAKA_FCT_HOST_ACC</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Vec_8hpp.html">alpaka/core/Vec.hpp</a>&gt;</span>      <span class="comment">// Vec</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka.html">alpaka</a></div>
@@ -145,7 +145,7 @@ $(document).ready(function(){initNavTree('IdxMapping_8hpp_source.html','');});
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">        //! \tparam TuiDim dimension of the position to map to.</span></div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment"></span>        <span class="comment">//#############################################################################</span></div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <span class="keyword">template</span>&lt;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            <a class="code" href="namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5">UInt</a> TuiIdxDimDst, </div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            <a class="code" href="namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5">UInt</a> TuiIdxDimDst,</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            <a class="code" href="namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5">UInt</a> TuiIdxDimSrc&gt;</div>
 <div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="structalpaka_1_1detail_1_1MapIdx.html">   39</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1detail_1_1MapIdx.html">MapIdx</a>;</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="comment">//#############################################################################</span><span class="comment"></span></div>
@@ -153,7 +153,7 @@ $(document).ready(function(){initNavTree('IdxMapping_8hpp_source.html','');});
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment"></span>        <span class="comment">//#############################################################################</span></div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="keyword">template</span>&lt;&gt;</div>
 <div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="structalpaka_1_1detail_1_1MapIdx_3_013u_00_011u_01_4.html">   44</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1detail_1_1MapIdx.html">MapIdx</a>&lt;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            3u, </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            3u,</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            1u&gt;</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        {</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <span class="comment">//-----------------------------------------------------------------------------</span></div>
@@ -164,88 +164,95 @@ $(document).ready(function(){initNavTree('IdxMapping_8hpp_source.html','');});
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            <span class="comment">//-----------------------------------------------------------------------------</span></div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            <span class="keyword">template</span>&lt;</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                <span class="keyword">typename</span> TElem&gt;</div>
-<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="structalpaka_1_1detail_1_1MapIdx_3_013u_00_011u_01_4.html#a5dd0164da96464a99c6042a61568c047">   56</a></span>&#160;            <a class="code" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> <span class="keyword">static</span> <a class="code" href="classalpaka_1_1Vec.html">Vec&lt;3u&gt;</a> <a class="code" href="structalpaka_1_1detail_1_1MapIdx_3_013u_00_011u_01_4.html#a5dd0164da96464a99c6042a61568c047">mapIdx</a>(</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                <a class="code" href="classalpaka_1_1Vec.html">Vec&lt;1u, TElem&gt;</a> <span class="keyword">const</span> &amp; index, </div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="structalpaka_1_1detail_1_1MapIdx_3_013u_00_011u_01_4.html#a0b7c2eea2a8273a7f5dce183f25ee3dc">   56</a></span>&#160;            <a class="code" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1detail_1_1MapIdx_3_013u_00_011u_01_4.html#a0b7c2eea2a8273a7f5dce183f25ee3dc">mapIdx</a>(</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                <a class="code" href="classalpaka_1_1Vec.html">Vec&lt;1u, TElem&gt;</a> <span class="keyword">const</span> &amp; index,</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                <a class="code" href="classalpaka_1_1Vec.html">Vec&lt;2u, TElem&gt;</a> <span class="keyword">const</span> &amp; extents)</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            {</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> &amp; uiIdx(index[0]);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> uiExtentXyLin(extents.<a class="code" href="classalpaka_1_1Vec.html#a2854014b98e3ec835594afbd97d2f645">prod</a>());</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> &amp; uiExtentX(extents[0]);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                <span class="keywordflow">return</span> {</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                    uiIdx % uiExtentX,</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                    (uiIdx % uiExtentXyLin) / uiExtentX,</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                    uiIdx / uiExtentXyLin</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                };</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            }</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        };</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="comment">//#############################################################################</span><span class="comment"></span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">        //! Maps a linear index to a 2 dimensional index.</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment"></span>        <span class="comment">//#############################################################################</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="structalpaka_1_1detail_1_1MapIdx_3_012u_00_011u_01_4.html">   75</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1detail_1_1MapIdx.html">MapIdx</a>&lt;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            2u, </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            1u&gt;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        {</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            <span class="comment">// \tparam TElem Type of the index values.</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            <span class="comment">// \param index Idx to be mapped.</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            <span class="comment">// \param extents Spatial size to map the index to.</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            <span class="comment">// \return Vector of dimension TuiDimDst.</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            <span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            <span class="keyword">template</span>&lt;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                <span class="keyword">typename</span> TElem&gt;</div>
-<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="structalpaka_1_1detail_1_1MapIdx_3_012u_00_011u_01_4.html#a80d8cf9a67588255f03eb19d1cf4c5ef">   87</a></span>&#160;            <a class="code" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> <span class="keyword">static</span> <a class="code" href="classalpaka_1_1Vec.html">Vec&lt;2u&gt;</a> <a class="code" href="structalpaka_1_1detail_1_1MapIdx_3_012u_00_011u_01_4.html#a80d8cf9a67588255f03eb19d1cf4c5ef">mapIdx</a>(</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                <a class="code" href="classalpaka_1_1Vec.html">Vec&lt;1u, TElem&gt;</a> <span class="keyword">const</span> &amp; index, </div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                <a class="code" href="classalpaka_1_1Vec.html">Vec&lt;1u, TElem&gt;</a> <span class="keyword">const</span> &amp; extents)</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            {</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> &amp; uiIdx(index[0]);</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> &amp; uiExtentX(extents[0]);</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                <span class="keywordflow">return</span> {</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                    uiIdx % uiExtentX,</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                    uiIdx / uiExtentX</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                };</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            }</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        };</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    }</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="comment">//#############################################################################</span><span class="comment"></span></div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="comment">    //! Maps a N dimensional index to a N dimensional position.</span></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="comment">    //!</span></div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="comment">    //! \tparam TuiDim dimension of the position to map to.</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="comment">    //! \tparam TuiIdxDim dimension of the index vector to map from.</span></div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="comment">    //! \tparam TElem type of the elements of the index vector to map from.</span></div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="comment"></span>    <span class="comment">//#############################################################################</span></div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <span class="keyword">template</span>&lt;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        <a class="code" href="namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5">UInt</a> TuiIdxDimDst, </div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        <a class="code" href="namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5">UInt</a> TuiIdxDimSrc, </div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        <span class="keyword">typename</span> TElem&gt;</div>
-<div class="line"><a name="l00113"></a><span class="lineno"><a class="line" href="namespacealpaka.html#a6f67dbcda9fb56595005fac7e1037340">  113</a></span>&#160;    <a class="code" href="classalpaka_1_1Vec.html">Vec&lt;TuiIdxDimDst&gt;</a> <a class="code" href="namespacealpaka.html#a6f67dbcda9fb56595005fac7e1037340">mapIdx</a>(</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        <a class="code" href="classalpaka_1_1Vec.html">Vec&lt;TuiIdxDimSrc, TElem&gt;</a> <span class="keyword">const</span> &amp; index, </div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        <a class="code" href="classalpaka_1_1Vec.html">Vec&lt;TuiIdxDimDst-1u, TElem&gt;</a> <span class="keyword">const</span> &amp; extents)</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    {</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="namespacealpaka.html#a6f67dbcda9fb56595005fac7e1037340">detail::MapIdx&lt;TuiIdxDimDst, TuiIdxDimSrc&gt;::mapIdx</a>(index, extents);</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    }</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;}</div>
-<div class="ttc" id="structalpaka_1_1detail_1_1MapIdx_3_012u_00_011u_01_4_html_a80d8cf9a67588255f03eb19d1cf4c5ef"><div class="ttname"><a href="structalpaka_1_1detail_1_1MapIdx_3_012u_00_011u_01_4.html#a80d8cf9a67588255f03eb19d1cf4c5ef">alpaka::detail::MapIdx&lt; 2u, 1u &gt;::mapIdx</a></div><div class="ttdeci">static ALPAKA_FCT_HOST_ACC Vec&lt; 2u &gt; mapIdx(Vec&lt; 1u, TElem &gt; const &amp;index, Vec&lt; 1u, TElem &gt; const &amp;extents)</div><div class="ttdef"><b>Definition:</b> <a href="IdxMapping_8hpp_source.html#l00087">IdxMapping.hpp:87</a></div></div>
-<div class="ttc" id="classalpaka_1_1Vec_html"><div class="ttname"><a href="classalpaka_1_1Vec.html">alpaka::Vec&lt; 3u &gt;</a></div></div>
-<div class="ttc" id="classalpaka_1_1Vec_html_a2854014b98e3ec835594afbd97d2f645"><div class="ttname"><a href="classalpaka_1_1Vec.html#a2854014b98e3ec835594afbd97d2f645">alpaka::Vec::prod</a></div><div class="ttdeci">ALPAKA_FCT_HOST_ACC TVal prod() const </div><div class="ttdef"><b>Definition:</b> <a href="Vec_8hpp_source.html#l00300">Vec.hpp:300</a></div></div>
-<div class="ttc" id="namespacealpaka_html_aff48a11ea7d01a9b5b6b06f7c20285f5"><div class="ttname"><a href="namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5">alpaka::UInt</a></div><div class="ttdeci">std::uint32_t UInt</div><div class="ttdoc">Defines the default index type. </div><div class="ttdef"><b>Definition:</b> <a href="core_2Common_8hpp_source.html#l00091">Common.hpp:91</a></div></div>
-<div class="ttc" id="namespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">The alpaka library. </div><div class="ttdef"><b>Definition:</b> <a href="BasicDims_8hpp_source.html#l00028">BasicDims.hpp:28</a></div></div>
-<div class="ttc" id="structalpaka_1_1detail_1_1MapIdx_3_013u_00_011u_01_4_html_a5dd0164da96464a99c6042a61568c047"><div class="ttname"><a href="structalpaka_1_1detail_1_1MapIdx_3_013u_00_011u_01_4.html#a5dd0164da96464a99c6042a61568c047">alpaka::detail::MapIdx&lt; 3u, 1u &gt;::mapIdx</a></div><div class="ttdeci">static ALPAKA_FCT_HOST_ACC Vec&lt; 3u &gt; mapIdx(Vec&lt; 1u, TElem &gt; const &amp;index, Vec&lt; 2u, TElem &gt; const &amp;extents)</div><div class="ttdef"><b>Definition:</b> <a href="IdxMapping_8hpp_source.html#l00056">IdxMapping.hpp:56</a></div></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            -&gt; <a class="code" href="classalpaka_1_1Vec.html">Vec&lt;3u&gt;</a></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            {</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> &amp; uiIdx(index[0]);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> uiExtentXyLin(extents.prod());</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> &amp; uiExtentX(extents[0]);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                <span class="keywordflow">return</span> {</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                    uiIdx % uiExtentX,</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                    (uiIdx % uiExtentXyLin) / uiExtentX,</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                    uiIdx / uiExtentXyLin</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                };</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            }</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        };</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="comment">//#############################################################################</span><span class="comment"></span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment">        //! Maps a linear index to a 2 dimensional index.</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment"></span>        <span class="comment">//#############################################################################</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="structalpaka_1_1detail_1_1MapIdx_3_012u_00_011u_01_4.html">   76</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1detail_1_1MapIdx.html">MapIdx</a>&lt;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            2u,</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            1u&gt;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        {</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            <span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            <span class="comment">// \tparam TElem Type of the index values.</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            <span class="comment">// \param index Idx to be mapped.</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            <span class="comment">// \param extents Spatial size to map the index to.</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            <span class="comment">// \return Vector of dimension TuiDimDst.</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            <span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            <span class="keyword">template</span>&lt;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                <span class="keyword">typename</span> TElem&gt;</div>
+<div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="structalpaka_1_1detail_1_1MapIdx_3_012u_00_011u_01_4.html#a60feebd5dac4ef3f93adaa61e42a947a">   88</a></span>&#160;            <a class="code" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1detail_1_1MapIdx_3_012u_00_011u_01_4.html#a60feebd5dac4ef3f93adaa61e42a947a">mapIdx</a>(</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                <a class="code" href="classalpaka_1_1Vec.html">Vec&lt;1u, TElem&gt;</a> <span class="keyword">const</span> &amp; index,</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                <a class="code" href="classalpaka_1_1Vec.html">Vec&lt;1u, TElem&gt;</a> <span class="keyword">const</span> &amp; extents)</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            -&gt; <a class="code" href="classalpaka_1_1Vec.html">Vec&lt;2u&gt;</a></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            {</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> &amp; uiIdx(index[0]);</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                <span class="keyword">auto</span> <span class="keyword">const</span> &amp; uiExtentX(extents[0]);</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                <span class="keywordflow">return</span> {</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                    uiIdx % uiExtentX,</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                    uiIdx / uiExtentX</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                };</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            }</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        };</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    }</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="comment">//#############################################################################</span><span class="comment"></span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="comment">    //! Maps a N dimensional index to a N dimensional position.</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="comment">    //!</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="comment">    //! \tparam TuiDim dimension of the position to map to.</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="comment">    //! \tparam TuiIdxDim dimension of the index vector to map from.</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="comment">    //! \tparam TElem type of the elements of the index vector to map from.</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="comment"></span>    <span class="comment">//#############################################################################</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <span class="keyword">template</span>&lt;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        <a class="code" href="namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5">UInt</a> TuiIdxDimDst,</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <a class="code" href="namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5">UInt</a> TuiIdxDimSrc,</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        <span class="keyword">typename</span> TElem&gt;</div>
+<div class="line"><a name="l00115"></a><span class="lineno"><a class="line" href="namespacealpaka.html#a2aa56c0fd48e312e50a7dc33fb434e91">  115</a></span>&#160;    <a class="code" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a2aa56c0fd48e312e50a7dc33fb434e91">mapIdx</a>(</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        <a class="code" href="classalpaka_1_1Vec.html">Vec&lt;TuiIdxDimSrc, TElem&gt;</a> <span class="keyword">const</span> &amp; index,</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        <a class="code" href="classalpaka_1_1Vec.html">Vec&lt;TuiIdxDimDst-1u, TElem&gt;</a> <span class="keyword">const</span> &amp; extents)</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    -&gt; <a class="code" href="classalpaka_1_1Vec.html">Vec&lt;TuiIdxDimDst&gt;</a></div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    {</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="structalpaka_1_1detail_1_1MapIdx.html">detail::MapIdx</a>&lt;</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;            TuiIdxDimDst,</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;            TuiIdxDimSrc&gt;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        <a class="code" href="namespacealpaka.html#a2aa56c0fd48e312e50a7dc33fb434e91">::mapIdx</a>(</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;            index,</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;            extents);</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    }</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;}</div>
+<div class="ttc" id="classalpaka_1_1Vec_html"><div class="ttname"><a href="classalpaka_1_1Vec.html">alpaka::Vec</a></div><div class="ttdoc">A n-dimensional vector. </div><div class="ttdef"><b>Definition:</b> <a href="Vec_8hpp_source.html#l00050">Vec.hpp:50</a></div></div>
+<div class="ttc" id="structalpaka_1_1detail_1_1MapIdx_3_012u_00_011u_01_4_html_a60feebd5dac4ef3f93adaa61e42a947a"><div class="ttname"><a href="structalpaka_1_1detail_1_1MapIdx_3_012u_00_011u_01_4.html#a60feebd5dac4ef3f93adaa61e42a947a">alpaka::detail::MapIdx&lt; 2u, 1u &gt;::mapIdx</a></div><div class="ttdeci">static ALPAKA_FCT_HOST_ACC auto mapIdx(Vec&lt; 1u, TElem &gt; const &amp;index, Vec&lt; 1u, TElem &gt; const &amp;extents) -&gt; Vec&lt; 2u &gt;</div><div class="ttdef"><b>Definition:</b> <a href="IdxMapping_8hpp_source.html#l00088">IdxMapping.hpp:88</a></div></div>
+<div class="ttc" id="namespacealpaka_html_aff48a11ea7d01a9b5b6b06f7c20285f5"><div class="ttname"><a href="namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5">alpaka::UInt</a></div><div class="ttdeci">std::uint32_t UInt</div><div class="ttdoc">Defines the default index type. </div><div class="ttdef"><b>Definition:</b> <a href="core_2Common_8hpp_source.html#l00092">Common.hpp:92</a></div></div>
+<div class="ttc" id="namespacealpaka_html_a2aa56c0fd48e312e50a7dc33fb434e91"><div class="ttname"><a href="namespacealpaka.html#a2aa56c0fd48e312e50a7dc33fb434e91">alpaka::mapIdx</a></div><div class="ttdeci">ALPAKA_FCT_HOST_ACC auto mapIdx(Vec&lt; TuiIdxDimSrc, TElem &gt; const &amp;index, Vec&lt; TuiIdxDimDst-1u, TElem &gt; const &amp;extents) -&gt; Vec&lt; TuiIdxDimDst &gt;</div><div class="ttdoc">Maps a N dimensional index to a N dimensional position. </div><div class="ttdef"><b>Definition:</b> <a href="IdxMapping_8hpp_source.html#l00115">IdxMapping.hpp:115</a></div></div>
+<div class="ttc" id="namespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">The alpaka library. </div><div class="ttdef"><b>Definition:</b> <a href="Accs_8hpp_source.html#l00056">Accs.hpp:56</a></div></div>
+<div class="ttc" id="structalpaka_1_1detail_1_1MapIdx_3_013u_00_011u_01_4_html_a0b7c2eea2a8273a7f5dce183f25ee3dc"><div class="ttname"><a href="structalpaka_1_1detail_1_1MapIdx_3_013u_00_011u_01_4.html#a0b7c2eea2a8273a7f5dce183f25ee3dc">alpaka::detail::MapIdx&lt; 3u, 1u &gt;::mapIdx</a></div><div class="ttdeci">static ALPAKA_FCT_HOST_ACC auto mapIdx(Vec&lt; 1u, TElem &gt; const &amp;index, Vec&lt; 2u, TElem &gt; const &amp;extents) -&gt; Vec&lt; 3u &gt;</div><div class="ttdef"><b>Definition:</b> <a href="IdxMapping_8hpp_source.html#l00056">IdxMapping.hpp:56</a></div></div>
 <div class="ttc" id="Vec_8hpp_html"><div class="ttname"><a href="Vec_8hpp.html">Vec.hpp</a></div></div>
-<div class="ttc" id="namespacealpaka_html_a6f67dbcda9fb56595005fac7e1037340"><div class="ttname"><a href="namespacealpaka.html#a6f67dbcda9fb56595005fac7e1037340">alpaka::mapIdx</a></div><div class="ttdeci">Vec&lt; TuiIdxDimDst &gt; mapIdx(Vec&lt; TuiIdxDimSrc, TElem &gt; const &amp;index, Vec&lt; TuiIdxDimDst-1u, TElem &gt; const &amp;extents)</div><div class="ttdoc">Maps a N dimensional index to a N dimensional position. </div><div class="ttdef"><b>Definition:</b> <a href="IdxMapping_8hpp_source.html#l00113">IdxMapping.hpp:113</a></div></div>
 <div class="ttc" id="core_2Common_8hpp_html"><div class="ttname"><a href="core_2Common_8hpp.html">Common.hpp</a></div></div>
 <div class="ttc" id="structalpaka_1_1detail_1_1MapIdx_html"><div class="ttname"><a href="structalpaka_1_1detail_1_1MapIdx.html">alpaka::detail::MapIdx</a></div><div class="ttdoc">Maps a linear index to a N dimensional index. </div><div class="ttdef"><b>Definition:</b> <a href="IdxMapping_8hpp_source.html#l00039">IdxMapping.hpp:39</a></div></div>
-<div class="ttc" id="core_2Common_8hpp_html_a58b8d1373dd28be3a64937d6cb48b7c0"><div class="ttname"><a href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a></div><div class="ttdeci">#define ALPAKA_FCT_HOST_ACC</div><div class="ttdef"><b>Definition:</b> <a href="core_2Common_8hpp_source.html#l00074">Common.hpp:74</a></div></div>
+<div class="ttc" id="core_2Common_8hpp_html_a58b8d1373dd28be3a64937d6cb48b7c0"><div class="ttname"><a href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a></div><div class="ttdeci">#define ALPAKA_FCT_HOST_ACC</div><div class="ttdef"><b>Definition:</b> <a href="core_2Common_8hpp_source.html#l00075">Common.hpp:75</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="IdxMapping_8hpp.html">IdxMapping.hpp</a></li>
-    <li class="footer">Generated on Fri Mar 6 2015 23:52:32 for alpaka by
+    <li class="footer">Generated on Tue Apr 7 2015 09:20:05 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

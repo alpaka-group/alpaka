@@ -1,4 +1,4 @@
 var structalpaka_1_1traits_1_1offset_1_1GetOffsetX_3_01alpaka_1_1Vec_3_01TuiDim_00_01TVal_01_4_00_0134890870534584db922ab770318a5e12 =
 [
-    [ "getOffsetX", "structalpaka_1_1traits_1_1offset_1_1GetOffsetX_3_01alpaka_1_1Vec_3_01TuiDim_00_01TVal_01_4_00_0134890870534584db922ab770318a5e12.html#ac53ee5e70c063c41498afa041bc07efa", null ]
+    [ "getOffsetX", "structalpaka_1_1traits_1_1offset_1_1GetOffsetX_3_01alpaka_1_1Vec_3_01TuiDim_00_01TVal_01_4_00_0134890870534584db922ab770318a5e12.html#abaafa9d0541ff8f3ff35ae856ad59f1d", null ]
 ];

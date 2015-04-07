@@ -118,8 +118,8 @@ $(document).ready(function(){initNavTree('Vec_8hpp.html','');});
 <code>#include &lt;<a class="el" href="BasicDims_8hpp_source.html">alpaka/core/BasicDims.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="IntegerSequence_8hpp_source.html">alpaka/core/IntegerSequence.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Dim_8hpp_source.html">alpaka/traits/Dim.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="Extents_8hpp_source.html">alpaka/traits/Extents.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="Offsets_8hpp_source.html">alpaka/traits/Offsets.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="Extent_8hpp_source.html">alpaka/traits/Extent.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="Offset_8hpp_source.html">alpaka/traits/Offset.hpp</a>&gt;</code><br />
 <code>#include &lt;boost/mpl/and.hpp&gt;</code><br />
 <code>#include &lt;boost/predef.h&gt;</code><br />
 <code>#include &lt;cstdint&gt;</code><br />
@@ -207,16 +207,16 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a34251387916741c92e32af9081e95fdb"><td class="memTemplParams" colspan="2">template&lt;UInt TuiDim, typename TVal &gt; </td></tr>
-<tr class="memitem:a34251387916741c92e32af9081e95fdb"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> Vec&lt; TuiDim, TVal &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a34251387916741c92e32af9081e95fdb">alpaka::operator*</a> (Vec&lt; TuiDim, TVal &gt; const &amp;p, Vec&lt; TuiDim, TVal &gt; const &amp;q)</td></tr>
-<tr class="separator:a34251387916741c92e32af9081e95fdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98d9446f6b1781b8c567a1b3b0b37a0d"><td class="memTemplParams" colspan="2">template&lt;UInt TuiDim, typename TVal &gt; </td></tr>
-<tr class="memitem:a98d9446f6b1781b8c567a1b3b0b37a0d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> Vec&lt; TuiDim, TVal &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a98d9446f6b1781b8c567a1b3b0b37a0d">alpaka::operator+</a> (Vec&lt; TuiDim, TVal &gt; const &amp;p, Vec&lt; TuiDim, TVal &gt; const &amp;q)</td></tr>
-<tr class="separator:a98d9446f6b1781b8c567a1b3b0b37a0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d86633643fd4aae83e00c702c677841"><td class="memTemplParams" colspan="2">template&lt;UInt TuiDim, typename TVal &gt; </td></tr>
-<tr class="memitem:a8d86633643fd4aae83e00c702c677841"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a8d86633643fd4aae83e00c702c677841">alpaka::operator&lt;&lt;</a> (std::ostream &amp;os, Vec&lt; TuiDim, TVal &gt; const &amp;v)</td></tr>
-<tr class="memdesc:a8d86633643fd4aae83e00c702c677841"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stream out operator.  <a href="#a8d86633643fd4aae83e00c702c677841">More...</a><br /></td></tr>
-<tr class="separator:a8d86633643fd4aae83e00c702c677841"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cd8cae675d0e0012d968ea9e6b04cd5"><td class="memTemplParams" colspan="2">template&lt;UInt TuiDim, typename TVal &gt; </td></tr>
+<tr class="memitem:a7cd8cae675d0e0012d968ea9e6b04cd5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a7cd8cae675d0e0012d968ea9e6b04cd5">alpaka::operator*</a> (Vec&lt; TuiDim, TVal &gt; const &amp;p, Vec&lt; TuiDim, TVal &gt; const &amp;q) -&gt; Vec&lt; TuiDim, TVal &gt;</td></tr>
+<tr class="separator:a7cd8cae675d0e0012d968ea9e6b04cd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab91bb130f54045cf6b55a29b74281370"><td class="memTemplParams" colspan="2">template&lt;UInt TuiDim, typename TVal &gt; </td></tr>
+<tr class="memitem:ab91bb130f54045cf6b55a29b74281370"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#ab91bb130f54045cf6b55a29b74281370">alpaka::operator+</a> (Vec&lt; TuiDim, TVal &gt; const &amp;p, Vec&lt; TuiDim, TVal &gt; const &amp;q) -&gt; Vec&lt; TuiDim, TVal &gt;</td></tr>
+<tr class="separator:ab91bb130f54045cf6b55a29b74281370"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9dbc493c840de7ff14be998586b77703"><td class="memTemplParams" colspan="2">template&lt;UInt TuiDim, typename TVal &gt; </td></tr>
+<tr class="memitem:a9dbc493c840de7ff14be998586b77703"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a9dbc493c840de7ff14be998586b77703">alpaka::operator&lt;&lt;</a> (std::ostream &amp;os, Vec&lt; TuiDim, TVal &gt; const &amp;v) -&gt; std::ostream &amp;</td></tr>
+<tr class="memdesc:a9dbc493c840de7ff14be998586b77703"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stream out operator.  <a href="#a9dbc493c840de7ff14be998586b77703">More...</a><br /></td></tr>
+<tr class="separator:a9dbc493c840de7ff14be998586b77703"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Copyright 2014-2015 Benjamin Worpitz</p>
@@ -232,7 +232,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="Vec_8hpp.html">Vec.hpp</a></li>
-    <li class="footer">Generated on Fri Mar 6 2015 23:52:33 for alpaka by
+    <li class="footer">Generated on Tue Apr 7 2015 09:20:06 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

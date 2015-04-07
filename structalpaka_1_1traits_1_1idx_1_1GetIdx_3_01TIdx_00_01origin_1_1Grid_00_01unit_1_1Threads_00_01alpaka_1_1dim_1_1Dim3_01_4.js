@@ -1,4 +1,4 @@
 var structalpaka_1_1traits_1_1idx_1_1GetIdx_3_01TIdx_00_01origin_1_1Grid_00_01unit_1_1Threads_00_01alpaka_1_1dim_1_1Dim3_01_4 =
 [
-    [ "getIdx", "structalpaka_1_1traits_1_1idx_1_1GetIdx_3_01TIdx_00_01origin_1_1Grid_00_01unit_1_1Threads_00_01alpaka_1_1dim_1_1Dim3_01_4.html#af87a6d3fe34edb8fab0a3fd3e4902f82", null ]
+    [ "getIdx", "structalpaka_1_1traits_1_1idx_1_1GetIdx_3_01TIdx_00_01origin_1_1Grid_00_01unit_1_1Threads_00_01alpaka_1_1dim_1_1Dim3_01_4.html#aadea7d5585c4ac7f444fbb6c40e22050", null ]
 ];

@@ -132,86 +132,93 @@ $(document).ready(function(){initNavTree('Acc_8hpp_source.html','');});
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span>   <span class="comment">// std::string</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;typeinfo&gt;</span> <span class="comment">// typeid</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span>                   <span class="comment">// std::string</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;typeinfo&gt;</span>                 <span class="comment">// typeid</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka.html">alpaka</a></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;{</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">    //! The traits.</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment"></span>    <span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keyword">namespace </span>traits</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    {</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">        //! The accelerator traits.</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment"></span>        <span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <span class="keyword">namespace </span>acc</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        {</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            <span class="comment">//#############################################################################</span><span class="comment"></span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">            //! The accelerator type trait.</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment"></span>            <span class="comment">//#############################################################################</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            <span class="keyword">template</span>&lt;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                <span class="keyword">typename</span> T,</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                <span class="keyword">typename</span> TSfinae = <span class="keywordtype">void</span>&gt;</div>
-<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="structalpaka_1_1traits_1_1acc_1_1AccType.html">   45</a></span>&#160;            <span class="keyword">struct </span><a class="code" href="structalpaka_1_1traits_1_1acc_1_1AccType.html">AccType</a>;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            <span class="comment">//#############################################################################</span><span class="comment"></span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">            //! The accelerator name trait.</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">            //!</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">            //! The default implementation returns the mangled class name.</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment"></span>            <span class="comment">//#############################################################################</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            <span class="keyword">template</span>&lt;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                <span class="keyword">typename</span> TAcc,</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                <span class="keyword">typename</span> TSfinae = <span class="keywordtype">void</span>&gt;</div>
-<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="structalpaka_1_1traits_1_1acc_1_1GetAccName.html">   55</a></span>&#160;            <span class="keyword">struct </span><a class="code" href="structalpaka_1_1traits_1_1acc_1_1GetAccName.html">GetAccName</a></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            {</div>
-<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="structalpaka_1_1traits_1_1acc_1_1GetAccName.html#ae1fabdbe1ee4734843b4a19a88a4f2b9">   57</a></span>&#160;                <a class="code" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> <span class="keyword">static</span> std::string <a class="code" href="structalpaka_1_1traits_1_1acc_1_1GetAccName.html#ae1fabdbe1ee4734843b4a19a88a4f2b9">getAccName</a>()</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                {</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                    <span class="keywordflow">return</span> <span class="keyword">typeid</span>(TAcc).name();</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                }</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            };</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        }</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    }</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">    //! The accelerator trait accessors.</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment"></span>    <span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keyword">namespace </span>acc</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    {</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="comment">//#############################################################################</span><span class="comment"></span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">        //! The accelerator type trait alias template to remove the ::type.</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment"></span>        <span class="comment">//#############################################################################</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keyword">template</span>&lt;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            <span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1acc.html#a78e45df13b4706c02cb65cf25786d38e">   75</a></span>&#160;        <span class="keyword">using</span> <a class="code" href="namespacealpaka_1_1acc.html#a78e45df13b4706c02cb65cf25786d38e">AccT</a> = <span class="keyword">typename</span> <a class="code" href="structalpaka_1_1traits_1_1acc_1_1AccType.html">traits::acc::AccType&lt;T&gt;::type</a>;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="comment">        //! Writes the accelerator name to the given stream.</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="comment">        //!</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="comment">        //! \tparam TAcc The accelerator type to write the name of.</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="comment"></span>        <span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="keyword">template</span>&lt;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            <span class="keyword">typename</span> TAcc&gt;</div>
-<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1acc.html#add272494450d71963f392544c1f6e55d">   84</a></span>&#160;        <a class="code" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> std::string <a class="code" href="namespacealpaka_1_1acc.html#add272494450d71963f392544c1f6e55d">getAccName</a>()</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        {</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="structalpaka_1_1traits_1_1acc_1_1GetAccName.html#ae1fabdbe1ee4734843b4a19a88a4f2b9">traits::acc::GetAccName&lt;TAcc&gt;::getAccName</a>();</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        }</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    }</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;}</div>
-<div class="ttc" id="namespacealpaka_1_1acc_html_add272494450d71963f392544c1f6e55d"><div class="ttname"><a href="namespacealpaka_1_1acc.html#add272494450d71963f392544c1f6e55d">alpaka::acc::getAccName</a></div><div class="ttdeci">ALPAKA_FCT_HOST std::string getAccName()</div><div class="ttdoc">Writes the accelerator name to the given stream. </div><div class="ttdef"><b>Definition:</b> <a href="Acc_8hpp_source.html#l00084">Acc.hpp:84</a></div></div>
-<div class="ttc" id="structalpaka_1_1traits_1_1acc_1_1AccType_html"><div class="ttname"><a href="structalpaka_1_1traits_1_1acc_1_1AccType.html">alpaka::traits::acc::AccType</a></div><div class="ttdoc">The accelerator type trait. </div><div class="ttdef"><b>Definition:</b> <a href="Acc_8hpp_source.html#l00045">Acc.hpp:45</a></div></div>
-<div class="ttc" id="structalpaka_1_1traits_1_1acc_1_1GetAccName_html"><div class="ttname"><a href="structalpaka_1_1traits_1_1acc_1_1GetAccName.html">alpaka::traits::acc::GetAccName</a></div><div class="ttdoc">The accelerator name trait. </div><div class="ttdef"><b>Definition:</b> <a href="Acc_8hpp_source.html#l00055">Acc.hpp:55</a></div></div>
-<div class="ttc" id="namespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">The alpaka library. </div><div class="ttdef"><b>Definition:</b> <a href="BasicDims_8hpp_source.html#l00028">BasicDims.hpp:28</a></div></div>
-<div class="ttc" id="structalpaka_1_1traits_1_1acc_1_1GetAccName_html_ae1fabdbe1ee4734843b4a19a88a4f2b9"><div class="ttname"><a href="structalpaka_1_1traits_1_1acc_1_1GetAccName.html#ae1fabdbe1ee4734843b4a19a88a4f2b9">alpaka::traits::acc::GetAccName::getAccName</a></div><div class="ttdeci">static ALPAKA_FCT_HOST std::string getAccName()</div><div class="ttdef"><b>Definition:</b> <a href="Acc_8hpp_source.html#l00057">Acc.hpp:57</a></div></div>
-<div class="ttc" id="core_2Common_8hpp_html_a0a2517d207990fa333bdfcd804895ee7"><div class="ttname"><a href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a></div><div class="ttdeci">#define ALPAKA_FCT_HOST</div><div class="ttdef"><b>Definition:</b> <a href="core_2Common_8hpp_source.html#l00075">Common.hpp:75</a></div></div>
-<div class="ttc" id="namespacealpaka_1_1acc_html_a78e45df13b4706c02cb65cf25786d38e"><div class="ttname"><a href="namespacealpaka_1_1acc.html#a78e45df13b4706c02cb65cf25786d38e">alpaka::acc::AccT</a></div><div class="ttdeci">typename traits::acc::AccType&lt; T &gt;::type AccT</div><div class="ttdoc">The accelerator type trait alias template to remove the ::type. </div><div class="ttdef"><b>Definition:</b> <a href="Acc_8hpp_source.html#l00075">Acc.hpp:75</a></div></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="core_2Common_8hpp.html">alpaka/core/Common.hpp</a>&gt;</span>   <span class="comment">// ALPAKA_FCT_HOST</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka.html">alpaka</a></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;{</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">    //! The traits.</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment"></span>    <span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keyword">namespace </span>traits</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    {</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">        //! The accelerator traits.</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment"></span>        <span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="keyword">namespace </span>acc</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        {</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            <span class="comment">//#############################################################################</span><span class="comment"></span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">            //! The accelerator type trait.</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment"></span>            <span class="comment">//#############################################################################</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            <span class="keyword">template</span>&lt;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                <span class="keyword">typename</span> T,</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                <span class="keyword">typename</span> TSfinae = <span class="keywordtype">void</span>&gt;</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="structalpaka_1_1traits_1_1acc_1_1AccType.html">   47</a></span>&#160;            <span class="keyword">struct </span><a class="code" href="structalpaka_1_1traits_1_1acc_1_1AccType.html">AccType</a>;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            <span class="comment">//#############################################################################</span><span class="comment"></span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">            //! The accelerator name trait.</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">            //!</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">            //! The default implementation returns the mangled class name.</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment"></span>            <span class="comment">//#############################################################################</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            <span class="keyword">template</span>&lt;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                <span class="keyword">typename</span> TAcc,</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                <span class="keyword">typename</span> TSfinae = <span class="keywordtype">void</span>&gt;</div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="structalpaka_1_1traits_1_1acc_1_1GetAccName.html">   57</a></span>&#160;            <span class="keyword">struct </span><a class="code" href="structalpaka_1_1traits_1_1acc_1_1GetAccName.html">GetAccName</a></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            {</div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="structalpaka_1_1traits_1_1acc_1_1GetAccName.html#a9df4e877867360e2c23273061c8e8e73">   59</a></span>&#160;                <a class="code" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1traits_1_1acc_1_1GetAccName.html#a9df4e877867360e2c23273061c8e8e73">getAccName</a>()</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                -&gt; std::string</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                {</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                    <span class="keywordflow">return</span> <span class="keyword">typeid</span>(TAcc).name();</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                }</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            };</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        }</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    }</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="comment">    //! The accelerator trait accessors.</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment"></span>    <span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1acc.html">   71</a></span>&#160;    <span class="keyword">namespace </span>acc</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    {</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="comment">//#############################################################################</span><span class="comment"></span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment">        //! The accelerator type trait alias template to remove the ::type.</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="comment"></span>        <span class="comment">//#############################################################################</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <span class="keyword">template</span>&lt;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            <span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1acc.html#a78e45df13b4706c02cb65cf25786d38e">   78</a></span>&#160;        <span class="keyword">using</span> <a class="code" href="namespacealpaka_1_1acc.html#a78e45df13b4706c02cb65cf25786d38e">AccT</a> = <span class="keyword">typename</span> <a class="code" href="structalpaka_1_1traits_1_1acc_1_1AccType.html">traits::acc::AccType&lt;T&gt;::type</a>;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="comment">        //! Writes the accelerator name to the given stream.</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="comment">        //!</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="comment">        //! \tparam TAcc The accelerator type to write the name of.</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="comment"></span>        <span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keyword">template</span>&lt;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            <span class="keyword">typename</span> TAcc&gt;</div>
+<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1acc.html#a78b342e0bca2e12e3ca163ffef5b7e50">   87</a></span>&#160;        <a class="code" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka_1_1acc.html#a78b342e0bca2e12e3ca163ffef5b7e50">getAccName</a>()</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        -&gt; std::string</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        {</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="structalpaka_1_1traits_1_1acc_1_1GetAccName.html">traits::acc::GetAccName</a>&lt;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                TAcc&gt;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            <a class="code" href="namespacealpaka_1_1acc.html#a78b342e0bca2e12e3ca163ffef5b7e50">::getAccName</a>();</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        }</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    }</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;}</div>
+<div class="ttc" id="structalpaka_1_1traits_1_1acc_1_1GetAccName_html_a9df4e877867360e2c23273061c8e8e73"><div class="ttname"><a href="structalpaka_1_1traits_1_1acc_1_1GetAccName.html#a9df4e877867360e2c23273061c8e8e73">alpaka::traits::acc::GetAccName::getAccName</a></div><div class="ttdeci">static ALPAKA_FCT_HOST auto getAccName() -&gt; std::string</div><div class="ttdef"><b>Definition:</b> <a href="Acc_8hpp_source.html#l00059">Acc.hpp:59</a></div></div>
+<div class="ttc" id="structalpaka_1_1traits_1_1acc_1_1AccType_html"><div class="ttname"><a href="structalpaka_1_1traits_1_1acc_1_1AccType.html">alpaka::traits::acc::AccType</a></div><div class="ttdoc">The accelerator type trait. </div><div class="ttdef"><b>Definition:</b> <a href="Acc_8hpp_source.html#l00047">Acc.hpp:47</a></div></div>
+<div class="ttc" id="structalpaka_1_1traits_1_1acc_1_1GetAccName_html"><div class="ttname"><a href="structalpaka_1_1traits_1_1acc_1_1GetAccName.html">alpaka::traits::acc::GetAccName</a></div><div class="ttdoc">The accelerator name trait. </div><div class="ttdef"><b>Definition:</b> <a href="Acc_8hpp_source.html#l00057">Acc.hpp:57</a></div></div>
+<div class="ttc" id="namespacealpaka_1_1acc_html_a78b342e0bca2e12e3ca163ffef5b7e50"><div class="ttname"><a href="namespacealpaka_1_1acc.html#a78b342e0bca2e12e3ca163ffef5b7e50">alpaka::acc::getAccName</a></div><div class="ttdeci">ALPAKA_FCT_HOST auto getAccName() -&gt; std::string</div><div class="ttdoc">Writes the accelerator name to the given stream. </div><div class="ttdef"><b>Definition:</b> <a href="Acc_8hpp_source.html#l00087">Acc.hpp:87</a></div></div>
+<div class="ttc" id="namespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">The alpaka library. </div><div class="ttdef"><b>Definition:</b> <a href="Accs_8hpp_source.html#l00056">Accs.hpp:56</a></div></div>
+<div class="ttc" id="core_2Common_8hpp_html_a0a2517d207990fa333bdfcd804895ee7"><div class="ttname"><a href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a></div><div class="ttdeci">#define ALPAKA_FCT_HOST</div><div class="ttdef"><b>Definition:</b> <a href="core_2Common_8hpp_source.html#l00076">Common.hpp:76</a></div></div>
+<div class="ttc" id="namespacealpaka_1_1acc_html_a78e45df13b4706c02cb65cf25786d38e"><div class="ttname"><a href="namespacealpaka_1_1acc.html#a78e45df13b4706c02cb65cf25786d38e">alpaka::acc::AccT</a></div><div class="ttdeci">typename traits::acc::AccType&lt; T &gt;::type AccT</div><div class="ttdoc">The accelerator type trait alias template to remove the ::type. </div><div class="ttdef"><b>Definition:</b> <a href="Acc_8hpp_source.html#l00078">Acc.hpp:78</a></div></div>
+<div class="ttc" id="core_2Common_8hpp_html"><div class="ttname"><a href="core_2Common_8hpp.html">Common.hpp</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_704b24238599043534bfd555c7616f8b.html">traits</a></li><li class="navelem"><a class="el" href="Acc_8hpp.html">Acc.hpp</a></li>
-    <li class="footer">Generated on Fri Mar 6 2015 23:52:33 for alpaka by
+    <li class="footer">Generated on Tue Apr 7 2015 09:20:05 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

@@ -1,0 +1,4 @@
+var structalpaka_1_1traits_1_1extent_1_1GetWidth_3_01accs_1_1cuda_1_1detail_1_1BufCuda_3_01TElem_00_d053160e65746da68a0a8acb846c781f =
+[
+    [ "getWidth", "structalpaka_1_1traits_1_1extent_1_1GetWidth_3_01accs_1_1cuda_1_1detail_1_1BufCuda_3_01TElem_00_d053160e65746da68a0a8acb846c781f.html#a5eaad5ea57101018313b5c99d2afbe49", null ]
+];

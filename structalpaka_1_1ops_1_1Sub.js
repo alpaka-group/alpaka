@@ -1,4 +1,4 @@
 var structalpaka_1_1ops_1_1Sub =
 [
-    [ "operator()", "structalpaka_1_1ops_1_1Sub.html#abe555fafa08ea36230ea32d2a168eb95", null ]
+    [ "operator()", "structalpaka_1_1ops_1_1Sub.html#abdac8ca601e788debaf7ef153161627e", null ]
 ];
