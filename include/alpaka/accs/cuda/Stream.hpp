@@ -22,7 +22,7 @@
 #pragma once
 
 #include <alpaka/accs/cuda/Dev.hpp>         // DevCuda
-#include <alpaka/accs/cuda/Common.hpp>      // ALPAKA_CUDA_CHECK
+#include <alpaka/accs/cuda/Common.hpp>      // ALPAKA_CUDA_RT_CHECK
 
 #include <alpaka/traits/Stream.hpp>
 #include <alpaka/traits/Wait.hpp>           // CurrentThreadWaitFor, WaiterWaitFor
@@ -62,10 +62,10 @@ namespace alpaka
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                         // Set the current device.
-                        ALPAKA_CUDA_CHECK(cudaSetDevice(
+                        ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
                             m_Dev.m_iDevice));
                         // Create the stream on the current device.
-                        ALPAKA_CUDA_CHECK(cudaStreamCreate(
+                        ALPAKA_CUDA_RT_CHECK(cudaStreamCreate(
                             m_spCudaStream.get()));
                     }
                     //-----------------------------------------------------------------------------
@@ -115,12 +115,12 @@ namespace alpaka
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                         // Set the current device. \TODO: Is setting the current device before cudaStreamDestroy required?
-                        ALPAKA_CUDA_CHECK(cudaSetDevice(
+                        ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
                             dev.m_iDevice));
                         // In case the device is still doing work in the stream when cudaStreamDestroy() is called, the function will return immediately
                         // and the resources associated with stream will be released automatically once the device has completed all work in stream.
                         // -> No need to synchronize here.
-                        ALPAKA_CUDA_CHECK(cudaStreamDestroy(
+                        ALPAKA_CUDA_RT_CHECK(cudaStreamDestroy(
                             *stream));
                     }
 
@@ -226,7 +226,7 @@ namespace alpaka
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                     // Sync is allowed even for streams on non current device.
-                    ALPAKA_CUDA_CHECK(cudaStreamSynchronize(
+                    ALPAKA_CUDA_RT_CHECK(cudaStreamSynchronize(
                         *stream.m_spCudaStream.get()));
                 }
             };

@@ -349,7 +349,7 @@ namespace alpaka
 #endif
 
                         // Set the current device.
-                        ALPAKA_CUDA_CHECK(cudaSetDevice(
+                        ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
                             m_Stream.m_Dev.m_iDevice));
                         // Enqueue the kernel execution.
                         cudaKernel<TKernelFunctor, TArgs...><<<

@@ -94,7 +94,7 @@ namespace alpaka
                         assert(pBuffer);
 
                         // Set the current device. \TODO: Is setting the current device before cudaFree required?
-                        ALPAKA_CUDA_CHECK(cudaSetDevice(
+                        ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
                             dev.m_iDevice));
                         // Free the buffer.
                         cudaFree(reinterpret_cast<void *>(pBuffer));
@@ -403,11 +403,11 @@ namespace alpaka
                     assert(uiWidthBytes>0);
 
                     // Set the current device.
-                    ALPAKA_CUDA_CHECK(cudaSetDevice(
+                    ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
                         dev.m_iDevice));
                     // Allocate the buffer on this device.
                     void * pBuffer;
-                    ALPAKA_CUDA_CHECK(cudaMalloc(
+                    ALPAKA_CUDA_RT_CHECK(cudaMalloc(
                         &pBuffer,
                         uiWidthBytes));
                     assert((pBuffer));
@@ -461,12 +461,12 @@ namespace alpaka
                     assert(uiElementCount>0);
 
                     // Set the current device.
-                    ALPAKA_CUDA_CHECK(cudaSetDevice(
+                    ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
                         dev.m_iDevice));
                     // Allocate the buffer on this device.
                     void * pBuffer;
                     std::size_t uiPitch;
-                    ALPAKA_CUDA_CHECK(cudaMallocPitch(
+                    ALPAKA_CUDA_RT_CHECK(cudaMallocPitch(
                         &pBuffer,
                         &uiPitch,
                         uiWidthBytes,
@@ -522,11 +522,11 @@ namespace alpaka
                             alpaka::extent::getDepth(extents)));
 
                     // Set the current device.
-                    ALPAKA_CUDA_CHECK(cudaSetDevice(
+                    ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
                         dev.m_iDevice));
                     // Allocate the buffer on this device.
                     cudaPitchedPtr cudaPitchedPtrVal;
-                    ALPAKA_CUDA_CHECK(cudaMalloc3D(
+                    ALPAKA_CUDA_RT_CHECK(cudaMalloc3D(
                         &cudaPitchedPtrVal,
                         cudaExtentVal));
 

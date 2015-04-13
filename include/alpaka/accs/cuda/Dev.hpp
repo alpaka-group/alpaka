@@ -108,7 +108,7 @@ namespace alpaka
                     -> std::size_t
                     {
                         int iNumDevices(0);
-                        ALPAKA_CUDA_CHECK(cudaGetDeviceCount(&iNumDevices));
+                        ALPAKA_CUDA_RT_CHECK(cudaGetDeviceCount(&iNumDevices));
 
                         return static_cast<std::size_t>(iNumDevices);
                     }
@@ -143,7 +143,7 @@ namespace alpaka
                     -> DevCuda
                     {
                         DevCuda dev;
-                        ALPAKA_CUDA_CHECK(cudaGetDevice(&dev.m_iDevice));
+                        ALPAKA_CUDA_RT_CHECK(cudaGetDevice(&dev.m_iDevice));
                         return dev;
                     }
                     //-----------------------------------------------------------------------------
@@ -168,11 +168,11 @@ namespace alpaka
                         }
 
                         cudaDeviceProp devProp;
-                        ALPAKA_CUDA_CHECK(cudaGetDeviceProperties(&devProp, dev.m_iDevice));
+                        ALPAKA_CUDA_RT_CHECK(cudaGetDeviceProperties(&devProp, dev.m_iDevice));
                         // Default compute mode (Multiple threads can use cudaSetDevice() with this device)
                         if(devProp.computeMode == cudaComputeModeDefault)
                         {
-                            ALPAKA_CUDA_CHECK(cudaSetDevice(dev.m_iDevice));
+                            ALPAKA_CUDA_RT_CHECK(cudaSetDevice(dev.m_iDevice));
                             std::cout << "Set device to " << dev.m_iDevice << ": " << std::endl;
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                             printDeviceProperties(devProp);
@@ -204,9 +204,9 @@ namespace alpaka
 
                         // Instruct CUDA to actively spin when waiting for results from the device.
                         // This can decrease latency when waiting for the device, but may lower the performance of CPU threads if they are performing work in parallel with the CUDA thread.
-                        ALPAKA_CUDA_CHECK(cudaSetDeviceFlags(cudaDeviceScheduleSpin));
+                        ALPAKA_CUDA_RT_CHECK(cudaSetDeviceFlags(cudaDeviceScheduleSpin));
 #else
-                        ALPAKA_CUDA_CHECK(cudaSetDevice(dev.m_iDevice));
+                        ALPAKA_CUDA_RT_CHECK(cudaSetDevice(dev.m_iDevice));
 #endif
                     }*/
 
@@ -344,7 +344,7 @@ namespace alpaka
                 -> alpaka::dev::DevProps
                 {
                     cudaDeviceProp cudaDevProp;
-                    ALPAKA_CUDA_CHECK(cudaGetDeviceProperties(&cudaDevProp, device.m_iDevice));
+                    ALPAKA_CUDA_RT_CHECK(cudaGetDeviceProperties(&cudaDevProp, device.m_iDevice));
 
                     return alpaka::dev::DevProps(
                         // m_sName
@@ -418,9 +418,9 @@ namespace alpaka
                     // \TODO: This should be secured by a lock.
 
                     // Set the current device to wait for.
-                    ALPAKA_CUDA_CHECK(cudaSetDevice(
+                    ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
                         dev.m_iDevice));
-                    ALPAKA_CUDA_CHECK(cudaDeviceSynchronize());
+                    ALPAKA_CUDA_RT_CHECK(cudaDeviceSynchronize());
                 }
             };
         }

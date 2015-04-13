@@ -60,7 +60,7 @@ namespace alpaka
                     // cudaHostRegisterMapped:
                     //  Maps the allocation into the CUDA address space.The device pointer to the memory may be obtained by calling cudaHostGetDevicePointer().
                     //  This feature is available only on GPUs with compute capability greater than or equal to 1.1.
-                    ALPAKA_CUDA_CHECK_MSG_EXCP_IGNORE(
+                    ALPAKA_CUDA_RT_CHECK_IGNORE(
                         cudaHostRegister(
                             const_cast<void *>(reinterpret_cast<void const *>(mem::getNativePtr(buf))),
                             extent::getProductOfExtents(buf) * sizeof(mem::ElemT<TBuf>),
@@ -78,7 +78,7 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                    ALPAKA_CUDA_CHECK_MSG_EXCP_IGNORE(
+                    ALPAKA_CUDA_RT_CHECK_IGNORE(
                         cudaHostUnregister(
                             const_cast<void *>(reinterpret_cast<void const *>(mem::getNativePtr(buf)))),
                         cudaErrorHostMemoryNotRegistered);
@@ -131,10 +131,10 @@ namespace alpaka
                         assert(uiExtentWidth <= uiSrcWidth);
 
                         // Set the current device.
-                        ALPAKA_CUDA_CHECK(cudaSetDevice(
+                        ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
                             iDev));
                         // Initiate the memory copy.
-                        ALPAKA_CUDA_CHECK(
+                        ALPAKA_CUDA_RT_CHECK(
                             cudaMemcpy(
                                 reinterpret_cast<void *>(mem::getNativePtr(bufDst)),
                                 reinterpret_cast<void const *>(mem::getNativePtr(bufSrc)),
@@ -187,10 +187,10 @@ namespace alpaka
                         assert(uiExtentWidth <= uiSrcWidth);
 
                         // Set the current device.
-                        ALPAKA_CUDA_CHECK(cudaSetDevice(
+                        ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
                             iDev));
                         // Initiate the memory copy.
-                        ALPAKA_CUDA_CHECK(
+                        ALPAKA_CUDA_RT_CHECK(
                             cudaMemcpyAsync(
                                 reinterpret_cast<void *>(mem::getNativePtr(bufDst)),
                                 reinterpret_cast<void const *>(mem::getNativePtr(bufSrc)),
@@ -256,10 +256,10 @@ namespace alpaka
                         assert(uiExtentHeight <= uiSrcHeight);
 
                         // Set the current device.
-                        ALPAKA_CUDA_CHECK(cudaSetDevice(
+                        ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
                             iDev));
                         // Initiate the memory copy.
-                        ALPAKA_CUDA_CHECK(
+                        ALPAKA_CUDA_RT_CHECK(
                             cudaMemcpy2D(
                                 reinterpret_cast<void *>(mem::getNativePtr(bufDst)),
                                 mem::getPitchBytes(bufDst),
@@ -325,10 +325,10 @@ namespace alpaka
                         assert(uiExtentHeight <= uiSrcHeight);
 
                         // Set the current device.
-                        ALPAKA_CUDA_CHECK(cudaSetDevice(
+                        ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
                             iDev));
                         // Initiate the memory copy.
-                        ALPAKA_CUDA_CHECK(
+                        ALPAKA_CUDA_RT_CHECK(
                             cudaMemcpy2DAsync(
                                 reinterpret_cast<void *>(mem::getNativePtr(bufDst)),
                                 mem::getPitchBytes(bufDst),
@@ -388,10 +388,10 @@ namespace alpaka
                                 p_cudaMemcpyKind));
 
                         // Set the current device.
-                        ALPAKA_CUDA_CHECK(cudaSetDevice(
+                        ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
                             iDev));
                         // Initiate the memory copy.
-                        ALPAKA_CUDA_CHECK(
+                        ALPAKA_CUDA_RT_CHECK(
                             cudaMemcpy3D(
                                 &l_cudaMemcpy3DParms));
                     }
@@ -421,10 +421,10 @@ namespace alpaka
                                 p_cudaMemcpyKind));
 
                         // Set the current device.
-                        ALPAKA_CUDA_CHECK(cudaSetDevice(
+                        ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
                             iDev));
                         // Initiate the memory copy.
-                        ALPAKA_CUDA_CHECK(
+                        ALPAKA_CUDA_RT_CHECK(
                             cudaMemcpy3DAsync(
                                 &l_cudaMemcpy3DParms,
                                 *stream.m_spCudaStream.get()));
@@ -567,7 +567,7 @@ namespace alpaka
                         auto const uiSrcDev(alpaka::dev::getDev(bufSrc).m_iDevice);
 
                         // Initiate the memory copy.
-                        ALPAKA_CUDA_CHECK(
+                        ALPAKA_CUDA_RT_CHECK(
                             cudaMemcpyPeer(
                                 reinterpret_cast<void *>(mem::getNativePtr(bufDst)),
                                 uiDstDev,
@@ -624,7 +624,7 @@ namespace alpaka
                         auto const uiSrcDev(alpaka::dev::getDev(bufSrc).m_iDevice);
 
                         // Initiate the memory copy.
-                        ALPAKA_CUDA_CHECK(
+                        ALPAKA_CUDA_RT_CHECK(
                             cudaMemcpyPeerAsync(
                                 reinterpret_cast<void *>(mem::getNativePtr(bufDst)),
                                 uiDstDev,
@@ -676,7 +676,7 @@ namespace alpaka
                                 extents));
 
                         // Initiate the memory copy.
-                        ALPAKA_CUDA_CHECK(
+                        ALPAKA_CUDA_RT_CHECK(
                             cudaMemcpy3DPeer(
                                 &l_cudaMemcpy3DPeerParms));
                     }
@@ -703,7 +703,7 @@ namespace alpaka
                                 extents));
 
                         // Initiate the memory copy.
-                        ALPAKA_CUDA_CHECK(
+                        ALPAKA_CUDA_RT_CHECK(
                             cudaMemcpy3DPeerAsync(
                                 &l_cudaMemcpy3DPeerParms,
                                 *stream.m_spCudaStream.get()));

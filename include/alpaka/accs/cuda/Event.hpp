@@ -21,7 +21,7 @@
 #pragma once
 
 #include <alpaka/accs/cuda/Dev.hpp>         // DevCuda
-#include <alpaka/accs/cuda/Common.hpp>      // ALPAKA_CUDA_CHECK
+#include <alpaka/accs/cuda/Common.hpp>      // ALPAKA_CUDA_RT_CHECK
 
 #include <alpaka/traits/Event.hpp>
 #include <alpaka/traits/Wait.hpp>           // CurrentThreadWaitFor
@@ -62,13 +62,13 @@ namespace alpaka
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                         // Set the current device.
-                        ALPAKA_CUDA_CHECK(cudaSetDevice(
+                        ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
                             m_Dev.m_iDevice));
                         // Create the event on the current device with the specified flags. Valid flags include:
                         //  cudaEventDefault: Default event creation flag.
                         //  cudaEventBlockingSync : Specifies that event should use blocking synchronization.A host thread that uses cudaEventSynchronize() to wait on an event created with this flag will block until the event actually completes.
                         //  cudaEventDisableTiming : Specifies that the created event does not need to record timing data.Events created with this flag specified and the cudaEventBlockingSync flag not specified will provide the best performance when used with cudaStreamWaitEvent() and cudaEventQuery().
-                        ALPAKA_CUDA_CHECK(cudaEventCreateWithFlags(
+                        ALPAKA_CUDA_RT_CHECK(cudaEventCreateWithFlags(
                             m_spCudaEvent.get(),
                             (bBusyWait ? cudaEventDefault : cudaEventBlockingSync) | cudaEventDisableTiming));
                     }
@@ -119,12 +119,12 @@ namespace alpaka
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                         // Set the current device. \TODO: Is setting the current device before cudaEventDestroy required?
-                        ALPAKA_CUDA_CHECK(cudaSetDevice(
+                        ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
                             dev.m_iDevice));
                         // In case event has been recorded but has not yet been completed when cudaEventDestroy() is called, the function will return immediately
                         // and the resources associated with event will be released automatically once the device has completed event.
                         // -> No need to synchronize here.
-                        ALPAKA_CUDA_CHECK(cudaEventDestroy(*event));
+                        ALPAKA_CUDA_RT_CHECK(cudaEventDestroy(*event));
                     }
 
                 public:
@@ -194,9 +194,9 @@ namespace alpaka
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                     // Set the current device.
-                    ALPAKA_CUDA_CHECK(cudaSetDevice(
+                    ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
                         event.m_Dev.m_iDevice));
-                    ALPAKA_CUDA_CHECK(cudaEventRecord(
+                    ALPAKA_CUDA_RT_CHECK(cudaEventRecord(
                         *event.m_spCudaEvent.get(),
                         nullptr));
                 }
@@ -251,7 +251,7 @@ namespace alpaka
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                     // Sync is allowed even for events on non current device.
-                    ALPAKA_CUDA_CHECK(cudaEventSynchronize(
+                    ALPAKA_CUDA_RT_CHECK(cudaEventSynchronize(
                         *event.m_spCudaEvent.get()));
                 }
             };

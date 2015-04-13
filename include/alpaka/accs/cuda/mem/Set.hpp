@@ -75,10 +75,10 @@ namespace alpaka
                     assert(uiExtentWidth <= uiDstWidth);
 
                     // Set the current device.
-                    ALPAKA_CUDA_CHECK(cudaSetDevice(
+                    ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
                         alpaka::dev::getDev(buf).m_iDevice));
                     // Initiate the memory set.
-                    ALPAKA_CUDA_CHECK(
+                    ALPAKA_CUDA_RT_CHECK(
                         cudaMemset(
                             reinterpret_cast<void *>(alpaka::mem::getNativePtr(buf)),
                             static_cast<int>(byte),
@@ -111,10 +111,10 @@ namespace alpaka
                     assert(uiExtentWidth <= uiDstWidth);
 
                     // Set the current device.
-                    ALPAKA_CUDA_CHECK(cudaSetDevice(
+                    ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
                         alpaka::dev::getDev(buf).m_iDevice));
                     // Initiate the memory set.
-                    ALPAKA_CUDA_CHECK(
+                    ALPAKA_CUDA_RT_CHECK(
                         cudaMemsetAsync(
                             reinterpret_cast<void *>(alpaka::mem::getNativePtr(buf)),
                             static_cast<int>(byte),
@@ -159,10 +159,10 @@ namespace alpaka
                     assert(uiExtentHeight <= uiDstHeight);
 
                     // Set the current device.
-                    ALPAKA_CUDA_CHECK(cudaSetDevice(
+                    ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
                         alpaka::dev::getDev(buf).m_iDevice));
                     // Initiate the memory set.
-                    ALPAKA_CUDA_CHECK(
+                    ALPAKA_CUDA_RT_CHECK(
                         cudaMemset2D(
                             reinterpret_cast<void *>(alpaka::mem::getNativePtr(buf)),
                             alpaka::mem::getPitchBytes(buf),
@@ -200,10 +200,10 @@ namespace alpaka
                     assert(uiExtentHeight <= uiDstHeight);
 
                     // Set the current device.
-                    ALPAKA_CUDA_CHECK(cudaSetDevice(
+                    ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
                         alpaka::dev::getDev(buf).m_iDevice));
                     // Initiate the memory set.
-                    ALPAKA_CUDA_CHECK(
+                    ALPAKA_CUDA_RT_CHECK(
                         cudaMemset2DAsync(
                             reinterpret_cast<void *>(alpaka::mem::getNativePtr(buf)),
                             alpaka::mem::getPitchBytes(buf),
@@ -267,10 +267,10 @@ namespace alpaka
                             uiExtentDepth));
 
                     // Set the current device.
-                    ALPAKA_CUDA_CHECK(cudaSetDevice(
+                    ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
                         alpaka::dev::getDev(buf).m_iDevice));
                     // Initiate the memory set.
-                    ALPAKA_CUDA_CHECK(
+                    ALPAKA_CUDA_RT_CHECK(
                         cudaMemset3D(
                             cudaPitchedPtrVal,
                             static_cast<int>(byte),
@@ -323,10 +323,10 @@ namespace alpaka
                             uiExtentDepth));
 
                     // Set the current device.
-                    ALPAKA_CUDA_CHECK(cudaSetDevice(
+                    ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
                         alpaka::dev::getDev(buf).m_iDevice));
                     // Initiate the memory set.
-                    ALPAKA_CUDA_CHECK(
+                    ALPAKA_CUDA_RT_CHECK(
                         cudaMemset3DAsync(
                             cudaPitchedPtrVal,
                             static_cast<int>(byte),

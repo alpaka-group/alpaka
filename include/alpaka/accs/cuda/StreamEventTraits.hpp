@@ -23,7 +23,7 @@
 
 #include <alpaka/accs/cuda/Stream.hpp>  // StreamCuda
 #include <alpaka/accs/cuda/Event.hpp>   // EventCuda
-#include <alpaka/accs/cuda/Common.hpp>  // ALPAKA_CUDA_CHECK
+#include <alpaka/accs/cuda/Common.hpp>  // ALPAKA_CUDA_RT_CHECK
 
 namespace alpaka
 {
@@ -46,7 +46,7 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    ALPAKA_CUDA_CHECK(cudaEventRecord(
+                    ALPAKA_CUDA_RT_CHECK(cudaEventRecord(
                         *event.m_spCudaEvent.get(),
                         *stream.m_spCudaStream.get()));
                 }
@@ -70,7 +70,7 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    ALPAKA_CUDA_CHECK(cudaStreamWaitEvent(
+                    ALPAKA_CUDA_RT_CHECK(cudaStreamWaitEvent(
                         *stream.m_spCudaStream.get(),
                         *event.m_spCudaEvent.get(),
                         0));
