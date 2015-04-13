@@ -233,13 +233,15 @@ install:
     # Install nvcc
     - if [ "${ALPAKA_CUDA_ENABLE}" == "ON" ]
       ;then 
-        wget http://developer.download.nvidia.com/compute/cuda/${ALPAKA_CUDA_VER_MAJOR}_${ALPAKA_CUDA_VER_MINOR}/Prod/local_installers/rpmdeb/cuda-repo-ubuntu1204-${ALPAKA_CUDA_VER_MAJOR}-${ALPAKA_CUDA_VER_MINOR}-local_${ALPAKA_CUDA_VERSION}-28_amd64.deb
-        && sudo dpkg -i cuda-repo-ubuntu1204-${ALPAKA_CUDA_VER_MAJOR}-${ALPAKA_CUDA_VER_MINOR}-local_${ALPAKA_CUDA_VERSION}-28_amd64.deb
+        ALPAKA_CUDA_PKG_FILE_NAME=cuda-repo-ubuntu1204-${ALPAKA_CUDA_VER_MAJOR}-${ALPAKA_CUDA_VER_MINOR}-local_${ALPAKA_CUDA_VERSION}-28_amd64.deb
+        && wget http://developer.download.nvidia.com/compute/cuda/${ALPAKA_CUDA_VER_MAJOR}_${ALPAKA_CUDA_VER_MINOR}/Prod/local_installers/rpmdeb/${ALPAKA_CUDA_PKG_FILE_NAME}
+        && sudo dpkg -i ${ALPAKA_CUDA_PKG_FILE_NAME}
         && sudo apt-get -y update
         && sudo apt-get -y install cuda-core-${ALPAKA_CUDA_VERSION} cuda-cudart-${ALPAKA_CUDA_VERSION} cuda-cudart-dev-${ALPAKA_CUDA_VERSION}
         && sudo ln -s /usr/local/cuda-${ALPAKA_CUDA_VERSION} /usr/local/cuda
         && export PATH=/usr/local/cuda-${ALPAKA_CUDA_VERSION}/bin:$PATH
         && export LD_LIBRARY_PATH=/usr/local/cuda-${ALPAKA_CUDA_VERSION}/lib64:$LD_LIBRARY_PATH
+        && sudo rm -f ${ALPAKA_CUDA_PKG_FILE_NAME}
       ;fi
     # Currently we do not install CUDA fully: sudo apt-get -y install cuda 
     # We only install the minimal packages. Because of our manual partial installation we have to create a symlink at /usr/local/cuda
@@ -256,33 +258,40 @@ install:
     # NOTE: Older versions have to be built from source because CMake does not provide older x64 binaries.
     - if (( (( ${ALPAKA_CMAKE_VER_MAJOR} < 3 ))  || ( (( ${ALPAKA_CMAKE_VER_MAJOR} == 3 )) && (( ${ALPAKA_CMAKE_VER_MINOR} < 1 )) ) ))
       ;then 
-        wget "http://www.cmake.org/files/v${ALPAKA_CMAKE_VER_MAJOR}.${ALPAKA_CMAKE_VER_MINOR}/cmake-${ALPAKA_CMAKE_VER}.tar.gz"
-        && tar -xzf "cmake-${ALPAKA_CMAKE_VER}.tar.gz"
-        && "./cmake-${ALPAKA_CMAKE_VER}/bootstrap" --prefix=/usr
+        ALPAKA_CMAKE_PKG_FILE_NAME=cmake-${ALPAKA_CMAKE_VER}
+        && wget http://www.cmake.org/files/v${ALPAKA_CMAKE_VER_MAJOR}.${ALPAKA_CMAKE_VER_MINOR}/${ALPAKA_CMAKE_PKG_FILE_NAME}.tar.gz
+        && tar -xzf ${ALPAKA_CMAKE_PKG_FILE_NAME}.tar.gz
+        && ./cmake-${ALPAKA_CMAKE_VER}/bootstrap --prefix=/usr
         && make
         && sudo make install
+        && sudo rm -rf ${ALPAKA_CMAKE_PKG_FILE_NAME}.tar.gz ${ALPAKA_CMAKE_PKG_FILE_NAME}
       ;else
-        wget "http://www.cmake.org/files/v${ALPAKA_CMAKE_VER_MAJOR}.${ALPAKA_CMAKE_VER_MINOR}/cmake-${ALPAKA_CMAKE_VER}-Linux-x86_64.tar.gz"
-        && tar -xzf "cmake-${ALPAKA_CMAKE_VER}-Linux-x86_64.tar.gz"
+        ALPAKA_CMAKE_PKG_FILE_NAME=cmake-${ALPAKA_CMAKE_VER}-Linux-x86_64
+        && wget http://www.cmake.org/files/v${ALPAKA_CMAKE_VER_MAJOR}.${ALPAKA_CMAKE_VER_MINOR}/${ALPAKA_CMAKE_PKG_FILE_NAME}.tar.gz
+        && tar -xzf ${ALPAKA_CMAKE_PKG_FILE_NAME}.tar.gz
         && sudo cp -fR cmake-${ALPAKA_CMAKE_VER}-Linux-x86_64/* /usr
+        && sudo rm -rf ${ALPAKA_CMAKE_PKG_FILE_NAME}.tar.gz ${ALPAKA_CMAKE_PKG_FILE_NAME}
       ;fi
+      
+    
+    
 
     #-------------------------------------------------------------------------------
     # Clone boost.
     # If fibers are enabled we need the current development version of boost.context (this forces usage of boost.coroutine develop).
-    - git clone -b boost-$ALPAKA_BOOST_VER --recursive --single-branch --depth 1 https://github.com/boostorg/boost.git boost
-    - cd boost
+    - git clone -b boost-${ALPAKA_BOOST_VER} --recursive --single-branch --depth 1 https://github.com/boostorg/boost.git boost
+    - cd boost/
     - export ALPAKA_BOOST_ROOT_DIR=`pwd`
     - echo ${ALPAKA_BOOST_ROOT_DIR}
 
-    - cd libs
+    - cd libs/
 
     # Clone boost.fiber.
     # TODO: remove the reset and add back --depth 1 if the current head is functional again.
     - if [ "${ALPAKA_FIBERS_ENABLE}" == "ON" ]
       ;then
         git clone -b develop --single-branch https://github.com/olk/boost-fiber.git fiber
-        && cd fiber
+        && cd fiber/
         && git reset --hard 6a1257442bb82e9082a55cacc2c6ebe02b4aa540
         && cd ../
       ;fi
@@ -294,13 +303,14 @@ install:
     # Create file links.
     - sudo ./b2 headers
     # Prepare the library destination directory.
-    - cd ../
+    - cd ..
     - mkdir boost_libs
-    - cd boost_libs
+    - cd boost_libs/
     - mkdir x64
     - export ALPAKA_BOOST_LIB_DIR=`pwd`/x64/lib
     - echo ${ALPAKA_BOOST_LIB_DIR}
-    - cd ../boost/
+    - cd ../
+    - cd boost/
     # Clang is not supported by the FindBoost script. 
     - if [ "${CXX}" == "clang++" ]
       ;then 
@@ -320,7 +330,10 @@ install:
         architecture=x86 address-model=64 variant=debug,release link=static threading=multi runtime-link=shared
         --stagedir=../boost_libs/x64 stage
       ;fi
-    - cd ..
+    # Clean the intermediate build files.
+    - sudo rm -rf bin.v2
+
+    - cd ../
 
 ################################################################################
 # Use this to prepare your build for testing.
@@ -357,7 +370,7 @@ script:
 
     #-------------------------------------------------------------------------------
     # Build and execute all tests. 
-    - cd test/
+    - cd examples/
 
     #-------------------------------------------------------------------------------
     # cppcheck

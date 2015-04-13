@@ -97,9 +97,9 @@ auto profileKernelExec(
     std::cout << "Execution time: " << std::chrono::duration_cast<std::chrono::milliseconds>(durElapsed).count() << " ms" << std::endl;
 }
 
-//-----------------------------------------------------------------------------
+//#############################################################################
 //! Profiles the vector addition kernel.
-//-----------------------------------------------------------------------------
+//#############################################################################
 struct VectorAddKernelTester
 {
     template<

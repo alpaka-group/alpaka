@@ -50,7 +50,7 @@ Build status master branch: [![Build Status](https://travis-ci.org/Computational
 Build status develop branch: [![Build Status](https://travis-ci.org/ComputationalRadiationPhysics/alpaka.svg?branch=develop)](https://travis-ci.org/ComputationalRadiationPhysics/alpaka)
 
 
-Requirements
+Dependencies
 ------------
 
 [Boost](http://boost.org/) 1.56+ is the only required external dependency.

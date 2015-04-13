@@ -183,9 +183,9 @@ auto profileKernelExec(
     std::cout << "Execution time: " << std::chrono::duration_cast<std::chrono::milliseconds>(durElapsed).count() << " ms" << std::endl;
 }
 
-//-----------------------------------------------------------------------------
+//#############################################################################
 //! Profiles the example kernel and checks the result.
-//-----------------------------------------------------------------------------
+//#############################################################################
 template<
     typename TuiNumUselessWork>
 struct SharedMemTester
