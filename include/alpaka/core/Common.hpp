@@ -77,6 +77,24 @@
 #endif
 
 //-----------------------------------------------------------------------------
+//! Suggests unrolling of the following loop to the compiler.
+//!
+//! Usage:
+//!  `ALPAKA_UNROLL
+//!  for(...){...}`
+// \TODO: Unrolling in host code?
+//-----------------------------------------------------------------------------
+#ifdef __CUDA_ARCH__
+    #if BOOST_COMP_MSVC
+        #define ALPAKA_UNROLL __pragma(unroll)
+    #else
+        #define ALPAKA_UNROLL _Pragma("unroll")
+    #endif
+#else
+    #define ALPAKA_UNROLL
+#endif
+
+//-----------------------------------------------------------------------------
 // MSVC 2013 does not support noexcept
 //-----------------------------------------------------------------------------
 #if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
