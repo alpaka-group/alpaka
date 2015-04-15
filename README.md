@@ -56,7 +56,7 @@ Dependencies
 [Boost](http://boost.org/) 1.56+ is the only required external dependency.
 By default just header-only libraries are used.
 
-When the *Fibers-Accelerator* is enabled, `boost-coroutine`, `boost-context` and the proposed boost library [`boost-fibers`](https://github.com/olk/boost-fiber) (develop branch commit 6a1257442bb82e9082a55cacc2c6ebe02b4aa540) are required to be build.
+When the *Fibers-Accelerator* is enabled, `boost-coroutine`, `boost-context` and the proposed boost library [`boost-fibers`](https://github.com/olk/boost-fiber) (develop branch commit 9bd1c0cd0f1a15a5c7548aadaab0e40a0aea55c5) are required to be build.
 
 When the *CUDA-Accelerator* is enabled, version *7.0* of the *CUDA SDK* is the minimum requirement.
 
