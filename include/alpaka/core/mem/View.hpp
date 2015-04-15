@@ -177,11 +177,7 @@ namespace alpaka
                 typename TBuf>
             struct GetWidth<
                 alpaka::mem::detail::View<TBuf>,
-#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-                typename std::enable_if<alpaka::traits::dim::DimType<TBuf>::value >= 1u>::type>
-#else
                 typename std::enable_if<alpaka::dim::DimT<TBuf>::value >= 1u>::type>
-#endif
             {
                 //-----------------------------------------------------------------------------
                 //!
@@ -201,11 +197,7 @@ namespace alpaka
                 typename TBuf>
             struct GetHeight<
                 alpaka::mem::detail::View<TBuf>,
-#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-                typename std::enable_if<alpaka::traits::dim::DimType<TBuf>::value >= 2u>::type>
-#else
                 typename std::enable_if<alpaka::dim::DimT<TBuf>::value >= 2u>::type>
-#endif
             {
                 //-----------------------------------------------------------------------------
                 //!
@@ -224,11 +216,7 @@ namespace alpaka
                 typename TBuf>
             struct GetDepth<
                 alpaka::mem::detail::View<TBuf>,
-#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-                typename std::enable_if<alpaka::traits::dim::DimType<TBuf>::value >= 3u>::type>
-#else
                 typename std::enable_if<alpaka::dim::DimT<TBuf>::value >= 3u>::type>
-#endif
             {
                 //-----------------------------------------------------------------------------
                 //!
@@ -270,11 +258,7 @@ namespace alpaka
                 typename TBuf>
             struct GetOffsetX<
                 alpaka::mem::detail::View<TBuf>,
-#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-                typename std::enable_if<alpaka::traits::dim::DimType<TBuf>::value >= 1u>::type>
-#else
                 typename std::enable_if<alpaka::dim::DimT<TBuf>::value >= 1u>::type>
-#endif
             {
                 //-----------------------------------------------------------------------------
                 //!
@@ -294,11 +278,7 @@ namespace alpaka
                 typename TBuf>
             struct GetOffsetY<
                 alpaka::mem::detail::View<TBuf>,
-#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-                typename std::enable_if<alpaka::traits::dim::DimType<TBuf>::value >= 2u>::type>
-#else
                 typename std::enable_if<alpaka::dim::DimT<TBuf>::value >= 2u>::type>
-#endif
             {
                 //-----------------------------------------------------------------------------
                 //!
@@ -317,11 +297,7 @@ namespace alpaka
                 typename TBuf>
             struct GetOffsetZ<
                 alpaka::mem::detail::View<TBuf>,
-#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-                typename std::enable_if<alpaka::traits::dim::DimType<TBuf>::value >= 3u>::type>
-#else
                 typename std::enable_if<alpaka::dim::DimT<TBuf>::value >= 3u>::type>
-#endif
             {
                 //-----------------------------------------------------------------------------
                 //!

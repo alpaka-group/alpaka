@@ -64,10 +64,10 @@ namespace alpaka
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                     static_assert(
-                        std::is_same<alpaka::dim::DimT<TBuf>, alpaka::dim::Dim1>::value,
+                        alpaka::dim::DimT<TBuf>::value == alpaka::dim::Dim1::value,
                         "The destination buffer is required to have the dimensionality alpaka::dim::Dim1 for this specialization!");
                     static_assert(
-                        std::is_same<alpaka::dim::DimT<TBuf>, alpaka::dim::DimT<TExtents>>::value,
+                        alpaka::dim::DimT<TBuf>::value == alpaka::dim::DimT<TExtents>::value,
                         "The destination buffer and the extents are required to have the same dimensionality!");
 
                     auto const uiExtentWidth(alpaka::extent::getWidth(extents));
@@ -100,10 +100,10 @@ namespace alpaka
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                     static_assert(
-                        std::is_same<alpaka::dim::DimT<TBuf>, alpaka::dim::Dim1>::value,
+                        alpaka::dim::DimT<TBuf>::value == alpaka::dim::Dim1::value,
                         "The destination buffer is required to have the dimensionality alpaka::dim::Dim1 for this specialization!");
                     static_assert(
-                        std::is_same<alpaka::dim::DimT<TBuf>, alpaka::dim::DimT<TExtents>>::value,
+                        alpaka::dim::DimT<TBuf>::value == alpaka::dim::DimT<TExtents>::value,
                         "The destination buffer and the extents are required to have the same dimensionality!");
 
                     auto const uiExtentWidth(alpaka::extent::getWidth(extents));
@@ -145,10 +145,10 @@ namespace alpaka
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                     static_assert(
-                        std::is_same<alpaka::dim::DimT<TBuf>, alpaka::dim::Dim2>::value,
+                        alpaka::dim::DimT<TBuf>::value == alpaka::dim::Dim2::value,
                         "The destination buffer is required to have the dimensionality alpaka::dim::Dim2 for this specialization!");
                     static_assert(
-                        std::is_same<alpaka::dim::DimT<TBuf>, alpaka::dim::DimT<TExtents>>::value,
+                        alpaka::dim::DimT<TBuf>::value == alpaka::dim::DimT<TExtents>::value,
                         "The destination buffer and the extents are required to have the same dimensionality!");
 
                     auto const uiExtentWidth(alpaka::extent::getWidth(extents));
@@ -186,10 +186,10 @@ namespace alpaka
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                     static_assert(
-                        std::is_same<alpaka::dim::DimT<TBuf>, alpaka::dim::Dim2>::value,
+                        alpaka::dim::DimT<TBuf>::value == alpaka::dim::Dim2::value,
                         "The destination buffer is required to have the dimensionality alpaka::dim::Dim2 for this specialization!");
                     static_assert(
-                        std::is_same<alpaka::dim::DimT<TBuf>, alpaka::dim::DimT<TExtents>>::value,
+                        alpaka::dim::DimT<TBuf>::value == alpaka::dim::DimT<TExtents>::value,
                         "The destination buffer and the extents are required to have the same dimensionality!");
 
                     auto const uiExtentWidth(alpaka::extent::getWidth(extents));
@@ -236,10 +236,10 @@ namespace alpaka
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                     static_assert(
-                        std::is_same<alpaka::dim::DimT<TBuf>, alpaka::dim::Dim3>::value,
+                        alpaka::dim::DimT<TBuf>::value == alpaka::dim::Dim3::value,
                         "The destination base buffer is required to have the dimensionality alpaka::dim::Dim3 for this specialization!");
                     static_assert(
-                        std::is_same<alpaka::dim::DimT<TBuf>, alpaka::dim::DimT<TExtents>>::value,
+                        alpaka::dim::DimT<TBuf>::value == alpaka::dim::DimT<TExtents>::value,
                         "The destination base buffer and the extents are required to have the same dimensionality!");
 
                     auto const uiExtentWidth(alpaka::extent::getWidth(extents));
@@ -292,10 +292,10 @@ namespace alpaka
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                     static_assert(
-                        std::is_same<alpaka::dim::DimT<TBuf>, alpaka::dim::Dim3>::value,
+                        alpaka::dim::DimT<TBuf>::value == alpaka::dim::Dim3::value,
                         "The destination base buffer is required to have the dimensionality alpaka::dim::Dim3 for this specialization!");
                     static_assert(
-                        std::is_same<alpaka::dim::DimT<TBuf>, alpaka::dim::DimT<TExtents>>::value,
+                        alpaka::dim::DimT<TBuf>::value == alpaka::dim::DimT<TExtents>::value,
                         "The destination base buffer and the extents are required to have the same dimensionality!");
 
                     auto const uiExtentWidth(alpaka::extent::getWidth(extents));

@@ -70,10 +70,10 @@ namespace alpaka
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                     static_assert(
-                        std::is_same<alpaka::dim::DimT<TBufDst>, alpaka::dim::DimT<TBufSrc>>::value,
+                        alpaka::dim::DimT<TBufDst>::value == alpaka::dim::DimT<TBufSrc>::value,
                         "The source and the destination buffers are required to have the same dimensionality!");
                     static_assert(
-                        std::is_same<alpaka::dim::DimT<TBufDst>, alpaka::dim::DimT<TExtents>>::value,
+                        alpaka::dim::DimT<TBufDst>::value == alpaka::dim::DimT<TExtents>::value,
                         "The buffers and the extents are required to have the same dimensionality!");
                     static_assert(
                         std::is_same<alpaka::mem::ElemT<TBufDst>, alpaka::mem::ElemT<TBufSrc>>::value,

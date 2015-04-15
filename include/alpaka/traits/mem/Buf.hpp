@@ -259,7 +259,7 @@ namespace alpaka
         -> void
         {
             static_assert(
-                std::is_same<dim::DimT<TBuf>, dim::DimT<TExtents>>::value,
+                dim::DimT<TBuf>::value == dim::DimT<TExtents>::value,
                 "The buffer and the extents are required to have the same dimensionality!");
 
             traits::mem::Set<
@@ -291,7 +291,7 @@ namespace alpaka
         -> void
         {
             static_assert(
-                std::is_same<dim::DimT<TBuf>, dim::DimT<TExtents>>::value,
+                dim::DimT<TBuf>::value == dim::DimT<TExtents>::value,
                 "The buffer and the extents are required to have the same dimensionality!");
 
             traits::mem::Set<
@@ -323,10 +323,10 @@ namespace alpaka
         -> void
         {
             static_assert(
-                std::is_same<dim::DimT<TBufDst>, dim::DimT<TBufSrc>>::value,
+                dim::DimT<TBufDst>::value == dim::DimT<TBufSrc>::value,
                 "The source and the destination buffers are required to have the same dimensionality!");
             static_assert(
-                std::is_same<dim::DimT<TBufDst>, dim::DimT<TExtents>>::value,
+                dim::DimT<TBufDst>::value == dim::DimT<TExtents>::value,
                 "The destination buffer and the extents are required to have the same dimensionality!");
             static_assert(
                 std::is_same<ElemT<TBufDst>, ElemT<TBufSrc>>::value,
@@ -363,10 +363,10 @@ namespace alpaka
         -> void
         {
             static_assert(
-                std::is_same<dim::DimT<TBufDst>, dim::DimT<TBufSrc>>::value,
+                dim::DimT<TBufDst>::value == dim::DimT<TBufSrc>::value,
                 "The source and the destination buffers are required to have the same dimensionality!");
             static_assert(
-                std::is_same<dim::DimT<TBufDst>, dim::DimT<TExtents>>::value,
+                dim::DimT<TBufDst>::value == dim::DimT<TExtents>::value,
                 "The destination buffer and the extents are required to have the same dimensionality!");
             static_assert(
                 std::is_same<ElemT<TBufDst>, ElemT<TBufSrc>>::value,

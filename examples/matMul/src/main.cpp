@@ -306,10 +306,11 @@ struct MatMulTester
         // Instead we use BufPlainPtrWrapper to wrap the data.
         using MemBufWrapper = alpaka::mem::BufPlainPtrWrapper<
             alpaka::mem::SpaceHost,
+            alpaka::dim::Dim2,
             std::uint32_t,
-            alpaka::dim::Dim2>;
-        MemBufWrapper memBufAHost(vuiA.data(), v2uiExtentsA);
-        MemBufWrapper memBufBHost(vuiB.data(), v2uiExtentsB);
+            decltype(devHost)>;
+        MemBufWrapper memBufAHost(vuiA.data(), devHost, v2uiExtentsA);
+        MemBufWrapper memBufBHost(vuiB.data(), devHost, v2uiExtentsB);
 
         // Allocate C and set it to zero.
         auto memBufCHost(alpaka::mem::alloc<std::uint32_t>(devHost, v2uiExtentsC));

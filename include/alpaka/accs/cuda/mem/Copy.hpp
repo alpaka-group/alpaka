@@ -115,10 +115,10 @@ namespace alpaka
                         ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                         static_assert(
-                            std::is_same<dim::DimT<TBufDst>, dim::DimT<TBufSrc>>::value,
+                            dim::DimT<TBufDst>::value == dim::DimT<TBufSrc>::value,
                             "The source and the destination buffers are required to have the same dimensionality!");
                         static_assert(
-                            std::is_same<dim::DimT<TBufDst>, dim::DimT<TExtents>>::value,
+                            dim::DimT<TBufDst>::value == dim::DimT<TExtents>::value,
                             "The destination buffer and the extents are required to have the same dimensionality!");
                         static_assert(
                             std::is_same<mem::ElemT<TBufDst>, mem::ElemT<TBufSrc>>::value,
@@ -171,10 +171,10 @@ namespace alpaka
                         ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                         static_assert(
-                            std::is_same<dim::DimT<TBufDst>, dim::DimT<TBufSrc>>::value,
+                            dim::DimT<TBufDst>::value == dim::DimT<TBufSrc>::value,
                             "The source and the destination buffers are required to have the same dimensionality!");
                         static_assert(
-                            std::is_same<dim::DimT<TBufDst>, dim::DimT<TExtents>>::value,
+                            dim::DimT<TBufDst>::value == dim::DimT<TExtents>::value,
                             "The destination buffer and the extents are required to have the same dimensionality!");
                         static_assert(
                             std::is_same<mem::ElemT<TBufDst>, mem::ElemT<TBufSrc>>::value,
@@ -235,10 +235,10 @@ namespace alpaka
                         ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                         static_assert(
-                            std::is_same<dim::DimT<TBufDst>, dim::DimT<TBufSrc>>::value,
+                            dim::DimT<TBufDst>::value == dim::DimT<TBufSrc>::value,
                             "The source and the destination buffers are required to have the same dimensionality!");
                         static_assert(
-                            std::is_same<dim::DimT<TBufDst>, dim::DimT<TExtents>>::value,
+                            dim::DimT<TBufDst>::value == dim::DimT<TExtents>::value,
                             "The destination buffer and the extents are required to have the same dimensionality!");
                         static_assert(
                             std::is_same<mem::ElemT<TBufDst>, mem::ElemT<TBufSrc>>::value,
@@ -304,10 +304,10 @@ namespace alpaka
                         ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                         static_assert(
-                            std::is_same<dim::DimT<TBufDst>, dim::DimT<TBufSrc>>::value,
+                            dim::DimT<TBufDst>::value == dim::DimT<TBufSrc>::value,
                             "The source and the destination buffers are required to have the same dimensionality!");
                         static_assert(
-                            std::is_same<dim::DimT<TBufDst>, dim::DimT<TExtents>>::value,
+                            dim::DimT<TBufDst>::value == dim::DimT<TExtents>::value,
                             "The destination buffer and the extents are required to have the same dimensionality!");
                         static_assert(
                             std::is_same<mem::ElemT<TBufDst>, mem::ElemT<TBufSrc>>::value,
@@ -447,10 +447,10 @@ namespace alpaka
                         ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                         static_assert(
-                            std::is_same<dim::DimT<TBufDst>, dim::DimT<TBufSrc>>::value,
+                            dim::DimT<TBufDst>::value == dim::DimT<TBufSrc>::value,
                             "The source and the destination buffers are required to have the same dimensionality!");
                         static_assert(
-                            std::is_same<dim::DimT<TBufDst>, dim::DimT<TExtents>>::value,
+                            dim::DimT<TBufDst>::value == dim::DimT<TExtents>::value,
                             "The destination buffer and the extents are required to have the same dimensionality!");
                         static_assert(
                             std::is_same<mem::ElemT<TBufDst>, mem::ElemT<TBufSrc>>::value,
@@ -548,10 +548,10 @@ namespace alpaka
                         ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                         static_assert(
-                            std::is_same<dim::DimT<TBufDst>, dim::DimT<TBufSrc>>::value,
+                            dim::DimT<TBufDst>::value == dim::DimT<TBufSrc>::value,
                             "The source and the destination buffers are required to have the same dimensionality!");
                         static_assert(
-                            std::is_same<dim::DimT<TBufDst>, dim::DimT<TExtents>>::value,
+                            dim::DimT<TBufDst>::value == dim::DimT<TExtents>::value,
                             "The destination buffer and the extents are required to have the same dimensionality!");
                         static_assert(
                             std::is_same<mem::ElemT<TBufDst>, mem::ElemT<TBufSrc>>::value,
@@ -605,10 +605,10 @@ namespace alpaka
                         ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                         static_assert(
-                            std::is_same<dim::DimT<TBufDst>, dim::DimT<TBufSrc>>::value,
+                            dim::DimT<TBufDst>::value == dim::DimT<TBufSrc>::value,
                             "The source and the destination buffers are required to have the same dimensionality!");
                         static_assert(
-                            std::is_same<dim::DimT<TBufDst>, dim::DimT<TExtents>>::value,
+                            dim::DimT<TBufDst>::value == dim::DimT<TExtents>::value,
                             "The destination buffer and the extents are required to have the same dimensionality!");
                         static_assert(
                             std::is_same<mem::ElemT<TBufDst>, mem::ElemT<TBufSrc>>::value,
@@ -726,10 +726,10 @@ namespace alpaka
                         ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                         static_assert(
-                            std::is_same<dim::DimT<TBufDst>, dim::DimT<TBufSrc>>::value,
+                            dim::DimT<TBufDst>::value == dim::DimT<TBufSrc>::value,
                             "The source and the destination buffers are required to have the same dimensionality!");
                         static_assert(
-                            std::is_same<dim::DimT<TBufDst>, dim::DimT<TExtents>>::value,
+                            dim::DimT<TBufDst>::value == dim::DimT<TExtents>::value,
                             "The destination buffer and the extents are required to have the same dimensionality!");
                         static_assert(
                             std::is_same<mem::ElemT<TBufDst>, mem::ElemT<TBufSrc>>::value,

@@ -29,12 +29,27 @@
 
 #include <alpaka/host/mem/Space.hpp>        // SpaceHost
 #include <alpaka/accs/cuda/mem/Space.hpp>   // SpaceCuda
+#include <alpaka/host/Dev.hpp>              // host::getDev
 
 #include <boost/predef.h>                   // workarounds
 
 #include <type_traits>                      // std::enable_if, std::is_array, std::extent
 #include <vector>                           // std::vector
 #include <array>                            // std::array
+
+namespace alpaka
+{
+    namespace accs
+    {
+        namespace serial
+        {
+            namespace detail
+            {
+                class DevSerial;
+            }
+        }
+    }
+}
 
 namespace alpaka
 {
@@ -46,6 +61,38 @@ namespace alpaka
     //-----------------------------------------------------------------------------
     namespace traits
     {
+        namespace dev
+        {
+            //#############################################################################
+            //! The fixed size array device type trait specialization.
+            //#############################################################################
+            template<
+                typename TFixedSizeArray>
+            struct DevType<
+                TFixedSizeArray,
+                typename std::enable_if<std::is_array<TFixedSizeArray>::value>::type>
+            {
+                using type = accs::serial::detail::DevSerial;
+            };
+
+            //#############################################################################
+            //! The fixed size array device get trait specialization.
+            //#############################################################################
+            template<
+                typename TFixedSizeArray>
+            struct GetDev<
+                TFixedSizeArray,
+                typename std::enable_if<std::is_array<TFixedSizeArray>::value>::type>
+            {
+                ALPAKA_FCT_HOST static auto getDev(
+                    TFixedSizeArray const & buf)
+                    -> accs::serial::detail::DevSerial
+                {
+                    return alpaka::host::getDev();
+                }
+            };
+        }
+
         namespace dim
         {
             //#############################################################################
@@ -327,6 +374,38 @@ namespace alpaka
     //-----------------------------------------------------------------------------
     namespace traits
     {
+        namespace dev
+        {
+            //#############################################################################
+            //! The std::array device type trait specialization.
+            //#############################################################################
+            template<
+                typename TElem,
+                UInt TuiSize>
+            struct DevType<
+                std::array<TElem, TuiSize>>
+            {
+                using type = accs::serial::detail::DevSerial;
+            };
+
+            //#############################################################################
+            //! The std::array device get trait specialization.
+            //#############################################################################
+            template<
+                typename TElem,
+                UInt TuiSize>
+            struct GetDev<
+                std::array<TElem, TuiSize>>
+            {
+                ALPAKA_FCT_HOST static auto getDev(
+                    std::array<TElem, TuiSize> const & buf)
+                    -> accs::serial::detail::DevSerial
+                {
+                    return alpaka::host::getDev();
+                }
+            };
+        }
+
         namespace dim
         {
             //#############################################################################
@@ -511,10 +590,42 @@ namespace alpaka
     //-----------------------------------------------------------------------------
     namespace traits
     {
+        namespace dev
+        {
+            //#############################################################################
+            //! The std::vector device type trait specialization.
+            //#############################################################################
+            template<
+                typename TElem,
+                typename TAllocator>
+            struct DevType<
+                std::vector<TElem, TAllocator>>
+            {
+                using type = accs::serial::detail::DevSerial;
+            };
+
+            //#############################################################################
+            //! The std::vector device get trait specialization.
+            //#############################################################################
+            template<
+                typename TElem,
+                typename TAllocator>
+            struct GetDev<
+                std::vector<TElem, TAllocator>>
+            {
+                ALPAKA_FCT_HOST static auto getDev(
+                    std::vector<TElem, TAllocator> const & buf)
+                    -> accs::serial::detail::DevSerial
+                {
+                    return alpaka::host::getDev();
+                }
+            };
+        }
+
         namespace dim
         {
             //#############################################################################
-            //! The dimension getter trait.
+            //! The std::vector dimension getter trait specialization.
             //#############################################################################
             template<
                 typename TElem,
@@ -544,7 +655,7 @@ namespace alpaka
                     std::vector<TElem, TAllocator> const & extent)
                 -> Vec<1u>
                 {
-                    return {extent.size()};
+                    return {static_cast<Vec<1u>::Val>(extent.size())};
                 }
             };
 
@@ -561,7 +672,7 @@ namespace alpaka
                     std::vector<TElem, TAllocator> const & extent)
                 -> UInt
                 {
-                    return extent.size();
+                    return static_cast<UInt>(extent.size());
                 }
             };
         }
@@ -680,7 +791,7 @@ namespace alpaka
                     std::vector<TElem, TAllocator> const & pitch)
                 -> UInt
                 {
-                    return sizeof(TElem) * pitch.size();
+                    return static_cast<UInt>(sizeof(TElem) * pitch.size());
                 }
             };
         }

@@ -53,9 +53,20 @@ namespace alpaka
         //#############################################################################
         //! The dimension getter trait alias template to remove the ::type.
         //#############################################################################
+#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
+        template<
+            typename T>
+        struct DimT
+        {
+            using type = typename traits::dim::DimType<T>::type;
+            static const UInt value = type::value;
+        };
+#else
         template<
             typename T>
         using DimT = typename traits::dim::DimType<T>::type;
+#endif
+
 
         //-----------------------------------------------------------------------------
         //! \return The dimension.

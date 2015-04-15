@@ -76,7 +76,7 @@ namespace alpaka
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                         static_assert(
-                            std::is_same<TDim, dim::DimT<TExtents>>::value,
+                            TDim::value == dim::DimT<TExtents>::value,
                             "The extents are required to have the same dimensionality as the BufCuda!");
                     }
 

@@ -205,7 +205,7 @@ struct SharedMemTester
         SharedMemKernel<TuiNumUselessWork> kernel(42);
 
         // Get the host device.
-        auto const devHost(alpaka::host::getDev());
+        //auto const devHost(alpaka::host::getDev());
 
         // Select a device to execute on.
         alpaka::dev::DevT<TAcc> const devAcc(
@@ -237,10 +237,10 @@ struct SharedMemTester
         auto exec(alpaka::exec::create<TAcc>(workDiv, stream));
         // Profile the kernel execution.
         profileKernelExec(
-		    exec, 
+            exec, 
             kernel,
-		    alpaka::mem::getNativePtr(blockRetValsAcc),
-		    uiMult2);
+            alpaka::mem::getNativePtr(blockRetValsAcc),
+            uiMult2);
 
         // Copy back the result.
         alpaka::mem::copy(vuiBlockRetVals, blockRetValsAcc, uiSizeElements);

@@ -64,7 +64,7 @@ namespace alpaka
                     using Elem = alpaka::mem::ElemT<TBuf>;
 
                     static_assert(
-                        std::is_same<alpaka::dim::DimT<TBuf>, alpaka::dim::DimT<TExtents>>::value,
+                        alpaka::dim::DimT<TBuf>::value == alpaka::dim::DimT<TExtents>::value,
                         "The destination buffer and the extents are required to have the same dimensionality!");
 
                     auto const uiExtentWidth(alpaka::extent::getWidth(extents));
