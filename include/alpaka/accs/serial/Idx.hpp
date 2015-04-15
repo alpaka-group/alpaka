@@ -69,7 +69,7 @@ namespace alpaka
                     ALPAKA_FCT_ACC_NO_CUDA auto getIdxBlockThread() const
                     -> Vec<3u>
                     {
-                        return Vec<3u>(0u, 0u, 0u);
+                        return Vec<3u>::zeros();
                     }
                     //-----------------------------------------------------------------------------
                     //! \return The block index of the currently executed thread.

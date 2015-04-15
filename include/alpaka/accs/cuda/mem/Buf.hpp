@@ -265,7 +265,7 @@ namespace alpaka
                     accs::cuda::detail::BufCuda<TElem, TDim> const &)
                 -> Vec<TDim::value>
                 {
-                    return Vec<TDim::value>();
+                    return Vec<TDim::value>::zero();
                 }
             };
         }

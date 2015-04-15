@@ -96,7 +96,7 @@ namespace alpaka
                             WorkDivThreads(workDiv),
                             IdxThreads(m_mThreadsToIndices, m_v3uiGridBlockIdx),
                             AtomicThreads(),
-                            m_v3uiGridBlockIdx(0u),
+                            m_v3uiGridBlockIdx(Vec<3u>::zeros()),
                             m_uiNumThreadsPerBlock(workdiv::getWorkDiv<Block, Threads, dim::Dim1>(workDiv)[0u])
                     {}
 
@@ -408,7 +408,7 @@ namespace alpaka
                                 for(this->AccThreads::m_v3uiGridBlockIdx[0] = 0; this->AccThreads::m_v3uiGridBlockIdx[0]<v3uiGridBlockExtents[0]; ++this->AccThreads::m_v3uiGridBlockIdx[0])
                                 {
                                     // Execute the threads in parallel.
-                                    Vec<3u> v3uiBlockThreadIdx(0u);
+                                    Vec<3u> v3uiBlockThreadIdx(Vec<3u>::zeros());
                                     for(v3uiBlockThreadIdx[2] = 0; v3uiBlockThreadIdx[2]<v3uiBlockThreadExtents[2]; ++v3uiBlockThreadIdx[2])
                                     {
                                         for(v3uiBlockThreadIdx[1] = 0; v3uiBlockThreadIdx[1]<v3uiBlockThreadExtents[1]; ++v3uiBlockThreadIdx[1])

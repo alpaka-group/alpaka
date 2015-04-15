@@ -249,7 +249,7 @@ namespace alpaka
                     TFixedSizeArray const &)
                 -> Vec<alpaka::dim::DimT<TFixedSizeArray>::value>
                 {
-                    return Vec<alpaka::dim::DimT<TFixedSizeArray>::value>(0u);
+                    return Vec<alpaka::dim::DimT<TFixedSizeArray>::value>::zeros();
                 }
             };
         }
@@ -483,7 +483,7 @@ namespace alpaka
                     std::array<TElem, TuiSize> const &)
                 -> Vec<1u>
                 {
-                    return Vec<1u>(0u);
+                    return Vec<1u>::zeros();
                 }
             };
         }
@@ -695,7 +695,7 @@ namespace alpaka
                     std::vector<TElem, TAllocator> const &)
                 -> Vec<1u>
                 {
-                    return Vec<1u>(0u);
+                    return Vec<1u>::zeros();
                 }
             };
         }

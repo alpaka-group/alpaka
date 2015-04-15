@@ -94,7 +94,7 @@ namespace alpaka
                             WorkDivFibers(workDiv),
                             IdxFibers(m_mFibersToIndices, m_v3uiGridBlockIdx),
                             AtomicFibers(),
-                            m_v3uiGridBlockIdx(0u),
+                            m_v3uiGridBlockIdx(Vec<3u>::zeros()),
                             m_uiNumThreadsPerBlock(workdiv::getWorkDiv<Block, Threads, dim::Dim1>(workDiv)[0u])
                     {}
 
@@ -400,7 +400,7 @@ namespace alpaka
                                 for(this->AccFibers::m_v3uiGridBlockIdx[0] = 0; this->AccFibers::m_v3uiGridBlockIdx[0]<v3uiGridBlockExtents[0]; ++this->AccFibers::m_v3uiGridBlockIdx[0])
                                 {
                                     // Execute the block thread in parallel using cooperative multi-threading.
-                                    Vec<3u> v3uiBlockThreadIdx(0u);
+                                    Vec<3u> v3uiBlockThreadIdx(Vec<3u>::zeros());
                                     for(v3uiBlockThreadIdx[2] = 0; v3uiBlockThreadIdx[2]<v3uiBlockThreadExtents[2]; ++v3uiBlockThreadIdx[2])
                                     {
                                         for(v3uiBlockThreadIdx[1] = 0; v3uiBlockThreadIdx[1]<v3uiBlockThreadExtents[1]; ++v3uiBlockThreadIdx[1])

@@ -94,7 +94,7 @@ namespace alpaka
                             WorkDivSerial(workDiv),
                             IdxSerial(m_v3uiGridBlockIdx),
                             AtomicSerial(),
-                            m_v3uiGridBlockIdx(0u)
+                            m_v3uiGridBlockIdx(Vec<3u>::zeros())
                     {}
 
                 public:

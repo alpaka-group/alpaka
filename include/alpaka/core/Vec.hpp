@@ -29,8 +29,6 @@
 #include <alpaka/traits/Extent.hpp> // traits::getWidth, ...
 #include <alpaka/traits/Offset.hpp> // traits::getOffsetX, ...
 
-#include <boost/mpl/and.hpp>        // boost::mpl::and_
-//#include <boost/type_traits/is_convertible.hpp>
 #include <boost/predef.h>           // workarounds
 
 #include <cstdint>                  // std::uint32_t
@@ -55,52 +53,36 @@ namespace alpaka
         static const UInt s_uiDim = TuiDim;
         using Val = TVal;
 
+    private:
+        //! A sequence of integers from 0 to TuiDim-1.
+        //! This can be used to write compile time indexing algorithms.
+#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
+        using IdxSequence = typename alpaka::detail::make_index_sequence<TuiDim>::type;
+#else
+        using IdxSequence = alpaka::detail::make_index_sequence<TuiDim>;
+#endif
+
     public:
         //-----------------------------------------------------------------------------
-        //! Default-constructor.
-        //! Every value is set to zero.
+        // NOTE: No default constructor!
         //-----------------------------------------------------------------------------
-        /*ALPAKA_FCT_HOST_ACC Vec()
-        {
-            for(UInt i(0); i<TuiDim; ++i)
-            {
-                m_auiData[i] = 0;
-            }
-        }*/
+
         //-----------------------------------------------------------------------------
-        //! Constructor.
-        //! \param val The value every entry is set to.
-        //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC Vec(
-            TVal const & val)
-        {
-            for(UInt i(0); i<TuiDim; ++i)
-            {
-                m_auiData[i] = val;
-            }
-        }
-        //-----------------------------------------------------------------------------
-        //! Value-constructor.
+        //! Value constructor.
         //! This constructor is only available if the number of parameters matches the vector size.
         //-----------------------------------------------------------------------------
         template<
-            typename TFirstArg,
             typename... TArgs,
-            typename = typename std::enable_if<
-                (sizeof...(TArgs) == (TuiDim-1))
-                && std::is_convertible<typename std::decay<TFirstArg>::type, TVal>::value
-                //&& boost::mpl::and_<boost::mpl::true_, boost::mpl::true_, std::is_convertible<typename std::decay<TArgs>::type, TVal>...>::value
-            >::type>
+            typename = typename std::enable_if<(sizeof...(TArgs) == (TuiDim))>::type>
         ALPAKA_FCT_HOST_ACC Vec(
-            TFirstArg && val,
-            TArgs && ... values)
+            TArgs && ... vals)
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 22609))   // MSVC does not compile the basic array initialization: "error C2536: 'alpaka::Vec<0x03>::alpaka::Vec<0x03>::m_auiData': cannot specify explicit initializer for arrays"
             :
-                m_auiData{std::forward<TFirstArg>(val), std::forward<TArgs>(values)...}
+                m_auiData{std::forward<TArgs>(vals)...}
 #endif
         {
 #if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 22609))
-            TVal auiData2[TuiDim] = {std::forward<TFirstArg>(val), std::forward<TArgs>(values)...};
+            TVal auiData2[TuiDim] = {std::forward<TArgs>(vals)...};
             for(UInt i(0); i<TuiDim; ++i)
             {
                 m_auiData[i] = auiData2[i];
@@ -108,7 +90,91 @@ namespace alpaka
 #endif
         }
         //-----------------------------------------------------------------------------
-        //! Extents-constructor.
+        //! Zero value constructor.
+        //-----------------------------------------------------------------------------
+        ALPAKA_FCT_HOST_ACC static auto zeros()
+        -> Vec<TuiDim, TVal>
+        {
+            return all(static_cast<TVal>(0));
+        }
+        //-----------------------------------------------------------------------------
+        //! One value constructor.
+        //-----------------------------------------------------------------------------
+        ALPAKA_FCT_HOST_ACC static auto ones()
+            -> Vec<TuiDim, TVal>
+        {
+            return all(static_cast<TVal>(1));
+        }
+        //-----------------------------------------------------------------------------
+        //! \brief Single value constructor.
+        //!
+        //! Creates a vector with all values set to val.
+        //! \param val The initial value.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TVal2>
+        ALPAKA_FCT_HOST_ACC static auto all(
+            TVal2 && val)
+        -> Vec<TuiDim, TVal>
+        {
+            return create(
+                &Vec<TuiDim, TVal>::createSingleVal<TVal2>, 
+                std::forward<TVal2>(val));
+        }
+    private:
+        //-----------------------------------------------------------------------------
+        //! A Function that returns the given value.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TVal2>
+        ALPAKA_FCT_HOST_ACC static auto createSingleVal(
+            std::size_t const &,
+            TVal2 && val)
+        -> TVal2
+        {
+            return val;
+        }
+    public:
+        //-----------------------------------------------------------------------------
+        //! Creator using func(idx, args...) to initialize all values of the vector.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TFunctor,
+            typename... TArgs>
+        ALPAKA_FCT_HOST_ACC static auto create(
+            TFunctor && func,
+            TArgs && ... args)
+        -> Vec<TuiDim, TVal>
+        {
+            return createHelper(
+                func,
+                IdxSequence(),
+                std::forward<TArgs>(args)...);
+        }
+    private:
+        //-----------------------------------------------------------------------------
+        //! Single value constructor helper.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TFunctor,
+            typename... TArgs,
+            std::size_t... TIndices>
+        ALPAKA_FCT_HOST_ACC static auto createHelper(
+            TFunctor && func,
+#if !BOOST_COMP_MSVC     // MSVC 190022512 introduced a new bug with alias templates: error C3520: 'TIndices': parameter pack must be expanded in this context
+            detail::index_sequence<TIndices...> const &,
+#else
+            detail::integer_sequence<std::size_t, TIndices...> const &,
+#endif
+            TArgs && ... args)
+        -> Vec<TuiDim, TVal>
+        {
+            return Vec<TuiDim, TVal>(
+                (std::forward<TFunctor>(func)(TIndices, std::forward<TArgs>(args)...))...);
+        }
+    public:
+        //-----------------------------------------------------------------------------
+        //! Extents constructor.
         //-----------------------------------------------------------------------------
         template<
             typename TExtents,
@@ -122,7 +188,7 @@ namespace alpaka
                 extent::getWidth(extents));
         }
         //-----------------------------------------------------------------------------
-        //! Extents-constructor.
+        //! Extents constructor.
         //-----------------------------------------------------------------------------
         template<
             typename TExtents,
@@ -137,7 +203,7 @@ namespace alpaka
                 extent::getHeight(extents));
         }
         //-----------------------------------------------------------------------------
-        //! Extents-constructor.
+        //! Extents constructor.
         //-----------------------------------------------------------------------------
         template<
             typename TExtents,
@@ -153,7 +219,7 @@ namespace alpaka
                 extent::getDepth(extents));
         }
         //-----------------------------------------------------------------------------
-        //! Offsets-constructor.
+        //! Offsets constructor.
         //-----------------------------------------------------------------------------
         template<
             typename TOffsets,
@@ -167,7 +233,7 @@ namespace alpaka
                 offset::getOffsetX(offsets));
         }
         //-----------------------------------------------------------------------------
-        //! Offsets-constructor.
+        //! Offsets constructor.
         //-----------------------------------------------------------------------------
         template<
             typename TOffsets,
@@ -182,7 +248,7 @@ namespace alpaka
                 offset::getOffsetY(offsets));
         }
         //-----------------------------------------------------------------------------
-        //! Offsets-constructor.
+        //! Offsets constructor.
         //-----------------------------------------------------------------------------
         template<
             typename TOffsets,
@@ -237,14 +303,17 @@ namespace alpaka
         ALPAKA_FCT_HOST_ACC auto subVec() const
         -> Vec<TuiSubDim, TVal>
         {
+            //! A sequence of integers from 0 to TuiDim-1.
+            //! This can be used to write compile time indexing algorithms.
+#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
+            using IdxSubSequence = typename alpaka::detail::make_index_sequence<TuiSubDim>::type;
+#else
+            using IdxSubSequence = alpaka::detail::make_index_sequence<TuiSubDim>;
+#endif
+
             static_assert(TuiSubDim <= TuiDim, "The sub-vector has to be smaller (or same size) then the origin vector.");
 
-#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-            using IdxSequence = typename alpaka::detail::make_index_sequence<TuiSubDim>::type;
-#else
-            using IdxSequence = alpaka::detail::make_index_sequence<TuiSubDim>;
-#endif
-            return subVecFromIndices(IdxSequence());
+            return subVecFromIndices(IdxSubSequence());
         }
         //-----------------------------------------------------------------------------
         //! \return The sub-vector consisting of the elements specified by the indices.
@@ -356,12 +425,19 @@ namespace alpaka
         Vec<TuiDim, TVal> const & q)
     -> Vec<TuiDim, TVal>
     {
-        Vec<TuiDim, TVal> vRet(0u);
-        for(UInt i(0); i<TuiDim; ++i)
+        auto const add([](
+            std::size_t const & i,
+            Vec<TuiDim, TVal> const & p,
+            Vec<TuiDim, TVal> const & q)
+        -> TVal
         {
-            vRet[i] = p[i] + q[i];
-        }
-        return vRet;
+            return p[i] + q[i];
+        });
+
+        return Vec<TuiDim, TVal>::create(
+            add, 
+            p,
+            q);
     }
 
     //-----------------------------------------------------------------------------
@@ -375,12 +451,19 @@ namespace alpaka
         Vec<TuiDim, TVal> const & q)
     -> Vec<TuiDim, TVal>
     {
-        Vec<TuiDim, TVal> vRet(0u);
-        for(UInt i(0); i<TuiDim; ++i)
+        auto const mul([](
+            std::size_t const & i,
+            Vec<TuiDim, TVal> const & p,
+            Vec<TuiDim, TVal> const & q)
+        -> TVal
         {
-            vRet[i] = p[i] * q[i];
-        }
-        return vRet;
+            return p[i] * q[i];
+        });
+
+        return Vec<TuiDim, TVal>::create(
+            mul, 
+            p,
+            q);
     }
 
     //-----------------------------------------------------------------------------

@@ -95,7 +95,7 @@ namespace alpaka
                                 WorkDivOmp2(workDiv),
                                 IdxOmp2(m_v3uiGridBlockIdx),
                                 AtomicOmp2(),
-                                m_v3uiGridBlockIdx(0u)
+                                m_v3uiGridBlockIdx(Vec<3u>::zeros())
                         {}
 
                     public:

@@ -279,7 +279,7 @@ namespace alpaka
                     host::detail::BufHost<TDev, TElem, TDim> const &)
                 -> Vec<TDim::value>
                 {
-                    return Vec<TDim::value>();
+                    return Vec<TDim::value>::zeros();
                 }
             };
         }
