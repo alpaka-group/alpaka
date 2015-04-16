@@ -59,10 +59,10 @@ namespace alpaka
                 TElem * pMem,
                 TDev const & dev,
                 TExtents const & extents = TExtents()) :
-                    m_vExtentsElements(Vec<TDim::value>::fromExtents(extents)),
                     m_pMem(pMem),
-                    m_uiPitchBytes(extent::getWidth(extents) * sizeof(TElem)),
-                    m_Dev(dev)
+                    m_Dev(dev),
+                    m_vExtentsElements(Vec<TDim::value>::fromExtents(extents)),
+                    m_uiPitchBytes(extent::getWidth(extents) * sizeof(TElem))
             {}
 
             //-----------------------------------------------------------------------------
@@ -80,6 +80,33 @@ namespace alpaka
                     m_vExtentsElements(Vec<TDim::value>::fromExtents(extents)),
                     m_uiPitchBytes(uiPitch)
             {}
+
+            //-----------------------------------------------------------------------------
+            //! Copy constructor.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FCT_HOST_ACC BufPlainPtrWrapper(BufPlainPtrWrapper const &) = delete;
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
+            //-----------------------------------------------------------------------------
+            //! Move constructor.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FCT_HOST_ACC BufPlainPtrWrapper(BufPlainPtrWrapper &&) = default;
+#endif
+            //-----------------------------------------------------------------------------
+            //! Copy assignment.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FCT_HOST_ACC auto operator=(BufPlainPtrWrapper const &) -> BufPlainPtrWrapper & = delete;
+            //-----------------------------------------------------------------------------
+            //! Move assignment.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FCT_HOST_ACC auto operator=(BufPlainPtrWrapper &&) -> BufPlainPtrWrapper & = default;
+            //-----------------------------------------------------------------------------
+            //! Destructor.
+            //-----------------------------------------------------------------------------
+#if BOOST_COMP_INTEL
+            ALPAKA_FCT_HOST_ACC virtual ~BufPlainPtrWrapper() = default;
+#else
+            ALPAKA_FCT_HOST_ACC virtual ~BufPlainPtrWrapper() noexcept = default;
+#endif
 
         public:
             TElem * m_pMem;
@@ -121,7 +148,7 @@ namespace alpaka
             struct GetDev<
                 alpaka::mem::BufPlainPtrWrapper<TSpace, TDim, TElem, TDev>>
             {
-                ALPAKA_FCT_HOST static auto getDev(
+                ALPAKA_FCT_HOST_ACC static auto getDev(
                     alpaka::mem::BufPlainPtrWrapper<TSpace, TDim, TElem, TDev> const & buf)
                     -> TDev
                 {

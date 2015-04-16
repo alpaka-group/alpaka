@@ -10,15 +10,15 @@ language:
 os:
     - linux
 # Currently only available on request
-#    - osx  
+#    - osx
 
 ################################################################################
 #
 ################################################################################
-compiler: 
+compiler:
     - gcc
     - clang
-  
+
 ################################################################################
 # \TODO: Test full matrix:
 # ALPAKA_INTEGRATION_TEST                       : {ON}
@@ -31,7 +31,7 @@ compiler:
 # CMAKE_BUILD_TYPE                              : {DEBUG, RELEASE}
 # ALPAKA_DEBUG                                  : {0, 1, 2}
 # ALPAKA_THREADS_ENABLE                         : {ON, OFF}
-# ALPAKA_OPENMP_ENABLE                          : {ON, OFF}
+# ALPAKA_OPENMP2_ENABLE                          : {ON, OFF}
 #   [ON] OMP_NUM_THREADS                        : {1, 2, 3, 4}
 # ALPAKA_CUDA_ENABLE                            : {ON, OFF}
 #   [ON] ALPAKA_CUDA_VERSION                    : {7.0}
@@ -39,11 +39,10 @@ compiler:
 # And one analysis build
 # ALPAKA_ANALYSIS                               : {ON, OFF}
 ################################################################################
-env: 
+env:
     global:
-        - ALPAKA_INTEGRATION_TEST=ON
         - ALPAKA_THREADS_ENABLE=ON
-        - ALPAKA_OPENMP_ENABLE=ON
+        - ALPAKA_OPENMP2_ENABLE=ON
         - ALPAKA_FIBERS_ENABLE=ON
         - ALPAKA_CUDA_VERSION=7.0
         - ALPAKA_CLANG_LIBSTDCPP_VERSION=4.9
@@ -68,7 +67,7 @@ matrix:
 #    TODO: Exclusion does not work this way. Always the whole env:matrix: line is required.
 #        - os: osx
 #          env: ALPAKA_CUDA_ENABLE=ON
-        
+
     allow_failures:
         - compiler: clang
         - os: osx
@@ -91,16 +90,16 @@ before_install:
     - echo ${TRAVIS_REPO_SLUG}
     - echo ${TRAVIS_OS_NAME}
     - echo ${TRAVIS_TAG}
-    
+
     # g++ 4.8 / 4.9 / clang dependencies
     - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
- 
+
     # clang 3.5 / 3.6 / current
     - if [ "${CXX}" == "clang++" ] ;then sudo add-apt-repository -y 'deb http://llvm.org/apt/precise/ llvm-toolchain-precise-3.5 main' ;fi
     - if [ "${CXX}" == "clang++" ] ;then sudo add-apt-repository -y 'deb http://llvm.org/apt/precise/ llvm-toolchain-precise-3.6 main' ;fi
     - if [ "${CXX}" == "clang++" ] ;then sudo add-apt-repository -y 'deb http://llvm.org/apt/precise/ llvm-toolchain-precise main' ;fi
     - if [ "${CXX}" == "clang++" ] ;then wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key | sudo apt-key add - ;fi
-    
+
     # git
     - sudo add-apt-repository -y ppa:git-core/ppa
 
@@ -124,22 +123,22 @@ install:
 
     #-------------------------------------------------------------------------------
     # Get the curent gcc version.
-    - git --version 
+    - git --version
     - sudo apt-get install git
     - git --version
 
     #-------------------------------------------------------------------------------
     # gcc 4.6 is too old...
-    - if [ "${CXX}" == "g++" ] 
+    - if [ "${CXX}" == "g++" ]
       ;then
         sudo apt-get install g++-${ALPAKA_GCC_VER}
         && sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${ALPAKA_GCC_VER} 50
         && sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-${ALPAKA_GCC_VER} 50
       ;fi
     # Extract the version numbers.
-    - if [ "${CXX}" == "g++" ] 
-      ;then 
-        ALPAKA_GCC_VER_MAJOR=${ALPAKA_GCC_VER:0:1} 
+    - if [ "${CXX}" == "g++" ]
+      ;then
+        ALPAKA_GCC_VER_MAJOR=${ALPAKA_GCC_VER:0:1}
         && ALPAKA_GCC_VER_MINOR=${ALPAKA_GCC_VER:2:1}
         && echo ${ALPAKA_GCC_VER_MAJOR}
         && echo ${ALPAKA_GCC_VER_MINOR}
@@ -149,7 +148,7 @@ install:
     # Install clang.
     # We have to prepend /usr/bin to the path because else the preinstalled clang from usr/bin/local/ is used.
     - if [ "${CXX}" == "clang++" ]
-      ;then 
+      ;then
         sudo apt-get install libstdc++-${ALPAKA_CLANG_LIBSTDCPP_VERSION}-dev
         && sudo apt-get install clang-${ALPAKA_CLANG_VER}
         && sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-${ALPAKA_CLANG_VER} 50
@@ -159,25 +158,25 @@ install:
         && export PATH=/usr/bin:$PATH
       ;fi
     # Extract the version numbers.
-    - if [ "${CXX}" == "clang++" ] 
-      ;then 
-        ALPAKA_CLANG_VER_MAJOR=${ALPAKA_CLANG_VER:0:1} 
+    - if [ "${CXX}" == "clang++" ]
+      ;then
+        ALPAKA_CLANG_VER_MAJOR=${ALPAKA_CLANG_VER:0:1}
         && ALPAKA_CLANG_VER_MINOR=${ALPAKA_CLANG_VER:2:1}
         && echo ${ALPAKA_CLANG_VER_MAJOR}
         && echo ${ALPAKA_CLANG_VER_MINOR}
       ;fi
     # clang versions lower than 3.8 do not (currently) support OpenMP correctly.
     - if [ "${CXX}" == "clang++" ]
-      ;then 
+      ;then
         if (( (( ${ALPAKA_CLANG_VER_MAJOR} < 3 )) || ( (( ${ALPAKA_CLANG_VER_MAJOR} == 3 )) && (( ${ALPAKA_CLANG_VER_MINOR} < 8 )) ) ))
           ;then
-            export ALPAKA_OPENMP_ENABLE=OFF
-            && echo ALPAKA_OPENMP_ENABLE=${ALPAKA_OPENMP_ENABLE} because the clang version does not support it!
+            export ALPAKA_OPENMP2_ENABLE=OFF
+            && echo ALPAKA_OPENMP2_ENABLE=${ALPAKA_OPENMP2_ENABLE} because the clang version does not support it!
           ;fi
       ;fi
     # Old boost versions produce too much warnings when using clang so that the 4 MiB log is too short.
     - if [ "${CXX}" == "clang++" ]
-      ;then 
+      ;then
         if (( (( ${ALPAKA_CLANG_VER_MAJOR} < 3 )) || ( (( ${ALPAKA_CLANG_VER_MAJOR} == 3 )) && (( ${ALPAKA_CLANG_VER_MINOR} < 8 )) ) ))
           ;then
             export ALPAKA_BOOST_VER=1.57.0
@@ -188,8 +187,8 @@ install:
     #-------------------------------------------------------------------------------
     # Extract the CUDA version numbers.
     - if [ "${ALPAKA_CUDA_ENABLE}" == "ON" ]
-      ;then 
-        ALPAKA_CUDA_VER_MAJOR=${ALPAKA_CUDA_VERSION:0:1} 
+      ;then
+        ALPAKA_CUDA_VER_MAJOR=${ALPAKA_CUDA_VERSION:0:1}
         && ALPAKA_CUDA_VER_MINOR=${ALPAKA_CUDA_VERSION:2:1}
         && echo ${ALPAKA_CUDA_VER_MAJOR}
         && echo ${ALPAKA_CUDA_VER_MINOR}
@@ -197,12 +196,12 @@ install:
     # CUDA 7.0 does not support gcc > 4.9.2
     - if [ "${ALPAKA_CUDA_ENABLE}" == "ON" ]
       ;then
-        if [ "${CXX}" == "g++" ] 
-        ;then
+        if [ "${CXX}" == "g++" ]
+          ;then
             if (( (( ${ALPAKA_GCC_VER_MAJOR} > 4 ))  || ( (( ${ALPAKA_GCC_VER_MAJOR} == 4 )) && (( ${ALPAKA_GCC_VER_MINOR} > 9 )) ) ))
-              ;then 
+              ;then
                 if (( (( ${ALPAKA_CUDA_VER_MAJOR} == 7 )) && (( ${ALPAKA_CUDA_VER_MINOR} == 0 )) ))
-                  ;then 
+                  ;then
                     export ALPAKA_CUDA_ENABLE=OFF
                     && echo ALPAKA_CUDA_ENABLE=${ALPAKA_CUDA_ENABLE} because CUDA 7.0 does not support the gcc version!
                   ;fi
@@ -212,10 +211,10 @@ install:
     # clang is not a supported compiler for CUDA on linux
     - if [ "${ALPAKA_CUDA_ENABLE}" == "ON" ]
       ;then
-        if [ "${CXX}" == "clang++" ] 
-        ;then
+        if [ "${CXX}" == "clang++" ]
+          ;then
             if [ ${TRAVIS_OS_NAME} == "linux" ]
-              ;then 
+              ;then
                 export ALPAKA_CUDA_ENABLE=OFF
                 && echo ALPAKA_CUDA_ENABLE=${ALPAKA_CUDA_ENABLE} because clang is not a supported compiler for CUDA on linux!
               ;fi
@@ -232,7 +231,7 @@ install:
       ;fi
     # Install nvcc
     - if [ "${ALPAKA_CUDA_ENABLE}" == "ON" ]
-      ;then 
+      ;then
         ALPAKA_CUDA_PKG_FILE_NAME=cuda-repo-ubuntu1204-${ALPAKA_CUDA_VER_MAJOR}-${ALPAKA_CUDA_VER_MINOR}-local_${ALPAKA_CUDA_VERSION}-28_amd64.deb
         && wget http://developer.download.nvidia.com/compute/cuda/${ALPAKA_CUDA_VER_MAJOR}_${ALPAKA_CUDA_VER_MINOR}/Prod/local_installers/rpmdeb/${ALPAKA_CUDA_PKG_FILE_NAME}
         && sudo dpkg -i ${ALPAKA_CUDA_PKG_FILE_NAME}
@@ -243,7 +242,7 @@ install:
         && export LD_LIBRARY_PATH=/usr/local/cuda-${ALPAKA_CUDA_VERSION}/lib64:$LD_LIBRARY_PATH
         && sudo rm -f ${ALPAKA_CUDA_PKG_FILE_NAME}
       ;fi
-    # Currently we do not install CUDA fully: sudo apt-get -y install cuda 
+    # Currently we do not install CUDA fully: sudo apt-get -y install cuda
     # We only install the minimal packages. Because of our manual partial installation we have to create a symlink at /usr/local/cuda
 
     #-------------------------------------------------------------------------------
@@ -257,7 +256,7 @@ install:
     - echo ${ALPAKA_CMAKE_VER_MINOR}
     # NOTE: Older versions have to be built from source because CMake does not provide older x64 binaries.
     - if (( (( ${ALPAKA_CMAKE_VER_MAJOR} < 3 ))  || ( (( ${ALPAKA_CMAKE_VER_MAJOR} == 3 )) && (( ${ALPAKA_CMAKE_VER_MINOR} < 1 )) ) ))
-      ;then 
+      ;then
         ALPAKA_CMAKE_PKG_FILE_NAME=cmake-${ALPAKA_CMAKE_VER}
         && wget http://www.cmake.org/files/v${ALPAKA_CMAKE_VER_MAJOR}.${ALPAKA_CMAKE_VER_MINOR}/${ALPAKA_CMAKE_PKG_FILE_NAME}.tar.gz
         && tar -xzf ${ALPAKA_CMAKE_PKG_FILE_NAME}.tar.gz
@@ -272,9 +271,6 @@ install:
         && sudo cp -fR cmake-${ALPAKA_CMAKE_VER}-Linux-x86_64/* /usr
         && sudo rm -rf ${ALPAKA_CMAKE_PKG_FILE_NAME}.tar.gz ${ALPAKA_CMAKE_PKG_FILE_NAME}
       ;fi
-      
-    
-    
 
     #-------------------------------------------------------------------------------
     # Clone boost.
@@ -311,9 +307,9 @@ install:
     - echo ${ALPAKA_BOOST_LIB_DIR}
     - cd ../
     - cd boost/
-    # Clang is not supported by the FindBoost script. 
+    # Clang is not supported by the FindBoost script.
     - if [ "${CXX}" == "clang++" ]
-      ;then 
+      ;then
         export ALPAKA_BOOST_COMPILER=-clang${ALPAKA_CLANG_VER_MAJOR}${ALPAKA_CLANG_VER_MINOR}
         && echo ${ALPAKA_BOOST_COMPILER}
       ;fi
@@ -349,7 +345,7 @@ before_script:
     - ${CXX} -v
 
     - if [ "${ALPAKA_CUDA_ENABLE}" == "ON" ]
-      ;then 
+      ;then
         which nvcc
         && nvcc -V
       ;fi
@@ -369,7 +365,7 @@ script:
     - if [ "${ALPAKA_ANALYSIS}" == "ON" ] ;then grep -r TODO * ;fi
 
     #-------------------------------------------------------------------------------
-    # Build and execute all tests. 
+    # Build and execute all tests.
     - cd examples/
 
     #-------------------------------------------------------------------------------
@@ -378,13 +374,13 @@ script:
     # Once only with errors returning a failure on error.
     #- if [ "${ALPAKA_ANALYSIS}" == "ON" ] ;then cppcheck --force --verbose --error-exitcode=1 -j2 vectorAdd/src/ matMul/src/ sharedMem/src/ mandelbrot/src/ ;fi
     # Once with warnings but no failure return code.
-    #- if [ "${ALPAKA_ANALYSIS}" == "ON" ] ;then cppcheck --force --verbose --enable=all -j2 vectorAdd/src/ matMul/src/ sharedMem/src/ mandelbrot/src/ ;fi	  
+    #- if [ "${ALPAKA_ANALYSIS}" == "ON" ] ;then cppcheck --force --verbose --enable=all -j2 vectorAdd/src/ matMul/src/ sharedMem/src/ mandelbrot/src/ ;fi	
 
     #-------------------------------------------------------------------------------
     # analysis
     #- if [ "${ALPAKA_ANALYSIS}" == "ON" -a "${CXX}" == "clang++" ] ;then export CCC_CC=clang ;fi
     #- if [ "${ALPAKA_ANALYSIS}" == "ON" -a "${CXX}" == "clang++" ] ;then export CCC_CXX=clang++ ;fi
-    #- if [ "${ALPAKA_ANALYSIS}" == "ON" -a "${CXX}" == "clang++" ] 
+    #- if [ "${ALPAKA_ANALYSIS}" == "ON" -a "${CXX}" == "clang++" ]
     #  ;then
     #    cd mandelbrot/
     #    && mkdir build/
@@ -392,13 +388,13 @@ script:
     #    && mkdir analyze/
     #    && cd analyze/
     #    && scan-build -h
-    #    && scan-build -analyze-headers cmake 
-    #      -G "Unix Makefiles" 
-    #      -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang 
-    #      -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} 
-    #      -DBOOST_ROOT="${ALPAKA_BOOST_ROOT_DIR}" -DBOOST_LIBRARYDIR="${ALPAKA_BOOST_LIB_DIR}" -DBoost_COMPILER=${ALPAKA_BOOST_COMPILER} 
-    #      -DALPAKA_THREADS_ENABLE=${ALPAKA_THREADS_ENABLE} -DALPAKA_FIBERS_ENABLE=${ALPAKA_FIBERS_ENABLE} -DALPAKA_OPENMP_ENABLE=${ALPAKA_OPENMP_ENABLE} -DALPAKA_CUDA_ENABLE=${ALPAKA_CUDA_ENABLE} 
-    #      -DALPAKA_DEBUG=${ALPAKA_DEBUG} -DALPAKA_INTEGRATION_TEST=${ALPAKA_INTEGRATION_TEST} -DALPAKA_CUDA_VERSION=${ALPAKA_CUDA_VERSION} 
+    #    && scan-build -analyze-headers cmake
+    #      -G "Unix Makefiles"
+    #      -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang
+    #      -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+    #      -DBOOST_ROOT="${ALPAKA_BOOST_ROOT_DIR}" -DBOOST_LIBRARYDIR="${ALPAKA_BOOST_LIB_DIR}" -DBoost_COMPILER=${ALPAKA_BOOST_COMPILER} -DBoost_USE_STATIC_LIBS=ON -DBoost_USE_MULTITHREADED=ON -DBoost_USE_STATIC_RUNTIME=OFF
+    #      -DALPAKA_THREADS_ENABLE=${ALPAKA_THREADS_ENABLE} -DALPAKA_FIBERS_ENABLE=${ALPAKA_FIBERS_ENABLE} -DALPAKA_OPENMP2_ENABLE=${ALPAKA_OPENMP2_ENABLE} -DALPAKA_CUDA_ENABLE=${ALPAKA_CUDA_ENABLE}
+    #      -DALPAKA_DEBUG=${ALPAKA_DEBUG} -DALPAKA_INTEGRATION_TEST=ON -DALPAKA_CUDA_VERSION=${ALPAKA_CUDA_VERSION}
     #      "../../"
     #    && scan-build -analyze-headers --status-bugs make VERBOSE=1
     #    && cd ../../../
@@ -410,15 +406,15 @@ script:
     - cd build/
     - mkdir make/
     - cd make/
-    - cmake -G "Unix Makefiles" 
-      -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} 
-      -DBOOST_ROOT="${ALPAKA_BOOST_ROOT_DIR}" -DBOOST_LIBRARYDIR="${ALPAKA_BOOST_LIB_DIR}" -DBoost_COMPILER=${ALPAKA_BOOST_COMPILER} 
-      -DALPAKA_THREADS_ENABLE=${ALPAKA_THREADS_ENABLE} -DALPAKA_FIBERS_ENABLE=${ALPAKA_FIBERS_ENABLE} -DALPAKA_OPENMP_ENABLE=${ALPAKA_OPENMP_ENABLE} -DALPAKA_CUDA_ENABLE=${ALPAKA_CUDA_ENABLE} 
-      -DALPAKA_DEBUG=${ALPAKA_DEBUG} -DALPAKA_INTEGRATION_TEST=${ALPAKA_INTEGRATION_TEST} -DALPAKA_CUDA_VERSION=${ALPAKA_CUDA_VERSION} 
+    - cmake -G "Unix Makefiles"
+      -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+      -DBOOST_ROOT="${ALPAKA_BOOST_ROOT_DIR}" -DBOOST_LIBRARYDIR="${ALPAKA_BOOST_LIB_DIR}" -DBoost_COMPILER=${ALPAKA_BOOST_COMPILER} -DBoost_USE_STATIC_LIBS=ON -DBoost_USE_MULTITHREADED=ON -DBoost_USE_STATIC_RUNTIME=OFF
+      -DALPAKA_THREADS_ENABLE=${ALPAKA_THREADS_ENABLE} -DALPAKA_FIBERS_ENABLE=${ALPAKA_FIBERS_ENABLE} -DALPAKA_OPENMP2_ENABLE=${ALPAKA_OPENMP2_ENABLE} -DALPAKA_CUDA_ENABLE=${ALPAKA_CUDA_ENABLE}
+      -DALPAKA_DEBUG=${ALPAKA_DEBUG} -DALPAKA_INTEGRATION_TEST=ON -DALPAKA_CUDA_VERSION=${ALPAKA_CUDA_VERSION}
       "../../"
     - make VERBOSE=1
     - if [ "${ALPAKA_CUDA_ENABLE}" == "OFF" ]
-      ;then 
+      ;then
         ./mandelbrot
       ;fi
     - cd ../../../
@@ -430,14 +426,14 @@ script:
     - mkdir make/
     - cd make/
     - cmake -G "Unix Makefiles"
-      -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} 
-      -DBOOST_ROOT="${ALPAKA_BOOST_ROOT_DIR}" -DBOOST_LIBRARYDIR="${ALPAKA_BOOST_LIB_DIR}" -DBoost_COMPILER=${ALPAKA_BOOST_COMPILER} 
-      -DALPAKA_THREADS_ENABLE=${ALPAKA_THREADS_ENABLE} -DALPAKA_FIBERS_ENABLE=${ALPAKA_FIBERS_ENABLE} -DALPAKA_OPENMP_ENABLE=${ALPAKA_OPENMP_ENABLE} -DALPAKA_CUDA_ENABLE=${ALPAKA_CUDA_ENABLE} 
-      -DALPAKA_DEBUG=${ALPAKA_DEBUG} -DALPAKA_INTEGRATION_TEST=${ALPAKA_INTEGRATION_TEST} -DALPAKA_CUDA_VERSION=${ALPAKA_CUDA_VERSION} 
+      -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+      -DBOOST_ROOT="${ALPAKA_BOOST_ROOT_DIR}" -DBOOST_LIBRARYDIR="${ALPAKA_BOOST_LIB_DIR}" -DBoost_COMPILER=${ALPAKA_BOOST_COMPILER} -DBoost_USE_STATIC_LIBS=ON -DBoost_USE_MULTITHREADED=ON -DBoost_USE_STATIC_RUNTIME=OFF
+      -DALPAKA_THREADS_ENABLE=${ALPAKA_THREADS_ENABLE} -DALPAKA_FIBERS_ENABLE=${ALPAKA_FIBERS_ENABLE} -DALPAKA_OPENMP2_ENABLE=${ALPAKA_OPENMP2_ENABLE} -DALPAKA_CUDA_ENABLE=${ALPAKA_CUDA_ENABLE}
+      -DALPAKA_DEBUG=${ALPAKA_DEBUG} -DALPAKA_INTEGRATION_TEST=ON -DALPAKA_CUDA_VERSION=${ALPAKA_CUDA_VERSION}
       "../../"
     - make VERBOSE=1
     - if [ "${ALPAKA_CUDA_ENABLE}" == "OFF" ]
-      ;then 
+      ;then
         ./matMul
       ;fi
     - cd ../../../
@@ -448,15 +444,15 @@ script:
     - cd build/
     - mkdir make/
     - cd make/
-    - cmake -G "Unix Makefiles" 
-      -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} 
-      -DBOOST_ROOT="${ALPAKA_BOOST_ROOT_DIR}" -DBOOST_LIBRARYDIR="${ALPAKA_BOOST_LIB_DIR}" -DBoost_COMPILER=${ALPAKA_BOOST_COMPILER} 
-      -DALPAKA_THREADS_ENABLE=${ALPAKA_THREADS_ENABLE} -DALPAKA_FIBERS_ENABLE=${ALPAKA_FIBERS_ENABLE} -DALPAKA_OPENMP_ENABLE=${ALPAKA_OPENMP_ENABLE} -DALPAKA_CUDA_ENABLE=${ALPAKA_CUDA_ENABLE} 
-      -DALPAKA_DEBUG=${ALPAKA_DEBUG} -DALPAKA_INTEGRATION_TEST=${ALPAKA_INTEGRATION_TEST} -DALPAKA_CUDA_VERSION=${ALPAKA_CUDA_VERSION} 
+    - cmake -G "Unix Makefiles"
+      -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+      -DBOOST_ROOT="${ALPAKA_BOOST_ROOT_DIR}" -DBOOST_LIBRARYDIR="${ALPAKA_BOOST_LIB_DIR}" -DBoost_COMPILER=${ALPAKA_BOOST_COMPILER} -DBoost_USE_STATIC_LIBS=ON -DBoost_USE_MULTITHREADED=ON -DBoost_USE_STATIC_RUNTIME=OFF
+      -DALPAKA_THREADS_ENABLE=${ALPAKA_THREADS_ENABLE} -DALPAKA_FIBERS_ENABLE=${ALPAKA_FIBERS_ENABLE} -DALPAKA_OPENMP2_ENABLE=${ALPAKA_OPENMP2_ENABLE} -DALPAKA_CUDA_ENABLE=${ALPAKA_CUDA_ENABLE}
+      -DALPAKA_DEBUG=${ALPAKA_DEBUG} -DALPAKA_INTEGRATION_TEST=ON -DALPAKA_CUDA_VERSION=${ALPAKA_CUDA_VERSION}
       "../../"
     - make VERBOSE=1
     - if [ "${ALPAKA_CUDA_ENABLE}" == "OFF" ]
-      ;then 
+      ;then
         ./sharedMem
       ;fi
     - cd ../../../
@@ -468,14 +464,14 @@ script:
     - mkdir make/
     - cd make/
     - cmake -G "Unix Makefiles"
-      -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} 
-      -DBOOST_ROOT="${ALPAKA_BOOST_ROOT_DIR}" -DBOOST_LIBRARYDIR="${ALPAKA_BOOST_LIB_DIR}" -DBoost_COMPILER=${ALPAKA_BOOST_COMPILER} 
-      -DALPAKA_THREADS_ENABLE=${ALPAKA_THREADS_ENABLE} -DALPAKA_FIBERS_ENABLE=${ALPAKA_FIBERS_ENABLE} -DALPAKA_OPENMP_ENABLE=${ALPAKA_OPENMP_ENABLE} -DALPAKA_CUDA_ENABLE=${ALPAKA_CUDA_ENABLE} 
-      -DALPAKA_DEBUG=${ALPAKA_DEBUG} -DALPAKA_INTEGRATION_TEST=${ALPAKA_INTEGRATION_TEST} -DALPAKA_CUDA_VERSION=${ALPAKA_CUDA_VERSION} 
+      -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+      -DBOOST_ROOT="${ALPAKA_BOOST_ROOT_DIR}" -DBOOST_LIBRARYDIR="${ALPAKA_BOOST_LIB_DIR}" -DBoost_COMPILER=${ALPAKA_BOOST_COMPILER} -DBoost_USE_STATIC_LIBS=ON -DBoost_USE_MULTITHREADED=ON -DBoost_USE_STATIC_RUNTIME=OFF
+      -DALPAKA_THREADS_ENABLE=${ALPAKA_THREADS_ENABLE} -DALPAKA_FIBERS_ENABLE=${ALPAKA_FIBERS_ENABLE} -DALPAKA_OPENMP2_ENABLE=${ALPAKA_OPENMP2_ENABLE} -DALPAKA_CUDA_ENABLE=${ALPAKA_CUDA_ENABLE}
+      -DALPAKA_DEBUG=${ALPAKA_DEBUG} -DALPAKA_INTEGRATION_TEST=ON -DALPAKA_CUDA_VERSION=${ALPAKA_CUDA_VERSION}
       "../../"
     - make VERBOSE=1
     - if [ "$ALPAKA_CUDA_ENABLE" == "OFF" ]
-      ;then 
+      ;then
         ./vectorAdd
       ;fi
     - cd ../../../
@@ -483,7 +479,7 @@ script:
     - cd ../
 
 ################################################################################
-# 
+#
 ################################################################################
 notifications:
     email: false

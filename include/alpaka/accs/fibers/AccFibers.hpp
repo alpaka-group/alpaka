@@ -423,7 +423,7 @@ namespace alpaka
                                         }
                                     }
 
-                                    // Join all the threads.
+                                    // Wait for the completion of the kernels.
                                     std::for_each(m_vFuturesInBlock.begin(), m_vFuturesInBlock.end(),
                                         [](boost::fibers::future<void> & t)
                                         {

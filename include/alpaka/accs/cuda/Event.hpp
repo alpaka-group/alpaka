@@ -56,7 +56,7 @@ namespace alpaka
                         bool bBusyWait = true) :
                             m_Dev(dev),
                             m_spCudaEvent(
-                                new cudaEvent_t, 
+                                new cudaEvent_t,
                                 std::bind(&EventCuda::destroyEvent, std::placeholders::_1, std::ref(m_Dev)))
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;

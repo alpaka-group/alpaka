@@ -69,7 +69,7 @@ namespace alpaka
                             m_Dev(dev),
                             m_vExtentsElements(Vec<TDim::value>::fromExtents(extents)),
                             m_spMem(
-                                pMem, 
+                                pMem,
                                 std::bind(&BufCuda::freeBuffer, std::placeholders::_1, std::ref(m_Dev))),
                             m_uiPitchBytes(uiPitchBytes)
                     {

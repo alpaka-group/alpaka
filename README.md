@@ -53,14 +53,15 @@ Build status develop branch: [![Build Status](https://travis-ci.org/Computationa
 Dependencies
 ------------
 
-[Boost](http://boost.org/) 1.56+ is the only required external dependency.
-By default just header-only libraries are used.
-
-When the *Fibers-Accelerator* is enabled, `boost-coroutine`, `boost-context` and the proposed boost library [`boost-fibers`](https://github.com/olk/boost-fiber) (develop branch commit 9bd1c0cd0f1a15a5c7548aadaab0e40a0aea55c5) are required to be build.
+[Boost](http://boost.org/) 1.56+ is the only mandatory external dependency.
+Just header-only libraries are required by the **alpaka** library itself.
+However some of the examples require different boost libraries to be built.
 
 When the *CUDA-Accelerator* is enabled, version *7.0* of the *CUDA SDK* is the minimum requirement.
 
 When the *OpenMP-Accelerator* is enabled, the compiler and the platform have to support *OpenMP 2.0* or newer.
+
+When the *Fibers-Accelerator* is enabled, `boost-coroutine`, `boost-context` and the proposed boost library [`boost-fibers`](https://github.com/olk/boost-fiber) (develop branch commit 9bd1c0cd0f1a15a5c7548aadaab0e40a0aea55c5) are required to be build.
 
 
 Accelerators

@@ -30,7 +30,7 @@
 #ifdef ALPAKA_FIBERS_ENABLED
     #include <alpaka/accs/fibers/AccFibers.hpp>
 #endif
-#ifdef ALPAKA_OPENMP_ENABLED
+#ifdef ALPAKA_OPENMP2_ENABLED
     #include <alpaka/accs/omp/omp2/AccOmp2.hpp>
 #endif
 #ifdef ALPAKA_CUDA_ENABLED

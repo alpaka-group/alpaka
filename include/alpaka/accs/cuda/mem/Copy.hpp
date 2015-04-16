@@ -708,7 +708,7 @@ namespace alpaka
                                 &l_cudaMemcpy3DPeerParms,
                                 *stream.m_spCudaStream.get()));
                     }
-                    
+
                 private:
                     //-----------------------------------------------------------------------------
                     //!
@@ -849,7 +849,7 @@ namespace alpaka
                     -> void
                     {
                         ALPAKA_DEBUG_FULL_LOG_SCOPE;
-                        
+
                         // Initiate the memory copy.
                         // NOTE: There is no cudaMemcpy2DPeerAsync so we reuse cudaMemcpy3DPeerAsync.
                         MemCopyCudaPeer<
@@ -1028,7 +1028,7 @@ namespace alpaka
                 -> void
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
-                    
+
                     if(alpaka::dev::getDev(bufDst) == alpaka::dev::getDev(bufSrc))
                     {
                         accs::cuda::detail::MemCopyCuda<TDim>::memCopyCuda(

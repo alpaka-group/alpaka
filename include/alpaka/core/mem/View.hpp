@@ -128,7 +128,7 @@ namespace alpaka
                     alpaka::mem::detail::View<TBuf> const & bufView)
                 -> alpaka::dev::DevT<TBuf>
                 {
-                    return 
+                    return
                         alpaka::dev::getDev(
                             alpaka::mem::getBuf(bufView));
                 }

@@ -57,9 +57,9 @@ namespace alpaka
         //! A sequence of integers from 0 to TuiDim-1.
         //! This can be used to write compile time indexing algorithms.
 #if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-        using IdxSequence = typename alpaka::detail::make_index_sequence<TuiDim>::type;
+        using IdxSequence = typename alpaka::detail::make_integer_sequence<UInt, TuiDim>::type;
 #else
-        using IdxSequence = alpaka::detail::make_index_sequence<TuiDim>;
+        using IdxSequence = alpaka::detail::make_integer_sequence<UInt, TuiDim>;
 #endif
 
     public:
@@ -118,7 +118,7 @@ namespace alpaka
         -> Vec<TuiDim, TVal>
         {
             return create(
-                &Vec<TuiDim, TVal>::createSingleVal<TVal2>, 
+                &Vec<TuiDim, TVal>::createSingleVal<TVal2>,
                 std::forward<TVal2>(val));
         }
     private:
@@ -128,7 +128,7 @@ namespace alpaka
         template<
             typename TVal2>
         ALPAKA_FCT_HOST_ACC static auto createSingleVal(
-            std::size_t const &,
+            UInt const &,
             TVal2 && val)
         -> TVal2
         {
@@ -158,14 +158,10 @@ namespace alpaka
         template<
             typename TFunctor,
             typename... TArgs,
-            std::size_t... TIndices>
+            UInt... TIndices>
         ALPAKA_FCT_HOST_ACC static auto createHelper(
             TFunctor && func,
-#if !BOOST_COMP_MSVC     // MSVC 190022512 introduced a new bug with alias templates: error C3520: 'TIndices': parameter pack must be expanded in this context
-            detail::index_sequence<TIndices...> const &,
-#else
-            detail::integer_sequence<std::size_t, TIndices...> const &,
-#endif
+            detail::integer_sequence<UInt, TIndices...> const &,
             TArgs && ... args)
         -> Vec<TuiDim, TVal>
         {
@@ -306,9 +302,9 @@ namespace alpaka
             //! A sequence of integers from 0 to TuiDim-1.
             //! This can be used to write compile time indexing algorithms.
 #if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-            using IdxSubSequence = typename alpaka::detail::make_index_sequence<TuiSubDim>::type;
+            using IdxSubSequence = typename alpaka::detail::make_integer_sequence<UInt, TuiSubDim>::type;
 #else
-            using IdxSubSequence = alpaka::detail::make_index_sequence<TuiSubDim>;
+            using IdxSubSequence = alpaka::detail::make_integer_sequence<UInt, TuiSubDim>;
 #endif
 
             static_assert(TuiSubDim <= TuiDim, "The sub-vector has to be smaller (or same size) then the origin vector.");
@@ -319,13 +315,9 @@ namespace alpaka
         //! \return The sub-vector consisting of the elements specified by the indices.
         //-----------------------------------------------------------------------------
         template<
-            size_t... TIndices>
+            UInt... TIndices>
         ALPAKA_FCT_HOST_ACC auto subVecFromIndices(
-#if !BOOST_COMP_MSVC     // MSVC 190022512 introduced a new bug with alias templates: error C3520: 'TIndices': parameter pack must be expanded in this context
-            detail::index_sequence<TIndices...> const &) const
-#else
-            detail::integer_sequence<std::size_t, TIndices...> const &) const
-#endif
+            detail::integer_sequence<UInt, TIndices...> const &) const
         -> Vec<sizeof...(TIndices), TVal>
         {
             static_assert(sizeof...(TIndices) <= TuiDim, "The sub-vector has to be smaller (or same size) then the origin vector.");
@@ -426,7 +418,7 @@ namespace alpaka
     -> Vec<TuiDim, TVal>
     {
         auto const add([](
-            std::size_t const & i,
+            UInt const & i,
             Vec<TuiDim, TVal> const & p,
             Vec<TuiDim, TVal> const & q)
         -> TVal
@@ -435,7 +427,7 @@ namespace alpaka
         });
 
         return Vec<TuiDim, TVal>::create(
-            add, 
+            add,
             p,
             q);
     }
@@ -452,7 +444,7 @@ namespace alpaka
     -> Vec<TuiDim, TVal>
     {
         auto const mul([](
-            std::size_t const & i,
+            UInt const & i,
             Vec<TuiDim, TVal> const & p,
             Vec<TuiDim, TVal> const & q)
         -> TVal
@@ -461,7 +453,7 @@ namespace alpaka
         });
 
         return Vec<TuiDim, TVal>::create(
-            mul, 
+            mul,
             p,
             q);
     }

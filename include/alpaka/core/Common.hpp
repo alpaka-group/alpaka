@@ -135,7 +135,7 @@ namespace alpaka
         template<
             unsigned N>
         struct RoundUpToPowerOfTwoHelper<
-            N, 
+            N,
             false>
         {
             enum

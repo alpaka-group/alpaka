@@ -48,10 +48,10 @@ public:
         typename TAcc,
         typename TElem>
     ALPAKA_FCT_ACC auto operator()(
-        TAcc const & acc, 
-        TElem const * const A, 
-        TElem const * const B, 
-        TElem * const C, 
+        TAcc const & acc,
+        TElem const * const A,
+        TElem const * const B,
+        TElem * const C,
         std::size_t const & uiNumElements) const
     -> void
     {
@@ -86,7 +86,7 @@ auto profileKernelExec(
 
     // Execute the kernel functor.
     exec(std::forward<TKernelFunctor>(kernelFunctor), std::forward<TArgs>(args)...);
-    
+
     // Wait for the stream to finish the kernel execution to measure its run time.
     alpaka::wait::wait(alpaka::stream::getStream(exec));
 
@@ -120,11 +120,11 @@ struct VectorAddKernelTester
         // Select a device to execute on.
         alpaka::dev::DevT<TAcc> const devAcc(
             alpaka::dev::DevManT<TAcc>::getDevByIdx(0));
-            
+
         // Get a stream on this device.
         alpaka::stream::StreamT<TAcc> const stream(
             alpaka::stream::create(devAcc));
-        
+
         alpaka::Vec<1u> const v1uiExtents(
             static_cast<alpaka::Vec<1u>::Val>(uiNumElements));
 
@@ -143,7 +143,7 @@ struct VectorAddKernelTester
         auto memBufHostA(alpaka::mem::alloc<float>(devHost, v1uiExtents));
         auto memBufHostB(alpaka::mem::alloc<float>(devHost, v1uiExtents));
         auto memBufHostC(alpaka::mem::alloc<float>(devHost, v1uiExtents));
-        
+
         // Initialize the host input vectors
         for (std::size_t i(0); i < uiNumElements; ++i)
         {
@@ -159,7 +159,7 @@ struct VectorAddKernelTester
         // Copy Host -> Acc.
         alpaka::mem::copy(memBufAccA, memBufHostA, v1uiExtents, stream);
         alpaka::mem::copy(memBufAccB, memBufHostB, v1uiExtents, stream);
-        
+
         // Create the kernel executor.
         auto exec(alpaka::exec::create<TAcc>(workDiv, stream));
         // Profile the kernel execution.
@@ -173,10 +173,10 @@ struct VectorAddKernelTester
 
         // Copy back the result.
         alpaka::mem::copy(memBufHostC, memBufAccC, v1uiExtents, stream);
-        
+
         // Wait for the stream to finish the memory operation.
         alpaka::wait::wait(stream);
-        
+
         bool bResultCorrect(true);
         auto const pHostData(alpaka::mem::getNativePtr(memBufHostC));
         for(std::size_t i(0u);

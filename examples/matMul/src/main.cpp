@@ -106,7 +106,7 @@ public:
         auto * const pBlockSharedB(pBlockSharedA + uiBlockThreadsExtentX*uiBlockThreadsExtentY);
 
         auto const uiSharedBlockIdx1d(uiBlockThreadIdxY*uiBlockThreadsExtentX + uiBlockThreadIdxX);
-        
+
         bool const bInsideA(uiGridThreadIdxY < uiL);
         bool const bInsideB(uiGridThreadIdxX < uiN);
         bool const bInsideC(bInsideA && bInsideB);
@@ -149,7 +149,7 @@ public:
             // Synchronize to make sure that the preceding computation is done before loading two new sub-matrices of A and B in the next iteration.
             acc.syncBlockThreads();
         }
-        
+
         // If the element is outside of the matrix it was only a helper thread that did not calculate any meaningful results
         if(bInsideC)
         {
@@ -219,7 +219,7 @@ auto profileKernelExec(
 
     // Execute the kernel functor.
     exec(std::forward<TKernelFunctor>(kernelFunctor), std::forward<TArgs>(args)...);
-    
+
     // Wait for the stream to finish the kernel execution to measure its run time.
     alpaka::wait::wait(alpaka::stream::getStream(exec));
 
@@ -256,11 +256,11 @@ struct MatMulTester
         // Select a device to execute on.
         alpaka::dev::DevT<TAcc> const devAcc(
             alpaka::dev::DevManT<TAcc>::getDevByIdx(0));
-            
+
         // Get a stream on this device.
         alpaka::stream::StreamT<TAcc> const stream(
             alpaka::stream::create(devAcc));
-            
+
         alpaka::Vec<2u> const v2uiExtentsA(
             static_cast<alpaka::Vec<2u>::Val>(uiM),
             static_cast<alpaka::Vec<2u>::Val>(uiL));
@@ -273,7 +273,7 @@ struct MatMulTester
         alpaka::Vec<2u> const v2uiExtentsC(
             static_cast<alpaka::Vec<2u>::Val>(uiN),
             static_cast<alpaka::Vec<2u>::Val>(uiL));
-        
+
         // Let alpaka calculate good block and grid sizes given our full problem extents.
         alpaka::workdiv::BasicWorkDiv workDiv(
             bAdaptiveBlockThreadExtent
@@ -344,7 +344,7 @@ struct MatMulTester
 
         // Copy back the result.
         alpaka::mem::copy(memBufCHost, memBufCAcc, v2uiExtentsC, stream);
-        
+
         // Wait for the stream to finish the memory operation.
         alpaka::wait::wait(stream);
 
@@ -437,9 +437,9 @@ auto main(
 #if ALPAKA_INTEGRATION_TEST
             for(std::size_t uiL(1u); uiL <= 64u; uiL *= 8u)
             {
-                for(std::size_t uiM(1u); uiM <= 512u; uiM *= 8u)
+                for(std::size_t uiM(1u); uiM <= 79u; uiM *= 79u)
                 {
-                    for(std::size_t uiN(1u); uiN <= 64u; uiN *= 8u)
+                    for(std::size_t uiN(1u); uiN <= 23u; uiN *= 23u)
                     {
 #else
             for(std::size_t uiL(1u); uiL <= 1024u; uiL *= 4u)

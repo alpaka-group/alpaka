@@ -54,7 +54,7 @@ public:
         typename TAcc>
     ALPAKA_FCT_ACC auto operator()(
         TAcc const & acc,
-        std::uint32_t * const puiBlockRetVals, 
+        std::uint32_t * const puiBlockRetVals,
         std::uint32_t const uiMult2) const
     -> void
     {
@@ -140,7 +140,7 @@ namespace alpaka
             template<
                 typename... TArgs>
             ALPAKA_FCT_HOST static auto getBlockSharedExternMemSizeBytes(
-                alpaka::Vec<3u> const & v3uiBlockThreadsExtents, 
+                alpaka::Vec<3u> const & v3uiBlockThreadsExtents,
                 TArgs && ...)
             -> UInt
             {
@@ -154,11 +154,11 @@ namespace alpaka
 //! Profiles the given kernel.
 //-----------------------------------------------------------------------------
 template<
-    typename TExec, 
+    typename TExec,
     typename TKernelFunctor,
     typename... TArgs>
 auto profileKernelExec(
-    TExec const & exec, 
+    TExec const & exec,
     TKernelFunctor && kernelFunctor,
     TArgs && ... args)
 -> void
@@ -167,7 +167,7 @@ auto profileKernelExec(
         << "profileKernelExec("
         << " kernelExecutor: " << typeid(TExec).name()
         << ")" << std::endl;
-    
+
     auto const tpStart(std::chrono::high_resolution_clock::now());
 
     // Execute the kernel functor.
@@ -191,16 +191,16 @@ template<
 struct SharedMemTester
 {
     template<
-        typename TAcc, 
+        typename TAcc,
         typename TWorkDiv>
     auto operator()(
-        TWorkDiv const & workDiv, 
+        TWorkDiv const & workDiv,
         std::uint32_t const uiMult2)
     -> void
     {
         std::cout << std::endl;
         std::cout << "################################################################################" << std::endl;
-            
+
         // Create the kernel functor.
         SharedMemKernel<TuiNumUselessWork> kernel(42);
 
@@ -210,7 +210,7 @@ struct SharedMemTester
         // Select a device to execute on.
         alpaka::dev::DevT<TAcc> const devAcc(
             alpaka::dev::DevManT<TAcc>::getDevByIdx(0));
-            
+
         // Get a stream on this device.
         alpaka::stream::StreamT<TAcc> const stream(
             alpaka::stream::create(devAcc));
@@ -232,12 +232,12 @@ struct SharedMemTester
         std::size_t const uiSizeElements(uiGridBlocksCount);
         auto blockRetValsAcc(alpaka::mem::alloc<std::uint32_t>(devAcc, uiSizeElements));
         alpaka::mem::copy(blockRetValsAcc, vuiBlockRetVals, uiSizeElements);
-        
+
         // Create the kernel executor.
         auto exec(alpaka::exec::create<TAcc>(workDiv, stream));
         // Profile the kernel execution.
         profileKernelExec(
-            exec, 
+            exec,
             kernel,
             alpaka::mem::getNativePtr(blockRetValsAcc),
             uiMult2);
@@ -262,7 +262,7 @@ struct SharedMemTester
         {
             std::cout << "Execution results correct!" << std::endl;
         }
-        
+
         std::cout << "################################################################################" << std::endl;
 
         bAllResultsCorrect = bAllResultsCorrect && bResultCorrect;
@@ -300,11 +300,11 @@ auto main()
         std::uint32_t const uiMult2(5u);
 
         SharedMemTester<TuiNumUselessWork> sharedMemTester;
-            
+
         // Execute the kernel on all enabled accelerators.
         alpaka::forEachType<alpaka::accs::EnabledAccs>(
-            sharedMemTester,  
-            workDiv, 
+            sharedMemTester,
+            workDiv,
             uiMult2);
 
         return sharedMemTester.bAllResultsCorrect ? EXIT_SUCCESS : EXIT_FAILURE;

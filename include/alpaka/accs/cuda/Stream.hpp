@@ -55,7 +55,7 @@ namespace alpaka
                     ALPAKA_FCT_HOST StreamCuda(
                         DevCuda const & dev) :
                         m_spCudaStream(
-                            new cudaStream_t, 
+                            new cudaStream_t,
                             std::bind(&StreamCuda::destroyStream, std::placeholders::_1, std::ref(m_Dev))),
                         m_Dev(dev)
                     {
