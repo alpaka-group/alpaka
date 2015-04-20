@@ -21,15 +21,15 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>           // ALPAKA_FCT_HOST
+#include <alpaka/host/mem/Space.hpp>        // SpaceHost
+#include <alpaka/accs/cuda/mem/Space.hpp>   // SpaceCuda
+#include <alpaka/host/Dev.hpp>              // host::getDev
 
 #include <alpaka/traits/Dim.hpp>            // dim::DimType
 #include <alpaka/traits/Extent.hpp>         // traits::getXXX
 #include <alpaka/traits/Mem.hpp>            // mem::SpaceType
 
-#include <alpaka/host/mem/Space.hpp>        // SpaceHost
-#include <alpaka/accs/cuda/mem/Space.hpp>   // SpaceCuda
-#include <alpaka/host/Dev.hpp>              // host::getDev
+#include <alpaka/core/Common.hpp>           // ALPAKA_FCT_HOST
 
 #include <boost/predef.h>                   // workarounds
 

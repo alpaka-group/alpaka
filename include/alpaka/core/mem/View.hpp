@@ -21,14 +21,14 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST
-#include <alpaka/core/Vec.hpp>          // Vec
-
 #include <alpaka/traits/Dim.hpp>        // DimT
 #include <alpaka/traits/Dev.hpp>        // DevT
 #include <alpaka/traits/Extent.hpp>     // traits::getXXX
 #include <alpaka/traits/Offset.hpp>     // traits::getOffsetX
 #include <alpaka/traits/mem/View.hpp>   // SpaceT, ...
+
+#include <alpaka/core/Vec.hpp>          // Vec
+#include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST
 
 namespace alpaka
 {
@@ -55,7 +55,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 View(
                     TBuf const & buf) :
-                        m_buf(getBuf(buf)),
+                        m_Buf(getBuf(buf)),
                         m_vOffsetsElements(Vec<Dim::value>::fromOffsets(buf)),
                         m_vExtentsElements(Vec<Dim::value>::fromExtents(buf))
                 {}
@@ -73,7 +73,7 @@ namespace alpaka
                     TBuf const & buf,
                     TExtents const & extentsElements,
                     TOffsets const & relativeOffsetsElements = TOffsets()) :
-                        m_buf(getBuf(buf)),
+                        m_Buf(getBuf(buf)),
                         m_vOffsetsElements(Vec<Dim::value>::fromOffsets(relativeOffsetsElements)+Vec<Dim::value>::fromOffsets(buf)),
                         m_vExtentsElements(Vec<Dim::value>::fromExtents(extentsElements))
                 {
@@ -90,13 +90,12 @@ namespace alpaka
                 }
 
             public:
-                Buf m_buf;
+                Buf m_Buf;
                 Vec<Dim::value> m_vOffsetsElements;
                 Vec<Dim::value> m_vExtentsElements;
             };
         }
     }
-
 
     //-----------------------------------------------------------------------------
     // Trait specializations for View.
@@ -347,6 +346,43 @@ namespace alpaka
             };
 
             //#############################################################################
+            //! The memory buffer view creation type trait.
+            //#############################################################################
+            template<
+                typename TBuf>
+            struct CreateView<
+                alpaka::mem::detail::View<TBuf>>
+            {
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static auto createView(
+                    TBuf const & buf)
+                -> alpaka::mem::detail::View<TBuf>
+                {
+                    return alpaka::mem::detail::View<TBuf>(
+                        buf);
+                }
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TExtents,
+                    typename TOffsets>
+                ALPAKA_FCT_HOST static auto createView(
+                    TBuf const & buf,
+                    TExtents const & extentsElements,
+                    TOffsets const & relativeOffsetsElements)
+                -> alpaka::mem::detail::View<TBuf>
+                {
+                    return alpaka::mem::detail::View<TBuf>(
+                        buf,
+                        extentsElements,
+                        relativeOffsetsElements);
+                }
+            };
+
+            //#############################################################################
             //! The View base buffer trait specialization.
             //#############################################################################
             template<
@@ -361,7 +397,7 @@ namespace alpaka
                     alpaka::mem::detail::View<TBuf> const & bufView)
                 -> TBuf const &
                 {
-                    return bufView.m_buf;
+                    return bufView.m_Buf;
                 }
                 //-----------------------------------------------------------------------------
                 //!
@@ -370,7 +406,7 @@ namespace alpaka
                     alpaka::mem::detail::View<TBuf> & bufView)
                 -> TBuf &
                 {
-                    return bufView.m_buf;
+                    return bufView.m_Buf;
                 }
             };
 

@@ -21,8 +21,8 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST
 #include <alpaka/core/BasicDims.hpp>    // dim::Dim<N>
+#include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST
 
 #include <type_traits>                  // std::enable_if, std::is_integral, std::is_unsigned
 

@@ -234,7 +234,7 @@ struct SharedMemTester
         alpaka::mem::copy(blockRetValsAcc, vuiBlockRetVals, uiSizeElements);
 
         // Create the kernel executor.
-        auto exec(alpaka::exec::create<TAcc>(workDiv, stream));
+        auto exec(alpaka::exec::create(workDiv, stream));
         // Profile the kernel execution.
         profileKernelExec(
             exec,

@@ -161,7 +161,7 @@ struct VectorAddKernelTester
         alpaka::mem::copy(memBufAccB, memBufHostB, v1uiExtents, stream);
 
         // Create the kernel executor.
-        auto exec(alpaka::exec::create<TAcc>(workDiv, stream));
+        auto exec(alpaka::exec::create(workDiv, stream));
         // Profile the kernel execution.
         profileKernelExec(
             exec,

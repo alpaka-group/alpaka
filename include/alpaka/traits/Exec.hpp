@@ -62,12 +62,12 @@ namespace alpaka
         //! \return A kernel executor.
         //-----------------------------------------------------------------------------
         template<
-            typename TAcc,
+            typename TStream,
             typename TWorkDiv>
         ALPAKA_FCT_HOST auto create(
             TWorkDiv const & workDiv,
-            stream::StreamT<TAcc> const & stream)
-        -> ExecT<TAcc>
+            TStream const & stream)
+        -> ExecT<acc::AccT<TStream>>
         {
             // Some basic tests.
             if(workdiv::getWorkDiv<Grid, Blocks, dim::Dim1>(workDiv)[0] == 0u)
@@ -82,23 +82,23 @@ namespace alpaka
             // This checks for the compliance with the maxima of the accelerator.
             if(!workdiv::isValidWorkDiv(dev::getDev(stream), workDiv))
             {
-                throw std::runtime_error("The given work division is not supported by the " + acc::getAccName<TAcc>() + " accelerator!");
+                throw std::runtime_error("The given work division is not supported by the " + acc::getAccName<acc::AccT<TStream>>() + " accelerator!");
             }
 
-            return ExecT<TAcc>(workDiv, stream);
+            return ExecT<acc::AccT<TStream>>(workDiv, stream);
         }
         //-----------------------------------------------------------------------------
         //! \return A kernel executor.
         //-----------------------------------------------------------------------------
         template<
-            typename TAcc,
+            typename TStream,
             typename TGridBlockExtents,
             typename TBlockThreadExtents>
         ALPAKA_FCT_HOST auto create(
             TGridBlockExtents const & gridBlockExtent,
             TBlockThreadExtents const & blockThreadExtents,
-            stream::StreamT<TAcc> const & stream)
-        -> ExecT<TAcc>
+            TStream const & stream)
+        -> ExecT<acc::AccT<TStream>>
         {
             return create(
                 workdiv::BasicWorkDiv(

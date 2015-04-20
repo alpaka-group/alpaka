@@ -21,12 +21,12 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>           // ALPAKA_FCT_HOST
-#include <alpaka/core/Vec.hpp>              // Vec
+#include <alpaka/traits/Dev.hpp>            // dev::DevManT, getDevProps
+
 #include <alpaka/core/BasicWorkDiv.hpp>     // workdiv::BasicWorkDiv
 #include <alpaka/core/ForEachType.hpp>      // forEachType
-
-#include <alpaka/traits/Dev.hpp>            // dev::DevManT, getDevProps
+#include <alpaka/core/Vec.hpp>              // Vec
+#include <alpaka/core/Common.hpp>           // ALPAKA_FCT_HOST
 
 #include <boost/mpl/vector.hpp>             // boost::mpl::vector
 

@@ -155,7 +155,7 @@ public:
         std::uint32_t const & uiMaxIterations) const
     -> void
     {
-        auto const uiGridThreadIdx(acc.template getIdx<alpaka::Grid, alpaka::Threads>().template subVec<2u>());
+        auto const uiGridThreadIdx(alpaka::subVec<2u>(acc.template getIdx<alpaka::Grid, alpaka::Threads>()));
         auto const & uiGridThreadIdxX(uiGridThreadIdx[0u]);
         auto const & uiGridThreadIdxY(uiGridThreadIdx[1u]);
 
@@ -421,7 +421,7 @@ struct MandelbrotKernelTester
         alpaka::mem::copy(bufColorAcc, bufColorHost, v2uiExtents, stream);
 
         // Create the kernel executor.
-        auto exec(alpaka::exec::create<TAcc>(workDiv, stream));
+        auto exec(alpaka::exec::create(workDiv, stream));
         // Profile the kernel execution.
         profileKernelExec(
             exec,

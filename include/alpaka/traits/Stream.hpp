@@ -21,9 +21,9 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST
-
 #include <alpaka/traits/Wait.hpp>   // CurrentThreadWaitFor, WaiterWaitFor
+
+#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST
 
 namespace alpaka
 {

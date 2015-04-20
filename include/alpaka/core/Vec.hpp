@@ -21,13 +21,13 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_ACC, ALPAKA_ALIGN
-#include <alpaka/core/BasicDims.hpp>// dim::Dim<N>
-#include <alpaka/core/IntegerSequence.hpp>    //
-
 #include <alpaka/traits/Dim.hpp>    // traits::getDim
 #include <alpaka/traits/Extent.hpp> // traits::getWidth, ...
 #include <alpaka/traits/Offset.hpp> // traits::getOffsetX, ...
+
+#include <alpaka/core/BasicDims.hpp>// dim::Dim<N>
+#include <alpaka/core/IntegerSequence.hpp>    //
+#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_ACC, ALPAKA_ALIGN
 
 #include <boost/predef.h>           // workarounds
 
@@ -73,7 +73,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename... TArgs,
-            typename = typename std::enable_if<(sizeof...(TArgs) == (TuiDim))>::type>
+            typename = typename std::enable_if<sizeof...(TArgs) == TuiDim>::type>
         ALPAKA_FCT_HOST_ACC Vec(
             TArgs && ... vals)
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 22609))   // MSVC does not compile the basic array initialization: "error C2536: 'alpaka::Vec<0x03>::alpaka::Vec<0x03>::m_auiData': cannot specify explicit initializer for arrays"
@@ -248,8 +248,8 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TOffsets,
-            UInt TuiDim2 = TuiDim,
-            typename = typename std::enable_if<TuiDim2 == 3>::type>
+            UInt TuiDimSfinae = TuiDim,
+            typename = typename std::enable_if<TuiDimSfinae == 3>::type>
         ALPAKA_FCT_HOST_ACC static auto fromOffsets(
             TOffsets const & offsets)
         -> Vec<3u, TVal>
@@ -292,44 +292,15 @@ namespace alpaka
         }
 
         //-----------------------------------------------------------------------------
-        //! \return The sub-vector consisting of the first N elements of the source vector.
-        //-----------------------------------------------------------------------------
-        template<
-            UInt TuiSubDim>
-        ALPAKA_FCT_HOST_ACC auto subVec() const
-        -> Vec<TuiSubDim, TVal>
-        {
-            //! A sequence of integers from 0 to TuiDim-1.
-            //! This can be used to write compile time indexing algorithms.
-#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-            using IdxSubSequence = typename alpaka::detail::make_integer_sequence<UInt, TuiSubDim>::type;
-#else
-            using IdxSubSequence = alpaka::detail::make_integer_sequence<UInt, TuiSubDim>;
-#endif
-
-            static_assert(TuiSubDim <= TuiDim, "The sub-vector has to be smaller (or same size) then the origin vector.");
-
-            return subVecFromIndices(IdxSubSequence());
-        }
-        //-----------------------------------------------------------------------------
-        //! \return The sub-vector consisting of the elements specified by the indices.
-        //-----------------------------------------------------------------------------
-        template<
-            UInt... TIndices>
-        ALPAKA_FCT_HOST_ACC auto subVecFromIndices(
-            detail::integer_sequence<UInt, TIndices...> const &) const
-        -> Vec<sizeof...(TIndices), TVal>
-        {
-            static_assert(sizeof...(TIndices) <= TuiDim, "The sub-vector has to be smaller (or same size) then the origin vector.");
-
-            return Vec<sizeof...(TIndices), TVal>((*this)[TIndices]...);
-        }
-
-        //-----------------------------------------------------------------------------
         //! \return A reference to the value at the given index.
+        // \TODO: Add is_unsigned but is vec[1337] failing then?
         //-----------------------------------------------------------------------------
+        template<
+            typename TInt,
+            typename = typename std::enable_if<
+                std::is_integral<TInt>::value>::type>
         ALPAKA_FCT_HOST_ACC auto operator[](
-            UInt const uiIdx)
+            TInt const uiIdx)
         -> TVal &
         {
             assert(uiIdx<TuiDim);
@@ -337,9 +308,14 @@ namespace alpaka
         }
         //-----------------------------------------------------------------------------
         //! \return The value at the given index.
+        // \TODO: Add is_unsigned but is vec[1337] failing then?
         //-----------------------------------------------------------------------------
+        template<
+            typename TInt,
+            typename = typename std::enable_if<
+                std::is_integral<TInt>::value>::type>
         ALPAKA_FCT_HOST_ACC auto operator[](
-            UInt const uiIdx) const
+            TInt const uiIdx) const
         -> TVal
         {
             assert(uiIdx<TuiDim);
@@ -482,6 +458,63 @@ namespace alpaka
 
         return os;
     }
+    
+    //-----------------------------------------------------------------------------
+    //! \return The sub-vector consisting of the elements specified by the indices.
+    //-----------------------------------------------------------------------------
+    template<
+        UInt... TIndices,
+        UInt TuiDim,
+        typename TVal>
+    ALPAKA_FCT_HOST_ACC static auto subVecFromIndices(
+        Vec<TuiDim, TVal> const & vec,
+        detail::integer_sequence<UInt, TIndices...> const &)
+    -> Vec<sizeof...(TIndices), TVal>
+    {
+        static_assert(sizeof...(TIndices) <= TuiDim, "The sub-vector has to be smaller (or same size) then the origin vector.");
+
+        return Vec<sizeof...(TIndices), TVal>(vec[TIndices]...);
+    }
+    //-----------------------------------------------------------------------------
+    //! \return The sub-vector consisting of the first N elements of the source vector.
+    //-----------------------------------------------------------------------------
+    template<
+        UInt TuiSubDim,
+        UInt TuiDim,
+        typename TVal/*,
+        typename std::enable_if<TuiSubDim != TuiDim>::type * = nullptr*/>
+    ALPAKA_FCT_HOST_ACC static auto subVec(
+        Vec<TuiDim, TVal> const & vec)
+    -> Vec<TuiSubDim, TVal>
+    {
+        static_assert(TuiSubDim <= TuiDim, "The sub-vector has to be smaller (or same size) then the origin vector.");
+        
+        //! A sequence of integers from 0 to TuiDim-1.
+        //! This can be used to write compile time indexing algorithms.
+#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
+        using IdxSubSequence = typename alpaka::detail::make_integer_sequence<UInt, TuiSubDim>::type;
+#else
+        using IdxSubSequence = alpaka::detail::make_integer_sequence<UInt, TuiSubDim>;
+#endif
+        return subVecFromIndices(vec, IdxSubSequence());
+    }
+    //-----------------------------------------------------------------------------
+    //! \return The sub-vector consisting of the first N elements of the source vector.
+    //! For TuiSubDim == TuiDim nothing has to be done.
+    // Specialization for template class template methods is not possible, SFINAE as workaround does.
+    // \FIXME: Does not work with nvcc!
+    //-----------------------------------------------------------------------------
+    /*template<
+        UInt TuiSubDim,
+        UInt TuiDim,
+        typename TVal,
+        typename std::enable_if<TuiSubDim == TuiDim>::type * = nullptr>
+    ALPAKA_FCT_HOST_ACC static auto subVec(
+        Vec<TuiDim, TVal> const & vec)
+    -> Vec<TuiSubDim, TVal>
+    {
+        return vec;
+    }*/
 
     namespace detail
     {

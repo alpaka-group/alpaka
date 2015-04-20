@@ -85,17 +85,17 @@ public:
     -> void
     {
         // Column and row of C to calculate.
-        auto const v2uiGridThreadIdx(acc.template getIdx<alpaka::Grid, alpaka::Threads>().template subVec<2u>());
+        auto const v2uiGridThreadIdx(alpaka::subVec<2u>(acc.template getIdx<alpaka::Grid, alpaka::Threads>()));
         auto const & uiGridThreadIdxX(v2uiGridThreadIdx[0u]);
         auto const & uiGridThreadIdxY(v2uiGridThreadIdx[1u]);
 
         // Column and row inside the block of C to calculate.
-        auto const v2uiBlockThreadIdx(acc.template getIdx<alpaka::Block, alpaka::Threads>().template subVec<2u>());
+        auto const v2uiBlockThreadIdx(alpaka::subVec<2u>(acc.template getIdx<alpaka::Block, alpaka::Threads>()));
         auto const & uiBlockThreadIdxX(v2uiBlockThreadIdx[0u]);
         auto const & uiBlockThreadIdxY(v2uiBlockThreadIdx[1u]);
 
         // The block threads extents.
-        auto const v2uiBlockThreadsExtents(acc.template getWorkDiv<alpaka::Block, alpaka::Threads>().template subVec<2u>());
+        auto const v2uiBlockThreadsExtents(alpaka::subVec<2u>(acc.template getWorkDiv<alpaka::Block, alpaka::Threads>()));
         auto const & uiBlockThreadsExtentX(v2uiBlockThreadsExtents[0u]);
         auto const & uiBlockThreadsExtentY(v2uiBlockThreadsExtents[1u]);
         //assert(uiBlockThreadsExtentX == uiBlockThreadsExtentY);
@@ -327,7 +327,7 @@ struct MatMulTester
         alpaka::mem::copy(memBufCAcc, memBufCHost, v2uiExtentsC, stream);
 
         // Create the kernel executor.
-        auto exec(alpaka::exec::create<TAcc>(workDiv, stream));
+        auto exec(alpaka::exec::create(workDiv, stream));
         // Profile the kernel execution.
         profileKernelExec(
             exec,

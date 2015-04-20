@@ -21,8 +21,8 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC
 #include <alpaka/core/Vec.hpp>      // Vec
+#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC
 
 namespace alpaka
 {

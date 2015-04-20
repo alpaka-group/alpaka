@@ -25,9 +25,9 @@
 #include <alpaka/traits/WorkDiv.hpp>        // workdiv::getWorkDiv
 #include <alpaka/traits/Idx.hpp>            // idx::getIdx
 
-#include <alpaka/core/Vec.hpp>              // DimToVecT
 #include <alpaka/core/BasicDims.hpp>        // dim::Dim<N>
 #include <alpaka/core/Positioning.hpp>      // origin::Grid/Blocks, unit::Blocks, unit::Threads
+#include <alpaka/core/Vec.hpp>              // DimToVecT
 #include <alpaka/core/Common.hpp>           // ALPAKA_FCT_ACC
 
 #include <utility>                          // std::forward
