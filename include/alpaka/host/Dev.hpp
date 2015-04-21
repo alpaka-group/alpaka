@@ -33,7 +33,10 @@ namespace alpaka
         ALPAKA_FCT_HOST auto getDev()
         -> decltype(dev::DevManT<accs::serial::detail::AccSerial>::getDevByIdx(std::declval<std::size_t const &>()))
         {
-            return dev::DevManT<accs::serial::detail::AccSerial>::getDevByIdx(0);
+            return dev::DevManT<
+                accs::serial::detail::AccSerial>
+            ::getDevByIdx(
+                0);
         }
     }
 }

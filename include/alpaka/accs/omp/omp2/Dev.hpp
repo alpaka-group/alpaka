@@ -216,10 +216,10 @@ namespace alpaka
             //! The OpenMP2 accelerator device properties get trait specialization.
             //#############################################################################
             template<>
-            struct GetDevProps<
+            struct GetProps<
                 accs::omp::omp2::detail::DevOmp2>
             {
-                ALPAKA_FCT_HOST static auto getDevProps(
+                ALPAKA_FCT_HOST static auto getProps(
                     accs::omp::omp2::detail::DevOmp2 const &)
                 -> alpaka::dev::DevProps
                 {
@@ -254,6 +254,41 @@ namespace alpaka
                             std::numeric_limits<UInt>::max()),
                         // m_uiGlobalMemSizeBytes
                         host::getGlobalMemSizeBytes());
+                }
+            };
+
+            //#############################################################################
+            //! The OpenMP2 accelerator device free memory get trait specialization.
+            //#############################################################################
+            template<>
+            struct GetFreeMemBytes<
+                accs::omp::omp2::detail::DevOmp2>
+            {
+                ALPAKA_FCT_HOST static auto getFreeMemBytes(
+                    accs::omp::omp2::detail::DevOmp2 const & dev)
+                -> std::size_t
+                {
+                    boost::ignore_unused(dev);
+
+                    // \FIXME: Get correct free memory size!
+                    return host::getGlobalMemSizeBytes();
+                }
+            };
+
+            //#############################################################################
+            //! The OpenMP2 accelerator device reset trait specialization.
+            //#############################################################################
+            template<>
+            struct Reset<
+                accs::omp::omp2::detail::DevOmp2>
+            {
+                ALPAKA_FCT_HOST static auto reset(
+                    accs::omp::omp2::detail::DevOmp2 const & dev)
+                -> void
+                {
+                    boost::ignore_unused(dev);
+
+                    // The OpenMP2 device can not be reset for now.
                 }
             };
 

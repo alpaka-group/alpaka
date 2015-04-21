@@ -77,19 +77,19 @@ matrix:
 ################################################################################
 before_install:
     # Print the travis environment variables: http://docs.travis-ci.com/user/ci-environment/
-    - echo ${TRAVIS_BRANCH}
-    - echo ${TRAVIS_BUILD_DIR}
-    - echo ${TRAVIS_BUILD_ID}
-    - echo ${TRAVIS_BUILD_NUMBER}
-    - echo ${TRAVIS_COMMIT}
-    - echo ${TRAVIS_COMMIT_RANGE}
-    - echo ${TRAVIS_JOB_ID}
-    - echo ${TRAVIS_JOB_NUMBER}
-    - echo ${TRAVIS_PULL_REQUEST}
-    - echo ${TRAVIS_SECURE_ENV_VARS}
-    - echo ${TRAVIS_REPO_SLUG}
-    - echo ${TRAVIS_OS_NAME}
-    - echo ${TRAVIS_TAG}
+    - echo "${TRAVIS_BRANCH}"
+    - echo "${TRAVIS_BUILD_DIR}"
+    - echo "${TRAVIS_BUILD_ID}"
+    - echo "${TRAVIS_BUILD_NUMBER}"
+    - echo "${TRAVIS_COMMIT}"
+    - echo "${TRAVIS_COMMIT_RANGE}"
+    - echo "${TRAVIS_JOB_ID}"
+    - echo "${TRAVIS_JOB_NUMBER}"
+    - echo "${TRAVIS_PULL_REQUEST}"
+    - echo "${TRAVIS_SECURE_ENV_VARS}"
+    - echo "${TRAVIS_REPO_SLUG}"
+    - echo "${TRAVIS_OS_NAME}"
+    - echo "${TRAVIS_TAG}"
 
     # g++ 4.8 / 4.9 / clang dependencies
     - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
@@ -269,7 +269,7 @@ install:
     - git clone -b boost-${ALPAKA_BOOST_VER} --recursive --single-branch --depth 1 https://github.com/boostorg/boost.git boost
     - cd boost/
     - export ALPAKA_BOOST_ROOT_DIR=`pwd`
-    - echo ${ALPAKA_BOOST_ROOT_DIR}
+    - echo "${ALPAKA_BOOST_ROOT_DIR}"
 
     - cd libs/
 
@@ -295,7 +295,7 @@ install:
     - cd boost_libs/
     - mkdir x64
     - export ALPAKA_BOOST_LIB_DIR=`pwd`/x64/lib
-    - echo ${ALPAKA_BOOST_LIB_DIR}
+    - echo "${ALPAKA_BOOST_LIB_DIR}"
     - cd ../
     - cd boost/
     # Clang is not supported by the FindBoost script.
@@ -303,9 +303,9 @@ install:
     - if [ "${CXX}" == "clang++" ]
       ;then
         export ALPAKA_BOOST_COMPILER=-clang${ALPAKA_CLANG_VER_MAJOR}${ALPAKA_CLANG_VER_MINOR}
-        && echo ${ALPAKA_BOOST_COMPILER}
-        && export ALPAKA_BOOST_CXXFLAGS='cxxflags="-Wunused-local-typedef -Wc99-extensions"'
-        && echo ${ALPAKA_BOOST_CXXFLAGS}
+        && echo "${ALPAKA_BOOST_COMPILER}"
+        && export ALPAKA_BOOST_CXXFLAGS='cxxflags="-Wno-unused-local-typedef -Wno-c99-extensions"'
+        && echo "${ALPAKA_BOOST_CXXFLAGS}"
       ;else
         export ALPAKA_BOOST_CXXFLAGS=
       ;fi
@@ -314,12 +314,12 @@ install:
       ;then
         sudo ./b2 -j2 --layout=versioned --toolset=${CC}
         --with-program_options --with-fiber --with-coroutine --with-context --with-thread --with-system --with-atomic --with-chrono --with-date_time --with-regex
-        architecture=x86 address-model=64 variant=debug,release link=static threading=multi runtime-link=shared ${ALPAKA_BOOST_CXXFLAGS}
+        architecture=x86 address-model=64 variant=debug,release link=static threading=multi runtime-link=shared "${ALPAKA_BOOST_CXXFLAGS}"
         --stagedir=../boost_libs/x64 stage
       ;else
         sudo ./b2 -j2 --layout=versioned --toolset=${CC}
         --with-program_options
-        architecture=x86 address-model=64 variant=debug,release link=static threading=multi runtime-link=shared ${ALPAKA_BOOST_CXXFLAGS}
+        architecture=x86 address-model=64 variant=debug,release link=static threading=multi runtime-link=shared "${ALPAKA_BOOST_CXXFLAGS}"
         --stagedir=../boost_libs/x64 stage
       ;fi
     # Clean the intermediate build files.
@@ -388,7 +388,7 @@ script:
     #      -G "Unix Makefiles"
     #      -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang
     #      -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-    #      -DBOOST_ROOT="${ALPAKA_BOOST_ROOT_DIR}" -DBOOST_LIBRARYDIR="${ALPAKA_BOOST_LIB_DIR}" -DBoost_COMPILER=${ALPAKA_BOOST_COMPILER} -DBoost_USE_STATIC_LIBS=ON -DBoost_USE_MULTITHREADED=ON -DBoost_USE_STATIC_RUNTIME=OFF
+    #      -DBOOST_ROOT="${ALPAKA_BOOST_ROOT_DIR}" -DBOOST_LIBRARYDIR="${ALPAKA_BOOST_LIB_DIR}" -DBoost_COMPILER="${ALPAKA_BOOST_COMPILER}" -DBoost_USE_STATIC_LIBS=ON -DBoost_USE_MULTITHREADED=ON -DBoost_USE_STATIC_RUNTIME=OFF
     #      -DALPAKA_THREADS_ENABLE=${ALPAKA_THREADS_ENABLE} -DALPAKA_FIBERS_ENABLE=${ALPAKA_FIBERS_ENABLE} -DALPAKA_OPENMP2_ENABLE=${ALPAKA_OPENMP2_ENABLE} -DALPAKA_CUDA_ENABLE=${ALPAKA_CUDA_ENABLE}
     #      -DALPAKA_DEBUG=${ALPAKA_DEBUG} -DALPAKA_INTEGRATION_TEST=ON -DALPAKA_CUDA_VERSION=${ALPAKA_CUDA_VERSION}
     #      "../../"
@@ -404,7 +404,7 @@ script:
     - cd make/
     - cmake -G "Unix Makefiles"
       -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-      -DBOOST_ROOT="${ALPAKA_BOOST_ROOT_DIR}" -DBOOST_LIBRARYDIR="${ALPAKA_BOOST_LIB_DIR}" -DBoost_COMPILER=${ALPAKA_BOOST_COMPILER} -DBoost_USE_STATIC_LIBS=ON -DBoost_USE_MULTITHREADED=ON -DBoost_USE_STATIC_RUNTIME=OFF
+      -DBOOST_ROOT="${ALPAKA_BOOST_ROOT_DIR}" -DBOOST_LIBRARYDIR="${ALPAKA_BOOST_LIB_DIR}" -DBoost_COMPILER="${ALPAKA_BOOST_COMPILER}" -DBoost_USE_STATIC_LIBS=ON -DBoost_USE_MULTITHREADED=ON -DBoost_USE_STATIC_RUNTIME=OFF
       -DALPAKA_THREADS_ENABLE=${ALPAKA_THREADS_ENABLE} -DALPAKA_FIBERS_ENABLE=${ALPAKA_FIBERS_ENABLE} -DALPAKA_OPENMP2_ENABLE=${ALPAKA_OPENMP2_ENABLE} -DALPAKA_CUDA_ENABLE=${ALPAKA_CUDA_ENABLE}
       -DALPAKA_DEBUG=${ALPAKA_DEBUG} -DALPAKA_INTEGRATION_TEST=ON -DALPAKA_CUDA_VERSION=${ALPAKA_CUDA_VERSION}
       "../../"
@@ -423,7 +423,7 @@ script:
     - cd make/
     - cmake -G "Unix Makefiles"
       -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-      -DBOOST_ROOT="${ALPAKA_BOOST_ROOT_DIR}" -DBOOST_LIBRARYDIR="${ALPAKA_BOOST_LIB_DIR}" -DBoost_COMPILER=${ALPAKA_BOOST_COMPILER} -DBoost_USE_STATIC_LIBS=ON -DBoost_USE_MULTITHREADED=ON -DBoost_USE_STATIC_RUNTIME=OFF
+      -DBOOST_ROOT="${ALPAKA_BOOST_ROOT_DIR}" -DBOOST_LIBRARYDIR="${ALPAKA_BOOST_LIB_DIR}" -DBoost_COMPILER="${ALPAKA_BOOST_COMPILER}" -DBoost_USE_STATIC_LIBS=ON -DBoost_USE_MULTITHREADED=ON -DBoost_USE_STATIC_RUNTIME=OFF
       -DALPAKA_THREADS_ENABLE=${ALPAKA_THREADS_ENABLE} -DALPAKA_FIBERS_ENABLE=${ALPAKA_FIBERS_ENABLE} -DALPAKA_OPENMP2_ENABLE=${ALPAKA_OPENMP2_ENABLE} -DALPAKA_CUDA_ENABLE=${ALPAKA_CUDA_ENABLE}
       -DALPAKA_DEBUG=${ALPAKA_DEBUG} -DALPAKA_INTEGRATION_TEST=ON -DALPAKA_CUDA_VERSION=${ALPAKA_CUDA_VERSION}
       "../../"
@@ -442,7 +442,7 @@ script:
     - cd make/
     - cmake -G "Unix Makefiles"
       -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-      -DBOOST_ROOT="${ALPAKA_BOOST_ROOT_DIR}" -DBOOST_LIBRARYDIR="${ALPAKA_BOOST_LIB_DIR}" -DBoost_COMPILER=${ALPAKA_BOOST_COMPILER} -DBoost_USE_STATIC_LIBS=ON -DBoost_USE_MULTITHREADED=ON -DBoost_USE_STATIC_RUNTIME=OFF
+      -DBOOST_ROOT="${ALPAKA_BOOST_ROOT_DIR}" -DBOOST_LIBRARYDIR="${ALPAKA_BOOST_LIB_DIR}" -DBoost_COMPILER="${ALPAKA_BOOST_COMPILER}" -DBoost_USE_STATIC_LIBS=ON -DBoost_USE_MULTITHREADED=ON -DBoost_USE_STATIC_RUNTIME=OFF
       -DALPAKA_THREADS_ENABLE=${ALPAKA_THREADS_ENABLE} -DALPAKA_FIBERS_ENABLE=${ALPAKA_FIBERS_ENABLE} -DALPAKA_OPENMP2_ENABLE=${ALPAKA_OPENMP2_ENABLE} -DALPAKA_CUDA_ENABLE=${ALPAKA_CUDA_ENABLE}
       -DALPAKA_DEBUG=${ALPAKA_DEBUG} -DALPAKA_INTEGRATION_TEST=ON -DALPAKA_CUDA_VERSION=${ALPAKA_CUDA_VERSION}
       "../../"
@@ -461,7 +461,7 @@ script:
     - cd make/
     - cmake -G "Unix Makefiles"
       -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-      -DBOOST_ROOT="${ALPAKA_BOOST_ROOT_DIR}" -DBOOST_LIBRARYDIR="${ALPAKA_BOOST_LIB_DIR}" -DBoost_COMPILER=${ALPAKA_BOOST_COMPILER} -DBoost_USE_STATIC_LIBS=ON -DBoost_USE_MULTITHREADED=ON -DBoost_USE_STATIC_RUNTIME=OFF
+      -DBOOST_ROOT="${ALPAKA_BOOST_ROOT_DIR}" -DBOOST_LIBRARYDIR="${ALPAKA_BOOST_LIB_DIR}" -DBoost_COMPILER="${ALPAKA_BOOST_COMPILER}" -DBoost_USE_STATIC_LIBS=ON -DBoost_USE_MULTITHREADED=ON -DBoost_USE_STATIC_RUNTIME=OFF
       -DALPAKA_THREADS_ENABLE=${ALPAKA_THREADS_ENABLE} -DALPAKA_FIBERS_ENABLE=${ALPAKA_FIBERS_ENABLE} -DALPAKA_OPENMP2_ENABLE=${ALPAKA_OPENMP2_ENABLE} -DALPAKA_CUDA_ENABLE=${ALPAKA_CUDA_ENABLE}
       -DALPAKA_DEBUG=${ALPAKA_DEBUG} -DALPAKA_INTEGRATION_TEST=ON -DALPAKA_CUDA_VERSION=${ALPAKA_CUDA_VERSION}
       "../../"

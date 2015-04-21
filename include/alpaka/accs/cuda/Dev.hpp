@@ -336,15 +336,17 @@ namespace alpaka
             //! The CUDA accelerator device properties get trait specialization.
             //#############################################################################
             template<>
-            struct GetDevProps<
+            struct GetProps<
                 accs::cuda::detail::DevCuda>
             {
-                ALPAKA_FCT_HOST static auto getDevProps(
-                    accs::cuda::detail::DevCuda const & device)
+                ALPAKA_FCT_HOST static auto getProps(
+                    accs::cuda::detail::DevCuda const & dev)
                 -> alpaka::dev::DevProps
                 {
                     cudaDeviceProp cudaDevProp;
-                    ALPAKA_CUDA_RT_CHECK(cudaGetDeviceProperties(&cudaDevProp, device.m_iDevice));
+                    ALPAKA_CUDA_RT_CHECK(cudaGetDeviceProperties(
+                        &cudaDevProp, 
+                        dev.m_iDevice));
 
                     return alpaka::dev::DevProps(
                         // m_sName
@@ -366,6 +368,48 @@ namespace alpaka
                         // m_uiGlobalMemSizeBytes
                         static_cast<std::size_t>(cudaDevProp.totalGlobalMem));
                         //devProps.m_uiMaxClockFrequencyHz = cudaDevProp.clockRate * 1000;
+                }
+            };
+
+            //#############################################################################
+            //! The CUDA accelerator device free memory get trait specialization.
+            //#############################################################################
+            template<>
+            struct GetFreeMemBytes<
+                accs::cuda::detail::DevCuda>
+            {
+                ALPAKA_FCT_HOST static auto getFreeMemBytes(
+                    accs::cuda::detail::DevCuda const & dev)
+                -> std::size_t
+                {
+                    std::size_t freeInternal(0u);
+                    std::size_t totalInternal(0u);
+
+                    ALPAKA_CUDA_RT_CHECK(cudaMemGetInfo(
+                        &freeInternal, 
+                        &totalInternal));
+
+                    return freeInternal;
+                }
+            };
+
+            //#############################################################################
+            //! The CUDA accelerator device reset trait specialization.
+            //#############################################################################
+            template<>
+            struct Reset<
+                accs::cuda::detail::DevCuda>
+            {
+                ALPAKA_FCT_HOST static auto reset(
+                    accs::cuda::detail::DevCuda const & dev)
+                -> void
+                {
+                    // \TODO: This should be secured by a lock.
+
+                    // Set the current device to wait for.
+                    ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
+                        dev.m_iDevice));
+                    ALPAKA_CUDA_RT_CHECK(cudaDeviceReset());
                 }
             };
 

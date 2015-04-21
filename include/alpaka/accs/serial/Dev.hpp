@@ -203,10 +203,10 @@ namespace alpaka
             //! The serial accelerator device properties get trait specialization.
             //#############################################################################
             template<>
-            struct GetDevProps<
+            struct GetProps<
                 accs::serial::detail::DevSerial>
             {
-                ALPAKA_FCT_HOST static auto getDevProps(
+                ALPAKA_FCT_HOST static auto getProps(
                     accs::serial::detail::DevSerial const &)
                 -> alpaka::dev::DevProps
                 {
@@ -223,6 +223,41 @@ namespace alpaka
                         Vec<3u>::all(std::numeric_limits<Vec<3u>::Val>::max()),
                         // m_uiGlobalMemSizeBytes
                         host::getGlobalMemSizeBytes());
+                }
+            };
+
+            //#############################################################################
+            //! The serial accelerator device free memory get trait specialization.
+            //#############################################################################
+            template<>
+            struct GetFreeMemBytes<
+                accs::serial::detail::DevSerial>
+            {
+                ALPAKA_FCT_HOST static auto getFreeMemBytes(
+                    accs::serial::detail::DevSerial const & dev)
+                -> std::size_t
+                {
+                    boost::ignore_unused(dev);
+
+                    // \FIXME: Get correct free memory size!
+                    return host::getGlobalMemSizeBytes();
+                }
+            };
+
+            //#############################################################################
+            //! The serial accelerator device reset trait specialization.
+            //#############################################################################
+            template<>
+            struct Reset<
+                accs::serial::detail::DevSerial>
+            {
+                ALPAKA_FCT_HOST static auto reset(
+                    accs::serial::detail::DevSerial const & dev)
+                -> void
+                {
+                    boost::ignore_unused(dev);
+
+                    // The serial device can not be reset for now.
                 }
             };
 

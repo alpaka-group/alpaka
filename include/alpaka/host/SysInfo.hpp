@@ -144,9 +144,9 @@ namespace alpaka
             // Unix : Prefer sysctl() over sysconf() except sysctl() with HW_REALMEM and HW_PHYSMEM which are not always reliable
     #if defined(CTL_HW) && (defined(HW_MEMSIZE) || defined(HW_PHYSMEM64))
             int const mib[2] = {CTL_HW,
-        #if defined(HW_MEMSIZE)        // OSX
+        #if defined(HW_MEMSIZE)                                                 // OSX
                 HW_MEMSIZE
-        #elif defined(HW_PHYSMEM64)    // NetBSD, OpenBSD.
+        #elif defined(HW_PHYSMEM64)                                             // NetBSD, OpenBSD.
                 HW_PHYSMEM64
         #endif
             };
@@ -158,20 +158,20 @@ namespace alpaka
             }
             return static_cast<std::size_t>(uiSize);
 
-    #elif defined(_SC_AIX_REALMEM)                                             // AIX.
+    #elif defined(_SC_AIX_REALMEM)                                          // AIX.
             return static_cast<std::size_t>(sysconf(_SC_AIX_REALMEM)) * static_cast<std::size_t>(1024);
 
-    #elif defined(_SC_PHYS_PAGES) && defined(_SC_PAGESIZE)                    // Linux, FreeBSD, OpenBSD, Solaris.
+    #elif defined(_SC_PHYS_PAGES) && defined(_SC_PAGESIZE)                  // Linux, FreeBSD, OpenBSD, Solaris.
             return static_cast<std::size_t>(sysconf(_SC_PHYS_PAGES)) * static_cast<std::size_t>(sysconf(_SC_PAGESIZE));
 
-    #elif defined(_SC_PHYS_PAGES) && defined(_SC_PAGE_SIZE)                   // Legacy.
+    #elif defined(_SC_PHYS_PAGES) && defined(_SC_PAGE_SIZE)                 // Legacy.
             return static_cast<std::size_t>(sysconf(_SC_PHYS_PAGES)) * static_cast<std::size_t>(sysconf(_SC_PAGE_SIZE));
 
-    #elif defined(CTL_HW) && (defined(HW_PHYSMEM) || defined(HW_REALMEM))    // DragonFly BSD, FreeBSD, NetBSD, OpenBSD, and OSX.
+    #elif defined(CTL_HW) && (defined(HW_PHYSMEM) || defined(HW_REALMEM))   // FreeBSD, DragonFly BSD, NetBSD, OpenBSD, and OSX.
             int mib[2] = {CTL_HW,
-        #if defined(HW_REALMEM)        // FreeBSD.
+        #if defined(HW_REALMEM)                                                 // FreeBSD.
                 HW_REALMEM;
-        #elif defined(HW_PYSMEM)        // Others.
+        #elif defined(HW_PYSMEM)                                                // Others.
                 HW_PHYSMEM;
         #endif
             };

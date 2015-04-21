@@ -203,10 +203,10 @@ namespace alpaka
             //! The fibers accelerator device properties get trait specialization.
             //#############################################################################
             template<>
-            struct GetDevProps<
+            struct GetProps<
                 accs::fibers::detail::DevFibers>
             {
-                ALPAKA_FCT_HOST static auto getDevProps(
+                ALPAKA_FCT_HOST static auto getProps(
                     accs::fibers::detail::DevFibers const &)
                 -> alpaka::dev::DevProps
                 {
@@ -234,6 +234,41 @@ namespace alpaka
                             std::numeric_limits<UInt>::max()),
                         // m_uiGlobalMemSizeBytes
                         host::getGlobalMemSizeBytes());
+                }
+            };
+
+            //#############################################################################
+            //! The fibers accelerator device free memory get trait specialization.
+            //#############################################################################
+            template<>
+            struct GetFreeMemBytes<
+                accs::fibers::detail::DevFibers>
+            {
+                ALPAKA_FCT_HOST static auto getFreeMemBytes(
+                    accs::fibers::detail::DevFibers const & dev)
+                -> std::size_t
+                {
+                    boost::ignore_unused(dev);
+
+                    // \FIXME: Get correct free memory size!
+                    return host::getGlobalMemSizeBytes();
+                }
+            };
+
+            //#############################################################################
+            //! The fibers accelerator device reset trait specialization.
+            //#############################################################################
+            template<>
+            struct Reset<
+                accs::fibers::detail::DevFibers>
+            {
+                ALPAKA_FCT_HOST static auto reset(
+                    accs::fibers::detail::DevFibers const & dev)
+                -> void
+                {
+                    boost::ignore_unused(dev);
+
+                    // The fibers device can not be reset for now.
                 }
             };
 

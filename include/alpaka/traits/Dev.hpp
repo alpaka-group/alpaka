@@ -52,7 +52,7 @@ namespace alpaka
             //! The device get trait.
             //#############################################################################
             template<
-                typename TDev,
+                typename T,
                 typename TSfinae = void>
             struct GetDev;
 
@@ -62,7 +62,23 @@ namespace alpaka
             template<
                 typename TDev,
                 typename TSfinae = void>
-            struct GetDevProps;
+            struct GetProps;
+
+            //#############################################################################
+            //! The device reset trait.
+            //#############################################################################
+            template<
+                typename T,
+                typename TSfinae = void>
+            struct GetFreeMemBytes;
+
+            //#############################################################################
+            //! The device reset trait.
+            //#############################################################################
+            template<
+                typename T,
+                typename TSfinae = void>
+            struct Reset;
         }
     }
 
@@ -89,30 +105,15 @@ namespace alpaka
         //! \return The device this object is bound to.
         //-----------------------------------------------------------------------------
         template<
-            typename TDev>
+            typename T>
         ALPAKA_FCT_HOST auto getDev(
-            TDev const & dev)
-        -> decltype(traits::dev::GetDev<TDev>::getDev(std::declval<TDev const &>()))
+            T const & t)
+        -> decltype(traits::dev::GetDev<T>::getDev(std::declval<T const &>()))
         {
             return traits::dev::GetDev<
-                TDev>
+                T>
             ::getDev(
-                dev);
-        }
-
-        //-----------------------------------------------------------------------------
-        //! \return The device properties.
-        //-----------------------------------------------------------------------------
-        template<
-            typename TDev>
-        ALPAKA_FCT_HOST auto getDevProps(
-            TDev const & device)
-        -> DevProps
-        {
-            return traits::dev::GetDevProps<
-                TDev>
-            ::getDevProps(
-                device);
+                t);
         }
 
         //-----------------------------------------------------------------------------
@@ -120,7 +121,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TDevMan>
-        ALPAKA_FCT_HOST auto getDevices()
+        ALPAKA_FCT_HOST auto getDevs()
         -> std::vector<DevT<TDevMan>>
         {
             std::vector<DevT<TDevMan>> vDevices;
@@ -132,6 +133,52 @@ namespace alpaka
             }
 
             return vDevices;
+        }
+
+        //-----------------------------------------------------------------------------
+        //! \return The device properties.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TDev>
+        ALPAKA_FCT_HOST auto getProps(
+            TDev const & dev)
+        -> DevProps
+        {
+            return traits::dev::GetProps<
+                TDev>
+            ::getProps(
+                dev);
+        }
+
+        //-----------------------------------------------------------------------------
+        //! \return The free memory on the device in Bytes.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TDev>
+        ALPAKA_FCT_HOST auto getFreeMemBytes(
+            TDev const & dev)
+        -> std::size_t
+        {
+            return traits::dev::GetFreeMemBytes<
+                TDev>
+            ::getFreeMemBytes(
+                dev);
+        }
+
+        //-----------------------------------------------------------------------------
+        //! Resets the device.
+        //! What this method does is dependent of the accelerator.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TDev>
+        ALPAKA_FCT_HOST auto reset(
+            TDev const & dev)
+        -> void
+        {
+            traits::dev::Reset<
+                TDev>
+            ::reset(
+                dev);
         }
     }
 }

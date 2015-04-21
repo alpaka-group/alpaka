@@ -204,10 +204,10 @@ namespace alpaka
             //! The threads accelerator device properties get trait specialization.
             //#############################################################################
             template<>
-            struct GetDevProps<
+            struct GetProps<
                 accs::threads::detail::DevThreads>
             {
-                ALPAKA_FCT_HOST static auto getDevProps(
+                ALPAKA_FCT_HOST static auto getProps(
                     accs::threads::detail::DevThreads const &)
                 -> alpaka::dev::DevProps
                 {
@@ -237,6 +237,41 @@ namespace alpaka
                             std::numeric_limits<UInt>::max()),
                         // m_uiGlobalMemSizeBytes
                         host::getGlobalMemSizeBytes());
+                }
+            };
+
+            //#############################################################################
+            //! The threads accelerator device free memory get trait specialization.
+            //#############################################################################
+            template<>
+            struct GetFreeMemBytes<
+                accs::threads::detail::DevThreads>
+            {
+                ALPAKA_FCT_HOST static auto getFreeMemBytes(
+                    accs::threads::detail::DevThreads const & dev)
+                -> std::size_t
+                {
+                    boost::ignore_unused(dev);
+
+                    // \FIXME: Get correct free memory size!
+                    return host::getGlobalMemSizeBytes();
+                }
+            };
+
+            //#############################################################################
+            //! The threads accelerator device reset trait specialization.
+            //#############################################################################
+            template<>
+            struct Reset<
+                accs::threads::detail::DevThreads>
+            {
+                ALPAKA_FCT_HOST static auto reset(
+                    accs::threads::detail::DevThreads const & dev)
+                -> void
+                {
+                    boost::ignore_unused(dev);
+
+                    // The threads device can not be reset for now.
                 }
             };
 

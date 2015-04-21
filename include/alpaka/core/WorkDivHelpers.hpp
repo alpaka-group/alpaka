@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/traits/Dev.hpp>            // dev::DevManT, getDevProps
+#include <alpaka/traits/Dev.hpp>            // dev::DevManT, getProps
 
 #include <alpaka/core/BasicWorkDiv.hpp>     // workdiv::BasicWorkDiv
 #include <alpaka/core/ForEachType.hpp>      // forEachType
@@ -57,10 +57,10 @@ namespace alpaka
                     Vec<3u> & v3uiBlockThreadExtents)
                 -> void
                 {
-                    auto const vDevs(dev::getDevices<dev::DevManT<TAcc>>());
+                    auto const vDevs(dev::getDevs<dev::DevManT<TAcc>>());
                     for(auto const & dev : vDevs)
                     {
-                        auto const devProps(dev::getDevProps(dev));
+                        auto const devProps(dev::getProps(dev));
                         auto const & v3uiBlockThreadExtentsMax(devProps.m_v3uiBlockThreadExtentsMax);
 
                         v3uiBlockThreadExtents = Vec<3u>(
@@ -113,10 +113,10 @@ namespace alpaka
                     UInt & uiBlockThreadCount)
                 -> void
                 {
-                    auto const vDevs(dev::getDevices<dev::DevManT<TAcc>>());
+                    auto const vDevs(dev::getDevs<dev::DevManT<TAcc>>());
                     for(auto const & dev : vDevs)
                     {
-                        auto const devProps(dev::getDevProps(dev));
+                        auto const devProps(dev::getProps(dev));
                         auto const & uiBlockThreadCountMax(devProps.m_uiBlockThreadsCountMax);
 
                         uiBlockThreadCount = std::min(uiBlockThreadCount, uiBlockThreadCountMax);
@@ -284,7 +284,7 @@ namespace alpaka
             auto const v3uiGridBlockExtents(getWorkDiv<Grid, Blocks, dim::Dim3>(workDiv));
             auto const v3uiBlockThreadExtents(getWorkDiv<Block, Threads, dim::Dim3>(workDiv));
 
-            auto const devProps(dev::getDevProps(dev));
+            auto const devProps(dev::getProps(dev));
             auto const & v3uiBlockThreadExtentsMax(devProps.m_v3uiBlockThreadExtentsMax);
             auto const & uiBlockThreadCountMax(devProps.m_uiBlockThreadsCountMax);
 
