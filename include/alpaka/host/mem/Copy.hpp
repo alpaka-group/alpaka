@@ -81,18 +81,18 @@ namespace alpaka
 
                     using Elem = alpaka::mem::ElemT<TBufDst>;
 
-                    auto const uiExtentWidth(alpaka::extent::getWidth(extents));
-                    auto const uiExtentHeight(alpaka::extent::getHeight(extents));
-                    auto const uiExtentDepth(alpaka::extent::getDepth(extents));
-                    auto const uiDstWidth(alpaka::extent::getWidth(bufDst));
-                    auto const uiDstHeight(alpaka::extent::getHeight(bufDst));
+                    auto const uiExtentWidth(alpaka::extent::getWidth<UInt>(extents));
+                    auto const uiExtentHeight(alpaka::extent::getHeight<UInt>(extents));
+                    auto const uiExtentDepth(alpaka::extent::getDepth<UInt>(extents));
+                    auto const uiDstWidth(alpaka::extent::getWidth<UInt>(bufDst));
+                    auto const uiDstHeight(alpaka::extent::getHeight<UInt>(bufDst));
 #if (!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
-                    auto const uiDstDepth(alpaka::extent::getDepth(bufDst));
+                    auto const uiDstDepth(alpaka::extent::getDepth<UInt>(bufDst));
 #endif
-                    auto const uiSrcWidth(alpaka::extent::getWidth(bufSrc));
-                    auto const uiSrcHeight(alpaka::extent::getHeight(bufSrc));
+                    auto const uiSrcWidth(alpaka::extent::getWidth<UInt>(bufSrc));
+                    auto const uiSrcHeight(alpaka::extent::getHeight<UInt>(bufSrc));
 #if (!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
-                    auto const uiSrcDepth(alpaka::extent::getDepth(bufSrc));
+                    auto const uiSrcDepth(alpaka::extent::getDepth<UInt>(bufSrc));
 #endif
                     assert(uiExtentWidth <= uiDstWidth);
                     assert(uiExtentHeight <= uiDstHeight);
@@ -114,10 +114,10 @@ namespace alpaka
 
                     auto const & dstBuf(alpaka::mem::getBuf(bufDst));
                     auto const & srcBuf(alpaka::mem::getBuf(bufSrc));
-                    auto const uiDstBufWidth(alpaka::extent::getWidth(dstBuf));
-                    auto const uiSrcBufWidth(alpaka::extent::getWidth(srcBuf));
-                    auto const uiDstBufHeight(alpaka::extent::getHeight(dstBuf));
-                    auto const uiSrcBufHeight(alpaka::extent::getHeight(srcBuf));
+                    auto const uiDstBufWidth(alpaka::extent::getWidth<UInt>(dstBuf));
+                    auto const uiSrcBufWidth(alpaka::extent::getWidth<UInt>(srcBuf));
+                    auto const uiDstBufHeight(alpaka::extent::getHeight<UInt>(dstBuf));
+                    auto const uiSrcBufHeight(alpaka::extent::getHeight<UInt>(srcBuf));
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                     std::cout << BOOST_CURRENT_FUNCTION

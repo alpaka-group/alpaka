@@ -21,13 +21,12 @@
 
 #pragma once
 
-#include <alpaka/accs/omp/omp2/WorkDiv.hpp> // WorkDivOmp2
-
 #include <alpaka/accs/omp/Common.hpp>
 
-#include <alpaka/traits/Idx.hpp>            // idx::GetIdx
+#include <alpaka/traits/Idx.hpp>        // idx::GetIdx
 
-#include <alpaka/core/IdxMapping.hpp>       // mapIdx
+#include <alpaka/core/BasicWorkDiv.hpp> // workdiv::BasicWorkDiv
+#include <alpaka/core/IdxMapping.hpp>   // mapIdx
 
 namespace alpaka
 {
@@ -49,7 +48,7 @@ namespace alpaka
                         //! Constructor.
                         //-----------------------------------------------------------------------------
                         ALPAKA_FCT_ACC_NO_CUDA IdxOmp2(
-                            Vec<3u> const & v3uiGridBlockIdx) :
+                            Vec3<> const & v3uiGridBlockIdx) :
                             m_v3uiGridBlockIdx(v3uiGridBlockIdx)
                         {}
                         //-----------------------------------------------------------------------------
@@ -79,13 +78,13 @@ namespace alpaka
                         template<
                             typename TWorkDiv>
                         ALPAKA_FCT_ACC_NO_CUDA auto getIdxBlockThread3d(TWorkDiv const & workDiv) const
-                        -> Vec<3u>
+                        -> Vec3<>
                         {
                             // We assume that the thread id is positive.
                             auto const v1iIdxBlockThread(getIdxBlockThread1d());
                             // Get the number of threads in each dimension of the grid.
                             auto const v3uiBlockThreadExtents(workdiv::getWorkDiv<Block, Threads, dim::Dim3>(workDiv));
-                            auto const v2uiBlockThreadExtents(subVec<2u>(v3uiBlockThreadExtents));
+                            auto const v2uiBlockThreadExtents(subVec<dim::Dim2>(v3uiBlockThreadExtents));
 
                             return mapIdx<3>(
                                 v1iIdxBlockThread,
@@ -95,24 +94,24 @@ namespace alpaka
                         //! \return The index of the currently executed thread.
                         //-----------------------------------------------------------------------------
                         ALPAKA_FCT_ACC_NO_CUDA auto getIdxBlockThread1d() const
-                        -> Vec<1u>
+                        -> Vec1<>
                         {
                             // We assume that the thread id is positive.
                             assert(::omp_get_thread_num() >= 0);
-                            auto const uiThreadId(static_cast<Vec<1u>::Val>(::omp_get_thread_num()));
-                            return Vec<1u>(uiThreadId);
+                            auto const uiThreadId(static_cast<Vec1<>::Val>(::omp_get_thread_num()));
+                            return Vec1<>(uiThreadId);
                         }
                         //-----------------------------------------------------------------------------
                         //! \return The block index of the currently executed thread.
                         //-----------------------------------------------------------------------------
                         ALPAKA_FCT_ACC_NO_CUDA auto getIdxGridBlock() const
-                        -> Vec<3u>
+                        -> Vec3<>
                         {
                             return m_v3uiGridBlockIdx;
                         }
 
                     private:
-                        Vec<3u> const & m_v3uiGridBlockIdx; //!< The index of the currently executed block.
+                        Vec3<> const & m_v3uiGridBlockIdx; //!< The index of the currently executed block.
                     };
                 }
             }
@@ -141,7 +140,7 @@ namespace alpaka
                 ALPAKA_FCT_ACC_NO_CUDA static auto getIdx(
                     accs::omp::omp2::detail::IdxOmp2 const & index,
                     TWorkDiv const & workDiv)
-                -> alpaka::DimToVecT<alpaka::dim::Dim3>
+                -> alpaka::Vec<alpaka::dim::Dim3>
                 {
                     return index.getIdxBlockThread3d(workDiv);
                 }
@@ -165,7 +164,7 @@ namespace alpaka
                 ALPAKA_FCT_ACC_NO_CUDA static auto getIdx(
                     accs::omp::omp2::detail::IdxOmp2 const & index,
                     TWorkDiv const &)
-                -> alpaka::DimToVecT<alpaka::dim::Dim1>
+                -> alpaka::Vec<alpaka::dim::Dim1>
                 {
                     return index.getIdxBlockThread1d();
                 }
@@ -189,7 +188,7 @@ namespace alpaka
                 ALPAKA_FCT_ACC_NO_CUDA static auto getIdx(
                     accs::omp::omp2::detail::IdxOmp2 const & index,
                     TWorkDiv const &)
-                -> alpaka::DimToVecT<alpaka::dim::Dim3>
+                -> alpaka::Vec<alpaka::dim::Dim3>
                 {
                     return index.getIdxGridBlock();
                 }

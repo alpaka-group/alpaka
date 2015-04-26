@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/core/BasicWorkDiv.hpp>  //  workdiv::BasicWorkDiv
+#include <alpaka/core/BasicWorkDiv.hpp> // workdiv::BasicWorkDiv
 
 namespace alpaka
 {

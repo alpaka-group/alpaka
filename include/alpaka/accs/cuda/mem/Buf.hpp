@@ -27,7 +27,7 @@
 #include <alpaka/accs/cuda/Common.hpp>
 
 #include <alpaka/core/BasicDims.hpp>        // dim::Dim<N>
-#include <alpaka/core/Vec.hpp>              // Vec<TDim::value>
+#include <alpaka/core/Vec.hpp>              // Vec<TDim>
 
 #include <alpaka/traits/mem/Buf.hpp>        // traits::Copy, ...
 #include <alpaka/traits/Extent.hpp>         // traits::getXXX
@@ -67,7 +67,7 @@ namespace alpaka
                         UInt const & uiPitchBytes,
                         TExtents const & extents) :
                             m_Dev(dev),
-                            m_vExtentsElements(Vec<TDim::value>::fromExtents(extents)),
+                            m_vExtentsElements(extent::getExtentsNd<TDim, UInt>(extents)),
                             m_spMem(
                                 pMem,
                                 std::bind(&BufCuda::freeBuffer, std::placeholders::_1, std::ref(m_Dev))),
@@ -102,7 +102,7 @@ namespace alpaka
 
                 public:
                     DevCuda m_Dev;
-                    Vec<TDim::value> m_vExtentsElements;
+                    Vec<TDim> m_vExtentsElements;
                     std::shared_ptr<TElem> m_spMem;
                     UInt m_uiPitchBytes;
                 };
@@ -165,84 +165,25 @@ namespace alpaka
         namespace extent
         {
             //#############################################################################
-            //! The BufCuda extents get trait specialization.
+            //! The BufCuda extent get trait specialization.
             //#############################################################################
             template<
+                UInt TuiIdx,
                 typename TElem,
                 typename TDim>
-            struct GetExtents<
-                accs::cuda::detail::BufCuda<TElem, TDim>>
-            {
-                //-----------------------------------------------------------------------------
-                //!
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getExtents(
-                    accs::cuda::detail::BufCuda<TElem, TDim> const & extents)
-                -> Vec<TDim::value>
-                {
-                    return {extents.m_vExtentsElements};
-                }
-            };
-
-            //#############################################################################
-            //! The BufCuda width get trait specialization.
-            //#############################################################################
-            template<
-                typename TElem,
-                typename TDim>
-            struct GetWidth<
+            struct GetExtent<
+                TuiIdx,
                 accs::cuda::detail::BufCuda<TElem, TDim>,
-                typename std::enable_if<(TDim::value >= 1u) && (TDim::value <= 3u)>::type>
+                typename std::enable_if<TDim::value >= (TuiIdx+1)>::type>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getWidth(
+                ALPAKA_FCT_HOST static auto getExtent(
                     accs::cuda::detail::BufCuda<TElem, TDim> const & extent)
                 -> UInt
                 {
-                    return extent.m_vExtentsElements[0u];
-                }
-            };
-
-            //#############################################################################
-            //! The BufCuda height get trait specialization.
-            //#############################################################################
-            template<
-                typename TElem,
-                typename TDim>
-            struct GetHeight<
-                accs::cuda::detail::BufCuda<TElem, TDim>,
-                typename std::enable_if<(TDim::value >= 2u) && (TDim::value <= 3u)>::type>
-            {
-                //-----------------------------------------------------------------------------
-                //!
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getHeight(
-                    accs::cuda::detail::BufCuda<TElem, TDim> const & extent)
-                -> UInt
-                {
-                    return extent.m_vExtentsElements[1u];
-                }
-            };
-            //#############################################################################
-            //! The BufCuda depth get trait specialization.
-            //#############################################################################
-            template<
-                typename TElem,
-                typename TDim>
-            struct GetDepth<
-                accs::cuda::detail::BufCuda<TElem, TDim>,
-                typename std::enable_if<(TDim::value >= 3u) && (TDim::value <= 3u)>::type>
-            {
-                //-----------------------------------------------------------------------------
-                //!
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getDepth(
-                    accs::cuda::detail::BufCuda<TElem, TDim> const & extent)
-                -> UInt
-                {
-                    return extent.m_vExtentsElements[2u];
+                    return extent.m_vExtentsElements[TuiIdx];
                 }
             };
         }
@@ -250,22 +191,24 @@ namespace alpaka
         namespace offset
         {
             //#############################################################################
-            //! The BufCuda offsets get trait specialization.
+            //! The BufCuda offset get trait specialization.
             //#############################################################################
             template<
+                UInt TuiIdx,
                 typename TElem,
                 typename TDim>
-            struct GetOffsets<
+            struct GetOffset<
+                TuiIdx,
                 accs::cuda::detail::BufCuda<TElem, TDim>>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getOffsets(
+                ALPAKA_FCT_HOST static auto getOffset(
                     accs::cuda::detail::BufCuda<TElem, TDim> const &)
-                -> Vec<TDim::value>
+                -> UInt
                 {
-                    return Vec<TDim::value>::zero();
+                    return 0u;
                 }
             };
         }
@@ -397,7 +340,7 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    auto const uiWidth(alpaka::extent::getWidth(extents));
+                    auto const uiWidth(alpaka::extent::getWidth<UInt>(extents));
                     assert(uiWidth>0);
                     auto const uiWidthBytes(uiWidth * sizeof(T));
                     assert(uiWidthBytes>0);
@@ -451,10 +394,10 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    auto const uiWidth(alpaka::extent::getWidth(extents));
+                    auto const uiWidth(alpaka::extent::getWidth<UInt>(extents));
                     auto const uiWidthBytes(uiWidth * sizeof(T));
                     assert(uiWidthBytes>0);
-                    auto const uiHeight(alpaka::extent::getHeight(extents));
+                    auto const uiHeight(alpaka::extent::getHeight<UInt>(extents));
 #ifndef NDEBUG
                     auto const uiElementCount(uiWidth * uiHeight);
 #endif
@@ -517,9 +460,9 @@ namespace alpaka
 
                     cudaExtent const cudaExtentVal(
                         make_cudaExtent(
-                            alpaka::extent::getWidth(extents) * sizeof(T),
-                            alpaka::extent::getHeight(extents),
-                            alpaka::extent::getDepth(extents)));
+                            alpaka::extent::getWidth<UInt>(extents) * sizeof(T),
+                            alpaka::extent::getHeight<UInt>(extents),
+                            alpaka::extent::getDepth<UInt>(extents)));
 
                     // Set the current device.
                     ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
@@ -534,7 +477,7 @@ namespace alpaka
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                     std::cout << BOOST_CURRENT_FUNCTION
-                        << " ew: " << alpaka::extent::getWidth(extents)
+                        << " ew: " << alpaka::extent::getWidth<UInt>(extents)
                         << " eh: " << cudaExtentVal.height
                         << " ed: " << cudaExtentVal.depth
                         << " ewb: " << cudaExtentVal.width

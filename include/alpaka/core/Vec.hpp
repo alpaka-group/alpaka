@@ -41,25 +41,25 @@ namespace alpaka
     //#############################################################################
     //! A n-dimensional vector.
     //#############################################################################
-    // \TODO: Replace the integer template parameter by a dimension type.
     template<
-        UInt TuiDim,
+        typename TDim,
         typename TVal = UInt>
     class Vec
     {
     public:
-        static_assert(TuiDim>0, "Size of the vector is required to be greater then zero!");
-
-        static const UInt s_uiDim = TuiDim;
+        static_assert(TDim::value>0, "Size of the vector is required to be greater then zero!");
+        
+        using Dim = TDim;
+        static const UInt s_uiDim = TDim::value;
         using Val = TVal;
 
     private:
-        //! A sequence of integers from 0 to TuiDim-1.
+        //! A sequence of integers from 0 to dim-1.
         //! This can be used to write compile time indexing algorithms.
 #if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-        using IdxSequence = typename alpaka::detail::make_integer_sequence<UInt, TuiDim>::type;
+        using IdxSequence = typename alpaka::detail::make_integer_sequence<UInt, TDim::value>::type;
 #else
-        using IdxSequence = alpaka::detail::make_integer_sequence<UInt, TuiDim>;
+        using IdxSequence = alpaka::detail::make_integer_sequence<UInt, TDim::value>;
 #endif
 
     public:
@@ -73,7 +73,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename... TArgs,
-            typename = typename std::enable_if<sizeof...(TArgs) == TuiDim>::type>
+            typename = typename std::enable_if<sizeof...(TArgs) == TDim::value>::type>
         ALPAKA_FCT_HOST_ACC Vec(
             TArgs && ... vals)
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 22609))   // MSVC does not compile the basic array initialization: "error C2536: 'alpaka::Vec<0x03>::alpaka::Vec<0x03>::m_auiData': cannot specify explicit initializer for arrays"
@@ -82,29 +82,65 @@ namespace alpaka
 #endif
         {
 #if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 22609))
-            TVal auiData2[TuiDim] = {std::forward<TArgs>(vals)...};
-            for(UInt i(0); i<TuiDim; ++i)
+            TVal auiData2[TDim::value] = {std::forward<TArgs>(vals)...};
+            for(UInt i(0); i<TDim::value; ++i)
             {
                 m_auiData[i] = auiData2[i];
             }
 #endif
         }
+    private:
         //-----------------------------------------------------------------------------
-        //! Zero value constructor.
+        //! Single value constructor helper.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC static auto zeros()
-        -> Vec<TuiDim, TVal>
+        template<
+            template<UInt> class TTFunctor,
+            typename... TArgs,
+            UInt... TIndices>
+        ALPAKA_FCT_HOST_ACC static auto createHelper(
+            detail::integer_sequence<UInt, TIndices...> const &,
+            TArgs && ... args)
+        -> Vec<TDim, TVal>
         {
-            return all(static_cast<TVal>(0));
+            return Vec<TDim, TVal>(
+                (TTFunctor<TIndices>::create(std::forward<TArgs>(args)...))...);
         }
+    public:
         //-----------------------------------------------------------------------------
-        //! One value constructor.
+        //! Creator using func(idx, args...) to initialize all values of the vector.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC static auto ones()
-            -> Vec<TuiDim, TVal>
+        template<
+            template<UInt> class TTFunctor,
+            typename... TArgs>
+        ALPAKA_FCT_HOST_ACC static auto create(
+            TArgs && ... args)
+        -> Vec<TDim, TVal>
         {
-            return all(static_cast<TVal>(1));
+            return createHelper<TTFunctor>(
+                IdxSequence(),
+                std::forward<TArgs>(args)...);
         }
+    private:
+        //#############################################################################
+        //! A functor that returns the given value for each index.
+        //#############################################################################
+        template<
+            UInt TuiIdx>
+        struct CreateSingleVal
+        {
+            //-----------------------------------------------------------------------------
+            //!
+            //-----------------------------------------------------------------------------
+            template<
+                typename TVal2>
+            ALPAKA_FCT_HOST_ACC static auto create(
+                TVal2 && val)
+            -> TVal2
+            {
+                return val;
+            }
+        };
+    public:
         //-----------------------------------------------------------------------------
         //! \brief Single value constructor.
         //!
@@ -115,149 +151,26 @@ namespace alpaka
             typename TVal2>
         ALPAKA_FCT_HOST_ACC static auto all(
             TVal2 && val)
-        -> Vec<TuiDim, TVal>
+        -> Vec<TDim, TVal>
         {
-            return create(
-                &Vec<TuiDim, TVal>::createSingleVal<TVal2>,
+            return create<CreateSingleVal>(
                 std::forward<TVal2>(val));
         }
-    private:
         //-----------------------------------------------------------------------------
-        //! A Function that returns the given value.
+        //! Zero value constructor.
         //-----------------------------------------------------------------------------
-        template<
-            typename TVal2>
-        ALPAKA_FCT_HOST_ACC static auto createSingleVal(
-            UInt const &,
-            TVal2 && val)
-        -> TVal2
+        ALPAKA_FCT_HOST_ACC static auto zeros()
+        -> Vec<TDim, TVal>
         {
-            return val;
-        }
-    public:
-        //-----------------------------------------------------------------------------
-        //! Creator using func(idx, args...) to initialize all values of the vector.
-        //-----------------------------------------------------------------------------
-        template<
-            typename TFunctor,
-            typename... TArgs>
-        ALPAKA_FCT_HOST_ACC static auto create(
-            TFunctor && func,
-            TArgs && ... args)
-        -> Vec<TuiDim, TVal>
-        {
-            return createHelper(
-                func,
-                IdxSequence(),
-                std::forward<TArgs>(args)...);
-        }
-    private:
-        //-----------------------------------------------------------------------------
-        //! Single value constructor helper.
-        //-----------------------------------------------------------------------------
-        template<
-            typename TFunctor,
-            typename... TArgs,
-            UInt... TIndices>
-        ALPAKA_FCT_HOST_ACC static auto createHelper(
-            TFunctor && func,
-            detail::integer_sequence<UInt, TIndices...> const &,
-            TArgs && ... args)
-        -> Vec<TuiDim, TVal>
-        {
-            return Vec<TuiDim, TVal>(
-                (std::forward<TFunctor>(func)(TIndices, std::forward<TArgs>(args)...))...);
-        }
-    public:
-        //-----------------------------------------------------------------------------
-        //! Extents constructor.
-        //-----------------------------------------------------------------------------
-        template<
-            typename TExtents,
-            UInt TuiDimSfinae = TuiDim,
-            typename = typename std::enable_if<TuiDimSfinae == 1>::type>
-        ALPAKA_FCT_HOST_ACC static auto fromExtents(
-            TExtents const & extents)
-        -> Vec<1u, TVal>
-        {
-            return Vec<1u, TVal>(
-                extent::getWidth(extents));
+            return all(static_cast<TVal>(0));
         }
         //-----------------------------------------------------------------------------
-        //! Extents constructor.
+        //! One value constructor.
         //-----------------------------------------------------------------------------
-        template<
-            typename TExtents,
-            UInt TuiDimSfinae = TuiDim,
-            typename = typename std::enable_if<TuiDimSfinae == 2>::type>
-        ALPAKA_FCT_HOST_ACC static auto fromExtents(
-            TExtents const & extents)
-        -> Vec<2u, TVal>
+        ALPAKA_FCT_HOST_ACC static auto ones()
+            -> Vec<TDim, TVal>
         {
-            return Vec<2u, TVal>(
-                extent::getWidth(extents),
-                extent::getHeight(extents));
-        }
-        //-----------------------------------------------------------------------------
-        //! Extents constructor.
-        //-----------------------------------------------------------------------------
-        template<
-            typename TExtents,
-            UInt TuiDimSfinae = TuiDim,
-            typename = typename std::enable_if<TuiDimSfinae == 3>::type>
-        ALPAKA_FCT_HOST_ACC static auto fromExtents(
-            TExtents const & extents)
-        -> Vec<3u, TVal>
-        {
-            return Vec<3u, TVal>(
-                extent::getWidth(extents),
-                extent::getHeight(extents),
-                extent::getDepth(extents));
-        }
-        //-----------------------------------------------------------------------------
-        //! Offsets constructor.
-        //-----------------------------------------------------------------------------
-        template<
-            typename TOffsets,
-            UInt TuiDimSfinae = TuiDim,
-            typename = typename std::enable_if<TuiDimSfinae == 1>::type>
-        ALPAKA_FCT_HOST_ACC static auto fromOffsets(
-            TOffsets const & offsets)
-        -> Vec<1u, TVal>
-        {
-            return Vec<1u, TVal>(
-                offset::getOffsetX(offsets));
-        }
-        //-----------------------------------------------------------------------------
-        //! Offsets constructor.
-        //-----------------------------------------------------------------------------
-        template<
-            typename TOffsets,
-            UInt TuiDimSfinae = TuiDim,
-            typename = typename std::enable_if<TuiDimSfinae == 2>::type>
-        ALPAKA_FCT_HOST_ACC static auto fromOffsets(
-            TOffsets const & offsets)
-        -> Vec<2u, TVal>
-        {
-            return Vec<2u, TVal>(
-                offset::getOffsetX(offsets),
-                offset::getOffsetY(offsets));
-        }
-        //-----------------------------------------------------------------------------
-        //! Offsets constructor.
-        //-----------------------------------------------------------------------------
-        template<
-            typename TOffsets,
-            UInt TuiDimSfinae = TuiDim,
-            typename = typename std::enable_if<TuiDimSfinae == 3>::type>
-        ALPAKA_FCT_HOST_ACC static auto fromOffsets(
-            TOffsets const & offsets)
-        -> Vec<3u, TVal>
-        {
-            return Vec<3u, TVal>(
-                offset::getOffsetX(offsets),
-                offset::getOffsetY(offsets),
-                offset::getOffsetZ(offsets));
+            return all(static_cast<TVal>(1));
         }
         //-----------------------------------------------------------------------------
         //! Copy constructor.
@@ -288,39 +201,78 @@ namespace alpaka
 #endif
         -> UInt
         {
-            return TuiDim;
+            return TDim::value;
         }
 
         //-----------------------------------------------------------------------------
+        //! Value reference accessor at the given non-unsigned integer index.
         //! \return A reference to the value at the given index.
-        // \TODO: Add is_unsigned but is vec[1337] failing then?
         //-----------------------------------------------------------------------------
         template<
-            typename TInt,
+            typename TIdx,
             typename = typename std::enable_if<
-                std::is_integral<TInt>::value>::type>
+                std::is_integral<TIdx>::value
+                /*&& !std::is_unsigned<TIdx>::value*/>::type/* * = nullptr*/>
         ALPAKA_FCT_HOST_ACC auto operator[](
-            TInt const uiIdx)
+            TIdx const iIdx)
         -> TVal &
         {
-            assert(uiIdx<TuiDim);
+            assert(0<=iIdx);
+            auto const uiIdx(static_cast<UInt>(iIdx));
+            assert(uiIdx<TDim::value);
             return m_auiData[uiIdx];
         }
         //-----------------------------------------------------------------------------
+        //! Value reference accessor at the given unsigned integer index.
+        //! \return A reference to the value at the given index.
+        //-----------------------------------------------------------------------------
+        /*template<
+            typename TIdx,
+            typename std::enable_if<
+                std::is_integral<TIdx>::value
+                && std::is_unsigned<TIdx>::value>::type * = nullptr>
+        ALPAKA_FCT_HOST_ACC auto operator[](
+            TIdx const uiIdx)
+        -> TVal &
+        {
+            assert(uiIdx<TDim::value);
+            return m_auiData[uiIdx];
+        }*/
+
+        //-----------------------------------------------------------------------------
+        //! Value accessor at the given non-unsigned integer index.
         //! \return The value at the given index.
-        // \TODO: Add is_unsigned but is vec[1337] failing then?
         //-----------------------------------------------------------------------------
         template<
-            typename TInt,
+            typename TIdx,
             typename = typename std::enable_if<
-                std::is_integral<TInt>::value>::type>
+                std::is_integral<TIdx>::value
+                /*&& !std::is_unsigned<TIdx>::value*/>::type/* * = nullptr*/>
         ALPAKA_FCT_HOST_ACC auto operator[](
-            TInt const uiIdx) const
+            TIdx const iIdx) const
         -> TVal
         {
-            assert(uiIdx<TuiDim);
+            assert(0<=iIdx);
+            auto const uiIdx(static_cast<UInt>(iIdx));
+            assert(uiIdx<TDim::value);
             return m_auiData[uiIdx];
         }
+        //-----------------------------------------------------------------------------
+        //! Value accessor at the given unsigned integer index.
+        //! \return The value at the given index.
+        //-----------------------------------------------------------------------------
+        /*template<
+            typename TIdx,
+            typename std::enable_if<
+                std::is_integral<TIdx>::value
+                && std::is_unsigned<TIdx>::value>::type * = nullptr>
+        ALPAKA_FCT_HOST_ACC auto operator[](
+            TIdx const uiIdx) const
+        -> TVal
+        {
+            assert(uiIdx<TDim::value);
+            return m_auiData[uiIdx];
+        }*/
 
         //-----------------------------------------------------------------------------
         // Equality comparison operator.
@@ -329,11 +281,11 @@ namespace alpaka
             Vec const & rhs) const
         -> bool
         {
-            for(UInt i(0); i < TuiDim; i++)
+            for(UInt i(0); i < TDim::value; i++)
             {
                 if((*this)[i] != rhs[i])
                 {
-                    return TuiDim;
+                    return false;
                 }
             }
             return true;
@@ -355,101 +307,123 @@ namespace alpaka
         -> TVal
         {
             TVal uiProd(m_auiData[0]);
-            for(UInt i(1); i<TuiDim; ++i)
+            for(UInt i(1); i<TDim::value; ++i)
             {
                 uiProd *= m_auiData[i];
             }
             return uiProd;
         }
-
-        //-----------------------------------------------------------------------------
-        //! Calculates the dot product of two vectors.
-        //-----------------------------------------------------------------------------
-        /*ALPAKA_FCT_HOST_ACC static auto dotProduct(
-            Vec const & p,
-            Vec const & q)
-        -> TVal
+    
+    public: // \TODO: Make private.
+        //#############################################################################
+        //! A functor that returns the sum of the two input vectors elements.
+        //#############################################################################
+        template<
+            UInt TuiIdx>
+        struct CreateAdd
         {
-            TVal uiProd(0);
-            for(size_t i(0); i<TuiDim; ++i)
+            //-----------------------------------------------------------------------------
+            //!
+            //-----------------------------------------------------------------------------
+            ALPAKA_FCT_HOST_ACC static auto create(
+                Vec<TDim, TVal> const & p,
+                Vec<TDim, TVal> const & q)
+            -> TVal
             {
-                uiProd += p[i] * q[i];
+                return p[TuiIdx] + q[TuiIdx];
             }
-            return uiProd;
-        }*/
+        };
+        //#############################################################################
+        //! A functor that returns the product of the two input vectors elements.
+        //#############################################################################
+        template<
+            UInt TuiIdx>
+        struct CreateMul
+        {
+            //-----------------------------------------------------------------------------
+            //!
+            //-----------------------------------------------------------------------------
+            ALPAKA_FCT_HOST_ACC static auto create(
+                Vec<TDim, TVal> const & p,
+                Vec<TDim, TVal> const & q)
+            -> TVal
+            {
+                return p[TuiIdx] * q[TuiIdx];
+            }
+        };
 
     private:
-        ALPAKA_ALIGN(TVal, m_auiData[TuiDim]);
+        ALPAKA_ALIGN(TVal, m_auiData[TDim::value]);
     };
+    
+    template<
+        typename TVal = UInt>
+    using Vec1 = Vec<dim::Dim1, TVal>;
+    
+    template<
+        typename TVal = UInt>
+    using Vec2 = Vec<dim::Dim2, TVal>;
+
+    template<
+        typename TVal = UInt>
+    using Vec3 = Vec<dim::Dim3, TVal>;
 
     //-----------------------------------------------------------------------------
     //! \return The element wise sum of two vectors.
     //-----------------------------------------------------------------------------
     template<
-        UInt TuiDim,
+        typename TDim,
         typename TVal>
     ALPAKA_FCT_HOST_ACC auto operator+(
-        Vec<TuiDim, TVal> const & p,
-        Vec<TuiDim, TVal> const & q)
-    -> Vec<TuiDim, TVal>
+        Vec<TDim, TVal> const & p,
+        Vec<TDim, TVal> const & q)
+    -> Vec<TDim, TVal>
     {
-        auto const add([](
-            UInt const & i,
-            Vec<TuiDim, TVal> const & p,
-            Vec<TuiDim, TVal> const & q)
-        -> TVal
-        {
-            return p[i] + q[i];
-        });
-
-        return Vec<TuiDim, TVal>::create(
-            add,
-            p,
-            q);
+        return Vec<
+            TDim,
+            TVal>
+        ::template create<
+            Vec<TDim, TVal>::template CreateAdd>(
+                p,
+                q);
     }
-
+    
     //-----------------------------------------------------------------------------
     //! \return The element wise product of two vectors.
     //-----------------------------------------------------------------------------
     template<
-        UInt TuiDim,
+        typename TDim,
         typename TVal>
     ALPAKA_FCT_HOST_ACC auto operator*(
-        Vec<TuiDim, TVal> const & p,
-        Vec<TuiDim, TVal> const & q)
-    -> Vec<TuiDim, TVal>
+        Vec<TDim, TVal> const & p,
+        Vec<TDim, TVal> const & q)
+    -> Vec<TDim, TVal>
     {
-        auto const mul([](
-            UInt const & i,
-            Vec<TuiDim, TVal> const & p,
-            Vec<TuiDim, TVal> const & q)
-        -> TVal
-        {
-            return p[i] * q[i];
-        });
-
-        return Vec<TuiDim, TVal>::create(
-            mul,
-            p,
-            q);
+        return Vec<
+            TDim,
+            TVal>
+        ::template create<
+            Vec<TDim, TVal>::template CreateMul>(
+                p,
+                q);
     }
 
     //-----------------------------------------------------------------------------
     //! Stream out operator.
     //-----------------------------------------------------------------------------
     template<
-        UInt TuiDim,
+        typename TDim,
         typename TVal>
     ALPAKA_FCT_HOST auto operator<<(
         std::ostream & os,
-        Vec<TuiDim, TVal> const & v)
+        Vec<TDim, TVal> const & v)
     -> std::ostream &
     {
         os << "(";
-        for(UInt i(0); i<TuiDim; ++i)
+        for(UInt i(0); i<TDim::value; ++i)
         {
             os << v[i];
-            if(i<TuiDim-1)
+            if(i<TDim::value-1)
             {
                 os << ", ";
             }
@@ -464,202 +438,230 @@ namespace alpaka
     //-----------------------------------------------------------------------------
     template<
         UInt... TIndices,
-        UInt TuiDim,
+        typename TDim,
         typename TVal>
     ALPAKA_FCT_HOST_ACC static auto subVecFromIndices(
-        Vec<TuiDim, TVal> const & vec,
+        Vec<TDim, TVal> const & vec,
         detail::integer_sequence<UInt, TIndices...> const &)
-    -> Vec<sizeof...(TIndices), TVal>
+    -> Vec<dim::Dim<sizeof...(TIndices)>, TVal>
     {
-        static_assert(sizeof...(TIndices) <= TuiDim, "The sub-vector has to be smaller (or same size) then the origin vector.");
+        static_assert(sizeof...(TIndices) <= TDim::value, "The sub-vector has to be smaller (or same size) then the origin vector.");
 
-        return Vec<sizeof...(TIndices), TVal>(vec[TIndices]...);
+        return Vec<dim::Dim<sizeof...(TIndices)>, TVal>(vec[TIndices]...);
     }
     //-----------------------------------------------------------------------------
     //! \return The sub-vector consisting of the first N elements of the source vector.
     //-----------------------------------------------------------------------------
     template<
-        UInt TuiSubDim,
-        UInt TuiDim,
+        typename TSubDim,
+        typename TDim,
         typename TVal/*,
-        typename std::enable_if<TuiSubDim != TuiDim>::type * = nullptr*/>
+        typename std::enable_if<TuiSubDim != TDim::value>::type * = nullptr*/>
     ALPAKA_FCT_HOST_ACC static auto subVec(
-        Vec<TuiDim, TVal> const & vec)
-    -> Vec<TuiSubDim, TVal>
+        Vec<TDim, TVal> const & vec)
+    -> Vec<TSubDim, TVal>
     {
-        static_assert(TuiSubDim <= TuiDim, "The sub-vector has to be smaller (or same size) then the origin vector.");
+        static_assert(TSubDim::value <= TDim::value, "The sub-vector has to be smaller (or same size) then the origin vector.");
         
-        //! A sequence of integers from 0 to TuiDim-1.
+        //! A sequence of integers from 0 to dim-1.
         //! This can be used to write compile time indexing algorithms.
 #if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
         using IdxSubSequence = typename alpaka::detail::make_integer_sequence<UInt, TuiSubDim>::type;
 #else
-        using IdxSubSequence = alpaka::detail::make_integer_sequence<UInt, TuiSubDim>;
+        using IdxSubSequence = alpaka::detail::make_integer_sequence<UInt, TSubDim::value>;
 #endif
         return subVecFromIndices(vec, IdxSubSequence());
     }
     //-----------------------------------------------------------------------------
     //! \return The sub-vector consisting of the first N elements of the source vector.
-    //! For TuiSubDim == TuiDim nothing has to be done.
+    //! For subDim == dim nothing has to be done.
     // Specialization for template class template methods is not possible, SFINAE as workaround does.
     // \FIXME: Does not work with nvcc!
     //-----------------------------------------------------------------------------
     /*template<
-        UInt TuiSubDim,
-        UInt TuiDim,
+        typename TSubDim,
+        typename TDim,
         typename TVal,
-        typename std::enable_if<TuiSubDim == TuiDim>::type * = nullptr>
+        typename std::enable_if<TSubDim::value == TDim::value>::type * = nullptr>
     ALPAKA_FCT_HOST_ACC static auto subVec(
-        Vec<TuiDim, TVal> const & vec)
-    -> Vec<TuiSubDim, TVal>
+        Vec<TDim, TVal> const & vec)
+    -> Vec<TSubDim, TVal>
     {
         return vec;
     }*/
-
-    namespace detail
+    
+    namespace extent
     {
-        //#############################################################################
-        //! The dimension to vector type transformation trait.
-        //#############################################################################
-        template<
-            typename TDim>
-        struct DimToVec
+        namespace detail
         {
-            using type = Vec<TDim::value>;
-        };
+            //-----------------------------------------------------------------------------
+            //!
+            //-----------------------------------------------------------------------------
+            template<
+                typename TVal,
+                typename TExtents,
+                size_t... TIndices>
+            ALPAKA_FCT_HOST static auto getExtentsInternal(
+                TExtents const & extents,
+#if !BOOST_COMP_MSVC     // MSVC 190022512 introduced a new bug with alias templates: error C3520: 'TIndices': parameter pack must be expanded in this context
+            alpaka::detail::index_sequence<TIndices...> const &)
+#else
+            alpaka::detail::integer_sequence<std::size_t, TIndices...> const &)
+#endif
+            -> Vec<dim::Dim<sizeof...(TIndices)>, TVal>
+            {
+                return {getExtent<TIndices, TVal>(extents)...};
+            }
+        }
+        //-----------------------------------------------------------------------------
+        //! \return The extents.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TDim,
+            typename TVal,
+            typename TExtents>
+        ALPAKA_FCT_HOST_ACC auto getExtentsNd(
+            TExtents const & extents = TExtents())
+        -> Vec<TDim>
+        {
+#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
+            using IdxSequence = typename alpaka::detail::make_index_sequence<TDim::value>::type;
+#else
+            using IdxSequence = alpaka::detail::make_index_sequence<TDim::value>;
+#endif
+            return detail::getExtentsInternal<TVal>(
+                extents,
+                IdxSequence());
+        }
+        //-----------------------------------------------------------------------------
+        //! \return The extents.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TVal,
+            typename TExtents>
+        ALPAKA_FCT_HOST_ACC auto getExtents(
+            TExtents const & extents = TExtents())
+        -> Vec<dim::DimT<TExtents>, TVal>
+        {
+            return getExtentsNd<dim::DimT<TExtents>, TVal>(extents);
+        }
     }
-
-    //#############################################################################
-    //! The dimension to vector type alias template to remove the ::type.
-    //#############################################################################
-    template<
-        typename TDim>
-    using DimToVecT = typename detail::DimToVec<TDim>::type;
+    
+    namespace offset
+    {
+        namespace detail
+        {
+            //-----------------------------------------------------------------------------
+            //!
+            //-----------------------------------------------------------------------------
+            template<
+                typename TVal,
+                typename TOffsets,
+                size_t... TIndices>
+            ALPAKA_FCT_HOST static auto getOffsetsInternal(
+                TOffsets const & extents,
+#if !BOOST_COMP_MSVC     // MSVC 190022512 introduced a new bug with alias templates: error C3520: 'TIndices': parameter pack must be expanded in this context
+            alpaka::detail::index_sequence<TIndices...> const &)
+#else
+            alpaka::detail::integer_sequence<std::size_t, TIndices...> const &)
+#endif
+            -> Vec<dim::Dim<sizeof...(TIndices)>, TVal>
+            {
+                return {getOffset<TIndices, TVal>(extents)...};
+            }
+        }
+        //-----------------------------------------------------------------------------
+        //! \return The offsets.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TDim,
+            typename TVal,
+            typename TOffsets>
+        ALPAKA_FCT_HOST_ACC auto getOffsetsNd(
+            TOffsets const & offsets = TOffsets())
+        -> Vec<TDim, TVal>
+        {
+#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
+            using IdxSequence = typename alpaka::detail::make_index_sequence<TDim::value>::type;
+#else
+            using IdxSequence = alpaka::detail::make_index_sequence<TDim::value>;
+#endif
+            return detail::getOffsetsInternal<TVal>(
+                offsets,
+                IdxSequence());
+        }
+        //-----------------------------------------------------------------------------
+        //! \return The offsets.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TVal,
+            typename TOffsets>
+        ALPAKA_FCT_HOST_ACC auto getOffsets(
+            TOffsets const & offsets = TOffsets())
+        -> Vec<dim::DimT<TOffsets>, TVal>
+        {
+            return getOffsetsNd<dim::DimT<TOffsets>, TVal>(offsets);
+        }
+    }
 
     namespace traits
     {
         namespace dim
         {
             //#############################################################################
-            //! The Vec<TuiDim> dimension get trait specialization.
+            //! The Vec dimension get trait specialization.
             //#############################################################################
             template<
-                UInt TuiDim,
+                typename TDim,
                 typename TVal>
             struct DimType<
-                alpaka::Vec<TuiDim, TVal>>
+                alpaka::Vec<TDim, TVal>>
             {
-                using type = alpaka::dim::Dim<TuiDim>;
+                using type = TDim;
             };
         }
 
         namespace extent
         {
             //#############################################################################
-            //! The Vec<TuiDim> width get trait specialization.
+            //! The Vec width get trait specialization.
             //#############################################################################
             template<
-                UInt TuiDim,
+                UInt TuiIdx,
+                typename TDim,
                 typename TVal>
-            struct GetWidth<
-                alpaka::Vec<TuiDim, TVal>,
-                typename std::enable_if<(TuiDim >= 1u) && (TuiDim <= 3u)>::type>
+            struct GetExtent<
+                TuiIdx,
+                alpaka::Vec<TDim, TVal>,
+                typename std::enable_if<TDim::value >= (TuiIdx+1)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static auto getWidth(
-                    alpaka::Vec<TuiDim, TVal> const & extent)
+                ALPAKA_FCT_HOST_ACC static auto getExtent(
+                    alpaka::Vec<TDim, TVal> const & extents)
                 -> TVal
                 {
-                    return extent[0u];
+                    return extents[TuiIdx];
                 }
             };
             //#############################################################################
-            //! The Vec<TuiDim> width set trait specialization.
+            //! The Vec width set trait specialization.
             //#############################################################################
             template<
-                UInt TuiDim,
+                UInt TuiIdx,
+                typename TDim,
                 typename TVal>
-            struct SetWidth<
-                alpaka::Vec<TuiDim, TVal>,
-                typename std::enable_if<(TuiDim >= 1u) && (TuiDim <= 3u)>::type>
+            struct SetExtent<
+                TuiIdx,
+                alpaka::Vec<TDim, TVal>,
+                typename std::enable_if<TDim::value >= (TuiIdx+1)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static auto setWidth(
-                    alpaka::Vec<TuiDim, TVal> & extent,
-                    TVal const & width)
+                template<
+                    typename TVal2>
+                ALPAKA_FCT_HOST_ACC static auto setExtent(
+                    alpaka::Vec<TDim, TVal> & extents,
+                    TVal2 const & extent)
                 -> void
                 {
-                    extent[0u] = width;
-                }
-            };
-
-            //#############################################################################
-            //! The Vec<TuiDim> height get trait specialization.
-            //#############################################################################
-            template<
-                UInt TuiDim,
-                typename TVal>
-            struct GetHeight<
-                alpaka::Vec<TuiDim, TVal>,
-                typename std::enable_if<(TuiDim >= 2u) && (TuiDim <= 3u)>::type>
-            {
-                ALPAKA_FCT_HOST_ACC static auto getHeight(
-                    alpaka::Vec<TuiDim, TVal> const & extent)
-                -> TVal
-                {
-                    return extent[1u];
-                }
-            };
-            //#############################################################################
-            //! The Vec<TuiDim> height set trait specialization.
-            //#############################################################################
-            template<
-                UInt TuiDim,
-                typename TVal>
-            struct SetHeight<
-                alpaka::Vec<TuiDim, TVal>,
-                typename std::enable_if<(TuiDim >= 2u) && (TuiDim <= 3u)>::type>
-            {
-                ALPAKA_FCT_HOST_ACC static auto setHeight(
-                    alpaka::Vec<TuiDim, TVal> & extent,
-                    TVal const & height)
-                -> void
-                {
-                    extent[1u] = height;
-                }
-            };
-
-            //#############################################################################
-            //! The Vec<TuiDim> depth get trait specialization.
-            //#############################################################################
-            template<
-                UInt TuiDim,
-                typename TVal>
-            struct GetDepth<
-                alpaka::Vec<TuiDim, TVal>,
-                typename std::enable_if<(TuiDim >= 3u) && (TuiDim <= 3u)>::type>
-            {
-                ALPAKA_FCT_HOST_ACC static auto getDepth(
-                    alpaka::Vec<TuiDim, TVal> const & extent)
-                -> TVal
-                {
-                    return extent[2u];
-                }
-            };
-            //#############################################################################
-            //! The Vec<TuiDim> depth set trait specialization.
-            //#############################################################################
-            template<
-                UInt TuiDim,
-                typename TVal>
-            struct SetDepth<
-                alpaka::Vec<TuiDim, TVal>,
-                typename std::enable_if<(TuiDim >= 3u) && (TuiDim <= 3u)>::type>
-            {
-                ALPAKA_FCT_HOST_ACC static auto setDepth(
-                    alpaka::Vec<TuiDim, TVal> & extent,
-                    TVal const & depth)
-                -> void
-                {
-                    extent[2u] = depth;
+                    extents[TuiIdx] = extent;
                 }
             };
         }
@@ -667,110 +669,44 @@ namespace alpaka
         namespace offset
         {
             //#############################################################################
-            //! The Vec<TuiDim> x offset get trait specialization.
+            //! The Vec offset get trait specialization.
             //#############################################################################
             template<
-                UInt TuiDim,
+                UInt TuiIdx,
+                typename TDim,
                 typename TVal>
-            struct GetOffsetX<
-                alpaka::Vec<TuiDim, TVal>,
-                typename std::enable_if<(TuiDim >= 1u) && (TuiDim <= 3u)>::type>
+            struct GetOffset<
+                TuiIdx,
+                alpaka::Vec<TDim, TVal>,
+                typename std::enable_if<TDim::value >= (TuiIdx+1)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static auto getOffsetX(
-                    alpaka::Vec<TuiDim, TVal> const & extent)
+                ALPAKA_FCT_HOST_ACC static auto getOffset(
+                    alpaka::Vec<TDim, TVal> const & offsets)
                 -> TVal
                 {
-                    return extent[0u];
+                    return offsets[TuiIdx];
                 }
             };
             //#############################################################################
-            //! The Vec<TuiDim> x offset set trait specialization.
+            //! The Vec offset set trait specialization.
             //#############################################################################
             template<
-                UInt TuiDim,
+                UInt TuiIdx,
+                typename TDim,
                 typename TVal>
-            struct SetOffsetX<
-                alpaka::Vec<TuiDim, TVal>,
-                typename std::enable_if<(TuiDim >= 1u) && (TuiDim <= 3u)>::type>
+            struct SetOffset<
+                TuiIdx,
+                alpaka::Vec<TDim, TVal>,
+                typename std::enable_if<TDim::value >= (TuiIdx+1)>::type>
             {
+                template<
+                    typename TVal2>
                 ALPAKA_FCT_HOST_ACC static auto setOffsetX(
-                    alpaka::Vec<TuiDim, TVal> & extent,
-                    TVal const & width)
+                    alpaka::Vec<TDim, TVal> & offsets,
+                    TVal2 const & offset)
                 -> void
                 {
-                    extent[0u] = width;
-                }
-            };
-
-            //#############################################################################
-            //! The Vec<TuiDim> y offset get trait specialization.
-            //#############################################################################
-            template<
-                UInt TuiDim,
-                typename TVal>
-            struct GetOffsetY<
-                alpaka::Vec<TuiDim, TVal>,
-                typename std::enable_if<(TuiDim >= 2u) && (TuiDim <= 3u)>::type>
-            {
-                ALPAKA_FCT_HOST_ACC static auto getOffsetY(
-                    alpaka::Vec<TuiDim, TVal> const & extent)
-                -> TVal
-                {
-                    return extent[1u];
-                }
-            };
-            //#############################################################################
-            //! The Vec<TuiDim> y offset set trait specialization.
-            //#############################################################################
-            template<
-                UInt TuiDim,
-                typename TVal>
-            struct SetOffsetY<
-                alpaka::Vec<TuiDim, TVal>,
-                typename std::enable_if<(TuiDim >= 2u) && (TuiDim <= 3u)>::type>
-            {
-                ALPAKA_FCT_HOST_ACC static auto setOffsetY(
-                    alpaka::Vec<TuiDim, TVal> & extent,
-                    TVal const & height)
-                -> void
-                {
-                    extent[1u] = height;
-                }
-            };
-
-            //#############################################################################
-            //! The Vec<TuiDim> z offset get trait specialization.
-            //#############################################################################
-            template<
-                UInt TuiDim,
-                typename TVal>
-            struct GetOffsetZ<
-                alpaka::Vec<TuiDim, TVal>,
-                typename std::enable_if<(TuiDim >= 3u) && (TuiDim <= 3u)>::type>
-            {
-                ALPAKA_FCT_HOST_ACC static auto getOffsetZ(
-                    alpaka::Vec<TuiDim, TVal> const & extent)
-                -> TVal
-                {
-                    return extent[2u];
-                }
-            };
-            //#############################################################################
-            //! The Vec<TuiDim> z offset set trait specialization.
-            //#############################################################################
-            template<
-                UInt TuiDim,
-                typename TVal>
-            struct SetOffsetZ<
-                alpaka::Vec<TuiDim, TVal>,
-                typename std::enable_if<(TuiDim >= 3u) && (TuiDim <= 3u)>::type>
-            {
-                ALPAKA_FCT_HOST_ACC static auto setOffsetZ(
-                    alpaka::Vec<TuiDim, TVal> & extent,
-                    TVal const & depth)
-                -> void
-                {
-                    extent[2u] = depth;
+                    offsets[TuiIdx] = offset;
                 }
             };
         }

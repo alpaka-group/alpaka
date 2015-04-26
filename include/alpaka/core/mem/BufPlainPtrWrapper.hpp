@@ -61,8 +61,8 @@ namespace alpaka
                 TExtents const & extents = TExtents()) :
                     m_pMem(pMem),
                     m_Dev(dev),
-                    m_vExtentsElements(Vec<TDim::value>::fromExtents(extents)),
-                    m_uiPitchBytes(extent::getWidth(extents) * sizeof(TElem))
+                    m_vExtentsElements(extent::getExtentsNd<TDim, UInt>(extents)),
+                    m_uiPitchBytes(extent::getWidth<UInt>(extents) * sizeof(TElem))
             {}
 
             //-----------------------------------------------------------------------------
@@ -77,7 +77,7 @@ namespace alpaka
                 UInt const & uiPitch) :
                     m_pMem(pMem),
                     m_Dev(dev),
-                    m_vExtentsElements(Vec<TDim::value>::fromExtents(extents)),
+                    m_vExtentsElements(extent::getExtentsNd<TDim, UInt>(extents)),
                     m_uiPitchBytes(uiPitch)
             {}
 
@@ -111,7 +111,7 @@ namespace alpaka
         public:
             TElem * m_pMem;
             TDev m_Dev;
-            Vec<TDim::value> m_vExtentsElements;
+            Vec<TDim> m_vExtentsElements;
             UInt m_uiPitchBytes;
         };
     }
@@ -177,83 +177,24 @@ namespace alpaka
         namespace extent
         {
             //#############################################################################
-            //! The BufPlainPtrWrapper extents get trait specialization.
-            //#############################################################################
-            template<
-                typename TSpace,
-                typename TDim,
-                typename TElem,
-                typename TDev>
-            struct GetExtents<
-                alpaka::mem::BufPlainPtrWrapper<TSpace, TDim, TElem, TDev>>
-            {
-                //-----------------------------------------------------------------------------
-                //!
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST_ACC static auto getExtents(
-                    alpaka::mem::BufPlainPtrWrapper<TSpace, TDim, TElem, TDev> const & extents)
-                -> Vec<TDim::value>
-                {
-                    return {extents.m_vExtentsElements};
-                }
-            };
-
-            //#############################################################################
             //! The BufPlainPtrWrapper width get trait specialization.
             //#############################################################################
             template<
+                UInt TuiIdx,
                 typename TSpace,
                 typename TDim,
                 typename TElem,
                 typename TDev>
-            struct GetWidth<
+            struct GetExtent<
+                TuiIdx,
                 alpaka::mem::BufPlainPtrWrapper<TSpace, TDim, TElem, TDev>,
-                typename std::enable_if<(TDim::value >= 1u) && (TDim::value <= 3u)>::type>
+                typename std::enable_if<TDim::value >= (TuiIdx+1)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static auto getWidth(
-                    alpaka::mem::BufPlainPtrWrapper<TSpace, TDim, TElem, TDev> const & extent)
+                ALPAKA_FCT_HOST_ACC static auto getExtent(
+                    alpaka::mem::BufPlainPtrWrapper<TSpace, TDim, TElem, TDev> const & extents)
                 -> UInt
                 {
-                    return extent.m_vExtentsElements[0u];
-                }
-            };
-
-            //#############################################################################
-            //! The BufPlainPtrWrapper height get trait specialization.
-            //#############################################################################
-            template<
-                typename TSpace,
-                typename TDim,
-                typename TElem,
-                typename TDev>
-            struct GetHeight<
-                alpaka::mem::BufPlainPtrWrapper<TSpace, TDim, TElem, TDev>,
-                typename std::enable_if<(TDim::value >= 2u) && (TDim::value <= 3u)>::type>
-            {
-                ALPAKA_FCT_HOST_ACC static auto getHeight(
-                    alpaka::mem::BufPlainPtrWrapper<TSpace, TDim, TElem, TDev> const & extent)
-                -> UInt
-                {
-                    return extent.m_vExtentsElements[1u];
-                }
-            };
-            //#############################################################################
-            //! The BufPlainPtrWrapper depth get trait specialization.
-            //#############################################################################
-            template<
-                typename TSpace,
-                typename TDim,
-                typename TElem,
-                typename TDev>
-            struct GetDepth<
-                alpaka::mem::BufPlainPtrWrapper<TSpace, TDim, TElem, TDev>,
-                typename std::enable_if<(TDim::value >= 3u) && (TDim::value <= 3u)>::type>
-            {
-                ALPAKA_FCT_HOST_ACC static auto getDepth(
-                    alpaka::mem::BufPlainPtrWrapper<TSpace, TDim, TElem, TDev> const & extent)
-                -> UInt
-                {
-                    return extent.m_vExtentsElements[2u];
+                    return extents.m_vExtentsElements[TuiIdx];
                 }
             };
         }
@@ -261,24 +202,26 @@ namespace alpaka
         namespace offset
         {
             //#############################################################################
-            //! The BufPlainPtrWrapper offsets get trait specialization.
+            //! The BufPlainPtrWrapper offset get trait specialization.
             //#############################################################################
             template<
+                UInt TuiIdx,
                 typename TSpace,
                 typename TDim,
                 typename TElem,
                 typename TDev>
-            struct GetOffsets<
+            struct GetOffset<
+                TuiIdx,
                 alpaka::mem::BufPlainPtrWrapper<TSpace, TDim, TElem, TDev>>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST_ACC static auto getOffsets(
+                ALPAKA_FCT_HOST_ACC static auto getOffset(
                     alpaka::mem::BufPlainPtrWrapper<TSpace, TDim, TElem, TDev> const &)
-                -> Vec<TDim::value>
+                -> UInt
                 {
-                    return Vec<TDim::value>();
+                    return 0u;
                 }
             };
         }

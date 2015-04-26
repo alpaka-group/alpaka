@@ -35,7 +35,7 @@ namespace alpaka
         {
             namespace detail
             {
-                using FiberIdToIdxMap = std::map<boost::fibers::fiber::id, Vec<3u>>;
+                using FiberIdToIdxMap = std::map<boost::fibers::fiber::id, Vec3<>>;
                 //#############################################################################
                 //! This fibers accelerator index provider.
                 //#############################################################################
@@ -47,7 +47,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_ACC_NO_CUDA IdxFibers(
                         FiberIdToIdxMap const & mFibersToIndices,
-                        Vec<3u> const & v3uiGridBlockIdx) :
+                        Vec3<> const & v3uiGridBlockIdx) :
                         m_mFibersToIndices(mFibersToIndices),
                         m_v3uiGridBlockIdx(v3uiGridBlockIdx)
                     {}
@@ -74,7 +74,7 @@ namespace alpaka
                     //! \return The index of the currently executed thread.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_ACC_NO_CUDA auto getIdxBlockThread() const
-                    -> Vec<3u>
+                    -> Vec3<>
                     {
                         auto const idFiber(boost::this_fiber::get_id());
                         auto const itFind(m_mFibersToIndices.find(idFiber));
@@ -86,14 +86,14 @@ namespace alpaka
                     //! \return The index of the block of the currently executed thread.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_ACC_NO_CUDA auto getIdxGridBlock() const
-                    -> Vec<3u>
+                    -> Vec3<>
                     {
                         return m_v3uiGridBlockIdx;
                     }
 
                 private:
                     FiberIdToIdxMap const & m_mFibersToIndices;     //!< The mapping of fibers id's to fibers indices.
-                    Vec<3u> const & m_v3uiGridBlockIdx;             //!< The index of the currently executed block.
+                    Vec3<> const & m_v3uiGridBlockIdx;             //!< The index of the currently executed block.
                 };
             }
         }
@@ -121,7 +121,7 @@ namespace alpaka
                 ALPAKA_FCT_ACC_NO_CUDA static auto getIdx(
                     accs::fibers::detail::IdxFibers const & index,
                     TWorkDiv const &)
-                -> alpaka::DimToVecT<alpaka::dim::Dim3>
+                -> alpaka::Vec<alpaka::dim::Dim3>
                 {
                     return index.getIdxBlockThread();
                 }
@@ -145,7 +145,7 @@ namespace alpaka
                 ALPAKA_FCT_ACC_NO_CUDA static auto getIdx(
                     accs::fibers::detail::IdxFibers const & index,
                     TWorkDiv const &)
-                -> alpaka::DimToVecT<alpaka::dim::Dim3>
+                -> alpaka::Vec<alpaka::dim::Dim3>
                 {
                     return index.getIdxGridBlock();
                 }

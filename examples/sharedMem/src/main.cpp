@@ -124,29 +124,32 @@ namespace alpaka
 {
     namespace traits
     {
-        //#############################################################################
-        //! The trait for getting the size of the block shared extern memory for a kernel.
-        //#############################################################################
-        template<
-            typename TuiNumUselessWork,
-            typename TAcc>
-        struct BlockSharedExternMemSizeBytes<
-            SharedMemKernel<TuiNumUselessWork>,
-            TAcc>
+        namespace kernel
         {
-            //-----------------------------------------------------------------------------
-            //! \return The size of the shared memory allocated for a block.
-            //-----------------------------------------------------------------------------
+            //#############################################################################
+            //! The trait for getting the size of the block shared extern memory for a kernel.
+            //#############################################################################
             template<
-                typename... TArgs>
-            ALPAKA_FCT_HOST static auto getBlockSharedExternMemSizeBytes(
-                alpaka::Vec<3u> const & v3uiBlockThreadsExtents,
-                TArgs && ...)
-            -> UInt
+                typename TuiNumUselessWork,
+                typename TAcc>
+            struct BlockSharedExternMemSizeBytes<
+                SharedMemKernel<TuiNumUselessWork>,
+                TAcc>
             {
-                return v3uiBlockThreadsExtents.prod() * sizeof(std::uint32_t);
-            }
-        };
+                //-----------------------------------------------------------------------------
+                //! \return The size of the shared memory allocated for a block.
+                //-----------------------------------------------------------------------------
+                template<
+                    typename... TArgs>
+                ALPAKA_FCT_HOST static auto getBlockSharedExternMemSizeBytes(
+                    alpaka::Vec3<> const & v3uiBlockThreadsExtents,
+                    TArgs && ...)
+                -> UInt
+                {
+                    return v3uiBlockThreadsExtents.prod() * sizeof(std::uint32_t);
+                }
+            };
+        }
     }
 }
 
@@ -294,7 +297,7 @@ auto main()
         // Set the grid blocks extent.
         alpaka::workdiv::BasicWorkDiv const workDiv(
             alpaka::workdiv::getValidWorkDiv<alpaka::accs::EnabledAccs>(
-                alpaka::Vec<3u>(16u, 8u, 4u)));
+                alpaka::Vec3<>(16u, 8u, 4u)));
 
         using TuiNumUselessWork = boost::mpl::int_<100u>;
         std::uint32_t const uiMult2(5u);

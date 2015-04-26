@@ -218,9 +218,9 @@ namespace alpaka
                         // m_uiBlockThreadsCountMax
                         1u,
                         // m_v3uiBlockThreadExtentsMax
-                        Vec<3u>::ones(),
+                        Vec3<>::ones(),
                         // m_v3uiGridBlockExtentsMax
-                        Vec<3u>::all(std::numeric_limits<Vec<3u>::Val>::max()),
+                        Vec3<>::all(std::numeric_limits<Vec3<>::Val>::max()),
                         // m_uiGlobalMemSizeBytes
                         host::getGlobalMemSizeBytes());
                 }

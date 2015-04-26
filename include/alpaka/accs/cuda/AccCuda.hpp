@@ -27,12 +27,13 @@
 #include <alpaka/accs/cuda/Atomic.hpp>              // AtomicCuda
 
 // User functionality.
-#include <alpaka/accs/cuda/Mem.hpp>                 // Copy
-#include <alpaka/accs/cuda/mem/Space.hpp>           // SpaceCuda
-#include <alpaka/accs/cuda/Stream.hpp>              // StreamCuda
-#include <alpaka/accs/cuda/Event.hpp>               // EventCuda
-#include <alpaka/accs/cuda/StreamEventTraits.hpp>   // StreamCuda & EventCuda
 #include <alpaka/accs/cuda/Dev.hpp>                 // Devices
+#include <alpaka/accs/cuda/Event.hpp>               // EventCuda
+#include <alpaka/accs/cuda/mem/Space.hpp>           // SpaceCuda
+#include <alpaka/accs/cuda/Mem.hpp>                 // Copy
+#include <alpaka/accs/cuda/Rand.hpp>                // rand
+#include <alpaka/accs/cuda/Stream.hpp>              // StreamCuda
+#include <alpaka/accs/cuda/StreamEventTraits.hpp>   // StreamCuda & EventCuda
 
 // Specialized traits.
 #include <alpaka/traits/Acc.hpp>                    // AccType
@@ -41,7 +42,7 @@
 
 // Implementation details.
 #include <alpaka/accs/cuda/Common.hpp>
-#include <alpaka/traits/BlockSharedExternMemSizeBytes.hpp>
+#include <alpaka/traits/Kernel.hpp>                 // BlockSharedExternMemSizeBytes
 
 #include <boost/predef.h>                           // workarounds
 
@@ -135,7 +136,7 @@ namespace alpaka
                         typename TUnit,
                         typename TDim = dim::Dim3>
                     ALPAKA_FCT_ACC_CUDA_ONLY auto getWorkDiv() const
-                    -> DimToVecT<TDim>
+                    -> Vec<TDim>
                     {
                         return workdiv::getWorkDiv<TOrigin, TUnit, TDim>(
                             *static_cast<WorkDivCuda const *>(this));
@@ -149,7 +150,7 @@ namespace alpaka
                         typename TUnit,
                         typename TDim = dim::Dim3>
                     ALPAKA_FCT_ACC_CUDA_ONLY auto getIdx() const
-                    -> DimToVecT<TDim>
+                    -> Vec<TDim>
                     {
                         return idx::getIdx<TOrigin, TUnit, TDim>(
                             *static_cast<IdxCuda const *>(this),
@@ -324,7 +325,7 @@ namespace alpaka
 #endif
 
                         // Get the size of the block shared extern memory.
-                        auto const uiBlockSharedExternMemSizeBytes(getBlockSharedExternMemSizeBytes<typename std::decay<TKernelFunctor>::type, AccCuda>(
+                        auto const uiBlockSharedExternMemSizeBytes(kernel::getBlockSharedExternMemSizeBytes<typename std::decay<TKernelFunctor>::type, AccCuda>(
                             m_v3uiBlockThreadExtents,
                             std::forward<TArgs>(args)...));
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -377,8 +378,8 @@ namespace alpaka
                     }
 
                 private:
-                    Vec<3u> const m_v3uiGridBlockExtents;
-                    Vec<3u> const m_v3uiBlockThreadExtents;
+                    Vec3<> const m_v3uiGridBlockExtents;
+                    Vec3<> const m_v3uiBlockThreadExtents;
 
                 public:
                     StreamCuda m_Stream;
@@ -420,7 +421,7 @@ namespace alpaka
             struct GetAccName<
                 accs::cuda::detail::AccCuda>
             {
-                static auto getAccName()
+                ALPAKA_FCT_HOST_ACC static auto getAccName()
                 -> std::string
                 {
                     return "AccCuda";

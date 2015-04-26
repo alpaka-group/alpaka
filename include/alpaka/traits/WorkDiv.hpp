@@ -67,7 +67,7 @@ namespace alpaka
             typename TWorkDiv = void>
         ALPAKA_FCT_HOST_ACC auto getWorkDiv(
             TWorkDiv const & workDiv)
-        -> DimToVecT<TDim>
+        -> Vec<TDim>
         {
             return traits::workdiv::GetWorkDiv<
                 TWorkDiv,
@@ -99,7 +99,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST_ACC static auto getWorkDiv(
                     TWorkDiv const & workDiv)
-                -> alpaka::DimToVecT<alpaka::dim::Dim1>
+                -> alpaka::Vec<alpaka::dim::Dim1>
                 {
                     return alpaka::workdiv::getWorkDiv<origin::Block, unit::Threads, alpaka::dim::Dim3>(workDiv).prod();
                 }
@@ -120,7 +120,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST_ACC static auto getWorkDiv(
                     TWorkDiv const & workDiv)
-                -> alpaka::DimToVecT<alpaka::dim::Dim3>
+                -> alpaka::Vec<alpaka::dim::Dim3>
                 {
                     return alpaka::workdiv::getWorkDiv<origin::Grid, unit::Blocks, alpaka::dim::Dim3>(workDiv)
                         * alpaka::workdiv::getWorkDiv<origin::Block, unit::Threads, alpaka::dim::Dim3>(workDiv);
@@ -142,7 +142,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST_ACC static auto getWorkDiv(
                     TWorkDiv const & workDiv)
-                -> alpaka::DimToVecT<alpaka::dim::Dim1>
+                -> alpaka::Vec<alpaka::dim::Dim1>
                 {
                     return alpaka::workdiv::getWorkDiv<origin::Grid, unit::Threads, alpaka::dim::Dim3>(workDiv).prod();
                 }
@@ -163,7 +163,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST_ACC static auto getWorkDiv(
                     TWorkDiv const & workDiv)
-                -> alpaka::DimToVecT<alpaka::dim::Dim1>
+                -> alpaka::Vec<alpaka::dim::Dim1>
                 {
                     return alpaka::workdiv::getWorkDiv<origin::Grid, unit::Blocks, alpaka::dim::Dim3>(workDiv).prod();
                 }

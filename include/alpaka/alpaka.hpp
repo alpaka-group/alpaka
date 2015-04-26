@@ -50,11 +50,12 @@
 
 #include <alpaka/host/Dev.hpp>
 #include <alpaka/host/Mem.hpp>
+#include <alpaka/host/Rand.hpp>
 #include <alpaka/host/SysInfo.hpp>
 
 #include <alpaka/traits/Acc.hpp>
 #include <alpaka/traits/Atomic.hpp>
-#include <alpaka/traits/BlockSharedExternMemSizeBytes.hpp>
+#include <alpaka/traits/Kernel.hpp>
 #include <alpaka/traits/Dev.hpp>
 #include <alpaka/traits/Dim.hpp>
 #include <alpaka/traits/Event.hpp>

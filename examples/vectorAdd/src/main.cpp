@@ -125,8 +125,8 @@ struct VectorAddKernelTester
         alpaka::stream::StreamT<TAcc> const stream(
             alpaka::stream::create(devAcc));
 
-        alpaka::Vec<1u> const v1uiExtents(
-            static_cast<alpaka::Vec<1u>::Val>(uiNumElements));
+        alpaka::Vec1<> const v1uiExtents(
+            static_cast<alpaka::Vec1<>::Val>(uiNumElements));
 
         // Let alpaka calculate good block and grid sizes given our full problem extents.
         alpaka::workdiv::BasicWorkDiv const workDiv(alpaka::workdiv::getValidWorkDiv<boost::mpl::vector<TAcc>>(v1uiExtents, false));

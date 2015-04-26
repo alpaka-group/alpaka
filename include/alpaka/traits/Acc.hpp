@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST
+#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC
 
 #include <string>                   // std::string
 #include <typeinfo>                 // typeid
@@ -56,7 +56,7 @@ namespace alpaka
                 typename TSfinae = void>
             struct GetAccName
             {
-                ALPAKA_FCT_HOST static auto getAccName()
+                ALPAKA_FCT_HOST_ACC static auto getAccName()
                 -> std::string
                 {
                     return typeid(TAcc).name();
@@ -84,7 +84,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TAcc>
-        ALPAKA_FCT_HOST auto getAccName()
+        ALPAKA_FCT_HOST_ACC auto getAccName()
         -> std::string
         {
             return traits::acc::GetAccName<

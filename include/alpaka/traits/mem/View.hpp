@@ -234,7 +234,7 @@ namespace alpaka
                 dim::DimT<TView>,
                 SpaceT<TView>,
                 TStream>
-            ::memSetAsync(
+            ::set(
                 buf,
                 byte,
                 extents,

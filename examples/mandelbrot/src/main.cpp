@@ -155,7 +155,7 @@ public:
         std::uint32_t const & uiMaxIterations) const
     -> void
     {
-        auto const uiGridThreadIdx(alpaka::subVec<2u>(acc.template getIdx<alpaka::Grid, alpaka::Threads>()));
+        auto const uiGridThreadIdx(alpaka::subVec<alpaka::dim::Dim2>(acc.template getIdx<alpaka::Grid, alpaka::Threads>()));
         auto const & uiGridThreadIdxX(uiGridThreadIdx[0u]);
         auto const & uiGridThreadIdxY(uiGridThreadIdx[1u]);
 
@@ -296,14 +296,14 @@ auto writeTgaColorImage(
         "The buffer element type has to be integral!");
 
     // The width of the input buffer is in input elements.
-    auto const uiBufWidthElems(alpaka::extent::getWidth(bufRgba));
+    auto const uiBufWidthElems(alpaka::extent::getWidth<std::size_t>(bufRgba));
     auto const uiBufWidthBytes(uiBufWidthElems * sizeof(alpaka::mem::ElemT<TBuf>));
     // The row width in bytes has to be dividable by 4 Bytes (RGBA).
     assert(uiBufWidthBytes % sizeof(std::uint32_t) == 0);
     // The number of colors in a row.
     auto const uiBufWidthColors(uiBufWidthBytes / sizeof(std::uint32_t));
     assert(uiBufWidthColors >= 1);
-    auto const uiBufHeightColors(alpaka::extent::getHeight(bufRgba));
+    auto const uiBufHeightColors(alpaka::extent::getHeight<std::size_t>(bufRgba));
     assert(uiBufHeightColors >= 1);
     auto const uiBufPitchBytes(alpaka::mem::getPitchBytes(bufRgba));
     assert(uiBufPitchBytes >= uiBufWidthBytes);
@@ -391,9 +391,9 @@ struct MandelbrotKernelTester
         alpaka::stream::StreamT<TAcc> const stream(
             alpaka::stream::create(devAcc));
 
-        alpaka::Vec<2u> const v2uiExtents(
-            static_cast<alpaka::Vec<2u>::Val>(uiNumCols),
-            static_cast<alpaka::Vec<2u>::Val>(uiNumRows));
+        alpaka::Vec2<> const v2uiExtents(
+            static_cast<alpaka::Vec2<>::Val>(uiNumCols),
+            static_cast<alpaka::Vec2<>::Val>(uiNumRows));
 
         // Let alpaka calculate good block and grid sizes given our full problem extents.
         alpaka::workdiv::BasicWorkDiv const workDiv(

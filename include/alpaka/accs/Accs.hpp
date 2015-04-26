@@ -121,7 +121,7 @@ namespace alpaka
             {
                 template<
                     typename TAcc>
-                ALPAKA_FCT_HOST auto operator()(std::ostream & os)
+                ALPAKA_FCT_HOST_ACC auto operator()(std::ostream & os)
                 -> void
                 {
                     os << acc::getAccName<TAcc>();
@@ -133,7 +133,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Writes the enabled accelerators to the given stream.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST auto writeEnabledAccs(std::ostream & os)
+        ALPAKA_FCT_HOST_ACC auto writeEnabledAccs(std::ostream & os)
         -> void
         {
             os << "Accelerators enabled: ";
@@ -150,7 +150,7 @@ namespace alpaka
         //! \return The maximum block thread extents supported by all of the enabled accelerators.
         //-----------------------------------------------------------------------------
         ALPAKA_FCT_HOST auto getMaxBlockThreadExtentsEnabledAccs()
-        -> Vec<3u>
+        -> Vec3<>
         {
             return workdiv::getMaxBlockThreadExtentsAccsDevices<EnabledAccs>();
         }

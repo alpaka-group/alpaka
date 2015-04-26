@@ -26,7 +26,7 @@
 #include <alpaka/host/Dev.hpp>
 
 #include <alpaka/core/BasicDims.hpp>    // dim::Dim<N>
-#include <alpaka/core/Vec.hpp>          // Vec<TDim::value>
+#include <alpaka/core/Vec.hpp>          // Vec<TDim>
 
 #include <alpaka/traits/mem/Buf.hpp>    // traits::Alloc, ...
 #include <alpaka/traits/Extent.hpp>     // traits::getXXX
@@ -64,9 +64,9 @@ namespace alpaka
                     TDev const & dev,
                     TExtents const & extents) :
                         m_Dev(dev),
-                        m_vExtentsElements(Vec<TDim::value>::fromExtents(extents)),
+                        m_vExtentsElements(extent::getExtentsNd<TDim, UInt>(extents)),
                         m_spMem(new TElem[computeElementCount(extents)], &BufHost::freeBuffer),
-                        m_uiPitchBytes(extent::getWidth(extents) * sizeof(TElem))
+                        m_uiPitchBytes(extent::getWidth<UInt>(extents) * sizeof(TElem))
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -89,7 +89,7 @@ namespace alpaka
                     TExtents const & extents)
                 -> UInt
                 {
-                    auto const uiExtentsElementCount(extent::getProductOfExtents(extents));
+                    auto const uiExtentsElementCount(extent::getProductOfExtents<UInt>(extents));
                     assert(uiExtentsElementCount>0);
 
                     return uiExtentsElementCount;
@@ -109,7 +109,7 @@ namespace alpaka
 
             public:
                 TDev m_Dev;
-                Vec<TDim::value> m_vExtentsElements;
+                Vec<TDim> m_vExtentsElements;
                 std::shared_ptr<TElem> m_spMem;
                 UInt m_uiPitchBytes;
             };
@@ -174,88 +174,26 @@ namespace alpaka
         namespace extent
         {
             //#############################################################################
-            //! The BufHost extents get trait specialization.
-            //#############################################################################
-            template<
-                typename TDev,
-                typename TElem,
-                typename TDim>
-            struct GetExtents<
-                host::detail::BufHost<TDev, TElem, TDim>>
-            {
-                //-----------------------------------------------------------------------------
-                //!
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getExtents(
-                    host::detail::BufHost<TDev, TElem, TDim> const & extents)
-                -> Vec<TDim::value>
-                {
-                    return {extents.m_vExtentsElements};
-                }
-            };
-
-            //#############################################################################
             //! The BufHost width get trait specialization.
             //#############################################################################
             template<
+                UInt TuiIdx,
                 typename TDev,
                 typename TElem,
                 typename TDim>
-            struct GetWidth<
+            struct GetExtent<
+                TuiIdx,
                 host::detail::BufHost<TDev, TElem, TDim>,
-                typename std::enable_if<(TDim::value >= 1u) && (TDim::value <= 3u)>::type>
+                typename std::enable_if<TDim::value >= (TuiIdx+1)>::type>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getWidth(
-                    host::detail::BufHost<TDev, TElem, TDim> const & extent)
+                ALPAKA_FCT_HOST static auto getExtent(
+                    host::detail::BufHost<TDev, TElem, TDim> const & extents)
                 -> UInt
                 {
-                    return extent.m_vExtentsElements[0u];
-                }
-            };
-
-            //#############################################################################
-            //! The BufHost height get trait specialization.
-            //#############################################################################
-            template<
-                typename TDev,
-                typename TElem,
-                typename TDim>
-            struct GetHeight<
-                host::detail::BufHost<TDev, TElem, TDim>,
-                typename std::enable_if<(TDim::value >= 2u) && (TDim::value <= 3u)>::type>
-            {
-                //-----------------------------------------------------------------------------
-                //!
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getHeight(
-                    host::detail::BufHost<TDev, TElem, TDim> const & extent)
-                -> UInt
-                {
-                    return extent.m_vExtentsElements[1u];
-                }
-            };
-            //#############################################################################
-            //! The BufHost depth get trait specialization.
-            //#############################################################################
-            template<
-                typename TDev,
-                typename TElem,
-                typename TDim>
-            struct GetDepth<
-                host::detail::BufHost<TDev, TElem, TDim>,
-                typename std::enable_if<(TDim::value >= 3u) && (TDim::value <= 3u)>::type>
-            {
-                //-----------------------------------------------------------------------------
-                //!
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getDepth(
-                    host::detail::BufHost<TDev, TElem, TDim> const & extent)
-                -> UInt
-                {
-                    return extent.m_vExtentsElements[2u];
+                    return extents.m_vExtentsElements[TuiIdx];
                 }
             };
         }
@@ -263,23 +201,25 @@ namespace alpaka
         namespace offset
         {
             //#############################################################################
-            //! The BufHost offsets get trait specialization.
+            //! The BufHost offset get trait specialization.
             //#############################################################################
             template<
+                UInt TuiIdx,
                 typename TDev,
                 typename TElem,
                 typename TDim>
-            struct GetOffsets<
+            struct GetOffset<
+                TuiIdx,
                 host::detail::BufHost<TDev, TElem, TDim>>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getOffsets(
+                ALPAKA_FCT_HOST static auto getOffset(
                     host::detail::BufHost<TDev, TElem, TDim> const &)
-                -> Vec<TDim::value>
+                -> UInt
                 {
-                    return Vec<TDim::value>::zeros();
+                    return 0u;
                 }
             };
         }

@@ -52,10 +52,10 @@ namespace alpaka
             explicit
 #endif
             BasicWorkDiv(
-                TGridBlockExtents const & gridBlockExtent = TGridBlockExtents(),
+                TGridBlockExtents const & gridBlockExtents = TGridBlockExtents(),
                 TBlockThreadExtents const & blockThreadExtents = TBlockThreadExtents()) :
-                m_v3uiGridBlockExtents(Vec<3u>::fromExtents(gridBlockExtent)),
-                m_v3uiBlockThreadExtents(Vec<3u>::fromExtents(blockThreadExtents))
+                m_v3uiGridBlockExtents(extent::getExtentsNd<dim::Dim3, UInt>(gridBlockExtents)),
+                m_v3uiBlockThreadExtents(extent::getExtentsNd<dim::Dim3, UInt>(blockThreadExtents))
             {}
             //-----------------------------------------------------------------------------
             //! Copy constructor.
@@ -122,7 +122,7 @@ namespace alpaka
             //! \return The grid block extents of the currently executed thread.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST auto getGridBlockExtents() const
-            -> Vec<3u>
+            -> Vec3<>
             {
                 return m_v3uiGridBlockExtents;
             }
@@ -130,14 +130,14 @@ namespace alpaka
             //! \return The block threads extents of the currently executed thread.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST auto getBlockThreadExtents() const
-            -> Vec<3u>
+            -> Vec3<>
             {
                 return m_v3uiBlockThreadExtents;
             }
 
         public:
-            Vec<3u> m_v3uiGridBlockExtents;
-            Vec<3u> m_v3uiBlockThreadExtents;
+            Vec3<> m_v3uiGridBlockExtents;
+            Vec3<> m_v3uiBlockThreadExtents;
         };
 
         //-----------------------------------------------------------------------------
@@ -149,18 +149,31 @@ namespace alpaka
         -> std::ostream &
         {
             return (os
-                << "{GridBlockExtents: " << workDiv.getGridBlockExtents()
-                << ", BlockThreadExtents: " << workDiv.getBlockThreadExtents()
+                << "{gridBlockExtents: " << workDiv.getGridBlockExtents()
+                << ", blockThreadExtents: " << workDiv.getBlockThreadExtents()
                 << "}");
         }
     }
 
     namespace traits
     {
+        namespace dim
+        {
+            //#############################################################################
+            //! The BasicWorkDiv dimension get trait specialization.
+            //#############################################################################
+            template<>
+            struct DimType<
+                alpaka::workdiv::BasicWorkDiv>
+            {
+                using type = alpaka::dim::Dim<3u>;
+            };
+        }
+
         namespace workdiv
         {
             //#############################################################################
-            //! The work div block thread 3D extents trait specialization.
+            //! The BasicWorkDiv block thread 3D extents trait specialization.
             //#############################################################################
             template<>
             struct GetWorkDiv<
@@ -174,14 +187,14 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST_ACC static auto getWorkDiv(
                     alpaka::workdiv::BasicWorkDiv const & workDiv)
-                -> alpaka::DimToVecT<alpaka::dim::Dim3>
+                -> alpaka::Vec<alpaka::dim::Dim3>
                 {
                     return workDiv.getBlockThreadExtents();
                 }
             };
 
             //#############################################################################
-            //! The work div grid block 3D extents trait specialization.
+            //! The BasicWorkDiv grid block 3D extents trait specialization.
             //#############################################################################
             template<>
             struct GetWorkDiv<
@@ -195,7 +208,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST_ACC static auto getWorkDiv(
                     alpaka::workdiv::BasicWorkDiv const & workDiv)
-                -> alpaka::DimToVecT<alpaka::dim::Dim3>
+                -> alpaka::Vec<alpaka::dim::Dim3>
                 {
                     return workDiv.getGridBlockExtents();
                 }

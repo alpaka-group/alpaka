@@ -85,17 +85,17 @@ public:
     -> void
     {
         // Column and row of C to calculate.
-        auto const v2uiGridThreadIdx(alpaka::subVec<2u>(acc.template getIdx<alpaka::Grid, alpaka::Threads>()));
+        auto const v2uiGridThreadIdx(alpaka::subVec<alpaka::dim::Dim2>(acc.template getIdx<alpaka::Grid, alpaka::Threads>()));
         auto const & uiGridThreadIdxX(v2uiGridThreadIdx[0u]);
         auto const & uiGridThreadIdxY(v2uiGridThreadIdx[1u]);
 
         // Column and row inside the block of C to calculate.
-        auto const v2uiBlockThreadIdx(alpaka::subVec<2u>(acc.template getIdx<alpaka::Block, alpaka::Threads>()));
+        auto const v2uiBlockThreadIdx(alpaka::subVec<alpaka::dim::Dim2>(acc.template getIdx<alpaka::Block, alpaka::Threads>()));
         auto const & uiBlockThreadIdxX(v2uiBlockThreadIdx[0u]);
         auto const & uiBlockThreadIdxY(v2uiBlockThreadIdx[1u]);
 
         // The block threads extents.
-        auto const v2uiBlockThreadsExtents(alpaka::subVec<2u>(acc.template getWorkDiv<alpaka::Block, alpaka::Threads>()));
+        auto const v2uiBlockThreadsExtents(alpaka::subVec<alpaka::dim::Dim2>(acc.template getWorkDiv<alpaka::Block, alpaka::Threads>()));
         auto const & uiBlockThreadsExtentX(v2uiBlockThreadsExtents[0u]);
         auto const & uiBlockThreadsExtentY(v2uiBlockThreadsExtents[1u]);
         //assert(uiBlockThreadsExtentX == uiBlockThreadsExtentY);
@@ -162,38 +162,41 @@ namespace alpaka
 {
     namespace traits
     {
-        //#############################################################################
-        //! The trait for getting the size of the block shared extern memory for a kernel.
-        //#############################################################################
-        template<
-            typename TAcc>
-        struct BlockSharedExternMemSizeBytes<
-            MatMulKernel,
-            TAcc>
+        namespace kernel
         {
-            //-----------------------------------------------------------------------------
-            //! \return The size of the shared memory allocated for a block.
-            //-----------------------------------------------------------------------------
+            //#############################################################################
+            //! The trait for getting the size of the block shared extern memory for a kernel.
+            //#############################################################################
             template<
-                typename TIndex,
-                typename TElem>
-            ALPAKA_FCT_HOST static auto getBlockSharedExternMemSizeBytes(
-                alpaka::Vec<3u> const & v3uiBlockThreadsExtents,
-                TIndex const &,
-                TIndex const &,
-                TIndex const &,
-                TElem const * const,
-                TIndex const &,
-                TElem const * const,
-                TIndex const &,
-                TElem * const,
-                TIndex const &)
-            -> UInt
+                typename TAcc>
+            struct BlockSharedExternMemSizeBytes<
+                MatMulKernel,
+                TAcc>
             {
-                // Reserve the buffer for the two blocks of A and B.
-                return 2u * v3uiBlockThreadsExtents.prod() * sizeof(TElem);
-            }
-        };
+                //-----------------------------------------------------------------------------
+                //! \return The size of the shared memory allocated for a block.
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TIndex,
+                    typename TElem>
+                ALPAKA_FCT_HOST static auto getBlockSharedExternMemSizeBytes(
+                    alpaka::Vec3<> const & v3uiBlockThreadsExtents,
+                    TIndex const &,
+                    TIndex const &,
+                    TIndex const &,
+                    TElem const * const,
+                    TIndex const &,
+                    TElem const * const,
+                    TIndex const &,
+                    TElem * const,
+                    TIndex const &)
+                -> UInt
+                {
+                    // Reserve the buffer for the two blocks of A and B.
+                    return 2u * v3uiBlockThreadsExtents.prod() * sizeof(TElem);
+                }
+            };
+        }
     }
 }
 
@@ -261,18 +264,18 @@ struct MatMulTester
         alpaka::stream::StreamT<TAcc> const stream(
             alpaka::stream::create(devAcc));
 
-        alpaka::Vec<2u> const v2uiExtentsA(
-            static_cast<alpaka::Vec<2u>::Val>(uiM),
-            static_cast<alpaka::Vec<2u>::Val>(uiL));
+        alpaka::Vec2<> const v2uiExtentsA(
+            static_cast<alpaka::Vec2<>::Val>(uiM),
+            static_cast<alpaka::Vec2<>::Val>(uiL));
 
-        alpaka::Vec<2u> const v2uiExtentsB(
-            static_cast<alpaka::Vec<2u>::Val>(uiN),
-            static_cast<alpaka::Vec<2u>::Val>(uiM));
+        alpaka::Vec2<> const v2uiExtentsB(
+            static_cast<alpaka::Vec2<>::Val>(uiN),
+            static_cast<alpaka::Vec2<>::Val>(uiM));
 
         // Result matrix is LxN. We create one worker per result matrix cell.
-        alpaka::Vec<2u> const v2uiExtentsC(
-            static_cast<alpaka::Vec<2u>::Val>(uiN),
-            static_cast<alpaka::Vec<2u>::Val>(uiL));
+        alpaka::Vec2<> const v2uiExtentsC(
+            static_cast<alpaka::Vec2<>::Val>(uiN),
+            static_cast<alpaka::Vec2<>::Val>(uiL));
 
         // Let alpaka calculate good block and grid sizes given our full problem extents.
         alpaka::workdiv::BasicWorkDiv workDiv(
@@ -281,9 +284,9 @@ struct MatMulTester
             : alpaka::workdiv::getValidWorkDiv<alpaka::accs::EnabledAccs>(v2uiExtentsC, false));
         // Assure that the extents are square.
         auto const uiMinExtent(std::min(workDiv.m_v3uiBlockThreadExtents[0u], workDiv.m_v3uiBlockThreadExtents[1u]));
-        workDiv.m_v3uiGridBlockExtents[0u] = static_cast<alpaka::Vec<3u>::Val>(std::ceil(static_cast<double>(uiN) / static_cast<double>(uiMinExtent)));
+        workDiv.m_v3uiGridBlockExtents[0u] = static_cast<alpaka::Vec3<>::Val>(std::ceil(static_cast<double>(uiN) / static_cast<double>(uiMinExtent)));
         workDiv.m_v3uiBlockThreadExtents[0u] = uiMinExtent;
-        workDiv.m_v3uiGridBlockExtents[1u] = static_cast<alpaka::Vec<3u>::Val>(std::ceil(static_cast<double>(uiL) / static_cast<double>(uiMinExtent)));
+        workDiv.m_v3uiGridBlockExtents[1u] = static_cast<alpaka::Vec3<>::Val>(std::ceil(static_cast<double>(uiL) / static_cast<double>(uiMinExtent)));
         workDiv.m_v3uiBlockThreadExtents[1u] = uiMinExtent;
 
         std::cout

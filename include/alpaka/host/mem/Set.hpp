@@ -67,13 +67,13 @@ namespace alpaka
                         alpaka::dim::DimT<TBuf>::value == alpaka::dim::DimT<TExtents>::value,
                         "The destination buffer and the extents are required to have the same dimensionality!");
 
-                    auto const uiExtentWidth(alpaka::extent::getWidth(extents));
-                    auto const uiExtentHeight(alpaka::extent::getHeight(extents));
-                    auto const uiExtentDepth(alpaka::extent::getDepth(extents));
-                    auto const uiDstWidth(alpaka::extent::getWidth(bufDst));
-                    auto const uiDstHeight(alpaka::extent::getHeight(bufDst));
+                    auto const uiExtentWidth(alpaka::extent::getWidth<UInt>(extents));
+                    auto const uiExtentHeight(alpaka::extent::getHeight<UInt>(extents));
+                    auto const uiExtentDepth(alpaka::extent::getDepth<UInt>(extents));
+                    auto const uiDstWidth(alpaka::extent::getWidth<UInt>(bufDst));
+                    auto const uiDstHeight(alpaka::extent::getHeight<UInt>(bufDst));
 #if (!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
-                    auto const uiDstDepth(alpaka::extent::getDepth(bufDst));
+                    auto const uiDstDepth(alpaka::extent::getDepth<UInt>(bufDst));
 #endif
                     assert(uiExtentWidth <= uiDstWidth);
                     assert(uiExtentHeight <= uiDstHeight);
@@ -87,8 +87,8 @@ namespace alpaka
                     auto const uiDstSliceSizeBytes(uiDstPitchBytes * uiDstHeight);
 
                     auto const & dstBuf(alpaka::mem::getBuf(bufDst));
-                    auto const uiDstBufWidth(alpaka::extent::getWidth(dstBuf));
-                    auto const uiDstBufHeight(alpaka::extent::getHeight(dstBuf));
+                    auto const uiDstBufWidth(alpaka::extent::getWidth<UInt>(dstBuf));
+                    auto const uiDstBufHeight(alpaka::extent::getHeight<UInt>(dstBuf));
 
                     int iByte(static_cast<int>(byte));
 

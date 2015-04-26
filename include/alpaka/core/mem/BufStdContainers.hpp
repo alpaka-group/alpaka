@@ -111,122 +111,30 @@ namespace alpaka
         namespace extent
         {
             //#############################################################################
-            //! The fixed size array extents get trait specialization.
-            //#############################################################################
-            template<
-                typename TFixedSizeArray>
-            struct GetExtents<
-                TFixedSizeArray,
-                typename std::enable_if<std::is_array<TFixedSizeArray>::value>::type>
-            {
-                //-----------------------------------------------------------------------------
-                //!
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static /*constexpr*/ auto getExtents(
-                    TFixedSizeArray const & extents)
-                -> Vec<alpaka::dim::DimT<TFixedSizeArray>::value>
-                {
-                    return getExtentsInternal(
-                        extents,
-                        IdxSequence());
-                }
-
-            private:
-#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-                using IdxSequence = typename alpaka::detail::make_index_sequence<std::rank<TFixedSizeArray>::value>::type;
-#else
-                using IdxSequence = alpaka::detail::make_index_sequence<std::rank<TFixedSizeArray>::value>;
-#endif
-                //-----------------------------------------------------------------------------
-                //!
-                //-----------------------------------------------------------------------------
-                template<
-                    typename TVal,
-                    size_t... TIndices>
-                ALPAKA_FCT_HOST static /*constexpr*/ auto getExtentsInternal(
-                    TFixedSizeArray const & extents,
-#if !BOOST_COMP_MSVC     // MSVC 190022512 introduced a new bug with alias templates: error C3520: 'TIndices': parameter pack must be expanded in this context
-                alpaka::detail::index_sequence<TIndices...> const &)
-#else
-                alpaka::detail::integer_sequence<std::size_t, TIndices...> const &)
-#endif
-                -> Vec<alpaka::dim::DimT<TFixedSizeArray>::value>
-                {
-                    return {(std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value-(TIndices+1u)>::value)...};
-                }
-            };
-
-            //#############################################################################
             //! The fixed size array width get trait specialization.
             //#############################################################################
             template<
+                UInt TuiIdx,
                 typename TFixedSizeArray>
-            struct GetWidth<
+            struct GetExtent<
+                TuiIdx,
                 TFixedSizeArray,
                 typename std::enable_if<
                     std::is_array<TFixedSizeArray>::value
-                    && (std::rank<TFixedSizeArray>::value >= 1u)
-                    && (std::rank<TFixedSizeArray>::value <= 3u)
-                    && (std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 1u>::value > 0u)>::type>
+                    && (std::rank<TFixedSizeArray>::value >= (TuiIdx+1))
+                    && (std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value-1u>::value > 0u)>::type>
             {
 #if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-                ALPAKA_FCT_HOST_ACC static auto getWidth(
+                ALPAKA_FCT_HOST_ACC static auto getWidth<UInt>(
 #else
-                ALPAKA_FCT_HOST_ACC static constexpr auto getWidth(
+                ALPAKA_FCT_HOST_ACC static constexpr auto getExtent(
 #endif
-                    TFixedSizeArray const &)
+                    TFixedSizeArray const & /*extents*/)
                 -> UInt
                 {
+                    // C++14
+                    /*boost::ignore_unused(extents);*/
                     return std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value-1u>::value;
-                }
-            };
-
-            //#############################################################################
-            //! The fixed size array height get trait specialization.
-            //#############################################################################
-            template<
-                typename TFixedSizeArray>
-            struct GetHeight<
-                TFixedSizeArray,
-                typename std::enable_if<
-                    std::is_array<TFixedSizeArray>::value
-                    && (std::rank<TFixedSizeArray>::value >= 2u)
-                    && (std::rank<TFixedSizeArray>::value <= 3u)
-                    && (std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 2u>::value > 0u)>::type>
-            {
-#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-                ALPAKA_FCT_HOST_ACC static auto getHeight(
-#else
-                ALPAKA_FCT_HOST_ACC static constexpr auto getHeight(
-#endif
-                    TFixedSizeArray const &)
-                -> UInt
-                {
-                    return std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 2u>::value;
-                }
-            };
-            //#############################################################################
-            //! The fixed size array depth get trait specialization.
-            //#############################################################################
-            template<
-                typename TFixedSizeArray>
-            struct GetDepth<
-                TFixedSizeArray,
-                typename std::enable_if<
-                    std::is_array<TFixedSizeArray>::value
-                    && (std::rank<TFixedSizeArray>::value >= 3u)
-                    && (std::rank<TFixedSizeArray>::value <= 3u)
-                    && (std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 3u>::value > 0u)>::type>
-            {
-#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-                ALPAKA_FCT_HOST_ACC static auto getDepth(
-#else
-                ALPAKA_FCT_HOST_ACC static constexpr auto getDepth(
-#endif
-                    TFixedSizeArray const &)
-                -> UInt
-                {
-                    return std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 3u>::value;
                 }
             };
         }
@@ -234,22 +142,24 @@ namespace alpaka
         namespace offset
         {
             //#############################################################################
-            //! The fixed size array offsets get trait specialization.
+            //! The fixed size array offset get trait specialization.
             //#############################################################################
             template<
+                UInt TuiIdx,
                 typename TFixedSizeArray>
-            struct GetOffsets<
+            struct GetOffset<
+                TuiIdx,
                 TFixedSizeArray,
                 typename std::enable_if<std::is_array<TFixedSizeArray>::value>::type>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getOffsets(
+                ALPAKA_FCT_HOST static auto getOffset(
                     TFixedSizeArray const &)
-                -> Vec<alpaka::dim::DimT<TFixedSizeArray>::value>
+                -> UInt
                 {
-                    return Vec<alpaka::dim::DimT<TFixedSizeArray>::value>::zeros();
+                    return 0u;
                 }
             };
         }
@@ -424,42 +334,25 @@ namespace alpaka
         namespace extent
         {
             //#############################################################################
-            //! The std::array extents get trait specialization.
-            //#############################################################################
-            template<
-                typename TElem,
-                UInt TuiSize>
-            struct GetExtents<
-                std::array<TElem, TuiSize>>
-            {
-                //-----------------------------------------------------------------------------
-                //!
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static /*constexpr*/ auto getExtents(
-                    std::array<TElem, TuiSize> const & extents)
-                -> Vec<1u>
-                {
-                    return {TuiSize};
-                }
-            };
-
-            //#############################################################################
             //! The std::array width get trait specialization.
             //#############################################################################
             template<
                 typename TElem,
                 UInt TuiSize>
-            struct GetWidth<
+            struct GetExtent<
+                0u,
                 std::array<TElem, TuiSize>>
             {
 #if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-                ALPAKA_FCT_HOST_ACC static auto getWidth(
+                ALPAKA_FCT_HOST_ACC static auto getExtent(
 #else
-                ALPAKA_FCT_HOST_ACC static constexpr auto getWidth(
+                ALPAKA_FCT_HOST_ACC static constexpr auto getExtent(
 #endif
-                    std::array<TElem, TuiSize> const & extent)
+                    std::array<TElem, TuiSize> const & /*extents*/)
                 -> UInt
                 {
+                    // C++14
+                    /*boost::ignore_unused(extents);*/
                     return TuiSize;
                 }
             };
@@ -468,22 +361,24 @@ namespace alpaka
         namespace offset
         {
             //#############################################################################
-            //! The std::array offsets get trait specialization.
+            //! The std::array offset get trait specialization.
             //#############################################################################
             template<
+                UInt TuiIdx,
                 typename TElem,
                 UInt TuiSize>
-            struct GetOffsets<
+            struct GetOffset<
+                TuiIdx,
                 std::array<TElem, TuiSize>>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getOffsets(
+                ALPAKA_FCT_HOST static auto getOffset(
                     std::array<TElem, TuiSize> const &)
-                -> Vec<1u>
+                -> UInt
                 {
-                    return Vec<1u>::zeros();
+                    return 0u;
                 }
             };
         }
@@ -640,39 +535,20 @@ namespace alpaka
         namespace extent
         {
             //#############################################################################
-            //! The std::vector extents get trait specialization.
-            //#############################################################################
-            template<
-                typename TElem,
-                typename TAllocator>
-            struct GetExtents<
-                std::vector<TElem, TAllocator>>
-            {
-                //-----------------------------------------------------------------------------
-                //!
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getExtents(
-                    std::vector<TElem, TAllocator> const & extent)
-                -> Vec<1u>
-                {
-                    return {static_cast<Vec<1u>::Val>(extent.size())};
-                }
-            };
-
-            //#############################################################################
             //! The std::vector width get trait specialization.
             //#############################################################################
             template<
                 typename TElem,
                 typename TAllocator>
-            struct GetWidth<
+            struct GetExtent<
+                0u,
                 std::vector<TElem, TAllocator>>
             {
-                ALPAKA_FCT_HOST_ACC static auto getWidth(
-                    std::vector<TElem, TAllocator> const & extent)
+                ALPAKA_FCT_HOST_ACC static auto getExtent(
+                    std::vector<TElem, TAllocator> const & extents)
                 -> UInt
                 {
-                    return static_cast<UInt>(extent.size());
+                    return static_cast<UInt>(extents.size());
                 }
             };
         }
@@ -680,22 +556,24 @@ namespace alpaka
         namespace offset
         {
             //#############################################################################
-            //! The std::vector offsets get trait specialization.
+            //! The std::vector offset get trait specialization.
             //#############################################################################
             template<
+                UInt TuiIdx,
                 typename TElem,
                 typename TAllocator>
-            struct GetOffsets<
+            struct GetOffset<
+                TuiIdx,
                 std::vector<TElem, TAllocator>>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getOffsets(
+                ALPAKA_FCT_HOST static auto getOffset(
                     std::vector<TElem, TAllocator> const &)
-                -> Vec<1u>
+                -> UInt
                 {
-                    return Vec<1u>::zeros();
+                    return 0u;
                 }
             };
         }

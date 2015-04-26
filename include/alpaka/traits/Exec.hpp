@@ -27,6 +27,7 @@
 #include <alpaka/traits/WorkDiv.hpp>        // workdiv::getWorkDiv
 
 #include <alpaka/core/WorkDivHelpers.hpp>   // workdiv::isValidWorkDiv
+#include <alpaka/core/Common.hpp>           // ALPAKA_FCT_HOST
 
 namespace alpaka
 {
@@ -41,7 +42,8 @@ namespace alpaka
             //! The executor type trait.
             //#############################################################################
             template<
-                typename TAcc>
+                typename TAcc,
+                typename TSfinae = void>
             struct ExecType;
         }
     }
@@ -69,6 +71,12 @@ namespace alpaka
             TStream const & stream)
         -> ExecT<acc::AccT<TStream>>
         {
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+            std::cout << BOOST_CURRENT_FUNCTION
+                << " gridBlockExtents: " << workdiv::getWorkDiv<Grid, Blocks>(workDiv)
+                << ", blockThreadExtents: " << workdiv::getWorkDiv<Block, Threads>(workDiv)
+                << std::endl;
+#endif
             // Some basic tests.
             if(workdiv::getWorkDiv<Grid, Blocks, dim::Dim1>(workDiv)[0] == 0u)
             {
@@ -95,15 +103,15 @@ namespace alpaka
             typename TGridBlockExtents,
             typename TBlockThreadExtents>
         ALPAKA_FCT_HOST auto create(
-            TGridBlockExtents const & gridBlockExtent,
+            TGridBlockExtents const & gridBlockExtents,
             TBlockThreadExtents const & blockThreadExtents,
             TStream const & stream)
         -> ExecT<acc::AccT<TStream>>
         {
             return create(
                 workdiv::BasicWorkDiv(
-                    Vec<3u>(extent::getWidth(gridBlockExtent), extent::getHeight(gridBlockExtent), extent::getDepth(gridBlockExtent)),
-                    Vec<3u>(extent::getWidth(blockThreadExtents), extent::getHeight(blockThreadExtents), extent::getDepth(blockThreadExtents))),
+                    gridBlockExtents,
+                    blockThreadExtents),
                 stream);
         }
     }

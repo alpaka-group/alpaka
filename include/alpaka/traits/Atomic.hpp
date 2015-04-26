@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_ACC
+#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC
 
 namespace alpaka
 {
@@ -62,7 +62,7 @@ namespace alpaka
             typename TOp,
             typename T,
             typename TAtomic>
-        ALPAKA_FCT_ACC auto atomicOp(
+        ALPAKA_FCT_HOST_ACC auto atomicOp(
             unsigned int * const addr,
             unsigned int const & value,
             TAtomic const & atomic)

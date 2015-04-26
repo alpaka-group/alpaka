@@ -70,8 +70,8 @@ namespace alpaka
                         alpaka::dim::DimT<TBuf>::value == alpaka::dim::DimT<TExtents>::value,
                         "The destination buffer and the extents are required to have the same dimensionality!");
 
-                    auto const uiExtentWidth(alpaka::extent::getWidth(extents));
-                    auto const uiDstWidth(alpaka::extent::getWidth(buf));
+                    auto const uiExtentWidth(alpaka::extent::getWidth<UInt>(extents));
+                    auto const uiDstWidth(alpaka::extent::getWidth<UInt>(buf));
                     assert(uiExtentWidth <= uiDstWidth);
 
                     // Set the current device.
@@ -106,8 +106,8 @@ namespace alpaka
                         alpaka::dim::DimT<TBuf>::value == alpaka::dim::DimT<TExtents>::value,
                         "The destination buffer and the extents are required to have the same dimensionality!");
 
-                    auto const uiExtentWidth(alpaka::extent::getWidth(extents));
-                    auto const uiDstWidth(alpaka::extent::getWidth(buf));
+                    auto const uiExtentWidth(alpaka::extent::getWidth<UInt>(extents));
+                    auto const uiDstWidth(alpaka::extent::getWidth<UInt>(buf));
                     assert(uiExtentWidth <= uiDstWidth);
 
                     // Set the current device.
@@ -151,10 +151,10 @@ namespace alpaka
                         alpaka::dim::DimT<TBuf>::value == alpaka::dim::DimT<TExtents>::value,
                         "The destination buffer and the extents are required to have the same dimensionality!");
 
-                    auto const uiExtentWidth(alpaka::extent::getWidth(extents));
-                    auto const uiExtentHeight(alpaka::extent::getHeight(extents));
-                    auto const uiDstWidth(alpaka::extent::getWidth(buf));
-                    auto const uiDstHeight(alpaka::extent::getHeight(buf));
+                    auto const uiExtentWidth(alpaka::extent::getWidth<UInt>(extents));
+                    auto const uiExtentHeight(alpaka::extent::getHeight<UInt>(extents));
+                    auto const uiDstWidth(alpaka::extent::getWidth<UInt>(buf));
+                    auto const uiDstHeight(alpaka::extent::getHeight<UInt>(buf));
                     assert(uiExtentWidth <= uiDstWidth);
                     assert(uiExtentHeight <= uiDstHeight);
 
@@ -192,10 +192,10 @@ namespace alpaka
                         alpaka::dim::DimT<TBuf>::value == alpaka::dim::DimT<TExtents>::value,
                         "The destination buffer and the extents are required to have the same dimensionality!");
 
-                    auto const uiExtentWidth(alpaka::extent::getWidth(extents));
-                    auto const uiExtentHeight(alpaka::extent::getHeight(extents));
-                    auto const uiDstWidth(alpaka::extent::getWidth(buf));
-                    auto const uiDstHeight(alpaka::extent::getHeight(buf));
+                    auto const uiExtentWidth(alpaka::extent::getWidth<UInt>(extents));
+                    auto const uiExtentHeight(alpaka::extent::getHeight<UInt>(extents));
+                    auto const uiDstWidth(alpaka::extent::getWidth<UInt>(buf));
+                    auto const uiDstHeight(alpaka::extent::getHeight<UInt>(buf));
                     assert(uiExtentWidth <= uiDstWidth);
                     assert(uiExtentHeight <= uiDstHeight);
 
@@ -242,12 +242,12 @@ namespace alpaka
                         alpaka::dim::DimT<TBuf>::value == alpaka::dim::DimT<TExtents>::value,
                         "The destination base buffer and the extents are required to have the same dimensionality!");
 
-                    auto const uiExtentWidth(alpaka::extent::getWidth(extents));
-                    auto const uiExtentHeight(alpaka::extent::getHeight(extents));
-                    auto const uiExtentDepth(alpaka::extent::getDepth(extents));
-                    auto const uiDstWidth(alpaka::extent::getWidth(buf));
-                    auto const uiDstHeight(alpaka::extent::getHeight(buf));
-                    auto const uiDstDepth(alpaka::extent::getDepth(buf));
+                    auto const uiExtentWidth(alpaka::extent::getWidth<UInt>(extents));
+                    auto const uiExtentHeight(alpaka::extent::getHeight<UInt>(extents));
+                    auto const uiExtentDepth(alpaka::extent::getDepth<UInt>(extents));
+                    auto const uiDstWidth(alpaka::extent::getWidth<UInt>(buf));
+                    auto const uiDstHeight(alpaka::extent::getHeight<UInt>(buf));
+                    auto const uiDstDepth(alpaka::extent::getDepth<UInt>(buf));
                     assert(uiExtentWidth <= uiDstWidth);
                     assert(uiExtentHeight <= uiDstHeight);
                     assert(uiExtentDepth <= uiDstDepth);
@@ -298,12 +298,12 @@ namespace alpaka
                         alpaka::dim::DimT<TBuf>::value == alpaka::dim::DimT<TExtents>::value,
                         "The destination base buffer and the extents are required to have the same dimensionality!");
 
-                    auto const uiExtentWidth(alpaka::extent::getWidth(extents));
-                    auto const uiExtentHeight(alpaka::extent::getHeight(extents));
-                    auto const uiExtentDepth(alpaka::extent::getDepth(extents));
-                    auto const uiDstWidth(alpaka::extent::getWidth(buf));
-                    auto const uiDstHeight(alpaka::extent::getHeight(buf));
-                    auto const uiDstDepth(alpaka::extent::getDepth(buf));
+                    auto const uiExtentWidth(alpaka::extent::getWidth<UInt>(extents));
+                    auto const uiExtentHeight(alpaka::extent::getHeight<UInt>(extents));
+                    auto const uiExtentDepth(alpaka::extent::getDepth<UInt>(extents));
+                    auto const uiDstWidth(alpaka::extent::getWidth<UInt>(buf));
+                    auto const uiDstHeight(alpaka::extent::getHeight<UInt>(buf));
+                    auto const uiDstDepth(alpaka::extent::getDepth<UInt>(buf));
                     assert(uiExtentWidth <= uiDstWidth);
                     assert(uiExtentHeight <= uiDstHeight);
                     assert(uiExtentDepth <= uiDstDepth);

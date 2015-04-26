@@ -317,7 +317,7 @@ namespace alpaka
             {
                 auto boundTask(std::bind(std::forward<TFunc>(task), std::forward<TArgs>(args)...));
 
-                //  Return type of the functor, can be void via specialization of TaskPkg.
+                // Return type of the functor, can be void via specialization of TaskPkg.
                 using FuncReturn = typename std::result_of<TFunc(TArgs...)>::type;
                 using TaskPackage = TaskPkg<TCurrentException, TPromise, decltype(boundTask), FuncReturn>;
                 // Ensures no memory leak if push throws.
@@ -531,7 +531,7 @@ namespace alpaka
             {
                 auto boundTask(std::bind(std::forward<TFunc>(task), std::forward<TArgs>(args)...));
 
-                //  Return type of the functor, can be void via specialization of TaskPkg.
+                // Return type of the functor, can be void via specialization of TaskPkg.
                 using FuncReturn = typename std::result_of<TFunc(TArgs...)>::type;
                 using TaskPackage = TaskPkg<TCurrentException, TPromise, decltype(boundTask), FuncReturn>;
                 // Ensures no memory leak if push throws.

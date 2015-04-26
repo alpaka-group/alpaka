@@ -22,13 +22,14 @@
 #pragma once
 
 // Base classes.
-#include <alpaka/accs/serial/WorkDiv.hpp>           // WorkDivSerial
+#include <alpaka/core/BasicWorkDiv.hpp>             // workdiv::BasicWorkDiv
 #include <alpaka/accs/serial/Idx.hpp>               // IdxSerial
 #include <alpaka/accs/serial/Atomic.hpp>            // AtomicSerial
 
 // User functionality.
 #include <alpaka/host/Mem.hpp>                      // Copy
 #include <alpaka/host/mem/Space.hpp>                // SpaceHost
+#include <alpaka/host/Rand.hpp>                     // rand
 #include <alpaka/accs/serial/Stream.hpp>            // StreamSerial
 #include <alpaka/accs/serial/Event.hpp>             // EventSerial
 #include <alpaka/accs/serial/Dev.hpp>               // Devices
@@ -39,7 +40,7 @@
 #include <alpaka/traits/Mem.hpp>                    // SpaceType
 
 // Implementation details.
-#include <alpaka/traits/BlockSharedExternMemSizeBytes.hpp>
+#include <alpaka/traits/Kernel.hpp>                 // BlockSharedExternMemSizeBytes
 
 #include <vector>                                   // std::vector
 #include <cassert>                                  // assert
@@ -74,7 +75,7 @@ namespace alpaka
                 //! The block size is restricted to 1x1x1 so there is no parallelism at all.
                 //#############################################################################
                 class AccSerial :
-                    protected WorkDivSerial,
+                    protected alpaka::workdiv::BasicWorkDiv,
                     protected IdxSerial,
                     protected AtomicSerial
                 {
@@ -91,10 +92,10 @@ namespace alpaka
                         typename TWorkDiv>
                     ALPAKA_FCT_ACC_NO_CUDA AccSerial(
                         TWorkDiv const & workDiv) :
-                            WorkDivSerial(workDiv),
+                            alpaka::workdiv::BasicWorkDiv(workDiv),
                             IdxSerial(m_v3uiGridBlockIdx),
                             AtomicSerial(),
-                            m_v3uiGridBlockIdx(Vec<3u>::zeros())
+                            m_v3uiGridBlockIdx(Vec3<>::zeros())
                     {}
 
                 public:
@@ -126,11 +127,11 @@ namespace alpaka
                         typename TUnit,
                         typename TDim = dim::Dim3>
                     ALPAKA_FCT_ACC_NO_CUDA auto getIdx() const
-                    -> DimToVecT<TDim>
+                    -> Vec<TDim>
                     {
                         return idx::getIdx<TOrigin, TUnit, TDim>(
                             *static_cast<IdxSerial const *>(this),
-                            *static_cast<WorkDivSerial const *>(this));
+                            *static_cast<alpaka::workdiv::BasicWorkDiv const *>(this));
                     }
 
                     //-----------------------------------------------------------------------------
@@ -141,10 +142,10 @@ namespace alpaka
                         typename TUnit,
                         typename TDim = dim::Dim3>
                     ALPAKA_FCT_ACC_NO_CUDA auto getWorkDiv() const
-                    -> DimToVecT<TDim>
+                    -> Vec<TDim>
                     {
                         return workdiv::getWorkDiv<TOrigin, TUnit, TDim>(
-                            *static_cast<WorkDivSerial const *>(this));
+                            *static_cast<alpaka::workdiv::BasicWorkDiv const *>(this));
                     }
 
                     //-----------------------------------------------------------------------------
@@ -208,7 +209,7 @@ namespace alpaka
                 private:
     #endif
                     // getIdx
-                    Vec<3u> mutable m_v3uiGridBlockIdx;                         //!< The index of the currently executed block.
+                    Vec3<> mutable m_v3uiGridBlockIdx;                         //!< The index of the currently executed block.
 
                     // allocBlockSharedMem
                     std::vector<
@@ -242,7 +243,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_HOST KernelExecSerial(
                         KernelExecSerial const & other) :
-                            AccSerial(static_cast<WorkDivSerial const &>(other))
+                            AccSerial(static_cast<alpaka::workdiv::BasicWorkDiv const &>(other))
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                     }
@@ -252,7 +253,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_HOST KernelExecSerial(
                         KernelExecSerial && other) :
-                            AccSerial(static_cast<WorkDivSerial &&>(other))
+                            AccSerial(static_cast<alpaka::workdiv::BasicWorkDiv &&>(other))
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                     }
@@ -283,10 +284,10 @@ namespace alpaka
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                        Vec<3u> const v3uiGridBlockExtents(this->AccSerial::getWorkDiv<Grid, Blocks, dim::Dim3>());
-                        Vec<3u> const v3uiBlockThreadExtents(this->AccSerial::getWorkDiv<Block, Threads, dim::Dim3>());
+                        Vec3<> const v3uiGridBlockExtents(this->AccSerial::getWorkDiv<Grid, Blocks, dim::Dim3>());
+                        Vec3<> const v3uiBlockThreadExtents(this->AccSerial::getWorkDiv<Block, Threads, dim::Dim3>());
 
-                        auto const uiBlockSharedExternMemSizeBytes(getBlockSharedExternMemSizeBytes<typename std::decay<TKernelFunctor>::type, AccSerial>(
+                        auto const uiBlockSharedExternMemSizeBytes(kernel::getBlockSharedExternMemSizeBytes<typename std::decay<TKernelFunctor>::type, AccSerial>(
                             v3uiBlockThreadExtents,
                             std::forward<TArgs>(args)...));
     #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -359,7 +360,7 @@ namespace alpaka
             struct GetAccName<
                 accs::serial::detail::AccSerial>
             {
-                static auto getAccName()
+                ALPAKA_FCT_HOST_ACC static auto getAccName()
                 -> std::string
                 {
                     return "AccSerial";

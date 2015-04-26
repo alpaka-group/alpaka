@@ -54,7 +54,7 @@ namespace alpaka
                 template<
                     typename TAcc>
                 ALPAKA_FCT_HOST auto operator()(
-                    Vec<3u> & v3uiBlockThreadExtents)
+                    Vec3<> & v3uiBlockThreadExtents)
                 -> void
                 {
                     auto const vDevs(dev::getDevs<dev::DevManT<TAcc>>());
@@ -63,7 +63,7 @@ namespace alpaka
                         auto const devProps(dev::getProps(dev));
                         auto const & v3uiBlockThreadExtentsMax(devProps.m_v3uiBlockThreadExtentsMax);
 
-                        v3uiBlockThreadExtents = Vec<3u>(
+                        v3uiBlockThreadExtents = Vec3<>(
                             std::min(v3uiBlockThreadExtents[0u], v3uiBlockThreadExtentsMax[0u]),
                             std::min(v3uiBlockThreadExtents[1u], v3uiBlockThreadExtentsMax[1u]),
                             std::min(v3uiBlockThreadExtents[2u], v3uiBlockThreadExtentsMax[2u]));
@@ -78,13 +78,13 @@ namespace alpaka
         template<
             typename TAccSeq>
         ALPAKA_FCT_HOST auto getMaxBlockThreadExtentsAccsDevices()
-        -> Vec<3u>
+        -> Vec3<>
         {
             static_assert(
                 boost::mpl::is_sequence<TAccSeq>::value,
                 "TAccSeq is required to be a mpl::sequence!");
 
-            Vec<3u> v3uiMaxBlockThreadExtents(
+            Vec3<> v3uiMaxBlockThreadExtents(
                 std::numeric_limits<UInt>::max(),
                 std::numeric_limits<UInt>::max(),
                 std::numeric_limits<UInt>::max());
@@ -189,8 +189,8 @@ namespace alpaka
             //!     NOTE: If v3uiGridThreadExtents is prime (or otherwise bad chosen) in a dimension, the block thread extent will be one in this dimension.
             //#############################################################################
             ALPAKA_FCT_HOST auto subdivideGridThreads(
-                Vec<3u> const & v3uiGridThreadExtents,
-                Vec<3u> const & v3uiMaxBlockThreadExtents,
+                Vec3<> const & v3uiGridThreadExtents,
+                Vec3<> const & v3uiMaxBlockThreadExtents,
                 UInt const & uiMaxBlockThreadsCount,
                 bool bRequireBlockThreadExtentsToDivideGridThreadExtents = true)
             -> BasicWorkDiv
@@ -202,7 +202,7 @@ namespace alpaka
                 // 1. Restrict the max block thread extents with the grid thread extents.
                 // This removes dimensions not required in the given grid thread extents.
                 // This has to be done before the uiMaxBlockThreadsCount clipping to get the maximum correctly.
-                Vec<3u> v3uiBlockThreadExtents(
+                Vec3<> v3uiBlockThreadExtents(
                     std::min(v3uiMaxBlockThreadExtents[0u], v3uiGridThreadExtents[0u]),
                     std::min(v3uiMaxBlockThreadExtents[1u], v3uiGridThreadExtents[1u]),
                     std::min(v3uiMaxBlockThreadExtents[2u], v3uiGridThreadExtents[2u]));
@@ -223,14 +223,14 @@ namespace alpaka
                 if(bRequireBlockThreadExtentsToDivideGridThreadExtents)
                 {
                     // Make the block thread extents divide the grid thread extents.
-                    v3uiBlockThreadExtents = Vec<3u>(
+                    v3uiBlockThreadExtents = Vec3<>(
                         detail::nextLowerOrEqualFactor(v3uiBlockThreadExtents[0u], v3uiGridThreadExtents[0u]),
                         detail::nextLowerOrEqualFactor(v3uiBlockThreadExtents[1u], v3uiGridThreadExtents[1u]),
                         detail::nextLowerOrEqualFactor(v3uiBlockThreadExtents[2u], v3uiGridThreadExtents[2u]));
                 }
 
                 // Set the grid block extents (rounded to the next integer not less then the quotient.
-                Vec<3u> const v3uiGridBlockExtents(
+                Vec3<> const v3uiGridBlockExtents(
                     static_cast<UInt>(std::ceil(static_cast<double>(v3uiGridThreadExtents[0u]) / static_cast<double>(v3uiBlockThreadExtents[0u]))),
                     static_cast<UInt>(std::ceil(static_cast<double>(v3uiGridThreadExtents[1u]) / static_cast<double>(v3uiBlockThreadExtents[1u]))),
                     static_cast<UInt>(std::ceil(static_cast<double>(v3uiGridThreadExtents[2u]) / static_cast<double>(v3uiBlockThreadExtents[2u]))));
@@ -261,7 +261,7 @@ namespace alpaka
                 "TExtents is required to have less than or equal 3 dimensions!");
 
             return detail::subdivideGridThreads(
-                Vec<3u>::fromExtents(gridThreadExtents),
+                extent::getExtentsNd<dim::Dim3, UInt>(gridThreadExtents),
                 getMaxBlockThreadExtentsAccsDevices<TAccSeq>(),
                 getMaxBlockThreadCountAccsDevices<TAccSeq>(),
                 bRequireBlockThreadExtentsToDivideGridThreadExtents);

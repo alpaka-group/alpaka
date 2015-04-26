@@ -243,12 +243,12 @@ namespace alpaka
                         // m_uiBlockThreadsCountMax
                         uiBlockThreadsCountMax,
                         // m_v3uiBlockThreadExtentsMax
-                        Vec<3u>(
+                        Vec3<>(
                             uiBlockThreadsCountMax,
                             uiBlockThreadsCountMax,
                             uiBlockThreadsCountMax),
                         // m_v3uiGridBlockExtentsMax
-                        Vec<3u>(
+                        Vec3<>(
                             std::numeric_limits<UInt>::max(),
                             std::numeric_limits<UInt>::max(),
                             std::numeric_limits<UInt>::max()),

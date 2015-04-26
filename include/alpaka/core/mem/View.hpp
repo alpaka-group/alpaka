@@ -56,8 +56,8 @@ namespace alpaka
                 View(
                     TBuf const & buf) :
                         m_Buf(getBuf(buf)),
-                        m_vOffsetsElements(Vec<Dim::value>::fromOffsets(buf)),
-                        m_vExtentsElements(Vec<Dim::value>::fromExtents(buf))
+                        m_vOffsetsElements(offset::getOffsetsNd<Dim, UInt>(buf)),
+                        m_vExtentsElements(extent::getExtentsNd<Dim, UInt>(buf))
                 {}
 
                 //-----------------------------------------------------------------------------
@@ -74,25 +74,25 @@ namespace alpaka
                     TExtents const & extentsElements,
                     TOffsets const & relativeOffsetsElements = TOffsets()) :
                         m_Buf(getBuf(buf)),
-                        m_vOffsetsElements(Vec<Dim::value>::fromOffsets(relativeOffsetsElements)+Vec<Dim::value>::fromOffsets(buf)),
-                        m_vExtentsElements(Vec<Dim::value>::fromExtents(extentsElements))
+                        m_vOffsetsElements(offset::getOffsetsNd<Dim, UInt>(relativeOffsetsElements)+offset::getOffsetsNd<Dim, UInt>(buf)),
+                        m_vExtentsElements(extent::getExtentsNd<Dim, UInt>(extentsElements))
                 {
                     static_assert(
                         std::is_same<Dim, dim::DimT<TExtents>>::value,
                         "The base buffer and the extents are required to have the same dimensionality!");
 
-                    assert(extent::getWidth(relativeOffsetsElements) <= extent::getWidth(buf));
-                    assert(extent::getHeight(relativeOffsetsElements) <= extent::getHeight(buf));
-                    assert(extent::getDepth(relativeOffsetsElements) <= extent::getDepth(buf));
-                    assert((offset::getOffsetX(relativeOffsetsElements)+offset::getOffsetX(buf)+extent::getWidth(extentsElements)) <= extent::getWidth(buf));
-                    assert((offset::getOffsetY(relativeOffsetsElements)+offset::getOffsetY(buf)+extent::getHeight(extentsElements)) <= extent::getHeight(buf));
-                    assert((offset::getOffsetZ(relativeOffsetsElements)+offset::getOffsetZ(buf)+extent::getDepth(extentsElements)) <= extent::getDepth(buf));
+                    assert(extent::getWidth<UInt>(relativeOffsetsElements) <= extent::getWidth<UInt>(buf));
+                    assert(extent::getHeight<UInt>(relativeOffsetsElements) <= extent::getHeight<UInt>(buf));
+                    assert(extent::getDepth<UInt>(relativeOffsetsElements) <= extent::getDepth<UInt>(buf));
+                    assert((offset::getOffsetX<UInt>(relativeOffsetsElements)+offset::getOffsetX<UInt>(buf)+extent::getWidth<UInt>(extentsElements)) <= extent::getWidth<UInt>(buf));
+                    assert((offset::getOffsetY<UInt>(relativeOffsetsElements)+offset::getOffsetY<UInt>(buf)+extent::getHeight<UInt>(extentsElements)) <= extent::getHeight<UInt>(buf));
+                    assert((offset::getOffsetZ<UInt>(relativeOffsetsElements)+offset::getOffsetZ<UInt>(buf)+extent::getDepth<UInt>(extentsElements)) <= extent::getDepth<UInt>(buf));
                 }
 
             public:
                 Buf m_Buf;
-                Vec<Dim::value> m_vOffsetsElements;
-                Vec<Dim::value> m_vExtentsElements;
+                Vec<Dim> m_vOffsetsElements;
+                Vec<Dim> m_vExtentsElements;
             };
         }
     }
@@ -151,80 +151,24 @@ namespace alpaka
         namespace extent
         {
             //#############################################################################
-            //! The View extents get trait specialization.
-            //#############################################################################
-            template<
-                typename TBuf>
-            struct GetExtents<
-                alpaka::mem::detail::View<TBuf>>
-            {
-                //-----------------------------------------------------------------------------
-                //!
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getExtents(
-                    alpaka::mem::detail::View<TBuf> const & extents)
-                -> Vec<alpaka::dim::DimT<TBuf>::value>
-                {
-                    return {extents.m_vExtentsElements};
-                }
-            };
-
-            //#############################################################################
             //! The View width get trait specialization.
             //#############################################################################
             template<
+                UInt TuiIdx,
                 typename TBuf>
-            struct GetWidth<
+            struct GetExtent<
+                TuiIdx,
                 alpaka::mem::detail::View<TBuf>,
-                typename std::enable_if<alpaka::dim::DimT<TBuf>::value >= 1u>::type>
+                typename std::enable_if<alpaka::dim::DimT<TBuf>::value >= (TuiIdx+1)>::type>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getWidth(
-                    alpaka::mem::detail::View<TBuf> const & extent)
+                ALPAKA_FCT_HOST static auto getExtent(
+                    alpaka::mem::detail::View<TBuf> const & extents)
                 -> UInt
                 {
-                    return extent.m_vExtentsElements[0u];
-                }
-            };
-
-            //#############################################################################
-            //! The View height get trait specialization.
-            //#############################################################################
-            template<
-                typename TBuf>
-            struct GetHeight<
-                alpaka::mem::detail::View<TBuf>,
-                typename std::enable_if<alpaka::dim::DimT<TBuf>::value >= 2u>::type>
-            {
-                //-----------------------------------------------------------------------------
-                //!
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getHeight(
-                    alpaka::mem::detail::View<TBuf> const & extent)
-                -> UInt
-                {
-                    return extent.m_vExtentsElements[1u];
-                }
-            };
-            //#############################################################################
-            //! The View depth get trait specialization.
-            //#############################################################################
-            template<
-                typename TBuf>
-            struct GetDepth<
-                alpaka::mem::detail::View<TBuf>,
-                typename std::enable_if<alpaka::dim::DimT<TBuf>::value >= 3u>::type>
-            {
-                //-----------------------------------------------------------------------------
-                //!
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getDepth(
-                    alpaka::mem::detail::View<TBuf> const & extent)
-                -> UInt
-                {
-                    return extent.m_vExtentsElements[2u];
+                    return extents.m_vExtentsElements[TuiIdx];
                 }
             };
         }
@@ -232,80 +176,24 @@ namespace alpaka
         namespace offset
         {
             //#############################################################################
-            //! The View offsets get trait specialization.
-            //#############################################################################
-            template<
-                typename TBuf>
-            struct GetOffsets<
-                alpaka::mem::detail::View<TBuf>>
-            {
-                //-----------------------------------------------------------------------------
-                //!
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getOffsets(
-                    alpaka::mem::detail::View<TBuf> const & offsets)
-                -> Vec<alpaka::dim::DimT<TBuf>::value>
-                {
-                    return offsets.m_vOffsetsElements;
-                }
-            };
-
-            //#############################################################################
             //! The View x offset get trait specialization.
             //#############################################################################
             template<
+                UInt TuiIdx,
                 typename TBuf>
-            struct GetOffsetX<
+            struct GetOffset<
+                TuiIdx,
                 alpaka::mem::detail::View<TBuf>,
-                typename std::enable_if<alpaka::dim::DimT<TBuf>::value >= 1u>::type>
+                typename std::enable_if<alpaka::dim::DimT<TBuf>::value >= (TuiIdx+1)>::type>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getOffsetX(
+                ALPAKA_FCT_HOST static auto getOffset(
                     alpaka::mem::detail::View<TBuf> const & offset)
                 -> UInt
                 {
-                    return offset.m_vOffsetsElements[0u];
-                }
-            };
-
-            //#############################################################################
-            //! The View y offset get trait specialization.
-            //#############################################################################
-            template<
-                typename TBuf>
-            struct GetOffsetY<
-                alpaka::mem::detail::View<TBuf>,
-                typename std::enable_if<alpaka::dim::DimT<TBuf>::value >= 2u>::type>
-            {
-                //-----------------------------------------------------------------------------
-                //!
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getOffsetY(
-                    alpaka::mem::detail::View<TBuf> const & offset)
-                -> UInt
-                {
-                    return offset.m_vOffsetsElements[1u];
-                }
-            };
-            //#############################################################################
-            //! The View z offset get trait specialization.
-            //#############################################################################
-            template<
-                typename TBuf>
-            struct GetOffsetZ<
-                alpaka::mem::detail::View<TBuf>,
-                typename std::enable_if<alpaka::dim::DimT<TBuf>::value >= 3u>::type>
-            {
-                //-----------------------------------------------------------------------------
-                //!
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getOffsetZ(
-                    alpaka::mem::detail::View<TBuf> const & offset)
-                -> UInt
-                {
-                    return offset.m_vOffsetsElements[2u];
+                    return offset.m_vOffsetsElements[TuiIdx];
                 }
             };
         }
@@ -429,9 +317,9 @@ namespace alpaka
                     // \TODO: Precalculate this pointer for faster execution.
                     auto const uiPitchElements(alpaka::mem::getPitchElements(bufView));
                     return alpaka::mem::getNativePtr(alpaka::mem::getBuf(bufView))
-                        + alpaka::offset::getOffsetX(bufView)
-                        + alpaka::offset::getOffsetY(bufView) * uiPitchElements
-                        + alpaka::offset::getOffsetZ(bufView) * uiPitchElements * alpaka::extent::getHeight(alpaka::mem::getBuf(bufView));
+                        + alpaka::offset::getOffset<0u, UInt>(bufView)
+                        + alpaka::offset::getOffset<1u, UInt>(bufView) * uiPitchElements
+                        + alpaka::offset::getOffset<2u, UInt>(bufView) * uiPitchElements * alpaka::extent::getExtent<0u, UInt>(alpaka::mem::getBuf(bufView));
                 }
                 //-----------------------------------------------------------------------------
                 //!
@@ -443,9 +331,9 @@ namespace alpaka
                     // \TODO: Precalculate this pointer for faster execution.
                     auto const uiPitchElements(alpaka::mem::getPitchElements(bufView));
                     return alpaka::mem::getNativePtr(alpaka::mem::getBuf(bufView))
-                        + alpaka::offset::getOffsetX(bufView)
-                        + alpaka::offset::getOffsetY(bufView) * uiPitchElements
-                        + alpaka::offset::getOffsetZ(bufView) * uiPitchElements * alpaka::extent::getHeight(alpaka::mem::getBuf(bufView));
+                        + alpaka::offset::getOffset<0u, UInt>(bufView)
+                        + alpaka::offset::getOffset<1u, UInt>(bufView) * uiPitchElements
+                        + alpaka::offset::getOffset<2u, UInt>(bufView) * uiPitchElements * alpaka::extent::getExtent<0u, UInt>(alpaka::mem::getBuf(bufView));
                 }
             };
 

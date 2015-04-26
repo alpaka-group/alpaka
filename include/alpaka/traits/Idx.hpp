@@ -70,7 +70,7 @@ namespace alpaka
         ALPAKA_FCT_ACC auto getIdx(
             TIdx const & index,
             TWorkDiv const & workDiv)
-        -> DimToVecT<TDim>
+        -> Vec<TDim>
         {
             return traits::idx::GetIdx<
                 TIdx,
@@ -106,7 +106,7 @@ namespace alpaka
                 ALPAKA_FCT_ACC static auto getIdx(
                     TIdx const & index,
                     TWorkDiv const & workDiv)
-                -> alpaka::DimToVecT<alpaka::dim::Dim1>
+                -> alpaka::Vec<alpaka::dim::Dim1>
                 {
                     auto const v3uiBlockThreadExtents(alpaka::workdiv::getWorkDiv<origin::Block, unit::Threads, alpaka::dim::Dim3>(workDiv));
                     auto const v3uiBlockThreadIdx(alpaka::idx::getIdx<origin::Block, unit::Threads, alpaka::dim::Dim3>(index, workDiv));
@@ -132,7 +132,7 @@ namespace alpaka
                 ALPAKA_FCT_ACC static auto getIdx(
                     TIdx const & index,
                     TWorkDiv const & workDiv)
-                -> alpaka::DimToVecT<alpaka::dim::Dim3>
+                -> alpaka::Vec<alpaka::dim::Dim3>
                 {
                     return alpaka::idx::getIdx<origin::Grid, unit::Blocks, alpaka::dim::Dim3>(index, workDiv)
                         * alpaka::workdiv::getWorkDiv<origin::Block, unit::Threads, alpaka::dim::Dim3>(workDiv)
@@ -158,7 +158,7 @@ namespace alpaka
                 ALPAKA_FCT_ACC static auto getIdx(
                     TIdx const & index,
                     TWorkDiv const & workDiv)
-                -> alpaka::DimToVecT<alpaka::dim::Dim1>
+                -> alpaka::Vec<alpaka::dim::Dim1>
                 {
                     auto const v3uiGridThreadSize(alpaka::workdiv::getWorkDiv<origin::Grid, unit::Threads, alpaka::dim::Dim3>(workDiv));
                     auto const v3uiGridThreadIdx(alpaka::idx::getIdx<origin::Grid, unit::Threads, alpaka::dim::Dim3>(index, workDiv));
@@ -184,7 +184,7 @@ namespace alpaka
                 ALPAKA_FCT_ACC static auto getIdx(
                     TIdx const & index,
                     TWorkDiv const & workDiv)
-                -> alpaka::DimToVecT<alpaka::dim::Dim1>
+                -> alpaka::Vec<alpaka::dim::Dim1>
                 {
                     auto const v3uiGridBlockExtent(alpaka::workdiv::getWorkDiv<origin::Grid, unit::Blocks, alpaka::dim::Dim3>(workDiv));
                     auto const v3uiGridBlockIdx(alpaka::idx::getIdx<origin::Grid, unit::Blocks, alpaka::dim::Dim3>(index, workDiv));

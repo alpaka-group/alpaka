@@ -30,8 +30,6 @@ namespace alpaka
     {
         //#############################################################################
         //! Maps a linear index to a N dimensional index.
-        //!
-        //! \tparam TuiDim dimension of the position to map to.
         //#############################################################################
         template<
             UInt TuiIdxDimDst,
@@ -54,9 +52,9 @@ namespace alpaka
             template<
                 typename TElem>
             ALPAKA_FCT_HOST_ACC static auto mapIdx(
-                Vec<1u, TElem> const & index,
-                Vec<2u, TElem> const & extents)
-            -> Vec<3u>
+                Vec<dim::Dim1, TElem> const & index,
+                Vec<dim::Dim2, TElem> const & extents)
+            -> Vec<dim::Dim3, TElem>
             {
                 auto const & uiIdx(index[0]);
                 auto const uiExtentXyLin(extents.prod());
@@ -86,9 +84,9 @@ namespace alpaka
             template<
                 typename TElem>
             ALPAKA_FCT_HOST_ACC static auto mapIdx(
-                Vec<1u, TElem> const & index,
-                Vec<1u, TElem> const & extents)
-            -> Vec<2u>
+                Vec<dim::Dim1, TElem> const & index,
+                Vec<dim::Dim1, TElem> const & extents)
+            -> Vec<dim::Dim2, TElem>
             {
                 auto const & uiIdx(index[0]);
                 auto const & uiExtentX(extents[0]);
@@ -104,8 +102,8 @@ namespace alpaka
     //#############################################################################
     //! Maps a N dimensional index to a N dimensional position.
     //!
-    //! \tparam TuiDim dimension of the position to map to.
-    //! \tparam TuiIdxDim dimension of the index vector to map from.
+    //! \tparam TuiIdxDimDst dimension of the position to map to.
+    //! \tparam TuiIdxDimSrc dimension of the index vector to map from.
     //! \tparam TElem type of the elements of the index vector to map from.
     //#############################################################################
     template<
@@ -113,9 +111,9 @@ namespace alpaka
         UInt TuiIdxDimSrc,
         typename TElem>
     ALPAKA_FCT_HOST_ACC auto mapIdx(
-        Vec<TuiIdxDimSrc, TElem> const & index,
-        Vec<TuiIdxDimDst-1u, TElem> const & extents)
-    -> Vec<TuiIdxDimDst>
+        Vec<dim::Dim<TuiIdxDimSrc>, TElem> const & index,
+        Vec<dim::Dim<TuiIdxDimDst-1u>, TElem> const & extents)
+    -> Vec<dim::Dim<TuiIdxDimDst>, TElem>
     {
         return detail::MapIdx<
             TuiIdxDimDst,

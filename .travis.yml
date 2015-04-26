@@ -25,13 +25,13 @@ compiler:
 # CXX                                           : {g++, clang++}
 #   [clang++] ALPAKA_CLANG_LIBSTDCPP_VERSION    : {4.9}
 #   [clang++] ALPAKA_CLANG_VER                  : {3.5, 3.6, 3.7}
-#   [g++] ALPAKA_GCC_VER                        : {4.9}
-# ALPAKA_BOOST_VER                              : {1.56, 1.57}
+#   [g++] ALPAKA_GCC_VER                        : {4.9, 5}
+# ALPAKA_BOOST_BRANCH                           : {boost-1.56.0, boost-1.57.0, develop}
 # ALPAKA_CMAKE_VER                              : {2.8.12.2, 3.0.2, 3.1.1, 3.2.1}
 # CMAKE_BUILD_TYPE                              : {DEBUG, RELEASE}
 # ALPAKA_DEBUG                                  : {0, 1, 2}
 # ALPAKA_THREADS_ENABLE                         : {ON, OFF}
-# ALPAKA_OPENMP2_ENABLE                          : {ON, OFF}
+# ALPAKA_OPENMP2_ENABLE                         : {ON, OFF}
 #   [ON] OMP_NUM_THREADS                        : {1, 2, 3, 4}
 # ALPAKA_CUDA_ENABLE                            : {ON, OFF}
 #   [ON] ALPAKA_CUDA_VERSION                    : {7.0}
@@ -48,17 +48,17 @@ env:
         - ALPAKA_CLANG_LIBSTDCPP_VERSION=4.9
 
     matrix:
-        - ALPAKA_ANALYSIS=OFF ALPAKA_DEBUG=2 ALPAKA_CMAKE_VER=3.2.1    CMAKE_BUILD_TYPE=Debug   OMP_NUM_THREADS=4 ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.6 ALPAKA_BOOST_VER=1.56.0 ALPAKA_CUDA_ENABLE=ON
-        - ALPAKA_ANALYSIS=OFF ALPAKA_DEBUG=1 ALPAKA_CMAKE_VER=3.0.2    CMAKE_BUILD_TYPE=Debug   OMP_NUM_THREADS=4 ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.5 ALPAKA_BOOST_VER=1.57.0 ALPAKA_CUDA_ENABLE=ON
-        - ALPAKA_ANALYSIS=OFF ALPAKA_DEBUG=0 ALPAKA_CMAKE_VER=2.8.12.2 CMAKE_BUILD_TYPE=Debug   OMP_NUM_THREADS=4 ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.7 ALPAKA_BOOST_VER=1.56.0 ALPAKA_CUDA_ENABLE=OFF
-        - ALPAKA_ANALYSIS=ON  ALPAKA_DEBUG=2 ALPAKA_CMAKE_VER=3.1.1    CMAKE_BUILD_TYPE=Debug   OMP_NUM_THREADS=2 ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.6 ALPAKA_BOOST_VER=1.57.0 ALPAKA_CUDA_ENABLE=OFF
-        - ALPAKA_ANALYSIS=OFF ALPAKA_DEBUG=2 ALPAKA_CMAKE_VER=3.2.1    CMAKE_BUILD_TYPE=Debug   OMP_NUM_THREADS=1 ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.5 ALPAKA_BOOST_VER=1.57.0 ALPAKA_CUDA_ENABLE=OFF
+        - ALPAKA_ANALYSIS=OFF ALPAKA_DEBUG=2 ALPAKA_CMAKE_VER=3.2.1    CMAKE_BUILD_TYPE=Debug   OMP_NUM_THREADS=4 ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.6 ALPAKA_BOOST_BRANCH=boost-1.56.0 ALPAKA_CUDA_ENABLE=ON
+        - ALPAKA_ANALYSIS=OFF ALPAKA_DEBUG=1 ALPAKA_CMAKE_VER=3.0.2    CMAKE_BUILD_TYPE=Debug   OMP_NUM_THREADS=4 ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.5 ALPAKA_BOOST_BRANCH=boost-1.57.0 ALPAKA_CUDA_ENABLE=ON
+        - ALPAKA_ANALYSIS=OFF ALPAKA_DEBUG=0 ALPAKA_CMAKE_VER=2.8.12.2 CMAKE_BUILD_TYPE=Debug   OMP_NUM_THREADS=4 ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.7 ALPAKA_BOOST_BRANCH=boost-1.56.0 ALPAKA_CUDA_ENABLE=OFF
+        - ALPAKA_ANALYSIS=ON  ALPAKA_DEBUG=2 ALPAKA_CMAKE_VER=3.1.1    CMAKE_BUILD_TYPE=Debug   OMP_NUM_THREADS=2 ALPAKA_GCC_VER=5   ALPAKA_CLANG_VER=3.6 ALPAKA_BOOST_BRANCH=develop      ALPAKA_CUDA_ENABLE=OFF
+        - ALPAKA_ANALYSIS=OFF ALPAKA_DEBUG=2 ALPAKA_CMAKE_VER=3.2.1    CMAKE_BUILD_TYPE=Debug   OMP_NUM_THREADS=1 ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.5 ALPAKA_BOOST_BRANCH=boost-1.57.0 ALPAKA_CUDA_ENABLE=OFF
 
-        - ALPAKA_ANALYSIS=OFF ALPAKA_DEBUG=2 ALPAKA_CMAKE_VER=3.2.1    CMAKE_BUILD_TYPE=Release OMP_NUM_THREADS=4 ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.6 ALPAKA_BOOST_VER=1.56.0 ALPAKA_CUDA_ENABLE=ON
-        - ALPAKA_ANALYSIS=OFF ALPAKA_DEBUG=2 ALPAKA_CMAKE_VER=3.2.1    CMAKE_BUILD_TYPE=Release OMP_NUM_THREADS=4 ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.5 ALPAKA_BOOST_VER=1.57.0 ALPAKA_CUDA_ENABLE=ON
-        - ALPAKA_ANALYSIS=OFF ALPAKA_DEBUG=2 ALPAKA_CMAKE_VER=3.2.1    CMAKE_BUILD_TYPE=Release OMP_NUM_THREADS=4 ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.7 ALPAKA_BOOST_VER=1.56.0 ALPAKA_CUDA_ENABLE=OFF
-        - ALPAKA_ANALYSIS=OFF ALPAKA_DEBUG=2 ALPAKA_CMAKE_VER=3.2.1    CMAKE_BUILD_TYPE=Release OMP_NUM_THREADS=2 ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.6 ALPAKA_BOOST_VER=1.57.0 ALPAKA_CUDA_ENABLE=OFF
-        - ALPAKA_ANALYSIS=OFF ALPAKA_DEBUG=2 ALPAKA_CMAKE_VER=3.2.1    CMAKE_BUILD_TYPE=Release OMP_NUM_THREADS=1 ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.5 ALPAKA_BOOST_VER=1.57.0 ALPAKA_CUDA_ENABLE=OFF
+        - ALPAKA_ANALYSIS=OFF ALPAKA_DEBUG=2 ALPAKA_CMAKE_VER=3.2.1    CMAKE_BUILD_TYPE=Release OMP_NUM_THREADS=4 ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.6 ALPAKA_BOOST_BRANCH=boost-1.57.0 ALPAKA_CUDA_ENABLE=ON
+        - ALPAKA_ANALYSIS=OFF ALPAKA_DEBUG=2 ALPAKA_CMAKE_VER=3.2.1    CMAKE_BUILD_TYPE=Release OMP_NUM_THREADS=4 ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.5 ALPAKA_BOOST_BRANCH=boost-1.56.0 ALPAKA_CUDA_ENABLE=ON
+        - ALPAKA_ANALYSIS=OFF ALPAKA_DEBUG=2 ALPAKA_CMAKE_VER=3.2.1    CMAKE_BUILD_TYPE=Release OMP_NUM_THREADS=4 ALPAKA_GCC_VER=5   ALPAKA_CLANG_VER=3.7 ALPAKA_BOOST_BRANCH=develop      ALPAKA_CUDA_ENABLE=OFF
+        - ALPAKA_ANALYSIS=OFF ALPAKA_DEBUG=2 ALPAKA_CMAKE_VER=3.2.1    CMAKE_BUILD_TYPE=Release OMP_NUM_THREADS=2 ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.6 ALPAKA_BOOST_BRANCH=boost-1.57.0 ALPAKA_CUDA_ENABLE=OFF
+        - ALPAKA_ANALYSIS=OFF ALPAKA_DEBUG=2 ALPAKA_CMAKE_VER=3.2.1    CMAKE_BUILD_TYPE=Release OMP_NUM_THREADS=1 ALPAKA_GCC_VER=5   ALPAKA_CLANG_VER=3.5 ALPAKA_BOOST_BRANCH=develop      ALPAKA_CUDA_ENABLE=OFF
 
 matrix:
 #    exclude:
@@ -91,10 +91,10 @@ before_install:
     - echo "${TRAVIS_OS_NAME}"
     - echo "${TRAVIS_TAG}"
 
-    # g++ 4.8 / 4.9 / clang dependencies
+    # g++ / clang dependencies
     - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
 
-    # clang 3.5 / 3.6 / current
+    # clang
     - if [ "${CXX}" == "clang++" ] ;then sudo add-apt-repository -y 'deb http://llvm.org/apt/precise/ llvm-toolchain-precise-3.5 main' ;fi
     - if [ "${CXX}" == "clang++" ] ;then sudo add-apt-repository -y 'deb http://llvm.org/apt/precise/ llvm-toolchain-precise-3.6 main' ;fi
     - if [ "${CXX}" == "clang++" ] ;then sudo add-apt-repository -y 'deb http://llvm.org/apt/precise/ llvm-toolchain-precise main' ;fi
@@ -142,6 +142,15 @@ install:
         && ALPAKA_GCC_VER_MINOR=${ALPAKA_GCC_VER:2:1}
         && echo ${ALPAKA_GCC_VER_MAJOR}
         && echo ${ALPAKA_GCC_VER_MINOR}
+      ;fi
+    # gcc version 5+ require boost-develop (1.59).
+    - if [ "${CXX}" == "clang++" ]
+      ;then
+        if (( ${ALPAKA_GCC_VER_MAJOR} == 5 ))
+          ;then
+            export ALPAKA_BOOST_BRANCH=develop
+            && echo ALPAKA_BOOST_BRANCH=${ALPAKA_BOOST_BRANCH} because gcc 5+ is only supported by boost 1.59+!
+          ;fi
       ;fi
 
     #-------------------------------------------------------------------------------
@@ -227,7 +236,7 @@ install:
         && wget http://developer.download.nvidia.com/compute/cuda/${ALPAKA_CUDA_VER_MAJOR}_${ALPAKA_CUDA_VER_MINOR}/Prod/local_installers/rpmdeb/${ALPAKA_CUDA_PKG_FILE_NAME}
         && sudo dpkg -i ${ALPAKA_CUDA_PKG_FILE_NAME}
         && sudo apt-get -y update
-        && sudo apt-get -y install cuda-core-${ALPAKA_CUDA_VERSION} cuda-cudart-${ALPAKA_CUDA_VERSION} cuda-cudart-dev-${ALPAKA_CUDA_VERSION}
+        && sudo apt-get -y install cuda-core-${ALPAKA_CUDA_VERSION} cuda-cudart-${ALPAKA_CUDA_VERSION} cuda-cudart-dev-${ALPAKA_CUDA_VERSION} cuda-curand-${ALPAKA_CUDA_VERSION} cuda-curand-dev-${ALPAKA_CUDA_VERSION}
         && sudo ln -s /usr/local/cuda-${ALPAKA_CUDA_VERSION} /usr/local/cuda
         && export PATH=/usr/local/cuda-${ALPAKA_CUDA_VERSION}/bin:$PATH
         && export LD_LIBRARY_PATH=/usr/local/cuda-${ALPAKA_CUDA_VERSION}/lib64:$LD_LIBRARY_PATH
@@ -266,7 +275,7 @@ install:
     #-------------------------------------------------------------------------------
     # Clone boost.
     # If fibers are enabled we need the current development version of boost.context (this forces usage of boost.coroutine develop).
-    - git clone -b boost-${ALPAKA_BOOST_VER} --recursive --single-branch --depth 1 https://github.com/boostorg/boost.git boost
+    - git clone -b ${ALPAKA_BOOST_BRANCH} --recursive --single-branch --depth 1 https://github.com/boostorg/boost.git boost
     - cd boost/
     - export ALPAKA_BOOST_ROOT_DIR=`pwd`
     - echo "${ALPAKA_BOOST_ROOT_DIR}"
@@ -298,30 +307,26 @@ install:
     - echo "${ALPAKA_BOOST_LIB_DIR}"
     - cd ../
     - cd boost/
+    - ALPAKA_BOOST_B2="sudo ./b2 -j2 --layout=versioned --toolset=${CC}"
+    - ALPAKA_BOOST_B2+=" architecture=x86 address-model=64 variant=debug,release link=static threading=multi runtime-link=shared"
     # Clang is not supported by the FindBoost script.
     # boost (especially old versions) produces too much warnings when using clang (newer versions) so that the 4 MiB log is too short.
     - if [ "${CXX}" == "clang++" ]
       ;then
         export ALPAKA_BOOST_COMPILER=-clang${ALPAKA_CLANG_VER_MAJOR}${ALPAKA_CLANG_VER_MINOR}
         && echo "${ALPAKA_BOOST_COMPILER}"
-        && export ALPAKA_BOOST_CXXFLAGS='cxxflags="-Wno-unused-local-typedef -Wno-c99-extensions"'
-        && echo "${ALPAKA_BOOST_CXXFLAGS}"
-      ;else
-        export ALPAKA_BOOST_CXXFLAGS=
+        && ALPAKA_BOOST_B2+=' cxxflags="-Wno-unused-local-typedef -Wno-c99-extensions"'
       ;fi
-    # Build the libraries required.
+    # Select the libraries required.
+    - ALPAKA_BOOST_B2+=" --with-program_options"
     - if [ "${ALPAKA_FIBERS_ENABLE}" == "ON" ]
       ;then
-        sudo ./b2 -j2 --layout=versioned --toolset=${CC}
-        --with-program_options --with-fiber --with-coroutine --with-context --with-thread --with-system --with-atomic --with-chrono --with-date_time --with-regex
-        architecture=x86 address-model=64 variant=debug,release link=static threading=multi runtime-link=shared "${ALPAKA_BOOST_CXXFLAGS}"
-        --stagedir=../boost_libs/x64 stage
-      ;else
-        sudo ./b2 -j2 --layout=versioned --toolset=${CC}
-        --with-program_options
-        architecture=x86 address-model=64 variant=debug,release link=static threading=multi runtime-link=shared "${ALPAKA_BOOST_CXXFLAGS}"
-        --stagedir=../boost_libs/x64 stage
+        ALPAKA_BOOST_B2+=" --with-fiber --with-coroutine --with-context --with-thread --with-system --with-atomic --with-chrono --with-date_time --with-regex"
       ;fi
+    - ALPAKA_BOOST_B2+=" --stagedir=../boost_libs/x64 stage"
+    # Build boost.
+    - echo "${ALPAKA_BOOST_B2}"
+    - eval "${ALPAKA_BOOST_B2}"
     # Clean the intermediate build files.
     - sudo rm -rf bin.v2
 

@@ -22,7 +22,7 @@
 #pragma once
 
 // Base classes.
-#include <alpaka/accs/fibers/WorkDiv.hpp>           // WorkDivFibers
+#include <alpaka/core/BasicWorkDiv.hpp>             // workdiv::BasicWorkDiv
 #include <alpaka/accs/fibers/Idx.hpp>               // IdxFibers
 #include <alpaka/accs/fibers/Atomic.hpp>            // AtomicFibers
 #include <alpaka/accs/fibers/Barrier.hpp>           // BarrierFibers
@@ -30,6 +30,7 @@
 // User functionality.
 #include <alpaka/host/Mem.hpp>                      // Copy
 #include <alpaka/host/mem/Space.hpp>                // SpaceHost
+#include <alpaka/host/Rand.hpp>                     // rand
 #include <alpaka/accs/fibers/Stream.hpp>            // StreamFibers
 #include <alpaka/accs/fibers/Event.hpp>             // EventFibers
 #include <alpaka/accs/fibers/Dev.hpp>               // Devices
@@ -41,7 +42,7 @@
 
 // Implementation details.
 #include <alpaka/accs/fibers/Common.hpp>
-#include <alpaka/traits/BlockSharedExternMemSizeBytes.hpp>
+#include <alpaka/traits/Kernel.hpp>                 // BlockSharedExternMemSizeBytes
 #include <alpaka/core/ConcurrentExecPool.hpp>       // ConcurrentExecPool
 
 #include <boost/predef.h>                           // workarounds
@@ -74,7 +75,7 @@ namespace alpaka
                 //! Furthermore there is no false sharing between neighboring threads as it is the case in real multi-threading.
                 //#############################################################################
                 class AccFibers :
-                    protected WorkDivFibers,
+                    protected workdiv::BasicWorkDiv,
                     protected IdxFibers,
                     protected AtomicFibers
                 {
@@ -91,10 +92,10 @@ namespace alpaka
                         typename TWorkDiv>
                     ALPAKA_FCT_ACC_NO_CUDA AccFibers(
                         TWorkDiv const & workDiv) :
-                            WorkDivFibers(workDiv),
+                            workdiv::BasicWorkDiv(workDiv),
                             IdxFibers(m_mFibersToIndices, m_v3uiGridBlockIdx),
                             AtomicFibers(),
-                            m_v3uiGridBlockIdx(Vec<3u>::zeros()),
+                            m_v3uiGridBlockIdx(Vec3<>::zeros()),
                             m_uiNumThreadsPerBlock(workdiv::getWorkDiv<Block, Threads, dim::Dim1>(workDiv)[0u])
                     {}
 
@@ -126,11 +127,11 @@ namespace alpaka
                         typename TUnit,
                         typename TDim = dim::Dim3>
                     ALPAKA_FCT_ACC_NO_CUDA auto getIdx() const
-                    -> DimToVecT<TDim>
+                    -> Vec<TDim>
                     {
                         return idx::getIdx<TOrigin, TUnit, TDim>(
                             *static_cast<IdxFibers const *>(this),
-                            *static_cast<WorkDivFibers const *>(this));
+                            *static_cast<workdiv::BasicWorkDiv const *>(this));
                     }
 
                     //-----------------------------------------------------------------------------
@@ -141,10 +142,10 @@ namespace alpaka
                         typename TUnit,
                         typename TDim = dim::Dim3>
                     ALPAKA_FCT_ACC_NO_CUDA auto getWorkDiv() const
-                    -> DimToVecT<TDim>
+                    -> Vec<TDim>
                     {
                         return workdiv::getWorkDiv<TOrigin, TUnit, TDim>(
-                            *static_cast<WorkDivFibers const *>(this));
+                            *static_cast<workdiv::BasicWorkDiv const *>(this));
                     }
 
                     //-----------------------------------------------------------------------------
@@ -249,7 +250,7 @@ namespace alpaka
 #endif
                     // getXxxIdx
                     FiberIdToIdxMap mutable m_mFibersToIndices;                 //!< The mapping of fibers id's to fibers indices.
-                    Vec<3u> mutable m_v3uiGridBlockIdx;                         //!< The index of the currently executed block.
+                    Vec3<> mutable m_v3uiGridBlockIdx;                         //!< The index of the currently executed block.
 
                     // syncBlockThreads
                     UInt const m_uiNumThreadsPerBlock;                            //!< The number of threads per block the barrier has to wait for.
@@ -322,7 +323,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_HOST KernelExecFibers(
                         KernelExecFibers const & other):
-                            AccFibers(static_cast<WorkDivFibers const &>(other)),
+                            AccFibers(static_cast<workdiv::BasicWorkDiv const &>(other)),
                             m_vFuturesInBlock()
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -333,7 +334,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_HOST KernelExecFibers(
                         KernelExecFibers && other) :
-                            AccFibers(static_cast<WorkDivFibers &&>(other))
+                            AccFibers(static_cast<workdiv::BasicWorkDiv &&>(other))
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                     }
@@ -364,10 +365,10 @@ namespace alpaka
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                        Vec<3u> const v3uiGridBlockExtents(this->AccFibers::getWorkDiv<Grid, Blocks, dim::Dim3>());
-                        Vec<3u> const v3uiBlockThreadExtents(this->AccFibers::getWorkDiv<Block, Threads, dim::Dim3>());
+                        Vec3<> const v3uiGridBlockExtents(this->AccFibers::getWorkDiv<Grid, Blocks, dim::Dim3>());
+                        Vec3<> const v3uiBlockThreadExtents(this->AccFibers::getWorkDiv<Block, Threads, dim::Dim3>());
 
-                        auto const uiBlockSharedExternMemSizeBytes(getBlockSharedExternMemSizeBytes<typename std::decay<TKernelFunctor>::type, AccFibers>(
+                        auto const uiBlockSharedExternMemSizeBytes(kernel::getBlockSharedExternMemSizeBytes<typename std::decay<TKernelFunctor>::type, AccFibers>(
                             v3uiBlockThreadExtents,
                             std::forward<TArgs>(args)...));
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -400,7 +401,7 @@ namespace alpaka
                                 for(this->AccFibers::m_v3uiGridBlockIdx[0] = 0; this->AccFibers::m_v3uiGridBlockIdx[0]<v3uiGridBlockExtents[0]; ++this->AccFibers::m_v3uiGridBlockIdx[0])
                                 {
                                     // Execute the block thread in parallel using cooperative multi-threading.
-                                    Vec<3u> v3uiBlockThreadIdx(Vec<3u>::zeros());
+                                    Vec3<> v3uiBlockThreadIdx(Vec3<>::zeros());
                                     for(v3uiBlockThreadIdx[2] = 0; v3uiBlockThreadIdx[2]<v3uiBlockThreadExtents[2]; ++v3uiBlockThreadIdx[2])
                                     {
                                         for(v3uiBlockThreadIdx[1] = 0; v3uiBlockThreadIdx[1]<v3uiBlockThreadExtents[1]; ++v3uiBlockThreadIdx[1])
@@ -452,7 +453,7 @@ namespace alpaka
                         typename TKernelFunctor,
                         typename... TArgs>
                     ALPAKA_FCT_HOST auto fiberKernel(
-                        Vec<3u> const & v3uiBlockThreadIdx,
+                        Vec3<> const & v3uiBlockThreadIdx,
                         TKernelFunctor && kernelFunctor,
                         TArgs && ... args) const
                     -> void
@@ -526,7 +527,7 @@ namespace alpaka
             struct GetAccName<
                 accs::fibers::detail::AccFibers>
             {
-                static auto getAccName()
+                ALPAKA_FCT_HOST_ACC static auto getAccName()
                 -> std::string
                 {
                     return "AccFibers";

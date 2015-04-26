@@ -35,62 +35,21 @@ namespace alpaka
         namespace offset
         {
             //#############################################################################
-            //! The offsets get trait.
-            //#############################################################################
-            template<
-                typename T,
-                typename TSfinae = void>
-            struct GetOffsets;
-
-            //#############################################################################
             //! The x offset get trait.
             //!
             //! If not specialized explicitly it returns 0.
             //#############################################################################
             template<
+                UInt TuiIdx,
                 typename T,
                 typename TSfinae = void>
-            struct GetOffsetX
+            struct GetOffset
             {
-                ALPAKA_FCT_HOST_ACC static auto getOffsetX(
+                ALPAKA_FCT_HOST_ACC static auto getOffset(
                     T const &)
                 -> UInt
                 {
-                    return static_cast<UInt>(0u);
-                }
-            };
-            //#############################################################################
-            //! The y offset get trait.
-            //!
-            //! If not specialized explicitly it returns 0.
-            //#############################################################################
-            template<
-                typename T,
-                typename TSfinae = void>
-            struct GetOffsetY
-            {
-                ALPAKA_FCT_HOST_ACC static auto getOffsetY(
-                    T const &)
-                -> UInt
-                {
-                    return static_cast<UInt>(0u);
-                }
-            };
-            //#############################################################################
-            //! The z offset get trait.
-            //!
-            //! If not specialized explicitly it returns 0.
-            //#############################################################################
-            template<
-                typename T,
-                typename TSfinae = void>
-            struct GetOffsetZ
-            {
-                ALPAKA_FCT_HOST_ACC static auto getOffsetZ(
-                    T const &)
-                -> UInt
-                {
-                    return static_cast<UInt>(0u);
+                    return 0u;
                 }
             };
 
@@ -98,23 +57,10 @@ namespace alpaka
             //! The x offset set trait.
             //#############################################################################
             template<
+                UInt TuiIdx,
                 typename T,
                 typename TSfinae = void>
-            struct SetOffsetX;
-            //#############################################################################
-            //! The y offset set trait.
-            //#############################################################################
-            template<
-                typename T,
-                typename TSfinae = void>
-            struct SetOffsetY;
-            //#############################################################################
-            //! The z offset set trait.
-            //#############################################################################
-            template<
-                typename T,
-                typename TSfinae = void>
-            struct SetOffsetZ;
+            struct SetOffset;
         }
     }
 
@@ -124,112 +70,118 @@ namespace alpaka
     namespace offset
     {
         //-----------------------------------------------------------------------------
-        //! \return The offsets.
+        //! \return The offset in the given dimension.
         //-----------------------------------------------------------------------------
         template<
+            UInt TuiIdx,
+            typename TVal,
             typename TOffsets>
-        ALPAKA_FCT_HOST_ACC auto getOffsets(
+        ALPAKA_FCT_HOST_ACC auto getOffset(
             TOffsets const & offsets)
-        -> decltype(traits::offset::GetOffsets<TOffsets>::getOffsets(std::declval<TOffsets const &>()))
+        -> TVal
         {
-            return traits::offset::GetOffsets<
-                TOffsets>
-            ::getOffsets(
-                offsets);
+            return
+                static_cast<TVal>(
+                    traits::offset::GetOffset<
+                        TuiIdx,
+                        TOffsets>
+                    ::getOffset(
+                        offsets));
         }
         //-----------------------------------------------------------------------------
-        //! \return The x offset.
+        //! \return The offset in x dimension.
         //-----------------------------------------------------------------------------
         template<
+            typename TVal,
             typename TOffsets>
         ALPAKA_FCT_HOST_ACC auto getOffsetX(
-            TOffsets const & offsets)
-        -> UInt
+            TOffsets const & offsets = TOffsets())
+        -> decltype(getOffset<0u, TVal>(offsets))
         {
-            return traits::offset::GetOffsetX<
-                TOffsets>
-            ::getOffsetX(
-                offsets);
+            return getOffset<0u, TVal>(offsets);
         }
         //-----------------------------------------------------------------------------
-        //! \return The y offset.
+        //! \return The offset in y dimension.
         //-----------------------------------------------------------------------------
         template<
+            typename TVal,
             typename TOffsets>
         ALPAKA_FCT_HOST_ACC auto getOffsetY(
-            TOffsets const & offsets)
-        -> UInt
+            TOffsets const & offsets = TOffsets())
+        -> decltype(getOffset<1u, TVal>(offsets))
         {
-            return traits::offset::GetOffsetY<
-                TOffsets>
-            ::getOffsetY(
-                offsets);
+            return getOffset<1u, TVal>(offsets);
         }
         //-----------------------------------------------------------------------------
-        //! \return The z offset.
+        //! \return The offset in z dimension.
         //-----------------------------------------------------------------------------
         template<
+            typename TVal,
             typename TOffsets>
         ALPAKA_FCT_HOST_ACC auto getOffsetZ(
-            TOffsets const & offsets)
-        -> UInt
+            TOffsets const & offsets = TOffsets())
+        -> decltype(getOffset<2u, TVal>(offsets))
         {
-            return traits::offset::GetOffsetZ<
-                TOffsets>
-            ::getOffsetZ(
-                offsets);
+            return getOffset<2u, TVal>(offsets);
         }
 
         //-----------------------------------------------------------------------------
-        //! Sets the x offset.
+        //! Sets the offset in the given dimension.
+        //-----------------------------------------------------------------------------
+        template<
+            UInt TuiIdx,
+            typename TOffsets,
+            typename TVal>
+        ALPAKA_FCT_HOST_ACC auto setOffset(
+            TOffsets const & offsets,
+            TVal const & offset)
+        -> void
+        {
+            traits::offset::SetOffset<
+                TuiIdx,
+                TOffsets>
+            ::setOffset(
+                offsets,
+                offset);
+        }
+        //-----------------------------------------------------------------------------
+        //! Sets the offset in x dimension.
         //-----------------------------------------------------------------------------
         template<
             typename TOffsets,
-            typename TInt>
+            typename TVal>
         ALPAKA_FCT_HOST_ACC auto setOffsetX(
             TOffsets const & offsets,
-            TInt const & xOffset)
+            TVal const & offset)
         -> void
         {
-            traits::offset::SetOffsetX<
-                TOffsets>
-            ::setOffsetX(
-                offsets,
-                xOffset);
+            setOffset<0u>(offsets, offset);
         }
         //-----------------------------------------------------------------------------
-        //! Sets the y offset.
+        //! Sets the offset in y dimension.
         //-----------------------------------------------------------------------------
         template<
             typename TOffsets,
-            typename TInt>
+            typename TVal>
         ALPAKA_FCT_HOST_ACC auto setOffsetY(
             TOffsets const & offsets,
-            TInt const & yOffset)
+            TVal const & offset)
         -> void
         {
-            traits::offset::SetOffsetY<
-                TOffsets>
-            ::setOffsetY(
-                offsets,
-                yOffset);
+            setOffset<1u>(offsets, offset);
         }
         //-----------------------------------------------------------------------------
-        //! Sets the z offset.
+        //! Sets the offset in z dimension.
         //-----------------------------------------------------------------------------
         template<
             typename TOffsets,
-            typename TInt>
+            typename TVal>
         ALPAKA_FCT_HOST_ACC auto setOffsetZ(
             TOffsets const & offsets,
-            TInt const & zOffset)
+            TVal const & offset)
         -> void
         {
-            traits::offset::SetOffsetZ<
-                TOffsets>
-            ::setOffsetZ(
-                offsets,
-                zOffset);
+            setOffset<2u>(offsets, offset);
         }
     }
 
@@ -245,11 +197,12 @@ namespace alpaka
             //#############################################################################
             template<
                 typename T>
-            struct GetOffsetX<
+            struct GetOffset<
+                0u,
                 T,
                 typename std::enable_if<std::is_integral<T>::value && std::is_unsigned<T>::value>::type>
             {
-                ALPAKA_FCT_HOST_ACC static auto getOffsetX(
+                ALPAKA_FCT_HOST_ACC static auto getOffset(
                     T const & offset)
                 -> UInt
                 {

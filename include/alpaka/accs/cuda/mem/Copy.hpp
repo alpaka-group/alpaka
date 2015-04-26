@@ -53,17 +53,17 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                    // cudaHostRegisterDefault:
-                    //  See http://cgi.cs.indiana.edu/~nhusted/dokuwiki/doku.php?id=programming:cudaperformance1
-                    // cudaHostRegisterPortable:
-                    //  The memory returned by this call will be considered as pinned memory by all CUDA contexts, not just the one that performed the allocation.
-                    // cudaHostRegisterMapped:
-                    //  Maps the allocation into the CUDA address space.The device pointer to the memory may be obtained by calling cudaHostGetDevicePointer().
-                    //  This feature is available only on GPUs with compute capability greater than or equal to 1.1.
+                    // - cudaHostRegisterDefault:
+                    //   See http://cgi.cs.indiana.edu/~nhusted/dokuwiki/doku.php?id=programming:cudaperformance1
+                    // - cudaHostRegisterPortable:
+                    //   The memory returned by this call will be considered as pinned memory by all CUDA contexts, not just the one that performed the allocation.
+                    // - cudaHostRegisterMapped:
+                    //   Maps the allocation into the CUDA address space.The device pointer to the memory may be obtained by calling cudaHostGetDevicePointer().
+                    //   This feature is available only on GPUs with compute capability greater than or equal to 1.1.
                     ALPAKA_CUDA_RT_CHECK_IGNORE(
                         cudaHostRegister(
                             const_cast<void *>(reinterpret_cast<void const *>(mem::getNativePtr(buf))),
-                            extent::getProductOfExtents(buf) * sizeof(mem::ElemT<TBuf>),
+                            extent::getProductOfExtents<std::size_t>(buf) * sizeof(mem::ElemT<TBuf>),
                             cudaHostRegisterDefault),
                         cudaErrorHostMemoryAlreadyRegistered);
                 }
@@ -124,9 +124,9 @@ namespace alpaka
                             std::is_same<mem::ElemT<TBufDst>, mem::ElemT<TBufSrc>>::value,
                             "The source and the destination buffers are required to have the same element type!");
 
-                        auto const uiExtentWidth(extent::getWidth(extents));
-                        auto const uiDstWidth(extent::getWidth(bufDst));
-                        auto const uiSrcWidth(extent::getWidth(bufSrc));
+                        auto const uiExtentWidth(extent::getWidth<UInt>(extents));
+                        auto const uiDstWidth(extent::getWidth<UInt>(bufDst));
+                        auto const uiSrcWidth(extent::getWidth<UInt>(bufSrc));
                         assert(uiExtentWidth <= uiDstWidth);
                         assert(uiExtentWidth <= uiSrcWidth);
 
@@ -180,9 +180,9 @@ namespace alpaka
                             std::is_same<mem::ElemT<TBufDst>, mem::ElemT<TBufSrc>>::value,
                             "The source and the destination buffers are required to have the same element type!");
 
-                        auto const uiExtentWidth(extent::getWidth(extents));
-                        auto const uiDstWidth(extent::getWidth(bufDst));
-                        auto const uiSrcWidth(extent::getWidth(bufSrc));
+                        auto const uiExtentWidth(extent::getWidth<UInt>(extents));
+                        auto const uiDstWidth(extent::getWidth<UInt>(bufDst));
+                        auto const uiSrcWidth(extent::getWidth<UInt>(bufSrc));
                         assert(uiExtentWidth <= uiDstWidth);
                         assert(uiExtentWidth <= uiSrcWidth);
 
@@ -244,12 +244,12 @@ namespace alpaka
                             std::is_same<mem::ElemT<TBufDst>, mem::ElemT<TBufSrc>>::value,
                             "The source and the destination buffers are required to have the same element type!");
 
-                        auto const uiExtentWidth(extent::getWidth(extents));
-                        auto const uiExtentHeight(extent::getHeight(extents));
-                        auto const uiDstWidth(extent::getWidth(bufDst));
-                        auto const uiDstHeight(extent::getHeight(bufDst));
-                        auto const uiSrcWidth(extent::getWidth(bufSrc));
-                        auto const uiSrcHeight(extent::getHeight(bufSrc));
+                        auto const uiExtentWidth(extent::getWidth<UInt>(extents));
+                        auto const uiExtentHeight(extent::getHeight<UInt>(extents));
+                        auto const uiDstWidth(extent::getWidth<UInt>(bufDst));
+                        auto const uiDstHeight(extent::getHeight<UInt>(bufDst));
+                        auto const uiSrcWidth(extent::getWidth<UInt>(bufSrc));
+                        auto const uiSrcHeight(extent::getHeight<UInt>(bufSrc));
                         assert(uiExtentWidth <= uiDstWidth);
                         assert(uiExtentHeight <= uiDstHeight);
                         assert(uiExtentWidth <= uiSrcWidth);
@@ -313,12 +313,12 @@ namespace alpaka
                             std::is_same<mem::ElemT<TBufDst>, mem::ElemT<TBufSrc>>::value,
                             "The source and the destination buffers are required to have the same element type!");
 
-                        auto const uiExtentWidth(extent::getWidth(extents));
-                        auto const uiExtentHeight(extent::getHeight(extents));
-                        auto const uiDstWidth(extent::getWidth(bufDst));
-                        auto const uiDstHeight(extent::getHeight(bufDst));
-                        auto const uiSrcWidth(extent::getWidth(bufSrc));
-                        auto const uiSrcHeight(extent::getHeight(bufSrc));
+                        auto const uiExtentWidth(extent::getWidth<UInt>(extents));
+                        auto const uiExtentHeight(extent::getHeight<UInt>(extents));
+                        auto const uiDstWidth(extent::getWidth<UInt>(bufDst));
+                        auto const uiDstHeight(extent::getHeight<UInt>(bufDst));
+                        auto const uiSrcWidth(extent::getWidth<UInt>(bufSrc));
+                        auto const uiSrcHeight(extent::getHeight<UInt>(bufSrc));
                         assert(uiExtentWidth <= uiDstWidth);
                         assert(uiExtentHeight <= uiDstHeight);
                         assert(uiExtentWidth <= uiSrcWidth);
@@ -456,15 +456,15 @@ namespace alpaka
                             std::is_same<mem::ElemT<TBufDst>, mem::ElemT<TBufSrc>>::value,
                             "The source and the destination buffers are required to have the same element type!");
 
-                        auto const uiExtentWidth(extent::getWidth(extents));
-                        auto const uiExtentHeight(extent::getHeight(extents));
-                        auto const uiExtentDepth(extent::getDepth(extents));
-                        auto const uiDstWidth(extent::getWidth(bufDst));
-                        auto const uiDstHeight(extent::getHeight(bufDst));
-                        auto const uiDstDepth(extent::getDepth(bufDst));
-                        auto const uiSrcWidth(extent::getWidth(bufSrc));
-                        auto const uiSrcHeight(extent::getHeight(bufSrc));
-                        auto const uiSrcDepth(extent::getDepth(bufSrc));
+                        auto const uiExtentWidth(extent::getWidth<UInt>(extents));
+                        auto const uiExtentHeight(extent::getHeight<UInt>(extents));
+                        auto const uiExtentDepth(extent::getDepth<UInt>(extents));
+                        auto const uiDstWidth(extent::getWidth<UInt>(bufDst));
+                        auto const uiDstHeight(extent::getHeight<UInt>(bufDst));
+                        auto const uiDstDepth(extent::getDepth<UInt>(bufDst));
+                        auto const uiSrcWidth(extent::getWidth<UInt>(bufSrc));
+                        auto const uiSrcHeight(extent::getHeight<UInt>(bufSrc));
+                        auto const uiSrcDepth(extent::getDepth<UInt>(bufSrc));
                         assert(uiExtentWidth <= uiDstWidth);
                         assert(uiExtentHeight <= uiDstHeight);
                         assert(uiExtentDepth <= uiDstDepth);
@@ -557,9 +557,9 @@ namespace alpaka
                             std::is_same<mem::ElemT<TBufDst>, mem::ElemT<TBufSrc>>::value,
                             "The source and the destination buffers are required to have the same element type!");
 
-                        auto const uiExtentWidth(extent::getWidth(extents));
-                        auto const uiDstWidth(extent::getWidth(bufDst));
-                        auto const uiSrcWidth(extent::getWidth(bufSrc));
+                        auto const uiExtentWidth(extent::getWidth<UInt>(extents));
+                        auto const uiDstWidth(extent::getWidth<UInt>(bufDst));
+                        auto const uiSrcWidth(extent::getWidth<UInt>(bufSrc));
                         assert(uiExtentWidth <= uiDstWidth);
                         assert(uiExtentWidth <= uiSrcWidth);
 
@@ -614,9 +614,9 @@ namespace alpaka
                             std::is_same<mem::ElemT<TBufDst>, mem::ElemT<TBufSrc>>::value,
                             "The source and the destination buffers are required to have the same element type!");
 
-                        auto const uiExtentWidth(extent::getWidth(extents));
-                        auto const uiDstWidth(extent::getWidth(bufDst));
-                        auto const uiSrcWidth(extent::getWidth(bufSrc));
+                        auto const uiExtentWidth(extent::getWidth<UInt>(extents));
+                        auto const uiDstWidth(extent::getWidth<UInt>(bufDst));
+                        auto const uiSrcWidth(extent::getWidth<UInt>(bufSrc));
                         assert(uiExtentWidth <= uiDstWidth);
                         assert(uiExtentWidth <= uiSrcWidth);
 
@@ -735,15 +735,15 @@ namespace alpaka
                             std::is_same<mem::ElemT<TBufDst>, mem::ElemT<TBufSrc>>::value,
                             "The source and the destination buffers are required to have the same element type!");
 
-                        auto const uiExtentWidth(extent::getWidth(extents));
-                        auto const uiExtentHeight(extent::getHeight(extents));
-                        auto const uiExtentDepth(extent::getDepth(extents));
-                        auto const uiDstWidth(extent::getWidth(bufDst));
-                        auto const uiDstHeight(extent::getHeight(bufDst));
-                        auto const uiDstDepth(extent::getDepth(bufDst));
-                        auto const uiSrcWidth(extent::getWidth(bufSrc));
-                        auto const uiSrcHeight(extent::getHeight(bufSrc));
-                        auto const uiSrcDepth(extent::getDepth(bufSrc));
+                        auto const uiExtentWidth(extent::getWidth<UInt>(extents));
+                        auto const uiExtentHeight(extent::getHeight<UInt>(extents));
+                        auto const uiExtentDepth(extent::getDepth<UInt>(extents));
+                        auto const uiDstWidth(extent::getWidth<UInt>(bufDst));
+                        auto const uiDstHeight(extent::getHeight<UInt>(bufDst));
+                        auto const uiDstDepth(extent::getDepth<UInt>(bufDst));
+                        auto const uiSrcWidth(extent::getWidth<UInt>(bufSrc));
+                        auto const uiSrcHeight(extent::getHeight<UInt>(bufSrc));
+                        auto const uiSrcDepth(extent::getDepth<UInt>(bufSrc));
                         assert(uiExtentWidth <= uiDstWidth);
                         assert(uiExtentHeight <= uiDstHeight);
                         assert(uiExtentDepth <= uiDstDepth);

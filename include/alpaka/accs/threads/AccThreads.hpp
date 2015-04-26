@@ -22,7 +22,7 @@
 #pragma once
 
 // Base classes.
-#include <alpaka/accs/threads/WorkDiv.hpp>          // WorkDivThreads
+#include <alpaka/core/BasicWorkDiv.hpp>             // WorkDivThreads
 #include <alpaka/accs/threads/Idx.hpp>              // IdxThreads
 #include <alpaka/accs/threads/Atomic.hpp>           // AtomicThreads
 #include <alpaka/accs/threads/Barrier.hpp>          // BarrierThreads
@@ -30,6 +30,7 @@
 // User functionality.
 #include <alpaka/host/Mem.hpp>                      // Copy
 #include <alpaka/host/mem/Space.hpp>                // SpaceHost
+#include <alpaka/host/Rand.hpp>                     // rand
 #include <alpaka/accs/threads/Stream.hpp>           // StreamThreads
 #include <alpaka/accs/threads/Event.hpp>            // EventThreads
 #include <alpaka/accs/threads/Dev.hpp>              // Devices
@@ -40,7 +41,7 @@
 #include <alpaka/traits/Mem.hpp>                    // SpaceType
 
 // Implementation details.
-#include <alpaka/traits/BlockSharedExternMemSizeBytes.hpp>
+#include <alpaka/traits/Kernel.hpp>                 // BlockSharedExternMemSizeBytes
 #include <alpaka/core/ConcurrentExecPool.hpp>       // ConcurrentExecPool
 
 #include <boost/predef.h>                           // workarounds
@@ -76,7 +77,7 @@ namespace alpaka
                 //! It uses C++11 std::threads to implement the parallelism.
                 //#############################################################################
                 class AccThreads :
-                    protected WorkDivThreads,
+                    protected workdiv::BasicWorkDiv,
                     protected IdxThreads,
                     protected AtomicThreads
                 {
@@ -93,10 +94,10 @@ namespace alpaka
                         typename TWorkDiv>
                     ALPAKA_FCT_ACC_NO_CUDA AccThreads(
                         TWorkDiv const & workDiv) :
-                            WorkDivThreads(workDiv),
+                            workdiv::BasicWorkDiv(workDiv),
                             IdxThreads(m_mThreadsToIndices, m_v3uiGridBlockIdx),
                             AtomicThreads(),
-                            m_v3uiGridBlockIdx(Vec<3u>::zeros()),
+                            m_v3uiGridBlockIdx(Vec3<>::zeros()),
                             m_uiNumThreadsPerBlock(workdiv::getWorkDiv<Block, Threads, dim::Dim1>(workDiv)[0u])
                     {}
 
@@ -132,11 +133,11 @@ namespace alpaka
                         typename TUnit,
                         typename TDim = dim::Dim3>
                     ALPAKA_FCT_ACC_NO_CUDA auto getIdx() const
-                    -> DimToVecT<TDim>
+                    -> Vec<TDim>
                     {
                         return idx::getIdx<TOrigin, TUnit, TDim>(
                             *static_cast<IdxThreads const *>(this),
-                            *static_cast<WorkDivThreads const *>(this));
+                            *static_cast<workdiv::BasicWorkDiv const *>(this));
                     }
 
                     //-----------------------------------------------------------------------------
@@ -147,10 +148,10 @@ namespace alpaka
                         typename TUnit,
                         typename TDim = dim::Dim3>
                     ALPAKA_FCT_ACC_NO_CUDA auto getWorkDiv() const
-                    -> DimToVecT<TDim>
+                    -> Vec<TDim>
                     {
                         return workdiv::getWorkDiv<TOrigin, TUnit, TDim>(
-                            *static_cast<WorkDivThreads const *>(this));
+                            *static_cast<workdiv::BasicWorkDiv const *>(this));
                     }
 
                     //-----------------------------------------------------------------------------
@@ -257,7 +258,7 @@ namespace alpaka
     #endif
                     // getIdx
                     detail::ThreadIdToIdxMap mutable m_mThreadsToIndices;       //!< The mapping of thread id's to thread indices.
-                    Vec<3u> mutable m_v3uiGridBlockIdx;                         //!< The index of the currently executed block.
+                    Vec3<> mutable m_v3uiGridBlockIdx;                         //!< The index of the currently executed block.
 
                     // syncBlockThreads
                     UInt const m_uiNumThreadsPerBlock;                          //!< The number of threads per block the barrier has to wait for.
@@ -332,7 +333,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_HOST KernelExecThreads(
                         KernelExecThreads const & other) :
-                            AccThreads(static_cast<WorkDivThreads const &>(other)),
+                            AccThreads(static_cast<workdiv::BasicWorkDiv const &>(other)),
                             m_vFuturesInBlock(),
                             m_mtxMapInsert()
                     {
@@ -343,7 +344,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_HOST KernelExecThreads(
                         KernelExecThreads && other) :
-                            AccThreads(static_cast<WorkDivThreads &&>(other)),
+                            AccThreads(static_cast<workdiv::BasicWorkDiv &&>(other)),
                             m_vFuturesInBlock(),
                             m_mtxMapInsert()
                     {
@@ -375,10 +376,10 @@ namespace alpaka
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                        Vec<3u> const v3uiGridBlockExtents(this->AccThreads::getWorkDiv<Grid, Blocks, dim::Dim3>());
-                        Vec<3u> const v3uiBlockThreadExtents(this->AccThreads::getWorkDiv<Block, Threads, dim::Dim3>());
+                        Vec3<> const v3uiGridBlockExtents(this->AccThreads::getWorkDiv<Grid, Blocks, dim::Dim3>());
+                        Vec3<> const v3uiBlockThreadExtents(this->AccThreads::getWorkDiv<Block, Threads, dim::Dim3>());
 
-                        auto const uiBlockSharedExternMemSizeBytes(getBlockSharedExternMemSizeBytes<typename std::decay<TKernelFunctor>::type, AccThreads>(
+                        auto const uiBlockSharedExternMemSizeBytes(kernel::getBlockSharedExternMemSizeBytes<typename std::decay<TKernelFunctor>::type, AccThreads>(
                             v3uiBlockThreadExtents,
                             std::forward<TArgs>(args)...));
     #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -408,7 +409,7 @@ namespace alpaka
                                 for(this->AccThreads::m_v3uiGridBlockIdx[0] = 0; this->AccThreads::m_v3uiGridBlockIdx[0]<v3uiGridBlockExtents[0]; ++this->AccThreads::m_v3uiGridBlockIdx[0])
                                 {
                                     // Execute the threads in parallel.
-                                    Vec<3u> v3uiBlockThreadIdx(Vec<3u>::zeros());
+                                    Vec3<> v3uiBlockThreadIdx(Vec3<>::zeros());
                                     for(v3uiBlockThreadIdx[2] = 0; v3uiBlockThreadIdx[2]<v3uiBlockThreadExtents[2]; ++v3uiBlockThreadIdx[2])
                                     {
                                         for(v3uiBlockThreadIdx[1] = 0; v3uiBlockThreadIdx[1]<v3uiBlockThreadExtents[1]; ++v3uiBlockThreadIdx[1])
@@ -460,7 +461,7 @@ namespace alpaka
                         typename TKernelFunctor,
                         typename... TArgs>
                     ALPAKA_FCT_HOST auto threadKernel(
-                        Vec<3u> const & v3uiBlockThreadIdx,
+                        Vec3<> const & v3uiBlockThreadIdx,
                         TKernelFunctor && kernelFunctor,
                         TArgs && ... args) const
                     -> void
@@ -541,7 +542,7 @@ namespace alpaka
             struct GetAccName<
                 accs::threads::detail::AccThreads>
             {
-                static auto getAccName()
+                ALPAKA_FCT_HOST_ACC static auto getAccName()
                 -> std::string
                 {
                     return "AccThreads";

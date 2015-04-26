@@ -64,17 +64,17 @@ namespace alpaka
                     //! \return The index of the currently executed thread.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_ACC_CUDA_ONLY auto getIdxBlockThread() const
-                    -> Vec<3u>
+                    -> Vec3<>
                     {
-                        return Vec<3u>(threadIdx.x, threadIdx.y, threadIdx.z);
+                        return Vec3<>(threadIdx.x, threadIdx.y, threadIdx.z);
                     }
                     //-----------------------------------------------------------------------------
                     //! \return The block index of the currently executed thread.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_ACC_CUDA_ONLY auto getIdxGridBlock() const
-                    -> Vec<3u>
+                    -> Vec3<>
                     {
-                        return Vec<3u>(blockIdx.x, blockIdx.y, blockIdx.z);
+                        return Vec3<>(blockIdx.x, blockIdx.y, blockIdx.z);
                     }
                 };
             }
@@ -103,7 +103,7 @@ namespace alpaka
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto getIdx(
                     accs::cuda::detail::IdxCuda const & index,
                     TWorkDiv const &)
-                -> alpaka::DimToVecT<alpaka::dim::Dim3>
+                -> alpaka::Vec<alpaka::dim::Dim3>
                 {
                     return index.getIdxBlockThread();
                 }
@@ -127,7 +127,7 @@ namespace alpaka
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto getIdx(
                     accs::cuda::detail::IdxCuda const & index,
                     TWorkDiv const &)
-                -> alpaka::DimToVecT<alpaka::dim::Dim3>
+                -> alpaka::Vec<alpaka::dim::Dim3>
                 {
                     return index.getIdxGridBlock();
                 }

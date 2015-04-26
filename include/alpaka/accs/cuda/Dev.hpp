@@ -356,12 +356,12 @@ namespace alpaka
                         // m_uiBlockThreadsCountMax
                         static_cast<UInt>(cudaDevProp.maxThreadsPerBlock),
                         // m_v3uiBlockThreadExtentsMax
-                        Vec<3u>(
+                        Vec3<>(
                             static_cast<UInt>(cudaDevProp.maxThreadsDim[0]),
                             static_cast<UInt>(cudaDevProp.maxThreadsDim[1]),
                             static_cast<UInt>(cudaDevProp.maxThreadsDim[2])),
                         // m_v3uiGridBlockExtentsMax
-                        Vec<3u>(
+                        Vec3<>(
                             static_cast<UInt>(cudaDevProp.maxGridSize[0]),
                             static_cast<UInt>(cudaDevProp.maxGridSize[1]),
                             static_cast<UInt>(cudaDevProp.maxGridSize[2])),

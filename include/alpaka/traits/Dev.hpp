@@ -22,6 +22,7 @@
 #pragma once
 
 #include <alpaka/core/DevProps.hpp> // DevProps
+#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST
 
 namespace alpaka
 {

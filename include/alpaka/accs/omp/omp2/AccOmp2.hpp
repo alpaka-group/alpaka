@@ -22,13 +22,14 @@
 #pragma once
 
 // Base classes.
-#include <alpaka/accs/omp/omp2/WorkDiv.hpp>         // WorkDivOmp2
+#include <alpaka/core/BasicWorkDiv.hpp>             // workdiv::BasicWorkDiv
 #include <alpaka/accs/omp/omp2/Idx.hpp>             // IdxOmp2
 #include <alpaka/accs/omp/omp2/Atomic.hpp>          // AtomicOmp2
 
 // User functionality.
 #include <alpaka/host/Mem.hpp>                      // Copy
 #include <alpaka/host/mem/Space.hpp>                // SpaceHost
+#include <alpaka/host/Rand.hpp>                     // rand
 #include <alpaka/accs/omp/omp2/Stream.hpp>          // StreamOmp2
 #include <alpaka/accs/omp/omp2/Event.hpp>           // EventOmp2
 #include <alpaka/accs/omp/omp2/Dev.hpp>             // Devices
@@ -40,7 +41,7 @@
 
 // Implementation details.
 #include <alpaka/accs/omp/Common.hpp>
-#include <alpaka/traits/BlockSharedExternMemSizeBytes.hpp>
+#include <alpaka/traits/Kernel.hpp>                 // BlockSharedExternMemSizeBytes
 
 #include <cstdint>                                  // std::uint32_t
 #include <vector>                                   // std::vector
@@ -75,7 +76,7 @@ namespace alpaka
                     //! It uses OpenMP2 to implement the parallelism.
                     //#############################################################################
                     class AccOmp2 :
-                        protected WorkDivOmp2,
+                        protected alpaka::workdiv::BasicWorkDiv,
                         protected IdxOmp2,
                         protected AtomicOmp2
                     {
@@ -92,10 +93,10 @@ namespace alpaka
                             typename TWorkDiv>
                         ALPAKA_FCT_ACC_NO_CUDA AccOmp2(
                             TWorkDiv const & workDiv) :
-                                WorkDivOmp2(workDiv),
+                                alpaka::workdiv::BasicWorkDiv(workDiv),
                                 IdxOmp2(m_v3uiGridBlockIdx),
                                 AtomicOmp2(),
-                                m_v3uiGridBlockIdx(Vec<3u>::zeros())
+                                m_v3uiGridBlockIdx(Vec3<>::zeros())
                         {}
 
                     public:
@@ -126,11 +127,11 @@ namespace alpaka
                             typename TUnit,
                             typename TDim = dim::Dim3>
                         ALPAKA_FCT_ACC_NO_CUDA auto getIdx() const
-                        -> DimToVecT<TDim>
+                        -> Vec<TDim>
                         {
                             return idx::getIdx<TOrigin, TUnit, TDim>(
                                 *static_cast<IdxOmp2 const *>(this),
-                                *static_cast<WorkDivOmp2 const *>(this));
+                                *static_cast<workdiv::BasicWorkDiv const *>(this));
                         }
 
                         //-----------------------------------------------------------------------------
@@ -141,10 +142,10 @@ namespace alpaka
                             typename TUnit,
                             typename TDim = dim::Dim3>
                         ALPAKA_FCT_ACC_NO_CUDA auto getWorkDiv() const
-                        -> DimToVecT<TDim>
+                        -> Vec<TDim>
                         {
                             return workdiv::getWorkDiv<TOrigin, TUnit, TDim>(
-                                *static_cast<WorkDivOmp2 const *>(this));
+                                *static_cast<workdiv::BasicWorkDiv const *>(this));
                         }
 
                         //-----------------------------------------------------------------------------
@@ -218,7 +219,7 @@ namespace alpaka
                     private:
 #endif
                         // getIdx
-                        Vec<3u> mutable m_v3uiGridBlockIdx;                         //!< The index of the currently executed block.
+                        Vec3<> mutable m_v3uiGridBlockIdx;                         //!< The index of the currently executed block.
 
                         // allocBlockSharedMem
                         std::vector<
@@ -252,7 +253,7 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         ALPAKA_FCT_HOST KernelExecOmp2(
                             KernelExecOmp2 const & other) :
-                                AccOmp2(static_cast<WorkDivOmp2 const &>(other))
+                                AccOmp2(static_cast<workdiv::BasicWorkDiv const &>(other))
                         {
                             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                         }
@@ -262,7 +263,7 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         ALPAKA_FCT_HOST KernelExecOmp2(
                             KernelExecOmp2 && other) :
-                                AccOmp2(static_cast<WorkDivOmp2 &&>(other))
+                                AccOmp2(static_cast<workdiv::BasicWorkDiv &&>(other))
                         {
                             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                         }
@@ -293,10 +294,10 @@ namespace alpaka
                         {
                             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                            Vec<3u> const v3uiGridBlockExtents(this->AccOmp2::getWorkDiv<Grid, Blocks, dim::Dim3>());
-                            Vec<3u> const v3uiBlockThreadExtents(this->AccOmp2::getWorkDiv<Block, Threads, dim::Dim3>());
+                            Vec3<> const v3uiGridBlockExtents(this->AccOmp2::getWorkDiv<Grid, Blocks, dim::Dim3>());
+                            Vec3<> const v3uiBlockThreadExtents(this->AccOmp2::getWorkDiv<Block, Threads, dim::Dim3>());
 
-                            auto const uiBlockSharedExternMemSizeBytes(getBlockSharedExternMemSizeBytes<typename std::decay<TKernelFunctor>::type, AccOmp2>(
+                            auto const uiBlockSharedExternMemSizeBytes(kernel::getBlockSharedExternMemSizeBytes<typename std::decay<TKernelFunctor>::type, AccOmp2>(
                                 v3uiBlockThreadExtents,
                                 std::forward<TArgs>(args)...));
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -335,7 +336,7 @@ namespace alpaka
                                             {
                                                 assert(::omp_get_num_threads()>=0);
                                                 auto const uiNumThreads(static_cast<decltype(uiNumThreadsInBlock)>(::omp_get_num_threads()));
-                                                std::cout << "omp_get_num_threads: " << uiNumThreads << std::endl;
+                                                std::cout << BOOST_CURRENT_FUNCTION << " omp_get_num_threads: " << uiNumThreads << std::endl;
                                                 if(uiNumThreads != uiNumThreadsInBlock)
                                                 {
                                                     throw std::runtime_error("The OpenMP2 runtime did not use the number of threads that had been required!");
@@ -397,7 +398,7 @@ namespace alpaka
             struct GetAccName<
                 accs::omp::omp2::detail::AccOmp2>
             {
-                static auto getAccName()
+                ALPAKA_FCT_HOST_ACC static auto getAccName()
                 -> std::string
                 {
                     return "AccOmp2";
