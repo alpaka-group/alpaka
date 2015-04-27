@@ -23,6 +23,8 @@
 
 #include <alpaka/host/Event.hpp>    // EventHost
 
+#include <alpaka/traits/Acc.hpp>    // AccType
+
 namespace alpaka
 {
     namespace accs

@@ -308,10 +308,9 @@ struct MatMulTester
         // For multi dimensional data you could directly create them using alpaka::mem::alloc<Type, SpaceHost>, which is not used here.
         // Instead we use BufPlainPtrWrapper to wrap the data.
         using MemBufWrapper = alpaka::mem::BufPlainPtrWrapper<
-            alpaka::mem::SpaceHost,
-            alpaka::dim::Dim2,
             std::uint32_t,
-            decltype(devHost)>;
+            alpaka::dim::Dim2,
+            std::decay<decltype(devHost)>::type>;
         MemBufWrapper memBufAHost(vuiA.data(), devHost, v2uiExtentsA);
         MemBufWrapper memBufBHost(vuiB.data(), devHost, v2uiExtentsB);
 
@@ -338,12 +337,12 @@ struct MatMulTester
             static_cast<std::uint32_t>(uiL),
             static_cast<std::uint32_t>(uiM),
             static_cast<std::uint32_t>(uiN),
-            alpaka::mem::getNativePtr(memBufAAcc),
-            static_cast<std::uint32_t>(alpaka::mem::getPitchElements(memBufAAcc)),
-            alpaka::mem::getNativePtr(memBufBAcc),
-            static_cast<std::uint32_t>(alpaka::mem::getPitchElements(memBufBAcc)),
-            alpaka::mem::getNativePtr(memBufCAcc),
-            static_cast<std::uint32_t>(alpaka::mem::getPitchElements(memBufCAcc)));
+            alpaka::mem::getPtrNative(memBufAAcc),
+            alpaka::mem::getPitchElements<0u, std::uint32_t>(memBufAAcc),
+            alpaka::mem::getPtrNative(memBufBAcc),
+            alpaka::mem::getPitchElements<0u, std::uint32_t>(memBufBAcc),
+            alpaka::mem::getPtrNative(memBufCAcc),
+            alpaka::mem::getPitchElements<0u, std::uint32_t>(memBufCAcc));
 
         // Copy back the result.
         alpaka::mem::copy(memBufCHost, memBufCAcc, v2uiExtentsC, stream);
@@ -356,7 +355,7 @@ struct MatMulTester
         std::uint32_t const uiCorrectResult(static_cast<std::uint32_t>(uiM));
 
         bool bResultCorrect(true);
-        auto const pHostData(alpaka::mem::getNativePtr(memBufCHost));
+        auto const pHostData(alpaka::mem::getPtrNative(memBufCHost));
         for(std::size_t i(0u);
             i < uiL * uiN;
             ++i)

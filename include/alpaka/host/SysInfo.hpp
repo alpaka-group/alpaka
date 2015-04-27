@@ -38,6 +38,7 @@
 
 #include <boost/predef.h>   // BOOST_XXX
 
+#include <cstring>          // std::memcpy
 #include <string>           // std::string
 
 namespace alpaka

@@ -21,16 +21,19 @@
 
 #pragma once
 
-#include <alpaka/host/SysInfo.hpp>                  // host::getCpuName, host::getGlobalMemSizeBytes
+#include <alpaka/host/SysInfo.hpp>      // host::getCpuName, host::getGlobalMemSizeBytes
 
-#include <alpaka/traits/Dev.hpp>                    // DevType
-#include <alpaka/traits/Stream.hpp>                 // StreamType
-#include <alpaka/traits/Wait.hpp>                   // CurrentThreadWaitFor
+#include <alpaka/traits/Acc.hpp>        // AccType
+#include <alpaka/traits/Dev.hpp>        // DevType
+#include <alpaka/traits/Stream.hpp>     // StreamType
+#include <alpaka/traits/Wait.hpp>       // CurrentThreadWaitFor
 
-#include <stdexcept>                                // std::runtime_error
-#include <sstream>                                  // std::stringstream
-#include <limits>                                   // std::numeric_limits
-#include <thread>                                   // std::thread
+#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+
+#include <stdexcept>                    // std::runtime_error
+#include <sstream>                      // std::stringstream
+#include <limits>                       // std::numeric_limits
+#include <thread>                       // std::thread
 
 namespace alpaka
 {

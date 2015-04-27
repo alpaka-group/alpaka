@@ -46,15 +46,38 @@ namespace alpaka
             template<
                 typename TBuf,
                 typename TSfinae = void>
-            struct GetNativePtr;
+            struct GetPtrNative;
+
+            //#############################################################################
+            //! The pointer on device get trait.
+            //#############################################################################
+            template<
+                typename TBuf,
+                typename TDev,
+                typename TSfinae = void>
+            struct GetPtrDev;
 
             //#############################################################################
             //! The pitch in bytes. This is the distance between two consecutive rows.
+            //!
+            //! The default implementation uses the extent to calculate the pitch.
             //#############################################################################
             template<
+                UInt TuiIdx,
                 typename TView,
                 typename TSfinae = void>
-            struct GetPitchBytes;
+            struct GetPitchBytes
+            {
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static auto getPitchBytes(
+                    TView const & buf)
+                -> UInt
+                {
+                    return alpaka::extent::getExtent<TuiIdx, UInt>(buf) * sizeof(ElemType<TView>::type);
+                }
+            };
 
             //#############################################################################
             //! The memory set trait.
@@ -83,7 +106,9 @@ namespace alpaka
             //! The memory buffer view type trait.
             //#############################################################################
             template<
-                typename TBuf,
+                typename TElem,
+                typename TDim,
+                typename TDev,
                 typename TSfinae = void>
             struct ViewType;
 
@@ -96,12 +121,12 @@ namespace alpaka
             struct CreateView;
 
             //#############################################################################
-            //! The base buffer trait.
+            //! The base trait.
             //#############################################################################
             template<
                 typename TBuf,
                 typename TSfinae = void>
-            struct GetBuf;
+            struct GetBase;
         }
     }
 
@@ -122,16 +147,15 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TBuf>
-        ALPAKA_FCT_HOST auto getNativePtr(
+        ALPAKA_FCT_HOST auto getPtrNative(
             TBuf const & buf)
         -> ElemT<TBuf> const *
         {
-            return traits::mem::GetNativePtr<
+            return traits::mem::GetPtrNative<
                 TBuf>
-            ::getNativePtr(
+            ::getPtrNative(
                 buf);
         }
-
         //-----------------------------------------------------------------------------
         //! Gets the native pointer of the memory buffer.
         //!
@@ -140,42 +164,94 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TBuf>
-        ALPAKA_FCT_HOST auto getNativePtr(
+        ALPAKA_FCT_HOST auto getPtrNative(
             TBuf & buf)
         -> ElemT<TBuf> *
         {
-            return traits::mem::GetNativePtr<
+            return traits::mem::GetPtrNative<
                 TBuf>
-            ::getNativePtr(
+            ::getPtrNative(
                 buf);
+        }
+
+        //-----------------------------------------------------------------------------
+        //! Gets the pointer to the buffer on the given device.
+        //!
+        //! \param buf The memory buffer.
+        //! \param dev The device.
+        //! \return The pointer on the device.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TBuf,
+            typename TDev>
+        ALPAKA_FCT_HOST auto getPtrDev(
+            TBuf const & buf,
+            TDev const & dev)
+        -> ElemT<TBuf> const *
+        {
+            return traits::mem::GetPtrDev<
+                TBuf,
+                TDev>
+            ::getPtrDev(
+                buf,
+                dev);
+        }
+        //-----------------------------------------------------------------------------
+        //! Gets the pointer to the buffer on the given device.
+        //!
+        //! \param buf The memory buffer.
+        //! \param dev The device.
+        //! \return The pointer on the device.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TBuf,
+            typename TDev>
+        ALPAKA_FCT_HOST auto getPtrDev(
+            TBuf & buf,
+            TDev const & dev)
+        -> ElemT<TBuf> *
+        {
+            return traits::mem::GetPtrDev<
+                TBuf,
+                TDev>
+            ::getPtrDev(
+                buf,
+                dev);
         }
 
         //-----------------------------------------------------------------------------
         //! \return The pitch in bytes. This is the distance between two consecutive rows.
         //-----------------------------------------------------------------------------
         template<
+            UInt TuiIdx,
+            typename TVal,
             typename TView>
         ALPAKA_FCT_HOST auto getPitchBytes(
             TView const & buf)
-        -> UInt
+        -> TVal
         {
-            return traits::mem::GetPitchBytes<
-                TView>
-            ::getPitchBytes(
-                buf);
+            return
+                static_cast<TVal>(
+                    traits::mem::GetPitchBytes<
+                        TuiIdx,
+                        TView>
+                    ::getPitchBytes(
+                        buf));
         }
 
         //-----------------------------------------------------------------------------
         //! \return The pitch in elements. This is the distance between two consecutive rows.
         //-----------------------------------------------------------------------------
         template<
+            UInt TuiIdx,
+            typename TVal,
             typename TView>
         ALPAKA_FCT_HOST auto getPitchElements(
             TView const & buf)
-        -> UInt
+        -> TVal
         {
-            assert((getPitchBytes(buf) % sizeof(ElemT<TView>)) == 0u);
-            return getPitchBytes(buf) / sizeof(ElemT<TView>);
+            assert((getPitchBytes<TuiIdx, TVal>(buf) % sizeof(ElemT<TView>)) == 0u);
+            return getPitchBytes<TuiIdx, TVal>(buf) / sizeof(ElemT<TView>);
         }
 
         //-----------------------------------------------------------------------------
@@ -323,8 +399,10 @@ namespace alpaka
         //! The memory buffer view type trait alias template to remove the ::type.
         //#############################################################################
         template<
-            typename TView>
-        using ViewT = typename traits::mem::ViewType<TView>::type;
+            typename TElem,
+            typename TDim,
+            typename TDev>
+        using ViewT = typename traits::mem::ViewType<TElem, TDim, TDev>::type;
 
         //-----------------------------------------------------------------------------
         //! Constructor.
@@ -335,14 +413,29 @@ namespace alpaka
             typename TBuf>
         ALPAKA_FCT_HOST auto createView(
             TBuf const & buf)
-        -> decltype(traits::mem::CreateView<TView>::createView(std::declval<TBuf const &>()))
+        -> decltype(traits::mem::CreateView<TView>::createView(buf))
         {
             return traits::mem::CreateView<
                 TView>
             ::createView(
                 buf);
         }
-
+        //-----------------------------------------------------------------------------
+        //! Constructor.
+        //! \param buf This can be either a memory buffer base or a memory buffer view itself.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TView,
+            typename TBuf>
+        ALPAKA_FCT_HOST auto createView(
+            TBuf & buf)
+        -> decltype(traits::mem::CreateView<TView>::createView(buf))
+        {
+            return traits::mem::CreateView<
+                TView>
+            ::createView(
+                buf);
+        }
         //-----------------------------------------------------------------------------
         //! Constructor.
         //! \param buf This can be either a memory buffer base or a memory buffer view itself.
@@ -358,7 +451,31 @@ namespace alpaka
             TBuf const & buf,
             TExtents const & extentsElements,
             TOffsets const & relativeOffsetsElements = TOffsets())
-        -> decltype(traits::mem::CreateView<TView>::createView(std::declval<TBuf const &>(), std::declval<TExtents const &>(), std::declval<TOffsets const &>()))
+        -> decltype(traits::mem::CreateView<TView>::createView(buf, extentsElements, relativeOffsetsElements))
+        {
+            return traits::mem::CreateView<
+                TView>
+            ::createView(
+                buf,
+                extentsElements,
+                relativeOffsetsElements);
+        }
+        //-----------------------------------------------------------------------------
+        //! Constructor.
+        //! \param buf This can be either a memory buffer base or a memory buffer view itself.
+        //! \param offsetsElements The offsets in elements.
+        //! \param extentsElements The extents in elements.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TView,
+            typename TBuf,
+            typename TExtents,
+            typename TOffsets>
+        ALPAKA_FCT_HOST auto createView(
+            TBuf & buf,
+            TExtents const & extentsElements,
+            TOffsets const & relativeOffsetsElements = TOffsets())
+        -> decltype(traits::mem::CreateView<TView>::createView(buf, extentsElements, relativeOffsetsElements))
         {
             return traits::mem::CreateView<
                 TView>
@@ -376,13 +493,13 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TBuf>
-        ALPAKA_FCT_HOST auto getBuf(
+        ALPAKA_FCT_HOST auto getBase(
             TBuf const & buf)
-        -> decltype(traits::mem::GetBuf<TBuf>::getBuf(std::declval<TBuf const &>()))
+        -> decltype(traits::mem::GetBase<TBuf>::getBase(buf))
         {
-            return traits::mem::GetBuf<
+            return traits::mem::GetBase<
                 TBuf>
-            ::getBuf(
+            ::getBase(
                 buf);
         }
 
@@ -394,13 +511,13 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TBuf>
-        ALPAKA_FCT_HOST auto getBuf(
+        ALPAKA_FCT_HOST auto getBase(
             TBuf & buf)
-        -> decltype(traits::mem::GetBuf<TBuf>::getBuf(std::declval<TBuf &>()))
+        -> decltype(traits::mem::GetBase<TBuf>::getBase(buf))
         {
-            return traits::mem::GetBuf<
+            return traits::mem::GetBase<
                 TBuf>
-            ::getBuf(
+            ::getBase(
                 buf);
         }
     }

@@ -327,10 +327,13 @@ namespace alpaka
                 {
                     ALPAKA_FCT_ACC_CUDA_ONLY static auto createDefault(
                         TAcc const & acc,
-                        std::uint32_t const & seed)
+                        std::uint32_t const & seed,
+                        std::uint32_t const & subsequence)
                     -> alpaka::accs::cuda::rand::generator::detail::Xor
                     {
-                        return alpaka::accs::cuda::rand::generator::detail::Xor(seed);
+                        return alpaka::accs::cuda::rand::generator::detail::Xor(
+                            seed,
+                            subsequence);
                     }
                 };
             }

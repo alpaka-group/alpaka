@@ -21,43 +21,7 @@
 
 #pragma once
 
-#include <alpaka/accs/cuda/mem/Space.hpp>   // SpaceCuda
-#include <alpaka/accs/cuda/mem/Copy.hpp>    // Copy
 #include <alpaka/accs/cuda/mem/Buf.hpp>     // BufCuda
-
-#include <alpaka/core/mem/View.hpp>         // View
-
-#include <alpaka/traits/Mem.hpp>            // traits::mem::BufT
-
-namespace alpaka
-{
-    namespace traits
-    {
-        namespace mem
-        {
-            //#############################################################################
-            //! The BufCuda memory buffer type trait specialization.
-            //#############################################################################
-            template<
-                typename TElem,
-                typename TDim>
-            struct BufType<
-                accs::cuda::detail::DevCuda, TElem, TDim, alpaka::mem::SpaceCuda>
-            {
-                using type = accs::cuda::detail::BufCuda<TElem, TDim>;
-            };
-
-            //#############################################################################
-            //! The BufCuda memory buffer type trait specialization.
-            //#############################################################################
-            template<
-                typename TElem,
-                typename TDim>
-            struct ViewType<
-                accs::cuda::detail::BufCuda<TElem, TDim>>
-            {
-                using type = alpaka::mem::detail::View<accs::cuda::detail::BufCuda<TElem, TDim>>;
-            };
-        }
-    }
-}
+#include <alpaka/accs/cuda/mem/Copy.hpp>    // Copy
+#include <alpaka/accs/cuda/mem/Set.hpp>     // Set
+#include <alpaka/accs/cuda/mem/Space.hpp>   // SpaceCuda

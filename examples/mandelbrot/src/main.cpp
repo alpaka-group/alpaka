@@ -305,7 +305,7 @@ auto writeTgaColorImage(
     assert(uiBufWidthColors >= 1);
     auto const uiBufHeightColors(alpaka::extent::getHeight<std::size_t>(bufRgba));
     assert(uiBufHeightColors >= 1);
-    auto const uiBufPitchBytes(alpaka::mem::getPitchBytes(bufRgba));
+    auto const uiBufPitchBytes(alpaka::mem::getPitchBytes<0u, std::size_t>(bufRgba));
     assert(uiBufPitchBytes >= uiBufWidthBytes);
 
     std::ofstream ofs(
@@ -337,7 +337,7 @@ auto writeTgaColorImage(
     ofs.put(0x20);                      // Image Descriptor Byte.
 
     // Write the data.
-    char const * pData(reinterpret_cast<char const *>(alpaka::mem::getNativePtr(bufRgba)));
+    char const * pData(reinterpret_cast<char const *>(alpaka::mem::getPtrNative(bufRgba)));
     // If there is no padding, we can directly write the whole buffer data ...
     if(uiBufPitchBytes == uiBufWidthBytes)
     {
@@ -426,10 +426,10 @@ struct MandelbrotKernelTester
         profileKernelExec(
             exec,
             kernel,
-            alpaka::mem::getNativePtr(bufColorAcc),
+            alpaka::mem::getPtrNative(bufColorAcc),
             static_cast<std::uint32_t>(uiNumRows),
             static_cast<std::uint32_t>(uiNumCols),
-            static_cast<std::uint32_t>(alpaka::mem::getPitchElements(bufColorAcc)),
+            alpaka::mem::getPitchElements<0u, std::uint32_t>(bufColorAcc),
             fMinR,
             fMaxR,
             fMinI,

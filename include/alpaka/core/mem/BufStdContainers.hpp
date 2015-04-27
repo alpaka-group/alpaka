@@ -31,6 +31,7 @@
 
 #include <alpaka/core/Common.hpp>           // ALPAKA_FCT_HOST
 
+#include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
 #include <boost/predef.h>                   // workarounds
 
 #include <type_traits>                      // std::enable_if, std::is_array, std::extent
@@ -197,11 +198,11 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The fixed size array base buffer trait specialization.
+            //! The fixed size array base trait specialization.
             //#############################################################################
             template<
                 typename TFixedSizeArray>
-            struct GetBuf<
+            struct GetBase<
                 TFixedSizeArray,
                 typename std::enable_if<
                     std::is_array<TFixedSizeArray>::value>::type>
@@ -209,7 +210,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getBuf(
+                ALPAKA_FCT_HOST static auto getBase(
                     TFixedSizeArray const & buf)
                 -> TFixedSizeArray const &
                 {
@@ -218,7 +219,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getBuf(
+                ALPAKA_FCT_HOST static auto getBase(
                     TFixedSizeArray & buf)
                 -> TFixedSizeArray &
                 {
@@ -231,20 +232,20 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TFixedSizeArray>
-            struct GetNativePtr<
+            struct GetPtrNative<
                 TFixedSizeArray,
                 typename std::enable_if<
                     std::is_array<TFixedSizeArray>::value>::type>
             {
                 using TElem = typename std::remove_all_extents<TFixedSizeArray>::type;
 
-                ALPAKA_FCT_HOST_ACC static auto getNativePtr(
+                ALPAKA_FCT_HOST_ACC static auto getPtrNative(
                     TFixedSizeArray const & buf)
                 -> TElem const *
                 {
                     return buf;
                 }
-                ALPAKA_FCT_HOST_ACC static auto getNativePtr(
+                ALPAKA_FCT_HOST_ACC static auto getPtrNative(
                     TFixedSizeArray & buf)
                 -> TElem *
                 {
@@ -258,6 +259,7 @@ namespace alpaka
             template<
                 typename TFixedSizeArray>
             struct GetPitchBytes<
+                0u,
                 TFixedSizeArray,
                 typename std::enable_if<
                     std::is_array<TFixedSizeArray>::value
@@ -410,18 +412,18 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The std::array base buffer trait specialization.
+            //! The std::array base trait specialization.
             //#############################################################################
             template<
                 typename TElem,
                 UInt TuiSize>
-            struct GetBuf<
+            struct GetBase<
                 std::array<TElem, TuiSize>>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getBuf(
+                ALPAKA_FCT_HOST static auto getBase(
                     std::array<TElem, TuiSize> const & buf)
                 -> std::array<TElem, TuiSize> const &
                 {
@@ -430,7 +432,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getBuf(
+                ALPAKA_FCT_HOST static auto getBase(
                     std::array<TElem, TuiSize> & buf)
                 -> std::array<TElem, TuiSize> &
                 {
@@ -444,16 +446,16 @@ namespace alpaka
             template<
                 typename TElem,
                 UInt TuiSize>
-            struct GetNativePtr<
+            struct GetPtrNative<
                 std::array<TElem, TuiSize>>
             {
-                ALPAKA_FCT_HOST_ACC static auto getNativePtr(
+                ALPAKA_FCT_HOST_ACC static auto getPtrNative(
                     std::array<TElem, TuiSize> const & buf)
                 -> TElem const *
                 {
                     return buf.data();
                 }
-                ALPAKA_FCT_HOST_ACC static auto getNativePtr(
+                ALPAKA_FCT_HOST_ACC static auto getPtrNative(
                     std::array<TElem, TuiSize> & buf)
                 -> TElem *
                 {
@@ -468,6 +470,7 @@ namespace alpaka
                 typename TElem,
                 UInt TuiSize>
             struct GetPitchBytes<
+                0u,
                 std::array<TElem, TuiSize>>
             {
                 ALPAKA_FCT_HOST_ACC static auto getPitchBytes(
@@ -605,18 +608,18 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The std::vector base buffer trait specialization.
+            //! The std::vector base trait specialization.
             //#############################################################################
             template<
                 typename TElem,
                 typename TAllocator>
-            struct GetBuf<
+            struct GetBase<
                 std::vector<TElem, TAllocator>>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getBuf(
+                ALPAKA_FCT_HOST static auto getBase(
                     std::vector<TElem, TAllocator> const & buf)
                 -> std::vector<TElem, TAllocator> const &
                 {
@@ -625,7 +628,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getBuf(
+                ALPAKA_FCT_HOST static auto getBase(
                     std::vector<TElem, TAllocator> & buf)
                 -> std::vector<TElem, TAllocator> &
                 {
@@ -639,16 +642,16 @@ namespace alpaka
             template<
                 typename TElem,
                 typename TAllocator>
-            struct GetNativePtr<
+            struct GetPtrNative<
                 std::vector<TElem, TAllocator>>
             {
-                ALPAKA_FCT_HOST_ACC static auto getNativePtr(
+                ALPAKA_FCT_HOST_ACC static auto getPtrNative(
                     std::vector<TElem, TAllocator> const & buf)
                 -> TElem const *
                 {
                     return buf.data();
                 }
-                ALPAKA_FCT_HOST_ACC static auto getNativePtr(
+                ALPAKA_FCT_HOST_ACC static auto getPtrNative(
                     std::vector<TElem, TAllocator> & buf)
                 -> TElem *
                 {
@@ -663,6 +666,7 @@ namespace alpaka
                 typename TElem,
                 typename TAllocator>
             struct GetPitchBytes<
+                0u,
                 std::vector<TElem, TAllocator>>
             {
                 ALPAKA_FCT_HOST_ACC static auto getPitchBytes(

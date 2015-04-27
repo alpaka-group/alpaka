@@ -80,13 +80,13 @@ namespace alpaka
                     assert(uiExtentDepth <= uiDstDepth);
 
                     auto const uiExtentWidthBytes(uiExtentWidth * sizeof(Elem));
-                    auto const uiDstPitchBytes(alpaka::mem::getPitchBytes(bufDst));
+                    auto const uiDstPitchBytes(alpaka::mem::getPitchBytes<0u, UInt>(bufDst));
                     assert(uiExtentWidthBytes <= uiDstPitchBytes);
 
-                    auto const pDstNative(reinterpret_cast<std::uint8_t *>(alpaka::mem::getNativePtr(bufDst)));
+                    auto const pDstNative(reinterpret_cast<std::uint8_t *>(alpaka::mem::getPtrNative(bufDst)));
                     auto const uiDstSliceSizeBytes(uiDstPitchBytes * uiDstHeight);
 
-                    auto const & dstBuf(alpaka::mem::getBuf(bufDst));
+                    auto const & dstBuf(alpaka::mem::getBase(bufDst));
                     auto const uiDstBufWidth(alpaka::extent::getWidth<UInt>(dstBuf));
                     auto const uiDstBufHeight(alpaka::extent::getHeight<UInt>(dstBuf));
 

@@ -26,6 +26,9 @@
 #include <alpaka/accs/cuda/Dev.hpp>         // DevCuda
 #include <alpaka/accs/cuda/Common.hpp>
 
+#include <alpaka/host/mem/Buf.hpp>          // BufHost
+
+#include <alpaka/core/mem/View.hpp>         // View
 #include <alpaka/core/BasicDims.hpp>        // dim::Dim<N>
 #include <alpaka/core/Vec.hpp>              // Vec<TDim>
 
@@ -216,6 +219,34 @@ namespace alpaka
         namespace mem
         {
             //#############################################################################
+            //! The BufCuda memory buffer type trait specialization.
+            //#############################################################################
+            template<
+                typename TElem,
+                typename TDim>
+            struct BufType<
+                TElem,
+                TDim,
+                accs::cuda::detail::DevCuda>
+            {
+                using type = accs::cuda::detail::BufCuda<TElem, TDim>;
+            };
+
+            //#############################################################################
+            //! The BufCuda memory buffer type trait specialization.
+            //#############################################################################
+            template<
+                typename TElem,
+                typename TDim>
+            struct ViewType<
+                TElem,
+                TDim,
+                accs::cuda::detail::DevCuda>
+            {
+                using type = alpaka::mem::detail::View<TElem, TDim, accs::cuda::detail::DevCuda>;
+            };
+
+            //#############################################################################
             //! The BufCuda memory space trait specialization.
             //#############################################################################
             template<
@@ -240,18 +271,18 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The BufCuda base buffer trait specialization.
+            //! The BufCuda base trait specialization.
             //#############################################################################
             template<
                 typename TElem,
                 typename TDim>
-            struct GetBuf<
+            struct GetBase<
                 accs::cuda::detail::BufCuda<TElem, TDim>>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getBuf(
+                ALPAKA_FCT_HOST static auto getBase(
                     accs::cuda::detail::BufCuda<TElem, TDim> const & buf)
                 -> accs::cuda::detail::BufCuda<TElem, TDim> const &
                 {
@@ -260,7 +291,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getBuf(
+                ALPAKA_FCT_HOST static auto getBase(
                     accs::cuda::detail::BufCuda<TElem, TDim> & buf)
                 -> accs::cuda::detail::BufCuda<TElem, TDim> &
                 {
@@ -274,13 +305,13 @@ namespace alpaka
             template<
                 typename TElem,
                 typename TDim>
-            struct GetNativePtr<
+            struct GetPtrNative<
                 accs::cuda::detail::BufCuda<TElem, TDim>>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getNativePtr(
+                ALPAKA_FCT_HOST static auto getPtrNative(
                     accs::cuda::detail::BufCuda<TElem, TDim> const & buf)
                 -> TElem const *
                 {
@@ -289,11 +320,57 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getNativePtr(
+                ALPAKA_FCT_HOST static auto getPtrNative(
                     accs::cuda::detail::BufCuda<TElem, TDim> & buf)
                 -> TElem *
                 {
                     return buf.m_spMem.get();
+                }
+            };
+
+            //#############################################################################
+            //! The BufCuda pointer on device get trait specialization.
+            //#############################################################################
+            template<
+                typename TElem,
+                typename TDim>
+            struct GetPtrDev<
+                accs::cuda::detail::BufCuda<TElem, TDim>,
+                accs::cuda::detail::DevCuda>
+            {
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static auto getPtrDev(
+                    accs::cuda::detail::BufCuda<TElem, TDim> const & buf,
+                    accs::cuda::detail::DevCuda const & dev)
+                -> TElem const *
+                {
+                    if(dev == alpaka::dev::getDev(buf))
+                    {
+                        return buf.m_spMem.get();
+                    }
+                    else
+                    {
+                        throw std::runtime_error("The buffer is not accessible from the given device!");
+                    }
+                }
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static auto getPtrDev(
+                    accs::cuda::detail::BufCuda<TElem, TDim> & buf,
+                    accs::cuda::detail::DevCuda const & dev)
+                -> TElem *
+                {
+                    if(dev == alpaka::dev::getDev(buf))
+                    {
+                        return buf.m_spMem.get();
+                    }
+                    else
+                    {
+                        throw std::runtime_error("The buffer is not accessible from the given device!");
+                    }
                 }
             };
 
@@ -304,16 +381,17 @@ namespace alpaka
                 typename TElem,
                 typename TDim>
             struct GetPitchBytes<
+                0u,
                 accs::cuda::detail::BufCuda<TElem, TDim>>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getPitchBytes(
-                    accs::cuda::detail::BufCuda<TElem, TDim> const & pitch)
+                    accs::cuda::detail::BufCuda<TElem, TDim> const & buf)
                 -> UInt
                 {
-                    return pitch.m_uiPitchBytes;
+                    return buf.m_uiPitchBytes;
                 }
             };
 
@@ -323,10 +401,9 @@ namespace alpaka
             template<
                 typename T>
             struct Alloc<
-                accs::cuda::detail::DevCuda,
                 T,
                 alpaka::dim::Dim1,
-                alpaka::mem::SpaceCuda>
+                accs::cuda::detail::DevCuda>
             {
                 //-----------------------------------------------------------------------------
                 //!
@@ -377,10 +454,9 @@ namespace alpaka
             template<
                 typename T>
             struct Alloc<
-                accs::cuda::detail::DevCuda,
                 T,
                 alpaka::dim::Dim2,
-                alpaka::mem::SpaceCuda>
+                accs::cuda::detail::DevCuda>
             {
                 //-----------------------------------------------------------------------------
                 //!
@@ -441,10 +517,9 @@ namespace alpaka
             template<
                 typename T>
             struct Alloc<
-                accs::cuda::detail::DevCuda,
                 T,
                 alpaka::dim::Dim3,
-                alpaka::mem::SpaceCuda>
+                accs::cuda::detail::DevCuda>
             {
                 //-----------------------------------------------------------------------------
                 //!
@@ -493,6 +568,187 @@ namespace alpaka
                             reinterpret_cast<T *>(cudaPitchedPtrVal.ptr),
                             static_cast<UInt>(cudaPitchedPtrVal.pitch),
                             extents);
+                }
+            };
+
+            //#############################################################################
+            //! The CUDA memory mapping trait specialization.
+            //#############################################################################
+            template<
+                typename TElem,
+                typename TDim>
+            struct Map<
+                accs::cuda::detail::BufCuda<TElem, TDim>,
+                accs::cuda::detail::DevCuda>
+            {
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static auto map(
+                    accs::cuda::detail::BufCuda<TElem, TDim> const & buf,
+                    accs::cuda::detail::DevCuda const & dev)
+                -> void
+                {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                    if(alpaka::dev::getDev(buf) != dev)
+                    {
+                        throw std::runtime_error("Mapping memory from one CUDA device into an other CUDA device not implemented!");
+                    }
+                    // If it is already the same device, nothing has to be mapped.
+                }
+            };
+
+            //#############################################################################
+            //! The CUDA memory unmapping trait specialization.
+            //#############################################################################
+            template<
+                typename TElem,
+                typename TDim>
+            struct Unmap<
+                accs::cuda::detail::BufCuda<TElem, TDim>,
+                accs::cuda::detail::DevCuda>
+            {
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static auto unmap(
+                    accs::cuda::detail::BufCuda<TElem, TDim> const & buf,
+                    accs::cuda::detail::DevCuda const & dev)
+                -> void
+                {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                    if(alpaka::dev::getDev(buf) != dev)
+                    {
+                        throw std::runtime_error("Unmapping memory from one CUDA device from an other CUDA device not implemented!");
+                    }
+                    // If it is already the same device, nothing has to be unmapped.
+                }
+            };
+        }
+    }
+
+    //-----------------------------------------------------------------------------
+    // Trait specializations for BufHost.
+    //-----------------------------------------------------------------------------
+    namespace traits
+    {
+        namespace mem
+        {
+            //#############################################################################
+            //! The BufHost CUDA memory mapping trait specialization.
+            //#############################################################################
+            template<
+                typename TElem,
+                typename TDim,
+                typename TDev>
+            struct Map<
+                host::detail::BufHost<TElem, TDim, TDev>,
+                accs::cuda::detail::DevCuda>
+            {
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static auto map(
+                    host::detail::BufHost<TElem, TDim, TDev> const & buf,
+                    accs::cuda::detail::DevCuda const & dev)
+                -> void
+                {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                    if(alpaka::dev::getDev(buf) != dev)
+                    {
+                        // cudaHostRegisterMapped:
+                        //   Maps the allocation into the CUDA address space.The device pointer to the memory may be obtained by calling cudaHostGetDevicePointer().
+                        //   This feature is available only on GPUs with compute capability greater than or equal to 1.1.
+                        ALPAKA_CUDA_RT_CHECK(
+                            cudaHostRegister(
+                                const_cast<void *>(reinterpret_cast<void const *>(alpaka::mem::getPtrNative(buf))),
+                                alpaka::extent::getProductOfExtents<std::size_t>(buf) * sizeof(alpaka::mem::ElemT<host::detail::BufHost<TElem, TDim, TDev>>),
+                                cudaHostRegisterMapped));
+                    }
+                    // If it is already the same device, nothing has to be mapped.
+                }
+            };
+
+            //#############################################################################
+            //! The BufHost CUDA memory unmapping trait specialization.
+            //#############################################################################
+            template<
+                typename TElem,
+                typename TDim,
+                typename TDev>
+            struct Unmap<
+                host::detail::BufHost<TElem, TDim, TDev>,
+                accs::cuda::detail::DevCuda>
+            {
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static auto unmap(
+                    host::detail::BufHost<TElem, TDim, TDev> const & buf,
+                    accs::cuda::detail::DevCuda const & dev)
+                -> void
+                {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                    if(alpaka::dev::getDev(buf) != dev)
+                    {
+                        // Unmaps the memory range whose base address is specified by ptr, and makes it pageable again.
+                        // TODO: If the memory has separately been pinned before we destroy the pinning state.
+                        ALPAKA_CUDA_RT_CHECK(
+                            cudaHostUnregister(
+                                const_cast<void *>(reinterpret_cast<void const *>(alpaka::mem::getPtrNative(buf)))));
+                    }
+                    // If it is already the same device, nothing has to be unmapped.
+                }
+            };
+
+            //#############################################################################
+            //! The BufHost pointer on device get trait specialization.
+            //#############################################################################
+            template<
+                typename TElem,
+                typename TDim,
+                typename TDev>
+            struct GetPtrDev<
+                host::detail::BufHost<TElem, TDim, TDev>,
+                accs::cuda::detail::DevCuda>
+            {
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static auto getPtrDev(
+                    host::detail::BufHost<TElem, TDim, TDev> const & buf,
+                    accs::cuda::detail::DevCuda const & dev)
+                -> TElem const *
+                {
+                    // TODO: Check if the memory is mapped at all!
+                    TElem * pDev(nullptr);
+                    ALPAKA_CUDA_RT_CHECK(
+                        cudaHostGetDevicePointer(
+                            &pDev,
+                            const_cast<void *>(reinterpret_cast<void const *>(alpaka::mem::getPtrNative(buf))),
+                            0));
+                    return pDev;
+                }
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static auto getPtrDev(
+                    host::detail::BufHost<TElem, TDim, TDev> & buf,
+                    accs::cuda::detail::DevCuda const & dev)
+                -> TElem *
+                {
+                    // TODO: Check if the memory is mapped at all!
+                    TElem * pDev(nullptr);
+                    ALPAKA_CUDA_RT_CHECK(
+                        cudaHostGetDevicePointer(
+                            &pDev,
+                            alpaka::mem::getPtrNative(buf),
+                            0));
+                    return pDev;
                 }
             };
         }

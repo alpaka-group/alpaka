@@ -102,18 +102,18 @@ namespace alpaka
                     assert(uiExtentDepth <= uiSrcDepth);
 
                     auto const uiExtentWidthBytes(uiExtentWidth * sizeof(Elem));
-                    auto const uiDstPitchBytes(alpaka::mem::getPitchBytes(bufDst));
-                    auto const uiSrcPitchBytes(alpaka::mem::getPitchBytes(bufSrc));
+                    auto const uiDstPitchBytes(alpaka::mem::getPitchBytes<0u, UInt>(bufDst));
+                    auto const uiSrcPitchBytes(alpaka::mem::getPitchBytes<0u, UInt>(bufSrc));
                     assert(uiExtentWidthBytes <= uiDstPitchBytes);
                     assert(uiExtentWidthBytes <= uiSrcPitchBytes);
 
-                    auto const pDstNative(reinterpret_cast<std::uint8_t *>(alpaka::mem::getNativePtr(bufDst)));
-                    auto const pSrcNative(reinterpret_cast<std::uint8_t const *>(alpaka::mem::getNativePtr(bufSrc)));
+                    auto const pDstNative(reinterpret_cast<std::uint8_t *>(alpaka::mem::getPtrNative(bufDst)));
+                    auto const pSrcNative(reinterpret_cast<std::uint8_t const *>(alpaka::mem::getPtrNative(bufSrc)));
                     auto const uiDstSliceSizeBytes(uiDstPitchBytes * uiDstHeight);
                     auto const uiSrcSliceSizeBytes(uiSrcPitchBytes * uiSrcHeight);
 
-                    auto const & dstBuf(alpaka::mem::getBuf(bufDst));
-                    auto const & srcBuf(alpaka::mem::getBuf(bufSrc));
+                    auto const & dstBuf(alpaka::mem::getBase(bufDst));
+                    auto const & srcBuf(alpaka::mem::getBase(bufSrc));
                     auto const uiDstBufWidth(alpaka::extent::getWidth<UInt>(dstBuf));
                     auto const uiSrcBufWidth(alpaka::extent::getWidth<UInt>(srcBuf));
                     auto const uiDstBufHeight(alpaka::extent::getHeight<UInt>(dstBuf));

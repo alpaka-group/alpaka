@@ -147,8 +147,8 @@ struct VectorAddKernelTester
         // Initialize the host input vectors
         for (std::size_t i(0); i < uiNumElements; ++i)
         {
-            alpaka::mem::getNativePtr(memBufHostA)[i] = static_cast<float>(rand())/static_cast<float>(RAND_MAX);
-            alpaka::mem::getNativePtr(memBufHostB)[i] = static_cast<float>(rand())/static_cast<float>(RAND_MAX);
+            alpaka::mem::getPtrNative(memBufHostA)[i] = static_cast<float>(rand())/static_cast<float>(RAND_MAX);
+            alpaka::mem::getPtrNative(memBufHostB)[i] = static_cast<float>(rand())/static_cast<float>(RAND_MAX);
         }
 
         // Allocate the buffer on the accelerator.
@@ -166,9 +166,9 @@ struct VectorAddKernelTester
         profileKernelExec(
             exec,
             kernel,
-            alpaka::mem::getNativePtr(memBufAccA),
-            alpaka::mem::getNativePtr(memBufAccB),
-            alpaka::mem::getNativePtr(memBufAccC),
+            alpaka::mem::getPtrNative(memBufAccA),
+            alpaka::mem::getPtrNative(memBufAccB),
+            alpaka::mem::getPtrNative(memBufAccC),
             static_cast<std::uint32_t>(uiNumElements));
 
         // Copy back the result.
@@ -178,13 +178,13 @@ struct VectorAddKernelTester
         alpaka::wait::wait(stream);
 
         bool bResultCorrect(true);
-        auto const pHostData(alpaka::mem::getNativePtr(memBufHostC));
+        auto const pHostData(alpaka::mem::getPtrNative(memBufHostC));
         for(std::size_t i(0u);
             i < uiNumElements;
             ++i)
         {
             auto const & uiVal(pHostData[i]);
-            auto const uiCorrectResult(alpaka::mem::getNativePtr(memBufHostA)[i]+alpaka::mem::getNativePtr(memBufHostB)[i]);
+            auto const uiCorrectResult(alpaka::mem::getPtrNative(memBufHostA)[i]+alpaka::mem::getPtrNative(memBufHostB)[i]);
             if(uiVal != uiCorrectResult)
             {
                 std::cout << "C[" << i << "] == " << uiVal << " != " << uiCorrectResult << std::endl;

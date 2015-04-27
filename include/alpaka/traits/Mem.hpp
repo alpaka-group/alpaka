@@ -21,45 +21,6 @@
 
 #pragma once
 
-#include <alpaka/traits/mem/Space.hpp>  // SpaceT
 #include <alpaka/traits/mem/Buf.hpp>    // Alloc
 #include <alpaka/traits/mem/View.hpp>   // ViewType
-
-namespace alpaka
-{
-    namespace traits
-    {
-        //-----------------------------------------------------------------------------
-        //! The memory traits.
-        //-----------------------------------------------------------------------------
-        namespace mem
-        {
-            //#############################################################################
-            //! The memory buffer base type trait.
-            //#############################################################################
-            template<
-                typename TDev,
-                typename TElem,
-                typename TDim,
-                typename TSpace,
-                typename TSfinae = void>
-            struct BufType;
-        }
-    }
-
-    //-----------------------------------------------------------------------------
-    //! The memory trait accessors.
-    //-----------------------------------------------------------------------------
-    namespace mem
-    {
-        //#############################################################################
-        //! The memory buffer base type trait alias template to remove the ::type.
-        //#############################################################################
-        template<
-            typename TDev,
-            typename TElem,
-            typename TDim,
-            typename TSpace>
-        using BufT = typename traits::mem::BufType<TDev, TElem, TDim, SpaceT<TSpace>>::type;
-    }
-}
+#include <alpaka/traits/mem/Space.hpp>  // SpaceT

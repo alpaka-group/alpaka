@@ -62,7 +62,7 @@ namespace alpaka
                     //   This feature is available only on GPUs with compute capability greater than or equal to 1.1.
                     ALPAKA_CUDA_RT_CHECK_IGNORE(
                         cudaHostRegister(
-                            const_cast<void *>(reinterpret_cast<void const *>(mem::getNativePtr(buf))),
+                            const_cast<void *>(reinterpret_cast<void const *>(mem::getPtrNative(buf))),
                             extent::getProductOfExtents<std::size_t>(buf) * sizeof(mem::ElemT<TBuf>),
                             cudaHostRegisterDefault),
                         cudaErrorHostMemoryAlreadyRegistered);
@@ -80,7 +80,7 @@ namespace alpaka
 
                     ALPAKA_CUDA_RT_CHECK_IGNORE(
                         cudaHostUnregister(
-                            const_cast<void *>(reinterpret_cast<void const *>(mem::getNativePtr(buf)))),
+                            const_cast<void *>(reinterpret_cast<void const *>(mem::getPtrNative(buf)))),
                         cudaErrorHostMemoryNotRegistered);
                 }*/
 
@@ -136,8 +136,8 @@ namespace alpaka
                         // Initiate the memory copy.
                         ALPAKA_CUDA_RT_CHECK(
                             cudaMemcpy(
-                                reinterpret_cast<void *>(mem::getNativePtr(bufDst)),
-                                reinterpret_cast<void const *>(mem::getNativePtr(bufSrc)),
+                                reinterpret_cast<void *>(mem::getPtrNative(bufDst)),
+                                reinterpret_cast<void const *>(mem::getPtrNative(bufSrc)),
                                 uiExtentWidth * sizeof(mem::ElemT<TBufDst>),
                                 p_cudaMemcpyKind));
 
@@ -146,9 +146,9 @@ namespace alpaka
                             << " ew: " << uiExtentWidth
                             << " ewb: " << uiExtentWidth * sizeof(mem::ElemT<TBufDst>)
                             << " dw: " << uiDstWidth
-                            << " dptr: " << reinterpret_cast<void *>(mem::getNativePtr(bufDst))
+                            << " dptr: " << reinterpret_cast<void *>(mem::getPtrNative(bufDst))
                             << " sw: " << uiSrcWidth
-                            << " sptr: " << reinterpret_cast<void const *>(mem::getNativePtr(bufSrc))
+                            << " sptr: " << reinterpret_cast<void const *>(mem::getPtrNative(bufSrc))
                             << std::endl;
 #endif
                     }
@@ -192,8 +192,8 @@ namespace alpaka
                         // Initiate the memory copy.
                         ALPAKA_CUDA_RT_CHECK(
                             cudaMemcpyAsync(
-                                reinterpret_cast<void *>(mem::getNativePtr(bufDst)),
-                                reinterpret_cast<void const *>(mem::getNativePtr(bufSrc)),
+                                reinterpret_cast<void *>(mem::getPtrNative(bufDst)),
+                                reinterpret_cast<void const *>(mem::getPtrNative(bufSrc)),
                                 uiExtentWidth * sizeof(mem::ElemT<TBufDst>),
                                 p_cudaMemcpyKind,
                                 *stream.m_spCudaStream.get()));
@@ -203,9 +203,9 @@ namespace alpaka
                             << " ew: " << uiExtentWidth
                             << " ewb: " << uiExtentWidth * sizeof(mem::ElemT<TBufDst>)
                             << " dw: " << uiDstWidth
-                            << " dptr: " << reinterpret_cast<void *>(mem::getNativePtr(bufDst))
+                            << " dptr: " << reinterpret_cast<void *>(mem::getPtrNative(bufDst))
                             << " sw: " << uiSrcWidth
-                            << " sptr: " << reinterpret_cast<void const *>(mem::getNativePtr(bufSrc))
+                            << " sptr: " << reinterpret_cast<void const *>(mem::getPtrNative(bufSrc))
                             << std::endl;
 #endif
                     }
@@ -261,10 +261,10 @@ namespace alpaka
                         // Initiate the memory copy.
                         ALPAKA_CUDA_RT_CHECK(
                             cudaMemcpy2D(
-                                reinterpret_cast<void *>(mem::getNativePtr(bufDst)),
-                                mem::getPitchBytes(bufDst),
-                                reinterpret_cast<void const *>(mem::getNativePtr(bufSrc)),
-                                mem::getPitchBytes(bufSrc),
+                                reinterpret_cast<void *>(mem::getPtrNative(bufDst)),
+                                mem::getPitchBytes<0u, UInt>(bufDst),
+                                reinterpret_cast<void const *>(mem::getPtrNative(bufSrc)),
+                                mem::getPitchBytes<0u, UInt>(bufSrc),
                                 uiExtentWidth * sizeof(mem::ElemT<TBufDst>),
                                 uiExtentHeight,
                                 p_cudaMemcpyKind));
@@ -276,12 +276,12 @@ namespace alpaka
                             << " ewb: " << uiExtentWidth * sizeof(mem::ElemT<TBufDst>)
                             << " dw: " << uiDstWidth
                             << " dh: " << uiDstHeight
-                            << " dptr: " << reinterpret_cast<void *>(mem::getNativePtr(bufDst))
-                            << " dpitchb: " << mem::getPitchBytes(bufDst)
+                            << " dptr: " << reinterpret_cast<void *>(mem::getPtrNative(bufDst))
+                            << " dpitchb: " << mem::getPitchBytes<0u>(bufDst)
                             << " sw: " << uiSrcWidth
                             << " sh: " << uiSrcHeight
-                            << " sptr: " << reinterpret_cast<void const *>(mem::getNativePtr(bufSrc))
-                            << " spitchb: " << mem::getPitchBytes(bufSrc)
+                            << " sptr: " << reinterpret_cast<void const *>(mem::getPtrNative(bufSrc))
+                            << " spitchb: " << mem::getPitchBytes<0u>(bufSrc)
                             << std::endl;
 #endif
                     }
@@ -330,10 +330,10 @@ namespace alpaka
                         // Initiate the memory copy.
                         ALPAKA_CUDA_RT_CHECK(
                             cudaMemcpy2DAsync(
-                                reinterpret_cast<void *>(mem::getNativePtr(bufDst)),
-                                mem::getPitchBytes(bufDst),
-                                reinterpret_cast<void const *>(mem::getNativePtr(bufSrc)),
-                                mem::getPitchBytes(bufSrc),
+                                reinterpret_cast<void *>(mem::getPtrNative(bufDst)),
+                                mem::getPitchBytes<0u, UInt>(bufDst),
+                                reinterpret_cast<void const *>(mem::getPtrNative(bufSrc)),
+                                mem::getPitchBytes<0u, UInt>(bufSrc),
                                 uiExtentWidth * sizeof(mem::ElemT<TBufDst>),
                                 uiExtentHeight,
                                 p_cudaMemcpyKind,
@@ -346,12 +346,12 @@ namespace alpaka
                             << " ewb: " << uiExtentWidth * sizeof(mem::ElemT<TBufDst>)
                             << " dw: " << uiDstWidth
                             << " dh: " << uiDstHeight
-                            << " dptr: " << reinterpret_cast<void *>(mem::getNativePtr(bufDst))
-                            << " dpitchb: " << mem::getPitchBytes(bufDst)
+                            << " dptr: " << reinterpret_cast<void *>(mem::getPtrNative(bufDst))
+                            << " dpitchb: " << mem::getPitchBytes<0u, UInt>(bufDst)
                             << " sw: " << uiSrcWidth
                             << " sh: " << uiSrcHeight
-                            << " sptr: " << reinterpret_cast<void const *>(mem::getNativePtr(bufSrc))
-                            << " spitchb: " << mem::getPitchBytes(bufSrc)
+                            << " sptr: " << reinterpret_cast<void const *>(mem::getPtrNative(bufSrc))
+                            << " spitchb: " << mem::getPitchBytes<0u, UInt>(bufSrc)
                             << std::endl;
 #endif
                     }
@@ -478,16 +478,16 @@ namespace alpaka
                         //l_cudaMemcpy3DParms.srcPos;       // Optional. Offset in bytes.
                         l_cudaMemcpy3DParms.srcPtr =
                             make_cudaPitchedPtr(
-                                reinterpret_cast<void *>(mem::getNativePtr(bufSrc)),
-                                mem::getPitchBytes(bufSrc),
+                                reinterpret_cast<void *>(mem::getPtrNative(bufSrc)),
+                                mem::getPitchBytes<0u, UInt>(bufSrc),
                                 uiSrcWidth,
                                 uiSrcHeight);
                         //l_cudaMemcpy3DParms.dstArray;     // Either dstArray or dstPtr.
                         //l_cudaMemcpy3DParms.dstPos;       // Optional. Offset in bytes.
                         l_cudaMemcpy3DParms.dstPtr =
                             make_cudaPitchedPtr(
-                                reinterpret_cast<void *>(mem::getNativePtr(bufDst)),
-                                mem::getPitchBytes(bufDst),
+                                reinterpret_cast<void *>(mem::getPtrNative(bufDst)),
+                                mem::getPitchBytes<0u, UInt>(bufDst),
                                 uiDstWidth,
                                 uiDstHeight);
                         l_cudaMemcpy3DParms.extent =
@@ -506,13 +506,13 @@ namespace alpaka
                             << " dw: " << uiDstWidth
                             << " dh: " << uiDstHeight
                             << " dd: " << uiDstDepth
-                            << " dptr: " << reinterpret_cast<void *>(mem::getNativePtr(bufDst))
-                            << " dpitchb: " << mem::getPitchBytes(bufDst)
+                            << " dptr: " << reinterpret_cast<void *>(mem::getPtrNative(bufDst))
+                            << " dpitchb: " << mem::getPitchBytes<0u, UInt>(bufDst)
                             << " sw: " << uiSrcWidth
                             << " sh: " << uiSrcHeight
                             << " sd: " << uiSrcDepth
-                            << " sptr: " << reinterpret_cast<void const *>(mem::getNativePtr(bufSrc))
-                            << " spitchb: " << mem::getPitchBytes(bufSrc)
+                            << " sptr: " << reinterpret_cast<void const *>(mem::getPtrNative(bufSrc))
+                            << " spitchb: " << mem::getPitchBytes<0u, UInt>(bufSrc)
                             << std::endl;
 #endif
                         return l_cudaMemcpy3DParms;
@@ -569,9 +569,9 @@ namespace alpaka
                         // Initiate the memory copy.
                         ALPAKA_CUDA_RT_CHECK(
                             cudaMemcpyPeer(
-                                reinterpret_cast<void *>(mem::getNativePtr(bufDst)),
+                                reinterpret_cast<void *>(mem::getPtrNative(bufDst)),
                                 uiDstDev,
-                                reinterpret_cast<void const *>(mem::getNativePtr(bufSrc)),
+                                reinterpret_cast<void const *>(mem::getPtrNative(bufSrc)),
                                 uiSrcDev,
                                 uiExtentWidth * sizeof(mem::ElemT<TBufDst>)));
 
@@ -580,10 +580,10 @@ namespace alpaka
                             << " ew: " << uiExtentWidth
                             << " ewb: " << uiExtentWidth * sizeof(mem::ElemT<TBufDst>)
                             << " dw: " << uiDstWidth
-                            << " dptr: " << reinterpret_cast<void *>(mem::getNativePtr(bufDst))
+                            << " dptr: " << reinterpret_cast<void *>(mem::getPtrNative(bufDst))
                             << " ddev: " << uiDstDev
                             << " sw: " << uiSrcWidth
-                            << " sptr: " << reinterpret_cast<void const *>(mem::getNativePtr(bufSrc))
+                            << " sptr: " << reinterpret_cast<void const *>(mem::getPtrNative(bufSrc))
                             << " sdev: " << uiSrcDev
                             << std::endl;
 #endif
@@ -626,9 +626,9 @@ namespace alpaka
                         // Initiate the memory copy.
                         ALPAKA_CUDA_RT_CHECK(
                             cudaMemcpyPeerAsync(
-                                reinterpret_cast<void *>(mem::getNativePtr(bufDst)),
+                                reinterpret_cast<void *>(mem::getPtrNative(bufDst)),
                                 uiDstDev,
-                                reinterpret_cast<void const *>(mem::getNativePtr(bufSrc)),
+                                reinterpret_cast<void const *>(mem::getPtrNative(bufSrc)),
                                 uiSrcDev,
                                 uiExtentWidth * sizeof(mem::ElemT<TBufDst>),
                                 *stream.m_spCudaStream.get()));
@@ -638,10 +638,10 @@ namespace alpaka
                             << " ew: " << uiExtentWidth
                             << " ewb: " << uiExtentWidth * sizeof(mem::ElemT<TBufDst>)
                             << " dw: " << uiDstWidth
-                            << " dptr: " << reinterpret_cast<void *>(mem::getNativePtr(bufDst))
+                            << " dptr: " << reinterpret_cast<void *>(mem::getPtrNative(bufDst))
                             << " ddev: " << uiDstDev
                             << " sw: " << uiSrcWidth
-                            << " sptr: " << reinterpret_cast<void const *>(mem::getNativePtr(bufSrc))
+                            << " sptr: " << reinterpret_cast<void const *>(mem::getPtrNative(bufSrc))
                             << " sdev: " << uiSrcDev
                             << std::endl;
 #endif
@@ -761,8 +761,8 @@ namespace alpaka
                         //l_cudaMemcpy3DPeerParms.dstPos;       // Optional. Offset in bytes.
                         l_cudaMemcpy3DPeerParms.dstPtr =
                             make_cudaPitchedPtr(
-                                reinterpret_cast<void *>(mem::getNativePtr(bufDst)),
-                                mem::getPitchBytes(bufDst),
+                                reinterpret_cast<void *>(mem::getPtrNative(bufDst)),
+                                mem::getPitchBytes<0u, UInt>(bufDst),
                                 uiDstWidth,
                                 uiDstHeight);
                         l_cudaMemcpy3DPeerParms.extent =
@@ -775,8 +775,8 @@ namespace alpaka
                         //l_cudaMemcpy3DPeerParms.srcPos;       // Optional. Offset in bytes.
                         l_cudaMemcpy3DPeerParms.srcPtr =
                             make_cudaPitchedPtr(
-                                reinterpret_cast<void *>(mem::getNativePtr(bufSrc)),
-                                mem::getPitchBytes(bufSrc),
+                                reinterpret_cast<void *>(mem::getPtrNative(bufSrc)),
+                                mem::getPitchBytes<0u, UInt>(bufSrc),
                                 uiSrcWidth,
                                 uiSrcHeight);
 
@@ -789,14 +789,14 @@ namespace alpaka
                             << " dw: " << uiDstWidth
                             << " dh: " << uiDstHeight
                             << " dd: " << uiDstDepth
-                            << " dptr: " << reinterpret_cast<void *>(mem::getNativePtr(bufDst))
-                            << " dpitchb: " << mem::getPitchBytes(bufDst)
+                            << " dptr: " << reinterpret_cast<void *>(mem::getPtrNative(bufDst))
+                            << " dpitchb: " << mem::getPitchBytes<0u, UInt>(bufDst)
                             << " ddev: " << uiDstDev
                             << " sw: " << uiSrcWidth
                             << " sh: " << uiSrcHeight
                             << " sd: " << uiSrcDepth
-                            << " sptr: " << reinterpret_cast<void const *>(mem::getNativePtr(bufSrc))
-                            << " spitchb: " << mem::getPitchBytes(bufSrc)
+                            << " sptr: " << reinterpret_cast<void const *>(mem::getPtrNative(bufSrc))
+                            << " spitchb: " << mem::getPitchBytes<0u, UInt>(bufSrc)
                             << " sdev: " << uiSrcDev
                             << std::endl;
 #endif

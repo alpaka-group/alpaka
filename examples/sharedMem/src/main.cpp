@@ -242,7 +242,7 @@ struct SharedMemTester
         profileKernelExec(
             exec,
             kernel,
-            alpaka::mem::getNativePtr(blockRetValsAcc),
+            alpaka::mem::getPtrNative(blockRetValsAcc),
             uiMult2);
 
         // Copy back the result.

@@ -21,45 +21,6 @@
 
 #pragma once
 
-#include <alpaka/host/mem/Space.hpp>// SpaceHost
-#include <alpaka/host/mem/Copy.hpp> // Copy
 #include <alpaka/host/mem/Buf.hpp>  // BufHost
-
-#include <alpaka/core/mem/View.hpp> // View
-
-#include <alpaka/traits/Mem.hpp>    // traits::mem::BufType
-
-namespace alpaka
-{
-    namespace traits
-    {
-        namespace mem
-        {
-            //#############################################################################
-            //! The BufHost memory buffer type trait specialization.
-            //#############################################################################
-            template<
-                typename TDev,
-                typename TElem,
-                typename TDim>
-            struct BufType<
-                TDev, TElem, TDim, alpaka::mem::SpaceHost>
-            {
-                using type = host::detail::BufHost<TDev, TElem, TDim>;
-            };
-
-            //#############################################################################
-            //! The BufCuda memory buffer type trait specialization.
-            //#############################################################################
-            template<
-                typename TDev,
-                typename TElem,
-                typename TDim>
-            struct ViewType<
-                host::detail::BufHost<TDev, TElem, TDim>>
-            {
-                using type = alpaka::mem::detail::View<host::detail::BufHost<TDev, TElem, TDim>>;
-            };
-        }
-    }
-}
+#include <alpaka/host/mem/Copy.hpp> // Copy
+#include <alpaka/host/mem/Space.hpp>// SpaceHost

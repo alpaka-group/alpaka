@@ -80,7 +80,7 @@ namespace alpaka
                     // Initiate the memory set.
                     ALPAKA_CUDA_RT_CHECK(
                         cudaMemset(
-                            reinterpret_cast<void *>(alpaka::mem::getNativePtr(buf)),
+                            reinterpret_cast<void *>(alpaka::mem::getPtrNative(buf)),
                             static_cast<int>(byte),
                             uiExtentWidth * sizeof(alpaka::mem::ElemT<TBuf>)));
                 }
@@ -116,7 +116,7 @@ namespace alpaka
                     // Initiate the memory set.
                     ALPAKA_CUDA_RT_CHECK(
                         cudaMemsetAsync(
-                            reinterpret_cast<void *>(alpaka::mem::getNativePtr(buf)),
+                            reinterpret_cast<void *>(alpaka::mem::getPtrNative(buf)),
                             static_cast<int>(byte),
                             uiExtentWidth * sizeof(alpaka::mem::ElemT<TBuf>),
                             *stream.m_spCudaStream.get()));
@@ -164,8 +164,8 @@ namespace alpaka
                     // Initiate the memory set.
                     ALPAKA_CUDA_RT_CHECK(
                         cudaMemset2D(
-                            reinterpret_cast<void *>(alpaka::mem::getNativePtr(buf)),
-                            alpaka::mem::getPitchBytes(buf),
+                            reinterpret_cast<void *>(alpaka::mem::getPtrNative(buf)),
+                            alpaka::mem::getPitchBytes<0u, UInt>(buf),
                             static_cast<int>(byte),
                             uiExtentWidth * sizeof(alpaka::mem::ElemT<TBuf>),
                             uiExtentHeight));
@@ -205,8 +205,8 @@ namespace alpaka
                     // Initiate the memory set.
                     ALPAKA_CUDA_RT_CHECK(
                         cudaMemset2DAsync(
-                            reinterpret_cast<void *>(alpaka::mem::getNativePtr(buf)),
-                            alpaka::mem::getPitchBytes(buf),
+                            reinterpret_cast<void *>(alpaka::mem::getPtrNative(buf)),
+                            alpaka::mem::getPitchBytes<0u, UInt>(buf),
                             static_cast<int>(byte),
                             uiExtentWidth * sizeof(alpaka::mem::ElemT<TBuf>),
                             uiExtentHeight,
@@ -255,8 +255,8 @@ namespace alpaka
                     // Fill CUDA parameter structures.
                     cudaPitchedPtr const cudaPitchedPtrVal(
                         make_cudaPitchedPtr(
-                            reinterpret_cast<void *>(alpaka::mem::getNativePtr(buf)),
-                            alpaka::mem::getPitchBytes(buf),
+                            reinterpret_cast<void *>(alpaka::mem::getPtrNative(buf)),
+                            alpaka::mem::getPitchBytes<0u, UInt>(buf),
                             uiDstWidth,
                             uiDstHeight));
 
@@ -311,8 +311,8 @@ namespace alpaka
                     // Fill CUDA parameter structures.
                     cudaPitchedPtr const cudaPitchedPtrVal(
                         make_cudaPitchedPtr(
-                            reinterpret_cast<void *>(alpaka::mem::getNativePtr(buf)),
-                            alpaka::mem::getPitchBytes(buf),
+                            reinterpret_cast<void *>(alpaka::mem::getPtrNative(buf)),
+                            alpaka::mem::getPitchBytes<0u, UInt>(buf),
                             uiDstWidth,
                             uiDstHeight));
 

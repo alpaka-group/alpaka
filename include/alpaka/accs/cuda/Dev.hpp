@@ -23,14 +23,15 @@
 
 #include <alpaka/accs/cuda/Common.hpp>
 
-#include <alpaka/traits/Dev.hpp>            // DevType
-#include <alpaka/traits/Stream.hpp>         // StreamType
-#include <alpaka/traits/Wait.hpp>           // CurrentThreadWaitFor
+#include <alpaka/traits/Acc.hpp>        // AccType
+#include <alpaka/traits/Dev.hpp>        // DevType
+#include <alpaka/traits/Stream.hpp>     // StreamType
+#include <alpaka/traits/Wait.hpp>       // CurrentThreadWaitFor
 
-#include <iostream>                         // std::cout
-#include <sstream>                          // std::stringstream
-#include <limits>                           // std::numeric_limits
-#include <stdexcept>                        // std::runtime_error
+#include <iostream>                     // std::cout
+#include <sstream>                      // std::stringstream
+#include <limits>                       // std::numeric_limits
+#include <stdexcept>                    // std::runtime_error
 
 namespace alpaka
 {

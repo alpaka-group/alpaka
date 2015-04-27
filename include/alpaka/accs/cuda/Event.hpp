@@ -23,10 +23,11 @@
 #include <alpaka/accs/cuda/Dev.hpp>         // DevCuda
 #include <alpaka/accs/cuda/Common.hpp>      // ALPAKA_CUDA_RT_CHECK
 
-#include <alpaka/traits/Event.hpp>
-#include <alpaka/traits/Wait.hpp>           // CurrentThreadWaitFor
+
 #include <alpaka/traits/Acc.hpp>            // AccType
 #include <alpaka/traits/Dev.hpp>            // GetDev
+#include <alpaka/traits/Event.hpp>
+#include <alpaka/traits/Wait.hpp>           // CurrentThreadWaitFor
 
 #include <stdexcept>                        // std::runtime_error
 #include <memory>                           // std::shared_ptr

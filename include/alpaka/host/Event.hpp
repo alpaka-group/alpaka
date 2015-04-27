@@ -21,11 +21,13 @@
 
 #pragma once
 
-#include <type_traits>                  // std::is_base
-
 #include <alpaka/traits/Event.hpp>      // StreamEnqueueEvent, ...
 #include <alpaka/traits/Wait.hpp>       // CurrentThreadWaitFor
 #include <alpaka/traits/Dev.hpp>        // GetDev
+
+#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+
+#include <type_traits>                  // std::is_base
 
 namespace alpaka
 {

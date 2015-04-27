@@ -125,10 +125,12 @@ namespace alpaka
                 {
                     ALPAKA_FCT_HOST_ACC static auto createDefault(
                         TAcc const & acc,
-                        std::uint32_t const & seed)
+                        std::uint32_t const & seed,
+                        std::uint32_t const & subsequence)
                     -> std::mt19937
                     {
-                        return std::mt19937(seed);
+                        // NOTE: XOR the seed and the subsequence to generate a unique seed.
+                        return std::mt19937(seed ^ subsequence);
                     }
                 };
             }
