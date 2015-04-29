@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2014-2015 Benjamin Worpitz
+* Copyright 2014-2015 Benjamin Worpitz, Rene Widera
 *
 * This file is part of alpaka.
 *
@@ -120,96 +120,102 @@ namespace alpaka
                         std::size_t const & uiIdx)
                     -> DevCuda
                     {
-                        DevCuda device;
+                        DevCuda dev;
 
                         std::size_t const uiNumDevices(getDevCount());
-                        if(uiIdx < uiNumDevices)
-                        {
-                            device.m_iDevice = static_cast<int>(uiIdx);
-                        }
-                        else
+                        if(uiIdx >= uiNumDevices)
                         {
                             std::stringstream ssErr;
                             ssErr << "Unable to return device handle for device " << uiIdx << " because there are only " << uiNumDevices << " CUDA devices!";
                             throw std::runtime_error(ssErr.str());
                         }
 
-                        return device;
-                    }
-/*                private:
-                    //-----------------------------------------------------------------------------
-                    //! \return The handle to the currently used device.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto getCurrentDev()
-                    -> DevCuda
-                    {
-                        DevCuda dev;
-                        ALPAKA_CUDA_RT_CHECK(cudaGetDevice(&dev.m_iDevice));
-                        return dev;
-                    }
-                    //-----------------------------------------------------------------------------
-                    //! Sets the device to use with this accelerator.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto setCurrentDev(
-                        DevCuda const & dev)
-                    -> void
-                    {
-                        ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-#if 0
-                        std::size_t uiNumDevices(getDevCount());
-                        if(uiNumDevices < 1)
+                        // Initialize the cuda runtime.
+                        init();
+                        
+                        // Try all devices if the given one is unusable.
+                        for(std::size_t iDeviceOffset(0); iDeviceOffset < uiNumDevices; ++iDeviceOffset)
                         {
-                            throw std::runtime_error("No CUDA capable devices detected!");
-                        }
-                        else if(uiNumDevices < dev.m_iDevice)
-                        {
-                            std::stringstream ssErr;
-                            ssErr << "No CUDA device " << dev.m_iDevice << " available, only " << uiNumDevices << " devices found!";
-                            throw std::runtime_error(ssErr.str());
+                            std::size_t const iDevice((uiIdx + iDeviceOffset) % uiNumDevices);
+
+                            if(isDevUsable(iDevice))
+                            {
+                                dev.m_iDevice = static_cast<int>(iDevice);
+
+                                // Log this device.
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+                                cudaDeviceProp devProp;
+                                ALPAKA_CUDA_RT_CHECK(cudaGetDeviceProperties(&devProp, dev.m_iDevice));
+#endif
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                                printDeviceProperties(devProp);
+#elif ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+                                std::cout << devProp.name << std::endl;
+#endif
+                                return dev;
+                            }
                         }
 
-                        cudaDeviceProp devProp;
-                        ALPAKA_CUDA_RT_CHECK(cudaGetDeviceProperties(&devProp, dev.m_iDevice));
-                        // Default compute mode (Multiple threads can use cudaSetDevice() with this device)
-                        if(devProp.computeMode == cudaComputeModeDefault)
+                        // If we came until here, none of the devices was usable.
+                        std::stringstream ssErr;
+                        ssErr << "Unable to return device handle for device " << uiIdx << " because none of the " << uiNumDevices << " CUDA devices is usable!";
+                        throw std::runtime_error(ssErr.str());
+                    }
+
+                private:
+                    //-----------------------------------------------------------------------------
+                    //! \return If the device is usable.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST static auto isDevUsable(
+                        std::size_t iDevice)
+                    -> bool
+                    {
+                        cudaError rc(cudaSetDevice(static_cast<int>(iDevice)));
+
+                        // Create a dummy stream to check if the device is already used by an other process.
+                        // \TODO: Check if this workaround is needed!
+                        // Since NVIDIA changed something in the runtime cudaSetDevice never returns an error if another process already uses the selected device and gpu compute mode is set "process exclusive".
+                        if(rc == cudaSuccess)
                         {
-                            ALPAKA_CUDA_RT_CHECK(cudaSetDevice(dev.m_iDevice));
-                            std::cout << "Set device to " << dev.m_iDevice << ": " << std::endl;
-#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                            printDeviceProperties(devProp);
-#else
-                            std::cout << devProp.name << std::endl;
-#endif
+                            cudaStream_t stream;
+                            rc = cudaStreamCreate(&stream);
                         }
-                        // Compute-exclusive-thread mode (Only one thread in one process will be able to use cudaSetDevice() with this device)
-                        else if(devProp.computeMode == cudaComputeModeExclusive)
+                        
+                        if(rc == cudaSuccess)
                         {
-                            std::cout << "Requested device is in computeMode cudaComputeModeExclusive.";
-                            // \TODO: Are we allowed to use the device in compute mode cudaComputeModeExclusive?
-                        }
-                        // Compute-prohibited mode (No threads can use cudaSetDevice() with this device)
-                        else if(devProp.computeMode == cudaComputeModeProhibited)
-                        {
-                            std::cout << "Requested device is in computeMode cudaComputeModeProhibited. It can not be selected!";
-                        }
-                        // Compute-exclusive-process mode (Many threads in one process will be able to use cudaSetDevice() with this device)
-                        else if(devProp.computeMode == cudaComputeModeExclusiveProcess)
-                        {
-                            std::cerr << "Requested device is in computeMode cudaComputeModeExclusiveProcess.";
-                            // \TODO: Are we allowed to use the device in compute mode cudaComputeModeExclusiveProcess?
+                            return true;
                         }
                         else
                         {
-                            std::cerr << "unknown computeMode!";
-                        }
+                            ALPAKA_CUDA_RT_CHECK(rc);
+                            // Reset the Error state.
+                            cudaGetLastError();
 
-                        // Instruct CUDA to actively spin when waiting for results from the device.
-                        // This can decrease latency when waiting for the device, but may lower the performance of CPU threads if they are performing work in parallel with the CUDA thread.
-                        ALPAKA_CUDA_RT_CHECK(cudaSetDeviceFlags(cudaDeviceScheduleSpin));
-#else
-                        ALPAKA_CUDA_RT_CHECK(cudaSetDevice(dev.m_iDevice));
-#endif
-                    }*/
+                            return false;
+                        }
+                    }
+                    //-----------------------------------------------------------------------------
+                    //! Initializes the cuda runtime.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST static auto init()
+                    -> void
+                    {
+                        static bool s_bInitialized = false;
+
+                        if(!s_bInitialized)
+                        {
+                            s_bInitialized = true;
+                            
+                            // - cudaDeviceScheduleSpin:
+                            //   Instruct CUDA to actively spin when waiting for results from the device.
+                            //   This can decrease latency when waiting for the device, but may lower the performance of CPU threads if they are performing work in parallel with the CUDA thread.
+                            // - cudaDeviceMapHost: 
+                            //   This flag must be set in order to allocate pinned host memory that is accessible to the device. 
+                            //   If this flag is not set, cudaHostGetDevicePointer() will always return a failure code.
+                            ALPAKA_CUDA_RT_CHECK(cudaSetDeviceFlags(
+                                cudaDeviceScheduleSpin | cudaDeviceMapHost));
+                        }
+                    }
 
                 private:
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL

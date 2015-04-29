@@ -72,6 +72,22 @@ namespace alpaka
                 typename TDev,
                 typename TSfinae = void>
             struct Unmap;
+
+            //#############################################################################
+            //! The memory pinning trait.
+            //#############################################################################
+            template<
+                typename TBuf,
+                typename TSfinae = void>
+            struct Pin;
+
+            //#############################################################################
+            //! The memory unpinning trait.
+            //#############################################################################
+            template<
+                typename TBuf,
+                typename TSfinae = void>
+            struct Unpin;
         }
     }
     
@@ -168,6 +184,40 @@ namespace alpaka
             ::unmap(
                 buf,
                 dev);
+        }
+        //-----------------------------------------------------------------------------
+        //! Pins the buffer.
+        //!
+        //! \tparam TBuf The buffer type.
+        //! \param buf The buffer to map into the device memory.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TBuf>
+        ALPAKA_FCT_HOST auto pin(
+            TBuf const & buf)
+        -> void
+        {
+            return traits::mem::Pin<
+                TBuf>
+            ::pin(
+                buf);
+        }
+        //-----------------------------------------------------------------------------
+        //! Unpins the buffer.
+        //!
+        //! \tparam TBuf The buffer type.
+        //! \param buf The buffer to unmap from the device memory.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TBuf>
+        ALPAKA_FCT_HOST auto unpin(
+            TBuf const & buf)
+        -> void
+        {
+            return traits::mem::Unpin<
+                TBuf>
+            ::unpin(
+                buf);
         }
     }
 }

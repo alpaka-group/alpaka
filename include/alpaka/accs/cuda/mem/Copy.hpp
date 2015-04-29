@@ -40,48 +40,6 @@ namespace alpaka
         {
             namespace detail
             {
-                //-----------------------------------------------------------------------------
-                //! Page-locks the memory range specified.
-                //-----------------------------------------------------------------------------
-                /*template<
-                    typename TBuf>
-                auto pageLockHostMem(
-                    TBuf const & buf)
-                -> void
-                {
-                    ALPAKA_DEBUG_FULL_LOG_SCOPE;
-
-                    // - cudaHostRegisterDefault:
-                    //   See http://cgi.cs.indiana.edu/~nhusted/dokuwiki/doku.php?id=programming:cudaperformance1
-                    // - cudaHostRegisterPortable:
-                    //   The memory returned by this call will be considered as pinned memory by all CUDA contexts, not just the one that performed the allocation.
-                    // - cudaHostRegisterMapped:
-                    //   Maps the allocation into the CUDA address space.The device pointer to the memory may be obtained by calling cudaHostGetDevicePointer().
-                    //   This feature is available only on GPUs with compute capability greater than or equal to 1.1.
-                    ALPAKA_CUDA_RT_CHECK_IGNORE(
-                        cudaHostRegister(
-                            const_cast<void *>(reinterpret_cast<void const *>(mem::getPtrNative(buf))),
-                            extent::getProductOfExtents<std::size_t>(buf) * sizeof(mem::ElemT<TBuf>),
-                            cudaHostRegisterDefault),
-                        cudaErrorHostMemoryAlreadyRegistered);
-                }
-                //-----------------------------------------------------------------------------
-                //! Unmaps page-locked memory.
-                //-----------------------------------------------------------------------------
-                template<
-                    typename TBuf>
-                auto unPageLockHostMem(
-                    TBuf const & buf)
-                -> void
-                {
-                    ALPAKA_DEBUG_FULL_LOG_SCOPE;
-
-                    ALPAKA_CUDA_RT_CHECK_IGNORE(
-                        cudaHostUnregister(
-                            const_cast<void *>(reinterpret_cast<void const *>(mem::getPtrNative(buf)))),
-                        cudaErrorHostMemoryNotRegistered);
-                }*/
-
                 //#############################################################################
                 //! The CUDA memory copy trait.
                 //#############################################################################
@@ -895,17 +853,12 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                    // \TODO: Is memory pinning really useful for synchronous copies?
-                    //accs::cuda::detail::pageLockHostMem(bufDst);
-
                     accs::cuda::detail::MemCopyCuda<TDim>::memCopyCuda(
                         bufDst,
                         bufSrc,
                         extents,
                         cudaMemcpyDeviceToHost,
                         alpaka::dev::getDev(bufSrc).m_iDevice);
-
-                    //accs::cuda::detail::unPageLockHostMem(bufDst);
                 }
                 //-----------------------------------------------------------------------------
                 //!
@@ -923,8 +876,6 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                    //accs::cuda::detail::pageLockHostMem(bufDst);
-
                     accs::cuda::detail::MemCopyCuda<TDim>::memCopyCuda(
                         bufDst,
                         bufSrc,
@@ -932,8 +883,6 @@ namespace alpaka
                         cudaMemcpyDeviceToHost,
                         alpaka::dev::getDev(bufSrc).m_iDevice,
                         stream);
-
-                    //accs::cuda::detail::unPageLockHostMem(bufDst);
                 }
             };
             //#############################################################################
@@ -961,17 +910,12 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                    // \TODO: Is memory pinning really useful for synchronous copies?
-                    //accs::cuda::detail::pageLockHostMem(bufSrc);
-
                     accs::cuda::detail::MemCopyCuda<TDim>::memCopyCuda(
                         bufDst,
                         bufSrc,
                         extents,
                         cudaMemcpyHostToDevice,
                         alpaka::dev::getDev(bufDst).m_iDevice);
-
-                    //accs::cuda::detail::unPageLockHostMem(bufSrc);
                 }
                 //-----------------------------------------------------------------------------
                 //!
@@ -989,8 +933,6 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                    //accs::cuda::detail::pageLockHostMem(bufSrc);
-
                     accs::cuda::detail::MemCopyCuda<TDim>::memCopyCuda(
                         bufDst,
                         bufSrc,
@@ -998,8 +940,6 @@ namespace alpaka
                         cudaMemcpyHostToDevice,
                         alpaka::dev::getDev(bufDst).m_iDevice,
                         stream);
-
-                    //accs::cuda::detail::unPageLockHostMem(bufSrc);
                 }
             };
             //#############################################################################

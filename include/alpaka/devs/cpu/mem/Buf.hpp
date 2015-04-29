@@ -31,6 +31,11 @@
 #include <alpaka/traits/mem/Buf.hpp>    // traits::Alloc, ...
 #include <alpaka/traits/Extent.hpp>     // traits::getXXX
 
+// \TODO: Remove CUDA inclusion for BufCpu by replacing pinning with non CUDA code!
+#ifdef ALPAKA_CUDA_ENABLED
+    #include <alpaka/accs/cuda/Common.hpp>
+#endif
+
 #include <cassert>                      // assert
 #include <memory>                       // std::shared_ptr
 
@@ -135,7 +140,6 @@ namespace alpaka
             {
                 using type = devs::cpu::detail::DevCpu;
             };
-
             //#############################################################################
             //! The BufCpu device get trait specialization.
             //#############################################################################
@@ -235,7 +239,6 @@ namespace alpaka
             {
                 using type = devs::cpu::detail::BufCpu<TElem, TDim>;
             };
-
             //#############################################################################
             //! The cpu device memory view type trait specialization.
             //#############################################################################
@@ -249,7 +252,6 @@ namespace alpaka
             {
                 using type = alpaka::mem::detail::View<TElem, TDim, devs::cpu::detail::DevCpu>;
             };
-
             //#############################################################################
             //! The BufCpu memory element type get trait specialization.
             //#############################################################################
@@ -261,7 +263,6 @@ namespace alpaka
             {
                 using type = TElem;
             };
-
             //#############################################################################
             //! The BufCpu base trait specialization.
             //#############################################################################
@@ -290,7 +291,6 @@ namespace alpaka
                     return buf;
                 }
             };
-
             //#############################################################################
             //! The BufCpu native pointer get trait specialization.
             //#############################################################################
@@ -364,7 +364,6 @@ namespace alpaka
                     }
                 }
             };
-
             //#############################################################################
             //! The BufCpu pitch get trait specialization.
             //#############################################################################
@@ -385,7 +384,6 @@ namespace alpaka
                     return pitch.m_uiPitchBytes;
                 }
             };
-
             //#############################################################################
             //! The cpu device memory allocation trait specialization.
             //#############################################################################
@@ -416,7 +414,6 @@ namespace alpaka
                             extents);
                 }
             };
-
             //#############################################################################
             //! The cpu device memory mapping trait specialization.
             //#############################################################################
@@ -444,7 +441,6 @@ namespace alpaka
                     // If it is the same device, nothing has to be mapped.
                 }
             };
-
             //#############################################################################
             //! The cpu device memory unmapping trait specialization.
             //#############################################################################
@@ -470,6 +466,68 @@ namespace alpaka
                         throw std::runtime_error("Memory unmapping of BufCpu between two devices is not implemented!");
                     }
                     // If it is the same device, nothing has to be mapped.
+                }
+            };
+            //#############################################################################
+            //! The cpu device memory pinning trait specialization.
+            //#############################################################################
+            template<
+                typename TElem,
+                typename TDim>
+            struct Pin<
+                devs::cpu::detail::BufCpu<TElem, TDim>>
+            {
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static auto pin(
+                    devs::cpu::detail::BufCpu<TElem, TDim> const & buf)
+                -> void
+                {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+#ifdef ALPAKA_CUDA_ENABLED
+                    // - cudaHostRegisterDefault:
+                    //   See http://cgi.cs.indiana.edu/~nhusted/dokuwiki/doku.php?id=programming:cudaperformance1
+                    // - cudaHostRegisterPortable:
+                    //   The memory returned by this call will be considered as pinned memory by all CUDA contexts, not just the one that performed the allocation.
+                    ALPAKA_CUDA_RT_CHECK_IGNORE(
+                        cudaHostRegister(
+                            const_cast<void *>(reinterpret_cast<void const *>(alpaka::mem::getPtrNative(buf))),
+                            alpaka::extent::getProductOfExtents<std::size_t>(buf) * sizeof(alpaka::mem::ElemT<devs::cpu::detail::BufCpu<TElem, TDim>>),
+                            cudaHostRegisterDefault),
+                        cudaErrorHostMemoryAlreadyRegistered);
+#else
+                    throw std::runtime_error("Memory pinning of BufCpu is not implemented when CUDA is not enabled!");
+#endif
+                }
+            };
+            //#############################################################################
+            //! The cpu device memory unpinning trait specialization.
+            //#############################################################################
+            template<
+                typename TElem,
+                typename TDim>
+            struct Unpin<
+                devs::cpu::detail::BufCpu<TElem, TDim>>
+            {
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static auto unpin(
+                    devs::cpu::detail::BufCpu<TElem, TDim> const & buf)
+                -> void
+                {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+#ifdef ALPAKA_CUDA_ENABLED
+                    ALPAKA_CUDA_RT_CHECK_IGNORE(
+                        cudaHostUnregister(
+                            const_cast<void *>(reinterpret_cast<void const *>(alpaka::mem::getPtrNative(buf)))),
+                        cudaErrorHostMemoryNotRegistered);
+#else
+                    throw std::runtime_error("Memory unpinning of BufCpu is not implemented when CUDA is not enabled!");
+#endif
                 }
             };
         }

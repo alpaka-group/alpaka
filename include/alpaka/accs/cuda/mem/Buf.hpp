@@ -130,7 +130,6 @@ namespace alpaka
             {
                 using type = accs::cuda::detail::DevCuda;
             };
-
             //#############################################################################
             //! The BufCuda device get trait specialization.
             //#############################################################################
@@ -230,7 +229,6 @@ namespace alpaka
             {
                 using type = accs::cuda::detail::BufCuda<TElem, TDim>;
             };
-
             //#############################################################################
             //! The BufCuda memory buffer type trait specialization.
             //#############################################################################
@@ -244,7 +242,6 @@ namespace alpaka
             {
                 using type = alpaka::mem::detail::View<TElem, TDim, accs::cuda::detail::DevCuda>;
             };
-
             //#############################################################################
             //! The BufCuda memory element type get trait specialization.
             //#############################################################################
@@ -256,7 +253,6 @@ namespace alpaka
             {
                 using type = TElem;
             };
-
             //#############################################################################
             //! The BufCuda base trait specialization.
             //#############################################################################
@@ -285,7 +281,6 @@ namespace alpaka
                     return buf;
                 }
             };
-
             //#############################################################################
             //! The BufCuda native pointer get trait specialization.
             //#############################################################################
@@ -314,7 +309,6 @@ namespace alpaka
                     return buf.m_spMem.get();
                 }
             };
-
             //#############################################################################
             //! The BufCuda pointer on device get trait specialization.
             //#############################################################################
@@ -360,7 +354,6 @@ namespace alpaka
                     }
                 }
             };
-
             //#############################################################################
             //! The CUDA buffer pitch get trait specialization.
             //#############################################################################
@@ -381,7 +374,6 @@ namespace alpaka
                     return buf.m_uiPitchBytes;
                 }
             };
-
             //#############################################################################
             //! The CUDA 1D memory allocation trait specialization.
             //#############################################################################
@@ -434,7 +426,6 @@ namespace alpaka
                             extents);
                 }
             };
-
             //#############################################################################
             //! The CUDA 2D memory allocation trait specialization.
             //#############################################################################
@@ -497,7 +488,6 @@ namespace alpaka
                             extents);
                 }
             };
-
             //#############################################################################
             //! The CUDA 3D memory allocation trait specialization.
             //#############################################################################
@@ -557,7 +547,6 @@ namespace alpaka
                             extents);
                 }
             };
-
             //#############################################################################
             //! The CUDA memory mapping trait specialization.
             //#############################################################################
@@ -585,7 +574,6 @@ namespace alpaka
                     // If it is already the same device, nothing has to be mapped.
                 }
             };
-
             //#############################################################################
             //! The CUDA memory unmapping trait specialization.
             //#############################################################################
@@ -611,6 +599,48 @@ namespace alpaka
                         throw std::runtime_error("Unmapping memory from one CUDA device from an other CUDA device not implemented!");
                     }
                     // If it is already the same device, nothing has to be unmapped.
+                }
+            };
+            //#############################################################################
+            //! The CUDA memory pinning trait specialization.
+            //#############################################################################
+            template<
+                typename TElem,
+                typename TDim>
+            struct Pin<
+                accs::cuda::detail::BufCuda<TElem, TDim>>
+            {
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static auto pin(
+                    accs::cuda::detail::BufCuda<TElem, TDim> const & buf)
+                -> void
+                {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+                    
+                    // CUDA device memory is always pinned, it can not be swapped out.
+                }
+            };
+            //#############################################################################
+            //! The CUDA memory unpinning trait specialization.
+            //#############################################################################
+            template<
+                typename TElem,
+                typename TDim>
+            struct Unpin<
+                accs::cuda::detail::BufCuda<TElem, TDim>>
+            {
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static auto unpin(
+                    accs::cuda::detail::BufCuda<TElem, TDim> const & buf)
+                -> void
+                {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                    // CUDA device memory is always pinned, it can not be swapped out.
                 }
             };
         }
