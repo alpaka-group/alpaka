@@ -21,16 +21,30 @@
 
 #pragma once
 
-#include <alpaka/host/mem/Space.hpp>    // SpaceHost
-#include <alpaka/host/Stream.hpp>       // StreamHost
-
 #include <alpaka/core/BasicDims.hpp>    // dim::Dim<N>
 
 #include <alpaka/traits/mem/Buf.hpp>    // traits::Alloc, ...
 #include <alpaka/traits/Extent.hpp>     // traits::getXXX
 
+#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+
 #include <cassert>                      // assert
 #include <cstring>                      // std::memset
+
+namespace alpaka
+{
+    namespace devs
+    {
+        namespace cpu
+        {
+            namespace detail
+            {
+                class DevCpu;
+                class StreamCpu;
+            }
+        }
+    }
+}
 
 namespace alpaka
 {
@@ -39,13 +53,13 @@ namespace alpaka
         namespace mem
         {
             //#############################################################################
-            //! The host accelerators memory set trait specialization.
+            //! The cpu device memory set trait specialization.
             //#############################################################################
             template<
                 typename TDim>
             struct Set<
                 TDim,
-                alpaka::mem::SpaceHost>
+                devs::cpu::detail::DevCpu>
             {
                 //-----------------------------------------------------------------------------
                 //!
@@ -150,7 +164,7 @@ namespace alpaka
                 }
                 //-----------------------------------------------------------------------------
                 //!
-                // \TODO: Implement asynchronous host set.
+                // \TODO: Implement asynchronous cpu set.
                 //-----------------------------------------------------------------------------
                 template<
                     typename TBuf,
@@ -160,10 +174,12 @@ namespace alpaka
                     TBuf & bufDst,
                     std::uint8_t const & byte,
                     TExtents const & extents,
-                    host::detail::StreamHost<TDev> const &)
+                    devs::cpu::detail::StreamCpu const & stream)
                 -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+                    
+                    boost::ignore_unused(stream);
 
                     copy(
                         bufDst,

@@ -21,11 +21,9 @@
 
 #pragma once
 
-#include <alpaka/accs/cuda/mem/Space.hpp>   // SpaceCuda
+#include <alpaka/accs/cuda/Dev.hpp>         // DevCuda
 #include <alpaka/accs/cuda/Stream.hpp>      // StreamCuda
 #include <alpaka/accs/cuda/Common.hpp>
-
-#include <alpaka/host/mem/Space.hpp>        // SpaceHost
 
 #include <alpaka/core/BasicDims.hpp>        // dim::Dim<N>
 
@@ -879,8 +877,8 @@ namespace alpaka
                 typename TDim>
             struct Copy<
                 TDim,
-                alpaka::mem::SpaceHost,
-                alpaka::mem::SpaceCuda>
+                devs::cpu::detail::DevCpu,
+                accs::cuda::detail::DevCuda>
             {
                 //-----------------------------------------------------------------------------
                 //!
@@ -945,8 +943,8 @@ namespace alpaka
                 typename TDim>
             struct Copy<
                 TDim,
-                alpaka::mem::SpaceCuda,
-                alpaka::mem::SpaceHost>
+                accs::cuda::detail::DevCuda,
+                devs::cpu::detail::DevCpu>
             {
                 //-----------------------------------------------------------------------------
                 //!
@@ -1011,8 +1009,8 @@ namespace alpaka
                 typename TDim>
             struct Copy<
                 TDim,
-                alpaka::mem::SpaceCuda,
-                alpaka::mem::SpaceCuda>
+                accs::cuda::detail::DevCuda,
+                accs::cuda::detail::DevCuda>
             {
                 //-----------------------------------------------------------------------------
                 //!

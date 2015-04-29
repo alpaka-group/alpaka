@@ -21,6 +21,10 @@
 
 #pragma once
 
-#include <alpaka/host/mem/Buf.hpp>  // BufHost
-#include <alpaka/host/mem/Copy.hpp> // Copy
-#include <alpaka/host/mem/Space.hpp>// SpaceHost
+#include <alpaka/accs/omp/omp2/Acc.hpp>         // AccOmp2
+#include <alpaka/accs/omp/omp2/Atomic.hpp>      // AtomicOmp2
+#include <alpaka/accs/omp/omp2/Exec.hpp>        // ExecOmp2
+#include <alpaka/accs/omp/omp2/Idx.hpp>         // IdxOmp2
+#include <alpaka/accs/omp/omp2/WorkDiv.hpp>     // WorkDivOmp2
+#include <alpaka/devs/cpu/Mem.hpp>              // Copy
+#include <alpaka/devs/cpu/Rand.hpp>             // rand

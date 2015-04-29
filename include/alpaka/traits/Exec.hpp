@@ -61,15 +61,16 @@ namespace alpaka
         using ExecT = typename traits::exec::ExecType<TAcc>::type;
 
         //-----------------------------------------------------------------------------
-        //! \return A kernel executor.
+        //! \return A executor.
         //-----------------------------------------------------------------------------
         template<
+            typename TAcc,
             typename TStream,
             typename TWorkDiv>
         ALPAKA_FCT_HOST auto create(
             TWorkDiv const & workDiv,
-            TStream const & stream)
-        -> ExecT<acc::AccT<TStream>>
+            TStream & stream)
+        -> ExecT<TAcc>
         {
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
             std::cout << BOOST_CURRENT_FUNCTION
@@ -88,27 +89,28 @@ namespace alpaka
             }
 
             // This checks for the compliance with the maxima of the accelerator.
-            if(!workdiv::isValidWorkDiv(dev::getDev(stream), workDiv))
+            if(!workdiv::isValidWorkDiv<TAcc>(dev::getDev(stream), workDiv))
             {
-                throw std::runtime_error("The given work division is not supported by the " + acc::getAccName<acc::AccT<TStream>>() + " accelerator!");
+                throw std::runtime_error("The given work division is not supported by the " + acc::getAccName<TAcc>() + " accelerator!");
             }
 
-            return ExecT<acc::AccT<TStream>>(workDiv, stream);
+            return ExecT<TAcc>(workDiv, stream);
         }
         //-----------------------------------------------------------------------------
-        //! \return A kernel executor.
+        //! \return A executor.
         //-----------------------------------------------------------------------------
         template<
+            typename TAcc,
             typename TStream,
             typename TGridBlockExtents,
             typename TBlockThreadExtents>
         ALPAKA_FCT_HOST auto create(
             TGridBlockExtents const & gridBlockExtents,
             TBlockThreadExtents const & blockThreadExtents,
-            TStream const & stream)
-        -> ExecT<acc::AccT<TStream>>
+            TStream & stream)
+        -> ExecT<TAcc>
         {
-            return create(
+            return create<TAcc>(
                 workdiv::BasicWorkDiv(
                     gridBlockExtents,
                     blockThreadExtents),

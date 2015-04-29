@@ -300,11 +300,11 @@ namespace alpaka
         namespace dev
         {
             //#############################################################################
-            //! The CUDA accelerator device type trait specialization.
+            //! The CUDA accelerator device device type trait specialization.
             //#############################################################################
             template<>
             struct DevType<
-                accs::cuda::detail::AccCuda>
+                accs::cuda::detail::DevCuda>
             {
                 using type = accs::cuda::detail::DevCuda;
             };
@@ -334,41 +334,51 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The CUDA accelerator device properties get trait specialization.
+            //! The CUDA accelerator device name get trait specialization.
             //#############################################################################
             template<>
-            struct GetProps<
+            struct GetName<
                 accs::cuda::detail::DevCuda>
             {
-                ALPAKA_FCT_HOST static auto getProps(
+                ALPAKA_FCT_HOST static auto getName(
                     accs::cuda::detail::DevCuda const & dev)
-                -> alpaka::dev::DevProps
+                -> std::string
                 {
                     cudaDeviceProp cudaDevProp;
                     ALPAKA_CUDA_RT_CHECK(cudaGetDeviceProperties(
                         &cudaDevProp, 
                         dev.m_iDevice));
 
-                    return alpaka::dev::DevProps(
-                        // m_sName
-                        cudaDevProp.name,
-                        // m_uiMultiProcessorCount
-                        static_cast<UInt>(cudaDevProp.multiProcessorCount),
-                        // m_uiBlockThreadsCountMax
-                        static_cast<UInt>(cudaDevProp.maxThreadsPerBlock),
-                        // m_v3uiBlockThreadExtentsMax
-                        Vec3<>(
-                            static_cast<UInt>(cudaDevProp.maxThreadsDim[0]),
-                            static_cast<UInt>(cudaDevProp.maxThreadsDim[1]),
-                            static_cast<UInt>(cudaDevProp.maxThreadsDim[2])),
-                        // m_v3uiGridBlockExtentsMax
-                        Vec3<>(
-                            static_cast<UInt>(cudaDevProp.maxGridSize[0]),
-                            static_cast<UInt>(cudaDevProp.maxGridSize[1]),
-                            static_cast<UInt>(cudaDevProp.maxGridSize[2])),
-                        // m_uiGlobalMemSizeBytes
-                        static_cast<std::size_t>(cudaDevProp.totalGlobalMem));
-                        //devProps.m_uiMaxClockFrequencyHz = cudaDevProp.clockRate * 1000;
+                    return std::string(cudaDevProp.name);
+                }
+            };
+
+            //#############################################################################
+            //! The CUDA accelerator device available memory get trait specialization.
+            //#############################################################################
+            template<>
+            struct GetMemBytes<
+                accs::cuda::detail::DevCuda>
+            {
+                ALPAKA_FCT_HOST static auto getMemBytes(
+                    accs::cuda::detail::DevCuda const & dev)
+                -> std::size_t
+                {
+                    // \TODO: Check which is faster: cudaMemGetInfo().totalInternal vs cudaGetDeviceProperties().totalGlobalMem
+                    // \TODO: This should be secured by a lock.
+
+                    // Set the current device to wait for.
+                    ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
+                        dev.m_iDevice));
+
+                    std::size_t freeInternal(0u);
+                    std::size_t totalInternal(0u);
+
+                    ALPAKA_CUDA_RT_CHECK(cudaMemGetInfo(
+                        &freeInternal, 
+                        &totalInternal));
+
+                    return totalInternal;
                 }
             };
 
@@ -383,6 +393,12 @@ namespace alpaka
                     accs::cuda::detail::DevCuda const & dev)
                 -> std::size_t
                 {
+                    // \TODO: This should be secured by a lock.
+
+                    // Set the current device to wait for.
+                    ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
+                        dev.m_iDevice));
+
                     std::size_t freeInternal(0u);
                     std::size_t totalInternal(0u);
 
@@ -413,22 +429,21 @@ namespace alpaka
                     ALPAKA_CUDA_RT_CHECK(cudaDeviceReset());
                 }
             };
-
-            //#############################################################################
-            //! The CUDA accelerator device manager type trait specialization.
-            //#############################################################################
-            template<>
-            struct DevManType<
-                accs::cuda::detail::AccCuda>
-            {
-                using type = accs::cuda::detail::DevManCuda;
-            };
             //#############################################################################
             //! The CUDA accelerator device device manager type trait specialization.
             //#############################################################################
             template<>
             struct DevManType<
                 accs::cuda::detail::DevCuda>
+            {
+                using type = accs::cuda::detail::DevManCuda;
+            };
+            //#############################################################################
+            //! The CUDA accelerator device manager device manager type trait specialization.
+            //#############################################################################
+            template<>
+            struct DevManType<
+                accs::cuda::detail::DevManCuda>
             {
                 using type = accs::cuda::detail::DevManCuda;
             };

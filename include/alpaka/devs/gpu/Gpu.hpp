@@ -21,13 +21,6 @@
 
 #pragma once
 
-#include <alpaka/accs/threads/Atomic.hpp>           // AtomicThreads
-#include <alpaka/accs/threads/Barrier.hpp>          // BarrierThreads
-#include <alpaka/accs/threads/Dev.hpp>              // Devices
-#include <alpaka/accs/threads/Event.hpp>            // EventThreads
-#include <alpaka/accs/threads/Exec.hpp>             // ExecThreads
-#include <alpaka/accs/threads/Idx.hpp>              // IdxThreads
-#include <alpaka/accs/threads/Stream.hpp>           // StreamThreads
-#include <alpaka/host/Mem.hpp>                      // Copy
-#include <alpaka/host/Rand.hpp>                     // rand
-
+#include <alpaka/devs/gpu/Dev.hpp>
+#include <alpaka/devs/gpu/Event.hpp>
+#include <alpaka/devs/gpu/Stream.hpp>

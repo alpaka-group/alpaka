@@ -21,8 +21,6 @@
 
 #pragma once
 
-#include <alpaka/host/mem/Space.hpp>    // mem::SpaceHost
-
 #include <alpaka/core/BasicDims.hpp>    // dim::Dim<N>
 #include <alpaka/core/Vec.hpp>          // Vec<N>
 
@@ -46,7 +44,6 @@ namespace alpaka
             using Elem = TElem;
             using Dim = TDim;
             using Dev = TDev;
-            using MemSpace = SpaceT<acc::AccT<TDev>>;
 
         public:
             //-----------------------------------------------------------------------------
@@ -222,19 +219,6 @@ namespace alpaka
 
         namespace mem
         {
-            //#############################################################################
-            //! The BufPlainPtrWrapper memory space trait specialization.
-            //#############################################################################
-            template<
-                typename TElem,
-                typename TDim,
-                typename TDev>
-            struct SpaceType<
-                alpaka::mem::BufPlainPtrWrapper<TElem, TDim, TDev>>
-            {
-                using type = typename alpaka::mem::BufPlainPtrWrapper<TElem, TDim, TDev>::MemSpace;
-            };
-
             //#############################################################################
             //! The BufPlainPtrWrapper memory element type get trait specialization.
             //#############################################################################

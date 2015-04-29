@@ -28,42 +28,32 @@
 
 namespace alpaka
 {
-    //-----------------------------------------------------------------------------
-    //! The device management functionality.
-    //-----------------------------------------------------------------------------
-    namespace dev
+    namespace acc
     {
         //#############################################################################
-        //! The device properties.
+        //! The acceleration properties on a device.
         //#############################################################################
-        struct DevProps
+        struct AccDevProps
         {
             //-----------------------------------------------------------------------------
             //! Default-constructor
             //-----------------------------------------------------------------------------
-            DevProps(
-                std::string const & sName,
+            AccDevProps(
                 UInt const & uiMultiProcessorCount,
                 UInt const & uiBlockThreadsCountMax,
                 Vec3<> const & v3uiBlockThreadExtentsMax,
-                Vec3<> const & v3uiGridBlockExtentsMax,
-                std::size_t const & uiGlobalMemSizeBytes) :
-                    m_sName(sName),
+                Vec3<> const & v3uiGridBlockExtentsMax) :
                     m_uiMultiProcessorCount(uiMultiProcessorCount),
                     m_uiBlockThreadsCountMax(uiBlockThreadsCountMax),
                     m_v3uiBlockThreadExtentsMax(v3uiBlockThreadExtentsMax),
-                    m_v3uiGridBlockExtentsMax(v3uiGridBlockExtentsMax),
-                    m_uiGlobalMemSizeBytes(uiGlobalMemSizeBytes)
+                    m_v3uiGridBlockExtentsMax(v3uiGridBlockExtentsMax)
             {}
 
-            std::string m_sName;                    //!< The name.
             UInt m_uiMultiProcessorCount;           //!< The number of multiprocessors.
             UInt m_uiBlockThreadsCountMax;          //!< The maximum number of threads in a block.
             Vec3<> m_v3uiBlockThreadExtentsMax;     //!< The maximum number of threads in each dimension of a block.
             Vec3<> m_v3uiGridBlockExtentsMax;       //!< The maximum number of blocks in each dimension of the grid.
-            std::size_t m_uiGlobalMemSizeBytes;     //!< Size of the global device memory in bytes.
             //std::size_t m_uiSharedMemSizeBytes;   //!< Size of the available block shared memory in bytes.
-            //std::size_t m_uiMaxClockFrequencyHz;  //!< Maximum clock frequency of the device in Hz.
         };
     }
 }

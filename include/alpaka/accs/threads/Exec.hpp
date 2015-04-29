@@ -21,261 +21,41 @@
 
 #pragma once
 
-// Base classes.
-#include <alpaka/core/BasicWorkDiv.hpp>         // WorkDivThreads
-#include <alpaka/accs/threads/Idx.hpp>          // IdxThreads
-#include <alpaka/accs/threads/Atomic.hpp>       // AtomicThreads
-#include <alpaka/accs/threads/Barrier.hpp>      // BarrierThreads
-
 // Specialized traits.
 #include <alpaka/traits/Acc.hpp>                // AccType
 #include <alpaka/traits/Exec.hpp>               // ExecType
 #include <alpaka/traits/Event.hpp>              // EventType
-#include <alpaka/traits/Mem.hpp>                // SpaceType
+#include <alpaka/traits/Dev.hpp>                // DevType
 #include <alpaka/traits/Stream.hpp>             // StreamType
 
 // Implementation details.
-#include <alpaka/accs/threads/Dev.hpp>          // Devices
-#include <alpaka/accs/threads/Stream.hpp>       // StreamThreads
-#include <alpaka/host/mem/Space.hpp>            // SpaceHost
-#include <alpaka/traits/Kernel.hpp>             // BlockSharedExternMemSizeBytes
+#include <alpaka/accs/threads/Acc.hpp>          // AccThreads
+#include <alpaka/core/BasicWorkDiv.hpp>         // WorkDivThreads
 #include <alpaka/core/ConcurrentExecPool.hpp>   // ConcurrentExecPool
+#include <alpaka/devs/cpu/Dev.hpp>              // DevCpu
+#include <alpaka/devs/cpu/Event.hpp>            // EventCpu
+#include <alpaka/devs/cpu/Stream.hpp>           // StreamCpu
+#include <alpaka/traits/Kernel.hpp>             // BlockSharedExternMemSizeBytes
 
 #include <boost/predef.h>                       // workarounds
 
-#include <vector>                               // std::vector
-#include <thread>                               // std::thread
-#include <map>                                  // std::map
 #include <algorithm>                            // std::for_each
-#include <array>                                // std::array
-#include <cassert>                              // assert
-#include <string>                               // std::to_string
-#include <memory>                               // std::unique_ptr
+#include <stdexcept>                            // std::current_exception
+#include <thread>                               // std::thread
+#include <utility>                              // std::move, std::forward
+#include <vector>                               // std::vector
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+    #include <iostream>                         // std::cout
+#endif
 
 namespace alpaka
 {
     namespace accs
     {
-        //-----------------------------------------------------------------------------
-        //! The threads accelerator.
-        //-----------------------------------------------------------------------------
         namespace threads
         {
-            //-----------------------------------------------------------------------------
-            //! The threads accelerator implementation details.
-            //-----------------------------------------------------------------------------
             namespace detail
             {
-                class ExecThreads;
-
-                //#############################################################################
-                //! The threads accelerator.
-                //!
-                //! This accelerator allows parallel kernel execution on the host.
-                //! It uses C++11 std::threads to implement the parallelism.
-                //#############################################################################
-                class AccThreads :
-                    protected workdiv::BasicWorkDiv,
-                    protected IdxThreads,
-                    protected AtomicThreads
-                {
-                public:
-                    using MemSpace = mem::SpaceHost;
-
-                    friend class ::alpaka::accs::threads::detail::ExecThreads;
-
-                private:
-                    //-----------------------------------------------------------------------------
-                    //! Constructor.
-                    //-----------------------------------------------------------------------------
-                    template<
-                        typename TWorkDiv>
-                    ALPAKA_FCT_ACC_NO_CUDA AccThreads(
-                        TWorkDiv const & workDiv) :
-                            workdiv::BasicWorkDiv(workDiv),
-                            IdxThreads(m_mThreadsToIndices, m_v3uiGridBlockIdx),
-                            AtomicThreads(),
-                            m_v3uiGridBlockIdx(Vec3<>::zeros()),
-                            m_uiNumThreadsPerBlock(workdiv::getWorkDiv<Block, Threads, dim::Dim1>(workDiv)[0u])
-                    {}
-
-                public:
-                    //-----------------------------------------------------------------------------
-                    //! Copy constructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA AccThreads(AccThreads const &) = delete;
-    #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
-                    //-----------------------------------------------------------------------------
-                    //! Move constructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA AccThreads(AccThreads &&) = delete;
-    #endif
-                    //-----------------------------------------------------------------------------
-                    //! Copy assignment.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA auto operator=(AccThreads const &) -> AccThreads & = delete;
-                    //-----------------------------------------------------------------------------
-                    //! Destructor.
-                    //-----------------------------------------------------------------------------
-    #if BOOST_COMP_INTEL     // threads/AccThreads.hpp(134): error : the declared exception specification is incompatible with the generated one
-                    ALPAKA_FCT_ACC_NO_CUDA virtual ~AccThreads() = default;
-    #else
-                    ALPAKA_FCT_ACC_NO_CUDA virtual ~AccThreads() noexcept = default;
-    #endif
-
-                    //-----------------------------------------------------------------------------
-                    //! \return The requested indices.
-                    //-----------------------------------------------------------------------------
-                    template<
-                        typename TOrigin,
-                        typename TUnit,
-                        typename TDim = dim::Dim3>
-                    ALPAKA_FCT_ACC_NO_CUDA auto getIdx() const
-                    -> Vec<TDim>
-                    {
-                        return idx::getIdx<TOrigin, TUnit, TDim>(
-                            *static_cast<IdxThreads const *>(this),
-                            *static_cast<workdiv::BasicWorkDiv const *>(this));
-                    }
-
-                    //-----------------------------------------------------------------------------
-                    //! \return The requested extents.
-                    //-----------------------------------------------------------------------------
-                    template<
-                        typename TOrigin,
-                        typename TUnit,
-                        typename TDim = dim::Dim3>
-                    ALPAKA_FCT_ACC_NO_CUDA auto getWorkDiv() const
-                    -> Vec<TDim>
-                    {
-                        return workdiv::getWorkDiv<TOrigin, TUnit, TDim>(
-                            *static_cast<workdiv::BasicWorkDiv const *>(this));
-                    }
-
-                    //-----------------------------------------------------------------------------
-                    //! Execute the atomic operation on the given address with the given value.
-                    //! \return The old value before executing the atomic operation.
-                    //-----------------------------------------------------------------------------
-                    template<
-                        typename TOp,
-                        typename T>
-                    ALPAKA_FCT_ACC auto atomicOp(
-                        T * const addr,
-                        T const & value) const
-                    -> T
-                    {
-                        return atomic::atomicOp<TOp, T>(
-                            addr,
-                            value,
-                            *static_cast<AtomicThreads const *>(this));
-                    }
-
-                    //-----------------------------------------------------------------------------
-                    //! Syncs all threads in the current block.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA auto syncBlockThreads() const
-                    -> void
-                    {
-                        auto const idThread(std::this_thread::get_id());
-                        auto const itFind(m_mThreadsToBarrier.find(idThread));
-
-                        syncBlockThreads(itFind);
-                    }
-                private:
-                    //-----------------------------------------------------------------------------
-                    //! Syncs all threads in the current block.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA auto syncBlockThreads(
-                        std::map<std::thread::id, UInt>::iterator const & itFind) const
-                    -> void
-                    {
-                        assert(itFind != m_mThreadsToBarrier.end());
-
-                        auto & uiBarrierIdx(itFind->second);
-                        std::size_t const uiModBarrierIdx(uiBarrierIdx % 2);
-
-                        auto & bar(m_abarSyncThreads[uiModBarrierIdx]);
-
-                        // (Re)initialize a barrier if this is the first thread to reach it.
-                        if(bar.getNumThreadsToWaitFor() == 0)
-                        {
-                            std::lock_guard<std::mutex> lock(m_mtxBarrier);
-                            if(bar.getNumThreadsToWaitFor() == 0)
-                            {
-                                bar.reset(m_uiNumThreadsPerBlock);
-                            }
-                        }
-
-                        // Wait for the barrier.
-                        bar.wait();
-                        ++uiBarrierIdx;
-                    }
-                public:
-                    //-----------------------------------------------------------------------------
-                    //! \return Allocates block shared memory.
-                    //-----------------------------------------------------------------------------
-                    template<
-                        typename T,
-                        UInt TuiNumElements>
-                    ALPAKA_FCT_ACC_NO_CUDA auto allocBlockSharedMem() const
-                    -> T *
-                    {
-                        static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
-
-                        // Assure that all threads have executed the return of the last allocBlockSharedMem function (if there was one before).
-                        syncBlockThreads();
-
-                        // Arbitrary decision: The thread that was created first has to allocate the memory.
-                        if(m_idMasterThread == std::this_thread::get_id())
-                        {
-                            // \TODO: C++14 std::make_unique would be better.
-                            m_vvuiSharedMem.emplace_back(
-                                std::unique_ptr<uint8_t[]>(
-                                    reinterpret_cast<uint8_t*>(new T[TuiNumElements])));
-                        }
-                        syncBlockThreads();
-
-                        return reinterpret_cast<T*>(m_vvuiSharedMem.back().get());
-                    }
-
-                    //-----------------------------------------------------------------------------
-                    //! \return The pointer to the externally allocated block shared memory.
-                    //-----------------------------------------------------------------------------
-                    template<
-                        typename T>
-                    ALPAKA_FCT_ACC_NO_CUDA auto getBlockSharedExternMem() const
-                    -> T *
-                    {
-                        return reinterpret_cast<T*>(m_vuiExternalSharedMem.get());
-                    }
-
-    #ifdef ALPAKA_NVCC_FRIEND_ACCESS_BUG
-                protected:
-    #else
-                private:
-    #endif
-                    // getIdx
-                    detail::ThreadIdToIdxMap mutable m_mThreadsToIndices;       //!< The mapping of thread id's to thread indices.
-                    Vec3<> mutable m_v3uiGridBlockIdx;                         //!< The index of the currently executed block.
-
-                    // syncBlockThreads
-                    UInt const m_uiNumThreadsPerBlock;                          //!< The number of threads per block the barrier has to wait for.
-                    std::map<
-                        std::thread::id,
-                        UInt> mutable m_mThreadsToBarrier;                      //!< The mapping of thread id's to their current barrier.
-                    std::mutex mutable m_mtxBarrier;
-                    detail::ThreadBarrier mutable m_abarSyncThreads[2];         //!< The barriers for the synchronization of threads.
-                    //!< We have to keep the current and the last barrier because one of the threads can reach the next barrier before a other thread was wakeup from the last one and has checked if it can run.
-
-                    // allocBlockSharedMem
-                    std::thread::id mutable m_idMasterThread;                   //!< The id of the master thread.
-                    std::vector<
-                        std::unique_ptr<uint8_t[]>> mutable m_vvuiSharedMem;    //!< Block shared memory.
-
-                    // getBlockSharedExternMem
-                    std::unique_ptr<uint8_t[]> mutable m_vuiExternalSharedMem;  //!< External block shared memory.
-                };
-
                 //#############################################################################
                 //! The type given to the ConcurrentExecPool for yielding the current thread.
                 //#############################################################################
@@ -319,8 +99,9 @@ namespace alpaka
                         typename TWorkDiv>
                     ALPAKA_FCT_HOST ExecThreads(
                         TWorkDiv const & workDiv,
-                        StreamThreads const &) :
+                        devs::cpu::detail::StreamCpu & stream) :
                             AccThreads(workDiv),
+                            m_Stream(stream),
                             m_vFuturesInBlock(),
                             m_mtxMapInsert()
                     {
@@ -332,6 +113,7 @@ namespace alpaka
                     ALPAKA_FCT_HOST ExecThreads(
                         ExecThreads const & other) :
                             AccThreads(static_cast<workdiv::BasicWorkDiv const &>(other)),
+                            m_Stream(other.m_Stream),
                             m_vFuturesInBlock(),
                             m_mtxMapInsert()
                     {
@@ -343,6 +125,7 @@ namespace alpaka
                     ALPAKA_FCT_HOST ExecThreads(
                         ExecThreads && other) :
                             AccThreads(static_cast<workdiv::BasicWorkDiv &&>(other)),
+                            m_Stream(other.m_Stream),
                             m_vFuturesInBlock(),
                             m_mtxMapInsert()
                     {
@@ -498,6 +281,9 @@ namespace alpaka
                         this->AccThreads::syncBlockThreads(itThreadToBarrier);
                     }
 
+                public:
+                    devs::cpu::detail::StreamCpu m_Stream;
+
                 private:
                     std::vector<std::future<void>> mutable m_vFuturesInBlock; //!< The futures of the threads in the current block.
 
@@ -507,111 +293,92 @@ namespace alpaka
         }
     }
 
-    using AccThreads = accs::threads::detail::AccThreads;
-
     namespace traits
     {
         namespace acc
         {
             //#############################################################################
-            //! The threads accelerator kernel executor accelerator type trait specialization.
+            //! The threads accelerator executor accelerator type trait specialization.
             //#############################################################################
             template<>
             struct AccType<
                 accs::threads::detail::ExecThreads>
             {
-                using type = AccThreads;
-            };
-
-            //#############################################################################
-            //! The threads accelerator accelerator type trait specialization.
-            //#############################################################################
-            template<>
-            struct AccType<
-                accs::threads::detail::AccThreads>
-            {
                 using type = accs::threads::detail::AccThreads;
-            };
-
-            //#############################################################################
-            //! The threads accelerator name trait specialization.
-            //#############################################################################
-            template<>
-            struct GetAccName<
-                accs::threads::detail::AccThreads>
-            {
-                ALPAKA_FCT_HOST_ACC static auto getAccName()
-                -> std::string
-                {
-                    return "AccThreads";
-                }
             };
         }
 
         namespace event
         {
             //#############################################################################
-            //! The threads accelerator event type trait specialization.
+            //! The threads accelerator executor event type trait specialization.
             //#############################################################################
             template<>
             struct EventType<
-                accs::threads::detail::AccThreads>
+                accs::threads::detail::ExecThreads>
             {
-                using type = accs::threads::detail::EventThreads;
+                using type = devs::cpu::detail::EventCpu;
             };
         }
 
         namespace exec
         {
             //#############################################################################
-            //! The threads accelerator executor type trait specialization.
+            //! The threads accelerator executor executor type trait specialization.
             //#############################################################################
             template<>
             struct ExecType<
-                accs::threads::detail::AccThreads>
+                accs::threads::detail::ExecThreads>
             {
                 using type = accs::threads::detail::ExecThreads;
             };
         }
 
-        namespace mem
+        namespace dev
         {
             //#############################################################################
-            //! The threads accelerator memory space trait specialization.
+            //! The threads accelerator executor device type trait specialization.
             //#############################################################################
             template<>
-            struct SpaceType<
-                accs::threads::detail::AccThreads>
+            struct DevType<
+                accs::threads::detail::ExecThreads>
             {
-                using type = alpaka::mem::SpaceHost;
+                using type = devs::cpu::detail::DevCpu;
+            };
+            //#############################################################################
+            //! The threads accelerator device type trait specialization.
+            //#############################################################################
+            template<>
+            struct DevManType<
+                accs::threads::detail::ExecThreads>
+            {
+                using type = devs::cpu::detail::DevManCpu;
             };
         }
 
         namespace stream
         {
             //#############################################################################
-            //! The threads accelerator stream type trait specialization.
+            //! The threads accelerator executor stream type trait specialization.
             //#############################################################################
             template<>
             struct StreamType<
-                accs::threads::detail::AccThreads>
+                accs::threads::detail::ExecThreads>
             {
-                using type = accs::threads::detail::StreamThreads;
+                using type = devs::cpu::detail::StreamCpu;
             };
-
             //#############################################################################
-            //! The threads accelerator kernel executor stream get trait specialization.
+            //! The threads accelerator executor stream get trait specialization.
             //#############################################################################
             template<>
             struct GetStream<
                 accs::threads::detail::ExecThreads>
             {
                 ALPAKA_FCT_HOST static auto getStream(
-                    accs::threads::detail::ExecThreads const &)
-                -> accs::threads::detail::StreamThreads
+                    accs::threads::detail::ExecThreads const & exec)
+                -> devs::cpu::detail::StreamCpu
                 {
-                    return accs::threads::detail::StreamThreads(
-                        accs::threads::detail::DevManThreads::getDevByIdx(0));
+                    return exec.m_Stream;
                 }
             };
         }

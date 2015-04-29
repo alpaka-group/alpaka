@@ -22,12 +22,11 @@
 #pragma once
 
 #include <alpaka/traits/Rand.hpp>           // CreateNormalReal, ...
-#include <alpaka/traits/mem/Space.hpp>      // SpaceT
 
 #include <alpaka/core/Common.hpp>           // ALPAKA_FCT_ACC_CUDA_ONLY
 
 #include <alpaka/accs/cuda/Common.hpp>      // ALPAKA_CUDA_RT_CHECK
-#include <alpaka/accs/cuda/mem/Space.hpp>   // SpaceCuda
+#include <alpaka/accs/cuda/Dev.hpp>         // DevCuda
 
 #include <curand_kernel.h>                  // curand_init, ...
 
@@ -254,8 +253,8 @@ namespace alpaka
                     T,
                     typename std::enable_if<
                         std::is_same<
-                            alpaka::mem::SpaceT<TAcc>,
-                            alpaka::mem::SpaceCuda>::value
+                            alpaka::dev::DevT<TAcc>,
+                            alpaka::accs::cuda::detail::DevCuda>::value
                         && std::is_floating_point<T>::value>::type>
                 {
                     ALPAKA_FCT_ACC_CUDA_ONLY static auto createNormalReal(
@@ -266,7 +265,7 @@ namespace alpaka
                     }
                 };
                 //#############################################################################
-                //! The host random number float uniform distribution get trait specialization.
+                //! The cpu random number float uniform distribution get trait specialization.
                 //#############################################################################
                 template<
                     typename TAcc,
@@ -276,8 +275,8 @@ namespace alpaka
                     T,
                     typename std::enable_if<
                         std::is_same<
-                            alpaka::mem::SpaceT<TAcc>,
-                            alpaka::mem::SpaceCuda>::value
+                            alpaka::dev::DevT<TAcc>,
+                            alpaka::accs::cuda::detail::DevCuda>::value
                         && std::is_floating_point<T>::value>::type>
                 {
                     ALPAKA_FCT_ACC_CUDA_ONLY static auto createUniformReal(
@@ -288,7 +287,7 @@ namespace alpaka
                     }
                 };
                 //#############################################################################
-                //! The host random number integer uniform distribution get trait specialization.
+                //! The cpu random number integer uniform distribution get trait specialization.
                 //#############################################################################
                 template<
                     typename TAcc,
@@ -298,8 +297,8 @@ namespace alpaka
                     T,
                     typename std::enable_if<
                         std::is_same<
-                            alpaka::mem::SpaceT<TAcc>,
-                            alpaka::mem::SpaceCuda>::value
+                            alpaka::dev::DevT<TAcc>,
+                            alpaka::accs::cuda::detail::DevCuda>::value
                         && std::is_integral<T>::value>::type>
                 {
                     ALPAKA_FCT_ACC_CUDA_ONLY static auto createUniformUint(
@@ -314,7 +313,7 @@ namespace alpaka
             namespace generator
             {
                 //#############################################################################
-                //! The host random number default generator get trait specialization.
+                //! The cpu random number default generator get trait specialization.
                 //#############################################################################
                 template<
                     typename TAcc>
@@ -322,8 +321,8 @@ namespace alpaka
                     TAcc,
                     typename std::enable_if<
                         std::is_same<
-                            alpaka::mem::SpaceT<TAcc>,
-                            alpaka::mem::SpaceCuda>::value>::type>
+                            alpaka::dev::DevT<TAcc>,
+                            alpaka::accs::cuda::detail::DevCuda>::value>::type>
                 {
                     ALPAKA_FCT_ACC_CUDA_ONLY static auto createDefault(
                         TAcc const & acc,

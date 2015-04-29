@@ -21,6 +21,5 @@
 
 #pragma once
 
-#include <alpaka/accs/cuda/mem/Buf.hpp>     // BufCuda
-#include <alpaka/accs/cuda/mem/Copy.hpp>    // Copy
-#include <alpaka/accs/cuda/mem/Set.hpp>     // Set
+#include <alpaka/devs/cpu/mem/Buf.hpp>  // BufCpu
+#include <alpaka/devs/cpu/mem/Copy.hpp> // Copy

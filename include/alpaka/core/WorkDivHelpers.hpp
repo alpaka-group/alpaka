@@ -21,7 +21,8 @@
 
 #pragma once
 
-#include <alpaka/traits/Dev.hpp>            // dev::DevManT, getProps
+#include <alpaka/traits/Dev.hpp>            // dev::DevManT
+#include <alpaka/traits/Acc.hpp>            // getAccDevProps
 
 #include <alpaka/core/BasicWorkDiv.hpp>     // workdiv::BasicWorkDiv
 #include <alpaka/core/ForEachType.hpp>      // forEachType
@@ -60,7 +61,7 @@ namespace alpaka
                     auto const vDevs(dev::getDevs<dev::DevManT<TAcc>>());
                     for(auto const & dev : vDevs)
                     {
-                        auto const devProps(dev::getProps(dev));
+                        auto const devProps(acc::getAccDevProps<TAcc>(dev));
                         auto const & v3uiBlockThreadExtentsMax(devProps.m_v3uiBlockThreadExtentsMax);
 
                         v3uiBlockThreadExtents = Vec3<>(
@@ -116,7 +117,7 @@ namespace alpaka
                     auto const vDevs(dev::getDevs<dev::DevManT<TAcc>>());
                     for(auto const & dev : vDevs)
                     {
-                        auto const devProps(dev::getProps(dev));
+                        auto const devProps(acc::getAccDevProps<TAcc>(dev));
                         auto const & uiBlockThreadCountMax(devProps.m_uiBlockThreadsCountMax);
 
                         uiBlockThreadCount = std::min(uiBlockThreadCount, uiBlockThreadCountMax);
@@ -274,6 +275,7 @@ namespace alpaka
         //! \return If the work division is valid on this accelerator.
         //-----------------------------------------------------------------------------
         template<
+            typename TAcc,
             typename TDev,
             typename TWorkDiv>
         ALPAKA_FCT_HOST auto isValidWorkDiv(
@@ -284,7 +286,7 @@ namespace alpaka
             auto const v3uiGridBlockExtents(getWorkDiv<Grid, Blocks, dim::Dim3>(workDiv));
             auto const v3uiBlockThreadExtents(getWorkDiv<Block, Threads, dim::Dim3>(workDiv));
 
-            auto const devProps(dev::getProps(dev));
+            auto const devProps(acc::getAccDevProps<TAcc>(dev));
             auto const & v3uiBlockThreadExtentsMax(devProps.m_v3uiBlockThreadExtentsMax);
             auto const & uiBlockThreadCountMax(devProps.m_uiBlockThreadsCountMax);
 

@@ -21,13 +21,8 @@
 
 #pragma once
 
-#include <alpaka/host/mem/Space.hpp>        // SpaceHost
-#include <alpaka/accs/cuda/mem/Space.hpp>   // SpaceCuda
-#include <alpaka/host/Dev.hpp>              // host::getDev
-
 #include <alpaka/traits/Dim.hpp>            // dim::DimType
 #include <alpaka/traits/Extent.hpp>         // traits::getXXX
-#include <alpaka/traits/Mem.hpp>            // mem::SpaceType
 
 #include <alpaka/core/Common.hpp>           // ALPAKA_FCT_HOST
 
@@ -40,13 +35,13 @@
 
 namespace alpaka
 {
-    namespace accs
+    namespace devs
     {
-        namespace serial
+        namespace cpu
         {
             namespace detail
             {
-                class DevSerial;
+                class DevCpu;
             }
         }
     }
@@ -73,7 +68,7 @@ namespace alpaka
                 TFixedSizeArray,
                 typename std::enable_if<std::is_array<TFixedSizeArray>::value>::type>
             {
-                using type = accs::serial::detail::DevSerial;
+                using type = devs::cpu::detail::DevCpu;
             };
 
             //#############################################################################
@@ -87,9 +82,10 @@ namespace alpaka
             {
                 ALPAKA_FCT_HOST static auto getDev(
                     TFixedSizeArray const & buf)
-                    -> accs::serial::detail::DevSerial
+                    -> devs::cpu::detail::DevCpu
                 {
-                    return alpaka::host::getDev();
+                    // \FIXME: CUDA device?
+                    return alpaka::devs::cpu::getDev();
                 }
             };
         }
@@ -167,23 +163,6 @@ namespace alpaka
 
         namespace mem
         {
-            //#############################################################################
-            //! The fixed size array memory space trait specialization.
-            //#############################################################################
-            template<
-                typename TFixedSizeArray>
-            struct SpaceType<
-                TFixedSizeArray,
-                typename std::enable_if<
-                    std::is_array<TFixedSizeArray>::value>::type>
-            {
-#ifdef __CUDA_ARCH__
-                using type = alpaka::mem::SpaceCuda;
-#else
-                using type = alpaka::mem::SpaceHost;
-#endif
-            };
-
             //#############################################################################
             //! The fixed size array memory element type get trait specialization.
             //#############################################################################
@@ -297,7 +276,7 @@ namespace alpaka
             struct DevType<
                 std::array<TElem, TuiSize>>
             {
-                using type = accs::serial::detail::DevSerial;
+                using type = devs::cpu::detail::DevCpu;
             };
 
             //#############################################################################
@@ -311,9 +290,9 @@ namespace alpaka
             {
                 ALPAKA_FCT_HOST static auto getDev(
                     std::array<TElem, TuiSize> const & buf)
-                    -> accs::serial::detail::DevSerial
+                    -> devs::cpu::detail::DevCpu
                 {
-                    return alpaka::host::getDev();
+                    return alpaka::devs::cpu::getDev();
                 }
             };
         }
@@ -387,18 +366,6 @@ namespace alpaka
 
         namespace mem
         {
-            //#############################################################################
-            //! The std::array memory space trait specialization.
-            //#############################################################################
-            template<
-                typename TElem,
-                UInt TuiSize>
-            struct SpaceType<
-                std::array<TElem, TuiSize>>
-            {
-                using type = alpaka::mem::SpaceHost;
-            };
-
             //#############################################################################
             //! The std::array memory element type get trait specialization.
             //#############################################################################
@@ -499,7 +466,7 @@ namespace alpaka
             struct DevType<
                 std::vector<TElem, TAllocator>>
             {
-                using type = accs::serial::detail::DevSerial;
+                using type = devs::cpu::detail::DevCpu;
             };
 
             //#############################################################################
@@ -513,9 +480,9 @@ namespace alpaka
             {
                 ALPAKA_FCT_HOST static auto getDev(
                     std::vector<TElem, TAllocator> const & buf)
-                    -> accs::serial::detail::DevSerial
+                    -> devs::cpu::detail::DevCpu
                 {
-                    return alpaka::host::getDev();
+                    return alpaka::devs::cpu::getDev();
                 }
             };
         }
@@ -583,18 +550,6 @@ namespace alpaka
 
         namespace mem
         {
-            //#############################################################################
-            //! The std::vector memory space trait specialization.
-            //#############################################################################
-            template<
-                typename TElem,
-                typename TAllocator>
-            struct SpaceType<
-                std::vector<TElem, TAllocator>>
-            {
-                using type = alpaka::mem::SpaceHost;
-            };
-
             //#############################################################################
             //! The std::vector memory element type get trait specialization.
             //#############################################################################

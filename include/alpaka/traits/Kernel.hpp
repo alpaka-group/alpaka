@@ -27,7 +27,7 @@
 #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 
 //-----------------------------------------------------------------------------
-//! The name space for the accelerator library.
+//! The alpaka accelerator library.
 //-----------------------------------------------------------------------------
 namespace alpaka
 {

@@ -22,7 +22,6 @@
 #pragma once
 
 #include <alpaka/traits/Dim.hpp>        // DimT
-#include <alpaka/traits/mem/Space.hpp>  // SpaceT
 
 #include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST
 
@@ -86,19 +85,19 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TDim,
-                typename TSpace,
+                typename TDev,
                 typename TSfinae = void>
             struct Set;
 
             //#############################################################################
             //! The memory copy trait.
             //!
-            //! Copies memory from one buffer into another buffer possibly in a different memory space.
+            //! Copies memory from one buffer into another buffer possibly on a different device.
             //#############################################################################
             template<
                 typename TDim,
-                typename TSpaceDst,
-                typename TSpaceSrc,
+                typename TDevDst,
+                typename TDevSrc,
                 typename TSfinae = void>
             struct Copy;
 
@@ -276,7 +275,7 @@ namespace alpaka
 
             traits::mem::Set<
                 dim::DimT<TView>,
-                SpaceT<TView>>
+                dev::DevT<TView>>
             ::set(
                 buf,
                 byte,
@@ -308,7 +307,7 @@ namespace alpaka
 
             traits::mem::Set<
                 dim::DimT<TView>,
-                SpaceT<TView>,
+                dev::DevT<TView>,
                 TStream>
             ::set(
                 buf,
@@ -346,8 +345,8 @@ namespace alpaka
 
             traits::mem::Copy<
                 dim::DimT<TBufDst>,
-                SpaceT<TBufDst>,
-                SpaceT<TBufSrc>>
+                dev::DevT<TBufDst>,
+                dev::DevT<TBufSrc>>
             ::copy(
                 bufDst,
                 bufSrc,
@@ -386,8 +385,8 @@ namespace alpaka
 
             traits::mem::Copy<
                 dim::DimT<TBufDst>,
-                SpaceT<TBufDst>,
-                SpaceT<TBufSrc>>
+                dev::DevT<TBufDst>,
+                dev::DevT<TBufSrc>>
             ::copy(
                 bufDst,
                 bufSrc,

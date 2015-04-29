@@ -78,7 +78,7 @@ namespace alpaka
         template<
             typename TDev>
         ALPAKA_FCT_HOST auto create(
-            TDev const & dev)
+            TDev & dev)
         -> StreamT<TDev>
         {
             return StreamT<TDev>(dev);
@@ -106,7 +106,7 @@ namespace alpaka
             typename T>
         ALPAKA_FCT_HOST_ACC auto getStream(
             T const & type)
-        -> decltype(traits::stream::GetStream<T>::getStream(std::declval<T const &>()))
+        -> decltype(traits::stream::GetStream<T>::getStream(type))
         {
             return traits::stream::GetStream<
                 T>

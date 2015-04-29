@@ -22,19 +22,19 @@
 #pragma once
 
 // AccSerial is always enabled because the host::getDev uses it.
-#include <alpaka/accs/serial/AccSerial.hpp>
+#include <alpaka/accs/serial/Serial.hpp>
 
 #ifdef ALPAKA_THREADS_ENABLED
-    #include <alpaka/accs/threads/AccThreads.hpp>
+    #include <alpaka/accs/threads/Threads.hpp>
 #endif
 #ifdef ALPAKA_FIBERS_ENABLED
-    #include <alpaka/accs/fibers/AccFibers.hpp>
+    #include <alpaka/accs/fibers/Fibers.hpp>
 #endif
 #ifdef ALPAKA_OPENMP2_ENABLED
-    #include <alpaka/accs/omp/omp2/AccOmp2.hpp>
+    #include <alpaka/accs/omp/omp2/Omp2.hpp>
 #endif
 #ifdef ALPAKA_CUDA_ENABLED
-    #include <alpaka/accs/cuda/AccCuda.hpp>
+    #include <alpaka/accs/cuda/Cuda.hpp>
 #endif
 
 #include <alpaka/traits/Acc.hpp>            // traits::GetAccName

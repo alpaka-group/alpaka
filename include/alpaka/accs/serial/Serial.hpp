@@ -21,13 +21,9 @@
 
 #pragma once
 
-#include <alpaka/accs/fibers/Atomic.hpp>            // AtomicFibers
-#include <alpaka/accs/fibers/Barrier.hpp>           // BarrierFibers
-#include <alpaka/accs/fibers/Common.hpp>
-#include <alpaka/accs/fibers/Dev.hpp>               // Devices
-#include <alpaka/accs/fibers/Event.hpp>             // EventFibers
-#include <alpaka/accs/fibers/Exec.hpp>              // ExecFibers
-#include <alpaka/accs/fibers/Idx.hpp>               // IdxFibers
-#include <alpaka/accs/fibers/Stream.hpp>            // StreamFibers
-#include <alpaka/host/Mem.hpp>                      // Copy
-#include <alpaka/host/Rand.hpp>                     // rand
+#include <alpaka/accs/serial/Acc.hpp>       // AccSerial
+#include <alpaka/accs/serial/Atomic.hpp>    // AtomicSerial
+#include <alpaka/accs/serial/Exec.hpp>      // ExecSerial
+#include <alpaka/accs/serial/Idx.hpp>       // IdxSerial
+#include <alpaka/devs/cpu/Mem.hpp>          // Copy
+#include <alpaka/devs/cpu/Rand.hpp>         // rand

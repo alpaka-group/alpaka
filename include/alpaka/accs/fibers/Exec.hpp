@@ -21,252 +21,40 @@
 
 #pragma once
 
-// Base classes.
-#include <alpaka/core/BasicWorkDiv.hpp>         // workdiv::BasicWorkDiv
-#include <alpaka/accs/fibers/Idx.hpp>           // IdxFibers
-#include <alpaka/accs/fibers/Atomic.hpp>        // AtomicFibers
-#include <alpaka/accs/fibers/Barrier.hpp>       // BarrierFibers
-
 // Specialized traits.
 #include <alpaka/traits/Acc.hpp>                // AccType
 #include <alpaka/traits/Exec.hpp>               // ExecType
 #include <alpaka/traits/Event.hpp>              // EventType
-#include <alpaka/traits/Mem.hpp>                // SpaceType
+#include <alpaka/traits/Dev.hpp>                // DevType
 #include <alpaka/traits/Stream.hpp>             // StreamType
 
 // Implementation details.
+#include <alpaka/accs/fibers/Acc.hpp>           // AccFibers
 #include <alpaka/accs/fibers/Common.hpp>
-#include <alpaka/accs/fibers/Dev.hpp>           // Devices
-#include <alpaka/accs/fibers/Stream.hpp>        // StreamFibers
-#include <alpaka/host/mem/Space.hpp>            // SpaceHost
-#include <alpaka/traits/Kernel.hpp>             // BlockSharedExternMemSizeBytes
+#include <alpaka/core/BasicWorkDiv.hpp>         // workdiv::BasicWorkDiv
 #include <alpaka/core/ConcurrentExecPool.hpp>   // ConcurrentExecPool
+#include <alpaka/devs/cpu/Dev.hpp>              // DevCpu
+#include <alpaka/devs/cpu/Event.hpp>            // EventCpu
+#include <alpaka/devs/cpu/Stream.hpp>           // StreamCpu
+#include <alpaka/traits/Kernel.hpp>             // BlockSharedExternMemSizeBytes
 
 #include <boost/predef.h>                       // workarounds
 
-#include <cassert>                              // assert
-#include <stdexcept>                            // std::except
-#include <memory>                               // std::unique_ptr
+#include <algorithm>                            // std::for_each
+#include <utility>                              // std::forward
+#include <vector>                               // std::vector
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+    #include <iostream>                         // std::cout
+#endif
 
 namespace alpaka
 {
     namespace accs
     {
-        //-----------------------------------------------------------------------------
-        //! The fibers accelerator.
-        //-----------------------------------------------------------------------------
         namespace fibers
         {
-            //-----------------------------------------------------------------------------
-            //! The fibers accelerator implementation details.
-            //-----------------------------------------------------------------------------
             namespace detail
             {
-                class ExecFibers;
-
-                //#############################################################################
-                //! The fibers accelerator.
-                //!
-                //! This accelerator allows parallel kernel execution on the host.
-                //! It uses boost::fibers to implement the cooperative parallelism.
-                //! By using fibers the shared memory can reside in the closest memory/cache available.
-                //! Furthermore there is no false sharing between neighboring threads as it is the case in real multi-threading.
-                //#############################################################################
-                class AccFibers :
-                    protected workdiv::BasicWorkDiv,
-                    protected IdxFibers,
-                    protected AtomicFibers
-                {
-                public:
-                    using MemSpace = mem::SpaceHost;
-
-                    friend class ::alpaka::accs::fibers::detail::ExecFibers;
-
-                private:
-                    //-----------------------------------------------------------------------------
-                    //! Constructor.
-                    //-----------------------------------------------------------------------------
-                    template<
-                        typename TWorkDiv>
-                    ALPAKA_FCT_ACC_NO_CUDA AccFibers(
-                        TWorkDiv const & workDiv) :
-                            workdiv::BasicWorkDiv(workDiv),
-                            IdxFibers(m_mFibersToIndices, m_v3uiGridBlockIdx),
-                            AtomicFibers(),
-                            m_v3uiGridBlockIdx(Vec3<>::zeros()),
-                            m_uiNumThreadsPerBlock(workdiv::getWorkDiv<Block, Threads, dim::Dim1>(workDiv)[0u])
-                    {}
-
-                public:
-                    //-----------------------------------------------------------------------------
-                    //! Copy constructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA AccFibers(AccFibers const &) = delete;
-#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
-                    //-----------------------------------------------------------------------------
-                    //! Move constructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA AccFibers(AccFibers &&) = delete;
-#endif
-                    //-----------------------------------------------------------------------------
-                    //! Copy assignment.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA auto operator=(AccFibers const &) -> AccFibers & = delete;
-                    //-----------------------------------------------------------------------------
-                    //! Destructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA virtual ~AccFibers() noexcept = default;
-
-                    //-----------------------------------------------------------------------------
-                    //! \return The requested indices.
-                    //-----------------------------------------------------------------------------
-                    template<
-                        typename TOrigin,
-                        typename TUnit,
-                        typename TDim = dim::Dim3>
-                    ALPAKA_FCT_ACC_NO_CUDA auto getIdx() const
-                    -> Vec<TDim>
-                    {
-                        return idx::getIdx<TOrigin, TUnit, TDim>(
-                            *static_cast<IdxFibers const *>(this),
-                            *static_cast<workdiv::BasicWorkDiv const *>(this));
-                    }
-
-                    //-----------------------------------------------------------------------------
-                    //! \return The requested extents.
-                    //-----------------------------------------------------------------------------
-                    template<
-                        typename TOrigin,
-                        typename TUnit,
-                        typename TDim = dim::Dim3>
-                    ALPAKA_FCT_ACC_NO_CUDA auto getWorkDiv() const
-                    -> Vec<TDim>
-                    {
-                        return workdiv::getWorkDiv<TOrigin, TUnit, TDim>(
-                            *static_cast<workdiv::BasicWorkDiv const *>(this));
-                    }
-
-                    //-----------------------------------------------------------------------------
-                    //! Execute the atomic operation on the given address with the given value.
-                    //! \return The old value before executing the atomic operation.
-                    //-----------------------------------------------------------------------------
-                    template<
-                        typename TOp,
-                        typename T>
-                    ALPAKA_FCT_ACC auto atomicOp(
-                        T * const addr,
-                        T const & value) const
-                    -> T
-                    {
-                        return atomic::atomicOp<TOp, T>(
-                            addr,
-                            value,
-                            *static_cast<AtomicFibers const *>(this));
-                    }
-
-                    //-----------------------------------------------------------------------------
-                    //! Syncs all threads in the current block.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA auto syncBlockThreads() const
-                    -> void
-                    {
-                        auto const idFiber(boost::this_fiber::get_id());
-                        auto const itFind(m_mFibersToBarrier.find(idFiber));
-
-                        syncBlockThreads(itFind);
-                    }
-
-                private:
-                    //-----------------------------------------------------------------------------
-                    //! Syncs all threads in the current block.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA auto syncBlockThreads(
-                        std::map<boost::fibers::fiber::id, UInt>::iterator const & itFind) const
-                    -> void
-                    {
-                        assert(itFind != m_mFibersToBarrier.end());
-
-                        auto & uiBarrierIdx(itFind->second);
-                        std::size_t const uiModBarrierIdx(uiBarrierIdx % 2);
-
-                        auto & bar(m_abarSyncFibers[uiModBarrierIdx]);
-
-                        // (Re)initialize a barrier if this is the first fiber to reach it.
-                        if(bar.getNumFibersToWaitFor() == 0)
-                        {
-                            // No DCLP required because there can not be an interruption in between the check and the reset.
-                            bar.reset(m_uiNumThreadsPerBlock);
-                        }
-
-                        // Wait for the barrier.
-                        bar.wait();
-                        ++uiBarrierIdx;
-                    }
-                public:
-                    //-----------------------------------------------------------------------------
-                    //! \return Allocates block shared memory.
-                    //-----------------------------------------------------------------------------
-                    template<
-                        typename T,
-                        UInt TuiNumElements>
-                    ALPAKA_FCT_ACC_NO_CUDA auto allocBlockSharedMem() const
-                    -> T *
-                    {
-                        static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
-
-                        // Assure that all fibers have executed the return of the last allocBlockSharedMem function (if there was one before).
-                        syncBlockThreads();
-
-                        // Arbitrary decision: The fiber that was created first has to allocate the memory.
-                        if(m_idMasterFiber == boost::this_fiber::get_id())
-                        {
-                            // \TODO: C++14 std::make_unique would be better.
-                            m_vvuiSharedMem.emplace_back(
-                                std::unique_ptr<uint8_t[]>(
-                                    reinterpret_cast<uint8_t*>(new T[TuiNumElements])));
-                        }
-                        syncBlockThreads();
-
-                        return reinterpret_cast<T*>(m_vvuiSharedMem.back().get());
-                    }
-
-                    //-----------------------------------------------------------------------------
-                    //! \return The pointer to the externally allocated block shared memory.
-                    //-----------------------------------------------------------------------------
-                    template<
-                        typename T>
-                    ALPAKA_FCT_ACC_NO_CUDA auto getBlockSharedExternMem() const
-                    -> T *
-                    {
-                        return reinterpret_cast<T*>(m_vuiExternalSharedMem.get());
-                    }
-
-#ifdef ALPAKA_NVCC_FRIEND_ACCESS_BUG
-                protected:
-#else
-                private:
-#endif
-                    // getXxxIdx
-                    FiberIdToIdxMap mutable m_mFibersToIndices;                 //!< The mapping of fibers id's to fibers indices.
-                    Vec3<> mutable m_v3uiGridBlockIdx;                         //!< The index of the currently executed block.
-
-                    // syncBlockThreads
-                    UInt const m_uiNumThreadsPerBlock;                            //!< The number of threads per block the barrier has to wait for.
-                    std::map<
-                        boost::fibers::fiber::id,
-                        UInt> mutable m_mFibersToBarrier;                       //!< The mapping of fibers id's to their current barrier.
-                    FiberBarrier mutable m_abarSyncFibers[2];                   //!< The barriers for the synchronization of fibers.
-                    //!< We have the keep to current and the last barrier because one of the fibers can reach the next barrier before another fiber was wakeup from the last one and has checked if it can run.
-
-                    // allocBlockSharedMem
-                    boost::fibers::fiber::id mutable m_idMasterFiber;           //!< The id of the master fiber.
-                    std::vector<
-                        std::unique_ptr<uint8_t[]>> mutable m_vvuiSharedMem;    //!< Block shared memory.
-
-                    // getBlockSharedExternMem
-                    std::unique_ptr<uint8_t[]> mutable m_vuiExternalSharedMem;  //!< External block shared memory.
-                };
-
                 //#############################################################################
                 //! The type given to the ConcurrentExecPool for yielding the current fiber.
                 //#############################################################################
@@ -310,8 +98,9 @@ namespace alpaka
                         typename TWorkDiv>
                     ALPAKA_FCT_HOST ExecFibers(
                         TWorkDiv const & workDiv,
-                        StreamFibers const &):
+                        devs::cpu::detail::StreamCpu & stream):
                             AccFibers(workDiv),
+                            m_Stream(stream),
                             m_vFuturesInBlock()
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -322,6 +111,7 @@ namespace alpaka
                     ALPAKA_FCT_HOST ExecFibers(
                         ExecFibers const & other):
                             AccFibers(static_cast<workdiv::BasicWorkDiv const &>(other)),
+                            m_Stream(other.m_Stream),
                             m_vFuturesInBlock()
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -332,7 +122,8 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_HOST ExecFibers(
                         ExecFibers && other) :
-                            AccFibers(static_cast<workdiv::BasicWorkDiv &&>(other))
+                            AccFibers(static_cast<workdiv::BasicWorkDiv &&>(other)),
+                            m_Stream(other.m_Stream)
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                     }
@@ -485,6 +276,9 @@ namespace alpaka
                         this->AccFibers::syncBlockThreads(itFiberToBarrier);
                     }
 
+                public:
+                    devs::cpu::detail::StreamCpu m_Stream;
+
                 private:
                     std::vector<boost::fibers::future<void>> mutable m_vFuturesInBlock; //!< The futures of the fibers in the current block.
                 };
@@ -492,111 +286,92 @@ namespace alpaka
         }
     }
 
-    using AccFibers = accs::fibers::detail::AccFibers;
-
     namespace traits
     {
         namespace acc
         {
             //#############################################################################
-            //! The fibers accelerator kernel executor accelerator type trait specialization.
+            //! The fibers accelerator executor accelerator type trait specialization.
             //#############################################################################
             template<>
             struct AccType<
                 accs::fibers::detail::ExecFibers>
             {
-                using type = AccFibers;
-            };
-
-            //#############################################################################
-            //! The fibers accelerator accelerator type trait specialization.
-            //#############################################################################
-            template<>
-            struct AccType<
-                accs::fibers::detail::AccFibers>
-            {
                 using type = accs::fibers::detail::AccFibers;
-            };
-
-            //#############################################################################
-            //! The fibers accelerator name trait specialization.
-            //#############################################################################
-            template<>
-            struct GetAccName<
-                accs::fibers::detail::AccFibers>
-            {
-                ALPAKA_FCT_HOST_ACC static auto getAccName()
-                -> std::string
-                {
-                    return "AccFibers";
-                }
             };
         }
 
         namespace event
         {
             //#############################################################################
-            //! The fibers accelerator event type trait specialization.
+            //! The fibers accelerator executor event type trait specialization.
             //#############################################################################
             template<>
             struct EventType<
-                accs::fibers::detail::AccFibers>
+                accs::fibers::detail::ExecFibers>
             {
-                using type = accs::fibers::detail::EventFibers;
+                using type = devs::cpu::detail::EventCpu;
             };
         }
 
         namespace exec
         {
             //#############################################################################
-            //! The fibers accelerator executor type trait specialization.
+            //! The fibers accelerator executor executor type trait specialization.
             //#############################################################################
             template<>
             struct ExecType<
-                accs::fibers::detail::AccFibers>
+                accs::fibers::detail::ExecFibers>
             {
                 using type = accs::fibers::detail::ExecFibers;
             };
         }
 
-        namespace mem
+        namespace dev
         {
             //#############################################################################
-            //! The fibers accelerator memory space trait specialization.
+            //! The fibers accelerator executor device type trait specialization.
             //#############################################################################
             template<>
-            struct SpaceType<
-                accs::fibers::detail::AccFibers>
+            struct DevType<
+                accs::fibers::detail::ExecFibers>
             {
-                using type = alpaka::mem::SpaceHost;
+                using type = devs::cpu::detail::DevCpu;
+            };
+            //#############################################################################
+            //! The fibers accelerator device type trait specialization.
+            //#############################################################################
+            template<>
+            struct DevManType<
+                accs::fibers::detail::ExecFibers>
+            {
+                using type = devs::cpu::detail::DevManCpu;
             };
         }
 
         namespace stream
         {
             //#############################################################################
-            //! The fibers accelerator stream type trait specialization.
+            //! The fibers accelerator executor stream type trait specialization.
             //#############################################################################
             template<>
             struct StreamType<
-                accs::fibers::detail::AccFibers>
+                accs::fibers::detail::ExecFibers>
             {
-                using type = accs::fibers::detail::StreamFibers;
+                using type = devs::cpu::detail::StreamCpu;
             };
-
             //#############################################################################
-            //! The fibers accelerator kernel executor stream get trait specialization.
+            //! The fibers accelerator executor stream get trait specialization.
             //#############################################################################
             template<>
             struct GetStream<
                 accs::fibers::detail::ExecFibers>
             {
                 ALPAKA_FCT_HOST static auto getStream(
-                    accs::fibers::detail::ExecFibers const &)
-                -> accs::fibers::detail::StreamFibers
+                    accs::fibers::detail::ExecFibers const & exec)
+                -> devs::cpu::detail::StreamCpu
                 {
-                    return accs::fibers::detail::StreamFibers(
-                        accs::fibers::detail::DevManFibers::getDevByIdx(0));
+                    return exec.m_Stream;
                 }
             };
         }

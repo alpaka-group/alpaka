@@ -21,10 +21,11 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC
+#include <alpaka/core/AccDevProps.hpp>  // AccDevProps
+#include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST_ACC
 
-#include <string>                   // std::string
-#include <typeinfo>                 // typeid
+#include <string>                       // std::string
+#include <typeinfo>                     // typeid
 
 namespace alpaka
 {
@@ -45,6 +46,14 @@ namespace alpaka
                 typename T,
                 typename TSfinae = void>
             struct AccType;
+
+            //#############################################################################
+            //! The device properties get trait.
+            //#############################################################################
+            template<
+                typename TAcc,
+                typename TSfinae = void>
+            struct GetAccDevProps;
 
             //#############################################################################
             //! The accelerator name trait.
@@ -76,6 +85,22 @@ namespace alpaka
         template<
             typename T>
         using AccT = typename traits::acc::AccType<T>::type;
+
+        //-----------------------------------------------------------------------------
+        //! \return The acceleration properties on the given device.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TAcc,
+            typename TDev>
+        ALPAKA_FCT_HOST auto getAccDevProps(
+            TDev const & dev)
+        -> AccDevProps
+        {
+            return traits::acc::GetAccDevProps<
+                TAcc>
+            ::getAccDevProps(
+                dev);
+        }
 
         //-----------------------------------------------------------------------------
         //! Writes the accelerator name to the given stream.

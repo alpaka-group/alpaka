@@ -25,7 +25,7 @@
 #include <alpaka/traits/Dev.hpp>                    // DevT
 #include <alpaka/traits/Extent.hpp>                 // traits::getXXX
 #include <alpaka/traits/Offset.hpp>                 // traits::getOffsetX
-#include <alpaka/traits/mem/View.hpp>               // SpaceT, ...
+#include <alpaka/traits/mem/View.hpp>
 
 #include <alpaka/core/mem/BufPlainPtrWrapper.hpp>   // BufPlainPtrWrapper
 #include <alpaka/core/Vec.hpp>                      // Vec
@@ -69,7 +69,6 @@ namespace alpaka
                 using Buf = BufPlainPtrWrapper<TElem, TDim, TDev>;
                 // If the value type is const, we store a const buffer.
                 //using BufC = alpaka::detail::MimicConst<TElem, Buf>;
-                using MemSpace = SpaceT<acc::AccT<TDev>>;
 
             public:
                 //-----------------------------------------------------------------------------
@@ -293,19 +292,6 @@ namespace alpaka
 
         namespace mem
         {
-            //#############################################################################
-            //! The View memory space trait specialization.
-            //#############################################################################
-            template<
-                typename TElem,
-                typename TDim,
-                typename TDev>
-            struct SpaceType<
-                alpaka::mem::detail::View<TElem, TDim, TDev>>
-            {
-                using type = typename alpaka::mem::detail::View<TElem, TDim, TDev>::MemSpace;
-            };
-
             //#############################################################################
             //! The View memory element type get trait specialization.
             //#############################################################################

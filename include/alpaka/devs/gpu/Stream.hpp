@@ -21,11 +21,15 @@
 
 #pragma once
 
-#include <alpaka/accs/serial/Atomic.hpp>    // AtomicSerial
-#include <alpaka/accs/serial/Dev.hpp>       // Devices
-#include <alpaka/accs/serial/Event.hpp>     // EventSerial
-#include <alpaka/accs/serial/Exec.hpp>      // ExecSerial
-#include <alpaka/accs/serial/Idx.hpp>       // IdxSerial
-#include <alpaka/accs/serial/Stream.hpp>    // StreamSerial
-#include <alpaka/host/Mem.hpp>              // Copy
-#include <alpaka/host/Rand.hpp>             // rand
+#include <alpaka/accs/cuda/Stream.hpp>     // StreamCuda
+
+namespace alpaka
+{
+    namespace dev
+    {
+        namespace gpu
+        {
+            using StreamGpu = alpaka::accs::cuda::detail::StreamCuda;
+        }
+    }
+}

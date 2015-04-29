@@ -21,12 +21,11 @@
 
 #pragma once
 
-#include <alpaka/accs/cuda/mem/Space.hpp>   // SpaceCuda
 #include <alpaka/accs/cuda/mem/Set.hpp>     // Set
 #include <alpaka/accs/cuda/Dev.hpp>         // DevCuda
 #include <alpaka/accs/cuda/Common.hpp>
 
-#include <alpaka/host/mem/Buf.hpp>          // BufHost
+#include <alpaka/devs/cpu/mem/Buf.hpp>      // BufCpu
 
 #include <alpaka/core/mem/View.hpp>         // View
 #include <alpaka/core/BasicDims.hpp>        // dim::Dim<N>
@@ -244,18 +243,6 @@ namespace alpaka
                 accs::cuda::detail::DevCuda>
             {
                 using type = alpaka::mem::detail::View<TElem, TDim, accs::cuda::detail::DevCuda>;
-            };
-
-            //#############################################################################
-            //! The BufCuda memory space trait specialization.
-            //#############################################################################
-            template<
-                typename TElem,
-                typename TDim>
-            struct SpaceType<
-                accs::cuda::detail::BufCuda<TElem, TDim>>
-            {
-                using type = alpaka::mem::SpaceCuda;
             };
 
             //#############################################################################
@@ -630,28 +617,27 @@ namespace alpaka
     }
 
     //-----------------------------------------------------------------------------
-    // Trait specializations for BufHost.
+    // Trait specializations for BufCpu.
     //-----------------------------------------------------------------------------
     namespace traits
     {
         namespace mem
         {
             //#############################################################################
-            //! The BufHost CUDA memory mapping trait specialization.
+            //! The BufCpu CUDA memory mapping trait specialization.
             //#############################################################################
             template<
                 typename TElem,
-                typename TDim,
-                typename TDev>
+                typename TDim>
             struct Map<
-                host::detail::BufHost<TElem, TDim, TDev>,
+                devs::cpu::detail::BufCpu<TElem, TDim>,
                 accs::cuda::detail::DevCuda>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto map(
-                    host::detail::BufHost<TElem, TDim, TDev> const & buf,
+                    devs::cpu::detail::BufCpu<TElem, TDim> const & buf,
                     accs::cuda::detail::DevCuda const & dev)
                 -> void
                 {
@@ -665,7 +651,7 @@ namespace alpaka
                         ALPAKA_CUDA_RT_CHECK(
                             cudaHostRegister(
                                 const_cast<void *>(reinterpret_cast<void const *>(alpaka::mem::getPtrNative(buf))),
-                                alpaka::extent::getProductOfExtents<std::size_t>(buf) * sizeof(alpaka::mem::ElemT<host::detail::BufHost<TElem, TDim, TDev>>),
+                                alpaka::extent::getProductOfExtents<std::size_t>(buf) * sizeof(alpaka::mem::ElemT<devs::cpu::detail::BufCpu<TElem, TDim>>),
                                 cudaHostRegisterMapped));
                     }
                     // If it is already the same device, nothing has to be mapped.
@@ -673,21 +659,20 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The BufHost CUDA memory unmapping trait specialization.
+            //! The BufCpu CUDA memory unmapping trait specialization.
             //#############################################################################
             template<
                 typename TElem,
-                typename TDim,
-                typename TDev>
+                typename TDim>
             struct Unmap<
-                host::detail::BufHost<TElem, TDim, TDev>,
+                devs::cpu::detail::BufCpu<TElem, TDim>,
                 accs::cuda::detail::DevCuda>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto unmap(
-                    host::detail::BufHost<TElem, TDim, TDev> const & buf,
+                    devs::cpu::detail::BufCpu<TElem, TDim> const & buf,
                     accs::cuda::detail::DevCuda const & dev)
                 -> void
                 {
@@ -706,21 +691,20 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The BufHost pointer on device get trait specialization.
+            //! The BufCpu pointer on device get trait specialization.
             //#############################################################################
             template<
                 typename TElem,
-                typename TDim,
-                typename TDev>
+                typename TDim>
             struct GetPtrDev<
-                host::detail::BufHost<TElem, TDim, TDev>,
+                devs::cpu::detail::BufCpu<TElem, TDim>,
                 accs::cuda::detail::DevCuda>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getPtrDev(
-                    host::detail::BufHost<TElem, TDim, TDev> const & buf,
+                    devs::cpu::detail::BufCpu<TElem, TDim> const & buf,
                     accs::cuda::detail::DevCuda const & dev)
                 -> TElem const *
                 {
@@ -737,7 +721,7 @@ namespace alpaka
                 //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getPtrDev(
-                    host::detail::BufHost<TElem, TDim, TDev> & buf,
+                    devs::cpu::detail::BufCpu<TElem, TDim> & buf,
                     accs::cuda::detail::DevCuda const & dev)
                 -> TElem *
                 {

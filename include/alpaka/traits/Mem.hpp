@@ -23,4 +23,3 @@
 
 #include <alpaka/traits/mem/Buf.hpp>    // Alloc
 #include <alpaka/traits/mem/View.hpp>   // ViewType
-#include <alpaka/traits/mem/Space.hpp>  // SpaceT

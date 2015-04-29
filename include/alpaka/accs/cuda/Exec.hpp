@@ -21,196 +21,37 @@
 
 #pragma once
 
-// Base classes.
-#include <alpaka/accs/cuda/WorkDiv.hpp>     // WorkDivCuda
-#include <alpaka/accs/cuda/Idx.hpp>         // IdxCuda
-#include <alpaka/accs/cuda/Atomic.hpp>      // AtomicCuda
-
 // Specialized traits.
 #include <alpaka/traits/Acc.hpp>            // AccType
 #include <alpaka/traits/Exec.hpp>           // ExecType
 #include <alpaka/traits/Event.hpp>          // EventType
-#include <alpaka/traits/Mem.hpp>            // SpaceType
+#include <alpaka/traits/Dev.hpp>            // DevType
 #include <alpaka/traits/Stream.hpp>         // StreamType
 
 // Implementation details.
 #include <alpaka/accs/cuda/Common.hpp>
-#include <alpaka/accs/cuda/Mem.hpp>         // SpaceCuda
+#include <alpaka/accs/cuda/Acc.hpp>         // AccCuda
+#include <alpaka/accs/cuda/Dev.hpp>         // DevCuda
+#include <alpaka/accs/cuda/Event.hpp>       // EventCuda
 #include <alpaka/accs/cuda/Stream.hpp>      // StreamCuda
 #include <alpaka/traits/Kernel.hpp>         // BlockSharedExternMemSizeBytes
 
 #include <boost/predef.h>                   // workarounds
 
-#include <cstdint>                          // std::uint32_t
 #include <stdexcept>                        // std::runtime_error
-#include <string>                           // std::to_string
 #include <utility>                          // std::forward
-#include <tuple>                            // std::tuple
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+    #include <iostream>                     // std::cout
+#endif
 
 namespace alpaka
 {
     namespace accs
     {
-        //-----------------------------------------------------------------------------
-        //! The CUDA accelerator.
-        //-----------------------------------------------------------------------------
         namespace cuda
         {
-            //-----------------------------------------------------------------------------
-            //! The CUDA accelerator implementation details.
-            //-----------------------------------------------------------------------------
             namespace detail
             {
-                // Forward declarations.
-                /*template<
-                    typename TKernelFunctor,
-                    typename... TArgs>
-                __global__ void cudaKernel(
-                    TKernelFunctor kernelFunctor,
-                    TArgs ... args);*/
-
-                //class ExecCuda;
-
-                //#############################################################################
-                //! The CUDA accelerator.
-                //!
-                //! This accelerator allows parallel kernel execution on devices supporting CUDA.
-                //#############################################################################
-                class AccCuda :
-                    protected WorkDivCuda,
-                    private IdxCuda,
-                    protected AtomicCuda
-                {
-                public:
-                    using MemSpace = mem::SpaceCuda;
-
-                    /*template<
-                        typename TKernelFunctor,
-                        typename... TArgs>
-                    friend void ::alpaka::cuda::detail::cudaKernel(
-                        TKernelFunctor kernelFunctor,
-                        TArgs ... args);*/
-
-                    //friend class ::alpaka::cuda::detail::ExecCuda;
-
-                //private:
-                    //-----------------------------------------------------------------------------
-                    //! Constructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_CUDA_ONLY AccCuda() :
-                        WorkDivCuda(),
-                        IdxCuda(),
-                        AtomicCuda()
-                    {}
-
-                public:
-                    //-----------------------------------------------------------------------------
-                    //! Copy constructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_CUDA_ONLY AccCuda(AccCuda const &) = delete;
-#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
-                    //-----------------------------------------------------------------------------
-                    //! Move constructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_CUDA_ONLY AccCuda(AccCuda &&) = delete;
-#endif
-                    //-----------------------------------------------------------------------------
-                    //! Copy assignment.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_CUDA_ONLY auto operator=(AccCuda const &) -> AccCuda & = delete;
-                    //-----------------------------------------------------------------------------
-                    //! Destructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_CUDA_ONLY /*virtual*/ ~AccCuda() noexcept = default;
-
-                    //-----------------------------------------------------------------------------
-                    //! \return The requested extents.
-                    //-----------------------------------------------------------------------------
-                    template<
-                        typename TOrigin,
-                        typename TUnit,
-                        typename TDim = dim::Dim3>
-                    ALPAKA_FCT_ACC_CUDA_ONLY auto getWorkDiv() const
-                    -> Vec<TDim>
-                    {
-                        return workdiv::getWorkDiv<TOrigin, TUnit, TDim>(
-                            *static_cast<WorkDivCuda const *>(this));
-                    }
-
-                    //-----------------------------------------------------------------------------
-                    //! \return The requested indices.
-                    //-----------------------------------------------------------------------------
-                    template<
-                        typename TOrigin,
-                        typename TUnit,
-                        typename TDim = dim::Dim3>
-                    ALPAKA_FCT_ACC_CUDA_ONLY auto getIdx() const
-                    -> Vec<TDim>
-                    {
-                        return idx::getIdx<TOrigin, TUnit, TDim>(
-                            *static_cast<IdxCuda const *>(this),
-                            *static_cast<WorkDivCuda const *>(this));
-                    }
-
-                    //-----------------------------------------------------------------------------
-                    //! Execute the atomic operation on the given address with the given value.
-                    //! \return The old value before executing the atomic operation.
-                    //-----------------------------------------------------------------------------
-                    template<
-                        typename TOp,
-                        typename T>
-                    ALPAKA_FCT_ACC auto atomicOp(
-                        T * const addr,
-                        T const & value) const
-                    -> T
-                    {
-                        return atomic::atomicOp<TOp, T>(
-                            addr,
-                            value,
-                            *static_cast<AtomicCuda const *>(this));
-                    }
-
-                    //-----------------------------------------------------------------------------
-                    //! Syncs all threads in the current block.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_CUDA_ONLY auto syncBlockThreads() const
-                    -> void
-                    {
-                        __syncthreads();
-                    }
-
-                    //-----------------------------------------------------------------------------
-                    //! \return Allocates block shared memory.
-                    //-----------------------------------------------------------------------------
-                    template<
-                        typename T,
-                        UInt TuiNumElements>
-                    ALPAKA_FCT_ACC_CUDA_ONLY auto allocBlockSharedMem() const
-                    -> T *
-                    {
-                        static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
-
-                        __shared__ T shMem[TuiNumElements];
-                        return shMem;
-                    }
-
-                    //-----------------------------------------------------------------------------
-                    //! \return The pointer to the externally allocated block shared memory.
-                    //-----------------------------------------------------------------------------
-                    template<
-                        typename T>
-                    ALPAKA_FCT_ACC_CUDA_ONLY auto getBlockSharedExternMem() const
-                    -> T *
-                    {
-                        // Because unaligned access to variables is not allowed in device code,
-                        // we have to use the widest possible type to have all types aligned correctly.
-                        // See: http://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#shared
-                        // http://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#vector-types
-                        extern __shared__ float4 shMem[];
-                        return reinterpret_cast<T *>(shMem);
-                    }
-                };
-
                 //-----------------------------------------------------------------------------
                 //! The CUDA kernel entry point.
                 // \NOTE: A __global__ function or function template cannot have a trailing return type.
@@ -245,7 +86,7 @@ namespace alpaka
                         typename TWorkDiv>
                     ALPAKA_FCT_HOST ExecCuda(
                         TWorkDiv const & workDiv,
-                        StreamCuda const & stream) :
+                        StreamCuda & stream) :
                             m_Stream(stream),
                             m_v3uiGridBlockExtents(workdiv::getWorkDiv<Grid, Blocks, dim::Dim3>(workDiv)),
                             m_v3uiBlockThreadExtents(workdiv::getWorkDiv<Block, Threads, dim::Dim3>(workDiv))
@@ -383,14 +224,12 @@ namespace alpaka
         }
     }
 
-    using AccCuda = accs::cuda::detail::AccCuda;
-
     namespace traits
     {
         namespace acc
         {
             //#############################################################################
-            //! The CUDA accelerator kernel executor accelerator type trait specialization.
+            //! The CUDA accelerator executor accelerator type trait specialization.
             //#############################################################################
             template<>
             struct AccType<
@@ -398,40 +237,16 @@ namespace alpaka
             {
                 using type = accs::cuda::detail::AccCuda;
             };
-
-            //#############################################################################
-            //! The CUDA accelerator accelerator type trait specialization.
-            //#############################################################################
-            template<>
-            struct AccType<
-                accs::cuda::detail::AccCuda>
-            {
-                using type = accs::cuda::detail::AccCuda;
-            };
-
-            //#############################################################################
-            //! The CUDA accelerator name trait specialization.
-            //#############################################################################
-            template<>
-            struct GetAccName<
-                accs::cuda::detail::AccCuda>
-            {
-                ALPAKA_FCT_HOST_ACC static auto getAccName()
-                -> std::string
-                {
-                    return "AccCuda";
-                }
-            };
         }
 
         namespace event
         {
             //#############################################################################
-            //! The CUDA accelerator event type trait specialization.
+            //! The CUDA accelerator executor event type trait specialization.
             //#############################################################################
             template<>
             struct EventType<
-                accs::cuda::detail::AccCuda>
+                accs::cuda::detail::ExecCuda>
             {
                 using type = accs::cuda::detail::EventCuda;
             };
@@ -440,43 +255,51 @@ namespace alpaka
         namespace exec
         {
             //#############################################################################
-            //! The CUDA accelerator executor type trait specialization.
+            //! The CUDA accelerator executor executor type trait specialization.
             //#############################################################################
             template<>
             struct ExecType<
-                accs::cuda::detail::AccCuda>
+                accs::cuda::detail::ExecCuda>
             {
                 using type = accs::cuda::detail::ExecCuda;
             };
         }
 
-        namespace mem
+        namespace dev
         {
             //#############################################################################
-            //! The CUDA accelerator memory space trait specialization.
+            //! The CUDA accelerator executor device type trait specialization.
             //#############################################################################
             template<>
-            struct SpaceType<
-                accs::cuda::detail::AccCuda>
+            struct DevType<
+                accs::cuda::detail::ExecCuda>
             {
-                using type = alpaka::mem::SpaceCuda;
+                using type = accs::cuda::detail::DevCuda;
+            };
+            //#############################################################################
+            //! The CUDA accelerator device type trait specialization.
+            //#############################################################################
+            template<>
+            struct DevManType<
+                accs::cuda::detail::ExecCuda>
+            {
+                using type = accs::cuda::detail::DevManCuda;
             };
         }
 
         namespace stream
         {
             //#############################################################################
-            //! The CUDA accelerator stream type trait specialization.
+            //! The CUDA accelerator executor stream type trait specialization.
             //#############################################################################
             template<>
             struct StreamType<
-                accs::cuda::detail::AccCuda>
+                accs::cuda::detail::ExecCuda>
             {
                 using type = accs::cuda::detail::StreamCuda;
             };
-
             //#############################################################################
-            //! The CUDA accelerator kernel executor stream get trait specialization.
+            //! The CUDA accelerator executor stream get trait specialization.
             //#############################################################################
             template<>
             struct GetStream<

@@ -21,38 +21,51 @@
 
 #pragma once
 
-#include <alpaka/host/mem/Space.hpp>    // SpaceHost
-#include <alpaka/host/mem/Buf.hpp>      // BufHost
-#include <alpaka/host/Stream.hpp>       // StreamHost
-
 #include <alpaka/core/BasicDims.hpp>    // dim::Dim<N>
 
 #include <alpaka/traits/Mem.hpp>        // traits::Copy, ...
 #include <alpaka/traits/Extent.hpp>     // traits::getXXX
+
+#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 
 #include <cassert>                      // assert
 #include <cstring>                      // std::memcpy
 
 namespace alpaka
 {
+    namespace devs
+    {
+        namespace cpu
+        {
+            namespace detail
+            {
+                class DevCpu;
+                class StreamCpu;
+            }
+        }
+    }
+}
+
+namespace alpaka
+{
     //-----------------------------------------------------------------------------
-    // Trait specializations for host::detail::BufHost.
+    // Trait specializations for BufCpu.
     //-----------------------------------------------------------------------------
     namespace traits
     {
         namespace mem
         {
             //#############################################################################
-            //! The host accelerators memory copy trait specialization.
+            //! The cpu device memory copy trait specialization.
             //!
-            //! Copies from host memory into host memory.
+            //! Copies from cpu memory into cpu memory.
             //#############################################################################
             template<
                 typename TDim>
             struct Copy<
                 TDim,
-                alpaka::mem::SpaceHost,
-                alpaka::mem::SpaceHost>
+                devs::cpu::detail::DevCpu,
+                devs::cpu::detail::DevCpu>
             {
                 //-----------------------------------------------------------------------------
                 //!
@@ -196,21 +209,22 @@ namespace alpaka
                 }
                 //-----------------------------------------------------------------------------
                 //!
-                // \TODO: Implement asynchronous host copy.
+                // \TODO: Implement asynchronous cpu copy.
                 //-----------------------------------------------------------------------------
                 template<
                     typename TExtents,
                     typename TBufSrc,
-                    typename TBufDst,
-                    typename TDev>
+                    typename TBufDst>
                 ALPAKA_FCT_HOST static auto copy(
                     TBufDst & bufDst,
                     TBufSrc const & bufSrc,
                     TExtents const & extents,
-                    host::detail::StreamHost<TDev> const &)
+                    devs::cpu::detail::StreamCpu const & stream)
                 -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+                    
+                    boost::ignore_unused(stream);
 
                     copy(
                         bufDst,

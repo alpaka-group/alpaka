@@ -21,30 +21,25 @@
 
 #pragma once
 
-// Base classes.
-#include <alpaka/core/BasicWorkDiv.hpp>     // workdiv::BasicWorkDiv
-#include <alpaka/accs/serial/Idx.hpp>       // IdxSerial
-#include <alpaka/accs/serial/Atomic.hpp>    // AtomicSerial
-
 // Specialized traits.
 #include <alpaka/traits/Acc.hpp>            // AccType
 #include <alpaka/traits/Exec.hpp>           // ExecType
 #include <alpaka/traits/Event.hpp>          // EventType
-#include <alpaka/traits/Mem.hpp>            // SpaceType
+#include <alpaka/traits/Dev.hpp>            // DevType
 #include <alpaka/traits/Stream.hpp>         // StreamType
 
 // Implementation details.
-#include <alpaka/accs/serial/Dev.hpp>       // Devices
-#include <alpaka/accs/serial/Stream.hpp>    // StreamSerial
-#include <alpaka/host/mem/Space.hpp>        // SpaceHost
+#include <alpaka/accs/serial/Acc.hpp>       // AccSerial
+#include <alpaka/core/BasicWorkDiv.hpp>     // workdiv::BasicWorkDiv
+#include <alpaka/devs/cpu/Dev.hpp>          // DevCpu
+#include <alpaka/devs/cpu/Event.hpp>        // EventCpu
+#include <alpaka/devs/cpu/Stream.hpp>       // StreamCpu
 #include <alpaka/traits/Kernel.hpp>         // BlockSharedExternMemSizeBytes
 
-#include <vector>                           // std::vector
+#include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
+
 #include <cassert>                          // assert
-#include <stdexcept>                        // std::except
 #include <utility>                          // std::forward
-#include <string>                           // std::to_string
-#include <memory>                           // std::unique_ptr
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
     #include <iostream>                     // std::cout
 #endif
@@ -53,170 +48,10 @@ namespace alpaka
 {
     namespace accs
     {
-        //-----------------------------------------------------------------------------
-        //! The serial accelerator.
-        //-----------------------------------------------------------------------------
         namespace serial
         {
-            //-----------------------------------------------------------------------------
-            //! The serial accelerator implementation details.
-            //-----------------------------------------------------------------------------
             namespace detail
             {
-                // Forward declaration.
-                class ExecSerial;
-
-                //#############################################################################
-                //! The serial accelerator.
-                //!
-                //! This accelerator allows serial kernel execution on the host.
-                //! The block size is restricted to 1x1x1 so there is no parallelism at all.
-                //#############################################################################
-                class AccSerial :
-                    protected alpaka::workdiv::BasicWorkDiv,
-                    protected IdxSerial,
-                    protected AtomicSerial
-                {
-                public:
-                    using MemSpace = mem::SpaceHost;
-
-                    friend class ::alpaka::accs::serial::detail::ExecSerial;
-
-                private:
-                    //-----------------------------------------------------------------------------
-                    //! Constructor.
-                    //-----------------------------------------------------------------------------
-                    template<
-                        typename TWorkDiv>
-                    ALPAKA_FCT_ACC_NO_CUDA AccSerial(
-                        TWorkDiv const & workDiv) :
-                            alpaka::workdiv::BasicWorkDiv(workDiv),
-                            IdxSerial(m_v3uiGridBlockIdx),
-                            AtomicSerial(),
-                            m_v3uiGridBlockIdx(Vec3<>::zeros())
-                    {}
-
-                public:
-                    //-----------------------------------------------------------------------------
-                    //! Copy constructor.
-                    // Do not copy most members because they are initialized by the executor for each execution.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA AccSerial(AccSerial const &) = delete;
-    #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
-                    //-----------------------------------------------------------------------------
-                    //! Move constructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA AccSerial(AccSerial &&) = delete;
-    #endif
-                    //-----------------------------------------------------------------------------
-                    //! Copy assignment.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA auto operator=(AccSerial const &) -> AccSerial & = delete;
-                    //-----------------------------------------------------------------------------
-                    //! Destructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA virtual ~AccSerial() noexcept = default;
-
-                    //-----------------------------------------------------------------------------
-                    //! \return The requested indices.
-                    //-----------------------------------------------------------------------------
-                    template<
-                        typename TOrigin,
-                        typename TUnit,
-                        typename TDim = dim::Dim3>
-                    ALPAKA_FCT_ACC_NO_CUDA auto getIdx() const
-                    -> Vec<TDim>
-                    {
-                        return idx::getIdx<TOrigin, TUnit, TDim>(
-                            *static_cast<IdxSerial const *>(this),
-                            *static_cast<alpaka::workdiv::BasicWorkDiv const *>(this));
-                    }
-
-                    //-----------------------------------------------------------------------------
-                    //! \return The requested extents.
-                    //-----------------------------------------------------------------------------
-                    template<
-                        typename TOrigin,
-                        typename TUnit,
-                        typename TDim = dim::Dim3>
-                    ALPAKA_FCT_ACC_NO_CUDA auto getWorkDiv() const
-                    -> Vec<TDim>
-                    {
-                        return workdiv::getWorkDiv<TOrigin, TUnit, TDim>(
-                            *static_cast<alpaka::workdiv::BasicWorkDiv const *>(this));
-                    }
-
-                    //-----------------------------------------------------------------------------
-                    //! Execute the atomic operation on the given address with the given value.
-                    //! \return The old value before executing the atomic operation.
-                    //-----------------------------------------------------------------------------
-                    template<
-                        typename TOp,
-                        typename T>
-                    ALPAKA_FCT_ACC auto atomicOp(
-                        T * const addr,
-                        T const & value) const
-                    -> T
-                    {
-                        return atomic::atomicOp<TOp, T>(
-                            addr,
-                            value,
-                            *static_cast<AtomicSerial const *>(this));
-                    }
-
-                    //-----------------------------------------------------------------------------
-                    //! Syncs all threads in the current block.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA void syncBlockThreads() const
-                    {
-                        // Nothing to do in here because only one thread in a group is allowed.
-                    }
-
-                    //-----------------------------------------------------------------------------
-                    //! \return Allocates block shared memory.
-                    //-----------------------------------------------------------------------------
-                    template<
-                        typename T,
-                        UInt TuiNumElements>
-                    ALPAKA_FCT_ACC_NO_CUDA auto allocBlockSharedMem() const
-                    -> T *
-                    {
-                        static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
-
-                        // \TODO: C++14 std::make_unique would be better.
-                        m_vvuiSharedMem.emplace_back(
-                            std::unique_ptr<uint8_t[]>(
-                                reinterpret_cast<uint8_t*>(new T[TuiNumElements])));
-                        return reinterpret_cast<T*>(m_vvuiSharedMem.back().get());
-                    }
-
-                    //-----------------------------------------------------------------------------
-                    //! \return The pointer to the externally allocated block shared memory.
-                    //-----------------------------------------------------------------------------
-                    template<
-                        typename T>
-                    ALPAKA_FCT_ACC_NO_CUDA auto getBlockSharedExternMem() const
-                    -> T *
-                    {
-                        return reinterpret_cast<T*>(m_vuiExternalSharedMem.get());
-                    }
-
-    #ifdef ALPAKA_NVCC_FRIEND_ACCESS_BUG
-                protected:
-    #else
-                private:
-    #endif
-                    // getIdx
-                    Vec3<> mutable m_v3uiGridBlockIdx;                         //!< The index of the currently executed block.
-
-                    // allocBlockSharedMem
-                    std::vector<
-                        std::unique_ptr<uint8_t[]>> mutable m_vvuiSharedMem;    //!< Block shared memory.
-
-                    // getBlockSharedExternMem
-                    std::unique_ptr<uint8_t[]> mutable m_vuiExternalSharedMem;  //!< External block shared memory.
-                };
-
                 //#############################################################################
                 //! The serial accelerator executor.
                 //#############################################################################
@@ -231,8 +66,9 @@ namespace alpaka
                         typename TWorkDiv>
                     ALPAKA_FCT_HOST ExecSerial(
                         TWorkDiv const & workDiv,
-                        StreamSerial const &) :
-                            AccSerial(workDiv)
+                        devs::cpu::detail::StreamCpu & stream) :
+                            AccSerial(workDiv),
+                            m_Stream(stream)
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                     }
@@ -241,7 +77,8 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_HOST ExecSerial(
                         ExecSerial const & other) :
-                            AccSerial(static_cast<alpaka::workdiv::BasicWorkDiv const &>(other))
+                            AccSerial(static_cast<alpaka::workdiv::BasicWorkDiv const &>(other)),
+                            m_Stream(other.m_Stream)
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                     }
@@ -251,7 +88,8 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_HOST ExecSerial(
                         ExecSerial && other) :
-                            AccSerial(static_cast<alpaka::workdiv::BasicWorkDiv &&>(other))
+                            AccSerial(static_cast<alpaka::workdiv::BasicWorkDiv &&>(other)),
+                            m_Stream(other.m_Stream)
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                     }
@@ -320,116 +158,100 @@ namespace alpaka
                         // After all blocks have been processed, the external shared memory can be deleted.
                         this->AccSerial::m_vuiExternalSharedMem.reset();
                     }
+
+                public:
+                    devs::cpu::detail::StreamCpu m_Stream;
                 };
             }
         }
     }
-
-    using AccSerial = accs::serial::detail::AccSerial;
 
     namespace traits
     {
         namespace acc
         {
             //#############################################################################
-            //! The serial accelerator kernel executor accelerator type trait specialization.
+            //! The serial accelerator executor accelerator type trait specialization.
             //#############################################################################
             template<>
             struct AccType<
                 accs::serial::detail::ExecSerial>
             {
                 using type = accs::serial::detail::AccSerial;
-            };
-
-            //#############################################################################
-            //! The serial accelerator accelerator type trait specialization.
-            //#############################################################################
-            template<>
-            struct AccType<
-                accs::serial::detail::AccSerial>
-            {
-                using type = accs::serial::detail::AccSerial;
-            };
-
-            //#############################################################################
-            //! The serial accelerator name trait specialization.
-            //#############################################################################
-            template<>
-            struct GetAccName<
-                accs::serial::detail::AccSerial>
-            {
-                ALPAKA_FCT_HOST_ACC static auto getAccName()
-                -> std::string
-                {
-                    return "AccSerial";
-                }
             };
         }
 
         namespace event
         {
             //#############################################################################
-            //! The serial accelerator event type trait specialization.
+            //! The serial accelerator executor event type trait specialization.
             //#############################################################################
             template<>
             struct EventType<
-                accs::serial::detail::AccSerial>
+                accs::serial::detail::ExecSerial>
             {
-                using type = accs::serial::detail::EventSerial;
+                using type = devs::cpu::detail::EventCpu;
             };
         }
 
         namespace exec
         {
             //#############################################################################
-            //! The serial accelerator executor type trait specialization.
+            //! The serial accelerator executor executor type trait specialization.
             //#############################################################################
             template<>
             struct ExecType<
-                accs::serial::detail::AccSerial>
+                accs::serial::detail::ExecSerial>
             {
                 using type = accs::serial::detail::ExecSerial;
             };
         }
 
-        namespace mem
+        namespace dev
         {
             //#############################################################################
-            //! The serial accelerator memory space trait specialization.
+            //! The serial accelerator executor device type trait specialization.
             //#############################################################################
             template<>
-            struct SpaceType<
-                accs::serial::detail::AccSerial>
+            struct DevType<
+                accs::serial::detail::ExecSerial>
             {
-                using type = alpaka::mem::SpaceHost;
+                using type = devs::cpu::detail::DevCpu;
+            };
+            //#############################################################################
+            //! The serial accelerator device type trait specialization.
+            //#############################################################################
+            template<>
+            struct DevManType<
+                accs::serial::detail::ExecSerial>
+            {
+                using type = devs::cpu::detail::DevManCpu;
             };
         }
 
         namespace stream
         {
             //#############################################################################
-            //! The serial accelerator stream type trait specialization.
+            //! The serial accelerator executor stream type trait specialization.
             //#############################################################################
             template<>
             struct StreamType<
-                accs::serial::detail::AccSerial>
+                accs::serial::detail::ExecSerial>
             {
-                using type = accs::serial::detail::StreamSerial;
+                using type = devs::cpu::detail::StreamCpu;
             };
-
             //#############################################################################
-            //! The serial accelerator kernel executor stream get trait specialization.
+            //! The serial accelerator executor stream get trait specialization.
             //#############################################################################
             template<>
             struct GetStream<
                 accs::serial::detail::ExecSerial>
             {
                 ALPAKA_FCT_HOST static auto getStream(
-                    accs::serial::detail::ExecSerial const &)
-                -> accs::serial::detail::StreamSerial
+                    accs::serial::detail::ExecSerial const & exec)
+                -> devs::cpu::detail::StreamCpu
                 {
-                    return accs::serial::detail::StreamSerial(
-                        accs::serial::detail::DevManSerial::getDevByIdx(0));
+                    return exec.m_Stream;
                 }
             };
         }

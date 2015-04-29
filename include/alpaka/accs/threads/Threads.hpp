@@ -21,12 +21,10 @@
 
 #pragma once
 
-#include <alpaka/accs/omp/omp2/Atomic.hpp>          // AtomicOmp2
-#include <alpaka/accs/omp/omp2/Dev.hpp>             // Devices
-#include <alpaka/accs/omp/omp2/Event.hpp>           // EventOmp2
-#include <alpaka/accs/omp/omp2/Exec.hpp>            // ExecOmp2
-#include <alpaka/accs/omp/omp2/Idx.hpp>             // IdxOmp2
-#include <alpaka/accs/omp/omp2/Stream.hpp>          // StreamOmp2
-#include <alpaka/accs/omp/omp2/WorkDiv.hpp>         // WorkDivOmp2
-#include <alpaka/host/Mem.hpp>                      // Copy
-#include <alpaka/host/Rand.hpp>                     // rand
+#include <alpaka/accs/threads/Acc.hpp>      // AccThreads
+#include <alpaka/accs/threads/Atomic.hpp>   // AtomicThreads
+#include <alpaka/accs/threads/Barrier.hpp>  // BarrierThreads
+#include <alpaka/accs/threads/Exec.hpp>     // ExecThreads
+#include <alpaka/accs/threads/Idx.hpp>      // IdxThreads
+#include <alpaka/devs/cpu/Mem.hpp>          // Copy
+#include <alpaka/devs/cpu/Rand.hpp>         // rand

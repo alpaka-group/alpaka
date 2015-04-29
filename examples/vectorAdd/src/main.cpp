@@ -115,14 +115,14 @@ struct VectorAddKernelTester
         VectorAddKernel kernel;
 
         // Get the host device.
-        auto const devHost(alpaka::host::getDev());
+        auto devHost(alpaka::devs::cpu::getDev());
 
         // Select a device to execute on.
-        alpaka::dev::DevT<TAcc> const devAcc(
+        alpaka::dev::DevT<TAcc> devAcc(
             alpaka::dev::DevManT<TAcc>::getDevByIdx(0));
 
         // Get a stream on this device.
-        alpaka::stream::StreamT<TAcc> const stream(
+        alpaka::stream::StreamT<TAcc> stream(
             alpaka::stream::create(devAcc));
 
         alpaka::Vec1<> const v1uiExtents(
@@ -160,8 +160,8 @@ struct VectorAddKernelTester
         alpaka::mem::copy(memBufAccA, memBufHostA, v1uiExtents, stream);
         alpaka::mem::copy(memBufAccB, memBufHostB, v1uiExtents, stream);
 
-        // Create the kernel executor.
-        auto exec(alpaka::exec::create(workDiv, stream));
+        // Create the executor.
+        auto exec(alpaka::exec::create<TAcc>(workDiv, stream));
         // Profile the kernel execution.
         profileKernelExec(
             exec,

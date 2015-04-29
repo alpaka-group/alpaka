@@ -21,9 +21,8 @@
 
 #pragma once
 
-#include <alpaka/host/mem/Space.hpp>    // SpaceHost
-#include <alpaka/host/mem/Set.hpp>      // Set
-#include <alpaka/host/Dev.hpp>
+#include <alpaka/devs/cpu/mem/Set.hpp>  // Set
+#include <alpaka/devs/cpu/Dev.hpp>      // DevCpu
 
 #include <alpaka/core/mem/View.hpp>     // View
 #include <alpaka/core/BasicDims.hpp>    // dim::Dim<N>
@@ -37,88 +36,89 @@
 
 namespace alpaka
 {
-    namespace host
+    namespace devs
     {
-        namespace detail
+        namespace cpu
         {
-            //#############################################################################
-            //! The host memory buffer.
-            //#############################################################################
-            template<
-                typename TElem,
-                typename TDim,
-                typename TDev>
-            class BufHost
+            namespace detail
             {
-            private:
-                using Elem = TElem;
-                using Dim = TDim;
-                using Dev = TDev;
-
-            public:
-                //-----------------------------------------------------------------------------
-                //! Constructor
-                //-----------------------------------------------------------------------------
+                //#############################################################################
+                //! The cpu memory buffer.
+                //#############################################################################
                 template<
-                    typename TExtents>
-                ALPAKA_FCT_HOST BufHost(
-                    TDev const & dev,
-                    TExtents const & extents) :
-                        m_Dev(dev),
-                        m_vExtentsElements(extent::getExtentsNd<TDim, UInt>(extents)),
-                        m_spMem(new TElem[computeElementCount(extents)], &BufHost::freeBuffer),
-                        m_uiPitchBytes(extent::getWidth<UInt>(extents) * sizeof(TElem))
+                    typename TElem,
+                    typename TDim>
+                class BufCpu
                 {
-                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+                private:
+                    using Elem = TElem;
+                    using Dim = TDim;
 
-#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                    std::cout << BOOST_CURRENT_FUNCTION
-                        << " e: " << m_vExtentsElements
-                        << " ptr: " << static_cast<void *>(m_spMem.get())
-                        << " pitch: " << m_uiPitchBytes
-                        << std::endl;
-#endif
-                }
+                public:
+                    //-----------------------------------------------------------------------------
+                    //! Constructor
+                    //-----------------------------------------------------------------------------
+                    template<
+                        typename TExtents>
+                    ALPAKA_FCT_HOST BufCpu(
+                        devs::cpu::detail::DevCpu const & dev,
+                        TExtents const & extents) :
+                            m_Dev(dev),
+                            m_vExtentsElements(extent::getExtentsNd<TDim, UInt>(extents)),
+                            m_spMem(new TElem[computeElementCount(extents)], &BufCpu::freeBuffer),
+                            m_uiPitchBytes(extent::getWidth<UInt>(extents) * sizeof(TElem))
+                    {
+                        ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-            private:
-                //-----------------------------------------------------------------------------
-                //! \return The number of elements to allocate.
-                //-----------------------------------------------------------------------------
-                template<
-                    typename TExtents>
-                ALPAKA_FCT_HOST static auto computeElementCount(
-                    TExtents const & extents)
-                -> UInt
-                {
-                    auto const uiExtentsElementCount(extent::getProductOfExtents<UInt>(extents));
-                    assert(uiExtentsElementCount>0);
+    #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                        std::cout << BOOST_CURRENT_FUNCTION
+                            << " e: " << m_vExtentsElements
+                            << " ptr: " << static_cast<void *>(m_spMem.get())
+                            << " pitch: " << m_uiPitchBytes
+                            << std::endl;
+    #endif
+                    }
 
-                    return uiExtentsElementCount;
-                }
-                //-----------------------------------------------------------------------------
-                //! Frees the shared buffer.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto freeBuffer(
-                    TElem * pBuffer)
-                -> void
-                {
-                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+                private:
+                    //-----------------------------------------------------------------------------
+                    //! \return The number of elements to allocate.
+                    //-----------------------------------------------------------------------------
+                    template<
+                        typename TExtents>
+                    ALPAKA_FCT_HOST static auto computeElementCount(
+                        TExtents const & extents)
+                    -> UInt
+                    {
+                        auto const uiExtentsElementCount(extent::getProductOfExtents<UInt>(extents));
+                        assert(uiExtentsElementCount>0);
 
-                    assert(pBuffer);
-                    delete[] pBuffer;
-                }
+                        return uiExtentsElementCount;
+                    }
+                    //-----------------------------------------------------------------------------
+                    //! Frees the shared buffer.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST static auto freeBuffer(
+                        TElem * pBuffer)
+                    -> void
+                    {
+                        ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-            public:
-                TDev m_Dev;
-                Vec<TDim> m_vExtentsElements;
-                std::shared_ptr<TElem> m_spMem;
-                UInt m_uiPitchBytes;
-            };
+                        assert(pBuffer);
+                        delete[] pBuffer;
+                    }
+
+                public:
+                    devs::cpu::detail::DevCpu m_Dev;
+                    Vec<TDim> m_vExtentsElements;
+                    std::shared_ptr<TElem> m_spMem;
+                    UInt m_uiPitchBytes;
+                };
+            }
         }
     }
 
     //-----------------------------------------------------------------------------
-    // Trait specializations for host::detail::BufHost.
+    // Trait specializations for devs::cpu::detail::BufCpu.
     //-----------------------------------------------------------------------------
     namespace traits
     {
@@ -128,28 +128,26 @@ namespace alpaka
             //! The BufCuda device type trait specialization.
             //#############################################################################
             template<
-                typename TDev,
                 typename TElem,
                 typename TDim>
             struct DevType<
-                host::detail::BufHost<TElem, TDim, TDev>>
+                devs::cpu::detail::BufCpu<TElem, TDim>>
             {
-                using type = TDev;
+                using type = devs::cpu::detail::DevCpu;
             };
 
             //#############################################################################
-            //! The BufHost device get trait specialization.
+            //! The BufCpu device get trait specialization.
             //#############################################################################
             template<
                 typename TElem,
-                typename TDim,
-                typename TDev>
+                typename TDim>
             struct GetDev<
-                host::detail::BufHost<TElem, TDim, TDev>>
+                devs::cpu::detail::BufCpu<TElem, TDim>>
             {
                 ALPAKA_FCT_HOST static auto getDev(
-                    host::detail::BufHost<TElem, TDim, TDev> const & buf)
-                -> TDev
+                    devs::cpu::detail::BufCpu<TElem, TDim> const & buf)
+                -> devs::cpu::detail::DevCpu
                 {
                     return buf.m_Dev;
                 }
@@ -159,14 +157,13 @@ namespace alpaka
         namespace dim
         {
             //#############################################################################
-            //! The BufHost dimension getter trait.
+            //! The BufCpu dimension getter trait.
             //#############################################################################
             template<
                 typename TElem,
-                typename TDim,
-                typename TDev>
+                typename TDim>
             struct DimType<
-                host::detail::BufHost<TElem, TDim, TDev>>
+                devs::cpu::detail::BufCpu<TElem, TDim>>
             {
                 using type = TDim;
             };
@@ -175,23 +172,22 @@ namespace alpaka
         namespace extent
         {
             //#############################################################################
-            //! The BufHost width get trait specialization.
+            //! The BufCpu width get trait specialization.
             //#############################################################################
             template<
                 UInt TuiIdx,
                 typename TElem,
-                typename TDim,
-                typename TDev>
+                typename TDim>
             struct GetExtent<
                 TuiIdx,
-                host::detail::BufHost<TElem, TDim, TDev>,
+                devs::cpu::detail::BufCpu<TElem, TDim>,
                 typename std::enable_if<TDim::value >= (TuiIdx+1)>::type>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getExtent(
-                    host::detail::BufHost<TElem, TDim, TDev> const & extents)
+                    devs::cpu::detail::BufCpu<TElem, TDim> const & extents)
                 -> UInt
                 {
                     return extents.m_vExtentsElements[TuiIdx];
@@ -202,22 +198,21 @@ namespace alpaka
         namespace offset
         {
             //#############################################################################
-            //! The BufHost offset get trait specialization.
+            //! The BufCpu offset get trait specialization.
             //#############################################################################
             template<
                 UInt TuiIdx,
                 typename TElem,
-                typename TDim,
-                typename TDev>
+                typename TDim>
             struct GetOffset<
                 TuiIdx,
-                host::detail::BufHost<TElem, TDim, TDev>>
+                devs::cpu::detail::BufCpu<TElem, TDim>>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getOffset(
-                    host::detail::BufHost<TElem, TDim, TDev> const &)
+                    devs::cpu::detail::BufCpu<TElem, TDim> const &)
                 -> UInt
                 {
                     return 0u;
@@ -228,79 +223,60 @@ namespace alpaka
         namespace mem
         {
             //#############################################################################
-            //! The host accelerators memory buffer type trait specialization.
+            //! The cpu device memory buffer type trait specialization.
             //#############################################################################
             template<
                 typename TElem,
-                typename TDim,
-                typename TDev>
+                typename TDim>
             struct BufType<
                 TElem,
                 TDim,
-                TDev,
-                typename std::enable_if<std::is_same<alpaka::mem::SpaceT<alpaka::acc::AccT<TDev>>, alpaka::mem::SpaceHost>::value>::type>
+                devs::cpu::detail::DevCpu>
             {
-                using type = host::detail::BufHost<TElem, TDim, TDev>;
+                using type = devs::cpu::detail::BufCpu<TElem, TDim>;
             };
 
             //#############################################################################
-            //! The host accelerators memory view type trait specialization.
+            //! The cpu device memory view type trait specialization.
             //#############################################################################
             template<
                 typename TElem,
-                typename TDim,
-                typename TDev>
+                typename TDim>
             struct ViewType<
                 TElem,
                 TDim,
-                TDev,
-                typename std::enable_if<std::is_same<alpaka::mem::SpaceT<alpaka::acc::AccT<TDev>>, alpaka::mem::SpaceHost>::value>::type>
+                devs::cpu::detail::DevCpu>
             {
-                using type = alpaka::mem::detail::View<TElem, TDim, TDev>;
+                using type = alpaka::mem::detail::View<TElem, TDim, devs::cpu::detail::DevCpu>;
             };
 
             //#############################################################################
-            //! The BufHost memory space trait specialization.
+            //! The BufCpu memory element type get trait specialization.
             //#############################################################################
             template<
                 typename TElem,
-                typename TDim,
-                typename TDev>
-            struct SpaceType<
-                host::detail::BufHost<TElem, TDim, TDev>>
-            {
-                using type = alpaka::mem::SpaceHost;
-            };
-
-            //#############################################################################
-            //! The BufHost memory element type get trait specialization.
-            //#############################################################################
-            template<
-                typename TElem,
-                typename TDim,
-                typename TDev>
+                typename TDim>
             struct ElemType<
-                host::detail::BufHost<TElem, TDim, TDev>>
+                devs::cpu::detail::BufCpu<TElem, TDim>>
             {
                 using type = TElem;
             };
 
             //#############################################################################
-            //! The BufHost base trait specialization.
+            //! The BufCpu base trait specialization.
             //#############################################################################
             template<
                 typename TElem,
-                typename TDim,
-                typename TDev>
+                typename TDim>
             struct GetBase<
-                host::detail::BufHost<TElem, TDim, TDev>>
+                devs::cpu::detail::BufCpu<TElem, TDim>>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getBase(
-                    host::detail::BufHost<TElem, TDim, TDev> const & buf)
-                -> host::detail::BufHost<TElem, TDim, TDev> const &
+                    devs::cpu::detail::BufCpu<TElem, TDim> const & buf)
+                -> devs::cpu::detail::BufCpu<TElem, TDim> const &
                 {
                     return buf;
                 }
@@ -308,28 +284,27 @@ namespace alpaka
                 //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getBase(
-                    host::detail::BufHost<TElem, TDim, TDev> & buf)
-                -> host::detail::BufHost<TElem, TDim, TDev> &
+                    devs::cpu::detail::BufCpu<TElem, TDim> & buf)
+                -> devs::cpu::detail::BufCpu<TElem, TDim> &
                 {
                     return buf;
                 }
             };
 
             //#############################################################################
-            //! The BufHost native pointer get trait specialization.
+            //! The BufCpu native pointer get trait specialization.
             //#############################################################################
             template<
                 typename TElem,
-                typename TDim,
-                typename TDev>
+                typename TDim>
             struct GetPtrNative<
-                host::detail::BufHost<TElem, TDim, TDev>>
+                devs::cpu::detail::BufCpu<TElem, TDim>>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getPtrNative(
-                    host::detail::BufHost<TElem, TDim, TDev> const & buf)
+                    devs::cpu::detail::BufCpu<TElem, TDim> const & buf)
                 -> TElem const *
                 {
                     return buf.m_spMem.get();
@@ -338,29 +313,28 @@ namespace alpaka
                 //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getPtrNative(
-                    host::detail::BufHost<TElem, TDim, TDev> & buf)
+                    devs::cpu::detail::BufCpu<TElem, TDim> & buf)
                 -> TElem *
                 {
                     return buf.m_spMem.get();
                 }
             };
             //#############################################################################
-            //! The BufHost pointer on device get trait specialization.
+            //! The BufCpu pointer on device get trait specialization.
             //#############################################################################
             template<
                 typename TElem,
-                typename TDim,
-                typename TDev>
+                typename TDim>
             struct GetPtrDev<
-                host::detail::BufHost<TElem, TDim, TDev>,
-                TDev>
+                devs::cpu::detail::BufCpu<TElem, TDim>,
+                devs::cpu::detail::DevCpu>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getPtrDev(
-                    host::detail::BufHost<TElem, TDim, TDev> const & buf,
-                    TDev const & dev)
+                    devs::cpu::detail::BufCpu<TElem, TDim> const & buf,
+                    devs::cpu::detail::DevCpu const & dev)
                 -> TElem const *
                 {
                     if(dev == alpaka::dev::getDev(buf))
@@ -376,8 +350,8 @@ namespace alpaka
                 //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getPtrDev(
-                    host::detail::BufHost<TElem, TDim, TDev> & buf,
-                    TDev const & dev)
+                    devs::cpu::detail::BufCpu<TElem, TDim> & buf,
+                    devs::cpu::detail::DevCpu const & dev)
                 -> TElem *
                 {
                     if(dev == alpaka::dev::getDev(buf))
@@ -392,40 +366,36 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The BufHost pitch get trait specialization.
+            //! The BufCpu pitch get trait specialization.
             //#############################################################################
             template<
                 typename TElem,
-                typename TDim,
-                typename TDev>
+                typename TDim>
             struct GetPitchBytes<
                 0u,
-                host::detail::BufHost<TElem, TDim, TDev>>
+                devs::cpu::detail::BufCpu<TElem, TDim>>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getPitchBytes(
-                    host::detail::BufHost<TElem, TDim, TDev> const & pitch)
+                    devs::cpu::detail::BufCpu<TElem, TDim> const & pitch)
                 -> UInt
                 {
-                    // No pitch on the host currently.
                     return pitch.m_uiPitchBytes;
                 }
             };
 
             //#############################################################################
-            //! The host accelerators memory allocation trait specialization.
+            //! The cpu device memory allocation trait specialization.
             //#############################################################################
             template<
                 typename TElem,
-                typename TDim,
-                typename TDev>
+                typename TDim>
             struct Alloc<
                 TElem,
                 TDim,
-                TDev,
-                typename std::enable_if<std::is_same<alpaka::mem::SpaceT<alpaka::acc::AccT<TDev>>, alpaka::mem::SpaceHost>::value>::type>
+                devs::cpu::detail::DevCpu>
             {
                 //-----------------------------------------------------------------------------
                 //!
@@ -433,74 +403,71 @@ namespace alpaka
                 template<
                     typename TExtents>
                 ALPAKA_FCT_HOST static auto alloc(
-                    TDev const & dev,
+                    devs::cpu::detail::DevCpu const & dev,
                     TExtents const & extents)
-                -> host::detail::BufHost<TElem, TDim, TDev>
+                -> devs::cpu::detail::BufCpu<TElem, TDim>
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    return host::detail::BufHost<
+                    return devs::cpu::detail::BufCpu<
                         TElem,
-                        TDim,
-                        TDev>(
+                        TDim>(
                             dev,
                             extents);
                 }
             };
 
             //#############################################################################
-            //! The host accelerators memory mapping trait specialization.
+            //! The cpu device memory mapping trait specialization.
             //#############################################################################
             template<
                 typename TElem,
-                typename TDim,
-                typename TDev>
+                typename TDim>
             struct Map<
-                host::detail::BufHost<TElem, TDim, TDev>,
-                TDev>
+                devs::cpu::detail::BufCpu<TElem, TDim>,
+                devs::cpu::detail::DevCpu>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto map(
-                    host::detail::BufHost<TElem, TDim, TDev> const & buf,
-                    TDev const & dev)
+                    devs::cpu::detail::BufCpu<TElem, TDim> const & buf,
+                    devs::cpu::detail::DevCpu const & dev)
                 -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                     if(alpaka::dev::getDev(buf) != dev)
                     {
-                        throw std::runtime_error("Memory mapping of BufHost between two devices is not implemented!");
+                        throw std::runtime_error("Memory mapping of BufCpu between two devices is not implemented!");
                     }
                     // If it is the same device, nothing has to be mapped.
                 }
             };
 
             //#############################################################################
-            //! The host accelerators memory unmapping trait specialization.
+            //! The cpu device memory unmapping trait specialization.
             //#############################################################################
             template<
                 typename TElem,
-                typename TDim,
-                typename TDev>
+                typename TDim>
             struct Unmap<
-                host::detail::BufHost<TElem, TDim, TDev>,
-                TDev>
+                devs::cpu::detail::BufCpu<TElem, TDim>,
+                devs::cpu::detail::DevCpu>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto unmap(
-                    host::detail::BufHost<TElem, TDim, TDev> const & buf,
-                    TDev const & dev)
+                    devs::cpu::detail::BufCpu<TElem, TDim> const & buf,
+                    devs::cpu::detail::DevCpu const & dev)
                 -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                     if(alpaka::dev::getDev(buf) != dev)
                     {
-                        throw std::runtime_error("Memory unmapping of BufHost between two devices is not implemented!");
+                        throw std::runtime_error("Memory unmapping of BufCpu between two devices is not implemented!");
                     }
                     // If it is the same device, nothing has to be mapped.
                 }

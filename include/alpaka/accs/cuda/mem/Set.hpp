@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/accs/cuda/mem/Space.hpp>   // SpaceCuda
+#include <alpaka/accs/cuda/Dev.hpp>         // DevCuda
 #include <alpaka/accs/cuda/Stream.hpp>      // StreamCuda
 #include <alpaka/accs/cuda/Common.hpp>
 
@@ -47,7 +47,7 @@ namespace alpaka
             template<>
             struct Set<
                 alpaka::dim::Dim1,
-                alpaka::mem::SpaceCuda>
+                accs::cuda::detail::DevCuda>
             {
                 //-----------------------------------------------------------------------------
                 //!
@@ -128,7 +128,7 @@ namespace alpaka
             template<>
             struct Set<
                 alpaka::dim::Dim2,
-                alpaka::mem::SpaceCuda>
+                accs::cuda::detail::DevCuda>
             {
                 //-----------------------------------------------------------------------------
                 //!
@@ -219,7 +219,7 @@ namespace alpaka
             template<>
             struct Set<
                 alpaka::dim::Dim3,
-                alpaka::mem::SpaceCuda>
+                accs::cuda::detail::DevCuda>
             {
                 //-----------------------------------------------------------------------------
                 //!

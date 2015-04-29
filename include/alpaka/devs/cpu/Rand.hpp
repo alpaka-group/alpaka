@@ -22,11 +22,8 @@
 #pragma once
 
 #include <alpaka/traits/Rand.hpp>       // CreateNormalReal, ...
-#include <alpaka/traits/mem/Space.hpp>  // SpaceT
 
 #include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST_ACC
-
-#include <alpaka/host/mem/Space.hpp>    // SpaceHost
 
 #include <random>                       // std::mt19937, std::uniform_real_distribution, ...
 #include <type_traits>                  // std::enable_if
@@ -40,7 +37,7 @@ namespace alpaka
             namespace distribution
             {
                 //#############################################################################
-                //! The host random number float normal distribution get trait specialization.
+                //! The cpu device random number float normal distribution get trait specialization.
                 //#############################################################################
                 template<
                     typename TAcc,
@@ -50,8 +47,8 @@ namespace alpaka
                     T,
                     typename std::enable_if<
                         std::is_same<
-                            alpaka::mem::SpaceT<TAcc>,
-                            alpaka::mem::SpaceHost>::value
+                            alpaka::dev::DevT<TAcc>,
+                            devs::cpu::detail::DevCpu>::value
                         && std::is_floating_point<T>::value>::type>
                 {
                     ALPAKA_FCT_HOST_ACC static auto createNormalReal(
@@ -62,7 +59,7 @@ namespace alpaka
                     }
                 };
                 //#############################################################################
-                //! The host random number float uniform distribution get trait specialization.
+                //! The cpu device random number float uniform distribution get trait specialization.
                 //#############################################################################
                 template<
                     typename TAcc,
@@ -72,8 +69,8 @@ namespace alpaka
                     T,
                     typename std::enable_if<
                         std::is_same<
-                            alpaka::mem::SpaceT<TAcc>,
-                            alpaka::mem::SpaceHost>::value
+                            alpaka::dev::DevT<TAcc>,
+                            devs::cpu::detail::DevCpu>::value
                         && std::is_floating_point<T>::value>::type>
                 {
                     ALPAKA_FCT_HOST_ACC static auto createUniformReal(
@@ -84,7 +81,7 @@ namespace alpaka
                     }
                 };
                 //#############################################################################
-                //! The host random number integer uniform distribution get trait specialization.
+                //! The cpu device random number integer uniform distribution get trait specialization.
                 //#############################################################################
                 template<
                     typename TAcc,
@@ -94,8 +91,8 @@ namespace alpaka
                     T,
                     typename std::enable_if<
                         std::is_same<
-                            alpaka::mem::SpaceT<TAcc>,
-                            alpaka::mem::SpaceHost>::value
+                            alpaka::dev::DevT<TAcc>,
+                            devs::cpu::detail::DevCpu>::value
                         && std::is_integral<T>::value>::type>
                 {
                     ALPAKA_FCT_HOST_ACC static auto createUniformUint(
@@ -112,7 +109,7 @@ namespace alpaka
             namespace generator
             {
                 //#############################################################################
-                //! The host random number default generator get trait specialization.
+                //! The cpu device random number default generator get trait specialization.
                 //#############################################################################
                 template<
                     typename TAcc>
@@ -120,8 +117,8 @@ namespace alpaka
                     TAcc,
                     typename std::enable_if<
                         std::is_same<
-                            alpaka::mem::SpaceT<TAcc>,
-                            alpaka::mem::SpaceHost>::value>::type>
+                            alpaka::dev::DevT<TAcc>,
+                            devs::cpu::detail::DevCpu>::value>::type>
                 {
                     ALPAKA_FCT_HOST_ACC static auto createDefault(
                         TAcc const & acc,

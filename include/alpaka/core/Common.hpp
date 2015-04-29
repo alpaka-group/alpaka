@@ -82,7 +82,7 @@
 //! Usage:
 //!  `ALPAKA_UNROLL
 //!  for(...){...}`
-// \TODO: Unrolling in host code?
+// \TODO: Unrolling in non CUDA code?
 //-----------------------------------------------------------------------------
 #ifdef __CUDA_ARCH__
     #if BOOST_COMP_MSVC

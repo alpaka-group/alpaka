@@ -48,10 +48,7 @@
 #include <alpaka/core/Vec.hpp>
 #include <alpaka/core/WorkDivHelpers.hpp>
 
-#include <alpaka/host/Dev.hpp>
-#include <alpaka/host/Mem.hpp>
-#include <alpaka/host/Rand.hpp>
-#include <alpaka/host/SysInfo.hpp>
+#include <alpaka/devs/Devs.hpp>
 
 #include <alpaka/traits/Acc.hpp>
 #include <alpaka/traits/Atomic.hpp>

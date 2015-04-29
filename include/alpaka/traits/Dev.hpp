@@ -21,8 +21,8 @@
 
 #pragma once
 
-#include <alpaka/core/DevProps.hpp> // DevProps
-#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST
+#include <alpaka/core/AccDevProps.hpp>  // AccDevProps
+#include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST
 
 namespace alpaka
 {
@@ -58,15 +58,23 @@ namespace alpaka
             struct GetDev;
 
             //#############################################################################
-            //! The device properties get trait.
+            //! The device name get trait.
             //#############################################################################
             template<
                 typename TDev,
                 typename TSfinae = void>
-            struct GetProps;
+            struct GetName;
 
             //#############################################################################
-            //! The device reset trait.
+            //! The device memory size get trait.
+            //#############################################################################
+            template<
+                typename TDev,
+                typename TSfinae = void>
+            struct GetMemBytes;
+
+            //#############################################################################
+            //! The device free memory size get trait.
             //#############################################################################
             template<
                 typename T,
@@ -85,6 +93,9 @@ namespace alpaka
 
     //-----------------------------------------------------------------------------
     //! The device trait accessors.
+    //
+    // \TODO:
+    // std::size_t m_uiMaxClockFrequencyHz;  //!< Maximum clock frequency of the device in Hz.
     //-----------------------------------------------------------------------------
     namespace dev
     {
@@ -109,7 +120,7 @@ namespace alpaka
             typename T>
         ALPAKA_FCT_HOST auto getDev(
             T const & t)
-        -> decltype(traits::dev::GetDev<T>::getDev(std::declval<T const &>()))
+        -> decltype(traits::dev::GetDev<T>::getDev(t))
         {
             return traits::dev::GetDev<
                 T>
@@ -137,17 +148,32 @@ namespace alpaka
         }
 
         //-----------------------------------------------------------------------------
-        //! \return The device properties.
+        //! \return The device name.
         //-----------------------------------------------------------------------------
         template<
             typename TDev>
-        ALPAKA_FCT_HOST auto getProps(
+        ALPAKA_FCT_HOST auto getName(
             TDev const & dev)
-        -> DevProps
+        -> std::string
         {
-            return traits::dev::GetProps<
+            return traits::dev::GetName<
                 TDev>
-            ::getProps(
+            ::getName(
+                dev);
+        }
+
+        //-----------------------------------------------------------------------------
+        //! \return The memory on the device in Bytes.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TDev>
+        ALPAKA_FCT_HOST auto getMemBytes(
+            TDev const & dev)
+        -> std::size_t
+        {
+            return traits::dev::GetMemBytes<
+                TDev>
+            ::getMemBytes(
                 dev);
         }
 

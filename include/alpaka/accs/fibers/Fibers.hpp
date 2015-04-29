@@ -21,6 +21,10 @@
 
 #pragma once
 
-#include <alpaka/accs/cuda/mem/Buf.hpp>     // BufCuda
-#include <alpaka/accs/cuda/mem/Copy.hpp>    // Copy
-#include <alpaka/accs/cuda/mem/Set.hpp>     // Set
+#include <alpaka/accs/fibers/Acc.hpp>       // AccFibers
+#include <alpaka/accs/fibers/Atomic.hpp>    // AtomicFibers
+#include <alpaka/accs/fibers/Barrier.hpp>   // BarrierFibers
+#include <alpaka/accs/fibers/Common.hpp>
+#include <alpaka/accs/fibers/Exec.hpp>      // ExecFibers
+#include <alpaka/accs/fibers/Idx.hpp>       // IdxFibers
+#include <alpaka/devs/cpu/Rand.hpp>         // rand

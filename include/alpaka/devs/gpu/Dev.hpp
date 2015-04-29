@@ -21,31 +21,16 @@
 
 #pragma once
 
-#include <alpaka/traits/mem/Space.hpp>
+#include <alpaka/accs/cuda/Dev.hpp>     // DevCuda
 
 namespace alpaka
 {
-    namespace mem
+    namespace devs
     {
-        //#############################################################################
-        //! The data space on the host.
-        //#############################################################################
-        struct SpaceHost;
-    }
-
-    namespace traits
-    {
-        namespace mem
+        namespace gpu
         {
-            //#############################################################################
-            //! The SpaceHost memory space trait specialization.
-            //#############################################################################
-            template<>
-            struct SpaceType<
-                alpaka::mem::SpaceHost>
-            {
-                using type = alpaka::mem::SpaceHost;
-            };
+            using DevGpu = alpaka::accs::cuda::detail::DevCuda;
+            using DevManGpu = alpaka::accs::cuda::detail::DevManCuda;
         }
     }
 }

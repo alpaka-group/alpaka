@@ -21,36 +21,28 @@
 
 #pragma once
 
-// Base classes.
-#include <alpaka/core/BasicWorkDiv.hpp>         // workdiv::BasicWorkDiv
-#include <alpaka/accs/omp/omp2/Idx.hpp>         // IdxOmp2
-#include <alpaka/accs/omp/omp2/Atomic.hpp>      // AtomicOmp2
-
-// User functionality.
-#include <alpaka/host/Mem.hpp>                  // Copy
-#include <alpaka/host/Rand.hpp>                 // rand
-
 // Specialized traits.
 #include <alpaka/traits/Acc.hpp>                // AccType
 #include <alpaka/traits/Exec.hpp>               // ExecType
 #include <alpaka/traits/Event.hpp>              // EventType
-#include <alpaka/traits/Mem.hpp>                // SpaceType
+#include <alpaka/traits/Dev.hpp>                // DevType
 #include <alpaka/traits/Stream.hpp>             // StreamType
 
 // Implementation details.
+#include <alpaka/core/BasicWorkDiv.hpp>         // workdiv::BasicWorkDiv
+#include <alpaka/accs/omp/omp2/Acc.hpp>         // AccOmp2
 #include <alpaka/accs/omp/Common.hpp>
-#include <alpaka/accs/omp/omp2/Dev.hpp>         // Devices
-#include <alpaka/accs/omp/omp2/Stream.hpp>      // StreamOmp2
-#include <alpaka/host/mem/Space.hpp>            // SpaceHost
+#include <alpaka/devs/cpu/Dev.hpp>              // DevCpu
+#include <alpaka/devs/cpu/Event.hpp>            // EventCpu
+#include <alpaka/devs/cpu/Stream.hpp>           // StreamCpu
 #include <alpaka/traits/Kernel.hpp>             // BlockSharedExternMemSizeBytes
 
-#include <cstdint>                              // std::uint32_t
-#include <vector>                               // std::vector
 #include <cassert>                              // assert
 #include <stdexcept>                            // std::runtime_error
-#include <string>                               // std::to_string
-#include <utility>                              // std::move, std::forward
-#include <memory>                               // std::unique_ptr
+#include <utility>                              // std::forward
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+    #include <iostream>                         // std::cout
+#endif
 
 namespace alpaka
 {
@@ -58,179 +50,10 @@ namespace alpaka
     {
         namespace omp
         {
-            //-----------------------------------------------------------------------------
-            //! The OpenMP2 accelerator.
-            //-----------------------------------------------------------------------------
             namespace omp2
             {
-                //-----------------------------------------------------------------------------
-                //! The OpenMP2 accelerator implementation details.
-                //-----------------------------------------------------------------------------
                 namespace detail
                 {
-                    class ExecOmp2;
-
-                    //#############################################################################
-                    //! The OpenMP2 accelerator.
-                    //!
-                    //! This accelerator allows parallel kernel execution on the host.
-                    // \TODO: Offloading?
-                    //! It uses OpenMP2 to implement the parallelism.
-                    //#############################################################################
-                    class AccOmp2 :
-                        protected alpaka::workdiv::BasicWorkDiv,
-                        protected IdxOmp2,
-                        protected AtomicOmp2
-                    {
-                    public:
-                        using MemSpace = mem::SpaceHost;
-
-                        friend class ::alpaka::accs::omp::omp2::detail::ExecOmp2;
-
-                    private:
-                        //-----------------------------------------------------------------------------
-                        //! Constructor.
-                        //-----------------------------------------------------------------------------
-                        template<
-                            typename TWorkDiv>
-                        ALPAKA_FCT_ACC_NO_CUDA AccOmp2(
-                            TWorkDiv const & workDiv) :
-                                alpaka::workdiv::BasicWorkDiv(workDiv),
-                                IdxOmp2(m_v3uiGridBlockIdx),
-                                AtomicOmp2(),
-                                m_v3uiGridBlockIdx(Vec3<>::zeros())
-                        {}
-
-                    public:
-                        //-----------------------------------------------------------------------------
-                        //! Copy constructor.
-                        //-----------------------------------------------------------------------------
-                        ALPAKA_FCT_ACC_NO_CUDA AccOmp2(AccOmp2 const &) = delete;
-#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
-                        //-----------------------------------------------------------------------------
-                        //! Move constructor.
-                        //-----------------------------------------------------------------------------
-                        ALPAKA_FCT_ACC_NO_CUDA AccOmp2(AccOmp2 &&) = delete;
-#endif
-                        //-----------------------------------------------------------------------------
-                        //! Copy assignment.
-                        //-----------------------------------------------------------------------------
-                        ALPAKA_FCT_ACC_NO_CUDA auto operator=(AccOmp2 const &) -> AccOmp2 & = delete;
-                        //-----------------------------------------------------------------------------
-                        //! Destructor.
-                        //-----------------------------------------------------------------------------
-                        ALPAKA_FCT_ACC_NO_CUDA virtual ~AccOmp2() noexcept = default;
-
-                        //-----------------------------------------------------------------------------
-                        //! \return The requested indices.
-                        //-----------------------------------------------------------------------------
-                        template<
-                            typename TOrigin,
-                            typename TUnit,
-                            typename TDim = dim::Dim3>
-                        ALPAKA_FCT_ACC_NO_CUDA auto getIdx() const
-                        -> Vec<TDim>
-                        {
-                            return idx::getIdx<TOrigin, TUnit, TDim>(
-                                *static_cast<IdxOmp2 const *>(this),
-                                *static_cast<workdiv::BasicWorkDiv const *>(this));
-                        }
-
-                        //-----------------------------------------------------------------------------
-                        //! \return The requested extents.
-                        //-----------------------------------------------------------------------------
-                        template<
-                            typename TOrigin,
-                            typename TUnit,
-                            typename TDim = dim::Dim3>
-                        ALPAKA_FCT_ACC_NO_CUDA auto getWorkDiv() const
-                        -> Vec<TDim>
-                        {
-                            return workdiv::getWorkDiv<TOrigin, TUnit, TDim>(
-                                *static_cast<workdiv::BasicWorkDiv const *>(this));
-                        }
-
-                        //-----------------------------------------------------------------------------
-                        //! Execute the atomic operation on the given address with the given value.
-                        //! \return The old value before executing the atomic operation.
-                        //-----------------------------------------------------------------------------
-                        template<
-                            typename TOp,
-                            typename T>
-                        ALPAKA_FCT_ACC auto atomicOp(
-                            T * const addr,
-                            T const & value) const
-                        -> T
-                        {
-                            return atomic::atomicOp<TOp, T>(
-                                addr,
-                                value,
-                                *static_cast<AtomicOmp2 const *>(this));
-                        }
-
-                        //-----------------------------------------------------------------------------
-                        //! Syncs all threads in the current block.
-                        //-----------------------------------------------------------------------------
-                        ALPAKA_FCT_ACC_NO_CUDA auto syncBlockThreads() const
-                        -> void
-                        {
-                            #pragma omp barrier
-                        }
-
-                        //-----------------------------------------------------------------------------
-                        //! \return Allocates block shared memory.
-                        //-----------------------------------------------------------------------------
-                        template<
-                            typename T,
-                            UInt TuiNumElements>
-                        ALPAKA_FCT_ACC_NO_CUDA auto allocBlockSharedMem() const
-                        -> T *
-                        {
-                            static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
-
-                            // Assure that all threads have executed the return of the last allocBlockSharedMem function (if there was one before).
-                            syncBlockThreads();
-
-                            // Arbitrary decision: The thread with id 0 has to allocate the memory.
-                            if(::omp_get_thread_num() == 0)
-                            {
-                                // \TODO: C++14 std::make_unique would be better.
-                                m_vvuiSharedMem.emplace_back(
-                                    std::unique_ptr<uint8_t[]>(
-                                        reinterpret_cast<uint8_t*>(new T[TuiNumElements])));
-                            }
-                            syncBlockThreads();
-
-                            return reinterpret_cast<T*>(m_vvuiSharedMem.back().get());
-                        }
-
-                        //-----------------------------------------------------------------------------
-                        //! \return The pointer to the externally allocated block shared memory.
-                        //-----------------------------------------------------------------------------
-                        template<
-                            typename T>
-                        ALPAKA_FCT_ACC_NO_CUDA auto getBlockSharedExternMem() const
-                        -> T *
-                        {
-                            return reinterpret_cast<T*>(m_vuiExternalSharedMem.get());
-                        }
-
-#ifdef ALPAKA_NVCC_FRIEND_ACCESS_BUG
-                    protected:
-#else
-                    private:
-#endif
-                        // getIdx
-                        Vec3<> mutable m_v3uiGridBlockIdx;                         //!< The index of the currently executed block.
-
-                        // allocBlockSharedMem
-                        std::vector<
-                            std::unique_ptr<uint8_t[]>> mutable m_vvuiSharedMem;    //!< Block shared memory.
-
-                        // getBlockSharedExternMem
-                        std::unique_ptr<uint8_t[]> mutable m_vuiExternalSharedMem;  //!< External block shared memory.
-                    };
-
                     //#############################################################################
                     //! The OpenMP2 accelerator executor.
                     //#############################################################################
@@ -245,8 +68,9 @@ namespace alpaka
                             typename TWorkDiv>
                         ALPAKA_FCT_HOST ExecOmp2(
                             TWorkDiv const & workDiv,
-                            StreamOmp2 const &) :
-                                AccOmp2(workDiv)
+                            devs::cpu::detail::StreamCpu & stream) :
+                                AccOmp2(workDiv),
+                                m_Stream(stream)
                         {
                             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                         }
@@ -255,7 +79,8 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         ALPAKA_FCT_HOST ExecOmp2(
                             ExecOmp2 const & other) :
-                                AccOmp2(static_cast<workdiv::BasicWorkDiv const &>(other))
+                                AccOmp2(static_cast<workdiv::BasicWorkDiv const &>(other)),
+                                m_Stream(other.m_Stream)
                         {
                             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                         }
@@ -265,7 +90,8 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         ALPAKA_FCT_HOST ExecOmp2(
                             ExecOmp2 && other) :
-                                AccOmp2(static_cast<workdiv::BasicWorkDiv &&>(other))
+                                AccOmp2(static_cast<workdiv::BasicWorkDiv &&>(other)),
+                                m_Stream(other.m_Stream)
                         {
                             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                         }
@@ -361,117 +187,101 @@ namespace alpaka
                             // After all blocks have been processed, the external shared memory can be deleted.
                             this->AccOmp2::m_vuiExternalSharedMem.reset();
                         }
+
+                    public:
+                        devs::cpu::detail::StreamCpu m_Stream;
                     };
                 }
             }
         }
     }
 
-    using AccOmp2 = accs::omp::omp2::detail::AccOmp2;
-
     namespace traits
     {
         namespace acc
         {
             //#############################################################################
-            //! The OpenMP2 accelerator kernel executor accelerator type trait specialization.
+            //! The OpenMP2 accelerator executor accelerator type trait specialization.
             //#############################################################################
             template<>
             struct AccType<
                 accs::omp::omp2::detail::ExecOmp2>
             {
-                using type = AccOmp2;
-            };
-
-            //#############################################################################
-            //! The OpenMP2 accelerator accelerator type trait specialization.
-            //#############################################################################
-            template<>
-            struct AccType<
-                accs::omp::omp2::detail::AccOmp2>
-            {
                 using type = accs::omp::omp2::detail::AccOmp2;
-            };
-
-            //#############################################################################
-            //! The OpenMP2 accelerator name trait specialization.
-            //#############################################################################
-            template<>
-            struct GetAccName<
-                accs::omp::omp2::detail::AccOmp2>
-            {
-                ALPAKA_FCT_HOST_ACC static auto getAccName()
-                -> std::string
-                {
-                    return "AccOmp2";
-                }
             };
         }
 
         namespace event
         {
             //#############################################################################
-            //! The OpenMP2 accelerator event type trait specialization.
+            //! The OpenMP2 accelerator executor event type trait specialization.
             //#############################################################################
             template<>
             struct EventType<
-                accs::omp::omp2::detail::AccOmp2>
+                accs::omp::omp2::detail::ExecOmp2>
             {
-                using type = accs::omp::omp2::detail::EventOmp2;
+                using type = devs::cpu::detail::EventCpu;
             };
         }
 
         namespace exec
         {
             //#############################################################################
-            //! The OpenMP2 accelerator executor type trait specialization.
+            //! The OpenMP2 accelerator executor executor type trait specialization.
             //#############################################################################
             template<>
             struct ExecType<
-                accs::omp::omp2::detail::AccOmp2>
+                accs::omp::omp2::detail::ExecOmp2>
             {
                 using type = accs::omp::omp2::detail::ExecOmp2;
             };
         }
 
-        namespace mem
+        namespace dev
         {
             //#############################################################################
-            //! The OpenMP2 accelerator memory space trait specialization.
+            //! The OpenMP2 accelerator executor device type trait specialization.
             //#############################################################################
             template<>
-            struct SpaceType<
-                accs::omp::omp2::detail::AccOmp2>
+            struct DevType<
+                accs::omp::omp2::detail::ExecOmp2>
             {
-                using type = alpaka::mem::SpaceHost;
+                using type = devs::cpu::detail::DevCpu;
+            };
+            //#############################################################################
+            //! The OpenMP2 accelerator device type trait specialization.
+            //#############################################################################
+            template<>
+            struct DevManType<
+                accs::omp::omp2::detail::ExecOmp2>
+            {
+                using type = devs::cpu::detail::DevManCpu;
             };
         }
 
         namespace stream
         {
             //#############################################################################
-            //! The OpenMP2 accelerator stream type trait specialization.
+            //! The OpenMP2 accelerator executor stream type trait specialization.
             //#############################################################################
             template<>
             struct StreamType<
-                accs::omp::omp2::detail::AccOmp2>
+                accs::omp::omp2::detail::ExecOmp2>
             {
-                using type = accs::omp::omp2::detail::StreamOmp2;
+                using type = devs::cpu::detail::StreamCpu;
             };
-
             //#############################################################################
-            //! The OpenMP2 accelerator kernel executor stream get trait specialization.
+            //! The OpenMP2 accelerator executor stream get trait specialization.
             //#############################################################################
             template<>
             struct GetStream<
                 accs::omp::omp2::detail::ExecOmp2>
             {
                 ALPAKA_FCT_HOST static auto getStream(
-                    accs::omp::omp2::detail::ExecOmp2 const &)
-                -> accs::omp::omp2::detail::StreamOmp2
+                    accs::omp::omp2::detail::ExecOmp2 const & exec)
+                -> devs::cpu::detail::StreamCpu
                 {
-                    return accs::omp::omp2::detail::StreamOmp2(
-                        accs::omp::omp2::detail::DevManOmp2::getDevByIdx(0));
+                    return exec.m_Stream;
                 }
             };
         }

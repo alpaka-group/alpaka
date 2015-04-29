@@ -21,22 +21,9 @@
 
 #pragma once
 
-#include <alpaka/accs/serial/Dev.hpp>   // SpaceHost
-
-namespace alpaka
-{
-    namespace host
-    {
-        //-----------------------------------------------------------------------------
-        //! \return The device this object is bound to.
-        //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST auto getDev()
-        -> decltype(dev::DevManT<accs::serial::detail::AccSerial>::getDevByIdx(std::declval<std::size_t const &>()))
-        {
-            return dev::DevManT<
-                accs::serial::detail::AccSerial>
-            ::getDevByIdx(
-                0);
-        }
-    }
-}
+#include <alpaka/devs/cpu/Dev.hpp>
+#include <alpaka/devs/cpu/Event.hpp>
+#include <alpaka/devs/cpu/Mem.hpp>
+#include <alpaka/devs/cpu/Rand.hpp>
+#include <alpaka/devs/cpu/Stream.hpp>
+#include <alpaka/devs/cpu/SysInfo.hpp>

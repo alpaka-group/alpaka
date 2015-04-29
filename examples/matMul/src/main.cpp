@@ -254,14 +254,14 @@ struct MatMulTester
         MatMulKernel kernel;
 
         // Get the host device.
-        auto const devHost(alpaka::host::getDev());
+        auto devHost(alpaka::devs::cpu::getDev());
 
         // Select a device to execute on.
-        alpaka::dev::DevT<TAcc> const devAcc(
+        alpaka::dev::DevT<TAcc> devAcc(
             alpaka::dev::DevManT<TAcc>::getDevByIdx(0));
 
         // Get a stream on this device.
-        alpaka::stream::StreamT<TAcc> const stream(
+        alpaka::stream::StreamT<TAcc> stream(
             alpaka::stream::create(devAcc));
 
         alpaka::Vec2<> const v2uiExtentsA(
@@ -305,7 +305,7 @@ struct MatMulTester
         std::vector<std::uint32_t> vuiB(uiM * uiN, 1u);
         // Wrap the std::vectors into a memory buffer object.
         // For 1D data this would not be required because alpaka::mem::copy is specialized for std::vector and std::array.
-        // For multi dimensional data you could directly create them using alpaka::mem::alloc<Type, SpaceHost>, which is not used here.
+        // For multi dimensional data you could directly create them using alpaka::mem::alloc<Type>(devHost, extents), which is not used here.
         // Instead we use BufPlainPtrWrapper to wrap the data.
         using MemBufWrapper = alpaka::mem::BufPlainPtrWrapper<
             std::uint32_t,
@@ -328,8 +328,8 @@ struct MatMulTester
         alpaka::mem::copy(memBufBAcc, memBufBHost, v2uiExtentsB, stream);
         alpaka::mem::copy(memBufCAcc, memBufCHost, v2uiExtentsC, stream);
 
-        // Create the kernel executor.
-        auto exec(alpaka::exec::create(workDiv, stream));
+        // Create the executor.
+        auto exec(alpaka::exec::create<TAcc>(workDiv, stream));
         // Profile the kernel execution.
         profileKernelExec(
             exec,

@@ -21,31 +21,15 @@
 
 #pragma once
 
-#include <alpaka/traits/mem/Space.hpp>
+#include <alpaka/accs/cuda/Event.hpp>     // EventCuda
 
 namespace alpaka
 {
-    namespace mem
+    namespace dev
     {
-        //#############################################################################
-        //! The data space on the CUDA accelerator.
-        //#############################################################################
-        struct SpaceCuda;
-    }
-
-    namespace traits
-    {
-        namespace mem
+        namespace gpu
         {
-            //#############################################################################
-            //! The SpaceCuda memory space trait specialization.
-            //#############################################################################
-            template<>
-            struct SpaceType<
-                alpaka::mem::SpaceCuda>
-            {
-                using type = alpaka::mem::SpaceCuda;
-            };
+            using EventGpu = alpaka::accs::cuda::detail::EventCuda;
         }
     }
 }
