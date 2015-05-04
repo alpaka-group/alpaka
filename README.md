@@ -37,12 +37,12 @@ The source code documentation generated with [doxygen](http://www.doxygen.org) i
 Supported Compilers
 -------------------
 
-This library uses a subset of C++11 to keep the code clean and readable.
+This library uses C++11 (or newer when available).
 
 Supported compilers are:
 - gcc 4.9.2+
 - MSVC 2013+ (boost-fibers only supported in MSVC 2015)
-- clang 3.5+ (currently OpenMP only supported in `clang-omp` )
+- clang 3.5+ (currently OpenMP only supported in `clang-omp`)
 - icc 15.0+ (untested)
 
 Build status master branch: [![Build Status](https://travis-ci.org/ComputationalRadiationPhysics/alpaka.svg?branch=master)](https://travis-ci.org/ComputationalRadiationPhysics/alpaka)
@@ -61,7 +61,7 @@ When the *CUDA-Accelerator* is enabled, version *7.0* of the *CUDA SDK* is the m
 
 When the *OpenMP-Accelerator* is enabled, the compiler and the platform have to support *OpenMP 2.0* or newer.
 
-When the *Fibers-Accelerator* is enabled, `boost-coroutine`, `boost-context` and the proposed boost library [`boost-fibers`](https://github.com/olk/boost-fiber) (develop branch commit 9bd1c0cd0f1a15a5c7548aadaab0e40a0aea55c5) are required to be build.
+When the **Fibers-Accelerator** is enabled, the develop branch of boost and the proposed boost library [`boost-fibers`](https://github.com/olk/boost-fiber) (develop branch) are required. `boost-fibers`, `boost-context` and all of its dependencies are required to be build in C++14 mode `./b2 cxxflags="-std=c++14"`.
 
 
 Accelerators

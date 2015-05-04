@@ -67,7 +67,7 @@ IF(ALPAKA_ROOT)
     # Find Boost.
     #-------------------------------------------------------------------------------
     IF(ALPAKA_FIBERS_ENABLE)
-        FIND_PACKAGE(Boost COMPONENTS fiber coroutine context system thread atomic chrono date_time regex)
+        FIND_PACKAGE(Boost COMPONENTS fiber context system thread atomic chrono date_time)
         IF(NOT Boost_FIBER_FOUND)
             MESSAGE(WARNING "Optional alpaka dependency Boost fiber could not be found! Fibers accelerator disabled!")
             SET(ALPAKA_FIBERS_ENABLE OFF CACHE BOOL "Enable the Fibers accelerator" FORCE)
@@ -212,7 +212,11 @@ IF(ALPAKA_ROOT)
         LIST(APPEND ALPAKA_COMPILE_OPTIONS)
     ELSE()
         # Select C++ standard version.
-        LIST(APPEND ALPAKA_COMPILE_OPTIONS "-std=c++11")
+        IF(ALPAKA_FIBERS_ENABLE)
+            LIST(APPEND ALPAKA_COMPILE_OPTIONS "-std=c++14")
+        ELSE()
+            LIST(APPEND ALPAKA_COMPILE_OPTIONS "-std=c++11")
+        ENDIF()
 
         # Add linker options.
         IF(ALPAKA_THREADS_ENABLE)

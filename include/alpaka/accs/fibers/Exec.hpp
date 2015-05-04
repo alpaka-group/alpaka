@@ -70,21 +70,6 @@ namespace alpaka
                     }
                 };
                 //#############################################################################
-                //! The type given to the ConcurrentExecPool for returning the current exception.
-                //#############################################################################
-                struct FiberPoolCurrentException
-                {
-                    //-----------------------------------------------------------------------------
-                    //! \return The current exception.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA static auto current_exception()
-                    -> std::result_of<decltype(&boost::current_exception)()>::type
-                    {
-                        return boost::current_exception();
-                    }
-                };
-
-                //#############################################################################
                 //! The fibers accelerator executor.
                 //#############################################################################
                 class ExecFibers :
@@ -174,10 +159,8 @@ namespace alpaka
                         using FiberPool = alpaka::detail::ConcurrentExecPool<
                             boost::fibers::fiber,               // The concurrent execution type.
                             boost::fibers::promise,             // The promise type.
-                            FiberPoolCurrentException,          // The type returning the current exception.
                             FiberPoolYield,                     // The type yielding the current concurrent execution.
                             boost::fibers::mutex,               // The mutex type to use. Only required if TbYield is true.
-                            boost::unique_lock,                 // The unique lock type to use. Only required if TbYield is true.
                             boost::fibers::condition_variable,  // The condition variable type to use. Only required if TbYield is true.
                             false>;                             // If the threads should yield.
                         FiberPool pool(uiNumThreadsInBlock[0], uiNumThreadsInBlock[0]);

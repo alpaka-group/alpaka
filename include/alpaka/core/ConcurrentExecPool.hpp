@@ -46,17 +46,10 @@ namespace alpaka
     {
         //#############################################################################
         //! ITaskPkg.
-        //!
-        //! \tparam TCurrentException Must have a static method "current_exception()" that returns the current exception.
         //#############################################################################
         // \TODO: Replace with std::packaged_task which was buggy in MSVC 12.
-        template<
-            typename TCurrentException>
         class ITaskPkg
         {
-        public:
-            using ExceptionPtr = typename std::result_of<decltype(&TCurrentException::current_exception)()>::type;
-
         public:
             //-----------------------------------------------------------------------------
             //! Runs this task.
@@ -70,8 +63,7 @@ namespace alpaka
                 }
                 catch(...)
                 {
-                    setException(
-                        TCurrentException::current_exception());
+                    setException(std::current_exception());
                 }
             }
 
@@ -86,24 +78,23 @@ namespace alpaka
             //! Sets an exception.
             //-----------------------------------------------------------------------------
             virtual auto setException(
-                ExceptionPtr exceptPtr) -> void = 0;
+                std::exception_ptr const & exceptPtr)
+            -> void = 0;
         };
 
         //#############################################################################
         //! TaskPkg with return type.
         //!
-        //! \tparam TCurrentException Must have a static method "current_exception()" that returns the current exception.
         //! \tparam TPromise The promise type returned by the task.
         //! \tparam TFunc The type of the function to execute.
         //! \tparam TFuncReturn The return type of the TFunc. Used for class specialization.
         //#############################################################################
         template<
-            typename TCurrentException,
             template<typename TFuncReturn> class TPromise,
             typename TFunc,
             typename TFuncReturn>
         class TaskPkg :
-            public ITaskPkg<TCurrentException>
+            public ITaskPkg
         {
         public:
             //-----------------------------------------------------------------------------
@@ -122,14 +113,14 @@ namespace alpaka
             virtual auto run()
             -> void final
             {
-                m_Promise.set_value(m_Func());
+                m_Promise.set_value(this->m_Func());
             }
         public:
             //-----------------------------------------------------------------------------
             //! Sets an exception.
             //-----------------------------------------------------------------------------
             virtual auto setException(
-                typename ITaskPkg<TCurrentException>::ExceptionPtr exceptPtr)
+                std::exception_ptr const & exceptPtr)
             -> void final
             {
                 m_Promise.set_exception(exceptPtr);
@@ -143,20 +134,17 @@ namespace alpaka
         //#############################################################################
         //! TaskPkg without return type.
         //!
-        //! \tparam TCurrentException Must have a static method "current_exception()" that returns the current exception.
         //! \tparam TPromise The promise type returned by the task.
         //! \tparam TFunc The type of the function to execute.
         //#############################################################################
         template<
-            typename TCurrentException,
             template<typename TFuncReturn> class TPromise,
             typename TFunc>
         class TaskPkg<
-            TCurrentException,
             TPromise,
             TFunc,
             void> :
-            public ITaskPkg<TCurrentException>
+            public ITaskPkg
         {
         public:
             //-----------------------------------------------------------------------------
@@ -175,7 +163,7 @@ namespace alpaka
             virtual auto run()
             -> void final
             {
-                m_Func();
+                this->m_Func();
                 m_Promise.set_value();
             }
         public:
@@ -183,7 +171,7 @@ namespace alpaka
             //! Sets an exception.
             //-----------------------------------------------------------------------------
             virtual auto setException(
-                typename ITaskPkg<TCurrentException>::ExceptionPtr exceptPtr)
+                std::exception_ptr const & exceptPtr)
             -> void final
             {
                 m_Promise.set_exception(exceptPtr);
@@ -199,20 +187,16 @@ namespace alpaka
         //!
         //! \tparam TConcurrentExec The type of concurrent executor (for example std::thread).
         //! \tparam TPromise The promise type returned by the task.
-        //! \tparam TCurrentException Must have a static method "current_exception()" that returns the current exception.
         //! \tparam TYield The type is required to have a static method "void yield()" to yield the current thread if there is no work.
         //! \tparam TMutex Unused. The mutex type used for locking threads.
-        //! \tparam TUniqueLock Unused. The lock type used to lock the TMutex.
-        //! \tparam TCondVar Unused. The condition variable type used to make the threads wait if there is no work. Uses the TUniqueLock.
+        //! \tparam TCondVar Unused. The condition variable type used to make the threads wait if there is no work.
         //! \tparam TbYield Booleam value the threads should yield instead of wait for a condition variable.
         //#############################################################################
         template<
             typename TConcurrentExec,
             template<typename TFuncReturn> class TPromise,
-            typename TCurrentException,
             typename TYield,
             typename TMutex = void,
-            template<typename TMutex2> class TUniqueLock = std::atomic,
             typename TCondVar = void,
             bool TbYield = true>
         class ConcurrentExecPool
@@ -240,7 +224,7 @@ namespace alpaka
                 // Create all concurrent executors.
                 for(size_t uiConcurrentExec(0); uiConcurrentExec < uiConcurrentExecutionCount; ++uiConcurrentExec)
                 {
-                    m_vConcurrentExecs.emplace_back(&ConcurrentExecPool::concurrentExecFunc, this);
+                    m_vConcurrentExecs.emplace_back(std::bind(&ConcurrentExecPool::concurrentExecFunc, this));
                 }
             }
             //-----------------------------------------------------------------------------
@@ -273,24 +257,13 @@ namespace alpaka
 
                 joinAllConcurrentExecs();
 
-                auto currentTaskPackage(std::unique_ptr<ITaskPkg<TCurrentException>>{nullptr});
+                auto currentTaskPackage(std::unique_ptr<ITaskPkg>{nullptr});
 
                 // Signal to each incomplete task that it will not complete due to pool destruction.
                 while(popTask(currentTaskPackage))
                 {
-                    // Boost is missing make_exception_ptr so we have to throw the exception to get a pointer to it.
-
-                    //auto const except(std::runtime_error("Could not perform task before ConcurrentExecPool destruction"));
-                    //currentTaskPackage->setException(std::make_exception_ptr(except));
-
-                    try
-                    {
-                        throw std::runtime_error("Could not perform task before ConcurrentExecPool destruction");
-                    }
-                    catch(...)
-                    {
-                        currentTaskPackage->setException(TCurrentException::current_exception());
-                    }
+                    auto const except(std::runtime_error("Could not perform task before ConcurrentExecPool destruction"));
+                    currentTaskPackage->setException(std::make_exception_ptr(except));
                 }
             }
 
@@ -319,12 +292,12 @@ namespace alpaka
 
                 // Return type of the functor, can be void via specialization of TaskPkg.
                 using FuncReturn = typename std::result_of<TFunc(TArgs...)>::type;
-                using TaskPackage = TaskPkg<TCurrentException, TPromise, decltype(boundTask), FuncReturn>;
+                using TaskPackage = TaskPkg<TPromise, decltype(boundTask), FuncReturn>;
                 // Ensures no memory leak if push throws.
                 // \TODO: C++14 std::make_unique would be better.
                 auto packagePtr(std::unique_ptr<TaskPackage>(new TaskPackage(std::move(boundTask))));
 
-                m_qTasks.push(static_cast<ITaskPkg<TCurrentException> *>(packagePtr.get()));
+                m_qTasks.push(static_cast<ITaskPkg *>(packagePtr.get()));
 
                 auto future(packagePtr->m_Promise.get_future());
 
@@ -351,7 +324,7 @@ namespace alpaka
                 // Checks whether pool is being destroyed, if so, stop running.
                 while(!m_bShutdownFlag.load(std::memory_order_relaxed))
                 {
-                    auto currentTaskPackage(std::unique_ptr<ITaskPkg<TCurrentException>>{nullptr});
+                    auto currentTaskPackage(std::unique_ptr<ITaskPkg>{nullptr});
 
                     // Use popTask so we only ever have one reference to the ITaskPkg
                     if(popTask(currentTaskPackage))
@@ -379,10 +352,10 @@ namespace alpaka
             //! Pops a task from the queue.
             //-----------------------------------------------------------------------------
             auto popTask(
-                std::unique_ptr<ITaskPkg<TCurrentException>> & out)
+                std::unique_ptr<ITaskPkg> & out)
             -> bool
             {
-                ITaskPkg<TCurrentException> * tempPtr(nullptr);
+                ITaskPkg * tempPtr(nullptr);
 
                 if(m_qTasks.pop(tempPtr))
                 {
@@ -395,7 +368,7 @@ namespace alpaka
         private:
             std::vector<TConcurrentExec> m_vConcurrentExecs;
             std::atomic<bool> m_bShutdownFlag;
-            boost::lockfree::queue<ITaskPkg<TCurrentException> *> m_qTasks;
+            boost::lockfree::queue<ITaskPkg *> m_qTasks;
         };
 
         //#############################################################################
@@ -403,27 +376,21 @@ namespace alpaka
         //!
         //! \tparam TConcurrentExec The type of concurrent executor (for example std::thread).
         //! \tparam TPromise The promise type returned by the task.
-        //! \tparam TCurrentException Must have a static method "current_exception()" that returns the current exception.
         //! \tparam TYield Unused. The type is required to have a static method "void yield()" to yield the current thread if there is no work.
         //! \tparam TMutex The mutex type used for locking threads.
-        //! \tparam TUniqueLock The lock type used to lock the TMutex.
-        //! \tparam TCondVar The condition variable type used to make the threads wait if there is no work. Uses the TUniqueLock.
+        //! \tparam TCondVar The condition variable type used to make the threads wait if there is no work.
         //#############################################################################
         template<
             typename TConcurrentExec,
             template<typename TFuncReturn> class TPromise,
-            typename TCurrentException,
             typename TYield,
             typename TMutex,
-            template<typename TMutex2> class TUniqueLock,
             typename TCondVar>
         class ConcurrentExecPool<
             TConcurrentExec,
             TPromise,
-            TCurrentException,
             TYield,
             TMutex,
-            TUniqueLock,
             TCondVar,
             false>
         {
@@ -452,7 +419,7 @@ namespace alpaka
                 // Create all concurrent executors.
                 for(size_t uiConcurrentExec(0); uiConcurrentExec < uiConcurrentExecutionCount; ++uiConcurrentExec)
                 {
-                    m_vConcurrentExecs.emplace_back(&ConcurrentExecPool::concurrentExecFunc, this);
+                    m_vConcurrentExecs.emplace_back(std::bind(&ConcurrentExecPool::concurrentExecFunc, this));
                 }
             }
             //-----------------------------------------------------------------------------
@@ -487,24 +454,13 @@ namespace alpaka
 
                 joinAllConcurrentExecs();
 
-                auto currentTaskPackage(std::unique_ptr<ITaskPkg<TCurrentException>>{nullptr});
+                auto currentTaskPackage(std::unique_ptr<ITaskPkg>{nullptr});
 
                 // Signal to each incomplete task that it will not complete due to pool destruction.
                 while(popTask(currentTaskPackage))
                 {
-                    // Boost is missing make_exception_ptr so we have to throw the exception to get a pointer to it.
-
-                    //auto const except(std::runtime_error("Could not perform task before ConcurrentExecPool destruction"));
-                    //currentTaskPackage->setException(std::make_exception_ptr(except));
-
-                    try
-                    {
-                        throw std::runtime_error("Could not perform task before ConcurrentExecPool destruction");
-                    }
-                    catch(...)
-                    {
-                        currentTaskPackage->setException(TCurrentException::current_exception());
-                    }
+                    auto const except(std::runtime_error("Could not perform task before ConcurrentExecPool destruction"));
+                    currentTaskPackage->setException(std::make_exception_ptr(except));
                 }
             }
 
@@ -533,12 +489,12 @@ namespace alpaka
 
                 // Return type of the functor, can be void via specialization of TaskPkg.
                 using FuncReturn = typename std::result_of<TFunc(TArgs...)>::type;
-                using TaskPackage = TaskPkg<TCurrentException, TPromise, decltype(boundTask), FuncReturn>;
+                using TaskPackage = TaskPkg<TPromise, decltype(boundTask), FuncReturn>;
                 // Ensures no memory leak if push throws.
                 // \TODO: C++14 std::make_unique would be better.
                 auto packagePtr(std::unique_ptr<TaskPackage>(new TaskPackage(std::move(boundTask))));
 
-                m_qTasks.push(static_cast<ITaskPkg<TCurrentException> *>(packagePtr.get()));
+                m_qTasks.push(static_cast<ITaskPkg *>(packagePtr.get()));
 
                 auto future(packagePtr->m_Promise.get_future());
 
@@ -567,7 +523,7 @@ namespace alpaka
                 // Checks whether pool is being destroyed, if so, stop running.
                 while(!m_bShutdownFlag.load(std::memory_order_relaxed))
                 {
-                    auto currentTaskPackage(std::unique_ptr<ITaskPkg<TCurrentException>>{nullptr});
+                    auto currentTaskPackage(std::unique_ptr<ITaskPkg>{nullptr});
 
                     // Use popTask so we only ever have one reference to the ITaskPkg
                     if(popTask(currentTaskPackage))
@@ -576,7 +532,7 @@ namespace alpaka
                     }
                     else
                     {
-                        TUniqueLock<TMutex> lock(m_mtxWakeup);
+                        std::unique_lock<TMutex> lock(m_mtxWakeup);
 
                         m_cvWakeup.wait(lock, [this]() { return !m_qTasks.empty() || m_bShutdownFlag; });
                     }
@@ -597,10 +553,10 @@ namespace alpaka
             //! Pops a task from the queue.
             //-----------------------------------------------------------------------------
             auto popTask(
-                std::unique_ptr<ITaskPkg<TCurrentException>> & out)
+                std::unique_ptr<ITaskPkg> & out)
             -> bool
             {
-                ITaskPkg<TCurrentException> * tempPtr(nullptr);
+                ITaskPkg * tempPtr(nullptr);
 
                 if(m_qTasks.pop(tempPtr))
                 {
@@ -613,7 +569,7 @@ namespace alpaka
         private:
             std::vector<TConcurrentExec> m_vConcurrentExecs;
             std::atomic<bool> m_bShutdownFlag;
-            boost::lockfree::queue<ITaskPkg<TCurrentException> *> m_qTasks;
+            boost::lockfree::queue<ITaskPkg *> m_qTasks;
 
             TCondVar m_cvWakeup;
             TMutex m_mtxWakeup;

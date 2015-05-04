@@ -71,21 +71,6 @@ namespace alpaka
                     }
                 };
                 //#############################################################################
-                //! The type given to the ConcurrentExecPool for returning the current exception.
-                //#############################################################################
-                struct ThreadPoolCurrentException
-                {
-                    //-----------------------------------------------------------------------------
-                    //! \return The current exception.
-                    //-----------------------------------------------------------------------------
-                    static auto current_exception()
-                    -> std::result_of<decltype(&std::current_exception)()>::type
-                    {
-                        return std::current_exception();
-                    }
-                };
-
-                //#############################################################################
                 //! The threads accelerator executor.
                 //#############################################################################
                 class ExecThreads :
@@ -178,7 +163,6 @@ namespace alpaka
                         using ThreadPool = alpaka::detail::ConcurrentExecPool<
                             std::thread,                // The concurrent execution type.
                             std::promise,               // The promise type.
-                            ThreadPoolCurrentException, // The type returning the current exception.
                             ThreadPoolYield>;           // The type yielding the current concurrent execution.
                         ThreadPool pool(uiNumThreadsInBlock[0], uiNumThreadsInBlock[0]);
 

@@ -25,6 +25,8 @@
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FCT_ACC_NO_CUDA
 
+#include <mutex>                    // std::unique_lock
+
 namespace alpaka
 {
     namespace accs
@@ -72,7 +74,7 @@ namespace alpaka
                     ALPAKA_FCT_ACC_NO_CUDA auto wait()
                     -> void
                     {
-                        boost::unique_lock<boost::fibers::mutex> lock(m_mtxBarrier);
+                        std::unique_lock<boost::fibers::mutex> lock(m_mtxBarrier);
                         if(--m_uiNumFibersToWaitFor == 0)
                         {
                             m_cvAllFibersReachedBarrier.notify_all();

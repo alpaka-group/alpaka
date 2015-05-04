@@ -21,9 +21,6 @@
 
 #pragma once
 
-// Force the usage of variadic templates for fibers.
-#define BOOST_FIBERS_USE_VARIADIC_FIBER
-
 #if BOOST_COMP_MSVC
     #pragma warning(push)
     #pragma warning(disable: 4267)  // boost/asio/detail/impl/socket_ops.ipp(1968): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
