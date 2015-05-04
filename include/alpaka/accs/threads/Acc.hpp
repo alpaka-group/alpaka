@@ -190,6 +190,7 @@ namespace alpaka
                         auto & bar(m_abarSyncThreads[uiModBarrierIdx]);
 
                         // (Re)initialize a barrier if this is the first thread to reach it.
+                        // DCLP: Double checked locking pattern for better performance.
                         if(bar.getNumThreadsToWaitFor() == 0)
                         {
                             std::lock_guard<std::mutex> lock(m_mtxBarrier);
@@ -248,8 +249,8 @@ namespace alpaka
                 private:
     #endif
                     // getIdx
-                    detail::ThreadIdToIdxMap mutable m_mThreadsToIndices;       //!< The mapping of thread id's to thread indices.
-                    Vec3<> mutable m_v3uiGridBlockIdx;                         //!< The index of the currently executed block.
+                    detail::ThreadIdToIdxMap mutable m_mThreadsToIndices;       //!< The mapping of thread id's to indices.
+                    Vec3<> mutable m_v3uiGridBlockIdx;                          //!< The index of the currently executed block.
 
                     // syncBlockThreads
                     UInt const m_uiNumThreadsPerBlock;                          //!< The number of threads per block the barrier has to wait for.

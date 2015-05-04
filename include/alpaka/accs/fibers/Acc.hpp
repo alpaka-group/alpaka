@@ -243,17 +243,17 @@ namespace alpaka
 #else
                 private:
 #endif
-                    // getXxxIdx
-                    FiberIdToIdxMap mutable m_mFibersToIndices;                 //!< The mapping of fibers id's to fibers indices.
-                    Vec3<> mutable m_v3uiGridBlockIdx;                         //!< The index of the currently executed block.
+                    // getIdx
+                    FiberIdToIdxMap mutable m_mFibersToIndices;                 //!< The mapping of fibers id's to indices.
+                    Vec3<> mutable m_v3uiGridBlockIdx;                          //!< The index of the currently executed block.
 
                     // syncBlockThreads
-                    UInt const m_uiNumThreadsPerBlock;                            //!< The number of threads per block the barrier has to wait for.
+                    UInt const m_uiNumThreadsPerBlock;                          //!< The number of threads per block the barrier has to wait for.
                     std::map<
                         boost::fibers::fiber::id,
                         UInt> mutable m_mFibersToBarrier;                       //!< The mapping of fibers id's to their current barrier.
                     FiberBarrier mutable m_abarSyncFibers[2];                   //!< The barriers for the synchronization of fibers.
-                    //!< We have the keep to current and the last barrier because one of the fibers can reach the next barrier before another fiber was wakeup from the last one and has checked if it can run.
+                    //!< We have to keep the current and the last barrier because one of the fibers can reach the next barrier before another fiber was wakeup from the last one and has checked if it can run.
 
                     // allocBlockSharedMem
                     boost::fibers::fiber::id mutable m_idMasterFiber;           //!< The id of the master fiber.

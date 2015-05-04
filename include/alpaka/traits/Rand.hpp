@@ -174,19 +174,22 @@ namespace alpaka
                 typename TAcc>
             ALPAKA_FCT_HOST_ACC auto createDefault(
                 TAcc const & acc,
-                std::uint32_t const & seed)
+                std::uint32_t const & seed,
+                std::uint32_t const & subsequence)
             -> decltype(
                     traits::rand::generator::CreateDefault<
                         TAcc>
                     ::createDefault(
-                        std::declval<TAcc const &>(),
-                        std::declval<std::uint32_t const &>()))
+                        acc,
+                        seed,
+                        subsequence))
             {
                 return traits::rand::generator::CreateDefault<
                     TAcc>
                 ::createDefault(
                     acc,
-                    seed);
+                    seed,
+                    subsequence);
             }
         }
     }
