@@ -62,7 +62,7 @@ namespace alpaka
             //! The default implementation uses the extent to calculate the pitch.
             //#############################################################################
             template<
-                UInt TuiIdx,
+                typename TIdx,
                 typename TView,
                 typename TSfinae = void>
             struct GetPitchBytes
@@ -71,10 +71,32 @@ namespace alpaka
                 //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getPitchBytes(
-                    TView const & buf)
+                    TView const & view)
                 -> UInt
                 {
-                    return alpaka::extent::getExtent<TuiIdx, UInt>(buf) * sizeof(ElemType<TView>::type);
+#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
+                    using IdxSequence = typename alpaka::detail::make_integer_sequence_start<UInt, TIdx::value, alpaka::dim::DimT<TView>::value - TIdx::value>::type;
+#else
+                    using IdxSequence = alpaka::detail::make_integer_sequence_start<UInt, TIdx::value, alpaka::dim::DimT<TView>::value - TIdx::value>;
+#endif
+                    return
+                         extentsProd(view, IdxSequence())
+                        * sizeof(typename ElemType<TView>::type);
+                }
+            private:
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                template<
+                    UInt... TIndices>
+                ALPAKA_FCT_HOST static auto extentsProd(
+                    TView const & view,
+                    alpaka::detail::integer_sequence<UInt, TIndices...> const &)
+                -> UInt
+                {
+                    return alpaka::foldr(
+                            std::multiplies<UInt>(),
+                            alpaka::extent::getExtent<TIndices, UInt>(view)...);
                 }
             };
 
@@ -120,12 +142,12 @@ namespace alpaka
             struct CreateView;
 
             //#############################################################################
-            //! The base trait.
+            //! The buffer trait.
             //#############################################################################
             template<
                 typename TBuf,
                 typename TSfinae = void>
-            struct GetBase;
+            struct GetBuf;
         }
     }
 
@@ -136,7 +158,7 @@ namespace alpaka
         //#############################################################################
         template<
             typename TView>
-        using ElemT = typename traits::mem::ElemType<TView>::type;
+        using ElemT = typename std::remove_volatile<typename traits::mem::ElemType<TView>::type>::type;
 
         //-----------------------------------------------------------------------------
         //! Gets the native pointer of the memory buffer.
@@ -232,7 +254,7 @@ namespace alpaka
             return
                 static_cast<TVal>(
                     traits::mem::GetPitchBytes<
-                        TuiIdx,
+                        std::integral_constant<UInt, TuiIdx>,
                         TView>
                     ::getPitchBytes(
                         buf));
@@ -240,6 +262,7 @@ namespace alpaka
 
         //-----------------------------------------------------------------------------
         //! \return The pitch in elements. This is the distance between two consecutive rows.
+        //! \TODO: Remove because pitches are not always multiple of the element size.
         //-----------------------------------------------------------------------------
         template<
             UInt TuiIdx,
@@ -340,7 +363,7 @@ namespace alpaka
                 dim::DimT<TBufDst>::value == dim::DimT<TExtents>::value,
                 "The destination buffer and the extents are required to have the same dimensionality!");
             static_assert(
-                std::is_same<ElemT<TBufDst>, ElemT<TBufSrc>>::value,
+                std::is_same<ElemT<TBufDst>, typename std::remove_const<mem::ElemT<TBufSrc>>::type>::value,
                 "The source and the destination buffers are required to have the same element type!");
 
             traits::mem::Copy<
@@ -380,7 +403,7 @@ namespace alpaka
                 dim::DimT<TBufDst>::value == dim::DimT<TExtents>::value,
                 "The destination buffer and the extents are required to have the same dimensionality!");
             static_assert(
-                std::is_same<ElemT<TBufDst>, ElemT<TBufSrc>>::value,
+                std::is_same<ElemT<TBufDst>, typename std::remove_const<ElemT<TBufSrc>>::type>::value,
                 "The source and the destination buffers are required to have the same element type!");
 
             traits::mem::Copy<
@@ -405,7 +428,7 @@ namespace alpaka
 
         //-----------------------------------------------------------------------------
         //! Constructor.
-        //! \param buf This can be either a memory buffer base or a memory buffer view itself.
+        //! \param buf This can be either a memory buffer or a memory view.
         //-----------------------------------------------------------------------------
         template<
             typename TView,
@@ -421,7 +444,7 @@ namespace alpaka
         }
         //-----------------------------------------------------------------------------
         //! Constructor.
-        //! \param buf This can be either a memory buffer base or a memory buffer view itself.
+        //! \param buf This can be either a memory buffer or a memory view.
         //-----------------------------------------------------------------------------
         template<
             typename TView,
@@ -437,7 +460,7 @@ namespace alpaka
         }
         //-----------------------------------------------------------------------------
         //! Constructor.
-        //! \param buf This can be either a memory buffer base or a memory buffer view itself.
+        //! \param buf This can be either a memory buffer or a memory view.
         //! \param offsetsElements The offsets in elements.
         //! \param extentsElements The extents in elements.
         //-----------------------------------------------------------------------------
@@ -461,7 +484,7 @@ namespace alpaka
         }
         //-----------------------------------------------------------------------------
         //! Constructor.
-        //! \param buf This can be either a memory buffer base or a memory buffer view itself.
+        //! \param buf This can be either a memory buffer or a memory view.
         //! \param offsetsElements The offsets in elements.
         //! \param extentsElements The extents in elements.
         //-----------------------------------------------------------------------------
@@ -485,38 +508,38 @@ namespace alpaka
         }
 
         //-----------------------------------------------------------------------------
-        //! Gets the base memory buffer.
+        //! Gets the memory buffer.
         //!
-        //! \param buf The memory buffer.
-        //! \return The base buffer.
+        //! \param buf The object the buffer is received from.
+        //! \return The memory buffer.
         //-----------------------------------------------------------------------------
         template<
             typename TBuf>
-        ALPAKA_FCT_HOST auto getBase(
+        ALPAKA_FCT_HOST auto getBuf(
             TBuf const & buf)
-        -> decltype(traits::mem::GetBase<TBuf>::getBase(buf))
+        -> decltype(traits::mem::GetBuf<TBuf>::getBuf(buf))
         {
-            return traits::mem::GetBase<
+            return traits::mem::GetBuf<
                 TBuf>
-            ::getBase(
+            ::getBuf(
                 buf);
         }
 
         //-----------------------------------------------------------------------------
-        //! Gets the base memory buffer.
+        //! Gets the memory buffer.
         //!
-        //! \param buf The memory buffer.
-        //! \return The base buffer.
+        //! \param buf The object the buffer is received from.
+        //! \return The memory buffer.
         //-----------------------------------------------------------------------------
         template<
             typename TBuf>
-        ALPAKA_FCT_HOST auto getBase(
+        ALPAKA_FCT_HOST auto getBuf(
             TBuf & buf)
-        -> decltype(traits::mem::GetBase<TBuf>::getBase(buf))
+        -> decltype(traits::mem::GetBuf<TBuf>::getBuf(buf))
         {
-            return traits::mem::GetBase<
+            return traits::mem::GetBuf<
                 TBuf>
-            ::getBase(
+            ::getBuf(
                 buf);
         }
     }

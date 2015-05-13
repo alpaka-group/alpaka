@@ -110,7 +110,7 @@ namespace alpaka
                 {
                     auto const v3uiBlockThreadExtents(alpaka::workdiv::getWorkDiv<origin::Block, unit::Threads, alpaka::dim::Dim3>(workDiv));
                     auto const v3uiBlockThreadIdx(alpaka::idx::getIdx<origin::Block, unit::Threads, alpaka::dim::Dim3>(index, workDiv));
-                    return v3uiBlockThreadIdx[2] * v3uiBlockThreadExtents[1] * v3uiBlockThreadExtents[0] + v3uiBlockThreadIdx[1] * v3uiBlockThreadExtents[0] + v3uiBlockThreadIdx[0];
+                    return v3uiBlockThreadIdx[0u] * v3uiBlockThreadExtents[1u] * v3uiBlockThreadExtents[2u] + v3uiBlockThreadIdx[1u] * v3uiBlockThreadExtents[2u] + v3uiBlockThreadIdx[2u];
                 }
             };
             //#############################################################################
@@ -162,7 +162,7 @@ namespace alpaka
                 {
                     auto const v3uiGridThreadSize(alpaka::workdiv::getWorkDiv<origin::Grid, unit::Threads, alpaka::dim::Dim3>(workDiv));
                     auto const v3uiGridThreadIdx(alpaka::idx::getIdx<origin::Grid, unit::Threads, alpaka::dim::Dim3>(index, workDiv));
-                    return v3uiGridThreadIdx[2] * v3uiGridThreadSize[1] * v3uiGridThreadSize[0] + v3uiGridThreadIdx[1] * v3uiGridThreadSize[0] + v3uiGridThreadIdx[0];
+                    return v3uiGridThreadIdx[0u] * v3uiGridThreadSize[1u] * v3uiGridThreadSize[2u] + v3uiGridThreadIdx[1u] * v3uiGridThreadSize[2u] + v3uiGridThreadIdx[2u];
                 }
             };
             //#############################################################################
@@ -188,7 +188,7 @@ namespace alpaka
                 {
                     auto const v3uiGridBlockExtent(alpaka::workdiv::getWorkDiv<origin::Grid, unit::Blocks, alpaka::dim::Dim3>(workDiv));
                     auto const v3uiGridBlockIdx(alpaka::idx::getIdx<origin::Grid, unit::Blocks, alpaka::dim::Dim3>(index, workDiv));
-                    return v3uiGridBlockIdx[2] * v3uiGridBlockExtent[1] * v3uiGridBlockExtent[0] + v3uiGridBlockIdx[1] * v3uiGridBlockExtent[0] + v3uiGridBlockIdx[0];
+                    return v3uiGridBlockIdx[0u] * v3uiGridBlockExtent[1u] * v3uiGridBlockExtent[2u] + v3uiGridBlockIdx[1u] * v3uiGridBlockExtent[2u] + v3uiGridBlockIdx[2u];
                 }
             };
         }

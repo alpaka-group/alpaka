@@ -163,22 +163,22 @@ namespace alpaka
                             boost::fibers::mutex,               // The mutex type to use. Only required if TbYield is true.
                             boost::fibers::condition_variable,  // The condition variable type to use. Only required if TbYield is true.
                             false>;                             // If the threads should yield.
-                        FiberPool pool(uiNumThreadsInBlock[0], uiNumThreadsInBlock[0]);
+                        FiberPool pool(uiNumThreadsInBlock[0u], uiNumThreadsInBlock[0u]);
 
                         // Execute the blocks serially.
-                        for(this->AccFibers::m_v3uiGridBlockIdx[2] = 0; this->AccFibers::m_v3uiGridBlockIdx[2]<v3uiGridBlockExtents[2]; ++this->AccFibers::m_v3uiGridBlockIdx[2])
+                        for(this->AccFibers::m_v3uiGridBlockIdx[0u] = 0u; this->AccFibers::m_v3uiGridBlockIdx[0u]<v3uiGridBlockExtents[0u]; ++this->AccFibers::m_v3uiGridBlockIdx[0u])
                         {
-                            for(this->AccFibers::m_v3uiGridBlockIdx[1] = 0; this->AccFibers::m_v3uiGridBlockIdx[1]<v3uiGridBlockExtents[1]; ++this->AccFibers::m_v3uiGridBlockIdx[1])
+                            for(this->AccFibers::m_v3uiGridBlockIdx[1u] = 0u; this->AccFibers::m_v3uiGridBlockIdx[1u]<v3uiGridBlockExtents[1u]; ++this->AccFibers::m_v3uiGridBlockIdx[1u])
                             {
-                                for(this->AccFibers::m_v3uiGridBlockIdx[0] = 0; this->AccFibers::m_v3uiGridBlockIdx[0]<v3uiGridBlockExtents[0]; ++this->AccFibers::m_v3uiGridBlockIdx[0])
+                                for(this->AccFibers::m_v3uiGridBlockIdx[2u] = 0u; this->AccFibers::m_v3uiGridBlockIdx[2u]<v3uiGridBlockExtents[2u]; ++this->AccFibers::m_v3uiGridBlockIdx[2u])
                                 {
                                     // Execute the block thread in parallel using cooperative multi-threading.
                                     Vec3<> v3uiBlockThreadIdx(Vec3<>::zeros());
-                                    for(v3uiBlockThreadIdx[2] = 0; v3uiBlockThreadIdx[2]<v3uiBlockThreadExtents[2]; ++v3uiBlockThreadIdx[2])
+                                    for(v3uiBlockThreadIdx[0u] = 0u; v3uiBlockThreadIdx[0u]<v3uiBlockThreadExtents[0u]; ++v3uiBlockThreadIdx[0u])
                                     {
-                                        for(v3uiBlockThreadIdx[1] = 0; v3uiBlockThreadIdx[1]<v3uiBlockThreadExtents[1]; ++v3uiBlockThreadIdx[1])
+                                        for(v3uiBlockThreadIdx[1u] = 0u; v3uiBlockThreadIdx[1u]<v3uiBlockThreadExtents[1u]; ++v3uiBlockThreadIdx[1u])
                                         {
-                                            for(v3uiBlockThreadIdx[0] = 0; v3uiBlockThreadIdx[0]<v3uiBlockThreadExtents[0]; ++v3uiBlockThreadIdx[0])
+                                            for(v3uiBlockThreadIdx[2u] = 0u; v3uiBlockThreadIdx[2u]<v3uiBlockThreadExtents[2u]; ++v3uiBlockThreadIdx[2u])
                                             {
                                                 // The v3uiBlockThreadIdx is required to be copied in from the environment because if the fiber is immediately suspended the variable is already changed for the next iteration/thread.
                                                 auto fiberKernelFct =

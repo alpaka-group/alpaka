@@ -173,20 +173,20 @@ namespace alpaka
             //! The BufPlainPtrWrapper width get trait specialization.
             //#############################################################################
             template<
-                UInt TuiIdx,
+                typename TIdx,
                 typename TElem,
                 typename TDim,
                 typename TDev>
             struct GetExtent<
-                TuiIdx,
+                TIdx,
                 alpaka::mem::BufPlainPtrWrapper<TElem, TDim, TDev>,
-                typename std::enable_if<TDim::value >= (TuiIdx+1)>::type>
+                typename std::enable_if<(TDim::value > TIdx::value)>::type>
             {
                 ALPAKA_FCT_HOST_ACC static auto getExtent(
                     alpaka::mem::BufPlainPtrWrapper<TElem, TDim, TDev> const & extents)
                 -> UInt
                 {
-                    return extents.m_vExtentsElements[TuiIdx];
+                    return extents.m_vExtentsElements[TIdx::value];
                 }
             };
         }
@@ -197,12 +197,12 @@ namespace alpaka
             //! The BufPlainPtrWrapper offset get trait specialization.
             //#############################################################################
             template<
-                UInt TuiIdx,
+                typename TIdx,
                 typename TElem,
                 typename TDim,
                 typename TDev>
             struct GetOffset<
-                TuiIdx,
+                TIdx,
                 alpaka::mem::BufPlainPtrWrapper<TElem, TDim, TDev>>
             {
                 //-----------------------------------------------------------------------------
@@ -233,19 +233,19 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The BufPlainPtrWrapper base trait specialization.
+            //! The BufPlainPtrWrapper buf trait specialization.
             //#############################################################################
             template<
                 typename TElem,
                 typename TDim,
                 typename TDev>
-            struct GetBase<
+            struct GetBuf<
                 alpaka::mem::BufPlainPtrWrapper<TElem, TDim, TDev>>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST_ACC static auto getBase(
+                ALPAKA_FCT_HOST_ACC static auto getBuf(
                     alpaka::mem::BufPlainPtrWrapper<TElem, TDim, TDev> const & buf)
                 -> alpaka::mem::BufPlainPtrWrapper<TElem, TDim, TDev> const &
                 {
@@ -254,7 +254,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST_ACC static auto getBase(
+                ALPAKA_FCT_HOST_ACC static auto getBuf(
                     alpaka::mem::BufPlainPtrWrapper<TElem, TDim, TDev> & buf)
                 -> alpaka::mem::BufPlainPtrWrapper<TElem, TDim, TDev> &
                 {
@@ -294,7 +294,7 @@ namespace alpaka
                 typename TDim,
                 typename TDev>
             struct GetPitchBytes<
-                0u,
+                std::integral_constant<UInt, 0u>,
                 alpaka::mem::BufPlainPtrWrapper<TElem, TDim, TDev>>
             {
                 ALPAKA_FCT_HOST_ACC static auto getPitchBytes(

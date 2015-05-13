@@ -73,7 +73,7 @@ namespace alpaka
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
-                //! \param buf This can be either a memory buffer base or a memory buffer view itself.
+                //! \param buf This can be either a memory buffer or a memory view.
                 //-----------------------------------------------------------------------------
                 template<
                     typename TBuf>
@@ -83,13 +83,13 @@ namespace alpaka
                             mem::getPtrNative(buf),
                             dev::getDev(buf),
                             extent::getExtentsNd<Dim, UInt>(buf),
-                            mem::getPitchBytes<0u, UInt>(buf)),
+                            mem::getPitchBytes<Dim::value - 1u, UInt>(buf)),
                         m_vOffsetsElements(offset::getOffsetsNd<Dim, UInt>(buf)),
                         m_vExtentsElements(extent::getExtentsNd<Dim, UInt>(buf))
                 {}
                 //-----------------------------------------------------------------------------
                 //! Constructor.
-                //! \param buf This can be either a memory buffer base or a memory buffer view itself.
+                //! \param buf This can be either a memory buffer or a memory view.
                 //-----------------------------------------------------------------------------
                 template<
                     typename TBuf>
@@ -99,14 +99,14 @@ namespace alpaka
                             mem::getPtrNative(buf),
                             dev::getDev(buf),
                             extent::getExtentsNd<Dim, UInt>(buf),
-                            mem::getPitchBytes<0u, UInt>(buf)),
+                            mem::getPitchBytes<Dim::value - 1u, UInt>(buf)),
                         m_vOffsetsElements(offset::getOffsetsNd<Dim, UInt>(buf)),
                         m_vExtentsElements(extent::getExtentsNd<Dim, UInt>(buf))
                 {}
 
                 //-----------------------------------------------------------------------------
                 //! Constructor.
-                //! \param buf This can be either a memory buffer base or a memory buffer view itself.
+                //! \param buf This can be either a memory buffer or a memory view.
                 //! \param offsetsElements The offsets in elements.
                 //! \param extentsElements The extents in elements.
                 //-----------------------------------------------------------------------------
@@ -122,13 +122,13 @@ namespace alpaka
                             mem::getPtrNative(buf),
                             dev::getDev(buf),
                             extent::getExtentsNd<Dim, UInt>(buf),
-                            mem::getPitchBytes<0u, UInt>(buf)),
+                            mem::getPitchBytes<Dim::value - 1u, UInt>(buf)),
                         m_vOffsetsElements(offset::getOffsetsNd<Dim, UInt>(relativeOffsetsElements) + offset::getOffsetsNd<Dim, UInt>(buf)),
                         m_vExtentsElements(extent::getExtentsNd<Dim, UInt>(extentsElements))
                 {
                     static_assert(
                         std::is_same<Dim, dim::DimT<TExtents>>::value,
-                        "The base buffer and the extents are required to have the same dimensionality!");
+                        "The buffer and the extents are required to have the same dimensionality!");
 
                     assert(extent::getWidth<UInt>(relativeOffsetsElements) <= extent::getWidth<UInt>(buf));
                     assert(extent::getHeight<UInt>(relativeOffsetsElements) <= extent::getHeight<UInt>(buf));
@@ -139,7 +139,7 @@ namespace alpaka
                 }
                 //-----------------------------------------------------------------------------
                 //! Constructor.
-                //! \param buf This can be either a memory buffer base or a memory buffer view itself.
+                //! \param buf This can be either a memory buffer or a memory view.
                 //! \param offsetsElements The offsets in elements.
                 //! \param extentsElements The extents in elements.
                 //-----------------------------------------------------------------------------
@@ -155,13 +155,13 @@ namespace alpaka
                             mem::getPtrNative(buf),
                             dev::getDev(buf),
                             extent::getExtentsNd<Dim, UInt>(buf),
-                            mem::getPitchBytes<0u, UInt>(buf)),
+                            mem::getPitchBytes<Dim::value - 1u, UInt>(buf)),
                         m_vOffsetsElements(offset::getOffsetsNd<Dim, UInt>(relativeOffsetsElements) + offset::getOffsetsNd<Dim, UInt>(buf)),
                         m_vExtentsElements(extent::getExtentsNd<Dim, UInt>(extentsElements))
                 {
                     static_assert(
                         std::is_same<Dim, dim::DimT<TExtents>>::value,
-                        "The base buffer and the extents are required to have the same dimensionality!");
+                        "The buffer and the extents are required to have the same dimensionality!");
 
                     assert(extent::getWidth<UInt>(relativeOffsetsElements) <= extent::getWidth<UInt>(buf));
                     assert(extent::getHeight<UInt>(relativeOffsetsElements) <= extent::getHeight<UInt>(buf));
@@ -210,12 +210,12 @@ namespace alpaka
                 alpaka::mem::detail::View<TElem, TDim, TDev>>
             {
                 ALPAKA_FCT_HOST static auto getDev(
-                    alpaka::mem::detail::View<TElem, TDim, TDev> const & bufView)
+                    alpaka::mem::detail::View<TElem, TDim, TDev> const & view)
                 -> TDev
                 {
                     return
                         alpaka::dev::getDev(
-                            alpaka::mem::getBase(bufView));
+                            alpaka::mem::getBuf(view));
                 }
             };
         }
@@ -242,14 +242,14 @@ namespace alpaka
             //! The View width get trait specialization.
             //#############################################################################
             template<
-                UInt TuiIdx,
+                typename TIdx,
                 typename TElem,
                 typename TDim,
                 typename TDev>
             struct GetExtent<
-                TuiIdx,
+                TIdx,
                 alpaka::mem::detail::View<TElem, TDim, TDev>,
-                typename std::enable_if<TDim::value >= (TuiIdx+1)>::type>
+                typename std::enable_if<(TDim::value > TIdx::value)>::type>
             {
                 //-----------------------------------------------------------------------------
                 //!
@@ -258,7 +258,7 @@ namespace alpaka
                     alpaka::mem::detail::View<TElem, TDim, TDev> const & extents)
                 -> UInt
                 {
-                    return extents.m_vExtentsElements[TuiIdx];
+                    return extents.m_vExtentsElements[TIdx::value];
                 }
             };
         }
@@ -269,14 +269,14 @@ namespace alpaka
             //! The View x offset get trait specialization.
             //#############################################################################
             template<
-                UInt TuiIdx,
+                typename TIdx,
                 typename TElem,
                 typename TDim,
                 typename TDev>
             struct GetOffset<
-                TuiIdx,
+                TIdx,
                 alpaka::mem::detail::View<TElem, TDim, TDev>,
-                typename std::enable_if<TDim::value >= (TuiIdx+1)>::type>
+                typename std::enable_if<(TDim::value > TIdx::value)>::type>
             {
                 //-----------------------------------------------------------------------------
                 //!
@@ -285,7 +285,7 @@ namespace alpaka
                     alpaka::mem::detail::View<TElem, TDim, TDev> const & offset)
                 -> UInt
                 {
-                    return offset.m_vOffsetsElements[TuiIdx];
+                    return offset.m_vOffsetsElements[TIdx::value];
                 }
             };
         }
@@ -390,38 +390,37 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The View base trait specialization.
+            //! The View buf trait specialization.
             //#############################################################################
             template<
                 typename TElem,
                 typename TDim,
                 typename TDev>
-            struct GetBase<
+            struct GetBuf<
                 alpaka::mem::detail::View<TElem, TDim, TDev>>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getBase(
-                    alpaka::mem::detail::View<TElem, TDim, TDev> const & bufView)
+                ALPAKA_FCT_HOST static auto getBuf(
+                    alpaka::mem::detail::View<TElem, TDim, TDev> const & view)
                 -> typename alpaka::mem::detail::View<TElem, TDim, TDev>::Buf const &
                 {
-                    return bufView.m_Buf;
+                    return view.m_Buf;
                 }
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getBase(
-                    alpaka::mem::detail::View<TElem, TDim, TDev> & bufView)
+                ALPAKA_FCT_HOST static auto getBuf(
+                    alpaka::mem::detail::View<TElem, TDim, TDev> & view)
                 -> typename alpaka::mem::detail::View<TElem, TDim, TDev>::Buf &
                 {
-                    return bufView.m_Buf;
+                    return view.m_Buf;
                 }
             };
 
             //#############################################################################
             //! The View native pointer get trait specialization.
-            // \TODO: Optimize by specializing per dim!
             //#############################################################################
             template<
                 typename TElem,
@@ -430,35 +429,70 @@ namespace alpaka
             struct GetPtrNative<
                 alpaka::mem::detail::View<TElem, TDim, TDev>>
             {
+            private:
+#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
+                using IdxSequence = typename alpaka::detail::make_integer_sequence<UInt, TDim::value>::type;
+#else
+                using IdxSequence = alpaka::detail::make_integer_sequence<UInt, TDim::value>;
+#endif
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getPtrNative(
-                    alpaka::mem::detail::View<TElem, TDim, TDev> const & bufView)
+                    alpaka::mem::detail::View<TElem, TDim, TDev> const & view)
                 -> TElem const *
                 {
                     // \TODO: Precalculate this pointer for faster execution.
-                    auto const & buf(alpaka::mem::getBase(bufView));
-                    auto const uiPitchElementsX(alpaka::mem::getPitchElements<0u, UInt>(buf));
-                    return alpaka::mem::getPtrNative(buf)
-                        + alpaka::offset::getOffset<0u, UInt>(bufView)
-                        + alpaka::offset::getOffset<1u, UInt>(bufView) * uiPitchElementsX
-                        + alpaka::offset::getOffset<2u, UInt>(bufView) * uiPitchElementsX * alpaka::mem::getPitchElements<1u, UInt>(buf);
+                    return getPtrNativeInternal(
+                        view,
+                        IdxSequence());
                 }
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getPtrNative(
-                    alpaka::mem::detail::View<TElem, TDim, TDev> & bufView)
+                    alpaka::mem::detail::View<TElem, TDim, TDev> & view)
                 -> TElem *
                 {
                     // \TODO: Precalculate this pointer for faster execution.
-                    auto & buf(alpaka::mem::getBase(bufView));
-                    auto const uiPitchElementsX(alpaka::mem::getPitchElements<0u, UInt>(buf));
+                    return getPtrNativeInternal(
+                        view,
+                        IdxSequence());
+                }
+
+            private:
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TView,
+                    UInt... TIndices>
+                ALPAKA_FCT_HOST static auto getPtrNativeInternal(
+                    TView && view,
+                    alpaka::detail::integer_sequence<UInt, TIndices...> const &)
+                -> TElem *
+                {
+                    auto & buf(alpaka::mem::getBuf(view));
                     return alpaka::mem::getPtrNative(buf)
-                        + alpaka::offset::getOffset<0u, UInt>(bufView)
-                        + alpaka::offset::getOffset<1u, UInt>(bufView) * uiPitchElementsX
-                        + alpaka::offset::getOffset<2u, UInt>(bufView) * uiPitchElementsX * alpaka::mem::getPitchElements<1u, UInt>(buf);
+                        + alpaka::foldr(
+                            std::plus<UInt>(),
+                            basePtrOffsetElems<TIndices>(view, buf)...);
+                }
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TIdx,
+                    typename TView,
+                    typename TBuf>
+                ALPAKA_FCT_HOST static auto basePtrOffsetElems(
+                    TView const & view,
+                    TBuf const & buf)
+                -> UInt
+                {
+                    return
+                        alpaka::offset::getOffset<TIdx::value, UInt>(view)
+                        * alpaka::mem::getPitchElements<TIdx::value + 1u, UInt>(buf);
                 }
             };
 
@@ -466,24 +500,24 @@ namespace alpaka
             //! The View pitch get trait specialization.
             //#############################################################################
             template<
-                UInt TuiIdx,
+                typename TIdx,
                 typename TElem,
                 typename TDim,
                 typename TDev>
             struct GetPitchBytes<
-                TuiIdx,
+                TIdx,
                 alpaka::mem::detail::View<TElem, TDim, TDev>>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getPitchBytes(
-                    alpaka::mem::detail::View<TElem, TDim, TDev> const & bufView)
+                    alpaka::mem::detail::View<TElem, TDim, TDev> const & view)
                 -> UInt
                 {
                     return
-                        alpaka::mem::getPitchElements<TuiIdx, UInt>(
-                            alpaka::mem::getBase(bufView));
+                        alpaka::mem::getPitchElements<TIdx, UInt>(
+                            alpaka::mem::getBuf(view));
                 }
             };
         }

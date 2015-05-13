@@ -169,13 +169,13 @@ namespace alpaka
             //! The BufCuda extent get trait specialization.
             //#############################################################################
             template<
-                UInt TuiIdx,
+                typename TIdx,
                 typename TElem,
                 typename TDim>
             struct GetExtent<
-                TuiIdx,
+                TIdx,
                 accs::cuda::detail::BufCuda<TElem, TDim>,
-                typename std::enable_if<TDim::value >= (TuiIdx+1)>::type>
+                typename std::enable_if<(TDim::value > TIdx::value)>::type>
             {
                 //-----------------------------------------------------------------------------
                 //!
@@ -184,7 +184,7 @@ namespace alpaka
                     accs::cuda::detail::BufCuda<TElem, TDim> const & extent)
                 -> UInt
                 {
-                    return extent.m_vExtentsElements[TuiIdx];
+                    return extent.m_vExtentsElements[TIdx::value];
                 }
             };
         }
@@ -195,11 +195,11 @@ namespace alpaka
             //! The BufCuda offset get trait specialization.
             //#############################################################################
             template<
-                UInt TuiIdx,
+                typename TIdx,
                 typename TElem,
                 typename TDim>
             struct GetOffset<
-                TuiIdx,
+                TIdx,
                 accs::cuda::detail::BufCuda<TElem, TDim>>
             {
                 //-----------------------------------------------------------------------------
@@ -254,18 +254,18 @@ namespace alpaka
                 using type = TElem;
             };
             //#############################################################################
-            //! The BufCuda base trait specialization.
+            //! The BufCuda buf trait specialization.
             //#############################################################################
             template<
                 typename TElem,
                 typename TDim>
-            struct GetBase<
+            struct GetBuf<
                 accs::cuda::detail::BufCuda<TElem, TDim>>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getBase(
+                ALPAKA_FCT_HOST static auto getBuf(
                     accs::cuda::detail::BufCuda<TElem, TDim> const & buf)
                 -> accs::cuda::detail::BufCuda<TElem, TDim> const &
                 {
@@ -274,7 +274,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getBase(
+                ALPAKA_FCT_HOST static auto getBuf(
                     accs::cuda::detail::BufCuda<TElem, TDim> & buf)
                 -> accs::cuda::detail::BufCuda<TElem, TDim> &
                 {
@@ -361,7 +361,7 @@ namespace alpaka
                 typename TElem,
                 typename TDim>
             struct GetPitchBytes<
-                0u,
+                std::integral_constant<UInt, TDim::value - 1u>,
                 accs::cuda::detail::BufCuda<TElem, TDim>>
             {
                 //-----------------------------------------------------------------------------
@@ -618,7 +618,7 @@ namespace alpaka
                 -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-                    
+
                     // CUDA device memory is always pinned, it can not be swapped out.
                 }
             };

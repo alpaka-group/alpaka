@@ -32,7 +32,7 @@
 #include <alpaka/traits/Extent.hpp>     // traits::getXXX
 
 // \TODO: Remove CUDA inclusion for BufCpu by replacing pinning with non CUDA code!
-#ifdef ALPAKA_CUDA_ENABLED
+#if defined(ALPAKA_CUDA_ENABLED) && defined(__CUDACC__)
     #include <alpaka/accs/cuda/Common.hpp>
 #endif
 
@@ -179,13 +179,13 @@ namespace alpaka
             //! The BufCpu width get trait specialization.
             //#############################################################################
             template<
-                UInt TuiIdx,
+                typename TIdx,
                 typename TElem,
                 typename TDim>
             struct GetExtent<
-                TuiIdx,
+                TIdx,
                 devs::cpu::detail::BufCpu<TElem, TDim>,
-                typename std::enable_if<TDim::value >= (TuiIdx+1)>::type>
+                typename std::enable_if<(TDim::value > TIdx::value)>::type>
             {
                 //-----------------------------------------------------------------------------
                 //!
@@ -194,7 +194,7 @@ namespace alpaka
                     devs::cpu::detail::BufCpu<TElem, TDim> const & extents)
                 -> UInt
                 {
-                    return extents.m_vExtentsElements[TuiIdx];
+                    return extents.m_vExtentsElements[TIdx::value];
                 }
             };
         }
@@ -205,11 +205,11 @@ namespace alpaka
             //! The BufCpu offset get trait specialization.
             //#############################################################################
             template<
-                UInt TuiIdx,
+                typename TIdx,
                 typename TElem,
                 typename TDim>
             struct GetOffset<
-                TuiIdx,
+                TIdx,
                 devs::cpu::detail::BufCpu<TElem, TDim>>
             {
                 //-----------------------------------------------------------------------------
@@ -264,18 +264,18 @@ namespace alpaka
                 using type = TElem;
             };
             //#############################################################################
-            //! The BufCpu base trait specialization.
+            //! The BufCpu buf trait specialization.
             //#############################################################################
             template<
                 typename TElem,
                 typename TDim>
-            struct GetBase<
+            struct GetBuf<
                 devs::cpu::detail::BufCpu<TElem, TDim>>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getBase(
+                ALPAKA_FCT_HOST static auto getBuf(
                     devs::cpu::detail::BufCpu<TElem, TDim> const & buf)
                 -> devs::cpu::detail::BufCpu<TElem, TDim> const &
                 {
@@ -284,7 +284,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getBase(
+                ALPAKA_FCT_HOST static auto getBuf(
                     devs::cpu::detail::BufCpu<TElem, TDim> & buf)
                 -> devs::cpu::detail::BufCpu<TElem, TDim> &
                 {
@@ -371,7 +371,7 @@ namespace alpaka
                 typename TElem,
                 typename TDim>
             struct GetPitchBytes<
-                0u,
+                std::integral_constant<UInt, TDim::value - 1u>,
                 devs::cpu::detail::BufCpu<TElem, TDim>>
             {
                 //-----------------------------------------------------------------------------
@@ -486,7 +486,7 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-#ifdef ALPAKA_CUDA_ENABLED
+#if defined(ALPAKA_CUDA_ENABLED) && defined(__CUDACC__)
                     // - cudaHostRegisterDefault:
                     //   See http://cgi.cs.indiana.edu/~nhusted/dokuwiki/doku.php?id=programming:cudaperformance1
                     // - cudaHostRegisterPortable:
@@ -520,7 +520,7 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-#ifdef ALPAKA_CUDA_ENABLED
+#if defined(ALPAKA_CUDA_ENABLED) && defined(__CUDACC__)
                     ALPAKA_CUDA_RT_CHECK_IGNORE(
                         cudaHostUnregister(
                             const_cast<void *>(reinterpret_cast<void const *>(alpaka::mem::getPtrNative(buf)))),

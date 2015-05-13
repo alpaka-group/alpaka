@@ -132,7 +132,7 @@ namespace alpaka
 
                         // Initialize the cuda runtime.
                         init();
-                        
+
                         // Try all devices if the given one is unusable.
                         for(std::size_t iDeviceOffset(0); iDeviceOffset < uiNumDevices; ++iDeviceOffset)
                         {
@@ -180,7 +180,7 @@ namespace alpaka
                             cudaStream_t stream;
                             rc = cudaStreamCreate(&stream);
                         }
-                        
+
                         if(rc == cudaSuccess)
                         {
                             return true;
@@ -205,12 +205,12 @@ namespace alpaka
                         if(!s_bInitialized)
                         {
                             s_bInitialized = true;
-                            
+
                             // - cudaDeviceScheduleSpin:
                             //   Instruct CUDA to actively spin when waiting for results from the device.
                             //   This can decrease latency when waiting for the device, but may lower the performance of CPU threads if they are performing work in parallel with the CUDA thread.
-                            // - cudaDeviceMapHost: 
-                            //   This flag must be set in order to allocate pinned host memory that is accessible to the device. 
+                            // - cudaDeviceMapHost:
+                            //   This flag must be set in order to allocate pinned host memory that is accessible to the device.
                             //   If this flag is not set, cudaHostGetDevicePointer() will always return a failure code.
                             ALPAKA_CUDA_RT_CHECK(cudaSetDeviceFlags(
                                 cudaDeviceScheduleSpin | cudaDeviceMapHost));
@@ -352,7 +352,7 @@ namespace alpaka
                 {
                     cudaDeviceProp cudaDevProp;
                     ALPAKA_CUDA_RT_CHECK(cudaGetDeviceProperties(
-                        &cudaDevProp, 
+                        &cudaDevProp,
                         dev.m_iDevice));
 
                     return std::string(cudaDevProp.name);
@@ -381,7 +381,7 @@ namespace alpaka
                     std::size_t totalInternal(0u);
 
                     ALPAKA_CUDA_RT_CHECK(cudaMemGetInfo(
-                        &freeInternal, 
+                        &freeInternal,
                         &totalInternal));
 
                     return totalInternal;
@@ -409,7 +409,7 @@ namespace alpaka
                     std::size_t totalInternal(0u);
 
                     ALPAKA_CUDA_RT_CHECK(cudaMemGetInfo(
-                        &freeInternal, 
+                        &freeInternal,
                         &totalInternal));
 
                     return freeInternal;

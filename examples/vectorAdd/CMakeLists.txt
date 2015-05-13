@@ -30,10 +30,10 @@ SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
 # Project.
 ################################################################################
 
-SET("TARGET_NAME" "vectorAdd")
-SET("INCLUDE_DIR" "include/")
-SET("SUFFIXED_INCLUDE_DIR" "${INCLUDE_DIR}${TARGET_NAME}/")
-SET("SUFFIXED_SOURCE_DIR" "src/")
+SET(TARGET_NAME "vectorAdd")
+SET(INCLUDE_DIR "include/")
+SET(SUFFIXED_INCLUDE_DIR "${INCLUDE_DIR}${TARGET_NAME}/")
+SET(SUFFIXED_SOURCE_DIR "src/")
 
 PROJECT("${TARGET_NAME}")
 
@@ -41,9 +41,9 @@ PROJECT("${TARGET_NAME}")
 # Find alpaka.
 #-------------------------------------------------------------------------------
 
-SET("ALPAKA_ROOT" "${CMAKE_CURRENT_LIST_DIR}/../../" CACHE STRING  "The location of the alpaka library")
+SET(ALPAKA_ROOT "${CMAKE_CURRENT_LIST_DIR}/../../" CACHE STRING  "The location of the alpaka library")
 
-LIST(APPEND "CMAKE_MODULE_PATH" "${ALPAKA_ROOT}")
+LIST(APPEND CMAKE_MODULE_PATH "${ALPAKA_ROOT}")
 FIND_PACKAGE("alpaka" REQUIRED)
 
 #-------------------------------------------------------------------------------
@@ -58,15 +58,14 @@ INCLUDE("${ALPAKA_ROOT}/cmake/dev.cmake")
 #-------------------------------------------------------------------------------
 
 # Add all the include files in all recursive subdirectories and group them accordingly.
-append_recursive_files_add_to_src_group("${SUFFIXED_INCLUDE_DIR}" "" "hpp" "HPP_FILES_ALL")
+append_recursive_files_add_to_src_group("${SUFFIXED_INCLUDE_DIR}" "" "hpp" HPP_FILES_ALL)
 
 # Add all the source files in all recursive subdirectories and group them accordingly.
-append_recursive_files_add_to_src_group("${SUFFIXED_SOURCE_DIR}" "" "cpp" "CPP_FILES_ALL")
+append_recursive_files_add_to_src_group("${SUFFIXED_SOURCE_DIR}" "" "cpp" CPP_FILES_ALL)
 
 # Add all the CUDA source files in all recursive subdirectories and group them accordingly.
-append_recursive_files_add_to_src_group("${SUFFIXED_SOURCE_DIR}" "" "cu" "CU_FILES_ALL")
+append_recursive_files_add_to_src_group("${SUFFIXED_SOURCE_DIR}" "" "cu" CU_FILES_ALL)
 
-# Builds the project as a static library and adds the headers and sources.
 # Always add all files to the target executable build call to add them to the build project.
 IF(ALPAKA_CUDA_ENABLE)
     # CUDA does not work well with the much better target dependent TARGET_XXX commands but requires the settings to be available globally: https://www.cmake.org/Bug/view.php?id=14201&nbn=1

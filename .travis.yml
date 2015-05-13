@@ -27,7 +27,7 @@ compiler:
 #   [clang++] ALPAKA_CLANG_VER                  : {3.5, 3.6, 3.7}
 #   [g++] ALPAKA_GCC_VER                        : {4.9, 5}
 # ALPAKA_BOOST_BRANCH                           : {boost-1.56.0, boost-1.57.0, boost-1.58.0, develop}
-# ALPAKA_CMAKE_VER                              : {2.8.12.2, 3.0.2, 3.1.1, 3.2.1}
+# ALPAKA_CMAKE_VER                              : {2.8.12.2, 3.0.2, 3.1.1, 3.2.2}
 # CMAKE_BUILD_TYPE                              : {Debug, Release}
 # ALPAKA_DEBUG                                  : {0, 1, 2}
 # ALPAKA_THREADS_ENABLE                         : {ON, OFF}
@@ -271,9 +271,11 @@ install:
         ALPAKA_CMAKE_PKG_FILE_NAME=cmake-${ALPAKA_CMAKE_VER}
         && wget http://www.cmake.org/files/v${ALPAKA_CMAKE_VER_MAJOR}.${ALPAKA_CMAKE_VER_MINOR}/${ALPAKA_CMAKE_PKG_FILE_NAME}.tar.gz
         && tar -xzf ${ALPAKA_CMAKE_PKG_FILE_NAME}.tar.gz
-        && ./cmake-${ALPAKA_CMAKE_VER}/bootstrap --prefix=/usr
+        && cd cmake-${ALPAKA_CMAKE_VER}
+        && ./bootstrap --prefix=/usr
         && make
         && sudo make install
+        && cd ../
         && sudo rm -rf ${ALPAKA_CMAKE_PKG_FILE_NAME}.tar.gz ${ALPAKA_CMAKE_PKG_FILE_NAME}
       ;else
         ALPAKA_CMAKE_PKG_FILE_NAME=cmake-${ALPAKA_CMAKE_VER}-Linux-x86_64

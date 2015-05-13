@@ -36,7 +36,7 @@ namespace alpaka
         namespace mem
         {
             //#############################################################################
-            //! The memory buffer base type trait.
+            //! The memory buffer type trait.
             //#############################################################################
             template<
                 typename TElem,
@@ -90,14 +90,14 @@ namespace alpaka
             struct Unpin;
         }
     }
-    
+
     //-----------------------------------------------------------------------------
     //! The memory trait accessors.
     //-----------------------------------------------------------------------------
     namespace mem
     {
         //#############################################################################
-        //! The memory buffer base type trait alias template to remove the ::type.
+        //! The memory buffer type trait alias template to remove the ::type.
         //#############################################################################
         template<
             typename TElem,

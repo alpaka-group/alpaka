@@ -66,6 +66,10 @@ IF(ALPAKA_ROOT)
     #-------------------------------------------------------------------------------
     # Find Boost.
     #-------------------------------------------------------------------------------
+    IF(${ALPAKA_DEBUG} GREATER 0)
+        SET(Boost_DEBUG ON)
+        SET(Boost_DETAILED_FAILURE_MSG ON)
+    ENDIF()
     IF(ALPAKA_FIBERS_ENABLE)
         FIND_PACKAGE(Boost COMPONENTS fiber context system thread atomic chrono date_time)
         IF(NOT Boost_FIBER_FOUND)
@@ -76,6 +80,59 @@ IF(ALPAKA_ROOT)
 
     ELSE()
         FIND_PACKAGE(Boost)
+    ENDIF()
+
+    IF(${ALPAKA_DEBUG} GREATER 1)
+        MESSAGE(STATUS "Boost in:")
+        MESSAGE(STATUS "BOOST_ROOT : ${BOOST_ROOT}")
+        MESSAGE(STATUS "BOOSTROOT : ${BOOSTROOT}")
+        MESSAGE(STATUS "BOOST_INCLUDEDIR: ${BOOST_INCLUDEDIR}")
+        MESSAGE(STATUS "BOOST_LIBRARYDIR: ${BOOST_LIBRARYDIR}")
+        MESSAGE(STATUS "Boost_NO_SYSTEM_PATHS: ${Boost_NO_SYSTEM_PATHS}")
+        MESSAGE(STATUS "Boost_ADDITIONAL_VERSIONS: ${Boost_ADDITIONAL_VERSIONS}")
+        MESSAGE(STATUS "Boost_USE_MULTITHREADED: ${Boost_USE_MULTITHREADED}")
+        MESSAGE(STATUS "Boost_USE_STATIC_LIBS: ${Boost_USE_STATIC_LIBS}")
+        MESSAGE(STATUS "Boost_USE_STATIC_RUNTIME: ${Boost_USE_STATIC_RUNTIME}")
+        MESSAGE(STATUS "Boost_USE_DEBUG_RUNTIME: ${Boost_USE_DEBUG_RUNTIME}")
+        MESSAGE(STATUS "Boost_USE_DEBUG_PYTHON: ${Boost_USE_DEBUG_PYTHON}")
+        MESSAGE(STATUS "Boost_USE_STLPORT: ${Boost_USE_STLPORT}")
+        MESSAGE(STATUS "Boost_USE_STLPORT_DEPRECATED_NATIVE_IOSTREAMS: ${Boost_USE_STLPORT_DEPRECATED_NATIVE_IOSTREAMS}")
+        MESSAGE(STATUS "Boost_COMPILER: ${Boost_COMPILER}")
+        MESSAGE(STATUS "Boost_THREADAPI: ${Boost_THREADAPI}")
+        MESSAGE(STATUS "Boost_NAMESPACE: ${Boost_NAMESPACE}")
+        MESSAGE(STATUS "Boost_DEBUG: ${Boost_DEBUG}")
+        MESSAGE(STATUS "Boost_DETAILED_FAILURE_MSG: ${Boost_DETAILED_FAILURE_MSG}")
+        MESSAGE(STATUS "Boost_REALPATH: ${Boost_REALPATH}")
+        MESSAGE(STATUS "Boost_NO_BOOST_CMAKE: ${Boost_NO_BOOST_CMAKE}")
+        MESSAGE(STATUS "Boost out:")
+        MESSAGE(STATUS "Boost_FOUND: ${Boost_FOUND}")
+        MESSAGE(STATUS "Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
+        MESSAGE(STATUS "Boost_LIBRARY_DIRS: ${Boost_LIBRARY_DIRS}")
+        MESSAGE(STATUS "Boost_LIBRARIES: ${Boost_LIBRARIES}")
+        MESSAGE(STATUS "Boost_FIBER_FOUND: ${Boost_FIBER_FOUND}")
+        MESSAGE(STATUS "Boost_FIBER_LIBRARY: ${Boost_FIBER_LIBRARY}")
+        MESSAGE(STATUS "Boost_CONTEXT_FOUND: ${Boost_CONTEXT_FOUND}")
+        MESSAGE(STATUS "Boost_CONTEXT_LIBRARY: ${Boost_CONTEXT_LIBRARY}")
+        MESSAGE(STATUS "Boost_SYSTEM_FOUND: ${Boost_SYSTEM_FOUND}")
+        MESSAGE(STATUS "Boost_SYSTEM_LIBRARY: ${Boost_SYSTEM_LIBRARY}")
+        MESSAGE(STATUS "Boost_THREAD_FOUND: ${Boost_THREAD_FOUND}")
+        MESSAGE(STATUS "Boost_THREAD_LIBRARY: ${Boost_THREAD_LIBRARY}")
+        MESSAGE(STATUS "Boost_ATOMIC_FOUND: ${Boost_ATOMIC_FOUND}")
+        MESSAGE(STATUS "Boost_ATOMIC_LIBRARY: ${Boost_ATOMIC_LIBRARY}")
+        MESSAGE(STATUS "Boost_CHRONO_FOUND: ${Boost_CHRONO_FOUND}")
+        MESSAGE(STATUS "Boost_CHRONO_LIBRARY: ${Boost_CHRONO_LIBRARY}")
+        MESSAGE(STATUS "Boost_DATE_TIME_FOUND: ${Boost_DATE_TIME_FOUND}")
+        MESSAGE(STATUS "Boost_DATE_TIME_LIBRARY: ${Boost_DATE_TIME_LIBRARY}")
+        MESSAGE(STATUS "Boost_VERSION: ${Boost_VERSION}")
+        MESSAGE(STATUS "Boost_LIB_VERSION: ${Boost_LIB_VERSION}")
+        MESSAGE(STATUS "Boost_MAJOR_VERSION: ${Boost_MAJOR_VERSION}")
+        MESSAGE(STATUS "Boost_MINOR_VERSION: ${Boost_MINOR_VERSION}")
+        MESSAGE(STATUS "Boost_SUBMINOR_VERSION: ${Boost_SUBMINOR_VERSION}")
+        MESSAGE(STATUS "Boost_LIB_DIAGNOSTIC_DEFINITIONS: ${Boost_LIB_DIAGNOSTIC_DEFINITIONS}")
+        MESSAGE(STATUS "Boost_LIBRARIES: ${Boost_LIBRARIES}")
+        MESSAGE(STATUS "Boost cached:")
+        MESSAGE(STATUS "Boost_INCLUDE_DIR: ${Boost_INCLUDE_DIR}")
+        MESSAGE(STATUS "Boost_LIBRARY_DIR: ${Boost_LIBRARY_DIR}")
     ENDIF()
 
     IF(NOT Boost_FOUND)
@@ -158,8 +215,8 @@ IF(ALPAKA_ROOT)
                     LIST(APPEND CUDA_NVCC_FLAGS "--use_fast_math")
                 ENDIF()
 
-                OPTION(ALPAKA_CUDA_FAST_MATH "Set flush to zero for GPU" OFF)
-                IF(ALPAKA_CUDA_FAST_MATH)
+                OPTION(ALPAKA_CUDA_FTZ "Set flush to zero for GPU" OFF)
+                IF(ALPAKA_CUDA_FTZ)
                     LIST(APPEND CUDA_NVCC_FLAGS "--ftz=true")
                 ELSE()
                     LIST(APPEND CUDA_NVCC_FLAGS "--ftz=false")
@@ -185,9 +242,8 @@ IF(ALPAKA_ROOT)
                     SET(ALPAKA_CUDA_KEEP_FILES ON CACHE BOOL "activate keep files" FORCE)
                 ENDIF()
 
-                IF(${CUDA_CUDART_LIBRARY})
-                    LIST(APPEND alpaka_LIBRARIES "general" ${CUDA_CUDART_LIBRARY})
-                ENDIF()
+                LIST(APPEND alpaka_LIBRARIES "general" ${CUDA_CUDART_LIBRARY})
+                LIST(APPEND alpaka_INCLUDE_DIRS "general" ${CUDA_INCLUDE_DIRS})
             ENDIF()
         ENDIF()
     ENDIF()
@@ -255,7 +311,7 @@ IF(ALPAKA_ROOT)
         MESSAGE(STATUS ALPAKA_CUDA_ENABLED)
     ENDIF()
 
-    IF("${ALPAKA_DEBUG}" GREATER 0)
+    IF(${ALPAKA_DEBUG} GREATER 0)
         LIST(APPEND alpaka_DEFINITIONS "ALPAKA_DEBUG=${ALPAKA_DEBUG}")
     ENDIF()
 
@@ -282,15 +338,15 @@ IF(ALPAKA_ROOT)
             ${ALPAKA_HEADER_FILES_ALL} ${ALPAKA_SOURCE_FILES_ALL} ${ALPAKA_CMAKE_FILES_ALL})
 
         # Compile options.
-        SET("ALPAKA_COMPILE_OPTIONS_COPY" "${ALPAKA_COMPILE_OPTIONS}")
+        SET(ALPAKA_COMPILE_OPTIONS_COPY "${ALPAKA_COMPILE_OPTIONS}")
         list_add_prefix("PUBLIC;" ALPAKA_COMPILE_OPTIONS_COPY)
-        IF("${ALPAKA_DEBUG}" GREATER 0)
+        IF(${ALPAKA_DEBUG} GREATER 0)
             MESSAGE(STATUS "ALPAKA_COMPILE_OPTIONS: ${ALPAKA_COMPILE_OPTIONS_COPY}")
         ENDIF()
         LIST(
             LENGTH
-            "ALPAKA_COMPILE_OPTIONS_COPY"
-            "ALPAKA_COMPILE_OPTIONS_COPY_LENGTH")
+            ALPAKA_COMPILE_OPTIONS_COPY
+            ALPAKA_COMPILE_OPTIONS_COPY_LENGTH)
         IF("${ALPAKA_COMPILE_OPTIONS_COPY_LENGTH}")
             TARGET_COMPILE_OPTIONS(
                 "alpaka"
@@ -298,55 +354,55 @@ IF(ALPAKA_ROOT)
         ENDIF()
 
         # Compile definitions.
-        SET("ALPAKA_COMPILE_DEFINITIONS_COPY" "${alpaka_DEFINITIONS}")
-        list_add_prefix("PUBLIC;" "ALPAKA_COMPILE_DEFINITIONS_COPY")
-        IF("${ALPAKA_DEBUG}" GREATER 0)
-            MESSAGE(STATUS "alpaka_DEFINITIONS: ${ALPAKA_COMPILE_DEFINITIONS_COPY}")
+        SET(alpaka_DEFINITIONS_COPY "${alpaka_DEFINITIONS}")
+        list_add_prefix("PUBLIC;" "alpaka_DEFINITIONS_COPY")
+        IF(${ALPAKA_DEBUG} GREATER 0)
+            MESSAGE(STATUS "alpaka_DEFINITIONS: ${alpaka_DEFINITIONS_COPY}")
         ENDIF()
         LIST(
             LENGTH
-            "ALPAKA_COMPILE_DEFINITIONS_COPY"
-            "ALPAKA_COMPILE_DEFINITIONS_COPY_LENGTH")
-        IF("${ALPAKA_COMPILE_DEFINITIONS_COPY_LENGTH}")
+            alpaka_DEFINITIONS_COPY
+            alpaka_DEFINITIONS_COPY_LENGTH)
+        IF("${alpaka_DEFINITIONS_COPY_LENGTH}")
             TARGET_COMPILE_DEFINITIONS(
                 "alpaka"
-                ${ALPAKA_COMPILE_DEFINITIONS_COPY})
+                ${alpaka_DEFINITIONS_COPY})
         ENDIF()
 
         # Include directories.
-        SET("ALPAKA_INCLUDE_DIRS_COPY" "${alpaka_INCLUDE_DIRS}")
-        list_add_prefix("PUBLIC;" "ALPAKA_INCLUDE_DIRS_COPY")
-        IF("${ALPAKA_DEBUG}" GREATER 0)
-            MESSAGE(STATUS "alpaka_INCLUDE_DIRS: ${ALPAKA_INCLUDE_DIRS_COPY}")
+        SET(alpaka_INCLUDE_DIRS_COPY "${alpaka_INCLUDE_DIRS}")
+        list_add_prefix("PUBLIC;" "alpaka_INCLUDE_DIRS_COPY")
+        IF(${ALPAKA_DEBUG} GREATER 0)
+            MESSAGE(STATUS "alpaka_INCLUDE_DIRS: ${alpaka_INCLUDE_DIRS_COPY}")
         ENDIF()
         LIST(
             LENGTH
-            "ALPAKA_INCLUDE_DIRS_COPY"
-            "ALPAKA_INCLUDE_DIRS_COPY_LENGTH")
-        IF("${ALPAKA_INCLUDE_DIRS_COPY_LENGTH}")
+            alpaka_INCLUDE_DIRS_COPY
+            alpaka_INCLUDE_DIRS_COPY_LENGTH)
+        IF("${alpaka_INCLUDE_DIRS_COPY_LENGTH}")
             TARGET_INCLUDE_DIRECTORIES(
                 "alpaka"
-                ${ALPAKA_INCLUDE_DIRS_COPY})
+                ${alpaka_INCLUDE_DIRS_COPY})
         ENDIF()
 
         # Link libraries.
-        SET("ALPAKA_LINK_LIBS_COPY" "${alpaka_LIBRARIES}")
+        SET(alpaka_LIBRARIES_COPY "${alpaka_LIBRARIES}")
         # NOTE: All libraries are required to be prefixed with general, debug or optimized!
         # Add PUBLIC; to all link libraries.
-        list_add_prefix_to("PUBLIC;" "optimized;" "ALPAKA_LINK_LIBS_COPY")
-        list_add_prefix_to("PUBLIC;" "debug;" "ALPAKA_LINK_LIBS_COPY")
-        list_add_prefix_to("PUBLIC;" "general;" "ALPAKA_LINK_LIBS_COPY")
-        IF("${ALPAKA_DEBUG}" GREATER 0)
-            MESSAGE(STATUS "alpaka_LIBRARIES: ${ALPAKA_LINK_LIBS_COPY}")
+        list_add_prefix_to("PUBLIC;" "optimized;" alpaka_LIBRARIES_COPY)
+        list_add_prefix_to("PUBLIC;" "debug;" alpaka_LIBRARIES_COPY)
+        list_add_prefix_to("PUBLIC;" "general;" alpaka_LIBRARIES_COPY)
+        IF(${ALPAKA_DEBUG} GREATER 0)
+            MESSAGE(STATUS "alpaka_LIBRARIES: ${alpaka_LIBRARIES_COPY}")
         ENDIF()
         LIST(
             LENGTH
-            "ALPAKA_LINK_LIBS_COPY"
-            "ALPAKA_LINK_LIBS_COPY_LENGTH")
-        IF("${ALPAKA_LINK_LIBS_COPY_LENGTH}")
+            alpaka_LIBRARIES_COPY
+            alpaka_LIBRARIES_COPY_LENGTH)
+        IF("${alpaka_LIBRARIES_COPY_LENGTH}")
             TARGET_LINK_LIBRARIES(
                 "alpaka"
-                ${ALPAKA_LINK_LIBS_COPY})
+                ${alpaka_LIBRARIES_COPY})
         ENDIF()
     ENDIF()
 

@@ -48,7 +48,7 @@ namespace alpaka
     {
     public:
         static_assert(TDim::value>0, "Size of the vector is required to be greater then zero!");
-        
+
         using Dim = TDim;
         static const UInt s_uiDim = TDim::value;
         using Val = TVal;
@@ -302,6 +302,7 @@ namespace alpaka
 
         //-----------------------------------------------------------------------------
         //! \return The product of all values.
+        //! \TODO: Replace with fold instead of loop.
         //-----------------------------------------------------------------------------
         ALPAKA_FCT_HOST_ACC auto prod() const
         -> TVal
@@ -313,7 +314,7 @@ namespace alpaka
             }
             return uiProd;
         }
-    
+
     public: // \TODO: Make private.
         //#############################################################################
         //! A functor that returns the sum of the two input vectors elements.
@@ -355,11 +356,11 @@ namespace alpaka
     private:
         ALPAKA_ALIGN(TVal, m_auiData[TDim::value]);
     };
-    
+
     template<
         typename TVal = UInt>
     using Vec1 = Vec<dim::Dim1, TVal>;
-    
+
     template<
         typename TVal = UInt>
     using Vec2 = Vec<dim::Dim2, TVal>;
@@ -387,7 +388,7 @@ namespace alpaka
                 p,
                 q);
     }
-    
+
     //-----------------------------------------------------------------------------
     //! \return The element wise product of two vectors.
     //-----------------------------------------------------------------------------
@@ -432,22 +433,76 @@ namespace alpaka
 
         return os;
     }
-    
+    namespace detail
+    {
+        //#############################################################################
+        //!
+        //#############################################################################
+        template<
+            typename TDim,
+            typename TIndexSequence>
+        struct SubVecFromIndices
+        {
+            template<
+                typename TVal,
+                UInt... TIndices>
+            ALPAKA_FCT_HOST_ACC static auto subVecFromIndices(
+                Vec<TDim, TVal> const & vec,
+                alpaka::detail::integer_sequence<UInt, TIndices...> const &)
+            -> Vec<dim::Dim<sizeof...(TIndices)>, TVal>
+            {
+                static_assert(sizeof...(TIndices) <= TDim::value, "The sub-vector has to be smaller (or same size) then the origin vector.");
+
+                return Vec<dim::Dim<sizeof...(TIndices)>, TVal>(vec[TIndices]...);
+            }
+        };
+        //#############################################################################
+        //! Specialization for selecting the whole vector.
+        //#############################################################################
+        template<
+            typename TDim>
+        struct SubVecFromIndices<
+            TDim,
+#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
+            typename alpaka::detail::make_integer_sequence<UInt, TDim::value>::type>
+#else
+            alpaka::detail::make_integer_sequence<UInt, TDim::value>>
+#endif
+        {
+            template<
+                typename TVal>
+            ALPAKA_FCT_HOST_ACC static auto subVecFromIndices(
+                Vec<TDim, TVal> const & vec,
+#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
+                typename alpaka::detail::make_integer_sequence<UInt, TDim::value>::type const &)
+#else
+                alpaka::detail::make_integer_sequence<UInt, TDim::value> const &)
+#endif
+            -> Vec<TDim, TVal>
+            {
+                return vec;
+            }
+        };
+    }
     //-----------------------------------------------------------------------------
     //! \return The sub-vector consisting of the elements specified by the indices.
     //-----------------------------------------------------------------------------
     template<
-        UInt... TIndices,
         typename TDim,
-        typename TVal>
+        typename TVal,
+        UInt... TIndices>
     ALPAKA_FCT_HOST_ACC static auto subVecFromIndices(
         Vec<TDim, TVal> const & vec,
-        detail::integer_sequence<UInt, TIndices...> const &)
+        detail::integer_sequence<UInt, TIndices...> const & indices)
     -> Vec<dim::Dim<sizeof...(TIndices)>, TVal>
     {
-        static_assert(sizeof...(TIndices) <= TDim::value, "The sub-vector has to be smaller (or same size) then the origin vector.");
-
-        return Vec<dim::Dim<sizeof...(TIndices)>, TVal>(vec[TIndices]...);
+        return
+            detail::SubVecFromIndices<
+                TDim,
+                detail::integer_sequence<UInt, TIndices...>>
+            ::subVecFromIndices(
+                vec,
+                indices);
     }
     //-----------------------------------------------------------------------------
     //! \return The sub-vector consisting of the first N elements of the source vector.
@@ -455,18 +510,16 @@ namespace alpaka
     template<
         typename TSubDim,
         typename TDim,
-        typename TVal/*,
-        typename std::enable_if<TuiSubDim != TDim::value>::type * = nullptr*/>
-    ALPAKA_FCT_HOST_ACC static auto subVec(
+        typename TVal>
+    ALPAKA_FCT_HOST_ACC static auto subVecBegin(
         Vec<TDim, TVal> const & vec)
     -> Vec<TSubDim, TVal>
     {
         static_assert(TSubDim::value <= TDim::value, "The sub-vector has to be smaller (or same size) then the origin vector.");
-        
+
         //! A sequence of integers from 0 to dim-1.
-        //! This can be used to write compile time indexing algorithms.
 #if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-        using IdxSubSequence = typename alpaka::detail::make_integer_sequence<UInt, TuiSubDim>::type;
+        using IdxSubSequence = typename alpaka::detail::make_integer_sequence<UInt, TuiSubDim::value>::type;
 #else
         using IdxSubSequence = alpaka::detail::make_integer_sequence<UInt, TSubDim::value>;
 #endif
@@ -474,22 +527,26 @@ namespace alpaka
     }
     //-----------------------------------------------------------------------------
     //! \return The sub-vector consisting of the first N elements of the source vector.
-    //! For subDim == dim nothing has to be done.
-    // Specialization for template class template methods is not possible, SFINAE as workaround does.
-    // \FIXME: Does not work with nvcc!
     //-----------------------------------------------------------------------------
-    /*template<
+    template<
         typename TSubDim,
         typename TDim,
-        typename TVal,
-        typename std::enable_if<TSubDim::value == TDim::value>::type * = nullptr>
-    ALPAKA_FCT_HOST_ACC static auto subVec(
+        typename TVal>
+    ALPAKA_FCT_HOST_ACC static auto subVecEnd(
         Vec<TDim, TVal> const & vec)
     -> Vec<TSubDim, TVal>
     {
-        return vec;
-    }*/
-    
+        static_assert(TSubDim::value <= TDim::value, "The sub-vector has to be smaller (or same size) then the origin vector.");
+
+        //! A sequence of integers from 0 to dim-1.
+#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
+        using IdxSubSequence = typename alpaka::detail::make_integer_sequence_start<UInt, TDim::value-TSubDim::value, TuiSubDim::value>::type;
+#else
+        using IdxSubSequence = alpaka::detail::make_integer_sequence_start<UInt, TDim::value-TSubDim::value, TSubDim::value>;
+#endif
+        return subVecFromIndices(vec, IdxSubSequence());
+    }
+
     namespace extent
     {
         namespace detail
@@ -500,17 +557,14 @@ namespace alpaka
             template<
                 typename TVal,
                 typename TExtents,
-                size_t... TIndices>
+                typename TInt,
+                TInt... TIndices>
             ALPAKA_FCT_HOST static auto getExtentsInternal(
                 TExtents const & extents,
-#if !BOOST_COMP_MSVC     // MSVC 190022512 introduced a new bug with alias templates: error C3520: 'TIndices': parameter pack must be expanded in this context
-            alpaka::detail::index_sequence<TIndices...> const &)
-#else
-            alpaka::detail::integer_sequence<std::size_t, TIndices...> const &)
-#endif
+                alpaka::detail::integer_sequence<TInt, TIndices...> const &)
             -> Vec<dim::Dim<sizeof...(TIndices)>, TVal>
             {
-                return {getExtent<TIndices, TVal>(extents)...};
+                return {getExtent<(UInt)TIndices, TVal>(extents)...};
             }
         }
         //-----------------------------------------------------------------------------
@@ -524,10 +578,11 @@ namespace alpaka
             TExtents const & extents = TExtents())
         -> Vec<TDim>
         {
+            using DimSrc = dim::DimT<TExtents>;
 #if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-            using IdxSequence = typename alpaka::detail::make_index_sequence<TDim::value>::type;
+            using IdxSequence = typename alpaka::detail::make_integer_sequence_start<std::intmax_t, (((std::intmax_t)DimSrc::value)-((std::intmax_t)TDim::value)), TDim::value>::type;
 #else
-            using IdxSequence = alpaka::detail::make_index_sequence<TDim::value>;
+            using IdxSequence = alpaka::detail::make_integer_sequence_start<std::intmax_t, (((std::intmax_t)DimSrc::value)-((std::intmax_t)TDim::value)), TDim::value>;
 #endif
             return detail::getExtentsInternal<TVal>(
                 extents,
@@ -546,7 +601,7 @@ namespace alpaka
             return getExtentsNd<dim::DimT<TExtents>, TVal>(extents);
         }
     }
-    
+
     namespace offset
     {
         namespace detail
@@ -555,19 +610,17 @@ namespace alpaka
             //!
             //-----------------------------------------------------------------------------
             template<
+                typename TDim,
                 typename TVal,
                 typename TOffsets,
-                size_t... TIndices>
+                typename TInt,
+                TInt... TIndices>
             ALPAKA_FCT_HOST static auto getOffsetsInternal(
                 TOffsets const & extents,
-#if !BOOST_COMP_MSVC     // MSVC 190022512 introduced a new bug with alias templates: error C3520: 'TIndices': parameter pack must be expanded in this context
-            alpaka::detail::index_sequence<TIndices...> const &)
-#else
-            alpaka::detail::integer_sequence<std::size_t, TIndices...> const &)
-#endif
+                alpaka::detail::integer_sequence<TInt, TIndices...> const &)
             -> Vec<dim::Dim<sizeof...(TIndices)>, TVal>
             {
-                return {getOffset<TIndices, TVal>(extents)...};
+                return {getOffset<(UInt)TIndices, TVal>(extents)...};
             }
         }
         //-----------------------------------------------------------------------------
@@ -581,10 +634,11 @@ namespace alpaka
             TOffsets const & offsets = TOffsets())
         -> Vec<TDim, TVal>
         {
+            using DimSrc = dim::DimT<TOffsets>;
 #if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-            using IdxSequence = typename alpaka::detail::make_index_sequence<TDim::value>::type;
+            using IdxSequence = typename alpaka::detail::make_integer_sequence_start<std::intmax_t,  (((std::intmax_t)DimSrc::value)-((std::intmax_t)TDim::value)), TDim::value>::type;
 #else
-            using IdxSequence = alpaka::detail::make_index_sequence<TDim::value>;
+            using IdxSequence = alpaka::detail::make_integer_sequence_start<std::intmax_t, (((std::intmax_t)DimSrc::value)-((std::intmax_t)TDim::value)), TDim::value>;
 #endif
             return detail::getOffsetsInternal<TVal>(
                 offsets,
@@ -627,32 +681,32 @@ namespace alpaka
             //! The Vec width get trait specialization.
             //#############################################################################
             template<
-                UInt TuiIdx,
+                typename TIdx,
                 typename TDim,
                 typename TVal>
             struct GetExtent<
-                TuiIdx,
+                TIdx,
                 alpaka::Vec<TDim, TVal>,
-                typename std::enable_if<TDim::value >= (TuiIdx+1)>::type>
+                typename std::enable_if<(TDim::value > TIdx::value)>::type>
             {
                 ALPAKA_FCT_HOST_ACC static auto getExtent(
                     alpaka::Vec<TDim, TVal> const & extents)
                 -> TVal
                 {
-                    return extents[TuiIdx];
+                    return extents[TIdx::value];
                 }
             };
             //#############################################################################
             //! The Vec width set trait specialization.
             //#############################################################################
             template<
-                UInt TuiIdx,
+                typename TIdx,
                 typename TDim,
                 typename TVal>
             struct SetExtent<
-                TuiIdx,
+                TIdx,
                 alpaka::Vec<TDim, TVal>,
-                typename std::enable_if<TDim::value >= (TuiIdx+1)>::type>
+                typename std::enable_if<(TDim::value > TIdx::value)>::type>
             {
                 template<
                     typename TVal2>
@@ -661,7 +715,7 @@ namespace alpaka
                     TVal2 const & extent)
                 -> void
                 {
-                    extents[TuiIdx] = extent;
+                    extents[TIdx::value] = extent;
                 }
             };
         }
@@ -672,32 +726,32 @@ namespace alpaka
             //! The Vec offset get trait specialization.
             //#############################################################################
             template<
-                UInt TuiIdx,
+                typename TIdx,
                 typename TDim,
                 typename TVal>
             struct GetOffset<
-                TuiIdx,
+                TIdx,
                 alpaka::Vec<TDim, TVal>,
-                typename std::enable_if<TDim::value >= (TuiIdx+1)>::type>
+                typename std::enable_if<(TDim::value > TIdx::value)>::type>
             {
                 ALPAKA_FCT_HOST_ACC static auto getOffset(
                     alpaka::Vec<TDim, TVal> const & offsets)
                 -> TVal
                 {
-                    return offsets[TuiIdx];
+                    return offsets[TIdx::value];
                 }
             };
             //#############################################################################
             //! The Vec offset set trait specialization.
             //#############################################################################
             template<
-                UInt TuiIdx,
+                typename TIdx,
                 typename TDim,
                 typename TVal>
             struct SetOffset<
-                TuiIdx,
+                TIdx,
                 alpaka::Vec<TDim, TVal>,
-                typename std::enable_if<TDim::value >= (TuiIdx+1)>::type>
+                typename std::enable_if<(TDim::value > TIdx::value)>::type>
             {
                 template<
                     typename TVal2>
@@ -706,7 +760,7 @@ namespace alpaka
                     TVal2 const & offset)
                 -> void
                 {
-                    offsets[TuiIdx] = offset;
+                    offsets[TIdx::value] = offset;
                 }
             };
         }

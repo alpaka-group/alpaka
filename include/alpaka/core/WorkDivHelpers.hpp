@@ -212,12 +212,12 @@ namespace alpaka
                 if(v3uiBlockThreadExtents.prod() > uiMaxBlockThreadsCount)
                 {
                     // Begin in z dimension.
-                    UInt uiDim(2);
+                    UInt uiDim(0u);
                     // Very primitive clipping. Just halve it until it fits repeatedly iterating over the dimensions.
                     while(v3uiBlockThreadExtents.prod() > uiMaxBlockThreadsCount)
                     {
                         v3uiBlockThreadExtents[uiDim] = std::max(static_cast<UInt>(1u), static_cast<UInt>(v3uiBlockThreadExtents[uiDim] / 2u));
-                        uiDim = (uiDim+2) % 3;
+                        uiDim = (uiDim+1u) % 3u;
                     }
                 }
 

@@ -33,7 +33,7 @@
 #ifdef ALPAKA_OPENMP2_ENABLED
     #include <alpaka/accs/omp/omp2/Omp2.hpp>
 #endif
-#ifdef ALPAKA_CUDA_ENABLED
+#if defined(ALPAKA_CUDA_ENABLED) && defined(__CUDACC__)
     #include <alpaka/accs/cuda/Cuda.hpp>
 #endif
 
@@ -80,7 +80,7 @@ namespace alpaka
 #else
             using AccOmp2IfAvailableElseVoid = void;
 #endif
-#ifdef ALPAKA_CUDA_ENABLED
+#if defined(ALPAKA_CUDA_ENABLED) && defined(__CUDACC__)
             using AccCudaIfAvailableElseVoid = AccCuda;
 #else
             using AccCudaIfAvailableElseVoid = void;

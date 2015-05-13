@@ -135,15 +135,15 @@ namespace alpaka
                             new uint8_t[uiBlockSharedExternMemSizeBytes]);
 
                         // Execute the blocks serially.
-                        for(this->AccSerial::m_v3uiGridBlockIdx[2] = 0; this->AccSerial::m_v3uiGridBlockIdx[2]<v3uiGridBlockExtents[2]; ++this->AccSerial::m_v3uiGridBlockIdx[2])
+                        for(this->AccSerial::m_v3uiGridBlockIdx[0u] = 0u; this->AccSerial::m_v3uiGridBlockIdx[0u]<v3uiGridBlockExtents[0u]; ++this->AccSerial::m_v3uiGridBlockIdx[0u])
                         {
-                            for(this->AccSerial::m_v3uiGridBlockIdx[1] = 0; this->AccSerial::m_v3uiGridBlockIdx[1]<v3uiGridBlockExtents[1]; ++this->AccSerial::m_v3uiGridBlockIdx[1])
+                            for(this->AccSerial::m_v3uiGridBlockIdx[1u] = 0u; this->AccSerial::m_v3uiGridBlockIdx[1u]<v3uiGridBlockExtents[1u]; ++this->AccSerial::m_v3uiGridBlockIdx[1u])
                             {
-                                for(this->AccSerial::m_v3uiGridBlockIdx[0] = 0; this->AccSerial::m_v3uiGridBlockIdx[0]<v3uiGridBlockExtents[0]; ++this->AccSerial::m_v3uiGridBlockIdx[0])
+                                for(this->AccSerial::m_v3uiGridBlockIdx[2u] = 0u; this->AccSerial::m_v3uiGridBlockIdx[2u]<v3uiGridBlockExtents[2u]; ++this->AccSerial::m_v3uiGridBlockIdx[2u])
                                 {
-                                    assert(v3uiBlockThreadExtents[0] == 1);
-                                    assert(v3uiBlockThreadExtents[1] == 1);
-                                    assert(v3uiBlockThreadExtents[2] == 1);
+                                    assert(v3uiBlockThreadExtents[0u] == 1u);
+                                    assert(v3uiBlockThreadExtents[1u] == 1u);
+                                    assert(v3uiBlockThreadExtents[2u] == 1u);
 
                                     // There is only ever one thread in a block in the serial accelerator.
                                     std::forward<TKernelFunctor>(kernelFunctor)(

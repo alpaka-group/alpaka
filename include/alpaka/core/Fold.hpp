@@ -21,16 +21,38 @@
 
 #pragma once
 
-#include <alpaka/devs/cpu/Cpu.hpp>
-#if defined(ALPAKA_CUDA_ENABLED) && defined(__CUDACC__)
-    #include <alpaka/devs/gpu/Gpu.hpp>
-#endif
+#include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
 
 namespace alpaka
 {
     //-----------------------------------------------------------------------------
-    //! The devices.
+    //!
     //-----------------------------------------------------------------------------
-    namespace devs
-    {}
+    template<
+        typename F,
+        typename T>
+    T foldr(
+        F const & f,
+        T const & t)
+    {
+        boost::ignore_unused(f);
+        return t;
+    }
+    //-----------------------------------------------------------------------------
+    //!
+    //-----------------------------------------------------------------------------
+    template<
+        typename F,
+        typename T0,
+        typename T1,
+        typename... Ts>
+    auto foldr(
+        F const & f,
+        T0 const & t0,
+        T1 const & t1,
+        Ts const & ... ts)
+    -> decltype(f(t0, foldr(f, t1, ts...)))
+    {
+        return f(t0, foldr(f, t1, ts...));
+    }
 }

@@ -45,8 +45,8 @@ namespace alpaka
         {
             //-----------------------------------------------------------------------------
             // \tparam TElem Type of the index values.
-            // \param index Idx to be mapped.
-            // \param extents Spatial size to map the index to.
+            // \param Index Idx to be mapped.
+            // \param Extents Spatial size to map the index to.
             // \return Vector of dimension TuiDimDst.
             //-----------------------------------------------------------------------------
             template<
@@ -57,14 +57,13 @@ namespace alpaka
             -> Vec<dim::Dim3, TElem>
             {
                 auto const & uiIdx(index[0]);
-                auto const uiExtentXyLin(extents.prod());
-                auto const & uiExtentX(extents[0]);
+                auto const uiXyExtentsProd(extents.prod());
+                auto const & uiExtentX(extents[1]);
 
                 return {
-                    uiIdx % uiExtentX,
-                    (uiIdx % uiExtentXyLin) / uiExtentX,
-                    uiIdx / uiExtentXyLin
-                };
+                    uiIdx / uiXyExtentsProd,
+                    (uiIdx % uiXyExtentsProd) / uiExtentX,
+                    uiIdx % uiExtentX};
             }
         };
         //#############################################################################
@@ -77,8 +76,8 @@ namespace alpaka
         {
             //-----------------------------------------------------------------------------
             // \tparam TElem Type of the index values.
-            // \param index Idx to be mapped.
-            // \param extents Spatial size to map the index to.
+            // \param Index Idx to be mapped.
+            // \param Extents Spatial size to map the index to.
             // \return Vector of dimension TuiDimDst.
             //-----------------------------------------------------------------------------
             template<
@@ -92,9 +91,8 @@ namespace alpaka
                 auto const & uiExtentX(extents[0]);
 
                 return {
-                    uiIdx % uiExtentX,
-                    uiIdx / uiExtentX
-                };
+                    uiIdx / uiExtentX,
+                    uiIdx % uiExtentX};
             }
         };
     }
@@ -102,9 +100,9 @@ namespace alpaka
     //#############################################################################
     //! Maps a N dimensional index to a N dimensional position.
     //!
-    //! \tparam TuiIdxDimDst dimension of the position to map to.
-    //! \tparam TuiIdxDimSrc dimension of the index vector to map from.
-    //! \tparam TElem type of the elements of the index vector to map from.
+    //! \tparam TuiIdxDimDst Dimension of the position to map to.
+    //! \tparam TuiIdxDimSrc Dimension of the index vector to map from.
+    //! \tparam TElem Type of the elements of the index vector to map from.
     //#############################################################################
     template<
         UInt TuiIdxDimDst,

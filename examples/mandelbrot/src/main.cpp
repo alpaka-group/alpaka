@@ -155,9 +155,9 @@ public:
         std::uint32_t const & uiMaxIterations) const
     -> void
     {
-        auto const uiGridThreadIdx(alpaka::subVec<alpaka::dim::Dim2>(acc.template getIdx<alpaka::Grid, alpaka::Threads>()));
-        auto const & uiGridThreadIdxX(uiGridThreadIdx[0u]);
-        auto const & uiGridThreadIdxY(uiGridThreadIdx[1u]);
+        auto const uiGridThreadIdx(alpaka::subVecEnd<alpaka::dim::Dim2>(acc.template getIdx<alpaka::Grid, alpaka::Threads>()));
+        auto const & uiGridThreadIdxX(uiGridThreadIdx[1u]);
+        auto const & uiGridThreadIdxY(uiGridThreadIdx[0u]);
 
         if((uiGridThreadIdxY < uiNumRows) && (uiGridThreadIdxX < uiNumCols))
         {
@@ -305,7 +305,7 @@ auto writeTgaColorImage(
     assert(uiBufWidthColors >= 1);
     auto const uiBufHeightColors(alpaka::extent::getHeight<std::size_t>(bufRgba));
     assert(uiBufHeightColors >= 1);
-    auto const uiBufPitchBytes(alpaka::mem::getPitchBytes<0u, std::size_t>(bufRgba));
+    auto const uiBufPitchBytes(alpaka::mem::getPitchBytes<alpaka::dim::DimT<TBuf>::value - 1u, std::size_t>(bufRgba));
     assert(uiBufPitchBytes >= uiBufWidthBytes);
 
     std::ofstream ofs(
@@ -392,8 +392,8 @@ struct MandelbrotKernelTester
             alpaka::stream::create(devAcc));
 
         alpaka::Vec2<> const v2uiExtents(
-            static_cast<alpaka::Vec2<>::Val>(uiNumCols),
-            static_cast<alpaka::Vec2<>::Val>(uiNumRows));
+            static_cast<alpaka::Vec2<>::Val>(uiNumRows),
+            static_cast<alpaka::Vec2<>::Val>(uiNumCols));
 
         // Let alpaka calculate good block and grid sizes given our full problem extents.
         alpaka::workdiv::BasicWorkDiv const workDiv(
@@ -429,7 +429,7 @@ struct MandelbrotKernelTester
             alpaka::mem::getPtrNative(bufColorAcc),
             static_cast<std::uint32_t>(uiNumRows),
             static_cast<std::uint32_t>(uiNumCols),
-            alpaka::mem::getPitchElements<0u, std::uint32_t>(bufColorAcc),
+            alpaka::mem::getPitchElements<1u, std::uint32_t>(bufColorAcc),
             fMinR,
             fMaxR,
             fMinI,

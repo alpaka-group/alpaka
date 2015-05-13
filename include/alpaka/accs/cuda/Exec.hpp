@@ -147,13 +147,13 @@ namespace alpaka
 #endif
 
                         dim3 const gridDim(
-                            static_cast<unsigned int>(m_v3uiGridBlockExtents[0u]),
+                            static_cast<unsigned int>(m_v3uiGridBlockExtents[2u]),
                             static_cast<unsigned int>(m_v3uiGridBlockExtents[1u]),
-                            static_cast<unsigned int>(m_v3uiGridBlockExtents[2u]));
+                            static_cast<unsigned int>(m_v3uiGridBlockExtents[0u]));
                         dim3 const blockDim(
-                            static_cast<unsigned int>(m_v3uiBlockThreadExtents[0u]),
+                            static_cast<unsigned int>(m_v3uiBlockThreadExtents[2u]),
                             static_cast<unsigned int>(m_v3uiBlockThreadExtents[1u]),
-                            static_cast<unsigned int>(m_v3uiBlockThreadExtents[2u]));
+                            static_cast<unsigned int>(m_v3uiBlockThreadExtents[0u]));
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                         std::cout << "v3uiBlockThreadExtents: " <<  gridDim.x << " " <<  gridDim.y << " " <<  gridDim.z << std::endl;

@@ -42,7 +42,7 @@ namespace alpaka
                     typename T,
                     typename TSfinae = void>
                 struct CreateNormalReal;
-                
+
                 //#############################################################################
                 //! The random number float uniform distribution get trait.
                 //#############################################################################
@@ -161,7 +161,7 @@ namespace alpaka
                     acc);
             }
         }
-        
+
         //-----------------------------------------------------------------------------
         //! The random number generator method trait accessors.
         //-----------------------------------------------------------------------------

@@ -66,7 +66,7 @@ namespace alpaka
                     ALPAKA_FCT_ACC_CUDA_ONLY auto getIdxBlockThread() const
                     -> Vec3<>
                     {
-                        return Vec3<>(threadIdx.x, threadIdx.y, threadIdx.z);
+                        return Vec3<>(threadIdx.z, threadIdx.y, threadIdx.x);
                     }
                     //-----------------------------------------------------------------------------
                     //! \return The block index of the currently executed thread.
@@ -74,7 +74,7 @@ namespace alpaka
                     ALPAKA_FCT_ACC_CUDA_ONLY auto getIdxGridBlock() const
                     -> Vec3<>
                     {
-                        return Vec3<>(blockIdx.x, blockIdx.y, blockIdx.z);
+                        return Vec3<>(blockIdx.x, blockIdx.y, blockIdx.x);
                     }
                 };
             }

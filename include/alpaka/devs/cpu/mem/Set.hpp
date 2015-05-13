@@ -68,7 +68,7 @@ namespace alpaka
                     typename TBuf,
                     typename TExtents>
                 ALPAKA_FCT_HOST static auto set(
-                    TBuf & bufDst,
+                    TBuf & buf,
                     std::uint8_t const & byte,
                     TExtents const & extents)
                 -> void
@@ -84,23 +84,23 @@ namespace alpaka
                     auto const uiExtentWidth(alpaka::extent::getWidth<UInt>(extents));
                     auto const uiExtentHeight(alpaka::extent::getHeight<UInt>(extents));
                     auto const uiExtentDepth(alpaka::extent::getDepth<UInt>(extents));
-                    auto const uiDstWidth(alpaka::extent::getWidth<UInt>(bufDst));
-                    auto const uiDstHeight(alpaka::extent::getHeight<UInt>(bufDst));
+                    auto const uiDstWidth(alpaka::extent::getWidth<UInt>(buf));
+                    auto const uiDstHeight(alpaka::extent::getHeight<UInt>(buf));
 #if (!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
-                    auto const uiDstDepth(alpaka::extent::getDepth<UInt>(bufDst));
+                    auto const uiDstDepth(alpaka::extent::getDepth<UInt>(buf));
 #endif
                     assert(uiExtentWidth <= uiDstWidth);
                     assert(uiExtentHeight <= uiDstHeight);
                     assert(uiExtentDepth <= uiDstDepth);
 
                     auto const uiExtentWidthBytes(uiExtentWidth * sizeof(Elem));
-                    auto const uiDstPitchBytes(alpaka::mem::getPitchBytes<0u, UInt>(bufDst));
+                    auto const uiDstPitchBytes(alpaka::mem::getPitchBytes<alpaka::dim::DimT<TBuf>::value - 1u, UInt>(buf));
                     assert(uiExtentWidthBytes <= uiDstPitchBytes);
 
-                    auto const pDstNative(reinterpret_cast<std::uint8_t *>(alpaka::mem::getPtrNative(bufDst)));
+                    auto const pDstNative(reinterpret_cast<std::uint8_t *>(alpaka::mem::getPtrNative(buf)));
                     auto const uiDstSliceSizeBytes(uiDstPitchBytes * uiDstHeight);
 
-                    auto const & dstBuf(alpaka::mem::getBase(bufDst));
+                    auto const & dstBuf(alpaka::mem::getBuf(buf));
                     auto const uiDstBufWidth(alpaka::extent::getWidth<UInt>(dstBuf));
                     auto const uiDstBufHeight(alpaka::extent::getHeight<UInt>(dstBuf));
 
@@ -171,18 +171,16 @@ namespace alpaka
                     typename TExtents,
                     typename TDev>
                 ALPAKA_FCT_HOST static auto set(
-                    TBuf & bufDst,
+                    TBuf & buf,
                     std::uint8_t const & byte,
                     TExtents const & extents,
                     devs::cpu::detail::StreamCpu const & stream)
                 -> void
                 {
-                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-                    
                     boost::ignore_unused(stream);
 
                     copy(
-                        bufDst,
+                        buf,
                         byte,
                         extents);
                 }

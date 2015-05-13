@@ -244,14 +244,14 @@ namespace alpaka
                         static_cast<UInt>(cudaDevProp.maxThreadsPerBlock),
                         // m_v3uiBlockThreadExtentsMax
                         Vec3<>(
-                            static_cast<UInt>(cudaDevProp.maxThreadsDim[0]),
+                            static_cast<UInt>(cudaDevProp.maxThreadsDim[2]),
                             static_cast<UInt>(cudaDevProp.maxThreadsDim[1]),
-                            static_cast<UInt>(cudaDevProp.maxThreadsDim[2])),
+                            static_cast<UInt>(cudaDevProp.maxThreadsDim[0])),
                         // m_v3uiGridBlockExtentsMax
                         Vec3<>(
-                            static_cast<UInt>(cudaDevProp.maxGridSize[0]),
+                            static_cast<UInt>(cudaDevProp.maxGridSize[2]),
                             static_cast<UInt>(cudaDevProp.maxGridSize[1]),
-                            static_cast<UInt>(cudaDevProp.maxGridSize[2])));
+                            static_cast<UInt>(cudaDevProp.maxGridSize[0])));
                         //devProps.m_uiMaxClockFrequencyHz = cudaDevProp.clockRate * 1000;
                 }
             };

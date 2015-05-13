@@ -39,6 +39,7 @@
 #include <alpaka/core/BasicDims.hpp>
 #include <alpaka/core/BasicWorkDiv.hpp>
 #include <alpaka/core/Common.hpp>
+#include <alpaka/core/Fold.hpp>
 #include <alpaka/core/ForEachType.hpp>
 #include <alpaka/core/mem/BufPlainPtrWrapper.hpp>
 #include <alpaka/core/mem/BufStdContainers.hpp>

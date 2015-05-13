@@ -297,7 +297,7 @@ auto main()
         // Set the grid blocks extent.
         alpaka::workdiv::BasicWorkDiv const workDiv(
             alpaka::workdiv::getValidWorkDiv<alpaka::accs::EnabledAccs>(
-                alpaka::Vec3<>(16u, 8u, 4u)));
+                alpaka::Vec3<>(4u, 8u, 16u)));
 
         using TuiNumUselessWork = boost::mpl::int_<100u>;
         std::uint32_t const uiMult2(5u);

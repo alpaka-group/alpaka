@@ -108,7 +108,6 @@ namespace alpaka
 #else
                         ALPAKA_FCT_HOST virtual ~ExecOmp2() noexcept = default;
 #endif
-
                         //-----------------------------------------------------------------------------
                         //! Executes the kernel functor.
                         //-----------------------------------------------------------------------------
@@ -140,11 +139,11 @@ namespace alpaka
                             auto const uiNumThreadsInBlock(this->AccOmp2::getWorkDiv<Block, Threads, dim::Dim1>()[0]);
 
                             // Execute the blocks serially.
-                            for(this->AccOmp2::m_v3uiGridBlockIdx[2] = 0; this->AccOmp2::m_v3uiGridBlockIdx[2]<v3uiGridBlockExtents[2]; ++this->AccOmp2::m_v3uiGridBlockIdx[2])
+                            for(this->AccOmp2::m_v3uiGridBlockIdx[0u] = 0u; this->AccOmp2::m_v3uiGridBlockIdx[0u]<v3uiGridBlockExtents[0u]; ++this->AccOmp2::m_v3uiGridBlockIdx[0u])
                             {
-                                for(this->AccOmp2::m_v3uiGridBlockIdx[1] = 0; this->AccOmp2::m_v3uiGridBlockIdx[1]<v3uiGridBlockExtents[1]; ++this->AccOmp2::m_v3uiGridBlockIdx[1])
+                                for(this->AccOmp2::m_v3uiGridBlockIdx[1u] = 0u; this->AccOmp2::m_v3uiGridBlockIdx[1u]<v3uiGridBlockExtents[1u]; ++this->AccOmp2::m_v3uiGridBlockIdx[1u])
                                 {
-                                    for(this->AccOmp2::m_v3uiGridBlockIdx[0] = 0; this->AccOmp2::m_v3uiGridBlockIdx[0]<v3uiGridBlockExtents[0]; ++this->AccOmp2::m_v3uiGridBlockIdx[0])
+                                    for(this->AccOmp2::m_v3uiGridBlockIdx[2u] = 0u; this->AccOmp2::m_v3uiGridBlockIdx[2u]<v3uiGridBlockExtents[2u]; ++this->AccOmp2::m_v3uiGridBlockIdx[2u])
                                     {
                                         // Execute the threads in parallel.
 
@@ -156,13 +155,13 @@ namespace alpaka
                                         // 'omp for' is not useful because it is meant for cases where multiple iterations are executed by one thread but in our case a 1:1 mapping is required.
                                         // Therefore we use 'omp parallel' with the specified number of threads in a block.
                                         //
-                                        // \TODO: Does this hinder executing multiple threads in parallel because their block sizes/omp thread numbers are interfering? Is this num_threads global? Is this a real use case?
+                                        // \TODO: Does this hinder executing multiple threads in parallel because their block sizes/omp thread numbers are interfering? Is this num_threads global?
                                         #pragma omp parallel num_threads(static_cast<int>(uiNumThreadsInBlock))
                                         {
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                                            if((::omp_get_thread_num() == 0) && (this->AccOmp2::m_v3uiGridBlockIdx[2] == 0) && (this->AccOmp2::m_v3uiGridBlockIdx[1] == 0) && (this->AccOmp2::m_v3uiGridBlockIdx[0] == 0))
+                                            // The first thread does some checks in the first block executed.
+                                            if((::omp_get_thread_num() == 0) && (this->AccOmp2::m_v3uiGridBlockIdx[0u] == 0u) && (this->AccOmp2::m_v3uiGridBlockIdx[1u] == 0u) && (this->AccOmp2::m_v3uiGridBlockIdx[2u] == 0u))
                                             {
-                                                assert(::omp_get_num_threads()>=0);
                                                 auto const uiNumThreads(static_cast<decltype(uiNumThreadsInBlock)>(::omp_get_num_threads()));
                                                 std::cout << BOOST_CURRENT_FUNCTION << " omp_get_num_threads: " << uiNumThreads << std::endl;
                                                 if(uiNumThreads != uiNumThreadsInBlock)

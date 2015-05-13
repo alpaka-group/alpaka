@@ -89,7 +89,7 @@ namespace alpaka
                         alpaka::dim::DimT<TBufDst>::value == alpaka::dim::DimT<TExtents>::value,
                         "The buffers and the extents are required to have the same dimensionality!");
                     static_assert(
-                        std::is_same<alpaka::mem::ElemT<TBufDst>, alpaka::mem::ElemT<TBufSrc>>::value,
+                        std::is_same<alpaka::mem::ElemT<TBufDst>, typename std::remove_const<alpaka::mem::ElemT<TBufSrc>>::type>::value,
                         "The source and the destination buffers are required to have the same element type!");
 
                     using Elem = alpaka::mem::ElemT<TBufDst>;
@@ -115,8 +115,8 @@ namespace alpaka
                     assert(uiExtentDepth <= uiSrcDepth);
 
                     auto const uiExtentWidthBytes(uiExtentWidth * sizeof(Elem));
-                    auto const uiDstPitchBytes(alpaka::mem::getPitchBytes<0u, UInt>(bufDst));
-                    auto const uiSrcPitchBytes(alpaka::mem::getPitchBytes<0u, UInt>(bufSrc));
+                    auto const uiDstPitchBytes(alpaka::mem::getPitchBytes<alpaka::dim::DimT<TBufDst>::value - 1u, UInt>(bufDst));
+                    auto const uiSrcPitchBytes(alpaka::mem::getPitchBytes<alpaka::dim::DimT<TBufSrc>::value - 1u, UInt>(bufSrc));
                     assert(uiExtentWidthBytes <= uiDstPitchBytes);
                     assert(uiExtentWidthBytes <= uiSrcPitchBytes);
 
@@ -125,8 +125,8 @@ namespace alpaka
                     auto const uiDstSliceSizeBytes(uiDstPitchBytes * uiDstHeight);
                     auto const uiSrcSliceSizeBytes(uiSrcPitchBytes * uiSrcHeight);
 
-                    auto const & dstBuf(alpaka::mem::getBase(bufDst));
-                    auto const & srcBuf(alpaka::mem::getBase(bufSrc));
+                    auto const & dstBuf(alpaka::mem::getBuf(bufDst));
+                    auto const & srcBuf(alpaka::mem::getBuf(bufSrc));
                     auto const uiDstBufWidth(alpaka::extent::getWidth<UInt>(dstBuf));
                     auto const uiSrcBufWidth(alpaka::extent::getWidth<UInt>(srcBuf));
                     auto const uiDstBufHeight(alpaka::extent::getHeight<UInt>(dstBuf));
@@ -156,7 +156,7 @@ namespace alpaka
 #endif
                     // If:
                     // - the copy extents width and height are identical to the dst and src extents width and height
-                    // - the copy extents width and height are identical to the dst and src base memory buffer extents width and height
+                    // - the copy extents width and height are identical to the dst and src memory buffer extents width and height
                     // - the src and dst slice size is identical
                     // -> we can copy the whole memory at once overwriting the pitch bytes
                     if((uiExtentWidth == uiDstWidth)
@@ -180,7 +180,7 @@ namespace alpaka
                         {
                             // If:
                             // - the copy extents width is identical to the dst and src extents width
-                            // - the copy extents width is identical to the dst and src base memory buffer extents width
+                            // - the copy extents width is identical to the dst and src memory buffer extents width
                             // - the src and dst pitch is identical
                             // -> we can copy whole slices at once overwriting the pitch bytes
                             if((uiExtentWidth == uiDstWidth)
@@ -222,8 +222,6 @@ namespace alpaka
                     devs::cpu::detail::StreamCpu const & stream)
                 -> void
                 {
-                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-                    
                     boost::ignore_unused(stream);
 
                     copy(

@@ -40,11 +40,37 @@ This should have no speed implication as every half baked compiler analyses the 
 Use `uint32_t const iUsageOfThisVariable(42);` instead of `uint32_t const iUsageOfThisVariable = 42;`
 
 
+Comments
+--------
+
+* Always use C++-Style comments `//`
+* For types use `//#############################################################################` to surround the comment block.
+* For functions use `//-----------------------------------------------------------------------------` to surround the comment block.
+* Never write comments for closing braces (namespaces, classes, etc ...)
+
+
+Braces
+------
+
+* Braces (opening and closing) for classes, structs, functions, namespaces, etc. appear on a new line. Exception: If the function or class body is empty, the closing braces is on the same line.
+* Only braces for variable initialization can appear in-line.
+
+
 Indentation
 -----------
 
 * Always indent everything by *one level* (namespace body, class members, function body, ...)
 * Do not use more indentation e.g. to align function parameters.
+
+
+Spaces
+------
+
+* Trailing white-spaces are forbidden.
+* There is no space between keywords (if, for, ...) and the opening parenthesis.
+* There is no space after the opening `(` or `<` and before the closing `)` `>`.
+* There is a space before and after binary operators (=, *, +, ...)
+* There is no space after the unary operators !, ~, ...
 
 
 Functions

@@ -40,7 +40,7 @@ namespace alpaka
             //! If not specialized explicitly it returns 0.
             //#############################################################################
             template<
-                UInt TuiIdx,
+                typename TIdx,
                 typename T,
                 typename TSfinae = void>
             struct GetOffset
@@ -57,7 +57,7 @@ namespace alpaka
             //! The x offset set trait.
             //#############################################################################
             template<
-                UInt TuiIdx,
+                typename TIdx,
                 typename T,
                 typename TSfinae = void>
             struct SetOffset;
@@ -83,7 +83,7 @@ namespace alpaka
             return
                 static_cast<TVal>(
                     traits::offset::GetOffset<
-                        TuiIdx,
+                        std::integral_constant<UInt, TuiIdx>,
                         TOffsets>
                     ::getOffset(
                         offsets));
@@ -96,9 +96,9 @@ namespace alpaka
             typename TOffsets>
         ALPAKA_FCT_HOST_ACC auto getOffsetX(
             TOffsets const & offsets = TOffsets())
-        -> decltype(getOffset<0u, TVal>(offsets))
+        -> decltype(getOffset<dim::DimT<TOffsets>::value - 1u, TVal>(offsets))
         {
-            return getOffset<0u, TVal>(offsets);
+            return getOffset<dim::DimT<TOffsets>::value - 1u, TVal>(offsets);
         }
         //-----------------------------------------------------------------------------
         //! \return The offset in y dimension.
@@ -108,9 +108,9 @@ namespace alpaka
             typename TOffsets>
         ALPAKA_FCT_HOST_ACC auto getOffsetY(
             TOffsets const & offsets = TOffsets())
-        -> decltype(getOffset<1u, TVal>(offsets))
+        -> decltype(getOffset<dim::DimT<TOffsets>::value - 2u, TVal>(offsets))
         {
-            return getOffset<1u, TVal>(offsets);
+            return getOffset<dim::DimT<TOffsets>::value - 2u, TVal>(offsets);
         }
         //-----------------------------------------------------------------------------
         //! \return The offset in z dimension.
@@ -120,9 +120,9 @@ namespace alpaka
             typename TOffsets>
         ALPAKA_FCT_HOST_ACC auto getOffsetZ(
             TOffsets const & offsets = TOffsets())
-        -> decltype(getOffset<2u, TVal>(offsets))
+        -> decltype(getOffset<dim::DimT<TOffsets>::value - 3u, TVal>(offsets))
         {
-            return getOffset<2u, TVal>(offsets);
+            return getOffset<dim::DimT<TOffsets>::value - 3u, TVal>(offsets);
         }
 
         //-----------------------------------------------------------------------------
@@ -138,7 +138,7 @@ namespace alpaka
         -> void
         {
             traits::offset::SetOffset<
-                TuiIdx,
+                std::integral_constant<UInt, TuiIdx>,
                 TOffsets>
             ::setOffset(
                 offsets,
@@ -155,7 +155,7 @@ namespace alpaka
             TVal const & offset)
         -> void
         {
-            setOffset<0u>(offsets, offset);
+            setOffset<dim::DimT<TOffsets>::value - 1u>(offsets, offset);
         }
         //-----------------------------------------------------------------------------
         //! Sets the offset in y dimension.
@@ -168,7 +168,7 @@ namespace alpaka
             TVal const & offset)
         -> void
         {
-            setOffset<1u>(offsets, offset);
+            setOffset<dim::DimT<TOffsets>::value - 2u>(offsets, offset);
         }
         //-----------------------------------------------------------------------------
         //! Sets the offset in z dimension.
@@ -181,7 +181,7 @@ namespace alpaka
             TVal const & offset)
         -> void
         {
-            setOffset<2u>(offsets, offset);
+            setOffset<dim::DimT<TOffsets>::value - 3u>(offsets, offset);
         }
     }
 
@@ -198,7 +198,7 @@ namespace alpaka
             template<
                 typename T>
             struct GetOffset<
-                0u,
+                std::integral_constant<UInt, 0u>,
                 T,
                 typename std::enable_if<std::is_integral<T>::value && std::is_unsigned<T>::value>::type>
             {

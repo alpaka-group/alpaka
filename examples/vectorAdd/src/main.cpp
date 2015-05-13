@@ -55,7 +55,7 @@ public:
         std::size_t const & uiNumElements) const
     -> void
     {
-        auto const uiGridThreadIdxX(acc.template getIdx<alpaka::Grid, alpaka::Threads>()[0u]);
+        auto const uiGridThreadIdxX(acc.template getIdx<alpaka::Grid, alpaka::Threads, alpaka::dim::Dim1>()[0u]);
 
         if (uiGridThreadIdxX < uiNumElements)
         {

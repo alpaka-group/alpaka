@@ -111,15 +111,15 @@ namespace alpaka
             //! The fixed size array width get trait specialization.
             //#############################################################################
             template<
-                UInt TuiIdx,
+                typename TIdx,
                 typename TFixedSizeArray>
             struct GetExtent<
-                TuiIdx,
+                TIdx,
                 TFixedSizeArray,
                 typename std::enable_if<
                     std::is_array<TFixedSizeArray>::value
-                    && (std::rank<TFixedSizeArray>::value >= (TuiIdx+1))
-                    && (std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value-1u>::value > 0u)>::type>
+                    && (std::rank<TFixedSizeArray>::value > TIdx::value)
+                    && (std::extent<TFixedSizeArray, TIdx::value>::value > 0u)>::type>
             {
 #if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
                 ALPAKA_FCT_HOST_ACC static auto getWidth<UInt>(
@@ -131,7 +131,7 @@ namespace alpaka
                 {
                     // C++14
                     /*boost::ignore_unused(extents);*/
-                    return std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value-1u>::value;
+                    return std::extent<TFixedSizeArray, TIdx::value>::value;
                 }
             };
         }
@@ -142,10 +142,10 @@ namespace alpaka
             //! The fixed size array offset get trait specialization.
             //#############################################################################
             template<
-                UInt TuiIdx,
+                typename TIdx,
                 typename TFixedSizeArray>
             struct GetOffset<
-                TuiIdx,
+                TIdx,
                 TFixedSizeArray,
                 typename std::enable_if<std::is_array<TFixedSizeArray>::value>::type>
             {
@@ -177,11 +177,11 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The fixed size array base trait specialization.
+            //! The fixed size array buf trait specialization.
             //#############################################################################
             template<
                 typename TFixedSizeArray>
-            struct GetBase<
+            struct GetBuf<
                 TFixedSizeArray,
                 typename std::enable_if<
                     std::is_array<TFixedSizeArray>::value>::type>
@@ -189,7 +189,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getBase(
+                ALPAKA_FCT_HOST static auto getBuf(
                     TFixedSizeArray const & buf)
                 -> TFixedSizeArray const &
                 {
@@ -198,7 +198,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getBase(
+                ALPAKA_FCT_HOST static auto getBuf(
                     TFixedSizeArray & buf)
                 -> TFixedSizeArray &
                 {
@@ -235,10 +235,11 @@ namespace alpaka
             //#############################################################################
             //! The fixed size array pitch get trait specialization.
             //#############################################################################
+            // \FIXME: Calculate pitch for all dimensions, not only the last one.
             template<
                 typename TFixedSizeArray>
             struct GetPitchBytes<
-                0u,
+                std::integral_constant<UInt, std::rank<TFixedSizeArray>::value - 1u>,
                 TFixedSizeArray,
                 typename std::enable_if<
                     std::is_array<TFixedSizeArray>::value
@@ -321,7 +322,7 @@ namespace alpaka
                 typename TElem,
                 UInt TuiSize>
             struct GetExtent<
-                0u,
+                std::integral_constant<UInt, 0u>,
                 std::array<TElem, TuiSize>>
             {
 #if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
@@ -345,11 +346,11 @@ namespace alpaka
             //! The std::array offset get trait specialization.
             //#############################################################################
             template<
-                UInt TuiIdx,
+                typename TIdx,
                 typename TElem,
                 UInt TuiSize>
             struct GetOffset<
-                TuiIdx,
+                TIdx,
                 std::array<TElem, TuiSize>>
             {
                 //-----------------------------------------------------------------------------
@@ -379,18 +380,18 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The std::array base trait specialization.
+            //! The std::array buf trait specialization.
             //#############################################################################
             template<
                 typename TElem,
                 UInt TuiSize>
-            struct GetBase<
+            struct GetBuf<
                 std::array<TElem, TuiSize>>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getBase(
+                ALPAKA_FCT_HOST static auto getBuf(
                     std::array<TElem, TuiSize> const & buf)
                 -> std::array<TElem, TuiSize> const &
                 {
@@ -399,7 +400,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getBase(
+                ALPAKA_FCT_HOST static auto getBuf(
                     std::array<TElem, TuiSize> & buf)
                 -> std::array<TElem, TuiSize> &
                 {
@@ -437,7 +438,7 @@ namespace alpaka
                 typename TElem,
                 UInt TuiSize>
             struct GetPitchBytes<
-                0u,
+                std::integral_constant<UInt, 0u>,
                 std::array<TElem, TuiSize>>
             {
                 ALPAKA_FCT_HOST_ACC static auto getPitchBytes(
@@ -511,7 +512,7 @@ namespace alpaka
                 typename TElem,
                 typename TAllocator>
             struct GetExtent<
-                0u,
+                std::integral_constant<UInt, 0u>,
                 std::vector<TElem, TAllocator>>
             {
                 ALPAKA_FCT_HOST_ACC static auto getExtent(
@@ -529,11 +530,11 @@ namespace alpaka
             //! The std::vector offset get trait specialization.
             //#############################################################################
             template<
-                UInt TuiIdx,
+                typename TIdx,
                 typename TElem,
                 typename TAllocator>
             struct GetOffset<
-                TuiIdx,
+                TIdx,
                 std::vector<TElem, TAllocator>>
             {
                 //-----------------------------------------------------------------------------
@@ -563,18 +564,18 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The std::vector base trait specialization.
+            //! The std::vector buf trait specialization.
             //#############################################################################
             template<
                 typename TElem,
                 typename TAllocator>
-            struct GetBase<
+            struct GetBuf<
                 std::vector<TElem, TAllocator>>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getBase(
+                ALPAKA_FCT_HOST static auto getBuf(
                     std::vector<TElem, TAllocator> const & buf)
                 -> std::vector<TElem, TAllocator> const &
                 {
@@ -583,7 +584,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getBase(
+                ALPAKA_FCT_HOST static auto getBuf(
                     std::vector<TElem, TAllocator> & buf)
                 -> std::vector<TElem, TAllocator> &
                 {
@@ -621,7 +622,7 @@ namespace alpaka
                 typename TElem,
                 typename TAllocator>
             struct GetPitchBytes<
-                0u,
+                std::integral_constant<UInt, 0u>,
                 std::vector<TElem, TAllocator>>
             {
                 ALPAKA_FCT_HOST_ACC static auto getPitchBytes(

@@ -135,7 +135,7 @@ FUNCTION(add_recursive_files_to_src_group In_RootDir In_SrcGroupIgnorePrefix In_
             "${wildcardFilePath}")
             #MESSAGE("filesInSubDirList: ${filesInSubDirList}")
 
-            
+
         LIST(
             LENGTH
             "filesInSubDirList"
@@ -207,9 +207,11 @@ FUNCTION(list_add_prefix prefix list_of_items)
 
     FOREACH(
         "item"
-        IN 
+        IN
         LISTS "${list_of_items}")
-
+        IF(POLICY CMP0054)
+            CMAKE_POLICY(SET CMP0054 NEW)   # Only interpret if() arguments as variables or keywords when unquoted.
+        ENDIF()
         IF(NOT "${item}" STREQUAL "")
             LIST(
                 APPEND
@@ -235,7 +237,9 @@ FUNCTION(list_add_prefix_to prefix item_to_prefix list_of_items)
     FOREACH(
         "item"
         IN LISTS "${list_of_items}")
-
+        IF(POLICY CMP0054)
+            CMAKE_POLICY(SET CMP0054 NEW)   # Only interpret if() arguments as variables or keywords when unquoted.
+        ENDIF()
         IF("${item}" STREQUAL "${item_to_prefix}")
             LIST(
                 APPEND

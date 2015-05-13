@@ -164,22 +164,22 @@ namespace alpaka
                             std::thread,                // The concurrent execution type.
                             std::promise,               // The promise type.
                             ThreadPoolYield>;           // The type yielding the current concurrent execution.
-                        ThreadPool pool(uiNumThreadsInBlock[0], uiNumThreadsInBlock[0]);
+                        ThreadPool pool(uiNumThreadsInBlock[0u], uiNumThreadsInBlock[0u]);
 
                         // Execute the blocks serially.
-                        for(this->AccThreads::m_v3uiGridBlockIdx[2] = 0; this->AccThreads::m_v3uiGridBlockIdx[2]<v3uiGridBlockExtents[2]; ++this->AccThreads::m_v3uiGridBlockIdx[2])
+                        for(this->AccThreads::m_v3uiGridBlockIdx[0u] = 0u; this->AccThreads::m_v3uiGridBlockIdx[0u]<v3uiGridBlockExtents[0u]; ++this->AccThreads::m_v3uiGridBlockIdx[0u])
                         {
-                            for(this->AccThreads::m_v3uiGridBlockIdx[1] = 0; this->AccThreads::m_v3uiGridBlockIdx[1]<v3uiGridBlockExtents[1]; ++this->AccThreads::m_v3uiGridBlockIdx[1])
+                            for(this->AccThreads::m_v3uiGridBlockIdx[1u] = 0u; this->AccThreads::m_v3uiGridBlockIdx[1u]<v3uiGridBlockExtents[1u]; ++this->AccThreads::m_v3uiGridBlockIdx[1u])
                             {
-                                for(this->AccThreads::m_v3uiGridBlockIdx[0] = 0; this->AccThreads::m_v3uiGridBlockIdx[0]<v3uiGridBlockExtents[0]; ++this->AccThreads::m_v3uiGridBlockIdx[0])
+                                for(this->AccThreads::m_v3uiGridBlockIdx[2u] = 0u; this->AccThreads::m_v3uiGridBlockIdx[2u]<v3uiGridBlockExtents[2u]; ++this->AccThreads::m_v3uiGridBlockIdx[2u])
                                 {
                                     // Execute the threads in parallel.
                                     Vec3<> v3uiBlockThreadIdx(Vec3<>::zeros());
-                                    for(v3uiBlockThreadIdx[2] = 0; v3uiBlockThreadIdx[2]<v3uiBlockThreadExtents[2]; ++v3uiBlockThreadIdx[2])
+                                    for(v3uiBlockThreadIdx[0u] = 0u; v3uiBlockThreadIdx[0u]<v3uiBlockThreadExtents[0u]; ++v3uiBlockThreadIdx[0u])
                                     {
-                                        for(v3uiBlockThreadIdx[1] = 0; v3uiBlockThreadIdx[1]<v3uiBlockThreadExtents[1]; ++v3uiBlockThreadIdx[1])
+                                        for(v3uiBlockThreadIdx[1u] = 0u; v3uiBlockThreadIdx[1u]<v3uiBlockThreadExtents[1u]; ++v3uiBlockThreadIdx[1u])
                                         {
-                                            for(v3uiBlockThreadIdx[0] = 0; v3uiBlockThreadIdx[0]<v3uiBlockThreadExtents[0]; ++v3uiBlockThreadIdx[0])
+                                            for(v3uiBlockThreadIdx[2u] = 0u; v3uiBlockThreadIdx[2u]<v3uiBlockThreadExtents[2u]; ++v3uiBlockThreadIdx[2u])
                                             {
                                                 // The v3uiBlockThreadIdx is required to be copied in from the environment because if the thread is immediately suspended the variable is already changed for the next iteration/thread.
                                                 auto threadKernelFct =
