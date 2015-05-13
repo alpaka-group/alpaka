@@ -21,9 +21,9 @@
 
 #pragma once
 
-// AccSerial is always enabled because the host::getDev uses it.
-#include <alpaka/accs/serial/Serial.hpp>
-
+#ifdef ALPAKA_SERIAL_ENABLED
+    #include <alpaka/accs/serial/Serial.hpp>
+#endif
 #ifdef ALPAKA_THREADS_ENABLED
     #include <alpaka/accs/threads/Threads.hpp>
 #endif
@@ -65,6 +65,11 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         namespace detail
         {
+#ifdef ALPAKA_SERIAL_ENABLED
+            using AccSerialIfAvailableElseVoid = AccSerial;
+#else
+            using AccSerialIfAvailableElseVoid = void;
+#endif
 #ifdef ALPAKA_THREADS_ENABLED
             using AccThreadsIfAvailableElseVoid = AccThreads;
 #else
@@ -90,7 +95,7 @@ namespace alpaka
             //#############################################################################
             using EnabledAccsVoid =
                 boost::mpl::vector<
-                    AccSerial,
+                    AccSerialIfAvailableElseVoid,
                     AccThreadsIfAvailableElseVoid,
                     AccFibersIfAvailableElseVoid,
                     AccOmp2IfAvailableElseVoid,

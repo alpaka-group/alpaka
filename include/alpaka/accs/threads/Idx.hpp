@@ -95,8 +95,8 @@ namespace alpaka
                     }
 
                 private:
-                    ThreadIdToIdxMap const & m_mThreadsToIndices; //!< The mapping of thread id's to thread indices.
-                    Vec3<> const & m_v3uiGridBlockIdx;             //!< The index of the currently executed block.
+                    ThreadIdToIdxMap const & m_mThreadsToIndices;   //!< The mapping of thread id's to thread indices.
+                    Vec3<> const & m_v3uiGridBlockIdx;              //!< The index of the currently executed block.
                 };
             }
         }

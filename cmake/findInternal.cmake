@@ -54,6 +54,7 @@ IF(ALPAKA_ROOT)
     #-------------------------------------------------------------------------------
     # Options.
     #-------------------------------------------------------------------------------
+    OPTION(ALPAKA_SERIAL_ENABLE "Enable the serial accelerator" ON)
     OPTION(ALPAKA_THREADS_ENABLE "Enable the threads accelerator" ON)
     OPTION(ALPAKA_FIBERS_ENABLE "Enable the fibers accelerator" ON)
     OPTION(ALPAKA_OPENMP2_ENABLE "Enable the OpenMP accelerator" ON)
@@ -294,6 +295,10 @@ IF(ALPAKA_ROOT)
         alpaka_INCLUDE_DIR
         alpaka_LIBRARY)
 
+    IF(ALPAKA_SERIAL_ENABLE)
+        LIST(APPEND alpaka_DEFINITIONS "ALPAKA_SERIAL_ENABLED")
+        MESSAGE(STATUS ALPAKA_SERIAL_ENABLED)
+    ENDIF()
     IF(ALPAKA_THREADS_ENABLE)
         LIST(APPEND alpaka_DEFINITIONS "ALPAKA_THREADS_ENABLED")
         MESSAGE(STATUS ALPAKA_THREADS_ENABLED)
