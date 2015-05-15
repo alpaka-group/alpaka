@@ -132,8 +132,11 @@ namespace alpaka
                                 << " BlockSharedExternMemSizeBytes: " << uiBlockSharedExternMemSizeBytes << " B"
                                 << std::endl;
 #endif
-                            this->AccOmp2::m_vuiExternalSharedMem.reset(
-                                new uint8_t[uiBlockSharedExternMemSizeBytes]);
+                            if(uiBlockSharedExternMemSizeBytes > 0)
+                            {
+                                this->AccOmp2::m_vuiExternalSharedMem.reset(
+                                    new uint8_t[uiBlockSharedExternMemSizeBytes]);
+                            }
 
                             // The number of threads in this block.
                             auto const uiNumThreadsInBlock(this->AccOmp2::getWorkDiv<Block, Threads, dim::Dim1>()[0]);

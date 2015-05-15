@@ -131,8 +131,11 @@ namespace alpaka
                             << " BlockSharedExternMemSizeBytes: " << uiBlockSharedExternMemSizeBytes << " B"
                             << std::endl;
     #endif
-                        this->AccSerial::m_vuiExternalSharedMem.reset(
-                            new uint8_t[uiBlockSharedExternMemSizeBytes]);
+                        if(uiBlockSharedExternMemSizeBytes > 0)
+                        {
+                            this->AccSerial::m_vuiExternalSharedMem.reset(
+                                new uint8_t[uiBlockSharedExternMemSizeBytes]);
+                        }
 
                         // Execute the blocks serially.
                         for(this->AccSerial::m_v3uiGridBlockIdx[0u] = 0u; this->AccSerial::m_v3uiGridBlockIdx[0u]<v3uiGridBlockExtents[0u]; ++this->AccSerial::m_v3uiGridBlockIdx[0u])

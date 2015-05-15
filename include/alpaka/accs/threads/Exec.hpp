@@ -153,8 +153,11 @@ namespace alpaka
                             << " BlockSharedExternMemSizeBytes: " << uiBlockSharedExternMemSizeBytes << " B"
                             << std::endl;
     #endif
-                        this->AccThreads::m_vuiExternalSharedMem.reset(
-                            new uint8_t[uiBlockSharedExternMemSizeBytes]);
+                        if(uiBlockSharedExternMemSizeBytes > 0)
+                        {
+                            this->AccThreads::m_vuiExternalSharedMem.reset(
+                                new uint8_t[uiBlockSharedExternMemSizeBytes]);
+                        }
 
                         auto const uiNumThreadsInBlock(this->AccThreads::getWorkDiv<Block, Threads, dim::Dim1>());
                         // When using the thread pool the threads are yielding because this is faster.

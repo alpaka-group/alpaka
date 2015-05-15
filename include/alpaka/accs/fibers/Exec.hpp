@@ -150,8 +150,11 @@ namespace alpaka
                             << " BlockSharedExternMemSizeBytes: " << uiBlockSharedExternMemSizeBytes << " B"
                             << std::endl;
 #endif
-                        this->AccFibers::m_vuiExternalSharedMem.reset(
-                            new uint8_t[uiBlockSharedExternMemSizeBytes]);
+                        if(uiBlockSharedExternMemSizeBytes > 0)
+                        {
+                            this->AccFibers::m_vuiExternalSharedMem.reset(
+                                new uint8_t[uiBlockSharedExternMemSizeBytes]);
+                        }
 
                         auto const uiNumThreadsInBlock(this->AccFibers::getWorkDiv<Block, Threads, dim::Dim1>());
                         // Yielding is not faster for fibers. Therefore we use condition variables.
