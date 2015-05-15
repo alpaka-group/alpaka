@@ -76,10 +76,12 @@ public:
         TIndex const & m,
         TIndex const & n,
         TIndex const & k,
+        TElem const & alpha,
         TElem const * const A,
         TIndex const & lda,
         TElem const * const B,
         TIndex const & ldb,
+        TElem const & beta,
         TElem * const C,
         TIndex const & ldc) const
     -> void
@@ -156,7 +158,8 @@ public:
         // If the element is outside of the matrix it was only a helper thread that did not calculate any meaningful results
         if(bInsideC)
         {
-            C[uiGridThreadIdxY*ldc + uiGridThreadIdxX] += fCSum;
+            auto const uiIdxC(uiGridThreadIdxY*ldc + uiGridThreadIdxX);
+            C[uiIdxC] =  alpha * fCSum + beta * C[uiIdxC];
         }
     }
 };
@@ -184,15 +187,17 @@ namespace alpaka
                     typename TElem>
                 ALPAKA_FCT_HOST static auto getBlockSharedExternMemSizeBytes(
                     alpaka::Vec3<> const & v3uiBlockThreadsExtents,
-                    TIndex const &,
-                    TIndex const &,
-                    TIndex const &,
-                    TElem const * const,
-                    TIndex const &,
-                    TElem const * const,
-                    TIndex const &,
-                    TElem * const,
-                    TIndex const &)
+                    TIndex const & m,
+                    TIndex const & n,
+                    TIndex const & k,
+                    TElem const & alpha,
+                    TElem const * const A,
+                    TIndex const & lda,
+                    TElem const * const B,
+                    TIndex const & ldb,
+                    TElem const & beta,
+                    TElem * const C,
+                    TIndex const & ldc)
                 -> UInt
                 {
                     // Reserve the buffer for the two blocks of A and B.
@@ -340,10 +345,12 @@ struct MatMulTester
             static_cast<std::uint32_t>(m),
             static_cast<std::uint32_t>(n),
             static_cast<std::uint32_t>(k),
+            static_cast<std::uint32_t>(1u),
             alpaka::mem::getPtrNative(bufAAcc),
             alpaka::mem::getPitchElements<1u, std::uint32_t>(bufAAcc),
             alpaka::mem::getPtrNative(bufBAcc),
             alpaka::mem::getPitchElements<1u, std::uint32_t>(bufBAcc),
+            static_cast<std::uint32_t>(1u),
             alpaka::mem::getPtrNative(bufCAcc),
             alpaka::mem::getPitchElements<1u, std::uint32_t>(bufCAcc));
 
