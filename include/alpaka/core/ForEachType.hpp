@@ -54,10 +54,13 @@ namespace alpaka
                 typename TFunctor,
                 typename... TArgs>
             ALPAKA_FCT_HOST_ACC static auto forEachTypeImpl(
-                TFunctor &&,
-                TArgs && ...)
+                TFunctor && f ,
+                TArgs && ... args)
             -> void
-            {}
+            {
+                boost::ignore_unused(f);
+                boost::ignore_unused(args...);
+            }
         };
 
         //#############################################################################

@@ -21,10 +21,12 @@
 
 #pragma once
 
-#include <alpaka/traits/Idx.hpp>    // idx::getIdx
+#include <alpaka/traits/Idx.hpp>        // idx::getIdx
 
-#include <thread>                   // std::thread
-#include <map>                      // std::map
+#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+
+#include <thread>                       // std::thread
+#include <map>                          // std::map
 
 namespace alpaka
 {
@@ -126,6 +128,7 @@ namespace alpaka
                     TWorkDiv const & workDiv)
                 -> alpaka::Vec3<>
                 {
+                    boost::ignore_unused(workDiv);
                     return index.getIdxBlockThread();
                 }
             };
@@ -150,6 +153,7 @@ namespace alpaka
                     TWorkDiv const & workDiv)
                 -> alpaka::Vec3<>
                 {
+                    boost::ignore_unused(workDiv);
                     return index.getIdxGridBlock();
                 }
             };

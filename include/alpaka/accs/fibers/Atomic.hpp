@@ -21,7 +21,9 @@
 
 #pragma once
 
-#include <alpaka/traits/Atomic.hpp> // AtomicOp
+#include <alpaka/traits/Atomic.hpp>     // AtomicOp
+
+#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 
 namespace alpaka
 {
@@ -80,11 +82,12 @@ namespace alpaka
                 T>
             {
                 ALPAKA_FCT_ACC_NO_CUDA static auto atomicOp(
-                    accs::fibers::detail::AtomicFibers const &,
+                    accs::fibers::detail::AtomicFibers const & atomic,
                     T * const addr,
                     T const & value)
                 -> T
                 {
+                    boost::ignore_unused(atomic);
                     return TOp()(addr, value);
                 }
             };

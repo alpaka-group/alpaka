@@ -91,11 +91,12 @@ namespace alpaka
                 int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const &,
+                    accs::cuda::detail::AtomicCuda const & atomic,
                     int * const addr,
                     int const & value)
                 -> int
                 {
+                    boost::ignore_unused(atomic);
                     return atomicAdd(addr, value);
                 }
             };
@@ -109,11 +110,12 @@ namespace alpaka
                 unsigned int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const &,
+                    accs::cuda::detail::AtomicCuda const & atomic,
                     unsigned int * const addr,
                     unsigned int const & value)
                 -> unsigned int
                 {
+                    boost::ignore_unused(atomic);
                     return atomicAdd(addr, value);
                 }
             };
@@ -127,11 +129,12 @@ namespace alpaka
                 unsigned long long int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const &,
+                    accs::cuda::detail::AtomicCuda const & atomic,
                     unsigned long long int * const addr,
                     unsigned long long int const & value)
                 -> unsigned long long int
                 {
+                    boost::ignore_unused(atomic);
                     return atomicAdd(addr, value);
                 }
             };
@@ -145,11 +148,12 @@ namespace alpaka
                 float>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const &,
+                    accs::cuda::detail::AtomicCuda const & atomic,
                     float * const addr,
                     float const & value)
                 -> float
                 {
+                    boost::ignore_unused(atomic);
                     return atomicAdd(addr, value);
                 }
             };
@@ -163,11 +167,12 @@ namespace alpaka
                 double>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const &,
+                    accs::cuda::detail::AtomicCuda const & atomic,
                     double * const addr,
                     double const & value)
                 -> double
                 {
+                    boost::ignore_unused(atomic);
                     // Code from: http://docs.nvidia.com/cuda/cuda-c-programming-guide/#atomic-functions
 
                     unsigned long long int * address_as_ull(reinterpret_cast<unsigned long long int *>(addr));
@@ -196,11 +201,12 @@ namespace alpaka
                 int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const &,
+                    accs::cuda::detail::AtomicCuda const & atomic,
                     int * const addr,
                     int const & value)
                 -> int
                 {
+                    boost::ignore_unused(atomic);
                     return atomicSub(addr, value);
                 }
             };
@@ -214,11 +220,12 @@ namespace alpaka
                 unsigned int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const &,
+                    accs::cuda::detail::AtomicCuda const & atomic,
                     unsigned int * const addr,
                     unsigned int const & value)
                 -> unsigned int
                 {
+                    boost::ignore_unused(atomic);
                     return atomicSub(addr, value);
                 }
             };
@@ -235,11 +242,12 @@ namespace alpaka
                 int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const &,
+                    accs::cuda::detail::AtomicCuda const & atomic,
                     int * const addr,
                     int const & value)
                 -> int
                 {
+                    boost::ignore_unused(atomic);
                     return atomicMin(addr, value);
                 }
             };
@@ -253,11 +261,12 @@ namespace alpaka
                 unsigned int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const &,
+                    accs::cuda::detail::AtomicCuda const & atomic,
                     unsigned int * const addr,
                     unsigned int const & value)
                 -> unsigned int
                 {
+                    boost::ignore_unused(atomic);
                     return atomicMin(addr, value);
                 }
             };
@@ -271,11 +280,12 @@ namespace alpaka
                 unsigned long long int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const &,
+                    accs::cuda::detail::AtomicCuda const & atomic,
                     unsigned long long int * const addr,
                     unsigned long long int const & value)
                 -> unsigned long long int
                 {
+                    boost::ignore_unused(atomic);
                     return atomicMin(addr, value);
                 }
             };*/
@@ -292,11 +302,12 @@ namespace alpaka
                 int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const &,
+                    accs::cuda::detail::AtomicCuda const & atomic,
                     int * const addr,
                     int const & value)
                 -> int
                 {
+                    boost::ignore_unused(atomic);
                     return atomicMax(addr, value);
                 }
             };
@@ -310,11 +321,12 @@ namespace alpaka
                 unsigned int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const &,
+                    accs::cuda::detail::AtomicCuda const & atomic,
                     unsigned int * const addr,
                     unsigned int const & value)
                 -> unsigned int
                 {
+                    boost::ignore_unused(atomic);
                     return atomicMax(addr, value);
                 }
             };
@@ -328,11 +340,12 @@ namespace alpaka
                 unsigned long long int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const &,
+                    accs::cuda::detail::AtomicCuda const & atomic,
                     unsigned long long int * const addr,
                     unsigned long long int const & value)
                 -> unsigned long long int
                 {
+                    boost::ignore_unused(atomic);
                     return atomicMax(addr, value);
                 }
             };*/
@@ -349,11 +362,12 @@ namespace alpaka
                 int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const &,
+                    accs::cuda::detail::AtomicCuda const & atomic,
                     int * const addr,
                     int const & value)
                 -> int
                 {
+                    boost::ignore_unused(atomic);
                     return atomicExch(addr, value);
                 }
             };
@@ -367,11 +381,12 @@ namespace alpaka
                 unsigned int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const &,
+                    accs::cuda::detail::AtomicCuda const & atomic,
                     unsigned int * const addr,
                     unsigned int const & value)
                 -> unsigned int
                 {
+                    boost::ignore_unused(atomic);
                     return atomicExch(addr, value);
                 }
             };
@@ -385,11 +400,12 @@ namespace alpaka
                 unsigned long long int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const &,
+                    accs::cuda::detail::AtomicCuda const & atomic,
                     unsigned long long int * const addr,
                     unsigned long long int const & value)
                 -> unsigned long long int
                 {
+                    boost::ignore_unused(atomic);
                     return atomicExch(addr, value);
                 }
             };
@@ -403,11 +419,12 @@ namespace alpaka
                 float>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const &,
+                    accs::cuda::detail::AtomicCuda const & atomic,
                     float * const addr,
                     float const & value)
                 -> float
                 {
+                    boost::ignore_unused(atomic);
                     return atomicExch(addr, value);
                 }
             };
@@ -424,11 +441,12 @@ namespace alpaka
                 unsigned int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const &,
+                    accs::cuda::detail::AtomicCuda const & atomic,
                     unsigned int * const addr,
                     unsigned int const & value)
                 -> unsigned int
                 {
+                    boost::ignore_unused(atomic);
                     return atomicInc(addr, value);
                 }
             };
@@ -445,11 +463,12 @@ namespace alpaka
                 unsigned int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const &,
+                    accs::cuda::detail::AtomicCuda const & atomic,
                     unsigned int * const addr,
                     unsigned int const & value)
                 -> unsigned int
                 {
+                    boost::ignore_unused(atomic);
                     return atomicDec(addr, value);
                 }
             };
@@ -466,11 +485,12 @@ namespace alpaka
                 int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const &,
+                    accs::cuda::detail::AtomicCuda const & atomic,
                     int * const addr,
                     int const & value)
                 -> int
                 {
+                    boost::ignore_unused(atomic);
                     return atomicAnd(addr, value);
                 }
             };
@@ -484,11 +504,12 @@ namespace alpaka
                 unsigned int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const &,
+                    accs::cuda::detail::AtomicCuda const & atomic,
                     unsigned int * const addr,
                     unsigned int const & value)
                 -> unsigned int
                 {
+                    boost::ignore_unused(atomic);
                     return atomicAnd(addr, value);
                 }
             };
@@ -502,11 +523,12 @@ namespace alpaka
                 unsigned long long int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const &,
+                    accs::cuda::detail::AtomicCuda const & atomic,
                     unsigned long long int * const addr,
                     unsigned long long int const & value)
                 -> unsigned long long int
                 {
+                    boost::ignore_unused(atomic);
                     return atomicAnd(addr, value);
                 }
             };*/
@@ -523,11 +545,12 @@ namespace alpaka
                 int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const &,
+                    accs::cuda::detail::AtomicCuda const & atomic,
                     int * const addr,
                     int const & value)
                 -> int
                 {
+                    boost::ignore_unused(atomic);
                     return atomicOr(addr, value);
                 }
             };
@@ -541,11 +564,12 @@ namespace alpaka
                 unsigned int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const &,
+                    accs::cuda::detail::AtomicCuda const & atomic,
                     unsigned int * const addr,
                     unsigned int const & value)
                 -> unsigned int
                 {
+                    boost::ignore_unused(atomic);
                     return atomicOr(addr, value);
                 }
             };
@@ -559,11 +583,12 @@ namespace alpaka
                 unsigned long long int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const &,
+                    accs::cuda::detail::AtomicCuda const & atomic,
                     unsigned long long int * const addr,
                     unsigned long long int const & value)
                 -> unsigned long long int
                 {
+                    boost::ignore_unused(atomic);
                     return atomicOr(addr, value);
                 }
             };*/
@@ -580,11 +605,12 @@ namespace alpaka
                 int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const &,
+                    accs::cuda::detail::AtomicCuda const & atomic,
                     int * const addr,
                     int const & value)
                 -> int
                 {
+                    boost::ignore_unused(atomic);
                     return atomicXor(addr, value);
                 }
             };
@@ -598,11 +624,12 @@ namespace alpaka
                 unsigned int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const &,
+                    accs::cuda::detail::AtomicCuda const & atomic,
                     unsigned int * const addr,
                     unsigned int const & value)
                 -> unsigned int
                 {
+                    boost::ignore_unused(atomic);
                     return atomicXor(addr, value);
                 }
             };
@@ -616,11 +643,12 @@ namespace alpaka
                 unsigned long long int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const &,
+                    accs::cuda::detail::AtomicCuda const & atomic,
                     unsigned long long int * const addr,
                     unsigned long long int const & value)
                 -> unsigned long long int
                 {
+                    boost::ignore_unused(atomic);
                     return atomicXor(addr, value);
                 }
             };*/
@@ -637,12 +665,13 @@ namespace alpaka
                 int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const &,
+                    accs::cuda::detail::AtomicCuda const & atomic,
                     int * const addr,
                     int const & compare,
                     int const & value)
                 -> int
                 {
+                    boost::ignore_unused(atomic);
                     return atomicCAS(addr, compare, value);
                 }
             };
@@ -656,12 +685,13 @@ namespace alpaka
                 unsigned int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const &,
+                    accs::cuda::detail::AtomicCuda const & atomic,
                     unsigned int * const addr,
                     unsigned int const & compare,
                     unsigned int const & value)
                 -> unsigned int
                 {
+                    boost::ignore_unused(atomic);
                     return atomicCAS(addr, compare, value);
                 }
             };
@@ -675,12 +705,13 @@ namespace alpaka
                 unsigned long long int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const &,
+                    accs::cuda::detail::AtomicCuda const & atomic,
                     unsigned long long int * const addr,
                     unsigned long long int const & compare,
                     unsigned long long int const & value)
                 -> unsigned long long int
                 {
+                    boost::ignore_unused(atomic);
                     return atomicCAS(addr, compare, value);
                 }
             };

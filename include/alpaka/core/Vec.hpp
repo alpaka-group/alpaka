@@ -21,20 +21,21 @@
 
 #pragma once
 
-#include <alpaka/traits/Dim.hpp>    // traits::getDim
-#include <alpaka/traits/Extent.hpp> // traits::getWidth, ...
-#include <alpaka/traits/Offset.hpp> // traits::getOffsetX, ...
+#include <alpaka/traits/Dim.hpp>            // traits::getDim
+#include <alpaka/traits/Extent.hpp>         // traits::getWidth, ...
+#include <alpaka/traits/Offset.hpp>         // traits::getOffsetX, ...
 
-#include <alpaka/core/BasicDims.hpp>// dim::Dim<N>
-#include <alpaka/core/IntegerSequence.hpp>    //
-#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_ACC, ALPAKA_ALIGN
+#include <alpaka/core/BasicDims.hpp>        // dim::Dim<N>
+#include <alpaka/core/IntegerSequence.hpp>  // detail::make_integer_sequence
+#include <alpaka/core/Common.hpp>           // ALPAKA_FCT_ACC, ALPAKA_ALIGN
 
-#include <boost/predef.h>           // workarounds
+#include <boost/predef.h>                   // workarounds
+#include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
 
-#include <cstdint>                  // std::uint32_t
-#include <ostream>                  // std::ostream
-#include <cassert>                  // assert
-#include <type_traits>              // std::enable_if
+#include <cstdint>                          // std::uint32_t
+#include <ostream>                          // std::ostream
+#include <cassert>                          // assert
+#include <type_traits>                      // std::enable_if
 
 namespace alpaka
 {
@@ -98,10 +99,11 @@ namespace alpaka
             typename... TArgs,
             UInt... TIndices>
         ALPAKA_FCT_HOST_ACC static auto createHelper(
-            detail::integer_sequence<UInt, TIndices...> const &,
+            detail::integer_sequence<UInt, TIndices...> const & indices,
             TArgs && ... args)
         -> Vec<TDim, TVal>
         {
+            boost::ignore_unused(indices);
             return Vec<TDim, TVal>(
                 (TTFunctor<TIndices>::create(std::forward<TArgs>(args)...))...);
         }

@@ -21,15 +21,6 @@
 
 #include <alpaka/alpaka.hpp>                // alpaka::exec::create
 
-#include <chrono>                           // std::chrono::high_resolution_clock
-#include <cassert>                          // assert
-#include <iostream>                         // std::cout
-#include <vector>                           // std::vector
-#include <typeinfo>                         // typeid
-#include <utility>                          // std::forward
-#include <functional>                       // std::placeholders
-#include <unordered_map>                    // std::unordered_map
-
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
     #if BOOST_COMP_MSVC
         #pragma warning(push)
@@ -42,6 +33,17 @@
         #pragma warning(pop)
     #endif
 #endif
+
+#include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
+
+#include <chrono>                           // std::chrono::high_resolution_clock
+#include <cassert>                          // assert
+#include <iostream>                         // std::cout
+#include <vector>                           // std::vector
+#include <typeinfo>                         // typeid
+#include <utility>                          // std::forward
+#include <functional>                       // std::placeholders
+#include <unordered_map>                    // std::unordered_map
 
 //#############################################################################
 //! A matrix multiplication kernel.
@@ -200,6 +202,18 @@ namespace alpaka
                     TIndex const & ldc)
                 -> UInt
                 {
+                    boost::ignore_unused(m);
+                    boost::ignore_unused(n);
+                    boost::ignore_unused(k);
+                    boost::ignore_unused(alpha);
+                    boost::ignore_unused(A);
+                    boost::ignore_unused(lda);
+                    boost::ignore_unused(B);
+                    boost::ignore_unused(ldb);
+                    boost::ignore_unused(beta);
+                    boost::ignore_unused(C);
+                    boost::ignore_unused(ldc);
+
                     // Reserve the buffer for the two blocks of A and B.
                     return 2u * v3uiBlockThreadsExtents.prod() * sizeof(TElem);
                 }
