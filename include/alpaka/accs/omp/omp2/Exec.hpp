@@ -154,8 +154,6 @@ namespace alpaka
                                         // So we have to spawn one OS thread per thread in a block.
                                         // 'omp for' is not useful because it is meant for cases where multiple iterations are executed by one thread but in our case a 1:1 mapping is required.
                                         // Therefore we use 'omp parallel' with the specified number of threads in a block.
-                                        //
-                                        // \TODO: Does this hinder executing multiple threads in parallel because their block sizes/omp thread numbers are interfering? Is this num_threads global?
                                         #pragma omp parallel num_threads(static_cast<int>(uiNumThreadsInBlock))
                                         {
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
@@ -178,12 +176,12 @@ namespace alpaka
                                             this->AccOmp2::syncBlockThreads();
                                         }
 
-                                        // After a block has been processed, the shared memory can be deleted.
+                                        // After a block has been processed, the shared memory has to be deleted.
                                         this->AccOmp2::m_vvuiSharedMem.clear();
                                     }
                                 }
                             }
-                            // After all blocks have been processed, the external shared memory can be deleted.
+                            // After all blocks have been processed, the external shared memory has to be deleted.
                             this->AccOmp2::m_vuiExternalSharedMem.reset();
                         }
 

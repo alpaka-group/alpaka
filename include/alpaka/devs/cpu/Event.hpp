@@ -131,22 +131,6 @@ namespace alpaka
             //#############################################################################
             //! The cpu device event enqueue trait specialization.
             //#############################################################################
-            /*template<>
-            struct DefaultStreamEnqueueEvent<
-                devs::cpu::detail::EventCpu>
-            {
-                ALPAKA_FCT_HOST static auto defaultStreamEnqueueEvent(
-                    devs::cpu::detail::EventCpu const & event)
-                -> void
-                {
-                    boost::ignore_unused(event);
-                    // Because cpu calls are not asynchronous, this call never has to enqueue anything.
-                }
-            };*/
-
-            //#############################################################################
-            //! The cpu device event enqueue trait specialization.
-            //#############################################################################
             template<>
             struct StreamEnqueueEvent<
                 devs::cpu::detail::EventCpu,

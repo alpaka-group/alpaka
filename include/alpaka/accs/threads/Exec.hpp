@@ -210,12 +210,12 @@ namespace alpaka
                                     this->AccThreads::m_mThreadsToIndices.clear();
                                     this->AccThreads::m_mThreadsToBarrier.clear();
 
-                                    // After a block has been processed, the shared memory can be deleted.
+                                    // After a block has been processed, the shared memory has to be deleted.
                                     this->AccThreads::m_vvuiSharedMem.clear();
                                 }
                             }
                         }
-                        // After all blocks have been processed, the external shared memory can be deleted.
+                        // After all blocks have been processed, the external shared memory has to be deleted.
                         this->AccThreads::m_vuiExternalSharedMem.reset();
                     }
                 private:

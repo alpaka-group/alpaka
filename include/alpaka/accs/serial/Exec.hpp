@@ -150,12 +150,12 @@ namespace alpaka
                                         (*static_cast<AccSerial const *>(this)),
                                         std::forward<TArgs>(args)...);
 
-                                    // After a block has been processed, the shared memory can be deleted.
+                                    // After a block has been processed, the shared memory has to be deleted.
                                     this->AccSerial::m_vvuiSharedMem.clear();
                                 }
                             }
                         }
-                        // After all blocks have been processed, the external shared memory can be deleted.
+                        // After all blocks have been processed, the external shared memory has to be deleted.
                         this->AccSerial::m_vuiExternalSharedMem.reset();
                     }
 

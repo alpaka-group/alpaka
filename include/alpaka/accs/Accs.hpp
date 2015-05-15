@@ -122,7 +122,7 @@ namespace alpaka
             //#############################################################################
             //! The accelerator name write wrapper.
             //#############################################################################
-            struct GetAccName
+            struct StreamOutAccName
             {
                 template<
                     typename TAcc>
@@ -144,29 +144,11 @@ namespace alpaka
             os << "Accelerators enabled: ";
 
             forEachType<EnabledAccs>(
-                detail::GetAccName(),
+                detail::StreamOutAccName(),
                 std::ref(os)
                 );
 
             os << std::endl;
-        }
-
-        //-----------------------------------------------------------------------------
-        //! \return The maximum block thread extents supported by all of the enabled accelerators.
-        //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST auto getMaxBlockThreadExtentsEnabledAccs()
-        -> Vec3<>
-        {
-            return workdiv::getMaxBlockThreadExtentsAccsDevices<EnabledAccs>();
-        }
-
-        //-----------------------------------------------------------------------------
-        //! \return The maximum block thread count supported by all of the enabled accelerators.
-        //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST auto getMaxBlockThreadCountEnabledAccs()
-        -> UInt
-        {
-            return workdiv::getMaxBlockThreadCountAccsDevices<EnabledAccs>();
         }
     }
 }

@@ -182,28 +182,6 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The CUDA accelerator event enqueue trait specialization.
-            //#############################################################################
-            /*template<>
-            struct DefaultStreamEnqueueEvent<
-                accs::cuda::detail::EventCuda>
-            {
-                ALPAKA_FCT_HOST static auto defaultStreamEnqueueEvent(
-                    accs::cuda::detail::EventCuda const & event)
-                -> void
-                {
-                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-                    // Set the current device.
-                    ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
-                        event.m_Dev.m_iDevice));
-                    ALPAKA_CUDA_RT_CHECK(cudaEventRecord(
-                        *event.m_spCudaEvent.get(),
-                        nullptr));
-                }
-            };*/
-
-            //#############################################################################
             //! The CUDA accelerator event test trait specialization.
             //#############################################################################
             template<>

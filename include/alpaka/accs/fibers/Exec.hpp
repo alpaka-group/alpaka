@@ -209,12 +209,12 @@ namespace alpaka
                                     this->AccFibers::m_mFibersToIndices.clear();
                                     this->AccFibers::m_mFibersToBarrier.clear();
 
-                                    // After a block has been processed, the shared memory can be deleted.
+                                    // After a block has been processed, the shared memory has to be deleted.
                                     this->AccFibers::m_vvuiSharedMem.clear();
                                 }
                             }
                         }
-                        // After all blocks have been processed, the external shared memory can be deleted.
+                        // After all blocks have been processed, the external shared memory has to be deleted.
                         this->AccFibers::m_vuiExternalSharedMem.reset();
                     }
                 private:
