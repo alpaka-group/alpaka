@@ -187,7 +187,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST_ACC static auto getWorkDiv(
                     alpaka::workdiv::BasicWorkDiv const & workDiv)
-                -> alpaka::Vec<alpaka::dim::Dim3>
+                -> alpaka::Vec3<>
                 {
                     return workDiv.getBlockThreadExtents();
                 }
@@ -208,7 +208,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST_ACC static auto getWorkDiv(
                     alpaka::workdiv::BasicWorkDiv const & workDiv)
-                -> alpaka::Vec<alpaka::dim::Dim3>
+                -> alpaka::Vec3<>
                 {
                     return workDiv.getGridBlockExtents();
                 }

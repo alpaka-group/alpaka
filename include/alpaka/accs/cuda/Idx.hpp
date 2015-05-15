@@ -102,8 +102,8 @@ namespace alpaka
                     typename TWorkDiv>
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto getIdx(
                     accs::cuda::detail::IdxCuda const & index,
-                    TWorkDiv const &)
-                -> alpaka::Vec<alpaka::dim::Dim3>
+                    TWorkDiv const & workDiv)
+                -> alpaka::Vec3<>
                 {
                     return index.getIdxBlockThread();
                 }
@@ -126,8 +126,8 @@ namespace alpaka
                     typename TWorkDiv>
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto getIdx(
                     accs::cuda::detail::IdxCuda const & index,
-                    TWorkDiv const &)
-                -> alpaka::Vec<alpaka::dim::Dim3>
+                    TWorkDiv const & workDiv)
+                -> alpaka::Vec3<>
                 {
                     return index.getIdxGridBlock();
                 }

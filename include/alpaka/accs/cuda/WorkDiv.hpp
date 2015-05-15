@@ -103,7 +103,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto getWorkDiv(
                     accs::cuda::detail::WorkDivCuda const & workDiv)
-                -> alpaka::Vec<alpaka::dim::Dim3>
+                -> alpaka::Vec3<>
                 {
                     return workDiv.getBlockThreadExtents();
                 }
@@ -124,7 +124,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto getWorkDiv(
                     accs::cuda::detail::WorkDivCuda const & workDiv)
-                -> alpaka::Vec<alpaka::dim::Dim3>
+                -> alpaka::Vec3<>
                 {
                     return workDiv.getGridBlockExtents();
                 }
