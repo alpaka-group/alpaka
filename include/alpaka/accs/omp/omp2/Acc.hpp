@@ -23,8 +23,8 @@
 
 // Base classes.
 #include <alpaka/core/BasicWorkDiv.hpp>     // workdiv::BasicWorkDiv
-#include <alpaka/accs/omp/omp2/Idx.hpp>     // IdxOmp2
-#include <alpaka/accs/omp/omp2/Atomic.hpp>  // AtomicOmp2
+#include <alpaka/accs/omp/Idx.hpp>          // IdxOmp
+#include <alpaka/accs/omp/Atomic.hpp>       // AtomicOmp
 
 // Specialized traits.
 #include <alpaka/traits/Acc.hpp>            // AccType
@@ -71,8 +71,8 @@ namespace alpaka
                     //#############################################################################
                     class AccOmp2 :
                         protected alpaka::workdiv::BasicWorkDiv,
-                        protected IdxOmp2,
-                        protected AtomicOmp2
+                        protected omp::detail::IdxOmp,
+                        protected omp::detail::AtomicOmp
                     {
                     public:
                         friend class ::alpaka::accs::omp::omp2::detail::ExecOmp2;
@@ -86,8 +86,8 @@ namespace alpaka
                         ALPAKA_FCT_ACC_NO_CUDA AccOmp2(
                             TWorkDiv const & workDiv) :
                                 alpaka::workdiv::BasicWorkDiv(workDiv),
-                                IdxOmp2(m_v3uiGridBlockIdx),
-                                AtomicOmp2(),
+                                IdxOmp(m_v3uiGridBlockIdx),
+                                AtomicOmp(),
                                 m_v3uiGridBlockIdx(Vec3<>::zeros())
                         {}
 
@@ -122,7 +122,7 @@ namespace alpaka
                         -> Vec<TDim>
                         {
                             return idx::getIdx<TOrigin, TUnit, TDim>(
-                                *static_cast<IdxOmp2 const *>(this),
+                                *static_cast<IdxOmp const *>(this),
                                 *static_cast<workdiv::BasicWorkDiv const *>(this));
                         }
 
@@ -155,7 +155,7 @@ namespace alpaka
                             return atomic::atomicOp<TOp, T>(
                                 addr,
                                 value,
-                                *static_cast<AtomicOmp2 const *>(this));
+                                *static_cast<AtomicOmp const *>(this));
                         }
 
                         //-----------------------------------------------------------------------------
@@ -254,7 +254,6 @@ namespace alpaka
                     boost::ignore_unused(dev);
 
 #if ALPAKA_INTEGRATION_TEST
-
                     UInt const uiBlockThreadsCountMax(4u);
 #else
                     // m_uiBlockThreadsCountMax

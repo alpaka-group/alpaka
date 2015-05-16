@@ -54,11 +54,12 @@ IF(ALPAKA_ROOT)
     #-------------------------------------------------------------------------------
     # Options.
     #-------------------------------------------------------------------------------
-    OPTION(ALPAKA_SERIAL_ENABLE "Enable the serial accelerator" ON)
-    OPTION(ALPAKA_THREADS_ENABLE "Enable the threads accelerator" ON)
-    OPTION(ALPAKA_FIBERS_ENABLE "Enable the fibers accelerator" ON)
-    OPTION(ALPAKA_OPENMP2_ENABLE "Enable the OpenMP accelerator" ON)
-    OPTION(ALPAKA_CUDA_ENABLE "Enable the CUDA accelerator" ON)
+    OPTION(ALPAKA_SERIAL_CPU_ENABLE "Enable the serial CPU accelerator" ON)
+    OPTION(ALPAKA_THREADS_CPU_ENABLE "Enable the threads CPU accelerator" ON)
+    OPTION(ALPAKA_FIBERS_CPU_ENABLE "Enable the fibers CPU accelerator" ON)
+    OPTION(ALPAKA_OPENMP2_CPU_ENABLE "Enable the OpenMP 2.0 CPU accelerator" ON)
+    OPTION(ALPAKA_OPENMP4_CPU_ENABLE "Enable the OpenMP 4.0 CPU accelerator" ON)
+    OPTION(ALPAKA_CUDA_GPU_ENABLE "Enable the CUDA GPU accelerator" ON)
 
     # Drop-down combo box in cmake-gui.
     SET(ALPAKA_DEBUG "0" CACHE STRING "Debug level")
@@ -71,11 +72,11 @@ IF(ALPAKA_ROOT)
         SET(Boost_DEBUG ON)
         SET(Boost_DETAILED_FAILURE_MSG ON)
     ENDIF()
-    IF(ALPAKA_FIBERS_ENABLE)
+    IF(ALPAKA_FIBERS_CPU_ENABLE)
         FIND_PACKAGE(Boost COMPONENTS fiber context system thread atomic chrono date_time)
         IF(NOT Boost_FIBER_FOUND)
             MESSAGE(WARNING "Optional alpaka dependency Boost fiber could not be found! Fibers accelerator disabled!")
-            SET(ALPAKA_FIBERS_ENABLE OFF CACHE BOOL "Enable the Fibers accelerator" FORCE)
+            SET(ALPAKA_FIBERS_CPU_ENABLE OFF CACHE BOOL "Enable the Fibers CPU accelerator" FORCE)
             FIND_PACKAGE(Boost)
         ENDIF()
 
@@ -153,11 +154,12 @@ IF(ALPAKA_ROOT)
     #-------------------------------------------------------------------------------
     # Find OpenMP.
     #-------------------------------------------------------------------------------
-    IF(ALPAKA_OPENMP2_ENABLE)
+    IF(ALPAKA_OPENMP2_CPU_ENABLE OR ALPAKA_OPENMP4_CPU_ENABLE)
         FIND_PACKAGE(OpenMP)
         IF(NOT OPENMP_FOUND)
             MESSAGE(WARNING "Optional alpaka dependency OpenMP could not be found! OpenMP accelerator disabled!")
-            SET(ALPAKA_OPENMP2_ENABLE OFF CACHE BOOL "Enable the OpenMP accelerator" FORCE)
+            SET(ALPAKA_OPENMP2_CPU_ENABLE OFF CACHE BOOL "Enable the OpenMP 2.0 CPU accelerator" FORCE)
+            SET(ALPAKA_OPENMP4_CPU_ENABLE OFF CACHE BOOL "Enable the OpenMP 4.0 CPU accelerator" FORCE)
 
         ELSE()
             SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
@@ -169,7 +171,7 @@ IF(ALPAKA_ROOT)
     #-------------------------------------------------------------------------------
     # Find CUDA.
     #-------------------------------------------------------------------------------
-    IF(ALPAKA_CUDA_ENABLE)
+    IF(ALPAKA_CUDA_GPU_ENABLE)
 
         IF(NOT DEFINED ALPAKA_CUDA_VERSION)
             SET(ALPAKA_CUDA_VERSION 7.0)
@@ -177,13 +179,13 @@ IF(ALPAKA_ROOT)
 
         IF(ALPAKA_CUDA_VERSION VERSION_LESS 7.0)
             MESSAGE(WARNING "CUDA Toolkit < 7.0 is not supported! CUDA accelerator disabled!")
-            SET(ALPAKA_CUDA_ENABLE OFF CACHE BOOL "Enable the CUDA accelerator" FORCE)
+            SET(ALPAKA_CUDA_GPU_ENABLE OFF CACHE BOOL "Enable the CUDA GPU accelerator" FORCE)
 
         ELSE()
             FIND_PACKAGE(CUDA "${ALPAKA_CUDA_VERSION}")
             IF(NOT CUDA_FOUND)
                 MESSAGE(WARNING "Optional alpaka dependency CUDA could not be found! CUDA accelerator disabled!")
-                SET(ALPAKA_CUDA_ENABLE OFF CACHE BOOL "Enable the CUDA accelerator" FORCE)
+                SET(ALPAKA_CUDA_GPU_ENABLE OFF CACHE BOOL "Enable the CUDA GPU accelerator" FORCE)
 
             ELSE()
                 #SET(CUDA_VERBOSE_BUILD ON)
@@ -269,14 +271,14 @@ IF(ALPAKA_ROOT)
         LIST(APPEND ALPAKA_COMPILE_OPTIONS)
     ELSE()
         # Select C++ standard version.
-        IF(ALPAKA_FIBERS_ENABLE)
+        IF(ALPAKA_FIBERS_CPU_ENABLE)
             LIST(APPEND ALPAKA_COMPILE_OPTIONS "-std=c++14")
         ELSE()
             LIST(APPEND ALPAKA_COMPILE_OPTIONS "-std=c++11")
         ENDIF()
 
         # Add linker options.
-        IF(ALPAKA_THREADS_ENABLE)
+        IF(ALPAKA_THREADS_CPU_ENABLE)
             LIST(APPEND alpaka_LIBRARIES "general;pthread")
         ENDIF()
         # librt: undefined reference to `clock_gettime'
@@ -295,25 +297,29 @@ IF(ALPAKA_ROOT)
         alpaka_INCLUDE_DIR
         alpaka_LIBRARY)
 
-    IF(ALPAKA_SERIAL_ENABLE)
-        LIST(APPEND alpaka_DEFINITIONS "ALPAKA_SERIAL_ENABLED")
-        MESSAGE(STATUS ALPAKA_SERIAL_ENABLED)
+    IF(ALPAKA_SERIAL_CPU_ENABLE)
+        LIST(APPEND alpaka_DEFINITIONS "ALPAKA_SERIAL_CPU_ENABLED")
+        MESSAGE(STATUS ALPAKA_SERIAL_CPU_ENABLED)
     ENDIF()
-    IF(ALPAKA_THREADS_ENABLE)
-        LIST(APPEND alpaka_DEFINITIONS "ALPAKA_THREADS_ENABLED")
-        MESSAGE(STATUS ALPAKA_THREADS_ENABLED)
+    IF(ALPAKA_THREADS_CPU_ENABLE)
+        LIST(APPEND alpaka_DEFINITIONS "ALPAKA_THREADS_CPU_ENABLED")
+        MESSAGE(STATUS ALPAKA_THREADS_CPU_ENABLED)
     ENDIF()
-    IF(ALPAKA_FIBERS_ENABLE)
-        LIST(APPEND alpaka_DEFINITIONS "ALPAKA_FIBERS_ENABLED")
-        MESSAGE(STATUS ALPAKA_FIBERS_ENABLED)
+    IF(ALPAKA_FIBERS_CPU_ENABLE)
+        LIST(APPEND alpaka_DEFINITIONS "ALPAKA_FIBERS_CPU_ENABLED")
+        MESSAGE(STATUS ALPAKA_FIBERS_CPU_ENABLED)
     ENDIF()
-    IF(ALPAKA_OPENMP2_ENABLE)
-        LIST(APPEND alpaka_DEFINITIONS "ALPAKA_OPENMP2_ENABLED")
-        MESSAGE(STATUS ALPAKA_OPENMP2_ENABLED)
+    IF(ALPAKA_OPENMP2_CPU_ENABLE)
+        LIST(APPEND alpaka_DEFINITIONS "ALPAKA_OPENMP2_CPU_ENABLED")
+        MESSAGE(STATUS ALPAKA_OPENMP2_CPU_ENABLED)
     ENDIF()
-    IF(ALPAKA_CUDA_ENABLE)
-        LIST(APPEND alpaka_DEFINITIONS "ALPAKA_CUDA_ENABLED")
-        MESSAGE(STATUS ALPAKA_CUDA_ENABLED)
+    IF(ALPAKA_OPENMP4_CPU_ENABLE)
+        LIST(APPEND alpaka_DEFINITIONS "ALPAKA_OPENMP4_CPU_ENABLED")
+        MESSAGE(STATUS ALPAKA_OPENMP4_CPU_ENABLED)
+    ENDIF()
+    IF(ALPAKA_CUDA_GPU_ENABLE)
+        LIST(APPEND alpaka_DEFINITIONS "ALPAKA_CUDA_GPU_ENABLED")
+        MESSAGE(STATUS ALPAKA_CUDA_GPU_ENABLED)
     ENDIF()
 
     IF(${ALPAKA_DEBUG} GREATER 0)
@@ -336,7 +342,7 @@ IF(ALPAKA_ROOT)
         # Add all the source files in all recursive subdirectories and group them accordingly.
         append_recursive_files_add_to_src_group("${ALPAKA_SUFFIXED_INCLUDE_DIR}" "${ALPAKA_SUFFIXED_INCLUDE_DIR}" "cpp" "ALPAKA_SOURCE_FILES_ALL")
 
-        SET(ALPAKA_CMAKE_FILES_ALL "${CMAKE_PARENT_LIST_FILE}" "${ALPAKA_ROOT}/cmake/findInternal.cmake" "${ALPAKA_COMMON_FILE}")
+        SET(ALPAKA_CMAKE_FILES_ALL "${CMAKE_PARENT_LIST_FILE}" "${ALPAKA_ROOT}/README.md" "${ALPAKA_ROOT}/.travis.yml" "${ALPAKA_ROOT}/cmake/findInternal.cmake" "${ALPAKA_ROOT}/Findalpaka.cmake" "${ALPAKA_COMMON_FILE}")
 
         ADD_LIBRARY(
             alpaka

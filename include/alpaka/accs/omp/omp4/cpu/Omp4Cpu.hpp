@@ -21,16 +21,9 @@
 
 #pragma once
 
-#include <alpaka/devs/cpu/Cpu.hpp>
-#if defined(ALPAKA_CUDA_GPU_ENABLED) && defined(__CUDACC__)
-    #include <alpaka/devs/gpu/Gpu.hpp>
-#endif
-
-namespace alpaka
-{
-    //-----------------------------------------------------------------------------
-    //! The devices.
-    //-----------------------------------------------------------------------------
-    namespace devs
-    {}
-}
+#include <alpaka/accs/omp/omp4/cpu/Acc.hpp>     // AccOmp4Cpu
+#include <alpaka/accs/omp/omp4/cpu/Exec.hpp>    // ExecOmp4Cpu
+#include <alpaka/accs/omp/Idx.hpp>              // IdxOmp4Cpu
+#include <alpaka/accs/omp/Atomic.hpp>           // AtomicOmp
+#include <alpaka/devs/cpu/Mem.hpp>              // Copy
+#include <alpaka/devs/cpu/Rand.hpp>             // rand

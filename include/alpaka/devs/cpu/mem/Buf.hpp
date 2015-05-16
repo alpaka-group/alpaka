@@ -32,7 +32,7 @@
 #include <alpaka/traits/Extent.hpp>     // traits::getXXX
 
 // \TODO: Remove CUDA inclusion for BufCpu by replacing pinning with non CUDA code!
-#if defined(ALPAKA_CUDA_ENABLED) && defined(__CUDACC__)
+#if defined(ALPAKA_CUDA_GPU_ENABLED) && defined(__CUDACC__)
     #include <alpaka/accs/cuda/Common.hpp>
 #endif
 
@@ -486,7 +486,7 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-#if defined(ALPAKA_CUDA_ENABLED) && defined(__CUDACC__)
+#if defined(ALPAKA_CUDA_GPU_ENABLED) && defined(__CUDACC__)
                     // - cudaHostRegisterDefault:
                     //   See http://cgi.cs.indiana.edu/~nhusted/dokuwiki/doku.php?id=programming:cudaperformance1
                     // - cudaHostRegisterPortable:
@@ -520,7 +520,7 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-#if defined(ALPAKA_CUDA_ENABLED) && defined(__CUDACC__)
+#if defined(ALPAKA_CUDA_GPU_ENABLED) && defined(__CUDACC__)
                     ALPAKA_CUDA_RT_CHECK_IGNORE(
                         cudaHostUnregister(
                             const_cast<void *>(reinterpret_cast<void const *>(alpaka::mem::getPtrNative(buf)))),

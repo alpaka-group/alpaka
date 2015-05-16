@@ -21,19 +21,22 @@
 
 #pragma once
 
-#ifdef ALPAKA_SERIAL_ENABLED
+#ifdef ALPAKA_SERIAL_CPU_ENABLED
     #include <alpaka/accs/serial/Serial.hpp>
 #endif
-#ifdef ALPAKA_THREADS_ENABLED
+#ifdef ALPAKA_THREADS_CPU_ENABLED
     #include <alpaka/accs/threads/Threads.hpp>
 #endif
-#ifdef ALPAKA_FIBERS_ENABLED
+#ifdef ALPAKA_FIBERS_CPU_ENABLED
     #include <alpaka/accs/fibers/Fibers.hpp>
 #endif
-#ifdef ALPAKA_OPENMP2_ENABLED
+#ifdef ALPAKA_OPENMP2_CPU_ENABLED
     #include <alpaka/accs/omp/omp2/Omp2.hpp>
 #endif
-#if defined(ALPAKA_CUDA_ENABLED) && defined(__CUDACC__)
+#ifdef ALPAKA_OPENMP4_CPU_ENABLED
+    #include <alpaka/accs/omp/omp4/cpu/Omp4Cpu.hpp>
+#endif
+#if defined(ALPAKA_CUDA_GPU_ENABLED) && defined(__CUDACC__)
     #include <alpaka/accs/cuda/Cuda.hpp>
 #endif
 
@@ -65,27 +68,32 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         namespace detail
         {
-#ifdef ALPAKA_SERIAL_ENABLED
+#ifdef ALPAKA_SERIAL_CPU_ENABLED
             using AccSerialIfAvailableElseVoid = AccSerial;
 #else
             using AccSerialIfAvailableElseVoid = void;
 #endif
-#ifdef ALPAKA_THREADS_ENABLED
+#ifdef ALPAKA_THREADS_CPU_ENABLED
             using AccThreadsIfAvailableElseVoid = AccThreads;
 #else
             using AccThreadsIfAvailableElseVoid = void;
 #endif
-#ifdef ALPAKA_FIBERS_ENABLED
+#ifdef ALPAKA_FIBERS_CPU_ENABLED
             using AccFibersIfAvailableElseVoid = AccFibers;
 #else
             using AccFibersIfAvailableElseVoid = void;
 #endif
-#ifdef ALPAKA_OPENMP2_ENABLED
+#ifdef ALPAKA_OPENMP2_CPU_ENABLED
             using AccOmp2IfAvailableElseVoid = AccOmp2;
 #else
             using AccOmp2IfAvailableElseVoid = void;
 #endif
-#if defined(ALPAKA_CUDA_ENABLED) && defined(__CUDACC__)
+#ifdef ALPAKA_OPENMP4_CPU_ENABLED
+            using AccOmp4CpuIfAvailableElseVoid = AccOmp4Cpu;
+#else
+            using AccOmp4CpuIfAvailableElseVoid = void;
+#endif
+#if defined(ALPAKA_CUDA_GPU_ENABLED) && defined(__CUDACC__)
             using AccCudaIfAvailableElseVoid = AccCuda;
 #else
             using AccCudaIfAvailableElseVoid = void;
@@ -99,6 +107,7 @@ namespace alpaka
                     AccThreadsIfAvailableElseVoid,
                     AccFibersIfAvailableElseVoid,
                     AccOmp2IfAvailableElseVoid,
+                    AccOmp4CpuIfAvailableElseVoid,
                     AccCudaIfAvailableElseVoid
                 >;
         }

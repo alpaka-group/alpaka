@@ -44,6 +44,7 @@ This library uses C++11 (or newer when available).
 |---|---|---|---|---|---|---|
 |CUDA 7.0|:white_check_mark:|:x:|:x:|:white_check_mark:|:x:|:white_check_mark:|
 |OpenMP 2.0|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
+|OpenMP 4.0|:white_check_mark:|:white_check_mark:|:x:|:x:|:x:|:white_check_mark:|
 |Bopost.Fiber|:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|:x:|:white_check_mark:|
 |std::thread|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
 |Serial|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
@@ -58,12 +59,12 @@ Build status develop branch: [![Build Status](https://travis-ci.org/Computationa
 Accelerator Backends
 ------------
 
-|-|Serial|std::thread|Boost.Fiber|OpenMP 2.0|CUDA 7.0|
+|-|Serial|std::thread|Boost.Fiber|OpenMP 2.0|OpenMP 4.0|CUDA 7.0|
 |---|---|---|---|---|---|
-|Devices|Host Core|Host Cores|Host Core|Host Cores|NVIDIA GPUs|
-|Lib/API|n/a| std::thread | boost::fibers::fiber |OpenMP 2.0|CUDA 7.0|
-|Execution strategy grid-blocks|sequential|sequential|sequential|sequential|undefined|
-|Execution strategy block-threads|sequential|preemptive multitasking|cooperative multitasking|preemptive multitasking|lock-step within warps|
+|Devices|Host Core|Host Cores|Host Core|Host Cores|Host Cores|NVIDIA GPUs|
+|Lib/API|n/a| std::thread | boost::fibers::fiber |OpenMP 2.0|OpenMP 4.0|CUDA 7.0|
+|Execution strategy grid-blocks|sequential|sequential|sequential|sequential|undefined|undefined|
+|Execution strategy block-threads|sequential|preemptive multitasking|cooperative multitasking|preemptive multitasking|preemptive multitasking|lock-step within warps|
 
 
 Dependencies

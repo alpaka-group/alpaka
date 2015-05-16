@@ -69,7 +69,7 @@ namespace alpaka
                     ALPAKA_FCT_ACC_CUDA_ONLY auto getGridBlockExtents() const
                     -> Vec3<>
                     {
-                        return Vec3<>(gridDim.x, gridDim.y, gridDim.z);
+                        return {gridDim.z, gridDim.y, gridDim.x};
                     }
                     //-----------------------------------------------------------------------------
                     //! \return The block thread extents of the currently executed thread.
@@ -77,7 +77,7 @@ namespace alpaka
                     ALPAKA_FCT_ACC_CUDA_ONLY auto getBlockThreadExtents() const
                     -> Vec3<>
                     {
-                        return Vec3<>(blockDim.x, blockDim.y, blockDim.z);
+                        return {blockDim.z, blockDim.y, blockDim.x};
                     }
                 };
             }

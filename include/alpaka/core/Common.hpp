@@ -42,7 +42,7 @@
 //! WARNING: only use this method if there is no other way to create runnable code.
 //! Most cases can solved by #ifdef __CUDA_ARCH__ or #ifdef __CUDACC__.
 //-----------------------------------------------------------------------------
-#if defined(ALPAKA_CUDA_ENABLED) && defined(__CUDACC__)
+#if defined(ALPAKA_CUDA_GPU_ENABLED) && defined(__CUDACC__)
     #if BOOST_COMP_MSVC
         #define ALPAKA_NO_HOST_ACC_WARNING __pragma(hd_warning_disable)
     #else
@@ -58,7 +58,7 @@
 //! Usage:
 //! ALPAKA_FCT_ACC int add(int a, int b);
 //-----------------------------------------------------------------------------
-#if defined(ALPAKA_CUDA_ENABLED) && defined(__CUDACC__)
+#if defined(ALPAKA_CUDA_GPU_ENABLED) && defined(__CUDACC__)
     #define ALPAKA_FCT_ACC_CUDA_ONLY __device__ __forceinline__
     #define ALPAKA_FCT_ACC_NO_CUDA __host__ __forceinline__
     #define ALPAKA_FCT_ACC \

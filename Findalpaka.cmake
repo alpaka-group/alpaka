@@ -31,10 +31,12 @@
 #
 # Set the following CMake variables BEFORE calling find_packages to
 # change the behaviour of this module:
-# - ``ALPAKA_THREADS_ENABLE`` {ON, OFF}
-# - ``ALPAKA_FIBERS_ENABLE`` {ON, OFF}
-# - ``ALPAKA_OPENMP2_ENABLE`` {ON, OFF}
-# - ``ALPAKA_CUDA_ENABLE`` {ON, OFF}
+# - ``ALPAKA_SERIAL_CPU_ENABLE`` {ON, OFF}
+# - ``ALPAKA_THREADS_CPU_ENABLE`` {ON, OFF}
+# - ``ALPAKA_FIBERS_CPU_ENABLE`` {ON, OFF}
+# - ``ALPAKA_OPENMP2_CPU_ENABLE`` {ON, OFF}
+# - ``ALPAKA_OPENMP4_CPU_ENABLE`` {ON, OFF}
+# - ``ALPAKA_CUDA_GPU_ENABLE`` {ON, OFF}
 # - ``ALPAKA_CUDA_VERSION`` {7.0, ...}
 # - ``ALPAKA_CUDA_ARCH`` {sm_20, sm...}
 # - ``ALPAKA_CUDA_FAST_MATH`` {ON, OFF}
