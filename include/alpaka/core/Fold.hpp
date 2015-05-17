@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST_ACC
+
 #include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
 
 namespace alpaka
@@ -29,11 +31,12 @@ namespace alpaka
     //!
     //-----------------------------------------------------------------------------
     template<
-        typename F,
+        typename TFunctor,
         typename T>
-    T foldr(
-        F const & f,
+    ALPAKA_FCT_HOST_ACC auto foldr(
+        TFunctor const & f,
         T const & t)
+    -> T
     {
         boost::ignore_unused(f);
         return t;
@@ -42,12 +45,12 @@ namespace alpaka
     //!
     //-----------------------------------------------------------------------------
     template<
-        typename F,
+        typename TFunctor,
         typename T0,
         typename T1,
         typename... Ts>
-    auto foldr(
-        F const & f,
+    ALPAKA_FCT_HOST_ACC auto foldr(
+        TFunctor const & f,
         T0 const & t0,
         T1 const & t1,
         Ts const & ... ts)
