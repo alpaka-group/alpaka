@@ -28,6 +28,7 @@
 #include <alpaka/core/BasicDims.hpp>        // dim::Dim<N>
 #include <alpaka/core/IntegerSequence.hpp>  // detail::make_integer_sequence
 #include <alpaka/core/Common.hpp>           // ALPAKA_FCT_ACC, ALPAKA_ALIGN
+#include <alpaka/core/Fold.hpp>             // foldr
 
 #include <boost/predef.h>                   // workarounds
 #include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
@@ -194,19 +195,6 @@ namespace alpaka
         ALPAKA_FCT_HOST_ACC virtual ~Vec() noexcept = default;
 
         //-----------------------------------------------------------------------------
-        //! Destructor.
-        //-----------------------------------------------------------------------------
-#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-        ALPAKA_FCT_HOST_ACC auto static getDim()
-#else
-        ALPAKA_FCT_HOST_ACC auto static constexpr getDim()
-#endif
-        -> UInt
-        {
-            return TDim::value;
-        }
-
-        //-----------------------------------------------------------------------------
         //! Value reference accessor at the given non-unsigned integer index.
         //! \return A reference to the value at the given index.
         //-----------------------------------------------------------------------------
@@ -301,20 +289,64 @@ namespace alpaka
         {
             return !((*this) == rhs);
         }
-
+    private:
+        //-----------------------------------------------------------------------------
+        //!
+        //-----------------------------------------------------------------------------
+        template<
+            typename TFunctor,
+            UInt... TIndices>
+        ALPAKA_FCT_HOST auto foldrAllInternal(
+            TFunctor const & f,
+            alpaka::detail::integer_sequence<UInt, TIndices...> const & indices) const
+        -> decltype(
+            foldr(
+                f,
+                ((*this)[TIndices])...))
+        {
+            boost::ignore_unused(indices);
+            return
+                foldr(
+                    f,
+                    ((*this)[TIndices])...);
+        }
+    public:
+        //-----------------------------------------------------------------------------
+        //!
+        //-----------------------------------------------------------------------------
+        template<
+            typename TFunctor>
+        ALPAKA_FCT_HOST auto foldrAll(
+            TFunctor const & f) const
+        -> decltype(
+#if (BOOST_COMP_GNUC) && (BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(5, 0, 0))
+            this->foldrAllInternal(
+#else
+            foldrAllInternal(
+#endif
+                f,
+                IdxSequence()))
+        {
+            return
+                foldrAllInternal(
+                    f,
+                    IdxSequence());
+        }
         //-----------------------------------------------------------------------------
         //! \return The product of all values.
-        //! \TODO: Replace with fold instead of loop.
         //-----------------------------------------------------------------------------
         ALPAKA_FCT_HOST_ACC auto prod() const
         -> TVal
         {
-            TVal uiProd(m_auiData[0]);
-            for(UInt i(1); i<TDim::value; ++i)
-            {
-                uiProd *= m_auiData[i];
-            }
-            return uiProd;
+            return foldrAll(std::multiplies<TVal>());
+        }
+        //-----------------------------------------------------------------------------
+        //! \return The sum of all values.
+        //-----------------------------------------------------------------------------
+        ALPAKA_FCT_HOST_ACC auto sum() const
+        -> TVal
+        {
+            return foldrAll(std::plus<TVal>());
         }
 
     public: // \TODO: Make private.

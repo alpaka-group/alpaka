@@ -25,6 +25,8 @@
 #include <alpaka/core/Common.hpp>           // ALPAKA_FCT_HOST_ACC
 #include <alpaka/core/Fold.hpp>             // foldr
 
+#include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
+
 #include <type_traits>                      // std::enable_if
 #include <functional>                       // std::multiplies
 
@@ -139,9 +141,10 @@ namespace alpaka
                 size_t... TIndices>
             ALPAKA_FCT_HOST static auto getProductOfExtentsInternal(
                 TExtents const & extents,
-                alpaka::detail::index_sequence<TIndices...> const &)
+                alpaka::detail::index_sequence<TIndices...> const & indices)
             -> TVal
             {
+                boost::ignore_unused(indices);
                 return
                     alpaka::foldr(
                         std::multiplies<TVal>(),

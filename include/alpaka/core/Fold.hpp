@@ -23,7 +23,9 @@
 
 #include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST_ACC
 
-#include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
+#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+
+#include <type_traits>                  // std::result_of
 
 namespace alpaka
 {
@@ -41,6 +43,7 @@ namespace alpaka
         boost::ignore_unused(f);
         return t;
     }
+#if __cplusplus >= 201402L
     //-----------------------------------------------------------------------------
     //!
     //-----------------------------------------------------------------------------
@@ -54,8 +57,71 @@ namespace alpaka
         T0 const & t0,
         T1 const & t1,
         Ts const & ... ts)
-    -> decltype(f(t0, foldr(f, t1, ts...)))
     {
         return f(t0, foldr(f, t1, ts...));
     }
+#else
+    namespace detail
+    {
+        //#############################################################################
+        //!
+        //#############################################################################
+        template<
+            typename TFunctor,
+            typename... T>
+        struct TypeOfFold;
+        //#############################################################################
+        //!
+        //#############################################################################
+        template<
+            typename TFunctor,
+            typename T>
+        struct TypeOfFold<
+            TFunctor,
+            T>
+        {
+            using type = T;
+        };
+        //#############################################################################
+        //!
+        //#############################################################################
+        template<
+            typename TFunctor,
+            typename T,
+            typename... P>
+        struct TypeOfFold<
+            TFunctor,
+            T,
+            P...>
+        {
+            using type =
+                typename std::result_of<
+                    TFunctor(T, typename TypeOfFold<TFunctor, P...>::type)>::type;
+        };
+    }
+
+    //-----------------------------------------------------------------------------
+    //!
+    //-----------------------------------------------------------------------------
+    template<
+        typename TFunctor,
+        typename T0,
+        typename T1,
+        typename... Ts>
+    ALPAKA_FCT_HOST_ACC auto foldr(
+        TFunctor const & f,
+        T0 const & t0,
+        T1 const & t1,
+        Ts const & ... ts)
+    // NOTE: This is not allowed because the point of function declaration is after the trailing return type.
+    // Thus the function itself is not available inside its return type declaration. 
+    // http://www.open-std.org/jtc1/sc22/wg21/docs/cwg_closed.html#1433
+    // http://stackoverflow.com/questions/3744400/trailing-return-type-using-decltype-with-a-variadic-template-function
+    // http://stackoverflow.com/questions/11596898/variadic-template-and-inferred-return-type-in-concat/11597196#11597196
+    //-> decltype(f(t0, foldr(f, t1, ts...)))
+    -> typename detail::TypeOfFold<TFunctor, T0, T1, Ts...>::type
+    {
+        return f(t0, foldr(f, t1, ts...));
+    }
+#endif
 }
