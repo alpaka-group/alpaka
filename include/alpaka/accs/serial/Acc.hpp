@@ -193,11 +193,7 @@ namespace alpaka
                         return reinterpret_cast<T*>(m_vuiExternalSharedMem.get());
                     }
 
-    #ifdef ALPAKA_NVCC_FRIEND_ACCESS_BUG
-                protected:
-    #else
                 private:
-    #endif
                     // getIdx
                     Vec3<> mutable m_v3uiGridBlockIdx;                         //!< The index of the currently executed block.
 

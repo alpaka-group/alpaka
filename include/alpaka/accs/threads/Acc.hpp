@@ -243,11 +243,7 @@ namespace alpaka
                         return reinterpret_cast<T*>(m_vuiExternalSharedMem.get());
                     }
 
-    #ifdef ALPAKA_NVCC_FRIEND_ACCESS_BUG
-                protected:
-    #else
                 private:
-    #endif
                     // getIdx
                     detail::ThreadIdToIdxMap mutable m_mThreadsToIndices;       //!< The mapping of thread id's to indices.
                     Vec3<> mutable m_v3uiGridBlockIdx;                          //!< The index of the currently executed block.
