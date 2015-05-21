@@ -30,7 +30,8 @@
 
 // Implementation details.
 #include <alpaka/core/BasicWorkDiv.hpp>         // workdiv::BasicWorkDiv
-#include <alpaka/accs/omp/omp2/Acc.hpp>         // AccOmp2
+#include <alpaka/core/NdLoop.hpp>               // NdLoop
+#include <alpaka/accs/omp/omp2/Acc.hpp>         // AccCpuOmp2
 #include <alpaka/accs/omp/Common.hpp>
 #include <alpaka/devs/cpu/Dev.hpp>              // DevCpu
 #include <alpaka/devs/cpu/Event.hpp>            // EventCpu
@@ -55,10 +56,12 @@ namespace alpaka
                 namespace detail
                 {
                     //#############################################################################
-                    //! The OpenMP2 accelerator executor.
+                    //! The CPU OpenMP2 accelerator executor.
                     //#############################################################################
-                    class ExecOmp2 :
-                        private AccOmp2
+                    template<
+                        typename TDim>
+                    class ExecCpuOmp2 :
+                        private AccCpuOmp2<TDim>
                     {
                     public:
                         //-----------------------------------------------------------------------------
@@ -66,10 +69,10 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         template<
                             typename TWorkDiv>
-                        ALPAKA_FCT_HOST ExecOmp2(
+                        ALPAKA_FCT_HOST ExecCpuOmp2(
                             TWorkDiv const & workDiv,
                             devs::cpu::detail::StreamCpu & stream) :
-                                AccOmp2(workDiv),
+                                AccCpuOmp2<TDim>(workDiv),
                                 m_Stream(stream)
                         {
                             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -77,9 +80,9 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         //! Copy constructor.
                         //-----------------------------------------------------------------------------
-                        ALPAKA_FCT_HOST ExecOmp2(
-                            ExecOmp2 const & other) :
-                                AccOmp2(static_cast<workdiv::BasicWorkDiv const &>(other)),
+                        ALPAKA_FCT_HOST ExecCpuOmp2(
+                            ExecCpuOmp2 const & other) :
+                                AccCpuOmp2<TDim>(static_cast<workdiv::BasicWorkDiv<TDim> const &>(other)),
                                 m_Stream(other.m_Stream)
                         {
                             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -88,9 +91,9 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         //! Move constructor.
                         //-----------------------------------------------------------------------------
-                        ALPAKA_FCT_HOST ExecOmp2(
-                            ExecOmp2 && other) :
-                                AccOmp2(static_cast<workdiv::BasicWorkDiv &&>(other)),
+                        ALPAKA_FCT_HOST ExecCpuOmp2(
+                            ExecCpuOmp2 && other) :
+                                AccCpuOmp2<TDim>(static_cast<workdiv::BasicWorkDiv<TDim> &&>(other)),
                                 m_Stream(other.m_Stream)
                         {
                             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -99,14 +102,14 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         //! Copy assignment.
                         //-----------------------------------------------------------------------------
-                        ALPAKA_FCT_HOST auto operator=(ExecOmp2 const &) -> ExecOmp2 & = delete;
+                        ALPAKA_FCT_HOST auto operator=(ExecCpuOmp2 const &) -> ExecCpuOmp2 & = delete;
                         //-----------------------------------------------------------------------------
                         //! Destructor.
                         //-----------------------------------------------------------------------------
 #if BOOST_COMP_INTEL
-                        ALPAKA_FCT_HOST virtual ~ExecOmp2() = default;
+                        ALPAKA_FCT_HOST virtual ~ExecCpuOmp2() = default;
 #else
-                        ALPAKA_FCT_HOST virtual ~ExecOmp2() noexcept = default;
+                        ALPAKA_FCT_HOST virtual ~ExecCpuOmp2() noexcept = default;
 #endif
                         //-----------------------------------------------------------------------------
                         //! Executes the kernel functor.
@@ -121,12 +124,15 @@ namespace alpaka
                         {
                             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                            Vec3<> const v3uiGridBlockExtents(this->AccOmp2::getWorkDiv<Grid, Blocks, dim::Dim3>());
-                            Vec3<> const v3uiBlockThreadExtents(this->AccOmp2::getWorkDiv<Block, Threads, dim::Dim3>());
+                            auto const vuiGridBlockExtents(this->AccCpuOmp2<TDim>::template getWorkDiv<Grid, Blocks>());
+                            auto const vuiBlockThreadExtents(this->AccCpuOmp2<TDim>::template getWorkDiv<Block, Threads>());
 
-                            auto const uiBlockSharedExternMemSizeBytes(kernel::getBlockSharedExternMemSizeBytes<typename std::decay<TKernelFunctor>::type, AccOmp2>(
-                                v3uiBlockThreadExtents,
-                                std::forward<TArgs>(args)...));
+                            auto const uiBlockSharedExternMemSizeBytes(
+                                kernel::getBlockSharedExternMemSizeBytes<
+                                    typename std::decay<TKernelFunctor>::type,
+                                    AccCpuOmp2<TDim>>(
+                                        vuiBlockThreadExtents,
+                                        std::forward<TArgs>(args)...));
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                             std::cout << BOOST_CURRENT_FUNCTION
                                 << " BlockSharedExternMemSizeBytes: " << uiBlockSharedExternMemSizeBytes << " B"
@@ -134,58 +140,58 @@ namespace alpaka
 #endif
                             if(uiBlockSharedExternMemSizeBytes > 0)
                             {
-                                this->AccOmp2::m_vuiExternalSharedMem.reset(
+                                this->AccCpuOmp2<TDim>::m_vuiExternalSharedMem.reset(
                                     new uint8_t[uiBlockSharedExternMemSizeBytes]);
                             }
 
                             // The number of threads in this block.
-                            auto const uiNumThreadsInBlock(this->AccOmp2::getWorkDiv<Block, Threads, dim::Dim1>()[0]);
+                            UInt const uiNumThreadsInBlock(vuiBlockThreadExtents.prod());
+                            int const iNumThreadsInBlock(static_cast<int>(uiNumThreadsInBlock));
 
                             // Execute the blocks serially.
-                            for(this->AccOmp2::m_v3uiGridBlockIdx[0u] = 0u; this->AccOmp2::m_v3uiGridBlockIdx[0u]<v3uiGridBlockExtents[0u]; ++this->AccOmp2::m_v3uiGridBlockIdx[0u])
-                            {
-                                for(this->AccOmp2::m_v3uiGridBlockIdx[1u] = 0u; this->AccOmp2::m_v3uiGridBlockIdx[1u]<v3uiGridBlockExtents[1u]; ++this->AccOmp2::m_v3uiGridBlockIdx[1u])
+                            ndLoop(
+                                vuiGridBlockExtents,
+                                [&](Vec<TDim> const & vuiGridBlockIdx)
                                 {
-                                    for(this->AccOmp2::m_v3uiGridBlockIdx[2u] = 0u; this->AccOmp2::m_v3uiGridBlockIdx[2u]<v3uiGridBlockExtents[2u]; ++this->AccOmp2::m_v3uiGridBlockIdx[2u])
+                                    this->AccCpuOmp2<TDim>::m_vuiGridBlockIdx = vuiGridBlockIdx;
+
+                                    // Execute the threads in parallel.
+
+                                    // Force the environment to use the given number of threads.
+                                    ::omp_set_dynamic(0);
+
+                                    // Parallel execution of the threads in a block is required because when syncBlockThreads is called all of them have to be done with their work up to this line.
+                                    // So we have to spawn one OS thread per thread in a block.
+                                    // 'omp for' is not useful because it is meant for cases where multiple iterations are executed by one thread but in our case a 1:1 mapping is required.
+                                    // Therefore we use 'omp parallel' with the specified number of threads in a block.
+                                    #pragma omp parallel num_threads(iNumThreadsInBlock)
                                     {
-                                        // Execute the threads in parallel.
-
-                                        // Force the environment to use the given number of threads.
-                                        ::omp_set_dynamic(0);
-
-                                        // Parallel execution of the threads in a block is required because when syncBlockThreads is called all of them have to be done with their work up to this line.
-                                        // So we have to spawn one OS thread per thread in a block.
-                                        // 'omp for' is not useful because it is meant for cases where multiple iterations are executed by one thread but in our case a 1:1 mapping is required.
-                                        // Therefore we use 'omp parallel' with the specified number of threads in a block.
-                                        #pragma omp parallel num_threads(static_cast<int>(uiNumThreadsInBlock))
-                                        {
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                                            // The first thread does some checks in the first block executed.
-                                            if((::omp_get_thread_num() == 0) && (this->AccOmp2::m_v3uiGridBlockIdx[0u] == 0u) && (this->AccOmp2::m_v3uiGridBlockIdx[1u] == 0u) && (this->AccOmp2::m_v3uiGridBlockIdx[2u] == 0u))
+                                        // The first thread does some checks in the first block executed.
+                                        if((::omp_get_thread_num() == 0) && (this->AccCpuOmp2<TDim>::m_vuiGridBlockIdx.sum() == 0u))
+                                        {
+                                            int const iNumThreads(::omp_get_num_threads());
+                                            std::cout << BOOST_CURRENT_FUNCTION << " omp_get_num_threads: " << iNumThreads << std::endl;
+                                            if(iNumThreads != iNumThreadsInBlock)
                                             {
-                                                auto const uiNumThreads(static_cast<decltype(uiNumThreadsInBlock)>(::omp_get_num_threads()));
-                                                std::cout << BOOST_CURRENT_FUNCTION << " omp_get_num_threads: " << uiNumThreads << std::endl;
-                                                if(uiNumThreads != uiNumThreadsInBlock)
-                                                {
-                                                    throw std::runtime_error("The OpenMP2 runtime did not use the number of threads that had been required!");
-                                                }
+                                                throw std::runtime_error("The OpenMP2 runtime did not use the number of threads that had been required!");
                                             }
-#endif
-                                            std::forward<TKernelFunctor>(kernelFunctor)(
-                                                (*static_cast<AccOmp2 const *>(this)),
-                                                std::forward<TArgs>(args)...);
-
-                                            // Wait for all threads to finish before deleting the shared memory.
-                                            this->AccOmp2::syncBlockThreads();
                                         }
+#endif
+                                        std::forward<TKernelFunctor>(kernelFunctor)(
+                                            (*static_cast<AccCpuOmp2<TDim> const *>(this)),
+                                            std::forward<TArgs>(args)...);
 
-                                        // After a block has been processed, the shared memory has to be deleted.
-                                        this->AccOmp2::m_vvuiSharedMem.clear();
+                                        // Wait for all threads to finish before deleting the shared memory.
+                                        this->AccCpuOmp2<TDim>::syncBlockThreads();
                                     }
-                                }
-                            }
+
+                                    // After a block has been processed, the shared memory has to be deleted.
+                                    this->AccCpuOmp2<TDim>::m_vvuiSharedMem.clear();
+                                });
+
                             // After all blocks have been processed, the external shared memory has to be deleted.
-                            this->AccOmp2::m_vuiExternalSharedMem.reset();
+                            this->AccCpuOmp2<TDim>::m_vuiExternalSharedMem.reset();
                         }
 
                     public:
@@ -201,24 +207,64 @@ namespace alpaka
         namespace acc
         {
             //#############################################################################
-            //! The OpenMP2 accelerator executor accelerator type trait specialization.
+            //! The CPU OpenMP2 executor accelerator type trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct AccType<
-                accs::omp::omp2::detail::ExecOmp2>
+                accs::omp::omp2::detail::ExecCpuOmp2<TDim>>
             {
-                using type = accs::omp::omp2::detail::AccOmp2;
+                using type = accs::omp::omp2::detail::AccCpuOmp2<TDim>;
+            };
+        }
+
+        namespace dev
+        {
+            //#############################################################################
+            //! The CPU OpenMP2 executor device type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim>
+            struct DevType<
+                accs::omp::omp2::detail::ExecCpuOmp2<TDim>>
+            {
+                using type = devs::cpu::detail::DevCpu;
+            };
+            //#############################################################################
+            //! The CPU OpenMP2 executor device manager type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim>
+            struct DevManType<
+                accs::omp::omp2::detail::ExecCpuOmp2<TDim>>
+            {
+                using type = devs::cpu::detail::DevManCpu;
+            };
+        }
+
+        namespace dim
+        {
+            //#############################################################################
+            //! The CPU OpenMP2 executor dimension getter trait specialization.
+            //#############################################################################
+            template<
+                typename TDim>
+            struct DimType<
+                accs::omp::omp2::detail::ExecCpuOmp2<TDim>>
+            {
+                using type = TDim;
             };
         }
 
         namespace event
         {
             //#############################################################################
-            //! The OpenMP2 accelerator executor event type trait specialization.
+            //! The CPU OpenMP2 executor event type trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct EventType<
-                accs::omp::omp2::detail::ExecOmp2>
+                accs::omp::omp2::detail::ExecCpuOmp2<TDim>>
             {
                 using type = devs::cpu::detail::EventCpu;
             };
@@ -227,58 +273,39 @@ namespace alpaka
         namespace exec
         {
             //#############################################################################
-            //! The OpenMP2 accelerator executor executor type trait specialization.
+            //! The CPU OpenMP2 executor executor type trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct ExecType<
-                accs::omp::omp2::detail::ExecOmp2>
+                accs::omp::omp2::detail::ExecCpuOmp2<TDim>>
             {
-                using type = accs::omp::omp2::detail::ExecOmp2;
-            };
-        }
-
-        namespace dev
-        {
-            //#############################################################################
-            //! The OpenMP2 accelerator executor device type trait specialization.
-            //#############################################################################
-            template<>
-            struct DevType<
-                accs::omp::omp2::detail::ExecOmp2>
-            {
-                using type = devs::cpu::detail::DevCpu;
-            };
-            //#############################################################################
-            //! The OpenMP2 accelerator device type trait specialization.
-            //#############################################################################
-            template<>
-            struct DevManType<
-                accs::omp::omp2::detail::ExecOmp2>
-            {
-                using type = devs::cpu::detail::DevManCpu;
+                using type = accs::omp::omp2::detail::ExecCpuOmp2<TDim>;
             };
         }
 
         namespace stream
         {
             //#############################################################################
-            //! The OpenMP2 accelerator executor stream type trait specialization.
+            //! The CPU OpenMP2 executor stream type trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct StreamType<
-                accs::omp::omp2::detail::ExecOmp2>
+                accs::omp::omp2::detail::ExecCpuOmp2<TDim>>
             {
                 using type = devs::cpu::detail::StreamCpu;
             };
             //#############################################################################
-            //! The OpenMP2 accelerator executor stream get trait specialization.
+            //! The CPU OpenMP2 executor stream get trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct GetStream<
-                accs::omp::omp2::detail::ExecOmp2>
+                accs::omp::omp2::detail::ExecCpuOmp2<TDim>>
             {
                 ALPAKA_FCT_HOST static auto getStream(
-                    accs::omp::omp2::detail::ExecOmp2 const & exec)
+                    accs::omp::omp2::detail::ExecCpuOmp2<TDim> const & exec)
                 -> devs::cpu::detail::StreamCpu
                 {
                     return exec.m_Stream;

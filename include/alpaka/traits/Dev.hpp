@@ -104,14 +104,14 @@ namespace alpaka
         //#############################################################################
         template<
             typename T>
-        using DevT = typename traits::dev::DevType<typename std::decay<T>::type>::type;
+        using DevT = typename traits::dev::DevType<T>::type;
 
         //#############################################################################
         //! The device manager type trait alias template to remove the ::type.
         //#############################################################################
         template<
             typename T>
-        using DevManT = typename traits::dev::DevManType<typename std::decay<T>::type>::type;
+        using DevManT = typename traits::dev::DevManType<T>::type;
 
         //-----------------------------------------------------------------------------
         //! \return The device this object is bound to.

@@ -36,7 +36,7 @@ namespace alpaka
             namespace detail
             {
                 //#############################################################################
-                //! The threads accelerator atomic ops.
+                //! The CPU threads accelerator atomic ops.
                 //#############################################################################
                 class AtomicThreads
                 {
@@ -87,7 +87,7 @@ namespace alpaka
         namespace atomic
         {
             //#############################################################################
-            //! The threads accelerator atomic operation functor.
+            //! The CPU threads accelerator atomic operation functor.
             //#############################################################################
             template<
                 typename TOp,

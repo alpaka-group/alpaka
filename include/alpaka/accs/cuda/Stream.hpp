@@ -41,10 +41,12 @@ namespace alpaka
         {
             namespace detail
             {
-                class AccCuda;
+                template<
+                    typename TDim>
+                class AccGpuCuda;
 
                 //#############################################################################
-                //! The CUDA accelerator stream.
+                //! The GPU CUDA accelerator stream.
                 //#############################################################################
                 class StreamCuda
                 {
@@ -134,23 +136,10 @@ namespace alpaka
 
     namespace traits
     {
-        namespace acc
-        {
-            //#############################################################################
-            //! The CUDA accelerator stream accelerator type trait specialization.
-            //#############################################################################
-            template<>
-            struct AccType<
-                accs::cuda::detail::StreamCuda>
-            {
-                using type = accs::cuda::detail::AccCuda;
-            };
-        }
-
         namespace dev
         {
             //#############################################################################
-            //! The CUDA accelerator stream device get trait specialization.
+            //! The GPU CUDA accelerator stream device get trait specialization.
             //#############################################################################
             template<>
             struct GetDev<
@@ -168,7 +157,7 @@ namespace alpaka
         namespace stream
         {
             //#############################################################################
-            //! The CUDA accelerator stream stream type trait specialization.
+            //! The GPU CUDA accelerator stream stream type trait specialization.
             //#############################################################################
             template<>
             struct StreamType<
@@ -178,7 +167,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The CUDA accelerator stream test trait specialization.
+            //! The GPU CUDA accelerator stream test trait specialization.
             //#############################################################################
             template<>
             struct StreamTest<
@@ -213,7 +202,7 @@ namespace alpaka
         namespace wait
         {
             //#############################################################################
-            //! The CUDA accelerator stream thread wait trait specialization.
+            //! The GPU CUDA accelerator stream thread wait trait specialization.
             //#############################################################################
             template<>
             struct CurrentThreadWaitFor<

@@ -47,8 +47,7 @@ namespace alpaka
             template<
                 typename TIdx,
                 typename TOrigin,
-                typename TUnit,
-                typename TDim>
+                typename TUnit>
             struct GetIdx;
         }
     }
@@ -64,19 +63,17 @@ namespace alpaka
         template<
             typename TOrigin,
             typename TUnit,
-            typename TDim = dim::Dim3,
-            typename TIdx = void,
-            typename TWorkDiv = void>
+            typename TIdx,
+            typename TWorkDiv>
         ALPAKA_FCT_ACC auto getIdx(
             TIdx const & index,
             TWorkDiv const & workDiv)
-        -> Vec<TDim>
+        -> Vec<alpaka::dim::DimT<TWorkDiv>>
         {
             return traits::idx::GetIdx<
                 TIdx,
                 TOrigin,
-                TUnit,
-                TDim>
+                TUnit>
             ::getIdx(
                 index,
                 workDiv);
@@ -88,32 +85,6 @@ namespace alpaka
         namespace idx
         {
             //#############################################################################
-            //! The 1D block thread index get trait specialization.
-            //#############################################################################
-            template<
-                typename TIdx>
-            struct GetIdx<
-                TIdx,
-                origin::Block,
-                unit::Threads,
-                alpaka::dim::Dim1>
-            {
-                //-----------------------------------------------------------------------------
-                //! \return The linearized index of the current thread in the block.
-                //-----------------------------------------------------------------------------
-                template<
-                    typename TWorkDiv>
-                ALPAKA_FCT_ACC static auto getIdx(
-                    TIdx const & index,
-                    TWorkDiv const & workDiv)
-                -> alpaka::Vec1<>
-                {
-                    auto const v3uiBlockThreadExtents(alpaka::workdiv::getWorkDiv<origin::Block, unit::Threads, alpaka::dim::Dim3>(workDiv));
-                    auto const v3uiBlockThreadIdx(alpaka::idx::getIdx<origin::Block, unit::Threads, alpaka::dim::Dim3>(index, workDiv));
-                    return v3uiBlockThreadIdx[0u] * v3uiBlockThreadExtents[1u] * v3uiBlockThreadExtents[2u] + v3uiBlockThreadIdx[1u] * v3uiBlockThreadExtents[2u] + v3uiBlockThreadIdx[2u];
-                }
-            };
-            //#############################################################################
             //! The 3D grid thread index get trait specialization.
             //#############################################################################
             template<
@@ -121,8 +92,7 @@ namespace alpaka
             struct GetIdx<
                 TIdx,
                 origin::Grid,
-                unit::Threads,
-                alpaka::dim::Dim3>
+                unit::Threads>
             {
                 //-----------------------------------------------------------------------------
                 //! \return The 3-dimensional index of the current thread in grid.
@@ -132,63 +102,11 @@ namespace alpaka
                 ALPAKA_FCT_ACC static auto getIdx(
                     TIdx const & index,
                     TWorkDiv const & workDiv)
-                -> alpaka::Vec3<>
+                -> alpaka::Vec<alpaka::dim::DimT<TWorkDiv>>
                 {
-                    return alpaka::idx::getIdx<origin::Grid, unit::Blocks, alpaka::dim::Dim3>(index, workDiv)
-                        * alpaka::workdiv::getWorkDiv<origin::Block, unit::Threads, alpaka::dim::Dim3>(workDiv)
-                        + alpaka::idx::getIdx<origin::Block, unit::Threads, alpaka::dim::Dim3>(index, workDiv);
-                }
-            };
-            //#############################################################################
-            //! The 1D grid thread index get trait specialization.
-            //#############################################################################
-            template<
-                typename TIdx>
-            struct GetIdx<
-                TIdx,
-                origin::Grid,
-                unit::Threads,
-                alpaka::dim::Dim1>
-            {
-                //-----------------------------------------------------------------------------
-                //! \return The linearized index of the current thread in the grid.
-                //-----------------------------------------------------------------------------
-                template<
-                    typename TWorkDiv>
-                ALPAKA_FCT_ACC static auto getIdx(
-                    TIdx const & index,
-                    TWorkDiv const & workDiv)
-                -> alpaka::Vec1<>
-                {
-                    auto const v3uiGridThreadSize(alpaka::workdiv::getWorkDiv<origin::Grid, unit::Threads, alpaka::dim::Dim3>(workDiv));
-                    auto const v3uiGridThreadIdx(alpaka::idx::getIdx<origin::Grid, unit::Threads, alpaka::dim::Dim3>(index, workDiv));
-                    return v3uiGridThreadIdx[0u] * v3uiGridThreadSize[1u] * v3uiGridThreadSize[2u] + v3uiGridThreadIdx[1u] * v3uiGridThreadSize[2u] + v3uiGridThreadIdx[2u];
-                }
-            };
-            //#############################################################################
-            //! The 1D grid block index get trait specialization.
-            //#############################################################################
-            template<
-                typename TIdx>
-            struct GetIdx<
-                TIdx,
-                origin::Grid,
-                unit::Blocks,
-                alpaka::dim::Dim1>
-            {
-                //-----------------------------------------------------------------------------
-                //! \return The linearized index of the current block in the grid.
-                //-----------------------------------------------------------------------------
-                template<
-                    typename TWorkDiv>
-                ALPAKA_FCT_ACC static auto getIdx(
-                    TIdx const & index,
-                    TWorkDiv const & workDiv)
-                -> alpaka::Vec1<>
-                {
-                    auto const v3uiGridBlockExtent(alpaka::workdiv::getWorkDiv<origin::Grid, unit::Blocks, alpaka::dim::Dim3>(workDiv));
-                    auto const v3uiGridBlockIdx(alpaka::idx::getIdx<origin::Grid, unit::Blocks, alpaka::dim::Dim3>(index, workDiv));
-                    return v3uiGridBlockIdx[0u] * v3uiGridBlockExtent[1u] * v3uiGridBlockExtent[2u] + v3uiGridBlockIdx[1u] * v3uiGridBlockExtent[2u] + v3uiGridBlockIdx[2u];
+                    return alpaka::idx::getIdx<origin::Grid, unit::Blocks>(index, workDiv)
+                        * alpaka::workdiv::getWorkDiv<origin::Block, unit::Threads>(workDiv)
+                        + alpaka::idx::getIdx<origin::Block, unit::Threads>(index, workDiv);
                 }
             };
         }

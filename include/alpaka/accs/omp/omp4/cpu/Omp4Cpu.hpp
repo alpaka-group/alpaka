@@ -21,8 +21,8 @@
 
 #pragma once
 
-#include <alpaka/accs/omp/omp4/cpu/Acc.hpp>     // AccOmp4Cpu
-#include <alpaka/accs/omp/omp4/cpu/Exec.hpp>    // ExecOmp4Cpu
+#include <alpaka/accs/omp/omp4/cpu/Acc.hpp>     // AccCpuOmp4
+#include <alpaka/accs/omp/omp4/cpu/Exec.hpp>    // ExecCpuOmp4
 #include <alpaka/accs/omp/Idx.hpp>              // IdxOmp4Cpu
 #include <alpaka/accs/omp/Atomic.hpp>           // AtomicOmp
 #include <alpaka/devs/cpu/Mem.hpp>              // Copy

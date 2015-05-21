@@ -29,9 +29,10 @@
 #include <alpaka/traits/Stream.hpp>             // StreamType
 
 // Implementation details.
-#include <alpaka/accs/threads/Acc.hpp>          // AccThreads
+#include <alpaka/accs/threads/Acc.hpp>          // AccCpuThreads
 #include <alpaka/core/BasicWorkDiv.hpp>         // WorkDivThreads
 #include <alpaka/core/ConcurrentExecPool.hpp>   // ConcurrentExecPool
+#include <alpaka/core/NdLoop.hpp>               // NdLoop
 #include <alpaka/devs/cpu/Dev.hpp>              // DevCpu
 #include <alpaka/devs/cpu/Event.hpp>            // EventCpu
 #include <alpaka/devs/cpu/Stream.hpp>           // StreamCpu
@@ -70,11 +71,24 @@ namespace alpaka
                         std::this_thread::yield();
                     }
                 };
+
                 //#############################################################################
-                //! The threads accelerator executor.
+                // When using the thread pool the threads are yielding because this is faster.
+                // Using condition variables and going to sleep is very costly for real threads.
+                // Especially when the time to wait is really short (syncBlockThreads) yielding is much faster.
                 //#############################################################################
-                class ExecThreads :
-                    private AccThreads
+                using ThreadPool = alpaka::detail::ConcurrentExecPool<
+                    std::thread,                // The concurrent execution type.
+                    std::promise,               // The promise type.
+                    ThreadPoolYield>;           // The type yielding the current concurrent execution.
+
+                //#############################################################################
+                //! The CPU threads executor.
+                //#############################################################################
+                template<
+                    typename TDim>
+                class ExecCpuThreads :
+                    private AccCpuThreads<TDim>
                 {
                 public:
                     //-----------------------------------------------------------------------------
@@ -82,10 +96,10 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     template<
                         typename TWorkDiv>
-                    ALPAKA_FCT_HOST ExecThreads(
+                    ALPAKA_FCT_HOST ExecCpuThreads(
                         TWorkDiv const & workDiv,
                         devs::cpu::detail::StreamCpu & stream) :
-                            AccThreads(workDiv),
+                            AccCpuThreads<TDim>(workDiv),
                             m_Stream(stream),
                             m_vFuturesInBlock(),
                             m_mtxMapInsert()
@@ -95,9 +109,9 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Copy constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST ExecThreads(
-                        ExecThreads const & other) :
-                            AccThreads(static_cast<workdiv::BasicWorkDiv const &>(other)),
+                    ALPAKA_FCT_HOST ExecCpuThreads(
+                        ExecCpuThreads const & other) :
+                            AccCpuThreads<TDim>(static_cast<workdiv::BasicWorkDiv<TDim> const &>(other)),
                             m_Stream(other.m_Stream),
                             m_vFuturesInBlock(),
                             m_mtxMapInsert()
@@ -107,9 +121,9 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Move constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST ExecThreads(
-                        ExecThreads && other) :
-                            AccThreads(static_cast<workdiv::BasicWorkDiv &&>(other)),
+                    ALPAKA_FCT_HOST ExecCpuThreads(
+                        ExecCpuThreads && other) :
+                            AccCpuThreads<TDim>(static_cast<workdiv::BasicWorkDiv<TDim> &&>(other)),
                             m_Stream(other.m_Stream),
                             m_vFuturesInBlock(),
                             m_mtxMapInsert()
@@ -119,14 +133,14 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Copy assignment.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto operator=(ExecThreads const &) -> ExecThreads & = delete;
+                    ALPAKA_FCT_HOST auto operator=(ExecCpuThreads const &) -> ExecCpuThreads & = delete;
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
     #if BOOST_COMP_INTEL
-                    ALPAKA_FCT_HOST virtual ~ExecThreads() = default;
+                    ALPAKA_FCT_HOST virtual ~ExecCpuThreads() = default;
     #else
-                    ALPAKA_FCT_HOST virtual ~ExecThreads() noexcept = default;
+                    ALPAKA_FCT_HOST virtual ~ExecCpuThreads() noexcept = default;
     #endif
 
                     //-----------------------------------------------------------------------------
@@ -142,12 +156,15 @@ namespace alpaka
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                        Vec3<> const v3uiGridBlockExtents(this->AccThreads::getWorkDiv<Grid, Blocks, dim::Dim3>());
-                        Vec3<> const v3uiBlockThreadExtents(this->AccThreads::getWorkDiv<Block, Threads, dim::Dim3>());
+                        auto const vuiGridBlockExtents(this->AccCpuThreads<TDim>::template getWorkDiv<Grid, Blocks>());
+                        auto const vuiBlockThreadExtents(this->AccCpuThreads<TDim>::template getWorkDiv<Block, Threads>());
 
-                        auto const uiBlockSharedExternMemSizeBytes(kernel::getBlockSharedExternMemSizeBytes<typename std::decay<TKernelFunctor>::type, AccThreads>(
-                            v3uiBlockThreadExtents,
-                            std::forward<TArgs>(args)...));
+                        auto const uiBlockSharedExternMemSizeBytes(
+                            kernel::getBlockSharedExternMemSizeBytes<
+                                typename std::decay<TKernelFunctor>::type,
+                                AccCpuThreads<TDim>>(
+                                    vuiBlockThreadExtents,
+                                    std::forward<TArgs>(args)...));
     #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                         std::cout << BOOST_CURRENT_FUNCTION
                             << " BlockSharedExternMemSizeBytes: " << uiBlockSharedExternMemSizeBytes << " B"
@@ -155,81 +172,111 @@ namespace alpaka
     #endif
                         if(uiBlockSharedExternMemSizeBytes > 0)
                         {
-                            this->AccThreads::m_vuiExternalSharedMem.reset(
+                            this->AccCpuThreads<TDim>::m_vuiExternalSharedMem.reset(
                                 new uint8_t[uiBlockSharedExternMemSizeBytes]);
                         }
 
-                        auto const uiNumThreadsInBlock(this->AccThreads::getWorkDiv<Block, Threads, dim::Dim1>());
-                        // When using the thread pool the threads are yielding because this is faster.
-                        // Using condition variables and going to sleep is very costly for real threads.
-                        // Especially when the time to wait is really short (syncBlockThreads) yielding is much faster.
-                        using ThreadPool = alpaka::detail::ConcurrentExecPool<
-                            std::thread,                // The concurrent execution type.
-                            std::promise,               // The promise type.
-                            ThreadPoolYield>;           // The type yielding the current concurrent execution.
-                        ThreadPool pool(uiNumThreadsInBlock[0u], uiNumThreadsInBlock[0u]);
+                        auto const uiNumThreadsInBlock(vuiBlockThreadExtents.prod());
+                        ThreadPool threadPool(uiNumThreadsInBlock, uiNumThreadsInBlock);
+
+                        // Bind the kernel and its arguments to the grid block function.
+                        auto boundGridBlockFct(std::bind(
+                            &ExecCpuThreads<TDim>::gridBlockFct<TKernelFunctor&, TArgs&...>,
+                            this,
+                            std::placeholders::_1,
+                            std::ref(vuiBlockThreadExtents),
+                            std::ref(threadPool),
+                            std::forward<TKernelFunctor>(kernelFunctor),
+                            std::forward<TArgs>(args)...));
 
                         // Execute the blocks serially.
-                        for(this->AccThreads::m_v3uiGridBlockIdx[0u] = 0u; this->AccThreads::m_v3uiGridBlockIdx[0u]<v3uiGridBlockExtents[0u]; ++this->AccThreads::m_v3uiGridBlockIdx[0u])
-                        {
-                            for(this->AccThreads::m_v3uiGridBlockIdx[1u] = 0u; this->AccThreads::m_v3uiGridBlockIdx[1u]<v3uiGridBlockExtents[1u]; ++this->AccThreads::m_v3uiGridBlockIdx[1u])
-                            {
-                                for(this->AccThreads::m_v3uiGridBlockIdx[2u] = 0u; this->AccThreads::m_v3uiGridBlockIdx[2u]<v3uiGridBlockExtents[2u]; ++this->AccThreads::m_v3uiGridBlockIdx[2u])
-                                {
-                                    // Execute the threads in parallel.
-                                    Vec3<> v3uiBlockThreadIdx(Vec3<>::zeros());
-                                    for(v3uiBlockThreadIdx[0u] = 0u; v3uiBlockThreadIdx[0u]<v3uiBlockThreadExtents[0u]; ++v3uiBlockThreadIdx[0u])
-                                    {
-                                        for(v3uiBlockThreadIdx[1u] = 0u; v3uiBlockThreadIdx[1u]<v3uiBlockThreadExtents[1u]; ++v3uiBlockThreadIdx[1u])
-                                        {
-                                            for(v3uiBlockThreadIdx[2u] = 0u; v3uiBlockThreadIdx[2u]<v3uiBlockThreadExtents[2u]; ++v3uiBlockThreadIdx[2u])
-                                            {
-                                                // The v3uiBlockThreadIdx is required to be copied in from the environment because if the thread is immediately suspended the variable is already changed for the next iteration/thread.
-                                                auto threadKernelFct =
-                                                    [&, v3uiBlockThreadIdx]()
-                                                    {
-                                                        threadKernel(
-                                                            v3uiBlockThreadIdx,
-                                                            std::forward<TKernelFunctor>(kernelFunctor),
-                                                            std::forward<TArgs>(args)...);
-                                                    };
-                                                m_vFuturesInBlock.emplace_back(
-                                                    pool.enqueueTask(
-                                                        threadKernelFct));
-                                            }
-                                        }
-                                    }
+                        ndLoop(
+                            vuiGridBlockExtents,
+                            boundGridBlockFct);
 
-                                    // Wait for the completion of the kernels.
-                                    std::for_each(m_vFuturesInBlock.begin(), m_vFuturesInBlock.end(),
-                                        [](std::future<void> & t)
-                                        {
-                                            t.wait();
-                                        }
-                                    );
-                                    // Clean up.
-                                    m_vFuturesInBlock.clear();
-
-                                    this->AccThreads::m_mThreadsToIndices.clear();
-                                    this->AccThreads::m_mThreadsToBarrier.clear();
-
-                                    // After a block has been processed, the shared memory has to be deleted.
-                                    this->AccThreads::m_vvuiSharedMem.clear();
-                                }
-                            }
-                        }
                         // After all blocks have been processed, the external shared memory has to be deleted.
-                        this->AccThreads::m_vuiExternalSharedMem.reset();
+                        this->AccCpuThreads<TDim>::m_vuiExternalSharedMem.reset();
                     }
                 private:
+                    //-----------------------------------------------------------------------------
+                    //! The function executed for each grid block.
+                    //-----------------------------------------------------------------------------
+                    template<
+                        typename TKernelFunctor,
+                        typename... TArgs>
+                    ALPAKA_FCT_HOST auto gridBlockFct(
+                        Vec<TDim> const & vuiGridBlockIdx,
+                        Vec<TDim> const & vuiBlockThreadExtents,
+                        ThreadPool & threadPool,
+                        TKernelFunctor && kernelFunctor,
+                        TArgs && ... args) const
+                    -> void
+                    {
+                        this->AccCpuThreads<TDim>::m_vuiGridBlockIdx = vuiGridBlockIdx;
+                        
+                        // Bind the kernel and its arguments to the block thread function.
+                        auto boundBlockThreadFct(std::bind(
+                            &ExecCpuThreads<TDim>::blockThreadFct<TKernelFunctor&, TArgs&...>,
+                            this,
+                            std::placeholders::_1,
+                            std::ref(threadPool),
+                            std::forward<TKernelFunctor>(kernelFunctor),
+                            std::forward<TArgs>(args)...));
+                        // Execute the block threads in parallel.
+                        ndLoop(
+                            vuiBlockThreadExtents,
+                            boundBlockThreadFct);
+
+                        // Wait for the completion of the block thread kernels.
+                        std::for_each(m_vFuturesInBlock.begin(), m_vFuturesInBlock.end(),
+                            [](std::future<void> & t)
+                            {
+                                t.wait();
+                            }
+                        );
+                        // Clean up.
+                        m_vFuturesInBlock.clear();
+
+                        this->AccCpuThreads<TDim>::m_mThreadsToIndices.clear();
+                        this->AccCpuThreads<TDim>::m_mThreadsToBarrier.clear();
+
+                        // After a block has been processed, the shared memory has to be deleted.
+                        this->AccCpuThreads<TDim>::m_vvuiSharedMem.clear();
+                    }
+                    //-----------------------------------------------------------------------------
+                    //! The function executed for each block thread.
+                    //-----------------------------------------------------------------------------
+                    template<
+                        typename TKernelFunctor,
+                        typename... TArgs>
+                    ALPAKA_FCT_HOST auto blockThreadFct(
+                        Vec<TDim> const & vuiBlockThreadIdx,
+                        ThreadPool & threadPool,
+                        TKernelFunctor && kernelFunctor,
+                        TArgs && ... args) const
+                    -> void
+                    {
+                        // The vuiBlockThreadIdx is required to be copied in from the environment because if the thread is immediately suspended the variable is already changed for the next iteration/thread.
+                        auto threadKernelFct =
+                            [&, vuiBlockThreadIdx]()
+                            {
+                                blockThreadThreadFct(
+                                    vuiBlockThreadIdx,
+                                    std::forward<TKernelFunctor>(kernelFunctor),
+                                    std::forward<TArgs>(args)...);
+                            };
+                        m_vFuturesInBlock.emplace_back(
+                            threadPool.enqueueTask(
+                                threadKernelFct));
+                    }
                     //-----------------------------------------------------------------------------
                     //! The thread entry point.
                     //-----------------------------------------------------------------------------
                     template<
                         typename TKernelFunctor,
                         typename... TArgs>
-                    ALPAKA_FCT_HOST auto threadKernel(
-                        Vec3<> const & v3uiBlockThreadIdx,
+                    ALPAKA_FCT_HOST auto blockThreadThreadFct(
+                        Vec<TDim> const & vuiBlockThreadIdx,
                         TKernelFunctor && kernelFunctor,
                         TArgs && ... args) const
                     -> void
@@ -238,9 +285,9 @@ namespace alpaka
                         auto const idThread(std::this_thread::get_id());
 
                         // Set the master thread id.
-                        if(v3uiBlockThreadIdx[0] == 0 && v3uiBlockThreadIdx[1] == 0 && v3uiBlockThreadIdx[2] == 0)
+                        if(vuiBlockThreadIdx.sum() == 0)
                         {
-                            this->AccThreads::m_idMasterThread = idThread;
+                            this->AccCpuThreads<TDim>::m_idMasterThread = idThread;
                         }
 
                         // We can not use the default syncBlockThreads here because it searches inside m_mThreadsToBarrier for the thread id.
@@ -252,20 +299,20 @@ namespace alpaka
                             std::lock_guard<std::mutex> lock(m_mtxMapInsert);
 
                             // Save the thread id, and index.
-                            this->AccThreads::m_mThreadsToIndices.emplace(idThread, v3uiBlockThreadIdx);
-                            itThreadToBarrier = this->AccThreads::m_mThreadsToBarrier.emplace(idThread, 0).first;
+                            this->AccCpuThreads<TDim>::m_mThreadsToIndices.emplace(idThread, vuiBlockThreadIdx);
+                            itThreadToBarrier = this->AccCpuThreads<TDim>::m_mThreadsToBarrier.emplace(idThread, 0).first;
                         }
 
                         // Sync all fibers so that the maps with fiber id's are complete and not changed after here.
-                        this->AccThreads::syncBlockThreads(itThreadToBarrier);
+                        this->AccCpuThreads<TDim>::syncBlockThreads(itThreadToBarrier);
 
                         // Execute the kernel itself.
                         std::forward<TKernelFunctor>(kernelFunctor)(
-                            (*static_cast<AccThreads const *>(this)),
+                            (*static_cast<AccCpuThreads<TDim> const *>(this)),
                             std::forward<TArgs>(args)...);
 
                         // We have to sync all threads here because if a thread would finish before all threads have been started, the new thread could get a recycled (then duplicate) thread id!
-                        this->AccThreads::syncBlockThreads(itThreadToBarrier);
+                        this->AccCpuThreads<TDim>::syncBlockThreads(itThreadToBarrier);
                     }
 
                 public:
@@ -285,24 +332,64 @@ namespace alpaka
         namespace acc
         {
             //#############################################################################
-            //! The threads accelerator executor accelerator type trait specialization.
+            //! The CPU threads executor accelerator type trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct AccType<
-                accs::threads::detail::ExecThreads>
+                accs::threads::detail::ExecCpuThreads<TDim>>
             {
-                using type = accs::threads::detail::AccThreads;
+                using type = accs::threads::detail::AccCpuThreads<TDim>;
+            };
+        }
+
+        namespace dev
+        {
+            //#############################################################################
+            //! The CPU threads executor device type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim>
+            struct DevType<
+                accs::threads::detail::ExecCpuThreads<TDim>>
+            {
+                using type = devs::cpu::detail::DevCpu;
+            };
+            //#############################################################################
+            //! The CPU threads executor device manager type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim>
+            struct DevManType<
+                accs::threads::detail::ExecCpuThreads<TDim>>
+            {
+                using type = devs::cpu::detail::DevManCpu;
+            };
+        }
+
+        namespace dim
+        {
+            //#############################################################################
+            //! The CPU threads executor dimension getter trait specialization.
+            //#############################################################################
+            template<
+                typename TDim>
+            struct DimType<
+                accs::threads::detail::ExecCpuThreads<TDim>>
+            {
+                using type = TDim;
             };
         }
 
         namespace event
         {
             //#############################################################################
-            //! The threads accelerator executor event type trait specialization.
+            //! The CPU threads executor event type trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct EventType<
-                accs::threads::detail::ExecThreads>
+                accs::threads::detail::ExecCpuThreads<TDim>>
             {
                 using type = devs::cpu::detail::EventCpu;
             };
@@ -311,58 +398,39 @@ namespace alpaka
         namespace exec
         {
             //#############################################################################
-            //! The threads accelerator executor executor type trait specialization.
+            //! The CPU threads executor executor type trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct ExecType<
-                accs::threads::detail::ExecThreads>
+                accs::threads::detail::ExecCpuThreads<TDim>>
             {
-                using type = accs::threads::detail::ExecThreads;
-            };
-        }
-
-        namespace dev
-        {
-            //#############################################################################
-            //! The threads accelerator executor device type trait specialization.
-            //#############################################################################
-            template<>
-            struct DevType<
-                accs::threads::detail::ExecThreads>
-            {
-                using type = devs::cpu::detail::DevCpu;
-            };
-            //#############################################################################
-            //! The threads accelerator device type trait specialization.
-            //#############################################################################
-            template<>
-            struct DevManType<
-                accs::threads::detail::ExecThreads>
-            {
-                using type = devs::cpu::detail::DevManCpu;
+                using type = accs::threads::detail::ExecCpuThreads<TDim>;
             };
         }
 
         namespace stream
         {
             //#############################################################################
-            //! The threads accelerator executor stream type trait specialization.
+            //! The CPU threads executor stream type trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct StreamType<
-                accs::threads::detail::ExecThreads>
+                accs::threads::detail::ExecCpuThreads<TDim>>
             {
                 using type = devs::cpu::detail::StreamCpu;
             };
             //#############################################################################
-            //! The threads accelerator executor stream get trait specialization.
+            //! The CPU threads executor stream get trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct GetStream<
-                accs::threads::detail::ExecThreads>
+                accs::threads::detail::ExecCpuThreads<TDim>>
             {
                 ALPAKA_FCT_HOST static auto getStream(
-                    accs::threads::detail::ExecThreads const & exec)
+                    accs::threads::detail::ExecCpuThreads<TDim> const & exec)
                 -> devs::cpu::detail::StreamCpu
                 {
                     return exec.m_Stream;

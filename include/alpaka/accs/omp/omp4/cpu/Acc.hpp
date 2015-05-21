@@ -53,30 +53,34 @@ namespace alpaka
             namespace omp4
             {
                 //-----------------------------------------------------------------------------
-                //! The OpenMP4 CPU accelerator.
+                //! The CPU OpenMP4 accelerator.
                 //-----------------------------------------------------------------------------
                 namespace cpu
                 {
                     //-----------------------------------------------------------------------------
-                    //! The OpenMP4 CPU accelerator implementation details.
+                    //! The CPU OpenMP4 accelerator implementation details.
                     //-----------------------------------------------------------------------------
                     namespace detail
                     {
-                        class ExecOmp4Cpu;
+                        template<
+                            typename TDim>
+                        class ExecCpuOmp4;
 
                         //#############################################################################
-                        //! The OpenMP4 CPU accelerator.
+                        //! The CPU OpenMP4 accelerator.
                         //!
                         //! This accelerator allows parallel kernel execution on a CPU device.
-                        //! It uses OpenMP4 CPU to implement the parallelism.
+                        //! It uses CPU OpenMP4 to implement the parallelism.
                         //#############################################################################
-                        class AccOmp4Cpu :
-                            protected alpaka::workdiv::BasicWorkDiv,
-                            protected omp::detail::IdxOmp,
+                        template<
+                            typename TDim>
+                        class AccCpuOmp4 :
+                            protected alpaka::workdiv::BasicWorkDiv<TDim>,
+                            protected omp::detail::IdxOmp<TDim>,
                             protected omp::detail::AtomicOmp
                         {
                         public:
-                            friend class ::alpaka::accs::omp::omp4::cpu::detail::ExecOmp4Cpu;
+                            friend class ::alpaka::accs::omp::omp4::cpu::detail::ExecCpuOmp4<TDim>;
 
                         private:
                             //-----------------------------------------------------------------------------
@@ -84,47 +88,46 @@ namespace alpaka
                             //-----------------------------------------------------------------------------
                             template<
                                 typename TWorkDiv>
-                            ALPAKA_FCT_ACC_NO_CUDA AccOmp4Cpu(
+                            ALPAKA_FCT_ACC_NO_CUDA AccCpuOmp4(
                                 TWorkDiv const & workDiv) :
-                                    alpaka::workdiv::BasicWorkDiv(workDiv),
-                                    IdxOmp(m_v3uiGridBlockIdx),
+                                    alpaka::workdiv::BasicWorkDiv<TDim>(workDiv),
+                                    omp::detail::IdxOmp<TDim>(m_vuiGridBlockIdx),
                                     AtomicOmp(),
-                                    m_v3uiGridBlockIdx(Vec3<>::zeros())
+                                    m_vuiGridBlockIdx(Vec<TDim>::zeros())
                             {}
 
                         public:
                             //-----------------------------------------------------------------------------
                             //! Copy constructor.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_ACC_NO_CUDA AccOmp4Cpu(AccOmp4Cpu const &) = delete;
+                            ALPAKA_FCT_ACC_NO_CUDA AccCpuOmp4(AccCpuOmp4 const &) = delete;
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                             //-----------------------------------------------------------------------------
                             //! Move constructor.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_ACC_NO_CUDA AccOmp4Cpu(AccOmp4Cpu &&) = delete;
+                            ALPAKA_FCT_ACC_NO_CUDA AccCpuOmp4(AccCpuOmp4 &&) = delete;
 #endif
                             //-----------------------------------------------------------------------------
                             //! Copy assignment.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_ACC_NO_CUDA auto operator=(AccOmp4Cpu const &) -> AccOmp4Cpu & = delete;
+                            ALPAKA_FCT_ACC_NO_CUDA auto operator=(AccCpuOmp4 const &) -> AccCpuOmp4 & = delete;
                             //-----------------------------------------------------------------------------
                             //! Destructor.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_ACC_NO_CUDA virtual ~AccOmp4Cpu() noexcept = default;
+                            ALPAKA_FCT_ACC_NO_CUDA virtual ~AccCpuOmp4() noexcept = default;
 
                             //-----------------------------------------------------------------------------
                             //! \return The requested indices.
                             //-----------------------------------------------------------------------------
                             template<
                                 typename TOrigin,
-                                typename TUnit,
-                                typename TDim = dim::Dim3>
+                                typename TUnit>
                             ALPAKA_FCT_ACC_NO_CUDA auto getIdx() const
                             -> Vec<TDim>
                             {
-                                return idx::getIdx<TOrigin, TUnit, TDim>(
-                                    *static_cast<IdxOmp const *>(this),
-                                    *static_cast<workdiv::BasicWorkDiv const *>(this));
+                                return idx::getIdx<TOrigin, TUnit>(
+                                    *static_cast<omp::detail::IdxOmp<TDim> const *>(this),
+                                    *static_cast<workdiv::BasicWorkDiv<TDim> const *>(this));
                             }
 
                             //-----------------------------------------------------------------------------
@@ -132,13 +135,12 @@ namespace alpaka
                             //-----------------------------------------------------------------------------
                             template<
                                 typename TOrigin,
-                                typename TUnit,
-                                typename TDim = dim::Dim3>
+                                typename TUnit>
                             ALPAKA_FCT_ACC_NO_CUDA auto getWorkDiv() const
                             -> Vec<TDim>
                             {
-                                return workdiv::getWorkDiv<TOrigin, TUnit, TDim>(
-                                    *static_cast<workdiv::BasicWorkDiv const *>(this));
+                                return workdiv::getWorkDiv<TOrigin, TUnit>(
+                                    *static_cast<workdiv::BasicWorkDiv<TDim> const *>(this));
                             }
 
                             //-----------------------------------------------------------------------------
@@ -208,7 +210,7 @@ namespace alpaka
 
                         private:
                             // getIdx
-                            Vec3<> mutable m_v3uiGridBlockIdx;                          //!< The index of the currently executed block.
+                            Vec<TDim> mutable m_vuiGridBlockIdx;                        //!< The index of the currently executed block.
 
                             // allocBlockSharedMem
                             std::vector<
@@ -222,76 +224,121 @@ namespace alpaka
             }
         }
     }
-
-    using AccOmp4Cpu = accs::omp::omp4::cpu::detail::AccOmp4Cpu;
+    
+    template<
+        typename TDim>
+    using AccCpuOmp4 = accs::omp::omp4::cpu::detail::AccCpuOmp4<TDim>;
 
     namespace traits
     {
         namespace acc
         {
             //#############################################################################
-            //! The OpenMP4 CPU accelerator accelerator type trait specialization.
+            //! The CPU OpenMP4 accelerator accelerator type trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct AccType<
-                accs::omp::omp4::cpu::detail::AccOmp4Cpu>
+                accs::omp::omp4::cpu::detail::AccCpuOmp4<TDim>>
             {
-                using type = accs::omp::omp4::cpu::detail::AccOmp4Cpu;
+                using type = accs::omp::omp4::cpu::detail::AccCpuOmp4<TDim>;
             };
             //#############################################################################
-            //! The OpenMP4 CPU accelerator device properties get trait specialization.
+            //! The CPU OpenMP4 accelerator device properties get trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct GetAccDevProps<
-                accs::omp::omp4::cpu::detail::AccOmp4Cpu>
+                accs::omp::omp4::cpu::detail::AccCpuOmp4<TDim>>
             {
                 ALPAKA_FCT_HOST static auto getAccDevProps(
                     devs::cpu::detail::DevCpu const & dev)
-                -> alpaka::acc::AccDevProps
+                -> alpaka::acc::AccDevProps<TDim>
                 {
                     boost::ignore_unused(dev);
 
 #if ALPAKA_INTEGRATION_TEST
                     UInt const uiBlockThreadsCountMax(4u);
 #else
-                    printf("%s omp_get_thread_limit: %d\n", BOOST_CURRENT_FUNCTION, ::omp_get_thread_limit());
+                    int const iThreadLimit(::omp_get_thread_limit());
+                    std::cout << BOOST_CURRENT_FUNCTION << " omp_get_thread_limit: " << iThreadLimit << std::endl;
                     // m_uiBlockThreadsCountMax
-                    UInt uiBlockThreadsCountMax(static_cast<UInt>(::omp_get_thread_limit()));
+                    UInt uiBlockThreadsCountMax(static_cast<UInt>(iThreadLimit));
 #endif
-                    return alpaka::acc::AccDevProps(
+                    return {
                         // m_uiMultiProcessorCount
                         1u,
                         // m_uiBlockThreadsCountMax
                         uiBlockThreadsCountMax,
-                        // m_v3uiBlockThreadExtentsMax
-                        Vec3<>::all(uiBlockThreadsCountMax),
-                        // m_v3uiGridBlockExtentsMax
-                        Vec3<>::all(std::numeric_limits<Vec3<>::Val>::max()));
+                        // m_vuiBlockThreadExtentsMax
+                        Vec<TDim>::all(uiBlockThreadsCountMax),
+                        // m_vuiGridBlockExtentsMax
+                        Vec<TDim>::all(std::numeric_limits<typename Vec<TDim>::Val>::max())};
                 }
             };
             //#############################################################################
-            //! The OpenMP4 CPU accelerator name trait specialization.
+            //! The CPU OpenMP4 accelerator name trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct GetAccName<
-                accs::omp::omp4::cpu::detail::AccOmp4Cpu>
+                accs::omp::omp4::cpu::detail::AccCpuOmp4<TDim>>
             {
                 ALPAKA_FCT_HOST_ACC static auto getAccName()
                 -> std::string
                 {
-                    return "AccOmp4Cpu";
+                    return "AccCpuOmp4<" + std::to_string(TDim::value) + ">";
                 }
+            };
+        }
+
+        namespace dev
+        {
+            //#############################################################################
+            //! The CPU OpenMP4 accelerator device type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim>
+            struct DevType<
+                accs::omp::omp4::cpu::detail::AccCpuOmp4<TDim>>
+            {
+                using type = devs::cpu::detail::DevCpu;
+            };
+            //#############################################################################
+            //! The CPU OpenMP4 accelerator device type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim>
+            struct DevManType<
+                accs::omp::omp4::cpu::detail::AccCpuOmp4<TDim>>
+            {
+                using type = devs::cpu::detail::DevManCpu;
+            };
+        }
+
+        namespace dim
+        {
+            //#############################################################################
+            //! The CPU OpenMP4 accelerator dimension getter trait specialization.
+            //#############################################################################
+            template<
+                typename TDim>
+            struct DimType<
+                accs::omp::omp4::cpu::detail::AccCpuOmp4<TDim>>
+            {
+                using type = TDim;
             };
         }
 
         namespace event
         {
             //#############################################################################
-            //! The OpenMP4 CPU accelerator event type trait specialization.
+            //! The CPU OpenMP4 accelerator event type trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct EventType<
-                accs::omp::omp4::cpu::detail::AccOmp4Cpu>
+                accs::omp::omp4::cpu::detail::AccCpuOmp4<TDim>>
             {
                 using type = devs::cpu::detail::EventCpu;
             };
@@ -300,46 +347,26 @@ namespace alpaka
         namespace exec
         {
             //#############################################################################
-            //! The OpenMP4 CPU accelerator executor type trait specialization.
+            //! The CPU OpenMP4 accelerator executor type trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct ExecType<
-                accs::omp::omp4::cpu::detail::AccOmp4Cpu>
+                accs::omp::omp4::cpu::detail::AccCpuOmp4<TDim>>
             {
-                using type = accs::omp::omp4::cpu::detail::ExecOmp4Cpu;
-            };
-        }
-
-        namespace dev
-        {
-            //#############################################################################
-            //! The OpenMP4 CPU accelerator device type trait specialization.
-            //#############################################################################
-            template<>
-            struct DevType<
-                accs::omp::omp4::cpu::detail::AccOmp4Cpu>
-            {
-                using type = devs::cpu::detail::DevCpu;
-            };
-            //#############################################################################
-            //! The OpenMP4 CPU accelerator device type trait specialization.
-            //#############################################################################
-            template<>
-            struct DevManType<
-                accs::omp::omp4::cpu::detail::AccOmp4Cpu>
-            {
-                using type = devs::cpu::detail::DevManCpu;
+                using type = accs::omp::omp4::cpu::detail::ExecCpuOmp4<TDim>;
             };
         }
 
         namespace stream
         {
             //#############################################################################
-            //! The OpenMP4 CPU accelerator stream type trait specialization.
+            //! The CPU OpenMP4 accelerator stream type trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct StreamType<
-                accs::omp::omp4::cpu::detail::AccOmp4Cpu>
+                accs::omp::omp4::cpu::detail::AccCpuOmp4<TDim>>
             {
                 using type = devs::cpu::detail::StreamCpu;
             };

@@ -21,12 +21,12 @@
 
 #pragma once
 
-#include <alpaka/accs/cuda/Acc.hpp>                 // AccCuda
+#include <alpaka/accs/cuda/Acc.hpp>                 // AccGpuCuda
 #include <alpaka/accs/cuda/Atomic.hpp>              // AtomicCuda
 #include <alpaka/accs/cuda/Common.hpp>              // ALPAKA_CUDA_RT_CHECK
 #include <alpaka/accs/cuda/Dev.hpp>                 // Devices
 #include <alpaka/accs/cuda/Event.hpp>               // EventCuda
-#include <alpaka/accs/cuda/Exec.hpp>                // ExecCuda
+#include <alpaka/accs/cuda/Exec.hpp>                // ExecGpuCuda
 #include <alpaka/accs/cuda/Idx.hpp>                 // IdxCuda
 #include <alpaka/accs/cuda/Mem.hpp>                 // Copy
 #include <alpaka/accs/cuda/Rand.hpp>                // rand

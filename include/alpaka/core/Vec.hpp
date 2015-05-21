@@ -74,17 +74,27 @@ namespace alpaka
         //! This constructor is only available if the number of parameters matches the vector size.
         //-----------------------------------------------------------------------------
         template<
+            typename TArg0,
             typename... TArgs,
-            typename = typename std::enable_if<sizeof...(TArgs) == TDim::value>::type>
+            typename = typename std::enable_if<
+                // There have to be dim arguments.
+                (sizeof...(TArgs)+1 == TDim::value)
+                && (
+                    // And there is either more than one argument ...
+                    (sizeof...(TArgs) > 0u)
+                    // ... or the first argument is not applicable for the copy constructor.
+                    || (!std::is_same<typename std::decay<TArg0>::type, Vec<TDim, TVal>>::value))
+                >::type>
         ALPAKA_FCT_HOST_ACC Vec(
-            TArgs && ... vals)
+            TArg0 && arg0,
+            TArgs && ... args)
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 22609))   // MSVC does not compile the basic array initialization: "error C2536: 'alpaka::Vec<0x03>::alpaka::Vec<0x03>::m_auiData': cannot specify explicit initializer for arrays"
             :
-                m_auiData{std::forward<TArgs>(vals)...}
+                m_auiData{std::forward<TArg0>(arg0), std::forward<TArgs>(args)...}
 #endif
         {
 #if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 22609))
-            TVal auiData2[TDim::value] = {std::forward<TArgs>(vals)...};
+            TVal auiData2[TDim::value] = {std::forward<TArg0>(arg0), std::forward<TArgs>(args)...};
             for(UInt i(0); i<TDim::value; ++i)
             {
                 m_auiData[i] = auiData2[i];
@@ -201,8 +211,7 @@ namespace alpaka
         template<
             typename TIdx,
             typename = typename std::enable_if<
-                std::is_integral<TIdx>::value
-                /*&& !std::is_unsigned<TIdx>::value*/>::type/* * = nullptr*/>
+                std::is_integral<TIdx>::value>::type>
         ALPAKA_FCT_HOST_ACC auto operator[](
             TIdx const iIdx)
         -> TVal &
@@ -212,22 +221,6 @@ namespace alpaka
             assert(uiIdx<TDim::value);
             return m_auiData[uiIdx];
         }
-        //-----------------------------------------------------------------------------
-        //! Value reference accessor at the given unsigned integer index.
-        //! \return A reference to the value at the given index.
-        //-----------------------------------------------------------------------------
-        /*template<
-            typename TIdx,
-            typename std::enable_if<
-                std::is_integral<TIdx>::value
-                && std::is_unsigned<TIdx>::value>::type * = nullptr>
-        ALPAKA_FCT_HOST_ACC auto operator[](
-            TIdx const uiIdx)
-        -> TVal &
-        {
-            assert(uiIdx<TDim::value);
-            return m_auiData[uiIdx];
-        }*/
 
         //-----------------------------------------------------------------------------
         //! Value accessor at the given non-unsigned integer index.
@@ -236,8 +229,7 @@ namespace alpaka
         template<
             typename TIdx,
             typename = typename std::enable_if<
-                std::is_integral<TIdx>::value
-                /*&& !std::is_unsigned<TIdx>::value*/>::type/* * = nullptr*/>
+                std::is_integral<TIdx>::value>::type>
         ALPAKA_FCT_HOST_ACC auto operator[](
             TIdx const iIdx) const
         -> TVal
@@ -247,22 +239,6 @@ namespace alpaka
             assert(uiIdx<TDim::value);
             return m_auiData[uiIdx];
         }
-        //-----------------------------------------------------------------------------
-        //! Value accessor at the given unsigned integer index.
-        //! \return The value at the given index.
-        //-----------------------------------------------------------------------------
-        /*template<
-            typename TIdx,
-            typename std::enable_if<
-                std::is_integral<TIdx>::value
-                && std::is_unsigned<TIdx>::value>::type * = nullptr>
-        ALPAKA_FCT_HOST_ACC auto operator[](
-            TIdx const uiIdx) const
-        -> TVal
-        {
-            assert(uiIdx<TDim::value);
-            return m_auiData[uiIdx];
-        }*/
 
         //-----------------------------------------------------------------------------
         // Equality comparison operator.
@@ -454,7 +430,7 @@ namespace alpaka
         Vec<TDim, TVal> const & v)
     -> std::ostream &
     {
-        os << "(";
+        os << "[";
         for(UInt i(0); i<TDim::value; ++i)
         {
             os << v[i];
@@ -463,14 +439,14 @@ namespace alpaka
                 os << ", ";
             }
         }
-        os << ")";
+        os << "]";
 
         return os;
     }
     namespace detail
     {
         //#############################################################################
-        //!
+        //! Specialization for selecting a sub-vector.
         //#############################################################################
         template<
             typename TDim,
@@ -519,6 +495,8 @@ namespace alpaka
         };
     }
     //-----------------------------------------------------------------------------
+    //! Builds a new vector by selecting the elements of the source vector in the given order.
+    //! Repeating and swizzling elements is allowed.
     //! \return The sub-vector consisting of the elements specified by the indices.
     //-----------------------------------------------------------------------------
     template<
@@ -560,7 +538,7 @@ namespace alpaka
         return subVecFromIndices(vec, IdxSubSequence());
     }
     //-----------------------------------------------------------------------------
-    //! \return The sub-vector consisting of the first N elements of the source vector.
+    //! \return The sub-vector consisting of the last N elements of the source vector.
     //-----------------------------------------------------------------------------
     template<
         typename TSubDim,
@@ -593,7 +571,7 @@ namespace alpaka
                 typename TExtents,
                 typename TInt,
                 TInt... TIndices>
-            ALPAKA_FCT_HOST static auto getExtentsInternal(
+            ALPAKA_FCT_HOST static auto getExtentsVecInternal(
                 TExtents const & extents,
                 alpaka::detail::integer_sequence<TInt, TIndices...> const &)
             -> Vec<dim::Dim<sizeof...(TIndices)>, TVal>
@@ -602,15 +580,15 @@ namespace alpaka
             }
         }
         //-----------------------------------------------------------------------------
-        //! \return The extents.
+        //! \return The extents but only the last N elements.
         //-----------------------------------------------------------------------------
         template<
             typename TDim,
             typename TVal,
             typename TExtents>
-        ALPAKA_FCT_HOST_ACC auto getExtentsNd(
+        ALPAKA_FCT_HOST_ACC auto getExtentsVecNd(
             TExtents const & extents = TExtents())
-        -> Vec<TDim>
+        -> Vec<dim::Dim<TDim::value>>
         {
             using DimSrc = dim::DimT<TExtents>;
 #if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
@@ -618,7 +596,7 @@ namespace alpaka
 #else
             using IdxSequence = alpaka::detail::make_integer_sequence_start<std::intmax_t, (((std::intmax_t)DimSrc::value)-((std::intmax_t)TDim::value)), TDim::value>;
 #endif
-            return detail::getExtentsInternal<TVal>(
+            return detail::getExtentsVecInternal<TVal>(
                 extents,
                 IdxSequence());
         }
@@ -628,11 +606,11 @@ namespace alpaka
         template<
             typename TVal,
             typename TExtents>
-        ALPAKA_FCT_HOST_ACC auto getExtents(
+        ALPAKA_FCT_HOST_ACC auto getExtentsVec(
             TExtents const & extents = TExtents())
-        -> Vec<dim::DimT<TExtents>, TVal>
+        -> Vec<dim::Dim<dim::DimT<TExtents>::value>, TVal>
         {
-            return getExtentsNd<dim::DimT<TExtents>, TVal>(extents);
+            return getExtentsVecNd<dim::DimT<TExtents>, TVal>(extents);
         }
     }
 
@@ -644,29 +622,28 @@ namespace alpaka
             //!
             //-----------------------------------------------------------------------------
             template<
-                typename TDim,
                 typename TVal,
                 typename TOffsets,
                 typename TInt,
                 TInt... TIndices>
-            ALPAKA_FCT_HOST static auto getOffsetsInternal(
-                TOffsets const & extents,
+            ALPAKA_FCT_HOST static auto getOffsetsVecInternal(
+                TOffsets const & offsets,
                 alpaka::detail::integer_sequence<TInt, TIndices...> const &)
             -> Vec<dim::Dim<sizeof...(TIndices)>, TVal>
             {
-                return {getOffset<(UInt)TIndices, TVal>(extents)...};
+                return {getOffset<(UInt)TIndices, TVal>(offsets)...};
             }
         }
         //-----------------------------------------------------------------------------
-        //! \return The offsets.
+        //! \return The offsets vector but only the last N elements.
         //-----------------------------------------------------------------------------
         template<
             typename TDim,
             typename TVal,
             typename TOffsets>
-        ALPAKA_FCT_HOST_ACC auto getOffsetsNd(
+        ALPAKA_FCT_HOST_ACC auto getOffsetsVecNd(
             TOffsets const & offsets = TOffsets())
-        -> Vec<TDim, TVal>
+        -> Vec<dim::Dim<TDim::value>, TVal>
         {
             using DimSrc = dim::DimT<TOffsets>;
 #if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
@@ -674,7 +651,7 @@ namespace alpaka
 #else
             using IdxSequence = alpaka::detail::make_integer_sequence_start<std::intmax_t, (((std::intmax_t)DimSrc::value)-((std::intmax_t)TDim::value)), TDim::value>;
 #endif
-            return detail::getOffsetsInternal<TVal>(
+            return detail::getOffsetsVecInternal<TVal>(
                 offsets,
                 IdxSequence());
         }
@@ -684,11 +661,11 @@ namespace alpaka
         template<
             typename TVal,
             typename TOffsets>
-        ALPAKA_FCT_HOST_ACC auto getOffsets(
+        ALPAKA_FCT_HOST_ACC auto getOffsetsVec(
             TOffsets const & offsets = TOffsets())
-        -> Vec<dim::DimT<TOffsets>, TVal>
+        -> Vec<dim::Dim<dim::DimT<TOffsets>::value>, TVal>
         {
-            return getOffsetsNd<dim::DimT<TOffsets>, TVal>(offsets);
+            return getOffsetsVecNd<dim::DimT<TOffsets>, TVal>(offsets);
         }
     }
 
@@ -712,7 +689,7 @@ namespace alpaka
         namespace extent
         {
             //#############################################################################
-            //! The Vec width get trait specialization.
+            //! The Vec extent get trait specialization.
             //#############################################################################
             template<
                 typename TIdx,
@@ -731,7 +708,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The Vec width set trait specialization.
+            //! The Vec extent set trait specialization.
             //#############################################################################
             template<
                 typename TIdx,
@@ -789,7 +766,7 @@ namespace alpaka
             {
                 template<
                     typename TVal2>
-                ALPAKA_FCT_HOST_ACC static auto setOffsetX(
+                ALPAKA_FCT_HOST_ACC static auto setOffset(
                     alpaka::Vec<TDim, TVal> & offsets,
                     TVal2 const & offset)
                 -> void

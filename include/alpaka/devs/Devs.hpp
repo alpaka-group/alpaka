@@ -22,7 +22,7 @@
 #pragma once
 
 #include <alpaka/devs/cpu/Cpu.hpp>
-#if defined(ALPAKA_CUDA_GPU_ENABLED) && defined(__CUDACC__)
+#if defined(ALPAKA_GPU_CUDA_ENABLED) && defined(__CUDACC__)
     #include <alpaka/devs/gpu/Gpu.hpp>
 #endif
 

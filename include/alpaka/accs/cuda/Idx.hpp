@@ -21,9 +21,11 @@
 
 #pragma once
 
+#include <alpaka/accs/cuda/Common.hpp>  // threadIdx, blockIdx, getOffset(dim3)
+
 #include <alpaka/traits/Idx.hpp>        // idx::getIdx
 
-#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+#include <alpaka/core/Vec.hpp>          // Vec, getOffsetsVecNd
 
 namespace alpaka
 {
@@ -34,8 +36,10 @@ namespace alpaka
             namespace detail
             {
                 //#############################################################################
-                //! This CUDA accelerator index provider.
+                //! This CUDA accelerator ND index provider.
                 //#############################################################################
+                template<
+                    typename TDim>
                 class IdxCuda
                 {
                 public:
@@ -66,17 +70,17 @@ namespace alpaka
                     //! \return The index of the currently executed thread.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_ACC_CUDA_ONLY auto getIdxBlockThread() const
-                    -> Vec3<>
+                    -> Vec<TDim>
                     {
-                        return Vec3<>(threadIdx.z, threadIdx.y, threadIdx.x);
+                        return offset::getOffsetsVecNd<TDim, UInt>(threadIdx);
                     }
                     //-----------------------------------------------------------------------------
                     //! \return The block index of the currently executed thread.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_ACC_CUDA_ONLY auto getIdxGridBlock() const
-                    -> Vec3<>
+                    -> Vec<TDim>
                     {
-                        return Vec3<>(blockIdx.x, blockIdx.y, blockIdx.x);
+                        return offset::getOffsetsVecNd<TDim, UInt>(blockIdx);
                     }
                 };
             }
@@ -85,54 +89,66 @@ namespace alpaka
 
     namespace traits
     {
+        namespace dim
+        {
+            //#############################################################################
+            //! The GPU CUDA accelerator index dimension get trait specialization.
+            //#############################################################################
+            template<
+                typename TDim>
+            struct DimType<
+                accs::cuda::detail::IdxCuda<TDim>>
+            {
+                using type = TDim;
+            };
+        }
+
         namespace idx
         {
             //#############################################################################
-            //! The CUDA accelerator 3D block thread index get trait specialization.
+            //! The GPU CUDA accelerator block thread index get trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct GetIdx<
-                accs::cuda::detail::IdxCuda,
+                accs::cuda::detail::IdxCuda<TDim>,
                 origin::Block,
-                unit::Threads,
-                alpaka::dim::Dim3>
+                unit::Threads>
             {
                 //-----------------------------------------------------------------------------
-                //! \return The 3-dimensional index of the current thread in the block.
+                //! \return The index of the current thread in the block.
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto getIdx(
-                    accs::cuda::detail::IdxCuda const & index,
-                    TWorkDiv const & workDiv)
-                -> alpaka::Vec3<>
+                    accs::cuda::detail::IdxCuda<TDim> const & index,
+                    TWorkDiv const &)
+                -> alpaka::Vec<TDim>
                 {
-                    boost::ignore_unused(workDiv);
                     return index.getIdxBlockThread();
                 }
             };
 
             //#############################################################################
-            //! The CUDA accelerator 3D grid block index get trait specialization.
+            //! The GPU CUDA accelerator grid block index get trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct GetIdx<
-                accs::cuda::detail::IdxCuda,
+                accs::cuda::detail::IdxCuda<TDim>,
                 origin::Grid,
-                unit::Blocks,
-                alpaka::dim::Dim3>
+                unit::Blocks>
             {
                 //-----------------------------------------------------------------------------
-                //! \return The 3-dimensional index of the current block in the grid.
+                //! \return The index of the current block in the grid.
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto getIdx(
-                    accs::cuda::detail::IdxCuda const & index,
-                    TWorkDiv const & workDiv)
-                -> alpaka::Vec3<>
+                    accs::cuda::detail::IdxCuda<TDim> const & index,
+                    TWorkDiv const &)
+                -> alpaka::Vec<TDim>
                 {
-                    boost::ignore_unused(workDiv);
                     return index.getIdxGridBlock();
                 }
             };

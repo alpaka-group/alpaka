@@ -82,10 +82,10 @@ namespace alpaka
                         m_Buf(
                             mem::getPtrNative(buf),
                             dev::getDev(buf),
-                            extent::getExtentsNd<Dim, UInt>(buf),
+                            extent::getExtentsVecNd<Dim, UInt>(buf),
                             mem::getPitchBytes<Dim::value - 1u, UInt>(buf)),
-                        m_vOffsetsElements(offset::getOffsetsNd<Dim, UInt>(buf)),
-                        m_vExtentsElements(extent::getExtentsNd<Dim, UInt>(buf))
+                        m_vOffsetsElements(offset::getOffsetsVecNd<Dim, UInt>(buf)),
+                        m_vExtentsElements(extent::getExtentsVecNd<Dim, UInt>(buf))
                 {}
                 //-----------------------------------------------------------------------------
                 //! Constructor.
@@ -98,10 +98,10 @@ namespace alpaka
                         m_Buf(
                             mem::getPtrNative(buf),
                             dev::getDev(buf),
-                            extent::getExtentsNd<Dim, UInt>(buf),
+                            extent::getExtentsVecNd<Dim, UInt>(buf),
                             mem::getPitchBytes<Dim::value - 1u, UInt>(buf)),
-                        m_vOffsetsElements(offset::getOffsetsNd<Dim, UInt>(buf)),
-                        m_vExtentsElements(extent::getExtentsNd<Dim, UInt>(buf))
+                        m_vOffsetsElements(offset::getOffsetsVecNd<Dim, UInt>(buf)),
+                        m_vExtentsElements(extent::getExtentsVecNd<Dim, UInt>(buf))
                 {}
 
                 //-----------------------------------------------------------------------------
@@ -121,10 +121,10 @@ namespace alpaka
                         m_Buf(
                             mem::getPtrNative(buf),
                             dev::getDev(buf),
-                            extent::getExtentsNd<Dim, UInt>(buf),
+                            extent::getExtentsVecNd<Dim, UInt>(buf),
                             mem::getPitchBytes<Dim::value - 1u, UInt>(buf)),
-                        m_vOffsetsElements(offset::getOffsetsNd<Dim, UInt>(relativeOffsetsElements) + offset::getOffsetsNd<Dim, UInt>(buf)),
-                        m_vExtentsElements(extent::getExtentsNd<Dim, UInt>(extentsElements))
+                        m_vOffsetsElements(offset::getOffsetsVecNd<Dim, UInt>(relativeOffsetsElements) + offset::getOffsetsVecNd<Dim, UInt>(buf)),
+                        m_vExtentsElements(extent::getExtentsVecNd<Dim, UInt>(extentsElements))
                 {
                     static_assert(
                         std::is_same<Dim, dim::DimT<TExtents>>::value,
@@ -154,10 +154,10 @@ namespace alpaka
                         m_Buf(
                             mem::getPtrNative(buf),
                             dev::getDev(buf),
-                            extent::getExtentsNd<Dim, UInt>(buf),
+                            extent::getExtentsVecNd<Dim, UInt>(buf),
                             mem::getPitchBytes<Dim::value - 1u, UInt>(buf)),
-                        m_vOffsetsElements(offset::getOffsetsNd<Dim, UInt>(relativeOffsetsElements) + offset::getOffsetsNd<Dim, UInt>(buf)),
-                        m_vExtentsElements(extent::getExtentsNd<Dim, UInt>(extentsElements))
+                        m_vOffsetsElements(offset::getOffsetsVecNd<Dim, UInt>(relativeOffsetsElements) + offset::getOffsetsVecNd<Dim, UInt>(buf)),
+                        m_vExtentsElements(extent::getExtentsVecNd<Dim, UInt>(extentsElements))
                 {
                     static_assert(
                         std::is_same<Dim, dim::DimT<TExtents>>::value,

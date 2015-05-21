@@ -34,7 +34,7 @@ namespace alpaka
             namespace detail
             {
                 //#############################################################################
-                //! The fibers accelerator atomic ops.
+                //! The CPU fibers accelerator atomic ops.
                 //#############################################################################
                 class AtomicFibers
                 {
@@ -71,7 +71,7 @@ namespace alpaka
         namespace atomic
         {
             //#############################################################################
-            //! The fibers accelerator atomic operation functor.
+            //! The CPU fibers accelerator atomic operation functor.
             //#############################################################################
             template<
                 typename TOp,

@@ -44,7 +44,7 @@ namespace alpaka
                 class DevManCpu;
 
                 //#############################################################################
-                //! The fibers accelerator device handle.
+                //! The CPU device handle.
                 //#############################################################################
                 class DevCpu
                 {
@@ -88,7 +88,7 @@ namespace alpaka
                 };
 
                 //#############################################################################
-                //! The fibers accelerator device manager.
+                //! The CPU device manager.
                 //#############################################################################
                 class DevManCpu
                 {

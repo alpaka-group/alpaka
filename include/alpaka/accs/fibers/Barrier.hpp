@@ -50,7 +50,7 @@ namespace alpaka
                         m_uiNumFibersToWaitFor{uiNumFibersToWaitFor}
                     {}
                     //-----------------------------------------------------------------------------
-                    //! Deleted copy-constructor.
+                    //! Copy constructor.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_ACC_NO_CUDA FiberBarrier(FiberBarrier const &) = delete;
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))

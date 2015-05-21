@@ -41,10 +41,12 @@ namespace alpaka
         {
             namespace detail
             {
-                class AccCuda;
+                template<
+                    typename TDim>
+                class AccGpuCuda;
 
                 //#############################################################################
-                //! The CUDA accelerator event.
+                //! The GPU CUDA accelerator event.
                 //#############################################################################
                 class EventCuda
                 {
@@ -138,23 +140,10 @@ namespace alpaka
 
     namespace traits
     {
-        namespace acc
-        {
-            //#############################################################################
-            //! The CUDA accelerator event accelerator type trait specialization.
-            //#############################################################################
-            template<>
-            struct AccType<
-                accs::cuda::detail::EventCuda>
-            {
-                using type = accs::cuda::detail::AccCuda;
-            };
-        }
-
         namespace dev
         {
             //#############################################################################
-            //! The CUDA accelerator stream device get trait specialization.
+            //! The GPU CUDA accelerator stream device get trait specialization.
             //#############################################################################
             template<>
             struct GetDev<
@@ -172,7 +161,7 @@ namespace alpaka
         namespace event
         {
             //#############################################################################
-            //! The CUDA accelerator event event type trait specialization.
+            //! The GPU CUDA accelerator event event type trait specialization.
             //#############################################################################
             template<>
             struct EventType<
@@ -182,7 +171,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The CUDA accelerator event test trait specialization.
+            //! The GPU CUDA accelerator event test trait specialization.
             //#############################################################################
             template<>
             struct EventTest<
@@ -217,7 +206,7 @@ namespace alpaka
         namespace wait
         {
             //#############################################################################
-            //! The CUDA accelerator event thread wait trait specialization.
+            //! The GPU CUDA accelerator event thread wait trait specialization.
             //#############################################################################
             template<>
             struct CurrentThreadWaitFor<

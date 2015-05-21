@@ -53,21 +53,26 @@ namespace alpaka
                 //! Corrects the maximum block thread extents if it is larger then the one supported by the given accelerator type.
                 //-----------------------------------------------------------------------------
                 template<
-                    typename TAcc>
+                    typename TAcc,
+                    typename TDim>
                 ALPAKA_FCT_HOST auto operator()(
-                    Vec3<> & v3uiBlockThreadExtents)
+                    Vec<TDim> & vuiBlockThreadExtents)
                 -> void
                 {
+                    static_assert(
+                        TDim::value == dim::DimT<TAcc>::value,
+                        "The accelerator is required to have the same dimension as the block thread extents");
+
                     auto const vDevs(dev::getDevs<dev::DevManT<TAcc>>());
                     for(auto const & dev : vDevs)
                     {
                         auto const devProps(acc::getAccDevProps<TAcc>(dev));
-                        auto const & v3uiBlockThreadExtentsMax(devProps.m_v3uiBlockThreadExtentsMax);
+                        auto const & vuiBlockThreadExtentsMax(devProps.m_vuiBlockThreadExtentsMax);
 
-                        v3uiBlockThreadExtents = Vec3<>(
-                            std::min(v3uiBlockThreadExtents[0u], v3uiBlockThreadExtentsMax[0u]),
-                            std::min(v3uiBlockThreadExtents[1u], v3uiBlockThreadExtentsMax[1u]),
-                            std::min(v3uiBlockThreadExtents[2u], v3uiBlockThreadExtentsMax[2u]));
+                        for(std::size_t i(0); i<TDim::value; ++i)
+                        {
+                            vuiBlockThreadExtents[i] = std::min(vuiBlockThreadExtents[i], vuiBlockThreadExtentsMax[i]);
+                        }
                     }
                 }
             };
@@ -77,25 +82,24 @@ namespace alpaka
         //! \return The maximum block thread extents supported by all of the given accelerators.
         //-----------------------------------------------------------------------------
         template<
-            typename TAccSeq>
+            typename TAccSeq,
+            typename TAccDim>
         ALPAKA_FCT_HOST auto getMaxBlockThreadExtentsAccsDevices()
-        -> Vec3<>
+        -> Vec<TAccDim>
         {
             static_assert(
                 boost::mpl::is_sequence<TAccSeq>::value,
                 "TAccSeq is required to be a mpl::sequence!");
 
-            Vec3<> v3uiMaxBlockThreadExtents(
-                std::numeric_limits<UInt>::max(),
-                std::numeric_limits<UInt>::max(),
-                std::numeric_limits<UInt>::max());
+            auto vuiMaxBlockThreadExtents(
+                Vec<TAccDim>::all(
+                    std::numeric_limits<UInt>::max()));
 
             forEachType<TAccSeq>(
                 detail::CorrectMaxBlockThreadExtents(),
-                std::ref(v3uiMaxBlockThreadExtents)
-                );
+                vuiMaxBlockThreadExtents);
 
-            return v3uiMaxBlockThreadExtents;
+            return vuiMaxBlockThreadExtents;
         }
 
         namespace detail
@@ -141,8 +145,7 @@ namespace alpaka
 
             forEachType<TAccSeq>(
                 detail::CorrectMaxBlockThreadCount(),
-                std::ref(uiMaxBlockThreadCount)
-                );
+                uiMaxBlockThreadCount);
 
             return uiMaxBlockThreadCount;
         }
@@ -179,69 +182,75 @@ namespace alpaka
             //! 2. The maximum block thread count
             //! 3. The requirement of the block thread extents to divide the grid thread extents without remainder
             //!
-            //! \param v3uiGridThreadExtents
+            //! \param vuiGridThreadExtents
             //!     The full extents of threads in the grid.
-            //! \param v3uiMaxBlockThreadExtents
+            //! \param vuiMaxBlockThreadExtents
             //!     The maximum extents of threads in a block.
             //! \param uiMaxBlockThreadsCount
             //!     The maximum number of threads in a block.
             //! \param bRequireBlockThreadExtentsToDivideGridThreadExtents
             //!     If this is true, the grid thread extents will be multiples of the corresponding block thread extents.
-            //!     NOTE: If v3uiGridThreadExtents is prime (or otherwise bad chosen) in a dimension, the block thread extent will be one in this dimension.
+            //!     NOTE: If vuiGridThreadExtents is prime (or otherwise bad chosen) in a dimension, the block thread extent will be one in this dimension.
             //#############################################################################
+            template<
+                typename TDim>
             ALPAKA_FCT_HOST auto subdivideGridThreads(
-                Vec3<> const & v3uiGridThreadExtents,
-                Vec3<> const & v3uiMaxBlockThreadExtents,
+                Vec<TDim> const & vuiGridThreadExtents,
+                Vec<TDim> const & vuiMaxBlockThreadExtents,
                 UInt const & uiMaxBlockThreadsCount,
                 bool bRequireBlockThreadExtentsToDivideGridThreadExtents = true)
-            -> BasicWorkDiv
+            -> BasicWorkDiv<TDim>
             {
-                assert(v3uiGridThreadExtents[0u]>0);
-                assert(v3uiGridThreadExtents[1u]>0);
-                assert(v3uiGridThreadExtents[2u]>0);
+                assert(uiMaxBlockThreadsCount>0);
+                for(std::size_t i(0); i<TDim::value; ++i)
+                {
+                    assert(vuiGridThreadExtents[i]>0);
+                }
 
                 // 1. Restrict the max block thread extents with the grid thread extents.
                 // This removes dimensions not required in the given grid thread extents.
                 // This has to be done before the uiMaxBlockThreadsCount clipping to get the maximum correctly.
-                Vec3<> v3uiBlockThreadExtents(
-                    std::min(v3uiMaxBlockThreadExtents[0u], v3uiGridThreadExtents[0u]),
-                    std::min(v3uiMaxBlockThreadExtents[1u], v3uiGridThreadExtents[1u]),
-                    std::min(v3uiMaxBlockThreadExtents[2u], v3uiGridThreadExtents[2u]));
+                auto vuiBlockThreadExtents(Vec<TDim>::ones());
+                for(std::size_t i(0); i<TDim::value; ++i)
+                {
+                    vuiBlockThreadExtents[i] = std::min(vuiMaxBlockThreadExtents[i], vuiGridThreadExtents[i]);
+                }
 
                 // 2. If the block thread extents require more threads then available on the accelerator, clip it.
-                if(v3uiBlockThreadExtents.prod() > uiMaxBlockThreadsCount)
+                if(vuiBlockThreadExtents.prod() > uiMaxBlockThreadsCount)
                 {
-                    // Begin in z dimension.
+                    // Begin in last dimension.
                     UInt uiDim(0u);
                     // Very primitive clipping. Just halve it until it fits repeatedly iterating over the dimensions.
-                    while(v3uiBlockThreadExtents.prod() > uiMaxBlockThreadsCount)
+                    while(vuiBlockThreadExtents.prod() > uiMaxBlockThreadsCount)
                     {
-                        v3uiBlockThreadExtents[uiDim] = std::max(static_cast<UInt>(1u), static_cast<UInt>(v3uiBlockThreadExtents[uiDim] / 2u));
-                        uiDim = (uiDim+1u) % 3u;
+                        vuiBlockThreadExtents[uiDim] = std::max(static_cast<UInt>(1u), static_cast<UInt>(vuiBlockThreadExtents[uiDim] / 2u));
+                        uiDim = (uiDim+1u) % TDim::value;
                     }
                 }
 
                 if(bRequireBlockThreadExtentsToDivideGridThreadExtents)
                 {
                     // Make the block thread extents divide the grid thread extents.
-                    v3uiBlockThreadExtents = Vec3<>(
-                        detail::nextLowerOrEqualFactor(v3uiBlockThreadExtents[0u], v3uiGridThreadExtents[0u]),
-                        detail::nextLowerOrEqualFactor(v3uiBlockThreadExtents[1u], v3uiGridThreadExtents[1u]),
-                        detail::nextLowerOrEqualFactor(v3uiBlockThreadExtents[2u], v3uiGridThreadExtents[2u]));
+                    for(std::size_t i(0); i<TDim::value; ++i)
+                    {
+                        vuiBlockThreadExtents[i] = detail::nextLowerOrEqualFactor(vuiBlockThreadExtents[i], vuiGridThreadExtents[i]);
+                    }
                 }
 
                 // Set the grid block extents (rounded to the next integer not less then the quotient.
-                Vec3<> const v3uiGridBlockExtents(
-                    static_cast<UInt>(std::ceil(static_cast<double>(v3uiGridThreadExtents[0u]) / static_cast<double>(v3uiBlockThreadExtents[0u]))),
-                    static_cast<UInt>(std::ceil(static_cast<double>(v3uiGridThreadExtents[1u]) / static_cast<double>(v3uiBlockThreadExtents[1u]))),
-                    static_cast<UInt>(std::ceil(static_cast<double>(v3uiGridThreadExtents[2u]) / static_cast<double>(v3uiBlockThreadExtents[2u]))));
+                auto vuiGridBlockExtents(Vec<TDim>::ones());
+                for(std::size_t i(0); i<TDim::value; ++i)
+                {
+                    vuiGridBlockExtents[i] = static_cast<UInt>(std::ceil(static_cast<double>(vuiGridThreadExtents[0u]) / static_cast<double>(vuiBlockThreadExtents[0u])));
+                }
 
-                return BasicWorkDiv(v3uiGridBlockExtents, v3uiBlockThreadExtents);
+                return BasicWorkDiv<TDim>(vuiGridBlockExtents, vuiBlockThreadExtents);
             }
         }
 
         //-----------------------------------------------------------------------------
-        //! \tparam TAccs The accelerators for which this work division has to be valid.
+        //! \tparam TAccSeq The accelerator sequence for which this work division has to be valid.
         //! \param gridThreadExtents The full extents of threads in the grid.
         //! \param bRequireBlockThreadExtentsToDivideGridThreadExtents If the grid thread extents have to be a multiple of the block thread extents.
         //! \return The work division.
@@ -252,18 +261,14 @@ namespace alpaka
         ALPAKA_FCT_HOST auto getValidWorkDiv(
             TExtents const & gridThreadExtents = TExtents(),
             bool bRequireBlockThreadExtentsToDivideGridThreadExtents = true)
-        -> BasicWorkDiv
+        -> BasicWorkDiv<dim::DimT<TExtents>>
         {
             static_assert(
                 boost::mpl::is_sequence<TAccSeq>::value,
                 "TAccSeq is required to be a mpl::sequence!");
-            static_assert(
-                dim::DimT<TExtents>::value <= 3,
-                "TExtents is required to have less than or equal 3 dimensions!");
-
             return detail::subdivideGridThreads(
-                extent::getExtentsNd<dim::Dim3, UInt>(gridThreadExtents),
-                getMaxBlockThreadExtentsAccsDevices<TAccSeq>(),
+                extent::getExtentsVec<UInt>(gridThreadExtents),
+                getMaxBlockThreadExtentsAccsDevices<TAccSeq, dim::DimT<TExtents>>(),
                 getMaxBlockThreadCountAccsDevices<TAccSeq>(),
                 bRequireBlockThreadExtentsToDivideGridThreadExtents);
         }
@@ -283,23 +288,29 @@ namespace alpaka
             TWorkDiv const & workDiv)
         -> bool
         {
-            auto const v3uiGridBlockExtents(getWorkDiv<Grid, Blocks, dim::Dim3>(workDiv));
-            auto const v3uiBlockThreadExtents(getWorkDiv<Block, Threads, dim::Dim3>(workDiv));
+            auto const vuiGridBlockExtents(getWorkDiv<Grid, Blocks>(workDiv));
+            auto const vuiBlockThreadExtents(getWorkDiv<Block, Threads>(workDiv));
 
             auto const devProps(acc::getAccDevProps<TAcc>(dev));
-            auto const & v3uiBlockThreadExtentsMax(devProps.m_v3uiBlockThreadExtentsMax);
-            auto const & uiBlockThreadCountMax(devProps.m_uiBlockThreadsCountMax);
+            auto const vuiBlockThreadExtentsMax(subVecEnd<dim::DimT<TWorkDiv>>(devProps.m_vuiBlockThreadExtentsMax));
+            auto const uiBlockThreadCountMax(devProps.m_uiBlockThreadsCountMax);
+            
+            if(uiBlockThreadCountMax < vuiBlockThreadExtents.prod())
+            {
+                return false;
+            }
 
-            return !((v3uiGridBlockExtents[0] == 0)
-                || (v3uiGridBlockExtents[1] == 0)
-                || (v3uiGridBlockExtents[2] == 0)
-                || (v3uiBlockThreadExtents[0] == 0)
-                || (v3uiBlockThreadExtents[1] == 0)
-                || (v3uiBlockThreadExtents[2] == 0)
-                || (v3uiBlockThreadExtentsMax[0] < v3uiBlockThreadExtents[0])
-                || (v3uiBlockThreadExtentsMax[1] < v3uiBlockThreadExtents[1])
-                || (v3uiBlockThreadExtentsMax[2] < v3uiBlockThreadExtents[2])
-                || (uiBlockThreadCountMax < v3uiBlockThreadExtents.prod()));
+            for(std::size_t i(0); i<dim::DimT<TWorkDiv>::value; ++i)
+            {
+                if((vuiGridBlockExtents[i] == 0)
+                    || (vuiBlockThreadExtents[i] == 0)
+                    || (vuiBlockThreadExtentsMax[i] < vuiBlockThreadExtents[i]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

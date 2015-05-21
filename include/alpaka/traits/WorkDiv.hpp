@@ -46,7 +46,6 @@ namespace alpaka
                 typename TWorkDiv,
                 typename TOrigin,
                 typename TUnit,
-                typename TDim,
                 typename TSfinae = void>
             struct GetWorkDiv;
         }
@@ -63,17 +62,15 @@ namespace alpaka
         template<
             typename TOrigin,
             typename TUnit,
-            typename TDim = dim::Dim3,
             typename TWorkDiv = void>
         ALPAKA_FCT_HOST_ACC auto getWorkDiv(
             TWorkDiv const & workDiv)
-        -> Vec<TDim>
+        -> Vec<alpaka::dim::DimT<TWorkDiv>>
         {
             return traits::workdiv::GetWorkDiv<
                 TWorkDiv,
                 TOrigin,
-                TUnit,
-                TDim>
+                TUnit>
             ::getWorkDiv(
                 workDiv);
         }
@@ -84,27 +81,6 @@ namespace alpaka
         namespace workdiv
         {
             //#############################################################################
-            //! The work div block thread 1D extents trait specialization.
-            //#############################################################################
-            template<
-                typename TWorkDiv>
-            struct GetWorkDiv<
-                TWorkDiv,
-                origin::Block,
-                unit::Threads,
-                alpaka::dim::Dim1>
-            {
-                //-----------------------------------------------------------------------------
-                //! \return The number of threads in a block.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST_ACC static auto getWorkDiv(
-                    TWorkDiv const & workDiv)
-                -> alpaka::Vec1<>
-                {
-                    return alpaka::workdiv::getWorkDiv<origin::Block, unit::Threads, alpaka::dim::Dim3>(workDiv).prod();
-                }
-            };
-            //#############################################################################
             //! The work div grid thread 3D extents trait specialization.
             //#############################################################################
             template<
@@ -112,60 +88,17 @@ namespace alpaka
             struct GetWorkDiv<
                 TWorkDiv,
                 origin::Grid,
-                unit::Threads,
-                alpaka::dim::Dim3>
+                unit::Threads>
             {
                 //-----------------------------------------------------------------------------
                 //! \return The number of threads in each dimension of the grid.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST_ACC static auto getWorkDiv(
                     TWorkDiv const & workDiv)
-                -> alpaka::Vec3<>
+                -> alpaka::Vec<alpaka::dim::DimT<TWorkDiv>>
                 {
-                    return alpaka::workdiv::getWorkDiv<origin::Grid, unit::Blocks, alpaka::dim::Dim3>(workDiv)
-                        * alpaka::workdiv::getWorkDiv<origin::Block, unit::Threads, alpaka::dim::Dim3>(workDiv);
-                }
-            };
-            //#############################################################################
-            //! The work div grid thread 1D extents trait specialization.
-            //#############################################################################
-            template<
-                typename TWorkDiv>
-            struct GetWorkDiv<
-                TWorkDiv,
-                origin::Grid,
-                unit::Threads,
-                alpaka::dim::Dim1>
-            {
-                //-----------------------------------------------------------------------------
-                //! \return The number of threads in the grid.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST_ACC static auto getWorkDiv(
-                    TWorkDiv const & workDiv)
-                -> alpaka::Vec1<>
-                {
-                    return alpaka::workdiv::getWorkDiv<origin::Grid, unit::Threads, alpaka::dim::Dim3>(workDiv).prod();
-                }
-            };
-            //#############################################################################
-            //! The work div grid block 1D extents trait specialization.
-            //#############################################################################
-            template<
-                typename TWorkDiv>
-            struct GetWorkDiv<
-                TWorkDiv,
-                origin::Grid,
-                unit::Blocks,
-                alpaka::dim::Dim1>
-            {
-                //-----------------------------------------------------------------------------
-                //! \return The number of blocks in the grid.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST_ACC static auto getWorkDiv(
-                    TWorkDiv const & workDiv)
-                -> alpaka::Vec1<>
-                {
-                    return alpaka::workdiv::getWorkDiv<origin::Grid, unit::Blocks, alpaka::dim::Dim3>(workDiv).prod();
+                    return alpaka::workdiv::getWorkDiv<origin::Grid, unit::Blocks>(workDiv)
+                        * alpaka::workdiv::getWorkDiv<origin::Block, unit::Threads>(workDiv);
                 }
             };
         }

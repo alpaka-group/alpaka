@@ -25,18 +25,19 @@
 # This module requires Boost. Make sure to provide a valid install of it
 # under the environment variable BOOST_ROOT.
 #
-# ALPAKA_FIBERS_ENABLE will require Boost.Fiber to be built.
-# ALPAKA_OPENMP2_ENABLE will require a OpenMP 2.0 capable compiler.
-# ALPAKA_CUDA_ENABLE will require CUDA 7.0 to be installed.
+# ALPAKA_CPU_FIBERS_ENABLE will require Boost.Fiber to be built.
+# ALPAKA_CPU_OPENMP2_ENABLE will require a OpenMP 2.0 capable compiler.
+# ALPAKA_CPU_OPENMP4_ENABLE will require a OpenMP 4.0 capable compiler.
+# ALPAKA_GPU_CUDA_ENABLE will require CUDA 7.0 to be installed.
 #
 # Set the following CMake variables BEFORE calling find_packages to
 # change the behaviour of this module:
-# - ``ALPAKA_SERIAL_CPU_ENABLE`` {ON, OFF}
-# - ``ALPAKA_THREADS_CPU_ENABLE`` {ON, OFF}
-# - ``ALPAKA_FIBERS_CPU_ENABLE`` {ON, OFF}
-# - ``ALPAKA_OPENMP2_CPU_ENABLE`` {ON, OFF}
-# - ``ALPAKA_OPENMP4_CPU_ENABLE`` {ON, OFF}
-# - ``ALPAKA_CUDA_GPU_ENABLE`` {ON, OFF}
+# - ``ALPAKA_CPU_SERIAL_ENABLE`` {ON, OFF}
+# - ``ALPAKA_CPU_THREADS_ENABLE`` {ON, OFF}
+# - ``ALPAKA_CPU_FIBERS_ENABLE`` {ON, OFF}
+# - ``ALPAKA_CPU_OPENMP2_ENABLE`` {ON, OFF}
+# - ``ALPAKA_CPU_OPENMP4_ENABLE`` {ON, OFF}
+# - ``ALPAKA_GPU_CUDA_ENABLE`` {ON, OFF}
 # - ``ALPAKA_CUDA_VERSION`` {7.0, ...}
 # - ``ALPAKA_CUDA_ARCH`` {sm_20, sm...}
 # - ``ALPAKA_CUDA_FAST_MATH`` {ON, OFF}

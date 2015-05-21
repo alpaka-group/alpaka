@@ -34,7 +34,7 @@ namespace alpaka
             namespace detail
             {
                 //#############################################################################
-                //! The serial accelerator atomic ops.
+                //! The CPU serial accelerator atomic ops.
                 //#############################################################################
                 class AtomicSerial
                 {
@@ -72,7 +72,7 @@ namespace alpaka
         namespace atomic
         {
             //#############################################################################
-            //! The serial accelerator atomic operation functor.
+            //! The CPU serial accelerator atomic operation functor.
             //#############################################################################
             template<
                 typename TOp,

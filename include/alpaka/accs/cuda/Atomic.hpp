@@ -38,7 +38,7 @@ namespace alpaka
             namespace detail
             {
                 //#############################################################################
-                //! The CUDA accelerator atomic ops.
+                //! The GPU CUDA accelerator atomic ops.
                 //#############################################################################
                 class AtomicCuda
                 {
@@ -82,7 +82,7 @@ namespace alpaka
             // Add.
             //-----------------------------------------------------------------------------
             //-----------------------------------------------------------------------------
-            //! The CUDA accelerator atomic operation functor.
+            //! The GPU CUDA accelerator atomic operation functor.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -91,17 +91,16 @@ namespace alpaka
                 int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const & atomic,
+                    accs::cuda::detail::AtomicCuda const &,
                     int * const addr,
                     int const & value)
                 -> int
                 {
-                    boost::ignore_unused(atomic);
                     return atomicAdd(addr, value);
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The CUDA accelerator atomic operation functor.
+            //! The GPU CUDA accelerator atomic operation functor.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -110,17 +109,16 @@ namespace alpaka
                 unsigned int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const & atomic,
+                    accs::cuda::detail::AtomicCuda const &,
                     unsigned int * const addr,
                     unsigned int const & value)
                 -> unsigned int
                 {
-                    boost::ignore_unused(atomic);
                     return atomicAdd(addr, value);
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The CUDA accelerator atomic operation functor.
+            //! The GPU CUDA accelerator atomic operation functor.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -129,17 +127,16 @@ namespace alpaka
                 unsigned long long int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const & atomic,
+                    accs::cuda::detail::AtomicCuda const &,
                     unsigned long long int * const addr,
                     unsigned long long int const & value)
                 -> unsigned long long int
                 {
-                    boost::ignore_unused(atomic);
                     return atomicAdd(addr, value);
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The CUDA accelerator atomic operation functor.
+            //! The GPU CUDA accelerator atomic operation functor.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -148,17 +145,16 @@ namespace alpaka
                 float>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const & atomic,
+                    accs::cuda::detail::AtomicCuda const &,
                     float * const addr,
                     float const & value)
                 -> float
                 {
-                    boost::ignore_unused(atomic);
                     return atomicAdd(addr, value);
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The CUDA accelerator atomic operation functor.
+            //! The GPU CUDA accelerator atomic operation functor.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -167,12 +163,11 @@ namespace alpaka
                 double>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const & atomic,
+                    accs::cuda::detail::AtomicCuda const &,
                     double * const addr,
                     double const & value)
                 -> double
                 {
-                    boost::ignore_unused(atomic);
                     // Code from: http://docs.nvidia.com/cuda/cuda-c-programming-guide/#atomic-functions
 
                     unsigned long long int * address_as_ull(reinterpret_cast<unsigned long long int *>(addr));
@@ -192,7 +187,7 @@ namespace alpaka
             // Sub.
             //-----------------------------------------------------------------------------
             //-----------------------------------------------------------------------------
-            //! The CUDA accelerator atomic operation functor.
+            //! The GPU CUDA accelerator atomic operation functor.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -201,17 +196,16 @@ namespace alpaka
                 int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const & atomic,
+                    accs::cuda::detail::AtomicCuda const &,
                     int * const addr,
                     int const & value)
                 -> int
                 {
-                    boost::ignore_unused(atomic);
                     return atomicSub(addr, value);
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The CUDA accelerator atomic operation functor.
+            //! The GPU CUDA accelerator atomic operation functor.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -220,12 +214,11 @@ namespace alpaka
                 unsigned int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const & atomic,
+                    accs::cuda::detail::AtomicCuda const &,
                     unsigned int * const addr,
                     unsigned int const & value)
                 -> unsigned int
                 {
-                    boost::ignore_unused(atomic);
                     return atomicSub(addr, value);
                 }
             };
@@ -233,7 +226,7 @@ namespace alpaka
             // Min.
             //-----------------------------------------------------------------------------
             //-----------------------------------------------------------------------------
-            //! The CUDA accelerator atomic operation functor.
+            //! The GPU CUDA accelerator atomic operation functor.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -242,17 +235,16 @@ namespace alpaka
                 int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const & atomic,
+                    accs::cuda::detail::AtomicCuda const &,
                     int * const addr,
                     int const & value)
                 -> int
                 {
-                    boost::ignore_unused(atomic);
                     return atomicMin(addr, value);
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The CUDA accelerator atomic operation functor.
+            //! The GPU CUDA accelerator atomic operation functor.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -261,17 +253,16 @@ namespace alpaka
                 unsigned int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const & atomic,
+                    accs::cuda::detail::AtomicCuda const &,
                     unsigned int * const addr,
                     unsigned int const & value)
                 -> unsigned int
                 {
-                    boost::ignore_unused(atomic);
                     return atomicMin(addr, value);
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The CUDA accelerator atomic operation functor.
+            //! The GPU CUDA accelerator atomic operation functor.
             //-----------------------------------------------------------------------------
             /*template<>
             struct AtomicOp<
@@ -280,12 +271,11 @@ namespace alpaka
                 unsigned long long int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const & atomic,
+                    accs::cuda::detail::AtomicCuda const &,
                     unsigned long long int * const addr,
                     unsigned long long int const & value)
                 -> unsigned long long int
                 {
-                    boost::ignore_unused(atomic);
                     return atomicMin(addr, value);
                 }
             };*/
@@ -293,7 +283,7 @@ namespace alpaka
             // Max.
             //-----------------------------------------------------------------------------
             //-----------------------------------------------------------------------------
-            //! The CUDA accelerator atomic operation functor.
+            //! The GPU CUDA accelerator atomic operation functor.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -302,17 +292,16 @@ namespace alpaka
                 int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const & atomic,
+                    accs::cuda::detail::AtomicCuda const &,
                     int * const addr,
                     int const & value)
                 -> int
                 {
-                    boost::ignore_unused(atomic);
                     return atomicMax(addr, value);
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The CUDA accelerator atomic operation functor.
+            //! The GPU CUDA accelerator atomic operation functor.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -321,17 +310,16 @@ namespace alpaka
                 unsigned int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const & atomic,
+                    accs::cuda::detail::AtomicCuda const &,
                     unsigned int * const addr,
                     unsigned int const & value)
                 -> unsigned int
                 {
-                    boost::ignore_unused(atomic);
                     return atomicMax(addr, value);
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The CUDA accelerator atomic operation functor.
+            //! The GPU CUDA accelerator atomic operation functor.
             //-----------------------------------------------------------------------------
             /*template<>
             struct AtomicOp<
@@ -340,12 +328,11 @@ namespace alpaka
                 unsigned long long int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const & atomic,
+                    accs::cuda::detail::AtomicCuda const &,
                     unsigned long long int * const addr,
                     unsigned long long int const & value)
                 -> unsigned long long int
                 {
-                    boost::ignore_unused(atomic);
                     return atomicMax(addr, value);
                 }
             };*/
@@ -353,7 +340,7 @@ namespace alpaka
             // Exch.
             //-----------------------------------------------------------------------------
             //-----------------------------------------------------------------------------
-            //! The CUDA accelerator atomic operation functor.
+            //! The GPU CUDA accelerator atomic operation functor.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -362,17 +349,16 @@ namespace alpaka
                 int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const & atomic,
+                    accs::cuda::detail::AtomicCuda const &,
                     int * const addr,
                     int const & value)
                 -> int
                 {
-                    boost::ignore_unused(atomic);
                     return atomicExch(addr, value);
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The CUDA accelerator atomic operation functor.
+            //! The GPU CUDA accelerator atomic operation functor.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -381,17 +367,16 @@ namespace alpaka
                 unsigned int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const & atomic,
+                    accs::cuda::detail::AtomicCuda const &,
                     unsigned int * const addr,
                     unsigned int const & value)
                 -> unsigned int
                 {
-                    boost::ignore_unused(atomic);
                     return atomicExch(addr, value);
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The CUDA accelerator atomic operation functor.
+            //! The GPU CUDA accelerator atomic operation functor.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -400,17 +385,16 @@ namespace alpaka
                 unsigned long long int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const & atomic,
+                    accs::cuda::detail::AtomicCuda const &,
                     unsigned long long int * const addr,
                     unsigned long long int const & value)
                 -> unsigned long long int
                 {
-                    boost::ignore_unused(atomic);
                     return atomicExch(addr, value);
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The CUDA accelerator atomic operation functor.
+            //! The GPU CUDA accelerator atomic operation functor.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -419,12 +403,11 @@ namespace alpaka
                 float>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const & atomic,
+                    accs::cuda::detail::AtomicCuda const &,
                     float * const addr,
                     float const & value)
                 -> float
                 {
-                    boost::ignore_unused(atomic);
                     return atomicExch(addr, value);
                 }
             };
@@ -432,7 +415,7 @@ namespace alpaka
             // Inc.
             //-----------------------------------------------------------------------------
             //-----------------------------------------------------------------------------
-            //! The CUDA accelerator atomic operation functor.
+            //! The GPU CUDA accelerator atomic operation functor.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -441,12 +424,11 @@ namespace alpaka
                 unsigned int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const & atomic,
+                    accs::cuda::detail::AtomicCuda const &,
                     unsigned int * const addr,
                     unsigned int const & value)
                 -> unsigned int
                 {
-                    boost::ignore_unused(atomic);
                     return atomicInc(addr, value);
                 }
             };
@@ -454,7 +436,7 @@ namespace alpaka
             // Dec.
             //-----------------------------------------------------------------------------
             //-----------------------------------------------------------------------------
-            //! The CUDA accelerator atomic operation functor.
+            //! The GPU CUDA accelerator atomic operation functor.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -463,12 +445,11 @@ namespace alpaka
                 unsigned int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const & atomic,
+                    accs::cuda::detail::AtomicCuda const &,
                     unsigned int * const addr,
                     unsigned int const & value)
                 -> unsigned int
                 {
-                    boost::ignore_unused(atomic);
                     return atomicDec(addr, value);
                 }
             };
@@ -476,7 +457,7 @@ namespace alpaka
             // And.
             //-----------------------------------------------------------------------------
             //-----------------------------------------------------------------------------
-            //! The CUDA accelerator atomic operation functor.
+            //! The GPU CUDA accelerator atomic operation functor.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -485,17 +466,16 @@ namespace alpaka
                 int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const & atomic,
+                    accs::cuda::detail::AtomicCuda const &,
                     int * const addr,
                     int const & value)
                 -> int
                 {
-                    boost::ignore_unused(atomic);
                     return atomicAnd(addr, value);
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The CUDA accelerator atomic operation functor.
+            //! The GPU CUDA accelerator atomic operation functor.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -504,17 +484,16 @@ namespace alpaka
                 unsigned int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const & atomic,
+                    accs::cuda::detail::AtomicCuda const &,
                     unsigned int * const addr,
                     unsigned int const & value)
                 -> unsigned int
                 {
-                    boost::ignore_unused(atomic);
                     return atomicAnd(addr, value);
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The CUDA accelerator atomic operation functor.
+            //! The GPU CUDA accelerator atomic operation functor.
             //-----------------------------------------------------------------------------
             /*template<>
             struct AtomicOp<
@@ -523,12 +502,11 @@ namespace alpaka
                 unsigned long long int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const & atomic,
+                    accs::cuda::detail::AtomicCuda const &,
                     unsigned long long int * const addr,
                     unsigned long long int const & value)
                 -> unsigned long long int
                 {
-                    boost::ignore_unused(atomic);
                     return atomicAnd(addr, value);
                 }
             };*/
@@ -536,7 +514,7 @@ namespace alpaka
             // Or.
             //-----------------------------------------------------------------------------
             //-----------------------------------------------------------------------------
-            //! The CUDA accelerator atomic operation functor.
+            //! The GPU CUDA accelerator atomic operation functor.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -545,17 +523,16 @@ namespace alpaka
                 int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const & atomic,
+                    accs::cuda::detail::AtomicCuda const &,
                     int * const addr,
                     int const & value)
                 -> int
                 {
-                    boost::ignore_unused(atomic);
                     return atomicOr(addr, value);
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The CUDA accelerator atomic operation functor.
+            //! The GPU CUDA accelerator atomic operation functor.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -564,17 +541,16 @@ namespace alpaka
                 unsigned int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const & atomic,
+                    accs::cuda::detail::AtomicCuda const &,
                     unsigned int * const addr,
                     unsigned int const & value)
                 -> unsigned int
                 {
-                    boost::ignore_unused(atomic);
                     return atomicOr(addr, value);
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The CUDA accelerator atomic operation functor.
+            //! The GPU CUDA accelerator atomic operation functor.
             //-----------------------------------------------------------------------------
             /*template<>
             struct AtomicOp<
@@ -583,12 +559,11 @@ namespace alpaka
                 unsigned long long int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const & atomic,
+                    accs::cuda::detail::AtomicCuda const &,
                     unsigned long long int * const addr,
                     unsigned long long int const & value)
                 -> unsigned long long int
                 {
-                    boost::ignore_unused(atomic);
                     return atomicOr(addr, value);
                 }
             };*/
@@ -596,7 +571,7 @@ namespace alpaka
             // Xor.
             //-----------------------------------------------------------------------------
             //-----------------------------------------------------------------------------
-            //! The CUDA accelerator atomic operation functor.
+            //! The GPU CUDA accelerator atomic operation functor.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -605,17 +580,16 @@ namespace alpaka
                 int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const & atomic,
+                    accs::cuda::detail::AtomicCuda const &,
                     int * const addr,
                     int const & value)
                 -> int
                 {
-                    boost::ignore_unused(atomic);
                     return atomicXor(addr, value);
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The CUDA accelerator atomic operation functor.
+            //! The GPU CUDA accelerator atomic operation functor.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -624,17 +598,16 @@ namespace alpaka
                 unsigned int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const & atomic,
+                    accs::cuda::detail::AtomicCuda const &,
                     unsigned int * const addr,
                     unsigned int const & value)
                 -> unsigned int
                 {
-                    boost::ignore_unused(atomic);
                     return atomicXor(addr, value);
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The CUDA accelerator atomic operation functor.
+            //! The GPU CUDA accelerator atomic operation functor.
             //-----------------------------------------------------------------------------
             /*template<>
             struct AtomicOp<
@@ -643,12 +616,11 @@ namespace alpaka
                 unsigned long long int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const & atomic,
+                    accs::cuda::detail::AtomicCuda const &,
                     unsigned long long int * const addr,
                     unsigned long long int const & value)
                 -> unsigned long long int
                 {
-                    boost::ignore_unused(atomic);
                     return atomicXor(addr, value);
                 }
             };*/
@@ -656,7 +628,7 @@ namespace alpaka
             // Cas.
             //-----------------------------------------------------------------------------
             //-----------------------------------------------------------------------------
-            //! The CUDA accelerator atomic operation functor.
+            //! The GPU CUDA accelerator atomic operation functor.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -665,18 +637,17 @@ namespace alpaka
                 int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const & atomic,
+                    accs::cuda::detail::AtomicCuda const &,
                     int * const addr,
                     int const & compare,
                     int const & value)
                 -> int
                 {
-                    boost::ignore_unused(atomic);
                     return atomicCAS(addr, compare, value);
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The CUDA accelerator atomic operation functor.
+            //! The GPU CUDA accelerator atomic operation functor.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -685,18 +656,17 @@ namespace alpaka
                 unsigned int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const & atomic,
+                    accs::cuda::detail::AtomicCuda const &,
                     unsigned int * const addr,
                     unsigned int const & compare,
                     unsigned int const & value)
                 -> unsigned int
                 {
-                    boost::ignore_unused(atomic);
                     return atomicCAS(addr, compare, value);
                 }
             };
             //-----------------------------------------------------------------------------
-            //! The CUDA accelerator atomic operation functor.
+            //! The GPU CUDA accelerator atomic operation functor.
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
@@ -705,13 +675,12 @@ namespace alpaka
                 unsigned long long int>
             {
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
-                    accs::cuda::detail::AtomicCuda const & atomic,
+                    accs::cuda::detail::AtomicCuda const &,
                     unsigned long long int * const addr,
                     unsigned long long int const & compare,
                     unsigned long long int const & value)
                 -> unsigned long long int
                 {
-                    boost::ignore_unused(atomic);
                     return atomicCAS(addr, compare, value);
                 }
             };

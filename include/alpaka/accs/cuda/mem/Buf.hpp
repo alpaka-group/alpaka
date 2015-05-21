@@ -46,7 +46,7 @@ namespace alpaka
             namespace detail
             {
                 //#############################################################################
-                //! The CUDA memory buffer.
+                //! The GPU CUDA memory buffer.
                 //#############################################################################
                 template<
                     typename TElem,
@@ -69,7 +69,7 @@ namespace alpaka
                         UInt const & uiPitchBytes,
                         TExtents const & extents) :
                             m_Dev(dev),
-                            m_vExtentsElements(extent::getExtentsNd<TDim, UInt>(extents)),
+                            m_vExtentsElements(extent::getExtentsVecNd<TDim, UInt>(extents)),
                             m_spMem(
                                 pMem,
                                 std::bind(&BufCuda::freeBuffer, std::placeholders::_1, std::ref(m_Dev))),
@@ -355,7 +355,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The CUDA buffer pitch get trait specialization.
+            //! The GPU CUDA buffer pitch get trait specialization.
             //#############################################################################
             template<
                 typename TElem,
@@ -375,7 +375,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The CUDA 1D memory allocation trait specialization.
+            //! The GPU CUDA 1D memory allocation trait specialization.
             //#############################################################################
             template<
                 typename T>
@@ -427,7 +427,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The CUDA 2D memory allocation trait specialization.
+            //! The GPU CUDA 2D memory allocation trait specialization.
             //#############################################################################
             template<
                 typename T>
@@ -489,7 +489,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The CUDA 3D memory allocation trait specialization.
+            //! The GPU CUDA 3D memory allocation trait specialization.
             //#############################################################################
             template<
                 typename T>
@@ -548,7 +548,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The CUDA memory mapping trait specialization.
+            //! The GPU CUDA memory mapping trait specialization.
             //#############################################################################
             template<
                 typename TElem,
@@ -575,7 +575,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The CUDA memory unmapping trait specialization.
+            //! The GPU CUDA memory unmapping trait specialization.
             //#############################################################################
             template<
                 typename TElem,
@@ -602,7 +602,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The CUDA memory pinning trait specialization.
+            //! The GPU CUDA memory pinning trait specialization.
             //#############################################################################
             template<
                 typename TElem,
@@ -623,7 +623,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The CUDA memory unpinning trait specialization.
+            //! The GPU CUDA memory unpinning trait specialization.
             //#############################################################################
             template<
                 typename TElem,

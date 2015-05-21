@@ -88,21 +88,21 @@ public:
         TIndex const & ldc) const
     -> void
     {
-        /*static_assert(alpaka::dim::DimT<TAcc>::value == 2u,
-            "The accelerator used for with MatMulKernel has to be 2 dimensional!");*/
+        static_assert(alpaka::dim::DimT<TAcc>::value == 2u,
+            "The accelerator used for with MatMulKernel has to be 2 dimensional!");
 
         // Column and row of C to calculate.
-        auto const v2uiGridThreadIdx(alpaka::subVecEnd<alpaka::dim::Dim2>(acc.template getIdx<alpaka::Grid, alpaka::Threads>()));
+        auto const v2uiGridThreadIdx(acc.template getIdx<alpaka::Grid, alpaka::Threads>());
         auto const & uiGridThreadIdxX(v2uiGridThreadIdx[1u]);
         auto const & uiGridThreadIdxY(v2uiGridThreadIdx[0u]);
 
         // Column and row inside the block of C to calculate.
-        auto const v2uiBlockThreadIdx(alpaka::subVecEnd<alpaka::dim::Dim2>(acc.template getIdx<alpaka::Block, alpaka::Threads>()));
+        auto const v2uiBlockThreadIdx(acc.template getIdx<alpaka::Block, alpaka::Threads>());
         auto const & uiBlockThreadIdxX(v2uiBlockThreadIdx[1u]);
         auto const & uiBlockThreadIdxY(v2uiBlockThreadIdx[0u]);
 
         // The block threads extents.
-        auto const v2uiBlockThreadsExtents(alpaka::subVecEnd<alpaka::dim::Dim2>(acc.template getWorkDiv<alpaka::Block, alpaka::Threads>()));
+        auto const v2uiBlockThreadsExtents(acc.template getWorkDiv<alpaka::Block, alpaka::Threads>());
         auto const & uiBlockThreadsExtentX(v2uiBlockThreadsExtents[1u]);
         auto const & uiBlockThreadsExtentY(v2uiBlockThreadsExtents[0u]);
         //assert(uiBlockThreadsExtentX == uiBlockThreadsExtentY);
@@ -161,7 +161,7 @@ public:
         if(bInsideC)
         {
             auto const uiIdxC(uiGridThreadIdxY*ldc + uiGridThreadIdxX);
-            C[uiIdxC] =  alpha * fCSum + beta * C[uiIdxC];
+            C[uiIdxC] = alpha * fCSum + beta * C[uiIdxC];
         }
     }
 };
@@ -188,7 +188,7 @@ namespace alpaka
                     typename TIndex,
                     typename TElem>
                 ALPAKA_FCT_HOST static auto getBlockSharedExternMemSizeBytes(
-                    alpaka::Vec3<> const & v3uiBlockThreadsExtents,
+                    alpaka::Vec<alpaka::dim::DimT<TAcc>> const & vuiBlockThreadsExtents,
                     TIndex const & m,
                     TIndex const & n,
                     TIndex const & k,
@@ -215,7 +215,7 @@ namespace alpaka
                     boost::ignore_unused(ldc);
 
                     // Reserve the buffer for the two blocks of A and B.
-                    return 2u * v3uiBlockThreadsExtents.prod() * sizeof(TElem);
+                    return 2u * vuiBlockThreadsExtents.prod() * sizeof(TElem);
                 }
             };
         }
@@ -300,20 +300,21 @@ struct MatMulTester
             static_cast<alpaka::Vec2<>::Val>(n));
 
         // Let alpaka calculate good block and grid sizes given our full problem extents.
-        alpaka::workdiv::BasicWorkDiv workDiv(
+        alpaka::workdiv::BasicWorkDiv<alpaka::dim::Dim2> workDiv(
             bAdaptiveBlockThreadExtent
             ? alpaka::workdiv::getValidWorkDiv<boost::mpl::vector<TAcc>>(v2uiExtentsC, false)
-            : alpaka::workdiv::getValidWorkDiv<alpaka::accs::EnabledAccs>(v2uiExtentsC, false));
+            : alpaka::workdiv::getValidWorkDiv<alpaka::accs::EnabledAccs<alpaka::dim::Dim2>>(v2uiExtentsC, false));
         // Assure that the extents are square.
-        auto const uiMinExtent(std::min(workDiv.m_v3uiBlockThreadExtents[1u], workDiv.m_v3uiBlockThreadExtents[2u]));
-        workDiv.m_v3uiGridBlockExtents[1u] = static_cast<alpaka::Vec3<>::Val>(std::ceil(static_cast<double>(m) / static_cast<double>(uiMinExtent)));
-        workDiv.m_v3uiBlockThreadExtents[1u] = uiMinExtent;
-        workDiv.m_v3uiGridBlockExtents[2u] = static_cast<alpaka::Vec3<>::Val>(std::ceil(static_cast<double>(n) / static_cast<double>(uiMinExtent)));
-        workDiv.m_v3uiBlockThreadExtents[2u] = uiMinExtent;
+        auto const uiMinExtent(std::min(workDiv.m_vuiBlockThreadExtents[0u], workDiv.m_vuiBlockThreadExtents[1u]));
+        workDiv.m_vuiGridBlockExtents[0u] = static_cast<alpaka::Vec2<>::Val>(std::ceil(static_cast<double>(m) / static_cast<double>(uiMinExtent)));
+        workDiv.m_vuiBlockThreadExtents[0u] = uiMinExtent;
+        workDiv.m_vuiGridBlockExtents[1u] = static_cast<alpaka::Vec2<>::Val>(std::ceil(static_cast<double>(n) / static_cast<double>(uiMinExtent)));
+        workDiv.m_vuiBlockThreadExtents[1u] = uiMinExtent;
 
         std::cout
             << "profileAcceleratedMatMulKernel("
-            << "m:" << m
+            << "bAdaptiveBlockThreadExtent:" << bAdaptiveBlockThreadExtent
+            << ", m:" << m
             << ", n:" << n
             << ", k:" << k
             << ", accelerator: " << alpaka::acc::getAccName<TAcc>()
@@ -445,7 +446,7 @@ auto main(
             std::cout << std::endl;
 
             // Logs the enabled accelerators.
-            alpaka::accs::writeEnabledAccs(std::cout);
+            alpaka::accs::writeEnabledAccs<alpaka::dim::Dim2>(std::cout);
 
             std::cout << std::endl;
 
@@ -478,10 +479,11 @@ auto main(
                         std::cout << std::endl;
 
                         // Execute the kernel on all enabled accelerators.
-                        alpaka::forEachType<alpaka::accs::EnabledAccs>(
-                            matMulTester,
-                            m, n, k,
-                            bAdaptiveBlockThreadExtent);
+                        alpaka::forEachType<
+                            alpaka::accs::EnabledAccs<alpaka::dim::Dim2>>(
+                                matMulTester,
+                                m, n, k,
+                                bAdaptiveBlockThreadExtent);
                     }
                 }
             }

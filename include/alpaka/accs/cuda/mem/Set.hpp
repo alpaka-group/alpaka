@@ -42,7 +42,7 @@ namespace alpaka
         namespace mem
         {
             //#############################################################################
-            //! The CUDA 1D memory set trait specialization.
+            //! The GPU CUDA 1D memory set trait specialization.
             //#############################################################################
             template<>
             struct Set<
@@ -123,7 +123,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The CUDA 2D memory set trait specialization.
+            //! The GPU CUDA 2D memory set trait specialization.
             //#############################################################################
             template<>
             struct Set<
@@ -216,7 +216,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The CUDA 3D memory set trait specialization.
+            //! The GPU CUDA 3D memory set trait specialization.
             //#############################################################################
             template<>
             struct Set<

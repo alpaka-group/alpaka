@@ -42,7 +42,7 @@ namespace alpaka
             //! The executor type trait.
             //#############################################################################
             template<
-                typename TAcc,
+                typename TExec,
                 typename TSfinae = void>
             struct ExecType;
         }
@@ -57,11 +57,11 @@ namespace alpaka
         //! The executor type trait alias template to remove the ::type.
         //#############################################################################
         template<
-            typename TAcc>
-        using ExecT = typename traits::exec::ExecType<TAcc>::type;
+            typename TExec>
+        using ExecT = typename traits::exec::ExecType<TExec>::type;
 
         //-----------------------------------------------------------------------------
-        //! \return A executor.
+        //! \return An executor.
         //-----------------------------------------------------------------------------
         template<
             typename TAcc,
@@ -72,32 +72,31 @@ namespace alpaka
             TStream & stream)
         -> ExecT<TAcc>
         {
+            static_assert(
+                dim::DimT<TWorkDiv>::value == dim::DimT<TAcc>::value,
+                "The dimensions of the accelerator and the work division have to be identical!");
+
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
             std::cout << BOOST_CURRENT_FUNCTION
                 << " gridBlockExtents: " << workdiv::getWorkDiv<Grid, Blocks>(workDiv)
                 << ", blockThreadExtents: " << workdiv::getWorkDiv<Block, Threads>(workDiv)
                 << std::endl;
 #endif
-            // Some basic tests.
-            if(workdiv::getWorkDiv<Grid, Blocks, dim::Dim1>(workDiv)[0] == 0u)
-            {
-                throw std::runtime_error("The workDiv grid blocks extents is not allowed to be zero in any dimension!");
-            }
-            if(workdiv::getWorkDiv<Block, Threads, dim::Dim1>(workDiv)[0] == 0u)
-            {
-                throw std::runtime_error("The workDiv block thread extents is not allowed to be zero in any dimension!");
-            }
-
-            // This checks for the compliance with the maxima of the accelerator.
+            // This checks for a valid work division that is also compliant with the maxima of the accelerator.
             if(!workdiv::isValidWorkDiv<TAcc>(dev::getDev(stream), workDiv))
             {
-                throw std::runtime_error("The given work division is not supported by the " + acc::getAccName<TAcc>() + " accelerator!");
+                throw std::runtime_error("The given work division is not valid or not supported by the " + acc::getAccName<TAcc>() + " accelerator!");
             }
 
-            return ExecT<TAcc>(workDiv, stream);
+            return
+                ExecT<TAcc>(
+                    workDiv,
+                    stream);
         }
         //-----------------------------------------------------------------------------
-        //! \return A executor.
+        //! Creates an executor for the given accelerator with the work division given by grid block extents and block thread extents.
+        //! The larger of the two dimensions specifies the executor dimension.
+        //! \return An executor.
         //-----------------------------------------------------------------------------
         template<
             typename TAcc,
@@ -110,11 +109,17 @@ namespace alpaka
             TStream & stream)
         -> ExecT<TAcc>
         {
-            return create<TAcc>(
-                workdiv::BasicWorkDiv(
-                    gridBlockExtents,
-                    blockThreadExtents),
-                stream);
+            static_assert(
+                (dim::DimT<TAcc>::value > dim::DimT<TBlockThreadExtents>::value) && (dim::DimT<TAcc>::value >dim::DimT<TGridBlockExtents>::value),
+                "The dimension of the accelerator has to be larger then the dimensions of the grid block and block thread extents!");
+
+            return
+                create<TAcc>(
+                    workdiv::BasicWorkDiv<
+                        dim::Dim<dim::DimT<TAcc>::value>>(
+                        gridBlockExtents,
+                        blockThreadExtents),
+                    stream);
         }
     }
 }

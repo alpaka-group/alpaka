@@ -55,7 +55,11 @@ public:
         std::size_t const & uiNumElements) const
     -> void
     {
-        auto const uiGridThreadIdxX(acc.template getIdx<alpaka::Grid, alpaka::Threads, alpaka::dim::Dim1>()[0u]);
+        static_assert(
+            alpaka::dim::DimT<TAcc>::value == 1,
+            "The VectorAddKernel expects 1-dimensional indices!");
+
+        auto const uiGridThreadIdxX(acc.template getIdx<alpaka::Grid, alpaka::Threads>()[0u]);
 
         if (uiGridThreadIdxX < uiNumElements)
         {
@@ -129,7 +133,10 @@ struct VectorAddKernelTester
             static_cast<alpaka::Vec1<>::Val>(uiNumElements));
 
         // Let alpaka calculate good block and grid sizes given our full problem extents.
-        alpaka::workdiv::BasicWorkDiv const workDiv(alpaka::workdiv::getValidWorkDiv<boost::mpl::vector<TAcc>>(v1uiExtents, false));
+        alpaka::workdiv::BasicWorkDiv<alpaka::dim::Dim1> const workDiv(
+            alpaka::workdiv::getValidWorkDiv<boost::mpl::vector<TAcc>>(
+                v1uiExtents,
+                false));
 
         std::cout
             << "VectorAddKernelTester("
@@ -221,7 +228,7 @@ auto main()
         std::cout << std::endl;
 
         // Logs the enabled accelerators.
-        alpaka::accs::writeEnabledAccs(std::cout);
+        alpaka::accs::writeEnabledAccs<alpaka::dim::Dim1>(std::cout);
 
         std::cout << std::endl;
 
@@ -237,9 +244,10 @@ auto main()
             std::cout << std::endl;
 
             // Execute the kernel on all enabled accelerators.
-            alpaka::forEachType<alpaka::accs::EnabledAccs>(
-                vectorAddKernelTester,
-                uiSize);
+            alpaka::forEachType<
+                alpaka::accs::EnabledAccs<alpaka::dim::Dim1>>(
+                    vectorAddKernelTester,
+                    uiSize);
         }
         return EXIT_SUCCESS;
     }

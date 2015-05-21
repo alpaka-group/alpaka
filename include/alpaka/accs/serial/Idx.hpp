@@ -36,6 +36,8 @@ namespace alpaka
                 //#############################################################################
                 //! This serial accelerator index provider.
                 //#############################################################################
+                template<
+                    typename TDim>
                 class IdxSerial
                 {
                 public:
@@ -43,8 +45,8 @@ namespace alpaka
                     //! Default constructor.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_ACC_NO_CUDA IdxSerial(
-                        Vec3<> const & v3uiGridBlockIdx) :
-                        m_v3uiGridBlockIdx(v3uiGridBlockIdx)
+                        Vec<TDim> const & vuiGridBlockIdx) :
+                        m_vuiGridBlockIdx(vuiGridBlockIdx)
                     {}
                     //-----------------------------------------------------------------------------
                     //! Copy constructor.
@@ -69,21 +71,21 @@ namespace alpaka
                     //! \return The index of the currently executed thread.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_ACC_NO_CUDA auto getIdxBlockThread() const
-                    -> Vec3<>
+                    -> Vec<TDim>
                     {
-                        return Vec3<>::zeros();
+                        return Vec<TDim>::zeros();
                     }
                     //-----------------------------------------------------------------------------
                     //! \return The block index of the currently executed thread.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_ACC_NO_CUDA auto getIdxGridBlock() const
-                    -> Vec3<>
+                    -> Vec<TDim>
                     {
-                        return m_v3uiGridBlockIdx;
+                        return m_vuiGridBlockIdx;
                     }
 
                 private:
-                    Vec3<> const & m_v3uiGridBlockIdx;
+                    Vec<TDim> const & m_vuiGridBlockIdx;
                 };
             }
         }
@@ -91,27 +93,41 @@ namespace alpaka
 
     namespace traits
     {
+        namespace dim
+        {
+            //#############################################################################
+            //! The CPU serial accelerator index dimension get trait specialization.
+            //#############################################################################
+            template<
+                typename TDim>
+            struct DimType<
+                accs::serial::detail::IdxSerial<TDim>>
+            {
+                using type = TDim;
+            };
+        }
+
         namespace idx
         {
             //#############################################################################
-            //! The serial accelerator 3D block thread index get trait specialization.
+            //! The CPU serial accelerator block thread index get trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct GetIdx<
-                accs::serial::detail::IdxSerial,
+                accs::serial::detail::IdxSerial<TDim>,
                 origin::Block,
-                unit::Threads,
-                alpaka::dim::Dim3>
+                unit::Threads>
             {
                 //-----------------------------------------------------------------------------
-                //! \return The 3-dimensional index of the current thread in the block.
+                //! \return The 3index of the current thread in the block.
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
                 ALPAKA_FCT_ACC_NO_CUDA static auto getIdx(
-                    accs::serial::detail::IdxSerial const & index,
+                    accs::serial::detail::IdxSerial<TDim> const & index,
                     TWorkDiv const & workDiv)
-                -> alpaka::Vec3<>
+                -> alpaka::Vec<TDim>
                 {
                     boost::ignore_unused(workDiv);
                     return index.getIdxBlockThread();
@@ -119,24 +135,24 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The serial accelerator 3D grid block index get trait specialization.
+            //! The CPU serial accelerator grid block index get trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct GetIdx<
-                accs::serial::detail::IdxSerial,
+                accs::serial::detail::IdxSerial<TDim>,
                 origin::Grid,
-                unit::Blocks,
-                alpaka::dim::Dim3>
+                unit::Blocks>
             {
                 //-----------------------------------------------------------------------------
-                //! \return The 3-dimensional index of the current block in the grid.
+                //! \return The index of the current block in the grid.
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
                 ALPAKA_FCT_ACC_NO_CUDA static auto getIdx(
-                    accs::serial::detail::IdxSerial const & index,
+                    accs::serial::detail::IdxSerial<TDim> const & index,
                     TWorkDiv const & workDiv)
-                -> alpaka::Vec3<>
+                -> alpaka::Vec<TDim>
                 {
                     boost::ignore_unused(workDiv);
                     return index.getIdxGridBlock();

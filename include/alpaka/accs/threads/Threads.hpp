@@ -21,10 +21,10 @@
 
 #pragma once
 
-#include <alpaka/accs/threads/Acc.hpp>      // AccThreads
+#include <alpaka/accs/threads/Acc.hpp>      // AccCpuThreads
 #include <alpaka/accs/threads/Atomic.hpp>   // AtomicThreads
 #include <alpaka/accs/threads/Barrier.hpp>  // BarrierThreads
-#include <alpaka/accs/threads/Exec.hpp>     // ExecThreads
+#include <alpaka/accs/threads/Exec.hpp>     // ExecCpuThreads
 #include <alpaka/accs/threads/Idx.hpp>      // IdxThreads
 #include <alpaka/devs/cpu/Mem.hpp>          // Copy
 #include <alpaka/devs/cpu/Rand.hpp>         // rand

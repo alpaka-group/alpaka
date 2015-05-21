@@ -57,7 +57,7 @@ namespace alpaka
                 TExtents const & extents = TExtents()) :
                     m_pMem(pMem),
                     m_Dev(dev),
-                    m_vExtentsElements(extent::getExtentsNd<TDim, UInt>(extents)),
+                    m_vExtentsElements(extent::getExtentsVecNd<TDim, UInt>(extents)),
                     m_uiPitchBytes(extent::getWidth<UInt>(extents) * sizeof(TElem))
             {}
 
@@ -73,7 +73,7 @@ namespace alpaka
                 UInt const & uiPitch) :
                     m_pMem(pMem),
                     m_Dev(dev),
-                    m_vExtentsElements(extent::getExtentsNd<TDim, UInt>(extents)),
+                    m_vExtentsElements(extent::getExtentsVecNd<TDim, UInt>(extents)),
                     m_uiPitchBytes(uiPitch)
             {}
 

@@ -37,21 +37,24 @@ namespace alpaka
         {
             namespace detail
             {
-                using FiberIdToIdxMap = std::map<boost::fibers::fiber::id, Vec3<>>;
                 //#############################################################################
                 //! This fibers accelerator index provider.
                 //#############################################################################
+                template<
+                    typename TDim>
                 class IdxFibers
                 {
                 public:
+                    using FiberIdToIdxMap = std::map<boost::fibers::fiber::id, Vec<TDim>>;
+
                     //-----------------------------------------------------------------------------
                     //! Constructor.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_ACC_NO_CUDA IdxFibers(
                         FiberIdToIdxMap const & mFibersToIndices,
-                        Vec3<> const & v3uiGridBlockIdx) :
+                        Vec<TDim> const & vuiGridBlockIdx) :
                         m_mFibersToIndices(mFibersToIndices),
-                        m_v3uiGridBlockIdx(v3uiGridBlockIdx)
+                        m_vuiGridBlockIdx(vuiGridBlockIdx)
                     {}
                     //-----------------------------------------------------------------------------
                     //! Copy constructor.
@@ -76,7 +79,7 @@ namespace alpaka
                     //! \return The index of the currently executed thread.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_ACC_NO_CUDA auto getIdxBlockThread() const
-                    -> Vec3<>
+                    -> Vec<TDim>
                     {
                         auto const idFiber(boost::this_fiber::get_id());
                         auto const itFind(m_mFibersToIndices.find(idFiber));
@@ -88,14 +91,14 @@ namespace alpaka
                     //! \return The index of the block of the currently executed thread.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_ACC_NO_CUDA auto getIdxGridBlock() const
-                    -> Vec3<>
+                    -> Vec<TDim>
                     {
-                        return m_v3uiGridBlockIdx;
+                        return m_vuiGridBlockIdx;
                     }
 
                 private:
                     FiberIdToIdxMap const & m_mFibersToIndices; //!< The mapping of fibers id's to fibers indices.
-                    Vec3<> const & m_v3uiGridBlockIdx;          //!< The index of the currently executed block.
+                    Vec<TDim> const & m_vuiGridBlockIdx;          //!< The index of the currently executed block.
                 };
             }
         }
@@ -103,27 +106,41 @@ namespace alpaka
 
     namespace traits
     {
+        namespace dim
+        {
+            //#############################################################################
+            //! The CPU fibers accelerator index dimension get trait specialization.
+            //#############################################################################
+            template<
+                typename TDim>
+            struct DimType<
+                accs::fibers::detail::IdxFibers<TDim>>
+            {
+                using type = TDim;
+            };
+        }
+
         namespace idx
         {
             //#############################################################################
-            //! The fibers accelerator 3D block thread index get trait specialization.
+            //! The CPU fibers accelerator block thread index get trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct GetIdx<
-                accs::fibers::detail::IdxFibers,
+                accs::fibers::detail::IdxFibers<TDim>,
                 origin::Block,
-                unit::Threads,
-                alpaka::dim::Dim3>
+                unit::Threads>
             {
                 //-----------------------------------------------------------------------------
-                //! \return The 3-dimensional index of the current thread in the block.
+                //! \return The index of the current thread in the block.
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
                 ALPAKA_FCT_ACC_NO_CUDA static auto getIdx(
-                    accs::fibers::detail::IdxFibers const & index,
+                    accs::fibers::detail::IdxFibers<TDim> const & index,
                     TWorkDiv const & workDiv)
-                -> alpaka::Vec3<>
+                -> alpaka::Vec<TDim>
                 {
                     boost::ignore_unused(workDiv);
                     return index.getIdxBlockThread();
@@ -131,24 +148,24 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The fibers accelerator 3D grid block index get trait specialization.
+            //! The CPU fibers accelerator grid block index get trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct GetIdx<
-                accs::fibers::detail::IdxFibers,
+                accs::fibers::detail::IdxFibers<TDim>,
                 origin::Grid,
-                unit::Blocks,
-                alpaka::dim::Dim3>
+                unit::Blocks>
             {
                 //-----------------------------------------------------------------------------
-                //! \return The 3-dimensional index of the current block in the grid.
+                //! \return The index of the current block in the grid.
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
                 ALPAKA_FCT_ACC_NO_CUDA static auto getIdx(
-                    accs::fibers::detail::IdxFibers const & index,
+                    accs::fibers::detail::IdxFibers<TDim> const & index,
                     TWorkDiv const & workDiv)
-                -> alpaka::Vec3<>
+                -> alpaka::Vec<TDim>
                 {
                     boost::ignore_unused(workDiv);
                     return index.getIdxGridBlock();

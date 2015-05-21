@@ -30,7 +30,7 @@
 
 // Implementation details.
 #include <alpaka/accs/cuda/Common.hpp>
-#include <alpaka/accs/cuda/Acc.hpp>         // AccCuda
+#include <alpaka/accs/cuda/Acc.hpp>         // AccGpuCuda
 #include <alpaka/accs/cuda/Dev.hpp>         // DevCuda
 #include <alpaka/accs/cuda/Event.hpp>       // EventCuda
 #include <alpaka/accs/cuda/Stream.hpp>      // StreamCuda
@@ -53,10 +53,11 @@ namespace alpaka
             namespace detail
             {
                 //-----------------------------------------------------------------------------
-                //! The CUDA kernel entry point.
+                //! The GPU CUDA kernel entry point.
                 // \NOTE: A __global__ function or function template cannot have a trailing return type.
                 //-----------------------------------------------------------------------------
                 template<
+                    typename TDim,
                     typename TKernelFunctor,
                     typename... TArgs>
                 __global__ void cudaKernel(
@@ -66,7 +67,7 @@ namespace alpaka
 #if defined(__CUDA_ARCH__) && (__CUDA_ARCH__ < 200)
         #error "Cuda device capability >= 2.0 is required!"
 #endif
-                    AccCuda acc;
+                    AccGpuCuda<TDim> acc;
 
                     kernelFunctor(
                         acc,
@@ -74,9 +75,11 @@ namespace alpaka
                 }
 
                 //#############################################################################
-                //! The CUDA accelerator executor.
+                //! The GPU CUDA accelerator executor.
                 //#############################################################################
-                class ExecCuda
+                template<
+                    typename TDim>
+                class ExecGpuCuda
                 {
                 public:
                     //-----------------------------------------------------------------------------
@@ -84,36 +87,36 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     template<
                         typename TWorkDiv>
-                    ALPAKA_FCT_HOST ExecCuda(
+                    ALPAKA_FCT_HOST ExecGpuCuda(
                         TWorkDiv const & workDiv,
                         StreamCuda & stream) :
                             m_Stream(stream),
-                            m_v3uiGridBlockExtents(workdiv::getWorkDiv<Grid, Blocks, dim::Dim3>(workDiv)),
-                            m_v3uiBlockThreadExtents(workdiv::getWorkDiv<Block, Threads, dim::Dim3>(workDiv))
+                            m_vuiGridBlockExtents(workdiv::getWorkDiv<Grid, Blocks>(workDiv)),
+                            m_vuiBlockThreadExtents(workdiv::getWorkDiv<Block, Threads>(workDiv))
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                     }
                     //-----------------------------------------------------------------------------
                     //! Copy constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST ExecCuda(ExecCuda const &) = default;
+                    ALPAKA_FCT_HOST ExecGpuCuda(ExecGpuCuda const &) = default;
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                     //-----------------------------------------------------------------------------
                     //! Move constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST ExecCuda(ExecCuda &&) = default;
+                    ALPAKA_FCT_HOST ExecGpuCuda(ExecGpuCuda &&) = default;
 #endif
                     //-----------------------------------------------------------------------------
                     //! Copy assignment.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto operator=(ExecCuda const &) -> ExecCuda & = delete;
+                    ALPAKA_FCT_HOST auto operator=(ExecGpuCuda const &) -> ExecGpuCuda & = delete;
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
 #if BOOST_COMP_INTEL
-                    ALPAKA_FCT_HOST virtual ~ExecCuda() = default;
+                    ALPAKA_FCT_HOST virtual ~ExecGpuCuda() = default;
 #else
-                    ALPAKA_FCT_HOST virtual ~ExecCuda() noexcept = default;
+                    ALPAKA_FCT_HOST virtual ~ExecGpuCuda() noexcept = default;
 #endif
 
                     //-----------------------------------------------------------------------------
@@ -133,7 +136,7 @@ namespace alpaka
 #if (!__GLIBCXX__) // libstdc++ even for gcc-4.9 does not support std::is_trivially_copyable.
                         static_assert(std::is_trivially_copyable<TKernelFunctor>::value, "The given kernel functor has to fulfill is_trivially_copyable!");
 #endif
-                        // TODO: Check that (sizeof(TKernelFunctor) * m_v3uiBlockThreadExtents.prod()) < available memory size
+                        // TODO: Check that (sizeof(TKernelFunctor) * m_3uiBlockThreadExtents.prod()) < available memory size
 
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -145,35 +148,41 @@ namespace alpaka
                         //cudaDeviceGetLimit(&uiPrintfFifoSize, cudaLimitPrintfFifoSize);
                         //std::cout << "uiPrintfFifoSize: " <<  uiPrintfFifoSize << std::endl;
 #endif
-
-                        dim3 const gridDim(
-                            static_cast<unsigned int>(m_v3uiGridBlockExtents[2u]),
-                            static_cast<unsigned int>(m_v3uiGridBlockExtents[1u]),
-                            static_cast<unsigned int>(m_v3uiGridBlockExtents[0u]));
-                        dim3 const blockDim(
-                            static_cast<unsigned int>(m_v3uiBlockThreadExtents[2u]),
-                            static_cast<unsigned int>(m_v3uiBlockThreadExtents[1u]),
-                            static_cast<unsigned int>(m_v3uiBlockThreadExtents[0u]));
+                        dim3 gridDim(1u, 1u, 1u);
+                        dim3 blockDim(1u, 1u, 1u);
+                        for(std::size_t i(0u); i<3u; ++i)
+                        {
+                            reinterpret_cast<unsigned int *>(&gridDim)[i] = m_vuiGridBlockExtents[TDim::value-1u-i];
+                            reinterpret_cast<unsigned int *>(&blockDim)[i] = m_vuiBlockThreadExtents[TDim::value-1u-i];
+                        }
+                        for(std::size_t i(3u); i<TDim::value; ++i)
+                        {
+                            assert(m_vuiGridBlockExtents[TDim::value-1u-i] == 1);
+                        }
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                        std::cout << "v3uiBlockThreadExtents: " <<  gridDim.x << " " <<  gridDim.y << " " <<  gridDim.z << std::endl;
-                        std::cout << "v3uiBlockThreadExtents: " <<  blockDim.x << " " <<  blockDim.y << " " <<  blockDim.z << std::endl;
+                        std::cout << "gridDim: " <<  gridDim.z << " " <<  gridDim.y << " " <<  gridDim.x << std::endl;
+                        std::cout << "blockDim: " <<  blockDim.z << " " <<  blockDim.y << " " <<  blockDim.x << std::endl;
 #endif
 
                         // Get the size of the block shared extern memory.
-                        auto const uiBlockSharedExternMemSizeBytes(kernel::getBlockSharedExternMemSizeBytes<typename std::decay<TKernelFunctor>::type, AccCuda>(
-                            m_v3uiBlockThreadExtents,
-                            std::forward<TArgs>(args)...));
+                        auto const uiBlockSharedExternMemSizeBytes(
+                            kernel::getBlockSharedExternMemSizeBytes<
+                                typename std::decay<TKernelFunctor>::type,
+                                AccGpuCuda<TDim>>(
+                                    m_vuiBlockThreadExtents,
+                                    std::forward<TArgs>(args)...));
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                         // Log the block shared memory size.
                         std::cout << BOOST_CURRENT_FUNCTION
                             << " BlockSharedExternMemSizeBytes: " << uiBlockSharedExternMemSizeBytes << " B"
                             << std::endl;
 #endif
+
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                         // Log the function attributes.
                         cudaFuncAttributes funcAttrs;
-                        cudaFuncGetAttributes(&funcAttrs, cudaKernel<TKernelFunctor, TArgs...>);
+                        cudaFuncGetAttributes(&funcAttrs, cudaKernel<TDim, TKernelFunctor, TArgs...>);
                         std::cout << BOOST_CURRENT_FUNCTION
                             << "binaryVersion: " << funcAttrs.binaryVersion
                             << "constSizeBytes: " << funcAttrs.constSizeBytes << " B"
@@ -189,7 +198,7 @@ namespace alpaka
                         ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
                             m_Stream.m_Dev.m_iDevice));
                         // Enqueue the kernel execution.
-                        cudaKernel<TKernelFunctor, TArgs...><<<
+                        cudaKernel<TDim, TKernelFunctor, TArgs...><<<
                             gridDim,
                             blockDim,
                             uiBlockSharedExternMemSizeBytes,
@@ -214,8 +223,8 @@ namespace alpaka
                     }
 
                 private:
-                    Vec3<> const m_v3uiGridBlockExtents;
-                    Vec3<> const m_v3uiBlockThreadExtents;
+                    Vec<TDim> const m_vuiGridBlockExtents;
+                    Vec<TDim> const m_vuiBlockThreadExtents;
 
                 public:
                     StreamCuda m_Stream;
@@ -229,24 +238,64 @@ namespace alpaka
         namespace acc
         {
             //#############################################################################
-            //! The CUDA accelerator executor accelerator type trait specialization.
+            //! The GPU CUDA executor accelerator type trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct AccType<
-                accs::cuda::detail::ExecCuda>
+                accs::cuda::detail::ExecGpuCuda<TDim>>
             {
-                using type = accs::cuda::detail::AccCuda;
+                using type = accs::cuda::detail::AccGpuCuda<TDim>;
+            };
+        }
+
+        namespace dev
+        {
+            //#############################################################################
+            //! The GPU CUDA executor device type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim>
+            struct DevType<
+                accs::cuda::detail::ExecGpuCuda<TDim>>
+            {
+                using type = accs::cuda::detail::DevCuda;
+            };
+            //#############################################################################
+            //! The GPU CUDA executor device manager type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim>
+            struct DevManType<
+                accs::cuda::detail::ExecGpuCuda<TDim>>
+            {
+                using type = accs::cuda::detail::DevManCuda;
+            };
+        }
+
+        namespace dim
+        {
+            //#############################################################################
+            //! The GPU CUDA executor dimension getter trait specialization.
+            //#############################################################################
+            template<
+                typename TDim>
+            struct DimType<
+                accs::cuda::detail::ExecGpuCuda<TDim>>
+            {
+                using type = TDim;
             };
         }
 
         namespace event
         {
             //#############################################################################
-            //! The CUDA accelerator executor event type trait specialization.
+            //! The GPU CUDA executor event type trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct EventType<
-                accs::cuda::detail::ExecCuda>
+                accs::cuda::detail::ExecGpuCuda<TDim>>
             {
                 using type = accs::cuda::detail::EventCuda;
             };
@@ -255,58 +304,39 @@ namespace alpaka
         namespace exec
         {
             //#############################################################################
-            //! The CUDA accelerator executor executor type trait specialization.
+            //! The GPU CUDA executor executor type trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct ExecType<
-                accs::cuda::detail::ExecCuda>
+                accs::cuda::detail::ExecGpuCuda<TDim>>
             {
-                using type = accs::cuda::detail::ExecCuda;
-            };
-        }
-
-        namespace dev
-        {
-            //#############################################################################
-            //! The CUDA accelerator executor device type trait specialization.
-            //#############################################################################
-            template<>
-            struct DevType<
-                accs::cuda::detail::ExecCuda>
-            {
-                using type = accs::cuda::detail::DevCuda;
-            };
-            //#############################################################################
-            //! The CUDA accelerator device type trait specialization.
-            //#############################################################################
-            template<>
-            struct DevManType<
-                accs::cuda::detail::ExecCuda>
-            {
-                using type = accs::cuda::detail::DevManCuda;
+                using type = accs::cuda::detail::ExecGpuCuda<TDim>;
             };
         }
 
         namespace stream
         {
             //#############################################################################
-            //! The CUDA accelerator executor stream type trait specialization.
+            //! The GPU CUDA executor stream type trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct StreamType<
-                accs::cuda::detail::ExecCuda>
+                accs::cuda::detail::ExecGpuCuda<TDim>>
             {
                 using type = accs::cuda::detail::StreamCuda;
             };
             //#############################################################################
-            //! The CUDA accelerator executor stream get trait specialization.
+            //! The GPU CUDA executor stream get trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct GetStream<
-                accs::cuda::detail::ExecCuda>
+                accs::cuda::detail::ExecGpuCuda<TDim>>
             {
                 ALPAKA_FCT_HOST static auto getStream(
-                    accs::cuda::detail::ExecCuda const & exec)
+                    accs::cuda::detail::ExecGpuCuda<TDim> const & exec)
                 -> accs::cuda::detail::StreamCuda
                 {
                     return exec.m_Stream;

@@ -52,32 +52,36 @@ namespace alpaka
     namespace accs
     {
         //-----------------------------------------------------------------------------
-        //! The fibers accelerator.
+        //! The CPU fibers accelerator.
         //-----------------------------------------------------------------------------
         namespace fibers
         {
             //-----------------------------------------------------------------------------
-            //! The fibers accelerator implementation details.
+            //! The CPU fibers accelerator implementation details.
             //-----------------------------------------------------------------------------
             namespace detail
             {
-                class ExecFibers;
+                template<
+                    typename TDim>
+                class ExecCpuFibers;
 
                 //#############################################################################
-                //! The fibers accelerator.
+                //! The CPU fibers accelerator.
                 //!
                 //! This accelerator allows parallel kernel execution on a cpu device.
                 //! It uses boost::fibers to implement the cooperative parallelism.
                 //! By using fibers the shared memory can reside in the closest memory/cache available.
                 //! Furthermore there is no false sharing between neighboring threads as it is the case in real multi-threading.
                 //#############################################################################
-                class AccFibers :
-                    protected workdiv::BasicWorkDiv,
-                    protected IdxFibers,
+                template<
+                    typename TDim>
+                class AccCpuFibers :
+                    protected workdiv::BasicWorkDiv<TDim>,
+                    protected IdxFibers<TDim>,
                     protected AtomicFibers
                 {
                 public:
-                    friend class ::alpaka::accs::fibers::detail::ExecFibers;
+                    friend class ::alpaka::accs::fibers::detail::ExecCpuFibers<TDim>;
 
                 private:
                     //-----------------------------------------------------------------------------
@@ -85,48 +89,47 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     template<
                         typename TWorkDiv>
-                    ALPAKA_FCT_ACC_NO_CUDA AccFibers(
+                    ALPAKA_FCT_ACC_NO_CUDA AccCpuFibers(
                         TWorkDiv const & workDiv) :
-                            workdiv::BasicWorkDiv(workDiv),
-                            IdxFibers(m_mFibersToIndices, m_v3uiGridBlockIdx),
+                            workdiv::BasicWorkDiv<TDim>(workDiv),
+                            IdxFibers<TDim>(m_mFibersToIndices, m_vuiGridBlockIdx),
                             AtomicFibers(),
-                            m_v3uiGridBlockIdx(Vec3<>::zeros()),
-                            m_uiNumThreadsPerBlock(workdiv::getWorkDiv<Block, Threads, dim::Dim1>(workDiv)[0u])
+                            m_vuiGridBlockIdx(Vec<TDim>::zeros()),
+                            m_uiNumThreadsPerBlock(workdiv::getWorkDiv<Block, Threads>(workDiv).prod())
                     {}
 
                 public:
                     //-----------------------------------------------------------------------------
                     //! Copy constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA AccFibers(AccFibers const &) = delete;
+                    ALPAKA_FCT_ACC_NO_CUDA AccCpuFibers(AccCpuFibers const &) = delete;
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                     //-----------------------------------------------------------------------------
                     //! Move constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA AccFibers(AccFibers &&) = delete;
+                    ALPAKA_FCT_ACC_NO_CUDA AccCpuFibers(AccCpuFibers &&) = delete;
 #endif
                     //-----------------------------------------------------------------------------
                     //! Copy assignment.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA auto operator=(AccFibers const &) -> AccFibers & = delete;
+                    ALPAKA_FCT_ACC_NO_CUDA auto operator=(AccCpuFibers const &) -> AccCpuFibers & = delete;
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA virtual ~AccFibers() noexcept = default;
+                    ALPAKA_FCT_ACC_NO_CUDA virtual ~AccCpuFibers() noexcept = default;
 
                     //-----------------------------------------------------------------------------
                     //! \return The requested indices.
                     //-----------------------------------------------------------------------------
                     template<
                         typename TOrigin,
-                        typename TUnit,
-                        typename TDim = dim::Dim3>
+                        typename TUnit>
                     ALPAKA_FCT_ACC_NO_CUDA auto getIdx() const
                     -> Vec<TDim>
                     {
-                        return idx::getIdx<TOrigin, TUnit, TDim>(
-                            *static_cast<IdxFibers const *>(this),
-                            *static_cast<workdiv::BasicWorkDiv const *>(this));
+                        return idx::getIdx<TOrigin, TUnit>(
+                            *static_cast<IdxFibers<TDim> const *>(this),
+                            *static_cast<workdiv::BasicWorkDiv<TDim> const *>(this));
                     }
 
                     //-----------------------------------------------------------------------------
@@ -134,13 +137,12 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     template<
                         typename TOrigin,
-                        typename TUnit,
-                        typename TDim = dim::Dim3>
+                        typename TUnit>
                     ALPAKA_FCT_ACC_NO_CUDA auto getWorkDiv() const
                     -> Vec<TDim>
                     {
-                        return workdiv::getWorkDiv<TOrigin, TUnit, TDim>(
-                            *static_cast<workdiv::BasicWorkDiv const *>(this));
+                        return workdiv::getWorkDiv<TOrigin, TUnit>(
+                            *static_cast<workdiv::BasicWorkDiv<TDim> const *>(this));
                     }
 
                     //-----------------------------------------------------------------------------
@@ -240,8 +242,8 @@ namespace alpaka
 
                 private:
                     // getIdx
-                    FiberIdToIdxMap mutable m_mFibersToIndices;                 //!< The mapping of fibers id's to indices.
-                    Vec3<> mutable m_v3uiGridBlockIdx;                          //!< The index of the currently executed block.
+                    typename IdxFibers<TDim>::FiberIdToIdxMap mutable m_mFibersToIndices;   //!< The mapping of fibers id's to indices.
+                    Vec<TDim> mutable m_vuiGridBlockIdx;                        //!< The index of the currently executed block.
 
                     // syncBlockThreads
                     UInt const m_uiNumThreadsPerBlock;                          //!< The number of threads per block the barrier has to wait for.
@@ -262,32 +264,36 @@ namespace alpaka
             }
         }
     }
-
-    using AccFibers = accs::fibers::detail::AccFibers;
+    
+    template<
+        typename TDim>
+    using AccCpuFibers = accs::fibers::detail::AccCpuFibers<TDim>;
 
     namespace traits
     {
         namespace acc
         {
             //#############################################################################
-            //! The fibers accelerator accelerator type trait specialization.
+            //! The CPU fibers accelerator accelerator type trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct AccType<
-                accs::fibers::detail::AccFibers>
+                accs::fibers::detail::AccCpuFibers<TDim>>
             {
-                using type = accs::fibers::detail::AccFibers;
+                using type = accs::fibers::detail::AccCpuFibers<TDim>;
             };
             //#############################################################################
-            //! The fibers accelerator device properties get trait specialization.
+            //! The CPU fibers accelerator device properties get trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct GetAccDevProps<
-                accs::fibers::detail::AccFibers>
+                accs::fibers::detail::AccCpuFibers<TDim>>
             {
                 ALPAKA_FCT_HOST static auto getAccDevProps(
                     devs::cpu::detail::DevCpu const & dev)
-                -> alpaka::acc::AccDevProps
+                -> alpaka::acc::AccDevProps<TDim>
                 {
                     boost::ignore_unused(dev);
 
@@ -296,40 +302,80 @@ namespace alpaka
 #else
                     UInt const uiBlockThreadsCountMax(32u);     // \TODO: What is the maximum? Just set a reasonable value?
 #endif
-                    return alpaka::acc::AccDevProps(
+                    return {
                         // m_uiMultiProcessorCount
-                        std::thread::hardware_concurrency(),    // \TODO: This may be inaccurate.
+                        std::max(1u, std::thread::hardware_concurrency()),    // \TODO: This may be inaccurate.
                         // m_uiBlockThreadsCountMax
                         uiBlockThreadsCountMax,
-                        // m_v3uiBlockThreadExtentsMax
-                        Vec3<>::all(uiBlockThreadsCountMax),
-                        // m_v3uiGridBlockExtentsMax
-                        Vec3<>::all(std::numeric_limits<Vec3<>::Val>::max()));
+                        // m_vuiBlockThreadExtentsMax
+                        Vec<TDim>::all(uiBlockThreadsCountMax),
+                        // m_vuiGridBlockExtentsMax
+                        Vec<TDim>::all(std::numeric_limits<typename Vec<TDim>::Val>::max())};
                 }
             };
             //#############################################################################
-            //! The fibers accelerator name trait specialization.
+            //! The CPU fibers accelerator name trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct GetAccName<
-                accs::fibers::detail::AccFibers>
+                accs::fibers::detail::AccCpuFibers<TDim>>
             {
                 ALPAKA_FCT_HOST_ACC static auto getAccName()
                 -> std::string
                 {
-                    return "AccFibers";
+                    return "AccCpuFibers<" + std::to_string(TDim::value) + ">";
                 }
+            };
+        }
+
+        namespace dev
+        {
+            //#############################################################################
+            //! The CPU fibers accelerator device type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim>
+            struct DevType<
+                accs::fibers::detail::AccCpuFibers<TDim>>
+            {
+                using type = devs::cpu::detail::DevCpu;
+            };
+            //#############################################################################
+            //! The CPU fibers accelerator device type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim>
+            struct DevManType<
+                accs::fibers::detail::AccCpuFibers<TDim>>
+            {
+                using type = devs::cpu::detail::DevManCpu;
+            };
+        }
+
+        namespace dim
+        {
+            //#############################################################################
+            //! The CPU fibers accelerator dimension getter trait specialization.
+            //#############################################################################
+            template<
+                typename TDim>
+            struct DimType<
+                accs::fibers::detail::AccCpuFibers<TDim>>
+            {
+                using type = TDim;
             };
         }
 
         namespace event
         {
             //#############################################################################
-            //! The fibers accelerator event type trait specialization.
+            //! The CPU fibers accelerator event type trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct EventType<
-                accs::fibers::detail::AccFibers>
+                accs::fibers::detail::AccCpuFibers<TDim>>
             {
                 using type = devs::cpu::detail::EventCpu;
             };
@@ -338,46 +384,26 @@ namespace alpaka
         namespace exec
         {
             //#############################################################################
-            //! The fibers accelerator executor type trait specialization.
+            //! The CPU fibers accelerator executor type trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct ExecType<
-                accs::fibers::detail::AccFibers>
+                accs::fibers::detail::AccCpuFibers<TDim>>
             {
-                using type = accs::fibers::detail::ExecFibers;
-            };
-        }
-
-        namespace dev
-        {
-            //#############################################################################
-            //! The fibers accelerator device type trait specialization.
-            //#############################################################################
-            template<>
-            struct DevType<
-                accs::fibers::detail::AccFibers>
-            {
-                using type = devs::cpu::detail::DevCpu;
-            };
-            //#############################################################################
-            //! The fibers accelerator device type trait specialization.
-            //#############################################################################
-            template<>
-            struct DevManType<
-                accs::fibers::detail::AccFibers>
-            {
-                using type = devs::cpu::detail::DevManCpu;
+                using type = accs::fibers::detail::ExecCpuFibers<TDim>;
             };
         }
 
         namespace stream
         {
             //#############################################################################
-            //! The fibers accelerator stream type trait specialization.
+            //! The CPU fibers accelerator stream type trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct StreamType<
-                accs::fibers::detail::AccFibers>
+                accs::fibers::detail::AccCpuFibers<TDim>>
             {
                 using type = devs::cpu::detail::StreamCpu;
             };

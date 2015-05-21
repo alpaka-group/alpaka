@@ -21,7 +21,9 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>                   // ALPAKA_FCT_HOST
+#include <alpaka/core/Common.hpp>           // ALPAKA_FCT_HOST
+#include <alpaka/core/Vec.hpp>              // Vec
+#include <alpaka/core/IntegerSequence.hpp>  // integer_sequence
 
 // cuda_runtime_api.h: CUDA Runtime API C-style interface that does not require compiling with nvcc.
 // cuda_runtime.h: CUDA Runtime API  C++-style interface built on top of the C API.
@@ -34,13 +36,13 @@
 // cuda.h: CUDA Driver API
 //#include <cuda.h>
 
-#include <array>                                    // std::array
-#include <type_traits>                              // std::enable_if
-#include <utility>                                  // std::forward
-#include <iostream>                                 // std::cerr
-#include <string>                                   // std::string, std::to_string
-#include <stdexcept>                                // std::runtime_error
-#include <cstddef>                                  // std::size_t
+#include <array>                            // std::array
+#include <type_traits>                      // std::enable_if
+#include <utility>                          // std::forward
+#include <iostream>                         // std::cerr
+#include <string>                           // std::string, std::to_string
+#include <stdexcept>                        // std::runtime_error
+#include <cstddef>                          // std::size_t
 
 #if (!defined(CUDART_VERSION) || (CUDART_VERSION < 7000))
     #error "CUDA version 7.0 or greater required!"
@@ -216,3 +218,507 @@ namespace alpaka
 //-----------------------------------------------------------------------------
 #define ALPAKA_CUDA_DRV_CHECK(cmd)\
     ::alpaka::accs::cuda::detail::cudaDrvCheck(cmd, #cmd, __FILE__, __LINE__)*/
+
+
+//-----------------------------------------------------------------------------
+//! CUDA vector_types.h trait specializations.
+//-----------------------------------------------------------------------------
+namespace alpaka
+{
+    namespace traits
+    {
+        namespace cuda
+        {
+            //#############################################################################
+            //! The CUDA vectors 1D dimension get trait specialization.
+            //#############################################################################
+            template<
+                typename T>
+            struct IsCudaBuiltinType :
+                std::integral_constant<
+                    bool,
+                    std::is_same<T, char1>::value
+                    || std::is_same<T, double1>::value
+                    || std::is_same<T, float1>::value
+                    || std::is_same<T, int1>::value
+                    || std::is_same<T, long1>::value
+                    || std::is_same<T, longlong1>::value
+                    || std::is_same<T, short1>::value
+                    || std::is_same<T, uchar1>::value
+                    || std::is_same<T, uint1>::value
+                    || std::is_same<T, ulong1>::value
+                    || std::is_same<T, ulonglong1>::value
+                    || std::is_same<T, ushort1>::value
+                    || std::is_same<T, char2>::value
+                    || std::is_same<T, double2>::value
+                    || std::is_same<T, float2>::value
+                    || std::is_same<T, int2>::value
+                    || std::is_same<T, long2>::value
+                    || std::is_same<T, longlong2>::value
+                    || std::is_same<T, short2>::value
+                    || std::is_same<T, uchar2>::value
+                    || std::is_same<T, uint2>::value
+                    || std::is_same<T, ulong2>::value
+                    || std::is_same<T, ulonglong2>::value
+                    || std::is_same<T, ushort2>::value
+                    || std::is_same<T, char3>::value
+                    || std::is_same<T, dim3>::value
+                    || std::is_same<T, double3>::value
+                    || std::is_same<T, float3>::value
+                    || std::is_same<T, int3>::value
+                    || std::is_same<T, long3>::value
+                    || std::is_same<T, longlong3>::value
+                    || std::is_same<T, short3>::value
+                    || std::is_same<T, uchar3>::value
+                    || std::is_same<T, uint3>::value
+                    || std::is_same<T, ulong3>::value
+                    || std::is_same<T, ulonglong3>::value
+                    || std::is_same<T, ushort3>::value
+                    || std::is_same<T, char4>::value
+                    || std::is_same<T, double4>::value
+                    || std::is_same<T, float4>::value
+                    || std::is_same<T, int4>::value
+                    || std::is_same<T, long4>::value
+                    || std::is_same<T, longlong4>::value
+                    || std::is_same<T, short4>::value
+                    || std::is_same<T, uchar4>::value
+                    || std::is_same<T, uint4>::value
+                    || std::is_same<T, ulong4>::value
+                    || std::is_same<T, ulonglong4>::value
+                    || std::is_same<T, ushort4>::value>
+            {};
+        }
+        namespace dim
+        {
+            //#############################################################################
+            //! The CUDA vectors 1D dimension get trait specialization.
+            //#############################################################################
+            template<
+                typename T>
+            struct DimType<
+                T,
+                typename std::enable_if<
+                    std::is_same<T, char1>::value
+                    || std::is_same<T, double1>::value
+                    || std::is_same<T, float1>::value
+                    || std::is_same<T, int1>::value
+                    || std::is_same<T, long1>::value
+                    || std::is_same<T, longlong1>::value
+                    || std::is_same<T, short1>::value
+                    || std::is_same<T, uchar1>::value
+                    || std::is_same<T, uint1>::value
+                    || std::is_same<T, ulong1>::value
+                    || std::is_same<T, ulonglong1>::value
+                    || std::is_same<T, ushort1>::value>::type>
+            {
+                using type = alpaka::dim::Dim1;
+            };
+            //#############################################################################
+            //! The CUDA vectors 2D dimension get trait specialization.
+            //#############################################################################
+            template<
+                typename T>
+            struct DimType<
+                T,
+                typename std::enable_if<
+                    std::is_same<T, char2>::value
+                    || std::is_same<T, double2>::value
+                    || std::is_same<T, float2>::value
+                    || std::is_same<T, int2>::value
+                    || std::is_same<T, long2>::value
+                    || std::is_same<T, longlong2>::value
+                    || std::is_same<T, short2>::value
+                    || std::is_same<T, uchar2>::value
+                    || std::is_same<T, uint2>::value
+                    || std::is_same<T, ulong2>::value
+                    || std::is_same<T, ulonglong2>::value
+                    || std::is_same<T, ushort2>::value>::type>
+            {
+                using type = alpaka::dim::Dim2;
+            };
+            //#############################################################################
+            //! The CUDA vectors 3D dimension get trait specialization.
+            //#############################################################################
+            template<
+                typename T>
+            struct DimType<
+                T,
+                typename std::enable_if<
+                    std::is_same<T, char3>::value
+                    || std::is_same<T, dim3>::value
+                    || std::is_same<T, double3>::value
+                    || std::is_same<T, float3>::value
+                    || std::is_same<T, int3>::value
+                    || std::is_same<T, long3>::value
+                    || std::is_same<T, longlong3>::value
+                    || std::is_same<T, short3>::value
+                    || std::is_same<T, uchar3>::value
+                    || std::is_same<T, uint3>::value
+                    || std::is_same<T, ulong3>::value
+                    || std::is_same<T, ulonglong3>::value
+                    || std::is_same<T, ushort3>::value>::type>
+            {
+                using type = alpaka::dim::Dim3;
+            };
+            //#############################################################################
+            //! The CUDA vectors 4D dimension get trait specialization.
+            //#############################################################################
+            template<
+                typename T>
+            struct DimType<
+                T,
+                typename std::enable_if<
+                    std::is_same<T, char4>::value
+                    || std::is_same<T, double4>::value
+                    || std::is_same<T, float4>::value
+                    || std::is_same<T, int4>::value
+                    || std::is_same<T, long4>::value
+                    || std::is_same<T, longlong4>::value
+                    || std::is_same<T, short4>::value
+                    || std::is_same<T, uchar4>::value
+                    || std::is_same<T, uint4>::value
+                    || std::is_same<T, ulong4>::value
+                    || std::is_same<T, ulonglong4>::value
+                    || std::is_same<T, ushort4>::value>::type>
+            {
+                using type = alpaka::dim::Dim4;
+            };
+        }
+
+        namespace extent
+        {
+            //#############################################################################
+            //! The CUDA vectors extent get trait specialization.
+            //#############################################################################
+            template<
+                typename TExtents>
+            struct GetExtent<
+                alpaka::dim::Dim<alpaka::dim::DimT<TExtents>::value - 0u>,
+                TExtents,
+                typename std::enable_if<
+                    cuda::IsCudaBuiltinType<TExtents>::value
+                    && (alpaka::dim::DimT<TExtents>::value >= 1)>::type>
+            {
+                ALPAKA_FCT_HOST_ACC static auto getExtent(
+                    TExtents const & extents)
+                -> decltype(extents.x)
+                {
+                    return extents.x;
+                }
+            };
+            //#############################################################################
+            //! The CUDA vectors extent get trait specialization.
+            //#############################################################################
+            template<
+                typename TExtents>
+            struct GetExtent<
+                alpaka::dim::Dim<alpaka::dim::DimT<TExtents>::value-1u>,
+                TExtents,
+                typename std::enable_if<
+                    cuda::IsCudaBuiltinType<TExtents>::value
+                    && (alpaka::dim::DimT<TExtents>::value >= 2)>::type>
+            {
+                ALPAKA_FCT_HOST_ACC static auto getExtent(
+                    TExtents const & extents)
+                -> decltype(extents.y)
+                {
+                    return extents.y;
+                }
+            };
+            //#############################################################################
+            //! The CUDA vectors extent get trait specialization.
+            //#############################################################################
+            template<
+                typename TExtents>
+            struct GetExtent<
+                alpaka::dim::Dim<alpaka::dim::DimT<TExtents>::value-2u>,
+                TExtents,
+                typename std::enable_if<
+                    cuda::IsCudaBuiltinType<TExtents>::value
+                    && (alpaka::dim::DimT<TExtents>::value >= 3)>::type>
+            {
+                ALPAKA_FCT_HOST_ACC static auto getExtent(
+                    TExtents const & extents)
+                -> decltype(extents.z)
+                {
+                    return extents.z;
+                }
+            };
+            //#############################################################################
+            //! The CUDA vectors extent get trait specialization.
+            //#############################################################################
+            template<
+                typename TExtents>
+            struct GetExtent<
+                alpaka::dim::Dim<alpaka::dim::DimT<TExtents>::value-3u>,
+                TExtents,
+                typename std::enable_if<
+                    cuda::IsCudaBuiltinType<TExtents>::value
+                    && (alpaka::dim::DimT<TExtents>::value >= 4)>::type>
+            {
+                ALPAKA_FCT_HOST_ACC static auto getExtent(
+                    TExtents const & extents)
+                -> decltype(extents.w)
+                {
+                    return extents.w;
+                }
+            };
+            //#############################################################################
+            //! The CUDA vectors extent set trait specialization.
+            //#############################################################################
+            template<
+                typename TExtents>
+            struct SetExtent<
+                alpaka::dim::Dim<alpaka::dim::DimT<TExtents>::value - 0u>,
+                TExtents,
+                typename std::enable_if<
+                    cuda::IsCudaBuiltinType<TExtents>::value
+                    && (alpaka::dim::DimT<TExtents>::value >= 1)>::type>
+            {
+                template<
+                    typename TVal2>
+                ALPAKA_FCT_HOST_ACC static auto setExtent(
+                    TExtents const & extents,
+                    TVal2 const & extent)
+                -> void
+                {
+                    extents.x = extent;
+                }
+            };
+            //#############################################################################
+            //! The CUDA vectors extent set trait specialization.
+            //#############################################################################
+            template<
+                typename TExtents>
+            struct SetExtent<
+                alpaka::dim::Dim<alpaka::dim::DimT<TExtents>::value - 1u>,
+                TExtents,
+                typename std::enable_if<
+                    cuda::IsCudaBuiltinType<TExtents>::value
+                    && (alpaka::dim::DimT<TExtents>::value >= 2)>::type>
+            {
+                template<
+                    typename TVal2>
+                ALPAKA_FCT_HOST_ACC static auto setExtent(
+                    TExtents const & extents,
+                    TVal2 const & extent)
+                -> void
+                {
+                    extents.y = extent;
+                }
+            };
+            //#############################################################################
+            //! The CUDA vectors extent set trait specialization.
+            //#############################################################################
+            template<
+                typename TExtents>
+            struct SetExtent<
+                alpaka::dim::Dim<alpaka::dim::DimT<TExtents>::value - 2u>,
+                TExtents,
+                typename std::enable_if<
+                    cuda::IsCudaBuiltinType<TExtents>::value
+                    && (alpaka::dim::DimT<TExtents>::value >= 3)>::type>
+            {
+                template<
+                    typename TVal2>
+                ALPAKA_FCT_HOST_ACC static auto setExtent(
+                    TExtents const & extents,
+                    TVal2 const & extent)
+                -> void
+                {
+                    extents.z = extent;
+                }
+            };
+            //#############################################################################
+            //! The CUDA vectors extent set trait specialization.
+            //#############################################################################
+            template<
+                typename TExtents>
+            struct SetExtent<
+                alpaka::dim::Dim<alpaka::dim::DimT<TExtents>::value - 3u>,
+                TExtents,
+                typename std::enable_if<
+                    cuda::IsCudaBuiltinType<TExtents>::value
+                    && (alpaka::dim::DimT<TExtents>::value >= 4)>::type>
+            {
+                template<
+                    typename TVal2>
+                ALPAKA_FCT_HOST_ACC static auto setExtent(
+                    TExtents const & extents,
+                    TVal2 const & extent)
+                -> void
+                {
+                    extents.w = extent;
+                }
+            };
+        }
+
+        namespace offset
+        {
+            //#############################################################################
+            //! The CUDA vectors offset get trait specialization.
+            //#############################################################################
+            template<
+                typename TOffsets>
+            struct GetOffset<
+                alpaka::dim::Dim<alpaka::dim::DimT<TOffsets>::value - 0u>,
+                TOffsets,
+                typename std::enable_if<
+                    cuda::IsCudaBuiltinType<TOffsets>::value
+                    && (alpaka::dim::DimT<TOffsets>::value >= 1)>::type>
+            {
+                ALPAKA_FCT_HOST_ACC static auto getOffset(
+                    TOffsets const & offsets)
+                -> decltype(offsets.x)
+                {
+                    return offsets.x;
+                }
+            };
+            //#############################################################################
+            //! The CUDA vectors offset get trait specialization.
+            //#############################################################################
+            template<
+                typename TOffsets>
+            struct GetOffset<
+                alpaka::dim::Dim<alpaka::dim::DimT<TOffsets>::value - 1u>,
+                TOffsets,
+                typename std::enable_if<
+                    cuda::IsCudaBuiltinType<TOffsets>::value
+                    && (alpaka::dim::DimT<TOffsets>::value >= 2)>::type>
+            {
+                ALPAKA_FCT_HOST_ACC static auto getOffset(
+                    TOffsets const & offsets)
+                -> decltype(offsets.y)
+                {
+                    return offsets.y;
+                }
+            };
+            //#############################################################################
+            //! The CUDA vectors offset get trait specialization.
+            //#############################################################################
+            template<
+                typename TOffsets>
+            struct GetOffset<
+                alpaka::dim::Dim<alpaka::dim::DimT<TOffsets>::value - 2u>,
+                TOffsets,
+                typename std::enable_if<
+                    cuda::IsCudaBuiltinType<TOffsets>::value
+                    && (alpaka::dim::DimT<TOffsets>::value >= 3)>::type>
+            {
+                ALPAKA_FCT_HOST_ACC static auto getOffset(
+                    TOffsets const & offsets)
+                -> decltype(offsets.z)
+                {
+                    return offsets.z;
+                }
+            };
+            //#############################################################################
+            //! The CUDA vectors offset get trait specialization.
+            //#############################################################################
+            template<
+                typename TOffsets>
+            struct GetOffset<
+                alpaka::dim::Dim<alpaka::dim::DimT<TOffsets>::value - 3u>,
+                TOffsets,
+                typename std::enable_if<
+                    cuda::IsCudaBuiltinType<TOffsets>::value
+                    && (alpaka::dim::DimT<TOffsets>::value >= 4)>::type>
+            {
+                ALPAKA_FCT_HOST_ACC static auto getOffset(
+                    TOffsets const & offsets)
+                -> decltype(offsets.w)
+                {
+                    return offsets.w;
+                }
+            };
+            //#############################################################################
+            //! The CUDA vectors offset set trait specialization.
+            //#############################################################################
+            template<
+                typename TOffsets>
+            struct SetOffset<
+                alpaka::dim::Dim<alpaka::dim::DimT<TOffsets>::value - 0u>,
+                TOffsets,
+                typename std::enable_if<
+                    cuda::IsCudaBuiltinType<TOffsets>::value
+                    && (alpaka::dim::DimT<TOffsets>::value >= 1)>::type>
+            {
+                template<
+                    typename TVal2>
+                ALPAKA_FCT_HOST_ACC static auto setOffset(
+                    TOffsets const & offsets,
+                    TVal2 const & offset)
+                -> void
+                {
+                    offsets.x = offset;
+                }
+            };
+            //#############################################################################
+            //! The CUDA vectors offset set trait specialization.
+            //#############################################################################
+            template<
+                typename TOffsets>
+            struct SetOffset<
+                alpaka::dim::Dim<alpaka::dim::DimT<TOffsets>::value - 1u>,
+                TOffsets,
+                typename std::enable_if<
+                    cuda::IsCudaBuiltinType<TOffsets>::value
+                    && (alpaka::dim::DimT<TOffsets>::value >= 2)>::type>
+            {
+                template<
+                    typename TVal2>
+                ALPAKA_FCT_HOST_ACC static auto setOffset(
+                    TOffsets const & offsets,
+                    TVal2 const & offset)
+                -> void
+                {
+                    offsets.y = offset;
+                }
+            };
+            //#############################################################################
+            //! The CUDA vectors offset set trait specialization.
+            //#############################################################################
+            template<
+                typename TOffsets>
+            struct SetOffset<
+                alpaka::dim::Dim<alpaka::dim::DimT<TOffsets>::value - 2u>,
+                TOffsets,
+                typename std::enable_if<
+                    cuda::IsCudaBuiltinType<TOffsets>::value
+                    && (alpaka::dim::DimT<TOffsets>::value >= 3)>::type>
+            {
+                template<
+                    typename TVal2>
+                ALPAKA_FCT_HOST_ACC static auto setOffset(
+                    TOffsets const & offsets,
+                    TVal2 const & offset)
+                -> void
+                {
+                    offsets.z = offset;
+                }
+            };
+            //#############################################################################
+            //! The CUDA vectors offset set trait specialization.
+            //#############################################################################
+            template<
+                typename TOffsets>
+            struct SetOffset<
+                alpaka::dim::Dim<alpaka::dim::DimT<TOffsets>::value - 3u>,
+                TOffsets,
+                typename std::enable_if<
+                    cuda::IsCudaBuiltinType<TOffsets>::value
+                    && (alpaka::dim::DimT<TOffsets>::value >= 4)>::type>
+            {
+                template<
+                    typename TVal2>
+                ALPAKA_FCT_HOST_ACC static auto setOffset(
+                    TOffsets const & offsets,
+                    TVal2 const & offset)
+                -> void
+                {
+                    offsets.w = offset;
+                }
+            };
+        }
+    }
+}

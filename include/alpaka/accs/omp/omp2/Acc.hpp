@@ -51,31 +51,35 @@ namespace alpaka
         namespace omp
         {
             //-----------------------------------------------------------------------------
-            //! The OpenMP2 accelerator.
+            //! The CPU OpenMP2 accelerator.
             //-----------------------------------------------------------------------------
             namespace omp2
             {
                 //-----------------------------------------------------------------------------
-                //! The OpenMP2 accelerator implementation details.
+                //! The CPU OpenMP2 accelerator implementation details.
                 //-----------------------------------------------------------------------------
                 namespace detail
                 {
-                    class ExecOmp2;
+                    template<
+                        typename TDim>
+                    class ExecCpuOmp2;
 
                     //#############################################################################
-                    //! The OpenMP2 accelerator.
+                    //! The CPU OpenMP2 accelerator.
                     //!
                     //! This accelerator allows parallel kernel execution on a cpu device.
                     // \TODO: Offloading?
                     //! It uses OpenMP2 to implement the parallelism.
                     //#############################################################################
-                    class AccOmp2 :
-                        protected alpaka::workdiv::BasicWorkDiv,
-                        protected omp::detail::IdxOmp,
+                    template<
+                        typename TDim>
+                    class AccCpuOmp2 :
+                        protected alpaka::workdiv::BasicWorkDiv<TDim>,
+                        protected omp::detail::IdxOmp<TDim>,
                         protected omp::detail::AtomicOmp
                     {
                     public:
-                        friend class ::alpaka::accs::omp::omp2::detail::ExecOmp2;
+                        friend class ::alpaka::accs::omp::omp2::detail::ExecCpuOmp2<TDim>;
 
                     private:
                         //-----------------------------------------------------------------------------
@@ -83,47 +87,46 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         template<
                             typename TWorkDiv>
-                        ALPAKA_FCT_ACC_NO_CUDA AccOmp2(
+                        ALPAKA_FCT_ACC_NO_CUDA AccCpuOmp2(
                             TWorkDiv const & workDiv) :
-                                alpaka::workdiv::BasicWorkDiv(workDiv),
-                                IdxOmp(m_v3uiGridBlockIdx),
+                                alpaka::workdiv::BasicWorkDiv<TDim>(workDiv),
+                                omp::detail::IdxOmp<TDim>(m_vuiGridBlockIdx),
                                 AtomicOmp(),
-                                m_v3uiGridBlockIdx(Vec3<>::zeros())
+                                m_vuiGridBlockIdx(Vec<TDim>::zeros())
                         {}
 
                     public:
                         //-----------------------------------------------------------------------------
                         //! Copy constructor.
                         //-----------------------------------------------------------------------------
-                        ALPAKA_FCT_ACC_NO_CUDA AccOmp2(AccOmp2 const &) = delete;
+                        ALPAKA_FCT_ACC_NO_CUDA AccCpuOmp2(AccCpuOmp2 const &) = delete;
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                         //-----------------------------------------------------------------------------
                         //! Move constructor.
                         //-----------------------------------------------------------------------------
-                        ALPAKA_FCT_ACC_NO_CUDA AccOmp2(AccOmp2 &&) = delete;
+                        ALPAKA_FCT_ACC_NO_CUDA AccCpuOmp2(AccCpuOmp2 &&) = delete;
 #endif
                         //-----------------------------------------------------------------------------
                         //! Copy assignment.
                         //-----------------------------------------------------------------------------
-                        ALPAKA_FCT_ACC_NO_CUDA auto operator=(AccOmp2 const &) -> AccOmp2 & = delete;
+                        ALPAKA_FCT_ACC_NO_CUDA auto operator=(AccCpuOmp2 const &) -> AccCpuOmp2 & = delete;
                         //-----------------------------------------------------------------------------
                         //! Destructor.
                         //-----------------------------------------------------------------------------
-                        ALPAKA_FCT_ACC_NO_CUDA virtual ~AccOmp2() noexcept = default;
+                        ALPAKA_FCT_ACC_NO_CUDA virtual ~AccCpuOmp2() noexcept = default;
 
                         //-----------------------------------------------------------------------------
                         //! \return The requested indices.
                         //-----------------------------------------------------------------------------
                         template<
                             typename TOrigin,
-                            typename TUnit,
-                            typename TDim = dim::Dim3>
+                            typename TUnit>
                         ALPAKA_FCT_ACC_NO_CUDA auto getIdx() const
                         -> Vec<TDim>
                         {
-                            return idx::getIdx<TOrigin, TUnit, TDim>(
-                                *static_cast<IdxOmp const *>(this),
-                                *static_cast<workdiv::BasicWorkDiv const *>(this));
+                            return idx::getIdx<TOrigin, TUnit>(
+                                *static_cast<omp::detail::IdxOmp<TDim> const *>(this),
+                                *static_cast<workdiv::BasicWorkDiv<TDim> const *>(this));
                         }
 
                         //-----------------------------------------------------------------------------
@@ -131,13 +134,12 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         template<
                             typename TOrigin,
-                            typename TUnit,
-                            typename TDim = dim::Dim3>
+                            typename TUnit>
                         ALPAKA_FCT_ACC_NO_CUDA auto getWorkDiv() const
                         -> Vec<TDim>
                         {
-                            return workdiv::getWorkDiv<TOrigin, TUnit, TDim>(
-                                *static_cast<workdiv::BasicWorkDiv const *>(this));
+                            return workdiv::getWorkDiv<TOrigin, TUnit>(
+                                *static_cast<workdiv::BasicWorkDiv<TDim> const *>(this));
                         }
 
                         //-----------------------------------------------------------------------------
@@ -207,7 +209,7 @@ namespace alpaka
 
                     private:
                         // getIdx
-                        Vec3<> mutable m_v3uiGridBlockIdx;                         //!< The index of the currently executed block.
+                        Vec<TDim> mutable m_vuiGridBlockIdx;                        //!< The index of the currently executed block.
 
                         // allocBlockSharedMem
                         std::vector<
@@ -220,32 +222,36 @@ namespace alpaka
             }
         }
     }
-
-    using AccOmp2 = accs::omp::omp2::detail::AccOmp2;
+    
+    template<
+        typename TDim>
+    using AccCpuOmp2 = accs::omp::omp2::detail::AccCpuOmp2<TDim>;
 
     namespace traits
     {
         namespace acc
         {
             //#############################################################################
-            //! The OpenMP2 accelerator accelerator type trait specialization.
+            //! The CPU OpenMP2 accelerator accelerator type trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct AccType<
-                accs::omp::omp2::detail::AccOmp2>
+                accs::omp::omp2::detail::AccCpuOmp2<TDim>>
             {
-                using type = accs::omp::omp2::detail::AccOmp2;
+                using type = accs::omp::omp2::detail::AccCpuOmp2<TDim>;
             };
             //#############################################################################
-            //! The OpenMP2 accelerator device properties get trait specialization.
+            //! The CPU OpenMP2 accelerator device properties get trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct GetAccDevProps<
-                accs::omp::omp2::detail::AccOmp2>
+                accs::omp::omp2::detail::AccCpuOmp2<TDim>>
             {
                 ALPAKA_FCT_HOST static auto getAccDevProps(
                     devs::cpu::detail::DevCpu const & dev)
-                -> alpaka::acc::AccDevProps
+                -> alpaka::acc::AccDevProps<TDim>
                 {
                     boost::ignore_unused(dev);
 
@@ -260,40 +266,80 @@ namespace alpaka
                     ::omp_set_num_threads(1024);
                     UInt const uiBlockThreadsCountMax(static_cast<UInt>(::omp_get_max_threads()));
 #endif
-                    return alpaka::acc::AccDevProps(
+                    return {
                         // m_uiMultiProcessorCount
                         1u,
                         // m_uiBlockThreadsCountMax
                         uiBlockThreadsCountMax,
-                        // m_v3uiBlockThreadExtentsMax
-                        Vec3<>::all(uiBlockThreadsCountMax),
-                        // m_v3uiGridBlockExtentsMax
-                        Vec3<>::all(std::numeric_limits<Vec3<>::Val>::max()));
+                        // m_vuiBlockThreadExtentsMax
+                        Vec<TDim>::all(uiBlockThreadsCountMax),
+                        // m_vuiGridBlockExtentsMax
+                        Vec<TDim>::all(std::numeric_limits<typename Vec<TDim>::Val>::max())};
                 }
             };
             //#############################################################################
-            //! The OpenMP2 accelerator name trait specialization.
+            //! The CPU OpenMP2 accelerator name trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct GetAccName<
-                accs::omp::omp2::detail::AccOmp2>
+                accs::omp::omp2::detail::AccCpuOmp2<TDim>>
             {
                 ALPAKA_FCT_HOST_ACC static auto getAccName()
                 -> std::string
                 {
-                    return "AccOmp2";
+                    return "AccCpuOmp2<" + std::to_string(TDim::value) + ">";
                 }
+            };
+        }
+
+        namespace dev
+        {
+            //#############################################################################
+            //! The CPU OpenMP2 accelerator device type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim>
+            struct DevType<
+                accs::omp::omp2::detail::AccCpuOmp2<TDim>>
+            {
+                using type = devs::cpu::detail::DevCpu;
+            };
+            //#############################################################################
+            //! The CPU OpenMP2 accelerator device type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim>
+            struct DevManType<
+                accs::omp::omp2::detail::AccCpuOmp2<TDim>>
+            {
+                using type = devs::cpu::detail::DevManCpu;
+            };
+        }
+
+        namespace dim
+        {
+            //#############################################################################
+            //! The CPU OpenMP2 accelerator dimension getter trait specialization.
+            //#############################################################################
+            template<
+                typename TDim>
+            struct DimType<
+                accs::omp::omp2::detail::AccCpuOmp2<TDim>>
+            {
+                using type = TDim;
             };
         }
 
         namespace event
         {
             //#############################################################################
-            //! The OpenMP2 accelerator event type trait specialization.
+            //! The CPU OpenMP2 accelerator event type trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct EventType<
-                accs::omp::omp2::detail::AccOmp2>
+                accs::omp::omp2::detail::AccCpuOmp2<TDim>>
             {
                 using type = devs::cpu::detail::EventCpu;
             };
@@ -302,46 +348,26 @@ namespace alpaka
         namespace exec
         {
             //#############################################################################
-            //! The OpenMP2 accelerator executor type trait specialization.
+            //! The CPU OpenMP2 accelerator executor type trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct ExecType<
-                accs::omp::omp2::detail::AccOmp2>
+                accs::omp::omp2::detail::AccCpuOmp2<TDim>>
             {
-                using type = accs::omp::omp2::detail::ExecOmp2;
-            };
-        }
-
-        namespace dev
-        {
-            //#############################################################################
-            //! The OpenMP2 accelerator device type trait specialization.
-            //#############################################################################
-            template<>
-            struct DevType<
-                accs::omp::omp2::detail::AccOmp2>
-            {
-                using type = devs::cpu::detail::DevCpu;
-            };
-            //#############################################################################
-            //! The OpenMP2 accelerator device type trait specialization.
-            //#############################################################################
-            template<>
-            struct DevManType<
-                accs::omp::omp2::detail::AccOmp2>
-            {
-                using type = devs::cpu::detail::DevManCpu;
+                using type = accs::omp::omp2::detail::ExecCpuOmp2<TDim>;
             };
         }
 
         namespace stream
         {
             //#############################################################################
-            //! The OpenMP2 accelerator stream type trait specialization.
+            //! The CPU OpenMP2 accelerator stream type trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct StreamType<
-                accs::omp::omp2::detail::AccOmp2>
+                accs::omp::omp2::detail::AccCpuOmp2<TDim>>
             {
                 using type = devs::cpu::detail::StreamCpu;
             };

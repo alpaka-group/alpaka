@@ -45,7 +45,7 @@ namespace alpaka
                     namespace detail
                     {
                         //#############################################################################
-                        //! The CUDA Xor random number generator.
+                        //! The GPU CUDA Xor random number generator.
                         //#############################################################################
                         class Xor
                         {
@@ -75,14 +75,14 @@ namespace alpaka
                     namespace detail
                     {
                         //#############################################################################
-                        //! The CUDA random number floating point normal distribution.
+                        //! The GPU CUDA random number floating point normal distribution.
                         //#############################################################################
                         template<
                             typename T>
                         class NormalReal;
 
                         //#############################################################################
-                        //! The CUDA random number float normal distribution.
+                        //! The GPU CUDA random number float normal distribution.
                         //#############################################################################
                         template<>
                         class NormalReal<
@@ -107,7 +107,7 @@ namespace alpaka
                             }
                         };
                         //#############################################################################
-                        //! The CUDA random number float normal distribution.
+                        //! The GPU CUDA random number float normal distribution.
                         //#############################################################################
                         template<>
                         class NormalReal<
@@ -133,14 +133,14 @@ namespace alpaka
                         };
 
                         //#############################################################################
-                        //! The CUDA random number floating point uniform distribution.
+                        //! The GPU CUDA random number floating point uniform distribution.
                         //#############################################################################
                         template<
                             typename T>
                         class UniformReal;
 
                         //#############################################################################
-                        //! The CUDA random number float uniform distribution.
+                        //! The GPU CUDA random number float uniform distribution.
                         //#############################################################################
                         template<>
                         class UniformReal<
@@ -169,7 +169,7 @@ namespace alpaka
                             }
                         };
                         //#############################################################################
-                        //! The CUDA random number float uniform distribution.
+                        //! The GPU CUDA random number float uniform distribution.
                         //#############################################################################
                         template<>
                         class UniformReal<
@@ -199,14 +199,14 @@ namespace alpaka
                         };
 
                         //#############################################################################
-                        //! The CUDA random number integer uniform distribution.
+                        //! The GPU CUDA random number integer uniform distribution.
                         //#############################################################################
                         template<
                             typename T>
                         class UniformUint;
 
                         //#############################################################################
-                        //! The CUDA random number unsigned integer uniform distribution.
+                        //! The GPU CUDA random number unsigned integer uniform distribution.
                         //#############################################################################
                         template<>
                         class UniformUint<
@@ -243,7 +243,7 @@ namespace alpaka
             namespace distribution
             {
                 //#############################################################################
-                //! The CUDA random number float normal distribution get trait specialization.
+                //! The GPU CUDA random number float normal distribution get trait specialization.
                 //#############################################################################
                 template<
                     typename TAcc,

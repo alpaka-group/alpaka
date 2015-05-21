@@ -52,30 +52,34 @@ namespace alpaka
     namespace accs
     {
         //-----------------------------------------------------------------------------
-        //! The threads accelerator.
+        //! The CPU threads accelerator.
         //-----------------------------------------------------------------------------
         namespace threads
         {
             //-----------------------------------------------------------------------------
-            //! The threads accelerator implementation details.
+            //! The CPU threads accelerator implementation details.
             //-----------------------------------------------------------------------------
             namespace detail
             {
-                class ExecThreads;
+                template<
+                    typename TDim>
+                class ExecCpuThreads;
 
                 //#############################################################################
-                //! The threads accelerator.
+                //! The CPU threads accelerator.
                 //!
                 //! This accelerator allows parallel kernel execution on a cpu device.
                 //! It uses C++11 std::threads to implement the parallelism.
                 //#############################################################################
-                class AccThreads :
-                    protected workdiv::BasicWorkDiv,
-                    protected IdxThreads,
+                template<
+                    typename TDim>
+                class AccCpuThreads :
+                    protected workdiv::BasicWorkDiv<TDim>,
+                    protected IdxThreads<TDim>,
                     protected AtomicThreads
                 {
                 public:
-                    friend class ::alpaka::accs::threads::detail::ExecThreads;
+                    friend class ::alpaka::accs::threads::detail::ExecCpuThreads<TDim>;
 
                 private:
                     //-----------------------------------------------------------------------------
@@ -83,52 +87,47 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     template<
                         typename TWorkDiv>
-                    ALPAKA_FCT_ACC_NO_CUDA AccThreads(
+                    ALPAKA_FCT_ACC_NO_CUDA AccCpuThreads(
                         TWorkDiv const & workDiv) :
-                            workdiv::BasicWorkDiv(workDiv),
-                            IdxThreads(m_mThreadsToIndices, m_v3uiGridBlockIdx),
+                            workdiv::BasicWorkDiv<TDim>(workDiv),
+                            IdxThreads<TDim>(m_mThreadsToIndices, m_vuiGridBlockIdx),
                             AtomicThreads(),
-                            m_v3uiGridBlockIdx(Vec3<>::zeros()),
-                            m_uiNumThreadsPerBlock(workdiv::getWorkDiv<Block, Threads, dim::Dim1>(workDiv)[0u])
+                            m_vuiGridBlockIdx(Vec<TDim>::zeros()),
+                            m_uiNumThreadsPerBlock(workdiv::getWorkDiv<Block, Threads>(workDiv).prod())
                     {}
 
                 public:
                     //-----------------------------------------------------------------------------
                     //! Copy constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA AccThreads(AccThreads const &) = delete;
-    #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
+                    ALPAKA_FCT_ACC_NO_CUDA AccCpuThreads(AccCpuThreads const &) = delete;
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                     //-----------------------------------------------------------------------------
                     //! Move constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA AccThreads(AccThreads &&) = delete;
-    #endif
+                    ALPAKA_FCT_ACC_NO_CUDA AccCpuThreads(AccCpuThreads &&) = delete;
+#endif
                     //-----------------------------------------------------------------------------
                     //! Copy assignment.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA auto operator=(AccThreads const &) -> AccThreads & = delete;
+                    ALPAKA_FCT_ACC_NO_CUDA auto operator=(AccCpuThreads const &) -> AccCpuThreads & = delete;
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-    #if BOOST_COMP_INTEL     // threads/AccThreads.hpp(134): error : the declared exception specification is incompatible with the generated one
-                    ALPAKA_FCT_ACC_NO_CUDA virtual ~AccThreads() = default;
-    #else
-                    ALPAKA_FCT_ACC_NO_CUDA virtual ~AccThreads() noexcept = default;
-    #endif
+                    ALPAKA_FCT_ACC_NO_CUDA virtual ~AccCpuThreads() noexcept = default;
 
                     //-----------------------------------------------------------------------------
                     //! \return The requested indices.
                     //-----------------------------------------------------------------------------
                     template<
                         typename TOrigin,
-                        typename TUnit,
-                        typename TDim = dim::Dim3>
+                        typename TUnit>
                     ALPAKA_FCT_ACC_NO_CUDA auto getIdx() const
                     -> Vec<TDim>
                     {
-                        return idx::getIdx<TOrigin, TUnit, TDim>(
-                            *static_cast<IdxThreads const *>(this),
-                            *static_cast<workdiv::BasicWorkDiv const *>(this));
+                        return idx::getIdx<TOrigin, TUnit>(
+                            *static_cast<IdxThreads<TDim> const *>(this),
+                            *static_cast<workdiv::BasicWorkDiv<TDim> const *>(this));
                     }
 
                     //-----------------------------------------------------------------------------
@@ -136,13 +135,12 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     template<
                         typename TOrigin,
-                        typename TUnit,
-                        typename TDim = dim::Dim3>
+                        typename TUnit>
                     ALPAKA_FCT_ACC_NO_CUDA auto getWorkDiv() const
                     -> Vec<TDim>
                     {
-                        return workdiv::getWorkDiv<TOrigin, TUnit, TDim>(
-                            *static_cast<workdiv::BasicWorkDiv const *>(this));
+                        return workdiv::getWorkDiv<TOrigin, TUnit>(
+                            *static_cast<workdiv::BasicWorkDiv<TDim> const *>(this));
                     }
 
                     //-----------------------------------------------------------------------------
@@ -245,55 +243,59 @@ namespace alpaka
 
                 private:
                     // getIdx
-                    detail::ThreadIdToIdxMap mutable m_mThreadsToIndices;       //!< The mapping of thread id's to indices.
-                    Vec3<> mutable m_v3uiGridBlockIdx;                          //!< The index of the currently executed block.
+                    typename IdxThreads<TDim>::ThreadIdToIdxMap mutable m_mThreadsToIndices;    //!< The mapping of thread id's to indices.
+                    Vec<TDim> mutable m_vuiGridBlockIdx;                            //!< The index of the currently executed block.
 
                     // syncBlockThreads
-                    UInt const m_uiNumThreadsPerBlock;                          //!< The number of threads per block the barrier has to wait for.
+                    UInt const m_uiNumThreadsPerBlock;                              //!< The number of threads per block the barrier has to wait for.
                     std::map<
                         std::thread::id,
-                        UInt> mutable m_mThreadsToBarrier;                      //!< The mapping of thread id's to their current barrier.
+                        UInt> mutable m_mThreadsToBarrier;                          //!< The mapping of thread id's to their current barrier.
                     std::mutex mutable m_mtxBarrier;
-                    detail::ThreadBarrier mutable m_abarSyncThreads[2];         //!< The barriers for the synchronization of threads.
+                    detail::ThreadBarrier mutable m_abarSyncThreads[2];             //!< The barriers for the synchronization of threads.
                     //!< We have to keep the current and the last barrier because one of the threads can reach the next barrier before a other thread was wakeup from the last one and has checked if it can run.
 
                     // allocBlockSharedMem
-                    std::thread::id mutable m_idMasterThread;                   //!< The id of the master thread.
+                    std::thread::id mutable m_idMasterThread;                       //!< The id of the master thread.
                     std::vector<
-                        std::unique_ptr<uint8_t[]>> mutable m_vvuiSharedMem;    //!< Block shared memory.
+                        std::unique_ptr<uint8_t[]>> mutable m_vvuiSharedMem;        //!< Block shared memory.
 
                     // getBlockSharedExternMem
-                    std::unique_ptr<uint8_t[]> mutable m_vuiExternalSharedMem;  //!< External block shared memory.
+                    std::unique_ptr<uint8_t[]> mutable m_vuiExternalSharedMem;      //!< External block shared memory.
                 };
             }
         }
     }
 
-    using AccThreads = accs::threads::detail::AccThreads;
+    template<
+        typename TDim>
+    using AccCpuThreads = accs::threads::detail::AccCpuThreads<TDim>;
 
     namespace traits
     {
         namespace acc
         {
             //#############################################################################
-            //! The threads accelerator accelerator type trait specialization.
+            //! The CPU threads accelerator accelerator type trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct AccType<
-                accs::threads::detail::AccThreads>
+                accs::threads::detail::AccCpuThreads<TDim>>
             {
-                using type = accs::threads::detail::AccThreads;
+                using type = accs::threads::detail::AccCpuThreads<TDim>;
             };
             //#############################################################################
-            //! The threads accelerator device properties get trait specialization.
+            //! The CPU threads accelerator device properties get trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct GetAccDevProps<
-                accs::threads::detail::AccThreads>
+                accs::threads::detail::AccCpuThreads<TDim>>
             {
                 ALPAKA_FCT_HOST static auto getAccDevProps(
                     devs::cpu::detail::DevCpu const & dev)
-                -> alpaka::acc::AccDevProps
+                -> alpaka::acc::AccDevProps<TDim>
                 {
                     boost::ignore_unused(dev);
 
@@ -301,43 +303,83 @@ namespace alpaka
                     UInt const uiBlockThreadsCountMax(8u);
 #else
                     // \TODO: Magic number. What is the maximum? Just set a reasonable value? There is a implementation defined maximum where the creation of a new thread crashes.
-                    // std::thread::hardware_concurrency  can return 0, so a default for this case?
-                    UInt const uiBlockThreadsCountMax(std::thread::hardware_concurrency() * 8u);
+                    // std::thread::hardware_concurrency can return 0, so 1 is the default case?
+                    UInt const uiBlockThreadsCountMax(std::max(1u, std::thread::hardware_concurrency() * 8u));
 #endif
-                    return alpaka::acc::AccDevProps(
+                    return {
                         // m_uiMultiProcessorCount
                         1u,
                         // m_uiBlockThreadsCountMax
                         uiBlockThreadsCountMax,
-                        // m_v3uiBlockThreadExtentsMax
-                        Vec3<>::all(uiBlockThreadsCountMax),
-                        // m_v3uiGridBlockExtentsMax
-                        Vec3<>::all(std::numeric_limits<Vec3<>::Val>::max()));
+                        // m_vuiBlockThreadExtentsMax
+                        Vec<TDim>::all(uiBlockThreadsCountMax),
+                        // m_vuiGridBlockExtentsMax
+                        Vec<TDim>::all(std::numeric_limits<typename Vec<TDim>::Val>::max())};
                 }
             };
             //#############################################################################
-            //! The threads accelerator name trait specialization.
+            //! The CPU threads accelerator name trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct GetAccName<
-                accs::threads::detail::AccThreads>
+                accs::threads::detail::AccCpuThreads<TDim>>
             {
                 ALPAKA_FCT_HOST_ACC static auto getAccName()
                 -> std::string
                 {
-                    return "AccThreads";
+                    return "AccCpuThreads<" + std::to_string(TDim::value) + ">";
                 }
+            };
+        }
+
+        namespace dev
+        {
+            //#############################################################################
+            //! The CPU threads accelerator device type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim>
+            struct DevType<
+                accs::threads::detail::AccCpuThreads<TDim>>
+            {
+                using type = devs::cpu::detail::DevCpu;
+            };
+            //#############################################################################
+            //! The CPU threads accelerator device type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim>
+            struct DevManType<
+                accs::threads::detail::AccCpuThreads<TDim>>
+            {
+                using type = devs::cpu::detail::DevManCpu;
+            };
+        }
+
+        namespace dim
+        {
+            //#############################################################################
+            //! The CPU threads accelerator dimension getter trait specialization.
+            //#############################################################################
+            template<
+                typename TDim>
+            struct DimType<
+                accs::threads::detail::AccCpuThreads<TDim>>
+            {
+                using type = TDim;
             };
         }
 
         namespace event
         {
             //#############################################################################
-            //! The threads accelerator event type trait specialization.
+            //! The CPU threads accelerator event type trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct EventType<
-                accs::threads::detail::AccThreads>
+                accs::threads::detail::AccCpuThreads<TDim>>
             {
                 using type = devs::cpu::detail::EventCpu;
             };
@@ -346,46 +388,26 @@ namespace alpaka
         namespace exec
         {
             //#############################################################################
-            //! The threads accelerator executor type trait specialization.
+            //! The CPU threads accelerator executor type trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct ExecType<
-                accs::threads::detail::AccThreads>
+                accs::threads::detail::AccCpuThreads<TDim>>
             {
-                using type = accs::threads::detail::ExecThreads;
-            };
-        }
-
-        namespace dev
-        {
-            //#############################################################################
-            //! The threads accelerator device type trait specialization.
-            //#############################################################################
-            template<>
-            struct DevType<
-                accs::threads::detail::AccThreads>
-            {
-                using type = devs::cpu::detail::DevCpu;
-            };
-            //#############################################################################
-            //! The threads accelerator device type trait specialization.
-            //#############################################################################
-            template<>
-            struct DevManType<
-                accs::threads::detail::AccThreads>
-            {
-                using type = devs::cpu::detail::DevManCpu;
+                using type = accs::threads::detail::ExecCpuThreads<TDim>;
             };
         }
 
         namespace stream
         {
             //#############################################################################
-            //! The threads accelerator stream type trait specialization.
+            //! The CPU threads accelerator stream type trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct StreamType<
-                accs::threads::detail::AccThreads>
+                accs::threads::detail::AccCpuThreads<TDim>>
             {
                 using type = devs::cpu::detail::StreamCpu;
             };

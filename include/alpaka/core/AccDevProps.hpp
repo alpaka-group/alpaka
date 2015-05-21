@@ -33,6 +33,8 @@ namespace alpaka
         //#############################################################################
         //! The acceleration properties on a device.
         //#############################################################################
+        template<
+            typename TDim>
         struct AccDevProps
         {
             //-----------------------------------------------------------------------------
@@ -41,18 +43,18 @@ namespace alpaka
             AccDevProps(
                 UInt const & uiMultiProcessorCount,
                 UInt const & uiBlockThreadsCountMax,
-                Vec3<> const & v3uiBlockThreadExtentsMax,
-                Vec3<> const & v3uiGridBlockExtentsMax) :
+                Vec<TDim> const & vuiBlockThreadExtentsMax,
+                Vec<TDim> const & vuiGridBlockExtentsMax) :
                     m_uiMultiProcessorCount(uiMultiProcessorCount),
                     m_uiBlockThreadsCountMax(uiBlockThreadsCountMax),
-                    m_v3uiBlockThreadExtentsMax(v3uiBlockThreadExtentsMax),
-                    m_v3uiGridBlockExtentsMax(v3uiGridBlockExtentsMax)
+                    m_vuiBlockThreadExtentsMax(vuiBlockThreadExtentsMax),
+                    m_vuiGridBlockExtentsMax(vuiGridBlockExtentsMax)
             {}
 
             UInt m_uiMultiProcessorCount;           //!< The number of multiprocessors.
             UInt m_uiBlockThreadsCountMax;          //!< The maximum number of threads in a block.
-            Vec3<> m_v3uiBlockThreadExtentsMax;     //!< The maximum number of threads in each dimension of a block.
-            Vec3<> m_v3uiGridBlockExtentsMax;       //!< The maximum number of blocks in each dimension of the grid.
+            Vec<TDim> m_vuiBlockThreadExtentsMax;   //!< The maximum number of threads in each dimension of a block.
+            Vec<TDim> m_vuiGridBlockExtentsMax;     //!< The maximum number of blocks in each dimension of the grid.
             //std::size_t m_uiSharedMemSizeBytes;   //!< Size of the available block shared memory in bytes.
         };
     }

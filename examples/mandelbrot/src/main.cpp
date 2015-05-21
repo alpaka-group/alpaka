@@ -155,7 +155,11 @@ public:
         std::uint32_t const & uiMaxIterations) const
     -> void
     {
-        auto const uiGridThreadIdx(alpaka::subVecEnd<alpaka::dim::Dim2>(acc.template getIdx<alpaka::Grid, alpaka::Threads>()));
+        static_assert(
+            alpaka::dim::DimT<TAcc>::value == 2,
+            "The MandelbrotKernel expects 2-dimensional indices!");
+
+        auto const uiGridThreadIdx(acc.template getIdx<alpaka::Grid, alpaka::Threads>());
         auto const & uiGridThreadIdxX(uiGridThreadIdx[1u]);
         auto const & uiGridThreadIdxY(uiGridThreadIdx[0u]);
 
@@ -396,8 +400,10 @@ struct MandelbrotKernelTester
             static_cast<alpaka::Vec2<>::Val>(uiNumCols));
 
         // Let alpaka calculate good block and grid sizes given our full problem extents.
-        alpaka::workdiv::BasicWorkDiv const workDiv(
-            alpaka::workdiv::getValidWorkDiv<boost::mpl::vector<TAcc>>(v2uiExtents, false));
+        alpaka::workdiv::BasicWorkDiv<alpaka::dim::Dim2> const workDiv(
+            alpaka::workdiv::getValidWorkDiv<boost::mpl::vector<TAcc>>(
+                v2uiExtents,
+                false));
 
         std::cout
             << "MandelbrotKernelTester("
@@ -467,7 +473,7 @@ auto main()
         std::cout << std::endl;
 
         // Logs the enabled accelerators.
-        alpaka::accs::writeEnabledAccs(std::cout);
+        alpaka::accs::writeEnabledAccs<alpaka::dim::Dim2>(std::cout);
 
         std::cout << std::endl;
 
@@ -485,7 +491,8 @@ auto main()
             std::cout << std::endl;
 
             // Execute the kernel on all enabled accelerators.
-            alpaka::forEachType<alpaka::accs::EnabledAccs>(
+            alpaka::forEachType<
+                alpaka::accs::EnabledAccs<alpaka::dim::Dim2>>(
                     mandelbrotTester,
                     uiSize,
                     uiSize,

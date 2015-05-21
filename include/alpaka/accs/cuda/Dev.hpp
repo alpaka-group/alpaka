@@ -41,11 +41,13 @@ namespace alpaka
         {
             namespace detail
             {
-                class AccCuda;
+                template<
+                    typename TDim>
+                class AccGpuCuda;
                 class DevManCuda;
 
                 //#############################################################################
-                //! The CUDA accelerator device handle.
+                //! The GPU CUDA accelerator device handle.
                 //#############################################################################
                 class DevCuda
                 {
@@ -92,7 +94,7 @@ namespace alpaka
                 };
 
                 //#############################################################################
-                //! The CUDA accelerator device manager.
+                //! The GPU CUDA accelerator device manager.
                 //#############################################################################
                 class DevManCuda
                 {
@@ -290,23 +292,10 @@ namespace alpaka
 
     namespace traits
     {
-        namespace acc
-        {
-            //#############################################################################
-            //! The CUDA accelerator device accelerator type trait specialization.
-            //#############################################################################
-            template<>
-            struct AccType<
-                accs::cuda::detail::DevCuda>
-            {
-                using type = accs::cuda::detail::AccCuda;
-            };
-        }
-
         namespace dev
         {
             //#############################################################################
-            //! The CUDA accelerator device device type trait specialization.
+            //! The GPU CUDA accelerator device device type trait specialization.
             //#############################################################################
             template<>
             struct DevType<
@@ -315,7 +304,7 @@ namespace alpaka
                 using type = accs::cuda::detail::DevCuda;
             };
             //#############################################################################
-            //! The CUDA accelerator device manager device type trait specialization.
+            //! The GPU CUDA accelerator device manager device type trait specialization.
             //#############################################################################
             template<>
             struct DevType<
@@ -325,7 +314,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The CUDA accelerator device device get trait specialization.
+            //! The GPU CUDA accelerator device device get trait specialization.
             //#############################################################################
             template<>
             struct GetDev<
@@ -340,7 +329,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The CUDA accelerator device name get trait specialization.
+            //! The GPU CUDA accelerator device name get trait specialization.
             //#############################################################################
             template<>
             struct GetName<
@@ -360,7 +349,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The CUDA accelerator device available memory get trait specialization.
+            //! The GPU CUDA accelerator device available memory get trait specialization.
             //#############################################################################
             template<>
             struct GetMemBytes<
@@ -389,7 +378,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The CUDA accelerator device free memory get trait specialization.
+            //! The GPU CUDA accelerator device free memory get trait specialization.
             //#############################################################################
             template<>
             struct GetFreeMemBytes<
@@ -417,7 +406,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The CUDA accelerator device reset trait specialization.
+            //! The GPU CUDA accelerator device reset trait specialization.
             //#############################################################################
             template<>
             struct Reset<
@@ -436,7 +425,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The CUDA accelerator device device manager type trait specialization.
+            //! The GPU CUDA accelerator device device manager type trait specialization.
             //#############################################################################
             template<>
             struct DevManType<
@@ -445,7 +434,7 @@ namespace alpaka
                 using type = accs::cuda::detail::DevManCuda;
             };
             //#############################################################################
-            //! The CUDA accelerator device manager device manager type trait specialization.
+            //! The GPU CUDA accelerator device manager device manager type trait specialization.
             //#############################################################################
             template<>
             struct DevManType<
@@ -458,7 +447,7 @@ namespace alpaka
         namespace stream
         {
             //#############################################################################
-            //! The CUDA accelerator device stream type trait specialization.
+            //! The GPU CUDA accelerator device stream type trait specialization.
             //#############################################################################
             template<>
             struct StreamType<
@@ -471,7 +460,7 @@ namespace alpaka
         namespace wait
         {
             //#############################################################################
-            //! The CUDA accelerator thread device wait specialization.
+            //! The GPU CUDA accelerator thread device wait specialization.
             //#############################################################################
             template<>
             struct CurrentThreadWaitFor<

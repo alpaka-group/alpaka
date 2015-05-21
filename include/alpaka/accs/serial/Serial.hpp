@@ -21,9 +21,9 @@
 
 #pragma once
 
-#include <alpaka/accs/serial/Acc.hpp>       // AccSerial
+#include <alpaka/accs/serial/Acc.hpp>       // AccCpuSerial
 #include <alpaka/accs/serial/Atomic.hpp>    // AtomicSerial
-#include <alpaka/accs/serial/Exec.hpp>      // ExecSerial
+#include <alpaka/accs/serial/Exec.hpp>      // ExecCpuSerial
 #include <alpaka/accs/serial/Idx.hpp>       // IdxSerial
 #include <alpaka/devs/cpu/Mem.hpp>          // Copy
 #include <alpaka/devs/cpu/Rand.hpp>         // rand

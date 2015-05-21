@@ -29,8 +29,9 @@
 #include <alpaka/traits/Stream.hpp>         // StreamType
 
 // Implementation details.
-#include <alpaka/accs/serial/Acc.hpp>       // AccSerial
+#include <alpaka/accs/serial/Acc.hpp>       // AccCpuSerial
 #include <alpaka/core/BasicWorkDiv.hpp>     // workdiv::BasicWorkDiv
+#include <alpaka/core/NdLoop.hpp>           // NdLoop
 #include <alpaka/devs/cpu/Dev.hpp>          // DevCpu
 #include <alpaka/devs/cpu/Event.hpp>        // EventCpu
 #include <alpaka/devs/cpu/Stream.hpp>       // StreamCpu
@@ -53,10 +54,12 @@ namespace alpaka
             namespace detail
             {
                 //#############################################################################
-                //! The serial accelerator executor.
+                //! The CPU serial executor.
                 //#############################################################################
-                class ExecSerial :
-                    private AccSerial
+                template<
+                    typename TDim>
+                class ExecCpuSerial :
+                    private AccCpuSerial<TDim>
                 {
                 public:
                     //-----------------------------------------------------------------------------
@@ -64,10 +67,10 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     template<
                         typename TWorkDiv>
-                    ALPAKA_FCT_HOST ExecSerial(
+                    ALPAKA_FCT_HOST ExecCpuSerial(
                         TWorkDiv const & workDiv,
                         devs::cpu::detail::StreamCpu & stream) :
-                            AccSerial(workDiv),
+                            AccCpuSerial<TDim>(workDiv),
                             m_Stream(stream)
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -75,9 +78,9 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Copy constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST ExecSerial(
-                        ExecSerial const & other) :
-                            AccSerial(static_cast<alpaka::workdiv::BasicWorkDiv const &>(other)),
+                    ALPAKA_FCT_HOST ExecCpuSerial(
+                        ExecCpuSerial const & other) :
+                            AccCpuSerial<TDim>(static_cast<alpaka::workdiv::BasicWorkDiv<TDim> const &>(other)),
                             m_Stream(other.m_Stream)
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -86,9 +89,9 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Move constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST ExecSerial(
-                        ExecSerial && other) :
-                            AccSerial(static_cast<alpaka::workdiv::BasicWorkDiv &&>(other)),
+                    ALPAKA_FCT_HOST ExecCpuSerial(
+                        ExecCpuSerial && other) :
+                            AccCpuSerial<TDim>(static_cast<alpaka::workdiv::BasicWorkDiv<TDim> &&>(other)),
                             m_Stream(other.m_Stream)
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -97,14 +100,14 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Copy assignment.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto operator=(ExecSerial const &) -> ExecSerial & = delete;
+                    ALPAKA_FCT_HOST auto operator=(ExecCpuSerial const &) -> ExecCpuSerial & = delete;
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
     #if BOOST_COMP_INTEL
-                    ALPAKA_FCT_HOST virtual ~ExecSerial() = default;
+                    ALPAKA_FCT_HOST virtual ~ExecCpuSerial() = default;
     #else
-                    ALPAKA_FCT_HOST virtual ~ExecSerial() noexcept = default;
+                    ALPAKA_FCT_HOST virtual ~ExecCpuSerial() noexcept = default;
     #endif
 
                     //-----------------------------------------------------------------------------
@@ -120,12 +123,15 @@ namespace alpaka
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                        Vec3<> const v3uiGridBlockExtents(this->AccSerial::getWorkDiv<Grid, Blocks, dim::Dim3>());
-                        Vec3<> const v3uiBlockThreadExtents(this->AccSerial::getWorkDiv<Block, Threads, dim::Dim3>());
+                        auto const vuiGridBlockExtents(this->AccCpuSerial<TDim>::template getWorkDiv<Grid, Blocks>());
+                        auto const vuiBlockThreadExtents(this->AccCpuSerial<TDim>::template getWorkDiv<Block, Threads>());
 
-                        auto const uiBlockSharedExternMemSizeBytes(kernel::getBlockSharedExternMemSizeBytes<typename std::decay<TKernelFunctor>::type, AccSerial>(
-                            v3uiBlockThreadExtents,
-                            std::forward<TArgs>(args)...));
+                        auto const uiBlockSharedExternMemSizeBytes(
+                            kernel::getBlockSharedExternMemSizeBytes<
+                                typename std::decay<TKernelFunctor>::type,
+                                AccCpuSerial<TDim>>(
+                                    vuiBlockThreadExtents,
+                                    std::forward<TArgs>(args)...));
     #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                         std::cout << BOOST_CURRENT_FUNCTION
                             << " BlockSharedExternMemSizeBytes: " << uiBlockSharedExternMemSizeBytes << " B"
@@ -133,33 +139,29 @@ namespace alpaka
     #endif
                         if(uiBlockSharedExternMemSizeBytes > 0)
                         {
-                            this->AccSerial::m_vuiExternalSharedMem.reset(
+                            this->AccCpuSerial<TDim>::m_vuiExternalSharedMem.reset(
                                 new uint8_t[uiBlockSharedExternMemSizeBytes]);
                         }
 
                         // Execute the blocks serially.
-                        for(this->AccSerial::m_v3uiGridBlockIdx[0u] = 0u; this->AccSerial::m_v3uiGridBlockIdx[0u]<v3uiGridBlockExtents[0u]; ++this->AccSerial::m_v3uiGridBlockIdx[0u])
-                        {
-                            for(this->AccSerial::m_v3uiGridBlockIdx[1u] = 0u; this->AccSerial::m_v3uiGridBlockIdx[1u]<v3uiGridBlockExtents[1u]; ++this->AccSerial::m_v3uiGridBlockIdx[1u])
+                        ndLoop(
+                            vuiGridBlockExtents,
+                            [&](Vec<TDim> const & vuiBlockThreadIdx)
                             {
-                                for(this->AccSerial::m_v3uiGridBlockIdx[2u] = 0u; this->AccSerial::m_v3uiGridBlockIdx[2u]<v3uiGridBlockExtents[2u]; ++this->AccSerial::m_v3uiGridBlockIdx[2u])
-                                {
-                                    assert(v3uiBlockThreadExtents[0u] == 1u);
-                                    assert(v3uiBlockThreadExtents[1u] == 1u);
-                                    assert(v3uiBlockThreadExtents[2u] == 1u);
+                                this->AccCpuSerial<TDim>::m_vuiGridBlockIdx = vuiBlockThreadIdx;
+                                assert(vuiBlockThreadExtents.prod() == 1u);
 
-                                    // There is only ever one thread in a block in the serial accelerator.
-                                    std::forward<TKernelFunctor>(kernelFunctor)(
-                                        (*static_cast<AccSerial const *>(this)),
-                                        std::forward<TArgs>(args)...);
+                                // There is only ever one thread in a block in the serial accelerator.
+                                std::forward<TKernelFunctor>(kernelFunctor)(
+                                    (*static_cast<AccCpuSerial<TDim> const *>(this)),
+                                    std::forward<TArgs>(args)...);
 
-                                    // After a block has been processed, the shared memory has to be deleted.
-                                    this->AccSerial::m_vvuiSharedMem.clear();
-                                }
-                            }
-                        }
+                                // After a block has been processed, the shared memory has to be deleted.
+                                this->AccCpuSerial<TDim>::m_vvuiSharedMem.clear();
+                            });
+
                         // After all blocks have been processed, the external shared memory has to be deleted.
-                        this->AccSerial::m_vuiExternalSharedMem.reset();
+                        this->AccCpuSerial<TDim>::m_vuiExternalSharedMem.reset();
                     }
 
                 public:
@@ -174,24 +176,64 @@ namespace alpaka
         namespace acc
         {
             //#############################################################################
-            //! The serial accelerator executor accelerator type trait specialization.
+            //! The CPU serial executor accelerator type trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct AccType<
-                accs::serial::detail::ExecSerial>
+                accs::serial::detail::ExecCpuSerial<TDim>>
             {
-                using type = accs::serial::detail::AccSerial;
+                using type = accs::serial::detail::AccCpuSerial<TDim>;
+            };
+        }
+
+        namespace dev
+        {
+            //#############################################################################
+            //! The CPU serial executor device type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim>
+            struct DevType<
+                accs::serial::detail::ExecCpuSerial<TDim>>
+            {
+                using type = devs::cpu::detail::DevCpu;
+            };
+            //#############################################################################
+            //! The CPU serial executor device manager type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim>
+            struct DevManType<
+                accs::serial::detail::ExecCpuSerial<TDim>>
+            {
+                using type = devs::cpu::detail::DevManCpu;
+            };
+        }
+
+        namespace dim
+        {
+            //#############################################################################
+            //! The CPU serial executor dimension getter trait specialization.
+            //#############################################################################
+            template<
+                typename TDim>
+            struct DimType<
+                accs::serial::detail::ExecCpuSerial<TDim>>
+            {
+                using type = TDim;
             };
         }
 
         namespace event
         {
             //#############################################################################
-            //! The serial accelerator executor event type trait specialization.
+            //! The CPU serial executor event type trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct EventType<
-                accs::serial::detail::ExecSerial>
+                accs::serial::detail::ExecCpuSerial<TDim>>
             {
                 using type = devs::cpu::detail::EventCpu;
             };
@@ -200,58 +242,39 @@ namespace alpaka
         namespace exec
         {
             //#############################################################################
-            //! The serial accelerator executor executor type trait specialization.
+            //! The CPU serial executor executor type trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct ExecType<
-                accs::serial::detail::ExecSerial>
+                accs::serial::detail::ExecCpuSerial<TDim>>
             {
-                using type = accs::serial::detail::ExecSerial;
-            };
-        }
-
-        namespace dev
-        {
-            //#############################################################################
-            //! The serial accelerator executor device type trait specialization.
-            //#############################################################################
-            template<>
-            struct DevType<
-                accs::serial::detail::ExecSerial>
-            {
-                using type = devs::cpu::detail::DevCpu;
-            };
-            //#############################################################################
-            //! The serial accelerator device type trait specialization.
-            //#############################################################################
-            template<>
-            struct DevManType<
-                accs::serial::detail::ExecSerial>
-            {
-                using type = devs::cpu::detail::DevManCpu;
+                using type = accs::serial::detail::ExecCpuSerial<TDim>;
             };
         }
 
         namespace stream
         {
             //#############################################################################
-            //! The serial accelerator executor stream type trait specialization.
+            //! The CPU serial executor stream type trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct StreamType<
-                accs::serial::detail::ExecSerial>
+                accs::serial::detail::ExecCpuSerial<TDim>>
             {
                 using type = devs::cpu::detail::StreamCpu;
             };
             //#############################################################################
-            //! The serial accelerator executor stream get trait specialization.
+            //! The CPU serial executor stream get trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct GetStream<
-                accs::serial::detail::ExecSerial>
+                accs::serial::detail::ExecCpuSerial<TDim>>
             {
                 ALPAKA_FCT_HOST static auto getStream(
-                    accs::serial::detail::ExecSerial const & exec)
+                    accs::serial::detail::ExecCpuSerial<TDim> const & exec)
                 -> devs::cpu::detail::StreamCpu
                 {
                     return exec.m_Stream;

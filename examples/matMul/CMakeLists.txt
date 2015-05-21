@@ -73,7 +73,7 @@ append_recursive_files_add_to_src_group("${SUFFIXED_SOURCE_DIR}" "" "cpp" CPP_FI
 append_recursive_files_add_to_src_group("${SUFFIXED_SOURCE_DIR}" "" "cu" CU_FILES_ALL)
 
 # Always add all files to the target executable build call to add them to the build project.
-IF(ALPAKA_CUDA_ENABLE)
+IF(ALPAKA_GPU_CUDA_ENABLE)
     # CUDA does not work well with the much better target dependent TARGET_XXX commands but requires the settings to be available globally: https://www.cmake.org/Bug/view.php?id=14201&nbn=1
     INCLUDE_DIRECTORIES(
         ${INCLUDE_DIR}

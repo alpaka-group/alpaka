@@ -30,7 +30,7 @@
 
 //#############################################################################
 //! An accelerated test kernel.
-//! Uses atomicOp(), syncBlockThreads(), shared memory, getIdx, getExtents, global memory to compute a (useless) result.
+//! Uses atomicOp, syncBlockThreads, getBlockSharedExternMem, getIdx, getWorkDiv and global memory to compute a (useless) result.
 //! \tparam TAcc The accelerator environment to be executed on.
 //! \tparam TuiNumUselessWork The number of useless calculations done in each kernel execution.
 //#############################################################################
@@ -58,8 +58,12 @@ public:
         std::uint32_t const uiMult2) const
     -> void
     {
+        static_assert(
+            alpaka::dim::DimT<TAcc>::value == 1,
+            "The SharedMemKernel expects 1-dimensional indices!");
+
         // The number of threads in this block.
-        std::size_t const uiNumKernelsInBlock(acc.template getWorkDiv<alpaka::Block, alpaka::Threads, alpaka::dim::Dim1>()[0u]);
+        std::size_t const uiNumKernelsInBlock(acc.template getWorkDiv<alpaka::Block, alpaka::Threads>()[0u]);
 
         // Get the extern allocated shared memory.
         std::uint32_t * const pBlockShared(acc.template getBlockSharedExternMem<std::uint32_t>());
@@ -69,7 +73,7 @@ public:
         //std::uint32_t * const pBlockShared2(acc.template allocBlockSharedMem<std::uint32_t, TuiNumUselessWork::value>());
 
         // Calculate linearized index of the thread in the block.
-        std::size_t const uiIdxBlockThreadsLin(acc.template getIdx<alpaka::Block, alpaka::Threads, alpaka::dim::Dim1>()[0u]);
+        std::size_t const uiIdxBlockThreadsLin(acc.template getIdx<alpaka::Block, alpaka::Threads>()[0u]);
 
 
         // Fill the shared block with the thread ids [1+X, 2+X, 3+X, ..., #Threads+X].
@@ -110,14 +114,14 @@ public:
         if(uiIdxBlockThreadsLin==0)
         {
             // Calculate linearized block id.
-            std::size_t const uiblockIdx(acc.template getIdx<alpaka::Grid, alpaka::Blocks, alpaka::dim::Dim1>()[0u]);
+            std::size_t const uiblockIdx(acc.template getIdx<alpaka::Grid, alpaka::Blocks>()[0u]);
 
             puiBlockRetVals[uiblockIdx] = pBlockShared[0] * m_uiMult * uiMult2;
         }
     }
 
 public:
-    std::uint32_t /*const*/ m_uiMult;
+    std::uint32_t const m_uiMult;
 };
 
 namespace alpaka
@@ -142,11 +146,11 @@ namespace alpaka
                 template<
                     typename... TArgs>
                 ALPAKA_FCT_HOST static auto getBlockSharedExternMemSizeBytes(
-                    alpaka::Vec3<> const & v3uiBlockThreadsExtents,
+                    alpaka::Vec<alpaka::dim::DimT<TAcc>> const & vuiBlockThreadsExtents,
                     TArgs && ...)
                 -> UInt
                 {
-                    return v3uiBlockThreadsExtents.prod() * sizeof(std::uint32_t);
+                    return vuiBlockThreadsExtents.prod() * sizeof(std::uint32_t);
                 }
             };
         }
@@ -194,10 +198,8 @@ template<
 struct SharedMemTester
 {
     template<
-        typename TAcc,
-        typename TWorkDiv>
+        typename TAcc>
     auto operator()(
-        TWorkDiv const & workDiv,
         std::uint32_t const uiMult2)
     -> void
     {
@@ -218,6 +220,12 @@ struct SharedMemTester
         alpaka::stream::StreamT<TAcc> stream(
             alpaka::stream::create(devAcc));
 
+        // Set the grid blocks extent.
+        alpaka::workdiv::BasicWorkDiv<alpaka::dim::Dim1> const workDiv(
+            alpaka::workdiv::getValidWorkDiv<
+                alpaka::accs::EnabledAccs<alpaka::dim::Dim1>>(
+                512u));
+
         std::cout
             << "SharedMemTester("
             << " accelerator: " << alpaka::acc::getAccName<TAcc>()
@@ -225,8 +233,10 @@ struct SharedMemTester
             << ", workDiv: " << workDiv
             << ")" << std::endl;
 
-        std::size_t const uiGridBlocksCount(alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Blocks, alpaka::dim::Dim1>(workDiv)[0u]);
-        std::size_t const uiBlockThreadsCount(alpaka::workdiv::getWorkDiv<alpaka::Block, alpaka::Threads, alpaka::dim::Dim1>(workDiv)[0u]);
+        std::size_t const uiGridBlocksCount(
+            alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Blocks>(workDiv)[0u]);
+        std::size_t const uiBlockThreadsCount(
+            alpaka::workdiv::getWorkDiv<alpaka::Block, alpaka::Threads>(workDiv)[0u]);
 
         // An array for the return values calculated by the blocks.
         std::vector<std::uint32_t> vuiBlockRetVals(uiGridBlocksCount, 0);
@@ -249,7 +259,10 @@ struct SharedMemTester
         alpaka::mem::copy(vuiBlockRetVals, blockRetValsAcc, uiSizeElements);
 
         // Assert that the results are correct.
-        std::uint32_t const uiCorrectResult(static_cast<std::uint32_t>(uiBlockThreadsCount*uiBlockThreadsCount) * kernel.m_uiMult * uiMult2);
+        std::uint32_t const uiCorrectResult(
+            static_cast<std::uint32_t>(uiBlockThreadsCount*uiBlockThreadsCount)
+            * kernel.m_uiMult
+            * uiMult2);
 
         bool bResultCorrect(true);
         for(std::size_t i(0); i<uiGridBlocksCount; ++i)
@@ -290,25 +303,20 @@ auto main()
         std::cout << std::endl;
 
         // Logs the enabled accelerators.
-        alpaka::accs::writeEnabledAccs(std::cout);
+        alpaka::accs::writeEnabledAccs<alpaka::dim::Dim1>(std::cout);
 
         std::cout << std::endl;
 
-        // Set the grid blocks extent.
-        alpaka::workdiv::BasicWorkDiv const workDiv(
-            alpaka::workdiv::getValidWorkDiv<alpaka::accs::EnabledAccs>(
-                alpaka::Vec3<>(4u, 8u, 16u)));
-
-        using TuiNumUselessWork = boost::mpl::int_<100u>;
+        using TuiNumUselessWork = std::integral_constant<std::size_t, 100u>;
         std::uint32_t const uiMult2(5u);
 
         SharedMemTester<TuiNumUselessWork> sharedMemTester;
 
         // Execute the kernel on all enabled accelerators.
-        alpaka::forEachType<alpaka::accs::EnabledAccs>(
-            sharedMemTester,
-            workDiv,
-            uiMult2);
+        alpaka::forEachType<
+            alpaka::accs::EnabledAccs<alpaka::dim::Dim1>>(
+                sharedMemTester,
+                uiMult2);
 
         return sharedMemTester.bAllResultsCorrect ? EXIT_SUCCESS : EXIT_FAILURE;
     }

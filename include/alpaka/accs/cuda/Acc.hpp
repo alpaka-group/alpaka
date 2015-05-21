@@ -46,12 +46,12 @@ namespace alpaka
     namespace accs
     {
         //-----------------------------------------------------------------------------
-        //! The CUDA accelerator.
+        //! The GPU CUDA accelerator.
         //-----------------------------------------------------------------------------
         namespace cuda
         {
             //-----------------------------------------------------------------------------
-            //! The CUDA accelerator implementation details.
+            //! The GPU CUDA accelerator implementation details.
             //-----------------------------------------------------------------------------
             namespace detail
             {
@@ -63,16 +63,20 @@ namespace alpaka
                     TKernelFunctor kernelFunctor,
                     TArgs ... args);*/
 
-                class ExecCuda;
+                template<
+                    typename TDim>
+                class ExecGpuCuda;
 
                 //#############################################################################
-                //! The CUDA accelerator.
+                //! The GPU CUDA accelerator.
                 //!
                 //! This accelerator allows parallel kernel execution on devices supporting CUDA.
                 //#############################################################################
-                class AccCuda :
-                    protected WorkDivCuda,
-                    private IdxCuda,
+                template<
+                    typename TDim>
+                class AccGpuCuda :
+                    protected WorkDivCuda<TDim>,
+                    private IdxCuda<TDim>,
                     protected AtomicCuda
                 {
                 public:
@@ -83,15 +87,15 @@ namespace alpaka
                         TKernelFunctor kernelFunctor,
                         TArgs ... args);*/
 
-                    //friend class ::alpaka::cuda::detail::ExecCuda;
+                    //friend class ::alpaka::cuda::detail::ExecGpuCuda<TDim>;
 
                 //private:
                     //-----------------------------------------------------------------------------
                     //! Constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_CUDA_ONLY AccCuda() :
-                        WorkDivCuda(),
-                        IdxCuda(),
+                    ALPAKA_FCT_ACC_CUDA_ONLY AccGpuCuda() :
+                        WorkDivCuda<TDim>(),
+                        IdxCuda<TDim>(),
                         AtomicCuda()
                     {}
 
@@ -99,49 +103,47 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Copy constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_CUDA_ONLY AccCuda(AccCuda const &) = delete;
+                    ALPAKA_FCT_ACC_CUDA_ONLY AccGpuCuda(AccGpuCuda const &) = delete;
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                     //-----------------------------------------------------------------------------
                     //! Move constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_CUDA_ONLY AccCuda(AccCuda &&) = delete;
+                    ALPAKA_FCT_ACC_CUDA_ONLY AccGpuCuda(AccGpuCuda &&) = delete;
 #endif
                     //-----------------------------------------------------------------------------
                     //! Copy assignment.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_CUDA_ONLY auto operator=(AccCuda const &) -> AccCuda & = delete;
+                    ALPAKA_FCT_ACC_CUDA_ONLY auto operator=(AccGpuCuda const &) -> AccGpuCuda & = delete;
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_CUDA_ONLY /*virtual*/ ~AccCuda() noexcept = default;
-
-                    //-----------------------------------------------------------------------------
-                    //! \return The requested extents.
-                    //-----------------------------------------------------------------------------
-                    template<
-                        typename TOrigin,
-                        typename TUnit,
-                        typename TDim = dim::Dim3>
-                    ALPAKA_FCT_ACC_CUDA_ONLY auto getWorkDiv() const
-                    -> Vec<TDim>
-                    {
-                        return workdiv::getWorkDiv<TOrigin, TUnit, TDim>(
-                            *static_cast<WorkDivCuda const *>(this));
-                    }
+                    ALPAKA_FCT_ACC_CUDA_ONLY /*virtual*/ ~AccGpuCuda() noexcept = default;
 
                     //-----------------------------------------------------------------------------
                     //! \return The requested indices.
                     //-----------------------------------------------------------------------------
                     template<
                         typename TOrigin,
-                        typename TUnit,
-                        typename TDim = dim::Dim3>
+                        typename TUnit>
                     ALPAKA_FCT_ACC_CUDA_ONLY auto getIdx() const
                     -> Vec<TDim>
                     {
-                        return idx::getIdx<TOrigin, TUnit, TDim>(
-                            *static_cast<IdxCuda const *>(this),
-                            *static_cast<WorkDivCuda const *>(this));
+                        return idx::getIdx<TOrigin, TUnit>(
+                            *static_cast<IdxCuda<TDim> const *>(this),
+                            *static_cast<WorkDivCuda<TDim> const *>(this));
+                    }
+
+                    //-----------------------------------------------------------------------------
+                    //! \return The requested extents.
+                    //-----------------------------------------------------------------------------
+                    template<
+                        typename TOrigin,
+                        typename TUnit>
+                    ALPAKA_FCT_ACC_CUDA_ONLY auto getWorkDiv() const
+                    -> Vec<TDim>
+                    {
+                        return workdiv::getWorkDiv<TOrigin, TUnit>(
+                            *static_cast<WorkDivCuda<TDim> const *>(this));
                     }
 
                     //-----------------------------------------------------------------------------
@@ -206,78 +208,115 @@ namespace alpaka
         }
     }
 
-    using AccCuda = accs::cuda::detail::AccCuda;
+    template<
+        typename TDim>
+    using AccGpuCuda = accs::cuda::detail::AccGpuCuda<TDim>;
 
     namespace traits
     {
         namespace acc
         {
             //#############################################################################
-            //! The CUDA accelerator accelerator type trait specialization.
+            //! The GPU CUDA accelerator accelerator type trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct AccType<
-                accs::cuda::detail::AccCuda>
+                accs::cuda::detail::AccGpuCuda<TDim>>
             {
-                using type = accs::cuda::detail::AccCuda;
+                using type = accs::cuda::detail::AccGpuCuda<TDim>;
             };
             //#############################################################################
-            //! The CUDA accelerator device properties get trait specialization.
+            //! The GPU CUDA accelerator device properties get trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct GetAccDevProps<
-                accs::cuda::detail::AccCuda>
+                accs::cuda::detail::AccGpuCuda<TDim>>
             {
                 ALPAKA_FCT_HOST static auto getAccDevProps(
                     accs::cuda::detail::DevCuda const & dev)
-                -> alpaka::acc::AccDevProps
+                -> alpaka::acc::AccDevProps<TDim>
                 {
                     cudaDeviceProp cudaDevProp;
                     ALPAKA_CUDA_RT_CHECK(cudaGetDeviceProperties(
                         &cudaDevProp,
                         dev.m_iDevice));
 
-                    return alpaka::acc::AccDevProps(
+                    return {
                         // m_uiMultiProcessorCount
                         static_cast<UInt>(cudaDevProp.multiProcessorCount),
                         // m_uiBlockThreadsCountMax
                         static_cast<UInt>(cudaDevProp.maxThreadsPerBlock),
-                        // m_v3uiBlockThreadExtentsMax
-                        Vec3<>(
-                            static_cast<UInt>(cudaDevProp.maxThreadsDim[2]),
-                            static_cast<UInt>(cudaDevProp.maxThreadsDim[1]),
-                            static_cast<UInt>(cudaDevProp.maxThreadsDim[0])),
-                        // m_v3uiGridBlockExtentsMax
-                        Vec3<>(
-                            static_cast<UInt>(cudaDevProp.maxGridSize[2]),
-                            static_cast<UInt>(cudaDevProp.maxGridSize[1]),
-                            static_cast<UInt>(cudaDevProp.maxGridSize[0])));
-                        //devProps.m_uiMaxClockFrequencyHz = cudaDevProp.clockRate * 1000;
+                        // m_vuiBlockThreadExtentsMax
+                        alpaka::extent::getExtentsVecNd<TDim, UInt>(cudaDevProp.maxThreadsDim),
+                        // m_vuiGridBlockExtentsMax
+                        alpaka::extent::getExtentsVecNd<TDim, UInt>(cudaDevProp.maxGridSize)};
                 }
             };
             //#############################################################################
-            //! The CUDA accelerator name trait specialization.
+            //! The GPU CUDA accelerator name trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct GetAccName<
-                accs::cuda::detail::AccCuda>
+                accs::cuda::detail::AccGpuCuda<TDim>>
             {
                 ALPAKA_FCT_HOST_ACC static auto getAccName()
                 -> std::string
                 {
-                    return "AccCuda";
+                    return "AccGpuCuda<" + std::to_string(TDim::value) + ">";
                 }
+            };
+        }
+
+        namespace dev
+        {
+            //#############################################################################
+            //! The GPU CUDA accelerator executor device type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim>
+            struct DevType<
+                accs::cuda::detail::AccGpuCuda<TDim>>
+            {
+                using type = accs::cuda::detail::DevCuda;
+            };
+            //#############################################################################
+            //! The GPU CUDA accelerator device type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim>
+            struct DevManType<
+                accs::cuda::detail::AccGpuCuda<TDim>>
+            {
+                using type = accs::cuda::detail::DevManCuda;
+            };
+        }
+
+        namespace dim
+        {
+            //#############################################################################
+            //! The GPU CUDA accelerator dimension getter trait specialization.
+            //#############################################################################
+            template<
+                typename TDim>
+            struct DimType<
+                accs::cuda::detail::AccGpuCuda<TDim>>
+            {
+                using type = TDim;
             };
         }
 
         namespace event
         {
             //#############################################################################
-            //! The CUDA accelerator event type trait specialization.
+            //! The GPU CUDA accelerator event type trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct EventType<
-                accs::cuda::detail::AccCuda>
+                accs::cuda::detail::AccGpuCuda<TDim>>
             {
                 using type = accs::cuda::detail::EventCuda;
             };
@@ -286,46 +325,26 @@ namespace alpaka
         namespace exec
         {
             //#############################################################################
-            //! The CUDA accelerator executor type trait specialization.
+            //! The GPU CUDA accelerator executor type trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct ExecType<
-                accs::cuda::detail::AccCuda>
+                accs::cuda::detail::AccGpuCuda<TDim>>
             {
-                using type = accs::cuda::detail::ExecCuda;
-            };
-        }
-
-        namespace dev
-        {
-            //#############################################################################
-            //! The CUDA accelerator executor device type trait specialization.
-            //#############################################################################
-            template<>
-            struct DevType<
-                accs::cuda::detail::AccCuda>
-            {
-                using type = accs::cuda::detail::DevCuda;
-            };
-            //#############################################################################
-            //! The CUDA accelerator device type trait specialization.
-            //#############################################################################
-            template<>
-            struct DevManType<
-                accs::cuda::detail::AccCuda>
-            {
-                using type = accs::cuda::detail::DevManCuda;
+                using type = accs::cuda::detail::ExecGpuCuda<TDim>;
             };
         }
 
         namespace stream
         {
             //#############################################################################
-            //! The CUDA accelerator stream type trait specialization.
+            //! The GPU CUDA accelerator stream type trait specialization.
             //#############################################################################
-            template<>
+            template<
+                typename TDim>
             struct StreamType<
-                accs::cuda::detail::AccCuda>
+                accs::cuda::detail::AccGpuCuda<TDim>>
             {
                 using type = accs::cuda::detail::StreamCuda;
             };

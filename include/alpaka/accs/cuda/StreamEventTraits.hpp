@@ -32,7 +32,7 @@ namespace alpaka
         namespace event
         {
             //#############################################################################
-            //! The CUDA accelerator event enqueue trait specialization.
+            //! The GPU CUDA accelerator event enqueue trait specialization.
             //#############################################################################
             template<>
             struct StreamEnqueueEvent<
@@ -56,7 +56,7 @@ namespace alpaka
         namespace wait
         {
             //#############################################################################
-            //! The CUDA accelerator stream event wait trait specialization.
+            //! The GPU CUDA accelerator stream event wait trait specialization.
             //#############################################################################
             template<>
             struct WaiterWaitFor<
