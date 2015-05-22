@@ -188,17 +188,20 @@ install:
           && echo ${ALPAKA_CLANG_VER_MAJOR}
           && echo ${ALPAKA_CLANG_VER_MINOR}
       ;fi
-    # clang versions lower than 3.8 do not (currently) support OpenMP correctly.
+    # clang versions lower than 3.7 do not support OpenMP 2.0, OpenMP 4.0 is not currently supported by any version.
     - if [ "${CXX}" == "clang++" ]
       ;then
-          if (( (( ${ALPAKA_CLANG_VER_MAJOR} < 3 )) || ( (( ${ALPAKA_CLANG_VER_MAJOR} == 3 )) && (( ${ALPAKA_CLANG_VER_MINOR} < 8 )) ) ))
+          if (( (( ${ALPAKA_CLANG_VER_MAJOR} < 3 )) || ( (( ${ALPAKA_CLANG_VER_MAJOR} == 3 )) && (( ${ALPAKA_CLANG_VER_MINOR} < 7 )) ) ))
           ;then
               if [ "${ALPAKA_CPU_OPENMP2_ENABLE}" == "ON" ]
               ;then
                   export ALPAKA_CPU_OPENMP2_ENABLE=OFF
                   && echo ALPAKA_CPU_OPENMP2_ENABLE=${ALPAKA_CPU_OPENMP2_ENABLE} because the clang version does not support it!
               ;fi
-              && if [ "${ALPAKA_CPU_OPENMP4_ENABLE}" == "ON" ]
+          ;fi
+          && if (( (( ${ALPAKA_CLANG_VER_MAJOR} < 3 )) || ( (( ${ALPAKA_CLANG_VER_MAJOR} == 3 )) && (( ${ALPAKA_CLANG_VER_MINOR} < 8 )) ) ))
+          ;then
+              if [ "${ALPAKA_CPU_OPENMP4_ENABLE}" == "ON" ]
               ;then
                   export ALPAKA_CPU_OPENMP4_ENABLE=OFF
                   && echo ALPAKA_CPU_OPENMP4_ENABLE=${ALPAKA_CPU_OPENMP4_ENABLE} because the clang version does not support it!
