@@ -588,17 +588,17 @@ namespace alpaka
             typename TExtents>
         ALPAKA_FCT_HOST_ACC auto getExtentsVecNd(
             TExtents const & extents = TExtents())
-        -> Vec<dim::Dim<TDim::value>>
+        -> Vec<dim::Dim<TDim::value>, TVal>
         {
             using DimSrc = dim::DimT<TExtents>;
 #if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-            using IdxSequence = typename alpaka::detail::make_integer_sequence_start<std::intmax_t, (((std::intmax_t)DimSrc::value)-((std::intmax_t)TDim::value)), TDim::value>::type;
+            using IdxSubSequence = typename alpaka::detail::make_integer_sequence_start<std::intmax_t, (((std::intmax_t)DimSrc::value)-((std::intmax_t)TDim::value)), TDim::value>::type;
 #else
-            using IdxSequence = alpaka::detail::make_integer_sequence_start<std::intmax_t, (((std::intmax_t)DimSrc::value)-((std::intmax_t)TDim::value)), TDim::value>;
+            using IdxSubSequence = alpaka::detail::make_integer_sequence_start<std::intmax_t, (((std::intmax_t)DimSrc::value)-((std::intmax_t)TDim::value)), TDim::value>;
 #endif
             return detail::getExtentsVecInternal<TVal>(
                 extents,
-                IdxSequence());
+                IdxSubSequence());
         }
         //-----------------------------------------------------------------------------
         //! \return The extents.
@@ -608,7 +608,7 @@ namespace alpaka
             typename TExtents>
         ALPAKA_FCT_HOST_ACC auto getExtentsVec(
             TExtents const & extents = TExtents())
-        -> Vec<dim::Dim<dim::DimT<TExtents>::value>, TVal>
+        -> decltype(getExtentsVecNd<dim::DimT<TExtents>, TVal>(extents))
         {
             return getExtentsVecNd<dim::DimT<TExtents>, TVal>(extents);
         }
@@ -647,13 +647,13 @@ namespace alpaka
         {
             using DimSrc = dim::DimT<TOffsets>;
 #if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-            using IdxSequence = typename alpaka::detail::make_integer_sequence_start<std::intmax_t,  (((std::intmax_t)DimSrc::value)-((std::intmax_t)TDim::value)), TDim::value>::type;
+            using IdxSubSequence = typename alpaka::detail::make_integer_sequence_start<std::intmax_t,  (((std::intmax_t)DimSrc::value)-((std::intmax_t)TDim::value)), TDim::value>::type;
 #else
-            using IdxSequence = alpaka::detail::make_integer_sequence_start<std::intmax_t, (((std::intmax_t)DimSrc::value)-((std::intmax_t)TDim::value)), TDim::value>;
+            using IdxSubSequence = alpaka::detail::make_integer_sequence_start<std::intmax_t, (((std::intmax_t)DimSrc::value)-((std::intmax_t)TDim::value)), TDim::value>;
 #endif
             return detail::getOffsetsVecInternal<TVal>(
                 offsets,
-                IdxSequence());
+                IdxSubSequence());
         }
         //-----------------------------------------------------------------------------
         //! \return The offsets.
@@ -663,7 +663,7 @@ namespace alpaka
             typename TOffsets>
         ALPAKA_FCT_HOST_ACC auto getOffsetsVec(
             TOffsets const & offsets = TOffsets())
-        -> Vec<dim::Dim<dim::DimT<TOffsets>::value>, TVal>
+        -> decltype(getOffsetsVecNd<dim::DimT<TOffsets>, TVal>(offsets))
         {
             return getOffsetsVecNd<dim::DimT<TOffsets>, TVal>(offsets);
         }

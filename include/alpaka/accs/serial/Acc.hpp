@@ -29,14 +29,10 @@
 // Specialized traits.
 #include <alpaka/traits/Acc.hpp>            // AccType
 #include <alpaka/traits/Exec.hpp>           // ExecType
-#include <alpaka/traits/Event.hpp>          // EventType
 #include <alpaka/traits/Dev.hpp>            // DevType
-#include <alpaka/traits/Stream.hpp>         // StreamType
 
 // Implementation details.
 #include <alpaka/devs/cpu/Dev.hpp>          // DevCpu
-#include <alpaka/devs/cpu/Event.hpp>        // EventCpu
-#include <alpaka/devs/cpu/Stream.hpp>       // StreamCpu
 
 #include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
 
@@ -237,7 +233,7 @@ namespace alpaka
                 accs::serial::detail::AccCpuSerial<TDim>>
             {
                 ALPAKA_FCT_HOST static auto getAccDevProps(
-                    devs::cpu::detail::DevCpu const & dev)
+                    devs::cpu::DevCpu const & dev)
                 -> alpaka::acc::AccDevProps<TDim>
                 {
                     boost::ignore_unused(dev);
@@ -279,7 +275,7 @@ namespace alpaka
             struct DevType<
                 accs::serial::detail::AccCpuSerial<TDim>>
             {
-                using type = devs::cpu::detail::DevCpu;
+                using type = devs::cpu::DevCpu;
             };
             //#############################################################################
             //! The CPU serial accelerator device type trait specialization.
@@ -289,7 +285,7 @@ namespace alpaka
             struct DevManType<
                 accs::serial::detail::AccCpuSerial<TDim>>
             {
-                using type = devs::cpu::detail::DevManCpu;
+                using type = devs::cpu::DevManCpu;
             };
         }
 
@@ -307,20 +303,6 @@ namespace alpaka
             };
         }
 
-        namespace event
-        {
-            //#############################################################################
-            //! The CPU serial accelerator event type trait specialization.
-            //#############################################################################
-            template<
-                typename TDim>
-            struct EventType<
-                accs::serial::detail::AccCpuSerial<TDim>>
-            {
-                using type = devs::cpu::detail::EventCpu;
-            };
-        }
-
         namespace exec
         {
             //#############################################################################
@@ -332,20 +314,6 @@ namespace alpaka
                 accs::serial::detail::AccCpuSerial<TDim>>
             {
                 using type = accs::serial::detail::ExecCpuSerial<TDim>;
-            };
-        }
-
-        namespace stream
-        {
-            //#############################################################################
-            //! The CPU serial accelerator stream type trait specialization.
-            //#############################################################################
-            template<
-                typename TDim>
-            struct StreamType<
-                accs::serial::detail::AccCpuSerial<TDim>>
-            {
-                using type = devs::cpu::detail::StreamCpu;
             };
         }
     }

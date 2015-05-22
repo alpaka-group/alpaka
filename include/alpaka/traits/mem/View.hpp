@@ -23,6 +23,7 @@
 
 #include <alpaka/traits/Dim.hpp>        // DimT
 
+#include <alpaka/core/Fold.hpp>         // foldr
 #include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST
 
 namespace alpaka
@@ -57,7 +58,8 @@ namespace alpaka
             struct GetPtrDev;
 
             //#############################################################################
-            //! The pitch in bytes. This is the distance between two consecutive rows.
+            //! The pitch in bytes.
+            //! This is the distance in bytes in the linear memory between two consecutive elements in the next higher dimension (TIdx+1).
             //!
             //! The default implementation uses the extent to calculate the pitch.
             //#############################################################################
@@ -94,8 +96,10 @@ namespace alpaka
                     alpaka::detail::integer_sequence<UInt, TIndices...> const &)
                 -> UInt
                 {
+                    // For the case that the sequence is empty (index out of range), 1 is returned. 
                     return alpaka::foldr(
                             std::multiplies<UInt>(),
+                            1u,
                             alpaka::extent::getExtent<TIndices, UInt>(view)...);
                 }
             };

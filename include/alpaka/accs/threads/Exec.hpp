@@ -98,7 +98,7 @@ namespace alpaka
                         typename TWorkDiv>
                     ALPAKA_FCT_HOST ExecCpuThreads(
                         TWorkDiv const & workDiv,
-                        devs::cpu::detail::StreamCpu & stream) :
+                        devs::cpu::StreamCpu & stream) :
                             AccCpuThreads<TDim>(workDiv),
                             m_Stream(stream),
                             m_vFuturesInBlock(),
@@ -316,7 +316,7 @@ namespace alpaka
                     }
 
                 public:
-                    devs::cpu::detail::StreamCpu m_Stream;
+                    devs::cpu::StreamCpu m_Stream;
 
                 private:
                     std::vector<std::future<void>> mutable m_vFuturesInBlock; //!< The futures of the threads in the current block.
@@ -353,7 +353,7 @@ namespace alpaka
             struct DevType<
                 accs::threads::detail::ExecCpuThreads<TDim>>
             {
-                using type = devs::cpu::detail::DevCpu;
+                using type = devs::cpu::DevCpu;
             };
             //#############################################################################
             //! The CPU threads executor device manager type trait specialization.
@@ -363,7 +363,7 @@ namespace alpaka
             struct DevManType<
                 accs::threads::detail::ExecCpuThreads<TDim>>
             {
-                using type = devs::cpu::detail::DevManCpu;
+                using type = devs::cpu::DevManCpu;
             };
         }
 
@@ -391,7 +391,7 @@ namespace alpaka
             struct EventType<
                 accs::threads::detail::ExecCpuThreads<TDim>>
             {
-                using type = devs::cpu::detail::EventCpu;
+                using type = devs::cpu::EventCpu;
             };
         }
 
@@ -419,7 +419,7 @@ namespace alpaka
             struct StreamType<
                 accs::threads::detail::ExecCpuThreads<TDim>>
             {
-                using type = devs::cpu::detail::StreamCpu;
+                using type = devs::cpu::StreamCpu;
             };
             //#############################################################################
             //! The CPU threads executor stream get trait specialization.
@@ -431,7 +431,7 @@ namespace alpaka
             {
                 ALPAKA_FCT_HOST static auto getStream(
                     accs::threads::detail::ExecCpuThreads<TDim> const & exec)
-                -> devs::cpu::detail::StreamCpu
+                -> devs::cpu::StreamCpu
                 {
                     return exec.m_Stream;
                 }

@@ -21,9 +21,10 @@
 
 #pragma once
 
-#include <alpaka/accs/cuda/Stream.hpp>  // StreamCuda
-#include <alpaka/accs/cuda/Event.hpp>   // EventCuda
-#include <alpaka/accs/cuda/Common.hpp>  // ALPAKA_CUDA_RT_CHECK
+#include <alpaka/devs/cuda/Stream.hpp>  // StreamCuda
+#include <alpaka/devs/cuda/Event.hpp>   // EventCuda
+
+#include <alpaka/core/Cuda.hpp>         // ALPAKA_CUDA_RT_CHECK
 
 namespace alpaka
 {
@@ -36,12 +37,12 @@ namespace alpaka
             //#############################################################################
             template<>
             struct StreamEnqueueEvent<
-                accs::cuda::detail::EventCuda,
-                accs::cuda::detail::StreamCuda>
+                devs::cuda::EventCuda,
+                devs::cuda::StreamCuda>
             {
                 ALPAKA_FCT_HOST static auto streamEnqueueEvent(
-                    accs::cuda::detail::EventCuda const & event,
-                    accs::cuda::detail::StreamCuda const & stream)
+                    devs::cuda::EventCuda const & event,
+                    devs::cuda::StreamCuda const & stream)
                 -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -60,12 +61,12 @@ namespace alpaka
             //#############################################################################
             template<>
             struct WaiterWaitFor<
-                accs::cuda::detail::StreamCuda,
-                accs::cuda::detail::EventCuda>
+                devs::cuda::StreamCuda,
+                devs::cuda::EventCuda>
             {
                 ALPAKA_FCT_HOST static auto waiterWaitFor(
-                    accs::cuda::detail::StreamCuda const & stream,
-                    accs::cuda::detail::EventCuda const & event)
+                    devs::cuda::StreamCuda const & stream,
+                    devs::cuda::EventCuda const & event)
                 -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;

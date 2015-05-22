@@ -21,16 +21,9 @@
 
 #pragma once
 
-#include <alpaka/accs/cuda/Dev.hpp>     // DevCuda
-
-namespace alpaka
-{
-    namespace devs
-    {
-        namespace gpu
-        {
-            using DevGpu = alpaka::accs::cuda::detail::DevCuda;
-            using DevManGpu = alpaka::accs::cuda::detail::DevManCuda;
-        }
-    }
-}
+#include <alpaka/devs/cuda/Dev.hpp>
+#include <alpaka/devs/cuda/Event.hpp>
+#include <alpaka/devs/cuda/Mem.hpp>
+#include <alpaka/devs/cuda/Rand.hpp>
+#include <alpaka/devs/cuda/Stream.hpp>
+#include <alpaka/devs/cuda/StreamEventTraits.hpp>

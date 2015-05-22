@@ -29,15 +29,11 @@
 // Specialized traits.
 #include <alpaka/traits/Acc.hpp>            // AccType
 #include <alpaka/traits/Exec.hpp>           // ExecType
-#include <alpaka/traits/Event.hpp>          // EventType
 #include <alpaka/traits/Dev.hpp>            // DevType
-#include <alpaka/traits/Stream.hpp>         // StreamType
 
 // Implementation details.
-#include <alpaka/accs/cuda/Common.hpp>
-#include <alpaka/accs/cuda/Dev.hpp>         // DevCuda
-#include <alpaka/accs/cuda/Event.hpp>       // EventCpu
-#include <alpaka/accs/cuda/Stream.hpp>      // StreamCuda
+#include <alpaka/devs/cuda/Dev.hpp>         // DevCuda
+#include <alpaka/core/Cuda.hpp>             // ALPAKA_CUDA_RT_CHECK
 
 #include <boost/predef.h>                   // workarounds
 
@@ -235,7 +231,7 @@ namespace alpaka
                 accs::cuda::detail::AccGpuCuda<TDim>>
             {
                 ALPAKA_FCT_HOST static auto getAccDevProps(
-                    accs::cuda::detail::DevCuda const & dev)
+                    devs::cuda::DevCuda const & dev)
                 -> alpaka::acc::AccDevProps<TDim>
                 {
                     cudaDeviceProp cudaDevProp;
@@ -273,24 +269,24 @@ namespace alpaka
         namespace dev
         {
             //#############################################################################
-            //! The GPU CUDA accelerator executor device type trait specialization.
+            //! The GPU CUDA accelerator device type trait specialization.
             //#############################################################################
             template<
                 typename TDim>
             struct DevType<
                 accs::cuda::detail::AccGpuCuda<TDim>>
             {
-                using type = accs::cuda::detail::DevCuda;
+                using type = devs::cuda::DevCuda;
             };
             //#############################################################################
-            //! The GPU CUDA accelerator device type trait specialization.
+            //! The GPU CUDA accelerator device manager type trait specialization.
             //#############################################################################
             template<
                 typename TDim>
             struct DevManType<
                 accs::cuda::detail::AccGpuCuda<TDim>>
             {
-                using type = accs::cuda::detail::DevManCuda;
+                using type = devs::cuda::DevManCuda;
             };
         }
 
@@ -308,20 +304,6 @@ namespace alpaka
             };
         }
 
-        namespace event
-        {
-            //#############################################################################
-            //! The GPU CUDA accelerator event type trait specialization.
-            //#############################################################################
-            template<
-                typename TDim>
-            struct EventType<
-                accs::cuda::detail::AccGpuCuda<TDim>>
-            {
-                using type = accs::cuda::detail::EventCuda;
-            };
-        }
-
         namespace exec
         {
             //#############################################################################
@@ -333,20 +315,6 @@ namespace alpaka
                 accs::cuda::detail::AccGpuCuda<TDim>>
             {
                 using type = accs::cuda::detail::ExecGpuCuda<TDim>;
-            };
-        }
-
-        namespace stream
-        {
-            //#############################################################################
-            //! The GPU CUDA accelerator stream type trait specialization.
-            //#############################################################################
-            template<
-                typename TDim>
-            struct StreamType<
-                accs::cuda::detail::AccGpuCuda<TDim>>
-            {
-                using type = accs::cuda::detail::StreamCuda;
             };
         }
     }

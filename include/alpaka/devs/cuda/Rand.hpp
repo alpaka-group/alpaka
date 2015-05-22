@@ -23,10 +23,10 @@
 
 #include <alpaka/traits/Rand.hpp>           // CreateNormalReal, ...
 
-#include <alpaka/core/Common.hpp>           // ALPAKA_FCT_ACC_CUDA_ONLY
+#include <alpaka/devs/cuda/Dev.hpp>         // DevCuda
 
-#include <alpaka/accs/cuda/Common.hpp>      // ALPAKA_CUDA_RT_CHECK
-#include <alpaka/accs/cuda/Dev.hpp>         // DevCuda
+#include <alpaka/core/Common.hpp>           // ALPAKA_FCT_ACC_CUDA_ONLY
+#include <alpaka/core/Cuda.hpp>             // ALPAKA_CUDA_RT_CHECK
 
 #include <curand_kernel.h>                  // curand_init, ...
 
@@ -34,7 +34,7 @@
 
 namespace alpaka
 {
-    namespace accs
+    namespace devs
     {
         namespace cuda
         {
@@ -254,14 +254,14 @@ namespace alpaka
                     typename std::enable_if<
                         std::is_same<
                             alpaka::dev::DevT<TAcc>,
-                            alpaka::accs::cuda::detail::DevCuda>::value
+                            alpaka::devs::cuda::DevCuda>::value
                         && std::is_floating_point<T>::value>::type>
                 {
                     ALPAKA_FCT_ACC_CUDA_ONLY static auto createNormalReal(
                         TAcc const & acc)
-                    -> std::normal_distribution<T>
+                    -> alpaka::devs::cuda::rand::distribution::detail::NormalReal<T>
                     {
-                        return alpaka::accs::cuda::rand::distribution::detail::NormalReal<T>();
+                        return alpaka::devs::cuda::rand::distribution::detail::NormalReal<T>();
                     }
                 };
                 //#############################################################################
@@ -276,14 +276,14 @@ namespace alpaka
                     typename std::enable_if<
                         std::is_same<
                             alpaka::dev::DevT<TAcc>,
-                            alpaka::accs::cuda::detail::DevCuda>::value
+                            alpaka::devs::cuda::DevCuda>::value
                         && std::is_floating_point<T>::value>::type>
                 {
                     ALPAKA_FCT_ACC_CUDA_ONLY static auto createUniformReal(
                         TAcc const & acc)
-                    -> std::uniform_real_distribution<T>
+                    -> alpaka::devs::cuda::rand::distribution::detail::UniformReal<T>
                     {
-                        return alpaka::accs::cuda::rand::distribution::detail::UniformReal<T>();
+                        return alpaka::devs::cuda::rand::distribution::detail::UniformReal<T>();
                     }
                 };
                 //#############################################################################
@@ -298,14 +298,14 @@ namespace alpaka
                     typename std::enable_if<
                         std::is_same<
                             alpaka::dev::DevT<TAcc>,
-                            alpaka::accs::cuda::detail::DevCuda>::value
+                            alpaka::devs::cuda::DevCuda>::value
                         && std::is_integral<T>::value>::type>
                 {
                     ALPAKA_FCT_ACC_CUDA_ONLY static auto createUniformUint(
                         TAcc const & acc)
-                    -> std::uniform_int_distribution<T>
+                    -> alpaka::devs::cuda::rand::distribution::detail::UniformUint<T>
                     {
-                        return alpaka::accs::cuda::rand::distribution::detail::UniformUint<T>();
+                        return alpaka::devs::cuda::rand::distribution::detail::UniformUint<T>();
                     }
                 };
             }
@@ -322,15 +322,15 @@ namespace alpaka
                     typename std::enable_if<
                         std::is_same<
                             alpaka::dev::DevT<TAcc>,
-                            alpaka::accs::cuda::detail::DevCuda>::value>::type>
+                            alpaka::devs::cuda::DevCuda>::value>::type>
                 {
                     ALPAKA_FCT_ACC_CUDA_ONLY static auto createDefault(
                         TAcc const & acc,
                         std::uint32_t const & seed,
                         std::uint32_t const & subsequence)
-                    -> alpaka::accs::cuda::rand::generator::detail::Xor
+                    -> alpaka::devs::cuda::rand::generator::detail::Xor
                     {
-                        return alpaka::accs::cuda::rand::generator::detail::Xor(
+                        return alpaka::devs::cuda::rand::generator::detail::Xor(
                             seed,
                             subsequence);
                     }

@@ -37,7 +37,7 @@ namespace alpaka
             namespace distribution
             {
                 //#############################################################################
-                //! The cpu device random number float normal distribution get trait specialization.
+                //! The CPU device random number float normal distribution get trait specialization.
                 //#############################################################################
                 template<
                     typename TAcc,
@@ -48,7 +48,7 @@ namespace alpaka
                     typename std::enable_if<
                         std::is_same<
                             alpaka::dev::DevT<TAcc>,
-                            devs::cpu::detail::DevCpu>::value
+                            devs::cpu::DevCpu>::value
                         && std::is_floating_point<T>::value>::type>
                 {
                     ALPAKA_FCT_HOST_ACC static auto createNormalReal(
@@ -59,7 +59,7 @@ namespace alpaka
                     }
                 };
                 //#############################################################################
-                //! The cpu device random number float uniform distribution get trait specialization.
+                //! The CPU device random number float uniform distribution get trait specialization.
                 //#############################################################################
                 template<
                     typename TAcc,
@@ -70,7 +70,7 @@ namespace alpaka
                     typename std::enable_if<
                         std::is_same<
                             alpaka::dev::DevT<TAcc>,
-                            devs::cpu::detail::DevCpu>::value
+                            devs::cpu::DevCpu>::value
                         && std::is_floating_point<T>::value>::type>
                 {
                     ALPAKA_FCT_HOST_ACC static auto createUniformReal(
@@ -81,7 +81,7 @@ namespace alpaka
                     }
                 };
                 //#############################################################################
-                //! The cpu device random number integer uniform distribution get trait specialization.
+                //! The CPU device random number integer uniform distribution get trait specialization.
                 //#############################################################################
                 template<
                     typename TAcc,
@@ -92,7 +92,7 @@ namespace alpaka
                     typename std::enable_if<
                         std::is_same<
                             alpaka::dev::DevT<TAcc>,
-                            devs::cpu::detail::DevCpu>::value
+                            devs::cpu::DevCpu>::value
                         && std::is_integral<T>::value>::type>
                 {
                     ALPAKA_FCT_HOST_ACC static auto createUniformUint(
@@ -109,7 +109,7 @@ namespace alpaka
             namespace generator
             {
                 //#############################################################################
-                //! The cpu device random number default generator get trait specialization.
+                //! The CPU device random number default generator get trait specialization.
                 //#############################################################################
                 template<
                     typename TAcc>
@@ -118,7 +118,7 @@ namespace alpaka
                     typename std::enable_if<
                         std::is_same<
                             alpaka::dev::DevT<TAcc>,
-                            devs::cpu::detail::DevCpu>::value>::type>
+                            devs::cpu::DevCpu>::value>::type>
                 {
                     ALPAKA_FCT_HOST_ACC static auto createDefault(
                         TAcc const & acc,

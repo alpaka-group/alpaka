@@ -21,20 +21,20 @@
 
 #pragma once
 
-#include <alpaka/accs/cuda/Dev.hpp>         // DevCuda
-#include <alpaka/accs/cuda/Stream.hpp>      // StreamCuda
-#include <alpaka/accs/cuda/Common.hpp>
-
-#include <alpaka/core/BasicDims.hpp>        // dim::Dim<N>
+#include <alpaka/devs/cuda/Dev.hpp>         // DevCuda
+#include <alpaka/devs/cuda/Stream.hpp>      // StreamCuda
 
 #include <alpaka/traits/Mem.hpp>            // traits::Copy
 #include <alpaka/traits/Extent.hpp>         // traits::getXXX
+
+#include <alpaka/core/BasicDims.hpp>        // dim::Dim<N>
+#include <alpaka/core/Cuda.hpp>
 
 #include <cassert>                          // assert
 
 namespace alpaka
 {
-    namespace accs
+    namespace devs
     {
         namespace cuda
         {
@@ -121,7 +121,7 @@ namespace alpaka
                         TExtents const & extents,
                         cudaMemcpyKind const & p_cudaMemcpyKind,
                         std::int32_t const & iDev,
-                        cuda::detail::StreamCuda const & stream)
+                        cuda::StreamCuda const & stream)
                     -> void
                     {
                         ALPAKA_DEBUG_FULL_LOG_SCOPE;
@@ -256,7 +256,7 @@ namespace alpaka
                         TExtents const & extents,
                         cudaMemcpyKind const & p_cudaMemcpyKind,
                         std::int32_t const & iDev,
-                        cuda::detail::StreamCuda const & stream)
+                        cuda::StreamCuda const & stream)
                     -> void
                     {
                         ALPAKA_DEBUG_FULL_LOG_SCOPE;
@@ -368,7 +368,7 @@ namespace alpaka
                         TExtents const & extents,
                         cudaMemcpyKind const & p_cudaMemcpyKind,
                         std::int32_t const & iDev,
-                        cuda::detail::StreamCuda const & stream)
+                        cuda::StreamCuda const & stream)
                     -> void
                     {
                         ALPAKA_DEBUG_FULL_LOG_SCOPE;
@@ -561,7 +561,7 @@ namespace alpaka
                         TBufDst & bufDst,
                         TBufSrc const & bufSrc,
                         TExtents const & extents,
-                        cuda::detail::StreamCuda const & stream)
+                        cuda::StreamCuda const & stream)
                     -> void
                     {
                         ALPAKA_DEBUG_FULL_LOG_SCOPE;
@@ -653,7 +653,7 @@ namespace alpaka
                         TBufDst & bufDst,
                         TBufSrc const & bufSrc,
                         TExtents const & extents,
-                        cuda::detail::StreamCuda const & stream)
+                        cuda::StreamCuda const & stream)
                     -> void
                     {
                         ALPAKA_DEBUG_FULL_LOG_SCOPE;
@@ -809,7 +809,7 @@ namespace alpaka
                         TBufDst & bufDst,
                         TBufSrc const & bufSrc,
                         TExtents const & extents,
-                        cuda::detail::StreamCuda const & stream)
+                        cuda::StreamCuda const & stream)
                     -> void
                     {
                         ALPAKA_DEBUG_FULL_LOG_SCOPE;
@@ -843,8 +843,8 @@ namespace alpaka
                 typename TDim>
             struct Copy<
                 TDim,
-                devs::cpu::detail::DevCpu,
-                accs::cuda::detail::DevCuda>
+                devs::cpu::DevCpu,
+                devs::cuda::DevCuda>
             {
                 //-----------------------------------------------------------------------------
                 //!
@@ -861,7 +861,7 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                    accs::cuda::detail::MemCopyCuda<TDim>::memCopyCuda(
+                    devs::cuda::detail::MemCopyCuda<TDim>::memCopyCuda(
                         bufDst,
                         bufSrc,
                         extents,
@@ -879,12 +879,12 @@ namespace alpaka
                     TBufDst & bufDst,
                     TBufSrc const & bufSrc,
                     TExtents const & extents,
-                    accs::cuda::detail::StreamCuda const & stream)
+                    devs::cuda::StreamCuda const & stream)
                 -> void
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                    accs::cuda::detail::MemCopyCuda<TDim>::memCopyCuda(
+                    devs::cuda::detail::MemCopyCuda<TDim>::memCopyCuda(
                         bufDst,
                         bufSrc,
                         extents,
@@ -900,8 +900,8 @@ namespace alpaka
                 typename TDim>
             struct Copy<
                 TDim,
-                accs::cuda::detail::DevCuda,
-                devs::cpu::detail::DevCpu>
+                devs::cuda::DevCuda,
+                devs::cpu::DevCpu>
             {
                 //-----------------------------------------------------------------------------
                 //!
@@ -918,7 +918,7 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                    accs::cuda::detail::MemCopyCuda<TDim>::memCopyCuda(
+                    devs::cuda::detail::MemCopyCuda<TDim>::memCopyCuda(
                         bufDst,
                         bufSrc,
                         extents,
@@ -936,12 +936,12 @@ namespace alpaka
                     TBufDst & bufDst,
                     TBufSrc const & bufSrc,
                     TExtents const & extents,
-                    accs::cuda::detail::StreamCuda const & stream)
+                    devs::cuda::StreamCuda const & stream)
                 -> void
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                    accs::cuda::detail::MemCopyCuda<TDim>::memCopyCuda(
+                    devs::cuda::detail::MemCopyCuda<TDim>::memCopyCuda(
                         bufDst,
                         bufSrc,
                         extents,
@@ -957,8 +957,8 @@ namespace alpaka
                 typename TDim>
             struct Copy<
                 TDim,
-                accs::cuda::detail::DevCuda,
-                accs::cuda::detail::DevCuda>
+                devs::cuda::DevCuda,
+                devs::cuda::DevCuda>
             {
                 //-----------------------------------------------------------------------------
                 //!
@@ -977,7 +977,7 @@ namespace alpaka
 
                     if(alpaka::dev::getDev(bufDst) == alpaka::dev::getDev(bufSrc))
                     {
-                        accs::cuda::detail::MemCopyCuda<TDim>::memCopyCuda(
+                        devs::cuda::detail::MemCopyCuda<TDim>::memCopyCuda(
                             bufDst,
                             bufSrc,
                             extents,
@@ -986,7 +986,7 @@ namespace alpaka
                     }
                     else
                     {
-                        accs::cuda::detail::MemCopyCudaPeer<TDim>::memCopyCudaPeer(
+                        devs::cuda::detail::MemCopyCudaPeer<TDim>::memCopyCudaPeer(
                             bufDst,
                             bufSrc,
                             extents);
@@ -1003,14 +1003,14 @@ namespace alpaka
                     TBufDst & bufDst,
                     TBufSrc const & bufSrc,
                     TExtents const & extents,
-                    accs::cuda::detail::StreamCuda const & stream)
+                    devs::cuda::StreamCuda const & stream)
                 -> void
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                     if(alpaka::dev::getDev(bufDst) == alpaka::dev::getDev(bufSrc))
                     {
-                        accs::cuda::detail::MemCopyCuda<TDim>::memCopyCuda(
+                        devs::cuda::detail::MemCopyCuda<TDim>::memCopyCuda(
                             bufDst,
                             bufSrc,
                             extents,
@@ -1020,7 +1020,7 @@ namespace alpaka
                     }
                     else
                     {
-                        accs::cuda::detail::MemCopyCudaPeer<TDim>::memCopyCudaPeer(
+                        devs::cuda::detail::MemCopyCudaPeer<TDim>::memCopyCudaPeer(
                             bufDst,
                             bufSrc,
                             extents,

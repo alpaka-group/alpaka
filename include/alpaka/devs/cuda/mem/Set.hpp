@@ -21,14 +21,14 @@
 
 #pragma once
 
-#include <alpaka/accs/cuda/Dev.hpp>         // DevCuda
-#include <alpaka/accs/cuda/Stream.hpp>      // StreamCuda
-#include <alpaka/accs/cuda/Common.hpp>
-
-#include <alpaka/core/BasicDims.hpp>        // dim::Dim<N>
+#include <alpaka/devs/cuda/Dev.hpp>         // DevCuda
+#include <alpaka/devs/cuda/Stream.hpp>      // StreamCuda
 
 #include <alpaka/traits/mem/Buf.hpp>        // traits::Set
 #include <alpaka/traits/Extent.hpp>         // traits::getXXX
+
+#include <alpaka/core/BasicDims.hpp>        // dim::Dim<N>
+#include <alpaka/core/Cuda.hpp>
 
 #include <cassert>                          // assert
 
@@ -47,7 +47,7 @@ namespace alpaka
             template<>
             struct Set<
                 alpaka::dim::Dim1,
-                accs::cuda::detail::DevCuda>
+                devs::cuda::DevCuda>
             {
                 //-----------------------------------------------------------------------------
                 //!
@@ -94,7 +94,7 @@ namespace alpaka
                     TBuf & buf,
                     std::uint8_t const & byte,
                     TExtents const & extents,
-                    accs::cuda::detail::StreamCuda const & stream)
+                    devs::cuda::StreamCuda const & stream)
                 -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -128,7 +128,7 @@ namespace alpaka
             template<>
             struct Set<
                 alpaka::dim::Dim2,
-                accs::cuda::detail::DevCuda>
+                devs::cuda::DevCuda>
             {
                 //-----------------------------------------------------------------------------
                 //!
@@ -181,7 +181,7 @@ namespace alpaka
                     TBuf & buf,
                     std::uint8_t const & byte,
                     TExtents const & extents,
-                    accs::cuda::detail::StreamCuda const & stream)
+                    devs::cuda::StreamCuda const & stream)
                 -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -221,7 +221,7 @@ namespace alpaka
             template<>
             struct Set<
                 alpaka::dim::Dim3,
-                accs::cuda::detail::DevCuda>
+                devs::cuda::DevCuda>
             {
                 //-----------------------------------------------------------------------------
                 //!
@@ -289,7 +289,7 @@ namespace alpaka
                     TBuf & buf,
                     std::uint8_t const & byte,
                     TExtents const & extents,
-                    accs::cuda::detail::StreamCuda const & stream)
+                    devs::cuda::StreamCuda const & stream)
                 -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;

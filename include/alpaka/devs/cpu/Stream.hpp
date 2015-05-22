@@ -38,62 +38,59 @@ namespace alpaka
     {
         namespace cpu
         {
-            namespace detail
+            //#############################################################################
+            //! The CPU device stream.
+            //#############################################################################
+            class StreamCpu
             {
-                //#############################################################################
-                //! The cpu device stream.
-                //#############################################################################
-                class StreamCpu
+            public:
+                //-----------------------------------------------------------------------------
+                //! Constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST StreamCpu(
+                    DevCpu & dev) :
+                        m_Dev(dev)
+                {}
+                //-----------------------------------------------------------------------------
+                //! Copy constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST StreamCpu(StreamCpu const &) = default;
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
+                //-----------------------------------------------------------------------------
+                //! Move constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST StreamCpu(StreamCpu &&) = default;
+#endif
+                //-----------------------------------------------------------------------------
+                //! Assignment operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST auto operator=(StreamCpu const &) -> StreamCpu & = default;
+                //-----------------------------------------------------------------------------
+                //! Equality comparison operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST auto operator==(StreamCpu const & rhs) const
+                -> bool
                 {
-                public:
-                    //-----------------------------------------------------------------------------
-                    //! Constructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST StreamCpu(
-                        DevCpu & dev) :
-                            m_Dev(dev)
-                    {}
-                    //-----------------------------------------------------------------------------
-                    //! Copy constructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST StreamCpu(StreamCpu const &) = default;
-    #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
-                    //-----------------------------------------------------------------------------
-                    //! Move constructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST StreamCpu(StreamCpu &&) = default;
-    #endif
-                    //-----------------------------------------------------------------------------
-                    //! Assignment operator.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto operator=(StreamCpu const &) -> StreamCpu & = default;
-                    //-----------------------------------------------------------------------------
-                    //! Equality comparison operator.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto operator==(StreamCpu const & rhs) const
-                    -> bool
-                    {
-                        return (m_Dev == rhs.m_Dev);
-                    }
-                    //-----------------------------------------------------------------------------
-                    //! Inequality comparison operator.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto operator!=(StreamCpu const & rhs) const
-                    -> bool
-                    {
-                        return !((*this) == rhs);
-                    }
-                    //-----------------------------------------------------------------------------
-                    //! Destructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST virtual ~StreamCpu() noexcept = default;
+                    return (m_Dev == rhs.m_Dev);
+                }
+                //-----------------------------------------------------------------------------
+                //! Inequality comparison operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST auto operator!=(StreamCpu const & rhs) const
+                -> bool
+                {
+                    return !((*this) == rhs);
+                }
+                //-----------------------------------------------------------------------------
+                //! Destructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST virtual ~StreamCpu() noexcept = default;
 
-                public:
-                    DevCpu m_Dev;
-                };
+            public:
+                DevCpu m_Dev;
+            };
 
-                class EventCpu;
-            }
+            class EventCpu;
         }
     }
 
@@ -102,15 +99,15 @@ namespace alpaka
         namespace dev
         {
             //#############################################################################
-            //! The cpu device stream device get trait specialization.
+            //! The CPU device stream device get trait specialization.
             //#############################################################################
             template<>
             struct GetDev<
-                devs::cpu::detail::StreamCpu>
+                devs::cpu::StreamCpu>
             {
                 ALPAKA_FCT_HOST static auto getDev(
-                    devs::cpu::detail::StreamCpu const & stream)
-                -> devs::cpu::detail::DevCpu
+                    devs::cpu::StreamCpu const & stream)
+                -> devs::cpu::DevCpu
                 {
                     return stream.m_Dev;
                 }
@@ -120,24 +117,24 @@ namespace alpaka
         namespace stream
         {
             //#############################################################################
-            //! The cpu device stream stream type trait specialization.
+            //! The CPU device stream stream type trait specialization.
             //#############################################################################
             template<>
             struct StreamType<
-                devs::cpu::detail::StreamCpu>
+                devs::cpu::StreamCpu>
             {
-                using type = devs::cpu::detail::StreamCpu;
+                using type = devs::cpu::StreamCpu;
             };
 
             //#############################################################################
-            //! The cpu device stream test trait specialization.
+            //! The CPU device stream test trait specialization.
             //#############################################################################
             template<>
             struct StreamTest<
-                devs::cpu::detail::StreamCpu>
+                devs::cpu::StreamCpu>
             {
                 ALPAKA_FCT_HOST static auto streamTest(
-                    devs::cpu::detail::StreamCpu const & stream)
+                    devs::cpu::StreamCpu const & stream)
                 -> bool
                 {
                     boost::ignore_unused(stream);
@@ -150,14 +147,14 @@ namespace alpaka
         namespace wait
         {
             //#############################################################################
-            //! The cpu device stream thread wait trait specialization.
+            //! The CPU device stream thread wait trait specialization.
             //#############################################################################
             template<>
             struct CurrentThreadWaitFor<
-                devs::cpu::detail::StreamCpu>
+                devs::cpu::StreamCpu>
             {
                 ALPAKA_FCT_HOST static auto currentThreadWaitFor(
-                    devs::cpu::detail::StreamCpu const & stream)
+                    devs::cpu::StreamCpu const & stream)
                 -> void
                 {
                     boost::ignore_unused(stream);
@@ -166,16 +163,16 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The cpu device stream event wait trait specialization.
+            //! The CPU device stream event wait trait specialization.
             //#############################################################################
             template<>
             struct WaiterWaitFor<
-                devs::cpu::detail::StreamCpu,
-                devs::cpu::detail::EventCpu>
+                devs::cpu::StreamCpu,
+                devs::cpu::EventCpu>
             {
                 ALPAKA_FCT_HOST static auto waiterWaitFor(
-                    devs::cpu::detail::StreamCpu const & stream,
-                    devs::cpu::detail::EventCpu const & event)
+                    devs::cpu::StreamCpu const & stream,
+                    devs::cpu::EventCpu const & event)
                 -> void
                 {
                     boost::ignore_unused(stream);

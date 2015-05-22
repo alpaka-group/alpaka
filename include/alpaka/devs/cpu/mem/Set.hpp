@@ -53,13 +53,13 @@ namespace alpaka
         namespace mem
         {
             //#############################################################################
-            //! The cpu device memory set trait specialization.
+            //! The CPU device memory set trait specialization.
             //#############################################################################
             template<
                 typename TDim>
             struct Set<
                 TDim,
-                devs::cpu::detail::DevCpu>
+                devs::cpu::DevCpu>
             {
                 //-----------------------------------------------------------------------------
                 //!
@@ -174,7 +174,7 @@ namespace alpaka
                     TBuf & buf,
                     std::uint8_t const & byte,
                     TExtents const & extents,
-                    devs::cpu::detail::StreamCpu const & stream)
+                    devs::cpu::StreamCpu const & stream)
                 -> void
                 {
                     boost::ignore_unused(stream);

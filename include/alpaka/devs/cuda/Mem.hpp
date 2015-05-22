@@ -21,15 +21,6 @@
 
 #pragma once
 
-#include <alpaka/accs/cuda/Stream.hpp>     // StreamCuda
-
-namespace alpaka
-{
-    namespace dev
-    {
-        namespace gpu
-        {
-            using StreamGpu = alpaka::accs::cuda::detail::StreamCuda;
-        }
-    }
-}
+#include <alpaka/devs/cuda/mem/Buf.hpp>     // BufCuda
+#include <alpaka/devs/cuda/mem/Copy.hpp>    // Copy
+#include <alpaka/devs/cuda/mem/Set.hpp>     // Set

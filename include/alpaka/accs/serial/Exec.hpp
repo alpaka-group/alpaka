@@ -69,7 +69,7 @@ namespace alpaka
                         typename TWorkDiv>
                     ALPAKA_FCT_HOST ExecCpuSerial(
                         TWorkDiv const & workDiv,
-                        devs::cpu::detail::StreamCpu & stream) :
+                        devs::cpu::StreamCpu & stream) :
                             AccCpuSerial<TDim>(workDiv),
                             m_Stream(stream)
                     {
@@ -165,7 +165,7 @@ namespace alpaka
                     }
 
                 public:
-                    devs::cpu::detail::StreamCpu m_Stream;
+                    devs::cpu::StreamCpu m_Stream;
                 };
             }
         }
@@ -197,7 +197,7 @@ namespace alpaka
             struct DevType<
                 accs::serial::detail::ExecCpuSerial<TDim>>
             {
-                using type = devs::cpu::detail::DevCpu;
+                using type = devs::cpu::DevCpu;
             };
             //#############################################################################
             //! The CPU serial executor device manager type trait specialization.
@@ -207,7 +207,7 @@ namespace alpaka
             struct DevManType<
                 accs::serial::detail::ExecCpuSerial<TDim>>
             {
-                using type = devs::cpu::detail::DevManCpu;
+                using type = devs::cpu::DevManCpu;
             };
         }
 
@@ -235,7 +235,7 @@ namespace alpaka
             struct EventType<
                 accs::serial::detail::ExecCpuSerial<TDim>>
             {
-                using type = devs::cpu::detail::EventCpu;
+                using type = devs::cpu::EventCpu;
             };
         }
 
@@ -263,7 +263,7 @@ namespace alpaka
             struct StreamType<
                 accs::serial::detail::ExecCpuSerial<TDim>>
             {
-                using type = devs::cpu::detail::StreamCpu;
+                using type = devs::cpu::StreamCpu;
             };
             //#############################################################################
             //! The CPU serial executor stream get trait specialization.
@@ -275,7 +275,7 @@ namespace alpaka
             {
                 ALPAKA_FCT_HOST static auto getStream(
                     accs::serial::detail::ExecCpuSerial<TDim> const & exec)
-                -> devs::cpu::detail::StreamCpu
+                -> devs::cpu::StreamCpu
                 {
                     return exec.m_Stream;
                 }

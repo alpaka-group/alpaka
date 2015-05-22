@@ -73,7 +73,7 @@ namespace alpaka
                                 typename TWorkDiv>
                             ALPAKA_FCT_HOST ExecCpuOmp4(
                                 TWorkDiv const & workDiv,
-                                devs::cpu::detail::StreamCpu & stream) :
+                                devs::cpu::StreamCpu & stream) :
                                     alpaka::workdiv::BasicWorkDiv<TDim>(workDiv),
                                     m_Stream(stream)
                             {
@@ -218,7 +218,7 @@ namespace alpaka
                             }
 
                         public:
-                            devs::cpu::detail::StreamCpu m_Stream;
+                            devs::cpu::StreamCpu m_Stream;
                         };
                     }
                 }
@@ -252,7 +252,7 @@ namespace alpaka
             struct DevType<
                 accs::omp::omp4::cpu::detail::ExecCpuOmp4<TDim>>
             {
-                using type = devs::cpu::detail::DevCpu;
+                using type = devs::cpu::DevCpu;
             };
             //#############################################################################
             //! The CPU OpenMP4 executor device manager type trait specialization.
@@ -262,7 +262,7 @@ namespace alpaka
             struct DevManType<
                 accs::omp::omp4::cpu::detail::ExecCpuOmp4<TDim>>
             {
-                using type = devs::cpu::detail::DevManCpu;
+                using type = devs::cpu::DevManCpu;
             };
         }
 
@@ -290,7 +290,7 @@ namespace alpaka
             struct EventType<
                 accs::omp::omp4::cpu::detail::ExecCpuOmp4<TDim>>
             {
-                using type = devs::cpu::detail::EventCpu;
+                using type = devs::cpu::EventCpu;
             };
         }
 
@@ -318,7 +318,7 @@ namespace alpaka
             struct StreamType<
                 accs::omp::omp4::cpu::detail::ExecCpuOmp4<TDim>>
             {
-                using type = devs::cpu::detail::StreamCpu;
+                using type = devs::cpu::StreamCpu;
             };
             //#############################################################################
             //! The CPU OpenMP4 executor stream get trait specialization.
@@ -330,7 +330,7 @@ namespace alpaka
             {
                 ALPAKA_FCT_HOST static auto getStream(
                     accs::omp::omp4::cpu::detail::ExecCpuOmp4<TDim> const & exec)
-                -> devs::cpu::detail::StreamCpu
+                -> devs::cpu::StreamCpu
                 {
                     return exec.m_Stream;
                 }

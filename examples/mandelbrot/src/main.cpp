@@ -392,7 +392,7 @@ struct MandelbrotKernelTester
             alpaka::dev::DevManT<TAcc>::getDevByIdx(0));
 
         // Get a stream on this device.
-        alpaka::stream::StreamT<TAcc> stream(
+        alpaka::stream::StreamT<alpaka::dev::DevT<TAcc>> stream(
             alpaka::stream::create(devAcc));
 
         alpaka::Vec2<> const v2uiExtents(

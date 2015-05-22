@@ -23,7 +23,7 @@
 
 #include <alpaka/devs/cpu/Cpu.hpp>
 #if defined(ALPAKA_GPU_CUDA_ENABLED) && defined(__CUDACC__)
-    #include <alpaka/devs/gpu/Gpu.hpp>
+    #include <alpaka/devs/cuda/Cuda.hpp>
 #endif
 
 namespace alpaka

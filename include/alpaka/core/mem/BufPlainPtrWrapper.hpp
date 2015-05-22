@@ -191,32 +191,6 @@ namespace alpaka
             };
         }
 
-        namespace offset
-        {
-            //#############################################################################
-            //! The BufPlainPtrWrapper offset get trait specialization.
-            //#############################################################################
-            template<
-                typename TIdx,
-                typename TElem,
-                typename TDim,
-                typename TDev>
-            struct GetOffset<
-                TIdx,
-                alpaka::mem::BufPlainPtrWrapper<TElem, TDim, TDev>>
-            {
-                //-----------------------------------------------------------------------------
-                //!
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST_ACC static auto getOffset(
-                    alpaka::mem::BufPlainPtrWrapper<TElem, TDim, TDev> const &)
-                -> UInt
-                {
-                    return 0u;
-                }
-            };
-        }
-
         namespace mem
         {
             //#############################################################################
@@ -302,6 +276,32 @@ namespace alpaka
                 -> UInt
                 {
                     return buf.m_uiPitchBytes;
+                }
+            };
+        }
+
+        namespace offset
+        {
+            //#############################################################################
+            //! The BufPlainPtrWrapper offset get trait specialization.
+            //#############################################################################
+            template<
+                typename TIdx,
+                typename TElem,
+                typename TDim,
+                typename TDev>
+            struct GetOffset<
+                TIdx,
+                alpaka::mem::BufPlainPtrWrapper<TElem, TDim, TDev>>
+            {
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST_ACC static auto getOffset(
+                    alpaka::mem::BufPlainPtrWrapper<TElem, TDim, TDev> const &)
+                -> UInt
+                {
+                    return 0u;
                 }
             };
         }

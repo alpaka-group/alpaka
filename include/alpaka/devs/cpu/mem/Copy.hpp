@@ -56,7 +56,7 @@ namespace alpaka
         namespace mem
         {
             //#############################################################################
-            //! The cpu device memory copy trait specialization.
+            //! The CPU device memory copy trait specialization.
             //!
             //! Copies from cpu memory into cpu memory.
             //#############################################################################
@@ -64,8 +64,8 @@ namespace alpaka
                 typename TDim>
             struct Copy<
                 TDim,
-                devs::cpu::detail::DevCpu,
-                devs::cpu::detail::DevCpu>
+                devs::cpu::DevCpu,
+                devs::cpu::DevCpu>
             {
                 //-----------------------------------------------------------------------------
                 //!
@@ -219,7 +219,7 @@ namespace alpaka
                     TBufDst & bufDst,
                     TBufSrc const & bufSrc,
                     TExtents const & extents,
-                    devs::cpu::detail::StreamCpu const & stream)
+                    devs::cpu::StreamCpu const & stream)
                 -> void
                 {
                     boost::ignore_unused(stream);

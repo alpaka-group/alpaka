@@ -29,15 +29,11 @@
 // Specialized traits.
 #include <alpaka/traits/Acc.hpp>            // AccType
 #include <alpaka/traits/Exec.hpp>           // ExecType
-#include <alpaka/traits/Event.hpp>          // EventType
 #include <alpaka/traits/Dev.hpp>            // DevType
-#include <alpaka/traits/Stream.hpp>         // StreamType
 
 // Implementation details.
 #include <alpaka/accs/omp/Common.hpp>
 #include <alpaka/devs/cpu/Dev.hpp>          // DevCpu
-#include <alpaka/devs/cpu/Event.hpp>        // EventCpu
-#include <alpaka/devs/cpu/Stream.hpp>       // StreamCpu
 
 #include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
 
@@ -252,7 +248,7 @@ namespace alpaka
                 accs::omp::omp4::cpu::detail::AccCpuOmp4<TDim>>
             {
                 ALPAKA_FCT_HOST static auto getAccDevProps(
-                    devs::cpu::detail::DevCpu const & dev)
+                    devs::cpu::DevCpu const & dev)
                 -> alpaka::acc::AccDevProps<TDim>
                 {
                     boost::ignore_unused(dev);
@@ -302,7 +298,7 @@ namespace alpaka
             struct DevType<
                 accs::omp::omp4::cpu::detail::AccCpuOmp4<TDim>>
             {
-                using type = devs::cpu::detail::DevCpu;
+                using type = devs::cpu::DevCpu;
             };
             //#############################################################################
             //! The CPU OpenMP4 accelerator device type trait specialization.
@@ -312,7 +308,7 @@ namespace alpaka
             struct DevManType<
                 accs::omp::omp4::cpu::detail::AccCpuOmp4<TDim>>
             {
-                using type = devs::cpu::detail::DevManCpu;
+                using type = devs::cpu::DevManCpu;
             };
         }
 
@@ -330,20 +326,6 @@ namespace alpaka
             };
         }
 
-        namespace event
-        {
-            //#############################################################################
-            //! The CPU OpenMP4 accelerator event type trait specialization.
-            //#############################################################################
-            template<
-                typename TDim>
-            struct EventType<
-                accs::omp::omp4::cpu::detail::AccCpuOmp4<TDim>>
-            {
-                using type = devs::cpu::detail::EventCpu;
-            };
-        }
-
         namespace exec
         {
             //#############################################################################
@@ -355,20 +337,6 @@ namespace alpaka
                 accs::omp::omp4::cpu::detail::AccCpuOmp4<TDim>>
             {
                 using type = accs::omp::omp4::cpu::detail::ExecCpuOmp4<TDim>;
-            };
-        }
-
-        namespace stream
-        {
-            //#############################################################################
-            //! The CPU OpenMP4 accelerator stream type trait specialization.
-            //#############################################################################
-            template<
-                typename TDim>
-            struct StreamType<
-                accs::omp::omp4::cpu::detail::AccCpuOmp4<TDim>>
-            {
-                using type = devs::cpu::detail::StreamCpu;
             };
         }
     }

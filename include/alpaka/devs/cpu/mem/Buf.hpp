@@ -24,16 +24,16 @@
 #include <alpaka/devs/cpu/mem/Set.hpp>  // Set
 #include <alpaka/devs/cpu/Dev.hpp>      // DevCpu
 
+#include <alpaka/traits/mem/Buf.hpp>    // traits::Alloc, ...
+#include <alpaka/traits/Extent.hpp>     // traits::getXXX
+
 #include <alpaka/core/mem/View.hpp>     // View
 #include <alpaka/core/BasicDims.hpp>    // dim::Dim<N>
 #include <alpaka/core/Vec.hpp>          // Vec<TDim>
 
-#include <alpaka/traits/mem/Buf.hpp>    // traits::Alloc, ...
-#include <alpaka/traits/Extent.hpp>     // traits::getXXX
-
 // \TODO: Remove CUDA inclusion for BufCpu by replacing pinning with non CUDA code!
 #if defined(ALPAKA_GPU_CUDA_ENABLED) && defined(__CUDACC__)
-    #include <alpaka/accs/cuda/Common.hpp>
+    #include <alpaka/core/Cuda.hpp>
 #endif
 
 #include <cassert>                      // assert
@@ -66,7 +66,7 @@ namespace alpaka
                     template<
                         typename TExtents>
                     ALPAKA_FCT_HOST BufCpu(
-                        devs::cpu::detail::DevCpu const & dev,
+                        devs::cpu::DevCpu const & dev,
                         TExtents const & extents) :
                             m_Dev(dev),
                             m_vExtentsElements(extent::getExtentsVecNd<TDim, UInt>(extents)),
@@ -113,7 +113,7 @@ namespace alpaka
                     }
 
                 public:
-                    devs::cpu::detail::DevCpu m_Dev;
+                    devs::cpu::DevCpu m_Dev;
                     Vec<TDim> m_vExtentsElements;
                     std::shared_ptr<TElem> m_spMem;
                     UInt m_uiPitchBytes;
@@ -138,7 +138,7 @@ namespace alpaka
             struct DevType<
                 devs::cpu::detail::BufCpu<TElem, TDim>>
             {
-                using type = devs::cpu::detail::DevCpu;
+                using type = devs::cpu::DevCpu;
             };
             //#############################################################################
             //! The BufCpu device get trait specialization.
@@ -151,7 +151,7 @@ namespace alpaka
             {
                 ALPAKA_FCT_HOST static auto getDev(
                     devs::cpu::detail::BufCpu<TElem, TDim> const & buf)
-                -> devs::cpu::detail::DevCpu
+                -> devs::cpu::DevCpu
                 {
                     return buf.m_Dev;
                 }
@@ -199,35 +199,10 @@ namespace alpaka
             };
         }
 
-        namespace offset
-        {
-            //#############################################################################
-            //! The BufCpu offset get trait specialization.
-            //#############################################################################
-            template<
-                typename TIdx,
-                typename TElem,
-                typename TDim>
-            struct GetOffset<
-                TIdx,
-                devs::cpu::detail::BufCpu<TElem, TDim>>
-            {
-                //-----------------------------------------------------------------------------
-                //!
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getOffset(
-                    devs::cpu::detail::BufCpu<TElem, TDim> const &)
-                -> UInt
-                {
-                    return 0u;
-                }
-            };
-        }
-
         namespace mem
         {
             //#############################################################################
-            //! The cpu device memory buffer type trait specialization.
+            //! The CPU device memory buffer type trait specialization.
             //#############################################################################
             template<
                 typename TElem,
@@ -235,12 +210,12 @@ namespace alpaka
             struct BufType<
                 TElem,
                 TDim,
-                devs::cpu::detail::DevCpu>
+                devs::cpu::DevCpu>
             {
                 using type = devs::cpu::detail::BufCpu<TElem, TDim>;
             };
             //#############################################################################
-            //! The cpu device memory view type trait specialization.
+            //! The CPU device memory view type trait specialization.
             //#############################################################################
             template<
                 typename TElem,
@@ -248,9 +223,9 @@ namespace alpaka
             struct ViewType<
                 TElem,
                 TDim,
-                devs::cpu::detail::DevCpu>
+                devs::cpu::DevCpu>
             {
-                using type = alpaka::mem::detail::View<TElem, TDim, devs::cpu::detail::DevCpu>;
+                using type = alpaka::mem::detail::View<TElem, TDim, devs::cpu::DevCpu>;
             };
             //#############################################################################
             //! The BufCpu memory element type get trait specialization.
@@ -327,14 +302,14 @@ namespace alpaka
                 typename TDim>
             struct GetPtrDev<
                 devs::cpu::detail::BufCpu<TElem, TDim>,
-                devs::cpu::detail::DevCpu>
+                devs::cpu::DevCpu>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getPtrDev(
                     devs::cpu::detail::BufCpu<TElem, TDim> const & buf,
-                    devs::cpu::detail::DevCpu const & dev)
+                    devs::cpu::DevCpu const & dev)
                 -> TElem const *
                 {
                     if(dev == alpaka::dev::getDev(buf))
@@ -351,7 +326,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getPtrDev(
                     devs::cpu::detail::BufCpu<TElem, TDim> & buf,
-                    devs::cpu::detail::DevCpu const & dev)
+                    devs::cpu::DevCpu const & dev)
                 -> TElem *
                 {
                     if(dev == alpaka::dev::getDev(buf))
@@ -385,7 +360,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The cpu device memory allocation trait specialization.
+            //! The CPU device memory allocation trait specialization.
             //#############################################################################
             template<
                 typename TElem,
@@ -393,7 +368,7 @@ namespace alpaka
             struct Alloc<
                 TElem,
                 TDim,
-                devs::cpu::detail::DevCpu>
+                devs::cpu::DevCpu>
             {
                 //-----------------------------------------------------------------------------
                 //!
@@ -401,7 +376,7 @@ namespace alpaka
                 template<
                     typename TExtents>
                 ALPAKA_FCT_HOST static auto alloc(
-                    devs::cpu::detail::DevCpu const & dev,
+                    devs::cpu::DevCpu const & dev,
                     TExtents const & extents)
                 -> devs::cpu::detail::BufCpu<TElem, TDim>
                 {
@@ -415,21 +390,21 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The cpu device memory mapping trait specialization.
+            //! The CPU device memory mapping trait specialization.
             //#############################################################################
             template<
                 typename TElem,
                 typename TDim>
             struct Map<
                 devs::cpu::detail::BufCpu<TElem, TDim>,
-                devs::cpu::detail::DevCpu>
+                devs::cpu::DevCpu>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto map(
                     devs::cpu::detail::BufCpu<TElem, TDim> const & buf,
-                    devs::cpu::detail::DevCpu const & dev)
+                    devs::cpu::DevCpu const & dev)
                 -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -442,21 +417,21 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The cpu device memory unmapping trait specialization.
+            //! The CPU device memory unmapping trait specialization.
             //#############################################################################
             template<
                 typename TElem,
                 typename TDim>
             struct Unmap<
                 devs::cpu::detail::BufCpu<TElem, TDim>,
-                devs::cpu::detail::DevCpu>
+                devs::cpu::DevCpu>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto unmap(
                     devs::cpu::detail::BufCpu<TElem, TDim> const & buf,
-                    devs::cpu::detail::DevCpu const & dev)
+                    devs::cpu::DevCpu const & dev)
                 -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -469,7 +444,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The cpu device memory pinning trait specialization.
+            //! The CPU device memory pinning trait specialization.
             //#############################################################################
             template<
                 typename TElem,
@@ -503,7 +478,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The cpu device memory unpinning trait specialization.
+            //! The CPU device memory unpinning trait specialization.
             //#############################################################################
             template<
                 typename TElem,
@@ -528,6 +503,31 @@ namespace alpaka
 #else
                     throw std::runtime_error("Memory unpinning of BufCpu is not implemented when CUDA is not enabled!");
 #endif
+                }
+            };
+        }
+
+        namespace offset
+        {
+            //#############################################################################
+            //! The BufCpu offset get trait specialization.
+            //#############################################################################
+            template<
+                typename TIdx,
+                typename TElem,
+                typename TDim>
+            struct GetOffset<
+                TIdx,
+                devs::cpu::detail::BufCpu<TElem, TDim>>
+            {
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static auto getOffset(
+                    devs::cpu::detail::BufCpu<TElem, TDim> const &)
+                -> UInt
+                {
+                    return 0u;
                 }
             };
         }

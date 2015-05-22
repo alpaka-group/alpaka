@@ -21,12 +21,11 @@
 
 #pragma once
 
-#include <alpaka/accs/cuda/Common.hpp>  // gridDim, blockDim, getExtent(dim3)
-
 #include <alpaka/traits/WorkDiv.hpp>    // alpaka::GetWorkDiv
 
 #include <alpaka/core/Vec.hpp>          // Vec, getExtentsVecNd
 #include <alpaka/core/Common.hpp>       // ALPAKA_FCT_ACC_CUDA_ONLY
+#include <alpaka/core/Cuda.hpp>  // gridDim, blockDim, getExtent(dim3)
 
 namespace alpaka
 {

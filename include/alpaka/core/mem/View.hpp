@@ -263,33 +263,6 @@ namespace alpaka
             };
         }
 
-        namespace offset
-        {
-            //#############################################################################
-            //! The View x offset get trait specialization.
-            //#############################################################################
-            template<
-                typename TIdx,
-                typename TElem,
-                typename TDim,
-                typename TDev>
-            struct GetOffset<
-                TIdx,
-                alpaka::mem::detail::View<TElem, TDim, TDev>,
-                typename std::enable_if<(TDim::value > TIdx::value)>::type>
-            {
-                //-----------------------------------------------------------------------------
-                //!
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getOffset(
-                    alpaka::mem::detail::View<TElem, TDim, TDev> const & offset)
-                -> UInt
-                {
-                    return offset.m_vOffsetsElements[TIdx::value];
-                }
-            };
-        }
-
         namespace mem
         {
             //#############################################################################
@@ -435,6 +408,7 @@ namespace alpaka
 #else
                 using IdxSequence = alpaka::detail::make_integer_sequence<UInt, TDim::value>;
 #endif
+            public:
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
@@ -442,10 +416,9 @@ namespace alpaka
                     alpaka::mem::detail::View<TElem, TDim, TDev> const & view)
                 -> TElem const *
                 {
+                    auto const & buf(alpaka::mem::getBuf(view));
                     // \TODO: Precalculate this pointer for faster execution.
-                    return getPtrNativeInternal(
-                        view,
-                        IdxSequence());
+                    return alpaka::mem::getPtrNative(buf) + pitchedOffsetElems(view, buf, IdxSequence());
                 }
                 //-----------------------------------------------------------------------------
                 //!
@@ -454,10 +427,9 @@ namespace alpaka
                     alpaka::mem::detail::View<TElem, TDim, TDev> & view)
                 -> TElem *
                 {
+                    auto & buf(alpaka::mem::getBuf(view));
                     // \TODO: Precalculate this pointer for faster execution.
-                    return getPtrNativeInternal(
-                        view,
-                        IdxSequence());
+                    return alpaka::mem::getPtrNative(buf) + pitchedOffsetElems(view, buf, IdxSequence());
                 }
 
             private:
@@ -466,33 +438,34 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TView,
+                    typename TBuf,
                     UInt... TIndices>
-                ALPAKA_FCT_HOST static auto getPtrNativeInternal(
-                    TView && view,
+                ALPAKA_FCT_HOST static auto pitchedOffsetElems(
+                    TView const & view,
+                    TBuf const & buf,
                     alpaka::detail::integer_sequence<UInt, TIndices...> const &)
-                -> TElem *
+                -> UInt
                 {
-                    auto & buf(alpaka::mem::getBuf(view));
-                    return alpaka::mem::getPtrNative(buf)
-                        + alpaka::foldr(
+                    return
+                        alpaka::foldr(
                             std::plus<UInt>(),
-                            basePtrOffsetElems<TIndices>(view, buf)...);
+                            pitchedOffsetElemsPerDim<TIndices>(view, buf)...);
                 }
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
                 template<
-                    typename TIdx,
+                    UInt TuiIdx,
                     typename TView,
                     typename TBuf>
-                ALPAKA_FCT_HOST static auto basePtrOffsetElems(
+                ALPAKA_FCT_HOST static auto pitchedOffsetElemsPerDim(
                     TView const & view,
                     TBuf const & buf)
                 -> UInt
                 {
                     return
-                        alpaka::offset::getOffset<TIdx::value, UInt>(view)
-                        * alpaka::mem::getPitchElements<TIdx::value + 1u, UInt>(buf);
+                        alpaka::offset::getOffset<TuiIdx, UInt>(view)
+                        * alpaka::mem::getPitchElements<TuiIdx + 1u, UInt>(buf);
                 }
             };
 
@@ -516,8 +489,35 @@ namespace alpaka
                 -> UInt
                 {
                     return
-                        alpaka::mem::getPitchElements<TIdx, UInt>(
+                        alpaka::mem::getPitchElements<TIdx::value, UInt>(
                             alpaka::mem::getBuf(view));
+                }
+            };
+        }
+
+        namespace offset
+        {
+            //#############################################################################
+            //! The View x offset get trait specialization.
+            //#############################################################################
+            template<
+                typename TIdx,
+                typename TElem,
+                typename TDim,
+                typename TDev>
+            struct GetOffset<
+                TIdx,
+                alpaka::mem::detail::View<TElem, TDim, TDev>,
+                typename std::enable_if<(TDim::value > TIdx::value)>::type>
+            {
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static auto getOffset(
+                    alpaka::mem::detail::View<TElem, TDim, TDev> const & offset)
+                -> UInt
+                {
+                    return offset.m_vOffsetsElements[TIdx::value];
                 }
             };
         }

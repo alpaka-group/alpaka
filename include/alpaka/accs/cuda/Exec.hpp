@@ -29,12 +29,12 @@
 #include <alpaka/traits/Stream.hpp>         // StreamType
 
 // Implementation details.
-#include <alpaka/accs/cuda/Common.hpp>
 #include <alpaka/accs/cuda/Acc.hpp>         // AccGpuCuda
-#include <alpaka/accs/cuda/Dev.hpp>         // DevCuda
-#include <alpaka/accs/cuda/Event.hpp>       // EventCuda
-#include <alpaka/accs/cuda/Stream.hpp>      // StreamCuda
+#include <alpaka/devs/cuda/Dev.hpp>         // DevCuda
+#include <alpaka/devs/cuda/Event.hpp>       // EventCuda
+#include <alpaka/devs/cuda/Stream.hpp>      // StreamCuda
 #include <alpaka/traits/Kernel.hpp>         // BlockSharedExternMemSizeBytes
+#include <alpaka/core/Cuda.hpp>             // ALPAKA_CUDA_RT_CHECK
 
 #include <boost/predef.h>                   // workarounds
 
@@ -89,7 +89,7 @@ namespace alpaka
                         typename TWorkDiv>
                     ALPAKA_FCT_HOST ExecGpuCuda(
                         TWorkDiv const & workDiv,
-                        StreamCuda & stream) :
+                        devs::cuda::StreamCuda & stream) :
                             m_Stream(stream),
                             m_vuiGridBlockExtents(workdiv::getWorkDiv<Grid, Blocks>(workDiv)),
                             m_vuiBlockThreadExtents(workdiv::getWorkDiv<Block, Threads>(workDiv))
@@ -227,7 +227,7 @@ namespace alpaka
                     Vec<TDim> const m_vuiBlockThreadExtents;
 
                 public:
-                    StreamCuda m_Stream;
+                    devs::cuda::StreamCuda m_Stream;
                 };
             }
         }
@@ -259,7 +259,7 @@ namespace alpaka
             struct DevType<
                 accs::cuda::detail::ExecGpuCuda<TDim>>
             {
-                using type = accs::cuda::detail::DevCuda;
+                using type = devs::cuda::DevCuda;
             };
             //#############################################################################
             //! The GPU CUDA executor device manager type trait specialization.
@@ -269,7 +269,7 @@ namespace alpaka
             struct DevManType<
                 accs::cuda::detail::ExecGpuCuda<TDim>>
             {
-                using type = accs::cuda::detail::DevManCuda;
+                using type = devs::cuda::DevManCuda;
             };
         }
 
@@ -297,7 +297,7 @@ namespace alpaka
             struct EventType<
                 accs::cuda::detail::ExecGpuCuda<TDim>>
             {
-                using type = accs::cuda::detail::EventCuda;
+                using type = devs::cuda::EventCuda;
             };
         }
 
@@ -325,7 +325,7 @@ namespace alpaka
             struct StreamType<
                 accs::cuda::detail::ExecGpuCuda<TDim>>
             {
-                using type = accs::cuda::detail::StreamCuda;
+                using type = devs::cuda::StreamCuda;
             };
             //#############################################################################
             //! The GPU CUDA executor stream get trait specialization.
@@ -337,7 +337,7 @@ namespace alpaka
             {
                 ALPAKA_FCT_HOST static auto getStream(
                     accs::cuda::detail::ExecGpuCuda<TDim> const & exec)
-                -> accs::cuda::detail::StreamCuda
+                -> devs::cuda::StreamCuda
                 {
                     return exec.m_Stream;
                 }

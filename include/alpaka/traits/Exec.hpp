@@ -110,8 +110,8 @@ namespace alpaka
         -> ExecT<TAcc>
         {
             static_assert(
-                (dim::DimT<TAcc>::value > dim::DimT<TBlockThreadExtents>::value) && (dim::DimT<TAcc>::value >dim::DimT<TGridBlockExtents>::value),
-                "The dimension of the accelerator has to be larger then the dimensions of the grid block and block thread extents!");
+                (dim::DimT<TAcc>::value >= dim::DimT<TBlockThreadExtents>::value) && (dim::DimT<TAcc>::value >= dim::DimT<TGridBlockExtents>::value),
+                "The dimension of the accelerator has to be larger or equal dimensionality than the grid block and block thread extents!");
 
             return
                 create<TAcc>(

@@ -46,7 +46,7 @@ namespace alpaka
     namespace devs
     {
         //-----------------------------------------------------------------------------
-        //! The cpu device functionality.
+        //! The CPU device functionality.
         //-----------------------------------------------------------------------------
         namespace cpu
         {

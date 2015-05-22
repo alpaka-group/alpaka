@@ -21,11 +21,10 @@
 
 #pragma once
 
-#include <alpaka/accs/cuda/Common.hpp>  // threadIdx, blockIdx, getOffset(dim3)
+#include <alpaka/traits/Idx.hpp>    // idx::getIdx
 
-#include <alpaka/traits/Idx.hpp>        // idx::getIdx
-
-#include <alpaka/core/Vec.hpp>          // Vec, getOffsetsVecNd
+#include <alpaka/core/Vec.hpp>      // Vec, getOffsetsVecNd
+#include <alpaka/core/Cuda.hpp>     // threadIdx, blockIdx, getOffset(dim3)
 
 namespace alpaka
 {

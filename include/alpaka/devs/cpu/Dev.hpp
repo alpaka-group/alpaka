@@ -24,6 +24,7 @@
 #include <alpaka/devs/cpu/SysInfo.hpp>  // getCpuName, getGlobalMemSizeBytes
 
 #include <alpaka/traits/Dev.hpp>        // DevType
+#include <alpaka/traits/Event.hpp>      // EventType
 #include <alpaka/traits/Stream.hpp>     // StreamType
 #include <alpaka/traits/Wait.hpp>       // CurrentThreadWaitFor
 
@@ -39,100 +40,97 @@ namespace alpaka
     {
         namespace cpu
         {
-            namespace detail
+            class DevManCpu;
+
+            //#############################################################################
+            //! The CPU device handle.
+            //#############################################################################
+            class DevCpu
             {
-                class DevManCpu;
-
-                //#############################################################################
-                //! The CPU device handle.
-                //#############################################################################
-                class DevCpu
-                {
-                    friend class DevManCpu;
-                protected:
-                    //-----------------------------------------------------------------------------
-                    //! Constructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST DevCpu() = default;
-                public:
-                    //-----------------------------------------------------------------------------
-                    //! Copy constructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST DevCpu(DevCpu const &) = default;
+                friend class DevManCpu;
+            protected:
+                //-----------------------------------------------------------------------------
+                //! Constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST DevCpu() = default;
+            public:
+                //-----------------------------------------------------------------------------
+                //! Copy constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST DevCpu(DevCpu const &) = default;
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
-                    //-----------------------------------------------------------------------------
-                    //! Move constructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST DevCpu(DevCpu &&) = default;
+                //-----------------------------------------------------------------------------
+                //! Move constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST DevCpu(DevCpu &&) = default;
 #endif
-                    //-----------------------------------------------------------------------------
-                    //! Assignment operator.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto operator=(DevCpu const &) -> DevCpu & = default;
-                    //-----------------------------------------------------------------------------
-                    //! Equality comparison operator.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto operator==(DevCpu const &) const
-                    -> bool
-                    {
-                        return true;
-                    }
-                    //-----------------------------------------------------------------------------
-                    //! Inequality comparison operator.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto operator!=(DevCpu const & rhs) const
-                    -> bool
-                    {
-                        return !((*this) == rhs);
-                    }
-                };
-
-                //#############################################################################
-                //! The CPU device manager.
-                //#############################################################################
-                class DevManCpu
+                //-----------------------------------------------------------------------------
+                //! Assignment operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST auto operator=(DevCpu const &) -> DevCpu & = default;
+                //-----------------------------------------------------------------------------
+                //! Equality comparison operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST auto operator==(DevCpu const &) const
+                -> bool
                 {
-                public:
-                    //-----------------------------------------------------------------------------
-                    //! Constructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST DevManCpu() = delete;
+                    return true;
+                }
+                //-----------------------------------------------------------------------------
+                //! Inequality comparison operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST auto operator!=(DevCpu const & rhs) const
+                -> bool
+                {
+                    return !((*this) == rhs);
+                }
+            };
 
-                    //-----------------------------------------------------------------------------
-                    //! \return The number of devices available.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto getDevCount()
-                    -> std::size_t
-                    {
-                        return 1;
-                    }
-                    //-----------------------------------------------------------------------------
-                    //! \return The number of devices available.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto getDevByIdx(
-                        std::size_t const & uiIdx)
-                    -> DevCpu
-                    {
-                        std::size_t const uiNumDevices(getDevCount());
-                        if(uiIdx >= uiNumDevices)
-                        {
-                            std::stringstream ssErr;
-                            ssErr << "Unable to return device handle for device " << uiIdx << " because there are only " << uiNumDevices << " threads devices!";
-                            throw std::runtime_error(ssErr.str());
-                        }
+            //#############################################################################
+            //! The CPU device manager.
+            //#############################################################################
+            class DevManCpu
+            {
+            public:
+                //-----------------------------------------------------------------------------
+                //! Constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST DevManCpu() = delete;
 
-                        return {};
+                //-----------------------------------------------------------------------------
+                //! \return The number of devices available.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static auto getDevCount()
+                -> std::size_t
+                {
+                    return 1;
+                }
+                //-----------------------------------------------------------------------------
+                //! \return The number of devices available.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static auto getDevByIdx(
+                    std::size_t const & uiIdx)
+                -> DevCpu
+                {
+                    std::size_t const uiNumDevices(getDevCount());
+                    if(uiIdx >= uiNumDevices)
+                    {
+                        std::stringstream ssErr;
+                        ssErr << "Unable to return device handle for device " << uiIdx << " because there are only " << uiNumDevices << " threads devices!";
+                        throw std::runtime_error(ssErr.str());
                     }
-                };
-            }
+
+                    return {};
+                }
+            };
 
             //-----------------------------------------------------------------------------
             //! \return The device this object is bound to.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST auto getDev()
-            -> detail::DevCpu
+            -> DevCpu
             {
-                return detail::DevManCpu::getDevByIdx(0);
+                return DevManCpu::getDevByIdx(0);
             }
         }
     }
@@ -141,10 +139,8 @@ namespace alpaka
     {
         namespace cpu
         {
-            namespace detail
-            {
-                class StreamCpu;
-            }
+            class EventCpu;
+            class StreamCpu;
         }
     }
 
@@ -153,48 +149,48 @@ namespace alpaka
         namespace dev
         {
             //#############################################################################
-            //! The cpu device device type trait specialization.
+            //! The CPU device device type trait specialization.
             //#############################################################################
             template<>
             struct DevType<
-                devs::cpu::detail::DevCpu>
+                devs::cpu::DevCpu>
             {
-                using type = devs::cpu::detail::DevCpu;
+                using type = devs::cpu::DevCpu;
             };
             //#############################################################################
-            //! The cpu device manager device type trait specialization.
+            //! The CPU device manager device type trait specialization.
             //#############################################################################
             template<>
             struct DevType<
-                devs::cpu::detail::DevManCpu>
+                devs::cpu::DevManCpu>
             {
-                using type = devs::cpu::detail::DevCpu;
+                using type = devs::cpu::DevCpu;
             };
 
             //#############################################################################
-            //! The cpu device device get trait specialization.
+            //! The CPU device device get trait specialization.
             //#############################################################################
             template<>
             struct GetDev<
-                devs::cpu::detail::DevCpu>
+                devs::cpu::DevCpu>
             {
                 ALPAKA_FCT_HOST static auto getDev(
-                    devs::cpu::detail::DevCpu const & dev)
-                -> devs::cpu::detail::DevCpu
+                    devs::cpu::DevCpu const & dev)
+                -> devs::cpu::DevCpu
                 {
                     return dev;
                 }
             };
 
             //#############################################################################
-            //! The cpu device name get trait specialization.
+            //! The CPU device name get trait specialization.
             //#############################################################################
             template<>
             struct GetName<
-                devs::cpu::detail::DevCpu>
+                devs::cpu::DevCpu>
             {
                 ALPAKA_FCT_HOST static auto getName(
-                    devs::cpu::detail::DevCpu const & dev)
+                    devs::cpu::DevCpu const & dev)
                 -> std::string
                 {
                     boost::ignore_unused(dev);
@@ -204,14 +200,14 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The cpu device available memory get trait specialization.
+            //! The CPU device available memory get trait specialization.
             //#############################################################################
             template<>
             struct GetMemBytes<
-                devs::cpu::detail::DevCpu>
+                devs::cpu::DevCpu>
             {
                 ALPAKA_FCT_HOST static auto getMemBytes(
-                    devs::cpu::detail::DevCpu const & dev)
+                    devs::cpu::DevCpu const & dev)
                 -> std::size_t
                 {
                     boost::ignore_unused(dev);
@@ -221,14 +217,14 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The cpu device free memory get trait specialization.
+            //! The CPU device free memory get trait specialization.
             //#############################################################################
             template<>
             struct GetFreeMemBytes<
-                devs::cpu::detail::DevCpu>
+                devs::cpu::DevCpu>
             {
                 ALPAKA_FCT_HOST static auto getFreeMemBytes(
-                    devs::cpu::detail::DevCpu const & dev)
+                    devs::cpu::DevCpu const & dev)
                 -> std::size_t
                 {
                     boost::ignore_unused(dev);
@@ -239,57 +235,70 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The cpu device reset trait specialization.
+            //! The CPU device reset trait specialization.
             //#############################################################################
             template<>
             struct Reset<
-                devs::cpu::detail::DevCpu>
+                devs::cpu::DevCpu>
             {
                 ALPAKA_FCT_HOST static auto reset(
-                    devs::cpu::detail::DevCpu const & dev)
+                    devs::cpu::DevCpu const & dev)
                 -> void
                 {
                     boost::ignore_unused(dev);
 
-                    // The fibers device can not be reset for now.
+                    // The CPU does nothing on reset.
                 }
             };
 
             //#############################################################################
-            //! The cpu device device manager type trait specialization.
+            //! The CPU device device manager type trait specialization.
             //#############################################################################
             template<>
             struct DevManType<
-                devs::cpu::detail::DevCpu>
+                devs::cpu::DevCpu>
             {
-                using type = devs::cpu::detail::DevManCpu;
+                using type = devs::cpu::DevManCpu;
+            };
+        }
+
+        namespace event
+        {
+            //#############################################################################
+            //! The CPU device event type trait specialization.
+            //#############################################################################
+            template<>
+            struct EventType<
+                devs::cpu::DevCpu>
+            {
+                using type = devs::cpu::EventCpu;
             };
         }
 
         namespace stream
         {
             //#############################################################################
-            //! The cpu device stream type trait specialization.
+            //! The CPU device stream type trait specialization.
             //#############################################################################
             template<>
             struct StreamType<
-                devs::cpu::detail::DevCpu>
+                devs::cpu::DevCpu>
             {
-                using type = devs::cpu::detail::StreamCpu;
+                using type = devs::cpu::StreamCpu;
             };
         }
 
         namespace wait
         {
             //#############################################################################
-            //! The cpu thread device wait specialization.
+            //! The CPU device thread wait specialization.
             //#############################################################################
             template<>
             struct CurrentThreadWaitFor<
-                devs::cpu::detail::DevCpu>
+                devs::cpu::DevCpu>
             {
                 ALPAKA_FCT_HOST static auto currentThreadWaitFor(
-                    devs::cpu::detail::DevCpu const &)
+                    devs::cpu::DevCpu const &)
                 -> void
                 {
                     // Because cpu calls are not asynchronous, this call never has to wait.

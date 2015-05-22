@@ -126,7 +126,7 @@ struct VectorAddKernelTester
             alpaka::dev::DevManT<TAcc>::getDevByIdx(0));
 
         // Get a stream on this device.
-        alpaka::stream::StreamT<TAcc> stream(
+        alpaka::stream::StreamT<alpaka::dev::DevT<TAcc>> stream(
             alpaka::stream::create(devAcc));
 
         alpaka::Vec1<> const v1uiExtents(

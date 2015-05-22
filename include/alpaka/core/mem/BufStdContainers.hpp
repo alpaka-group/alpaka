@@ -68,7 +68,7 @@ namespace alpaka
                 TFixedSizeArray,
                 typename std::enable_if<std::is_array<TFixedSizeArray>::value>::type>
             {
-                using type = devs::cpu::detail::DevCpu;
+                using type = devs::cpu::DevCpu;
             };
 
             //#############################################################################
@@ -82,7 +82,7 @@ namespace alpaka
             {
                 ALPAKA_FCT_HOST static auto getDev(
                     TFixedSizeArray const & buf)
-                    -> devs::cpu::detail::DevCpu
+                    -> devs::cpu::DevCpu
                 {
                     // \FIXME: CUDA device?
                     return alpaka::devs::cpu::getDev();
@@ -132,31 +132,6 @@ namespace alpaka
                     // C++14
                     /*boost::ignore_unused(extents);*/
                     return std::extent<TFixedSizeArray, TIdx::value>::value;
-                }
-            };
-        }
-
-        namespace offset
-        {
-            //#############################################################################
-            //! The fixed size array offset get trait specialization.
-            //#############################################################################
-            template<
-                typename TIdx,
-                typename TFixedSizeArray>
-            struct GetOffset<
-                TIdx,
-                TFixedSizeArray,
-                typename std::enable_if<std::is_array<TFixedSizeArray>::value>::type>
-            {
-                //-----------------------------------------------------------------------------
-                //!
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getOffset(
-                    TFixedSizeArray const &)
-                -> UInt
-                {
-                    return 0u;
                 }
             };
         }
@@ -259,6 +234,31 @@ namespace alpaka
                 }
             };
         }
+
+        namespace offset
+        {
+            //#############################################################################
+            //! The fixed size array offset get trait specialization.
+            //#############################################################################
+            template<
+                typename TIdx,
+                typename TFixedSizeArray>
+            struct GetOffset<
+                TIdx,
+                TFixedSizeArray,
+                typename std::enable_if<std::is_array<TFixedSizeArray>::value>::type>
+            {
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static auto getOffset(
+                    TFixedSizeArray const &)
+                -> UInt
+                {
+                    return 0u;
+                }
+            };
+        }
     }
 
     //-----------------------------------------------------------------------------
@@ -277,7 +277,7 @@ namespace alpaka
             struct DevType<
                 std::array<TElem, TuiSize>>
             {
-                using type = devs::cpu::detail::DevCpu;
+                using type = devs::cpu::DevCpu;
             };
 
             //#############################################################################
@@ -291,7 +291,7 @@ namespace alpaka
             {
                 ALPAKA_FCT_HOST static auto getDev(
                     std::array<TElem, TuiSize> const & buf)
-                    -> devs::cpu::detail::DevCpu
+                    -> devs::cpu::DevCpu
                 {
                     return alpaka::devs::cpu::getDev();
                 }
@@ -336,31 +336,6 @@ namespace alpaka
                     // C++14
                     /*boost::ignore_unused(extents);*/
                     return TuiSize;
-                }
-            };
-        }
-
-        namespace offset
-        {
-            //#############################################################################
-            //! The std::array offset get trait specialization.
-            //#############################################################################
-            template<
-                typename TIdx,
-                typename TElem,
-                UInt TuiSize>
-            struct GetOffset<
-                TIdx,
-                std::array<TElem, TuiSize>>
-            {
-                //-----------------------------------------------------------------------------
-                //!
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getOffset(
-                    std::array<TElem, TuiSize> const &)
-                -> UInt
-                {
-                    return 0u;
                 }
             };
         }
@@ -449,6 +424,31 @@ namespace alpaka
                 }
             };
         }
+
+        namespace offset
+        {
+            //#############################################################################
+            //! The std::array offset get trait specialization.
+            //#############################################################################
+            template<
+                typename TIdx,
+                typename TElem,
+                UInt TuiSize>
+            struct GetOffset<
+                TIdx,
+                std::array<TElem, TuiSize>>
+            {
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static auto getOffset(
+                    std::array<TElem, TuiSize> const &)
+                -> UInt
+                {
+                    return 0u;
+                }
+            };
+        }
     }
 
     //-----------------------------------------------------------------------------
@@ -467,7 +467,7 @@ namespace alpaka
             struct DevType<
                 std::vector<TElem, TAllocator>>
             {
-                using type = devs::cpu::detail::DevCpu;
+                using type = devs::cpu::DevCpu;
             };
 
             //#############################################################################
@@ -481,7 +481,7 @@ namespace alpaka
             {
                 ALPAKA_FCT_HOST static auto getDev(
                     std::vector<TElem, TAllocator> const & buf)
-                    -> devs::cpu::detail::DevCpu
+                    -> devs::cpu::DevCpu
                 {
                     return alpaka::devs::cpu::getDev();
                 }
@@ -520,31 +520,6 @@ namespace alpaka
                 -> UInt
                 {
                     return static_cast<UInt>(extents.size());
-                }
-            };
-        }
-
-        namespace offset
-        {
-            //#############################################################################
-            //! The std::vector offset get trait specialization.
-            //#############################################################################
-            template<
-                typename TIdx,
-                typename TElem,
-                typename TAllocator>
-            struct GetOffset<
-                TIdx,
-                std::vector<TElem, TAllocator>>
-            {
-                //-----------------------------------------------------------------------------
-                //!
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getOffset(
-                    std::vector<TElem, TAllocator> const &)
-                -> UInt
-                {
-                    return 0u;
                 }
             };
         }
@@ -630,6 +605,31 @@ namespace alpaka
                 -> UInt
                 {
                     return static_cast<UInt>(sizeof(TElem) * pitch.size());
+                }
+            };
+        }
+
+        namespace offset
+        {
+            //#############################################################################
+            //! The std::vector offset get trait specialization.
+            //#############################################################################
+            template<
+                typename TIdx,
+                typename TElem,
+                typename TAllocator>
+            struct GetOffset<
+                TIdx,
+                std::vector<TElem, TAllocator>>
+            {
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST static auto getOffset(
+                    std::vector<TElem, TAllocator> const &)
+                -> UInt
+                {
+                    return 0u;
                 }
             };
         }

@@ -37,62 +37,59 @@ namespace alpaka
     {
         namespace cpu
         {
-            namespace detail
+            //#############################################################################
+            //! The CPU device event.
+            //#############################################################################
+            class EventCpu
             {
-                //#############################################################################
-                //! The cpu device event.
-                //#############################################################################
-                class EventCpu
+            public:
+                //-----------------------------------------------------------------------------
+                //! Constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST EventCpu(
+                    DevCpu const & dev) :
+                        m_Dev(dev)
+                {}
+                //-----------------------------------------------------------------------------
+                //! Copy constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST EventCpu(EventCpu const &) = default;
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
+                //-----------------------------------------------------------------------------
+                //! Move constructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST EventCpu(EventCpu &&) = default;
+#endif
+                //-----------------------------------------------------------------------------
+                //! Assignment operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST auto operator=(EventCpu const &) -> EventCpu & = default;
+                //-----------------------------------------------------------------------------
+                //! Equality comparison operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST auto operator==(EventCpu const & rhs) const
+                -> bool
                 {
-                public:
-                    //-----------------------------------------------------------------------------
-                    //! Constructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST EventCpu(
-                        DevCpu const & dev) :
-                            m_Dev(dev)
-                    {}
-                    //-----------------------------------------------------------------------------
-                    //! Copy constructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST EventCpu(EventCpu const &) = default;
-    #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
-                    //-----------------------------------------------------------------------------
-                    //! Move constructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST EventCpu(EventCpu &&) = default;
-    #endif
-                    //-----------------------------------------------------------------------------
-                    //! Assignment operator.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto operator=(EventCpu const &) -> EventCpu & = default;
-                    //-----------------------------------------------------------------------------
-                    //! Equality comparison operator.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto operator==(EventCpu const & rhs) const
-                    -> bool
-                    {
-                        return (m_Dev == rhs.m_Dev);
-                    }
-                    //-----------------------------------------------------------------------------
-                    //! Inequality comparison operator.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto operator!=(EventCpu const & rhs) const
-                    -> bool
-                    {
-                        return !((*this) == rhs);
-                    }
-                    //-----------------------------------------------------------------------------
-                    //! Destructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST virtual ~EventCpu() noexcept = default;
+                    return (m_Dev == rhs.m_Dev);
+                }
+                //-----------------------------------------------------------------------------
+                //! Inequality comparison operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST auto operator!=(EventCpu const & rhs) const
+                -> bool
+                {
+                    return !((*this) == rhs);
+                }
+                //-----------------------------------------------------------------------------
+                //! Destructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST virtual ~EventCpu() noexcept = default;
 
-                public:
-                    DevCpu m_Dev;
-                };
+            public:
+                DevCpu m_Dev;
+            };
 
-                class StreamCpu;
-            }
+            class StreamCpu;
         }
     }
 
@@ -101,15 +98,15 @@ namespace alpaka
         namespace dev
         {
             //#############################################################################
-            //! The cpu device event device get trait specialization.
+            //! The CPU device event device get trait specialization.
             //#############################################################################
             template<>
             struct GetDev<
-                devs::cpu::detail::EventCpu>
+                devs::cpu::EventCpu>
             {
                 ALPAKA_FCT_HOST static auto getDev(
-                    devs::cpu::detail::EventCpu const & event)
-                -> devs::cpu::detail::DevCpu
+                    devs::cpu::EventCpu const & event)
+                -> devs::cpu::DevCpu
                 {
                     return event.m_Dev;
                 }
@@ -119,26 +116,26 @@ namespace alpaka
         namespace event
         {
             //#############################################################################
-            //! The cpu device event event type trait specialization.
+            //! The CPU device event event type trait specialization.
             //#############################################################################
             template<>
             struct EventType<
-                devs::cpu::detail::EventCpu>
+                devs::cpu::EventCpu>
             {
-                using type = devs::cpu::detail::EventCpu;
+                using type = devs::cpu::EventCpu;
             };
 
             //#############################################################################
-            //! The cpu device event enqueue trait specialization.
+            //! The CPU device event enqueue trait specialization.
             //#############################################################################
             template<>
             struct StreamEnqueueEvent<
-                devs::cpu::detail::EventCpu,
-                devs::cpu::detail::StreamCpu>
+                devs::cpu::EventCpu,
+                devs::cpu::StreamCpu>
             {
                 ALPAKA_FCT_HOST static auto streamEnqueueEvent(
-                    devs::cpu::detail::EventCpu const & event,
-                    devs::cpu::detail::StreamCpu const & stream)
+                    devs::cpu::EventCpu const & event,
+                    devs::cpu::StreamCpu const & stream)
                 -> void
                 {
                     boost::ignore_unused(event);
@@ -148,14 +145,14 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The cpu device event test trait specialization.
+            //! The CPU device event test trait specialization.
             //#############################################################################
             template<>
             struct EventTest<
-                devs::cpu::detail::EventCpu>
+                devs::cpu::EventCpu>
             {
                 ALPAKA_FCT_HOST static auto eventTest(
-                    devs::cpu::detail::EventCpu const & event)
+                    devs::cpu::EventCpu const & event)
                 -> bool
                 {
                     boost::ignore_unused(event);
@@ -168,14 +165,14 @@ namespace alpaka
         namespace wait
         {
             //#############################################################################
-            //! The cpu device event thread wait trait specialization.
+            //! The CPU device event thread wait trait specialization.
             //#############################################################################
             template<>
             struct CurrentThreadWaitFor<
-                devs::cpu::detail::EventCpu>
+                devs::cpu::EventCpu>
             {
                 ALPAKA_FCT_HOST static auto currentThreadWaitFor(
-                    devs::cpu::detail::EventCpu const & event)
+                    devs::cpu::EventCpu const & event)
                 -> void
                 {
                     boost::ignore_unused(event);
