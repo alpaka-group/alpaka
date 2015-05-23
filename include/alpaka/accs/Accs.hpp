@@ -31,9 +31,15 @@
     #include <alpaka/accs/fibers/Fibers.hpp>
 #endif
 #ifdef ALPAKA_CPU_OPENMP2_ENABLED
+    #if _OPENMP < 200203
+        #error If ALPAKA_CPU_OPENMP2_ENABLED is set, the compiler has to support OpenMP 2.0 or higher!
+    #endif
     #include <alpaka/accs/omp/omp2/Omp2.hpp>
 #endif
 #ifdef ALPAKA_CPU_OPENMP4_ENABLED
+    #if _OPENMP < 201307
+        #error If ALPAKA_CPU_OPENMP4_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
+    #endif
     #include <alpaka/accs/omp/omp4/cpu/Omp4Cpu.hpp>
 #endif
 #if defined(ALPAKA_GPU_CUDA_ENABLED) && defined(__CUDACC__)

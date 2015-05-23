@@ -167,6 +167,14 @@ namespace alpaka
                                     #pragma omp parallel num_threads(iNumThreadsInBlock)
                                     {
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+                                        // GCC 5.1 fails with:
+                                        // error: redeclaration of ‘const int& iNumThreadsInBlock’
+                                        // if(iNumThreads != iNumThreadsInBloc
+                                        //                ^
+                                        // note: ‘const int& iNumThreadsInBlock’ previously declared here
+                                        // #pragma omp parallel num_threads(iNumThread
+                                        //         ^
+#if (!BOOST_COMP_GNUC) || (BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(5, 0, 0))
                                         // The first thread does some checks in the first block executed.
                                         if((::omp_get_thread_num() == 0) && (this->AccCpuOmp2<TDim>::m_vuiGridBlockIdx.sum() == 0u))
                                         {
@@ -177,6 +185,7 @@ namespace alpaka
                                                 throw std::runtime_error("The OpenMP2 runtime did not use the number of threads that had been required!");
                                             }
                                         }
+#endif
 #endif
                                         std::forward<TKernelFunctor>(kernelFunctor)(
                                             (*static_cast<AccCpuOmp2<TDim> const *>(this)),
