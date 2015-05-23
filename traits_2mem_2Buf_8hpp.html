@@ -114,38 +114,31 @@ $(document).ready(function(){initNavTree('traits_2mem_2Buf_8hpp.html','');});
 <div class="title">Buf.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;<a class="el" href="core_2Common_8hpp_source.html">alpaka/core/Common.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="Acc_8hpp_source.html">alpaka/traits/Acc.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="Dim_8hpp_source.html">alpaka/traits/Dim.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="Extent_8hpp_source.html">alpaka/traits/Extent.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="traits_2mem_2Space_8hpp_source.html">alpaka/traits/mem/Space.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="traits_2mem_2Buf_8hpp_source.html">alpaka/traits/mem/Buf.hpp</a>&gt;</code><br />
+<div class="textblock"><code>#include &lt;<a class="el" href="traits_2Acc_8hpp_source.html">alpaka/traits/Acc.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="traits_2mem_2View_8hpp_source.html">alpaka/traits/mem/View.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="core_2Common_8hpp_source.html">alpaka/core/Common.hpp</a>&gt;</code><br />
 </div>
 <p><a href="traits_2mem_2Buf_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1mem_1_1Alloc.html">alpaka::traits::mem::Alloc&lt; TDev, TElem, TDim, TSpace, TSfinae &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1mem_1_1Alloc.html">alpaka::traits::mem::Alloc&lt; TElem, TDim, TDev, TSfinae &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The memory allocator trait.  <a href="structalpaka_1_1traits_1_1mem_1_1Alloc.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1mem_1_1Copy.html">alpaka::traits::mem::Copy&lt; TDim, TSpaceDst, TSpaceSrc, TSfinae &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The memory copy trait.  <a href="structalpaka_1_1traits_1_1mem_1_1Copy.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1mem_1_1BufType.html">alpaka::traits::mem::BufType&lt; TElem, TDim, TDev, TSfinae &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The memory buffer type trait.  <a href="structalpaka_1_1traits_1_1mem_1_1BufType.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1mem_1_1ElemType.html">alpaka::traits::mem::ElemType&lt; TBuf, TSfinae &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The memory element type trait.  <a href="structalpaka_1_1traits_1_1mem_1_1ElemType.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1mem_1_1Map.html">alpaka::traits::mem::Map&lt; TBuf, TDev, TSfinae &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The memory mapping trait.  <a href="structalpaka_1_1traits_1_1mem_1_1Map.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1mem_1_1GetBuf.html">alpaka::traits::mem::GetBuf&lt; TBuf, TSfinae &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The base buffer trait.  <a href="structalpaka_1_1traits_1_1mem_1_1GetBuf.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1mem_1_1Pin.html">alpaka::traits::mem::Pin&lt; TBuf, TSfinae &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The memory pinning trait.  <a href="structalpaka_1_1traits_1_1mem_1_1Pin.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1mem_1_1GetNativePtr.html">alpaka::traits::mem::GetNativePtr&lt; TBuf, TSfinae &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The native pointer get trait.  <a href="structalpaka_1_1traits_1_1mem_1_1GetNativePtr.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1mem_1_1Unmap.html">alpaka::traits::mem::Unmap&lt; TBuf, TDev, TSfinae &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The memory unmapping trait.  <a href="structalpaka_1_1traits_1_1mem_1_1Unmap.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1mem_1_1GetPitchBytes.html">alpaka::traits::mem::GetPitchBytes&lt; TBuf, TSfinae &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The pitch in bytes. This is the distance between two consecutive rows.  <a href="structalpaka_1_1traits_1_1mem_1_1GetPitchBytes.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1mem_1_1Set.html">alpaka::traits::mem::Set&lt; TDim, TSpace, TSfinae &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The memory set trait.  <a href="structalpaka_1_1traits_1_1mem_1_1Set.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1mem_1_1Unpin.html">alpaka::traits::mem::Unpin&lt; TBuf, TSfinae &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The memory unpinning trait.  <a href="structalpaka_1_1traits_1_1mem_1_1Unpin.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -165,55 +158,33 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:aa5142d9154dd24244018190a55761113"><td class="memTemplParams" colspan="2">template&lt;typename TBuf &gt; </td></tr>
-<tr class="memitem:aa5142d9154dd24244018190a55761113"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem.html#aa5142d9154dd24244018190a55761113">alpaka::mem::ElemT</a> = typename traits::mem::ElemType&lt; TBuf &gt;::type</td></tr>
-<tr class="memdesc:aa5142d9154dd24244018190a55761113"><td class="mdescLeft">&#160;</td><td class="mdescRight">The memory element type trait alias template to remove the ::type.  <a href="#aa5142d9154dd24244018190a55761113">More...</a><br /></td></tr>
-<tr class="separator:aa5142d9154dd24244018190a55761113"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af621266ce9ee8ed5415a1c3754c4fda0"><td class="memTemplParams" colspan="2">template&lt;typename TElem , typename TDim , typename TDev &gt; </td></tr>
+<tr class="memitem:af621266ce9ee8ed5415a1c3754c4fda0"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem.html#af621266ce9ee8ed5415a1c3754c4fda0">alpaka::mem::BufT</a> = typename traits::mem::BufType&lt; TElem, TDim, TDev &gt;::type</td></tr>
+<tr class="memdesc:af621266ce9ee8ed5415a1c3754c4fda0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The memory buffer type trait alias template to remove the ::type.  <a href="#af621266ce9ee8ed5415a1c3754c4fda0">More...</a><br /></td></tr>
+<tr class="separator:af621266ce9ee8ed5415a1c3754c4fda0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ab1b107eba8346e64a577701f097731e8"><td class="memTemplParams" colspan="2">template&lt;typename TElem , typename TExtents , typename TDev &gt; </td></tr>
-<tr class="memitem:ab1b107eba8346e64a577701f097731e8"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem.html#ab1b107eba8346e64a577701f097731e8">alpaka::mem::alloc</a> (TDev const &amp;dev, TExtents const &amp;extents=TExtents()) -&gt; decltype(traits::mem::Alloc&lt; TDev, TElem, dim::DimT&lt; TExtents &gt;, SpaceT&lt; acc::AccT&lt; TDev &gt;&gt;&gt;::alloc(std::declval&lt; TDev const &amp; &gt;(), std::declval&lt; TExtents const &amp; &gt;()))</td></tr>
-<tr class="memdesc:ab1b107eba8346e64a577701f097731e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates memory in the given memory space.  <a href="#ab1b107eba8346e64a577701f097731e8">More...</a><br /></td></tr>
-<tr class="separator:ab1b107eba8346e64a577701f097731e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a7741c2da4f09617d353034d3b26ed7"><td class="memTemplParams" colspan="2">template&lt;typename TBufDst , typename TBufSrc , typename TExtents &gt; </td></tr>
-<tr class="memitem:a4a7741c2da4f09617d353034d3b26ed7"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem.html#a4a7741c2da4f09617d353034d3b26ed7">alpaka::mem::copy</a> (TBufDst &amp;bufDst, TBufSrc const &amp;bufSrc, TExtents const &amp;extents) -&gt; void</td></tr>
-<tr class="memdesc:a4a7741c2da4f09617d353034d3b26ed7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies memory possibly between different memory spaces.  <a href="#a4a7741c2da4f09617d353034d3b26ed7">More...</a><br /></td></tr>
-<tr class="separator:a4a7741c2da4f09617d353034d3b26ed7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad778021cab89738007c96a4bb6f32a13"><td class="memTemplParams" colspan="2">template&lt;typename TBufDst , typename TBufSrc , typename TExtents , typename TStream &gt; </td></tr>
-<tr class="memitem:ad778021cab89738007c96a4bb6f32a13"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem.html#ad778021cab89738007c96a4bb6f32a13">alpaka::mem::copy</a> (TBufDst &amp;bufDst, TBufSrc const &amp;bufSrc, TExtents const &amp;extents, TStream const &amp;stream) -&gt; void</td></tr>
-<tr class="memdesc:ad778021cab89738007c96a4bb6f32a13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies memory possibly between different memory spaces asynchronously.  <a href="#ad778021cab89738007c96a4bb6f32a13">More...</a><br /></td></tr>
-<tr class="separator:ad778021cab89738007c96a4bb6f32a13"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3fc30ef28242070455f6ca41559c697e"><td class="memTemplParams" colspan="2">template&lt;typename TBuf &gt; </td></tr>
-<tr class="memitem:a3fc30ef28242070455f6ca41559c697e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem.html#a3fc30ef28242070455f6ca41559c697e">alpaka::mem::getBuf</a> (TBuf const &amp;buf) -&gt; decltype(traits::mem::GetBuf&lt; TBuf &gt;::getBuf(std::declval&lt; TBuf const &amp; &gt;()))</td></tr>
-<tr class="memdesc:a3fc30ef28242070455f6ca41559c697e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the base memory buffer.  <a href="#a3fc30ef28242070455f6ca41559c697e">More...</a><br /></td></tr>
-<tr class="separator:a3fc30ef28242070455f6ca41559c697e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78bf7439fde5af13baf4962320c4c650"><td class="memTemplParams" colspan="2">template&lt;typename TBuf &gt; </td></tr>
-<tr class="memitem:a78bf7439fde5af13baf4962320c4c650"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem.html#a78bf7439fde5af13baf4962320c4c650">alpaka::mem::getBuf</a> (TBuf &amp;buf) -&gt; decltype(traits::mem::GetBuf&lt; TBuf &gt;::getBuf(std::declval&lt; TBuf &amp; &gt;()))</td></tr>
-<tr class="memdesc:a78bf7439fde5af13baf4962320c4c650"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the base memory buffer.  <a href="#a78bf7439fde5af13baf4962320c4c650">More...</a><br /></td></tr>
-<tr class="separator:a78bf7439fde5af13baf4962320c4c650"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6f6e3772df469cf89bf0862ad5c5595a"><td class="memTemplParams" colspan="2">template&lt;typename TBuf &gt; </td></tr>
-<tr class="memitem:a6f6e3772df469cf89bf0862ad5c5595a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem.html#a6f6e3772df469cf89bf0862ad5c5595a">alpaka::mem::getNativePtr</a> (TBuf const &amp;buf) -&gt; ElemT&lt; TBuf &gt; const *</td></tr>
-<tr class="memdesc:a6f6e3772df469cf89bf0862ad5c5595a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the native pointer of the memory buffer.  <a href="#a6f6e3772df469cf89bf0862ad5c5595a">More...</a><br /></td></tr>
-<tr class="separator:a6f6e3772df469cf89bf0862ad5c5595a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a398ae03e3b31bc6846cc3bd11d3574b5"><td class="memTemplParams" colspan="2">template&lt;typename TBuf &gt; </td></tr>
-<tr class="memitem:a398ae03e3b31bc6846cc3bd11d3574b5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem.html#a398ae03e3b31bc6846cc3bd11d3574b5">alpaka::mem::getNativePtr</a> (TBuf &amp;buf) -&gt; ElemT&lt; TBuf &gt; *</td></tr>
-<tr class="memdesc:a398ae03e3b31bc6846cc3bd11d3574b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the native pointer of the memory buffer.  <a href="#a398ae03e3b31bc6846cc3bd11d3574b5">More...</a><br /></td></tr>
-<tr class="separator:a398ae03e3b31bc6846cc3bd11d3574b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc67d65e01443b9fbcc962eecd0a29be"><td class="memTemplParams" colspan="2">template&lt;typename TBuf &gt; </td></tr>
-<tr class="memitem:acc67d65e01443b9fbcc962eecd0a29be"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem.html#acc67d65e01443b9fbcc962eecd0a29be">alpaka::mem::getPitchBytes</a> (TBuf const &amp;buf) -&gt; UInt</td></tr>
-<tr class="separator:acc67d65e01443b9fbcc962eecd0a29be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acdcc868bc3d98d381fe98b1438250a89"><td class="memTemplParams" colspan="2">template&lt;typename TBuf &gt; </td></tr>
-<tr class="memitem:acdcc868bc3d98d381fe98b1438250a89"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem.html#acdcc868bc3d98d381fe98b1438250a89">alpaka::mem::getPitchElements</a> (TBuf const &amp;buf) -&gt; UInt</td></tr>
-<tr class="separator:acdcc868bc3d98d381fe98b1438250a89"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab950d6b53ee9db30200bc7281d72682"><td class="memTemplParams" colspan="2">template&lt;typename TBuf , typename TExtents &gt; </td></tr>
-<tr class="memitem:aab950d6b53ee9db30200bc7281d72682"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem.html#aab950d6b53ee9db30200bc7281d72682">alpaka::mem::set</a> (TBuf &amp;buf, std::uint8_t const &amp;byte, TExtents const &amp;extents) -&gt; void</td></tr>
-<tr class="memdesc:aab950d6b53ee9db30200bc7281d72682"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the memory to the given value.  <a href="#aab950d6b53ee9db30200bc7281d72682">More...</a><br /></td></tr>
-<tr class="separator:aab950d6b53ee9db30200bc7281d72682"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6da0911070761e39e5b645b24d55d59b"><td class="memTemplParams" colspan="2">template&lt;typename TBuf , typename TExtents , typename TStream &gt; </td></tr>
-<tr class="memitem:a6da0911070761e39e5b645b24d55d59b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem.html#a6da0911070761e39e5b645b24d55d59b">alpaka::mem::set</a> (TBuf &amp;buf, std::uint8_t const &amp;byte, TExtents const &amp;extents, TStream const &amp;stream) -&gt; void</td></tr>
-<tr class="memdesc:a6da0911070761e39e5b645b24d55d59b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the memory to the given value asynchronously.  <a href="#a6da0911070761e39e5b645b24d55d59b">More...</a><br /></td></tr>
-<tr class="separator:a6da0911070761e39e5b645b24d55d59b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8f3081048b6ff96e0e61e272c59c32b"><td class="memTemplParams" colspan="2">template&lt;typename TElem , typename TExtents , typename TDev &gt; </td></tr>
+<tr class="memitem:ab8f3081048b6ff96e0e61e272c59c32b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem.html#ab8f3081048b6ff96e0e61e272c59c32b">alpaka::mem::alloc</a> (TDev const &amp;dev, TExtents const &amp;extents=TExtents()) -&gt; decltype(traits::mem::Alloc&lt; TElem, dim::DimT&lt; TExtents &gt;, TDev &gt;::alloc(dev, extents))</td></tr>
+<tr class="memdesc:ab8f3081048b6ff96e0e61e272c59c32b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates memory on the given device.  <a href="#ab8f3081048b6ff96e0e61e272c59c32b">More...</a><br /></td></tr>
+<tr class="separator:ab8f3081048b6ff96e0e61e272c59c32b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afcd0d7813257adbd467efebcd2e58739"><td class="memTemplParams" colspan="2">template&lt;typename TBuf , typename TDev &gt; </td></tr>
+<tr class="memitem:afcd0d7813257adbd467efebcd2e58739"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem.html#afcd0d7813257adbd467efebcd2e58739">alpaka::mem::map</a> (TBuf const &amp;buf, TDev const &amp;dev) -&gt; void</td></tr>
+<tr class="memdesc:afcd0d7813257adbd467efebcd2e58739"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps the buffer into the memory of the given device.  <a href="#afcd0d7813257adbd467efebcd2e58739">More...</a><br /></td></tr>
+<tr class="separator:afcd0d7813257adbd467efebcd2e58739"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe22e86343cf6f9ce48055f2d3086de4"><td class="memTemplParams" colspan="2">template&lt;typename TBuf &gt; </td></tr>
+<tr class="memitem:abe22e86343cf6f9ce48055f2d3086de4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem.html#abe22e86343cf6f9ce48055f2d3086de4">alpaka::mem::pin</a> (TBuf const &amp;buf) -&gt; void</td></tr>
+<tr class="memdesc:abe22e86343cf6f9ce48055f2d3086de4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pins the buffer.  <a href="#abe22e86343cf6f9ce48055f2d3086de4">More...</a><br /></td></tr>
+<tr class="separator:abe22e86343cf6f9ce48055f2d3086de4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99910683304cb55a09484ce622363b51"><td class="memTemplParams" colspan="2">template&lt;typename TBuf , typename TDev &gt; </td></tr>
+<tr class="memitem:a99910683304cb55a09484ce622363b51"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem.html#a99910683304cb55a09484ce622363b51">alpaka::mem::unmap</a> (TBuf const &amp;buf, TDev const &amp;dev) -&gt; void</td></tr>
+<tr class="memdesc:a99910683304cb55a09484ce622363b51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unmaps the buffer from the memory of the given device.  <a href="#a99910683304cb55a09484ce622363b51">More...</a><br /></td></tr>
+<tr class="separator:a99910683304cb55a09484ce622363b51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32db1667a4be8cb0bdec017f493188e7"><td class="memTemplParams" colspan="2">template&lt;typename TBuf &gt; </td></tr>
+<tr class="memitem:a32db1667a4be8cb0bdec017f493188e7"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem.html#a32db1667a4be8cb0bdec017f493188e7">alpaka::mem::unpin</a> (TBuf const &amp;buf) -&gt; void</td></tr>
+<tr class="memdesc:a32db1667a4be8cb0bdec017f493188e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unpins the buffer.  <a href="#a32db1667a4be8cb0bdec017f493188e7">More...</a><br /></td></tr>
+<tr class="separator:a32db1667a4be8cb0bdec017f493188e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Copyright 2014-2015 Benjamin Worpitz</p>
@@ -229,7 +200,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_704b24238599043534bfd555c7616f8b.html">traits</a></li><li class="navelem"><a class="el" href="dir_75ea7b52764b477b9fb631771cbd470a.html">mem</a></li><li class="navelem"><a class="el" href="traits_2mem_2Buf_8hpp.html">Buf.hpp</a></li>
-    <li class="footer">Generated on Tue Apr 7 2015 09:20:05 for alpaka by
+    <li class="footer">Generated on Sat May 23 2015 14:48:26 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

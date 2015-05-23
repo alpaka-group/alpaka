@@ -1,19 +1,20 @@
 var searchData=
 [
-  ['abstract_2emd',['Abstract.md',['../Abstract_8md.html',1,'']]],
   ['abstraction_2emd',['Abstraction.md',['../Abstraction_8md.html',1,'']]],
-  ['acc_2ehpp',['Acc.hpp',['../Acc_8hpp.html',1,'']]],
-  ['acccuda_2ehpp',['AccCuda.hpp',['../AccCuda_8hpp.html',1,'']]],
-  ['accfibers_2ehpp',['AccFibers.hpp',['../AccFibers_8hpp.html',1,'']]],
-  ['accomp2_2ehpp',['AccOmp2.hpp',['../AccOmp2_8hpp.html',1,'']]],
+  ['acc_2ehpp',['Acc.hpp',['../accs_2fibers_2Acc_8hpp.html',1,'']]],
+  ['acc_2ehpp',['Acc.hpp',['../accs_2threads_2Acc_8hpp.html',1,'']]],
+  ['acc_2ehpp',['Acc.hpp',['../traits_2Acc_8hpp.html',1,'']]],
+  ['acc_2ehpp',['Acc.hpp',['../accs_2omp_2omp2_2Acc_8hpp.html',1,'']]],
+  ['acc_2ehpp',['Acc.hpp',['../accs_2cuda_2Acc_8hpp.html',1,'']]],
+  ['acc_2ehpp',['Acc.hpp',['../accs_2omp_2omp4_2cpu_2Acc_8hpp.html',1,'']]],
+  ['acc_2ehpp',['Acc.hpp',['../accs_2serial_2Acc_8hpp.html',1,'']]],
+  ['accdevprops_2ehpp',['AccDevProps.hpp',['../AccDevProps_8hpp.html',1,'']]],
   ['accs_2ehpp',['Accs.hpp',['../Accs_8hpp.html',1,'']]],
-  ['accserial_2ehpp',['AccSerial.hpp',['../AccSerial_8hpp.html',1,'']]],
-  ['accthreads_2ehpp',['AccThreads.hpp',['../AccThreads_8hpp.html',1,'']]],
   ['alpaka_2ehpp',['alpaka.hpp',['../alpaka_8hpp.html',1,'']]],
-  ['atomic_2ehpp',['Atomic.hpp',['../accs_2cuda_2Atomic_8hpp.html',1,'']]],
-  ['atomic_2ehpp',['Atomic.hpp',['../accs_2fibers_2Atomic_8hpp.html',1,'']]],
-  ['atomic_2ehpp',['Atomic.hpp',['../accs_2omp_2omp2_2Atomic_8hpp.html',1,'']]],
+  ['atomic_2ehpp',['Atomic.hpp',['../accs_2omp_2Atomic_8hpp.html',1,'']]],
+  ['atomic_2ehpp',['Atomic.hpp',['../accs_2serial_2Atomic_8hpp.html',1,'']]],
   ['atomic_2ehpp',['Atomic.hpp',['../traits_2Atomic_8hpp.html',1,'']]],
   ['atomic_2ehpp',['Atomic.hpp',['../accs_2threads_2Atomic_8hpp.html',1,'']]],
-  ['atomic_2ehpp',['Atomic.hpp',['../accs_2serial_2Atomic_8hpp.html',1,'']]]
+  ['atomic_2ehpp',['Atomic.hpp',['../accs_2fibers_2Atomic_8hpp.html',1,'']]],
+  ['atomic_2ehpp',['Atomic.hpp',['../accs_2cuda_2Atomic_8hpp.html',1,'']]]
 ];

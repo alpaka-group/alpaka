@@ -1,4 +1,0 @@
-var structalpaka_1_1traits_1_1stream_1_1StreamType_3_01host_1_1detail_1_1StreamHost_3_01TDev_01_4_01_4 =
-[
-    [ "type", "structalpaka_1_1traits_1_1stream_1_1StreamType_3_01host_1_1detail_1_1StreamHost_3_01TDev_01_4_01_4.html#a7ed58abee5a8a7b57f1c0995cef3bbe9", null ]
-];

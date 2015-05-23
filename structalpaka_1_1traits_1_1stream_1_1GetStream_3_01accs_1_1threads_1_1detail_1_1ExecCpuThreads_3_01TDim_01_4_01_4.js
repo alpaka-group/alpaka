@@ -1,0 +1,4 @@
+var structalpaka_1_1traits_1_1stream_1_1GetStream_3_01accs_1_1threads_1_1detail_1_1ExecCpuThreads_3_01TDim_01_4_01_4 =
+[
+    [ "getStream", "structalpaka_1_1traits_1_1stream_1_1GetStream_3_01accs_1_1threads_1_1detail_1_1ExecCpuThreads_3_01TDim_01_4_01_4.html#a03d290ea9547c554df358d9d691a8d6f", null ]
+];

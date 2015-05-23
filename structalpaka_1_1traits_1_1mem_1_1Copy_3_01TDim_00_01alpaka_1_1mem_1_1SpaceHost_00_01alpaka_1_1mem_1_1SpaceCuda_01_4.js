@@ -1,5 +1,0 @@
-var structalpaka_1_1traits_1_1mem_1_1Copy_3_01TDim_00_01alpaka_1_1mem_1_1SpaceHost_00_01alpaka_1_1mem_1_1SpaceCuda_01_4 =
-[
-    [ "copy", "structalpaka_1_1traits_1_1mem_1_1Copy_3_01TDim_00_01alpaka_1_1mem_1_1SpaceHost_00_01alpaka_1_1mem_1_1SpaceCuda_01_4.html#a8151070f0c607ff5ee9ceaeb489f9725", null ],
-    [ "copy", "structalpaka_1_1traits_1_1mem_1_1Copy_3_01TDim_00_01alpaka_1_1mem_1_1SpaceHost_00_01alpaka_1_1mem_1_1SpaceCuda_01_4.html#aa1cc836cce7e7dae2ffa240d71f1337f", null ]
-];

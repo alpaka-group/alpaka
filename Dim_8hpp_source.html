@@ -132,8 +132,8 @@ $(document).ready(function(){initNavTree('Dim_8hpp_source.html','');});
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="core_2Common_8hpp.html">alpaka/core/Common.hpp</a>&gt;</span>       <span class="comment">// ALPAKA_FCT_HOST</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="BasicDims_8hpp.html">alpaka/core/BasicDims.hpp</a>&gt;</span>    <span class="comment">// dim::Dim&lt;N&gt;</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="BasicDims_8hpp.html">alpaka/core/BasicDims.hpp</a>&gt;</span>    <span class="comment">// dim::Dim&lt;N&gt;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="core_2Common_8hpp.html">alpaka/core/Common.hpp</a>&gt;</span>       <span class="comment">// ALPAKA_FCT_HOST_ACC</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;type_traits&gt;</span>                  <span class="comment">// std::enable_if, std::is_integral, std::is_unsigned</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
@@ -164,65 +164,58 @@ $(document).ready(function(){initNavTree('Dim_8hpp_source.html','');});
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="comment">//#############################################################################</span><span class="comment"></span></div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">        //! The dimension getter trait alias template to remove the ::type.</span></div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment"></span>        <span class="comment">//#############################################################################</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <span class="keyword">template</span>&lt;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            <span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1dim.html#a3cd5c34a55999be55481237289ef4737">   58</a></span>&#160;        <span class="keyword">using</span> <a class="code" href="namespacealpaka_1_1dim.html#a3cd5c34a55999be55481237289ef4737">DimT</a> = <span class="keyword">typename</span> <a class="code" href="structalpaka_1_1traits_1_1dim_1_1DimType.html">traits::dim::DimType&lt;T&gt;::type</a>;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="comment">        //! \return The dimension.</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment"></span>        <span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keyword">template</span>&lt;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            <span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#if (BOOST_COMP_MSVC) &amp;&amp; (BOOST_COMP_MSVC &lt; BOOST_VERSION_NUMBER(14, 0, 0))</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <a class="code" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka_1_1dim.html#aafaa14548a1da52a05392859af6548ff">getDim</a>()</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1dim.html#aafaa14548a1da52a05392859af6548ff">   68</a></span>&#160;        <a class="code" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> <span class="keyword">auto</span> constexpr <a class="code" href="namespacealpaka_1_1dim.html#aafaa14548a1da52a05392859af6548ff">getDim</a>()</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        -&gt; <a class="code" href="namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5">UInt</a></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        {</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacealpaka_1_1dim.html#a3cd5c34a55999be55481237289ef4737">DimT&lt;T&gt;::value</a>;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        }</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    }</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="comment">// Trait specializations for unsigned integral types.</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keyword">namespace </span>traits</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    {</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="keyword">namespace </span>dim</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        {</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            <span class="comment">//#############################################################################</span><span class="comment"></span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="comment">            //! The unsigned integral dimension getter trait specialization.</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="comment"></span>            <span class="comment">//#############################################################################</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            <span class="keyword">template</span>&lt;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                <span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="structalpaka_1_1traits_1_1dim_1_1DimType_3_01T_00_01typename_01std_1_1enable__if_3_01std_1_1is__92740465b99107bdef2b23b8b297a379.html">   88</a></span>&#160;            <span class="keyword">struct </span><a class="code" href="structalpaka_1_1traits_1_1dim_1_1DimType.html">DimType</a>&lt;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                T,</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                typename <a class="code" href="namespacestd.html">std</a>::enable_if&lt;std::is_integral&lt;T&gt;::value &amp;&amp; std::is_unsigned&lt;T&gt;::value&gt;<a class="code" href="structalpaka_1_1traits_1_1dim_1_1DimType_3_01T_00_01typename_01std_1_1enable__if_3_01std_1_1is__92740465b99107bdef2b23b8b297a379.html#a979f27e9d8f90e4fb5d7cad241ecd222">::type</a>&gt;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            {</div>
-<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="structalpaka_1_1traits_1_1dim_1_1DimType_3_01T_00_01typename_01std_1_1enable__if_3_01std_1_1is__92740465b99107bdef2b23b8b297a379.html#a979f27e9d8f90e4fb5d7cad241ecd222">   92</a></span>&#160;                <span class="keyword">using</span> <a class="code" href="structalpaka_1_1traits_1_1dim_1_1DimType_3_01T_00_01typename_01std_1_1enable__if_3_01std_1_1is__92740465b99107bdef2b23b8b297a379.html#a979f27e9d8f90e4fb5d7cad241ecd222">type</a> = <a class="code" href="namespacealpaka_1_1dim.html#adfe56c20847b0ca61e47408cbaec071a">alpaka::dim::Dim1</a>;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            };</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        }</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    }</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;}</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="preprocessor">#if (BOOST_COMP_MSVC) &amp;&amp; (BOOST_COMP_MSVC &lt; BOOST_VERSION_NUMBER(14, 0, 0))</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        <span class="keyword">template</span>&lt;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            <span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <span class="keyword">struct </span><a class="code" href="namespacealpaka_1_1dim.html#a3cd5c34a55999be55481237289ef4737">DimT</a></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        {</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            <span class="keyword">using</span> type = <span class="keyword">typename</span> <a class="code" href="structalpaka_1_1traits_1_1dim_1_1DimType.html">traits::dim::DimType&lt;T&gt;::type</a>;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            <span class="keyword">static</span> <span class="keyword">const</span> <a class="code" href="namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5">UInt</a> value = type::value;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        };</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="keyword">template</span>&lt;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            <span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1dim.html#a3cd5c34a55999be55481237289ef4737">   67</a></span>&#160;        <span class="keyword">using</span> <a class="code" href="namespacealpaka_1_1dim.html#a3cd5c34a55999be55481237289ef4737">DimT</a> = <span class="keyword">typename</span> <a class="code" href="structalpaka_1_1traits_1_1dim_1_1DimType.html">traits::dim::DimType&lt;T&gt;::type</a>;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    }</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="comment">// Trait specializations for unsigned integral types.</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keyword">namespace </span>traits</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    {</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <span class="keyword">namespace </span>dim</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        {</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            <span class="comment">//#############################################################################</span><span class="comment"></span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="comment">            //! The unsigned integral dimension getter trait specialization.</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="comment"></span>            <span class="comment">//#############################################################################</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            <span class="keyword">template</span>&lt;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                <span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="structalpaka_1_1traits_1_1dim_1_1DimType_3_01T_00_01typename_01std_1_1enable__if_3_01std_1_1is__92740465b99107bdef2b23b8b297a379.html">   83</a></span>&#160;            <span class="keyword">struct </span><a class="code" href="structalpaka_1_1traits_1_1dim_1_1DimType.html">DimType</a>&lt;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                T,</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                typename <a class="code" href="namespacestd.html">std</a>::enable_if&lt;std::is_integral&lt;T&gt;::value &amp;&amp; std::is_unsigned&lt;T&gt;::value&gt;<a class="code" href="structalpaka_1_1traits_1_1dim_1_1DimType_3_01T_00_01typename_01std_1_1enable__if_3_01std_1_1is__92740465b99107bdef2b23b8b297a379.html#a979f27e9d8f90e4fb5d7cad241ecd222">::type</a>&gt;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            {</div>
+<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="structalpaka_1_1traits_1_1dim_1_1DimType_3_01T_00_01typename_01std_1_1enable__if_3_01std_1_1is__92740465b99107bdef2b23b8b297a379.html#a979f27e9d8f90e4fb5d7cad241ecd222">   87</a></span>&#160;                <span class="keyword">using</span> <a class="code" href="structalpaka_1_1traits_1_1dim_1_1DimType_3_01T_00_01typename_01std_1_1enable__if_3_01std_1_1is__92740465b99107bdef2b23b8b297a379.html#a979f27e9d8f90e4fb5d7cad241ecd222">type</a> = <a class="code" href="namespacealpaka_1_1dim.html#adfe56c20847b0ca61e47408cbaec071a">alpaka::dim::Dim1</a>;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            };</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        }</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    }</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;}</div>
 <div class="ttc" id="namespacestd_html"><div class="ttname"><a href="namespacestd.html">std</a></div><div class="ttdoc">STL namespace. </div></div>
 <div class="ttc" id="structalpaka_1_1traits_1_1dim_1_1DimType_html"><div class="ttname"><a href="structalpaka_1_1traits_1_1dim_1_1DimType.html">alpaka::traits::dim::DimType</a></div><div class="ttdoc">The dimension getter type trait. </div><div class="ttdef"><b>Definition:</b> <a href="Dim_8hpp_source.html#l00044">Dim.hpp:44</a></div></div>
 <div class="ttc" id="namespacealpaka_1_1dim_html_adfe56c20847b0ca61e47408cbaec071a"><div class="ttname"><a href="namespacealpaka_1_1dim.html#adfe56c20847b0ca61e47408cbaec071a">alpaka::dim::Dim1</a></div><div class="ttdeci">Dim&lt; 1u &gt; Dim1</div><div class="ttdoc">One dimension. </div><div class="ttdef"><b>Definition:</b> <a href="BasicDims_8hpp_source.html#l00042">BasicDims.hpp:42</a></div></div>
-<div class="ttc" id="namespacealpaka_html_aff48a11ea7d01a9b5b6b06f7c20285f5"><div class="ttname"><a href="namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5">alpaka::UInt</a></div><div class="ttdeci">std::uint32_t UInt</div><div class="ttdoc">Defines the default index type. </div><div class="ttdef"><b>Definition:</b> <a href="core_2Common_8hpp_source.html#l00092">Common.hpp:92</a></div></div>
-<div class="ttc" id="namespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">The alpaka library. </div><div class="ttdef"><b>Definition:</b> <a href="Accs_8hpp_source.html#l00056">Accs.hpp:56</a></div></div>
-<div class="ttc" id="namespacealpaka_1_1dim_html_a3cd5c34a55999be55481237289ef4737"><div class="ttname"><a href="namespacealpaka_1_1dim.html#a3cd5c34a55999be55481237289ef4737">alpaka::dim::DimT</a></div><div class="ttdeci">typename traits::dim::DimType&lt; T &gt;::type DimT</div><div class="ttdoc">The dimension getter trait alias template to remove the ::type. </div><div class="ttdef"><b>Definition:</b> <a href="Dim_8hpp_source.html#l00058">Dim.hpp:58</a></div></div>
-<div class="ttc" id="structalpaka_1_1traits_1_1dim_1_1DimType_3_01T_00_01typename_01std_1_1enable__if_3_01std_1_1is__92740465b99107bdef2b23b8b297a379_html_a979f27e9d8f90e4fb5d7cad241ecd222"><div class="ttname"><a href="structalpaka_1_1traits_1_1dim_1_1DimType_3_01T_00_01typename_01std_1_1enable__if_3_01std_1_1is__92740465b99107bdef2b23b8b297a379.html#a979f27e9d8f90e4fb5d7cad241ecd222">alpaka::traits::dim::DimType&lt; T, typename std::enable_if&lt; std::is_integral&lt; T &gt;::value &amp;&amp;std::is_unsigned&lt; T &gt;::value &gt;::type &gt;::type</a></div><div class="ttdeci">alpaka::dim::Dim1 type</div><div class="ttdef"><b>Definition:</b> <a href="Dim_8hpp_source.html#l00092">Dim.hpp:92</a></div></div>
-<div class="ttc" id="namespacealpaka_1_1dim_html_aafaa14548a1da52a05392859af6548ff"><div class="ttname"><a href="namespacealpaka_1_1dim.html#aafaa14548a1da52a05392859af6548ff">alpaka::dim::getDim</a></div><div class="ttdeci">ALPAKA_FCT_HOST_ACC auto constexpr getDim() -&gt; UInt</div><div class="ttdef"><b>Definition:</b> <a href="Dim_8hpp_source.html#l00068">Dim.hpp:68</a></div></div>
+<div class="ttc" id="namespacealpaka_html_aff48a11ea7d01a9b5b6b06f7c20285f5"><div class="ttname"><a href="namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5">alpaka::UInt</a></div><div class="ttdeci">std::uint32_t UInt</div><div class="ttdoc">Defines the default index type. </div><div class="ttdef"><b>Definition:</b> <a href="core_2Common_8hpp_source.html#l00110">Common.hpp:110</a></div></div>
+<div class="ttc" id="namespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">The alpaka library. </div><div class="ttdef"><b>Definition:</b> <a href="Accs_8hpp_source.html#l00065">Accs.hpp:65</a></div></div>
+<div class="ttc" id="namespacealpaka_1_1dim_html_a3cd5c34a55999be55481237289ef4737"><div class="ttname"><a href="namespacealpaka_1_1dim.html#a3cd5c34a55999be55481237289ef4737">alpaka::dim::DimT</a></div><div class="ttdeci">typename traits::dim::DimType&lt; T &gt;::type DimT</div><div class="ttdoc">The dimension getter trait alias template to remove the ::type. </div><div class="ttdef"><b>Definition:</b> <a href="Dim_8hpp_source.html#l00067">Dim.hpp:67</a></div></div>
+<div class="ttc" id="structalpaka_1_1traits_1_1dim_1_1DimType_3_01T_00_01typename_01std_1_1enable__if_3_01std_1_1is__92740465b99107bdef2b23b8b297a379_html_a979f27e9d8f90e4fb5d7cad241ecd222"><div class="ttname"><a href="structalpaka_1_1traits_1_1dim_1_1DimType_3_01T_00_01typename_01std_1_1enable__if_3_01std_1_1is__92740465b99107bdef2b23b8b297a379.html#a979f27e9d8f90e4fb5d7cad241ecd222">alpaka::traits::dim::DimType&lt; T, typename std::enable_if&lt; std::is_integral&lt; T &gt;::value &amp;&amp;std::is_unsigned&lt; T &gt;::value &gt;::type &gt;::type</a></div><div class="ttdeci">alpaka::dim::Dim1 type</div><div class="ttdef"><b>Definition:</b> <a href="Dim_8hpp_source.html#l00087">Dim.hpp:87</a></div></div>
 <div class="ttc" id="BasicDims_8hpp_html"><div class="ttname"><a href="BasicDims_8hpp.html">BasicDims.hpp</a></div></div>
 <div class="ttc" id="core_2Common_8hpp_html"><div class="ttname"><a href="core_2Common_8hpp.html">Common.hpp</a></div></div>
-<div class="ttc" id="core_2Common_8hpp_html_a58b8d1373dd28be3a64937d6cb48b7c0"><div class="ttname"><a href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a></div><div class="ttdeci">#define ALPAKA_FCT_HOST_ACC</div><div class="ttdef"><b>Definition:</b> <a href="core_2Common_8hpp_source.html#l00075">Common.hpp:75</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_704b24238599043534bfd555c7616f8b.html">traits</a></li><li class="navelem"><a class="el" href="Dim_8hpp.html">Dim.hpp</a></li>
-    <li class="footer">Generated on Tue Apr 7 2015 09:20:05 for alpaka by
+    <li class="footer">Generated on Sat May 23 2015 14:48:25 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

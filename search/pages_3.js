@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['rationale',['Rationale',['../md_C_1_dev_alpaka_doc_Rationale.html',1,'']]]
+  ['threading',['Threading',['../md_C_1_dev_alpaka_doc_Threading.html',1,'']]]
 ];

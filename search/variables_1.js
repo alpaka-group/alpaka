@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['s_5fuidim',['s_uiDim',['../classalpaka_1_1Vec.html#a4643c34d19e00242837e32ac1f85dcb8',1,'alpaka::Vec']]]
+  ['s_5fuidim',['s_uiDim',['../classalpaka_1_1Vec.html#ab386d760d4e8dbcd66d76c92c7f084f9',1,'alpaka::Vec']]]
 ];

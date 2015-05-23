@@ -113,11 +113,12 @@ $(document).ready(function(){initNavTree('WorkDivHelpers_8hpp.html','');});
 <div class="title">WorkDivHelpers.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;<a class="el" href="core_2Common_8hpp_source.html">alpaka/core/Common.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="Vec_8hpp_source.html">alpaka/core/Vec.hpp</a>&gt;</code><br />
+<div class="textblock"><code>#include &lt;<a class="el" href="traits_2Dev_8hpp_source.html">alpaka/traits/Dev.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="traits_2Acc_8hpp_source.html">alpaka/traits/Acc.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="BasicWorkDiv_8hpp_source.html">alpaka/core/BasicWorkDiv.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="ForEachType_8hpp_source.html">alpaka/core/ForEachType.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="traits_2Dev_8hpp_source.html">alpaka/traits/Dev.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="Vec_8hpp_source.html">alpaka/core/Vec.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="core_2Common_8hpp_source.html">alpaka/core/Common.hpp</a>&gt;</code><br />
 <code>#include &lt;boost/mpl/vector.hpp&gt;</code><br />
 <code>#include &lt;cmath&gt;</code><br />
 <code>#include &lt;algorithm&gt;</code><br />
@@ -150,21 +151,22 @@ Functions</h2></td></tr>
 <tr class="memitem:a32c6297d57c4989f6b487f0823a2ca71"><td class="memTemplParams" colspan="2">template&lt;typename TAccSeq &gt; </td></tr>
 <tr class="memitem:a32c6297d57c4989f6b487f0823a2ca71"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1workdiv.html#a32c6297d57c4989f6b487f0823a2ca71">alpaka::workdiv::getMaxBlockThreadCountAccsDevices</a> () -&gt; UInt</td></tr>
 <tr class="separator:a32c6297d57c4989f6b487f0823a2ca71"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac83a18095f0f7c0e2509f42f33312a22"><td class="memTemplParams" colspan="2">template&lt;typename TAccSeq &gt; </td></tr>
-<tr class="memitem:ac83a18095f0f7c0e2509f42f33312a22"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1workdiv.html#ac83a18095f0f7c0e2509f42f33312a22">alpaka::workdiv::getMaxBlockThreadExtentsAccsDevices</a> () -&gt; Vec&lt; 3u &gt;</td></tr>
-<tr class="separator:ac83a18095f0f7c0e2509f42f33312a22"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a521e8ef14557a19c5950231950663a69"><td class="memTemplParams" colspan="2">template&lt;typename TAccSeq , typename TExtents &gt; </td></tr>
-<tr class="memitem:a521e8ef14557a19c5950231950663a69"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1workdiv.html#a521e8ef14557a19c5950231950663a69">alpaka::workdiv::getValidWorkDiv</a> (TExtents const &amp;gridThreadExtents=TExtents(), bool bRequireBlockThreadExtentsToDivideGridThreadExtents=true) -&gt; BasicWorkDiv</td></tr>
-<tr class="separator:a521e8ef14557a19c5950231950663a69"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45af332c68fb45fc5b566dd0dee3a968"><td class="memTemplParams" colspan="2">template&lt;typename TDev , typename TWorkDiv &gt; </td></tr>
-<tr class="memitem:a45af332c68fb45fc5b566dd0dee3a968"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1workdiv.html#a45af332c68fb45fc5b566dd0dee3a968">alpaka::workdiv::isValidWorkDiv</a> (TDev const &amp;dev, TWorkDiv const &amp;workDiv) -&gt; bool</td></tr>
-<tr class="separator:a45af332c68fb45fc5b566dd0dee3a968"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae615f39c8aa2ca04916483056b38d458"><td class="memTemplParams" colspan="2">template&lt;typename TAccSeq , typename TAccDim &gt; </td></tr>
+<tr class="memitem:ae615f39c8aa2ca04916483056b38d458"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1workdiv.html#ae615f39c8aa2ca04916483056b38d458">alpaka::workdiv::getMaxBlockThreadExtentsAccsDevices</a> () -&gt; Vec&lt; TAccDim &gt;</td></tr>
+<tr class="separator:ae615f39c8aa2ca04916483056b38d458"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adddb2c4b683e8be9da35e9400e2a9bbc"><td class="memTemplParams" colspan="2">template&lt;typename TAccSeq , typename TExtents &gt; </td></tr>
+<tr class="memitem:adddb2c4b683e8be9da35e9400e2a9bbc"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1workdiv.html#adddb2c4b683e8be9da35e9400e2a9bbc">alpaka::workdiv::getValidWorkDiv</a> (TExtents const &amp;gridThreadExtents=TExtents(), bool bRequireBlockThreadExtentsToDivideGridThreadExtents=true) -&gt; BasicWorkDiv&lt; dim::DimT&lt; TExtents &gt;&gt;</td></tr>
+<tr class="separator:adddb2c4b683e8be9da35e9400e2a9bbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bfed7ff9daedecf5fcf79c23e714127"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TDev , typename TWorkDiv &gt; </td></tr>
+<tr class="memitem:a3bfed7ff9daedecf5fcf79c23e714127"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1workdiv.html#a3bfed7ff9daedecf5fcf79c23e714127">alpaka::workdiv::isValidWorkDiv</a> (TDev const &amp;dev, TWorkDiv const &amp;workDiv) -&gt; bool</td></tr>
+<tr class="separator:a3bfed7ff9daedecf5fcf79c23e714127"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21bb2264ae48912f73c3f36c6461f562"><td class="memTemplParams" colspan="2">template&lt;typename T , typename  = typename std::enable_if&lt;std::is_integral&lt;T&gt;::value &amp;&amp; std::is_unsigned&lt;T&gt;::value&gt;::type&gt; </td></tr>
 <tr class="memitem:a21bb2264ae48912f73c3f36c6461f562"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1workdiv_1_1detail.html#a21bb2264ae48912f73c3f36c6461f562">alpaka::workdiv::detail::nextLowerOrEqualFactor</a> (T const &amp;uiMaxDivisor, T const &amp;uiDividend) -&gt; T</td></tr>
 <tr class="separator:a21bb2264ae48912f73c3f36c6461f562"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada11e0c08a3ae6e260f0719e581d1c87"><td class="memItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1workdiv_1_1detail.html#ada11e0c08a3ae6e260f0719e581d1c87">alpaka::workdiv::detail::subdivideGridThreads</a> (Vec&lt; 3u &gt; const &amp;v3uiGridThreadExtents, Vec&lt; 3u &gt; const &amp;v3uiMaxBlockThreadExtents, UInt const &amp;uiMaxBlockThreadsCount, bool bRequireBlockThreadExtentsToDivideGridThreadExtents=true) -&gt; BasicWorkDiv</td></tr>
-<tr class="memdesc:ada11e0c08a3ae6e260f0719e581d1c87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subdivides the given grid thread extents into blocks restricted by:  <a href="#ada11e0c08a3ae6e260f0719e581d1c87">More...</a><br /></td></tr>
-<tr class="separator:ada11e0c08a3ae6e260f0719e581d1c87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00c6c9eb9a1fdfdc9802fe5065bba622"><td class="memTemplParams" colspan="2">template&lt;typename TDim &gt; </td></tr>
+<tr class="memitem:a00c6c9eb9a1fdfdc9802fe5065bba622"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1workdiv_1_1detail.html#a00c6c9eb9a1fdfdc9802fe5065bba622">alpaka::workdiv::detail::subdivideGridThreads</a> (Vec&lt; TDim &gt; const &amp;vuiGridThreadExtents, Vec&lt; TDim &gt; const &amp;vuiMaxBlockThreadExtents, UInt const &amp;uiMaxBlockThreadsCount, bool bRequireBlockThreadExtentsToDivideGridThreadExtents=true) -&gt; BasicWorkDiv&lt; TDim &gt;</td></tr>
+<tr class="memdesc:a00c6c9eb9a1fdfdc9802fe5065bba622"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subdivides the given grid thread extents into blocks restricted by:  <a href="#a00c6c9eb9a1fdfdc9802fe5065bba622">More...</a><br /></td></tr>
+<tr class="separator:a00c6c9eb9a1fdfdc9802fe5065bba622"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Copyright 2014-2015 Benjamin Worpitz</p>
@@ -180,7 +182,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="WorkDivHelpers_8hpp.html">WorkDivHelpers.hpp</a></li>
-    <li class="footer">Generated on Tue Apr 7 2015 09:20:06 for alpaka by
+    <li class="footer">Generated on Sat May 23 2015 14:48:26 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

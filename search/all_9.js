@@ -1,28 +1,4 @@
 var searchData=
 [
-  ['idx_2ehpp',['Idx.hpp',['../accs_2cuda_2Idx_8hpp.html',1,'']]],
-  ['idx_2ehpp',['Idx.hpp',['../accs_2fibers_2Idx_8hpp.html',1,'']]],
-  ['idx_2ehpp',['Idx.hpp',['../accs_2omp_2omp2_2Idx_8hpp.html',1,'']]],
-  ['idx_2ehpp',['Idx.hpp',['../accs_2serial_2Idx_8hpp.html',1,'']]],
-  ['idx_2ehpp',['Idx.hpp',['../accs_2threads_2Idx_8hpp.html',1,'']]],
-  ['idx_2ehpp',['Idx.hpp',['../traits_2Idx_8hpp.html',1,'']]],
-  ['idxcuda',['IdxCuda',['../classalpaka_1_1accs_1_1cuda_1_1detail_1_1IdxCuda.html#aba7793ad9d25bfedf4eca73cb9228ba6',1,'alpaka::accs::cuda::detail::IdxCuda::IdxCuda()=default'],['../classalpaka_1_1accs_1_1cuda_1_1detail_1_1IdxCuda.html#aa5d6e61e0cd1661450b161706e864dbf',1,'alpaka::accs::cuda::detail::IdxCuda::IdxCuda(IdxCuda const &amp;)=default'],['../classalpaka_1_1accs_1_1cuda_1_1detail_1_1IdxCuda.html#a917099f3b996f15e073b545ff112c687',1,'alpaka::accs::cuda::detail::IdxCuda::IdxCuda(IdxCuda &amp;&amp;)=default']]],
-  ['idxcuda',['IdxCuda',['../classalpaka_1_1accs_1_1cuda_1_1detail_1_1IdxCuda.html',1,'alpaka::accs::cuda::detail']]],
-  ['idxfibers',['IdxFibers',['../classalpaka_1_1accs_1_1fibers_1_1detail_1_1IdxFibers.html#a73a1529ef8954cc27184a07e3647df3c',1,'alpaka::accs::fibers::detail::IdxFibers::IdxFibers(FiberIdToIdxMap const &amp;mFibersToIndices, Vec&lt; 3u &gt; const &amp;v3uiGridBlockIdx)'],['../classalpaka_1_1accs_1_1fibers_1_1detail_1_1IdxFibers.html#a78fe391d88885a027285cbfee073f202',1,'alpaka::accs::fibers::detail::IdxFibers::IdxFibers(IdxFibers const &amp;)=default'],['../classalpaka_1_1accs_1_1fibers_1_1detail_1_1IdxFibers.html#aa9de1083dbee677b922a35c6930d83c1',1,'alpaka::accs::fibers::detail::IdxFibers::IdxFibers(IdxFibers &amp;&amp;)=default']]],
-  ['idxfibers',['IdxFibers',['../classalpaka_1_1accs_1_1fibers_1_1detail_1_1IdxFibers.html',1,'alpaka::accs::fibers::detail']]],
-  ['idxmapping_2ehpp',['IdxMapping.hpp',['../IdxMapping_8hpp.html',1,'']]],
-  ['idxomp2',['IdxOmp2',['../classalpaka_1_1accs_1_1omp_1_1omp2_1_1detail_1_1IdxOmp2.html#a5c0e380c727c94cb02438210b627692e',1,'alpaka::accs::omp::omp2::detail::IdxOmp2::IdxOmp2(Vec&lt; 3u &gt; const &amp;v3uiGridBlockIdx)'],['../classalpaka_1_1accs_1_1omp_1_1omp2_1_1detail_1_1IdxOmp2.html#acc2abeb70c9cd8171e7e56ced679b390',1,'alpaka::accs::omp::omp2::detail::IdxOmp2::IdxOmp2(IdxOmp2 const &amp;)=default'],['../classalpaka_1_1accs_1_1omp_1_1omp2_1_1detail_1_1IdxOmp2.html#afa68a1d59c20041067323e9c0fe99321',1,'alpaka::accs::omp::omp2::detail::IdxOmp2::IdxOmp2(IdxOmp2 &amp;&amp;)=default']]],
-  ['idxomp2',['IdxOmp2',['../classalpaka_1_1accs_1_1omp_1_1omp2_1_1detail_1_1IdxOmp2.html',1,'alpaka::accs::omp::omp2::detail']]],
-  ['idxserial',['IdxSerial',['../classalpaka_1_1accs_1_1serial_1_1detail_1_1IdxSerial.html',1,'alpaka::accs::serial::detail']]],
-  ['idxserial',['IdxSerial',['../classalpaka_1_1accs_1_1serial_1_1detail_1_1IdxSerial.html#a504d3bcd9c630a138d57093916cf9088',1,'alpaka::accs::serial::detail::IdxSerial::IdxSerial(Vec&lt; 3u &gt; const &amp;v3uiGridBlockIdx)'],['../classalpaka_1_1accs_1_1serial_1_1detail_1_1IdxSerial.html#a65adc24317c629ac734a67283fddc6b2',1,'alpaka::accs::serial::detail::IdxSerial::IdxSerial(IdxSerial const &amp;)=default'],['../classalpaka_1_1accs_1_1serial_1_1detail_1_1IdxSerial.html#a8a51007731211277e60b3806785b80f4',1,'alpaka::accs::serial::detail::IdxSerial::IdxSerial(IdxSerial &amp;&amp;)=default']]],
-  ['idxthreads',['IdxThreads',['../classalpaka_1_1accs_1_1threads_1_1detail_1_1IdxThreads.html',1,'alpaka::accs::threads::detail']]],
-  ['idxthreads',['IdxThreads',['../classalpaka_1_1accs_1_1threads_1_1detail_1_1IdxThreads.html#a4277735cceff3aead571fbab6aa87bd3',1,'alpaka::accs::threads::detail::IdxThreads::IdxThreads(ThreadIdToIdxMap const &amp;mThreadsToIndices, Vec&lt; 3u &gt; const &amp;v3uiGridBlockIdx)'],['../classalpaka_1_1accs_1_1threads_1_1detail_1_1IdxThreads.html#a4545062e602cc59b549a5eeaae3cec1b',1,'alpaka::accs::threads::detail::IdxThreads::IdxThreads(IdxThreads const &amp;)=default'],['../classalpaka_1_1accs_1_1threads_1_1detail_1_1IdxThreads.html#a1549ec8f88dcd693d3478c95eb05f4cc',1,'alpaka::accs::threads::detail::IdxThreads::IdxThreads(IdxThreads &amp;&amp;)=default']]],
-  ['inc',['Inc',['../structalpaka_1_1ops_1_1Inc.html',1,'alpaka::ops']]],
-  ['index_5fsequence',['index_sequence',['../namespacealpaka_1_1detail.html#ab83a5bf6bfc1c3aa19a43c8e56ab7a3c',1,'alpaka::detail']]],
-  ['index_5fsequence_5ffor',['index_sequence_for',['../namespacealpaka_1_1detail.html#a0a3825903b37e20824bc306a436e2097',1,'alpaka::detail']]],
-  ['integer_5fsequence',['integer_sequence',['../structalpaka_1_1detail_1_1integer__sequence.html',1,'alpaka::detail']]],
-  ['integer_5fsequence_3c_20t_2c_20tvals_2e_2e_2e_3e',['integer_sequence&lt; T, TVals...&gt;',['../structalpaka_1_1detail_1_1integer__sequence.html',1,'alpaka::detail']]],
-  ['integersequence_2ehpp',['IntegerSequence.hpp',['../IntegerSequence_8hpp.html',1,'']]],
-  ['isvalidworkdiv',['isValidWorkDiv',['../namespacealpaka_1_1workdiv.html#a45af332c68fb45fc5b566dd0dee3a968',1,'alpaka::workdiv']]],
-  ['itaskpkg',['ITaskPkg',['../classalpaka_1_1detail_1_1ITaskPkg.html',1,'alpaka::detail']]]
+  ['kernel_2ehpp',['Kernel.hpp',['../Kernel_8hpp.html',1,'']]]
 ];

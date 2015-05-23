@@ -1,4 +1,0 @@
-var structalpaka_1_1traits_1_1wait_1_1CurrentThreadWaitFor_3_01accs_1_1omp_1_1omp2_1_1detail_1_1DevOmp2_01_4 =
-[
-    [ "currentThreadWaitFor", "structalpaka_1_1traits_1_1wait_1_1CurrentThreadWaitFor_3_01accs_1_1omp_1_1omp2_1_1detail_1_1DevOmp2_01_4.html#a5278fd95089ea04430d813ef389642e5", null ]
-];

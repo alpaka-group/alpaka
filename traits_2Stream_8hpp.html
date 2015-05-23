@@ -114,8 +114,8 @@ $(document).ready(function(){initNavTree('traits_2Stream_8hpp.html','');});
 <div class="title">Stream.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;<a class="el" href="core_2Common_8hpp_source.html">alpaka/core/Common.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="Wait_8hpp_source.html">alpaka/traits/Wait.hpp</a>&gt;</code><br />
+<div class="textblock"><code>#include &lt;<a class="el" href="Wait_8hpp_source.html">alpaka/traits/Wait.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="core_2Common_8hpp_source.html">alpaka/core/Common.hpp</a>&gt;</code><br />
 </div>
 <p><a href="traits_2Stream_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -155,13 +155,13 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a6996501f803a23f1f3c394f7f8c4b039"><td class="memTemplParams" colspan="2">template&lt;typename TDev &gt; </td></tr>
-<tr class="memitem:a6996501f803a23f1f3c394f7f8c4b039"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1stream.html#a6996501f803a23f1f3c394f7f8c4b039">alpaka::stream::create</a> (TDev const &amp;dev) -&gt; StreamT&lt; TDev &gt;</td></tr>
-<tr class="memdesc:a6996501f803a23f1f3c394f7f8c4b039"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a stream on a device.  <a href="#a6996501f803a23f1f3c394f7f8c4b039">More...</a><br /></td></tr>
-<tr class="separator:a6996501f803a23f1f3c394f7f8c4b039"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aef29c17aea49dff320ba38b143065102"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:aef29c17aea49dff320ba38b143065102"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1stream.html#aef29c17aea49dff320ba38b143065102">alpaka::stream::getStream</a> (T const &amp;type) -&gt; decltype(traits::stream::GetStream&lt; T &gt;::getStream(std::declval&lt; T const &amp; &gt;()))</td></tr>
-<tr class="separator:aef29c17aea49dff320ba38b143065102"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8054bc426975d241e55587b1c44cd08d"><td class="memTemplParams" colspan="2">template&lt;typename TDev &gt; </td></tr>
+<tr class="memitem:a8054bc426975d241e55587b1c44cd08d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1stream.html#a8054bc426975d241e55587b1c44cd08d">alpaka::stream::create</a> (TDev &amp;dev) -&gt; StreamT&lt; TDev &gt;</td></tr>
+<tr class="memdesc:a8054bc426975d241e55587b1c44cd08d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a stream on a device.  <a href="#a8054bc426975d241e55587b1c44cd08d">More...</a><br /></td></tr>
+<tr class="separator:a8054bc426975d241e55587b1c44cd08d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad88d092770107889a836999997a79b0e"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ad88d092770107889a836999997a79b0e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1stream.html#ad88d092770107889a836999997a79b0e">alpaka::stream::getStream</a> (T const &amp;type) -&gt; decltype(traits::stream::GetStream&lt; T &gt;::getStream(type))</td></tr>
+<tr class="separator:ad88d092770107889a836999997a79b0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a618b304f26f773dde59759b3f0f6a5af"><td class="memTemplParams" colspan="2">template&lt;typename TStream &gt; </td></tr>
 <tr class="memitem:a618b304f26f773dde59759b3f0f6a5af"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1stream.html#a618b304f26f773dde59759b3f0f6a5af">alpaka::stream::test</a> (TStream const &amp;stream) -&gt; bool</td></tr>
 <tr class="memdesc:a618b304f26f773dde59759b3f0f6a5af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tests if all ops in the given stream have been completed.  <a href="#a618b304f26f773dde59759b3f0f6a5af">More...</a><br /></td></tr>
@@ -181,7 +181,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_704b24238599043534bfd555c7616f8b.html">traits</a></li><li class="navelem"><a class="el" href="traits_2Stream_8hpp.html">Stream.hpp</a></li>
-    <li class="footer">Generated on Tue Apr 7 2015 09:20:06 for alpaka by
+    <li class="footer">Generated on Sat May 23 2015 14:48:26 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

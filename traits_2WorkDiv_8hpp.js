@@ -1,9 +1,6 @@
 var traits_2WorkDiv_8hpp =
 [
     [ "GetWorkDiv", "structalpaka_1_1traits_1_1workdiv_1_1GetWorkDiv.html", null ],
-    [ "GetWorkDiv< TWorkDiv, origin::Block, unit::Threads, alpaka::dim::Dim1 >", "structalpaka_1_1traits_1_1workdiv_1_1GetWorkDiv_3_01TWorkDiv_00_01origin_1_1Block_00_01unit_1_1Tf5ec91e8fdb52f1786b544c7bbc35138.html", "structalpaka_1_1traits_1_1workdiv_1_1GetWorkDiv_3_01TWorkDiv_00_01origin_1_1Block_00_01unit_1_1Tf5ec91e8fdb52f1786b544c7bbc35138" ],
-    [ "GetWorkDiv< TWorkDiv, origin::Grid, unit::Blocks, alpaka::dim::Dim1 >", "structalpaka_1_1traits_1_1workdiv_1_1GetWorkDiv_3_01TWorkDiv_00_01origin_1_1Grid_00_01unit_1_1Blb92b171bc2147e4918eaab4edf1a1361.html", "structalpaka_1_1traits_1_1workdiv_1_1GetWorkDiv_3_01TWorkDiv_00_01origin_1_1Grid_00_01unit_1_1Blb92b171bc2147e4918eaab4edf1a1361" ],
-    [ "GetWorkDiv< TWorkDiv, origin::Grid, unit::Threads, alpaka::dim::Dim1 >", "structalpaka_1_1traits_1_1workdiv_1_1GetWorkDiv_3_01TWorkDiv_00_01origin_1_1Grid_00_01unit_1_1Th94b2c3983bb10be44ca199fdd7dc2619.html", "structalpaka_1_1traits_1_1workdiv_1_1GetWorkDiv_3_01TWorkDiv_00_01origin_1_1Grid_00_01unit_1_1Th94b2c3983bb10be44ca199fdd7dc2619" ],
-    [ "GetWorkDiv< TWorkDiv, origin::Grid, unit::Threads, alpaka::dim::Dim3 >", "structalpaka_1_1traits_1_1workdiv_1_1GetWorkDiv_3_01TWorkDiv_00_01origin_1_1Grid_00_01unit_1_1Theb9071f251b3464f960328f9b5e39f10.html", "structalpaka_1_1traits_1_1workdiv_1_1GetWorkDiv_3_01TWorkDiv_00_01origin_1_1Grid_00_01unit_1_1Theb9071f251b3464f960328f9b5e39f10" ],
-    [ "getWorkDiv", "traits_2WorkDiv_8hpp.html#a6adb55a7a554a18f007f876359813e73", null ]
+    [ "GetWorkDiv< TWorkDiv, origin::Grid, unit::Threads >", "structalpaka_1_1traits_1_1workdiv_1_1GetWorkDiv_3_01TWorkDiv_00_01origin_1_1Grid_00_01unit_1_1Threads_01_4.html", "structalpaka_1_1traits_1_1workdiv_1_1GetWorkDiv_3_01TWorkDiv_00_01origin_1_1Grid_00_01unit_1_1Threads_01_4" ],
+    [ "getWorkDiv", "traits_2WorkDiv_8hpp.html#a4834a0ad3676c460305d7b2366cbe407", null ]
 ];

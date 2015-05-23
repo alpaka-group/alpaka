@@ -1,4 +1,22 @@
 var searchData=
 [
-  ['uint',['UInt',['../namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5',1,'alpaka']]]
+  ['val',['Val',['../classalpaka_1_1Vec.html#a8ba1d21778eba24f0ada0ec057204c8b',1,'alpaka::Vec']]],
+  ['value',['value',['../structalpaka_1_1detail_1_1RoundUpToPowerOfTwoHelper.html#a5a9bdc445f3f6e64f244ca78c7b4aedaa010bdd0d20915bbd1aa99aa4e323a484',1,'alpaka::detail::RoundUpToPowerOfTwoHelper::value()'],['../structalpaka_1_1detail_1_1RoundUpToPowerOfTwoHelper_3_01N_00_01false_01_4.html#ae09607acae3d50483bd9a9505c2e782dacb7c43c098fe71678a3cd3cb6dbfffe4',1,'alpaka::detail::RoundUpToPowerOfTwoHelper&lt; N, false &gt;::value()'],['../structalpaka_1_1detail_1_1RoundUpToPowerOfTwo.html#a8cf18b736e738d76a366793a28e98253a2b88bca28dc37c6b5fa9e5dc6d600e66',1,'alpaka::detail::RoundUpToPowerOfTwo::value()'],['../structalpaka_1_1detail_1_1OptimalAlignment.html#af3ad55ee7ae49b9b6e09760aa8e51f05a2c4cdc7b5b2d446b5f7e129303930df0',1,'alpaka::detail::OptimalAlignment::value()'],['../structalpaka_1_1detail_1_1ApplyAllCombineAndInternal.html#a4dd465a33ef8da4825c11a9e85c8cb47ab1dd144eccb8cb351c5f8a49818de06e',1,'alpaka::detail::ApplyAllCombineAndInternal::value()'],['../structalpaka_1_1detail_1_1ApplyAllCombineAndInternal_3_01TTrait_00_01THead_01_4.html#a00fd342a6d2bda86c2834ae788676420a460a94eecb654dda59ef05a67499ee33',1,'alpaka::detail::ApplyAllCombineAndInternal&lt; TTrait, THead &gt;::value()'],['../structalpaka_1_1detail_1_1ApplyAllCombineAnd.html#a81719b4fc4f194a8629e7ae95539fe55a5a5b9a8c6282314d17b61bbf65d7be76',1,'alpaka::detail::ApplyAllCombineAnd::value()'],['../structalpaka_1_1detail_1_1ApplyAllCombineAnd_3_01TTrait_01_4.html#ab93750f9f8d63d1b4f0bb8d2ebf8faa3af4ebc5363bfc1277a03f90834ef341b2',1,'alpaka::detail::ApplyAllCombineAnd&lt; TTrait &gt;::value()']]],
+  ['value_5ftype',['value_type',['../structalpaka_1_1detail_1_1integer__sequence.html#af44a2da7b9069abfc0907b6e3f1c413a',1,'alpaka::detail::integer_sequence']]],
+  ['vec',['Vec',['../classalpaka_1_1Vec.html',1,'alpaka']]],
+  ['vec',['Vec',['../classalpaka_1_1Vec.html#a5e1c2b0240f0b6a93ae63abc6988ba2b',1,'alpaka::Vec::Vec(TArg0 &amp;&amp;arg0, TArgs &amp;&amp;...args)'],['../classalpaka_1_1Vec.html#acb9d14d6d44e6cbe98d52a4c90ccf395',1,'alpaka::Vec::Vec(Vec const &amp;)=default'],['../classalpaka_1_1Vec.html#af6e10b1f8f066d77486c8748f032ebe6',1,'alpaka::Vec::Vec(Vec &amp;&amp;)=default']]],
+  ['vec_2ehpp',['Vec.hpp',['../Vec_8hpp.html',1,'']]],
+  ['vec1',['Vec1',['../namespacealpaka.html#a8f7e34b6c0e98c81348a56ada3e172c6',1,'alpaka']]],
+  ['vec2',['Vec2',['../namespacealpaka.html#ab92bd604a6577e8b129841fe8e42beeb',1,'alpaka']]],
+  ['vec3',['Vec3',['../namespacealpaka.html#a53d02e0ed5d6ae7518186c536e0ea80d',1,'alpaka']]],
+  ['vec_3c_20dim_20_3e',['Vec&lt; Dim &gt;',['../classalpaka_1_1Vec.html',1,'alpaka']]],
+  ['vec_3c_20tdim_20_3e',['Vec&lt; TDim &gt;',['../classalpaka_1_1Vec.html',1,'alpaka']]],
+  ['view',['View',['../classalpaka_1_1mem_1_1detail_1_1View.html#a99c6e7bdfb0400e78ad547bff8540559',1,'alpaka::mem::detail::View::View(TBuf const &amp;buf)'],['../classalpaka_1_1mem_1_1detail_1_1View.html#af29fc1747e2b27d561c4a11c23db7a3d',1,'alpaka::mem::detail::View::View(TBuf &amp;buf)'],['../classalpaka_1_1mem_1_1detail_1_1View.html#a881343d73a5fbb2fc426d6cf5470b045',1,'alpaka::mem::detail::View::View(TBuf const &amp;buf, TExtents const &amp;extentsElements, TOffsets const &amp;relativeOffsetsElements=TOffsets())'],['../classalpaka_1_1mem_1_1detail_1_1View.html#a81cbc8d2f817b273b0460b988b6f1c54',1,'alpaka::mem::detail::View::View(TBuf &amp;buf, TExtents const &amp;extentsElements, TOffsets const &amp;relativeOffsetsElements=TOffsets())']]],
+  ['view',['View',['../classalpaka_1_1mem_1_1detail_1_1View.html',1,'alpaka::mem::detail']]],
+  ['view_2ehpp',['View.hpp',['../traits_2mem_2View_8hpp.html',1,'']]],
+  ['view_2ehpp',['View.hpp',['../core_2mem_2View_8hpp.html',1,'']]],
+  ['viewt',['ViewT',['../namespacealpaka_1_1mem.html#a91621b7fb660c5a57878a63fb56ba2be',1,'alpaka::mem']]],
+  ['viewtype',['ViewType',['../structalpaka_1_1traits_1_1mem_1_1ViewType.html',1,'alpaka::traits::mem']]],
+  ['viewtype_3c_20telem_2c_20tdim_2c_20devs_3a_3acpu_3a_3adevcpu_20_3e',['ViewType&lt; TElem, TDim, devs::cpu::DevCpu &gt;',['../structalpaka_1_1traits_1_1mem_1_1ViewType_3_01TElem_00_01TDim_00_01devs_1_1cpu_1_1DevCpu_01_4.html',1,'alpaka::traits::mem']]],
+  ['viewtype_3c_20telem_2c_20tdim_2c_20devs_3a_3acuda_3a_3adevcuda_20_3e',['ViewType&lt; TElem, TDim, devs::cuda::DevCuda &gt;',['../structalpaka_1_1traits_1_1mem_1_1ViewType_3_01TElem_00_01TDim_00_01devs_1_1cuda_1_1DevCuda_01_4.html',1,'alpaka::traits::mem']]]
 ];

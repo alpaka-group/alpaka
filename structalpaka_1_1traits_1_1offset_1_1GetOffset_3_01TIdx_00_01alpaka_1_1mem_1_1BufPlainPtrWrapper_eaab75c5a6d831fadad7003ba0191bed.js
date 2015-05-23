@@ -1,0 +1,4 @@
+var structalpaka_1_1traits_1_1offset_1_1GetOffset_3_01TIdx_00_01alpaka_1_1mem_1_1BufPlainPtrWrapper_eaab75c5a6d831fadad7003ba0191bed =
+[
+    [ "getOffset", "structalpaka_1_1traits_1_1offset_1_1GetOffset_3_01TIdx_00_01alpaka_1_1mem_1_1BufPlainPtrWrapper_eaab75c5a6d831fadad7003ba0191bed.html#a45d5c8beffcebec7a9fd92c23a295e48", null ]
+];

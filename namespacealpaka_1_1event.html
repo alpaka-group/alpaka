@@ -131,7 +131,7 @@ Functions</h2></td></tr>
 <tr class="separator:a14b43f58e81783a36f17689272f6d504"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a180ae3b5b8d405cebb248d9e2a6a5c3a"><td class="memTemplParams" colspan="2">template&lt;typename TEvent , typename TStream &gt; </td></tr>
 <tr class="memitem:a180ae3b5b8d405cebb248d9e2a6a5c3a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1event.html#a180ae3b5b8d405cebb248d9e2a6a5c3a">enqueue</a> (TEvent const &amp;event, TStream const &amp;stream) -&gt; void</td></tr>
-<tr class="memdesc:a180ae3b5b8d405cebb248d9e2a6a5c3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queues the given event in the stream zero.  <a href="#a180ae3b5b8d405cebb248d9e2a6a5c3a">More...</a><br /></td></tr>
+<tr class="memdesc:a180ae3b5b8d405cebb248d9e2a6a5c3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queues the given event in the given stream.  <a href="#a180ae3b5b8d405cebb248d9e2a6a5c3a">More...</a><br /></td></tr>
 <tr class="separator:a180ae3b5b8d405cebb248d9e2a6a5c3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae5c1edae98afd948fddbb7da8a2ff1d"><td class="memTemplParams" colspan="2">template&lt;typename TEvent &gt; </td></tr>
 <tr class="memitem:aae5c1edae98afd948fddbb7da8a2ff1d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1event.html#aae5c1edae98afd948fddbb7da8a2ff1d">test</a> (TEvent const &amp;event) -&gt; bool</td></tr>
@@ -155,7 +155,7 @@ template&lt;typename TAcc &gt; </div>
 
 <p>The event type trait alias template to remove the ::type. </p>
 
-<p>Definition at line <a class="el" href="traits_2Event_8hpp_source.html#l00080">80</a> of file <a class="el" href="traits_2Event_8hpp_source.html">Event.hpp</a>.</p>
+<p>Definition at line <a class="el" href="traits_2Event_8hpp_source.html#l00072">72</a> of file <a class="el" href="traits_2Event_8hpp_source.html">Event.hpp</a>.</p>
 
 </div>
 </div>
@@ -179,7 +179,7 @@ template&lt;typename TDev &gt; </div>
 
 <p>Creates an event on a device. </p>
 
-<p>Definition at line <a class="el" href="traits_2Event_8hpp_source.html#l00087">87</a> of file <a class="el" href="traits_2Event_8hpp_source.html">Event.hpp</a>.</p>
+<p>Definition at line <a class="el" href="traits_2Event_8hpp_source.html#l00079">79</a> of file <a class="el" href="traits_2Event_8hpp_source.html">Event.hpp</a>.</p>
 
 </div>
 </div>
@@ -210,11 +210,10 @@ template&lt;typename TEvent , typename TStream &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Queues the given event in the stream zero. </p>
-<p>If it has previously been queued, then this call will overwrite any existing state of the event. Any subsequent calls which examine the status of event will only examine the completion of this most recent call to enqueue. Queues the given event in the given stream.</p>
+<p>Queues the given event in the given stream. </p>
 <p>If it has previously been queued, then this call will overwrite any existing state of the event. Any subsequent calls which examine the status of event will only examine the completion of this most recent call to enqueue. </p>
 
-<p>Definition at line <a class="el" href="traits_2Event_8hpp_source.html#l00121">121</a> of file <a class="el" href="traits_2Event_8hpp_source.html">Event.hpp</a>.</p>
+<p>Definition at line <a class="el" href="traits_2Event_8hpp_source.html#l00095">95</a> of file <a class="el" href="traits_2Event_8hpp_source.html">Event.hpp</a>.</p>
 
 </div>
 </div>
@@ -237,7 +236,7 @@ template&lt;typename TEvent &gt; </div>
 
 <p>Tests if the given event has already be completed. </p>
 
-<p>Definition at line <a class="el" href="traits_2Event_8hpp_source.html#l00139">139</a> of file <a class="el" href="traits_2Event_8hpp_source.html">Event.hpp</a>.</p>
+<p>Definition at line <a class="el" href="traits_2Event_8hpp_source.html#l00113">113</a> of file <a class="el" href="traits_2Event_8hpp_source.html">Event.hpp</a>.</p>
 
 </div>
 </div>
@@ -247,7 +246,7 @@ template&lt;typename TEvent &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1event.html">event</a></li>
-    <li class="footer">Generated on Tue Apr 7 2015 09:20:07 for alpaka by
+    <li class="footer">Generated on Sat May 23 2015 14:48:28 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

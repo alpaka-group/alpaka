@@ -132,30 +132,30 @@ $(document).ready(function(){initNavTree('accs_2fibers_2Common_8hpp_source.html'
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">// Force the usage of variadic templates for fibers.</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="accs_2fibers_2Common_8hpp.html#a41c138e7e60cad23c58d22cc55058af7">   25</a></span>&#160;<span class="preprocessor">#define BOOST_FIBERS_USE_VARIADIC_FIBER</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#if BOOST_COMP_MSVC</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">    #pragma warning(push)</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">    #pragma warning(disable: 4267)  // boost/asio/detail/impl/socket_ops.ipp(1968): warning C4267: &#39;argument&#39;: conversion from &#39;size_t&#39; to &#39;int&#39;, possible loss of data</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;                                    <span class="comment">// boost/asio/detail/impl/socket_ops.ipp(2172): warning C4267: &#39;initializing&#39;: conversion from &#39;size_t&#39; to &#39;int&#39;, possible loss of data</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">    #pragma warning(disable: 4297)  // boost/coroutine/detail/symmetric_coroutine_impl.hpp(409) : warning C4297 : &#39;boost::coroutines::detail::symmetric_coroutine_impl&lt;void&gt;::yield&#39; : function assumed not to throw an exception but does</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">    #pragma warning(disable: 4996)  // boost/asio/detail/impl/socket_ops.ipp(1363) : warning C4996 : &#39;WSASocketA&#39; : Use WSASocketW() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">    #pragma warning(disable: 4456)  // boost/fiber/condition.hpp(174): warning C4456: declaration of &#39;lk&#39; hides previous local declaration</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;                                    <span class="comment">// boost/fiber/condition.hpp(217): warning C4456: declaration of &#39;lk&#39; hides previous local declaration</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">// Boost fiber:</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">// http://olk.github.io/libs/fiber/doc/html/index.html</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">// https://github.com/olk/boost-fiber</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &lt;boost/fiber/fiber.hpp&gt;</span>                    <span class="comment">// boost::fibers::fiber</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#include &lt;boost/fiber/operations.hpp&gt;</span>               <span class="comment">// boost::this_fiber</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#include &lt;boost/fiber/condition.hpp&gt;</span>                <span class="comment">// boost::fibers::condition_variable</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#include &lt;boost/fiber/mutex.hpp&gt;</span>                    <span class="comment">// boost::fibers::mutex</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#include &lt;boost/fiber/future.hpp&gt;</span>                   <span class="comment">// boost::fibers::future</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">//#include &lt;boost/fiber/barrier.hpp&gt;                // boost::fibers::barrier</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">#if BOOST_COMP_MSVC</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#if BOOST_COMP_MSVC</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">    #pragma warning(push)</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">    #pragma warning(disable: 4267)  // boost/asio/detail/impl/socket_ops.ipp(1968): warning C4267: &#39;argument&#39;: conversion from &#39;size_t&#39; to &#39;int&#39;, possible loss of data</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;                                    <span class="comment">// boost/asio/detail/impl/socket_ops.ipp(2172): warning C4267: &#39;initializing&#39;: conversion from &#39;size_t&#39; to &#39;int&#39;, possible loss of data</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">    #pragma warning(disable: 4297)  // boost/coroutine/detail/symmetric_coroutine_impl.hpp(409) : warning C4297 : &#39;boost::coroutines::detail::symmetric_coroutine_impl&lt;void&gt;::yield&#39; : function assumed not to throw an exception but does</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">    #pragma warning(disable: 4996)  // boost/asio/detail/impl/socket_ops.ipp(1363) : warning C4996 : &#39;WSASocketA&#39; : Use WSASocketW() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">    #pragma warning(disable: 4456)  // boost/fiber/condition.hpp(174): warning C4456: declaration of &#39;lk&#39; hides previous local declaration</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;                                    <span class="comment">// boost/fiber/condition.hpp(217): warning C4456: declaration of &#39;lk&#39; hides previous local declaration</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="comment">// Boost.Fiber indirectly includes windows.h for which we need to define some things</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">    #define NOMINMAX</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">// Boost fiber:</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">// http://olk.github.io/libs/fiber/doc/html/index.html</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">// https://github.com/olk/boost-fiber</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#include &lt;boost/fiber/fiber.hpp&gt;</span>        <span class="comment">// boost::fibers::fiber</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &lt;boost/fiber/operations.hpp&gt;</span>   <span class="comment">// boost::this_fiber</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#include &lt;boost/fiber/condition.hpp&gt;</span>    <span class="comment">// boost::fibers::condition_variable</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#include &lt;boost/fiber/mutex.hpp&gt;</span>        <span class="comment">// boost::fibers::mutex</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#include &lt;boost/fiber/future.hpp&gt;</span>       <span class="comment">// boost::fibers::future</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">//#include &lt;boost/fiber/barrier.hpp&gt;    // boost::fibers::barrier</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#if BOOST_COMP_MSVC</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">    #undef NOMINMAX</span></div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">    #pragma warning(pop)</span></div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
@@ -164,7 +164,7 @@ $(document).ready(function(){initNavTree('accs_2fibers_2Common_8hpp_source.html'
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_68e39f1068b7c8e11271b44791d3a102.html">accs</a></li><li class="navelem"><a class="el" href="dir_220cd134d2d1bd59c66c30365118af8f.html">fibers</a></li><li class="navelem"><a class="el" href="accs_2fibers_2Common_8hpp.html">Common.hpp</a></li>
-    <li class="footer">Generated on Tue Apr 7 2015 09:20:04 for alpaka by
+    <li class="footer">Generated on Sat May 23 2015 14:48:25 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

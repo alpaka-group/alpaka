@@ -1,0 +1,5 @@
+var structalpaka_1_1traits_1_1mem_1_1GetPtrNative_3_01alpaka_1_1mem_1_1BufPlainPtrWrapper_3_01TElem_00_01TDim_00_01TDev_01_4_01_4 =
+[
+    [ "getPtrNative", "structalpaka_1_1traits_1_1mem_1_1GetPtrNative_3_01alpaka_1_1mem_1_1BufPlainPtrWrapper_3_01TElem_00_01TDim_00_01TDev_01_4_01_4.html#a977949b4a6f16a4aa0f9abe1de4a04a6", null ],
+    [ "getPtrNative", "structalpaka_1_1traits_1_1mem_1_1GetPtrNative_3_01alpaka_1_1mem_1_1BufPlainPtrWrapper_3_01TElem_00_01TDim_00_01TDev_01_4_01_4.html#a4dc50752a7ce544400c98b2388afaaf5", null ]
+];

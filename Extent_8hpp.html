@@ -113,36 +113,25 @@ $(document).ready(function(){initNavTree('Extent_8hpp.html','');});
 <div class="title">Extent.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;<a class="el" href="core_2Common_8hpp_source.html">alpaka/core/Common.hpp</a>&gt;</code><br />
+<div class="textblock"><code>#include &lt;<a class="el" href="IntegerSequence_8hpp_source.html">alpaka/core/IntegerSequence.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="core_2Common_8hpp_source.html">alpaka/core/Common.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="Fold_8hpp_source.html">alpaka/core/Fold.hpp</a>&gt;</code><br />
+<code>#include &lt;boost/core/ignore_unused.hpp&gt;</code><br />
 <code>#include &lt;type_traits&gt;</code><br />
+<code>#include &lt;functional&gt;</code><br />
 </div>
 <p><a href="Extent_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1extent_1_1GetDepth.html">alpaka::traits::extent::GetDepth&lt; T, TSfinae &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The depth get trait.  <a href="structalpaka_1_1traits_1_1extent_1_1GetDepth.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1extent_1_1GetExtent.html">alpaka::traits::extent::GetExtent&lt; TIdx, T, TSfinae &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The extent get trait.  <a href="structalpaka_1_1traits_1_1extent_1_1GetExtent.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1extent_1_1GetExtents.html">alpaka::traits::extent::GetExtents&lt; T, TSfinae &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The extents get trait.  <a href="structalpaka_1_1traits_1_1extent_1_1GetExtents.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1extent_1_1GetExtent_3_01std_1_1integral__constant_3_01UInt_00_010u_01_ca568b3421bf1570f10bdc078ed0788b.html">alpaka::traits::extent::GetExtent&lt; std::integral_constant&lt; UInt, 0u &gt;, T, typename std::enable_if&lt; std::is_integral&lt; T &gt;::value &amp;&amp;std::is_unsigned&lt; T &gt;::value &gt;::type &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The unsigned integral width get trait specialization.  <a href="structalpaka_1_1traits_1_1extent_1_1GetExtent_3_01std_1_1integral__constant_3_01UInt_00_010u_01_ca568b3421bf1570f10bdc078ed0788b.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1extent_1_1GetHeight.html">alpaka::traits::extent::GetHeight&lt; T, TSfinae &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The height get trait.  <a href="structalpaka_1_1traits_1_1extent_1_1GetHeight.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1extent_1_1GetWidth.html">alpaka::traits::extent::GetWidth&lt; T, TSfinae &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The width get trait.  <a href="structalpaka_1_1traits_1_1extent_1_1GetWidth.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1extent_1_1GetWidth_3_01T_00_01typename_01std_1_1enable__if_3_01std_1_16e859323b31b50f33015eb8e23ccfd31.html">alpaka::traits::extent::GetWidth&lt; T, typename std::enable_if&lt; std::is_integral&lt; T &gt;::value &amp;&amp;std::is_unsigned&lt; T &gt;::value &gt;::type &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The unsigned integral width get trait specialization.  <a href="structalpaka_1_1traits_1_1extent_1_1GetWidth_3_01T_00_01typename_01std_1_1enable__if_3_01std_1_16e859323b31b50f33015eb8e23ccfd31.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1extent_1_1SetDepth.html">alpaka::traits::extent::SetDepth&lt; T, TSfinae &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The depth set trait.  <a href="structalpaka_1_1traits_1_1extent_1_1SetDepth.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1extent_1_1SetHeight.html">alpaka::traits::extent::SetHeight&lt; T, TSfinae &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The height set trait.  <a href="structalpaka_1_1traits_1_1extent_1_1SetHeight.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1extent_1_1SetWidth.html">alpaka::traits::extent::SetWidth&lt; T, TSfinae &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The width set trait.  <a href="structalpaka_1_1traits_1_1extent_1_1SetWidth.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1extent_1_1SetExtent.html">alpaka::traits::extent::SetExtent&lt; TIdx, T, TSfinae &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The extent set trait.  <a href="structalpaka_1_1traits_1_1extent_1_1SetExtent.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -153,6 +142,8 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacealpaka_1_1extent"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1extent.html">alpaka::extent</a></td></tr>
 <tr class="memdesc:namespacealpaka_1_1extent"><td class="mdescLeft">&#160;</td><td class="mdescRight">The extent trait accessors. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacealpaka_1_1extent_1_1detail"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1extent_1_1detail.html">alpaka::extent::detail</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1traits"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1traits.html">alpaka::traits</a></td></tr>
 <tr class="memdesc:namespacealpaka_1_1traits"><td class="mdescLeft">&#160;</td><td class="mdescRight">The traits. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -162,33 +153,39 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ae0401be4e9c053062fbc9d6917d0459b"><td class="memTemplParams" colspan="2">template&lt;typename TExtents &gt; </td></tr>
-<tr class="memitem:ae0401be4e9c053062fbc9d6917d0459b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1extent.html#ae0401be4e9c053062fbc9d6917d0459b">alpaka::extent::getDepth</a> (TExtents const &amp;extents=TExtents()) -&gt; UInt</td></tr>
-<tr class="separator:ae0401be4e9c053062fbc9d6917d0459b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af392c032e46a8d1a4e8140a5ee16fe57"><td class="memTemplParams" colspan="2">template&lt;typename TExtents &gt; </td></tr>
-<tr class="memitem:af392c032e46a8d1a4e8140a5ee16fe57"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1extent.html#af392c032e46a8d1a4e8140a5ee16fe57">alpaka::extent::getExtents</a> (TExtents const &amp;extents=TExtents()) -&gt; decltype(traits::extent::GetExtents&lt; TExtents &gt;::getExtents(std::declval&lt; TExtents const &amp; &gt;()))</td></tr>
-<tr class="separator:af392c032e46a8d1a4e8140a5ee16fe57"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a43d8ee4f6592599fcf4f53cd12c7338e"><td class="memTemplParams" colspan="2">template&lt;typename TExtents &gt; </td></tr>
-<tr class="memitem:a43d8ee4f6592599fcf4f53cd12c7338e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1extent.html#a43d8ee4f6592599fcf4f53cd12c7338e">alpaka::extent::getHeight</a> (TExtents const &amp;extents=TExtents()) -&gt; UInt</td></tr>
-<tr class="separator:a43d8ee4f6592599fcf4f53cd12c7338e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f1ed4588835bf42d394b9250cdef4ed"><td class="memTemplParams" colspan="2">template&lt;typename TExtents &gt; </td></tr>
-<tr class="memitem:a4f1ed4588835bf42d394b9250cdef4ed"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1extent.html#a4f1ed4588835bf42d394b9250cdef4ed">alpaka::extent::getProductOfExtents</a> (TExtents const &amp;extents=TExtents()) -&gt; UInt</td></tr>
-<tr class="separator:a4f1ed4588835bf42d394b9250cdef4ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a502751417312beee0d02f08c92e53da7"><td class="memTemplParams" colspan="2">template&lt;typename TExtents &gt; </td></tr>
-<tr class="memitem:a502751417312beee0d02f08c92e53da7"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1extent.html#a502751417312beee0d02f08c92e53da7">alpaka::extent::getWidth</a> (TExtents const &amp;extents=TExtents()) -&gt; UInt</td></tr>
-<tr class="separator:a502751417312beee0d02f08c92e53da7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a15443e3fa41eaed02611e0e58a3e792c"><td class="memTemplParams" colspan="2">template&lt;typename TExtents , typename TInt &gt; </td></tr>
-<tr class="memitem:a15443e3fa41eaed02611e0e58a3e792c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1extent.html#a15443e3fa41eaed02611e0e58a3e792c">alpaka::extent::setDepth</a> (TExtents const &amp;extents, TInt const &amp;depth) -&gt; void</td></tr>
-<tr class="memdesc:a15443e3fa41eaed02611e0e58a3e792c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the depth.  <a href="#a15443e3fa41eaed02611e0e58a3e792c">More...</a><br /></td></tr>
-<tr class="separator:a15443e3fa41eaed02611e0e58a3e792c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad476913e498a910e40943354590a958c"><td class="memTemplParams" colspan="2">template&lt;typename TExtents , typename TInt &gt; </td></tr>
-<tr class="memitem:ad476913e498a910e40943354590a958c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1extent.html#ad476913e498a910e40943354590a958c">alpaka::extent::setHeight</a> (TExtents const &amp;extents, TInt const &amp;height) -&gt; void</td></tr>
-<tr class="memdesc:ad476913e498a910e40943354590a958c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the height.  <a href="#ad476913e498a910e40943354590a958c">More...</a><br /></td></tr>
-<tr class="separator:ad476913e498a910e40943354590a958c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ab65f9870f3f9c432ca0b43f0750c37"><td class="memTemplParams" colspan="2">template&lt;typename TExtents , typename TInt &gt; </td></tr>
-<tr class="memitem:a2ab65f9870f3f9c432ca0b43f0750c37"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1extent.html#a2ab65f9870f3f9c432ca0b43f0750c37">alpaka::extent::setWidth</a> (TExtents const &amp;extents, TInt const &amp;width) -&gt; void</td></tr>
-<tr class="memdesc:a2ab65f9870f3f9c432ca0b43f0750c37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the width.  <a href="#a2ab65f9870f3f9c432ca0b43f0750c37">More...</a><br /></td></tr>
-<tr class="separator:a2ab65f9870f3f9c432ca0b43f0750c37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f82c92902f73c2bcf42366f29844cc3"><td class="memTemplParams" colspan="2">template&lt;typename TVal , typename TExtents &gt; </td></tr>
+<tr class="memitem:a2f82c92902f73c2bcf42366f29844cc3"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1extent.html#a2f82c92902f73c2bcf42366f29844cc3">alpaka::extent::getDepth</a> (TExtents const &amp;extents=TExtents()) -&gt; decltype(getExtent&lt; dim::DimT&lt; TExtents &gt;::value-3u, TVal &gt;(extents))</td></tr>
+<tr class="separator:a2f82c92902f73c2bcf42366f29844cc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c79bda22374b9a8fe1e687df4b40e95"><td class="memTemplParams" colspan="2">template&lt;UInt TuiIdx, typename TVal , typename TExtents &gt; </td></tr>
+<tr class="memitem:a9c79bda22374b9a8fe1e687df4b40e95"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1extent.html#a9c79bda22374b9a8fe1e687df4b40e95">alpaka::extent::getExtent</a> (TExtents const &amp;extents=TExtents()) -&gt; TVal</td></tr>
+<tr class="separator:a9c79bda22374b9a8fe1e687df4b40e95"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8fcf7445a8a5e8bd086dc9e3b2da0a16"><td class="memTemplParams" colspan="2">template&lt;typename TVal , typename TExtents &gt; </td></tr>
+<tr class="memitem:a8fcf7445a8a5e8bd086dc9e3b2da0a16"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1extent.html#a8fcf7445a8a5e8bd086dc9e3b2da0a16">alpaka::extent::getHeight</a> (TExtents const &amp;extents=TExtents()) -&gt; decltype(getExtent&lt; dim::DimT&lt; TExtents &gt;::value-2u, TVal &gt;(extents))</td></tr>
+<tr class="separator:a8fcf7445a8a5e8bd086dc9e3b2da0a16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b8a09684ada6ada8d43d26e5241f284"><td class="memTemplParams" colspan="2">template&lt;typename TVal , typename TExtents &gt; </td></tr>
+<tr class="memitem:a5b8a09684ada6ada8d43d26e5241f284"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1extent.html#a5b8a09684ada6ada8d43d26e5241f284">alpaka::extent::getProductOfExtents</a> (TExtents const &amp;extents=TExtents()) -&gt; TVal</td></tr>
+<tr class="separator:a5b8a09684ada6ada8d43d26e5241f284"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4b40a014b850e2bae25a17d4222493e"><td class="memTemplParams" colspan="2">template&lt;typename TVal , typename TExtents , size_t... TIndices&gt; </td></tr>
+<tr class="memitem:af4b40a014b850e2bae25a17d4222493e"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1extent_1_1detail.html#af4b40a014b850e2bae25a17d4222493e">alpaka::extent::detail::getProductOfExtentsInternal</a> (TExtents const &amp;extents, <a class="el" href="namespacealpaka_1_1detail.html#ab83a5bf6bfc1c3aa19a43c8e56ab7a3c">alpaka::detail::index_sequence</a>&lt; TIndices...&gt; const &amp;indices) -&gt; TVal</td></tr>
+<tr class="separator:af4b40a014b850e2bae25a17d4222493e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af230c5dba963d32523f49c44402dff8f"><td class="memTemplParams" colspan="2">template&lt;typename TVal , typename TExtents &gt; </td></tr>
+<tr class="memitem:af230c5dba963d32523f49c44402dff8f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1extent.html#af230c5dba963d32523f49c44402dff8f">alpaka::extent::getWidth</a> (TExtents const &amp;extents=TExtents()) -&gt; decltype(getExtent&lt; dim::DimT&lt; TExtents &gt;::value-1u, TVal &gt;(extents))</td></tr>
+<tr class="separator:af230c5dba963d32523f49c44402dff8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a978f5ec98a736474dc5a379bcc983f5c"><td class="memTemplParams" colspan="2">template&lt;typename TExtents , typename TVal &gt; </td></tr>
+<tr class="memitem:a978f5ec98a736474dc5a379bcc983f5c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1extent.html#a978f5ec98a736474dc5a379bcc983f5c">alpaka::extent::setDepth</a> (TExtents const &amp;extents, TVal const &amp;depth) -&gt; void</td></tr>
+<tr class="memdesc:a978f5ec98a736474dc5a379bcc983f5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the depth.  <a href="#a978f5ec98a736474dc5a379bcc983f5c">More...</a><br /></td></tr>
+<tr class="separator:a978f5ec98a736474dc5a379bcc983f5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8db06707e659424a224ae0b26bde5f91"><td class="memTemplParams" colspan="2">template&lt;UInt TuiIdx, typename TExtents , typename TVal &gt; </td></tr>
+<tr class="memitem:a8db06707e659424a224ae0b26bde5f91"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1extent.html#a8db06707e659424a224ae0b26bde5f91">alpaka::extent::setExtent</a> (TExtents const &amp;extents, TVal const &amp;extent) -&gt; void</td></tr>
+<tr class="separator:a8db06707e659424a224ae0b26bde5f91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4c907711271e2a597be85736d6a054d"><td class="memTemplParams" colspan="2">template&lt;typename TExtents , typename TVal &gt; </td></tr>
+<tr class="memitem:aa4c907711271e2a597be85736d6a054d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1extent.html#aa4c907711271e2a597be85736d6a054d">alpaka::extent::setHeight</a> (TExtents const &amp;extents, TVal const &amp;height) -&gt; void</td></tr>
+<tr class="memdesc:aa4c907711271e2a597be85736d6a054d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the height.  <a href="#aa4c907711271e2a597be85736d6a054d">More...</a><br /></td></tr>
+<tr class="separator:aa4c907711271e2a597be85736d6a054d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a885e8adf4a0eb61a84785d3c181d095a"><td class="memTemplParams" colspan="2">template&lt;typename TExtents , typename TVal &gt; </td></tr>
+<tr class="memitem:a885e8adf4a0eb61a84785d3c181d095a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1extent.html#a885e8adf4a0eb61a84785d3c181d095a">alpaka::extent::setWidth</a> (TExtents const &amp;extents, TVal const &amp;width) -&gt; void</td></tr>
+<tr class="memdesc:a885e8adf4a0eb61a84785d3c181d095a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the width.  <a href="#a885e8adf4a0eb61a84785d3c181d095a">More...</a><br /></td></tr>
+<tr class="separator:a885e8adf4a0eb61a84785d3c181d095a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Copyright 2014-2015 Benjamin Worpitz</p>
@@ -204,7 +201,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_704b24238599043534bfd555c7616f8b.html">traits</a></li><li class="navelem"><a class="el" href="Extent_8hpp.html">Extent.hpp</a></li>
-    <li class="footer">Generated on Tue Apr 7 2015 09:20:06 for alpaka by
+    <li class="footer">Generated on Sat May 23 2015 14:48:26 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

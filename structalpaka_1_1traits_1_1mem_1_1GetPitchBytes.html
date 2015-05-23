@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.9"/>
-<title>alpaka: alpaka::traits::mem::GetPitchBytes&lt; TBuf, TSfinae &gt; Struct Template Reference</title>
+<title>alpaka: alpaka::traits::mem::GetPitchBytes&lt; TIdx, TView, TSfinae &gt; Struct Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -107,32 +107,70 @@ $(document).ready(function(){initNavTree('structalpaka_1_1traits_1_1mem_1_1GetPi
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="structalpaka_1_1traits_1_1mem_1_1GetPitchBytes-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">alpaka::traits::mem::GetPitchBytes&lt; TBuf, TSfinae &gt; Struct Template Reference</div>  </div>
+<div class="title">alpaka::traits::mem::GetPitchBytes&lt; TIdx, TView, TSfinae &gt; Struct Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>The pitch in bytes. This is the distance between two consecutive rows.  
+<p>The pitch in bytes. This is the distance in bytes in the linear memory between two consecutive elements in the next higher dimension (TIdx+1).  
  <a href="structalpaka_1_1traits_1_1mem_1_1GetPitchBytes.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="traits_2mem_2Buf_8hpp_source.html">Buf.hpp</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="traits_2mem_2View_8hpp_source.html">View.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1mem_1_1GetPitchBytes_1_1type.html">type</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The fixed size array pitch get trait specialization.  <a href="structalpaka_1_1traits_1_1mem_1_1GetPitchBytes_1_1type.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:ad8c4cc4b3a9d2125fe2d24831eb1436f"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1mem_1_1GetPitchBytes.html#ad8c4cc4b3a9d2125fe2d24831eb1436f">getPitchBytes</a> (TView const &amp;view) -&gt; <a class="el" href="namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5">UInt</a></td></tr>
+<tr class="separator:ad8c4cc4b3a9d2125fe2d24831eb1436f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;typename TBuf, typename TSfinae = void&gt;<br />
-struct alpaka::traits::mem::GetPitchBytes&lt; TBuf, TSfinae &gt;</h3>
+<div class="textblock"><h3>template&lt;typename TIdx, typename TView, typename TSfinae = void&gt;<br />
+struct alpaka::traits::mem::GetPitchBytes&lt; TIdx, TView, TSfinae &gt;</h3>
 
-<p>The pitch in bytes. This is the distance between two consecutive rows. </p>
+<p>The pitch in bytes. This is the distance in bytes in the linear memory between two consecutive elements in the next higher dimension (TIdx+1). </p>
+<p>The default implementation uses the extent to calculate the pitch. </p>
 
-<p>Definition at line <a class="el" href="traits_2mem_2Buf_8hpp_source.html#l00069">69</a> of file <a class="el" href="traits_2mem_2Buf_8hpp_source.html">Buf.hpp</a>.</p>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
-<li>C:/dev/alpaka/include/alpaka/traits/mem/<a class="el" href="traits_2mem_2Buf_8hpp_source.html">Buf.hpp</a></li>
+<p>Definition at line <a class="el" href="traits_2mem_2View_8hpp_source.html#l00070">70</a> of file <a class="el" href="traits_2mem_2View_8hpp_source.html">View.hpp</a>.</p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="ad8c4cc4b3a9d2125fe2d24831eb1436f"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TIdx , typename TView , typename TSfinae  = void&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto <a class="el" href="structalpaka_1_1traits_1_1mem_1_1GetPitchBytes.html">alpaka::traits::mem::GetPitchBytes</a>&lt; TIdx, TView, TSfinae &gt;::getPitchBytes </td>
+          <td>(</td>
+          <td class="paramtype">TView const &amp;&#160;</td>
+          <td class="paramname"><em>view</em></td><td>)</td>
+          <td> -&gt; <a class="el" href="namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5">UInt</a>
+                </td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="traits_2mem_2View_8hpp_source.html#l00075">75</a> of file <a class="el" href="traits_2mem_2View_8hpp_source.html">View.hpp</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
+<li>C:/dev/alpaka/include/alpaka/traits/mem/<a class="el" href="traits_2mem_2View_8hpp_source.html">View.hpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -140,7 +178,7 @@ struct alpaka::traits::mem::GetPitchBytes&lt; TBuf, TSfinae &gt;</h3>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1traits.html">traits</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1traits_1_1mem.html">mem</a></li><li class="navelem"><a class="el" href="structalpaka_1_1traits_1_1mem_1_1GetPitchBytes.html">GetPitchBytes</a></li>
-    <li class="footer">Generated on Tue Apr 7 2015 09:20:12 for alpaka by
+    <li class="footer">Generated on Sat May 23 2015 14:48:33 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

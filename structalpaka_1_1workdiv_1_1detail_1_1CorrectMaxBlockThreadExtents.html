@@ -121,21 +121,21 @@ $(document).ready(function(){initNavTree('structalpaka_1_1workdiv_1_1detail_1_1C
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af2b49b609d86e53b246e95cc69a9d8c0"><td class="memTemplParams" colspan="2">template&lt;typename TAcc &gt; </td></tr>
-<tr class="memitem:af2b49b609d86e53b246e95cc69a9d8c0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structalpaka_1_1workdiv_1_1detail_1_1CorrectMaxBlockThreadExtents.html#af2b49b609d86e53b246e95cc69a9d8c0">operator()</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; 3u &gt; &amp;v3uiBlockThreadExtents) -&gt; void</td></tr>
-<tr class="memdesc:af2b49b609d86e53b246e95cc69a9d8c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Corrects the maximum block thread extents if it is larger then the one supported by the given accelerator type.  <a href="#af2b49b609d86e53b246e95cc69a9d8c0">More...</a><br /></td></tr>
-<tr class="separator:af2b49b609d86e53b246e95cc69a9d8c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31ea90d41c1ee6a09f9f4d25a34c9df6"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TDim &gt; </td></tr>
+<tr class="memitem:a31ea90d41c1ee6a09f9f4d25a34c9df6"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structalpaka_1_1workdiv_1_1detail_1_1CorrectMaxBlockThreadExtents.html#a31ea90d41c1ee6a09f9f4d25a34c9df6">operator()</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim &gt; &amp;vuiBlockThreadExtents) -&gt; void</td></tr>
+<tr class="memdesc:a31ea90d41c1ee6a09f9f4d25a34c9df6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Corrects the maximum block thread extents if it is larger then the one supported by the given accelerator type.  <a href="#a31ea90d41c1ee6a09f9f4d25a34c9df6">More...</a><br /></td></tr>
+<tr class="separator:a31ea90d41c1ee6a09f9f4d25a34c9df6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The maximum block thread extents correction wrapper. </p>
 
-<p>Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00049">49</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
+<p>Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00050">50</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="af2b49b609d86e53b246e95cc69a9d8c0"></a>
+<a class="anchor" id="a31ea90d41c1ee6a09f9f4d25a34c9df6"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TAcc &gt; </div>
+template&lt;typename TAcc , typename TDim &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -143,8 +143,8 @@ template&lt;typename TAcc &gt; </div>
         <tr>
           <td class="memname"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto alpaka::workdiv::detail::CorrectMaxBlockThreadExtents::operator() </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; 3u &gt; &amp;&#160;</td>
-          <td class="paramname"><em>v3uiBlockThreadExtents</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim &gt; &amp;&#160;</td>
+          <td class="paramname"><em>vuiBlockThreadExtents</em></td><td>)</td>
           <td> -&gt; void
                 </td>
         </tr>
@@ -158,7 +158,7 @@ template&lt;typename TAcc &gt; </div>
 
 <p>Corrects the maximum block thread extents if it is larger then the one supported by the given accelerator type. </p>
 
-<p>Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00056">56</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
+<p>Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00058">58</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
 
 </div>
 </div>
@@ -171,7 +171,7 @@ template&lt;typename TAcc &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1workdiv.html">workdiv</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1workdiv_1_1detail.html">detail</a></li><li class="navelem"><a class="el" href="structalpaka_1_1workdiv_1_1detail_1_1CorrectMaxBlockThreadExtents.html">CorrectMaxBlockThreadExtents</a></li>
-    <li class="footer">Generated on Tue Apr 7 2015 09:20:14 for alpaka by
+    <li class="footer">Generated on Sat May 23 2015 14:48:35 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

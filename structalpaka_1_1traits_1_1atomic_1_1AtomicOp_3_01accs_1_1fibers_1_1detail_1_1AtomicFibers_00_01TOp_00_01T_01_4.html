@@ -114,25 +114,25 @@ $(document).ready(function(){initNavTree('structalpaka_1_1traits_1_1atomic_1_1At
 </div><!--header-->
 <div class="contents">
 
-<p>The fibers accelerator atomic operation functor.  
+<p>The CPU fibers accelerator atomic operation functor.  
  <a href="structalpaka_1_1traits_1_1atomic_1_1AtomicOp_3_01accs_1_1fibers_1_1detail_1_1AtomicFibers_00_01TOp_00_01T_01_4.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="accs_2fibers_2Atomic_8hpp_source.html">Atomic.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a71893ee621bc69833f4994f39015701d"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="core_2Common_8hpp.html#afd4b3f79dd504b2b49d64c9b01f098c5">ALPAKA_FCT_ACC_NO_CUDA</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1atomic_1_1AtomicOp_3_01accs_1_1fibers_1_1detail_1_1AtomicFibers_00_01TOp_00_01T_01_4.html#a71893ee621bc69833f4994f39015701d">atomicOp</a> (<a class="el" href="classalpaka_1_1accs_1_1fibers_1_1detail_1_1AtomicFibers.html">accs::fibers::detail::AtomicFibers</a> const &amp;, T *const addr, T const &amp;value) -&gt; T</td></tr>
-<tr class="separator:a71893ee621bc69833f4994f39015701d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0192abf32cd54316650c9ba4e4c5ef4"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="core_2Common_8hpp.html#afd4b3f79dd504b2b49d64c9b01f098c5">ALPAKA_FCT_ACC_NO_CUDA</a> auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1atomic_1_1AtomicOp_3_01accs_1_1fibers_1_1detail_1_1AtomicFibers_00_01TOp_00_01T_01_4.html#ae0192abf32cd54316650c9ba4e4c5ef4">atomicOp</a> (<a class="el" href="classalpaka_1_1accs_1_1fibers_1_1detail_1_1AtomicFibers.html">accs::fibers::detail::AtomicFibers</a> const &amp;atomic, T *const addr, T const &amp;value) -&gt; T</td></tr>
+<tr class="separator:ae0192abf32cd54316650c9ba4e4c5ef4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename TOp, typename T&gt;<br />
 struct alpaka::traits::atomic::AtomicOp&lt; accs::fibers::detail::AtomicFibers, TOp, T &gt;</h3>
 
-<p>The fibers accelerator atomic operation functor. </p>
+<p>The CPU fibers accelerator atomic operation functor. </p>
 
-<p>Definition at line <a class="el" href="accs_2fibers_2Atomic_8hpp_source.html#l00077">77</a> of file <a class="el" href="accs_2fibers_2Atomic_8hpp_source.html">Atomic.hpp</a>.</p>
+<p>Definition at line <a class="el" href="accs_2fibers_2Atomic_8hpp_source.html#l00079">79</a> of file <a class="el" href="accs_2fibers_2Atomic_8hpp_source.html">Atomic.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a71893ee621bc69833f4994f39015701d"></a>
+<a class="anchor" id="ae0192abf32cd54316650c9ba4e4c5ef4"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -145,7 +145,7 @@ template&lt;typename TOp , typename T &gt; </div>
           <td class="memname">static <a class="el" href="core_2Common_8hpp.html#afd4b3f79dd504b2b49d64c9b01f098c5">ALPAKA_FCT_ACC_NO_CUDA</a> auto <a class="el" href="structalpaka_1_1traits_1_1atomic_1_1AtomicOp.html">alpaka::traits::atomic::AtomicOp</a>&lt; <a class="el" href="classalpaka_1_1accs_1_1fibers_1_1detail_1_1AtomicFibers.html">accs::fibers::detail::AtomicFibers</a>, TOp, T &gt;::atomicOp </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classalpaka_1_1accs_1_1fibers_1_1detail_1_1AtomicFibers.html">accs::fibers::detail::AtomicFibers</a> const &amp;&#160;</td>
-          <td class="paramname">, </td>
+          <td class="paramname"><em>atomic</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -173,7 +173,7 @@ template&lt;typename TOp , typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="accs_2fibers_2Atomic_8hpp_source.html#l00082">82</a> of file <a class="el" href="accs_2fibers_2Atomic_8hpp_source.html">Atomic.hpp</a>.</p>
+<p>Definition at line <a class="el" href="accs_2fibers_2Atomic_8hpp_source.html#l00084">84</a> of file <a class="el" href="accs_2fibers_2Atomic_8hpp_source.html">Atomic.hpp</a>.</p>
 
 </div>
 </div>
@@ -186,7 +186,7 @@ template&lt;typename TOp , typename T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1traits.html">traits</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1traits_1_1atomic.html">atomic</a></li><li class="navelem"><a class="el" href="structalpaka_1_1traits_1_1atomic_1_1AtomicOp_3_01accs_1_1fibers_1_1detail_1_1AtomicFibers_00_01TOp_00_01T_01_4.html">AtomicOp&lt; accs::fibers::detail::AtomicFibers, TOp, T &gt;</a></li>
-    <li class="footer">Generated on Tue Apr 7 2015 09:20:09 for alpaka by
+    <li class="footer">Generated on Sat May 23 2015 14:48:30 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

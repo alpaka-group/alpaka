@@ -118,9 +118,9 @@ $(document).ready(function(){initNavTree('structalpaka_1_1detail_1_1ForEachTypeI
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a3bd8da2227efb955af01c07110fa6d55"><td class="memTemplParams" colspan="2">template&lt;typename TElemIt , typename TLastIt , typename TFunctor , typename... TArgs&gt; </td></tr>
-<tr class="memitem:a3bd8da2227efb955af01c07110fa6d55"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1ForEachTypeImpl.html#a3bd8da2227efb955af01c07110fa6d55">forEachTypeImpl</a> (TFunctor &amp;&amp;, TArgs &amp;&amp;...) -&gt; void</td></tr>
-<tr class="separator:a3bd8da2227efb955af01c07110fa6d55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac59679e64291a355197d06e45b1700e3"><td class="memTemplParams" colspan="2">template&lt;typename TElemIt , typename TLastIt , typename TFunctor , typename... TArgs&gt; </td></tr>
+<tr class="memitem:ac59679e64291a355197d06e45b1700e3"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1ForEachTypeImpl.html#ac59679e64291a355197d06e45b1700e3">forEachTypeImpl</a> (TFunctor &amp;&amp;f, TArgs &amp;&amp;...args) -&gt; void</td></tr>
+<tr class="separator:ac59679e64291a355197d06e45b1700e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;bool TbDone = true&gt;<br />
@@ -129,7 +129,7 @@ struct alpaka::detail::ForEachTypeImpl&lt; TbDone &gt;</h3>
 
 <p>Definition at line <a class="el" href="ForEachType_8hpp_source.html#l00046">46</a> of file <a class="el" href="ForEachType_8hpp_source.html">ForEachType.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a3bd8da2227efb955af01c07110fa6d55"></a>
+<a class="anchor" id="ac59679e64291a355197d06e45b1700e3"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -144,13 +144,13 @@ template&lt;typename TElemIt , typename TLastIt , typename TFunctor , typename..
           <td class="memname">static <a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto <a class="el" href="structalpaka_1_1detail_1_1ForEachTypeImpl.html">alpaka::detail::ForEachTypeImpl</a>&lt; TbDone &gt;::forEachTypeImpl </td>
           <td>(</td>
           <td class="paramtype">TFunctor &amp;&amp;&#160;</td>
-          <td class="paramname">, </td>
+          <td class="paramname"><em>f</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">TArgs &amp;&amp;&#160;</td>
-          <td class="paramname"><em>...</em>&#160;</td>
+          <td class="paramtype">TArgs &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -179,7 +179,7 @@ template&lt;typename TElemIt , typename TLastIt , typename TFunctor , typename..
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1detail.html">detail</a></li><li class="navelem"><a class="el" href="structalpaka_1_1detail_1_1ForEachTypeImpl.html">ForEachTypeImpl</a></li>
-    <li class="footer">Generated on Tue Apr 7 2015 09:20:07 for alpaka by
+    <li class="footer">Generated on Sat May 23 2015 14:48:27 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

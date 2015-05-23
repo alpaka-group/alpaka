@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['prod',['prod',['../classalpaka_1_1Vec.html#a0413934c9a0c1f06c3421d03629012ba',1,'alpaka::Vec']]]
+  ['reset',['reset',['../classalpaka_1_1accs_1_1fibers_1_1detail_1_1FiberBarrier.html#a29caf890e8af8fc4eb6137f52e952ccb',1,'alpaka::accs::fibers::detail::FiberBarrier::reset()'],['../classalpaka_1_1accs_1_1threads_1_1detail_1_1ThreadBarrier.html#a79ad44ffafbc04e8bc31210c4cfd2615',1,'alpaka::accs::threads::detail::ThreadBarrier::reset()'],['../structalpaka_1_1traits_1_1dev_1_1Reset_3_01devs_1_1cpu_1_1DevCpu_01_4.html#ab531413b2b282eb20d54d19a8a99e905',1,'alpaka::traits::dev::Reset&lt; devs::cpu::DevCpu &gt;::reset()'],['../structalpaka_1_1traits_1_1dev_1_1Reset_3_01devs_1_1cuda_1_1DevCuda_01_4.html#a10753592a8de269367b721bd76f9ff6e',1,'alpaka::traits::dev::Reset&lt; devs::cuda::DevCuda &gt;::reset()'],['../namespacealpaka_1_1dev.html#ad873a841076257da4f7a602525d6f6e3',1,'alpaka::dev::reset()']]],
+  ['runtask',['runTask',['../classalpaka_1_1detail_1_1ITaskPkg.html#a8ec466548e782fa2ff343bff9d83a563',1,'alpaka::detail::ITaskPkg']]]
 ];

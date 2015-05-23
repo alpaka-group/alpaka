@@ -1,12 +1,15 @@
 var searchData=
 [
-  ['vec',['Vec',['../classalpaka_1_1Vec.html',1,'alpaka']]],
-  ['vec_3c_203u_20_3e',['Vec&lt; 3u &gt;',['../classalpaka_1_1Vec.html',1,'alpaka']]],
-  ['vec_3c_20dim_3a_3avalue_20_3e',['Vec&lt; Dim::value &gt;',['../classalpaka_1_1Vec.html',1,'alpaka']]],
-  ['vec_3c_20tdim_3a_3avalue_20_3e',['Vec&lt; TDim::value &gt;',['../classalpaka_1_1Vec.html',1,'alpaka']]],
-  ['view',['View',['../classalpaka_1_1mem_1_1detail_1_1View.html',1,'alpaka::mem::detail']]],
-  ['viewtype',['ViewType',['../structalpaka_1_1traits_1_1mem_1_1ViewType.html',1,'alpaka::traits::mem']]],
-  ['viewtype_3c_20accs_3a_3acuda_3a_3adetail_3a_3abufcuda_3c_20telem_2c_20tdim_20_3e_20_3e',['ViewType&lt; accs::cuda::detail::BufCuda&lt; TElem, TDim &gt; &gt;',['../structalpaka_1_1traits_1_1mem_1_1ViewType_3_01accs_1_1cuda_1_1detail_1_1BufCuda_3_01TElem_00_01TDim_01_4_01_4.html',1,'alpaka::traits::mem']]],
-  ['viewtype_3c_20alpaka_3a_3amem_3a_3adetail_3a_3aview_3c_20tbuf_20_3e_20_3e',['ViewType&lt; alpaka::mem::detail::View&lt; TBuf &gt; &gt;',['../structalpaka_1_1traits_1_1mem_1_1ViewType_3_01alpaka_1_1mem_1_1detail_1_1View_3_01TBuf_01_4_01_4.html',1,'alpaka::traits::mem']]],
-  ['viewtype_3c_20host_3a_3adetail_3a_3abufhost_3c_20tdev_2c_20telem_2c_20tdim_20_3e_20_3e',['ViewType&lt; host::detail::BufHost&lt; TDev, TElem, TDim &gt; &gt;',['../structalpaka_1_1traits_1_1mem_1_1ViewType_3_01host_1_1detail_1_1BufHost_3_01TDev_00_01TElem_00_01TDim_01_4_01_4.html',1,'alpaka::traits::mem']]]
+  ['taskpkg',['TaskPkg',['../classalpaka_1_1detail_1_1TaskPkg.html',1,'alpaka::detail']]],
+  ['taskpkg_3c_20tpromise_2c_20tfunc_2c_20void_20_3e',['TaskPkg&lt; TPromise, TFunc, void &gt;',['../classalpaka_1_1detail_1_1TaskPkg_3_01TPromise_00_01TFunc_00_01void_01_4.html',1,'alpaka::detail']]],
+  ['threadbarrier',['ThreadBarrier',['../classalpaka_1_1accs_1_1threads_1_1detail_1_1ThreadBarrier.html',1,'alpaka::accs::threads::detail']]],
+  ['threadpoolyield',['ThreadPoolYield',['../structalpaka_1_1accs_1_1threads_1_1detail_1_1ThreadPoolYield.html',1,'alpaka::accs::threads::detail']]],
+  ['type',['type',['../structalpaka_1_1traits_1_1extent_1_1GetExtent_1_1type.html',1,'alpaka::traits::extent::GetExtent']]],
+  ['type',['type',['../structalpaka_1_1traits_1_1extent_1_1SetExtent_1_1type.html',1,'alpaka::traits::extent::SetExtent']]],
+  ['type',['type',['../structalpaka_1_1traits_1_1mem_1_1GetPitchBytes_1_1type.html',1,'alpaka::traits::mem::GetPitchBytes']]],
+  ['type',['type',['../structalpaka_1_1traits_1_1offset_1_1SetOffset_1_1type.html',1,'alpaka::traits::offset::SetOffset']]],
+  ['type',['type',['../structalpaka_1_1traits_1_1offset_1_1GetOffset_1_1type.html',1,'alpaka::traits::offset::GetOffset']]],
+  ['typeoffold',['TypeOfFold',['../structalpaka_1_1detail_1_1TypeOfFold.html',1,'alpaka::detail']]],
+  ['typeoffold_3c_20tfunctor_2c_20t_20_3e',['TypeOfFold&lt; TFunctor, T &gt;',['../structalpaka_1_1detail_1_1TypeOfFold_3_01TFunctor_00_01T_01_4.html',1,'alpaka::detail']]],
+  ['typeoffold_3c_20tfunctor_2c_20t_2c_20p_2e_2e_2e_3e',['TypeOfFold&lt; TFunctor, T, P...&gt;',['../structalpaka_1_1detail_1_1TypeOfFold_3_01TFunctor_00_01T_00_01P_8_8_8_4.html',1,'alpaka::detail']]]
 ];

@@ -1,13 +1,16 @@
 var searchData=
 [
-  ['acccuda',['AccCuda',['../namespacealpaka.html#a7f3eb47153a5d942c55f0900da437e5b',1,'alpaka']]],
-  ['acccudaifavailableelsevoid',['AccCudaIfAvailableElseVoid',['../namespacealpaka_1_1accs_1_1detail.html#a95de027f568a8198f43aec24206bfdd5',1,'alpaka::accs::detail']]],
-  ['accfibers',['AccFibers',['../namespacealpaka.html#ae1059b6e3a1a5de03b64a9ca85116812',1,'alpaka']]],
-  ['accfibersifavailableelsevoid',['AccFibersIfAvailableElseVoid',['../namespacealpaka_1_1accs_1_1detail.html#a9c0e591a6736b51dc4a2fa0b97eb30ad',1,'alpaka::accs::detail']]],
-  ['accomp2',['AccOmp2',['../namespacealpaka.html#a00d7887add3b55c26198ac00ae48f4e9',1,'alpaka']]],
-  ['accomp2ifavailableelsevoid',['AccOmp2IfAvailableElseVoid',['../namespacealpaka_1_1accs_1_1detail.html#a1072b4a58af8a97e07f0ce0461650eb5',1,'alpaka::accs::detail']]],
-  ['accserial',['AccSerial',['../namespacealpaka.html#a2041e2c1ae1b6c8fea1d04304cc4595e',1,'alpaka']]],
-  ['acct',['AccT',['../namespacealpaka_1_1acc.html#a78e45df13b4706c02cb65cf25786d38e',1,'alpaka::acc']]],
-  ['accthreads',['AccThreads',['../namespacealpaka.html#abc32aa5ad905e32e3195a5de53b62148',1,'alpaka']]],
-  ['accthreadsifavailableelsevoid',['AccThreadsIfAvailableElseVoid',['../namespacealpaka_1_1accs_1_1detail.html#a78b92f5825b76936e3bb07d45745026d',1,'alpaka::accs::detail']]]
+  ['acccpufibers',['AccCpuFibers',['../namespacealpaka.html#a60ae0ab0c1c609321213784b3784cb50',1,'alpaka']]],
+  ['acccpufibersifavailableelsevoid',['AccCpuFibersIfAvailableElseVoid',['../namespacealpaka_1_1accs_1_1detail.html#a04017df1d6b57b9d22be5c89d0643c86',1,'alpaka::accs::detail']]],
+  ['acccpuomp2',['AccCpuOmp2',['../namespacealpaka.html#a7ffafa8232e496bb64f374031d4e08e5',1,'alpaka']]],
+  ['acccpuomp2ifavailableelsevoid',['AccCpuOmp2IfAvailableElseVoid',['../namespacealpaka_1_1accs_1_1detail.html#a3d3774521bf86f2c09c2f3360f8b0a6e',1,'alpaka::accs::detail']]],
+  ['acccpuomp4',['AccCpuOmp4',['../namespacealpaka.html#a3aa317def187faa76f333390d98cb120',1,'alpaka']]],
+  ['acccpuomp4cpuifavailableelsevoid',['AccCpuOmp4CpuIfAvailableElseVoid',['../namespacealpaka_1_1accs_1_1detail.html#af27f5956b8166627dc027c55d1a3c4bb',1,'alpaka::accs::detail']]],
+  ['acccpuserial',['AccCpuSerial',['../namespacealpaka.html#a255b17f08e879007b8bd147baa222f14',1,'alpaka']]],
+  ['acccpuserialifavailableelsevoid',['AccCpuSerialIfAvailableElseVoid',['../namespacealpaka_1_1accs_1_1detail.html#a74dabd9751eb2db12ff027f6ed01f868',1,'alpaka::accs::detail']]],
+  ['acccputhreads',['AccCpuThreads',['../namespacealpaka.html#afdafff77fb7ba52f778388ac85f2b80f',1,'alpaka']]],
+  ['acccputhreadsifavailableelsevoid',['AccCpuThreadsIfAvailableElseVoid',['../namespacealpaka_1_1accs_1_1detail.html#ac5fd8ee522cd556b81718d0b293af62b',1,'alpaka::accs::detail']]],
+  ['accgpucuda',['AccGpuCuda',['../namespacealpaka.html#ae8f8fd84d250486262e216c2485d247e',1,'alpaka']]],
+  ['accgpucudaifavailableelsevoid',['AccGpuCudaIfAvailableElseVoid',['../namespacealpaka_1_1accs_1_1detail.html#a7cf807f1bfbe56677e0682de1c4e1e5e',1,'alpaka::accs::detail']]],
+  ['acct',['AccT',['../namespacealpaka_1_1acc.html#a78e45df13b4706c02cb65cf25786d38e',1,'alpaka::acc']]]
 ];

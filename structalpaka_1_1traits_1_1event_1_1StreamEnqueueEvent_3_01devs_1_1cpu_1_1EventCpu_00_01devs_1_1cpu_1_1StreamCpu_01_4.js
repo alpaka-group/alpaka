@@ -1,0 +1,4 @@
+var structalpaka_1_1traits_1_1event_1_1StreamEnqueueEvent_3_01devs_1_1cpu_1_1EventCpu_00_01devs_1_1cpu_1_1StreamCpu_01_4 =
+[
+    [ "streamEnqueueEvent", "structalpaka_1_1traits_1_1event_1_1StreamEnqueueEvent_3_01devs_1_1cpu_1_1EventCpu_00_01devs_1_1cpu_1_1StreamCpu_01_4.html#a7d2d4b2941261dbfc2d5b8835f0bbe7b", null ]
+];

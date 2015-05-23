@@ -132,187 +132,220 @@ $(document).ready(function(){initNavTree('Accs_8hpp_source.html','');});
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">// AccSerial is always enabled because the host::getDev uses it.</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="AccSerial_8hpp.html">alpaka/accs/serial/AccSerial.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#ifdef ALPAKA_THREADS_ENABLED</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">    #include &lt;<a class="code" href="AccThreads_8hpp.html">alpaka/accs/threads/AccThreads.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#ifdef ALPAKA_CPU_SERIAL_ENABLED</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">    #include &lt;<a class="code" href="Serial_8hpp.html">alpaka/accs/serial/Serial.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#ifdef ALPAKA_CPU_THREADS_ENABLED</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">    #include &lt;<a class="code" href="Threads_8hpp.html">alpaka/accs/threads/Threads.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#ifdef ALPAKA_FIBERS_ENABLED</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">    #include &lt;<a class="code" href="AccFibers_8hpp.html">alpaka/accs/fibers/AccFibers.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#ifdef ALPAKA_CPU_FIBERS_ENABLED</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">    #include &lt;<a class="code" href="Fibers_8hpp.html">alpaka/accs/fibers/Fibers.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#ifdef ALPAKA_OPENMP_ENABLED</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">    #include &lt;<a class="code" href="AccOmp2_8hpp.html">alpaka/accs/omp/omp2/AccOmp2.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#ifdef ALPAKA_CUDA_ENABLED</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">    #include &lt;<a class="code" href="AccCuda_8hpp.html">alpaka/accs/cuda/AccCuda.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#ifdef ALPAKA_CPU_OPENMP2_ENABLED</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">    #if _OPENMP &lt; 200203</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">        #error If ALPAKA_CPU_OPENMP2_ENABLED is set, the compiler has to support OpenMP 2.0 or higher!</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">    #include &lt;<a class="code" href="Omp2_8hpp.html">alpaka/accs/omp/omp2/Omp2.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Acc_8hpp.html">alpaka/traits/Acc.hpp</a>&gt;</span>            <span class="comment">// traits::GetAccName</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="ForEachType_8hpp.html">alpaka/core/ForEachType.hpp</a>&gt;</span>      <span class="comment">// forEachType</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="WorkDivHelpers_8hpp.html">alpaka/core/WorkDivHelpers.hpp</a>&gt;</span>   <span class="comment">// getMaxBlockThreadExtentsAccelerators</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#include &lt;boost/mpl/vector.hpp&gt;</span>             <span class="comment">// boost::mpl::vector</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#include &lt;boost/mpl/filter_view.hpp&gt;</span>        <span class="comment">// boost::mpl::filter_view</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">#include &lt;boost/mpl/not.hpp&gt;</span>                <span class="comment">// boost::not_</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#include &lt;boost/mpl/placeholders.hpp&gt;</span>       <span class="comment">// boost::mpl::_1</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#include &lt;boost/type_traits/is_same.hpp&gt;</span>    <span class="comment">// boost::is_same</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#ifdef ALPAKA_CPU_OPENMP4_ENABLED</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">    #if _OPENMP &lt; 201307</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">        #error If ALPAKA_CPU_OPENMP4_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">    #include &lt;<a class="code" href="Omp4Cpu_8hpp.html">alpaka/accs/omp/omp4/cpu/Omp4Cpu.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#if defined(ALPAKA_GPU_CUDA_ENABLED) &amp;&amp; defined(__CUDACC__)</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">    #include &lt;<a class="code" href="accs_2cuda_2Cuda_8hpp.html">alpaka/accs/cuda/Cuda.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="traits_2Acc_8hpp.html">alpaka/traits/Acc.hpp</a>&gt;</span>            <span class="comment">// traits::GetAccName</span></div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">#include &lt;iosfwd&gt;</span>                           <span class="comment">// std::ostream</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">//! The alpaka library.</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment"></span><span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="namespacealpaka.html">   56</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka.html">alpaka</a></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;{</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">    //! The accelerators.</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment"></span>    <span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1accs.html">   61</a></span>&#160;    <span class="keyword">namespace </span>accs</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    {</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">        //! The detail namespace is used to separate implementation details from user accessible code.</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment"></span>        <span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1accs_1_1detail.html">   66</a></span>&#160;        <span class="keyword">namespace </span>detail</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        {</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">#ifdef ALPAKA_THREADS_ENABLED</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1accs_1_1detail.html#a78b92f5825b76936e3bb07d45745026d">   69</a></span>&#160;            <span class="keyword">using</span> <a class="code" href="classalpaka_1_1accs_1_1threads_1_1detail_1_1AccThreads.html">AccThreadsIfAvailableElseVoid</a> = <a class="code" href="namespacealpaka.html#abc32aa5ad905e32e3195a5de53b62148">AccThreads</a>;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            <span class="keyword">using</span> <a class="code" href="classalpaka_1_1accs_1_1threads_1_1detail_1_1AccThreads.html">AccThreadsIfAvailableElseVoid</a> = void;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor">#ifdef ALPAKA_FIBERS_ENABLED</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1accs_1_1detail.html#a9c0e591a6736b51dc4a2fa0b97eb30ad">   74</a></span>&#160;            <span class="keyword">using</span> <a class="code" href="classalpaka_1_1accs_1_1fibers_1_1detail_1_1AccFibers.html">AccFibersIfAvailableElseVoid</a> = <a class="code" href="namespacealpaka.html#ae1059b6e3a1a5de03b64a9ca85116812">AccFibers</a>;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            <span class="keyword">using</span> <a class="code" href="classalpaka_1_1accs_1_1fibers_1_1detail_1_1AccFibers.html">AccFibersIfAvailableElseVoid</a> = void;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="preprocessor">#ifdef ALPAKA_OPENMP2_ENABLED</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <span class="keyword">using</span> <a class="code" href="namespacealpaka_1_1accs_1_1detail.html#a1072b4a58af8a97e07f0ce0461650eb5">AccOmp2IfAvailableElseVoid</a> = <a class="code" href="namespacealpaka.html#a00d7887add3b55c26198ac00ae48f4e9">AccOmp2</a>;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1accs_1_1detail.html#a1072b4a58af8a97e07f0ce0461650eb5">   81</a></span>&#160;            <span class="keyword">using</span> <a class="code" href="namespacealpaka_1_1accs_1_1detail.html#a1072b4a58af8a97e07f0ce0461650eb5">AccOmp2IfAvailableElseVoid</a> = void;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">#ifdef ALPAKA_CUDA_ENABLED</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1accs_1_1detail.html#a95de027f568a8198f43aec24206bfdd5">   84</a></span>&#160;            <span class="keyword">using</span> <a class="code" href="classalpaka_1_1accs_1_1cuda_1_1detail_1_1AccCuda.html">AccCudaIfAvailableElseVoid</a> = <a class="code" href="namespacealpaka.html#a7f3eb47153a5d942c55f0900da437e5b">AccCuda</a>;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            <span class="keyword">using</span> <a class="code" href="classalpaka_1_1accs_1_1cuda_1_1detail_1_1AccCuda.html">AccCudaIfAvailableElseVoid</a> = void;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            <span class="comment">//#############################################################################</span><span class="comment"></span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="comment">            //! A vector containing all available accelerators and void&#39;s.</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="comment"></span>            <span class="comment">//#############################################################################</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            <span class="keyword">using</span> <a class="code" href="namespacealpaka_1_1accs_1_1detail.html#a39aec0d11ca941eeac1203d4081a6705">EnabledAccsVoid</a> =</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                boost::mpl::vector&lt;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                    <a class="code" href="namespacealpaka.html#a2041e2c1ae1b6c8fea1d04304cc4595e">AccSerial</a>,</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                    <a class="code" href="namespacealpaka_1_1accs_1_1detail.html#a78b92f5825b76936e3bb07d45745026d">AccThreadsIfAvailableElseVoid</a>,</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                    <a class="code" href="namespacealpaka_1_1accs_1_1detail.html#a9c0e591a6736b51dc4a2fa0b97eb30ad">AccFibersIfAvailableElseVoid</a>,</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                    <a class="code" href="namespacealpaka_1_1accs_1_1detail.html#a1072b4a58af8a97e07f0ce0461650eb5">AccOmp2IfAvailableElseVoid</a>,</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                    <a class="code" href="classalpaka_1_1accs_1_1cuda_1_1detail_1_1AccCuda.html">AccCudaIfAvailableElseVoid</a></div>
-<div class="line"><a name="l00098"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1accs_1_1detail.html#a39aec0d11ca941eeac1203d4081a6705">   98</a></span>&#160;                &gt;;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        }</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        <span class="comment">//#############################################################################</span><span class="comment"></span></div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="comment">        //! A vector containing all available accelerators.</span></div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="comment"></span>        <span class="comment">//#############################################################################</span></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        <span class="keyword">using</span> <a class="code" href="namespacealpaka_1_1accs.html#a72692aca548fbb76a12e555175799527">EnabledAccs</a> =</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            boost::mpl::filter_view&lt;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                <a class="code" href="namespacealpaka_1_1accs_1_1detail.html#a39aec0d11ca941eeac1203d4081a6705">detail::EnabledAccsVoid</a>,</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                boost::mpl::not_&lt;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                    boost::is_same&lt;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                        boost::mpl::_1,</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                        <span class="keywordtype">void</span></div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                    &gt;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;                &gt;</div>
-<div class="line"><a name="l00113"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1accs.html#a72692aca548fbb76a12e555175799527">  113</a></span>&#160;            &gt;::type;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        <span class="keyword">namespace </span>detail</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        {</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;            <span class="comment">//#############################################################################</span><span class="comment"></span></div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="comment">            //! The accelerator name write wrapper.</span></div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="comment"></span>            <span class="comment">//#############################################################################</span></div>
-<div class="line"><a name="l00120"></a><span class="lineno"><a class="line" href="structalpaka_1_1accs_1_1detail_1_1GetAccName.html">  120</a></span>&#160;            <span class="keyword">struct </span><a class="code" href="structalpaka_1_1accs_1_1detail_1_1GetAccName.html">GetAccName</a></div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;            {</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;                <span class="keyword">template</span>&lt;</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;                    <span class="keyword">typename</span> TAcc&gt;</div>
-<div class="line"><a name="l00124"></a><span class="lineno"><a class="line" href="structalpaka_1_1accs_1_1detail_1_1GetAccName.html#a870df7f553dcdc2d620232a0ac3e2bcd">  124</a></span>&#160;                <a class="code" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1accs_1_1detail_1_1GetAccName.html#a870df7f553dcdc2d620232a0ac3e2bcd">operator()</a>(std::ostream &amp; os)</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;                -&gt; <span class="keywordtype">void</span></div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;                {</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;                    os &lt;&lt; acc::getAccName&lt;TAcc&gt;();</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;                    os &lt;&lt; <span class="stringliteral">&quot; &quot;</span>;</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;                }</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;            };</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        }</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="comment">        //! Writes the enabled accelerators to the given stream.</span></div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="comment"></span>        <span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00136"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1accs.html#a3de7adb3ff2fb436ff365854640190a9">  136</a></span>&#160;        <a class="code" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka_1_1accs.html#a3de7adb3ff2fb436ff365854640190a9">writeEnabledAccs</a>(std::ostream &amp; os)</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        -&gt; <span class="keywordtype">void</span></div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        {</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;            os &lt;&lt; <span class="stringliteral">&quot;Accelerators enabled: &quot;</span>;</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;            forEachType&lt;EnabledAccs&gt;(</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;                <a class="code" href="structalpaka_1_1accs_1_1detail_1_1GetAccName.html">detail::GetAccName</a>(),</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;                std::ref(os)</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;                );</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;            os &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        }</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="comment">        //! \return The maximum block thread extents supported by all of the enabled accelerators.</span></div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="comment"></span>        <span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00152"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1accs.html#a59090a4512a86c6e4dddf2707df4a029">  152</a></span>&#160;        <a class="code" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka_1_1accs.html#a59090a4512a86c6e4dddf2707df4a029">getMaxBlockThreadExtentsEnabledAccs</a>()</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        -&gt; <a class="code" href="classalpaka_1_1Vec.html">Vec&lt;3u&gt;</a></div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        {</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;            <span class="keywordflow">return</span> workdiv::getMaxBlockThreadExtentsAccsDevices&lt;EnabledAccs&gt;();</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        }</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="comment">        //! \return The maximum block thread count supported by all of the enabled accelerators.</span></div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="comment"></span>        <span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00161"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1accs.html#a8d93f358e6329c9704e0c98e4eb842a8">  161</a></span>&#160;        <a class="code" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka_1_1accs.html#a8d93f358e6329c9704e0c98e4eb842a8">getMaxBlockThreadCountEnabledAccs</a>()</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        -&gt; <a class="code" href="namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5">UInt</a></div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        {</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;            <span class="keywordflow">return</span> workdiv::getMaxBlockThreadCountAccsDevices&lt;EnabledAccs&gt;();</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        }</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    }</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;}</div>
-<div class="ttc" id="AccOmp2_8hpp_html"><div class="ttname"><a href="AccOmp2_8hpp.html">AccOmp2.hpp</a></div></div>
-<div class="ttc" id="namespacealpaka_1_1accs_html_a8d93f358e6329c9704e0c98e4eb842a8"><div class="ttname"><a href="namespacealpaka_1_1accs.html#a8d93f358e6329c9704e0c98e4eb842a8">alpaka::accs::getMaxBlockThreadCountEnabledAccs</a></div><div class="ttdeci">ALPAKA_FCT_HOST auto getMaxBlockThreadCountEnabledAccs() -&gt; UInt</div><div class="ttdef"><b>Definition:</b> <a href="Accs_8hpp_source.html#l00161">Accs.hpp:161</a></div></div>
-<div class="ttc" id="structalpaka_1_1accs_1_1detail_1_1GetAccName_html"><div class="ttname"><a href="structalpaka_1_1accs_1_1detail_1_1GetAccName.html">alpaka::accs::detail::GetAccName</a></div><div class="ttdoc">The accelerator name write wrapper. </div><div class="ttdef"><b>Definition:</b> <a href="Accs_8hpp_source.html#l00120">Accs.hpp:120</a></div></div>
-<div class="ttc" id="namespacealpaka_1_1accs_html_a59090a4512a86c6e4dddf2707df4a029"><div class="ttname"><a href="namespacealpaka_1_1accs.html#a59090a4512a86c6e4dddf2707df4a029">alpaka::accs::getMaxBlockThreadExtentsEnabledAccs</a></div><div class="ttdeci">ALPAKA_FCT_HOST auto getMaxBlockThreadExtentsEnabledAccs() -&gt; Vec&lt; 3u &gt;</div><div class="ttdef"><b>Definition:</b> <a href="Accs_8hpp_source.html#l00152">Accs.hpp:152</a></div></div>
-<div class="ttc" id="classalpaka_1_1Vec_html"><div class="ttname"><a href="classalpaka_1_1Vec.html">alpaka::Vec&lt; 3u &gt;</a></div></div>
-<div class="ttc" id="namespacealpaka_1_1accs_1_1detail_html_a9c0e591a6736b51dc4a2fa0b97eb30ad"><div class="ttname"><a href="namespacealpaka_1_1accs_1_1detail.html#a9c0e591a6736b51dc4a2fa0b97eb30ad">alpaka::accs::detail::AccFibersIfAvailableElseVoid</a></div><div class="ttdeci">AccFibers AccFibersIfAvailableElseVoid</div><div class="ttdef"><b>Definition:</b> <a href="Accs_8hpp_source.html#l00074">Accs.hpp:74</a></div></div>
-<div class="ttc" id="Acc_8hpp_html"><div class="ttname"><a href="Acc_8hpp.html">Acc.hpp</a></div></div>
-<div class="ttc" id="namespacealpaka_html_ae1059b6e3a1a5de03b64a9ca85116812"><div class="ttname"><a href="namespacealpaka.html#ae1059b6e3a1a5de03b64a9ca85116812">alpaka::AccFibers</a></div><div class="ttdeci">accs::fibers::detail::AccFibers AccFibers</div><div class="ttdef"><b>Definition:</b> <a href="AccFibers_8hpp_source.html#l00496">AccFibers.hpp:496</a></div></div>
-<div class="ttc" id="namespacealpaka_html_a2041e2c1ae1b6c8fea1d04304cc4595e"><div class="ttname"><a href="namespacealpaka.html#a2041e2c1ae1b6c8fea1d04304cc4595e">alpaka::AccSerial</a></div><div class="ttdeci">accs::serial::detail::AccSerial AccSerial</div><div class="ttdef"><b>Definition:</b> <a href="AccSerial_8hpp_source.html#l00329">AccSerial.hpp:329</a></div></div>
-<div class="ttc" id="namespacealpaka_1_1accs_1_1detail_html_a1072b4a58af8a97e07f0ce0461650eb5"><div class="ttname"><a href="namespacealpaka_1_1accs_1_1detail.html#a1072b4a58af8a97e07f0ce0461650eb5">alpaka::accs::detail::AccOmp2IfAvailableElseVoid</a></div><div class="ttdeci">void AccOmp2IfAvailableElseVoid</div><div class="ttdef"><b>Definition:</b> <a href="Accs_8hpp_source.html#l00081">Accs.hpp:81</a></div></div>
-<div class="ttc" id="namespacealpaka_html_a00d7887add3b55c26198ac00ae48f4e9"><div class="ttname"><a href="namespacealpaka.html#a00d7887add3b55c26198ac00ae48f4e9">alpaka::AccOmp2</a></div><div class="ttdeci">accs::omp::omp2::detail::AccOmp2 AccOmp2</div><div class="ttdef"><b>Definition:</b> <a href="AccOmp2_8hpp_source.html#l00367">AccOmp2.hpp:367</a></div></div>
-<div class="ttc" id="namespacealpaka_html_aff48a11ea7d01a9b5b6b06f7c20285f5"><div class="ttname"><a href="namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5">alpaka::UInt</a></div><div class="ttdeci">std::uint32_t UInt</div><div class="ttdoc">Defines the default index type. </div><div class="ttdef"><b>Definition:</b> <a href="core_2Common_8hpp_source.html#l00092">Common.hpp:92</a></div></div>
-<div class="ttc" id="classalpaka_1_1accs_1_1fibers_1_1detail_1_1AccFibers_html"><div class="ttname"><a href="classalpaka_1_1accs_1_1fibers_1_1detail_1_1AccFibers.html">alpaka::accs::fibers::detail::AccFibers</a></div><div class="ttdoc">The fibers accelerator. </div><div class="ttdef"><b>Definition:</b> <a href="AccFibers_8hpp_source.html#l00076">AccFibers.hpp:76</a></div></div>
-<div class="ttc" id="namespacealpaka_1_1accs_1_1detail_html_a39aec0d11ca941eeac1203d4081a6705"><div class="ttname"><a href="namespacealpaka_1_1accs_1_1detail.html#a39aec0d11ca941eeac1203d4081a6705">alpaka::accs::detail::EnabledAccsVoid</a></div><div class="ttdeci">boost::mpl::vector&lt; AccSerial, AccThreadsIfAvailableElseVoid, AccFibersIfAvailableElseVoid, AccOmp2IfAvailableElseVoid, AccCudaIfAvailableElseVoid &gt; EnabledAccsVoid</div><div class="ttdoc">A vector containing all available accelerators and void&#39;s. </div><div class="ttdef"><b>Definition:</b> <a href="Accs_8hpp_source.html#l00098">Accs.hpp:98</a></div></div>
-<div class="ttc" id="namespacealpaka_html_abc32aa5ad905e32e3195a5de53b62148"><div class="ttname"><a href="namespacealpaka.html#abc32aa5ad905e32e3195a5de53b62148">alpaka::AccThreads</a></div><div class="ttdeci">accs::threads::detail::AccThreads AccThreads</div><div class="ttdef"><b>Definition:</b> <a href="AccThreads_8hpp_source.html#l00511">AccThreads.hpp:511</a></div></div>
-<div class="ttc" id="namespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">The alpaka library. </div><div class="ttdef"><b>Definition:</b> <a href="Accs_8hpp_source.html#l00056">Accs.hpp:56</a></div></div>
-<div class="ttc" id="namespacealpaka_html_a7f3eb47153a5d942c55f0900da437e5b"><div class="ttname"><a href="namespacealpaka.html#a7f3eb47153a5d942c55f0900da437e5b">alpaka::AccCuda</a></div><div class="ttdeci">accs::cuda::detail::AccCuda AccCuda</div><div class="ttdef"><b>Definition:</b> <a href="AccCuda_8hpp_source.html#l00390">AccCuda.hpp:390</a></div></div>
-<div class="ttc" id="AccCuda_8hpp_html"><div class="ttname"><a href="AccCuda_8hpp.html">AccCuda.hpp</a></div></div>
-<div class="ttc" id="core_2Common_8hpp_html_a0a2517d207990fa333bdfcd804895ee7"><div class="ttname"><a href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a></div><div class="ttdeci">#define ALPAKA_FCT_HOST</div><div class="ttdef"><b>Definition:</b> <a href="core_2Common_8hpp_source.html#l00076">Common.hpp:76</a></div></div>
-<div class="ttc" id="namespacealpaka_1_1accs_1_1detail_html_a78b92f5825b76936e3bb07d45745026d"><div class="ttname"><a href="namespacealpaka_1_1accs_1_1detail.html#a78b92f5825b76936e3bb07d45745026d">alpaka::accs::detail::AccThreadsIfAvailableElseVoid</a></div><div class="ttdeci">AccThreads AccThreadsIfAvailableElseVoid</div><div class="ttdef"><b>Definition:</b> <a href="Accs_8hpp_source.html#l00069">Accs.hpp:69</a></div></div>
-<div class="ttc" id="structalpaka_1_1accs_1_1detail_1_1GetAccName_html_a870df7f553dcdc2d620232a0ac3e2bcd"><div class="ttname"><a href="structalpaka_1_1accs_1_1detail_1_1GetAccName.html#a870df7f553dcdc2d620232a0ac3e2bcd">alpaka::accs::detail::GetAccName::operator()</a></div><div class="ttdeci">ALPAKA_FCT_HOST auto operator()(std::ostream &amp;os) -&gt; void</div><div class="ttdef"><b>Definition:</b> <a href="Accs_8hpp_source.html#l00124">Accs.hpp:124</a></div></div>
-<div class="ttc" id="classalpaka_1_1accs_1_1cuda_1_1detail_1_1AccCuda_html"><div class="ttname"><a href="classalpaka_1_1accs_1_1cuda_1_1detail_1_1AccCuda.html">alpaka::accs::cuda::detail::AccCuda</a></div><div class="ttdoc">The CUDA accelerator. </div><div class="ttdef"><b>Definition:</b> <a href="AccCuda_8hpp_source.html#l00083">AccCuda.hpp:83</a></div></div>
-<div class="ttc" id="AccThreads_8hpp_html"><div class="ttname"><a href="AccThreads_8hpp.html">AccThreads.hpp</a></div></div>
-<div class="ttc" id="classalpaka_1_1accs_1_1threads_1_1detail_1_1AccThreads_html"><div class="ttname"><a href="classalpaka_1_1accs_1_1threads_1_1detail_1_1AccThreads.html">alpaka::accs::threads::detail::AccThreads</a></div><div class="ttdoc">The threads accelerator. </div><div class="ttdef"><b>Definition:</b> <a href="AccThreads_8hpp_source.html#l00078">AccThreads.hpp:78</a></div></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="ForEachType_8hpp.html">alpaka/core/ForEachType.hpp</a>&gt;</span>      <span class="comment">// forEachType</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="WorkDivHelpers_8hpp.html">alpaka/core/WorkDivHelpers.hpp</a>&gt;</span>   <span class="comment">// getMaxBlockThreadExtentsAccelerators</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor">#include &lt;boost/mpl/vector.hpp&gt;</span>             <span class="comment">// boost::mpl::vector</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#include &lt;boost/mpl/filter_view.hpp&gt;</span>        <span class="comment">// boost::mpl::filter_view</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="preprocessor">#include &lt;boost/mpl/not.hpp&gt;</span>                <span class="comment">// boost::not_</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor">#include &lt;boost/mpl/placeholders.hpp&gt;</span>       <span class="comment">// boost::mpl::_1</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor">#include &lt;boost/type_traits/is_same.hpp&gt;</span>    <span class="comment">// boost::is_same</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="preprocessor">#include &lt;iosfwd&gt;</span>                           <span class="comment">// std::ostream</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">//! The alpaka library.</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment"></span><span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="namespacealpaka.html">   65</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka.html">alpaka</a></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;{</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment">    //! The accelerators.</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="comment"></span>    <span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1accs.html">   70</a></span>&#160;    <span class="keyword">namespace </span>accs</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    {</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment">        //! The detail namespace is used to separate implementation details from user accessible code.</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment"></span>        <span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1accs_1_1detail.html">   75</a></span>&#160;        <span class="keyword">namespace </span>detail</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        {</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="preprocessor">#ifdef ALPAKA_CPU_SERIAL_ENABLED</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            <span class="keyword">template</span>&lt;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                <span class="keyword">typename</span> TDim&gt;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            <span class="keyword">using</span> <a class="code" href="namespacealpaka_1_1accs_1_1detail.html#a74dabd9751eb2db12ff027f6ed01f868">AccCpuSerialIfAvailableElseVoid</a> = <a class="code" href="classalpaka_1_1accs_1_1serial_1_1detail_1_1AccCpuSerial.html">AccCpuSerial&lt;TDim&gt;</a>;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            <span class="keyword">template</span>&lt;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                <span class="keyword">typename</span> TDim&gt;</div>
+<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1accs_1_1detail.html#a74dabd9751eb2db12ff027f6ed01f868">   84</a></span>&#160;            <span class="keyword">using</span> AccCpuSerialIfAvailableElseVoid = void;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="preprocessor">#ifdef ALPAKA_CPU_THREADS_ENABLED</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            <span class="keyword">template</span>&lt;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                <span class="keyword">typename</span> TDim&gt;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            <span class="keyword">using</span> <a class="code" href="namespacealpaka_1_1accs_1_1detail.html#ac5fd8ee522cd556b81718d0b293af62b">AccCpuThreadsIfAvailableElseVoid</a> = <a class="code" href="classalpaka_1_1accs_1_1threads_1_1detail_1_1AccCpuThreads.html">AccCpuThreads&lt;TDim&gt;</a>;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            <span class="keyword">template</span>&lt;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                <span class="keyword">typename</span> TDim&gt;</div>
+<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1accs_1_1detail.html#ac5fd8ee522cd556b81718d0b293af62b">   93</a></span>&#160;            <span class="keyword">using</span> AccCpuThreadsIfAvailableElseVoid = void;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="preprocessor">#ifdef ALPAKA_CPU_FIBERS_ENABLED</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            <span class="keyword">template</span>&lt;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                <span class="keyword">typename</span> TDim&gt;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            <span class="keyword">using</span> <a class="code" href="namespacealpaka_1_1accs_1_1detail.html#a04017df1d6b57b9d22be5c89d0643c86">AccCpuFibersIfAvailableElseVoid</a> = <a class="code" href="classalpaka_1_1accs_1_1fibers_1_1detail_1_1AccCpuFibers.html">AccCpuFibers&lt;TDim&gt;</a>;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            <span class="keyword">template</span>&lt;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                <span class="keyword">typename</span> TDim&gt;</div>
+<div class="line"><a name="l00102"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1accs_1_1detail.html#a04017df1d6b57b9d22be5c89d0643c86">  102</a></span>&#160;            <span class="keyword">using</span> AccCpuFibersIfAvailableElseVoid = void;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="preprocessor">#ifdef ALPAKA_CPU_OPENMP2_ENABLED</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            <span class="keyword">template</span>&lt;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                <span class="keyword">typename</span> TDim&gt;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            <span class="keyword">using</span> <a class="code" href="namespacealpaka_1_1accs_1_1detail.html#a3d3774521bf86f2c09c2f3360f8b0a6e">AccCpuOmp2IfAvailableElseVoid</a> = <a class="code" href="classalpaka_1_1accs_1_1omp_1_1omp2_1_1detail_1_1AccCpuOmp2.html">AccCpuOmp2&lt;TDim&gt;</a>;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            <span class="keyword">template</span>&lt;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                <span class="keyword">typename</span> TDim&gt;</div>
+<div class="line"><a name="l00111"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1accs_1_1detail.html#a3d3774521bf86f2c09c2f3360f8b0a6e">  111</a></span>&#160;            <span class="keyword">using</span> AccCpuOmp2IfAvailableElseVoid = void;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="preprocessor">#ifdef ALPAKA_CPU_OPENMP4_ENABLED</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            <span class="keyword">template</span>&lt;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;                <span class="keyword">typename</span> TDim&gt;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            <span class="keyword">using</span> <a class="code" href="namespacealpaka_1_1accs_1_1detail.html#af27f5956b8166627dc027c55d1a3c4bb">AccCpuOmp4CpuIfAvailableElseVoid</a> = <a class="code" href="classalpaka_1_1accs_1_1omp_1_1omp4_1_1cpu_1_1detail_1_1AccCpuOmp4.html">AccCpuOmp4&lt;TDim&gt;</a>;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;            <span class="keyword">template</span>&lt;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;                <span class="keyword">typename</span> TDim&gt;</div>
+<div class="line"><a name="l00120"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1accs_1_1detail.html#af27f5956b8166627dc027c55d1a3c4bb">  120</a></span>&#160;            <span class="keyword">using</span> AccCpuOmp4CpuIfAvailableElseVoid = void;</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="preprocessor">#if defined(ALPAKA_GPU_CUDA_ENABLED) &amp;&amp; defined(__CUDACC__)</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;            <span class="keyword">template</span>&lt;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;                <span class="keyword">typename</span> TDim&gt;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;            <span class="keyword">using</span> <a class="code" href="namespacealpaka_1_1accs_1_1detail.html#a7cf807f1bfbe56677e0682de1c4e1e5e">AccGpuCudaIfAvailableElseVoid</a> = <a class="code" href="classalpaka_1_1accs_1_1cuda_1_1detail_1_1AccGpuCuda.html">AccGpuCuda&lt;TDim&gt;</a>;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;            <span class="keyword">template</span>&lt;</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;                <span class="keyword">typename</span> TDim&gt;</div>
+<div class="line"><a name="l00129"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1accs_1_1detail.html#a7cf807f1bfbe56677e0682de1c4e1e5e">  129</a></span>&#160;            <span class="keyword">using</span> AccGpuCudaIfAvailableElseVoid = void;</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;            <span class="comment">//#############################################################################</span><span class="comment"></span></div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="comment">            //! A vector containing all available accelerators and void&#39;s.</span></div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="comment"></span>            <span class="comment">//#############################################################################</span></div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;            <span class="keyword">template</span>&lt;</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;                <span class="keyword">typename</span> TDim&gt;</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;            <span class="keyword">using</span> <a class="code" href="namespacealpaka_1_1accs_1_1detail.html#a861937a8c177d32b22ffef213a67da07">EnabledAccsVoid</a> =</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;                boost::mpl::vector&lt;</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;                    <a class="code" href="namespacealpaka_1_1accs_1_1detail.html#a74dabd9751eb2db12ff027f6ed01f868">AccCpuSerialIfAvailableElseVoid&lt;TDim&gt;</a>,</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;                    <a class="code" href="namespacealpaka_1_1accs_1_1detail.html#ac5fd8ee522cd556b81718d0b293af62b">AccCpuThreadsIfAvailableElseVoid&lt;TDim&gt;</a>,</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;                    <a class="code" href="namespacealpaka_1_1accs_1_1detail.html#a04017df1d6b57b9d22be5c89d0643c86">AccCpuFibersIfAvailableElseVoid&lt;TDim&gt;</a>,</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;                    <a class="code" href="namespacealpaka_1_1accs_1_1detail.html#a3d3774521bf86f2c09c2f3360f8b0a6e">AccCpuOmp2IfAvailableElseVoid&lt;TDim&gt;</a>,</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;                    <a class="code" href="namespacealpaka_1_1accs_1_1detail.html#af27f5956b8166627dc027c55d1a3c4bb">AccCpuOmp4CpuIfAvailableElseVoid&lt;TDim&gt;</a>,</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;                    <a class="code" href="namespacealpaka_1_1accs_1_1detail.html#a7cf807f1bfbe56677e0682de1c4e1e5e">AccGpuCudaIfAvailableElseVoid&lt;TDim&gt;</a></div>
+<div class="line"><a name="l00144"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1accs_1_1detail.html#a861937a8c177d32b22ffef213a67da07">  144</a></span>&#160;                &gt;;</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;        }</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        <span class="comment">//#############################################################################</span><span class="comment"></span></div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="comment">        //! A vector containing all available accelerators.</span></div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="comment"></span>        <span class="comment">//#############################################################################</span></div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        <span class="keyword">template</span>&lt;</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;            <span class="keyword">typename</span> TDim&gt;</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        <span class="keyword">using</span> <a class="code" href="namespacealpaka_1_1accs.html#a4960fe978e55f58905aaf8c0e3c9bdb7">EnabledAccs</a> =</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;            <span class="keyword">typename</span> boost::mpl::filter_view&lt;</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;                <a class="code" href="namespacealpaka_1_1accs_1_1detail.html#a861937a8c177d32b22ffef213a67da07">detail::EnabledAccsVoid&lt;TDim&gt;</a>,</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;                boost::mpl::not_&lt;</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;                    boost::is_same&lt;</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;                        boost::mpl::_1,</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;                        <span class="keywordtype">void</span></div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;                    &gt;</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;                &gt;</div>
+<div class="line"><a name="l00161"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1accs.html#a4960fe978e55f58905aaf8c0e3c9bdb7">  161</a></span>&#160;            &gt;::type;</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        <span class="keyword">namespace </span>detail</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        {</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;            <span class="comment">//#############################################################################</span><span class="comment"></span></div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="comment">            //! The accelerator name write wrapper.</span></div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="comment"></span>            <span class="comment">//#############################################################################</span></div>
+<div class="line"><a name="l00168"></a><span class="lineno"><a class="line" href="structalpaka_1_1accs_1_1detail_1_1StreamOutAccName.html">  168</a></span>&#160;            <span class="keyword">struct </span><a class="code" href="structalpaka_1_1accs_1_1detail_1_1StreamOutAccName.html">StreamOutAccName</a></div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;            {</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;                <span class="keyword">template</span>&lt;</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;                    <span class="keyword">typename</span> TAcc&gt;</div>
+<div class="line"><a name="l00172"></a><span class="lineno"><a class="line" href="structalpaka_1_1accs_1_1detail_1_1StreamOutAccName.html#aabb200c146fadbc6f984ee618711b754">  172</a></span>&#160;                <a class="code" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1accs_1_1detail_1_1StreamOutAccName.html#aabb200c146fadbc6f984ee618711b754">operator()</a>(</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;                    std::ostream &amp; os)</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;                -&gt; <span class="keywordtype">void</span></div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;                {</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;                    os &lt;&lt; acc::getAccName&lt;TAcc&gt;();</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;                    os &lt;&lt; <span class="stringliteral">&quot; &quot;</span>;</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;                }</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;            };</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;        }</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;        <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;<span class="comment">        //! Writes the enabled accelerators to the given stream.</span></div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;<span class="comment"></span>        <span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;        <span class="keyword">template</span>&lt;</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;            <span class="keyword">typename</span> TDim&gt;</div>
+<div class="line"><a name="l00187"></a><span class="lineno"><a class="line" href="namespacealpaka_1_1accs.html#a262ae762b2119f1101f1fbd2ad461f6c">  187</a></span>&#160;        <a class="code" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka_1_1accs.html#a262ae762b2119f1101f1fbd2ad461f6c">writeEnabledAccs</a>(</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;            std::ostream &amp; os)</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;        -&gt; <span class="keywordtype">void</span></div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        {</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;            os &lt;&lt; <span class="stringliteral">&quot;Accelerators enabled: &quot;</span>;</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;            <a class="code" href="namespacealpaka.html#a65275d743a931a39630a6437a128f026">forEachType</a>&lt;</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;                <a class="code" href="namespacealpaka_1_1accs.html#a4960fe978e55f58905aaf8c0e3c9bdb7">EnabledAccs&lt;TDim&gt;</a>&gt;(</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;                    <a class="code" href="structalpaka_1_1accs_1_1detail_1_1StreamOutAccName.html">detail::StreamOutAccName</a>(),</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;                    std::ref(os));</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;            os &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;        }</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    }</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;}</div>
+<div class="ttc" id="structalpaka_1_1accs_1_1detail_1_1StreamOutAccName_html"><div class="ttname"><a href="structalpaka_1_1accs_1_1detail_1_1StreamOutAccName.html">alpaka::accs::detail::StreamOutAccName</a></div><div class="ttdoc">The accelerator name write wrapper. </div><div class="ttdef"><b>Definition:</b> <a href="Accs_8hpp_source.html#l00168">Accs.hpp:168</a></div></div>
+<div class="ttc" id="namespacealpaka_1_1accs_html_a262ae762b2119f1101f1fbd2ad461f6c"><div class="ttname"><a href="namespacealpaka_1_1accs.html#a262ae762b2119f1101f1fbd2ad461f6c">alpaka::accs::writeEnabledAccs</a></div><div class="ttdeci">ALPAKA_FCT_HOST_ACC auto writeEnabledAccs(std::ostream &amp;os) -&gt; void</div><div class="ttdoc">Writes the enabled accelerators to the given stream. </div><div class="ttdef"><b>Definition:</b> <a href="Accs_8hpp_source.html#l00187">Accs.hpp:187</a></div></div>
+<div class="ttc" id="namespacealpaka_html_a65275d743a931a39630a6437a128f026"><div class="ttname"><a href="namespacealpaka.html#a65275d743a931a39630a6437a128f026">alpaka::forEachType</a></div><div class="ttdeci">ALPAKA_FCT_HOST_ACC auto forEachType(TFunctor &amp;&amp;f, TArgs &amp;&amp;...args) -&gt; void</div><div class="ttdoc">Equivalent to boost::mpl::for_each but does not require the types of the sequence to be default const...</div><div class="ttdef"><b>Definition:</b> <a href="ForEachType_8hpp_source.html#l00117">ForEachType.hpp:117</a></div></div>
+<div class="ttc" id="namespacealpaka_1_1accs_1_1detail_html_a7cf807f1bfbe56677e0682de1c4e1e5e"><div class="ttname"><a href="namespacealpaka_1_1accs_1_1detail.html#a7cf807f1bfbe56677e0682de1c4e1e5e">alpaka::accs::detail::AccGpuCudaIfAvailableElseVoid</a></div><div class="ttdeci">void AccGpuCudaIfAvailableElseVoid</div><div class="ttdef"><b>Definition:</b> <a href="Accs_8hpp_source.html#l00129">Accs.hpp:129</a></div></div>
+<div class="ttc" id="accs_2cuda_2Cuda_8hpp_html"><div class="ttname"><a href="accs_2cuda_2Cuda_8hpp.html">Cuda.hpp</a></div></div>
+<div class="ttc" id="Serial_8hpp_html"><div class="ttname"><a href="Serial_8hpp.html">Serial.hpp</a></div></div>
+<div class="ttc" id="traits_2Acc_8hpp_html"><div class="ttname"><a href="traits_2Acc_8hpp.html">Acc.hpp</a></div></div>
+<div class="ttc" id="classalpaka_1_1accs_1_1omp_1_1omp2_1_1detail_1_1AccCpuOmp2_html"><div class="ttname"><a href="classalpaka_1_1accs_1_1omp_1_1omp2_1_1detail_1_1AccCpuOmp2.html">alpaka::accs::omp::omp2::detail::AccCpuOmp2</a></div><div class="ttdoc">The CPU OpenMP2 accelerator. </div><div class="ttdef"><b>Definition:</b> <a href="accs_2omp_2omp2_2Acc_8hpp_source.html#l00072">Acc.hpp:72</a></div></div>
+<div class="ttc" id="Fibers_8hpp_html"><div class="ttname"><a href="Fibers_8hpp.html">Fibers.hpp</a></div></div>
+<div class="ttc" id="namespacealpaka_1_1accs_1_1detail_html_a861937a8c177d32b22ffef213a67da07"><div class="ttname"><a href="namespacealpaka_1_1accs_1_1detail.html#a861937a8c177d32b22ffef213a67da07">alpaka::accs::detail::EnabledAccsVoid</a></div><div class="ttdeci">boost::mpl::vector&lt; AccCpuSerialIfAvailableElseVoid&lt; TDim &gt;, AccCpuThreadsIfAvailableElseVoid&lt; TDim &gt;, AccCpuFibersIfAvailableElseVoid&lt; TDim &gt;, AccCpuOmp2IfAvailableElseVoid&lt; TDim &gt;, AccCpuOmp4CpuIfAvailableElseVoid&lt; TDim &gt;, AccGpuCudaIfAvailableElseVoid&lt; TDim &gt; &gt; EnabledAccsVoid</div><div class="ttdoc">A vector containing all available accelerators and void&#39;s. </div><div class="ttdef"><b>Definition:</b> <a href="Accs_8hpp_source.html#l00144">Accs.hpp:144</a></div></div>
+<div class="ttc" id="classalpaka_1_1accs_1_1omp_1_1omp4_1_1cpu_1_1detail_1_1AccCpuOmp4_html"><div class="ttname"><a href="classalpaka_1_1accs_1_1omp_1_1omp4_1_1cpu_1_1detail_1_1AccCpuOmp4.html">alpaka::accs::omp::omp4::cpu::detail::AccCpuOmp4</a></div><div class="ttdoc">The CPU OpenMP4 accelerator. </div><div class="ttdef"><b>Definition:</b> <a href="accs_2omp_2omp4_2cpu_2Acc_8hpp_source.html#l00076">Acc.hpp:76</a></div></div>
+<div class="ttc" id="namespacealpaka_1_1accs_1_1detail_html_a04017df1d6b57b9d22be5c89d0643c86"><div class="ttname"><a href="namespacealpaka_1_1accs_1_1detail.html#a04017df1d6b57b9d22be5c89d0643c86">alpaka::accs::detail::AccCpuFibersIfAvailableElseVoid</a></div><div class="ttdeci">void AccCpuFibersIfAvailableElseVoid</div><div class="ttdef"><b>Definition:</b> <a href="Accs_8hpp_source.html#l00102">Accs.hpp:102</a></div></div>
+<div class="ttc" id="namespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">The alpaka library. </div><div class="ttdef"><b>Definition:</b> <a href="Accs_8hpp_source.html#l00065">Accs.hpp:65</a></div></div>
+<div class="ttc" id="namespacealpaka_1_1accs_1_1detail_html_af27f5956b8166627dc027c55d1a3c4bb"><div class="ttname"><a href="namespacealpaka_1_1accs_1_1detail.html#af27f5956b8166627dc027c55d1a3c4bb">alpaka::accs::detail::AccCpuOmp4CpuIfAvailableElseVoid</a></div><div class="ttdeci">void AccCpuOmp4CpuIfAvailableElseVoid</div><div class="ttdef"><b>Definition:</b> <a href="Accs_8hpp_source.html#l00120">Accs.hpp:120</a></div></div>
+<div class="ttc" id="classalpaka_1_1accs_1_1fibers_1_1detail_1_1AccCpuFibers_html"><div class="ttname"><a href="classalpaka_1_1accs_1_1fibers_1_1detail_1_1AccCpuFibers.html">alpaka::accs::fibers::detail::AccCpuFibers</a></div><div class="ttdoc">The CPU fibers accelerator. </div><div class="ttdef"><b>Definition:</b> <a href="accs_2fibers_2Acc_8hpp_source.html#l00074">Acc.hpp:74</a></div></div>
+<div class="ttc" id="classalpaka_1_1accs_1_1threads_1_1detail_1_1AccCpuThreads_html"><div class="ttname"><a href="classalpaka_1_1accs_1_1threads_1_1detail_1_1AccCpuThreads.html">alpaka::accs::threads::detail::AccCpuThreads</a></div><div class="ttdoc">The CPU threads accelerator. </div><div class="ttdef"><b>Definition:</b> <a href="accs_2threads_2Acc_8hpp_source.html#l00072">Acc.hpp:72</a></div></div>
+<div class="ttc" id="Omp2_8hpp_html"><div class="ttname"><a href="Omp2_8hpp.html">Omp2.hpp</a></div></div>
+<div class="ttc" id="Omp4Cpu_8hpp_html"><div class="ttname"><a href="Omp4Cpu_8hpp.html">Omp4Cpu.hpp</a></div></div>
+<div class="ttc" id="namespacealpaka_1_1accs_1_1detail_html_ac5fd8ee522cd556b81718d0b293af62b"><div class="ttname"><a href="namespacealpaka_1_1accs_1_1detail.html#ac5fd8ee522cd556b81718d0b293af62b">alpaka::accs::detail::AccCpuThreadsIfAvailableElseVoid</a></div><div class="ttdeci">void AccCpuThreadsIfAvailableElseVoid</div><div class="ttdef"><b>Definition:</b> <a href="Accs_8hpp_source.html#l00093">Accs.hpp:93</a></div></div>
+<div class="ttc" id="namespacealpaka_1_1accs_1_1detail_html_a74dabd9751eb2db12ff027f6ed01f868"><div class="ttname"><a href="namespacealpaka_1_1accs_1_1detail.html#a74dabd9751eb2db12ff027f6ed01f868">alpaka::accs::detail::AccCpuSerialIfAvailableElseVoid</a></div><div class="ttdeci">void AccCpuSerialIfAvailableElseVoid</div><div class="ttdef"><b>Definition:</b> <a href="Accs_8hpp_source.html#l00084">Accs.hpp:84</a></div></div>
+<div class="ttc" id="namespacealpaka_1_1accs_1_1detail_html_a3d3774521bf86f2c09c2f3360f8b0a6e"><div class="ttname"><a href="namespacealpaka_1_1accs_1_1detail.html#a3d3774521bf86f2c09c2f3360f8b0a6e">alpaka::accs::detail::AccCpuOmp2IfAvailableElseVoid</a></div><div class="ttdeci">void AccCpuOmp2IfAvailableElseVoid</div><div class="ttdef"><b>Definition:</b> <a href="Accs_8hpp_source.html#l00111">Accs.hpp:111</a></div></div>
 <div class="ttc" id="ForEachType_8hpp_html"><div class="ttname"><a href="ForEachType_8hpp.html">ForEachType.hpp</a></div></div>
-<div class="ttc" id="namespacealpaka_1_1accs_html_a72692aca548fbb76a12e555175799527"><div class="ttname"><a href="namespacealpaka_1_1accs.html#a72692aca548fbb76a12e555175799527">alpaka::accs::EnabledAccs</a></div><div class="ttdeci">boost::mpl::filter_view&lt; detail::EnabledAccsVoid, boost::mpl::not_&lt; boost::is_same&lt; boost::mpl::_1, void &gt; &gt; &gt;::type EnabledAccs</div><div class="ttdoc">A vector containing all available accelerators. </div><div class="ttdef"><b>Definition:</b> <a href="Accs_8hpp_source.html#l00113">Accs.hpp:113</a></div></div>
-<div class="ttc" id="namespacealpaka_1_1accs_html_a3de7adb3ff2fb436ff365854640190a9"><div class="ttname"><a href="namespacealpaka_1_1accs.html#a3de7adb3ff2fb436ff365854640190a9">alpaka::accs::writeEnabledAccs</a></div><div class="ttdeci">ALPAKA_FCT_HOST auto writeEnabledAccs(std::ostream &amp;os) -&gt; void</div><div class="ttdoc">Writes the enabled accelerators to the given stream. </div><div class="ttdef"><b>Definition:</b> <a href="Accs_8hpp_source.html#l00136">Accs.hpp:136</a></div></div>
 <div class="ttc" id="WorkDivHelpers_8hpp_html"><div class="ttname"><a href="WorkDivHelpers_8hpp.html">WorkDivHelpers.hpp</a></div></div>
-<div class="ttc" id="AccSerial_8hpp_html"><div class="ttname"><a href="AccSerial_8hpp.html">AccSerial.hpp</a></div></div>
-<div class="ttc" id="AccFibers_8hpp_html"><div class="ttname"><a href="AccFibers_8hpp.html">AccFibers.hpp</a></div></div>
+<div class="ttc" id="Threads_8hpp_html"><div class="ttname"><a href="Threads_8hpp.html">Threads.hpp</a></div></div>
+<div class="ttc" id="structalpaka_1_1accs_1_1detail_1_1StreamOutAccName_html_aabb200c146fadbc6f984ee618711b754"><div class="ttname"><a href="structalpaka_1_1accs_1_1detail_1_1StreamOutAccName.html#aabb200c146fadbc6f984ee618711b754">alpaka::accs::detail::StreamOutAccName::operator()</a></div><div class="ttdeci">ALPAKA_FCT_HOST_ACC auto operator()(std::ostream &amp;os) -&gt; void</div><div class="ttdef"><b>Definition:</b> <a href="Accs_8hpp_source.html#l00172">Accs.hpp:172</a></div></div>
+<div class="ttc" id="namespacealpaka_1_1accs_html_a4960fe978e55f58905aaf8c0e3c9bdb7"><div class="ttname"><a href="namespacealpaka_1_1accs.html#a4960fe978e55f58905aaf8c0e3c9bdb7">alpaka::accs::EnabledAccs</a></div><div class="ttdeci">typename boost::mpl::filter_view&lt; detail::EnabledAccsVoid&lt; TDim &gt;, boost::mpl::not_&lt; boost::is_same&lt; boost::mpl::_1, void &gt; &gt; &gt;::type EnabledAccs</div><div class="ttdoc">A vector containing all available accelerators. </div><div class="ttdef"><b>Definition:</b> <a href="Accs_8hpp_source.html#l00161">Accs.hpp:161</a></div></div>
+<div class="ttc" id="classalpaka_1_1accs_1_1serial_1_1detail_1_1AccCpuSerial_html"><div class="ttname"><a href="classalpaka_1_1accs_1_1serial_1_1detail_1_1AccCpuSerial.html">alpaka::accs::serial::detail::AccCpuSerial</a></div><div class="ttdoc">The CPU serial accelerator. </div><div class="ttdef"><b>Definition:</b> <a href="accs_2serial_2Acc_8hpp_source.html#l00069">Acc.hpp:69</a></div></div>
+<div class="ttc" id="classalpaka_1_1accs_1_1cuda_1_1detail_1_1AccGpuCuda_html"><div class="ttname"><a href="classalpaka_1_1accs_1_1cuda_1_1detail_1_1AccGpuCuda.html">alpaka::accs::cuda::detail::AccGpuCuda</a></div><div class="ttdoc">The GPU CUDA accelerator. </div><div class="ttdef"><b>Definition:</b> <a href="accs_2cuda_2Acc_8hpp_source.html#l00073">Acc.hpp:73</a></div></div>
+<div class="ttc" id="core_2Common_8hpp_html_a58b8d1373dd28be3a64937d6cb48b7c0"><div class="ttname"><a href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a></div><div class="ttdeci">#define ALPAKA_FCT_HOST_ACC</div><div class="ttdef"><b>Definition:</b> <a href="core_2Common_8hpp_source.html#l00075">Common.hpp:75</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_68e39f1068b7c8e11271b44791d3a102.html">accs</a></li><li class="navelem"><a class="el" href="Accs_8hpp.html">Accs.hpp</a></li>
-    <li class="footer">Generated on Tue Apr 7 2015 09:20:04 for alpaka by
+    <li class="footer">Generated on Sat May 23 2015 14:48:24 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

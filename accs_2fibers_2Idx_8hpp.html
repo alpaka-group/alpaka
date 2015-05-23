@@ -107,28 +107,31 @@ $(document).ready(function(){initNavTree('accs_2fibers_2Idx_8hpp.html','');});
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#typedef-members">Typedefs</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle">
 <div class="title">Idx.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;<a class="el" href="accs_2fibers_2Common_8hpp_source.html">alpaka/accs/fibers/Common.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="traits_2Idx_8hpp_source.html">alpaka/traits/Idx.hpp</a>&gt;</code><br />
+<code>#include &lt;boost/core/ignore_unused.hpp&gt;</code><br />
 <code>#include &lt;map&gt;</code><br />
 </div>
 <p><a href="accs_2fibers_2Idx_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1accs_1_1fibers_1_1detail_1_1IdxFibers.html">alpaka::accs::fibers::detail::IdxFibers</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1accs_1_1fibers_1_1detail_1_1IdxFibers.html">alpaka::accs::fibers::detail::IdxFibers&lt; TDim &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This fibers accelerator index provider.  <a href="classalpaka_1_1accs_1_1fibers_1_1detail_1_1IdxFibers.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1idx_1_1GetIdx_3_01accs_1_1fibers_1_1detail_1_1IdxFibers_00_01origin_1_f8d5c71bc79487f8b2022f4b9def09a6.html">alpaka::traits::idx::GetIdx&lt; accs::fibers::detail::IdxFibers, origin::Block, unit::Threads, alpaka::dim::Dim3 &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The fibers accelerator 3D block thread index get trait specialization.  <a href="structalpaka_1_1traits_1_1idx_1_1GetIdx_3_01accs_1_1fibers_1_1detail_1_1IdxFibers_00_01origin_1_f8d5c71bc79487f8b2022f4b9def09a6.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1dim_1_1DimType_3_01accs_1_1fibers_1_1detail_1_1IdxFibers_3_01TDim_01_4_01_4.html">alpaka::traits::dim::DimType&lt; accs::fibers::detail::IdxFibers&lt; TDim &gt; &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU fibers accelerator index dimension get trait specialization.  <a href="structalpaka_1_1traits_1_1dim_1_1DimType_3_01accs_1_1fibers_1_1detail_1_1IdxFibers_3_01TDim_01_4_01_4.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1idx_1_1GetIdx_3_01accs_1_1fibers_1_1detail_1_1IdxFibers_00_01origin_1_29f393cf40abefd9b23f0bfae97e1df4.html">alpaka::traits::idx::GetIdx&lt; accs::fibers::detail::IdxFibers, origin::Grid, unit::Blocks, alpaka::dim::Dim3 &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The fibers accelerator 3D grid block index get trait specialization.  <a href="structalpaka_1_1traits_1_1idx_1_1GetIdx_3_01accs_1_1fibers_1_1detail_1_1IdxFibers_00_01origin_1_29f393cf40abefd9b23f0bfae97e1df4.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1idx_1_1GetIdx_3_01accs_1_1fibers_1_1detail_1_1IdxFibers_3_01TDim_01_4_8130bde49265815405b51e5be6d450bb.html">alpaka::traits::idx::GetIdx&lt; accs::fibers::detail::IdxFibers&lt; TDim &gt;, origin::Block, unit::Threads &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU fibers accelerator block thread index get trait specialization.  <a href="structalpaka_1_1traits_1_1idx_1_1GetIdx_3_01accs_1_1fibers_1_1detail_1_1IdxFibers_3_01TDim_01_4_8130bde49265815405b51e5be6d450bb.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1idx_1_1GetIdx_3_01accs_1_1fibers_1_1detail_1_1IdxFibers_3_01TDim_01_4_1f138853396d4cc98371b52c55d487e0.html">alpaka::traits::idx::GetIdx&lt; accs::fibers::detail::IdxFibers&lt; TDim &gt;, origin::Grid, unit::Blocks &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU fibers accelerator grid block index get trait specialization.  <a href="structalpaka_1_1traits_1_1idx_1_1GetIdx_3_01accs_1_1fibers_1_1detail_1_1IdxFibers_3_01TDim_01_4_1f138853396d4cc98371b52c55d487e0.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -140,22 +143,20 @@ Namespaces</h2></td></tr>
 <tr class="memdesc:namespacealpaka_1_1accs"><td class="mdescLeft">&#160;</td><td class="mdescRight">The accelerators. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1accs_1_1fibers"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1accs_1_1fibers.html">alpaka::accs::fibers</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1accs_1_1fibers"><td class="mdescLeft">&#160;</td><td class="mdescRight">The fibers accelerator. <br /></td></tr>
+<tr class="memdesc:namespacealpaka_1_1accs_1_1fibers"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU fibers accelerator. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1accs_1_1fibers_1_1detail"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1accs_1_1fibers_1_1detail.html">alpaka::accs::fibers::detail</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1accs_1_1fibers_1_1detail"><td class="mdescLeft">&#160;</td><td class="mdescRight">The fibers accelerator implementation details. <br /></td></tr>
+<tr class="memdesc:namespacealpaka_1_1accs_1_1fibers_1_1detail"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU fibers accelerator implementation details. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1traits"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1traits.html">alpaka::traits</a></td></tr>
 <tr class="memdesc:namespacealpaka_1_1traits"><td class="mdescLeft">&#160;</td><td class="mdescRight">The traits. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacealpaka_1_1traits_1_1dim"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1traits_1_1dim.html">alpaka::traits::dim</a></td></tr>
+<tr class="memdesc:namespacealpaka_1_1traits_1_1dim"><td class="mdescLeft">&#160;</td><td class="mdescRight">The dimension traits. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1traits_1_1idx"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1traits_1_1idx.html">alpaka::traits::idx</a></td></tr>
 <tr class="memdesc:namespacealpaka_1_1traits_1_1idx"><td class="mdescLeft">&#160;</td><td class="mdescRight">The index traits. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:afff8f610c53951547bc530a1f184a1f0"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1accs_1_1fibers_1_1detail.html#afff8f610c53951547bc530a1f184a1f0">alpaka::accs::fibers::detail::FiberIdToIdxMap</a> = std::map&lt; boost::fibers::fiber::id, Vec&lt; 3u &gt;&gt;</td></tr>
-<tr class="separator:afff8f610c53951547bc530a1f184a1f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Copyright 2014-2015 Benjamin Worpitz</p>
@@ -171,7 +172,7 @@ Typedefs</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_68e39f1068b7c8e11271b44791d3a102.html">accs</a></li><li class="navelem"><a class="el" href="dir_220cd134d2d1bd59c66c30365118af8f.html">fibers</a></li><li class="navelem"><a class="el" href="accs_2fibers_2Idx_8hpp.html">Idx.hpp</a></li>
-    <li class="footer">Generated on Tue Apr 7 2015 09:20:05 for alpaka by
+    <li class="footer">Generated on Sat May 23 2015 14:48:26 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

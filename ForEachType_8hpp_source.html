@@ -164,90 +164,93 @@ $(document).ready(function(){initNavTree('ForEachType_8hpp_source.html','');});
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                <span class="keyword">typename</span> TLastIt,</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                <span class="keyword">typename</span> TFunctor,</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                <span class="keyword">typename</span>... TArgs&gt;</div>
-<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="structalpaka_1_1detail_1_1ForEachTypeImpl.html#a3bd8da2227efb955af01c07110fa6d55">   56</a></span>&#160;            <a class="code" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1detail_1_1ForEachTypeImpl.html#a3bd8da2227efb955af01c07110fa6d55">forEachTypeImpl</a>(</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                TFunctor &amp;&amp;,</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                TArgs &amp;&amp; ...)</div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="structalpaka_1_1detail_1_1ForEachTypeImpl.html#ac59679e64291a355197d06e45b1700e3">   56</a></span>&#160;            <a class="code" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1detail_1_1ForEachTypeImpl.html#ac59679e64291a355197d06e45b1700e3">forEachTypeImpl</a>(</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                TFunctor &amp;&amp; f ,</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                TArgs &amp;&amp; ... args)</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            -&gt; <span class="keywordtype">void</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            {}</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        };</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="comment">//#############################################################################</span><span class="comment"></span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">        //!</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment"></span>        <span class="comment">//#############################################################################</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="structalpaka_1_1detail_1_1ForEachTypeImpl_3_01false_01_4.html">   67</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1detail_1_1ForEachTypeImpl.html">ForEachTypeImpl</a>&lt;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            false&gt;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        {</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">            //!</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment"></span>            <span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            <span class="keyword">template</span>&lt;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                <span class="keyword">typename</span> TElemIt,</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                <span class="keyword">typename</span> TLastIt,</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                <span class="keyword">typename</span> TFunctor,</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                <span class="keyword">typename</span>... TArgs&gt;</div>
-<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="structalpaka_1_1detail_1_1ForEachTypeImpl_3_01false_01_4.html#a7ee5edfc316d6d5239b0aa9eca1ea32a">   78</a></span>&#160;            <a class="code" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1detail_1_1ForEachTypeImpl_3_01false_01_4.html#a7ee5edfc316d6d5239b0aa9eca1ea32a">forEachTypeImpl</a>(</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                TFunctor &amp;&amp; f,</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                TArgs &amp;&amp; ... args)</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            -&gt; <span class="keywordtype">void</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            {</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                <span class="keyword">using</span> Elem = <span class="keyword">typename</span> boost::mpl::deref&lt;TElemIt&gt;::type;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                <span class="comment">// Call the functor template call operator.</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="preprocessor">#if BOOST_COMP_MSVC</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                boost::mpl::aux::unwrap(f, 0).operator()&lt;Elem&gt;(</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                    std::forward&lt;TArgs&gt;(args)...);</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                boost::mpl::aux::unwrap(f, 0).template operator()&lt;Elem&gt;(</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            {</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                boost::ignore_unused(f);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                boost::ignore_unused(args...);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            }</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        };</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="comment">//#############################################################################</span><span class="comment"></span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment">        //!</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment"></span>        <span class="comment">//#############################################################################</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="structalpaka_1_1detail_1_1ForEachTypeImpl_3_01false_01_4.html">   70</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1detail_1_1ForEachTypeImpl.html">ForEachTypeImpl</a>&lt;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            false&gt;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        {</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment">            //!</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="comment"></span>            <span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            <span class="keyword">template</span>&lt;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                <span class="keyword">typename</span> TElemIt,</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                <span class="keyword">typename</span> TLastIt,</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                <span class="keyword">typename</span> TFunctor,</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                <span class="keyword">typename</span>... TArgs&gt;</div>
+<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="structalpaka_1_1detail_1_1ForEachTypeImpl_3_01false_01_4.html#a7ee5edfc316d6d5239b0aa9eca1ea32a">   81</a></span>&#160;            <a class="code" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code" href="structalpaka_1_1detail_1_1ForEachTypeImpl_3_01false_01_4.html#a7ee5edfc316d6d5239b0aa9eca1ea32a">forEachTypeImpl</a>(</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                TFunctor &amp;&amp; f,</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                TArgs &amp;&amp; ... args)</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            -&gt; <span class="keywordtype">void</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            {</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                <span class="keyword">using</span> Elem = <span class="keyword">typename</span> boost::mpl::deref&lt;TElemIt&gt;::type;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                <span class="comment">// Call the functor template call operator.</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor">#if BOOST_COMP_MSVC</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                boost::mpl::aux::unwrap(f, 0).operator()&lt;Elem&gt;(</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                    std::forward&lt;TArgs&gt;(args)...);</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                <span class="comment">// Recurse to the next element.</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                <span class="keyword">using</span> NextIt = <span class="keyword">typename</span> boost::mpl::next&lt;TElemIt&gt;::type;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                <a class="code" href="structalpaka_1_1detail_1_1ForEachTypeImpl.html">ForEachTypeImpl</a>&lt;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                    std::is_same&lt;NextIt, TLastIt&gt;::value&gt;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                ::template <a class="code" href="structalpaka_1_1detail_1_1ForEachTypeImpl.html#a3bd8da2227efb955af01c07110fa6d55">forEachTypeImpl</a>&lt;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                    NextIt,</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                    TLastIt&gt;(</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                        std::forward&lt;TFunctor&gt;(f),</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                        std::forward&lt;TArgs&gt;(args)...);</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            }</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        };</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    }</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="comment">    //! Equivalent to boost::mpl::for_each but does not require the types of the sequence to be default constructible.</span></div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="comment">    //! This function does not create instances of the types instead it passes the types as template parameter.</span></div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="comment"></span>    <span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="keyword">template</span>&lt;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        <span class="keyword">typename</span> TSequence,</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        <span class="keyword">typename</span> TFunctor,</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <span class="keyword">typename</span>... TArgs&gt;</div>
-<div class="line"><a name="l00114"></a><span class="lineno"><a class="line" href="namespacealpaka.html#a65275d743a931a39630a6437a128f026">  114</a></span>&#160;    <a class="code" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a65275d743a931a39630a6437a128f026">forEachType</a>(</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        TFunctor &amp;&amp; f,</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        TArgs &amp;&amp; ... args)</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    -&gt; <span class="keywordtype">void</span></div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    {</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        static_assert(</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;            boost::mpl::is_sequence&lt;TSequence&gt;::value,</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;            <span class="stringliteral">&quot;for_each_type requires the TSequence to satisfy boost::mpl::is_sequence!&quot;</span>);</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        <span class="keyword">using</span> FirstIt = <span class="keyword">typename</span> boost::mpl::begin&lt;TSequence&gt;::type;</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        <span class="keyword">using</span> LastIt = <span class="keyword">typename</span> boost::mpl::end&lt;TSequence&gt;::type;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                boost::mpl::aux::unwrap(f, 0).template operator()&lt;Elem&gt;(</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                    std::forward&lt;TArgs&gt;(args)...);</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                <span class="comment">// Recurse to the next element.</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                <span class="keyword">using</span> NextIt = <span class="keyword">typename</span> boost::mpl::next&lt;TElemIt&gt;::type;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                <a class="code" href="structalpaka_1_1detail_1_1ForEachTypeImpl.html">ForEachTypeImpl</a>&lt;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                    std::is_same&lt;NextIt, TLastIt&gt;::value&gt;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                ::template <a class="code" href="structalpaka_1_1detail_1_1ForEachTypeImpl.html#ac59679e64291a355197d06e45b1700e3">forEachTypeImpl</a>&lt;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                    NextIt,</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                    TLastIt&gt;(</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                        std::forward&lt;TFunctor&gt;(f),</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                        std::forward&lt;TArgs&gt;(args)...);</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            }</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        };</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    }</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="comment">    //! Equivalent to boost::mpl::for_each but does not require the types of the sequence to be default constructible.</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="comment">    //! This function does not create instances of the types instead it passes the types as template parameter.</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="comment"></span>    <span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="keyword">template</span>&lt;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        <span class="keyword">typename</span> TSequence,</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        <span class="keyword">typename</span> TFunctor,</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        <span class="keyword">typename</span>... TArgs&gt;</div>
+<div class="line"><a name="l00117"></a><span class="lineno"><a class="line" href="namespacealpaka.html#a65275d743a931a39630a6437a128f026">  117</a></span>&#160;    <a class="code" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a65275d743a931a39630a6437a128f026">forEachType</a>(</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        TFunctor &amp;&amp; f,</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        TArgs &amp;&amp; ... args)</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    -&gt; <span class="keywordtype">void</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    {</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        static_assert(</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;            boost::mpl::is_sequence&lt;TSequence&gt;::value,</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;            <span class="stringliteral">&quot;for_each_type requires the TSequence to satisfy boost::mpl::is_sequence!&quot;</span>);</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        <a class="code" href="structalpaka_1_1detail_1_1ForEachTypeImpl.html">detail::ForEachTypeImpl</a>&lt;</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;            std::is_same&lt;FirstIt, LastIt&gt;::value&gt;</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        ::template forEachTypeImpl&lt;</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;            FirstIt,</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;            LastIt&gt;(</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;                std::forward&lt;TFunctor&gt;(f),</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;                std::forward&lt;TArgs&gt;(args)...);</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    }</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;}</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        <span class="keyword">using</span> FirstIt = <span class="keyword">typename</span> boost::mpl::begin&lt;TSequence&gt;::type;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        <span class="keyword">using</span> LastIt = <span class="keyword">typename</span> boost::mpl::end&lt;TSequence&gt;::type;</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        <a class="code" href="structalpaka_1_1detail_1_1ForEachTypeImpl.html">detail::ForEachTypeImpl</a>&lt;</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;            std::is_same&lt;FirstIt, LastIt&gt;::value&gt;</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        ::template forEachTypeImpl&lt;</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;            FirstIt,</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;            LastIt&gt;(</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;                std::forward&lt;TFunctor&gt;(f),</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;                std::forward&lt;TArgs&gt;(args)...);</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    }</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;}</div>
 <div class="ttc" id="structalpaka_1_1detail_1_1ForEachTypeImpl_html"><div class="ttname"><a href="structalpaka_1_1detail_1_1ForEachTypeImpl.html">alpaka::detail::ForEachTypeImpl</a></div><div class="ttdef"><b>Definition:</b> <a href="ForEachType_8hpp_source.html#l00046">ForEachType.hpp:46</a></div></div>
-<div class="ttc" id="namespacealpaka_html_a65275d743a931a39630a6437a128f026"><div class="ttname"><a href="namespacealpaka.html#a65275d743a931a39630a6437a128f026">alpaka::forEachType</a></div><div class="ttdeci">ALPAKA_FCT_HOST_ACC auto forEachType(TFunctor &amp;&amp;f, TArgs &amp;&amp;...args) -&gt; void</div><div class="ttdoc">Equivalent to boost::mpl::for_each but does not require the types of the sequence to be default const...</div><div class="ttdef"><b>Definition:</b> <a href="ForEachType_8hpp_source.html#l00114">ForEachType.hpp:114</a></div></div>
-<div class="ttc" id="structalpaka_1_1detail_1_1ForEachTypeImpl_3_01false_01_4_html_a7ee5edfc316d6d5239b0aa9eca1ea32a"><div class="ttname"><a href="structalpaka_1_1detail_1_1ForEachTypeImpl_3_01false_01_4.html#a7ee5edfc316d6d5239b0aa9eca1ea32a">alpaka::detail::ForEachTypeImpl&lt; false &gt;::forEachTypeImpl</a></div><div class="ttdeci">static ALPAKA_FCT_HOST_ACC auto forEachTypeImpl(TFunctor &amp;&amp;f, TArgs &amp;&amp;...args) -&gt; void</div><div class="ttdef"><b>Definition:</b> <a href="ForEachType_8hpp_source.html#l00078">ForEachType.hpp:78</a></div></div>
-<div class="ttc" id="namespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">The alpaka library. </div><div class="ttdef"><b>Definition:</b> <a href="Accs_8hpp_source.html#l00056">Accs.hpp:56</a></div></div>
-<div class="ttc" id="structalpaka_1_1detail_1_1ForEachTypeImpl_html_a3bd8da2227efb955af01c07110fa6d55"><div class="ttname"><a href="structalpaka_1_1detail_1_1ForEachTypeImpl.html#a3bd8da2227efb955af01c07110fa6d55">alpaka::detail::ForEachTypeImpl::forEachTypeImpl</a></div><div class="ttdeci">static ALPAKA_FCT_HOST_ACC auto forEachTypeImpl(TFunctor &amp;&amp;, TArgs &amp;&amp;...) -&gt; void</div><div class="ttdef"><b>Definition:</b> <a href="ForEachType_8hpp_source.html#l00056">ForEachType.hpp:56</a></div></div>
+<div class="ttc" id="namespacealpaka_html_a65275d743a931a39630a6437a128f026"><div class="ttname"><a href="namespacealpaka.html#a65275d743a931a39630a6437a128f026">alpaka::forEachType</a></div><div class="ttdeci">ALPAKA_FCT_HOST_ACC auto forEachType(TFunctor &amp;&amp;f, TArgs &amp;&amp;...args) -&gt; void</div><div class="ttdoc">Equivalent to boost::mpl::for_each but does not require the types of the sequence to be default const...</div><div class="ttdef"><b>Definition:</b> <a href="ForEachType_8hpp_source.html#l00117">ForEachType.hpp:117</a></div></div>
+<div class="ttc" id="structalpaka_1_1detail_1_1ForEachTypeImpl_3_01false_01_4_html_a7ee5edfc316d6d5239b0aa9eca1ea32a"><div class="ttname"><a href="structalpaka_1_1detail_1_1ForEachTypeImpl_3_01false_01_4.html#a7ee5edfc316d6d5239b0aa9eca1ea32a">alpaka::detail::ForEachTypeImpl&lt; false &gt;::forEachTypeImpl</a></div><div class="ttdeci">static ALPAKA_FCT_HOST_ACC auto forEachTypeImpl(TFunctor &amp;&amp;f, TArgs &amp;&amp;...args) -&gt; void</div><div class="ttdef"><b>Definition:</b> <a href="ForEachType_8hpp_source.html#l00081">ForEachType.hpp:81</a></div></div>
+<div class="ttc" id="structalpaka_1_1detail_1_1ForEachTypeImpl_html_ac59679e64291a355197d06e45b1700e3"><div class="ttname"><a href="structalpaka_1_1detail_1_1ForEachTypeImpl.html#ac59679e64291a355197d06e45b1700e3">alpaka::detail::ForEachTypeImpl::forEachTypeImpl</a></div><div class="ttdeci">static ALPAKA_FCT_HOST_ACC auto forEachTypeImpl(TFunctor &amp;&amp;f, TArgs &amp;&amp;...args) -&gt; void</div><div class="ttdef"><b>Definition:</b> <a href="ForEachType_8hpp_source.html#l00056">ForEachType.hpp:56</a></div></div>
+<div class="ttc" id="namespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">The alpaka library. </div><div class="ttdef"><b>Definition:</b> <a href="Accs_8hpp_source.html#l00065">Accs.hpp:65</a></div></div>
 <div class="ttc" id="core_2Common_8hpp_html"><div class="ttname"><a href="core_2Common_8hpp.html">Common.hpp</a></div></div>
 <div class="ttc" id="core_2Common_8hpp_html_a58b8d1373dd28be3a64937d6cb48b7c0"><div class="ttname"><a href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a></div><div class="ttdeci">#define ALPAKA_FCT_HOST_ACC</div><div class="ttdef"><b>Definition:</b> <a href="core_2Common_8hpp_source.html#l00075">Common.hpp:75</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
@@ -256,7 +259,7 @@ $(document).ready(function(){initNavTree('ForEachType_8hpp_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="ForEachType_8hpp.html">ForEachType.hpp</a></li>
-    <li class="footer">Generated on Tue Apr 7 2015 09:20:05 for alpaka by
+    <li class="footer">Generated on Sat May 23 2015 14:48:25 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

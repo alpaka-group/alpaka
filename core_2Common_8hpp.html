@@ -133,9 +133,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1RoundUpToPowerOfTwo.html">alpaka::detail::RoundUpToPowerOfTwo&lt; N &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rounds to the next higher power of two (if not already power of two).  <a href="structalpaka_1_1detail_1_1RoundUpToPowerOfTwo.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1RoundUpToPowerOfTwoH.html">alpaka::detail::RoundUpToPowerOfTwoH&lt; N, isPowerTwo &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1RoundUpToPowerOfTwoHelper.html">alpaka::detail::RoundUpToPowerOfTwoHelper&lt; N, isPowerTwo &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1RoundUpToPowerOfTwoH_3_01N_00_01false_01_4.html">alpaka::detail::RoundUpToPowerOfTwoH&lt; N, false &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1RoundUpToPowerOfTwoHelper_3_01N_00_01false_01_4.html">alpaka::detail::RoundUpToPowerOfTwoHelper&lt; N, false &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -171,6 +171,9 @@ Macros</h2></td></tr>
 <tr class="separator:aa8d02f0c4379afabdb7f4ee2e8f7954c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1259a647639e3950f2bdd1bdca98652a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_2Common_8hpp.html#a1259a647639e3950f2bdd1bdca98652a">ALPAKA_OPTIMAL_ALIGNMENT</a>(byte)</td></tr>
 <tr class="separator:a1259a647639e3950f2bdd1bdca98652a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5dc1b91c2ff61cf069b5a3100d324883"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_2Common_8hpp.html#a5dc1b91c2ff61cf069b5a3100d324883">ALPAKA_UNROLL</a></td></tr>
+<tr class="memdesc:a5dc1b91c2ff61cf069b5a3100d324883"><td class="mdescLeft">&#160;</td><td class="mdescRight">Suggests unrolling of the following loop to the compiler.  <a href="#a5dc1b91c2ff61cf069b5a3100d324883">More...</a><br /></td></tr>
+<tr class="separator:a5dc1b91c2ff61cf069b5a3100d324883"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -213,7 +216,7 @@ Typedefs</h2></td></tr>
 
 <p>Aligns the data optimally. You must align all arrays and structs which can be used on accelerators. </p>
 
-<p>Definition at line <a class="el" href="core_2Common_8hpp_source.html#l00205">205</a> of file <a class="el" href="core_2Common_8hpp_source.html">Common.hpp</a>.</p>
+<p>Definition at line <a class="el" href="core_2Common_8hpp_source.html#l00225">225</a> of file <a class="el" href="core_2Common_8hpp_source.html">Common.hpp</a>.</p>
 
 </div>
 </div>
@@ -243,7 +246,7 @@ Typedefs</h2></td></tr>
 
 <p>Aligns the data at 8 bytes. You must align all arrays and structs which can be used on accelerators. </p>
 
-<p>Definition at line <a class="el" href="core_2Common_8hpp_source.html#l00210">210</a> of file <a class="el" href="core_2Common_8hpp_source.html">Common.hpp</a>.</p>
+<p>Definition at line <a class="el" href="core_2Common_8hpp_source.html#l00230">230</a> of file <a class="el" href="core_2Common_8hpp_source.html">Common.hpp</a>.</p>
 
 </div>
 </div>
@@ -262,7 +265,7 @@ Typedefs</h2></td></tr>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The alignment of the type. </dd></dl>
 
-<p>Definition at line <a class="el" href="core_2Common_8hpp_source.html#l00215">215</a> of file <a class="el" href="core_2Common_8hpp_source.html">Common.hpp</a>.</p>
+<p>Definition at line <a class="el" href="core_2Common_8hpp_source.html#l00235">235</a> of file <a class="el" href="core_2Common_8hpp_source.html">Common.hpp</a>.</p>
 
 </div>
 </div>
@@ -365,7 +368,24 @@ Typedefs</h2></td></tr>
 <div class="line">        ((byte)&lt;=64?64:128\</div>
 <div class="line">        )))))))</div>
 </div><!-- fragment -->
-<p>Definition at line <a class="el" href="core_2Common_8hpp_source.html#l00155">155</a> of file <a class="el" href="core_2Common_8hpp_source.html">Common.hpp</a>.</p>
+<p>Definition at line <a class="el" href="core_2Common_8hpp_source.html#l00175">175</a> of file <a class="el" href="core_2Common_8hpp_source.html">Common.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a5dc1b91c2ff61cf069b5a3100d324883"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ALPAKA_UNROLL</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Suggests unrolling of the following loop to the compiler. </p>
+<p>Usage: <code>ALPAKA_UNROLL for(...){...}</code> </p>
+
+<p>Definition at line <a class="el" href="core_2Common_8hpp_source.html#l00094">94</a> of file <a class="el" href="core_2Common_8hpp_source.html">Common.hpp</a>.</p>
 
 </div>
 </div>
@@ -375,7 +395,7 @@ Typedefs</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="core_2Common_8hpp.html">Common.hpp</a></li>
-    <li class="footer">Generated on Tue Apr 7 2015 09:20:05 for alpaka by
+    <li class="footer">Generated on Sat May 23 2015 14:48:26 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

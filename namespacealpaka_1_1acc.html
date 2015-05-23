@@ -106,6 +106,7 @@ $(document).ready(function(){initNavTree('namespacealpaka_1_1acc.html','');});
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
@@ -116,6 +117,12 @@ $(document).ready(function(){initNavTree('namespacealpaka_1_1acc.html','');});
 <p>The accelerator trait accessors.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html">AccDevProps</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The acceleration properties on a device.  <a href="structalpaka_1_1acc_1_1AccDevProps.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:a78e45df13b4706c02cb65cf25786d38e"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
@@ -125,10 +132,13 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a78b342e0bca2e12e3ca163ffef5b7e50"><td class="memTemplParams" colspan="2">template&lt;typename TAcc &gt; </td></tr>
-<tr class="memitem:a78b342e0bca2e12e3ca163ffef5b7e50"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1acc.html#a78b342e0bca2e12e3ca163ffef5b7e50">getAccName</a> () -&gt; std::string</td></tr>
-<tr class="memdesc:a78b342e0bca2e12e3ca163ffef5b7e50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the accelerator name to the given stream.  <a href="#a78b342e0bca2e12e3ca163ffef5b7e50">More...</a><br /></td></tr>
-<tr class="separator:a78b342e0bca2e12e3ca163ffef5b7e50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa595c98a94f4fca132d4e045a387f58e"><td class="memTemplParams" colspan="2">template&lt;typename TAcc , typename TDev &gt; </td></tr>
+<tr class="memitem:aa595c98a94f4fca132d4e045a387f58e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1acc.html#aa595c98a94f4fca132d4e045a387f58e">getAccDevProps</a> (TDev const &amp;dev) -&gt; <a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html">AccDevProps</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#a3cd5c34a55999be55481237289ef4737">dim::DimT</a>&lt; TAcc &gt;&gt;</td></tr>
+<tr class="separator:aa595c98a94f4fca132d4e045a387f58e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2eb77638ef8646149078e1111520f9b5"><td class="memTemplParams" colspan="2">template&lt;typename TAcc &gt; </td></tr>
+<tr class="memitem:a2eb77638ef8646149078e1111520f9b5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1acc.html#a2eb77638ef8646149078e1111520f9b5">getAccName</a> () -&gt; std::string</td></tr>
+<tr class="memdesc:a2eb77638ef8646149078e1111520f9b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the accelerator name to the given stream.  <a href="#a2eb77638ef8646149078e1111520f9b5">More...</a><br /></td></tr>
+<tr class="separator:a2eb77638ef8646149078e1111520f9b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The accelerator trait accessors. </p>
@@ -147,19 +157,41 @@ template&lt;typename T &gt; </div>
 
 <p>The accelerator type trait alias template to remove the ::type. </p>
 
-<p>Definition at line <a class="el" href="Acc_8hpp_source.html#l00078">78</a> of file <a class="el" href="Acc_8hpp_source.html">Acc.hpp</a>.</p>
+<p>Definition at line <a class="el" href="traits_2Acc_8hpp_source.html#l00087">87</a> of file <a class="el" href="traits_2Acc_8hpp_source.html">Acc.hpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="a78b342e0bca2e12e3ca163ffef5b7e50"></a>
+<a class="anchor" id="aa595c98a94f4fca132d4e045a387f58e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TAcc , typename TDev &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto alpaka::acc::getAccDevProps </td>
+          <td>(</td>
+          <td class="paramtype">TDev const &amp;&#160;</td>
+          <td class="paramname"><em>dev</em></td><td>)</td>
+          <td> -&gt; <a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html">AccDevProps</a>&lt;<a class="el" href="namespacealpaka_1_1dim.html#a3cd5c34a55999be55481237289ef4737">dim::DimT</a>&lt;TAcc&gt;&gt;
+        </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>The acceleration properties on the given device. </dd></dl>
+
+<p>Definition at line <a class="el" href="traits_2Acc_8hpp_source.html#l00095">95</a> of file <a class="el" href="traits_2Acc_8hpp_source.html">Acc.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2eb77638ef8646149078e1111520f9b5"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename TAcc &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto alpaka::acc::getAccName </td>
+          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto alpaka::acc::getAccName </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> -&gt; std::string
@@ -176,7 +208,7 @@ template&lt;typename TAcc &gt; </div>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="Acc_8hpp_source.html#l00087">87</a> of file <a class="el" href="Acc_8hpp_source.html">Acc.hpp</a>.</p>
+<p>Definition at line <a class="el" href="traits_2Acc_8hpp_source.html#l00112">112</a> of file <a class="el" href="traits_2Acc_8hpp_source.html">Acc.hpp</a>.</p>
 
 </div>
 </div>
@@ -186,7 +218,7 @@ template&lt;typename TAcc &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1acc.html">acc</a></li>
-    <li class="footer">Generated on Tue Apr 7 2015 09:20:06 for alpaka by
+    <li class="footer">Generated on Sat May 23 2015 14:48:26 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

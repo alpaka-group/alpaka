@@ -106,8 +106,7 @@ $(document).ready(function(){initNavTree('namespacealpaka_1_1dim.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#typedef-members">Typedefs</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#typedef-members">Typedefs</a>  </div>
   <div class="headertitle">
 <div class="title">alpaka::dim Namespace Reference</div>  </div>
 </div><!--header-->
@@ -130,16 +129,13 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a34c4249188d81e31aff3e6bb8f1238bd"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dim.html#a34c4249188d81e31aff3e6bb8f1238bd">Dim3</a> = <a class="el" href="namespacealpaka_1_1dim.html#a39323e2b42723a0275c03f9a68e6d830">Dim</a>&lt; 3u &gt;</td></tr>
 <tr class="memdesc:a34c4249188d81e31aff3e6bb8f1238bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Three dimensions.  <a href="#a34c4249188d81e31aff3e6bb8f1238bd">More...</a><br /></td></tr>
 <tr class="separator:a34c4249188d81e31aff3e6bb8f1238bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad09103207e9416d2307123a3492655e0"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dim.html#ad09103207e9416d2307123a3492655e0">Dim4</a> = <a class="el" href="namespacealpaka_1_1dim.html#a39323e2b42723a0275c03f9a68e6d830">Dim</a>&lt; 4u &gt;</td></tr>
+<tr class="memdesc:ad09103207e9416d2307123a3492655e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Four dimensions.  <a href="#ad09103207e9416d2307123a3492655e0">More...</a><br /></td></tr>
+<tr class="separator:ad09103207e9416d2307123a3492655e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3cd5c34a55999be55481237289ef4737"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a3cd5c34a55999be55481237289ef4737"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dim.html#a3cd5c34a55999be55481237289ef4737">DimT</a> = typename <a class="el" href="structalpaka_1_1traits_1_1dim_1_1DimType.html">traits::dim::DimType</a>&lt; T &gt;::type</td></tr>
 <tr class="memdesc:a3cd5c34a55999be55481237289ef4737"><td class="mdescLeft">&#160;</td><td class="mdescRight">The dimension getter trait alias template to remove the ::type.  <a href="#a3cd5c34a55999be55481237289ef4737">More...</a><br /></td></tr>
 <tr class="separator:a3cd5c34a55999be55481237289ef4737"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:aafaa14548a1da52a05392859af6548ff"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:aafaa14548a1da52a05392859af6548ff"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dim.html#aafaa14548a1da52a05392859af6548ff">getDim</a> () -&gt; <a class="el" href="namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5">UInt</a></td></tr>
-<tr class="separator:aafaa14548a1da52a05392859af6548ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The dimension trait accessors. </p>
@@ -208,6 +204,22 @@ template&lt;UInt N&gt; </div>
 
 </div>
 </div>
+<a class="anchor" id="ad09103207e9416d2307123a3492655e0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacealpaka_1_1dim.html#ad09103207e9416d2307123a3492655e0">alpaka::dim::Dim4</a> = typedef <a class="el" href="namespacealpaka_1_1dim.html#a39323e2b42723a0275c03f9a68e6d830">Dim</a>&lt;4u&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Four dimensions. </p>
+
+<p>Definition at line <a class="el" href="BasicDims_8hpp_source.html#l00054">54</a> of file <a class="el" href="BasicDims_8hpp_source.html">BasicDims.hpp</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a3cd5c34a55999be55481237289ef4737"></a>
 <div class="memitem">
 <div class="memproto">
@@ -222,29 +234,7 @@ template&lt;typename T &gt; </div>
 
 <p>The dimension getter trait alias template to remove the ::type. </p>
 
-<p>Definition at line <a class="el" href="Dim_8hpp_source.html#l00058">58</a> of file <a class="el" href="Dim_8hpp_source.html">Dim.hpp</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="aafaa14548a1da52a05392859af6548ff"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto constexpr alpaka::dim::getDim </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> -&gt; <a class="el" href="namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5">UInt</a>
-        </td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>The dimension. </dd></dl>
-
-<p>Definition at line <a class="el" href="Dim_8hpp_source.html#l00068">68</a> of file <a class="el" href="Dim_8hpp_source.html">Dim.hpp</a>.</p>
+<p>Definition at line <a class="el" href="Dim_8hpp_source.html#l00067">67</a> of file <a class="el" href="Dim_8hpp_source.html">Dim.hpp</a>.</p>
 
 </div>
 </div>
@@ -254,7 +244,7 @@ template&lt;typename T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1dim.html">dim</a></li>
-    <li class="footer">Generated on Tue Apr 7 2015 09:20:07 for alpaka by
+    <li class="footer">Generated on Sat May 23 2015 14:48:28 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

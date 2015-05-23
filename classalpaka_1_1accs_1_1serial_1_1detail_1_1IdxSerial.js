@@ -1,10 +1,10 @@
 var classalpaka_1_1accs_1_1serial_1_1detail_1_1IdxSerial =
 [
-    [ "IdxSerial", "classalpaka_1_1accs_1_1serial_1_1detail_1_1IdxSerial.html#a504d3bcd9c630a138d57093916cf9088", null ],
-    [ "IdxSerial", "classalpaka_1_1accs_1_1serial_1_1detail_1_1IdxSerial.html#a65adc24317c629ac734a67283fddc6b2", null ],
-    [ "IdxSerial", "classalpaka_1_1accs_1_1serial_1_1detail_1_1IdxSerial.html#a8a51007731211277e60b3806785b80f4", null ],
-    [ "~IdxSerial", "classalpaka_1_1accs_1_1serial_1_1detail_1_1IdxSerial.html#a7c4f9686bc271e3b5582e43818db163f", null ],
-    [ "getIdxBlockThread", "classalpaka_1_1accs_1_1serial_1_1detail_1_1IdxSerial.html#a4fb62c935efb3d79323f33cb32ab61b8", null ],
-    [ "getIdxGridBlock", "classalpaka_1_1accs_1_1serial_1_1detail_1_1IdxSerial.html#a129f9deae88e4d9f9c9e8715c8469259", null ],
-    [ "operator=", "classalpaka_1_1accs_1_1serial_1_1detail_1_1IdxSerial.html#ab3d8094e1fdf1994c8c56bc384c64e7d", null ]
+    [ "IdxSerial", "classalpaka_1_1accs_1_1serial_1_1detail_1_1IdxSerial.html#a82a05eda1507b9e067c4fd41d1c88e7e", null ],
+    [ "IdxSerial", "classalpaka_1_1accs_1_1serial_1_1detail_1_1IdxSerial.html#a00fb7a54fdfe3276b2da9239910a04d8", null ],
+    [ "IdxSerial", "classalpaka_1_1accs_1_1serial_1_1detail_1_1IdxSerial.html#a5db564ced1b5a5ff381cdf2e62a10acc", null ],
+    [ "~IdxSerial", "classalpaka_1_1accs_1_1serial_1_1detail_1_1IdxSerial.html#aebeb66978e9e745f9d049df50e7d447f", null ],
+    [ "getIdxBlockThread", "classalpaka_1_1accs_1_1serial_1_1detail_1_1IdxSerial.html#ac787fe449baccfbe945fd2f7036ceb9d", null ],
+    [ "getIdxGridBlock", "classalpaka_1_1accs_1_1serial_1_1detail_1_1IdxSerial.html#a77ce93fad28de64c3b172879e755bcbc", null ],
+    [ "operator=", "classalpaka_1_1accs_1_1serial_1_1detail_1_1IdxSerial.html#aa1767b75ca15ed3b68d950e662804f18", null ]
 ];

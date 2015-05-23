@@ -116,9 +116,9 @@ $(document).ready(function(){initNavTree('traits_2Idx_8hpp.html','');});
 <div class="textblock"><code>#include &lt;<a class="el" href="Dim_8hpp_source.html">alpaka/traits/Dim.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="traits_2WorkDiv_8hpp_source.html">alpaka/traits/WorkDiv.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="traits_2Idx_8hpp_source.html">alpaka/traits/Idx.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="Vec_8hpp_source.html">alpaka/core/Vec.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="BasicDims_8hpp_source.html">alpaka/core/BasicDims.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Positioning_8hpp_source.html">alpaka/core/Positioning.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="Vec_8hpp_source.html">alpaka/core/Vec.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="core_2Common_8hpp_source.html">alpaka/core/Common.hpp</a>&gt;</code><br />
 <code>#include &lt;utility&gt;</code><br />
 </div>
@@ -126,20 +126,11 @@ $(document).ready(function(){initNavTree('traits_2Idx_8hpp.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1idx_1_1GetIdx.html">alpaka::traits::idx::GetIdx&lt; TIdx, TOrigin, TUnit, TDim &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1idx_1_1GetIdx.html">alpaka::traits::idx::GetIdx&lt; TIdx, TOrigin, TUnit &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The index get trait.  <a href="structalpaka_1_1traits_1_1idx_1_1GetIdx.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1idx_1_1GetIdx_3_01TIdx_00_01origin_1_1Block_00_01unit_1_1Threads_00_01alpaka_1_1dim_1_1Dim1_01_4.html">alpaka::traits::idx::GetIdx&lt; TIdx, origin::Block, unit::Threads, alpaka::dim::Dim1 &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The 1D block thread index get trait specialization.  <a href="structalpaka_1_1traits_1_1idx_1_1GetIdx_3_01TIdx_00_01origin_1_1Block_00_01unit_1_1Threads_00_01alpaka_1_1dim_1_1Dim1_01_4.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1idx_1_1GetIdx_3_01TIdx_00_01origin_1_1Grid_00_01unit_1_1Blocks_00_01alpaka_1_1dim_1_1Dim1_01_4.html">alpaka::traits::idx::GetIdx&lt; TIdx, origin::Grid, unit::Blocks, alpaka::dim::Dim1 &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The 1D grid block index get trait specialization.  <a href="structalpaka_1_1traits_1_1idx_1_1GetIdx_3_01TIdx_00_01origin_1_1Grid_00_01unit_1_1Blocks_00_01alpaka_1_1dim_1_1Dim1_01_4.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1idx_1_1GetIdx_3_01TIdx_00_01origin_1_1Grid_00_01unit_1_1Threads_00_01alpaka_1_1dim_1_1Dim1_01_4.html">alpaka::traits::idx::GetIdx&lt; TIdx, origin::Grid, unit::Threads, alpaka::dim::Dim1 &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The 1D grid thread index get trait specialization.  <a href="structalpaka_1_1traits_1_1idx_1_1GetIdx_3_01TIdx_00_01origin_1_1Grid_00_01unit_1_1Threads_00_01alpaka_1_1dim_1_1Dim1_01_4.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1idx_1_1GetIdx_3_01TIdx_00_01origin_1_1Grid_00_01unit_1_1Threads_00_01alpaka_1_1dim_1_1Dim3_01_4.html">alpaka::traits::idx::GetIdx&lt; TIdx, origin::Grid, unit::Threads, alpaka::dim::Dim3 &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The 3D grid thread index get trait specialization.  <a href="structalpaka_1_1traits_1_1idx_1_1GetIdx_3_01TIdx_00_01origin_1_1Grid_00_01unit_1_1Threads_00_01alpaka_1_1dim_1_1Dim3_01_4.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1idx_1_1GetIdx_3_01TIdx_00_01origin_1_1Grid_00_01unit_1_1Threads_01_4.html">alpaka::traits::idx::GetIdx&lt; TIdx, origin::Grid, unit::Threads &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The 3D grid thread index get trait specialization.  <a href="structalpaka_1_1traits_1_1idx_1_1GetIdx_3_01TIdx_00_01origin_1_1Grid_00_01unit_1_1Threads_01_4.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -159,10 +150,10 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a38fba12059aa83aadf50a0673b9f4031"><td class="memTemplParams" colspan="2">template&lt;typename TOrigin , typename TUnit , typename TDim  = dim::Dim3, typename TIdx  = void, typename TWorkDiv  = void&gt; </td></tr>
-<tr class="memitem:a38fba12059aa83aadf50a0673b9f4031"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a5f7933db4117e5cf67c10b559b645656">ALPAKA_FCT_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1idx.html#a38fba12059aa83aadf50a0673b9f4031">alpaka::idx::getIdx</a> (TIdx const &amp;index, TWorkDiv const &amp;workDiv) -&gt; DimToVecT&lt; TDim &gt;</td></tr>
-<tr class="memdesc:a38fba12059aa83aadf50a0673b9f4031"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the indices requested.  <a href="#a38fba12059aa83aadf50a0673b9f4031">More...</a><br /></td></tr>
-<tr class="separator:a38fba12059aa83aadf50a0673b9f4031"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44b80daff99b4aa336d0d6dddfa85e74"><td class="memTemplParams" colspan="2">template&lt;typename TOrigin , typename TUnit , typename TIdx , typename TWorkDiv &gt; </td></tr>
+<tr class="memitem:a44b80daff99b4aa336d0d6dddfa85e74"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a5f7933db4117e5cf67c10b559b645656">ALPAKA_FCT_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1idx.html#a44b80daff99b4aa336d0d6dddfa85e74">alpaka::idx::getIdx</a> (TIdx const &amp;index, TWorkDiv const &amp;workDiv) -&gt; Vec&lt; <a class="el" href="namespacealpaka_1_1dim.html#a3cd5c34a55999be55481237289ef4737">alpaka::dim::DimT</a>&lt; TWorkDiv &gt;&gt;</td></tr>
+<tr class="memdesc:a44b80daff99b4aa336d0d6dddfa85e74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the indices requested.  <a href="#a44b80daff99b4aa336d0d6dddfa85e74">More...</a><br /></td></tr>
+<tr class="separator:a44b80daff99b4aa336d0d6dddfa85e74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Copyright 2014-2015 Benjamin Worpitz</p>
@@ -178,7 +169,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_704b24238599043534bfd555c7616f8b.html">traits</a></li><li class="navelem"><a class="el" href="traits_2Idx_8hpp.html">Idx.hpp</a></li>
-    <li class="footer">Generated on Tue Apr 7 2015 09:20:05 for alpaka by
+    <li class="footer">Generated on Sat May 23 2015 14:48:26 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

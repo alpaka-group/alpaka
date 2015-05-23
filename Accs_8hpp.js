@@ -1,13 +1,13 @@
 var Accs_8hpp =
 [
-    [ "GetAccName", "structalpaka_1_1accs_1_1detail_1_1GetAccName.html", "structalpaka_1_1accs_1_1detail_1_1GetAccName" ],
-    [ "AccCudaIfAvailableElseVoid", "Accs_8hpp.html#a95de027f568a8198f43aec24206bfdd5", null ],
-    [ "AccFibersIfAvailableElseVoid", "Accs_8hpp.html#a9c0e591a6736b51dc4a2fa0b97eb30ad", null ],
-    [ "AccOmp2IfAvailableElseVoid", "Accs_8hpp.html#a1072b4a58af8a97e07f0ce0461650eb5", null ],
-    [ "AccThreadsIfAvailableElseVoid", "Accs_8hpp.html#a78b92f5825b76936e3bb07d45745026d", null ],
-    [ "EnabledAccs", "Accs_8hpp.html#a72692aca548fbb76a12e555175799527", null ],
-    [ "EnabledAccsVoid", "Accs_8hpp.html#a39aec0d11ca941eeac1203d4081a6705", null ],
-    [ "getMaxBlockThreadCountEnabledAccs", "Accs_8hpp.html#a8d93f358e6329c9704e0c98e4eb842a8", null ],
-    [ "getMaxBlockThreadExtentsEnabledAccs", "Accs_8hpp.html#a59090a4512a86c6e4dddf2707df4a029", null ],
-    [ "writeEnabledAccs", "Accs_8hpp.html#a3de7adb3ff2fb436ff365854640190a9", null ]
+    [ "StreamOutAccName", "structalpaka_1_1accs_1_1detail_1_1StreamOutAccName.html", "structalpaka_1_1accs_1_1detail_1_1StreamOutAccName" ],
+    [ "AccCpuFibersIfAvailableElseVoid", "Accs_8hpp.html#a04017df1d6b57b9d22be5c89d0643c86", null ],
+    [ "AccCpuOmp2IfAvailableElseVoid", "Accs_8hpp.html#a3d3774521bf86f2c09c2f3360f8b0a6e", null ],
+    [ "AccCpuOmp4CpuIfAvailableElseVoid", "Accs_8hpp.html#af27f5956b8166627dc027c55d1a3c4bb", null ],
+    [ "AccCpuSerialIfAvailableElseVoid", "Accs_8hpp.html#a74dabd9751eb2db12ff027f6ed01f868", null ],
+    [ "AccCpuThreadsIfAvailableElseVoid", "Accs_8hpp.html#ac5fd8ee522cd556b81718d0b293af62b", null ],
+    [ "AccGpuCudaIfAvailableElseVoid", "Accs_8hpp.html#a7cf807f1bfbe56677e0682de1c4e1e5e", null ],
+    [ "EnabledAccs", "Accs_8hpp.html#a4960fe978e55f58905aaf8c0e3c9bdb7", null ],
+    [ "EnabledAccsVoid", "Accs_8hpp.html#a861937a8c177d32b22ffef213a67da07", null ],
+    [ "writeEnabledAccs", "Accs_8hpp.html#a262ae762b2119f1101f1fbd2ad461f6c", null ]
 ];

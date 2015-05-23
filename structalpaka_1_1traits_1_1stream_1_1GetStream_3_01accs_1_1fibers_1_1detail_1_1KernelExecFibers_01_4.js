@@ -1,4 +1,0 @@
-var structalpaka_1_1traits_1_1stream_1_1GetStream_3_01accs_1_1fibers_1_1detail_1_1KernelExecFibers_01_4 =
-[
-    [ "getStream", "structalpaka_1_1traits_1_1stream_1_1GetStream_3_01accs_1_1fibers_1_1detail_1_1KernelExecFibers_01_4.html#a6453cd1a64dba7f6135766ab44e9426d", null ]
-];

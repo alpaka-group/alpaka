@@ -118,33 +118,94 @@ $(document).ready(function(){initNavTree('namespacealpaka_1_1accs_1_1detail.html
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1accs_1_1detail_1_1GetAccName.html">GetAccName</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The accelerator name write wrapper.  <a href="structalpaka_1_1accs_1_1detail_1_1GetAccName.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1accs_1_1detail_1_1StreamOutAccName.html">StreamOutAccName</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The accelerator name write wrapper.  <a href="structalpaka_1_1accs_1_1detail_1_1StreamOutAccName.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a95de027f568a8198f43aec24206bfdd5"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1accs_1_1detail.html#a95de027f568a8198f43aec24206bfdd5">AccCudaIfAvailableElseVoid</a> = <a class="el" href="namespacealpaka.html#a7f3eb47153a5d942c55f0900da437e5b">AccCuda</a></td></tr>
-<tr class="separator:a95de027f568a8198f43aec24206bfdd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c0e591a6736b51dc4a2fa0b97eb30ad"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1accs_1_1detail.html#a9c0e591a6736b51dc4a2fa0b97eb30ad">AccFibersIfAvailableElseVoid</a> = <a class="el" href="namespacealpaka.html#ae1059b6e3a1a5de03b64a9ca85116812">AccFibers</a></td></tr>
-<tr class="separator:a9c0e591a6736b51dc4a2fa0b97eb30ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1072b4a58af8a97e07f0ce0461650eb5"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1accs_1_1detail.html#a1072b4a58af8a97e07f0ce0461650eb5">AccOmp2IfAvailableElseVoid</a> = void</td></tr>
-<tr class="separator:a1072b4a58af8a97e07f0ce0461650eb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78b92f5825b76936e3bb07d45745026d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1accs_1_1detail.html#a78b92f5825b76936e3bb07d45745026d">AccThreadsIfAvailableElseVoid</a> = <a class="el" href="namespacealpaka.html#abc32aa5ad905e32e3195a5de53b62148">AccThreads</a></td></tr>
-<tr class="separator:a78b92f5825b76936e3bb07d45745026d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a39aec0d11ca941eeac1203d4081a6705"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1accs_1_1detail.html#a39aec0d11ca941eeac1203d4081a6705">EnabledAccsVoid</a> = boost::mpl::vector&lt; <a class="el" href="namespacealpaka.html#a2041e2c1ae1b6c8fea1d04304cc4595e">AccSerial</a>, <a class="el" href="namespacealpaka_1_1accs_1_1detail.html#a78b92f5825b76936e3bb07d45745026d">AccThreadsIfAvailableElseVoid</a>, <a class="el" href="namespacealpaka_1_1accs_1_1detail.html#a9c0e591a6736b51dc4a2fa0b97eb30ad">AccFibersIfAvailableElseVoid</a>, <a class="el" href="namespacealpaka_1_1accs_1_1detail.html#a1072b4a58af8a97e07f0ce0461650eb5">AccOmp2IfAvailableElseVoid</a>, <a class="el" href="namespacealpaka_1_1accs_1_1detail.html#a95de027f568a8198f43aec24206bfdd5">AccCudaIfAvailableElseVoid</a> &gt;</td></tr>
-<tr class="memdesc:a39aec0d11ca941eeac1203d4081a6705"><td class="mdescLeft">&#160;</td><td class="mdescRight">A vector containing all available accelerators and void's.  <a href="#a39aec0d11ca941eeac1203d4081a6705">More...</a><br /></td></tr>
-<tr class="separator:a39aec0d11ca941eeac1203d4081a6705"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04017df1d6b57b9d22be5c89d0643c86"><td class="memTemplParams" colspan="2">template&lt;typename TDim &gt; </td></tr>
+<tr class="memitem:a04017df1d6b57b9d22be5c89d0643c86"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1accs_1_1detail.html#a04017df1d6b57b9d22be5c89d0643c86">AccCpuFibersIfAvailableElseVoid</a> = void</td></tr>
+<tr class="separator:a04017df1d6b57b9d22be5c89d0643c86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d3774521bf86f2c09c2f3360f8b0a6e"><td class="memTemplParams" colspan="2">template&lt;typename TDim &gt; </td></tr>
+<tr class="memitem:a3d3774521bf86f2c09c2f3360f8b0a6e"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1accs_1_1detail.html#a3d3774521bf86f2c09c2f3360f8b0a6e">AccCpuOmp2IfAvailableElseVoid</a> = void</td></tr>
+<tr class="separator:a3d3774521bf86f2c09c2f3360f8b0a6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af27f5956b8166627dc027c55d1a3c4bb"><td class="memTemplParams" colspan="2">template&lt;typename TDim &gt; </td></tr>
+<tr class="memitem:af27f5956b8166627dc027c55d1a3c4bb"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1accs_1_1detail.html#af27f5956b8166627dc027c55d1a3c4bb">AccCpuOmp4CpuIfAvailableElseVoid</a> = void</td></tr>
+<tr class="separator:af27f5956b8166627dc027c55d1a3c4bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74dabd9751eb2db12ff027f6ed01f868"><td class="memTemplParams" colspan="2">template&lt;typename TDim &gt; </td></tr>
+<tr class="memitem:a74dabd9751eb2db12ff027f6ed01f868"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1accs_1_1detail.html#a74dabd9751eb2db12ff027f6ed01f868">AccCpuSerialIfAvailableElseVoid</a> = void</td></tr>
+<tr class="separator:a74dabd9751eb2db12ff027f6ed01f868"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5fd8ee522cd556b81718d0b293af62b"><td class="memTemplParams" colspan="2">template&lt;typename TDim &gt; </td></tr>
+<tr class="memitem:ac5fd8ee522cd556b81718d0b293af62b"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1accs_1_1detail.html#ac5fd8ee522cd556b81718d0b293af62b">AccCpuThreadsIfAvailableElseVoid</a> = void</td></tr>
+<tr class="separator:ac5fd8ee522cd556b81718d0b293af62b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cf807f1bfbe56677e0682de1c4e1e5e"><td class="memTemplParams" colspan="2">template&lt;typename TDim &gt; </td></tr>
+<tr class="memitem:a7cf807f1bfbe56677e0682de1c4e1e5e"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1accs_1_1detail.html#a7cf807f1bfbe56677e0682de1c4e1e5e">AccGpuCudaIfAvailableElseVoid</a> = void</td></tr>
+<tr class="separator:a7cf807f1bfbe56677e0682de1c4e1e5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a861937a8c177d32b22ffef213a67da07"><td class="memTemplParams" colspan="2">template&lt;typename TDim &gt; </td></tr>
+<tr class="memitem:a861937a8c177d32b22ffef213a67da07"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1accs_1_1detail.html#a861937a8c177d32b22ffef213a67da07">EnabledAccsVoid</a> = boost::mpl::vector&lt; <a class="el" href="namespacealpaka_1_1accs_1_1detail.html#a74dabd9751eb2db12ff027f6ed01f868">AccCpuSerialIfAvailableElseVoid</a>&lt; TDim &gt;, <a class="el" href="namespacealpaka_1_1accs_1_1detail.html#ac5fd8ee522cd556b81718d0b293af62b">AccCpuThreadsIfAvailableElseVoid</a>&lt; TDim &gt;, <a class="el" href="namespacealpaka_1_1accs_1_1detail.html#a04017df1d6b57b9d22be5c89d0643c86">AccCpuFibersIfAvailableElseVoid</a>&lt; TDim &gt;, <a class="el" href="namespacealpaka_1_1accs_1_1detail.html#a3d3774521bf86f2c09c2f3360f8b0a6e">AccCpuOmp2IfAvailableElseVoid</a>&lt; TDim &gt;, <a class="el" href="namespacealpaka_1_1accs_1_1detail.html#af27f5956b8166627dc027c55d1a3c4bb">AccCpuOmp4CpuIfAvailableElseVoid</a>&lt; TDim &gt;, <a class="el" href="namespacealpaka_1_1accs_1_1detail.html#a7cf807f1bfbe56677e0682de1c4e1e5e">AccGpuCudaIfAvailableElseVoid</a>&lt; TDim &gt; &gt;</td></tr>
+<tr class="memdesc:a861937a8c177d32b22ffef213a67da07"><td class="mdescLeft">&#160;</td><td class="mdescRight">A vector containing all available accelerators and void's.  <a href="#a861937a8c177d32b22ffef213a67da07">More...</a><br /></td></tr>
+<tr class="separator:a861937a8c177d32b22ffef213a67da07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The detail namespace is used to separate implementation details from user accessible code. </p>
 </div><h2 class="groupheader">Typedef Documentation</h2>
-<a class="anchor" id="a95de027f568a8198f43aec24206bfdd5"></a>
+<a class="anchor" id="a04017df1d6b57b9d22be5c89d0643c86"></a>
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDim &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka_1_1accs_1_1detail.html#a95de027f568a8198f43aec24206bfdd5">alpaka::accs::detail::AccCudaIfAvailableElseVoid</a> = typedef <a class="el" href="namespacealpaka.html#a7f3eb47153a5d942c55f0900da437e5b">AccCuda</a></td>
+          <td class="memname">using <a class="el" href="namespacealpaka_1_1accs_1_1detail.html#a04017df1d6b57b9d22be5c89d0643c86">alpaka::accs::detail::AccCpuFibersIfAvailableElseVoid</a> = typedef void</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="Accs_8hpp_source.html#l00102">102</a> of file <a class="el" href="Accs_8hpp_source.html">Accs.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a3d3774521bf86f2c09c2f3360f8b0a6e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDim &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacealpaka_1_1accs_1_1detail.html#a3d3774521bf86f2c09c2f3360f8b0a6e">alpaka::accs::detail::AccCpuOmp2IfAvailableElseVoid</a> = typedef void</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="Accs_8hpp_source.html#l00111">111</a> of file <a class="el" href="Accs_8hpp_source.html">Accs.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af27f5956b8166627dc027c55d1a3c4bb"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDim &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacealpaka_1_1accs_1_1detail.html#af27f5956b8166627dc027c55d1a3c4bb">alpaka::accs::detail::AccCpuOmp4CpuIfAvailableElseVoid</a> = typedef void</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="Accs_8hpp_source.html#l00120">120</a> of file <a class="el" href="Accs_8hpp_source.html">Accs.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a74dabd9751eb2db12ff027f6ed01f868"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDim &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacealpaka_1_1accs_1_1detail.html#a74dabd9751eb2db12ff027f6ed01f868">alpaka::accs::detail::AccCpuSerialIfAvailableElseVoid</a> = typedef void</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -153,61 +214,53 @@ Typedefs</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a9c0e591a6736b51dc4a2fa0b97eb30ad"></a>
+<a class="anchor" id="ac5fd8ee522cd556b81718d0b293af62b"></a>
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDim &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka_1_1accs_1_1detail.html#a9c0e591a6736b51dc4a2fa0b97eb30ad">alpaka::accs::detail::AccFibersIfAvailableElseVoid</a> = typedef <a class="el" href="namespacealpaka.html#ae1059b6e3a1a5de03b64a9ca85116812">AccFibers</a></td>
+          <td class="memname">using <a class="el" href="namespacealpaka_1_1accs_1_1detail.html#ac5fd8ee522cd556b81718d0b293af62b">alpaka::accs::detail::AccCpuThreadsIfAvailableElseVoid</a> = typedef void</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="Accs_8hpp_source.html#l00074">74</a> of file <a class="el" href="Accs_8hpp_source.html">Accs.hpp</a>.</p>
+<p>Definition at line <a class="el" href="Accs_8hpp_source.html#l00093">93</a> of file <a class="el" href="Accs_8hpp_source.html">Accs.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a1072b4a58af8a97e07f0ce0461650eb5"></a>
+<a class="anchor" id="a7cf807f1bfbe56677e0682de1c4e1e5e"></a>
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDim &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka_1_1accs_1_1detail.html#a1072b4a58af8a97e07f0ce0461650eb5">alpaka::accs::detail::AccOmp2IfAvailableElseVoid</a> = typedef void</td>
+          <td class="memname">using <a class="el" href="namespacealpaka_1_1accs_1_1detail.html#a7cf807f1bfbe56677e0682de1c4e1e5e">alpaka::accs::detail::AccGpuCudaIfAvailableElseVoid</a> = typedef void</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="Accs_8hpp_source.html#l00081">81</a> of file <a class="el" href="Accs_8hpp_source.html">Accs.hpp</a>.</p>
+<p>Definition at line <a class="el" href="Accs_8hpp_source.html#l00129">129</a> of file <a class="el" href="Accs_8hpp_source.html">Accs.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a78b92f5825b76936e3bb07d45745026d"></a>
+<a class="anchor" id="a861937a8c177d32b22ffef213a67da07"></a>
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename TDim &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka_1_1accs_1_1detail.html#a78b92f5825b76936e3bb07d45745026d">alpaka::accs::detail::AccThreadsIfAvailableElseVoid</a> = typedef <a class="el" href="namespacealpaka.html#abc32aa5ad905e32e3195a5de53b62148">AccThreads</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="Accs_8hpp_source.html#l00069">69</a> of file <a class="el" href="Accs_8hpp_source.html">Accs.hpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a39aec0d11ca941eeac1203d4081a6705"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka_1_1accs_1_1detail.html#a39aec0d11ca941eeac1203d4081a6705">alpaka::accs::detail::EnabledAccsVoid</a> = typedef boost::mpl::vector&lt; <a class="el" href="namespacealpaka.html#a2041e2c1ae1b6c8fea1d04304cc4595e">AccSerial</a>, <a class="el" href="namespacealpaka_1_1accs_1_1detail.html#a78b92f5825b76936e3bb07d45745026d">AccThreadsIfAvailableElseVoid</a>, <a class="el" href="namespacealpaka_1_1accs_1_1detail.html#a9c0e591a6736b51dc4a2fa0b97eb30ad">AccFibersIfAvailableElseVoid</a>, <a class="el" href="namespacealpaka_1_1accs_1_1detail.html#a1072b4a58af8a97e07f0ce0461650eb5">AccOmp2IfAvailableElseVoid</a>, <a class="el" href="namespacealpaka_1_1accs_1_1detail.html#a95de027f568a8198f43aec24206bfdd5">AccCudaIfAvailableElseVoid</a> &gt;</td>
+          <td class="memname">using <a class="el" href="namespacealpaka_1_1accs_1_1detail.html#a861937a8c177d32b22ffef213a67da07">alpaka::accs::detail::EnabledAccsVoid</a> = typedef boost::mpl::vector&lt; <a class="el" href="namespacealpaka_1_1accs_1_1detail.html#a74dabd9751eb2db12ff027f6ed01f868">AccCpuSerialIfAvailableElseVoid</a>&lt;TDim&gt;, <a class="el" href="namespacealpaka_1_1accs_1_1detail.html#ac5fd8ee522cd556b81718d0b293af62b">AccCpuThreadsIfAvailableElseVoid</a>&lt;TDim&gt;, <a class="el" href="namespacealpaka_1_1accs_1_1detail.html#a04017df1d6b57b9d22be5c89d0643c86">AccCpuFibersIfAvailableElseVoid</a>&lt;TDim&gt;, <a class="el" href="namespacealpaka_1_1accs_1_1detail.html#a3d3774521bf86f2c09c2f3360f8b0a6e">AccCpuOmp2IfAvailableElseVoid</a>&lt;TDim&gt;, <a class="el" href="namespacealpaka_1_1accs_1_1detail.html#af27f5956b8166627dc027c55d1a3c4bb">AccCpuOmp4CpuIfAvailableElseVoid</a>&lt;TDim&gt;, <a class="el" href="namespacealpaka_1_1accs_1_1detail.html#a7cf807f1bfbe56677e0682de1c4e1e5e">AccGpuCudaIfAvailableElseVoid</a>&lt;TDim&gt; &gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>A vector containing all available accelerators and void's. </p>
 
-<p>Definition at line <a class="el" href="Accs_8hpp_source.html#l00098">98</a> of file <a class="el" href="Accs_8hpp_source.html">Accs.hpp</a>.</p>
+<p>Definition at line <a class="el" href="Accs_8hpp_source.html#l00144">144</a> of file <a class="el" href="Accs_8hpp_source.html">Accs.hpp</a>.</p>
 
 </div>
 </div>
@@ -217,7 +270,7 @@ Typedefs</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1accs.html">accs</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1accs_1_1detail.html">detail</a></li>
-    <li class="footer">Generated on Tue Apr 7 2015 09:20:06 for alpaka by
+    <li class="footer">Generated on Sat May 23 2015 14:48:27 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

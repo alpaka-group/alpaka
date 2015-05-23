@@ -1,4 +1,0 @@
-var structalpaka_1_1traits_1_1extent_1_1GetExtents_3_01alpaka_1_1mem_1_1BufPlainPtrWrapper_3_01TSpac0992fbfd98bf1a3780cdc587ce0fe68d =
-[
-    [ "getExtents", "structalpaka_1_1traits_1_1extent_1_1GetExtents_3_01alpaka_1_1mem_1_1BufPlainPtrWrapper_3_01TSpac0992fbfd98bf1a3780cdc587ce0fe68d.html#a301287792897a97425b0ee090e928d0e", null ]
-];

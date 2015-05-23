@@ -1,5 +1,5 @@
 var SysInfo_8hpp =
 [
-    [ "getCpuName", "SysInfo_8hpp.html#a65ad34e012e6f8fdbbbed5607f61000e", null ],
-    [ "getGlobalMemSizeBytes", "SysInfo_8hpp.html#a217cc01511c1198bdf47a62f9aa4b307", null ]
+    [ "getCpuName", "SysInfo_8hpp.html#ae625bd75819a61cb582ad5065aa3e4ef", null ],
+    [ "getGlobalMemSizeBytes", "SysInfo_8hpp.html#ab42814b18e259bc175fa73327ecb6500", null ]
 ];

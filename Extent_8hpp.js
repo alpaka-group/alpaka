@@ -1,19 +1,18 @@
 var Extent_8hpp =
 [
-    [ "GetDepth", "structalpaka_1_1traits_1_1extent_1_1GetDepth.html", "structalpaka_1_1traits_1_1extent_1_1GetDepth" ],
-    [ "GetExtents", "structalpaka_1_1traits_1_1extent_1_1GetExtents.html", null ],
-    [ "GetHeight", "structalpaka_1_1traits_1_1extent_1_1GetHeight.html", "structalpaka_1_1traits_1_1extent_1_1GetHeight" ],
-    [ "GetWidth", "structalpaka_1_1traits_1_1extent_1_1GetWidth.html", "structalpaka_1_1traits_1_1extent_1_1GetWidth" ],
-    [ "GetWidth< T, typename std::enable_if< std::is_integral< T >::value &&std::is_unsigned< T >::value >::type >", "structalpaka_1_1traits_1_1extent_1_1GetWidth_3_01T_00_01typename_01std_1_1enable__if_3_01std_1_16e859323b31b50f33015eb8e23ccfd31.html", "structalpaka_1_1traits_1_1extent_1_1GetWidth_3_01T_00_01typename_01std_1_1enable__if_3_01std_1_16e859323b31b50f33015eb8e23ccfd31" ],
-    [ "SetDepth", "structalpaka_1_1traits_1_1extent_1_1SetDepth.html", null ],
-    [ "SetHeight", "structalpaka_1_1traits_1_1extent_1_1SetHeight.html", null ],
-    [ "SetWidth", "structalpaka_1_1traits_1_1extent_1_1SetWidth.html", null ],
-    [ "getDepth", "Extent_8hpp.html#ae0401be4e9c053062fbc9d6917d0459b", null ],
-    [ "getExtents", "Extent_8hpp.html#af392c032e46a8d1a4e8140a5ee16fe57", null ],
-    [ "getHeight", "Extent_8hpp.html#a43d8ee4f6592599fcf4f53cd12c7338e", null ],
-    [ "getProductOfExtents", "Extent_8hpp.html#a4f1ed4588835bf42d394b9250cdef4ed", null ],
-    [ "getWidth", "Extent_8hpp.html#a502751417312beee0d02f08c92e53da7", null ],
-    [ "setDepth", "Extent_8hpp.html#a15443e3fa41eaed02611e0e58a3e792c", null ],
-    [ "setHeight", "Extent_8hpp.html#ad476913e498a910e40943354590a958c", null ],
-    [ "setWidth", "Extent_8hpp.html#a2ab65f9870f3f9c432ca0b43f0750c37", null ]
+    [ "GetExtent", "structalpaka_1_1traits_1_1extent_1_1GetExtent.html", "structalpaka_1_1traits_1_1extent_1_1GetExtent" ],
+    [ "GetExtent< std::integral_constant< UInt, 0u >, T, typename std::enable_if< std::is_integral< T >::value &&std::is_unsigned< T >::value >::type >", "structalpaka_1_1traits_1_1extent_1_1GetExtent_3_01std_1_1integral__constant_3_01UInt_00_010u_01_ca568b3421bf1570f10bdc078ed0788b.html", "structalpaka_1_1traits_1_1extent_1_1GetExtent_3_01std_1_1integral__constant_3_01UInt_00_010u_01_ca568b3421bf1570f10bdc078ed0788b" ],
+    [ "SetExtent", "structalpaka_1_1traits_1_1extent_1_1SetExtent.html", [
+      [ "type", "structalpaka_1_1traits_1_1extent_1_1SetExtent_1_1type.html", "structalpaka_1_1traits_1_1extent_1_1SetExtent_1_1type" ]
+    ] ],
+    [ "getDepth", "Extent_8hpp.html#a2f82c92902f73c2bcf42366f29844cc3", null ],
+    [ "getExtent", "Extent_8hpp.html#a9c79bda22374b9a8fe1e687df4b40e95", null ],
+    [ "getHeight", "Extent_8hpp.html#a8fcf7445a8a5e8bd086dc9e3b2da0a16", null ],
+    [ "getProductOfExtents", "Extent_8hpp.html#a5b8a09684ada6ada8d43d26e5241f284", null ],
+    [ "getProductOfExtentsInternal", "Extent_8hpp.html#af4b40a014b850e2bae25a17d4222493e", null ],
+    [ "getWidth", "Extent_8hpp.html#af230c5dba963d32523f49c44402dff8f", null ],
+    [ "setDepth", "Extent_8hpp.html#a978f5ec98a736474dc5a379bcc983f5c", null ],
+    [ "setExtent", "Extent_8hpp.html#a8db06707e659424a224ae0b26bde5f91", null ],
+    [ "setHeight", "Extent_8hpp.html#aa4c907711271e2a597be85736d6a054d", null ],
+    [ "setWidth", "Extent_8hpp.html#a885e8adf4a0eb61a84785d3c181d095a", null ]
 ];

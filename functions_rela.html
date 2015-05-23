@@ -117,35 +117,29 @@ $(document).ready(function(){initNavTree('functions_rela.html','');});
 
 <div class="contents">
 &#160;<ul>
-<li>::alpaka::accs::fibers::detail::KernelExecFibers
-: <a class="el" href="classalpaka_1_1accs_1_1fibers_1_1detail_1_1AccFibers.html#aed05ada83abb0817843cca275bb9edfd">alpaka::accs::fibers::detail::AccFibers</a>
+<li>::alpaka::accs::fibers::detail::ExecCpuFibers&lt; TDim &gt;
+: <a class="el" href="classalpaka_1_1accs_1_1fibers_1_1detail_1_1AccCpuFibers.html#ad74bb655c0c1a48198d2c1e80d02827f">alpaka::accs::fibers::detail::AccCpuFibers&lt; TDim &gt;</a>
 </li>
-<li>::alpaka::accs::omp::omp2::detail::KernelExecOmp2
-: <a class="el" href="classalpaka_1_1accs_1_1omp_1_1omp2_1_1detail_1_1AccOmp2.html#ab305b847d01a016f66b06bccd46b9f72">alpaka::accs::omp::omp2::detail::AccOmp2</a>
+<li>::alpaka::accs::omp::omp2::detail::ExecCpuOmp2&lt; TDim &gt;
+: <a class="el" href="classalpaka_1_1accs_1_1omp_1_1omp2_1_1detail_1_1AccCpuOmp2.html#a5eee439c6ea0a84f216500e21aefcf40">alpaka::accs::omp::omp2::detail::AccCpuOmp2&lt; TDim &gt;</a>
 </li>
-<li>::alpaka::accs::serial::detail::KernelExecSerial
-: <a class="el" href="classalpaka_1_1accs_1_1serial_1_1detail_1_1AccSerial.html#a249d6084aca9ab380e548995d8608c13">alpaka::accs::serial::detail::AccSerial</a>
+<li>::alpaka::accs::omp::omp4::cpu::detail::ExecCpuOmp4&lt; TDim &gt;
+: <a class="el" href="classalpaka_1_1accs_1_1omp_1_1omp4_1_1cpu_1_1detail_1_1AccCpuOmp4.html#a9c91f5eacdbb1c8606c153f3c1845c37">alpaka::accs::omp::omp4::cpu::detail::AccCpuOmp4&lt; TDim &gt;</a>
 </li>
-<li>::alpaka::accs::threads::detail::KernelExecThreads
-: <a class="el" href="classalpaka_1_1accs_1_1threads_1_1detail_1_1AccThreads.html#ad8c0f30d68613d3f22089d5b6b719e36">alpaka::accs::threads::detail::AccThreads</a>
+<li>::alpaka::accs::serial::detail::ExecCpuSerial&lt; TDim &gt;
+: <a class="el" href="classalpaka_1_1accs_1_1serial_1_1detail_1_1AccCpuSerial.html#a6f433ac0c92faa454fe102d383181d69">alpaka::accs::serial::detail::AccCpuSerial&lt; TDim &gt;</a>
+</li>
+<li>::alpaka::accs::threads::detail::ExecCpuThreads&lt; TDim &gt;
+: <a class="el" href="classalpaka_1_1accs_1_1threads_1_1detail_1_1AccCpuThreads.html#a1e2d4bd988a1e77b14fa4daed7a1193d">alpaka::accs::threads::detail::AccCpuThreads&lt; TDim &gt;</a>
 </li>
 <li>alpaka::traits::atomic::AtomicOp
 : <a class="el" href="classalpaka_1_1accs_1_1threads_1_1detail_1_1AtomicThreads.html#abe67d5723bd2009cdca7659d696719e8">alpaka::accs::threads::detail::AtomicThreads</a>
 </li>
+<li>DevManCpu
+: <a class="el" href="classalpaka_1_1devs_1_1cpu_1_1DevCpu.html#ac1fee66b7a4cc1cddb917e0dea644b1b">alpaka::devs::cpu::DevCpu</a>
+</li>
 <li>DevManCuda
-: <a class="el" href="classalpaka_1_1accs_1_1cuda_1_1detail_1_1DevCuda.html#a692bf768825fc65880c4ca07a7fdbd0d">alpaka::accs::cuda::detail::DevCuda</a>
-</li>
-<li>DevManFibers
-: <a class="el" href="classalpaka_1_1accs_1_1fibers_1_1detail_1_1DevFibers.html#a521a15a4336ff461676583206593f37f">alpaka::accs::fibers::detail::DevFibers</a>
-</li>
-<li>DevManOmp2
-: <a class="el" href="classalpaka_1_1accs_1_1omp_1_1omp2_1_1detail_1_1DevOmp2.html#a6f16fe345c577df350dc08e45dbc8863">alpaka::accs::omp::omp2::detail::DevOmp2</a>
-</li>
-<li>DevManSerial
-: <a class="el" href="classalpaka_1_1accs_1_1serial_1_1detail_1_1DevSerial.html#a52ed645655458adc4ef79a933a2bdcc5">alpaka::accs::serial::detail::DevSerial</a>
-</li>
-<li>DevManThreads
-: <a class="el" href="classalpaka_1_1accs_1_1threads_1_1detail_1_1DevThreads.html#a3647317c0f90b315ac422eb23bdee00a">alpaka::accs::threads::detail::DevThreads</a>
+: <a class="el" href="classalpaka_1_1devs_1_1cuda_1_1DevCuda.html#a692bf768825fc65880c4ca07a7fdbd0d">alpaka::devs::cuda::DevCuda</a>
 </li>
 </ul>
 </div><!-- contents -->
@@ -153,7 +147,7 @@ $(document).ready(function(){initNavTree('functions_rela.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Apr 7 2015 09:20:14 for alpaka by
+    <li class="footer">Generated on Sat May 23 2015 14:48:36 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

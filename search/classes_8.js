@@ -1,8 +1,27 @@
 var searchData=
 [
-  ['kernelexeccuda',['KernelExecCuda',['../classalpaka_1_1accs_1_1cuda_1_1detail_1_1KernelExecCuda.html',1,'alpaka::accs::cuda::detail']]],
-  ['kernelexecfibers',['KernelExecFibers',['../classalpaka_1_1accs_1_1fibers_1_1detail_1_1KernelExecFibers.html',1,'alpaka::accs::fibers::detail']]],
-  ['kernelexecomp2',['KernelExecOmp2',['../classalpaka_1_1accs_1_1omp_1_1omp2_1_1detail_1_1KernelExecOmp2.html',1,'alpaka::accs::omp::omp2::detail']]],
-  ['kernelexecserial',['KernelExecSerial',['../classalpaka_1_1accs_1_1serial_1_1detail_1_1KernelExecSerial.html',1,'alpaka::accs::serial::detail']]],
-  ['kernelexecthreads',['KernelExecThreads',['../classalpaka_1_1accs_1_1threads_1_1detail_1_1KernelExecThreads.html',1,'alpaka::accs::threads::detail']]]
+  ['make_5finteger_5fsequence_5fhelper',['make_integer_sequence_helper',['../structalpaka_1_1detail_1_1make__integer__sequence__helper.html',1,'alpaka::detail']]],
+  ['make_5finteger_5fsequence_5fhelper_3c_20false_2c_20false_2c_20t_2c_20tuibegin_2c_20std_3a_3aintegral_5fconstant_3c_20t_2c_20tidx_20_3e_2c_20integer_5fsequence_3c_20t_2c_20tvals_2e_2e_2e_3e_20_3e',['make_integer_sequence_helper&lt; false, false, T, TuiBegin, std::integral_constant&lt; T, TIdx &gt;, integer_sequence&lt; T, TVals...&gt; &gt;',['../structalpaka_1_1detail_1_1make__integer__sequence__helper_3_01false_00_01false_00_01T_00_01TuiBebde1b37ee93ced1b96ec7547c9f2b221.html',1,'alpaka::detail']]],
+  ['make_5finteger_5fsequence_5fhelper_3c_20false_2c_20tidx_3d_3d_28tuibegin_2b1_29_2c_20t_2c_20tuibegin_2c_20std_3a_3aintegral_5fconstant_3c_20t_2c_20tidx_2d1_20_3e_2c_20integer_5fsequence_3c_20t_2c_20tidx_2d1_2c_20tvals_2e_2e_2e_3e_20_3e',['make_integer_sequence_helper&lt; false, TIdx==(TuiBegin+1), T, TuiBegin, std::integral_constant&lt; T, TIdx-1 &gt;, integer_sequence&lt; T, TIdx-1, TVals...&gt; &gt;',['../structalpaka_1_1detail_1_1make__integer__sequence__helper.html',1,'alpaka::detail']]],
+  ['make_5finteger_5fsequence_5fhelper_3c_20false_2c_20true_2c_20t_2c_20tuibegin_2c_20std_3a_3aintegral_5fconstant_3c_20t_2c_20tuibegin_20_3e_2c_20integer_5fsequence_3c_20t_2c_20tvals_2e_2e_2e_3e_20_3e',['make_integer_sequence_helper&lt; false, true, T, TuiBegin, std::integral_constant&lt; T, TuiBegin &gt;, integer_sequence&lt; T, TVals...&gt; &gt;',['../structalpaka_1_1detail_1_1make__integer__sequence__helper_3_01false_00_01true_00_01T_00_01TuiBeg9b51bec5da577ed794c23826d55bec7f.html',1,'alpaka::detail']]],
+  ['map',['Map',['../structalpaka_1_1traits_1_1mem_1_1Map.html',1,'alpaka::traits::mem']]],
+  ['map_3c_20devs_3a_3acpu_3a_3adetail_3a_3abufcpu_3c_20telem_2c_20tdim_20_3e_2c_20devs_3a_3acpu_3a_3adevcpu_20_3e',['Map&lt; devs::cpu::detail::BufCpu&lt; TElem, TDim &gt;, devs::cpu::DevCpu &gt;',['../structalpaka_1_1traits_1_1mem_1_1Map_3_01devs_1_1cpu_1_1detail_1_1BufCpu_3_01TElem_00_01TDim_01_d2494cf074f45e6e741bae84a7ddb5c1.html',1,'alpaka::traits::mem']]],
+  ['map_3c_20devs_3a_3acpu_3a_3adetail_3a_3abufcpu_3c_20telem_2c_20tdim_20_3e_2c_20devs_3a_3acuda_3a_3adevcuda_20_3e',['Map&lt; devs::cpu::detail::BufCpu&lt; TElem, TDim &gt;, devs::cuda::DevCuda &gt;',['../structalpaka_1_1traits_1_1mem_1_1Map_3_01devs_1_1cpu_1_1detail_1_1BufCpu_3_01TElem_00_01TDim_01_7243d8158fc6529ff4a76f7c70181101.html',1,'alpaka::traits::mem']]],
+  ['map_3c_20devs_3a_3acuda_3a_3adetail_3a_3abufcuda_3c_20telem_2c_20tdim_20_3e_2c_20devs_3a_3acuda_3a_3adevcuda_20_3e',['Map&lt; devs::cuda::detail::BufCuda&lt; TElem, TDim &gt;, devs::cuda::DevCuda &gt;',['../structalpaka_1_1traits_1_1mem_1_1Map_3_01devs_1_1cuda_1_1detail_1_1BufCuda_3_01TElem_00_01TDim_0dbcf25c5b52edfa5f9ade02dd1fcb9d3.html',1,'alpaka::traits::mem']]],
+  ['mapidx',['MapIdx',['../structalpaka_1_1detail_1_1MapIdx.html',1,'alpaka::detail']]],
+  ['mapidx_3c_201u_2c_201u_20_3e',['MapIdx&lt; 1u, 1u &gt;',['../structalpaka_1_1detail_1_1MapIdx_3_011u_00_011u_01_4.html',1,'alpaka::detail']]],
+  ['mapidx_3c_201u_2c_202u_20_3e',['MapIdx&lt; 1u, 2u &gt;',['../structalpaka_1_1detail_1_1MapIdx_3_011u_00_012u_01_4.html',1,'alpaka::detail']]],
+  ['mapidx_3c_201u_2c_203u_20_3e',['MapIdx&lt; 1u, 3u &gt;',['../structalpaka_1_1detail_1_1MapIdx_3_011u_00_013u_01_4.html',1,'alpaka::detail']]],
+  ['mapidx_3c_202u_2c_201u_20_3e',['MapIdx&lt; 2u, 1u &gt;',['../structalpaka_1_1detail_1_1MapIdx_3_012u_00_011u_01_4.html',1,'alpaka::detail']]],
+  ['mapidx_3c_203u_2c_201u_20_3e',['MapIdx&lt; 3u, 1u &gt;',['../structalpaka_1_1detail_1_1MapIdx_3_013u_00_011u_01_4.html',1,'alpaka::detail']]],
+  ['max',['Max',['../structalpaka_1_1ops_1_1Max.html',1,'alpaka::ops']]],
+  ['memcopycuda',['MemCopyCuda',['../structalpaka_1_1devs_1_1cuda_1_1detail_1_1MemCopyCuda.html',1,'alpaka::devs::cuda::detail']]],
+  ['memcopycuda_3c_20alpaka_3a_3adim_3a_3adim3_20_3e',['MemCopyCuda&lt; alpaka::dim::Dim3 &gt;',['../structalpaka_1_1devs_1_1cuda_1_1detail_1_1MemCopyCuda_3_01alpaka_1_1dim_1_1Dim3_01_4.html',1,'alpaka::devs::cuda::detail']]],
+  ['memcopycuda_3c_20dim_3a_3adim1_20_3e',['MemCopyCuda&lt; dim::Dim1 &gt;',['../structalpaka_1_1devs_1_1cuda_1_1detail_1_1MemCopyCuda_3_01dim_1_1Dim1_01_4.html',1,'alpaka::devs::cuda::detail']]],
+  ['memcopycuda_3c_20dim_3a_3adim2_20_3e',['MemCopyCuda&lt; dim::Dim2 &gt;',['../structalpaka_1_1devs_1_1cuda_1_1detail_1_1MemCopyCuda_3_01dim_1_1Dim2_01_4.html',1,'alpaka::devs::cuda::detail']]],
+  ['memcopycudapeer',['MemCopyCudaPeer',['../structalpaka_1_1devs_1_1cuda_1_1detail_1_1MemCopyCudaPeer.html',1,'alpaka::devs::cuda::detail']]],
+  ['memcopycudapeer_3c_20dim_3a_3adim1_20_3e',['MemCopyCudaPeer&lt; dim::Dim1 &gt;',['../structalpaka_1_1devs_1_1cuda_1_1detail_1_1MemCopyCudaPeer_3_01dim_1_1Dim1_01_4.html',1,'alpaka::devs::cuda::detail']]],
+  ['memcopycudapeer_3c_20dim_3a_3adim2_20_3e',['MemCopyCudaPeer&lt; dim::Dim2 &gt;',['../structalpaka_1_1devs_1_1cuda_1_1detail_1_1MemCopyCudaPeer_3_01dim_1_1Dim2_01_4.html',1,'alpaka::devs::cuda::detail']]],
+  ['memcopycudapeer_3c_20dim_3a_3adim3_20_3e',['MemCopyCudaPeer&lt; dim::Dim3 &gt;',['../structalpaka_1_1devs_1_1cuda_1_1detail_1_1MemCopyCudaPeer_3_01dim_1_1Dim3_01_4.html',1,'alpaka::devs::cuda::detail']]],
+  ['min',['Min',['../structalpaka_1_1ops_1_1Min.html',1,'alpaka::ops']]]
 ];

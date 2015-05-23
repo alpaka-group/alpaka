@@ -1,4 +1,0 @@
-var structalpaka_1_1traits_1_1wait_1_1WaiterWaitFor_3_01host_1_1detail_1_1StreamHost_3_01TDev_01_4_00fbaf3c0b3b722bb28b123a05dcf9b89 =
-[
-    [ "waiterWaitFor", "structalpaka_1_1traits_1_1wait_1_1WaiterWaitFor_3_01host_1_1detail_1_1StreamHost_3_01TDev_01_4_00fbaf3c0b3b722bb28b123a05dcf9b89.html#a697cd8f37fb940cf734508a1107b8b4b", null ]
-];

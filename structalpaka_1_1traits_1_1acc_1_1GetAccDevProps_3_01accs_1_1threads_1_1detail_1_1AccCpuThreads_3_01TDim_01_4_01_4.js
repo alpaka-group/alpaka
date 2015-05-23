@@ -1,0 +1,4 @@
+var structalpaka_1_1traits_1_1acc_1_1GetAccDevProps_3_01accs_1_1threads_1_1detail_1_1AccCpuThreads_3_01TDim_01_4_01_4 =
+[
+    [ "getAccDevProps", "structalpaka_1_1traits_1_1acc_1_1GetAccDevProps_3_01accs_1_1threads_1_1detail_1_1AccCpuThreads_3_01TDim_01_4_01_4.html#a4a6e3ddf8baba14259c68893a6f95ed8", null ]
+];

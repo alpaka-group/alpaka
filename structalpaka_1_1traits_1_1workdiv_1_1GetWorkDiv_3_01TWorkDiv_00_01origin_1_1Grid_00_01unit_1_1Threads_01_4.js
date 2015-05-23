@@ -1,0 +1,4 @@
+var structalpaka_1_1traits_1_1workdiv_1_1GetWorkDiv_3_01TWorkDiv_00_01origin_1_1Grid_00_01unit_1_1Threads_01_4 =
+[
+    [ "getWorkDiv", "structalpaka_1_1traits_1_1workdiv_1_1GetWorkDiv_3_01TWorkDiv_00_01origin_1_1Grid_00_01unit_1_1Threads_01_4.html#a41f17decd9a5abee7bf5a929c5250991", null ]
+];

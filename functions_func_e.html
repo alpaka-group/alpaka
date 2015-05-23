@@ -96,16 +96,19 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions_func_f.html#index_f"><span>f</span></a></li>
       <li><a href="functions_func_g.html#index_g"><span>g</span></a></li>
       <li><a href="functions_func_i.html#index_i"><span>i</span></a></li>
-      <li><a href="functions_func_k.html#index_k"><span>k</span></a></li>
       <li><a href="functions_func_m.html#index_m"><span>m</span></a></li>
+      <li><a href="functions_func_n.html#index_n"><span>n</span></a></li>
       <li><a href="functions_func_o.html#index_o"><span>o</span></a></li>
       <li><a href="functions_func_p.html#index_p"><span>p</span></a></li>
       <li><a href="functions_func_r.html#index_r"><span>r</span></a></li>
       <li><a href="functions_func_s.html#index_s"><span>s</span></a></li>
       <li><a href="functions_func_t.html#index_t"><span>t</span></a></li>
+      <li><a href="functions_func_u.html#index_u"><span>u</span></a></li>
       <li><a href="functions_func_v.html#index_v"><span>v</span></a></li>
       <li><a href="functions_func_w.html#index_w"><span>w</span></a></li>
+      <li><a href="functions_func_x.html#index_x"><span>x</span></a></li>
       <li><a href="functions_func_y.html#index_y"><span>y</span></a></li>
+      <li><a href="functions_func_z.html#index_z"><span>z</span></a></li>
       <li><a href="functions_func_~.html#index_~"><span>~</span></a></li>
     </ul>
   </div>
@@ -143,18 +146,36 @@ $(document).ready(function(){initNavTree('functions_func_e.html','');});
 
 <h3><a class="anchor" id="index_e"></a>- e -</h3><ul>
 <li>enqueueTask()
-: <a class="el" href="classalpaka_1_1detail_1_1ConcurrentExecPool.html#a003619a8194271fe8a5f3ac38276c290">alpaka::detail::ConcurrentExecPool&lt; TConcurrentExec, TPromise, TCurrentException, TYield, TMutex, TUniqueLock, TCondVar, TbYield &gt;</a>
-, <a class="el" href="classalpaka_1_1detail_1_1ConcurrentExecPool_3_01TConcurrentExec_00_01TPromise_00_01TCurrentExcep53306791c16fe288a45bb138e5455b4f.html#a8b937c13fca783620fac771bc9d2d87d">alpaka::detail::ConcurrentExecPool&lt; TConcurrentExec, TPromise, TCurrentException, TYield, TMutex, TUniqueLock, TCondVar, false &gt;</a>
+: <a class="el" href="classalpaka_1_1detail_1_1ConcurrentExecPool.html#a42b510b470fd5f0ce7659bc8b98d406b">alpaka::detail::ConcurrentExecPool&lt; TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TbYield &gt;</a>
+, <a class="el" href="classalpaka_1_1detail_1_1ConcurrentExecPool_3_01TConcurrentExec_00_01TPromise_00_01TYield_00_01Tb852a219d408599791c606e727c5a08c.html#a1457ed0be876fd8d96782466a73f89b0">alpaka::detail::ConcurrentExecPool&lt; TConcurrentExec, TPromise, TYield, TMutex, TCondVar, false &gt;</a>
+</li>
+<li>EventCpu()
+: <a class="el" href="classalpaka_1_1devs_1_1cpu_1_1EventCpu.html#adc9a27ef3c45abe15c5216d9eeca2b39">alpaka::devs::cpu::EventCpu</a>
 </li>
 <li>EventCuda()
-: <a class="el" href="classalpaka_1_1accs_1_1cuda_1_1detail_1_1EventCuda.html#a8cca047e18a36a564087c531bce485f1">alpaka::accs::cuda::detail::EventCuda</a>
-</li>
-<li>EventHost()
-: <a class="el" href="classalpaka_1_1host_1_1detail_1_1EventHost.html#aab97eebef77c192f2ecae780345458c6">alpaka::host::detail::EventHost&lt; TDev &gt;</a>
+: <a class="el" href="classalpaka_1_1devs_1_1cuda_1_1EventCuda.html#a312f24bb593d91558b6be6e633c331df">alpaka::devs::cuda::EventCuda</a>
 </li>
 <li>eventTest()
-: <a class="el" href="structalpaka_1_1traits_1_1event_1_1EventTest_3_01accs_1_1cuda_1_1detail_1_1EventCuda_01_4.html#adccad05f11af49929fee95c84786bdbc">alpaka::traits::event::EventTest&lt; accs::cuda::detail::EventCuda &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1event_1_1EventTest_3_01host_1_1detail_1_1EventHost_3_01TDev_01_4_01_4.html#a3322c829cea1111fd3c347b75cf1af5c">alpaka::traits::event::EventTest&lt; host::detail::EventHost&lt; TDev &gt; &gt;</a>
+: <a class="el" href="structalpaka_1_1traits_1_1event_1_1EventTest_3_01devs_1_1cpu_1_1EventCpu_01_4.html#a0bc3b6480c94d63769b4c6827e6d6c3d">alpaka::traits::event::EventTest&lt; devs::cpu::EventCpu &gt;</a>
+, <a class="el" href="structalpaka_1_1traits_1_1event_1_1EventTest_3_01devs_1_1cuda_1_1EventCuda_01_4.html#a48fcca28e2a646a26d1c572317b19fb9">alpaka::traits::event::EventTest&lt; devs::cuda::EventCuda &gt;</a>
+</li>
+<li>ExecCpuFibers()
+: <a class="el" href="classalpaka_1_1accs_1_1fibers_1_1detail_1_1ExecCpuFibers.html#a419deda3d818b54185041d111768cc58">alpaka::accs::fibers::detail::ExecCpuFibers&lt; TDim &gt;</a>
+</li>
+<li>ExecCpuOmp2()
+: <a class="el" href="classalpaka_1_1accs_1_1omp_1_1omp2_1_1detail_1_1ExecCpuOmp2.html#ac6246737199a6bf17350f75fd7b014d9">alpaka::accs::omp::omp2::detail::ExecCpuOmp2&lt; TDim &gt;</a>
+</li>
+<li>ExecCpuOmp4()
+: <a class="el" href="classalpaka_1_1accs_1_1omp_1_1omp4_1_1cpu_1_1detail_1_1ExecCpuOmp4.html#aa6e0d9520198555ab48b9713bea067ee">alpaka::accs::omp::omp4::cpu::detail::ExecCpuOmp4&lt; TDim &gt;</a>
+</li>
+<li>ExecCpuSerial()
+: <a class="el" href="classalpaka_1_1accs_1_1serial_1_1detail_1_1ExecCpuSerial.html#acc2af27c90719a8e9432fada752b595b">alpaka::accs::serial::detail::ExecCpuSerial&lt; TDim &gt;</a>
+</li>
+<li>ExecCpuThreads()
+: <a class="el" href="classalpaka_1_1accs_1_1threads_1_1detail_1_1ExecCpuThreads.html#a358da01f14925a74d8e51117989c6cc9">alpaka::accs::threads::detail::ExecCpuThreads&lt; TDim &gt;</a>
+</li>
+<li>ExecGpuCuda()
+: <a class="el" href="classalpaka_1_1accs_1_1cuda_1_1detail_1_1ExecGpuCuda.html#ae5991a7bd2ccbd0bdf447817372dea8f">alpaka::accs::cuda::detail::ExecGpuCuda&lt; TDim &gt;</a>
 </li>
 </ul>
 </div><!-- contents -->
@@ -162,7 +183,7 @@ $(document).ready(function(){initNavTree('functions_func_e.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Apr 7 2015 09:20:14 for alpaka by
+    <li class="footer">Generated on Sat May 23 2015 14:48:36 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

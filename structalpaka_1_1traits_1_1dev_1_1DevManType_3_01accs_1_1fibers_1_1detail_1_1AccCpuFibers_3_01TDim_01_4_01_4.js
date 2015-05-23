@@ -1,0 +1,4 @@
+var structalpaka_1_1traits_1_1dev_1_1DevManType_3_01accs_1_1fibers_1_1detail_1_1AccCpuFibers_3_01TDim_01_4_01_4 =
+[
+    [ "type", "structalpaka_1_1traits_1_1dev_1_1DevManType_3_01accs_1_1fibers_1_1detail_1_1AccCpuFibers_3_01TDim_01_4_01_4.html#ae40b5896117d720b1151fa5a14e6f569", null ]
+];

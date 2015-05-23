@@ -113,15 +113,25 @@ $(document).ready(function(){initNavTree('IdxMapping_8hpp.html','');});
 <div class="title">IdxMapping.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;<a class="el" href="core_2Common_8hpp_source.html">alpaka/core/Common.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="Vec_8hpp_source.html">alpaka/core/Vec.hpp</a>&gt;</code><br />
+<div class="textblock"><code>#include &lt;<a class="el" href="Vec_8hpp_source.html">alpaka/core/Vec.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="core_2Common_8hpp_source.html">alpaka/core/Common.hpp</a>&gt;</code><br />
+<code>#include &lt;boost/core/ignore_unused.hpp&gt;</code><br />
 </div>
 <p><a href="IdxMapping_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1MapIdx.html">alpaka::detail::MapIdx&lt; TuiIdxDimDst, TuiIdxDimSrc &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1MapIdx.html">alpaka::detail::MapIdx&lt; TuiIdxDimOut, TuiIdxDimIn &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps a linear index to a N dimensional index.  <a href="structalpaka_1_1detail_1_1MapIdx.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1MapIdx_3_011u_00_011u_01_4.html">alpaka::detail::MapIdx&lt; 1u, 1u &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps a linear index to a linear index.  <a href="structalpaka_1_1detail_1_1MapIdx_3_011u_00_011u_01_4.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1MapIdx_3_011u_00_012u_01_4.html">alpaka::detail::MapIdx&lt; 1u, 2u &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps a 2 dimensional index to a linear index.  <a href="structalpaka_1_1detail_1_1MapIdx_3_011u_00_012u_01_4.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1MapIdx_3_011u_00_013u_01_4.html">alpaka::detail::MapIdx&lt; 1u, 3u &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps a 3 dimensional index to a linear index.  <a href="structalpaka_1_1detail_1_1MapIdx_3_011u_00_013u_01_4.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1MapIdx_3_012u_00_011u_01_4.html">alpaka::detail::MapIdx&lt; 2u, 1u &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps a linear index to a 2 dimensional index.  <a href="structalpaka_1_1detail_1_1MapIdx_3_012u_00_011u_01_4.html#details">More...</a><br /></td></tr>
@@ -141,10 +151,10 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a2aa56c0fd48e312e50a7dc33fb434e91"><td class="memTemplParams" colspan="2">template&lt;UInt TuiIdxDimDst, UInt TuiIdxDimSrc, typename TElem &gt; </td></tr>
-<tr class="memitem:a2aa56c0fd48e312e50a7dc33fb434e91"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a2aa56c0fd48e312e50a7dc33fb434e91">alpaka::mapIdx</a> (Vec&lt; TuiIdxDimSrc, TElem &gt; const &amp;index, Vec&lt; TuiIdxDimDst-1u, TElem &gt; const &amp;extents) -&gt; Vec&lt; TuiIdxDimDst &gt;</td></tr>
-<tr class="memdesc:a2aa56c0fd48e312e50a7dc33fb434e91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps a N dimensional index to a N dimensional position.  <a href="#a2aa56c0fd48e312e50a7dc33fb434e91">More...</a><br /></td></tr>
-<tr class="separator:a2aa56c0fd48e312e50a7dc33fb434e91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c6a5776135710708cb091b7e21a4e3f"><td class="memTemplParams" colspan="2">template&lt;UInt TuiIdxDimOut, UInt TuiIdxDimIn, typename TElem &gt; </td></tr>
+<tr class="memitem:a2c6a5776135710708cb091b7e21a4e3f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a2c6a5776135710708cb091b7e21a4e3f">alpaka::mapIdx</a> (Vec&lt; dim::Dim&lt; TuiIdxDimIn &gt;, TElem &gt; const &amp;index, Vec&lt; dim::Dim&lt;(TuiIdxDimOut&lt; TuiIdxDimIn)?TuiIdxDimIn:TuiIdxDimOut &gt;, TElem &gt; const &amp;extents) -&gt; Vec&lt; dim::Dim&lt; TuiIdxDimOut &gt;, TElem &gt;</td></tr>
+<tr class="memdesc:a2c6a5776135710708cb091b7e21a4e3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps a N dimensional index to a N dimensional position.  <a href="#a2c6a5776135710708cb091b7e21a4e3f">More...</a><br /></td></tr>
+<tr class="separator:a2c6a5776135710708cb091b7e21a4e3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Copyright 2014-2015 Benjamin Worpitz</p>
@@ -160,7 +170,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="IdxMapping_8hpp.html">IdxMapping.hpp</a></li>
-    <li class="footer">Generated on Tue Apr 7 2015 09:20:06 for alpaka by
+    <li class="footer">Generated on Sat May 23 2015 14:31:09 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

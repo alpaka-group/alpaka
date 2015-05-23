@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.9"/>
-<title>alpaka: alpaka::mem::detail::View&lt; TBuf &gt; Class Template Reference</title>
+<title>alpaka: alpaka::mem::detail::View&lt; TElem, TDim, TDev &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -107,11 +107,12 @@ $(document).ready(function(){initNavTree('classalpaka_1_1mem_1_1detail_1_1View.h
 
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classalpaka_1_1mem_1_1detail_1_1View-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">alpaka::mem::detail::View&lt; TBuf &gt; Class Template Reference</div>  </div>
+<div class="title">alpaka::mem::detail::View&lt; TElem, TDim, TDev &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -120,44 +121,131 @@ $(document).ready(function(){initNavTree('classalpaka_1_1mem_1_1detail_1_1View.h
 
 <p><code>#include &lt;<a class="el" href="core_2mem_2View_8hpp_source.html">View.hpp</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a0f12fc2c899b2a742b7f53d86d2a7cdd"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html#a0f12fc2c899b2a742b7f53d86d2a7cdd">Buf</a> = <a class="el" href="classalpaka_1_1mem_1_1BufPlainPtrWrapper.html">BufPlainPtrWrapper</a>&lt; TElem, TDim, TDev &gt;</td></tr>
+<tr class="separator:a0f12fc2c899b2a742b7f53d86d2a7cdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ca0a9cbd3d5f439c41a802ba7566fec"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html#a8ca0a9cbd3d5f439c41a802ba7566fec">Dev</a> = TDev</td></tr>
+<tr class="separator:a8ca0a9cbd3d5f439c41a802ba7566fec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f39b7b23b3d27b96416eace8aa4e5bf"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html#a3f39b7b23b3d27b96416eace8aa4e5bf">Dim</a> = TDim</td></tr>
+<tr class="separator:a3f39b7b23b3d27b96416eace8aa4e5bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3322dfddc26f97396390805525cb7ec3"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html#a3322dfddc26f97396390805525cb7ec3">Elem</a> = TElem</td></tr>
+<tr class="separator:a3322dfddc26f97396390805525cb7ec3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a3b2b70aabf911809077da5f818380d34"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html#a3b2b70aabf911809077da5f818380d34">View</a> (TBuf const &amp;buf)</td></tr>
-<tr class="memdesc:a3b2b70aabf911809077da5f818380d34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a3b2b70aabf911809077da5f818380d34">More...</a><br /></td></tr>
-<tr class="separator:a3b2b70aabf911809077da5f818380d34"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c249239b4102a9079f4ab9c97215817"><td class="memTemplParams" colspan="2">template&lt;typename TOffsets , typename TExtents &gt; </td></tr>
-<tr class="memitem:a3c249239b4102a9079f4ab9c97215817"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html#a3c249239b4102a9079f4ab9c97215817">View</a> (TBuf const &amp;buf, TExtents const &amp;extentsElements, TOffsets const &amp;relativeOffsetsElements=TOffsets())</td></tr>
-<tr class="memdesc:a3c249239b4102a9079f4ab9c97215817"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a3c249239b4102a9079f4ab9c97215817">More...</a><br /></td></tr>
-<tr class="separator:a3c249239b4102a9079f4ab9c97215817"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99c6e7bdfb0400e78ad547bff8540559"><td class="memTemplParams" colspan="2">template&lt;typename TBuf &gt; </td></tr>
+<tr class="memitem:a99c6e7bdfb0400e78ad547bff8540559"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html#a99c6e7bdfb0400e78ad547bff8540559">View</a> (TBuf const &amp;buf)</td></tr>
+<tr class="memdesc:a99c6e7bdfb0400e78ad547bff8540559"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a99c6e7bdfb0400e78ad547bff8540559">More...</a><br /></td></tr>
+<tr class="separator:a99c6e7bdfb0400e78ad547bff8540559"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af29fc1747e2b27d561c4a11c23db7a3d"><td class="memTemplParams" colspan="2">template&lt;typename TBuf &gt; </td></tr>
+<tr class="memitem:af29fc1747e2b27d561c4a11c23db7a3d"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html#af29fc1747e2b27d561c4a11c23db7a3d">View</a> (TBuf &amp;buf)</td></tr>
+<tr class="memdesc:af29fc1747e2b27d561c4a11c23db7a3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#af29fc1747e2b27d561c4a11c23db7a3d">More...</a><br /></td></tr>
+<tr class="separator:af29fc1747e2b27d561c4a11c23db7a3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a881343d73a5fbb2fc426d6cf5470b045"><td class="memTemplParams" colspan="2">template&lt;typename TBuf , typename TOffsets , typename TExtents &gt; </td></tr>
+<tr class="memitem:a881343d73a5fbb2fc426d6cf5470b045"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html#a881343d73a5fbb2fc426d6cf5470b045">View</a> (TBuf const &amp;buf, TExtents const &amp;extentsElements, TOffsets const &amp;relativeOffsetsElements=TOffsets())</td></tr>
+<tr class="memdesc:a881343d73a5fbb2fc426d6cf5470b045"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a881343d73a5fbb2fc426d6cf5470b045">More...</a><br /></td></tr>
+<tr class="separator:a881343d73a5fbb2fc426d6cf5470b045"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81cbc8d2f817b273b0460b988b6f1c54"><td class="memTemplParams" colspan="2">template&lt;typename TBuf , typename TOffsets , typename TExtents &gt; </td></tr>
+<tr class="memitem:a81cbc8d2f817b273b0460b988b6f1c54"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html#a81cbc8d2f817b273b0460b988b6f1c54">View</a> (TBuf &amp;buf, TExtents const &amp;extentsElements, TOffsets const &amp;relativeOffsetsElements=TOffsets())</td></tr>
+<tr class="memdesc:a81cbc8d2f817b273b0460b988b6f1c54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a81cbc8d2f817b273b0460b988b6f1c54">More...</a><br /></td></tr>
+<tr class="separator:a81cbc8d2f817b273b0460b988b6f1c54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:ac0c5c018ae82112b6d5f03af161939b1"><td class="memItemLeft" align="right" valign="top">Buf&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html#ac0c5c018ae82112b6d5f03af161939b1">m_buf</a></td></tr>
-<tr class="separator:ac0c5c018ae82112b6d5f03af161939b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af35f6bdc125a43eabb023eb07ff19fa0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; Dim::value &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html#af35f6bdc125a43eabb023eb07ff19fa0">m_vExtentsElements</a></td></tr>
-<tr class="separator:af35f6bdc125a43eabb023eb07ff19fa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab6d5b98ab3adb2288a41ba83c7853a64"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; Dim::value &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html#ab6d5b98ab3adb2288a41ba83c7853a64">m_vOffsetsElements</a></td></tr>
-<tr class="separator:ab6d5b98ab3adb2288a41ba83c7853a64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e58597dd1fb13f4f28db738deb8863b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html#a0f12fc2c899b2a742b7f53d86d2a7cdd">Buf</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html#a1e58597dd1fb13f4f28db738deb8863b">m_Buf</a></td></tr>
+<tr class="separator:a1e58597dd1fb13f4f28db738deb8863b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a075088ccc87cda0f5e88c3490ad6a905"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html#a3f39b7b23b3d27b96416eace8aa4e5bf">Dim</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html#a075088ccc87cda0f5e88c3490ad6a905">m_vExtentsElements</a></td></tr>
+<tr class="separator:a075088ccc87cda0f5e88c3490ad6a905"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8171c112657be245b7b4010e97f2a63f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html#a3f39b7b23b3d27b96416eace8aa4e5bf">Dim</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html#a8171c112657be245b7b4010e97f2a63f">m_vOffsetsElements</a></td></tr>
+<tr class="separator:a8171c112657be245b7b4010e97f2a63f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;typename TBuf&gt;<br />
-class alpaka::mem::detail::View&lt; TBuf &gt;</h3>
+<div class="textblock"><h3>template&lt;typename TElem, typename TDim, typename TDev&gt;<br />
+class alpaka::mem::detail::View&lt; TElem, TDim, TDev &gt;</h3>
 
 <p>A memory buffer view. </p>
 
-<p>Definition at line <a class="el" href="core_2mem_2View_8hpp_source.html#l00044">44</a> of file <a class="el" href="core_2mem_2View_8hpp_source.html">View.hpp</a>.</p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a3b2b70aabf911809077da5f818380d34"></a>
+<p>Definition at line <a class="el" href="core_2mem_2View_8hpp_source.html#l00063">63</a> of file <a class="el" href="core_2mem_2View_8hpp_source.html">View.hpp</a>.</p>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a class="anchor" id="a0f12fc2c899b2a742b7f53d86d2a7cdd"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TBuf&gt; </div>
+template&lt;typename TElem, typename TDim, typename TDev&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html">alpaka::mem::detail::View</a>&lt; TElem, TDim, TDev &gt;::<a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html#a0f12fc2c899b2a742b7f53d86d2a7cdd">Buf</a> =  <a class="el" href="classalpaka_1_1mem_1_1BufPlainPtrWrapper.html">BufPlainPtrWrapper</a>&lt;TElem, TDim, TDev&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="core_2mem_2View_8hpp_source.html#l00069">69</a> of file <a class="el" href="core_2mem_2View_8hpp_source.html">View.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a8ca0a9cbd3d5f439c41a802ba7566fec"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TElem, typename TDim, typename TDev&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html">alpaka::mem::detail::View</a>&lt; TElem, TDim, TDev &gt;::<a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html#a8ca0a9cbd3d5f439c41a802ba7566fec">Dev</a> =  TDev</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="core_2mem_2View_8hpp_source.html#l00068">68</a> of file <a class="el" href="core_2mem_2View_8hpp_source.html">View.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a3f39b7b23b3d27b96416eace8aa4e5bf"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TElem, typename TDim, typename TDev&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html">alpaka::mem::detail::View</a>&lt; TElem, TDim, TDev &gt;::<a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html#a3f39b7b23b3d27b96416eace8aa4e5bf">Dim</a> =  TDim</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="core_2mem_2View_8hpp_source.html#l00067">67</a> of file <a class="el" href="core_2mem_2View_8hpp_source.html">View.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a3322dfddc26f97396390805525cb7ec3"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TElem, typename TDim, typename TDev&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html">alpaka::mem::detail::View</a>&lt; TElem, TDim, TDev &gt;::<a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html#a3322dfddc26f97396390805525cb7ec3">Elem</a> =  TElem</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="core_2mem_2View_8hpp_source.html#l00066">66</a> of file <a class="el" href="core_2mem_2View_8hpp_source.html">View.hpp</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a99c6e7bdfb0400e78ad547bff8540559"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TElem, typename TDim, typename TDev&gt; </div>
+<div class="memtemplate">
+template&lt;typename TBuf &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html">alpaka::mem::detail::View</a>&lt; TBuf &gt;::<a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html">View</a> </td>
+          <td class="memname"><a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html">alpaka::mem::detail::View</a>&lt; TElem, TDim, TDev &gt;::<a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html">View</a> </td>
           <td>(</td>
           <td class="paramtype">TBuf const &amp;&#160;</td>
           <td class="paramname"><em>buf</em></td><td>)</td>
@@ -174,28 +262,66 @@ template&lt;typename TBuf&gt; </div>
 <p>Constructor. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">buf</td><td>This can be either a memory buffer base or a memory buffer view itself. </td></tr>
+    <tr><td class="paramname">buf</td><td>This can be either a memory buffer or a memory view. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="core_2mem_2View_8hpp_source.html#l00056">56</a> of file <a class="el" href="core_2mem_2View_8hpp_source.html">View.hpp</a>.</p>
+<p>Definition at line <a class="el" href="core_2mem_2View_8hpp_source.html#l00080">80</a> of file <a class="el" href="core_2mem_2View_8hpp_source.html">View.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a3c249239b4102a9079f4ab9c97215817"></a>
+<a class="anchor" id="af29fc1747e2b27d561c4a11c23db7a3d"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TBuf&gt; </div>
+template&lt;typename TElem, typename TDim, typename TDev&gt; </div>
 <div class="memtemplate">
-template&lt;typename TOffsets , typename TExtents &gt; </div>
+template&lt;typename TBuf &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html">alpaka::mem::detail::View</a>&lt; TBuf &gt;::<a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html">View</a> </td>
+          <td class="memname"><a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html">alpaka::mem::detail::View</a>&lt; TElem, TDim, TDev &gt;::<a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html">View</a> </td>
+          <td>(</td>
+          <td class="paramtype">TBuf &amp;&#160;</td>
+          <td class="paramname"><em>buf</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">buf</td><td>This can be either a memory buffer or a memory view. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="core_2mem_2View_8hpp_source.html#l00096">96</a> of file <a class="el" href="core_2mem_2View_8hpp_source.html">View.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a881343d73a5fbb2fc426d6cf5470b045"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TElem, typename TDim, typename TDev&gt; </div>
+<div class="memtemplate">
+template&lt;typename TBuf , typename TOffsets , typename TExtents &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html">alpaka::mem::detail::View</a>&lt; TElem, TDim, TDev &gt;::<a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html">View</a> </td>
           <td>(</td>
           <td class="paramtype">TBuf const &amp;&#160;</td>
           <td class="paramname"><em>buf</em>, </td>
@@ -228,63 +354,119 @@ template&lt;typename TOffsets , typename TExtents &gt; </div>
 <p>Constructor. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">buf</td><td>This can be either a memory buffer base or a memory buffer view itself. </td></tr>
-    <tr><td class="paramname">offsetsElements</td><td>The offsets in elements. </td></tr>
+    <tr><td class="paramname">buf</td><td>This can be either a memory buffer or a memory view. </td></tr>
     <tr><td class="paramname">extentsElements</td><td>The extents in elements. </td></tr>
+    <tr><td class="paramname">relativeOffsetsElements</td><td>The offsets in elements. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="core_2mem_2View_8hpp_source.html#l00072">72</a> of file <a class="el" href="core_2mem_2View_8hpp_source.html">View.hpp</a>.</p>
+<p>Definition at line <a class="el" href="core_2mem_2View_8hpp_source.html#l00117">117</a> of file <a class="el" href="core_2mem_2View_8hpp_source.html">View.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a81cbc8d2f817b273b0460b988b6f1c54"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TElem, typename TDim, typename TDev&gt; </div>
+<div class="memtemplate">
+template&lt;typename TBuf , typename TOffsets , typename TExtents &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html">alpaka::mem::detail::View</a>&lt; TElem, TDim, TDev &gt;::<a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html">View</a> </td>
+          <td>(</td>
+          <td class="paramtype">TBuf &amp;&#160;</td>
+          <td class="paramname"><em>buf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TExtents const &amp;&#160;</td>
+          <td class="paramname"><em>extentsElements</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TOffsets const &amp;&#160;</td>
+          <td class="paramname"><em>relativeOffsetsElements</em> = <code>TOffsets()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">buf</td><td>This can be either a memory buffer or a memory view. </td></tr>
+    <tr><td class="paramname">extentsElements</td><td>The extents in elements. </td></tr>
+    <tr><td class="paramname">relativeOffsetsElements</td><td>The offsets in elements. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="core_2mem_2View_8hpp_source.html#l00150">150</a> of file <a class="el" href="core_2mem_2View_8hpp_source.html">View.hpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="ac0c5c018ae82112b6d5f03af161939b1"></a>
+<a class="anchor" id="a1e58597dd1fb13f4f28db738deb8863b"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TBuf&gt; </div>
+template&lt;typename TElem, typename TDim, typename TDev&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">Buf <a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html">alpaka::mem::detail::View</a>&lt; TBuf &gt;::m_buf</td>
+          <td class="memname"><a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html#a0f12fc2c899b2a742b7f53d86d2a7cdd">Buf</a> <a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html">alpaka::mem::detail::View</a>&lt; TElem, TDim, TDev &gt;::m_Buf</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="core_2mem_2View_8hpp_source.html#l00093">93</a> of file <a class="el" href="core_2mem_2View_8hpp_source.html">View.hpp</a>.</p>
+<p>Definition at line <a class="el" href="core_2mem_2View_8hpp_source.html#l00175">175</a> of file <a class="el" href="core_2mem_2View_8hpp_source.html">View.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="af35f6bdc125a43eabb023eb07ff19fa0"></a>
+<a class="anchor" id="a075088ccc87cda0f5e88c3490ad6a905"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TBuf&gt; </div>
+template&lt;typename TElem, typename TDim, typename TDev&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;Dim::value&gt; <a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html">alpaka::mem::detail::View</a>&lt; TBuf &gt;::m_vExtentsElements</td>
+          <td class="memname"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;<a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html#a3f39b7b23b3d27b96416eace8aa4e5bf">Dim</a>&gt; <a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html">alpaka::mem::detail::View</a>&lt; TElem, TDim, TDev &gt;::m_vExtentsElements</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="core_2mem_2View_8hpp_source.html#l00095">95</a> of file <a class="el" href="core_2mem_2View_8hpp_source.html">View.hpp</a>.</p>
+<p>Definition at line <a class="el" href="core_2mem_2View_8hpp_source.html#l00176">176</a> of file <a class="el" href="core_2mem_2View_8hpp_source.html">View.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ab6d5b98ab3adb2288a41ba83c7853a64"></a>
+<a class="anchor" id="a8171c112657be245b7b4010e97f2a63f"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TBuf&gt; </div>
+template&lt;typename TElem, typename TDim, typename TDev&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;Dim::value&gt; <a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html">alpaka::mem::detail::View</a>&lt; TBuf &gt;::m_vOffsetsElements</td>
+          <td class="memname"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;<a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html#a3f39b7b23b3d27b96416eace8aa4e5bf">Dim</a>&gt; <a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html">alpaka::mem::detail::View</a>&lt; TElem, TDim, TDev &gt;::m_vOffsetsElements</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="core_2mem_2View_8hpp_source.html#l00094">94</a> of file <a class="el" href="core_2mem_2View_8hpp_source.html">View.hpp</a>.</p>
+<p>Definition at line <a class="el" href="core_2mem_2View_8hpp_source.html#l00177">177</a> of file <a class="el" href="core_2mem_2View_8hpp_source.html">View.hpp</a>.</p>
 
 </div>
 </div>
@@ -297,7 +479,7 @@ template&lt;typename TBuf&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1mem.html">mem</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1mem_1_1detail.html">detail</a></li><li class="navelem"><a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html">View</a></li>
-    <li class="footer">Generated on Tue Apr 7 2015 09:20:08 for alpaka by
+    <li class="footer">Generated on Sat May 23 2015 14:48:28 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

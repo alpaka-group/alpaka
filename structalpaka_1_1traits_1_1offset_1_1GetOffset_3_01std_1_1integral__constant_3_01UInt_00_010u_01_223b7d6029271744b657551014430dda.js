@@ -1,0 +1,4 @@
+var structalpaka_1_1traits_1_1offset_1_1GetOffset_3_01std_1_1integral__constant_3_01UInt_00_010u_01_223b7d6029271744b657551014430dda =
+[
+    [ "getOffset", "structalpaka_1_1traits_1_1offset_1_1GetOffset_3_01std_1_1integral__constant_3_01UInt_00_010u_01_223b7d6029271744b657551014430dda.html#a9ca8e6fbdfb23dc267f6c4a9380e8e73", null ]
+];

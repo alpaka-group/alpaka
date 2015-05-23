@@ -114,7 +114,8 @@ $(document).ready(function(){initNavTree('traits_2Dev_8hpp.html','');});
 <div class="title">Dev.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;<a class="el" href="DevProps_8hpp_source.html">alpaka/core/DevProps.hpp</a>&gt;</code><br />
+<div class="textblock"><code>#include &lt;<a class="el" href="AccDevProps_8hpp_source.html">alpaka/core/AccDevProps.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="core_2Common_8hpp_source.html">alpaka/core/Common.hpp</a>&gt;</code><br />
 </div>
 <p><a href="traits_2Dev_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -126,11 +127,20 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1dev_1_1DevType.html">alpaka::traits::dev::DevType&lt; T, TSfinae &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The device type trait.  <a href="structalpaka_1_1traits_1_1dev_1_1DevType.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1dev_1_1GetDev.html">alpaka::traits::dev::GetDev&lt; TDev, TSfinae &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1dev_1_1GetDev.html">alpaka::traits::dev::GetDev&lt; T, TSfinae &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The device get trait.  <a href="structalpaka_1_1traits_1_1dev_1_1GetDev.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1dev_1_1GetDevProps.html">alpaka::traits::dev::GetDevProps&lt; TDev, TSfinae &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The device properties get trait.  <a href="structalpaka_1_1traits_1_1dev_1_1GetDevProps.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1dev_1_1GetFreeMemBytes.html">alpaka::traits::dev::GetFreeMemBytes&lt; T, TSfinae &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The device free memory size get trait.  <a href="structalpaka_1_1traits_1_1dev_1_1GetFreeMemBytes.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1dev_1_1GetMemBytes.html">alpaka::traits::dev::GetMemBytes&lt; TDev, TSfinae &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The device memory size get trait.  <a href="structalpaka_1_1traits_1_1dev_1_1GetMemBytes.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1dev_1_1GetName.html">alpaka::traits::dev::GetName&lt; TDev, TSfinae &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The device name get trait.  <a href="structalpaka_1_1traits_1_1dev_1_1GetName.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1dev_1_1Reset.html">alpaka::traits::dev::Reset&lt; T, TSfinae &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The device reset trait.  <a href="structalpaka_1_1traits_1_1dev_1_1Reset.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -139,7 +149,7 @@ Namespaces</h2></td></tr>
 <tr class="memdesc:namespacealpaka"><td class="mdescLeft">&#160;</td><td class="mdescRight">The alpaka library. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1dev"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dev.html">alpaka::dev</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1dev"><td class="mdescLeft">&#160;</td><td class="mdescRight">The device management functionality. <br /></td></tr>
+<tr class="memdesc:namespacealpaka_1_1dev"><td class="mdescLeft">&#160;</td><td class="mdescRight">The device trait accessors. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1traits"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1traits.html">alpaka::traits</a></td></tr>
 <tr class="memdesc:namespacealpaka_1_1traits"><td class="mdescLeft">&#160;</td><td class="mdescRight">The traits. <br /></td></tr>
@@ -150,26 +160,36 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a8bb8422f0ce90eb5550e38f28abed70e"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a8bb8422f0ce90eb5550e38f28abed70e"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dev.html#a8bb8422f0ce90eb5550e38f28abed70e">alpaka::dev::DevManT</a> = typename traits::dev::DevManType&lt; typename std::decay&lt; T &gt;::type &gt;::type</td></tr>
-<tr class="memdesc:a8bb8422f0ce90eb5550e38f28abed70e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The device manager type trait alias template to remove the ::type.  <a href="#a8bb8422f0ce90eb5550e38f28abed70e">More...</a><br /></td></tr>
-<tr class="separator:a8bb8422f0ce90eb5550e38f28abed70e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a87d7bc1caece2202ed01062b795dc64d"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a87d7bc1caece2202ed01062b795dc64d"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dev.html#a87d7bc1caece2202ed01062b795dc64d">alpaka::dev::DevT</a> = typename traits::dev::DevType&lt; typename std::decay&lt; T &gt;::type &gt;::type</td></tr>
-<tr class="memdesc:a87d7bc1caece2202ed01062b795dc64d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The device type trait alias template to remove the ::type.  <a href="#a87d7bc1caece2202ed01062b795dc64d">More...</a><br /></td></tr>
-<tr class="separator:a87d7bc1caece2202ed01062b795dc64d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8eb0fb3c0dbb0b68a34844566f01be1d"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a8eb0fb3c0dbb0b68a34844566f01be1d"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dev.html#a8eb0fb3c0dbb0b68a34844566f01be1d">alpaka::dev::DevManT</a> = typename traits::dev::DevManType&lt; T &gt;::type</td></tr>
+<tr class="memdesc:a8eb0fb3c0dbb0b68a34844566f01be1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The device manager type trait alias template to remove the ::type.  <a href="#a8eb0fb3c0dbb0b68a34844566f01be1d">More...</a><br /></td></tr>
+<tr class="separator:a8eb0fb3c0dbb0b68a34844566f01be1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc5ee1c9eb4b812f4ffc40915a7cf5b1"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:afc5ee1c9eb4b812f4ffc40915a7cf5b1"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dev.html#afc5ee1c9eb4b812f4ffc40915a7cf5b1">alpaka::dev::DevT</a> = typename traits::dev::DevType&lt; T &gt;::type</td></tr>
+<tr class="memdesc:afc5ee1c9eb4b812f4ffc40915a7cf5b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The device type trait alias template to remove the ::type.  <a href="#afc5ee1c9eb4b812f4ffc40915a7cf5b1">More...</a><br /></td></tr>
+<tr class="separator:afc5ee1c9eb4b812f4ffc40915a7cf5b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ab1b3da0737ddda5eb756620290b1862b"><td class="memTemplParams" colspan="2">template&lt;typename TDev &gt; </td></tr>
-<tr class="memitem:ab1b3da0737ddda5eb756620290b1862b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dev.html#ab1b3da0737ddda5eb756620290b1862b">alpaka::dev::getDev</a> (TDev const &amp;dev) -&gt; decltype(traits::dev::GetDev&lt; TDev &gt;::getDev(std::declval&lt; TDev const &amp; &gt;()))</td></tr>
-<tr class="separator:ab1b3da0737ddda5eb756620290b1862b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af549e9e86c6b63b61fb883fe3b74ce34"><td class="memTemplParams" colspan="2">template&lt;typename TDevMan &gt; </td></tr>
-<tr class="memitem:af549e9e86c6b63b61fb883fe3b74ce34"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dev.html#af549e9e86c6b63b61fb883fe3b74ce34">alpaka::dev::getDevices</a> () -&gt; std::vector&lt; DevT&lt; TDevMan &gt;&gt;</td></tr>
-<tr class="separator:af549e9e86c6b63b61fb883fe3b74ce34"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac3f8bf57cf9b2b5c23d5e1345cbf1c8b"><td class="memTemplParams" colspan="2">template&lt;typename TDev &gt; </td></tr>
-<tr class="memitem:ac3f8bf57cf9b2b5c23d5e1345cbf1c8b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dev.html#ac3f8bf57cf9b2b5c23d5e1345cbf1c8b">alpaka::dev::getDevProps</a> (TDev const &amp;device) -&gt; DevProps</td></tr>
-<tr class="separator:ac3f8bf57cf9b2b5c23d5e1345cbf1c8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad1250362a65458dcffadf7f71a20f5e"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:aad1250362a65458dcffadf7f71a20f5e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dev.html#aad1250362a65458dcffadf7f71a20f5e">alpaka::dev::getDev</a> (T const &amp;t) -&gt; decltype(traits::dev::GetDev&lt; T &gt;::getDev(t))</td></tr>
+<tr class="separator:aad1250362a65458dcffadf7f71a20f5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ae2e4ab2ee53415dc73ebb5831b00d2"><td class="memTemplParams" colspan="2">template&lt;typename TDevMan &gt; </td></tr>
+<tr class="memitem:a9ae2e4ab2ee53415dc73ebb5831b00d2"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dev.html#a9ae2e4ab2ee53415dc73ebb5831b00d2">alpaka::dev::getDevs</a> () -&gt; std::vector&lt; DevT&lt; TDevMan &gt;&gt;</td></tr>
+<tr class="separator:a9ae2e4ab2ee53415dc73ebb5831b00d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7275296fae3634f690b50b12b0ddaf7b"><td class="memTemplParams" colspan="2">template&lt;typename TDev &gt; </td></tr>
+<tr class="memitem:a7275296fae3634f690b50b12b0ddaf7b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dev.html#a7275296fae3634f690b50b12b0ddaf7b">alpaka::dev::getFreeMemBytes</a> (TDev const &amp;dev) -&gt; std::size_t</td></tr>
+<tr class="separator:a7275296fae3634f690b50b12b0ddaf7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1dcf5e731ba081ec87616f4f367caeaa"><td class="memTemplParams" colspan="2">template&lt;typename TDev &gt; </td></tr>
+<tr class="memitem:a1dcf5e731ba081ec87616f4f367caeaa"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dev.html#a1dcf5e731ba081ec87616f4f367caeaa">alpaka::dev::getMemBytes</a> (TDev const &amp;dev) -&gt; std::size_t</td></tr>
+<tr class="separator:a1dcf5e731ba081ec87616f4f367caeaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3097d606e3dbdeeb9f83a8d27d31de8"><td class="memTemplParams" colspan="2">template&lt;typename TDev &gt; </td></tr>
+<tr class="memitem:ae3097d606e3dbdeeb9f83a8d27d31de8"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dev.html#ae3097d606e3dbdeeb9f83a8d27d31de8">alpaka::dev::getName</a> (TDev const &amp;dev) -&gt; std::string</td></tr>
+<tr class="separator:ae3097d606e3dbdeeb9f83a8d27d31de8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad873a841076257da4f7a602525d6f6e3"><td class="memTemplParams" colspan="2">template&lt;typename TDev &gt; </td></tr>
+<tr class="memitem:ad873a841076257da4f7a602525d6f6e3"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dev.html#ad873a841076257da4f7a602525d6f6e3">alpaka::dev::reset</a> (TDev const &amp;dev) -&gt; void</td></tr>
+<tr class="memdesc:ad873a841076257da4f7a602525d6f6e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the device. What this method does is dependent of the accelerator.  <a href="#ad873a841076257da4f7a602525d6f6e3">More...</a><br /></td></tr>
+<tr class="separator:ad873a841076257da4f7a602525d6f6e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Copyright 2014-2015 Benjamin Worpitz</p>
@@ -185,7 +205,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_704b24238599043534bfd555c7616f8b.html">traits</a></li><li class="navelem"><a class="el" href="traits_2Dev_8hpp.html">Dev.hpp</a></li>
-    <li class="footer">Generated on Tue Apr 7 2015 09:20:05 for alpaka by
+    <li class="footer">Generated on Sat May 23 2015 14:48:26 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

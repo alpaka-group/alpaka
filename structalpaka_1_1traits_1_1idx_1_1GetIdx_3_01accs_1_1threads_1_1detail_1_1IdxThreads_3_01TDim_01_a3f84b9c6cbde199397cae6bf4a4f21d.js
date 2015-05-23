@@ -1,0 +1,4 @@
+var structalpaka_1_1traits_1_1idx_1_1GetIdx_3_01accs_1_1threads_1_1detail_1_1IdxThreads_3_01TDim_01_a3f84b9c6cbde199397cae6bf4a4f21d =
+[
+    [ "getIdx", "structalpaka_1_1traits_1_1idx_1_1GetIdx_3_01accs_1_1threads_1_1detail_1_1IdxThreads_3_01TDim_01_a3f84b9c6cbde199397cae6bf4a4f21d.html#adbc50e28999ff3d8fb352c762403125f", null ]
+];

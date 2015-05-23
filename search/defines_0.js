@@ -3,10 +3,8 @@ var searchData=
   ['alpaka_5falign',['ALPAKA_ALIGN',['../core_2Common_8hpp.html#ab7d373a2050fc4dec0b1ccb4d5ac0586',1,'Common.hpp']]],
   ['alpaka_5falign_5f8',['ALPAKA_ALIGN_8',['../core_2Common_8hpp.html#ac5ccd67d1c0a60661c91ddda2e685937',1,'Common.hpp']]],
   ['alpaka_5falignof',['ALPAKA_ALIGNOF',['../core_2Common_8hpp.html#a23dd202bda92266c949271cfa64612e5',1,'Common.hpp']]],
-  ['alpaka_5fcuda_5fcheck',['ALPAKA_CUDA_CHECK',['../accs_2cuda_2Common_8hpp.html#a3bbc2ae82e4d8e9bda5c91aac891af20',1,'Common.hpp']]],
-  ['alpaka_5fcuda_5fcheck_5fmsg',['ALPAKA_CUDA_CHECK_MSG',['../accs_2cuda_2Common_8hpp.html#a4e6c6ff4f2e2517e79afee3fb6f7f5b6',1,'Common.hpp']]],
-  ['alpaka_5fcuda_5fcheck_5fmsg_5fexcp',['ALPAKA_CUDA_CHECK_MSG_EXCP',['../accs_2cuda_2Common_8hpp.html#a2c815725944e7ed981e5694db9e6325f',1,'Common.hpp']]],
-  ['alpaka_5fcuda_5fcheck_5fmsg_5fexcp_5fignore',['ALPAKA_CUDA_CHECK_MSG_EXCP_IGNORE',['../accs_2cuda_2Common_8hpp.html#a51aa6621c831a23d99a776c814c9d818',1,'Common.hpp']]],
+  ['alpaka_5fcuda_5frt_5fcheck',['ALPAKA_CUDA_RT_CHECK',['../core_2Cuda_8hpp.html#a69aee482f007066dfdb79c831e8ba771',1,'Cuda.hpp']]],
+  ['alpaka_5fcuda_5frt_5fcheck_5fignore',['ALPAKA_CUDA_RT_CHECK_IGNORE',['../core_2Cuda_8hpp.html#a9a16799e40e87bdbe70e027f2bf8bf5c',1,'Cuda.hpp']]],
   ['alpaka_5fdebug',['ALPAKA_DEBUG',['../Debug_8hpp.html#a7f84384a17e301a636770e17c2951383',1,'Debug.hpp']]],
   ['alpaka_5fdebug_5fbreak',['ALPAKA_DEBUG_BREAK',['../Debug_8hpp.html#ac3248b76e967a40d459bf83b17de9b03',1,'Debug.hpp']]],
   ['alpaka_5fdebug_5fdisabled',['ALPAKA_DEBUG_DISABLED',['../Debug_8hpp.html#a47f20425304365ddf7b5bd4426987a8e',1,'Debug.hpp']]],
@@ -20,5 +18,6 @@ var searchData=
   ['alpaka_5ffct_5fhost_5facc',['ALPAKA_FCT_HOST_ACC',['../core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0',1,'Common.hpp']]],
   ['alpaka_5fno_5fhost_5facc_5fwarning',['ALPAKA_NO_HOST_ACC_WARNING',['../core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c',1,'Common.hpp']]],
   ['alpaka_5foptimal_5falignment',['ALPAKA_OPTIMAL_ALIGNMENT',['../core_2Common_8hpp.html#a1259a647639e3950f2bdd1bdca98652a',1,'Common.hpp']]],
+  ['alpaka_5funroll',['ALPAKA_UNROLL',['../core_2Common_8hpp.html#a5dc1b91c2ff61cf069b5a3100d324883',1,'Common.hpp']]],
   ['alpaka_5fversion',['ALPAKA_VERSION',['../alpaka_8hpp.html#a9639bc6e4b859663f62c4c64a8855ff0',1,'alpaka.hpp']]]
 ];

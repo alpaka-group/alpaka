@@ -1,0 +1,5 @@
+var structalpaka_1_1traits_1_1mem_1_1GetPtrNative_3_01devs_1_1cpu_1_1detail_1_1BufCpu_3_01TElem_00_01TDim_01_4_01_4 =
+[
+    [ "getPtrNative", "structalpaka_1_1traits_1_1mem_1_1GetPtrNative_3_01devs_1_1cpu_1_1detail_1_1BufCpu_3_01TElem_00_01TDim_01_4_01_4.html#ab0366b1a60325b81a40165e206d3cc19", null ],
+    [ "getPtrNative", "structalpaka_1_1traits_1_1mem_1_1GetPtrNative_3_01devs_1_1cpu_1_1detail_1_1BufCpu_3_01TElem_00_01TDim_01_4_01_4.html#a054029aef54ec2407badb20b22e34e3f", null ]
+];

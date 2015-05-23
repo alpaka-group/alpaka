@@ -97,16 +97,19 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions_f.html#index_f"><span>f</span></a></li>
       <li><a href="functions_g.html#index_g"><span>g</span></a></li>
       <li><a href="functions_i.html#index_i"><span>i</span></a></li>
-      <li><a href="functions_k.html#index_k"><span>k</span></a></li>
       <li><a href="functions_m.html#index_m"><span>m</span></a></li>
+      <li><a href="functions_n.html#index_n"><span>n</span></a></li>
       <li><a href="functions_o.html#index_o"><span>o</span></a></li>
       <li><a href="functions_p.html#index_p"><span>p</span></a></li>
       <li><a href="functions_r.html#index_r"><span>r</span></a></li>
       <li><a href="functions_s.html#index_s"><span>s</span></a></li>
       <li><a href="functions_t.html#index_t"><span>t</span></a></li>
+      <li><a href="functions_u.html#index_u"><span>u</span></a></li>
       <li><a href="functions_v.html#index_v"><span>v</span></a></li>
       <li><a href="functions_w.html#index_w"><span>w</span></a></li>
+      <li><a href="functions_x.html#index_x"><span>x</span></a></li>
       <li><a href="functions_y.html#index_y"><span>y</span></a></li>
+      <li><a href="functions_z.html#index_z"><span>z</span></a></li>
       <li><a href="functions_~.html#index_~"><span>~</span></a></li>
     </ul>
   </div>
@@ -143,17 +146,20 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <div class="textblock">Here is a list of all class members with links to the classes they belong to:</div>
 
 <h3><a class="anchor" id="index_:"></a>- : -</h3><ul>
-<li>::alpaka::accs::fibers::detail::KernelExecFibers
-: <a class="el" href="classalpaka_1_1accs_1_1fibers_1_1detail_1_1AccFibers.html#aed05ada83abb0817843cca275bb9edfd">alpaka::accs::fibers::detail::AccFibers</a>
+<li>::alpaka::accs::fibers::detail::ExecCpuFibers&lt; TDim &gt;
+: <a class="el" href="classalpaka_1_1accs_1_1fibers_1_1detail_1_1AccCpuFibers.html#ad74bb655c0c1a48198d2c1e80d02827f">alpaka::accs::fibers::detail::AccCpuFibers&lt; TDim &gt;</a>
 </li>
-<li>::alpaka::accs::omp::omp2::detail::KernelExecOmp2
-: <a class="el" href="classalpaka_1_1accs_1_1omp_1_1omp2_1_1detail_1_1AccOmp2.html#ab305b847d01a016f66b06bccd46b9f72">alpaka::accs::omp::omp2::detail::AccOmp2</a>
+<li>::alpaka::accs::omp::omp2::detail::ExecCpuOmp2&lt; TDim &gt;
+: <a class="el" href="classalpaka_1_1accs_1_1omp_1_1omp2_1_1detail_1_1AccCpuOmp2.html#a5eee439c6ea0a84f216500e21aefcf40">alpaka::accs::omp::omp2::detail::AccCpuOmp2&lt; TDim &gt;</a>
 </li>
-<li>::alpaka::accs::serial::detail::KernelExecSerial
-: <a class="el" href="classalpaka_1_1accs_1_1serial_1_1detail_1_1AccSerial.html#a249d6084aca9ab380e548995d8608c13">alpaka::accs::serial::detail::AccSerial</a>
+<li>::alpaka::accs::omp::omp4::cpu::detail::ExecCpuOmp4&lt; TDim &gt;
+: <a class="el" href="classalpaka_1_1accs_1_1omp_1_1omp4_1_1cpu_1_1detail_1_1AccCpuOmp4.html#a9c91f5eacdbb1c8606c153f3c1845c37">alpaka::accs::omp::omp4::cpu::detail::AccCpuOmp4&lt; TDim &gt;</a>
 </li>
-<li>::alpaka::accs::threads::detail::KernelExecThreads
-: <a class="el" href="classalpaka_1_1accs_1_1threads_1_1detail_1_1AccThreads.html#ad8c0f30d68613d3f22089d5b6b719e36">alpaka::accs::threads::detail::AccThreads</a>
+<li>::alpaka::accs::serial::detail::ExecCpuSerial&lt; TDim &gt;
+: <a class="el" href="classalpaka_1_1accs_1_1serial_1_1detail_1_1AccCpuSerial.html#a6f433ac0c92faa454fe102d383181d69">alpaka::accs::serial::detail::AccCpuSerial&lt; TDim &gt;</a>
+</li>
+<li>::alpaka::accs::threads::detail::ExecCpuThreads&lt; TDim &gt;
+: <a class="el" href="classalpaka_1_1accs_1_1threads_1_1detail_1_1AccCpuThreads.html#a1e2d4bd988a1e77b14fa4daed7a1193d">alpaka::accs::threads::detail::AccCpuThreads&lt; TDim &gt;</a>
 </li>
 </ul>
 </div><!-- contents -->
@@ -161,7 +167,7 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Apr 7 2015 09:20:14 for alpaka by
+    <li class="footer">Generated on Sat May 23 2015 14:48:36 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

@@ -1,4 +1,0 @@
-var structalpaka_1_1traits_1_1extent_1_1GetHeight_3_01accs_1_1cuda_1_1detail_1_1BufCuda_3_01TElem_006f820c93b7d5a3dbec484f19982e5c91 =
-[
-    [ "getHeight", "structalpaka_1_1traits_1_1extent_1_1GetHeight_3_01accs_1_1cuda_1_1detail_1_1BufCuda_3_01TElem_006f820c93b7d5a3dbec484f19982e5c91.html#a60b47066bbcab5063190fb8f29bff3f3", null ]
-];

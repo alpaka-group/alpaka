@@ -1,0 +1,4 @@
+var structalpaka_1_1traits_1_1mem_1_1Pin_3_01devs_1_1cuda_1_1detail_1_1BufCuda_3_01TElem_00_01TDim_01_4_01_4 =
+[
+    [ "pin", "structalpaka_1_1traits_1_1mem_1_1Pin_3_01devs_1_1cuda_1_1detail_1_1BufCuda_3_01TElem_00_01TDim_01_4_01_4.html#a2e9e7004d04f4e25d87e22f1f2e67515", null ]
+];
