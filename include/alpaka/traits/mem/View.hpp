@@ -141,7 +141,7 @@ namespace alpaka
             //! The memory buffer view creation type trait.
             //#############################################################################
             template<
-                typename TBuf,
+                typename TView,
                 typename TSfinae = void>
             struct CreateView;
 
@@ -149,7 +149,7 @@ namespace alpaka
             //! The buffer trait.
             //#############################################################################
             template<
-                typename TBuf,
+                typename TView,
                 typename TSfinae = void>
             struct GetBuf;
         }
@@ -465,8 +465,8 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Constructor.
         //! \param buf This can be either a memory buffer or a memory view.
-        //! \param offsetsElements The offsets in elements.
         //! \param extentsElements The extents in elements.
+        //! \param relativeOffsetsElements The offsets in elements.
         //-----------------------------------------------------------------------------
         template<
             typename TView,
@@ -489,8 +489,8 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Constructor.
         //! \param buf This can be either a memory buffer or a memory view.
-        //! \param offsetsElements The offsets in elements.
         //! \param extentsElements The extents in elements.
+        //! \param relativeOffsetsElements The offsets in elements.
         //-----------------------------------------------------------------------------
         template<
             typename TView,
@@ -514,37 +514,37 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Gets the memory buffer.
         //!
-        //! \param buf The object the buffer is received from.
+        //! \param view The object the buffer is received from.
         //! \return The memory buffer.
         //-----------------------------------------------------------------------------
         template<
-            typename TBuf>
+            typename TView>
         ALPAKA_FCT_HOST auto getBuf(
-            TBuf const & buf)
-        -> decltype(traits::mem::GetBuf<TBuf>::getBuf(buf))
+            TView const & view)
+        -> decltype(traits::mem::GetBuf<TView>::getBuf(view))
         {
             return traits::mem::GetBuf<
-                TBuf>
+                TView>
             ::getBuf(
-                buf);
+                view);
         }
 
         //-----------------------------------------------------------------------------
         //! Gets the memory buffer.
         //!
-        //! \param buf The object the buffer is received from.
+        //! \param view The object the buffer is received from.
         //! \return The memory buffer.
         //-----------------------------------------------------------------------------
         template<
-            typename TBuf>
+            typename TView>
         ALPAKA_FCT_HOST auto getBuf(
-            TBuf & buf)
-        -> decltype(traits::mem::GetBuf<TBuf>::getBuf(buf))
+            TView & view)
+        -> decltype(traits::mem::GetBuf<TView>::getBuf(view))
         {
             return traits::mem::GetBuf<
-                TBuf>
+                TView>
             ::getBuf(
-                buf);
+                view);
         }
     }
 }

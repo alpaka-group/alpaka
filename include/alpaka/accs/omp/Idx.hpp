@@ -25,7 +25,7 @@
 
 #include <alpaka/traits/Idx.hpp>        // idx::GetIdx
 
-#include <alpaka/core/IdxMapping.hpp>   // mapIdx
+#include <alpaka/core/MapIdx.hpp>       // mapIdx
 
 #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 

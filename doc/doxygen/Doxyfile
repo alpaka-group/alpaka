@@ -770,9 +770,7 @@ WARN_LOGFILE           =
 
 INPUT                  = ../../include/ \
                          ../../README.md \
-                         ../Abstract.md \
                          ../Distinction.md \
-                         ../Hardware.md \
                          ../Abstraction.md \
                          ../Threading.md \
                          ../Rationale.md

@@ -58,31 +58,6 @@ namespace alpaka
             namespace detail
             {
                 //#############################################################################
-                //! The type given to the ConcurrentExecPool for yielding the current thread.
-                //#############################################################################
-                struct ThreadPoolYield
-                {
-                    //-----------------------------------------------------------------------------
-                    //! Yields the current thread.
-                    //-----------------------------------------------------------------------------
-                    static auto yield()
-                    -> void
-                    {
-                        std::this_thread::yield();
-                    }
-                };
-
-                //#############################################################################
-                // When using the thread pool the threads are yielding because this is faster.
-                // Using condition variables and going to sleep is very costly for real threads.
-                // Especially when the time to wait is really short (syncBlockThreads) yielding is much faster.
-                //#############################################################################
-                using ThreadPool = alpaka::detail::ConcurrentExecPool<
-                    std::thread,                // The concurrent execution type.
-                    std::promise,               // The promise type.
-                    ThreadPoolYield>;           // The type yielding the current concurrent execution.
-
-                //#############################################################################
                 //! The CPU threads executor.
                 //#############################################################################
                 template<
@@ -90,6 +65,31 @@ namespace alpaka
                 class ExecCpuThreads :
                     private AccCpuThreads<TDim>
                 {
+                private:
+                    //#############################################################################
+                    //! The type given to the ConcurrentExecPool for yielding the current thread.
+                    //#############################################################################
+                    struct ThreadPoolYield
+                    {
+                        //-----------------------------------------------------------------------------
+                        //! Yields the current thread.
+                        //-----------------------------------------------------------------------------
+                        ALPAKA_FCT_HOST static auto yield()
+                        -> void
+                        {
+                            std::this_thread::yield();
+                        }
+                    };
+                    //#############################################################################
+                    // When using the thread pool the threads are yielding because this is faster.
+                    // Using condition variables and going to sleep is very costly for real threads.
+                    // Especially when the time to wait is really short (syncBlockThreads) yielding is much faster.
+                    //#############################################################################
+                    using ThreadPool = alpaka::detail::ConcurrentExecPool<
+                        std::thread,                // The concurrent execution type.
+                        std::promise,               // The promise type.
+                        ThreadPoolYield>;           // The type yielding the current concurrent execution.
+
                 public:
                     //-----------------------------------------------------------------------------
                     //! Constructor.

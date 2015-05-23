@@ -30,7 +30,7 @@
 
 // Implementation details.
 #include <alpaka/core/BasicWorkDiv.hpp>         // workdiv::BasicWorkDiv
-#include <alpaka/core/IdxMapping.hpp>           // mapIdx
+#include <alpaka/core/MapIdx.hpp>               // mapIdx
 #include <alpaka/accs/omp/omp4/cpu/Acc.hpp>     // AccCpuOmp4
 #include <alpaka/accs/omp/Common.hpp>
 #include <alpaka/devs/cpu/Dev.hpp>              // DevCpu

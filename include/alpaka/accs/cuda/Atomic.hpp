@@ -26,9 +26,6 @@
 #include <alpaka/core/Ops.hpp>      // Add, Sub, ...
 #include <alpaka/core/Common.hpp>   // ALPAKA_FCT_ACC_CUDA_ONLY
 
-//#define ALPAKA_ATOMIC_ADD_FLOAT_CAS   // Undefine this to use the floating point implementation of atomic add using atomicCAS for device with compute capability < 2.0.
-// This should be slower then the version using atomicExch.
-
 namespace alpaka
 {
     namespace accs

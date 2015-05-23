@@ -58,7 +58,7 @@ namespace alpaka
             //#############################################################################
             //! The CPU device memory copy trait specialization.
             //!
-            //! Copies from cpu memory into cpu memory.
+            //! Copies from CPU memory into CPU memory.
             //#############################################################################
             template<
                 typename TDim>
@@ -209,7 +209,7 @@ namespace alpaka
                 }
                 //-----------------------------------------------------------------------------
                 //!
-                // \TODO: Implement asynchronous cpu copy.
+                // \TODO: Implement asynchronous CPU copy.
                 //-----------------------------------------------------------------------------
                 template<
                     typename TExtents,

@@ -64,8 +64,8 @@ namespace alpaka
                 //#############################################################################
                 //! The CPU threads accelerator.
                 //!
-                //! This accelerator allows parallel kernel execution on a cpu device.
-                //! It uses C++11 std::threads to implement the parallelism.
+                //! This accelerator allows parallel kernel execution on a CPU device.
+                //! It uses C++11 std::thread to implement the parallelism.
                 //#############################################################################
                 template<
                     typename TDim>

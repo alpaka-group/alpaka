@@ -190,7 +190,7 @@ namespace alpaka
         //! \tparam TYield The type is required to have a static method "void yield()" to yield the current thread if there is no work.
         //! \tparam TMutex Unused. The mutex type used for locking threads.
         //! \tparam TCondVar Unused. The condition variable type used to make the threads wait if there is no work.
-        //! \tparam TbYield Booleam value the threads should yield instead of wait for a condition variable.
+        //! \tparam TbYield Booleam value if the threads should yield instead of wait for a condition variable.
         //#############################################################################
         template<
             typename TConcurrentExec,

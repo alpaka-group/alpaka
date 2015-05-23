@@ -64,7 +64,7 @@ namespace alpaka
                 //#############################################################################
                 //! The CPU fibers accelerator.
                 //!
-                //! This accelerator allows parallel kernel execution on a cpu device.
+                //! This accelerator allows parallel kernel execution on a CPU device.
                 //! It uses boost::fibers to implement the cooperative parallelism.
                 //! By using fibers the shared memory can reside in the closest memory/cache available.
                 //! Furthermore there is no false sharing between neighboring threads as it is the case in real multi-threading.

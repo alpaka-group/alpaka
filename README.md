@@ -45,24 +45,24 @@ This library uses C++11 (or newer when available).
 |CUDA 7.0|:white_check_mark:|:x:|:x:|:white_check_mark:|:x:|:white_check_mark:|
 |OpenMP 2.0|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
 |OpenMP 4.0|:white_check_mark:|:white_check_mark:|:x:|:x:|:x:|:white_check_mark:|
-|Bopost.Fiber|:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|:x:|:white_check_mark:|
-|std::thread|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
+| Bopost.Fiber |:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|:x:|:white_check_mark:|
+| std::thread |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
 |Serial|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
 
-**NOTE**: :bangbang: Currently the CUDA-Accelerator can not be enabled together with the Threads-Accelerator or Fibers-Accelerator :bangbang:
+**NOTE**: :bangbang: Currently the *CUDA accelerator back-end* can not be enabled together with the *std::thread accelerator back-end* or the *Boost.Fiber accelerator back-end* :bangbang:
 
 Build status master branch: [![Build Status](https://travis-ci.org/ComputationalRadiationPhysics/alpaka.svg?branch=master)](https://travis-ci.org/ComputationalRadiationPhysics/alpaka)
 
 Build status develop branch: [![Build Status](https://travis-ci.org/ComputationalRadiationPhysics/alpaka.svg?branch=develop)](https://travis-ci.org/ComputationalRadiationPhysics/alpaka)
 
 
-Accelerator Backends
+Accelerator Back-ends
 ------------
 
-|-|Serial|std::thread|Boost.Fiber|OpenMP 2.0|OpenMP 4.0|CUDA 7.0|
-|---|---|---|---|---|---|
-|Devices|Host Core|Host Cores|Host Core|Host Cores|Host Cores|NVIDIA GPUs|
+|-|Serial| std::thread | Boost.Fiber | OpenMP 2.0 | OpenMP 4.0 | CUDA 7.0 |
+|---|---|---|---|---|---|---|
 |Lib/API|n/a| std::thread | boost::fibers::fiber |OpenMP 2.0|OpenMP 4.0|CUDA 7.0|
+|Devices|Host Core|Host Cores|Host Core|Host Cores|Host Cores|NVIDIA GPUs SM 2.0+|
 |Execution strategy grid-blocks|sequential|sequential|sequential|sequential|undefined|undefined|
 |Execution strategy block-threads|sequential|preemptive multitasking|cooperative multitasking|preemptive multitasking|preemptive multitasking|lock-step within warps|
 
@@ -71,14 +71,16 @@ Dependencies
 ------------
 
 [Boost](http://boost.org/) 1.56+ is the only mandatory external dependency.
-Just header-only libraries are required by the **alpaka** library itself.
+The **alpaka** library itself just requires header-only libraries.
 However some of the examples require different boost libraries to be built.
 
-When the *CUDA-Accelerator* is enabled, version *7.0* of the *CUDA SDK* is the minimum requirement.
+When the *CUDA accelerator back-end* is enabled, version *7.0* of the *CUDA SDK* is the minimum requirement.
 
-When the *OpenMP-Accelerator* is enabled, the compiler and the platform have to support *OpenMP 2.0* or newer.
+When the *OpenMP 2.0 accelerator back-end* is enabled, the compiler and the platform have to support *OpenMP 2.0* or newer.
 
-When the *Fibers-Accelerator* is enabled, the develop branch of boost and the proposed boost library [`boost-fibers`](https://github.com/olk/boost-fiber) (develop branch) are required. `boost-fibers`, `boost-context` and all of its dependencies are required to be build in C++14 mode `./b2 cxxflags="-std=c++14"`.
+When the *OpenMP 4.0 accelerator back-end* is enabled, the compiler and the platform have to support *OpenMP 4.0* or newer.
+
+When the *Boost.Fiber accelerator back-end* is enabled, the develop branch of boost and the proposed boost library [`boost-fibers`](https://github.com/olk/boost-fiber) (develop branch) are required. `boost-fibers`, `boost-context` and all of its dependencies are required to be build in C++14 mode `./b2 cxxflags="-std=c++14"`.
 
 
 Usage
@@ -90,10 +92,10 @@ This allows to include the whole alpaka library with: `#include <alpaka/alpaka.h
 
 Code not intended to be utilized by users is hidden in the `detail` namespace.
 
-If you are building with the *CUDA-Accelerator* enabled, your source files are required to have the ending `.cu` to comply with the nvcc (NVIDIA CUDA C++ compiler) rules for code files using CUDA.
-When the *CUDA-Accelerator* is disabled, this is not required and a `.cpp` extension is enough.
+If you are building with the *CUDA accelerator back-end* enabled, your source files are required to have the ending `.cu` to comply with the nvcc (NVIDIA CUDA C++ compiler) rules for code files using CUDA.
+When the *CUDA accelerator back-end* is disabled, this is not required and a `.cpp` extension is enough.
 To allow both use-cases, it is desirable to have both, a `.cpp` file with the implementation and a `.cu` file containing only `#include <PATH/TO/IMPL.cpp>` to forward to the implementation.
-The build system then has to use the `.cu` files when the *CUDA-Accelerator* is enabled and the `.cpp` files else.
+The build system then has to use the `.cu` files when the *CUDA accelerator back-end* is enabled and the `.cpp` files else.
 
 
 Authors

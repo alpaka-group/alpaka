@@ -63,7 +63,7 @@ namespace alpaka
                     //#############################################################################
                     //! The CPU OpenMP2 accelerator.
                     //!
-                    //! This accelerator allows parallel kernel execution on a cpu device.
+                    //! This accelerator allows parallel kernel execution on a CPU device.
                     // \TODO: Offloading?
                     //! It uses OpenMP2 to implement the parallelism.
                     //#############################################################################

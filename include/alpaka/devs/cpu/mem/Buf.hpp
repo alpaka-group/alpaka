@@ -48,7 +48,7 @@ namespace alpaka
             namespace detail
             {
                 //#############################################################################
-                //! The cpu memory buffer.
+                //! The CPU memory buffer.
                 //#############################################################################
                 template<
                     typename TElem,
@@ -123,7 +123,7 @@ namespace alpaka
     }
 
     //-----------------------------------------------------------------------------
-    // Trait specializations for devs::cpu::detail::BufCpu.
+    // Trait specializations for BufCpu.
     //-----------------------------------------------------------------------------
     namespace traits
     {

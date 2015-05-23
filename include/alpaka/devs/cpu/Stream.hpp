@@ -40,6 +40,7 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU device stream.
+            //! NOTE: This stream is currently synchronous!
             //#############################################################################
             class StreamCpu
             {

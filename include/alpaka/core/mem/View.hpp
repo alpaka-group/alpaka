@@ -107,8 +107,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //! \param buf This can be either a memory buffer or a memory view.
-                //! \param offsetsElements The offsets in elements.
                 //! \param extentsElements The extents in elements.
+                //! \param relativeOffsetsElements The offsets in elements.
                 //-----------------------------------------------------------------------------
                 template<
                     typename TBuf,
@@ -123,8 +123,8 @@ namespace alpaka
                             dev::getDev(buf),
                             extent::getExtentsVecNd<Dim, UInt>(buf),
                             mem::getPitchBytes<Dim::value - 1u, UInt>(buf)),
-                        m_vOffsetsElements(offset::getOffsetsVecNd<Dim, UInt>(relativeOffsetsElements) + offset::getOffsetsVecNd<Dim, UInt>(buf)),
-                        m_vExtentsElements(extent::getExtentsVecNd<Dim, UInt>(extentsElements))
+                        m_vExtentsElements(extent::getExtentsVecNd<Dim, UInt>(extentsElements)),
+                        m_vOffsetsElements(offset::getOffsetsVecNd<Dim, UInt>(relativeOffsetsElements) + offset::getOffsetsVecNd<Dim, UInt>(buf))
                 {
                     static_assert(
                         std::is_same<Dim, dim::DimT<TExtents>>::value,
@@ -140,8 +140,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //! \param buf This can be either a memory buffer or a memory view.
-                //! \param offsetsElements The offsets in elements.
                 //! \param extentsElements The extents in elements.
+                //! \param relativeOffsetsElements The offsets in elements.
                 //-----------------------------------------------------------------------------
                 template<
                     typename TBuf,
@@ -156,8 +156,8 @@ namespace alpaka
                             dev::getDev(buf),
                             extent::getExtentsVecNd<Dim, UInt>(buf),
                             mem::getPitchBytes<Dim::value - 1u, UInt>(buf)),
-                        m_vOffsetsElements(offset::getOffsetsVecNd<Dim, UInt>(relativeOffsetsElements) + offset::getOffsetsVecNd<Dim, UInt>(buf)),
-                        m_vExtentsElements(extent::getExtentsVecNd<Dim, UInt>(extentsElements))
+                        m_vExtentsElements(extent::getExtentsVecNd<Dim, UInt>(extentsElements)),
+                        m_vOffsetsElements(offset::getOffsetsVecNd<Dim, UInt>(relativeOffsetsElements) + offset::getOffsetsVecNd<Dim, UInt>(buf))
                 {
                     static_assert(
                         std::is_same<Dim, dim::DimT<TExtents>>::value,
@@ -173,8 +173,8 @@ namespace alpaka
 
             public:
                 Buf m_Buf;
-                Vec<Dim> m_vOffsetsElements;
                 Vec<Dim> m_vExtentsElements;
+                Vec<Dim> m_vOffsetsElements;
             };
         }
     }

@@ -57,33 +57,6 @@ namespace alpaka
             namespace detail
             {
                 //#############################################################################
-                //! The type given to the ConcurrentExecPool for yielding the current fiber.
-                //#############################################################################
-                struct FiberPoolYield
-                {
-                    //-----------------------------------------------------------------------------
-                    //! Yields the current fiber.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA static auto yield()
-                    -> void
-                    {
-                        boost::this_fiber::yield();
-                    }
-                };
-
-                //#############################################################################
-                // Yielding is not faster for fibers. Therefore we use condition variables.
-                // It is better to wake them up when the conditions are fulfilled because this does not cost as much as for real threads.
-                //#############################################################################
-                using FiberPool = alpaka::detail::ConcurrentExecPool<
-                    boost::fibers::fiber,               // The concurrent execution type.
-                    boost::fibers::promise,             // The promise type.
-                    FiberPoolYield,                     // The type yielding the current concurrent execution.
-                    boost::fibers::mutex,               // The mutex type to use. Only required if TbYield is true.
-                    boost::fibers::condition_variable,  // The condition variable type to use. Only required if TbYield is true.
-                    false>;                             // If the threads should yield.
-
-                //#############################################################################
                 //! The CPU fibers accelerator executor.
                 //#############################################################################
                 template<
@@ -91,6 +64,33 @@ namespace alpaka
                 class ExecCpuFibers :
                     private AccCpuFibers<TDim>
                 {
+                private:
+                    //#############################################################################
+                    //! The type given to the ConcurrentExecPool for yielding the current fiber.
+                    //#############################################################################
+                    struct FiberPoolYield
+                    {
+                        //-----------------------------------------------------------------------------
+                        //! Yields the current fiber.
+                        //-----------------------------------------------------------------------------
+                        ALPAKA_FCT_ACC_NO_CUDA static auto yield()
+                        -> void
+                        {
+                            boost::this_fiber::yield();
+                        }
+                    };
+                    //#############################################################################
+                    // Yielding is not faster for fibers. Therefore we use condition variables.
+                    // It is better to wake them up when the conditions are fulfilled because this does not cost as much as for real threads.
+                    //#############################################################################
+                    using FiberPool = alpaka::detail::ConcurrentExecPool<
+                        boost::fibers::fiber,               // The concurrent execution type.
+                        boost::fibers::promise,             // The promise type.
+                        FiberPoolYield,                     // The type yielding the current concurrent execution.
+                        boost::fibers::mutex,               // The mutex type to use. Only required if TbYield is true.
+                        boost::fibers::condition_variable,  // The condition variable type to use. Only required if TbYield is true.
+                        false>;                             // If the threads should yield.
+
                 public:
                     //-----------------------------------------------------------------------------
                     //! Constructor.

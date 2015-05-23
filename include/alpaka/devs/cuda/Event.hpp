@@ -44,7 +44,7 @@ namespace alpaka
             class AccGpuCuda;
 
             //#############################################################################
-            //! The GPU CUDA accelerator event.
+            //! The CUDA device event.
             //#############################################################################
             class EventCuda
             {
@@ -140,7 +140,7 @@ namespace alpaka
         namespace dev
         {
             //#############################################################################
-            //! The GPU CUDA accelerator stream device get trait specialization.
+            //! The CUDA device event device get trait specialization.
             //#############################################################################
             template<>
             struct GetDev<
@@ -158,7 +158,7 @@ namespace alpaka
         namespace event
         {
             //#############################################################################
-            //! The GPU CUDA accelerator event event type trait specialization.
+            //! The CUDA device event event type trait specialization.
             //#############################################################################
             template<>
             struct EventType<
@@ -168,7 +168,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The GPU CUDA accelerator event test trait specialization.
+            //! The CUDA device event test trait specialization.
             //#############################################################################
             template<>
             struct EventTest<
@@ -203,7 +203,7 @@ namespace alpaka
         namespace wait
         {
             //#############################################################################
-            //! The GPU CUDA accelerator event thread wait trait specialization.
+            //! The CUDA device event thread wait trait specialization.
             //#############################################################################
             template<>
             struct CurrentThreadWaitFor<

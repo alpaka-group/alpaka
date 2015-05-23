@@ -38,6 +38,9 @@ namespace alpaka
 {
     namespace devs
     {
+        //-----------------------------------------------------------------------------
+        //! The CPU device.
+        //-----------------------------------------------------------------------------
         namespace cpu
         {
             class DevManCpu;
@@ -301,7 +304,7 @@ namespace alpaka
                     devs::cpu::DevCpu const &)
                 -> void
                 {
-                    // Because cpu calls are not asynchronous, this call never has to wait.
+                    // Because CPU calls are not asynchronous, this call never has to wait.
                 }
             };
         }

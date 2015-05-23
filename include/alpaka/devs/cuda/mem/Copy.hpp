@@ -41,13 +41,13 @@ namespace alpaka
             namespace detail
             {
                 //#############################################################################
-                //! The GPU CUDA memory copy trait.
+                //! The CUDA memory copy trait.
                 //#############################################################################
                 template<
                     typename TDim>
                 struct MemCopyCuda;
                 //#############################################################################
-                //! The GPU CUDA 1D memory copy trait specialization.
+                //! The CUDA 1D memory copy trait specialization.
                 //#############################################################################
                 template<>
                 struct MemCopyCuda<
@@ -167,7 +167,7 @@ namespace alpaka
                     }
                 };
                 //#############################################################################
-                //! The GPU CUDA 2D memory copy trait specialization.
+                //! The CUDA 2D memory copy trait specialization.
                 //#############################################################################
                 template<>
                 struct MemCopyCuda<
@@ -317,7 +317,7 @@ namespace alpaka
                     }
                 };
                 //#############################################################################
-                //! The GPU CUDA 3D memory copy trait specialization.
+                //! The CUDA 3D memory copy trait specialization.
                 //#############################################################################
                 template<>
                 struct MemCopyCuda<
@@ -482,13 +482,13 @@ namespace alpaka
                 };
 
                 //#############################################################################
-                //! The GPU CUDA peer memory copy trait.
+                //! The CUDA peer memory copy trait.
                 //#############################################################################
                 template<
                     typename TDim>
                 struct MemCopyCudaPeer;
                 //#############################################################################
-                //! The GPU CUDA 1D peer memory copy trait specialization.
+                //! The CUDA 1D peer memory copy trait specialization.
                 //#############################################################################
                 template<>
                 struct MemCopyCudaPeer<
@@ -610,7 +610,7 @@ namespace alpaka
                     }
                 };
                 //#############################################################################
-                //! The GPU CUDA 3D peer memory copy trait specialization.
+                //! The CUDA 3D peer memory copy trait specialization.
                 //#############################################################################
                 template<>
                 struct MemCopyCudaPeer<
@@ -768,7 +768,7 @@ namespace alpaka
                     }
                 };
                 //#############################################################################
-                //! The GPU CUDA 2D peer memory copy trait specialization.
+                //! The CUDA 2D peer memory copy trait specialization.
                 //#############################################################################
                 template<>
                 struct MemCopyCudaPeer<
@@ -837,7 +837,7 @@ namespace alpaka
         namespace mem
         {
             //#############################################################################
-            //! The GPU CUDA to Host memory copy trait specialization.
+            //! The CUDA to Host memory copy trait specialization.
             //#############################################################################
             template<
                 typename TDim>
@@ -951,7 +951,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The GPU CUDA to CUDA memory copy trait specialization.
+            //! The CUDA to CUDA memory copy trait specialization.
             //#############################################################################
             template<
                 typename TDim>

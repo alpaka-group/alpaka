@@ -61,7 +61,7 @@ namespace alpaka
                 //#############################################################################
                 //! The CPU serial accelerator.
                 //!
-                //! This accelerator allows serial kernel execution on a cpu device.
+                //! This accelerator allows serial kernel execution on a CPU device.
                 //! The block size is restricted to 1x1x1 so there is no parallelism at all.
                 //#############################################################################
                 template<

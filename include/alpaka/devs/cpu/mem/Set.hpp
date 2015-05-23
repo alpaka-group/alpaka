@@ -164,7 +164,7 @@ namespace alpaka
                 }
                 //-----------------------------------------------------------------------------
                 //!
-                // \TODO: Implement asynchronous cpu set.
+                // \TODO: Implement asynchronous CPU set.
                 //-----------------------------------------------------------------------------
                 template<
                     typename TBuf,

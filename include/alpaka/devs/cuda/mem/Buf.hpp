@@ -46,7 +46,7 @@ namespace alpaka
             namespace detail
             {
                 //#############################################################################
-                //! The GPU CUDA memory buffer.
+                //! The CUDA memory buffer.
                 //#############################################################################
                 template<
                     typename TElem,
@@ -330,7 +330,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The GPU CUDA buffer pitch get trait specialization.
+            //! The BufCuda pitch get trait specialization.
             //#############################################################################
             template<
                 typename TElem,
@@ -350,7 +350,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The GPU CUDA 1D memory allocation trait specialization.
+            //! The CUDA 1D memory allocation trait specialization.
             //#############################################################################
             template<
                 typename T>
@@ -402,7 +402,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The GPU CUDA 2D memory allocation trait specialization.
+            //! The CUDA 2D memory allocation trait specialization.
             //#############################################################################
             template<
                 typename T>
@@ -464,7 +464,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The GPU CUDA 3D memory allocation trait specialization.
+            //! The CUDA 3D memory allocation trait specialization.
             //#############################################################################
             template<
                 typename T>
@@ -523,7 +523,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The GPU CUDA memory mapping trait specialization.
+            //! The BufCuda CUDA device memory mapping trait specialization.
             //#############################################################################
             template<
                 typename TElem,
@@ -550,7 +550,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The GPU CUDA memory unmapping trait specialization.
+            //! The BufCuda CUDA device memory unmapping trait specialization.
             //#############################################################################
             template<
                 typename TElem,
@@ -577,7 +577,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The GPU CUDA memory pinning trait specialization.
+            //! The BufCuda memory pinning trait specialization.
             //#############################################################################
             template<
                 typename TElem,
@@ -598,7 +598,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The GPU CUDA memory unpinning trait specialization.
+            //! The BufCuda memory unpinning trait specialization.
             //#############################################################################
             template<
                 typename TElem,
@@ -654,7 +654,7 @@ namespace alpaka
         namespace mem
         {
             //#############################################################################
-            //! The BufCpu CUDA memory mapping trait specialization.
+            //! The BufCpu CUDA device memory mapping trait specialization.
             //#############################################################################
             template<
                 typename TElem,
@@ -689,7 +689,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The BufCpu CUDA memory unmapping trait specialization.
+            //! The BufCpu CUDA device memory unmapping trait specialization.
             //#############################################################################
             template<
                 typename TElem,
@@ -721,7 +721,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The BufCpu pointer on device get trait specialization.
+            //! The BufCpu pointer on CUDA device get trait specialization.
             //#############################################################################
             template<
                 typename TElem,

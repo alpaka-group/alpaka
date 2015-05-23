@@ -30,6 +30,9 @@ namespace alpaka
 {
     namespace traits
     {
+        //-----------------------------------------------------------------------------
+        //! The random number generation traits.
+        //-----------------------------------------------------------------------------
         namespace rand
         {
             namespace distribution
