@@ -55,17 +55,21 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Copy constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA AtomicThreads(AtomicThreads const &) = default;
+                    ALPAKA_FCT_ACC_NO_CUDA AtomicThreads(AtomicThreads const &) = delete;
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                     //-----------------------------------------------------------------------------
                     //! Move constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA AtomicThreads(AtomicThreads &&) = default;
+                    ALPAKA_FCT_ACC_NO_CUDA AtomicThreads(AtomicThreads &&) = delete;
 #endif
                     //-----------------------------------------------------------------------------
-                    //! Copy assignment.
+                    //! Copy assignment operator.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_ACC_NO_CUDA auto operator=(AtomicThreads const &) -> AtomicThreads & = delete;
+                    //-----------------------------------------------------------------------------
+                    //! Move assignment operator.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_ACC_NO_CUDA auto operator=(AtomicThreads &&) -> AtomicThreads & = delete;
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------

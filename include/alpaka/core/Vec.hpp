@@ -27,7 +27,8 @@
 
 #include <alpaka/core/BasicDims.hpp>        // dim::Dim<N>
 #include <alpaka/core/IntegerSequence.hpp>  // detail::make_integer_sequence
-#include <alpaka/core/Common.hpp>           // ALPAKA_FCT_ACC, ALPAKA_ALIGN
+#include <alpaka/core/Common.hpp>           // ALPAKA_FCT_ACC
+#include <alpaka/core/Align.hpp>            // ALPAKA_ALIGN
 #include <alpaka/core/Fold.hpp>             // foldr
 
 #include <boost/predef.h>                   // workarounds
@@ -196,9 +197,13 @@ namespace alpaka
         ALPAKA_FCT_HOST_ACC Vec(Vec &&) = default;
 #endif
         //-----------------------------------------------------------------------------
-        //! Copy assignment.
+        //! Copy assignment operator.
         //-----------------------------------------------------------------------------
         ALPAKA_FCT_HOST_ACC auto operator=(Vec const &) -> Vec & = default;
+        //-----------------------------------------------------------------------------
+        //! Move assignment operator.
+        //-----------------------------------------------------------------------------
+        ALPAKA_FCT_HOST_ACC auto operator=(Vec &&) -> Vec & = default;
         //-----------------------------------------------------------------------------
         //! Destructor.
         //-----------------------------------------------------------------------------

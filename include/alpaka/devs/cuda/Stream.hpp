@@ -40,9 +40,77 @@ namespace alpaka
     {
         namespace cuda
         {
-            template<
-                typename TDim>
-            class AccGpuCuda;
+            namespace detail
+            {
+                //#############################################################################
+                //! The CUDA device stream implementation.
+                //#############################################################################
+                class StreamCudaImpl
+                {
+                public:
+                    //-----------------------------------------------------------------------------
+                    //! Constructor.
+                    //-----------------------------------------------------------------------------
+                    StreamCudaImpl(
+                        DevCuda const & dev) :
+                            m_Dev(dev),
+                            m_CudaStream()
+                    {
+                        ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                        // Set the current device.
+                        ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
+                            m_Dev.m_iDevice));
+                        // - cudaStreamDefault: Default stream creation flag.
+                        // - cudaStreamNonBlocking: Specifies that work running in the created stream may run concurrently with work in stream 0 (the NULL stream),
+                        //   and that the created stream should perform no implicit synchronization with stream 0.
+                        // Create the stream on the current device.
+                        // NOTE: cudaStreamNonBlocking is required to match the semantic implemented in the CPU stream.
+                        // It would be too much work to implement implicit default stream synchronization on CPU.
+                        ALPAKA_CUDA_RT_CHECK(cudaStreamCreateWithFlags(
+                            &m_CudaStream,
+                            cudaStreamNonBlocking));
+                    }
+                    //-----------------------------------------------------------------------------
+                    //! Copy constructor.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST StreamCudaImpl(StreamCudaImpl const &) = delete;
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
+                    //-----------------------------------------------------------------------------
+                    //! Move constructor.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST StreamCudaImpl(StreamCudaImpl &&) = default;
+#endif
+                    //-----------------------------------------------------------------------------
+                    //! Copy assignment operator.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST auto operator=(StreamCudaImpl const &) -> StreamCudaImpl & = delete;
+                    //-----------------------------------------------------------------------------
+                    //! Move assignment operator.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST auto operator=(StreamCudaImpl &&) -> StreamCudaImpl & = default;
+                    //-----------------------------------------------------------------------------
+                    //! Destructor.
+                    //-----------------------------------------------------------------------------
+                    ~StreamCudaImpl()
+                    {
+                        ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                        // Set the current device. \TODO: Is setting the current device before cudaStreamDestroy required?
+                        ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
+                            m_Dev.m_iDevice));
+                        // In case the device is still doing work in the stream when cudaStreamDestroy() is called, the function will return immediately
+                        // and the resources associated with stream will be released automatically once the device has completed all work in stream.
+                        // -> No need to synchronize here.
+                        ALPAKA_CUDA_RT_CHECK(cudaStreamDestroy(
+                            m_CudaStream));
+                    }
+
+                public:
+                    DevCuda const m_Dev;        //!< The device this stream is bound to.
+                    cudaStream_t m_CudaStream;
+                };
+            }
 
             //#############################################################################
             //! The CUDA device stream.
@@ -55,20 +123,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST StreamCuda(
                     DevCuda & dev) :
-                    m_spCudaStream(
-                        new cudaStream_t,
-                        std::bind(&StreamCuda::destroyStream, std::placeholders::_1, std::ref(m_Dev))),
-                    m_Dev(dev)
-                {
-                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-                    // Set the current device.
-                    ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
-                        m_Dev.m_iDevice));
-                    // Create the stream on the current device.
-                    ALPAKA_CUDA_RT_CHECK(cudaStreamCreate(
-                        m_spCudaStream.get()));
-                }
+                    m_spStreamCudaImpl(std::make_shared<detail::StreamCudaImpl>(dev))
+                {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
@@ -80,16 +136,20 @@ namespace alpaka
                 ALPAKA_FCT_HOST StreamCuda(StreamCuda &&) = default;
 #endif
                 //-----------------------------------------------------------------------------
-                //! Assignment operator.
+                //! Copy assignment operator.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST auto operator=(StreamCuda const &) -> StreamCuda & = default;
+                //-----------------------------------------------------------------------------
+                //! Move assignment operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST auto operator=(StreamCuda &&) -> StreamCuda & = default;
                 //-----------------------------------------------------------------------------
                 //! Equality comparison operator.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST auto operator==(StreamCuda const & rhs) const
                 -> bool
                 {
-                    return (*m_spCudaStream.get()) == (*rhs.m_spCudaStream.get());
+                    return (m_spStreamCudaImpl->m_CudaStream == rhs.m_spStreamCudaImpl->m_CudaStream);
                 }
                 //-----------------------------------------------------------------------------
                 //! Equality comparison operator.
@@ -104,30 +164,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST /*virtual*/ ~StreamCuda() noexcept = default;
 
-            private:
-                //-----------------------------------------------------------------------------
-                //! Destroys the shared stream.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto destroyStream(
-                    cudaStream_t * stream,
-                    DevCuda const & dev)
-                -> void
-                {
-                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-                    // Set the current device. \TODO: Is setting the current device before cudaStreamDestroy required?
-                    ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
-                        dev.m_iDevice));
-                    // In case the device is still doing work in the stream when cudaStreamDestroy() is called, the function will return immediately
-                    // and the resources associated with stream will be released automatically once the device has completed all work in stream.
-                    // -> No need to synchronize here.
-                    ALPAKA_CUDA_RT_CHECK(cudaStreamDestroy(
-                        *stream));
-                }
-
             public:
-                std::shared_ptr<cudaStream_t> m_spCudaStream;
-                DevCuda m_Dev;
+                std::shared_ptr<detail::StreamCudaImpl> m_spStreamCudaImpl;
             };
         }
     }
@@ -147,7 +185,7 @@ namespace alpaka
                     devs::cuda::StreamCuda const & stream)
                 -> devs::cuda::DevCuda
                 {
-                    return stream.m_Dev;
+                    return stream.m_spStreamCudaImpl->m_Dev;
                 }
             };
         }
@@ -180,7 +218,7 @@ namespace alpaka
                     // Query is allowed even for streams on non current device.
                     auto const ret(
                         cudaStreamQuery(
-                            *stream.m_spCudaStream.get()));
+                            stream.m_spStreamCudaImpl->m_CudaStream));
                     if(ret == cudaSuccess)
                     {
                         return true;
@@ -217,7 +255,7 @@ namespace alpaka
 
                     // Sync is allowed even for streams on non current device.
                     ALPAKA_CUDA_RT_CHECK(cudaStreamSynchronize(
-                        *stream.m_spCudaStream.get()));
+                        stream.m_spStreamCudaImpl->m_CudaStream));
                 }
             };
         }

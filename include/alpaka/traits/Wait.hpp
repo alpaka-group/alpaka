@@ -78,7 +78,7 @@ namespace alpaka
             typename TWaiter,
             typename TAwaited>
         ALPAKA_FCT_HOST auto wait(
-            TWaiter const & waiter,
+            TWaiter & waiter,
             TAwaited const & awaited)
         -> void
         {

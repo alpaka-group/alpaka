@@ -68,9 +68,13 @@ namespace alpaka
                 ALPAKA_FCT_HOST DevCpu(DevCpu &&) = default;
 #endif
                 //-----------------------------------------------------------------------------
-                //! Assignment operator.
+                //! Copy assignment operator.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST auto operator=(DevCpu const &) -> DevCpu & = default;
+                //-----------------------------------------------------------------------------
+                //! Move assignment operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST auto operator=(DevCpu &&) -> DevCpu & = default;
                 //-----------------------------------------------------------------------------
                 //! Equality comparison operator.
                 //-----------------------------------------------------------------------------
@@ -304,7 +308,8 @@ namespace alpaka
                     devs::cpu::DevCpu const &)
                 -> void
                 {
-                    // Because CPU calls are not asynchronous, this call never has to wait.
+                    // \FIXME: implement alpaka::wait::wait(DevCpu)!
+                    throw std::runtime_error("Error: alpaka::wait::wait(DevCpu) not implemented!");
                 }
             };
         }

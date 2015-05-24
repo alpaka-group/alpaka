@@ -36,6 +36,8 @@
 
 #include <alpaka/accs/Accs.hpp>
 
+#include <alpaka/core/AccDevProps.hpp>
+#include <alpaka/core/Align.hpp>
 #include <alpaka/core/BasicDims.hpp>
 #include <alpaka/core/BasicWorkDiv.hpp>
 #include <alpaka/core/Common.hpp>

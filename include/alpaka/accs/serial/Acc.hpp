@@ -101,9 +101,13 @@ namespace alpaka
                     ALPAKA_FCT_ACC_NO_CUDA AccCpuSerial(AccCpuSerial &&) = delete;
 #endif
                     //-----------------------------------------------------------------------------
-                    //! Copy assignment.
+                    //! Copy assignment operator.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_ACC_NO_CUDA auto operator=(AccCpuSerial const &) -> AccCpuSerial & = delete;
+                    //-----------------------------------------------------------------------------
+                    //! Move assignment operator.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_ACC_NO_CUDA auto operator=(AccCpuSerial &&) -> AccCpuSerial & = delete;
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------

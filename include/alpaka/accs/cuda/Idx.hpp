@@ -49,17 +49,21 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Copy constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_CUDA_ONLY IdxCuda(IdxCuda const &) = default;
+                    ALPAKA_FCT_ACC_CUDA_ONLY IdxCuda(IdxCuda const &) = delete;
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                     //-----------------------------------------------------------------------------
                     //! Move constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_CUDA_ONLY IdxCuda(IdxCuda &&) = default;
+                    ALPAKA_FCT_ACC_CUDA_ONLY IdxCuda(IdxCuda &&) = delete;
 #endif
                     //-----------------------------------------------------------------------------
-                    //! Copy assignment.
+                    //! Copy assignment operator.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_ACC_CUDA_ONLY auto operator=(IdxCuda const & ) -> IdxCuda & = delete;
+                    //-----------------------------------------------------------------------------
+                    //! Move assignment operator.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_ACC_CUDA_ONLY auto operator=(IdxCuda &&) -> IdxCuda & = delete;
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------

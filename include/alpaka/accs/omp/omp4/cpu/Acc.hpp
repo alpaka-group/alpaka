@@ -107,9 +107,13 @@ namespace alpaka
                             ALPAKA_FCT_ACC_NO_CUDA AccCpuOmp4(AccCpuOmp4 &&) = delete;
 #endif
                             //-----------------------------------------------------------------------------
-                            //! Copy assignment.
+                            //! Copy assignment operator.
                             //-----------------------------------------------------------------------------
                             ALPAKA_FCT_ACC_NO_CUDA auto operator=(AccCpuOmp4 const &) -> AccCpuOmp4 & = delete;
+                            //-----------------------------------------------------------------------------
+                            //! Move assignment operator.
+                            //-----------------------------------------------------------------------------
+                            ALPAKA_FCT_ACC_NO_CUDA auto operator=(AccCpuOmp4 &&) -> AccCpuOmp4 & = delete;
                             //-----------------------------------------------------------------------------
                             //! Destructor.
                             //-----------------------------------------------------------------------------

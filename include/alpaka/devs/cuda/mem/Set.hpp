@@ -119,7 +119,7 @@ namespace alpaka
                             reinterpret_cast<void *>(alpaka::mem::getPtrNative(buf)),
                             static_cast<int>(byte),
                             uiExtentWidth * sizeof(alpaka::mem::ElemT<TBuf>),
-                            *stream.m_spCudaStream.get()));
+                            stream.m_spStreamCudaImpl->m_CudaStream));
                 }
             };
             //#############################################################################
@@ -212,7 +212,7 @@ namespace alpaka
                             static_cast<int>(byte),
                             uiExtentWidth * sizeof(alpaka::mem::ElemT<TBuf>),
                             uiExtentHeight,
-                            *stream.m_spCudaStream.get()));
+                            stream.m_spStreamCudaImpl->m_CudaStream));
                 }
             };
             //#############################################################################
@@ -335,7 +335,7 @@ namespace alpaka
                             cudaPitchedPtrVal,
                             static_cast<int>(byte),
                             cudaExtentVal,
-                            *stream.m_spCudaStream.get()));
+                            stream.m_spStreamCudaImpl->m_CudaStream));
                 }
             };
         }

@@ -46,15 +46,19 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Copy constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA AtomicOmp(AtomicOmp const &) = default;
+                    ALPAKA_FCT_ACC_NO_CUDA AtomicOmp(AtomicOmp const &) = delete;
                     //-----------------------------------------------------------------------------
                     //! Move constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA AtomicOmp(AtomicOmp &&) = default;
+                    ALPAKA_FCT_ACC_NO_CUDA AtomicOmp(AtomicOmp &&) = delete;
                     //-----------------------------------------------------------------------------
-                    //! Copy assignment.
+                    //! Copy assignment operator.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_ACC_NO_CUDA auto operator=(AtomicOmp const &) -> AtomicOmp & = delete;
+                    //-----------------------------------------------------------------------------
+                    //! Move assignment operator.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_ACC_NO_CUDA auto operator=(AtomicOmp &&) -> AtomicOmp & = delete;
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------

@@ -46,17 +46,21 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Copy constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA AtomicFibers(AtomicFibers const &) = default;
+                    ALPAKA_FCT_ACC_NO_CUDA AtomicFibers(AtomicFibers const &) = delete;
     #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                     //-----------------------------------------------------------------------------
                     //! Move constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA AtomicFibers(AtomicFibers &&) = default;
+                    ALPAKA_FCT_ACC_NO_CUDA AtomicFibers(AtomicFibers &&) = delete;
     #endif
                     //-----------------------------------------------------------------------------
-                    //! Copy assignment.
+                    //! Copy assignment operator.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_ACC_NO_CUDA auto operator=(AtomicFibers const &) -> AtomicFibers & = delete;
+                    //-----------------------------------------------------------------------------
+                    //! Move assignment operator.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_ACC_NO_CUDA auto operator=(AtomicFibers &&) -> AtomicFibers & = delete;
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------

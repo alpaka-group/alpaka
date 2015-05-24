@@ -88,11 +88,11 @@ namespace alpaka
             ALPAKA_FCT_HOST_ACC BufPlainPtrWrapper(BufPlainPtrWrapper &&) = default;
 #endif
             //-----------------------------------------------------------------------------
-            //! Copy assignment.
+            //! Copy assignment operator.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST_ACC auto operator=(BufPlainPtrWrapper const &) -> BufPlainPtrWrapper & = delete;
             //-----------------------------------------------------------------------------
-            //! Move assignment.
+            //! Move assignment operator.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST_ACC auto operator=(BufPlainPtrWrapper &&) -> BufPlainPtrWrapper & = default;
             //-----------------------------------------------------------------------------

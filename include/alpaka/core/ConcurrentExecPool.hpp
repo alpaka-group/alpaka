@@ -23,17 +23,23 @@
 
 #include <boost/predef.h>   // workarounds
 
-#if BOOST_COMP_MSVC
-    #pragma warning(push)
-    #pragma warning(disable: 4244)  // boost/lockfree/detail/tagged_ptr_ptrcompression.hpp(59): warning C4244: '=': conversion from 'int' to 'boost::lockfree::detail::tagged_ptr<boost::lockfree::detail::freelist_stack<T,Alloc>::freelist_node>::tag_t', possible loss of data
+// nvcc does not currently support boost correctly.
+// boost/utility/detail/result_of_iterate.hpp:148:75: error: invalid use of qualified-name 'std::allocator_traits<_Alloc>::propagate_on_container_swap'
+#if defined(ALPAKA_GPU_CUDA_ENABLED) && defined(__CUDACC__)
+    #include <queue>        // std::queue
+    #include <mutex>        // std::mutex
+#else
+    #if BOOST_COMP_MSVC
+        #pragma warning(push)
+        #pragma warning(disable: 4244)  // boost/lockfree/detail/tagged_ptr_ptrcompression.hpp(59): warning C4244: '=': conversion from 'int' to 'boost::lockfree::detail::tagged_ptr<boost::lockfree::detail::freelist_stack<T,Alloc>::freelist_node>::tag_t', possible loss of data
+    #endif
+
+    #include <boost/lockfree/queue.hpp>
+
+    #if BOOST_COMP_MSVC
+        #pragma warning(pop)
+    #endif
 #endif
-
-#include <boost/lockfree/queue.hpp>
-
-#if BOOST_COMP_MSVC
-    #pragma warning(pop)
-#endif
-
 #include <vector>           // std::vector
 #include <exception>        // std::runtime_error
 #include <utility>          // std::forward
@@ -44,6 +50,73 @@ namespace alpaka
 {
     namespace detail
     {
+#if defined(ALPAKA_GPU_CUDA_ENABLED) && defined(__CUDACC__)
+        //#############################################################################
+        //!
+        //#############################################################################
+        template<
+            typename T>
+        class ThreadSafeQueue :
+            private std::queue<T>
+        {
+        public:
+            //-----------------------------------------------------------------------------
+            //! Constructor.
+            //-----------------------------------------------------------------------------
+            ThreadSafeQueue(
+                std::size_t)
+            {}
+            //-----------------------------------------------------------------------------
+            //! \return If the queue is empty.
+            //-----------------------------------------------------------------------------
+            auto empty() const
+            -> bool
+            {
+                return std::queue<T>::empty();
+            }
+            //-----------------------------------------------------------------------------
+            //! Pushes the given value onto the back of the queue.
+            //-----------------------------------------------------------------------------
+            auto push(
+                T const & t)
+            -> void
+            {
+                std::lock_guard<std::mutex> lk(m_Mutex);
+
+                std::queue<T>::push(t);
+            }
+            //-----------------------------------------------------------------------------
+            //! Pops the given value from the front of the queue.
+            //-----------------------------------------------------------------------------
+            auto pop(
+                T & t)
+            -> bool
+            {
+                std::lock_guard<std::mutex> lk(m_Mutex);
+
+                if(std::queue<T>::empty())
+                {
+                    return false;
+                }
+                else
+                {
+                    t = std::queue<T>::front();
+                    std::queue<T>::pop();
+                    return true;
+                }
+            }
+
+        private:
+            std::mutex m_Mutex;
+        };
+#else
+        //#############################################################################
+        //!
+        //#############################################################################
+        template<
+            typename T>
+        using ThreadSafeQueue = boost::lockfree::queue<T>;
+#endif
         //#############################################################################
         //! ITaskPkg.
         //#############################################################################
@@ -214,7 +287,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ConcurrentExecPool(
                 UInt uiConcurrentExecutionCount,
-                UInt uiQueueSize = 128) :
+                UInt uiQueueSize = 128u) :
                 m_vConcurrentExecs(),
                 m_bShutdownFlag(false),
                 m_qTasks(uiQueueSize)
@@ -222,7 +295,7 @@ namespace alpaka
                 m_vConcurrentExecs.reserve(uiConcurrentExecutionCount);
 
                 // Create all concurrent executors.
-                for(size_t uiConcurrentExec(0); uiConcurrentExec < uiConcurrentExecutionCount; ++uiConcurrentExec)
+                for(size_t uiConcurrentExec(0u); uiConcurrentExec < uiConcurrentExecutionCount; ++uiConcurrentExec)
                 {
                     m_vConcurrentExecs.emplace_back(std::bind(&ConcurrentExecPool::concurrentExecFunc, this));
                 }
@@ -236,11 +309,11 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ConcurrentExecPool(ConcurrentExecPool &&) = delete;
             //-----------------------------------------------------------------------------
-            //! Copy assignment.
+            //! Copy assignment operator.
             //-----------------------------------------------------------------------------
             auto operator=(ConcurrentExecPool const &) -> ConcurrentExecPool & = delete;
             //-----------------------------------------------------------------------------
-            //! Move assignment.
+            //! Move assignment operator.
             //-----------------------------------------------------------------------------
             auto operator=(ConcurrentExecPool &&) -> ConcurrentExecPool & = delete;
 
@@ -314,6 +387,14 @@ namespace alpaka
             {
                 return m_vConcurrentExecs.size();
             }
+            //-----------------------------------------------------------------------------
+            //! \return If the work queue is empty.
+            //-----------------------------------------------------------------------------
+            auto isQueueEmpty() const
+            -> bool
+            {
+                return m_qTasks.empty();
+            }
 
         private:
             //-----------------------------------------------------------------------------
@@ -368,7 +449,7 @@ namespace alpaka
         private:
             std::vector<TConcurrentExec> m_vConcurrentExecs;
             std::atomic<bool> m_bShutdownFlag;
-            boost::lockfree::queue<ITaskPkg *> m_qTasks;
+            ThreadSafeQueue<ITaskPkg *> m_qTasks;
         };
 
         //#############################################################################
@@ -407,7 +488,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ConcurrentExecPool(
                 UInt uiConcurrentExecutionCount,
-                UInt uiQueueSize = 128) :
+                UInt uiQueueSize = 128u) :
                 m_vConcurrentExecs(),
                 m_bShutdownFlag(false),
                 m_qTasks(uiQueueSize),
@@ -417,7 +498,7 @@ namespace alpaka
                 m_vConcurrentExecs.reserve(uiConcurrentExecutionCount);
 
                 // Create all concurrent executors.
-                for(size_t uiConcurrentExec(0); uiConcurrentExec < uiConcurrentExecutionCount; ++uiConcurrentExec)
+                for(size_t uiConcurrentExec(0u); uiConcurrentExec < uiConcurrentExecutionCount; ++uiConcurrentExec)
                 {
                     m_vConcurrentExecs.emplace_back(std::bind(&ConcurrentExecPool::concurrentExecFunc, this));
                 }
@@ -431,11 +512,11 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ConcurrentExecPool(ConcurrentExecPool &&) = delete;
             //-----------------------------------------------------------------------------
-            //! Copy assignment.
+            //! Copy assignment operator.
             //-----------------------------------------------------------------------------
             auto operator=(ConcurrentExecPool const &) -> ConcurrentExecPool & = delete;
             //-----------------------------------------------------------------------------
-            //! Move assignment.
+            //! Move assignment operator.
             //-----------------------------------------------------------------------------
             auto operator=(ConcurrentExecPool &&) -> ConcurrentExecPool & = delete;
 
@@ -513,6 +594,14 @@ namespace alpaka
             {
                 return m_vConcurrentExecs.size();
             }
+            //-----------------------------------------------------------------------------
+            //! \return If the work queue is empty.
+            //-----------------------------------------------------------------------------
+            auto isQueueEmpty() const
+            -> bool
+            {
+                return m_qTasks.empty();
+            }
 
         private:
             //-----------------------------------------------------------------------------
@@ -569,7 +658,7 @@ namespace alpaka
         private:
             std::vector<TConcurrentExec> m_vConcurrentExecs;
             std::atomic<bool> m_bShutdownFlag;
-            boost::lockfree::queue<ITaskPkg *> m_qTasks;
+            ThreadSafeQueue<ITaskPkg *> m_qTasks;
 
             TCondVar m_cvWakeup;
             TMutex m_mtxWakeup;

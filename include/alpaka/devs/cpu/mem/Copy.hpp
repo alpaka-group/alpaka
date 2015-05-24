@@ -21,10 +21,12 @@
 
 #pragma once
 
-#include <alpaka/core/BasicDims.hpp>    // dim::Dim<N>
+#include <alpaka/devs/cpu/Stream.hpp>   // StreamCpu
 
 #include <alpaka/traits/Mem.hpp>        // traits::Copy, ...
 #include <alpaka/traits/Extent.hpp>     // traits::getXXX
+
+#include <alpaka/core/BasicDims.hpp>    // dim::Dim<N>
 
 #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 
@@ -37,11 +39,7 @@ namespace alpaka
     {
         namespace cpu
         {
-            namespace detail
-            {
-                class DevCpu;
-                class StreamCpu;
-            }
+            class DevCpu;
         }
     }
 }
@@ -209,7 +207,6 @@ namespace alpaka
                 }
                 //-----------------------------------------------------------------------------
                 //!
-                // \TODO: Implement asynchronous CPU copy.
                 //-----------------------------------------------------------------------------
                 template<
                     typename TExtents,
@@ -224,10 +221,14 @@ namespace alpaka
                 {
                     boost::ignore_unused(stream);
 
-                    copy(
-                        bufDst,
-                        bufSrc,
-                        extents);
+                    stream.m_spAsyncStreamCpu->m_workerThread.enqueueTask(
+                        [&bufDst, &bufSrc, extents]()
+                        {
+                            copy(
+                                bufDst,
+                                bufSrc,
+                                extents);
+                        });
                 }
             };
         }

@@ -152,7 +152,7 @@ namespace alpaka
                                 reinterpret_cast<void const *>(mem::getPtrNative(bufSrc)),
                                 uiExtentWidth * sizeof(mem::ElemT<TBufDst>),
                                 p_cudaMemcpyKind,
-                                *stream.m_spCudaStream.get()));
+                                stream.m_spStreamCudaImpl->m_CudaStream));
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                         std::cout << BOOST_CURRENT_FUNCTION
@@ -297,7 +297,7 @@ namespace alpaka
                                 uiExtentWidth * sizeof(mem::ElemT<TBufDst>),
                                 uiExtentHeight,
                                 p_cudaMemcpyKind,
-                                *stream.m_spCudaStream.get()));
+                                stream.m_spStreamCudaImpl->m_CudaStream));
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                         std::cout << BOOST_CURRENT_FUNCTION
@@ -387,7 +387,7 @@ namespace alpaka
                         ALPAKA_CUDA_RT_CHECK(
                             cudaMemcpy3DAsync(
                                 &l_cudaMemcpy3DParms,
-                                *stream.m_spCudaStream.get()));
+                                stream.m_spStreamCudaImpl->m_CudaStream));
                     }
                 private:
                     //-----------------------------------------------------------------------------
@@ -593,7 +593,7 @@ namespace alpaka
                                 reinterpret_cast<void const *>(mem::getPtrNative(bufSrc)),
                                 uiSrcDev,
                                 uiExtentWidth * sizeof(mem::ElemT<TBufDst>),
-                                *stream.m_spCudaStream.get()));
+                                stream.m_spStreamCudaImpl->m_CudaStream));
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                         std::cout << BOOST_CURRENT_FUNCTION
@@ -668,7 +668,7 @@ namespace alpaka
                         ALPAKA_CUDA_RT_CHECK(
                             cudaMemcpy3DPeerAsync(
                                 &l_cudaMemcpy3DPeerParms,
-                                *stream.m_spCudaStream.get()));
+                                stream.m_spStreamCudaImpl->m_CudaStream));
                     }
 
                 private:

@@ -21,15 +21,18 @@
 
 #pragma once
 
-#include <alpaka/devs/cpu/Dev.hpp>      // DevCpu
+#include <alpaka/devs/cpu/Dev.hpp>          // DevCpu
 
-#include <alpaka/traits/Event.hpp>      // StreamEnqueueEvent, ...
-#include <alpaka/traits/Wait.hpp>       // CurrentThreadWaitFor
-#include <alpaka/traits/Dev.hpp>        // GetDev
+#include <alpaka/traits/Event.hpp>          // StreamEnqueueEvent, ...
+#include <alpaka/traits/Wait.hpp>           // CurrentThreadWaitFor
+#include <alpaka/traits/Dev.hpp>            // GetDev
 
-#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+#include <boost/uuid/uuid.hpp>              // boost::uuids::uuid
+#include <boost/uuid/uuid_generators.hpp>   // boost::uuids::random_generator
 
-#include <type_traits>                  // std::is_base
+#include <type_traits>                      // std::is_base
+#include <mutex>                            // std::mutex
+#include <condition_variable>               // std::condition_variable
 
 namespace alpaka
 {
@@ -37,6 +40,72 @@ namespace alpaka
     {
         namespace cpu
         {
+            namespace detail
+            {
+                //#############################################################################
+                //! The CPU device event implementation.
+                //#############################################################################
+                class EventCpuImpl
+                {
+                public:
+                    //-----------------------------------------------------------------------------
+                    //! Constructor.
+                    //-----------------------------------------------------------------------------
+                    EventCpuImpl(
+                        DevCpu const & dev) :
+                            m_Uuid(boost::uuids::random_generator()()),
+                            m_Dev(dev),
+                            m_Mutex(),
+                            m_bIsReady(true),
+                            m_bIsWaitedFor(false),
+                            m_uiNumCanceledEnqueues(0)
+                    {}
+                    //-----------------------------------------------------------------------------
+                    //! Copy constructor.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST EventCpuImpl(EventCpuImpl const &) = delete;
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
+                    //-----------------------------------------------------------------------------
+                    //! Move constructor.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST EventCpuImpl(EventCpuImpl &&) = default;
+#endif
+                    //-----------------------------------------------------------------------------
+                    //! Copy assignment operator.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST auto operator=(EventCpuImpl const &) -> EventCpuImpl & = delete;
+                    //-----------------------------------------------------------------------------
+                    //! Move assignment operator.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST auto operator=(EventCpuImpl &&) -> EventCpuImpl & = default;
+                    //-----------------------------------------------------------------------------
+                    //! Destructor.
+                    //-----------------------------------------------------------------------------
+                    ~EventCpuImpl() noexcept(false)
+                    {
+                        // \FIXME: If a event is enqueued to a stream and gets waited on but destructed before it is completed the application crashes.
+                        // CUDA keeps all events valid while they are enqueued.
+                        if(m_bIsWaitedFor)
+                        {
+                            throw std::runtime_error("Error: Handling destruction of referenced (waited for) EventCpuImpl not implemented!");
+                        }
+                    }
+
+                public:
+                    boost::uuids::uuid const m_Uuid;                        //!< The unique ID.
+                    DevCpu const m_Dev;                                     //!< The device this event is bound to.
+
+                    std::mutex mutable m_Mutex;                             //!< The mutex used to synchronize access to the event.
+
+                    bool m_bIsReady;                                        //!< If the event is not waiting within a stream (not enqueued or already completed).
+                    std::condition_variable mutable m_ConditionVariable;    //!< The condition signaling the event completion.
+
+                    bool m_bIsWaitedFor;                                    //!< If a (one or multiple) streams wait for this event. The event can not be changed (deleted/re-enqueued) until completion.
+
+                    std::size_t m_uiNumCanceledEnqueues;                    //!< The number of successive re-enqueues while it was already in the queue. Reset on completion.
+                };
+            }
+
             //#############################################################################
             //! The CPU device event.
             //#############################################################################
@@ -48,7 +117,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST EventCpu(
                     DevCpu const & dev) :
-                        m_Dev(dev)
+                        m_spEventCpuImpl(std::make_shared<detail::EventCpuImpl>(dev))
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
@@ -61,16 +130,20 @@ namespace alpaka
                 ALPAKA_FCT_HOST EventCpu(EventCpu &&) = default;
 #endif
                 //-----------------------------------------------------------------------------
-                //! Assignment operator.
+                //! Copy assignment operator.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST auto operator=(EventCpu const &) -> EventCpu & = default;
+                //-----------------------------------------------------------------------------
+                //! Move assignment operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST auto operator=(EventCpu &&) -> EventCpu & = default;
                 //-----------------------------------------------------------------------------
                 //! Equality comparison operator.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST auto operator==(EventCpu const & rhs) const
                 -> bool
                 {
-                    return (m_Dev == rhs.m_Dev);
+                    return (m_spEventCpuImpl->m_Uuid == rhs.m_spEventCpuImpl->m_Uuid);
                 }
                 //-----------------------------------------------------------------------------
                 //! Inequality comparison operator.
@@ -80,16 +153,10 @@ namespace alpaka
                 {
                     return !((*this) == rhs);
                 }
-                //-----------------------------------------------------------------------------
-                //! Destructor.
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST virtual ~EventCpu() noexcept = default;
 
             public:
-                DevCpu m_Dev;
+                std::shared_ptr<detail::EventCpuImpl> m_spEventCpuImpl;
             };
-
-            class StreamCpu;
         }
     }
 
@@ -108,7 +175,7 @@ namespace alpaka
                     devs::cpu::EventCpu const & event)
                 -> devs::cpu::DevCpu
                 {
-                    return event.m_Dev;
+                    return event.m_spEventCpuImpl->m_Dev;
                 }
             };
         }
@@ -126,38 +193,22 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The CPU device event enqueue trait specialization.
-            //#############################################################################
-            template<>
-            struct StreamEnqueueEvent<
-                devs::cpu::EventCpu,
-                devs::cpu::StreamCpu>
-            {
-                ALPAKA_FCT_HOST static auto streamEnqueueEvent(
-                    devs::cpu::EventCpu const & event,
-                    devs::cpu::StreamCpu const & stream)
-                -> void
-                {
-                    boost::ignore_unused(event);
-                    boost::ignore_unused(stream);
-                    // Because cpu calls are not asynchronous, this call never has to enqueue anything.
-                }
-            };
-
-            //#############################################################################
             //! The CPU device event test trait specialization.
             //#############################################################################
             template<>
             struct EventTest<
                 devs::cpu::EventCpu>
             {
+                //-----------------------------------------------------------------------------
+                //! \return If the event is not waiting within a stream (not enqueued or already handled).
+                //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto eventTest(
                     devs::cpu::EventCpu const & event)
                 -> bool
                 {
-                    boost::ignore_unused(event);
-                    // Because cpu calls are not asynchronous, this call always returns true.
-                    return true;
+                    std::lock_guard<std::mutex> lk(event.m_spEventCpuImpl->m_Mutex);
+
+                    return event.m_spEventCpuImpl->m_bIsReady;
                 }
             };
         }
@@ -175,8 +226,15 @@ namespace alpaka
                     devs::cpu::EventCpu const & event)
                 -> void
                 {
-                    boost::ignore_unused(event);
-                    // Because cpu calls are not asynchronous, this call never has to wait.
+                    std::unique_lock<std::mutex> lk(event.m_spEventCpuImpl->m_Mutex);
+
+                    if(!event.m_spEventCpuImpl->m_bIsReady)
+                    {
+                        event.m_spEventCpuImpl->m_bIsWaitedFor = true;
+                        event.m_spEventCpuImpl->m_ConditionVariable.wait(
+                            lk,
+                            [&event]{return event.m_spEventCpuImpl->m_bIsReady;});
+                    }
                 }
             };
         }

@@ -27,3 +27,4 @@
 #include <alpaka/devs/cpu/Rand.hpp>
 #include <alpaka/devs/cpu/Stream.hpp>
 #include <alpaka/devs/cpu/SysInfo.hpp>
+#include <alpaka/devs/cpu/StreamEventTraits.hpp>

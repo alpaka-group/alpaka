@@ -98,9 +98,13 @@ namespace alpaka
                     }
     #endif
                     //-----------------------------------------------------------------------------
-                    //! Copy assignment.
+                    //! Copy assignment operator.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto operator=(ExecCpuSerial const &) -> ExecCpuSerial & = delete;
+                    ALPAKA_FCT_HOST auto operator=(ExecCpuSerial const &) -> ExecCpuSerial & = default;
+                    //-----------------------------------------------------------------------------
+                    //! Move assignment operator.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST auto operator=(ExecCpuSerial &&) -> ExecCpuSerial & = default;
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
@@ -111,12 +115,35 @@ namespace alpaka
     #endif
 
                     //-----------------------------------------------------------------------------
-                    //! Executes the kernel functor.
+                    //! Enqueues the kernel functor.
                     //-----------------------------------------------------------------------------
                     template<
                         typename TKernelFunctor,
                         typename... TArgs>
                     ALPAKA_FCT_HOST auto operator()(
+                        TKernelFunctor && kernelFunctor,
+                        TArgs && ... args) const
+                    -> void
+                    {
+                        ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                        m_Stream.m_spAsyncStreamCpu->m_workerThread.enqueueTask(
+                            [this, kernelFunctor, args...]()
+                            {
+                                exec(
+                                    kernelFunctor,
+                                    args...);
+                            });
+                    }
+
+                private:
+                    //-----------------------------------------------------------------------------
+                    //! Executes the kernel functor.
+                    //-----------------------------------------------------------------------------
+                    template<
+                        typename TKernelFunctor,
+                        typename... TArgs>
+                    ALPAKA_FCT_HOST auto exec(
                         TKernelFunctor && kernelFunctor,
                         TArgs && ... args) const
                     -> void
@@ -132,11 +159,11 @@ namespace alpaka
                                 AccCpuSerial<TDim>>(
                                     vuiBlockThreadExtents,
                                     std::forward<TArgs>(args)...));
-    #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                         std::cout << BOOST_CURRENT_FUNCTION
                             << " BlockSharedExternMemSizeBytes: " << uiBlockSharedExternMemSizeBytes << " B"
                             << std::endl;
-    #endif
+#endif
                         if(uiBlockSharedExternMemSizeBytes > 0)
                         {
                             this->AccCpuSerial<TDim>::m_vuiExternalSharedMem.reset(

@@ -92,18 +92,15 @@ namespace alpaka
             ALPAKA_FCT_HOST BasicWorkDiv(BasicWorkDiv<TDim> &&) = default;
 #endif
             //-----------------------------------------------------------------------------
-            //! Copy assignment.
+            //! Copy assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator=(
-                BasicWorkDiv<TDim> const & other)
-            -> BasicWorkDiv<TDim> &
-            {
-                m_vuiGridBlockExtents = other.m_vuiGridBlockExtents;
-                m_vuiBlockThreadExtents = other.m_vuiBlockThreadExtents;
-                return *this;
-            }
+            ALPAKA_FCT_HOST auto operator=(BasicWorkDiv<TDim> const &) -> BasicWorkDiv<TDim> & = default;
             //-----------------------------------------------------------------------------
-            //! Copy assignment.
+            //! Move assignment operator.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FCT_HOST auto operator=(BasicWorkDiv<TDim> &&) -> BasicWorkDiv<TDim> & = default;
+            //-----------------------------------------------------------------------------
+            //! Copy assignment operator.
             //-----------------------------------------------------------------------------
             template<
                 typename TWorkDiv>

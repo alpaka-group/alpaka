@@ -90,9 +90,13 @@ namespace alpaka
                             ALPAKA_FCT_HOST ExecCpuOmp4(ExecCpuOmp4 && other) = default;
 #endif
                             //-----------------------------------------------------------------------------
-                            //! Copy assignment.
+                            //! Copy assignment operator.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_HOST auto operator=(ExecCpuOmp4 const &) -> ExecCpuOmp4 & = delete;
+                            ALPAKA_FCT_HOST auto operator=(ExecCpuOmp4 const &) -> ExecCpuOmp4 & = default;
+                            //-----------------------------------------------------------------------------
+                            //! Move assignment operator.
+                            //-----------------------------------------------------------------------------
+                            ALPAKA_FCT_HOST auto operator=(ExecCpuOmp4 &&) -> ExecCpuOmp4 & = default;
                             //-----------------------------------------------------------------------------
                             //! Destructor.
                             //-----------------------------------------------------------------------------
@@ -102,12 +106,35 @@ namespace alpaka
                             ALPAKA_FCT_HOST virtual ~ExecCpuOmp4() noexcept = default;
 #endif
                             //-----------------------------------------------------------------------------
-                            //! Executes the kernel functor.
+                            //! Enqueues the kernel functor.
                             //-----------------------------------------------------------------------------
                             template<
                                 typename TKernelFunctor,
                                 typename... TArgs>
                             ALPAKA_FCT_HOST auto operator()(
+                                TKernelFunctor && kernelFunctor,
+                                TArgs && ... args) const
+                            -> void
+                            {
+                                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                                m_Stream.m_spAsyncStreamCpu->m_workerThread.enqueueTask(
+                                    [this, kernelFunctor, args...]()
+                                    {
+                                        exec(
+                                            kernelFunctor,
+                                            args...);
+                                    });
+                            }
+
+                        private:
+                            //-----------------------------------------------------------------------------
+                            //! Executes the kernel functor.
+                            //-----------------------------------------------------------------------------
+                            template<
+                                typename TKernelFunctor,
+                                typename... TArgs>
+                            ALPAKA_FCT_HOST auto exec(
                                 TKernelFunctor && kernelFunctor,
                                 TArgs && ... args) const
                             -> void

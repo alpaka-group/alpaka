@@ -25,8 +25,6 @@
 
 #include <boost/predef.h>           // workarounds
 
-#include <type_traits>              // std::remove_cv
-#include <cstddef>                  // std::size_t
 #include <cstdint>                  // std::uint32_t
 
 //-----------------------------------------------------------------------------
@@ -98,7 +96,7 @@
 // MSVC 2013 does not support noexcept
 //-----------------------------------------------------------------------------
 #if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-    #define noexcept
+    #define noexcept(...)
 #endif
 
 namespace alpaka
@@ -108,129 +106,4 @@ namespace alpaka
     //-----------------------------------------------------------------------------
     // NOTE: Setting the value type to std::size_t leads to invalid data on CUDA devices (at least with VC12).
     using UInt = std::uint32_t;
-
-    //-----------------------------------------------------------------------------
-    //! Defines implementation details that should not be used directly by the user.
-    //-----------------------------------------------------------------------------
-    namespace detail
-    {
-        //-----------------------------------------------------------------------------
-        //! Rounds to the next higher power of two (if not already power of two).
-        // Adapted from llvm/ADT/SmallPtrSet.h
-        //-----------------------------------------------------------------------------
-        template<
-            unsigned N>
-        struct RoundUpToPowerOfTwo;
-
-        template<
-            unsigned N,
-            bool isPowerTwo>
-        struct RoundUpToPowerOfTwoHelper
-        {
-            enum
-            {
-                value = N
-            };
-        };
-        template<
-            unsigned N>
-        struct RoundUpToPowerOfTwoHelper<
-            N,
-            false>
-        {
-            enum
-            {
-                // We could just use NextVal = N+1, but this converges faster.  N|(N-1) sets
-                // the right-most zero bits to one all at once, e.g. 0b0011000 -> 0b0011111.
-                value = RoundUpToPowerOfTwo<(N | (N - 1)) + 1>::value
-            };
-        };
-        template<
-            unsigned N>
-        struct RoundUpToPowerOfTwo
-        {
-            enum
-            {
-                value = RoundUpToPowerOfTwoHelper<N, (N&(N - 1)) == 0>::value
-            };
-        };
-
-        //-----------------------------------------------------------------------------
-        //! Calculates the optimal alignment for data of the given size.
-        //-----------------------------------------------------------------------------
-        template<
-            std::size_t TuiSizeBytes>
-        struct OptimalAlignment
-        {
-            // We have to use a enum here because VC14 says: "expected constant expression" when using "static const std::size_t".
-            enum
-            {
-                // GCC does not support alignments larger then 128: "warning: requested alignment 256 is larger than 128[-Wattributes]".
-                value = (TuiSizeBytes > 64) ? 128 : RoundUpToPowerOfTwo<TuiSizeBytes>::value
-            };
-        };
-    }
 }
-
-#define ALPAKA_OPTIMAL_ALIGNMENT(byte)\
-        ((byte)==1?1:\
-        ((byte)<=2?2:\
-        ((byte)<=4?4:\
-        ((byte)<=8?8:\
-        ((byte)<=16?16:\
-        ((byte)<=32?32:\
-        ((byte)<=64?64:128\
-        )))))))
-
-// Newer GCC versions >= 4.9 do not support constant expressions as parameters: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=58109
-#if BOOST_COMP_GNUC || BOOST_COMP_INTEL
-    //-----------------------------------------------------------------------------
-    //! Aligns the data optimally.
-    //! You must align all arrays and structs which can be used on accelerators.
-    //-----------------------------------------------------------------------------
-    #define ALPAKA_ALIGN(TYPE, NAME) alignas(ALPAKA_OPTIMAL_ALIGNMENT(sizeof(typename std::remove_cv<TYPE>::type))) TYPE NAME
-    //-----------------------------------------------------------------------------
-    //! Aligns the data at 8 bytes.
-    //! You must align all arrays and structs which can be used on accelerators.
-    //-----------------------------------------------------------------------------
-    #define ALPAKA_ALIGN_8(TYPE, NAME) alignas(8) TYPE NAME
-
-    //-----------------------------------------------------------------------------
-    //! \return The alignment of the type.
-    //-----------------------------------------------------------------------------
-    #define ALPAKA_ALIGNOF(TYPE) alignof(TYPE)
-#elif (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-    //-----------------------------------------------------------------------------
-    //! Aligns the data optimally.
-    //! You must align all arrays and structs which can be used on accelerators.
-    //-----------------------------------------------------------------------------
-    // \FIXME: sizeof in __declspec(align( not allowed...
-    //#define ALPAKA_ALIGN(TYPE, NAME) __declspec(align(ALPAKA_OPTIMAL_ALIGNMENT(sizeof(typename std::remove_cv<TYPE>::type)))) TYPE NAME
-    #define ALPAKA_ALIGN(TYPE, NAME) __declspec(align(16)) TYPE NAME
-    //-----------------------------------------------------------------------------
-    //! Aligns the data at 8 bytes.
-    //! You must align all arrays and structs which can be used on accelerators.
-    //-----------------------------------------------------------------------------
-    #define ALPAKA_ALIGN_8(TYPE, NAME) __declspec(align(8)) TYPE NAME
-
-    //-----------------------------------------------------------------------------
-    //! \return The alignment of the type.
-    //-----------------------------------------------------------------------------
-    #define ALPAKA_ALIGNOF(TYPE) __alignof(TYPE)
-#else
-    //-----------------------------------------------------------------------------
-    //! Aligns the data optimally.
-    //! You must align all arrays and structs which can be used on accelerators.
-    //-----------------------------------------------------------------------------
-    #define ALPAKA_ALIGN(TYPE, NAME) alignas(alpaka::detail::OptimalAlignment<sizeof(typename std::remove_cv<TYPE>::type)>::value) TYPE NAME
-    //-----------------------------------------------------------------------------
-    //! Aligns the data at 8 bytes.
-    //! You must align all arrays and structs which can be used on accelerators.
-    //-----------------------------------------------------------------------------
-    #define ALPAKA_ALIGN_8(TYPE, NAME) alignas(8) TYPE NAME
-
-    //-----------------------------------------------------------------------------
-    //! \return The alignment of the type.
-    //-----------------------------------------------------------------------------
-    #define ALPAKA_ALIGNOF(TYPE) alignof(TYPE)
-#endif

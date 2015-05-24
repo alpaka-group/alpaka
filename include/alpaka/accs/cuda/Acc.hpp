@@ -107,9 +107,13 @@ namespace alpaka
                     ALPAKA_FCT_ACC_CUDA_ONLY AccGpuCuda(AccGpuCuda &&) = delete;
 #endif
                     //-----------------------------------------------------------------------------
-                    //! Copy assignment.
+                    //! Copy assignment operator.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_ACC_CUDA_ONLY auto operator=(AccGpuCuda const &) -> AccGpuCuda & = delete;
+                    //-----------------------------------------------------------------------------
+                    //! Move assignment operator.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_ACC_CUDA_ONLY auto operator=(AccGpuCuda &&) -> AccGpuCuda & = delete;
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------

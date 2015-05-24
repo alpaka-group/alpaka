@@ -39,9 +39,78 @@ namespace alpaka
     {
         namespace cuda
         {
-            template<
-                typename TDim>
-            class AccGpuCuda;
+            namespace detail
+            {
+                //#############################################################################
+                //! The CUDA device event implementation.
+                //#############################################################################
+                class EventCudaImpl
+                {
+                public:
+                    //-----------------------------------------------------------------------------
+                    //! Constructor.
+                    //-----------------------------------------------------------------------------
+                    EventCudaImpl(
+                        DevCuda const & dev,
+                        bool bBusyWait) :
+                            m_Dev(dev),
+                            m_CudaEvent()
+                    {
+                        ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                        // Set the current device.
+                        ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
+                            m_Dev.m_iDevice));
+                        // Create the event on the current device with the specified flags. Valid flags include:
+                        // - cudaEventDefault: Default event creation flag.
+                        // - cudaEventBlockingSync : Specifies that event should use blocking synchronization.
+                        //   A host thread that uses cudaEventSynchronize() to wait on an event created with this flag will block until the event actually completes.
+                        // - cudaEventDisableTiming : Specifies that the created event does not need to record timing data.
+                        //   Events created with this flag specified and the cudaEventBlockingSync flag not specified will provide the best performance when used with cudaStreamWaitEvent() and cudaEventQuery().
+                        ALPAKA_CUDA_RT_CHECK(cudaEventCreateWithFlags(
+                            &m_CudaEvent,
+                            (bBusyWait ? cudaEventDefault : cudaEventBlockingSync) | cudaEventDisableTiming));
+                    }
+                    //-----------------------------------------------------------------------------
+                    //! Copy constructor.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST EventCudaImpl(EventCudaImpl const &) = delete;
+#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
+                    //-----------------------------------------------------------------------------
+                    //! Move constructor.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST EventCudaImpl(EventCudaImpl &&) = default;
+#endif
+                    //-----------------------------------------------------------------------------
+                    //! Copy assignment operator.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST auto operator=(EventCudaImpl const &) -> EventCudaImpl & = delete;
+                    //-----------------------------------------------------------------------------
+                    //! Move assignment operator.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST auto operator=(EventCudaImpl &&) -> EventCudaImpl & = default;
+                    //-----------------------------------------------------------------------------
+                    //! Destructor.
+                    //-----------------------------------------------------------------------------
+                    ~EventCudaImpl()
+                    {
+                        ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                        // Set the current device. \TODO: Is setting the current device before cudaEventDestroy required?
+                        ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
+                            m_Dev.m_iDevice));
+                        // In case event has been recorded but has not yet been completed when cudaEventDestroy() is called, the function will return immediately
+                        // and the resources associated with event will be released automatically once the device has completed event.
+                        // -> No need to synchronize here.
+                        ALPAKA_CUDA_RT_CHECK(cudaEventDestroy(
+                            m_CudaEvent));
+                    }
+
+                public:
+                    DevCuda const m_Dev;        //!< The device this event is bound to.
+                    cudaEvent_t m_CudaEvent;
+                };
+            }
 
             //#############################################################################
             //! The CUDA device event.
@@ -55,23 +124,9 @@ namespace alpaka
                 ALPAKA_FCT_HOST EventCuda(
                     DevCuda const & dev,
                     bool bBusyWait = true) :
-                        m_Dev(dev),
-                        m_spCudaEvent(
-                            new cudaEvent_t,
-                            std::bind(&EventCuda::destroyEvent, std::placeholders::_1, std::ref(m_Dev)))
+                        m_spEventCudaImpl(std::make_shared<detail::EventCudaImpl>(dev, bBusyWait))
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-                    // Set the current device.
-                    ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
-                        m_Dev.m_iDevice));
-                    // Create the event on the current device with the specified flags. Valid flags include:
-                    // - cudaEventDefault: Default event creation flag.
-                    // - cudaEventBlockingSync : Specifies that event should use blocking synchronization.A host thread that uses cudaEventSynchronize() to wait on an event created with this flag will block until the event actually completes.
-                    // - cudaEventDisableTiming : Specifies that the created event does not need to record timing data.Events created with this flag specified and the cudaEventBlockingSync flag not specified will provide the best performance when used with cudaStreamWaitEvent() and cudaEventQuery().
-                    ALPAKA_CUDA_RT_CHECK(cudaEventCreateWithFlags(
-                        m_spCudaEvent.get(),
-                        (bBusyWait ? cudaEventDefault : cudaEventBlockingSync) | cudaEventDisableTiming));
                 }
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
@@ -84,16 +139,20 @@ namespace alpaka
                 ALPAKA_FCT_HOST EventCuda(EventCuda &&) = default;
 #endif
                 //-----------------------------------------------------------------------------
-                //! Assignment operator.
+                //! Copy assignment operator.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST auto operator=(EventCuda const &) -> EventCuda & = default;
+                //-----------------------------------------------------------------------------
+                //! Move assignment operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST auto operator=(EventCuda &&) -> EventCuda & = default;
                 //-----------------------------------------------------------------------------
                 //! Equality comparison operator.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST auto operator==(EventCuda const & rhs) const
                 -> bool
                 {
-                    return (*m_spCudaEvent.get()) == (*rhs.m_spCudaEvent.get());
+                    return (m_spEventCudaImpl->m_CudaEvent == m_spEventCudaImpl->m_CudaEvent);
                 }
                 //-----------------------------------------------------------------------------
                 //! Equality comparison operator.
@@ -108,29 +167,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST /*virtual*/ ~EventCuda() noexcept = default;
 
-            private:
-                //-----------------------------------------------------------------------------
-                //! Destroys the shared event.
-                //-----------------------------------------------------------------------------
-                static auto destroyEvent(
-                    cudaEvent_t * event,
-                    DevCuda const & dev)
-                -> void
-                {
-                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-                    // Set the current device. \TODO: Is setting the current device before cudaEventDestroy required?
-                    ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
-                        dev.m_iDevice));
-                    // In case event has been recorded but has not yet been completed when cudaEventDestroy() is called, the function will return immediately
-                    // and the resources associated with event will be released automatically once the device has completed event.
-                    // -> No need to synchronize here.
-                    ALPAKA_CUDA_RT_CHECK(cudaEventDestroy(*event));
-                }
-
             public:
-                std::shared_ptr<cudaEvent_t> m_spCudaEvent;
-                DevCuda m_Dev;
+                std::shared_ptr<detail::EventCudaImpl> m_spEventCudaImpl;
             };
         }
     }
@@ -150,7 +188,7 @@ namespace alpaka
                     devs::cuda::EventCuda const & event)
                 -> devs::cuda::DevCuda
                 {
-                    return event.m_Dev;
+                    return event.m_spEventCudaImpl->m_Dev;
                 }
             };
         }
@@ -183,7 +221,7 @@ namespace alpaka
                     // Query is allowed even for events on non current device.
                     auto const ret(
                         cudaEventQuery(
-                            *event.m_spCudaEvent.get()));
+                            event.m_spEventCudaImpl->m_CudaEvent));
                     if(ret == cudaSuccess)
                     {
                         return true;
@@ -217,7 +255,7 @@ namespace alpaka
 
                     // Sync is allowed even for events on non current device.
                     ALPAKA_CUDA_RT_CHECK(cudaEventSynchronize(
-                        *event.m_spCudaEvent.get()));
+                        event.m_spEventCudaImpl->m_CudaEvent));
                 }
             };
         }

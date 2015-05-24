@@ -23,3 +23,4 @@
 
 #include <alpaka/devs/cpu/mem/Buf.hpp>  // BufCpu
 #include <alpaka/devs/cpu/mem/Copy.hpp> // Copy
+#include <alpaka/devs/cpu/mem/Set.hpp>  // Set

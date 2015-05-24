@@ -71,9 +71,13 @@ namespace alpaka
                 ALPAKA_FCT_HOST DevCuda(DevCuda &&) = default;
 #endif
                 //-----------------------------------------------------------------------------
-                //! Assignment operator.
+                //! Copy assignment operator.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST auto operator=(DevCuda const &) -> DevCuda & = default;
+                //-----------------------------------------------------------------------------
+                //! Move assignment operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST auto operator=(DevCuda &&) -> DevCuda & = default;
                 //-----------------------------------------------------------------------------
                 //! Equality comparison operator.
                 //-----------------------------------------------------------------------------
@@ -154,7 +158,7 @@ namespace alpaka
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                             printDeviceProperties(devProp);
 #elif ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                            std::cout << devProp.name << std::endl;
+                            std::cout << BOOST_CURRENT_FUNCTION << devProp.name << std::endl;
 #endif
                             return dev;
                         }

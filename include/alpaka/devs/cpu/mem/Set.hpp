@@ -21,10 +21,12 @@
 
 #pragma once
 
-#include <alpaka/core/BasicDims.hpp>    // dim::Dim<N>
+#include <alpaka/devs/cpu/Stream.hpp>   // StreamCpu
 
 #include <alpaka/traits/mem/Buf.hpp>    // traits::Alloc, ...
 #include <alpaka/traits/Extent.hpp>     // traits::getXXX
+
+#include <alpaka/core/BasicDims.hpp>    // dim::Dim<N>
 
 #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 
@@ -37,11 +39,7 @@ namespace alpaka
     {
         namespace cpu
         {
-            namespace detail
-            {
-                class DevCpu;
-                class StreamCpu;
-            }
+            class DevCpu;
         }
     }
 }
@@ -164,7 +162,6 @@ namespace alpaka
                 }
                 //-----------------------------------------------------------------------------
                 //!
-                // \TODO: Implement asynchronous CPU set.
                 //-----------------------------------------------------------------------------
                 template<
                     typename TBuf,
@@ -179,10 +176,14 @@ namespace alpaka
                 {
                     boost::ignore_unused(stream);
 
-                    copy(
-                        buf,
-                        byte,
-                        extents);
+                    stream.m_spAsyncStreamCpu->m_workerThread.enqueueTask(
+                        [&buf, &byte, extents]()
+                        {
+                            set(
+                                buf,
+                                byte,
+                                extents);
+                        });
                 }
             };
         }

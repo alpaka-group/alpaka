@@ -93,8 +93,8 @@ namespace alpaka
             typename TEvent,
             typename TStream>
         ALPAKA_FCT_HOST auto enqueue(
-            TEvent const & event,
-            TStream const & stream)
+            TEvent & event,
+            TStream & stream)
         -> void
         {
             traits::event::StreamEnqueueEvent<

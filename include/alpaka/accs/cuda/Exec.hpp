@@ -107,9 +107,13 @@ namespace alpaka
                     ALPAKA_FCT_HOST ExecGpuCuda(ExecGpuCuda &&) = default;
 #endif
                     //-----------------------------------------------------------------------------
-                    //! Copy assignment.
+                    //! Copy assignment operator.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto operator=(ExecGpuCuda const &) -> ExecGpuCuda & = delete;
+                    ALPAKA_FCT_HOST auto operator=(ExecGpuCuda const &) -> ExecGpuCuda & = default;
+                    //-----------------------------------------------------------------------------
+                    //! Move assignment operator.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST auto operator=(ExecGpuCuda &&) -> ExecGpuCuda & = default;
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
@@ -143,10 +147,10 @@ namespace alpaka
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                         //std::size_t uiPrintfFifoSize;
                         //cudaDeviceGetLimit(&uiPrintfFifoSize, cudaLimitPrintfFifoSize);
-                        //std::cout << "uiPrintfFifoSize: " << uiPrintfFifoSize << std::endl;
+                        //std::cout << BOOST_CURRENT_FUNCTION << "INFO: uiPrintfFifoSize: " << uiPrintfFifoSize << std::endl;
                         //cudaDeviceSetLimit(cudaLimitPrintfFifoSize, uiPrintfFifoSize*10);
                         //cudaDeviceGetLimit(&uiPrintfFifoSize, cudaLimitPrintfFifoSize);
-                        //std::cout << "uiPrintfFifoSize: " <<  uiPrintfFifoSize << std::endl;
+                        //std::cout << BOOST_CURRENT_FUNCTION << "INFO: uiPrintfFifoSize: " <<  uiPrintfFifoSize << std::endl;
 #endif
                         dim3 gridDim(1u, 1u, 1u);
                         dim3 blockDim(1u, 1u, 1u);
@@ -161,8 +165,8 @@ namespace alpaka
                         }
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                        std::cout << "gridDim: " <<  gridDim.z << " " <<  gridDim.y << " " <<  gridDim.x << std::endl;
-                        std::cout << "blockDim: " <<  blockDim.z << " " <<  blockDim.y << " " <<  blockDim.x << std::endl;
+                        std::cout << BOOST_CURRENT_FUNCTION << "gridDim: " <<  gridDim.z << " " <<  gridDim.y << " " <<  gridDim.x << std::endl;
+                        std::cout << BOOST_CURRENT_FUNCTION << "blockDim: " <<  blockDim.z << " " <<  blockDim.y << " " <<  blockDim.x << std::endl;
 #endif
 
                         // Get the size of the block shared extern memory.
@@ -196,20 +200,20 @@ namespace alpaka
 
                         // Set the current device.
                         ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
-                            m_Stream.m_Dev.m_iDevice));
+                            m_Stream.m_spStreamCudaImpl->m_Dev.m_iDevice));
                         // Enqueue the kernel execution.
                         cudaKernel<TDim, TKernelFunctor, TArgs...><<<
                             gridDim,
                             blockDim,
                             uiBlockSharedExternMemSizeBytes,
-                            *m_Stream.m_spCudaStream.get()>>>(
+                            m_Stream.m_spStreamCudaImpl->m_CudaStream>>>(
                                 kernelFunctor,
                                 args...);
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                         // Wait for the kernel execution to finish but do not check error return of this call.
                         // Do not use the alpaka::wait method because it checks the error itself but we want to give a custom error message.
-                        cudaStreamSynchronize(*m_Stream.m_spCudaStream.get());
+                        cudaStreamSynchronize(m_Stream.m_spStreamCudaImpl->m_CudaStream);
                         //cudaDeviceSynchronize();
                         cudaError_t const error(cudaGetLastError());
                         if(error != cudaSuccess)

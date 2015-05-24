@@ -39,10 +39,7 @@ namespace alpaka
     {
         namespace cpu
         {
-            namespace detail
-            {
-                class DevCpu;
-            }
+            class DevCpu;
         }
     }
 }

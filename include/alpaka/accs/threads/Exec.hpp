@@ -131,9 +131,13 @@ namespace alpaka
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                     }
                     //-----------------------------------------------------------------------------
-                    //! Copy assignment.
+                    //! Copy assignment operator.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto operator=(ExecCpuThreads const &) -> ExecCpuThreads & = delete;
+                    ALPAKA_FCT_HOST auto operator=(ExecCpuThreads const &) -> ExecCpuThreads & = default;
+                    //-----------------------------------------------------------------------------
+                    //! Move assignment operator.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST auto operator=(ExecCpuThreads &&) -> ExecCpuThreads & = default;
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
@@ -144,12 +148,35 @@ namespace alpaka
     #endif
 
                     //-----------------------------------------------------------------------------
-                    //! Executes the kernel functor.
+                    //! Enqueues the kernel functor.
                     //-----------------------------------------------------------------------------
                     template<
                         typename TKernelFunctor,
                         typename... TArgs>
                     ALPAKA_FCT_HOST auto operator()(
+                        TKernelFunctor && kernelFunctor,
+                        TArgs && ... args) const
+                    -> void
+                    {
+                        ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                        m_Stream.m_spAsyncStreamCpu->m_workerThread.enqueueTask(
+                            [this, kernelFunctor, args...]()
+                            {
+                                exec(
+                                    kernelFunctor,
+                                    args...);
+                            });
+                    }
+
+                private:
+                    //-----------------------------------------------------------------------------
+                    //! Executes the kernel functor.
+                    //-----------------------------------------------------------------------------
+                    template<
+                        typename TKernelFunctor,
+                        typename... TArgs>
+                    ALPAKA_FCT_HOST auto exec(
                         TKernelFunctor && kernelFunctor,
                         TArgs && ... args) const
                     -> void
@@ -165,11 +192,11 @@ namespace alpaka
                                 AccCpuThreads<TDim>>(
                                     vuiBlockThreadExtents,
                                     std::forward<TArgs>(args)...));
-    #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                         std::cout << BOOST_CURRENT_FUNCTION
                             << " BlockSharedExternMemSizeBytes: " << uiBlockSharedExternMemSizeBytes << " B"
                             << std::endl;
-    #endif
+#endif
                         if(uiBlockSharedExternMemSizeBytes > 0)
                         {
                             this->AccCpuThreads<TDim>::m_vuiExternalSharedMem.reset(
@@ -197,7 +224,6 @@ namespace alpaka
                         // After all blocks have been processed, the external shared memory has to be deleted.
                         this->AccCpuThreads<TDim>::m_vuiExternalSharedMem.reset();
                     }
-                private:
                     //-----------------------------------------------------------------------------
                     //! The function executed for each grid block.
                     //-----------------------------------------------------------------------------

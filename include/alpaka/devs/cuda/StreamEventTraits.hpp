@@ -41,15 +41,15 @@ namespace alpaka
                 devs::cuda::StreamCuda>
             {
                 ALPAKA_FCT_HOST static auto streamEnqueueEvent(
-                    devs::cuda::EventCuda const & event,
-                    devs::cuda::StreamCuda const & stream)
+                    devs::cuda::EventCuda & event,
+                    devs::cuda::StreamCuda & stream)
                 -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                     ALPAKA_CUDA_RT_CHECK(cudaEventRecord(
-                        *event.m_spCudaEvent.get(),
-                        *stream.m_spCudaStream.get()));
+                        event.m_spEventCudaImpl->m_CudaEvent,
+                        stream.m_spStreamCudaImpl->m_CudaStream));
                 }
             };
         }
@@ -65,15 +65,39 @@ namespace alpaka
                 devs::cuda::EventCuda>
             {
                 ALPAKA_FCT_HOST static auto waiterWaitFor(
-                    devs::cuda::StreamCuda const & stream,
+                    devs::cuda::StreamCuda & stream,
                     devs::cuda::EventCuda const & event)
                 -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                     ALPAKA_CUDA_RT_CHECK(cudaStreamWaitEvent(
-                        *stream.m_spCudaStream.get(),
-                        *event.m_spCudaEvent.get(),
+                        stream.m_spStreamCudaImpl->m_CudaStream,
+                        event.m_spEventCudaImpl->m_CudaEvent,
+                        0));
+                }
+            };
+
+            //#############################################################################
+            //! The CUDA device event wait trait specialization.
+            //!
+            //! Any future work submitted in any stream will wait for event to complete before beginning execution.
+            //#############################################################################
+            template<>
+            struct WaiterWaitFor<
+                devs::cuda::DevCuda,
+                devs::cuda::EventCuda>
+            {
+                ALPAKA_FCT_HOST static auto waiterWaitFor(
+                    devs::cuda::DevCuda & dev,
+                    devs::cuda::EventCuda const & event)
+                -> void
+                {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                    ALPAKA_CUDA_RT_CHECK(cudaStreamWaitEvent(
+                        0,
+                        event.m_spEventCudaImpl->m_CudaEvent,
                         0));
                 }
             };
