@@ -239,7 +239,7 @@ namespace alpaka
                     -> void
                     {
                         this->AccCpuThreads<TDim>::m_vuiGridBlockIdx = vuiGridBlockIdx;
-                        
+
                         // Bind the kernel and its arguments to the block thread function.
                         auto boundBlockThreadFct(std::bind(
                             &ExecCpuThreads<TDim>::blockThreadFct<TKernelFunctor&, TArgs&...>,

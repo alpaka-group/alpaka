@@ -56,7 +56,7 @@ env:
         - ALPAKA_ANALYSIS=OFF ALPAKA_DEBUG=2 ALPAKA_CMAKE_VER=3.0.2    CMAKE_BUILD_TYPE=Debug   OMP_NUM_THREADS=2 ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.6 ALPAKA_BOOST_BRANCH=boost-1.58.0 ALPAKA_GPU_CUDA_ENABLE=OFF
         - ALPAKA_ANALYSIS=OFF ALPAKA_DEBUG=0 ALPAKA_CMAKE_VER=2.8.12.2 CMAKE_BUILD_TYPE=Debug   OMP_NUM_THREADS=1 ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.5 ALPAKA_BOOST_BRANCH=boost-1.56.0 ALPAKA_GPU_CUDA_ENABLE=OFF
         - ALPAKA_ANALYSIS=ON  ALPAKA_DEBUG=1 ALPAKA_CMAKE_VER=3.2.1    CMAKE_BUILD_TYPE=Debug   OMP_NUM_THREADS=4 ALPAKA_GCC_VER=5   ALPAKA_CLANG_VER=3.7 ALPAKA_BOOST_BRANCH=develop      ALPAKA_GPU_CUDA_ENABLE=OFF
-        
+
         - ALPAKA_ANALYSIS=OFF ALPAKA_DEBUG=2 ALPAKA_CMAKE_VER=3.2.1    CMAKE_BUILD_TYPE=Release OMP_NUM_THREADS=4 ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.6 ALPAKA_BOOST_BRANCH=boost-1.57.0 ALPAKA_GPU_CUDA_ENABLE=ON
         - ALPAKA_ANALYSIS=OFF ALPAKA_DEBUG=0 ALPAKA_CMAKE_VER=3.2.1    CMAKE_BUILD_TYPE=Release OMP_NUM_THREADS=3 ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.5 ALPAKA_BOOST_BRANCH=boost-1.58.0 ALPAKA_GPU_CUDA_ENABLE=ON
         - ALPAKA_ANALYSIS=OFF ALPAKA_DEBUG=2 ALPAKA_CMAKE_VER=3.2.1    CMAKE_BUILD_TYPE=Release OMP_NUM_THREADS=2 ALPAKA_GCC_VER=4.9 ALPAKA_CLANG_VER=3.6 ALPAKA_BOOST_BRANCH=boost-1.56.0 ALPAKA_GPU_CUDA_ENABLE=OFF
@@ -85,7 +85,7 @@ matrix:
 branches:
   except:
      - doc
-     
+
 ################################################################################
 # Use this to prepare the system to install prerequisites or dependencies.
 ################################################################################
@@ -310,7 +310,7 @@ install:
               && echo ALPAKA_BOOST_BRANCH=${ALPAKA_BOOST_BRANCH} set because boost fibers requires boost version 1.58.0+!
           ;fi
       ;fi
-    
+
     - git clone -b ${ALPAKA_BOOST_BRANCH} --recursive --single-branch --depth 1 https://github.com/boostorg/boost.git boost
     - cd boost/
     - export ALPAKA_BOOST_ROOT_DIR=`pwd`
@@ -419,7 +419,7 @@ script:
     # Once only with errors returning a failure on error.
     #- if [ "${ALPAKA_ANALYSIS}" == "ON" ] ;then cppcheck --force --verbose --error-exitcode=1 -j2 vectorAdd/src/ matMul/src/ sharedMem/src/ mandelbrot/src/ ;fi
     # Once with warnings but no failure return code.
-    #- if [ "${ALPAKA_ANALYSIS}" == "ON" ] ;then cppcheck --force --verbose --enable=all -j2 vectorAdd/src/ matMul/src/ sharedMem/src/ mandelbrot/src/ ;fi	
+    #- if [ "${ALPAKA_ANALYSIS}" == "ON" ] ;then cppcheck --force --verbose --enable=all -j2 vectorAdd/src/ matMul/src/ sharedMem/src/ mandelbrot/src/ ;fi    
 
     #-------------------------------------------------------------------------------
     # analysis

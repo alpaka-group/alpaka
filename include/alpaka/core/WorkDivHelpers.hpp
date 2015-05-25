@@ -294,7 +294,7 @@ namespace alpaka
             auto const devProps(acc::getAccDevProps<TAcc>(dev));
             auto const vuiBlockThreadExtentsMax(subVecEnd<dim::DimT<TWorkDiv>>(devProps.m_vuiBlockThreadExtentsMax));
             auto const uiBlockThreadCountMax(devProps.m_uiBlockThreadsCountMax);
-            
+
             if(uiBlockThreadCountMax < vuiBlockThreadExtents.prod())
             {
                 return false;

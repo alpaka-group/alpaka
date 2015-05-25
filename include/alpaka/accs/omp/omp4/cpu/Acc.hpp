@@ -227,7 +227,7 @@ namespace alpaka
             }
         }
     }
-    
+
     template<
         typename TDim>
     using AccCpuOmp4 = accs::omp::omp4::cpu::detail::AccCpuOmp4<TDim>;

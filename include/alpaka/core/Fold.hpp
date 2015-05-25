@@ -114,7 +114,7 @@ namespace alpaka
         T1 const & t1,
         Ts const & ... ts)
     // NOTE: This is not allowed because the point of function declaration is after the trailing return type.
-    // Thus the function itself is not available inside its return type declaration. 
+    // Thus the function itself is not available inside its return type declaration.
     // http://www.open-std.org/jtc1/sc22/wg21/docs/cwg_closed.html#1433
     // http://stackoverflow.com/questions/3744400/trailing-return-type-using-decltype-with-a-variadic-template-function
     // http://stackoverflow.com/questions/11596898/variadic-template-and-inferred-return-type-in-concat/11597196#11597196

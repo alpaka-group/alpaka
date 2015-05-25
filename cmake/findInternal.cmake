@@ -283,7 +283,7 @@ IF(ALPAKA_ROOT)
         ENDIF()
         # librt: undefined reference to `clock_gettime'
         LIST(APPEND alpaka_LIBRARIES "general;rt")
-        
+
         # GNU
         IF(CMAKE_COMPILER_IS_GNUCXX)
             LIST(APPEND ALPAKA_COMPILE_OPTIONS "-ftemplate-depth-512")

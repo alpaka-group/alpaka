@@ -222,7 +222,7 @@ namespace alpaka
             }
         }
     }
-    
+
     template<
         typename TDim>
     using AccCpuOmp2 = accs::omp::omp2::detail::AccCpuOmp2<TDim>;

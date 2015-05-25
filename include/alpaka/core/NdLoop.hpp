@@ -126,7 +126,7 @@ namespace alpaka
     }
     //-----------------------------------------------------------------------------
     //! Loops over an n-dimensional iteration index variable calling f(idx, args...) for each iteration.
-    //! The loops are nested from index zero outmost to index (dim-1) innermost.  
+    //! The loops are nested from index zero outmost to index (dim-1) innermost.
     //!
     //! \param extents N-dimensional loop extents.
     //! \param f The function called at each iteration.
@@ -145,7 +145,7 @@ namespace alpaka
         static_assert(
             dim::DimT<TExtentsVec>::value > 0u,
             "The dimension given to ndLoop has to be larger than zero!");
-            
+
         auto vuiIdx(
             Vec<dim::DimT<TExtentsVec>>::zeros());
 

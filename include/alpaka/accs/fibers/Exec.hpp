@@ -215,7 +215,7 @@ namespace alpaka
                             std::ref(fiberPool),
                             std::forward<TKernelFunctor>(kernelFunctor),
                             std::forward<TArgs>(args)...));
-                        
+
                         // Execute the blocks serially.
                         ndLoop(
                             vuiGridBlockExtents,
@@ -239,7 +239,7 @@ namespace alpaka
                     -> void
                     {
                         this->AccCpuFibers<TDim>::m_vuiGridBlockIdx = vuiGridBlockIdx;
-                        
+
                         // Bind the kernel and its arguments to the block thread function.
                         auto boundBlockThreadFct(std::bind(
                             &ExecCpuFibers<TDim>::blockThreadFct<TKernelFunctor&, TArgs&...>,

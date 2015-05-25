@@ -264,7 +264,7 @@ namespace alpaka
             }
         }
     }
-    
+
     template<
         typename TDim>
     using AccCpuFibers = accs::fibers::detail::AccCpuFibers<TDim>;

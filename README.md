@@ -16,13 +16,13 @@ The supported accelerators can be selected at compile time but the decision whic
 
 The abstraction used is very similar to the CUDA grid-blocks-threads division strategy.
 Algorithms that should be parallelized have to be divided into a 1, 2, or 3-dimensional grid consisting of small uniform work items.
-The function being executed by each of this threads is called a kernel. 
+The function being executed by each of this threads is called a kernel.
 The threads in the grid are organized in blocks.
 All threads in a block are executed in parallel and can interact via fast shared memory.
 Blocks are executed independently and can not interact in any way.
 The block execution order is unspecified and depends on the accelerator in use.
 By using this abstraction the execution can be optimally adapted to the available accelerators.
- 
+
 Software License
 ----------------
 

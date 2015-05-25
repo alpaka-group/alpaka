@@ -96,7 +96,7 @@ namespace alpaka
                     alpaka::detail::integer_sequence<UInt, TIndices...> const &)
                 -> UInt
                 {
-                    // For the case that the sequence is empty (index out of range), 1 is returned. 
+                    // For the case that the sequence is empty (index out of range), 1 is returned.
                     return alpaka::foldr(
                             std::multiplies<UInt>(),
                             1u,
