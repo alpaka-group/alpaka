@@ -42,6 +42,7 @@
 #include <memory>                           // std::unique_ptr
 #include <thread>                           // std::thread
 #include <vector>                           // std::vector
+#include <mutex>                            // std::mutex
 
 namespace alpaka
 {
@@ -60,6 +61,9 @@ namespace alpaka
                 template<
                     typename TDim>
                 class ExecCpuThreads;
+                template<
+                    typename TDim>
+                class ExecCpuThreadsImpl;
 
                 //#############################################################################
                 //! The CPU threads accelerator.
@@ -69,13 +73,13 @@ namespace alpaka
                 //#############################################################################
                 template<
                     typename TDim>
-                class AccCpuThreads :
+                class AccCpuThreads final :
                     protected workdiv::BasicWorkDiv<TDim>,
                     protected IdxThreads<TDim>,
                     protected AtomicThreads
                 {
                 public:
-                    friend class ::alpaka::accs::threads::detail::ExecCpuThreads<TDim>;
+                    friend class ::alpaka::accs::threads::detail::ExecCpuThreadsImpl<TDim>;
 
                 private:
                     //-----------------------------------------------------------------------------
@@ -114,7 +118,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA virtual ~AccCpuThreads() noexcept = default;
+                    ALPAKA_FCT_ACC_NO_CUDA ~AccCpuThreads() noexcept = default;
 
                     //-----------------------------------------------------------------------------
                     //! \return The requested indices.
@@ -243,6 +247,7 @@ namespace alpaka
 
                 private:
                     // getIdx
+                    std::mutex mutable m_mtxMapInsert;                              //!< The mutex used to secure insertion into the ThreadIdToIdxMap.
                     typename IdxThreads<TDim>::ThreadIdToIdxMap mutable m_mThreadsToIndices;    //!< The mapping of thread id's to indices.
                     Vec<TDim> mutable m_vuiGridBlockIdx;                            //!< The index of the currently executed block.
 

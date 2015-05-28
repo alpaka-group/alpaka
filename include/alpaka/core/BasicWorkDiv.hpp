@@ -21,9 +21,10 @@
 
 #pragma once
 
-#include <alpaka/traits/WorkDiv.hpp>    // GetWorkDiv
-
+#include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST
 #include <alpaka/core/Vec.hpp>          // Vec
+
+#include <alpaka/traits/WorkDiv.hpp>    // GetWorkDiv
 
 #include <iosfwd>                       // std::ostream
 
@@ -49,7 +50,7 @@ namespace alpaka
             template<
                 typename TGridBlockExtents,
                 typename TBlockThreadExtents>
-            ALPAKA_FCT_HOST
+            ALPAKA_FCT_HOST_ACC
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
             explicit
 #endif
@@ -62,7 +63,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST
+            ALPAKA_FCT_HOST_ACC
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
             explicit
 #endif
@@ -76,7 +77,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TWorkDiv>
-            ALPAKA_FCT_HOST
+            ALPAKA_FCT_HOST_ACC
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
             explicit
 #endif
@@ -89,22 +90,22 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST BasicWorkDiv(BasicWorkDiv<TDim> &&) = default;
+            ALPAKA_FCT_HOST_ACC BasicWorkDiv(BasicWorkDiv<TDim> &&) = default;
 #endif
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator=(BasicWorkDiv<TDim> const &) -> BasicWorkDiv<TDim> & = default;
+            ALPAKA_FCT_HOST_ACC auto operator=(BasicWorkDiv<TDim> const &) -> BasicWorkDiv<TDim> & = default;
             //-----------------------------------------------------------------------------
             //! Move assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator=(BasicWorkDiv<TDim> &&) -> BasicWorkDiv<TDim> & = default;
+            ALPAKA_FCT_HOST_ACC auto operator=(BasicWorkDiv<TDim> &&) -> BasicWorkDiv<TDim> & = default;
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
             template<
                 typename TWorkDiv>
-            ALPAKA_FCT_HOST auto operator=(
+            ALPAKA_FCT_HOST_ACC auto operator=(
                 TWorkDiv const & other)
             -> BasicWorkDiv<TDim> &
             {
@@ -115,12 +116,12 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            //ALPAKA_FCT_HOST virtual ~BasicWorkDiv() noexcept = default;
+            ALPAKA_FCT_HOST_ACC /*virtual*/ ~BasicWorkDiv() noexcept = default;
 
             //-----------------------------------------------------------------------------
             //! \return The grid block extents of the currently executed thread.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto getGridBlockExtents() const
+            ALPAKA_FCT_HOST_ACC auto getGridBlockExtents() const
             -> Vec<TDim>
             {
                 return m_vuiGridBlockExtents;
@@ -128,7 +129,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! \return The block threads extents of the currently executed thread.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto getBlockThreadExtents() const
+            ALPAKA_FCT_HOST_ACC auto getBlockThreadExtents() const
             -> Vec<TDim>
             {
                 return m_vuiBlockThreadExtents;

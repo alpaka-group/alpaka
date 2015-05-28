@@ -23,7 +23,7 @@
 
 #include <alpaka/devs/cpu/Dev.hpp>          // DevCpu
 
-#include <alpaka/traits/Event.hpp>          // StreamEnqueueEvent, ...
+#include <alpaka/traits/Event.hpp>          // StreamEnqueue, ...
 #include <alpaka/traits/Wait.hpp>           // CurrentThreadWaitFor
 #include <alpaka/traits/Dev.hpp>            // GetDev
 
@@ -45,13 +45,13 @@ namespace alpaka
                 //#############################################################################
                 //! The CPU device event implementation.
                 //#############################################################################
-                class EventCpuImpl
+                class EventCpuImpl final
                 {
                 public:
                     //-----------------------------------------------------------------------------
                     //! Constructor.
                     //-----------------------------------------------------------------------------
-                    EventCpuImpl(
+                    ALPAKA_FCT_HOST EventCpuImpl(
                         DevCpu const & dev) :
                             m_Uuid(boost::uuids::random_generator()()),
                             m_Dev(dev),
@@ -81,16 +81,20 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ~EventCpuImpl() noexcept(false)
+                    ALPAKA_FCT_HOST ~EventCpuImpl()
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+                    noexcept(false)
                     {
-                        // \FIXME: If a event is enqueued to a stream and gets waited on but destructed before it is completed the application crashes.
-                        // CUDA keeps all events valid while they are enqueued.
+                        // If a event is enqueued to a stream and gets waited on but destructed before it is completed it is kept alive until completed.
+                        // This can never happen.
                         if(m_bIsWaitedFor)
                         {
-                            throw std::runtime_error("Error: Handling destruction of referenced (waited for) EventCpuImpl not implemented!");
+                            throw std::runtime_error("Assertion failure: Destruction of a referenced (waited for) EventCpuImpl!");
                         }
                     }
-
+#else
+                    noexcept(true) = default;
+#endif
                 public:
                     boost::uuids::uuid const m_Uuid;                        //!< The unique ID.
                     DevCpu const m_Dev;                                     //!< The device this event is bound to.
@@ -109,7 +113,7 @@ namespace alpaka
             //#############################################################################
             //! The CPU device event.
             //#############################################################################
-            class EventCpu
+            class EventCpu final
             {
             public:
                 //-----------------------------------------------------------------------------
@@ -217,6 +221,9 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU device event thread wait trait specialization.
+            //!
+            //! Waits until the event itself and therefore all tasks preceding it in the stream it is enqueued to have been completed.
+            //! If the event is not enqueued to a stream the method returns immediately. 
             //#############################################################################
             template<>
             struct CurrentThreadWaitFor<
@@ -226,14 +233,33 @@ namespace alpaka
                     devs::cpu::EventCpu const & event)
                 -> void
                 {
-                    std::unique_lock<std::mutex> lk(event.m_spEventCpuImpl->m_Mutex);
+                    alpaka::wait::wait(event.m_spEventCpuImpl);
+                }
+            };
+            //#############################################################################
+            //! The CPU device event implementation thread wait trait specialization.
+            //!
+            //! Waits until the event itself and therefore all tasks preceding it in the stream it is enqueued to have been completed.
+            //! If the event is not enqueued to a stream the method returns immediately. 
+            //!
+            //! NOTE: This method is for internal usage only.
+            //#############################################################################
+            template<>
+            struct CurrentThreadWaitFor<
+                std::shared_ptr<devs::cpu::detail::EventCpuImpl>>
+            {
+                ALPAKA_FCT_HOST static auto currentThreadWaitFor(
+                    std::shared_ptr<devs::cpu::detail::EventCpuImpl> const & spEventCpuImpl)
+                -> void
+                {
+                    std::unique_lock<std::mutex> lk(spEventCpuImpl->m_Mutex);
 
-                    if(!event.m_spEventCpuImpl->m_bIsReady)
+                    if(!spEventCpuImpl->m_bIsReady)
                     {
-                        event.m_spEventCpuImpl->m_bIsWaitedFor = true;
-                        event.m_spEventCpuImpl->m_ConditionVariable.wait(
+                        spEventCpuImpl->m_bIsWaitedFor = true;
+                        spEventCpuImpl->m_ConditionVariable.wait(
                             lk,
-                            [&event]{return event.m_spEventCpuImpl->m_bIsReady;});
+                            [spEventCpuImpl]{return spEventCpuImpl->m_bIsReady;});
                     }
                 }
             };

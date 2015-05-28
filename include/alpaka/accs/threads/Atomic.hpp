@@ -73,11 +73,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-#if BOOST_COMP_INTEL     // alpaka/accs/threads/Atomic.hpp(66): error : the declared exception specification is incompatible with the generated one
-                    ALPAKA_FCT_ACC_NO_CUDA virtual ~AtomicThreads() = default;
-#else
-                    ALPAKA_FCT_ACC_NO_CUDA virtual ~AtomicThreads() noexcept = default;
-#endif
+                    ALPAKA_FCT_ACC_NO_CUDA /*virtual*/ ~AtomicThreads() noexcept = default;
 
                 private:
                     std::mutex mutable m_mtxAtomic; //!< The mutex protecting access for a atomic operation.

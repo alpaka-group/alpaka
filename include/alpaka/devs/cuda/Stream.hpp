@@ -45,7 +45,7 @@ namespace alpaka
                 //#############################################################################
                 //! The CUDA device stream implementation.
                 //#############################################################################
-                class StreamCudaImpl
+                class StreamCudaImpl final
                 {
                 public:
                     //-----------------------------------------------------------------------------
@@ -115,7 +115,7 @@ namespace alpaka
             //#############################################################################
             //! The CUDA device stream.
             //#############################################################################
-            class StreamCuda
+            class StreamCuda final
             {
             public:
                 //-----------------------------------------------------------------------------
@@ -162,7 +162,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST /*virtual*/ ~StreamCuda() noexcept = default;
+                ALPAKA_FCT_HOST ~StreamCuda() noexcept = default;
 
             public:
                 std::shared_ptr<detail::StreamCudaImpl> m_spStreamCudaImpl;
@@ -240,8 +240,7 @@ namespace alpaka
             //#############################################################################
             //! The CUDA device stream thread wait trait specialization.
             //!
-            //! Halts execution of the calling thread until the stream has finished processing all previously requested tasks (kernels, data copies, ...)
-            // \TODO: Is this the right interpretation of what cudaStreamSynchronize does? Maybe it waits even for tasks enqueued after cudaStreamSynchronize is called.
+            //! Blocks execution of the calling thread until the stream has finished processing all previously requested tasks (kernels, data copies, ...)
             //#############################################################################
             template<>
             struct CurrentThreadWaitFor<

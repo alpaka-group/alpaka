@@ -52,7 +52,7 @@ Comments
 Braces
 ------
 
-* Braces (opening and closing) for classes, structs, functions, namespaces, etc. appear on a new line. Exception: If the function or class body is empty, the closing braces is on the same line.
+* Braces (opening and closing) for classes, structs, functions, namespaces, etc. appear on a new line. Exception: If the function or class body is empty, the opening and closing braces are on the same (next) line.
 * Only braces for variable initialization can appear in-line.
 
 
@@ -82,7 +82,7 @@ auto func()
 -> bool
 ```
   * This makes it easier to see the return type because it is on its own line.
-  * This leads to a consistent style for lambdas, functions templates with dependent return types and standard functions.
+  * This leads to a consistent style for constructs where there is no alternative style (lambdas, functions templates with dependent return types) and standard functions.
 
 * Each function parameter is on a new indented line:
 ```
@@ -131,7 +131,7 @@ template<
 struct GetOffsets;
 ```
 
-* Template trait aliases always end with a `T` e.g. `BufT` while the corresponding trait ends with Type e.g. `BufType`
+* Template trait aliases always end with a `T` e.g. `BufT` while the corresponding trait ends with `Type` e.g. `BufType`
 
 * Traits for implementations always have the same name as the accessor function but in PascalCase while the member function is camelCase again: `sin(){...}` and `Sin{sin(){...}};`
 

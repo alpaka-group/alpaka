@@ -70,7 +70,7 @@ namespace alpaka
                 //#############################################################################
                 template<
                     typename TDim>
-                class AccGpuCuda :
+                class AccGpuCuda final :
                     protected WorkDivCuda<TDim>,
                     private IdxCuda<TDim>,
                     protected AtomicCuda
@@ -117,7 +117,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_CUDA_ONLY /*virtual*/ ~AccGpuCuda() noexcept = default;
+                    ALPAKA_FCT_ACC_CUDA_ONLY ~AccGpuCuda() noexcept = default;
 
                     //-----------------------------------------------------------------------------
                     //! \return The requested indices.

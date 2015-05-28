@@ -86,22 +86,17 @@
 # USE OR PERFORMANCE OF THIS SOFTWARE.
 ################################################################################
 
-
-################################################################################
-# alpaka.
-################################################################################
-
-FIND_PATH(ALPAKA_ROOT
+# Find the root directory.
+FIND_PATH(ALPAKA_ROOT_DIR
   NAMES "include/alpaka/alpaka.hpp"
   HINTS "${ALPAKA_ROOT}" ENV ALPAKA_ROOT
-  DOC "alpaka ROOT location"
-)
+  DOC "alpaka ROOT location")
 
 # Normalize the path (e.g. remove ../)
-GET_FILENAME_COMPONENT(ALPAKA_ROOT "${ALPAKA_ROOT}" ABSOLUTE)
+GET_FILENAME_COMPONENT(ALPAKA_ROOT_DIR "${ALPAKA_ROOT_DIR}" ABSOLUTE)
 # Add the / at the end.
-SET(ALPAKA_ROOT "${ALPAKA_ROOT}/")
+SET(ALPAKA_ROOT_DIR "${ALPAKA_ROOT_DIR}/")
 
 # Use the internal find implementation.
-INCLUDE("${ALPAKA_ROOT}cmake/findInternal.cmake")
+INCLUDE("${ALPAKA_ROOT_DIR}cmake/findInternal.cmake")
     

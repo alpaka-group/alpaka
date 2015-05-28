@@ -40,7 +40,6 @@
 
 #include <cassert>                              // assert
 #include <stdexcept>                            // std::runtime_error
-#include <utility>                              // std::forward
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
     #include <iostream>                         // std::cout
 #endif
@@ -58,102 +57,64 @@ namespace alpaka
                     namespace detail
                     {
                         //#############################################################################
-                        //! The CPU OpenMP4 accelerator executor.
+                        //! The CPU OpenMP4 accelerator executor implementation.
                         //#############################################################################
                         template<
                             typename TDim>
-                        class ExecCpuOmp4 :
-                            public alpaka::workdiv::BasicWorkDiv<TDim>
+                        class ExecCpuOmp4Impl final
                         {
                         public:
                             //-----------------------------------------------------------------------------
                             //! Constructor.
                             //-----------------------------------------------------------------------------
-                            template<
-                                typename TWorkDiv>
-                            ALPAKA_FCT_HOST ExecCpuOmp4(
-                                TWorkDiv const & workDiv,
-                                devs::cpu::StreamCpu & stream) :
-                                    alpaka::workdiv::BasicWorkDiv<TDim>(workDiv),
-                                    m_Stream(stream)
-                            {
-                                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-                            }
+                            ALPAKA_FCT_HOST ExecCpuOmp4Impl() = default;
                             //-----------------------------------------------------------------------------
                             //! Copy constructor.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_HOST ExecCpuOmp4(ExecCpuOmp4 const & other) = default;
-#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
+                            ALPAKA_FCT_HOST ExecCpuOmp4Impl(ExecCpuOmp4Impl const & other) = default;
                             //-----------------------------------------------------------------------------
                             //! Move constructor.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_HOST ExecCpuOmp4(ExecCpuOmp4 && other) = default;
-#endif
+                            ALPAKA_FCT_HOST ExecCpuOmp4Impl(ExecCpuOmp4Impl && other) = default;
                             //-----------------------------------------------------------------------------
                             //! Copy assignment operator.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_HOST auto operator=(ExecCpuOmp4 const &) -> ExecCpuOmp4 & = default;
+                            ALPAKA_FCT_HOST auto operator=(ExecCpuOmp4Impl const &) -> ExecCpuOmp4Impl & = default;
                             //-----------------------------------------------------------------------------
                             //! Move assignment operator.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_HOST auto operator=(ExecCpuOmp4 &&) -> ExecCpuOmp4 & = default;
+                            ALPAKA_FCT_HOST auto operator=(ExecCpuOmp4Impl &&) -> ExecCpuOmp4Impl & = default;
                             //-----------------------------------------------------------------------------
                             //! Destructor.
                             //-----------------------------------------------------------------------------
-#if BOOST_COMP_INTEL
-                            ALPAKA_FCT_HOST virtual ~ExecCpuOmp4() = default;
-#else
-                            ALPAKA_FCT_HOST virtual ~ExecCpuOmp4() noexcept = default;
-#endif
-                            //-----------------------------------------------------------------------------
-                            //! Enqueues the kernel functor.
-                            //-----------------------------------------------------------------------------
-                            template<
-                                typename TKernelFunctor,
-                                typename... TArgs>
-                            ALPAKA_FCT_HOST auto operator()(
-                                TKernelFunctor && kernelFunctor,
-                                TArgs && ... args) const
-                            -> void
-                            {
-                                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+                            ALPAKA_FCT_HOST ~ExecCpuOmp4Impl() noexcept = default;
 
-                                m_Stream.m_spAsyncStreamCpu->m_workerThread.enqueueTask(
-                                    [this, kernelFunctor, args...]()
-                                    {
-                                        exec(
-                                            kernelFunctor,
-                                            args...);
-                                    });
-                            }
-
-                        private:
                             //-----------------------------------------------------------------------------
                             //! Executes the kernel functor.
                             //-----------------------------------------------------------------------------
                             template<
+                                typename TWorkDiv,
                                 typename TKernelFunctor,
                                 typename... TArgs>
-                            ALPAKA_FCT_HOST auto exec(
-                                TKernelFunctor && kernelFunctor,
-                                TArgs && ... args) const
+                            ALPAKA_FCT_HOST auto operator()(
+                                TWorkDiv const & workDiv,
+                                TKernelFunctor const & kernelFunctor,
+                                TArgs const & ... args) const
                             -> void
                             {
                                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                                 auto const vuiGridBlockExtents(
-                                    workdiv::getWorkDiv<Grid, Blocks>(
-                                        *static_cast<workdiv::BasicWorkDiv<TDim> const *>(this)));
+                                    workdiv::getWorkDiv<Grid, Blocks>(workDiv));
                                 auto const vuiBlockThreadExtents(
-                                    workdiv::getWorkDiv<Block, Threads>(
-                                        *static_cast<workdiv::BasicWorkDiv<TDim> const *>(this)));
+                                    workdiv::getWorkDiv<Block, Threads>(workDiv));
 
                                 auto const uiBlockSharedExternMemSizeBytes(
                                     kernel::getBlockSharedExternMemSizeBytes<
                                         typename std::decay<TKernelFunctor>::type,
                                         AccCpuOmp4<TDim>>(
                                             vuiBlockThreadExtents,
-                                            std::forward<TArgs>(args)...));
+                                            args...));
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                                 std::cout << BOOST_CURRENT_FUNCTION
                                     << " BlockSharedExternMemSizeBytes: " << uiBlockSharedExternMemSizeBytes << " B"
@@ -184,7 +145,7 @@ namespace alpaka
                                             }
                                         }
 #endif
-                                        AccCpuOmp4<TDim> acc(*static_cast<workdiv::BasicWorkDiv<TDim> const *>(this));
+                                        AccCpuOmp4<TDim> acc(workDiv);
 
                                         if(uiBlockSharedExternMemSizeBytes > 0)
                                         {
@@ -196,12 +157,13 @@ namespace alpaka
                                         for(UInt b = 0u; b<uiNumBlocksInGrid; ++b)
                                         {
                                             Vec1<> const v1iIdxGridBlock(b);
-                                            auto const vuiGridBlockExtents(
-                                                workdiv::getWorkDiv<Grid, Blocks>(
-                                                    *static_cast<workdiv::BasicWorkDiv<TDim> const *>(this)));
+                                            // When this is not repeated here:
+                                            // error: ‘vuiGridBlockExtents’ referenced in target region does not have a mappable type
+                                            auto const vuiGridBlockExtents2(
+                                                workdiv::getWorkDiv<Grid, Blocks>(workDiv));
                                             acc.m_vuiGridBlockIdx = mapIdx<TDim::value>(
                                                 v1iIdxGridBlock,
-                                                vuiGridBlockExtents);
+                                                vuiGridBlockExtents2);
 
                                             // Execute the threads in parallel.
 
@@ -227,9 +189,9 @@ namespace alpaka
                                                     }
                                                 }
 #endif
-                                                std::forward<TKernelFunctor>(kernelFunctor)(
+                                                kernelFunctor(
                                                     acc,
-                                                    std::forward<TArgs>(args)...);
+                                                    args...);
 
                                                 // Wait for all threads to finish before deleting the shared memory.
                                                 acc.syncBlockThreads();
@@ -242,6 +204,76 @@ namespace alpaka
                                         acc.m_vuiExternalSharedMem.reset();
                                     }
                                 }
+                            }
+                        };
+
+                        //#############################################################################
+                        //! The CPU OpenMP4 accelerator executor.
+                        //#############################################################################
+                        template<
+                            typename TDim>
+                        class ExecCpuOmp4 final :
+                            public alpaka::workdiv::BasicWorkDiv<TDim>
+                        {
+                        public:
+                            //-----------------------------------------------------------------------------
+                            //! Constructor.
+                            //-----------------------------------------------------------------------------
+                            template<
+                                typename TWorkDiv>
+                            ALPAKA_FCT_HOST ExecCpuOmp4(
+                                TWorkDiv const & workDiv,
+                                devs::cpu::StreamCpu & stream) :
+                                    alpaka::workdiv::BasicWorkDiv<TDim>(workDiv),
+                                    m_Stream(stream)
+                            {
+                                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+                            }
+                            //-----------------------------------------------------------------------------
+                            //! Copy constructor.
+                            //-----------------------------------------------------------------------------
+                            ALPAKA_FCT_HOST ExecCpuOmp4(ExecCpuOmp4 const & other) = default;
+                            //-----------------------------------------------------------------------------
+                            //! Move constructor.
+                            //-----------------------------------------------------------------------------
+                            ALPAKA_FCT_HOST ExecCpuOmp4(ExecCpuOmp4 && other) = default;
+                            //-----------------------------------------------------------------------------
+                            //! Copy assignment operator.
+                            //-----------------------------------------------------------------------------
+                            ALPAKA_FCT_HOST auto operator=(ExecCpuOmp4 const &) -> ExecCpuOmp4 & = default;
+                            //-----------------------------------------------------------------------------
+                            //! Move assignment operator.
+                            //-----------------------------------------------------------------------------
+                            ALPAKA_FCT_HOST auto operator=(ExecCpuOmp4 &&) -> ExecCpuOmp4 & = default;
+                            //-----------------------------------------------------------------------------
+                            //! Destructor.
+                            //-----------------------------------------------------------------------------
+                            ALPAKA_FCT_HOST ~ExecCpuOmp4() noexcept = default;
+
+                            //-----------------------------------------------------------------------------
+                            //! Enqueues the kernel functor.
+                            //-----------------------------------------------------------------------------
+                            template<
+                                typename TKernelFunctor,
+                                typename... TArgs>
+                            ALPAKA_FCT_HOST auto operator()(
+                                TKernelFunctor const & kernelFunctor,
+                                TArgs const & ... args) const
+                            -> void
+                            {
+                                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                                auto const & workDiv(*static_cast<workdiv::BasicWorkDiv<TDim> const *>(this));
+
+                                m_Stream.m_spAsyncStreamCpu->m_workerThread.enqueueTask(
+                                    [workDiv, kernelFunctor, args...]()
+                                    {
+                                        ExecCpuOmp4Impl<TDim> exec;
+                                        exec(
+                                            workDiv,
+                                            kernelFunctor,
+                                            args...);
+                                    });
                             }
 
                         public:

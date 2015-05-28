@@ -30,19 +30,19 @@ namespace alpaka
 {
     namespace traits
     {
-        namespace event
+        namespace stream
         {
             //#############################################################################
-            //! The CUDA device stream event enqueue trait specialization.
+            //! The CUDA device stream enqueue trait specialization.
             //#############################################################################
             template<>
-            struct StreamEnqueueEvent<
-                devs::cuda::EventCuda,
-                devs::cuda::StreamCuda>
+            struct StreamEnqueue<
+                devs::cuda::StreamCuda,
+                devs::cuda::EventCuda>
             {
-                ALPAKA_FCT_HOST static auto streamEnqueueEvent(
-                    devs::cuda::EventCuda & event,
-                    devs::cuda::StreamCuda & stream)
+                ALPAKA_FCT_HOST static auto streamEnqueue(
+                    devs::cuda::StreamCuda & stream,
+                    devs::cuda::EventCuda & event)
                 -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -81,7 +81,7 @@ namespace alpaka
             //#############################################################################
             //! The CUDA device event wait trait specialization.
             //!
-            //! Any future work submitted in any stream will wait for event to complete before beginning execution.
+            //! Any future work submitted in any stream of this device will wait for event to complete before beginning execution.
             //#############################################################################
             template<>
             struct WaiterWaitFor<

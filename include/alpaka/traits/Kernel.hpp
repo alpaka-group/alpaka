@@ -95,7 +95,7 @@ namespace alpaka
             typename... TArgs>
         ALPAKA_FCT_HOST_ACC auto getBlockSharedExternMemSizeBytes(
             Vec<TDim> const & vuiBlockThreadExtents,
-            TArgs && ... args)
+            TArgs const & ... args)
         -> UInt
         {
             return traits::kernel::BlockSharedExternMemSizeBytes<
@@ -103,7 +103,7 @@ namespace alpaka
                 TAcc>
             ::getBlockSharedExternMemSizeBytes(
                 vuiBlockThreadExtents,
-                std::forward<TArgs>(args)...);
+                args...);
         }
     }
 }

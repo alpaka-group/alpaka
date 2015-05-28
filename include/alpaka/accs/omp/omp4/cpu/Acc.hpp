@@ -64,6 +64,9 @@ namespace alpaka
                         template<
                             typename TDim>
                         class ExecCpuOmp4;
+                        template<
+                            typename TDim>
+                        class ExecCpuOmp4Impl;
 
                         //#############################################################################
                         //! The CPU OpenMP4 accelerator.
@@ -73,13 +76,13 @@ namespace alpaka
                         //#############################################################################
                         template<
                             typename TDim>
-                        class AccCpuOmp4 :
+                        class AccCpuOmp4 final :
                             protected alpaka::workdiv::BasicWorkDiv<TDim>,
                             protected omp::detail::IdxOmp<TDim>,
                             protected omp::detail::AtomicOmp
                         {
                         public:
-                            friend class ::alpaka::accs::omp::omp4::cpu::detail::ExecCpuOmp4<TDim>;
+                            friend class ::alpaka::accs::omp::omp4::cpu::detail::ExecCpuOmp4Impl<TDim>;
 
                         private:
                             //-----------------------------------------------------------------------------
@@ -117,7 +120,7 @@ namespace alpaka
                             //-----------------------------------------------------------------------------
                             //! Destructor.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_ACC_NO_CUDA virtual ~AccCpuOmp4() noexcept = default;
+                            ALPAKA_FCT_ACC_NO_CUDA ~AccCpuOmp4() noexcept = default;
 
                             //-----------------------------------------------------------------------------
                             //! \return The requested indices.

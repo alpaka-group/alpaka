@@ -44,13 +44,13 @@ namespace alpaka
                 //#############################################################################
                 //! The CUDA device event implementation.
                 //#############################################################################
-                class EventCudaImpl
+                class EventCudaImpl final
                 {
                 public:
                     //-----------------------------------------------------------------------------
                     //! Constructor.
                     //-----------------------------------------------------------------------------
-                    EventCudaImpl(
+                    ALPAKA_FCT_HOST EventCudaImpl(
                         DevCuda const & dev,
                         bool bBusyWait) :
                             m_Dev(dev),
@@ -92,7 +92,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ~EventCudaImpl()
+                    ALPAKA_FCT_HOST ~EventCudaImpl()
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -115,7 +115,7 @@ namespace alpaka
             //#############################################################################
             //! The CUDA device event.
             //#############################################################################
-            class EventCuda
+            class EventCuda final
             {
             public:
                 //-----------------------------------------------------------------------------
@@ -165,7 +165,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST /*virtual*/ ~EventCuda() noexcept = default;
+                ALPAKA_FCT_HOST ~EventCuda() noexcept = default;
 
             public:
                 std::shared_ptr<detail::EventCudaImpl> m_spEventCudaImpl;
@@ -242,6 +242,9 @@ namespace alpaka
         {
             //#############################################################################
             //! The CUDA device event thread wait trait specialization.
+            //!
+            //! Waits until the event itself and therefore all tasks preceding it in the stream it is enqueued to have been completed.
+            //! If the event is not enqueued to a stream the method returns immediately.
             //#############################################################################
             template<>
             struct CurrentThreadWaitFor<

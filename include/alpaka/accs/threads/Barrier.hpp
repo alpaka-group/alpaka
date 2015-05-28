@@ -37,7 +37,7 @@ namespace alpaka
                 //#############################################################################
                 //! A barrier.
                 //#############################################################################
-                class ThreadBarrier
+                class ThreadBarrier final
                 {
                 public:
                     //-----------------------------------------------------------------------------
@@ -71,11 +71,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-#if BOOST_COMP_INTEL    // threads/Barrier.hpp(66): error : the declared exception specification is incompatible with the generated one
-                    ALPAKA_FCT_ACC_NO_CUDA virtual ~ThreadBarrier() = default;
-#else
-                    ALPAKA_FCT_ACC_NO_CUDA virtual ~ThreadBarrier() noexcept = default;
-#endif
+                    ALPAKA_FCT_ACC_NO_CUDA ~ThreadBarrier() noexcept = default;
 
                     //-----------------------------------------------------------------------------
                     //! Waits for all the other threads to reach the barrier.

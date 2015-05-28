@@ -34,32 +34,36 @@ namespace alpaka
 {
     namespace traits
     {
-        namespace event
+        namespace stream
         {
             //#############################################################################
-            //! The CPU device event enqueue trait specialization.
+            //! The CPU device enqueue trait specialization.
             //#############################################################################
             template<>
-            struct StreamEnqueueEvent<
-                devs::cpu::EventCpu,
-                devs::cpu::StreamCpu>
+            struct StreamEnqueue<
+                std::shared_ptr<devs::cpu::detail::StreamCpuImpl>,
+                devs::cpu::EventCpu>
             {
-                ALPAKA_FCT_HOST static auto streamEnqueueEvent(
-                    devs::cpu::EventCpu & event,
-                    devs::cpu::StreamCpu & stream)
+                ALPAKA_FCT_HOST static auto streamEnqueue(
+                    std::shared_ptr<devs::cpu::detail::StreamCpuImpl> & spStreamImpl,
+                    devs::cpu::EventCpu & event)
                 -> void
                 {
+                    // Copy the shared pointer of the event implementation.
+                    // This is forwarded to the lambda that is enqueued into the stream to ensure that the event implementation is alive as long as it is enqueued.
+                    auto spEventCpuImpl(event.m_spEventCpuImpl);
+
                     // Setting the event state and enqueuing it has to be atomic.
-                    std::lock_guard<std::mutex> lk(event.m_spEventCpuImpl->m_Mutex);
+                    std::lock_guard<std::mutex> lk(spEventCpuImpl->m_Mutex);
 
                     // This is a invariant: If the event is ready (not enqueued) there can not be anybody waiting for it.
-                    assert(!(event.m_spEventCpuImpl->m_bIsReady && event.m_spEventCpuImpl->m_bIsWaitedFor));
+                    assert(!(spEventCpuImpl->m_bIsReady && spEventCpuImpl->m_bIsWaitedFor));
 
                     // If it is enqueued ...
-                    if(!event.m_spEventCpuImpl->m_bIsReady)
+                    if(!spEventCpuImpl->m_bIsReady)
                     {
                         // ... and somebody is waiting for it, it can NOT be re-enqueued.
-                        if(event.m_spEventCpuImpl->m_bIsWaitedFor)
+                        if(spEventCpuImpl->m_bIsWaitedFor)
                         {
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                             std::cout << BOOST_CURRENT_FUNCTION << "WARNING: The event to enqueue is already enqueued AND waited on. It can NOT be re-enqueued!" << std::endl;
@@ -69,41 +73,87 @@ namespace alpaka
                         // ... and was enqueued before, increment the cancel counter.
                         else
                         {
-                            ++event.m_spEventCpuImpl->m_uiNumCanceledEnqueues;
+                            ++spEventCpuImpl->m_uiNumCanceledEnqueues;
                         }
                     }
                     // If it is not enqueued, set its state to enqueued.
                     else
                     {
-                        event.m_spEventCpuImpl->m_bIsReady = false;
+                        spEventCpuImpl->m_bIsReady = false;
                     }
 
                     // Enqueue a task that only resets the events flag if it is completed.
-                    stream.m_spAsyncStreamCpu->m_workerThread.enqueueTask(
-                        [&event]()
+                    spStreamImpl->m_workerThread.enqueueTask(
+                        [spEventCpuImpl]()
                         {
                             {
-                                std::lock_guard<std::mutex> lk(event.m_spEventCpuImpl->m_Mutex);
+                                std::lock_guard<std::mutex> lk(spEventCpuImpl->m_Mutex);
                                 // Nothing to do if it has been re-enqueued to a later position in the queue.
-                                if(event.m_spEventCpuImpl->m_uiNumCanceledEnqueues > 0)
+                                if(spEventCpuImpl->m_uiNumCanceledEnqueues > 0)
                                 {
-                                    --event.m_spEventCpuImpl->m_uiNumCanceledEnqueues;
+                                    --spEventCpuImpl->m_uiNumCanceledEnqueues;
                                     return;
                                 }
                                 else
                                 {
-                                    event.m_spEventCpuImpl->m_bIsWaitedFor = false;
-                                    event.m_spEventCpuImpl->m_bIsReady = true;
+                                    spEventCpuImpl->m_bIsWaitedFor = false;
+                                    spEventCpuImpl->m_bIsReady = true;
                                 }
                             }
-                            event.m_spEventCpuImpl->m_ConditionVariable.notify_all();
+                            spEventCpuImpl->m_ConditionVariable.notify_all();
                         });
+                }
+            };
+            //#############################################################################
+            //! The CPU device enqueue trait specialization.
+            //#############################################################################
+            template<>
+            struct StreamEnqueue<
+                devs::cpu::StreamCpu,
+                devs::cpu::EventCpu>
+            {
+                ALPAKA_FCT_HOST static auto streamEnqueue(
+                    devs::cpu::StreamCpu & stream,
+                    devs::cpu::EventCpu & event)
+                -> void
+                {
+                    alpaka::stream::enqueue(stream.m_spAsyncStreamCpu, event);
                 }
             };
         }
 
         namespace wait
         {
+            //#############################################################################
+            //! The CPU device stream event wait trait specialization.
+            //#############################################################################
+            template<>
+            struct WaiterWaitFor<
+                std::shared_ptr<devs::cpu::detail::StreamCpuImpl>,
+                devs::cpu::EventCpu>
+            {
+                ALPAKA_FCT_HOST static auto waiterWaitFor(
+                    std::shared_ptr<devs::cpu::detail::StreamCpuImpl> & spStream,
+                    devs::cpu::EventCpu const & event)
+                -> void
+                {
+                    // Copy the shared pointer of the event implementation.
+                    // This is forwarded to the lambda that is enqueued into the stream to ensure that the event implementation is alive as long as it is enqueued.
+                    auto spEventCpuImpl(event.m_spEventCpuImpl);
+
+                    {
+                        std::lock_guard<std::mutex> lk(spEventCpuImpl->m_Mutex);
+                        spEventCpuImpl->m_bIsWaitedFor = true;
+                    }
+
+                    // Enqueue a task that waits for the given event.
+                    spStream->m_workerThread.enqueueTask(
+                        [spEventCpuImpl]()
+                        {
+                            alpaka::wait::wait(spEventCpuImpl);
+                        });
+                }
+            };
             //#############################################################################
             //! The CPU device stream event wait trait specialization.
             //#############################################################################
@@ -117,24 +167,14 @@ namespace alpaka
                     devs::cpu::EventCpu const & event)
                 -> void
                 {
-                    {
-                        std::lock_guard<std::mutex> lk(event.m_spEventCpuImpl->m_Mutex);
-                        event.m_spEventCpuImpl->m_bIsWaitedFor = true;
-                    }
-
-                    // Enqueue a task that waits for the given event.
-                    stream.m_spAsyncStreamCpu->m_workerThread.enqueueTask(
-                        [&event]()
-                        {
-                            alpaka::wait::wait(event);
-                        });
+                    alpaka::wait::wait(stream.m_spAsyncStreamCpu, event);
                 }
             };
 
             //#############################################################################
             //! The CPU device event wait trait specialization.
             //!
-            //! Any future work submitted in any stream will wait for event to complete before beginning execution.
+            //! Any future work submitted in any stream of this device will wait for event to complete before beginning execution.
             //#############################################################################
             template<>
             struct WaiterWaitFor<
@@ -146,19 +186,25 @@ namespace alpaka
                     devs::cpu::EventCpu const & event)
                 -> void
                 {
+                    // Get all the streams on the device at the time of invocation.
+                    // All streams added afterwards are ignored.
+                    auto vspStreams(
+                        dev.m_spDevCpuImpl->GetRegisteredStreams());
+
+                    // Let all the streams wait for this event.
+                    // \TODO: This should be done atomically for all streams. 
+                    // Furthermore there should not even be a chance to enqueue something between getting the streams and adding our wait events!
+                    for(auto && spStream : vspStreams)
                     {
-                        std::lock_guard<std::mutex> lk(event.m_spEventCpuImpl->m_Mutex);
-                        event.m_spEventCpuImpl->m_bIsWaitedFor = true;
+                        alpaka::wait::wait(spStream, event);
                     }
-                    // \FIXME: implement alpaka::wait::wait(DevCpu, EventCpu)!
-                    throw std::runtime_error("Error: Waiting for an EventCpu in all streams of a device 'alpaka::wait::wait(DevCpu, EventCpu)' is not implemented!");
                 }
             };
 
             //#############################################################################
             //! The CPU device stream thread wait trait specialization.
             //!
-            //! Halts execution of the calling thread until the stream has finished processing all previously requested tasks (kernels, data copies, ...)
+            //! Blocks execution of the calling thread until the stream has finished processing all previously requested tasks (kernels, data copies, ...)
             //#############################################################################
             template<>
             struct CurrentThreadWaitFor<
@@ -168,9 +214,13 @@ namespace alpaka
                     devs::cpu::StreamCpu const & stream)
                 -> void
                 {
-                    devs::cpu::EventCpu event(alpaka::dev::getDev(stream));
-                    alpaka::event::enqueue(event, const_cast<devs::cpu::StreamCpu &>(stream));
-                    alpaka::wait::wait(event);
+                    devs::cpu::EventCpu event(
+                        alpaka::dev::getDev(stream));
+                    alpaka::stream::enqueue(
+                        const_cast<devs::cpu::StreamCpu &>(stream),
+                        event);
+                    alpaka::wait::wait(
+                        event);
                 }
             };
         }

@@ -39,7 +39,6 @@
 #include <boost/predef.h>                   // workarounds
 
 #include <stdexcept>                        // std::runtime_error
-#include <utility>                          // std::forward
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
     #include <iostream>                     // std::cout
 #endif
@@ -79,7 +78,8 @@ namespace alpaka
                 //#############################################################################
                 template<
                     typename TDim>
-                class ExecGpuCuda
+                class ExecGpuCuda final :
+                    public workdiv::BasicWorkDiv<TDim>
                 {
                 public:
                     //-----------------------------------------------------------------------------
@@ -90,9 +90,8 @@ namespace alpaka
                     ALPAKA_FCT_HOST ExecGpuCuda(
                         TWorkDiv const & workDiv,
                         devs::cuda::StreamCuda & stream) :
-                            m_Stream(stream),
-                            m_vuiGridBlockExtents(workdiv::getWorkDiv<Grid, Blocks>(workDiv)),
-                            m_vuiBlockThreadExtents(workdiv::getWorkDiv<Block, Threads>(workDiv))
+                            workdiv::BasicWorkDiv<TDim>(workDiv),
+                            m_Stream(stream)
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
                     }
@@ -100,12 +99,10 @@ namespace alpaka
                     //! Copy constructor.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_HOST ExecGpuCuda(ExecGpuCuda const &) = default;
-#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                     //-----------------------------------------------------------------------------
                     //! Move constructor.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_HOST ExecGpuCuda(ExecGpuCuda &&) = default;
-#endif
                     //-----------------------------------------------------------------------------
                     //! Copy assignment operator.
                     //-----------------------------------------------------------------------------
@@ -117,11 +114,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-#if BOOST_COMP_INTEL
-                    ALPAKA_FCT_HOST virtual ~ExecGpuCuda() = default;
-#else
-                    ALPAKA_FCT_HOST virtual ~ExecGpuCuda() noexcept = default;
-#endif
+                    ALPAKA_FCT_HOST ~ExecGpuCuda() noexcept = default;
 
                     //-----------------------------------------------------------------------------
                     //! Executes the kernel functor.
@@ -130,7 +123,7 @@ namespace alpaka
                         typename TKernelFunctor,
                         typename... TArgs>
                     ALPAKA_FCT_HOST auto operator()(
-                        // \NOTE: No universal reference (&&) or const reference (const &) is allowed as the parameter type because the kernel launch language extension expects the arguments by value.
+                        // \NOTE: No const reference (const &) is allowed as the parameter type because the kernel launch language extension expects the arguments by value.
                         // This forces the type of a float argument given with std::forward to this function to be of type float instead of e.g. "float const & __ptr64" (MSVC).
                         // If not given by value, the kernel launch code does not copy the value but the pointer to the value location.
                         TKernelFunctor kernelFunctor,
@@ -152,16 +145,24 @@ namespace alpaka
                         //cudaDeviceGetLimit(&uiPrintfFifoSize, cudaLimitPrintfFifoSize);
                         //std::cout << BOOST_CURRENT_FUNCTION << "INFO: uiPrintfFifoSize: " <<  uiPrintfFifoSize << std::endl;
 #endif
+
+                        auto const vuiGridBlockExtents(
+                            workdiv::getWorkDiv<Grid, Blocks>(
+                                *static_cast<workdiv::BasicWorkDiv<TDim> const *>(this)));
+                        auto const vuiBlockThreadExtents(
+                            workdiv::getWorkDiv<Block, Threads>(
+                                *static_cast<workdiv::BasicWorkDiv<TDim> const *>(this)));
+
                         dim3 gridDim(1u, 1u, 1u);
                         dim3 blockDim(1u, 1u, 1u);
                         for(std::size_t i(0u); i<3u; ++i)
                         {
-                            reinterpret_cast<unsigned int *>(&gridDim)[i] = m_vuiGridBlockExtents[TDim::value-1u-i];
-                            reinterpret_cast<unsigned int *>(&blockDim)[i] = m_vuiBlockThreadExtents[TDim::value-1u-i];
+                            reinterpret_cast<unsigned int *>(&gridDim)[i] = vuiGridBlockExtents[TDim::value-1u-i];
+                            reinterpret_cast<unsigned int *>(&blockDim)[i] = vuiBlockThreadExtents[TDim::value-1u-i];
                         }
                         for(std::size_t i(3u); i<TDim::value; ++i)
                         {
-                            assert(m_vuiGridBlockExtents[TDim::value-1u-i] == 1);
+                            assert(vuiGridBlockExtents[TDim::value-1u-i] == 1);
                         }
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -174,8 +175,8 @@ namespace alpaka
                             kernel::getBlockSharedExternMemSizeBytes<
                                 typename std::decay<TKernelFunctor>::type,
                                 AccGpuCuda<TDim>>(
-                                    m_vuiBlockThreadExtents,
-                                    std::forward<TArgs>(args)...));
+                                    vuiBlockThreadExtents,
+                                    args...));
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                         // Log the block shared memory size.
                         std::cout << BOOST_CURRENT_FUNCTION
@@ -225,10 +226,6 @@ namespace alpaka
                         }
 #endif
                     }
-
-                private:
-                    Vec<TDim> const m_vuiGridBlockExtents;
-                    Vec<TDim> const m_vuiBlockThreadExtents;
 
                 public:
                     devs::cuda::StreamCuda m_Stream;

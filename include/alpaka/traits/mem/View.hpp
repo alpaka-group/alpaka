@@ -386,7 +386,7 @@ namespace alpaka
         //! \param bufDst The destination memory buffer.
         //! \param bufSrc The source memory buffer.
         //! \param extents The extents of the buffer to copy.
-        //! \param stream The stream to enqueue the buffer fill task into.
+        //! \param stream The stream to enqueue the buffer copy task into.
         //-----------------------------------------------------------------------------
         template<
             typename TBufDst,

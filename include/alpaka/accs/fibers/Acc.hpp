@@ -60,6 +60,9 @@ namespace alpaka
                 template<
                     typename TDim>
                 class ExecCpuFibers;
+                template<
+                    typename TDim>
+                class ExecCpuFibersImpl;
 
                 //#############################################################################
                 //! The CPU fibers accelerator.
@@ -71,13 +74,13 @@ namespace alpaka
                 //#############################################################################
                 template<
                     typename TDim>
-                class AccCpuFibers :
+                class AccCpuFibers final :
                     protected workdiv::BasicWorkDiv<TDim>,
                     protected IdxFibers<TDim>,
                     protected AtomicFibers
                 {
                 public:
-                    friend class ::alpaka::accs::fibers::detail::ExecCpuFibers<TDim>;
+                    friend class ::alpaka::accs::fibers::detail::ExecCpuFibersImpl<TDim>;
 
                 private:
                     //-----------------------------------------------------------------------------
@@ -116,7 +119,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA virtual ~AccCpuFibers() noexcept = default;
+                    ALPAKA_FCT_ACC_NO_CUDA /*virtual*/ ~AccCpuFibers() noexcept = default;
 
                     //-----------------------------------------------------------------------------
                     //! \return The requested indices.

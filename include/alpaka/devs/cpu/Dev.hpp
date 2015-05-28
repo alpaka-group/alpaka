@@ -33,6 +33,7 @@
 #include <sstream>                      // std::stringstream
 #include <limits>                       // std::numeric_limits
 #include <thread>                       // std::thread
+#include <mutex>                        // std::mutex
 
 namespace alpaka
 {
@@ -43,8 +44,103 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         namespace cpu
         {
-            class DevManCpu;
+            namespace detail
+            {
+                class StreamCpuImpl;
 
+                //#############################################################################
+                //! The CPU device implementation.
+                //#############################################################################
+                class DevCpuImpl
+                {
+                public:
+                    //-----------------------------------------------------------------------------
+                    //! Constructor.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST DevCpuImpl() = default;
+                    //-----------------------------------------------------------------------------
+                    //! Copy constructor.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST DevCpuImpl(DevCpuImpl const &) = default;
+    #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
+                    //-----------------------------------------------------------------------------
+                    //! Move constructor.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST DevCpuImpl(DevCpuImpl &&) = default;
+    #endif
+                    //-----------------------------------------------------------------------------
+                    //! Copy assignment operator.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST auto operator=(DevCpuImpl const &) -> DevCpuImpl & = default;
+                    //-----------------------------------------------------------------------------
+                    //! Move assignment operator.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST auto operator=(DevCpuImpl &&) -> DevCpuImpl & = default;
+                    //-----------------------------------------------------------------------------
+                    //! Destructor.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST ~DevCpuImpl() noexcept = default;
+
+                    //-----------------------------------------------------------------------------
+                    //!
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST auto RegisterStream(std::shared_ptr<StreamCpuImpl> spStreamImpl)
+                    -> void
+                    {
+                        std::lock_guard<std::mutex> lk(m_Mutex);
+
+                        // Register this stream on the device.
+                        m_vwpStreams.emplace_back(spStreamImpl);
+                    }
+                    //-----------------------------------------------------------------------------
+                    //!
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST auto UnregisterStream(StreamCpuImpl const * const pStream)
+                    -> void
+                    {
+                        std::lock_guard<std::mutex> lk(m_Mutex);
+
+                        // Unregister this stream from the device.
+                        m_vwpStreams.erase(
+                            std::remove_if(
+                                m_vwpStreams.begin(),
+                                m_vwpStreams.end(),
+                                [pStream](std::weak_ptr<detail::StreamCpuImpl> const & wp)
+                                {
+                                    return (pStream == wp.lock().get());
+                                }),
+                            m_vwpStreams.end());
+                    }
+                    //-----------------------------------------------------------------------------
+                    //!
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST auto GetRegisteredStreams() const
+                    -> std::vector<std::shared_ptr<StreamCpuImpl>>
+                    {
+                        std::vector<std::shared_ptr<devs::cpu::detail::StreamCpuImpl>> vspStreams;
+
+                        std::lock_guard<std::mutex> lk(m_Mutex);
+
+                        for(auto && wpStream : m_vwpStreams)
+                        {
+                            auto spStream(wpStream.lock());
+                            if(spStream)
+                            {
+                                vspStreams.emplace_back(std::move(spStream));
+                            }
+                            else
+                            {
+                                throw std::logic_error("One of the streams registered on the device is invalid!");
+                            }
+                        }
+                        return vspStreams;
+                    }
+
+                private:
+                    std::mutex mutable m_Mutex;
+                    std::vector<std::weak_ptr<StreamCpuImpl>> m_vwpStreams;
+                };
+            }
             //#############################################################################
             //! The CPU device handle.
             //#############################################################################
@@ -55,7 +151,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST DevCpu() = default;
+                ALPAKA_FCT_HOST DevCpu() :
+                    m_spDevCpuImpl(std::make_shared<detail::DevCpuImpl>())
+                {}
             public:
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
@@ -76,6 +174,10 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST auto operator=(DevCpu &&) -> DevCpu & = default;
                 //-----------------------------------------------------------------------------
+                //! Destructor.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST ~DevCpu() noexcept = default;
+                //-----------------------------------------------------------------------------
                 //! Equality comparison operator.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST auto operator==(DevCpu const &) const
@@ -91,6 +193,9 @@ namespace alpaka
                 {
                     return !((*this) == rhs);
                 }
+
+            public:
+                std::shared_ptr<detail::DevCpuImpl> m_spDevCpuImpl;
             };
 
             //#############################################################################
@@ -299,17 +404,38 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU device thread wait specialization.
+            //!
+            //! Blocks until the device has completed all preceding requested tasks.
+            //! Tasks that are enqueued or streams that are created after this call is made are not waited for.
             //#############################################################################
             template<>
             struct CurrentThreadWaitFor<
                 devs::cpu::DevCpu>
             {
                 ALPAKA_FCT_HOST static auto currentThreadWaitFor(
-                    devs::cpu::DevCpu const &)
+                    devs::cpu::DevCpu const & dev)
                 -> void
                 {
-                    // \FIXME: implement alpaka::wait::wait(DevCpu)!
-                    throw std::runtime_error("Error: alpaka::wait::wait(DevCpu) not implemented!");
+                    // Get all the streams on the device at the time of invocation.
+                    // All streams added afterwards are ignored.
+                    auto vspStreams(
+                        dev.m_spDevCpuImpl->GetRegisteredStreams());
+
+                    // Enqueue an event in every stream on the device.
+                    // \TODO: This should be done atomically for all streams. 
+                    // Furthermore there should not even be a chance to enqueue something between getting the streams and adding our wait events!
+                    std::vector<devs::cpu::EventCpu> vEvents;
+                    for(auto && spStream : vspStreams)
+                    {
+                        vEvents.emplace_back(dev);
+                        alpaka::stream::enqueue(spStream, vEvents.back());
+                    }
+
+                    // Now wait for all the events.
+                    for(auto && event : vEvents)
+                    {
+                        alpaka::wait::wait(event);
+                    }
                 }
             };
         }

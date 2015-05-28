@@ -26,23 +26,15 @@
 
 #include <alpaka/core/Common.hpp>           // ALPAKA_FCT_HOST
 
+// FIXME: This include can lead to circles!
+#include <alpaka/devs/cpu/Dev.hpp>          // DevCpu
+
 #include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
 #include <boost/predef.h>                   // workarounds
 
 #include <type_traits>                      // std::enable_if, std::is_array, std::extent
 #include <vector>                           // std::vector
 #include <array>                            // std::array
-
-namespace alpaka
-{
-    namespace devs
-    {
-        namespace cpu
-        {
-            class DevCpu;
-        }
-    }
-}
 
 namespace alpaka
 {
@@ -79,7 +71,7 @@ namespace alpaka
             {
                 ALPAKA_FCT_HOST static auto getDev(
                     TFixedSizeArray const & buf)
-                    -> devs::cpu::DevCpu
+                -> devs::cpu::DevCpu
                 {
                     // \FIXME: CUDA device?
                     return alpaka::devs::cpu::getDev();
@@ -288,7 +280,7 @@ namespace alpaka
             {
                 ALPAKA_FCT_HOST static auto getDev(
                     std::array<TElem, TuiSize> const & buf)
-                    -> devs::cpu::DevCpu
+                -> devs::cpu::DevCpu
                 {
                     return alpaka::devs::cpu::getDev();
                 }
@@ -478,7 +470,7 @@ namespace alpaka
             {
                 ALPAKA_FCT_HOST static auto getDev(
                     std::vector<TElem, TAllocator> const & buf)
-                    -> devs::cpu::DevCpu
+                -> devs::cpu::DevCpu
                 {
                     return alpaka::devs::cpu::getDev();
                 }

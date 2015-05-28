@@ -23,7 +23,7 @@
 
 #include <alpaka/devs/cpu/Dev.hpp>              // DevCpu
 
-#include <alpaka/traits/Stream.hpp>             // traits::StreamEnqueueEvent, ...
+#include <alpaka/traits/Stream.hpp>             // traits::StreamEnqueue, ...
 #include <alpaka/traits/Wait.hpp>               // CurrentThreadWaitFor, WaiterWaitFor
 #include <alpaka/traits/Acc.hpp>                // AccT
 #include <alpaka/traits/Dev.hpp>                // GetDev
@@ -48,7 +48,7 @@ namespace alpaka
                 //#############################################################################
                 //! The CPU device stream implementation.
                 //#############################################################################
-                class StreamCpuImpl
+                class StreamCpuImpl final
                 {
                 private:
                     //#############################################################################
@@ -90,7 +90,13 @@ namespace alpaka
                     //! Move assignment operator.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_HOST auto operator=(StreamCpuImpl &&) -> StreamCpuImpl & = default;
-
+                    //-----------------------------------------------------------------------------
+                    //! Destructor.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST ~StreamCpuImpl()
+                    {
+                        m_Dev.m_spDevCpuImpl->UnregisterStream(this);
+                    }
                 public:
                     boost::uuids::uuid const m_Uuid;    //!< The unique ID.
                     DevCpu const m_Dev;                 //!< The device this stream is bound to.
@@ -102,7 +108,7 @@ namespace alpaka
             //#############################################################################
             //! The CPU device stream.
             //#############################################################################
-            class StreamCpu
+            class StreamCpu final
             {
             public:
                 //-----------------------------------------------------------------------------
@@ -111,7 +117,9 @@ namespace alpaka
                 ALPAKA_FCT_HOST StreamCpu(
                     DevCpu & dev) :
                         m_spAsyncStreamCpu(std::make_shared<detail::StreamCpuImpl>(dev))
-                {}
+                {
+                    dev.m_spDevCpuImpl->RegisterStream(m_spAsyncStreamCpu);
+                }
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
@@ -149,7 +157,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST virtual ~StreamCpu() noexcept = default;
+                ALPAKA_FCT_HOST ~StreamCpu() noexcept = default;
 
             public:
                 std::shared_ptr<detail::StreamCpuImpl> m_spAsyncStreamCpu;

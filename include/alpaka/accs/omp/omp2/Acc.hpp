@@ -59,6 +59,9 @@ namespace alpaka
                     template<
                         typename TDim>
                     class ExecCpuOmp2;
+                    template<
+                        typename TDim>
+                    class ExecCpuOmp2Impl;
 
                     //#############################################################################
                     //! The CPU OpenMP2 accelerator.
@@ -69,13 +72,13 @@ namespace alpaka
                     //#############################################################################
                     template<
                         typename TDim>
-                    class AccCpuOmp2 :
+                    class AccCpuOmp2 final :
                         protected alpaka::workdiv::BasicWorkDiv<TDim>,
                         protected omp::detail::IdxOmp<TDim>,
                         protected omp::detail::AtomicOmp
                     {
                     public:
-                        friend class ::alpaka::accs::omp::omp2::detail::ExecCpuOmp2<TDim>;
+                        friend class ::alpaka::accs::omp::omp2::detail::ExecCpuOmp2Impl<TDim>;
 
                     private:
                         //-----------------------------------------------------------------------------
@@ -113,7 +116,7 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         //! Destructor.
                         //-----------------------------------------------------------------------------
-                        ALPAKA_FCT_ACC_NO_CUDA virtual ~AccCpuOmp2() noexcept = default;
+                        ALPAKA_FCT_ACC_NO_CUDA /*virtual*/ ~AccCpuOmp2() noexcept = default;
 
                         //-----------------------------------------------------------------------------
                         //! \return The requested indices.

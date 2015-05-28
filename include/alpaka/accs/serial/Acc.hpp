@@ -53,10 +53,12 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             namespace detail
             {
-                // Forward declaration.
                 template<
                     typename TDim>
                 class ExecCpuSerial;
+                template<
+                    typename TDim>
+                class ExecCpuSerialImpl;
 
                 //#############################################################################
                 //! The CPU serial accelerator.
@@ -66,13 +68,13 @@ namespace alpaka
                 //#############################################################################
                 template<
                     typename TDim>
-                class AccCpuSerial :
+                class AccCpuSerial final :
                     protected alpaka::workdiv::BasicWorkDiv<TDim>,
                     protected IdxSerial<TDim>,
                     protected AtomicSerial
                 {
                 public:
-                    friend class ::alpaka::accs::serial::detail::ExecCpuSerial<TDim>;
+                    friend class ::alpaka::accs::serial::detail::ExecCpuSerialImpl<TDim>;
 
                 private:
                     //-----------------------------------------------------------------------------
@@ -111,7 +113,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA virtual ~AccCpuSerial() noexcept = default;
+                    ALPAKA_FCT_ACC_NO_CUDA /*virtual*/ ~AccCpuSerial() noexcept = default;
 
                     //-----------------------------------------------------------------------------
                     //! \return The requested indices.

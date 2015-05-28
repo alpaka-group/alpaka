@@ -73,7 +73,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA virtual ~IdxOmp() noexcept = default;
+                    ALPAKA_FCT_ACC_NO_CUDA /*virtual*/ ~IdxOmp() noexcept = default;
 
                     //-----------------------------------------------------------------------------
                     //! \return The index of the currently executed thread.

@@ -51,6 +51,15 @@ namespace alpaka
             struct StreamTest;
 
             //#############################################################################
+            //! The stream enqueue trait.
+            //#############################################################################
+            template<
+                typename TEvent,
+                typename TStream,
+                typename TSfinae = void>
+            struct StreamEnqueue;
+
+            //#############################################################################
             //! The stream get trait.
             //#############################################################################
             template<
@@ -82,6 +91,28 @@ namespace alpaka
         -> StreamT<TDev>
         {
             return StreamT<TDev>(dev);
+        }
+
+        //-----------------------------------------------------------------------------
+        //! Queues the given task in the given stream.
+        //!
+        //! If it has previously been queued, then this call will overwrite any existing state of the event.
+        //! Any subsequent calls which examine the status of event will only examine the completion of this most recent call to enqueue.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TStream,
+            typename TTask>
+        ALPAKA_FCT_HOST auto enqueue(
+            TStream & stream,
+            TTask & task)
+        -> void
+        {
+            traits::stream::StreamEnqueue<
+                TStream,
+                TTask>
+            ::streamEnqueue(
+                stream,
+                task);
         }
 
         //-----------------------------------------------------------------------------

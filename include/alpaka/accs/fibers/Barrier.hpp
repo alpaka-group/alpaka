@@ -70,7 +70,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA virtual ~FiberBarrier() noexcept = default;
+                    ALPAKA_FCT_ACC_NO_CUDA /*virtual*/ ~FiberBarrier() noexcept = default;
 
                     //-----------------------------------------------------------------------------
                     //! Waits for all the other fibers to reach the barrier.

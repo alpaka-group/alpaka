@@ -40,7 +40,6 @@
 #include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
 
 #include <cassert>                          // assert
-#include <utility>                          // std::forward
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
     #include <iostream>                     // std::cout
 #endif
@@ -54,12 +53,106 @@ namespace alpaka
             namespace detail
             {
                 //#############################################################################
+                //! The CPU serial executor implementation.
+                //#############################################################################
+                template<
+                    typename TDim>
+                class ExecCpuSerialImpl final
+                {
+                public:
+                    //-----------------------------------------------------------------------------
+                    //! Constructor.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST ExecCpuSerialImpl() = default;
+                    //-----------------------------------------------------------------------------
+                    //! Copy constructor.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST ExecCpuSerialImpl(ExecCpuSerialImpl const &) = default;
+                    //-----------------------------------------------------------------------------
+                    //! Move constructor.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST ExecCpuSerialImpl(ExecCpuSerialImpl &&) = default;
+                    //-----------------------------------------------------------------------------
+                    //! Copy assignment operator.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST auto operator=(ExecCpuSerialImpl const &) -> ExecCpuSerialImpl & = default;
+                    //-----------------------------------------------------------------------------
+                    //! Move assignment operator.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST auto operator=(ExecCpuSerialImpl &&) -> ExecCpuSerialImpl & = default;
+                    //-----------------------------------------------------------------------------
+                    //! Destructor.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST ~ExecCpuSerialImpl() noexcept = default;
+
+                    //-----------------------------------------------------------------------------
+                    //! Executes the kernel functor.
+                    //-----------------------------------------------------------------------------
+                    template<
+                        typename TWorkDiv,
+                        typename TKernelFunctor,
+                        typename... TArgs>
+                    ALPAKA_FCT_HOST auto operator()(
+                        TWorkDiv const & workDiv,
+                        TKernelFunctor const & kernelFunctor,
+                        TArgs const & ... args) const
+                    -> void
+                    {
+                        ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                        auto const vuiGridBlockExtents(
+                            workdiv::getWorkDiv<Grid, Blocks>(workDiv));
+                        auto const vuiBlockThreadExtents(
+                            workdiv::getWorkDiv<Block, Threads>(workDiv));
+
+                        auto const uiBlockSharedExternMemSizeBytes(
+                            kernel::getBlockSharedExternMemSizeBytes<
+                                typename std::decay<TKernelFunctor>::type,
+                                AccCpuSerial<TDim>>(
+                                    vuiBlockThreadExtents,
+                                    args...));
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                        std::cout << BOOST_CURRENT_FUNCTION
+                            << " BlockSharedExternMemSizeBytes: " << uiBlockSharedExternMemSizeBytes << " B"
+                            << std::endl;
+#endif
+                        AccCpuSerial<TDim> acc(workDiv);
+
+                        if(uiBlockSharedExternMemSizeBytes > 0)
+                        {
+                            acc.m_vuiExternalSharedMem.reset(
+                                new uint8_t[uiBlockSharedExternMemSizeBytes]);
+                        }
+
+                        // Execute the blocks serially.
+                        ndLoop(
+                            vuiGridBlockExtents,
+                            [&](Vec<TDim> const & vuiBlockThreadIdx)
+                            {
+                                acc.m_vuiGridBlockIdx = vuiBlockThreadIdx;
+                                assert(vuiBlockThreadExtents.prod() == 1u);
+
+                                // There is only ever one thread in a block in the serial accelerator.
+                                kernelFunctor(
+                                    acc,
+                                    args...);
+
+                                // After a block has been processed, the shared memory has to be deleted.
+                                acc.m_vvuiSharedMem.clear();
+                            });
+
+                        // After all blocks have been processed, the external shared memory has to be deleted.
+                        acc.m_vuiExternalSharedMem.reset();
+                    }
+                };
+
+                //#############################################################################
                 //! The CPU serial executor.
                 //#############################################################################
                 template<
                     typename TDim>
-                class ExecCpuSerial :
-                    private AccCpuSerial<TDim>
+                class ExecCpuSerial final :
+                    public workdiv::BasicWorkDiv<TDim>
                 {
                 public:
                     //-----------------------------------------------------------------------------
@@ -70,7 +163,7 @@ namespace alpaka
                     ALPAKA_FCT_HOST ExecCpuSerial(
                         TWorkDiv const & workDiv,
                         devs::cpu::StreamCpu & stream) :
-                            AccCpuSerial<TDim>(workDiv),
+                            workdiv::BasicWorkDiv<TDim>(workDiv),
                             m_Stream(stream)
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -78,25 +171,11 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Copy constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST ExecCpuSerial(
-                        ExecCpuSerial const & other) :
-                            AccCpuSerial<TDim>(static_cast<alpaka::workdiv::BasicWorkDiv<TDim> const &>(other)),
-                            m_Stream(other.m_Stream)
-                    {
-                        ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-                    }
-    #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
+                    ALPAKA_FCT_HOST ExecCpuSerial(ExecCpuSerial const &) = default;
                     //-----------------------------------------------------------------------------
                     //! Move constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST ExecCpuSerial(
-                        ExecCpuSerial && other) :
-                            AccCpuSerial<TDim>(static_cast<alpaka::workdiv::BasicWorkDiv<TDim> &&>(other)),
-                            m_Stream(other.m_Stream)
-                    {
-                        ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-                    }
-    #endif
+                    ALPAKA_FCT_HOST ExecCpuSerial(ExecCpuSerial &&) = default;
                     //-----------------------------------------------------------------------------
                     //! Copy assignment operator.
                     //-----------------------------------------------------------------------------
@@ -108,11 +187,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-    #if BOOST_COMP_INTEL
-                    ALPAKA_FCT_HOST virtual ~ExecCpuSerial() = default;
-    #else
-                    ALPAKA_FCT_HOST virtual ~ExecCpuSerial() noexcept = default;
-    #endif
+                    ALPAKA_FCT_HOST ~ExecCpuSerial() noexcept = default;
 
                     //-----------------------------------------------------------------------------
                     //! Enqueues the kernel functor.
@@ -121,74 +196,23 @@ namespace alpaka
                         typename TKernelFunctor,
                         typename... TArgs>
                     ALPAKA_FCT_HOST auto operator()(
-                        TKernelFunctor && kernelFunctor,
-                        TArgs && ... args) const
+                        TKernelFunctor const & kernelFunctor,
+                        TArgs const & ... args) const
                     -> void
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
+                        auto const & workDiv(*static_cast<workdiv::BasicWorkDiv<TDim> const *>(this));
+
                         m_Stream.m_spAsyncStreamCpu->m_workerThread.enqueueTask(
-                            [this, kernelFunctor, args...]()
+                            [workDiv, kernelFunctor, args...]()
                             {
+                                ExecCpuSerialImpl<TDim> exec;
                                 exec(
+                                    workDiv,
                                     kernelFunctor,
                                     args...);
                             });
-                    }
-
-                private:
-                    //-----------------------------------------------------------------------------
-                    //! Executes the kernel functor.
-                    //-----------------------------------------------------------------------------
-                    template<
-                        typename TKernelFunctor,
-                        typename... TArgs>
-                    ALPAKA_FCT_HOST auto exec(
-                        TKernelFunctor && kernelFunctor,
-                        TArgs && ... args) const
-                    -> void
-                    {
-                        ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-                        auto const vuiGridBlockExtents(this->AccCpuSerial<TDim>::template getWorkDiv<Grid, Blocks>());
-                        auto const vuiBlockThreadExtents(this->AccCpuSerial<TDim>::template getWorkDiv<Block, Threads>());
-
-                        auto const uiBlockSharedExternMemSizeBytes(
-                            kernel::getBlockSharedExternMemSizeBytes<
-                                typename std::decay<TKernelFunctor>::type,
-                                AccCpuSerial<TDim>>(
-                                    vuiBlockThreadExtents,
-                                    std::forward<TArgs>(args)...));
-#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                        std::cout << BOOST_CURRENT_FUNCTION
-                            << " BlockSharedExternMemSizeBytes: " << uiBlockSharedExternMemSizeBytes << " B"
-                            << std::endl;
-#endif
-                        if(uiBlockSharedExternMemSizeBytes > 0)
-                        {
-                            this->AccCpuSerial<TDim>::m_vuiExternalSharedMem.reset(
-                                new uint8_t[uiBlockSharedExternMemSizeBytes]);
-                        }
-
-                        // Execute the blocks serially.
-                        ndLoop(
-                            vuiGridBlockExtents,
-                            [&](Vec<TDim> const & vuiBlockThreadIdx)
-                            {
-                                this->AccCpuSerial<TDim>::m_vuiGridBlockIdx = vuiBlockThreadIdx;
-                                assert(vuiBlockThreadExtents.prod() == 1u);
-
-                                // There is only ever one thread in a block in the serial accelerator.
-                                std::forward<TKernelFunctor>(kernelFunctor)(
-                                    (*static_cast<AccCpuSerial<TDim> const *>(this)),
-                                    std::forward<TArgs>(args)...);
-
-                                // After a block has been processed, the shared memory has to be deleted.
-                                this->AccCpuSerial<TDim>::m_vvuiSharedMem.clear();
-                            });
-
-                        // After all blocks have been processed, the external shared memory has to be deleted.
-                        this->AccCpuSerial<TDim>::m_vuiExternalSharedMem.reset();
                     }
 
                 public:

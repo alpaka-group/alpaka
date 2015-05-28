@@ -38,7 +38,7 @@ namespace alpaka
             typename TElem,
             typename TDim,
             typename TDev>
-        class BufPlainPtrWrapper
+        class BufPlainPtrWrapper final
         {
         public:
             using Elem = TElem;
@@ -98,11 +98,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-#if BOOST_COMP_INTEL
-            ALPAKA_FCT_HOST_ACC virtual ~BufPlainPtrWrapper() = default;
-#else
-            ALPAKA_FCT_HOST_ACC virtual ~BufPlainPtrWrapper() noexcept = default;
-#endif
+            ALPAKA_FCT_HOST_ACC ~BufPlainPtrWrapper() noexcept = default;
 
         public:
             TElem * m_pMem;

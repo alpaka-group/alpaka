@@ -40,6 +40,8 @@
         #pragma warning(pop)
     #endif
 #endif
+
+#include <stdexcept>        // std::current_exception
 #include <vector>           // std::vector
 #include <exception>        // std::runtime_error
 #include <utility>          // std::forward
@@ -272,7 +274,7 @@ namespace alpaka
             typename TMutex = void,
             typename TCondVar = void,
             bool TbYield = true>
-        class ConcurrentExecPool
+        class ConcurrentExecPool final
         {
         public:
             //-----------------------------------------------------------------------------
@@ -323,7 +325,7 @@ namespace alpaka
             //! Completes any currently running task as normal.
             //! Signals a std::runtime_error exception to any other tasks that were not able to run.
             //-----------------------------------------------------------------------------
-            virtual ~ConcurrentExecPool()
+            ~ConcurrentExecPool()
             {
                 // Signal that concurrent executors should not perform any new work
                 m_bShutdownFlag.store(true);
@@ -473,7 +475,7 @@ namespace alpaka
             TYield,
             TMutex,
             TCondVar,
-            false>
+            false> final
         {
         public:
             //-----------------------------------------------------------------------------
@@ -526,7 +528,7 @@ namespace alpaka
             //! Completes any currently running task as normal.
             //! Signals a std::runtime_error exception to any other tasks that were not able to run.
             //-----------------------------------------------------------------------------
-            virtual ~ConcurrentExecPool()
+            ~ConcurrentExecPool()
             {
                 // Signal that concurrent executors should not perform any new work
                 m_bShutdownFlag.store(true);

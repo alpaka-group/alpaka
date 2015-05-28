@@ -41,15 +41,6 @@ namespace alpaka
             struct EventType;
 
             //#############################################################################
-            //! The event enqueuer trait.
-            //#############################################################################
-            template<
-                typename TEvent,
-                typename TStream,
-                typename TSfinae = void>
-            struct StreamEnqueueEvent;
-
-            //#############################################################################
             //! The event tester trait.
             //#############################################################################
             template<
@@ -81,28 +72,6 @@ namespace alpaka
         -> EventT<TDev>
         {
             return EventT<TDev>(dev);
-        }
-
-        //-----------------------------------------------------------------------------
-        //! Queues the given event in the given stream.
-        //!
-        //! If it has previously been queued, then this call will overwrite any existing state of the event.
-        //! Any subsequent calls which examine the status of event will only examine the completion of this most recent call to enqueue.
-        //-----------------------------------------------------------------------------
-        template<
-            typename TEvent,
-            typename TStream>
-        ALPAKA_FCT_HOST auto enqueue(
-            TEvent & event,
-            TStream & stream)
-        -> void
-        {
-            traits::event::StreamEnqueueEvent<
-                TEvent,
-                TStream>
-            ::streamEnqueueEvent(
-                event,
-                stream);
         }
 
         //-----------------------------------------------------------------------------

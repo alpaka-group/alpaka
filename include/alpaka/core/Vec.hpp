@@ -47,7 +47,7 @@ namespace alpaka
     template<
         typename TDim,
         typename TVal = UInt>
-    class Vec
+    class Vec final
     {
     public:
         static_assert(TDim::value>0, "Size of the vector is required to be greater then zero!");
@@ -207,7 +207,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Destructor.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC virtual ~Vec() noexcept = default;
+        ALPAKA_FCT_HOST_ACC ~Vec() noexcept = default;
 
         //-----------------------------------------------------------------------------
         //! Value reference accessor at the given non-unsigned integer index.
