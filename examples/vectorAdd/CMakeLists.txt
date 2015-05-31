@@ -30,12 +30,11 @@ SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
 # Project.
 ################################################################################
 
-SET(TARGET_NAME "vectorAdd")
-SET(INCLUDE_DIR "include/")
-SET(SUFFIXED_INCLUDE_DIR "${INCLUDE_DIR}${TARGET_NAME}/")
-SET(SUFFIXED_SOURCE_DIR "src/")
+SET(_INCLUDE_DIR "include/")
+SET(_SUFFIXED_INCLUDE_DIR "${_INCLUDE_DIR}vectorAdd/")
+SET(_SOURCE_DIR "src/")
 
-PROJECT("${TARGET_NAME}")
+PROJECT("vectorAdd")
 
 #-------------------------------------------------------------------------------
 # Find alpaka.
@@ -58,47 +57,47 @@ INCLUDE("${ALPAKA_ROOT}/cmake/dev.cmake")
 #-------------------------------------------------------------------------------
 
 # Add all the include files in all recursive subdirectories and group them accordingly.
-append_recursive_files_add_to_src_group("${SUFFIXED_INCLUDE_DIR}" "" "hpp" HPP_FILES_ALL)
+append_recursive_files_add_to_src_group("${_SUFFIXED_INCLUDE_DIR}" "" "hpp" _FILES_HEADER)
 
 # Add all the source files in all recursive subdirectories and group them accordingly.
-append_recursive_files_add_to_src_group("${SUFFIXED_SOURCE_DIR}" "" "cpp" CPP_FILES_ALL)
+append_recursive_files_add_to_src_group("${_SOURCE_DIR}" "" "cpp" _FILES_SOURCE_CXX)
 
 # Add all the CUDA source files in all recursive subdirectories and group them accordingly.
-append_recursive_files_add_to_src_group("${SUFFIXED_SOURCE_DIR}" "" "cu" CU_FILES_ALL)
+append_recursive_files_add_to_src_group("${_SOURCE_DIR}" "" "cu" _FILES_SOURCE_CU)
 
 # Always add all files to the target executable build call to add them to the build project.
 IF(ALPAKA_GPU_CUDA_ENABLE)
+    # Force the .cpp files to be recognized as headers and not be compiled so there wont be a second entry point.
+    SET_SOURCE_FILES_PROPERTIES(
+        ${_FILES_SOURCE_CXX}
+        PROPERTIES HEADER_FILE_ONLY TRUE)
     # CUDA does not work well with the much better target dependent TARGET_XXX commands but requires the settings to be available globally: https://www.cmake.org/Bug/view.php?id=14201&nbn=1
     INCLUDE_DIRECTORIES(
-        ${INCLUDE_DIR}
+        ${_INCLUDE_DIR}
         ${alpaka_INCLUDE_DIRS})
     ADD_DEFINITIONS(
         ${alpaka_DEFINITIONS} ${ALPAKA_DEV_COMPILE_OPTIONS})
-    # Force the .cpp files to be recognized as headers and not be compiled so there wont be a second entry point.
-    SET_SOURCE_FILES_PROPERTIES(
-        ${CPP_FILES_ALL}
-        PROPERTIES HEADER_FILE_ONLY TRUE)
     CMAKE_POLICY(SET CMP0023 OLD)   # CUDA_ADD_EXECUTABLE calls TARGET_LINK_LIBRARIES without keywords.
     CUDA_ADD_EXECUTABLE(
-        "${TARGET_NAME}"
-        ${HPP_FILES_ALL} ${CPP_FILES_ALL} ${CU_FILES_ALL})
+        "vectorAdd"
+        ${_FILES_HEADER} ${_FILES_SOURCE_CXX} ${_FILES_SOURCE_CU})
 ELSE()
     # Force the .cu files to be recognized as headers and not be compiled so there wont be a second entry point.
     SET_SOURCE_FILES_PROPERTIES(
-        ${CU_FILES_ALL}
+        ${_FILES_SOURCE_CU}
         PROPERTIES HEADER_FILE_ONLY TRUE)
     ADD_EXECUTABLE(
-        "${TARGET_NAME}"
-        ${HPP_FILES_ALL} ${CPP_FILES_ALL} ${CU_FILES_ALL})
+        "vectorAdd"
+        ${_FILES_HEADER} ${_FILES_SOURCE_CXX} ${_FILES_SOURCE_CU})
     TARGET_INCLUDE_DIRECTORIES(
-        "${TARGET_NAME}"
-        PUBLIC ${INCLUDE_DIR})
+        "vectorAdd"
+        PUBLIC ${_INCLUDE_DIR})
     TARGET_COMPILE_OPTIONS(
-        "${TARGET_NAME}"
+        "vectorAdd"
         PUBLIC ${ALPAKA_DEV_COMPILE_OPTIONS})
 ENDIF()
 
 # Set the link libraries for this library (adds libs, include directories, defines and compile options).
 TARGET_LINK_LIBRARIES(
-    "${TARGET_NAME}"
+    "vectorAdd"
     PUBLIC "alpaka")

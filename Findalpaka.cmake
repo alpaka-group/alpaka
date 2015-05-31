@@ -50,16 +50,20 @@
 # Result Variables
 # ^^^^^^^^^^^^^^^^
 #
-# - ``alpaka_DEFINITIONS``
-#   Compiler definitions.
 # - ``alpaka_FOUND``
 #   TRUE if alpaka found a working install.
-# - ``alpaka_INCLUDE_DIRS``
-#   Include directories for the alpaka headers.
-# - ``alpaka_LIBRARIES``
-#   alpaka libraries.
 # - ``alpaka_VERSION``
 #   Version in format Major.Minor.Patch
+# - ``alpaka_COMPILE_OPTIONS``
+#   Compiler options.
+# - ``alpaka_COMPILE_DEFINITIONS``
+#   Compiler definitions (without "-D" prefix!).
+# - ``alpaka_DEFINITIONS``
+#   Deprecated old compiler definitions. Combination of alpaka_COMPILE_OPTIONS and alpaka_COMPILE_DEFINITIONS prefixed with "-D".
+# - ``alpaka_INCLUDE_DIRS``
+#   Include directories required by the alpaka headers.
+# - ``alpaka_LIBRARIES``
+#   Libraries required to link against to use alpaka.
 #
 #
 # IMPORTED Targets
@@ -87,16 +91,16 @@
 ################################################################################
 
 # Find the root directory.
-FIND_PATH(ALPAKA_ROOT_DIR
+FIND_PATH(_ALPAKA_ROOT_DIR
   NAMES "include/alpaka/alpaka.hpp"
   HINTS "${ALPAKA_ROOT}" ENV ALPAKA_ROOT
   DOC "alpaka ROOT location")
 
 # Normalize the path (e.g. remove ../)
-GET_FILENAME_COMPONENT(ALPAKA_ROOT_DIR "${ALPAKA_ROOT_DIR}" ABSOLUTE)
+GET_FILENAME_COMPONENT(_ALPAKA_ROOT_DIR "${_ALPAKA_ROOT_DIR}" ABSOLUTE)
 # Add the / at the end.
-SET(ALPAKA_ROOT_DIR "${ALPAKA_ROOT_DIR}/")
+SET(_ALPAKA_ROOT_DIR "${_ALPAKA_ROOT_DIR}/")
 
-# Use the internal find implementation.
-INCLUDE("${ALPAKA_ROOT_DIR}cmake/findInternal.cmake")
+# Use the configuration script.
+INCLUDE("${_ALPAKA_ROOT_DIR}alpakaConfig.cmake")
     

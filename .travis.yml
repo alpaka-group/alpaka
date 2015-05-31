@@ -9,8 +9,6 @@ language:
 ################################################################################
 os:
     - linux
-# Currently only available on request
-#    - osx
 
 ################################################################################
 #
@@ -32,20 +30,22 @@ compiler:
 # ALPAKA_DEBUG                                  : {0, 1, 2}
 # ALPAKA_CPU_SERIAL_ENABLE                      : {ON, OFF}
 # ALPAKA_CPU_THREADS_ENABLE                     : {ON, OFF}
+# ALPAKA_CPU_FIBERS_ENABLE                      : {ON, OFF}
 # ALPAKA_CPU_OPENMP2_ENABLE                     : {ON, OFF}
+#   [ON] OMP_NUM_THREADS                        : {1, 2, 3, 4}
+# ALPAKA_CPU_OPENMP4_ENABLE                     : {ON, OFF}
 #   [ON] OMP_NUM_THREADS                        : {1, 2, 3, 4}
 # ALPAKA_GPU_CUDA_ENABLE                        : {ON, OFF}
 #   [ON] ALPAKA_CUDA_VERSION                    : {7.0}
-# ALPAKA_CPU_FIBERS_ENABLE                      : {ON, OFF}
 # And one analysis build
 # ALPAKA_ANALYSIS                               : {ON, OFF}
 ################################################################################
 env:
     global:
         - ALPAKA_CPU_SERIAL_ENABLE=ON
-        - ALPAKA_CPU_THREADS_ENABLE=ON
         - ALPAKA_CPU_OPENMP2_ENABLE=ON
         - ALPAKA_CPU_OPENMP4_ENABLE=ON
+        - ALPAKA_CPU_THREADS_ENABLE=ON
         - ALPAKA_CPU_FIBERS_ENABLE=ON
         - ALPAKA_CUDA_VERSION=7.0
         - ALPAKA_CLANG_LIBSTDCPP_VERSION=4.9
@@ -64,13 +64,6 @@ env:
         - ALPAKA_ANALYSIS=OFF ALPAKA_DEBUG=1 ALPAKA_CMAKE_VER=3.2.1    CMAKE_BUILD_TYPE=Release OMP_NUM_THREADS=4 ALPAKA_GCC_VER=5   ALPAKA_CLANG_VER=3.7 ALPAKA_BOOST_BRANCH=develop      ALPAKA_GPU_CUDA_ENABLE=OFF
 
 matrix:
-#    exclude:
-#        - os: osx
-#          compiler: gcc
-#    TODO: Exclusion does not work this way. Always the whole env:matrix: line is required.
-#        - os: osx
-#          env: ALPAKA_GPU_CUDA_ENABLE=ON
-
     allow_failures:
         - compiler: gcc
           env: ALPAKA_ANALYSIS=ON  ALPAKA_DEBUG=1 ALPAKA_CMAKE_VER=3.2.1    CMAKE_BUILD_TYPE=Debug   OMP_NUM_THREADS=4 ALPAKA_GCC_VER=5   ALPAKA_CLANG_VER=3.7 ALPAKA_BOOST_BRANCH=develop      ALPAKA_GPU_CUDA_ENABLE=OFF
@@ -136,7 +129,7 @@ install:
     #- if [ "${ALPAKA_ANALYSIS}" == "ON" ] ;then sudo apt-get install cppcheck ;fi
 
     #-------------------------------------------------------------------------------
-    # Get the curent gcc version.
+    # Get the current gcc version.
     - git --version
     - sudo apt-get install git
     - git --version
@@ -343,7 +336,7 @@ install:
     # Create the boost build command.
     #  --layout=versioned
     - ALPAKA_BOOST_B2_CXXFLAGS=
-    - ALPAKA_BOOST_B2="sudo ./b2 -j2 --layout=tagged --toolset=${CC}"
+    - ALPAKA_BOOST_B2="sudo ./b2 -j1 --layout=tagged --toolset=${CC}"
     - ALPAKA_BOOST_B2+=" architecture=x86 address-model=64 variant=debug,release link=static threading=multi runtime-link=shared"
     # Clang is not supported by the FindBoost script.
     # boost (especially old versions) produces too much warnings when using clang (newer versions) so that the 4 MiB log is too short.
@@ -405,9 +398,9 @@ script:
 
     #-------------------------------------------------------------------------------
     # TODO/FIXME/HACK
-    - if [ "${ALPAKA_ANALYSIS}" == "ON" ] ;then grep -r HACK * ;fi
-    - if [ "${ALPAKA_ANALYSIS}" == "ON" ] ;then grep -r FIXME * ;fi
-    - if [ "${ALPAKA_ANALYSIS}" == "ON" ] ;then grep -r TODO * ;fi
+    - if [ "${ALPAKA_ANALYSIS}" == "ON" ] ;then grep -r HACK * ;fi || true
+    - if [ "${ALPAKA_ANALYSIS}" == "ON" ] ;then grep -r FIXME * ;fi || true
+    - if [ "${ALPAKA_ANALYSIS}" == "ON" ] ;then grep -r TODO * ;fi || true
 
     #-------------------------------------------------------------------------------
     # Build and execute all tests.

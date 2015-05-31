@@ -265,7 +265,7 @@ namespace alpaka
         //! \tparam TYield The type is required to have a static method "void yield()" to yield the current thread if there is no work.
         //! \tparam TMutex Unused. The mutex type used for locking threads.
         //! \tparam TCondVar Unused. The condition variable type used to make the threads wait if there is no work.
-        //! \tparam TbYield Booleam value if the threads should yield instead of wait for a condition variable.
+        //! \tparam TbYield Boolean value if the threads should yield instead of wait for a condition variable.
         //#############################################################################
         template<
             typename TConcurrentExec,
@@ -395,7 +395,11 @@ namespace alpaka
             auto isQueueEmpty() const
             -> bool
             {
+#if BOOST_COMP_GNUC
+                return const_cast<ThreadSafeQueue<ITaskPkg *> &>(m_qTasks).empty();
+#else
                 return m_qTasks.empty();
+#endif
             }
 
         private:
@@ -602,7 +606,11 @@ namespace alpaka
             auto isQueueEmpty() const
             -> bool
             {
+#if BOOST_COMP_GNUC
+                return const_cast<ThreadSafeQueue<ITaskPkg *> &>(m_qTasks).empty();
+#else
                 return m_qTasks.empty();
+#endif
             }
 
         private:

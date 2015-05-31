@@ -26,37 +26,47 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
 
 # Return values.
 UNSET(alpaka_FOUND)
+UNSET(alpaka_VERSION)
+UNSET(alpaka_COMPILE_OPTIONS)
+UNSET(alpaka_COMPILE_DEFINITIONS)
 UNSET(alpaka_DEFINITIONS)
 UNSET(alpaka_INCLUDE_DIR)
 UNSET(alpaka_INCLUDE_DIRS)
 UNSET(alpaka_LIBRARY)
 UNSET(alpaka_LIBRARIES)
-UNSET(alpaka_VERSION)
+
 # Internal usage.
-UNSET(ALPAKA_COMPILE_DEFINITIONS)
-UNSET(ALPAKA_COMPILE_OPTIONS)
-UNSET(ALPAKA_INCLUDE_DIRECTORY)
-UNSET(ALPAKA_INCLUDE_DIRECTORIES)
-UNSET(ALPAKA_LINK_LIBRARY)
-UNSET(ALPAKA_LINK_LIBRARIES)
+UNSET(_ALPAKA_FOUND)
+UNSET(_ALPAKA_COMPILE_OPTIONS_INTERFACE)
+UNSET(_ALPAKA_COMPILE_DEFINITIONS_INTERFACE)
+UNSET(_ALPAKA_INCLUDE_DIRECTORY)
+UNSET(_ALPAKA_INCLUDE_DIRECTORIES_INTERFACE)
+UNSET(_ALPAKA_LINK_LIBRARIES_INTERFACE)
+UNSET(_ALPAKA_LINK_FLAGS_INTERFACE)
+UNSET(_ALPAKA_COMMON_FILE)
+UNSET(_ALPAKA_FILES_HEADER)
+UNSET(_ALPAKA_FILES_SOURCE)
+UNSET(_ALPAKA_FILES_OTHER)
+UNSET(_ALPAKA_VERSION_DEFINE)
+UNSET(_ALPAKA_VER_MAJOR)
+UNSET(_ALPAKA_VER_MINOR)
+UNSET(_ALPAKA_VER_PATCH)
 
-UNSET(ALPAKA_FOUND_INTERNAL)
-
-IF(ALPAKA_ROOT_DIR)
+IF(_ALPAKA_ROOT_DIR)
     #-------------------------------------------------------------------------------
     # Set found to true initially and set it on false if a required dependency is missing.
     #-------------------------------------------------------------------------------
-    SET(ALPAKA_FOUND_INTERNAL TRUE)
+    SET(_ALPAKA_FOUND TRUE)
 
     #-------------------------------------------------------------------------------
     # Common.
     #-------------------------------------------------------------------------------
     # Add find modules.
-    LIST(APPEND CMAKE_MODULE_PATH "${ALPAKA_ROOT_DIR}/cmake/modules/")
+    LIST(APPEND CMAKE_MODULE_PATH "${_ALPAKA_ROOT_DIR}cmake/modules/")
 
     # Add common functions.
-    SET(ALPAKA_COMMON_FILE "${ALPAKA_ROOT_DIR}/cmake/common.cmake")
-    INCLUDE("${ALPAKA_COMMON_FILE}")
+    SET(_ALPAKA_COMMON_FILE "${_ALPAKA_ROOT_DIR}cmake/common.cmake")
+    INCLUDE("${_ALPAKA_COMMON_FILE}")
 
     #-------------------------------------------------------------------------------
     # Options.
@@ -75,7 +85,7 @@ IF(ALPAKA_ROOT_DIR)
     #-------------------------------------------------------------------------------
     # Find Boost.
     #-------------------------------------------------------------------------------
-    IF(${ALPAKA_DEBUG} GREATER 0)
+    IF(${ALPAKA_DEBUG} GREATER 1)
         SET(Boost_DEBUG ON)
         SET(Boost_DETAILED_FAILURE_MSG ON)
     ENDIF()
@@ -146,16 +156,11 @@ IF(ALPAKA_ROOT_DIR)
 
     IF(NOT Boost_FOUND)
         MESSAGE(WARNING "Required alpaka dependency Boost could not be found!")
-        SET(ALPAKA_FOUND_INTERNAL FALSE)
+        SET(_ALPAKA_FOUND FALSE)
 
     ELSE()
-        LIST(APPEND ALPAKA_INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIRS})
-
-        #LIST(FIND "${Boost_LIBRARIES}" "optimized" ALPAKA_BOOST_LIBRARY_LIST_OPTIMIZED_ATTRIBUTE_INDEX)
-        #IF(NOT ALPAKA_BOOST_LIBRARY_LIST_OPTIMIZED_ATTRIBUTE_INDEX EQUAL -1)
-        #    list_add_prefix("general;" Boost_LIBRARIES)
-        #ENDIF()
-        LIST(APPEND ALPAKA_LINK_LIBRARIES ${Boost_LIBRARIES})
+        LIST(APPEND _ALPAKA_INCLUDE_DIRECTORIES_INTERFACE ${Boost_INCLUDE_DIRS})
+        LIST(APPEND _ALPAKA_LINK_LIBRARIES_INTERFACE ${Boost_LIBRARIES})
     ENDIF()
 
     #-------------------------------------------------------------------------------
@@ -169,9 +174,13 @@ IF(ALPAKA_ROOT_DIR)
             SET(ALPAKA_CPU_OPENMP4_ENABLE OFF CACHE BOOL "Enable the OpenMP 4.0 CPU accelerator" FORCE)
 
         ELSE()
-            SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-            SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-            SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
+            SET(_ALPAKA_COMPILE_OPTIONS_INTERFACE ${OpenMP_CXX_FLAGS})
+            # CUDA requires some special handling
+            IF(ALPAKA_GPU_CUDA_ENABLE)
+                SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+            ELSE()
+                SET(_ALPAKA_LINK_FLAGS_INTERFACE ${OpenMP_CXX_FLAGS})
+            ENDIF()
         ENDIF()
     ENDIF()
 
@@ -195,7 +204,9 @@ IF(ALPAKA_ROOT_DIR)
                 SET(ALPAKA_GPU_CUDA_ENABLE OFF CACHE BOOL "Enable the CUDA GPU accelerator" FORCE)
 
             ELSE()
-                #SET(CUDA_VERBOSE_BUILD ON)
+                IF(${ALPAKA_DEBUG} GREATER 1)
+                    SET(CUDA_VERBOSE_BUILD ON)
+                ENDIF()
                 SET(CUDA_PROPAGATE_HOST_FLAGS ON)
 
                 SET(ALPAKA_CUDA_ARCH sm_20 CACHE STRING "Set GPU architecture")
@@ -252,10 +263,8 @@ IF(ALPAKA_ROOT_DIR)
                     SET(ALPAKA_CUDA_KEEP_FILES ON CACHE BOOL "activate keep files" FORCE)
                 ENDIF()
 
-                LIST(APPEND ALPAKA_LINK_LIBRARIES "general;${CUDA_CUDART_LIBRARY}")
-                SET(CUDA_INCLUDE_DIRS_COPY ${CUDA_INCLUDE_DIRS})
-                list_add_prefix("general" CUDA_INCLUDE_DIRS_COPY)
-                LIST(APPEND ALPAKA_INCLUDE_DIRECTORIES ${CUDA_INCLUDE_DIRS_COPY})
+                LIST(APPEND _ALPAKA_LINK_LIBRARIES_INTERFACE "general;${CUDA_CUDART_LIBRARY}")
+                LIST(APPEND _ALPAKA_INCLUDE_DIRECTORIES_INTERFACE ${CUDA_INCLUDE_DIRS})
             ENDIF()
         ENDIF()
     ENDIF()
@@ -265,212 +274,234 @@ IF(ALPAKA_ROOT_DIR)
     #-------------------------------------------------------------------------------
     IF(MSVC)
         # Empty append to define it if it does not already exist.
-        LIST(APPEND ALPAKA_COMPILE_OPTIONS)
+        LIST(APPEND _ALPAKA_COMPILE_OPTIONS_INTERFACE)
     ELSE()
         # Select C++ standard version.
         IF(ALPAKA_CPU_FIBERS_ENABLE)
-            LIST(APPEND ALPAKA_COMPILE_OPTIONS "-std=c++14")
+            LIST(APPEND _ALPAKA_COMPILE_OPTIONS_INTERFACE "-std=c++14")
         ELSE()
-            LIST(APPEND ALPAKA_COMPILE_OPTIONS "-std=c++11")
+            LIST(APPEND _ALPAKA_COMPILE_OPTIONS_INTERFACE "-std=c++11")
         ENDIF()
 
         # Add linker options.
         IF(ALPAKA_CPU_THREADS_ENABLE)
-            LIST(APPEND ALPAKA_LINK_LIBRARIES "general;pthread")
+            LIST(APPEND _ALPAKA_LINK_LIBRARIES_INTERFACE "general;pthread")
         ENDIF()
         # librt: undefined reference to `clock_gettime'
-        LIST(APPEND ALPAKA_LINK_LIBRARIES "general;rt")
+        LIST(APPEND _ALPAKA_LINK_LIBRARIES_INTERFACE "general;rt")
 
         # GNU
         IF(CMAKE_COMPILER_IS_GNUCXX)
-            LIST(APPEND ALPAKA_COMPILE_OPTIONS "-ftemplate-depth-512")
+            LIST(APPEND _ALPAKA_COMPILE_OPTIONS_INTERFACE "-ftemplate-depth-512")
         # Clang or AppleClang
         ELSEIF(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-            LIST(APPEND ALPAKA_COMPILE_OPTIONS "-ftemplate-depth=512")
+            LIST(APPEND _ALPAKA_COMPILE_OPTIONS_INTERFACE "-ftemplate-depth=512")
         ENDIF()
     ENDIF()
 
     #-------------------------------------------------------------------------------
     # alpaka.
     #-------------------------------------------------------------------------------
-    SET(ALPAKA_INCLUDE_DIRECTORY "${ALPAKA_ROOT_DIR}include/")
-    LIST(APPEND ALPAKA_INCLUDE_DIRECTORIES "${ALPAKA_INCLUDE_DIRECTORY}")
-    SET(ALPAKA_LINK_LIBRARY)
-    LIST(APPEND ALPAKA_LINK_LIBRARIES "${ALPAKA_LINK_LIBRARY}")
-
     IF(ALPAKA_CPU_SERIAL_ENABLE)
-        LIST(APPEND ALPAKA_COMPILE_DEFINITIONS "ALPAKA_CPU_SERIAL_ENABLED")
+        LIST(APPEND _ALPAKA_COMPILE_DEFINITIONS_INTERFACE "ALPAKA_CPU_SERIAL_ENABLED")
         MESSAGE(STATUS ALPAKA_CPU_SERIAL_ENABLED)
     ENDIF()
     IF(ALPAKA_CPU_THREADS_ENABLE)
-        LIST(APPEND ALPAKA_COMPILE_DEFINITIONS "ALPAKA_CPU_THREADS_ENABLED")
+        LIST(APPEND _ALPAKA_COMPILE_DEFINITIONS_INTERFACE "ALPAKA_CPU_THREADS_ENABLED")
         MESSAGE(STATUS ALPAKA_CPU_THREADS_ENABLED)
     ENDIF()
     IF(ALPAKA_CPU_FIBERS_ENABLE)
-        LIST(APPEND ALPAKA_COMPILE_DEFINITIONS "ALPAKA_CPU_FIBERS_ENABLED")
+        LIST(APPEND _ALPAKA_COMPILE_DEFINITIONS_INTERFACE "ALPAKA_CPU_FIBERS_ENABLED")
         MESSAGE(STATUS ALPAKA_CPU_FIBERS_ENABLED)
     ENDIF()
     IF(ALPAKA_CPU_OPENMP2_ENABLE)
-        LIST(APPEND ALPAKA_COMPILE_DEFINITIONS "ALPAKA_CPU_OPENMP2_ENABLED")
+        LIST(APPEND _ALPAKA_COMPILE_DEFINITIONS_INTERFACE "ALPAKA_CPU_OPENMP2_ENABLED")
         MESSAGE(STATUS ALPAKA_CPU_OPENMP2_ENABLED)
     ENDIF()
     IF(ALPAKA_CPU_OPENMP4_ENABLE)
-        LIST(APPEND ALPAKA_COMPILE_DEFINITIONS "ALPAKA_CPU_OPENMP4_ENABLED")
+        LIST(APPEND _ALPAKA_COMPILE_DEFINITIONS_INTERFACE "ALPAKA_CPU_OPENMP4_ENABLED")
         MESSAGE(STATUS ALPAKA_CPU_OPENMP4_ENABLED)
     ENDIF()
     IF(ALPAKA_GPU_CUDA_ENABLE)
-        LIST(APPEND ALPAKA_COMPILE_DEFINITIONS "ALPAKA_GPU_CUDA_ENABLED")
+        LIST(APPEND _ALPAKA_COMPILE_DEFINITIONS_INTERFACE "ALPAKA_GPU_CUDA_ENABLED")
         MESSAGE(STATUS ALPAKA_GPU_CUDA_ENABLED)
     ENDIF()
 
-    IF(${ALPAKA_DEBUG} GREATER 0)
-        LIST(APPEND ALPAKA_COMPILE_DEFINITIONS "ALPAKA_DEBUG=${ALPAKA_DEBUG}")
-    ENDIF()
+    LIST(APPEND _ALPAKA_COMPILE_DEFINITIONS_INTERFACE "ALPAKA_DEBUG=${ALPAKA_DEBUG}")
 
     IF(ALPAKA_INTEGRATION_TEST)
-        LIST(APPEND ALPAKA_COMPILE_DEFINITIONS "ALPAKA_INTEGRATION_TEST")
+        LIST(APPEND _ALPAKA_COMPILE_DEFINITIONS_INTERFACE "ALPAKA_INTEGRATION_TEST")
     ENDIF()
+
+    SET(_ALPAKA_INCLUDE_DIRECTORY "${_ALPAKA_ROOT_DIR}include/")
+    LIST(APPEND _ALPAKA_INCLUDE_DIRECTORIES_INTERFACE "${_ALPAKA_INCLUDE_DIRECTORY}")
+    SET(_ALPAKA_SUFFIXED_INCLUDE_DIR "${_ALPAKA_INCLUDE_DIRECTORY}alpaka/")
+    SET(_ALPAKA_LINK_LIBRARY)
+    LIST(APPEND _ALPAKA_LINK_LIBRARIES_INTERFACE "${_ALPAKA_LINK_LIBRARY}")
+
+    SET(_ALPAKA_FILES_OTHER "${_ALPAKA_ROOT_DIR}Findalpaka.cmake" "${_ALPAKA_ROOT_DIR}alpakaConfig.cmake" "${_ALPAKA_COMMON_FILE}" "${_ALPAKA_ROOT_DIR}.travis.yml" "${_ALPAKA_ROOT_DIR}README.md")
+
+    # Add all the source and include files in all recursive subdirectories and group them accordingly.
+    append_recursive_files_add_to_src_group("${_ALPAKA_SUFFIXED_INCLUDE_DIR}" "${_ALPAKA_SUFFIXED_INCLUDE_DIR}" "hpp" "_ALPAKA_FILES_HEADER")
+    append_recursive_files_add_to_src_group("${_ALPAKA_SUFFIXED_INCLUDE_DIR}" "${_ALPAKA_SUFFIXED_INCLUDE_DIR}" "cpp" "_ALPAKA_FILES_SOURCE")
 
     #-------------------------------------------------------------------------------
     # Target.
     #-------------------------------------------------------------------------------
-    IF(NOT TARGET alpaka)
-        SET(ALPAKA_SUFFIXED_INCLUDE_DIR "${ALPAKA_INCLUDE_DIRECTORY}alpaka/")
-
-        # Add all the include files in all recursive subdirectories and group them accordingly.
-        append_recursive_files_add_to_src_group("${ALPAKA_SUFFIXED_INCLUDE_DIR}" "${ALPAKA_SUFFIXED_INCLUDE_DIR}" "hpp" "ALPAKA_HEADER_FILES_ALL")
-
-        # Add all the source files in all recursive subdirectories and group them accordingly.
-        append_recursive_files_add_to_src_group("${ALPAKA_SUFFIXED_INCLUDE_DIR}" "${ALPAKA_SUFFIXED_INCLUDE_DIR}" "cpp" "ALPAKA_SOURCE_FILES_ALL")
-
-        SET(ALPAKA_CMAKE_FILES_ALL "${CMAKE_PARENT_LIST_FILE}" "${ALPAKA_ROOT_DIR}/README.md" "${ALPAKA_ROOT_DIR}/.travis.yml" "${ALPAKA_ROOT_DIR}/cmake/findInternal.cmake" "${ALPAKA_ROOT_DIR}/Findalpaka.cmake" "${ALPAKA_COMMON_FILE}")
-
+    IF(NOT TARGET "alpaka")
         ADD_LIBRARY(
-            alpaka
-            ${ALPAKA_HEADER_FILES_ALL} ${ALPAKA_SOURCE_FILES_ALL} ${ALPAKA_CMAKE_FILES_ALL})
+            "alpaka"
+            ${_ALPAKA_FILES_HEADER} ${_ALPAKA_FILES_SOURCE} ${_ALPAKA_FILES_OTHER})
 
         # Compile options.
-        SET(ALPAKA_COMPILE_OPTIONS_SCOPE "${ALPAKA_COMPILE_OPTIONS}")
-        list_add_prefix("PUBLIC;" ALPAKA_COMPILE_OPTIONS_SCOPE)
-        IF(${ALPAKA_DEBUG} GREATER 0)
-            MESSAGE(STATUS "ALPAKA_COMPILE_OPTIONS_SCOPE: ${ALPAKA_COMPILE_OPTIONS_SCOPE}")
+        IF(${ALPAKA_DEBUG} GREATER 1)
+            MESSAGE(STATUS "_ALPAKA_COMPILE_OPTIONS_INTERFACE: ${_ALPAKA_COMPILE_OPTIONS_INTERFACE}")
         ENDIF()
         LIST(
             LENGTH
-            ALPAKA_COMPILE_OPTIONS_SCOPE
-            ALPAKA_COMPILE_OPTIONS_SCOPE_LENGTH)
-        IF("${ALPAKA_COMPILE_OPTIONS_SCOPE_LENGTH}")
+            _ALPAKA_COMPILE_OPTIONS_INTERFACE
+            _ALPAKA_COMPILE_OPTIONS_INTERFACE_LENGTH)
+        IF(${_ALPAKA_COMPILE_OPTIONS_INTERFACE_LENGTH} GREATER 0)
             TARGET_COMPILE_OPTIONS(
-                alpaka
-                ${ALPAKA_COMPILE_OPTIONS_SCOPE})
+                "alpaka"
+                INTERFACE ${_ALPAKA_COMPILE_OPTIONS_INTERFACE})
         ENDIF()
 
         # Compile definitions.
-        SET(ALPAKA_COMPILE_DEFINITIONS_SCOPE "${ALPAKA_COMPILE_DEFINITIONS}")
-        list_add_prefix("PUBLIC;" "ALPAKA_COMPILE_DEFINITIONS_SCOPE")
-        IF(${ALPAKA_DEBUG} GREATER 0)
-            MESSAGE(STATUS "ALPAKA_COMPILE_DEFINITIONS_SCOPE: ${ALPAKA_COMPILE_DEFINITIONS_SCOPE}")
+        IF(${ALPAKA_DEBUG} GREATER 1)
+            MESSAGE(STATUS "_ALPAKA_COMPILE_DEFINITIONS_INTERFACE: ${_ALPAKA_COMPILE_DEFINITIONS_INTERFACE}")
         ENDIF()
         LIST(
             LENGTH
-            ALPAKA_COMPILE_DEFINITIONS_SCOPE
-            ALPAKA_COMPILE_DEFINITIONS_SCOPE_LENGTH)
-        IF("${ALPAKA_COMPILE_DEFINITIONS_SCOPE_LENGTH}")
+            _ALPAKA_COMPILE_DEFINITIONS_INTERFACE
+            _ALPAKA_COMPILE_DEFINITIONS_INTERFACE_LENGTH)
+        IF(${_ALPAKA_COMPILE_DEFINITIONS_INTERFACE_LENGTH} GREATER 0)
             TARGET_COMPILE_DEFINITIONS(
-                alpaka
-                ${ALPAKA_COMPILE_DEFINITIONS_SCOPE})
+                "alpaka"
+                INTERFACE ${_ALPAKA_COMPILE_DEFINITIONS_INTERFACE})
         ENDIF()
 
         # Include directories.
-        SET(ALPAKA_INCLUDE_DIRECTORYECTORIES_SCOPE "${ALPAKA_INCLUDE_DIRECTORIES}")
-        list_add_prefix("PUBLIC;" "ALPAKA_INCLUDE_DIRECTORYECTORIES_SCOPE")
-        IF(${ALPAKA_DEBUG} GREATER 0)
-            MESSAGE(STATUS "ALPAKA_INCLUDE_DIRECTORYECTORIES_SCOPE: ${ALPAKA_INCLUDE_DIRECTORYECTORIES_SCOPE}")
+        IF(${ALPAKA_DEBUG} GREATER 1)
+            MESSAGE(STATUS "_ALPAKA_INCLUDE_DIRECTORIES_INTERFACE: ${_ALPAKA_INCLUDE_DIRECTORIES_INTERFACE}")
         ENDIF()
         LIST(
             LENGTH
-            ALPAKA_INCLUDE_DIRECTORYECTORIES_SCOPE
-            ALPAKA_INCLUDE_DIRECTORYECTORIES_SCOPE_LENGTH)
-        IF("${ALPAKA_INCLUDE_DIRECTORYECTORIES_SCOPE_LENGTH}")
+            _ALPAKA_INCLUDE_DIRECTORIES_INTERFACE
+            _ALPAKA_INCLUDE_DIRECTORIES_INTERFACE_LENGTH)
+        IF(${_ALPAKA_INCLUDE_DIRECTORIES_INTERFACE_LENGTH} GREATER 0)
             TARGET_INCLUDE_DIRECTORIES(
-                alpaka
-                ${ALPAKA_INCLUDE_DIRECTORYECTORIES_SCOPE})
+                "alpaka"
+                INTERFACE ${_ALPAKA_INCLUDE_DIRECTORIES_INTERFACE})
         ENDIF()
 
         # Link libraries.
-        SET(ALPAKA_LINK_LIBRARIES_SCOPE "${ALPAKA_LINK_LIBRARIES}")
-        # NOTE: All libraries are required to be prefixed with general, debug or optimized!
-        # Add PUBLIC; to all link libraries.
-        list_add_prefix_to("PUBLIC;" "optimized;" ALPAKA_LINK_LIBRARIES_SCOPE)
-        list_add_prefix_to("PUBLIC;" "debug;" ALPAKA_LINK_LIBRARIES_SCOPE)
-        list_add_prefix_to("PUBLIC;" "general;" ALPAKA_LINK_LIBRARIES_SCOPE)
-        IF(${ALPAKA_DEBUG} GREATER 0)
-            MESSAGE(STATUS "ALPAKA_LINK_LIBRARIES_SCOPE: ${ALPAKA_LINK_LIBRARIES_SCOPE}")
+        # There are no INTERFACE_LINK_FLAGS in CMAKE:
+        # http://stackoverflow.com/questions/26850889/cmake-keeping-link-flags-of-internal-libs
+        IF(${ALPAKA_DEBUG} GREATER 1)
+            MESSAGE(STATUS "_ALPAKA_LINK_LIBRARIES_INTERFACE: ${_ALPAKA_LINK_LIBRARIES_INTERFACE}")
         ENDIF()
         LIST(
             LENGTH
-            ALPAKA_LINK_LIBRARIES_SCOPE
-            ALPAKA_LINK_LIBRARIES_SCOPE_LENGTH)
-        IF("${ALPAKA_LINK_LIBRARIES_SCOPE_LENGTH}")
+            _ALPAKA_LINK_LIBRARIES_INTERFACE
+            _ALPAKA_LINK_LIBRARIES_INTERFACE_LENGTH)
+        IF(${_ALPAKA_LINK_LIBRARIES_INTERFACE_LENGTH} GREATER 0)
             TARGET_LINK_LIBRARIES(
-                alpaka
-                ${ALPAKA_LINK_LIBRARIES_SCOPE})
+                "alpaka"
+                INTERFACE ${_ALPAKA_LINK_LIBRARIES_INTERFACE} ${_ALPAKA_LINK_FLAGS_INTERFACE})
         ENDIF()
     ENDIF()
 
     #-------------------------------------------------------------------------------
     # Find alpaka version.
     #-------------------------------------------------------------------------------
-    FILE(STRINGS "${ALPAKA_ROOT_DIR}/include/alpaka/alpaka.hpp"
-         ALPAKA_VERSION_DEFINE REGEX "#define ALPAKA_VERSION BOOST_VERSION_NUMBER")
+    FILE(STRINGS "${_ALPAKA_ROOT_DIR}/include/alpaka/alpaka.hpp"
+         _ALPAKA_VERSION_DEFINE REGEX "#define ALPAKA_VERSION BOOST_VERSION_NUMBER")
 
-    STRING(REGEX REPLACE "[^0-9]*([0-9]+), ([0-9]+), ([0-9]+).*" "\\1" ALPAKA_VER_MAJOR "${ALPAKA_VERSION_DEFINE}")
-    STRING(REGEX REPLACE "[^0-9]*([0-9]+), ([0-9]+), ([0-9]+).*" "\\2" ALPAKA_VER_MINOR "${ALPAKA_VERSION_DEFINE}")
-    STRING(REGEX REPLACE "[^0-9]*([0-9]+), ([0-9]+), ([0-9]+).*" "\\3" ALPAKA_VER_PATCH "${ALPAKA_VERSION_DEFINE}")
-
-    SET(alpaka_VERSION "${ALPAKA_VER_MAJOR}.${ALPAKA_VER_MINOR}.${ALPAKA_VER_PATCH}")
+    STRING(REGEX REPLACE "[^0-9]*([0-9]+), ([0-9]+), ([0-9]+).*" "\\1" _ALPAKA_VER_MAJOR "${_ALPAKA_VERSION_DEFINE}")
+    STRING(REGEX REPLACE "[^0-9]*([0-9]+), ([0-9]+), ([0-9]+).*" "\\2" _ALPAKA_VER_MINOR "${_ALPAKA_VERSION_DEFINE}")
+    STRING(REGEX REPLACE "[^0-9]*([0-9]+), ([0-9]+), ([0-9]+).*" "\\3" _ALPAKA_VER_PATCH "${_ALPAKA_VERSION_DEFINE}")
 
     #-------------------------------------------------------------------------------
     # Set return values.
     #-------------------------------------------------------------------------------
+    SET(alpaka_VERSION "${_ALPAKA_VER_MAJOR}.${_ALPAKA_VER_MINOR}.${_ALPAKA_VER_PATCH}")
+    SET(alpaka_COMPILE_OPTIONS ${_ALPAKA_COMPILE_OPTIONS_INTERFACE})
+    SET(alpaka_COMPILE_DEFINITIONS ${_ALPAKA_COMPILE_DEFINITIONS_INTERFACE})
     # Add '-D' to the definitions
-    SET(ALPAKA_COMPILE_DEFINITIONS_COPY ${ALPAKA_COMPILE_DEFINITIONS})
-    list_add_prefix("-D" ALPAKA_COMPILE_DEFINITIONS_COPY)
+    SET(alpaka_DEFINITIONS ${_ALPAKA_COMPILE_DEFINITIONS_INTERFACE})
+    list_add_prefix("-D" alpaka_DEFINITIONS)
     # Add the compile options to the definitions.
-    LIST(APPEND alpaka_DEFINITIONS ${ALPAKA_COMPILE_OPTIONS} ${ALPAKA_COMPILE_DEFINITIONS_COPY})
-    LIST(APPEND alpaka_INCLUDE_DIR "${ALPAKA_INCLUDE_DIRECTORY}")
-    LIST(APPEND alpaka_INCLUDE_DIRS "${ALPAKA_INCLUDE_DIRECTORIES}")
-    LIST(APPEND alpaka_LIBRARY "${ALPAKA_LINK_LIBRARY}")
-    LIST(APPEND alpaka_LIBRARIES "${ALPAKA_LINK_LIBRARIES}")
-    # Make some of the values advanced options in the GUI.
-    MARK_AS_ADVANCED(
-        alpaka_INCLUDE_DIR
-        alpaka_LIBRARY
-        ALPAKA_COMPILE_DEFINITIONS
-        ALPAKA_COMPILE_OPTIONS
-        ALPAKA_INCLUDE_DIRECTORY
-        ALPAKA_INCLUDE_DIRECTORIES
-        ALPAKA_LINK_LIBRARY
-        ALPAKA_LINK_LIBRARIES
-        ALPAKA_VER_MAJOR
-        ALPAKA_VER_MINOR
-        ALPAKA_VER_PATCH)
+    LIST(APPEND alpaka_DEFINITIONS ${_ALPAKA_COMPILE_OPTIONS_INTERFACE})
+    SET(alpaka_INCLUDE_DIR ${_ALPAKA_INCLUDE_DIRECTORY})
+    SET(alpaka_INCLUDE_DIRS ${_ALPAKA_INCLUDE_DIRECTORIES_INTERFACE})
+    SET(alpaka_LIBRARY ${_ALPAKA_LINK_LIBRARY})
+    SET(alpaka_LIBRARIES ${_ALPAKA_LINK_LIBRARIES_INTERFACE})
+
+    #-------------------------------------------------------------------------------
+    # Print the return values.
+    #-------------------------------------------------------------------------------
+    IF(${ALPAKA_DEBUG} GREATER 0)
+        MESSAGE(STATUS "alpaka_FOUND: ${alpaka_FOUND}")
+        MESSAGE(STATUS "alpaka_VERSION: ${alpaka_VERSION}")
+        MESSAGE(STATUS "alpaka_COMPILE_OPTIONS: ${alpaka_COMPILE_OPTIONS}")
+        MESSAGE(STATUS "alpaka_COMPILE_DEFINITIONS: ${alpaka_COMPILE_DEFINITIONS}")
+        MESSAGE(STATUS "alpaka_DEFINITIONS: ${alpaka_DEFINITIONS}")
+        MESSAGE(STATUS "alpaka_INCLUDE_DIR: ${alpaka_INCLUDE_DIR}")
+        MESSAGE(STATUS "alpaka_INCLUDE_DIRS: ${alpaka_INCLUDE_DIRS}")
+        MESSAGE(STATUS "alpaka_LIBRARY: ${alpaka_LIBRARY}")
+        MESSAGE(STATUS "alpaka_LIBRARIES: ${alpaka_LIBRARIES}")
+    ENDIF()
 ENDIF()
 
 # Unset already set variables if not found.
-IF(NOT ALPAKA_FOUND_INTERNAL)
+IF(NOT _ALPAKA_FOUND)
+    UNSET(alpaka_FOUND)
+    UNSET(alpaka_VERSION)
+    UNSET(alpaka_COMPILE_OPTIONS)
+    UNSET(alpaka_COMPILE_DEFINITIONS)
     UNSET(alpaka_DEFINITIONS)
     UNSET(alpaka_INCLUDE_DIR)
     UNSET(alpaka_INCLUDE_DIRS)
     UNSET(alpaka_LIBRARY)
     UNSET(alpaka_LIBRARIES)
-    UNSET(alpaka_VERSION)
-    UNSET(ALPAKA_COMPILE_DEFINITIONS)
-    UNSET(ALPAKA_COMPILE_OPTIONS)
-    UNSET(ALPAKA_INCLUDE_DIRECTORY)
-    UNSET(ALPAKA_INCLUDE_DIRECTORIES)
-    UNSET(ALPAKA_LINK_LIBRARY)
-    UNSET(ALPAKA_LINK_LIBRARIES)
+
+    UNSET(_ALPAKA_FOUND)
+    UNSET(_ALPAKA_COMPILE_OPTIONS_INTERFACE)
+    UNSET(_ALPAKA_COMPILE_DEFINITIONS_INTERFACE)
+    UNSET(_ALPAKA_INCLUDE_DIRECTORY)
+    UNSET(_ALPAKA_INCLUDE_DIRECTORIES_INTERFACE)
+    UNSET(_ALPAKA_LINK_LIBRARY)
+    UNSET(_ALPAKA_LINK_LIBRARIES_INTERFACE)
+    UNSET(_ALPAKA_LINK_FLAGS_INTERFACE)
+    UNSET(_ALPAKA_COMMON_FILE)
+    UNSET(_ALPAKA_FILES_HEADER)
+    UNSET(_ALPAKA_FILES_SOURCE)
+    UNSET(_ALPAKA_FILES_OTHER)
+    UNSET(_ALPAKA_VERSION_DEFINE)
+    UNSET(_ALPAKA_VER_MAJOR)
+    UNSET(_ALPAKA_VER_MINOR)
+    UNSET(_ALPAKA_VER_PATCH)
+ELSE()
+    # Make internal variables advanced options in the GUI.
+    MARK_AS_ADVANCED(
+        alpaka_INCLUDE_DIR
+        alpaka_LIBRARY
+        _ALPAKA_COMPILE_OPTIONS_INTERFACE
+        _ALPAKA_COMPILE_DEFINITIONS_INTERFACE
+        _ALPAKA_INCLUDE_DIRECTORY
+        _ALPAKA_INCLUDE_DIRECTORIES_INTERFACE
+        _ALPAKA_LINK_LIBRARY
+        _ALPAKA_LINK_LIBRARIES_INTERFACE
+        _ALPAKA_LINK_FLAGS_INTERFACE
+        _ALPAKA_COMMON_FILE
+        _ALPAKA_FILES_HEADER
+        _ALPAKA_FILES_SOURCE
+        _ALPAKA_FILES_OTHER
+        _ALPAKA_VERSION_DEFINE
+        _ALPAKA_VER_MAJOR
+        _ALPAKA_VER_MINOR
+        _ALPAKA_VER_PATCH)
 ENDIF()
 
 ###############################################################################
@@ -481,7 +512,7 @@ ENDIF()
 # NOTE: We do not check for alpaka_LIBRARIES and alpaka_DEFINITIONS because they can be empty.
 INCLUDE(FindPackageHandleStandardArgs)
 FIND_PACKAGE_HANDLE_STANDARD_ARGS(
-    alpaka
+    "alpaka"
     FOUND_VAR alpaka_FOUND
     REQUIRED_VARS alpaka_INCLUDE_DIR
     VERSION_VAR alpaka_VERSION)
