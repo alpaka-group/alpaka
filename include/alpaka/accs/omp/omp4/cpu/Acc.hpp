@@ -266,10 +266,12 @@ namespace alpaka
 #if ALPAKA_INTEGRATION_TEST
                     UInt const uiBlockThreadsCountMax(4u);
 #else
-                    int const iThreadLimit(::omp_get_thread_limit());
-                    std::cout << BOOST_CURRENT_FUNCTION << " omp_get_thread_limit: " << iThreadLimit << std::endl;
+                    // NOTE: ::omp_get_thread_limit() returns 2^31-1 (largest positive int value)...
+                    //int const iThreadLimit(::omp_get_thread_limit());
+                    //std::cout << BOOST_CURRENT_FUNCTION << " omp_get_thread_limit: " << iThreadLimit << std::endl;
                     // m_uiBlockThreadsCountMax
-                    UInt uiBlockThreadsCountMax(static_cast<UInt>(iThreadLimit));
+                    //UInt uiBlockThreadsCountMax(static_cast<UInt>(iThreadLimit));
+                    UInt uiBlockThreadsCountMax(static_cast<UInt>(::omp_get_num_procs()));
 #endif
                     return {
                         // m_uiMultiProcessorCount
