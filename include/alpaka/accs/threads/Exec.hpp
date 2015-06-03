@@ -128,6 +128,10 @@ namespace alpaka
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
+                        static_assert(
+                            dim::DimT<TWorkDiv>::value == TDim::value,
+                            "The work division and the executor have to of the same dimensionality!");
+
                         auto const vuiGridBlockExtents(
                             workdiv::getWorkDiv<Grid, Blocks>(workDiv));
                         auto const vuiBlockThreadExtents(
@@ -329,6 +333,10 @@ namespace alpaka
                             m_Stream(stream)
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                        static_assert(
+                            dim::DimT<TWorkDiv>::value == TDim::value,
+                            "The work division and the executor have to of the same dimensionality!");
                     }
                     //-----------------------------------------------------------------------------
                     //! Copy constructor.

@@ -130,12 +130,12 @@ namespace alpaka
                         TArgs ... args) const
                     -> void
                     {
+                        ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
 #if (!__GLIBCXX__) // libstdc++ even for gcc-4.9 does not support std::is_trivially_copyable.
                         static_assert(std::is_trivially_copyable<TKernelFunctor>::value, "The given kernel functor has to fulfill is_trivially_copyable!");
 #endif
                         // TODO: Check that (sizeof(TKernelFunctor) * m_3uiBlockThreadExtents.prod()) < available memory size
-
-                        ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                         //std::size_t uiPrintfFifoSize;
@@ -155,14 +155,17 @@ namespace alpaka
 
                         dim3 gridDim(1u, 1u, 1u);
                         dim3 blockDim(1u, 1u, 1u);
-                        for(std::size_t i(0u); i<3u; ++i)
+                        // \FIXME: CUDA currently supports a maximum of 3 dimensions!
+                        for(std::size_t i(0u); i<std::min(3u, TDim::value); ++i)
                         {
                             reinterpret_cast<unsigned int *>(&gridDim)[i] = vuiGridBlockExtents[TDim::value-1u-i];
                             reinterpret_cast<unsigned int *>(&blockDim)[i] = vuiBlockThreadExtents[TDim::value-1u-i];
                         }
-                        for(std::size_t i(3u); i<TDim::value; ++i)
+                        // Assert that all extents of the higher dimensions are 1!
+                        for(std::size_t i(std::min(3u, TDim::value)); i<TDim::value; ++i)
                         {
                             assert(vuiGridBlockExtents[TDim::value-1u-i] == 1);
+                            assert(vuiBlockThreadExtents[TDim::value-1u-i] == 1);
                         }
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
