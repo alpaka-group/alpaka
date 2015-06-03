@@ -55,7 +55,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                auto cpuid(std::uint32_t const level, std::uint32_t const subfunction, std::uint32_t ex[4])
+                inline auto cpuid(std::uint32_t const level, std::uint32_t const subfunction, std::uint32_t ex[4])
                 -> void
                 {
                     __cpuid_count(level, subfunction, ex[0], ex[1], ex[2], ex[3]);
@@ -66,7 +66,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                auto cpuid(std::uint32_t const level, std::uint32_t const subfunction, std::uint32_t ex[4])
+                inline auto cpuid(std::uint32_t const level, std::uint32_t const subfunction, std::uint32_t ex[4])
                 -> void
                 {
                     __cpuidex(reinterpret_cast<int*>(ex), level, subfunction);
