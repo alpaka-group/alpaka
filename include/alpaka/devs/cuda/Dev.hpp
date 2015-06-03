@@ -139,7 +139,7 @@ namespace alpaka
                     }
 
                     // Initialize the cuda runtime.
-                    init();
+                    //init();
 
                     // Try all devices if the given one is unusable.
                     for(std::size_t iDeviceOffset(0); iDeviceOffset < uiNumDevices; ++iDeviceOffset)
@@ -205,7 +205,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Initializes the cuda runtime.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto init()
+                /*ALPAKA_FCT_HOST static auto init()
                 -> void
                 {
                     static bool s_bInitialized = false;
@@ -220,10 +220,13 @@ namespace alpaka
                         // - cudaDeviceMapHost:
                         //   This flag must be set in order to allocate pinned host memory that is accessible to the device.
                         //   If this flag is not set, cudaHostGetDevicePointer() will always return a failure code.
-                        ALPAKA_CUDA_RT_CHECK(cudaSetDeviceFlags(
-                            cudaDeviceScheduleSpin | cudaDeviceMapHost));
+                        // NOTE: This is disabled because we have to support interop with native CUDA applications.
+                        // They could already have set a device before calling into alpaka and we would get:
+                        // cudaSetDeviceFlags( 0x01 | 0x08)' returned error: 'cannot set while device is active in this process'
+                        //ALPAKA_CUDA_RT_CHECK(cudaSetDeviceFlags(
+                        //    cudaDeviceScheduleSpin | cudaDeviceMapHost));
                     }
-                }
+                }*/
 
             private:
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
