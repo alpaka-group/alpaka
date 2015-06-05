@@ -19,14 +19,16 @@
 * If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <alpaka/alpaka.hpp>        // alpaka::exec::create
+#include <alpaka/alpaka.hpp>                        // alpaka::exec::create
+#include <alpaka/examples/MeasureKernelRunTime.hpp> // measureKernelRunTimeMs
+#include <alpaka/examples/accs/EnabledAccs.hpp>     // EnabledAccs
 
-#include <chrono>                   // std::chrono::high_resolution_clock
-#include <cassert>                  // assert
-#include <iostream>                 // std::cout
-#include <vector>                   // std::vector
-#include <typeinfo>                 // typeid
-#include <utility>                  // std::forward
+#include <chrono>                                   // std::chrono::high_resolution_clock
+#include <cassert>                                  // assert
+#include <iostream>                                 // std::cout
+#include <vector>                                   // std::vector
+#include <typeinfo>                                 // typeid
+#include <utility>                                  // std::forward
 
 //#############################################################################
 //! An accelerated test kernel.
@@ -157,39 +159,6 @@ namespace alpaka
     }
 }
 
-//-----------------------------------------------------------------------------
-//! Profiles the given kernel.
-//-----------------------------------------------------------------------------
-template<
-    typename TExec,
-    typename TKernelFunctor,
-    typename... TArgs>
-auto profileKernelExec(
-    TExec const & exec,
-    TKernelFunctor && kernelFunctor,
-    TArgs && ... args)
--> void
-{
-    std::cout
-        << "profileKernelExec("
-        << " kernelExecutor: " << typeid(TExec).name()
-        << ")" << std::endl;
-
-    auto const tpStart(std::chrono::high_resolution_clock::now());
-
-    // Execute the kernel functor.
-    exec(std::forward<TKernelFunctor>(kernelFunctor), std::forward<TArgs>(args)...);
-
-    // Wait for the stream to finish the kernel execution to measure its run time.
-    alpaka::wait::wait(alpaka::stream::getStream(exec));
-
-    auto const tpEnd(std::chrono::high_resolution_clock::now());
-
-    auto const durElapsed(tpEnd - tpStart);
-
-    std::cout << "Execution time: " << std::chrono::duration_cast<std::chrono::milliseconds>(durElapsed).count() << " ms" << std::endl;
-}
-
 //#############################################################################
 //! Profiles the example kernel and checks the result.
 //#############################################################################
@@ -223,7 +192,7 @@ struct SharedMemTester
         // Set the grid blocks extent.
         alpaka::workdiv::BasicWorkDiv<alpaka::dim::Dim1> const workDiv(
             alpaka::workdiv::getValidWorkDiv<
-                alpaka::accs::EnabledAccs<alpaka::dim::Dim1>>(
+                alpaka::examples::accs::EnabledAccs<alpaka::dim::Dim1>>(
                 512u));
 
         std::cout
@@ -249,11 +218,14 @@ struct SharedMemTester
         // Create the executor.
         auto exec(alpaka::exec::create<TAcc>(workDiv, stream));
         // Profile the kernel execution.
-        profileKernelExec(
-            exec,
-            kernel,
-            alpaka::mem::getPtrNative(blockRetValsAcc),
-            uiMult2);
+        std::cout << "Execution time: "
+            << alpaka::examples::measureKernelRunTimeMs(
+                exec,
+                kernel,
+                alpaka::mem::getPtrNative(blockRetValsAcc),
+                uiMult2)
+            << " ms"
+            << std::endl;
 
         // Copy back the result.
         alpaka::mem::copy(vuiBlockRetVals, blockRetValsAcc, uiSizeElements);
@@ -303,7 +275,7 @@ auto main()
         std::cout << std::endl;
 
         // Logs the enabled accelerators.
-        alpaka::accs::writeEnabledAccs<alpaka::dim::Dim1>(std::cout);
+        alpaka::examples::accs::writeEnabledAccs<alpaka::dim::Dim1>(std::cout);
 
         std::cout << std::endl;
 
@@ -314,7 +286,7 @@ auto main()
 
         // Execute the kernel on all enabled accelerators.
         alpaka::forEachType<
-            alpaka::accs::EnabledAccs<alpaka::dim::Dim1>>(
+            alpaka::examples::accs::EnabledAccs<alpaka::dim::Dim1>>(
                 sharedMemTester,
                 uiMult2);
 

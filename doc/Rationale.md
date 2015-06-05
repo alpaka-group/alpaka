@@ -85,29 +85,32 @@ This reduces runtime overhead because everything can be checked at compile time.
 **TODO**: Add note about ALPAKA_FCT_HOST_ACC!
 
 
-Accelerator Methods
--------------------
+Accelerator Access within Kernels
+---------------------------------
 
-There are two possible ways to implement access to accelerator dependent functionality  inside a kernel:
+CUDA always tracks some implicit state like the current device in host code or the current thread and block index in kernel code.
+This implicit state hides dependencies and can produce bugs if the wrong device is active during a memory operation in host code or similar things.
+In alpaka this is always made explicit.
+Streams, events and memory always require a device parameter for their creation.
+
+The kernels have access to the accelerator through a reference parameter.
+There are two possible ways to implement access to accelerator dependent functionality inside a kernel:
 * Making the functions/templates members of the accelerator (maybe by inheritance) and calling them like `acc.syncThreads()` or `acc.template getIdx<Grid, Thread, Dim1>()`.
-This would require the user to know and understand when to use the template keyword inside function calls.
+This would require the user to know and understand when to use the template keyword inside dependent type  object function calls.
 * The functions are only light wrappers around traits that can be specialized taking the accelerator as first value (it can not be the last value because of the potential use of variadic arguments). 
 The resulting code would look like `sync(acc)` or `getIdx<Grid, Thread, Dim1>(acc)`.
 Internally these wrappers would call trait templates that are specialized for the specific accelerator e.g. `template<typename TAcc> Sync{...};`
 
 The second version is easier to understand and usually shorter to use in user code.
+NOTE: Currently version 1 is implemented!
 
-CUDA always tracks some implicit state like the current device in host code or the current thread and block index in kernel code.
-This implicit state hides dependencies and can produce bugs if the wrong device is active during a memory operation or similar things.
-In alpaka this is always made explicit.
-Streams, events and memory always require a device parameter for their creation.
 
 Accelerator Implementation Notes
 --------------------------------
 
 ### Serial
 
-The serial accelerator is only for debugging purposes because it only allows blocks with exactly one kernel.
+The serial accelerator only allows blocks with exactly one thread.
 Therefore it does not implement real synchronization or atomic primitives.
 
 ### Threads
@@ -117,6 +120,8 @@ Therefore it does not implement real synchronization or atomic primitives.
 To prevent recreation of the threads between execution of different blocks in the grid, the threads are stored inside a thread pool.
 This thread pool is local to the invocation because making it local to the KernelExecutor could mean a heavy memory usage and lots of idling kernel-threads when there are multiple KernelExecutors around.
 Because the default policy of the threads in the pool is to yield instead of waiting, this would also slow down the system immensely.
+
+std::thread::hardware_concurrency()
 
 ### Fibers
 
@@ -138,6 +143,9 @@ Another reason for not using `omp for` like `#pragma omp parallel for collapse(3
 Because OpenMP is designed for a 1:1 abstraction of hardware to software threads, the block size is restricted by the number of OpenMP threads allowed by the runtime. 
 This could be as little as 2 or 4 kernels but on a system with 4 cores and hyper-threading OpenMP can also allow 64 threads.
 
+::omp_get_max_threads()
+::omp_get_thread_limit()
+
 #### Index
 
 OpenMP only provides a linear thread index. This index is converted to a 3 dimensional index at runtime.
@@ -149,3 +157,25 @@ Because we are implementing the CUDA atomic operations which return the old valu
 `omp_set_lock` is an alternative but is usually slower.
 
 ### CUDA
+
+Nearly all CUDA functionality can be directly mapped to alpaka function calls.
+A major difference is that CUDA requires the block and grid sizes to be given in (x, y, z) order.
+Alpaka uses the mathematical C/C++ array indexing scheme [z][y][x].
+Dimension 0 in this case is z, dimensions 2 is x.
+
+Furthermore alpaka does not require the indices and extents to be 3-dimensional.
+The accelerators are templatized on and support arbitrary dimensionality.
+NOTE: Currently the CUDA implementation is restricted to a maximum of 3 dimensions!
+
+NOTE: The CUDA-accelerator back-end can change the current CUDA device and will NOT set the device back to the one prior to the invocation of the alpaka function!
+
+Device Implementations
+----------------------
+
+|-|CPU|CUDA|
+|---|---|---|
+|Devices|(only ever one device)|cudaGetDeviceCount, cudaGetDevice, cudaGetDeviceProperties|
+|Events|std::condition_variable, std::mutex|cudaEventCreateWithFlags, cudaEventDestroy, cudaEventRecord, cudaEventSynchronize, cudaEventQuery|
+|Streams|Thread-Pool with exactly one worker|cudaStreamCreateWithFlags, cudaStreamDestroy, cudaStreamQuery, cudaStreamSynchronize, cudaStreamWaitEvent|
+|Memory|new , delete[], std::memcpy, std::memset, (cudaHostRegister, cudaHostUnregister for memory pinning if available)|cudaMalloc, cudaFree, cudaMemcpy, cudaMemset, cudaHostRegister, cudaHostUnregister, cudaHostGetDevicePointer|
+|RNG|std::mt19937, std::normal_distribution, std::uniform_real_distribution, std::uniform_int_distribution|curand_init, curandStateXORWOW_t, curand, curand_normal, curand_normal_double, curand_uniform, curand_uniform_double|

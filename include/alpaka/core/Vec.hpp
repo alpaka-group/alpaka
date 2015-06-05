@@ -59,11 +59,7 @@ namespace alpaka
     private:
         //! A sequence of integers from 0 to dim-1.
         //! This can be used to write compile time indexing algorithms.
-#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-        using IdxSequence = typename alpaka::detail::make_integer_sequence<UInt, TDim::value>::type;
-#else
         using IdxSequence = alpaka::detail::make_integer_sequence<UInt, TDim::value>;
-#endif
 
     public:
         //-----------------------------------------------------------------------------
@@ -88,20 +84,9 @@ namespace alpaka
                 >::type>
         ALPAKA_FCT_HOST_ACC Vec(
             TArg0 && arg0,
-            TArgs && ... args)
-#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 22609))   // MSVC does not compile the basic array initialization: "error C2536: 'alpaka::Vec<0x03>::alpaka::Vec<0x03>::m_auiData': cannot specify explicit initializer for arrays"
-            :
+            TArgs && ... args) :
                 m_auiData{std::forward<TArg0>(arg0), std::forward<TArgs>(args)...}
-#endif
-        {
-#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 22609))
-            TVal auiData2[TDim::value] = {std::forward<TArg0>(arg0), std::forward<TArgs>(args)...};
-            for(UInt i(0); i<TDim::value; ++i)
-            {
-                m_auiData[i] = auiData2[i];
-            }
-#endif
-        }
+        {}
     private:
         //-----------------------------------------------------------------------------
         //! Single value constructor helper.
@@ -190,12 +175,10 @@ namespace alpaka
         //! Copy constructor.
         //-----------------------------------------------------------------------------
         ALPAKA_FCT_HOST_ACC Vec(Vec const &) = default;
-#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
         //-----------------------------------------------------------------------------
         //! Move constructor.
         //-----------------------------------------------------------------------------
         ALPAKA_FCT_HOST_ACC Vec(Vec &&) = default;
-#endif
         //-----------------------------------------------------------------------------
         //! Copy assignment operator.
         //-----------------------------------------------------------------------------
@@ -478,21 +461,13 @@ namespace alpaka
             typename TDim>
         struct SubVecFromIndices<
             TDim,
-#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-            typename alpaka::detail::make_integer_sequence<UInt, TDim::value>::type>
-#else
             alpaka::detail::make_integer_sequence<UInt, TDim::value>>
-#endif
         {
             template<
                 typename TVal>
             ALPAKA_FCT_HOST_ACC static auto subVecFromIndices(
                 Vec<TDim, TVal> const & vec,
-#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-                typename alpaka::detail::make_integer_sequence<UInt, TDim::value>::type const &)
-#else
                 alpaka::detail::make_integer_sequence<UInt, TDim::value> const &)
-#endif
             -> Vec<TDim, TVal>
             {
                 return vec;
@@ -535,11 +510,7 @@ namespace alpaka
         static_assert(TSubDim::value <= TDim::value, "The sub-vector has to be smaller (or same size) then the origin vector.");
 
         //! A sequence of integers from 0 to dim-1.
-#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-        using IdxSubSequence = typename alpaka::detail::make_integer_sequence<UInt, TuiSubDim::value>::type;
-#else
         using IdxSubSequence = alpaka::detail::make_integer_sequence<UInt, TSubDim::value>;
-#endif
         return subVecFromIndices(vec, IdxSubSequence());
     }
     //-----------------------------------------------------------------------------
@@ -556,11 +527,7 @@ namespace alpaka
         static_assert(TSubDim::value <= TDim::value, "The sub-vector has to be smaller (or same size) then the origin vector.");
 
         //! A sequence of integers from 0 to dim-1.
-#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-        using IdxSubSequence = typename alpaka::detail::make_integer_sequence_start<UInt, TDim::value-TSubDim::value, TuiSubDim::value>::type;
-#else
         using IdxSubSequence = alpaka::detail::make_integer_sequence_start<UInt, TDim::value-TSubDim::value, TSubDim::value>;
-#endif
         return subVecFromIndices(vec, IdxSubSequence());
     }
 
@@ -596,11 +563,7 @@ namespace alpaka
         -> Vec<dim::Dim<TDim::value>, TVal>
         {
             using DimSrc = dim::DimT<TExtents>;
-#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-            using IdxSubSequence = typename alpaka::detail::make_integer_sequence_start<std::intmax_t, (((std::intmax_t)DimSrc::value)-((std::intmax_t)TDim::value)), TDim::value>::type;
-#else
             using IdxSubSequence = alpaka::detail::make_integer_sequence_start<std::intmax_t, (((std::intmax_t)DimSrc::value)-((std::intmax_t)TDim::value)), TDim::value>;
-#endif
             return detail::getExtentsVecInternal<TVal>(
                 extents,
                 IdxSubSequence());
@@ -651,11 +614,7 @@ namespace alpaka
         -> Vec<dim::Dim<TDim::value>, TVal>
         {
             using DimSrc = dim::DimT<TOffsets>;
-#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-            using IdxSubSequence = typename alpaka::detail::make_integer_sequence_start<std::intmax_t,  (((std::intmax_t)DimSrc::value)-((std::intmax_t)TDim::value)), TDim::value>::type;
-#else
             using IdxSubSequence = alpaka::detail::make_integer_sequence_start<std::intmax_t, (((std::intmax_t)DimSrc::value)-((std::intmax_t)TDim::value)), TDim::value>;
-#endif
             return detail::getOffsetsVecInternal<TVal>(
                 offsets,
                 IdxSubSequence());

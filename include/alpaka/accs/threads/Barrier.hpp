@@ -54,12 +54,10 @@ namespace alpaka
                         ThreadBarrier const & other) = delete;/* :
                         m_uiNumThreadsToWaitFor(other.m_uiNumThreadsToWaitFor)
                     {}*/
-#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                     //-----------------------------------------------------------------------------
                     //! Move constructor.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_ACC_NO_CUDA ThreadBarrier(ThreadBarrier &&) = delete;
-#endif
                     //-----------------------------------------------------------------------------
                     //! Copy assignment operator.
                     //-----------------------------------------------------------------------------

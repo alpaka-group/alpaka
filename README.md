@@ -3,25 +3,26 @@
 
 The **alpaka** library is a header-only C++11 abstraction library for accelerator development.
 
-Its aim is to provide performance portability through the abstraction (not hiding!) of the underlying levels of parallelism.
+Its aim is to provide performance portability across accelerators through the abstraction (not hiding!) of the underlying levels of parallelism.
 
-It is platform independent and supports the concurrent and cooperative use of multiple devices such as CPUs, CUDA GPUs and Xeon Phis with a multitude of accelerator-backends such as CUDA, OpenMP (2.0), Boost.Fiber, std::thread and serial execution (where applicaple). Only one implementation of the kernel is required by utilizing the uniform kernel interface.
+It is platform independent and supports the concurrent and cooperative use of multiple devices such as the hosts CPU as well as attached accelerators as for instance CUDA GPUs and Xeon Phis (currently native execution only).
+A multitude of accelerator back-ends such as CUDA, OpenMP (2.0/4.0), Boost.Fiber, std::thread, serial execution and their variants is provided and can be selected depending on the device.
+Only one implementation of the kernel is required by utilizing the uniform kernel interface which is used by all accelerator back-ends.
+There is no need to write special CUDA, OpenMP or custom threading code.
+Accelerator back-ends within a device stream can be mixed.
+The decision which accelerator back-end executes which kernel can be made at runtime.
 
 The **alpaka** API is currently unstable (alpha state).
 
-The library allows users to utilize a multitude of different accelerator types that require different libraries/compilers by providing a uniform kernel interface.
-Users have to write only one implementation of their algorithms and can benefit from all supported accelerators.
-There is no need to write special CUDA, OpenMP or custom threading code.
-The supported accelerators can be selected at compile time but the decision which accelerator executes which kernel can be made at runtime.
-
 The abstraction used is very similar to the CUDA grid-blocks-threads division strategy.
-Algorithms that should be parallelized have to be divided into a 1, 2, or 3-dimensional grid consisting of small uniform work items.
+Algorithms that should be parallelized have to be divided into a multi-dimensional grid consisting of small uniform work items.
 The function being executed by each of this threads is called a kernel.
 The threads in the grid are organized in blocks.
 All threads in a block are executed in parallel and can interact via fast shared memory.
 Blocks are executed independently and can not interact in any way.
 The block execution order is unspecified and depends on the accelerator in use.
 By using this abstraction the execution can be optimally adapted to the available accelerators.
+
 
 Software License
 ----------------
@@ -35,36 +36,40 @@ Documentation
 The source code documentation generated with [doxygen](http://www.doxygen.org) is available [here](http://computationalradiationphysics.github.io/alpaka/).
 
 
+Accelerator Back-ends
+------------
+
+|-|Lib/API|Devices|Execution strategy grid-blocks|Execution strategy block-threads|
+|---|---|---|---|---|
+|Serial|n/a|Host Core|sequential|sequential|
+|OpenMP 2.0 blocks|OpenMP 2.0|Host Cores|parallel (preemptive multitasking)|sequential|
+|OpenMP 2.0 threads|OpenMP 2.0|Host Cores|sequential|parallel (preemptive multitasking)|
+|OpenMP 4.0|OpenMP 4.0|Host Cores|parallel (undefined)|parallel (preemptive multitasking)|
+| std::thread | std::thread |Host Cores|sequential|parallel (preemptive multitasking)|
+| Boost.Fiber | boost::fibers::fiber |Host Core|sequential|parallel (cooperative multitasking)|
+|CUDA 7.0|CUDA 7.0|NVIDIA GPUs SM 2.0+|parallel (undefined)|parallel (lock-step within warps)|
+
+
 Supported Compilers
 -------------------
 
 This library uses C++11 (or newer when available).
 
-|-|gcc 4.9.2|gcc 5.1|clang 3.5+|MSVC 2013|MSVC 2015|icc 15.0+ (untested)|
+|-|gcc 4.9.2|gcc 5.1|clang 3.5+|MSVC 2015|icc 15.0+ (untested)|
 |---|---|---|---|---|---|---|
-|CUDA 7.0|:white_check_mark:|:x:|:x:|:white_check_mark:|:x:|:white_check_mark:|
-|OpenMP 2.0|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
-|OpenMP 4.0|:white_check_mark:|:white_check_mark:|:x:|:x:|:x:|:white_check_mark:|
-| Bopost.Fiber |:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|:x:|:white_check_mark:|
-| std::thread |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
-|Serial|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
+|Serial|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
+|OpenMP 2.0 blocks|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|:white_check_mark:|
+|OpenMP 2.0 threads|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|:white_check_mark:|
+|OpenMP 4.0|:white_check_mark:|:white_check_mark:|:x:|:x:|:white_check_mark:|
+| std::thread |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
+| Boost.Fiber |:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|
+|CUDA 7.0|:white_check_mark:|:x:|:x:|:x:|:white_check_mark:|
 
 **NOTE**: :bangbang: Currently the *CUDA accelerator back-end* can not be enabled together with the *std::thread accelerator back-end* or the *Boost.Fiber accelerator back-end* :bangbang:
 
 Build status master branch: [![Build Status](https://travis-ci.org/ComputationalRadiationPhysics/alpaka.svg?branch=master)](https://travis-ci.org/ComputationalRadiationPhysics/alpaka)
 
 Build status develop branch: [![Build Status](https://travis-ci.org/ComputationalRadiationPhysics/alpaka.svg?branch=develop)](https://travis-ci.org/ComputationalRadiationPhysics/alpaka)
-
-
-Accelerator Back-ends
-------------
-
-|-|Serial| std::thread | Boost.Fiber | OpenMP 2.0 | OpenMP 4.0 | CUDA 7.0 |
-|---|---|---|---|---|---|---|
-|Lib/API|n/a| std::thread | boost::fibers::fiber |OpenMP 2.0|OpenMP 4.0|CUDA 7.0|
-|Devices|Host Core|Host Cores|Host Core|Host Cores|Host Cores|NVIDIA GPUs SM 2.0+|
-|Execution strategy grid-blocks|sequential|sequential|sequential|sequential|undefined|undefined|
-|Execution strategy block-threads|sequential|preemptive multitasking|cooperative multitasking|preemptive multitasking|preemptive multitasking|lock-step within warps|
 
 
 Dependencies
@@ -74,13 +79,13 @@ Dependencies
 The **alpaka** library itself just requires header-only libraries.
 However some of the examples require different boost libraries to be built.
 
-When the *CUDA accelerator back-end* is enabled, version *7.0* of the *CUDA SDK* is the minimum requirement.
+When the *CUDA* accelerator back-end is enabled, version *7.0* of the *CUDA SDK* is the minimum requirement.
 
-When the *OpenMP 2.0 accelerator back-end* is enabled, the compiler and the platform have to support *OpenMP 2.0* or newer.
+When one of the *OpenMP 2.0* accelerator back-ends is enabled, the compiler and the platform have to support *OpenMP 2.0* or newer.
 
-When the *OpenMP 4.0 accelerator back-end* is enabled, the compiler and the platform have to support *OpenMP 4.0* or newer.
+When the *OpenMP 4.0* accelerator back-end is enabled, the compiler and the platform have to support *OpenMP 4.0* or newer.
 
-When the *Boost.Fiber accelerator back-end* is enabled, the develop branch of boost and the proposed boost library [`boost-fibers`](https://github.com/olk/boost-fiber) (develop branch) are required. `boost-fibers`, `boost-context` and all of its dependencies are required to be build in C++14 mode `./b2 cxxflags="-std=c++14"`.
+When the *Boost.Fiber* accelerator back-end is enabled, the develop branch of boost and the proposed boost library [`boost-fibers`](https://github.com/olk/boost-fiber) (develop branch) are required. `boost-fibers`, `boost-context` and all of its dependencies are required to be build in C++14 mode `./b2 cxxflags="-std=c++14"`.
 
 
 Usage
@@ -96,6 +101,7 @@ If you are building with the *CUDA accelerator back-end* enabled, your source fi
 When the *CUDA accelerator back-end* is disabled, this is not required and a `.cpp` extension is enough.
 To allow both use-cases, it is desirable to have both, a `.cpp` file with the implementation and a `.cu` file containing only `#include <PATH/TO/IMPL.cpp>` to forward to the implementation.
 The build system then has to use the `.cu` files when the *CUDA accelerator back-end* is enabled and the `.cpp` files else.
+Examples how to do this with CMake can be found in the `examples` folder.
 
 
 Authors

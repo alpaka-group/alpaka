@@ -75,12 +75,10 @@ namespace alpaka
                     //! Copy constructor.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_HOST StreamCudaImpl(StreamCudaImpl const &) = delete;
-#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                     //-----------------------------------------------------------------------------
                     //! Move constructor.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_HOST StreamCudaImpl(StreamCudaImpl &&) = default;
-#endif
                     //-----------------------------------------------------------------------------
                     //! Copy assignment operator.
                     //-----------------------------------------------------------------------------
@@ -129,12 +127,10 @@ namespace alpaka
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST StreamCuda(StreamCuda const &) = default;
-#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST StreamCuda(StreamCuda &&) = default;
-#endif
                 //-----------------------------------------------------------------------------
                 //! Copy assignment operator.
                 //-----------------------------------------------------------------------------

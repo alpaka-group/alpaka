@@ -21,10 +21,12 @@
 
 #pragma once
 
-#include <boost/predef.h>   // workarounds
+#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC
 
-#include <type_traits>      // std::is_integral
-#include <cstddef>          // std::size_t
+#include <boost/predef.h>           // workarounds
+
+#include <type_traits>              // std::is_integral
+#include <cstddef>                  // std::size_t
 
 namespace alpaka
 {
@@ -41,7 +43,7 @@ namespace alpaka
             typedef integer_sequence<T, TVals...> type;
             typedef T value_type;
 
-            static auto size() noexcept
+            ALPAKA_FCT_HOST_ACC static auto size() noexcept
             -> std::size_t
             {
                 return (sizeof...(TVals));
@@ -62,25 +64,11 @@ namespace alpaka
             make_integer_sequence_helper<false, TIdx == (TuiBegin+1), T, TuiBegin, std::integral_constant<T, TIdx - 1>, integer_sequence<T, TIdx - 1, TVals...> >
         {};
 
-        // Bug: https://connect.microsoft.com/VisualStudio/feedback/details/1085630/template-alias-internal-error-in-the-compiler-because-of-tmp-c-integer-sequence-for-c-11
-#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-        template<class T, T TuiSize>
-        struct make_integer_sequence
-        {
-            using type = typename make_integer_sequence_helper<(TuiSize < 0), (TuiSize == 0), T, 0, std::integral_constant<T, TuiSize>, integer_sequence<T> >::type;
-        };
-        template<class T, T TuiBegin, T TuiSize>
-        struct make_integer_sequence_start
-        {
-            using type = typename make_integer_sequence_helper<(TuiSize < 0), (TuiSize == 0), T, TuiBegin, std::integral_constant<T, TuiBegin+TuiSize>, integer_sequence<T> >::type;
-        };
-#else
         template<class T, T TuiBegin, T TuiSize>
         using make_integer_sequence_start = typename make_integer_sequence_helper<(TuiSize < 0), (TuiSize == 0), T, TuiBegin, std::integral_constant<T, TuiBegin+TuiSize>, integer_sequence<T> >::type;
 
         template<class T, T TuiSize>
         using make_integer_sequence = make_integer_sequence_start<T, 0u, TuiSize>;
-#endif
 
         template<std::size_t... TVals>
         using index_sequence = integer_sequence<std::size_t, TVals...>;

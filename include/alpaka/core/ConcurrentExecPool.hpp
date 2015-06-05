@@ -25,7 +25,7 @@
 
 // nvcc does not currently support boost correctly.
 // boost/utility/detail/result_of_iterate.hpp:148:75: error: invalid use of qualified-name 'std::allocator_traits<_Alloc>::propagate_on_container_swap'
-#if defined(ALPAKA_GPU_CUDA_ENABLED) && defined(__CUDACC__)
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
     #include <queue>        // std::queue
     #include <mutex>        // std::mutex
 #else
@@ -52,7 +52,7 @@ namespace alpaka
 {
     namespace detail
     {
-#if defined(ALPAKA_GPU_CUDA_ENABLED) && defined(__CUDACC__)
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
         //#############################################################################
         //!
         //#############################################################################
@@ -291,8 +291,8 @@ namespace alpaka
                 UInt uiConcurrentExecutionCount,
                 UInt uiQueueSize = 128u) :
                 m_vConcurrentExecs(),
-                m_bShutdownFlag(false),
-                m_qTasks(uiQueueSize)
+                m_qTasks(uiQueueSize),
+                m_bShutdownFlag(false)
             {
                 m_vConcurrentExecs.reserve(uiConcurrentExecutionCount);
 
@@ -454,8 +454,8 @@ namespace alpaka
 
         private:
             std::vector<TConcurrentExec> m_vConcurrentExecs;
-            std::atomic<bool> m_bShutdownFlag;
             ThreadSafeQueue<ITaskPkg *> m_qTasks;
+            std::atomic<bool> m_bShutdownFlag;
         };
 
         //#############################################################################
@@ -496,10 +496,10 @@ namespace alpaka
                 UInt uiConcurrentExecutionCount,
                 UInt uiQueueSize = 128u) :
                 m_vConcurrentExecs(),
-                m_bShutdownFlag(false),
                 m_qTasks(uiQueueSize),
-                m_cvWakeup(),
-                m_mtxWakeup()
+                m_mtxWakeup(),
+                m_bShutdownFlag(false),
+                m_cvWakeup()
             {
                 m_vConcurrentExecs.reserve(uiConcurrentExecutionCount);
 
@@ -534,8 +534,12 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ~ConcurrentExecPool()
             {
-                // Signal that concurrent executors should not perform any new work
-                m_bShutdownFlag.store(true);
+                {
+                    std::unique_lock<TMutex> lock(m_mtxWakeup);
+
+                    // Signal that concurrent executors should not perform any new work
+                    m_bShutdownFlag = true;
+                }
 
                 m_cvWakeup.notify_all();
 
@@ -619,8 +623,8 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             void concurrentExecFunc()
             {
-                // Checks whether pool is being destroyed, if so, stop running.
-                while(!m_bShutdownFlag.load(std::memory_order_relaxed))
+                // Checks whether pool is being destroyed, if so, stop running (lazy check without mutex).
+                while(!m_bShutdownFlag)
                 {
                     auto currentTaskPackage(std::unique_ptr<ITaskPkg>{nullptr});
 
@@ -633,7 +637,13 @@ namespace alpaka
                     {
                         std::unique_lock<TMutex> lock(m_mtxWakeup);
 
-                        m_cvWakeup.wait(lock, [this]() { return !m_qTasks.empty() || m_bShutdownFlag; });
+                        // If the shutdown flag has been set since the last check, return now.
+                        if(m_bShutdownFlag)
+                        {
+                            return;
+                        }
+
+                        m_cvWakeup.wait(lock, [this]() { return ((!m_qTasks.empty()) || m_bShutdownFlag); });
                     }
                 }
             }
@@ -667,11 +677,11 @@ namespace alpaka
 
         private:
             std::vector<TConcurrentExec> m_vConcurrentExecs;
-            std::atomic<bool> m_bShutdownFlag;
             ThreadSafeQueue<ITaskPkg *> m_qTasks;
 
-            TCondVar m_cvWakeup;
             TMutex m_mtxWakeup;
+            std::atomic<bool> m_bShutdownFlag;
+            TCondVar m_cvWakeup;
         };
     }
 }

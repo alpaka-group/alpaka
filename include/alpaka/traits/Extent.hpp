@@ -162,11 +162,7 @@ namespace alpaka
             TExtents const & extents = TExtents())
         -> TVal
         {
-#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-            using IdxSequence = typename alpaka::detail::make_index_sequence<dim::DimT<TExtents>::value>::type;
-#else
             using IdxSequence = alpaka::detail::make_index_sequence<dim::DimT<TExtents>::value>;
-#endif
             return detail::getProductOfExtentsInternal<TVal>(
                 extents,
                 IdxSequence());

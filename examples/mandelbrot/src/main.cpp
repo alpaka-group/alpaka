@@ -19,14 +19,16 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <alpaka/alpaka.hpp>                // alpaka::exec::create
+#include <alpaka/alpaka.hpp>                        // alpaka::exec::create
+#include <alpaka/examples/MeasureKernelRunTime.hpp> // measureKernelRunTimeMs
+#include <alpaka/examples/accs/EnabledAccs.hpp>     // EnabledAccs
 
-#include <chrono>                           // std::chrono::high_resolution_clock
-#include <cassert>                          // assert
-#include <iostream>                         // std::cout
-#include <typeinfo>                         // typeid
-#include <utility>                          // std::forward
-#include <fstream>                          // std::ofstream
+#include <chrono>                                   // std::chrono::high_resolution_clock
+#include <cassert>                                  // assert
+#include <iostream>                                 // std::cout
+#include <typeinfo>                                 // typeid
+#include <utility>                                  // std::forward
+#include <fstream>                                  // std::ofstream
 
 //#define ALPAKA_MANDELBROT_TEST_CONTINOUS_COLOR_MAPPING  // Define this to enable the continuous color mapping.
 
@@ -249,40 +251,6 @@ public:
 };
 
 //-----------------------------------------------------------------------------
-//! Profiles the given kernel.
-//-----------------------------------------------------------------------------
-template<
-    typename TExec,
-    typename TKernelFunctor,
-    typename... TArgs>
-auto profileKernelExec(
-    TExec const & exec,
-    TKernelFunctor && kernelFunctor,
-    TArgs && ... args)
--> void
-{
-    std::cout
-        << "profileKernelExec("
-        << " kernelExecutor: " << typeid(TExec).name()
-        << ")" << std::endl;
-
-    auto const tpStart(std::chrono::high_resolution_clock::now());
-
-    // Execute the kernel functor.
-    exec(std::forward<TKernelFunctor>(kernelFunctor), std::forward<TArgs>(args)...);
-
-    // Wait for the stream to finish the kernel execution to measure its run time.
-    alpaka::wait::wait(alpaka::stream::getStream(exec));
-
-    auto const tpEnd(std::chrono::high_resolution_clock::now());
-
-    auto const durElapsed(tpEnd - tpStart);
-
-    std::cout << "Execution time: " << std::chrono::duration_cast<std::chrono::milliseconds>(durElapsed).count() << " ms" << std::endl;
-}
-
-
-//-----------------------------------------------------------------------------
 //! Writes the buffer color data to a file.
 //-----------------------------------------------------------------------------
 template<
@@ -429,18 +397,21 @@ struct MandelbrotKernelTester
         // Create the executor.
         auto exec(alpaka::exec::create<TAcc>(workDiv, stream));
         // Profile the kernel execution.
-        profileKernelExec(
-            exec,
-            kernel,
-            alpaka::mem::getPtrNative(bufColorAcc),
-            static_cast<std::uint32_t>(uiNumRows),
-            static_cast<std::uint32_t>(uiNumCols),
-            alpaka::mem::getPitchElements<1u, std::uint32_t>(bufColorAcc),
-            fMinR,
-            fMaxR,
-            fMinI,
-            fMaxI,
-            static_cast<std::uint32_t>(uiMaxIterations));
+        std::cout << "Execution time: "
+            << alpaka::examples::measureKernelRunTimeMs(
+                exec,
+                kernel,
+                alpaka::mem::getPtrNative(bufColorAcc),
+                static_cast<std::uint32_t>(uiNumRows),
+                static_cast<std::uint32_t>(uiNumCols),
+                alpaka::mem::getPitchElements<1u, std::uint32_t>(bufColorAcc),
+                fMinR,
+                fMaxR,
+                fMinI,
+                fMaxI,
+                static_cast<std::uint32_t>(uiMaxIterations))
+            << " ms"
+            << std::endl;
 
         // Copy back the result.
         alpaka::mem::copy(bufColorHost, bufColorAcc, v2uiExtents, stream);
@@ -473,7 +444,7 @@ auto main()
         std::cout << std::endl;
 
         // Logs the enabled accelerators.
-        alpaka::accs::writeEnabledAccs<alpaka::dim::Dim2>(std::cout);
+        alpaka::examples::accs::writeEnabledAccs<alpaka::dim::Dim2>(std::cout);
 
         std::cout << std::endl;
 
@@ -492,7 +463,7 @@ auto main()
 
             // Execute the kernel on all enabled accelerators.
             alpaka::forEachType<
-                alpaka::accs::EnabledAccs<alpaka::dim::Dim2>>(
+                alpaka::examples::accs::EnabledAccs<alpaka::dim::Dim2>>(
                     mandelbrotTester,
                     uiSize,
                     uiSize,

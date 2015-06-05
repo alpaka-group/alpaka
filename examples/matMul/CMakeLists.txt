@@ -51,6 +51,7 @@ FIND_PACKAGE("alpaka" REQUIRED)
 
 INCLUDE("${ALPAKA_ROOT}/cmake/common.cmake")
 INCLUDE("${ALPAKA_ROOT}/cmake/dev.cmake")
+SET(_INCLUDE_DIRECTORIES_PRIVATE ${_INCLUDE_DIR} "${ALPAKA_ROOT}examples/common/")
 
 #-------------------------------------------------------------------------------
 # Find Boost.
@@ -79,7 +80,7 @@ IF(ALPAKA_GPU_CUDA_ENABLE)
         PROPERTIES HEADER_FILE_ONLY TRUE)
     # CUDA does not work well with the much better target dependent TARGET_XXX commands but requires the settings to be available globally: https://www.cmake.org/Bug/view.php?id=14201&nbn=1
     INCLUDE_DIRECTORIES(
-        ${_INCLUDE_DIR}
+        ${_INCLUDE_DIRECTORIES_PRIVATE}
         ${Boost_INCLUDE_DIRS}
         ${alpaka_INCLUDE_DIRS})
     ADD_DEFINITIONS(
@@ -98,11 +99,11 @@ ELSE()
         ${_FILES_HEADER} ${_FILES_SOURCE_CXX} ${_FILES_SOURCE_CU})
     TARGET_INCLUDE_DIRECTORIES(
         "matMul"
-        PUBLIC ${_INCLUDE_DIR}
-        PUBLIC ${Boost_INCLUDE_DIRS})
+        PRIVATE ${_INCLUDE_DIRECTORIES_PRIVATE}
+        PRIVATE ${Boost_INCLUDE_DIRS})
     TARGET_COMPILE_OPTIONS(
         "matMul"
-        PUBLIC ${ALPAKA_DEV_COMPILE_OPTIONS})
+        PRIVATE ${ALPAKA_DEV_COMPILE_OPTIONS})
 ENDIF()
 
 # Set the link libraries for this library (adds libs, include directories, defines and compile options).

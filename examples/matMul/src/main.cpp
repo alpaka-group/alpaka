@@ -19,31 +19,33 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <alpaka/alpaka.hpp>                // alpaka::exec::create
+#include <alpaka/alpaka.hpp>                        // alpaka::exec::create
+#include <alpaka/examples/MeasureKernelRunTime.hpp> // measureKernelRunTimeMs
+#include <alpaka/examples/accs/EnabledAccs.hpp>     // EnabledAccs
 
 #if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
     #if BOOST_COMP_MSVC
         #pragma warning(push)
-        #pragma warning(disable: 4512)      // boost/program_options/options_description.hpp(265): warning C4512: 'boost::program_options::options_description': assignment operator was implicitly defined as deleted
+        #pragma warning(disable: 4512)              // boost/program_options/options_description.hpp(265): warning C4512: 'boost::program_options::options_description': assignment operator was implicitly defined as deleted
     #endif
 
-    #include <boost/program_options.hpp>    // boost::program_options
+    #include <boost/program_options.hpp>            // boost::program_options
 
     #if BOOST_COMP_MSVC
         #pragma warning(pop)
     #endif
 #endif
 
-#include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
+#include <boost/core/ignore_unused.hpp>             // boost::ignore_unused
 
-#include <chrono>                           // std::chrono::high_resolution_clock
-#include <cassert>                          // assert
-#include <iostream>                         // std::cout
-#include <vector>                           // std::vector
-#include <typeinfo>                         // typeid
-#include <utility>                          // std::forward
-#include <functional>                       // std::placeholders
-#include <unordered_map>                    // std::unordered_map
+#include <chrono>                                   // std::chrono::high_resolution_clock
+#include <cassert>                                  // assert
+#include <iostream>                                 // std::cout
+#include <vector>                                   // std::vector
+#include <typeinfo>                                 // typeid
+#include <utility>                                  // std::forward
+#include <functional>                               // std::placeholders
+#include <unordered_map>                            // std::unordered_map
 
 //#############################################################################
 //! A matrix multiplication kernel.
@@ -222,39 +224,6 @@ namespace alpaka
     }
 }
 
-//-----------------------------------------------------------------------------
-//! Profiles the given kernel.
-//-----------------------------------------------------------------------------
-template<
-    typename TExec,
-    typename TKernelFunctor,
-    typename... TArgs>
-auto profileKernelExec(
-    TExec const & exec,
-    TKernelFunctor && kernelFunctor,
-    TArgs && ... args)
--> void
-{
-    std::cout
-        << "profileKernelExec("
-        << " kernelExecutor: " << typeid(TExec).name()
-        << ")" << std::endl;
-
-    auto const tpStart(std::chrono::high_resolution_clock::now());
-
-    // Execute the kernel functor.
-    exec(std::forward<TKernelFunctor>(kernelFunctor), std::forward<TArgs>(args)...);
-
-    // Wait for the stream to finish the kernel execution to measure its run time.
-    alpaka::wait::wait(alpaka::stream::getStream(exec));
-
-    auto const tpEnd(std::chrono::high_resolution_clock::now());
-
-    auto const durElapsed(tpEnd - tpStart);
-
-    std::cout << "Execution time: " << std::chrono::duration_cast<std::chrono::milliseconds>(durElapsed).count() << " ms" << std::endl;
-}
-
 //#############################################################################
 //! Profiles the example kernel and checks the result.
 //#############################################################################
@@ -303,7 +272,7 @@ struct MatMulTester
         alpaka::workdiv::BasicWorkDiv<alpaka::dim::Dim2> workDiv(
             bAdaptiveBlockThreadExtent
             ? alpaka::workdiv::getValidWorkDiv<boost::mpl::vector<TAcc>>(v2uiExtentsC, false)
-            : alpaka::workdiv::getValidWorkDiv<alpaka::accs::EnabledAccs<alpaka::dim::Dim2>>(v2uiExtentsC, false));
+            : alpaka::workdiv::getValidWorkDiv<alpaka::examples::accs::EnabledAccs<alpaka::dim::Dim2>>(v2uiExtentsC, false));
         // Assure that the extents are square.
         auto const uiMinExtent(std::min(workDiv.m_vuiBlockThreadExtents[0u], workDiv.m_vuiBlockThreadExtents[1u]));
         workDiv.m_vuiGridBlockExtents[0u] = static_cast<alpaka::Vec2<>::Val>(std::ceil(static_cast<double>(m) / static_cast<double>(uiMinExtent)));
@@ -354,20 +323,23 @@ struct MatMulTester
         // Create the executor.
         auto exec(alpaka::exec::create<TAcc>(workDiv, stream));
         // Profile the kernel execution.
-        profileKernelExec(
-            exec,
-            kernel,
-            static_cast<std::uint32_t>(m),
-            static_cast<std::uint32_t>(n),
-            static_cast<std::uint32_t>(k),
-            static_cast<std::uint32_t>(1u),
-            alpaka::mem::getPtrNative(bufAAcc),
-            alpaka::mem::getPitchElements<1u, std::uint32_t>(bufAAcc),
-            alpaka::mem::getPtrNative(bufBAcc),
-            alpaka::mem::getPitchElements<1u, std::uint32_t>(bufBAcc),
-            static_cast<std::uint32_t>(1u),
-            alpaka::mem::getPtrNative(bufCAcc),
-            alpaka::mem::getPitchElements<1u, std::uint32_t>(bufCAcc));
+        std::cout << "Execution time: "
+            << alpaka::examples::measureKernelRunTimeMs(
+                exec,
+                kernel,
+                static_cast<std::uint32_t>(m),
+                static_cast<std::uint32_t>(n),
+                static_cast<std::uint32_t>(k),
+                static_cast<std::uint32_t>(1u),
+                alpaka::mem::getPtrNative(bufAAcc),
+                alpaka::mem::getPitchElements<1u, std::uint32_t>(bufAAcc),
+                alpaka::mem::getPtrNative(bufBAcc),
+                alpaka::mem::getPitchElements<1u, std::uint32_t>(bufBAcc),
+                static_cast<std::uint32_t>(1u),
+                alpaka::mem::getPtrNative(bufCAcc),
+                alpaka::mem::getPitchElements<1u, std::uint32_t>(bufCAcc))
+            << " ms"
+            << std::endl;
 
         // Copy back the result.
         alpaka::mem::copy(bufCHost, bufCAcc, v2uiExtentsC, stream);
@@ -446,7 +418,7 @@ auto main(
             std::cout << std::endl;
 
             // Logs the enabled accelerators.
-            alpaka::accs::writeEnabledAccs<alpaka::dim::Dim2>(std::cout);
+            alpaka::examples::accs::writeEnabledAccs<alpaka::dim::Dim2>(std::cout);
 
             std::cout << std::endl;
 
@@ -480,7 +452,7 @@ auto main(
 
                         // Execute the kernel on all enabled accelerators.
                         alpaka::forEachType<
-                            alpaka::accs::EnabledAccs<alpaka::dim::Dim2>>(
+                            alpaka::examples::accs::EnabledAccs<alpaka::dim::Dim2>>(
                                 matMulTester,
                                 m, n, k,
                                 bAdaptiveBlockThreadExtent);

@@ -47,42 +47,39 @@ namespace alpaka
         namespace omp
         {
             //-----------------------------------------------------------------------------
-            //! The OpenMP4 accelerator.
+            //! The CPU OpenMP 2.0 thread accelerator.
             //-----------------------------------------------------------------------------
-            namespace omp4
+            namespace omp2
             {
-                //-----------------------------------------------------------------------------
-                //! The CPU OpenMP 4.0 accelerator.
-                //-----------------------------------------------------------------------------
-                namespace cpu
+                namespace threads
                 {
                     //-----------------------------------------------------------------------------
-                    //! The CPU OpenMP 4.0 accelerator implementation details.
+                    //! The CPU OpenMP 2.0 thread accelerator implementation details.
                     //-----------------------------------------------------------------------------
                     namespace detail
                     {
                         template<
                             typename TDim>
-                        class ExecCpuOmp4;
+                        class ExecCpuOmp2Threads;
                         template<
                             typename TDim>
-                        class ExecCpuOmp4Impl;
+                        class ExecCpuOmp2ThreadsImpl;
 
                         //#############################################################################
-                        //! The CPU OpenMP 4.0 accelerator.
+                        //! The CPU OpenMP 2.0 thread accelerator.
                         //!
                         //! This accelerator allows parallel kernel execution on a CPU device.
-                        //! It uses CPU OpenMP4 to implement the parallelism.
+                        //! It uses OpenMP 2.0 to implement the block thread parallelism.
                         //#############################################################################
                         template<
                             typename TDim>
-                        class AccCpuOmp4 final :
+                        class AccCpuOmp2Threads final :
                             protected workdiv::BasicWorkDiv<TDim>,
                             protected omp::detail::IdxOmp<TDim>,
                             protected omp::detail::AtomicOmp
                         {
                         public:
-                            friend class ::alpaka::accs::omp::omp4::cpu::detail::ExecCpuOmp4Impl<TDim>;
+                            friend class ::alpaka::accs::omp::omp2::threads::detail::ExecCpuOmp2ThreadsImpl<TDim>;
 
                         private:
                             //-----------------------------------------------------------------------------
@@ -90,7 +87,7 @@ namespace alpaka
                             //-----------------------------------------------------------------------------
                             template<
                                 typename TWorkDiv>
-                            ALPAKA_FCT_ACC_NO_CUDA AccCpuOmp4(
+                            ALPAKA_FCT_ACC_NO_CUDA AccCpuOmp2Threads(
                                 TWorkDiv const & workDiv) :
                                     workdiv::BasicWorkDiv<TDim>(workDiv),
                                     omp::detail::IdxOmp<TDim>(m_vuiGridBlockIdx),
@@ -102,23 +99,23 @@ namespace alpaka
                             //-----------------------------------------------------------------------------
                             //! Copy constructor.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_ACC_NO_CUDA AccCpuOmp4(AccCpuOmp4 const &) = delete;
+                            ALPAKA_FCT_ACC_NO_CUDA AccCpuOmp2Threads(AccCpuOmp2Threads const &) = delete;
                             //-----------------------------------------------------------------------------
                             //! Move constructor.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_ACC_NO_CUDA AccCpuOmp4(AccCpuOmp4 &&) = delete;
+                            ALPAKA_FCT_ACC_NO_CUDA AccCpuOmp2Threads(AccCpuOmp2Threads &&) = delete;
                             //-----------------------------------------------------------------------------
                             //! Copy assignment operator.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_ACC_NO_CUDA auto operator=(AccCpuOmp4 const &) -> AccCpuOmp4 & = delete;
+                            ALPAKA_FCT_ACC_NO_CUDA auto operator=(AccCpuOmp2Threads const &) -> AccCpuOmp2Threads & = delete;
                             //-----------------------------------------------------------------------------
                             //! Move assignment operator.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_ACC_NO_CUDA auto operator=(AccCpuOmp4 &&) -> AccCpuOmp4 & = delete;
+                            ALPAKA_FCT_ACC_NO_CUDA auto operator=(AccCpuOmp2Threads &&) -> AccCpuOmp2Threads & = delete;
                             //-----------------------------------------------------------------------------
                             //! Destructor.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_ACC_NO_CUDA ~AccCpuOmp4() noexcept = default;
+                            ALPAKA_FCT_ACC_NO_CUDA /*virtual*/ ~AccCpuOmp2Threads() noexcept = default;
 
                             //-----------------------------------------------------------------------------
                             //! \return The requested indices.
@@ -231,29 +228,29 @@ namespace alpaka
 
     template<
         typename TDim>
-    using AccCpuOmp4 = accs::omp::omp4::cpu::detail::AccCpuOmp4<TDim>;
+    using AccCpuOmp2Threads = accs::omp::omp2::threads::detail::AccCpuOmp2Threads<TDim>;
 
     namespace traits
     {
         namespace acc
         {
             //#############################################################################
-            //! The CPU OpenMP 4.0 accelerator accelerator type trait specialization.
+            //! The CPU OpenMP 2.0 thread accelerator accelerator type trait specialization.
             //#############################################################################
             template<
                 typename TDim>
             struct AccType<
-                accs::omp::omp4::cpu::detail::AccCpuOmp4<TDim>>
+                accs::omp::omp2::threads::detail::AccCpuOmp2Threads<TDim>>
             {
-                using type = accs::omp::omp4::cpu::detail::AccCpuOmp4<TDim>;
+                using type = accs::omp::omp2::threads::detail::AccCpuOmp2Threads<TDim>;
             };
             //#############################################################################
-            //! The CPU OpenMP 4.0 accelerator device properties get trait specialization.
+            //! The CPU OpenMP 2.0 thread accelerator device properties get trait specialization.
             //#############################################################################
             template<
                 typename TDim>
             struct GetAccDevProps<
-                accs::omp::omp4::cpu::detail::AccCpuOmp4<TDim>>
+                accs::omp::omp2::threads::detail::AccCpuOmp2Threads<TDim>>
             {
                 ALPAKA_FCT_HOST static auto getAccDevProps(
                     devs::cpu::DevCpu const & dev)
@@ -264,12 +261,13 @@ namespace alpaka
 #if ALPAKA_INTEGRATION_TEST
                     UInt const uiBlockThreadsCountMax(4u);
 #else
-                    // NOTE: ::omp_get_thread_limit() returns 2^31-1 (largest positive int value)...
-                    //int const iThreadLimit(::omp_get_thread_limit());
-                    //std::cout << BOOST_CURRENT_FUNCTION << " omp_get_thread_limit: " << iThreadLimit << std::endl;
                     // m_uiBlockThreadsCountMax
-                    //UInt uiBlockThreadsCountMax(static_cast<UInt>(iThreadLimit));
-                    UInt uiBlockThreadsCountMax(static_cast<UInt>(::omp_get_num_procs()));
+                    // HACK: ::omp_get_max_threads() does not return the real limit of the underlying OpenMP 2.0 runtime:
+                    // 'The omp_get_max_threads routine returns the value of the internal control variable, which is used to determine the number of threads that would form the new team,
+                    // if an active parallel region without a num_threads clause were to be encountered at that point in the program.'
+                    // How to do this correctly? Is there even a way to get the hard limit apart from omp_set_num_threads(high_value) -> omp_get_max_threads()?
+                    ::omp_set_num_threads(1024);
+                    UInt const uiBlockThreadsCountMax(static_cast<UInt>(::omp_get_max_threads()));
 #endif
                     return {
                         // m_uiMultiProcessorCount
@@ -283,17 +281,17 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The CPU OpenMP 4.0 accelerator name trait specialization.
+            //! The CPU OpenMP 2.0 thread accelerator name trait specialization.
             //#############################################################################
             template<
                 typename TDim>
             struct GetAccName<
-                accs::omp::omp4::cpu::detail::AccCpuOmp4<TDim>>
+                accs::omp::omp2::threads::detail::AccCpuOmp2Threads<TDim>>
             {
                 ALPAKA_FCT_HOST_ACC static auto getAccName()
                 -> std::string
                 {
-                    return "AccCpuOmp4<" + std::to_string(TDim::value) + ">";
+                    return "AccCpuOmp2Threads<" + std::to_string(TDim::value) + ">";
                 }
             };
         }
@@ -301,22 +299,22 @@ namespace alpaka
         namespace dev
         {
             //#############################################################################
-            //! The CPU OpenMP 4.0 accelerator device type trait specialization.
+            //! The CPU OpenMP 2.0 thread accelerator device type trait specialization.
             //#############################################################################
             template<
                 typename TDim>
             struct DevType<
-                accs::omp::omp4::cpu::detail::AccCpuOmp4<TDim>>
+                accs::omp::omp2::threads::detail::AccCpuOmp2Threads<TDim>>
             {
                 using type = devs::cpu::DevCpu;
             };
             //#############################################################################
-            //! The CPU OpenMP 4.0 accelerator device type trait specialization.
+            //! The CPU OpenMP 2.0 thread accelerator device type trait specialization.
             //#############################################################################
             template<
                 typename TDim>
             struct DevManType<
-                accs::omp::omp4::cpu::detail::AccCpuOmp4<TDim>>
+                accs::omp::omp2::threads::detail::AccCpuOmp2Threads<TDim>>
             {
                 using type = devs::cpu::DevManCpu;
             };
@@ -325,12 +323,12 @@ namespace alpaka
         namespace dim
         {
             //#############################################################################
-            //! The CPU OpenMP 4.0 accelerator dimension getter trait specialization.
+            //! The CPU OpenMP 2.0 thread accelerator dimension getter trait specialization.
             //#############################################################################
             template<
                 typename TDim>
             struct DimType<
-                accs::omp::omp4::cpu::detail::AccCpuOmp4<TDim>>
+                accs::omp::omp2::threads::detail::AccCpuOmp2Threads<TDim>>
             {
                 using type = TDim;
             };
@@ -339,14 +337,14 @@ namespace alpaka
         namespace exec
         {
             //#############################################################################
-            //! The CPU OpenMP 4.0 accelerator executor type trait specialization.
+            //! The CPU OpenMP 2.0 thread accelerator executor type trait specialization.
             //#############################################################################
             template<
                 typename TDim>
             struct ExecType<
-                accs::omp::omp4::cpu::detail::AccCpuOmp4<TDim>>
+                accs::omp::omp2::threads::detail::AccCpuOmp2Threads<TDim>>
             {
-                using type = accs::omp::omp4::cpu::detail::ExecCpuOmp4<TDim>;
+                using type = accs::omp::omp2::threads::detail::ExecCpuOmp2Threads<TDim>;
             };
         }
     }

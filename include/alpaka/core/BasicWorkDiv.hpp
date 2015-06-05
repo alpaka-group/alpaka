@@ -50,11 +50,7 @@ namespace alpaka
             template<
                 typename TGridBlockExtents,
                 typename TBlockThreadExtents>
-            ALPAKA_FCT_HOST_ACC
-#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
-            explicit
-#endif
-            BasicWorkDiv(
+            ALPAKA_FCT_HOST_ACC explicit BasicWorkDiv(
                 TGridBlockExtents const & gridBlockExtents = TGridBlockExtents(),
                 TBlockThreadExtents const & blockThreadExtents = TBlockThreadExtents()) :
                 m_vuiGridBlockExtents(extent::getExtentsVecNd<TDim, UInt>(gridBlockExtents)),
@@ -63,11 +59,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC
-#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
-            explicit
-#endif
-            BasicWorkDiv(
+            ALPAKA_FCT_HOST_ACC explicit BasicWorkDiv(
                 BasicWorkDiv<TDim> const & other) :
                     m_vuiGridBlockExtents(other.m_vuiGridBlockExtents),
                     m_vuiBlockThreadExtents(other.m_vuiBlockThreadExtents)
@@ -77,21 +69,15 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TWorkDiv>
-            ALPAKA_FCT_HOST_ACC
-#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
-            explicit
-#endif
-            BasicWorkDiv(
+            ALPAKA_FCT_HOST_ACC explicit BasicWorkDiv(
                 TWorkDiv const & other) :
                     m_vuiGridBlockExtents(alpaka::subVecEnd<TDim>(getWorkDiv<Grid, Blocks>(other))),
                     m_vuiBlockThreadExtents(alpaka::subVecEnd<TDim>(getWorkDiv<Block, Threads>(other)))
             {}
-#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST_ACC BasicWorkDiv(BasicWorkDiv<TDim> &&) = default;
-#endif
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------

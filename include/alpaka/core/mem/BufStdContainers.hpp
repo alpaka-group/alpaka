@@ -110,11 +110,7 @@ namespace alpaka
                     && (std::rank<TFixedSizeArray>::value > TIdx::value)
                     && (std::extent<TFixedSizeArray, TIdx::value>::value > 0u)>::type>
             {
-#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-                ALPAKA_FCT_HOST_ACC static auto getWidth<UInt>(
-#else
                 ALPAKA_FCT_HOST_ACC static constexpr auto getExtent(
-#endif
                     TFixedSizeArray const & /*extents*/)
                 -> UInt
                 {
@@ -211,11 +207,7 @@ namespace alpaka
             {
                 using TElem = typename std::remove_all_extents<TFixedSizeArray>::type;
 
-#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-                ALPAKA_FCT_HOST_ACC static auto getPitchBytes(
-#else
                 ALPAKA_FCT_HOST_ACC static constexpr auto getPitchBytes(
-#endif
                     TFixedSizeArray const &)
                 -> UInt
                 {
@@ -314,11 +306,7 @@ namespace alpaka
                 std::integral_constant<UInt, 0u>,
                 std::array<TElem, TuiSize>>
             {
-#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-                ALPAKA_FCT_HOST_ACC static auto getExtent(
-#else
                 ALPAKA_FCT_HOST_ACC static constexpr auto getExtent(
-#endif
                     std::array<TElem, TuiSize> const & /*extents*/)
                 -> UInt
                 {

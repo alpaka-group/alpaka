@@ -64,12 +64,12 @@ namespace alpaka
                 //! The CPU serial accelerator.
                 //!
                 //! This accelerator allows serial kernel execution on a CPU device.
-                //! The block size is restricted to 1x1x1 so there is no parallelism at all.
+                //! The block size is restricted to 1x1x1 and all blocks are executed serially so there is no parallelism at all.
                 //#############################################################################
                 template<
                     typename TDim>
                 class AccCpuSerial final :
-                    protected alpaka::workdiv::BasicWorkDiv<TDim>,
+                    protected workdiv::BasicWorkDiv<TDim>,
                     protected IdxSerial<TDim>,
                     protected AtomicSerial
                 {
@@ -84,7 +84,7 @@ namespace alpaka
                         typename TWorkDiv>
                     ALPAKA_FCT_ACC_NO_CUDA AccCpuSerial(
                         TWorkDiv const & workDiv) :
-                            alpaka::workdiv::BasicWorkDiv<TDim>(workDiv),
+                            workdiv::BasicWorkDiv<TDim>(workDiv),
                             IdxSerial<TDim>(m_vuiGridBlockIdx),
                             AtomicSerial(),
                             m_vuiGridBlockIdx(Vec<TDim>::zeros())
@@ -96,12 +96,10 @@ namespace alpaka
                     // Do not copy most members because they are initialized by the executor for each execution.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_ACC_NO_CUDA AccCpuSerial(AccCpuSerial const &) = delete;
-#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                     //-----------------------------------------------------------------------------
                     //! Move constructor.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_ACC_NO_CUDA AccCpuSerial(AccCpuSerial &&) = delete;
-#endif
                     //-----------------------------------------------------------------------------
                     //! Copy assignment operator.
                     //-----------------------------------------------------------------------------

@@ -128,15 +128,16 @@ namespace alpaka
                                 new uint8_t[uiBlockSharedExternMemSizeBytes]);
                         }
 
+                        // There is only ever one thread in a block in the serial accelerator.
+                        assert(vuiBlockThreadExtents.prod() == 1u);
+
                         // Execute the blocks serially.
                         ndLoop(
                             vuiGridBlockExtents,
                             [&](Vec<TDim> const & vuiBlockThreadIdx)
                             {
                                 acc.m_vuiGridBlockIdx = vuiBlockThreadIdx;
-                                assert(vuiBlockThreadExtents.prod() == 1u);
 
-                                // There is only ever one thread in a block in the serial accelerator.
                                 kernelFunctor(
                                     acc,
                                     args...);

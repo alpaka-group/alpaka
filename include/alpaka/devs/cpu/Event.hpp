@@ -64,12 +64,10 @@ namespace alpaka
                     //! Copy constructor.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_HOST EventCpuImpl(EventCpuImpl const &) = delete;
-#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                     //-----------------------------------------------------------------------------
                     //! Move constructor.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_HOST EventCpuImpl(EventCpuImpl &&) = default;
-#endif
                     //-----------------------------------------------------------------------------
                     //! Copy assignment operator.
                     //-----------------------------------------------------------------------------
@@ -81,19 +79,15 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST ~EventCpuImpl()
+                    ALPAKA_FCT_HOST ~EventCpuImpl() noexcept
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                    noexcept(false)
                     {
                         // If a event is enqueued to a stream and gets waited on but destructed before it is completed it is kept alive until completed.
                         // This can never happen.
-                        if(m_bIsWaitedFor)
-                        {
-                            throw std::runtime_error("Assertion failure: Destruction of a referenced (waited for) EventCpuImpl!");
-                        }
+                        assert(!m_bIsWaitedFor);
                     }
 #else
-                    noexcept(true) = default;
+                    = default;
 #endif
                 public:
                     boost::uuids::uuid const m_Uuid;                        //!< The unique ID.
@@ -127,12 +121,10 @@ namespace alpaka
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST EventCpu(EventCpu const &) = default;
-#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST EventCpu(EventCpu &&) = default;
-#endif
                 //-----------------------------------------------------------------------------
                 //! Copy assignment operator.
                 //-----------------------------------------------------------------------------

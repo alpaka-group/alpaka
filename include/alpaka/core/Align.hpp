@@ -117,48 +117,21 @@ namespace alpaka
     //! You must align all arrays and structs which can be used on accelerators.
     //-----------------------------------------------------------------------------
     #define ALPAKA_ALIGN(TYPE, NAME) alignas(ALPAKA_OPTIMAL_ALIGNMENT(sizeof(typename std::remove_cv<TYPE>::type))) TYPE NAME
-    //-----------------------------------------------------------------------------
-    //! Aligns the data at 8 bytes.
-    //! You must align all arrays and structs which can be used on accelerators.
-    //-----------------------------------------------------------------------------
-    #define ALPAKA_ALIGN_8(TYPE, NAME) alignas(8) TYPE NAME
-
-    //-----------------------------------------------------------------------------
-    //! \return The alignment of the type.
-    //-----------------------------------------------------------------------------
-    #define ALPAKA_ALIGNOF(TYPE) alignof(TYPE)
-#elif (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-    //-----------------------------------------------------------------------------
-    //! Aligns the data optimally.
-    //! You must align all arrays and structs which can be used on accelerators.
-    //-----------------------------------------------------------------------------
-    // \FIXME: sizeof in __declspec(align( not allowed...
-    //#define ALPAKA_ALIGN(TYPE, NAME) __declspec(align(ALPAKA_OPTIMAL_ALIGNMENT(sizeof(typename std::remove_cv<TYPE>::type)))) TYPE NAME
-    #define ALPAKA_ALIGN(TYPE, NAME) __declspec(align(16)) TYPE NAME
-    //-----------------------------------------------------------------------------
-    //! Aligns the data at 8 bytes.
-    //! You must align all arrays and structs which can be used on accelerators.
-    //-----------------------------------------------------------------------------
-    #define ALPAKA_ALIGN_8(TYPE, NAME) __declspec(align(8)) TYPE NAME
-
-    //-----------------------------------------------------------------------------
-    //! \return The alignment of the type.
-    //-----------------------------------------------------------------------------
-    #define ALPAKA_ALIGNOF(TYPE) __alignof(TYPE)
 #else
     //-----------------------------------------------------------------------------
     //! Aligns the data optimally.
     //! You must align all arrays and structs which can be used on accelerators.
     //-----------------------------------------------------------------------------
     #define ALPAKA_ALIGN(TYPE, NAME) alignas(alpaka::align::OptimalAlignment<sizeof(typename std::remove_cv<TYPE>::type)>::value) TYPE NAME
-    //-----------------------------------------------------------------------------
-    //! Aligns the data at 8 bytes.
-    //! You must align all arrays and structs which can be used on accelerators.
-    //-----------------------------------------------------------------------------
-    #define ALPAKA_ALIGN_8(TYPE, NAME) alignas(8) TYPE NAME
-
-    //-----------------------------------------------------------------------------
-    //! \return The alignment of the type.
-    //-----------------------------------------------------------------------------
-    #define ALPAKA_ALIGNOF(TYPE) alignof(TYPE)
 #endif
+
+//-----------------------------------------------------------------------------
+//! Aligns the data at 8 bytes.
+//! You must align all arrays and structs which can be used on accelerators.
+//-----------------------------------------------------------------------------
+#define ALPAKA_ALIGN_8(TYPE, NAME) alignas(8) TYPE NAME
+
+//-----------------------------------------------------------------------------
+//! \return The alignment of the type.
+//-----------------------------------------------------------------------------
+#define ALPAKA_ALIGNOF(TYPE) alignof(TYPE)

@@ -76,11 +76,7 @@ namespace alpaka
                     TView const & view)
                 -> UInt
                 {
-#if (BOOST_COMP_MSVC) && (BOOST_COMP_MSVC < BOOST_VERSION_NUMBER(14, 0, 0))
-                    using IdxSequence = typename alpaka::detail::make_integer_sequence_start<UInt, TIdx::value, alpaka::dim::DimT<TView>::value - TIdx::value>::type;
-#else
                     using IdxSequence = alpaka::detail::make_integer_sequence_start<UInt, TIdx::value, alpaka::dim::DimT<TView>::value - TIdx::value>;
-#endif
                     return
                          extentsProd(view, IdxSequence())
                         * sizeof(typename ElemType<TView>::type);
