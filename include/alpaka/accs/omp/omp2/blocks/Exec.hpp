@@ -130,6 +130,7 @@ namespace alpaka
                                 assert(vuiBlockThreadExtents.prod() == 1u);
 
                                 // Force the environment to use the given number of threads.
+                                int const iOmpIsDynamic(::omp_get_dynamic());
                                 ::omp_set_dynamic(0);
 
                                 // Execute the blocks in parallel.
@@ -182,6 +183,9 @@ namespace alpaka
                                     // After all blocks have been processed, the external shared memory has to be deleted.
                                     acc.m_vuiExternalSharedMem.reset();
                                 }
+
+                                // Reset the dynamic thread number setting.
+                                ::omp_set_dynamic(iOmpIsDynamic);
                             }
                         };
 

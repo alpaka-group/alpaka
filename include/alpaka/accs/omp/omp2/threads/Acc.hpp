@@ -168,6 +168,8 @@ namespace alpaka
                             ALPAKA_FCT_ACC_NO_CUDA auto syncBlockThreads() const
                             -> void
                             {
+                                // Barrier implementation not waiting for all threads:
+                                // http://berenger.eu/blog/copenmp-custom-barrier-a-barrier-for-a-group-of-threads/
                                 #pragma omp barrier
                             }
 

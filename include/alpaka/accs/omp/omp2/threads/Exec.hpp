@@ -136,6 +136,10 @@ namespace alpaka
                                 UInt const uiNumThreadsInBlock(vuiBlockThreadExtents.prod());
                                 int const iNumThreadsInBlock(static_cast<int>(uiNumThreadsInBlock));
 
+                                // Force the environment to use the given number of threads.
+                                int const iOmpIsDynamic(::omp_get_dynamic());
+                                ::omp_set_dynamic(0);
+
                                 // Execute the blocks serially.
                                 ndLoop(
                                     vuiGridBlockExtents,
@@ -144,9 +148,6 @@ namespace alpaka
                                         acc.m_vuiGridBlockIdx = vuiGridBlockIdx;
 
                                         // Execute the threads in parallel.
-
-                                        // Force the environment to use the given number of threads.
-                                        ::omp_set_dynamic(0);
 
                                         // Parallel execution of the threads in a block is required because when syncBlockThreads is called all of them have to be done with their work up to this line.
                                         // So we have to spawn one OS thread per thread in a block.
@@ -189,6 +190,9 @@ namespace alpaka
 
                                 // After all blocks have been processed, the external shared memory has to be deleted.
                                 acc.m_vuiExternalSharedMem.reset();
+
+                                // Reset the dynamic thread number setting.
+                                ::omp_set_dynamic(iOmpIsDynamic);
                             }
                         };
 

@@ -134,7 +134,7 @@ namespace alpaka
                                 // `When an if(scalar-expression) evaluates to false, the structured block is executed on the host.`
                                 #pragma omp target if(0)
                                 {
-                                    #pragma omp teams num_teams(iNumBlocksInGrid) thread_limit(iNumThreadsInBlock)
+                                    #pragma omp teams/* num_teams(iNumBlocksInGrid) thread_limit(iNumThreadsInBlock)*/
                                     {
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                                         // The first team does some checks ...
@@ -172,6 +172,7 @@ namespace alpaka
                                             // Execute the threads in parallel.
 
                                             // Force the environment to use the given number of threads.
+                                            int const iOmpIsDynamic(::omp_get_dynamic());
                                             ::omp_set_dynamic(0);
 
                                             // Parallel execution of the threads in a block is required because when syncBlockThreads is called all of them have to be done with their work up to this line.
@@ -200,6 +201,9 @@ namespace alpaka
                                                 // Wait for all threads to finish before deleting the shared memory.
                                                 acc.syncBlockThreads();
                                             }
+
+                                            // Reset the dynamic thread number setting.
+                                            ::omp_set_dynamic(iOmpIsDynamic);
 
                                             // After a block has been processed, the shared memory has to be deleted.
                                             acc.m_vvuiSharedMem.clear();
