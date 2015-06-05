@@ -158,9 +158,9 @@ namespace alpaka
                     -> T
                     {
                         return atomic::atomicOp<TOp, T>(
+                            *static_cast<AtomicThreads const *>(this),
                             addr,
-                            value,
-                            *static_cast<AtomicThreads const *>(this));
+                            value);
                     }
 
                     //-----------------------------------------------------------------------------

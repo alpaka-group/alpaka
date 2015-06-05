@@ -63,9 +63,9 @@ namespace alpaka
             typename T,
             typename TAtomic>
         ALPAKA_FCT_HOST_ACC auto atomicOp(
+            TAtomic const & atomic,
             unsigned int * const addr,
-            unsigned int const & value,
-            TAtomic const & atomic)
+            unsigned int const & value)
         -> T
         {
             return traits::atomic::AtomicOp<

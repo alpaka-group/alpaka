@@ -95,7 +95,7 @@ namespace alpaka
                 unit::Threads>
             {
                 //-----------------------------------------------------------------------------
-                //! \return The 3-dimensional index of the current thread in grid.
+                //! \return The index of the current thread in the grid.
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
