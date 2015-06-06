@@ -38,6 +38,8 @@
 #include <alpaka/devs/cpu/Stream.hpp>           // StreamCpu
 #include <alpaka/traits/Kernel.hpp>             // BlockSharedExternMemSizeBytes
 
+#include <boost/align.hpp>                      // boost::aligned_alloc
+
 #include <cassert>                              // assert
 #include <stdexcept>                            // std::runtime_error
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
@@ -151,10 +153,11 @@ namespace alpaka
 #endif
                                         AccCpuOmp4<TDim> acc(workDiv);
 
-                                        if(uiBlockSharedExternMemSizeBytes > 0)
+                                        if(uiBlockSharedExternMemSizeBytes > 0u)
                                         {
                                             acc.m_vuiExternalSharedMem.reset(
-                                                new uint8_t[uiBlockSharedExternMemSizeBytes]);
+                                                reinterpret_cast<uint8_t *>(
+                                                    boost::alignment::aligned_alloc(16u, uiBlockSharedExternMemSizeBytes)));
                                         }
 
                                         #pragma omp distribute

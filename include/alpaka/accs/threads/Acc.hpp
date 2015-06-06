@@ -37,6 +37,7 @@
 
 #include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
 #include <boost/predef.h>                   // workarounds
+#include <boost/align.hpp>                  // boost::aligned_alloc
 
 #include <cassert>                          // assert
 #include <memory>                           // std::unique_ptr
@@ -222,10 +223,8 @@ namespace alpaka
                         // Arbitrary decision: The thread that was created first has to allocate the memory.
                         if(m_idMasterThread == std::this_thread::get_id())
                         {
-                            // \TODO: C++14 std::make_unique would be better.
                             m_vvuiSharedMem.emplace_back(
-                                std::unique_ptr<uint8_t[]>(
-                                    reinterpret_cast<uint8_t*>(new T[TuiNumElements])));
+                                boost::alignment::aligned_alloc(16u, sizeof(T) * TuiNumElements));
                         }
                         syncBlockThreads();
 
@@ -247,7 +246,7 @@ namespace alpaka
                     // getIdx
                     std::mutex mutable m_mtxMapInsert;                              //!< The mutex used to secure insertion into the ThreadIdToIdxMap.
                     typename IdxThreads<TDim>::ThreadIdToIdxMap mutable m_mThreadsToIndices;    //!< The mapping of thread id's to indices.
-                    Vec<TDim> mutable m_vuiGridBlockIdx;                            //!< The index of the currently executed block.
+                    alignas(16u) Vec<TDim> mutable m_vuiGridBlockIdx;               //!< The index of the currently executed block.
 
                     // syncBlockThreads
                     UInt const m_uiNumThreadsPerBlock;                              //!< The number of threads per block the barrier has to wait for.
@@ -261,10 +260,10 @@ namespace alpaka
                     // allocBlockSharedMem
                     std::thread::id mutable m_idMasterThread;                       //!< The id of the master thread.
                     std::vector<
-                        std::unique_ptr<uint8_t[]>> mutable m_vvuiSharedMem;        //!< Block shared memory.
+                        std::unique_ptr<uint8_t, boost::alignment::aligned_delete>> mutable m_vvuiSharedMem;        //!< Block shared memory.
 
                     // getBlockSharedExternMem
-                    std::unique_ptr<uint8_t[]> mutable m_vuiExternalSharedMem;      //!< External block shared memory.
+                    std::unique_ptr<uint8_t, boost::alignment::aligned_delete> mutable m_vuiExternalSharedMem;      //!< External block shared memory.
                 };
             }
         }

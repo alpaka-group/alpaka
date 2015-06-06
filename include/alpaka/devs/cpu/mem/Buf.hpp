@@ -70,7 +70,9 @@ namespace alpaka
                         TExtents const & extents) :
                             m_Dev(dev),
                             m_vExtentsElements(extent::getExtentsVecNd<TDim, UInt>(extents)),
-                            m_spMem(new TElem[computeElementCount(extents)], &BufCpu::freeBuffer),
+                            m_spMem(
+                                reinterpret_cast<TElem *>(
+                                    boost::alignment::aligned_alloc(16u, sizeof(TElem) * computeElementCount(extents))), &BufCpu::freeBuffer),
                             m_uiPitchBytes(extent::getWidth<UInt>(extents) * sizeof(TElem))
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -109,7 +111,8 @@ namespace alpaka
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                         assert(pBuffer);
-                        delete[] pBuffer;
+                        boost::alignment::aligned_free(
+                            reinterpret_cast<void *>(pBuffer));
                     }
 
                 public:

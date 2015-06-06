@@ -98,7 +98,7 @@ namespace alpaka
                     }
 
                 private:
-                    Vec<TDim> const & m_vuiGridBlockIdx; //!< The index of the currently executed block.
+                    alignas(16u) Vec<TDim> const & m_vuiGridBlockIdx;    //!< The index of the currently executed block.
                 };
             }
         }

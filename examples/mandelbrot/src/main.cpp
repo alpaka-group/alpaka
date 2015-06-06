@@ -246,7 +246,7 @@ public:
         return m_aColors[uiIterationCount%16];
     }
 
-    ALPAKA_ALIGN(std::uint32_t, m_aColors[16]);
+    alignas(16) std::uint32_t m_aColors[16];
 #endif
 };
 

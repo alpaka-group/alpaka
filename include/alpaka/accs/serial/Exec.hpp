@@ -38,6 +38,7 @@
 #include <alpaka/traits/Kernel.hpp>         // BlockSharedExternMemSizeBytes
 
 #include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
+#include <boost/align.hpp>                  // boost::aligned_alloc
 
 #include <cassert>                          // assert
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
@@ -122,10 +123,11 @@ namespace alpaka
 #endif
                         AccCpuSerial<TDim> acc(workDiv);
 
-                        if(uiBlockSharedExternMemSizeBytes > 0)
+                        if(uiBlockSharedExternMemSizeBytes > 0u)
                         {
                             acc.m_vuiExternalSharedMem.reset(
-                                new uint8_t[uiBlockSharedExternMemSizeBytes]);
+                                reinterpret_cast<uint8_t *>(
+                                    boost::alignment::aligned_alloc(16u, uiBlockSharedExternMemSizeBytes)));
                         }
 
                         // There is only ever one thread in a block in the serial accelerator.

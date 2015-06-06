@@ -36,6 +36,7 @@
 #include <alpaka/core/Cuda.hpp>             // ALPAKA_CUDA_RT_CHECK
 
 #include <boost/predef.h>                   // workarounds
+#include <boost/align.hpp>                  // boost::aligned_alloc
 
 namespace alpaka
 {

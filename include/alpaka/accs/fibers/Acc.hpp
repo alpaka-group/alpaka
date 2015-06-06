@@ -38,6 +38,7 @@
 
 #include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
 #include <boost/predef.h>                   // workarounds
+#include <boost/align.hpp>                  // boost::aligned_alloc
 
 #include <cassert>                          // assert
 #include <memory>                           // std::unique_ptr
@@ -220,10 +221,8 @@ namespace alpaka
                         // Arbitrary decision: The fiber that was created first has to allocate the memory.
                         if(m_idMasterFiber == boost::this_fiber::get_id())
                         {
-                            // \TODO: C++14 std::make_unique would be better.
                             m_vvuiSharedMem.emplace_back(
-                                std::unique_ptr<uint8_t[]>(
-                                    reinterpret_cast<uint8_t*>(new T[TuiNumElements])));
+                                boost::alignment::aligned_alloc(16u, sizeof(T) * TuiNumElements));
                         }
                         syncBlockThreads();
 
@@ -244,7 +243,7 @@ namespace alpaka
                 private:
                     // getIdx
                     typename IdxFibers<TDim>::FiberIdToIdxMap mutable m_mFibersToIndices;   //!< The mapping of fibers id's to indices.
-                    Vec<TDim> mutable m_vuiGridBlockIdx;                        //!< The index of the currently executed block.
+                    alignas(16u) Vec<TDim> mutable m_vuiGridBlockIdx;                       //!< The index of the currently executed block.
 
                     // syncBlockThreads
                     UInt const m_uiNumThreadsPerBlock;                          //!< The number of threads per block the barrier has to wait for.
@@ -257,10 +256,10 @@ namespace alpaka
                     // allocBlockSharedMem
                     boost::fibers::fiber::id mutable m_idMasterFiber;           //!< The id of the master fiber.
                     std::vector<
-                        std::unique_ptr<uint8_t[]>> mutable m_vvuiSharedMem;    //!< Block shared memory.
+                        std::unique_ptr<uint8_t, boost::alignment::aligned_delete>> mutable m_vvuiSharedMem;    //!< Block shared memory.
 
                     // getBlockSharedExternMem
-                    std::unique_ptr<uint8_t[]> mutable m_vuiExternalSharedMem;  //!< External block shared memory.
+                    std::unique_ptr<uint8_t, boost::alignment::aligned_delete> mutable m_vuiExternalSharedMem;  //!< External block shared memory.
                 };
             }
         }

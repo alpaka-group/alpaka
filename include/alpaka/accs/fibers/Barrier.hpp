@@ -112,7 +112,7 @@ namespace alpaka
                 private:
                     boost::fibers::mutex m_mtxBarrier;
                     boost::fibers::condition_variable m_cvAllFibersReachedBarrier;
-                    UInt m_uiNumFibersToWaitFor;
+                    alignas(16u) UInt m_uiNumFibersToWaitFor;
                 };
             }
         }

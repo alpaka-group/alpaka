@@ -112,7 +112,7 @@ namespace alpaka
                 private:
                     std::mutex m_mtxBarrier;
                     std::condition_variable m_cvAllThreadsReachedBarrier;
-                    UInt m_uiNumThreadsToWaitFor;
+                    alignas(16u) UInt m_uiNumThreadsToWaitFor;
                 };
             }
         }

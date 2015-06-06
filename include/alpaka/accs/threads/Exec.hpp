@@ -39,6 +39,7 @@
 #include <alpaka/traits/Kernel.hpp>             // BlockSharedExternMemSizeBytes
 
 #include <boost/predef.h>                       // workarounds
+#include <boost/align.hpp>                      // boost::aligned_alloc
 
 #include <algorithm>                            // std::for_each
 #include <thread>                               // std::thread
@@ -150,10 +151,11 @@ namespace alpaka
 #endif
                         AccCpuThreads<TDim> acc(workDiv);
 
-                        if(uiBlockSharedExternMemSizeBytes > 0)
+                        if(uiBlockSharedExternMemSizeBytes > 0u)
                         {
                             acc.m_vuiExternalSharedMem.reset(
-                                new uint8_t[uiBlockSharedExternMemSizeBytes]);
+                                reinterpret_cast<uint8_t *>(
+                                    boost::alignment::aligned_alloc(16u, uiBlockSharedExternMemSizeBytes)));
                         }
 
                         auto const uiNumThreadsInBlock(vuiBlockThreadExtents.prod());

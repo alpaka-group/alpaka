@@ -87,7 +87,7 @@ namespace alpaka
                     }
 
                 private:
-                    Vec<TDim> const & m_vuiGridBlockIdx;
+                    alignas(16u) Vec<TDim> const & m_vuiGridBlockIdx;
                 };
             }
         }

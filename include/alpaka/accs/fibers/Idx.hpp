@@ -99,8 +99,8 @@ namespace alpaka
                     }
 
                 private:
-                    FiberIdToIdxMap const & m_mFibersToIndices; //!< The mapping of fibers id's to fibers indices.
-                    Vec<TDim> const & m_vuiGridBlockIdx;          //!< The index of the currently executed block.
+                    FiberIdToIdxMap const & m_mFibersToIndices;         //!< The mapping of fibers id's to fibers indices.
+                    alignas(16u) Vec<TDim> const & m_vuiGridBlockIdx;   //!< The index of the currently executed block.
                 };
             }
         }

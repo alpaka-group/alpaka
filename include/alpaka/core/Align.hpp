@@ -93,45 +93,34 @@ namespace alpaka
         struct OptimalAlignment :
             std::integral_constant<
                 std::size_t,
+#if BOOST_COMP_GNUC
                 // GCC does not support alignments larger then 128: "warning: requested alignment 256 is larger than 128[-Wattributes]".
-                ((TuiSizeBytes > 64)
+                (TuiSizeBytes > 64)
                     ? 128
-                    : RoundUpToPowerOfTwo<TuiSizeBytes>::value)>
+                    : 
+#endif
+                // Align at a minimum of 16 Bytes.
+                        ((TuiSizeBytes <= 16)
+                        ? 16
+                        : RoundUpToPowerOfTwo<TuiSizeBytes>::value)>
         {};
     }
 }
 
 // Newer GCC versions >= 4.9 do not support constant expressions as parameters to alignas: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=58109
-#if BOOST_COMP_GNUC || BOOST_COMP_INTEL
-    #define ALPAKA_OPTIMAL_ALIGNMENT(uiSizeBytes)\
-            ((uiSizeBytes)==1?1:\
+            /*((uiSizeBytes)==1?1:\
             ((uiSizeBytes)<=2?2:\
             ((uiSizeBytes)<=4?4:\
-            ((uiSizeBytes)<=8?8:\
+            ((uiSizeBytes)<=8?8:\*/
+#if BOOST_COMP_GNUC || BOOST_COMP_INTEL
+    #define ALPAKA_OPTIMAL_ALIGNMENT_SIZE(uiSizeBytes)\
             ((uiSizeBytes)<=16?16:\
             ((uiSizeBytes)<=32?32:\
             ((uiSizeBytes)<=64?64:128\
             )))))))
-    //-----------------------------------------------------------------------------
-    //! Aligns the data optimally.
-    //! You must align all arrays and structs which can be used on accelerators.
-    //-----------------------------------------------------------------------------
-    #define ALPAKA_ALIGN(TYPE, NAME) alignas(ALPAKA_OPTIMAL_ALIGNMENT(sizeof(typename std::remove_cv<TYPE>::type))) TYPE NAME
+    #define ALPAKA_OPTIMAL_ALIGNMENT(TYPE)\
+            ALPAKA_OPTIMAL_ALIGNMENT_SIZE(sizeof(typename std::remove_cv<TYPE>::type))
 #else
-    //-----------------------------------------------------------------------------
-    //! Aligns the data optimally.
-    //! You must align all arrays and structs which can be used on accelerators.
-    //-----------------------------------------------------------------------------
-    #define ALPAKA_ALIGN(TYPE, NAME) alignas(alpaka::align::OptimalAlignment<sizeof(typename std::remove_cv<TYPE>::type)>::value) TYPE NAME
+    #define ALPAKA_OPTIMAL_ALIGNMENT(TYPE)\
+            alpaka::align::OptimalAlignment<sizeof(typename std::remove_cv<TYPE>::type)>::value
 #endif
-
-//-----------------------------------------------------------------------------
-//! Aligns the data at 8 bytes.
-//! You must align all arrays and structs which can be used on accelerators.
-//-----------------------------------------------------------------------------
-#define ALPAKA_ALIGN_8(TYPE, NAME) alignas(8) TYPE NAME
-
-//-----------------------------------------------------------------------------
-//! \return The alignment of the type.
-//-----------------------------------------------------------------------------
-#define ALPAKA_ALIGNOF(TYPE) alignof(TYPE)

@@ -35,6 +35,7 @@
 #include <alpaka/devs/cpu/Dev.hpp>          // DevCpu
 
 #include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
+#include <boost/align.hpp>                  // boost::aligned_alloc
 
 #include <memory>                           // std::unique_ptr
 #include <vector>                           // std::vector
@@ -177,10 +178,8 @@ namespace alpaka
                     {
                         static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
 
-                        // \TODO: C++14 std::make_unique would be better.
                         m_vvuiSharedMem.emplace_back(
-                            std::unique_ptr<uint8_t[]>(
-                                reinterpret_cast<uint8_t*>(new T[TuiNumElements])));
+                            boost::alignment::aligned_alloc(16u, sizeof(T) * TuiNumElements));
                         return reinterpret_cast<T*>(m_vvuiSharedMem.back().get());
                     }
 
@@ -197,14 +196,14 @@ namespace alpaka
 
                 private:
                     // getIdx
-                    Vec<TDim> mutable m_vuiGridBlockIdx;                        //!< The index of the currently executed block.
+                    alignas(16u) Vec<TDim> mutable m_vuiGridBlockIdx;            //!< The index of the currently executed block.
 
                     // allocBlockSharedMem
                     std::vector<
-                        std::unique_ptr<uint8_t[]>> mutable m_vvuiSharedMem;    //!< Block shared memory.
+                        std::unique_ptr<uint8_t, boost::alignment::aligned_delete>> mutable m_vvuiSharedMem;    //!< Block shared memory.
 
                     // getBlockSharedExternMem
-                    std::unique_ptr<uint8_t[]> mutable m_vuiExternalSharedMem;  //!< External block shared memory.
+                    std::unique_ptr<uint8_t, boost::alignment::aligned_delete> mutable m_vuiExternalSharedMem;  //!< External block shared memory.
                 };
             }
         }

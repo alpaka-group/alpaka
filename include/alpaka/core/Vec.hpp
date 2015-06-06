@@ -47,13 +47,13 @@ namespace alpaka
     template<
         typename TDim,
         typename TVal = UInt>
-    class Vec final
+    class alignas(16u) Vec final
     {
     public:
         static_assert(TDim::value>0, "Size of the vector is required to be greater then zero!");
 
         using Dim = TDim;
-        static const UInt s_uiDim = TDim::value;
+        static constexpr UInt s_uiDim = TDim::value;
         using Val = TVal;
 
     private:
@@ -352,7 +352,8 @@ namespace alpaka
         };
 
     private:
-        ALPAKA_ALIGN(TVal, m_auiData[TDim::value]);
+        // 16 Byte alignment for usage inside of CUDA kernels.
+        alignas(16u) TVal m_auiData[TDim::value];
     };
 
     template<

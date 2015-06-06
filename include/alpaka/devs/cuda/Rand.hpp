@@ -26,7 +26,6 @@
 #include <alpaka/devs/cuda/Dev.hpp>         // DevCuda
 
 #include <alpaka/core/Common.hpp>           // ALPAKA_FCT_ACC_CUDA_ONLY
-#include <alpaka/core/Align.hpp>            // ALPAKA_ALIGN
 #include <alpaka/core/Cuda.hpp>             // ALPAKA_CUDA_RT_CHECK
 
 #include <curand_kernel.h>                  // curand_init, ...
@@ -67,7 +66,7 @@ namespace alpaka
                             }
 
                         public:
-                            ALPAKA_ALIGN(curandStateXORWOW_t, m_State);
+                            curandStateXORWOW_t m_State;
                         };
                     }
                 }
