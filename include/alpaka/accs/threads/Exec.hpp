@@ -112,7 +112,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST ~ExecCpuThreadsImpl() noexcept = default;
+                    ALPAKA_FCT_HOST ~ExecCpuThreadsImpl() = default;
 
                     //-----------------------------------------------------------------------------
                     //! Executes the kernel functor.
@@ -359,7 +359,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST ~ExecCpuThreads() noexcept = default;
+                    ALPAKA_FCT_HOST ~ExecCpuThreads() = default;
 
                     //-----------------------------------------------------------------------------
                     //! Enqueues the kernel functor.

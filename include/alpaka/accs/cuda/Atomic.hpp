@@ -63,7 +63,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_CUDA_ONLY /*virtual*/ ~AtomicCuda() noexcept = default;
+                    ALPAKA_FCT_ACC_CUDA_ONLY /*virtual*/ ~AtomicCuda() = default;
                 };
             }
         }

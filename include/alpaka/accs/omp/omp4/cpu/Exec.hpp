@@ -89,7 +89,7 @@ namespace alpaka
                             //-----------------------------------------------------------------------------
                             //! Destructor.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_HOST ~ExecCpuOmp4Impl() noexcept = default;
+                            ALPAKA_FCT_HOST ~ExecCpuOmp4Impl() = default;
 
                             //-----------------------------------------------------------------------------
                             //! Executes the kernel functor.
@@ -263,7 +263,7 @@ namespace alpaka
                             //-----------------------------------------------------------------------------
                             //! Destructor.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_HOST ~ExecCpuOmp4() noexcept = default;
+                            ALPAKA_FCT_HOST ~ExecCpuOmp4() = default;
 
                             //-----------------------------------------------------------------------------
                             //! Enqueues the kernel functor.

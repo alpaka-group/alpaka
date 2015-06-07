@@ -158,7 +158,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST ~StreamCuda() noexcept = default;
+                ALPAKA_FCT_HOST ~StreamCuda() = default;
 
             public:
                 std::shared_ptr<detail::StreamCudaImpl> m_spStreamCudaImpl;

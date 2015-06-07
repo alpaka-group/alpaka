@@ -161,7 +161,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST ~EventCuda() noexcept = default;
+                ALPAKA_FCT_HOST ~EventCuda() = default;
 
             public:
                 std::shared_ptr<detail::EventCudaImpl> m_spEventCudaImpl;

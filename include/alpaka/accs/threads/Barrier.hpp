@@ -69,7 +69,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA ~ThreadBarrier() noexcept = default;
+                    ALPAKA_FCT_ACC_NO_CUDA ~ThreadBarrier() = default;
 
                     //-----------------------------------------------------------------------------
                     //! Waits for all the other threads to reach the barrier.

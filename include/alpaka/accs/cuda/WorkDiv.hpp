@@ -66,7 +66,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_CUDA_ONLY /*virtual*/ ~WorkDivCuda() noexcept = default;
+                    ALPAKA_FCT_ACC_CUDA_ONLY /*virtual*/ ~WorkDivCuda() = default;
 
                     //-----------------------------------------------------------------------------
                     //! \return The grid block extents of the currently executed thread.

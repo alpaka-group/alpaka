@@ -91,7 +91,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST ~StreamCpuImpl()
+                    ALPAKA_FCT_HOST ~StreamCpuImpl() noexcept(false)
                     {
                         m_Dev.m_spDevCpuImpl->UnregisterStream(this);
                     }
@@ -153,7 +153,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST ~StreamCpu() noexcept = default;
+                ALPAKA_FCT_HOST ~StreamCpu() = default;
 
             public:
                 std::shared_ptr<detail::StreamCpuImpl> m_spAsyncStreamCpu;

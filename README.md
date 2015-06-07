@@ -37,16 +37,16 @@ The source code documentation generated with [doxygen](http://www.doxygen.org) i
 
 
 Accelerator Back-ends
-------------
+---------------------
 
-|-|Lib/API|Devices|Execution strategy grid-blocks|Execution strategy block-threads|
+|Accelerator Back-end|Lib/API|Devices|Execution strategy grid-blocks|Execution strategy block-threads|
 |---|---|---|---|---|
-|Serial|n/a|Host Core|sequential|sequential|
-|OpenMP 2.0 blocks|OpenMP 2.0|Host Cores|parallel (preemptive multitasking)|sequential|
-|OpenMP 2.0 threads|OpenMP 2.0|Host Cores|sequential|parallel (preemptive multitasking)|
-|OpenMP 4.0|OpenMP 4.0|Host Cores|parallel (undefined)|parallel (preemptive multitasking)|
-| std::thread | std::thread |Host Cores|sequential|parallel (preemptive multitasking)|
-| Boost.Fiber | boost::fibers::fiber |Host Core|sequential|parallel (cooperative multitasking)|
+|Serial|n/a|Host CPU (single core)|sequential|sequential|
+|OpenMP 2.0 blocks|OpenMP 2.0|Host CPU (multi core)|parallel (preemptive multitasking)|sequential|
+|OpenMP 2.0 threads|OpenMP 2.0|Host CPU (multi core)|sequential|parallel (preemptive multitasking)|
+|OpenMP 4.0|OpenMP 4.0|Host CPU (multi core)|parallel (undefined)|parallel (preemptive multitasking)|
+| std::thread | std::thread |Host CPU (multi core)|sequential|parallel (preemptive multitasking)|
+| Boost.Fiber | boost::fibers::fiber |Host CPU (single core)|sequential|parallel (cooperative multitasking)|
 |CUDA 7.0|CUDA 7.0|NVIDIA GPUs SM 2.0+|parallel (undefined)|parallel (lock-step within warps)|
 
 
@@ -55,15 +55,15 @@ Supported Compilers
 
 This library uses C++11 (or newer when available).
 
-|-|gcc 4.9.2|gcc 5.1|clang 3.5+|MSVC 2015|icc 15.0+ (untested)|
+|-|gcc 4.9.2|gcc 5.1|clang 3.5/3.6|clang 3.7|MSVC 2015|icc 15.0+ (untested)|
 |---|---|---|---|---|---|---|
-|Serial|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
-|OpenMP 2.0 blocks|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|:white_check_mark:|
-|OpenMP 2.0 threads|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|:white_check_mark:|
-|OpenMP 4.0|:white_check_mark:|:white_check_mark:|:x:|:x:|:white_check_mark:|
-| std::thread |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
-| Boost.Fiber |:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|
-|CUDA 7.0|:white_check_mark:|:x:|:x:|:x:|:white_check_mark:|
+|Serial|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
+|OpenMP 2.0 blocks|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
+|OpenMP 2.0 threads|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
+|OpenMP 4.0|:white_check_mark:|:white_check_mark:|:x:|:x:|:x:|:white_check_mark:|
+| std::thread |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
+| Boost.Fiber |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|
+|CUDA 7.0|:white_check_mark:|:x:|:x:|:x:|:x:|:white_check_mark:|
 
 **NOTE**: :bangbang: Currently the *CUDA accelerator back-end* can not be enabled together with the *std::thread accelerator back-end* or the *Boost.Fiber accelerator back-end* :bangbang:
 

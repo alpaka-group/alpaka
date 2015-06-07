@@ -116,7 +116,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_CUDA_ONLY ~AccGpuCuda() noexcept = default;
+                    ALPAKA_FCT_ACC_CUDA_ONLY ~AccGpuCuda() = default;
 
                     //-----------------------------------------------------------------------------
                     //! \return The requested indices.

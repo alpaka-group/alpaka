@@ -117,7 +117,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA ~AccCpuThreads() noexcept = default;
+                    ALPAKA_FCT_ACC_NO_CUDA ~AccCpuThreads() = default;
 
                     //-----------------------------------------------------------------------------
                     //! \return The requested indices.
@@ -224,7 +224,8 @@ namespace alpaka
                         if(m_idMasterThread == std::this_thread::get_id())
                         {
                             m_vvuiSharedMem.emplace_back(
-                                boost::alignment::aligned_alloc(16u, sizeof(T) * TuiNumElements));
+                                reinterpret_cast<uint8_t *>(
+                                    boost::alignment::aligned_alloc(16u, sizeof(T) * TuiNumElements)));
                         }
                         syncBlockThreads();
 

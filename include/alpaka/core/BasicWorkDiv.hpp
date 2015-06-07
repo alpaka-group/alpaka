@@ -102,7 +102,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC /*virtual*/ ~BasicWorkDiv() noexcept = default;
+            ALPAKA_FCT_HOST_ACC /*virtual*/ ~BasicWorkDiv() = default;
 
             //-----------------------------------------------------------------------------
             //! \return The grid block extents of the currently executed thread.

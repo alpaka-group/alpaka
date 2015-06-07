@@ -30,6 +30,7 @@
 
 #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 
+#include <map>                          // std::map
 #include <sstream>                      // std::stringstream
 #include <limits>                       // std::numeric_limits
 #include <thread>                       // std::thread
@@ -45,6 +46,8 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         namespace cpu
         {
+            class StreamCpu;
+
             namespace detail
             {
                 class StreamCpuImpl;
@@ -54,6 +57,8 @@ namespace alpaka
                 //#############################################################################
                 class DevCpuImpl
                 {
+                    friend StreamCpu;       // StreamCpu::StreamCpu calls RegisterStream.
+                    friend StreamCpuImpl;   // StreamCpuImpl::~StreamCpuImpl calls UnregisterStream.
                 public:
                     //-----------------------------------------------------------------------------
                     //! Constructor.
@@ -78,51 +83,21 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST ~DevCpuImpl() noexcept = default;
+                    ALPAKA_FCT_HOST ~DevCpuImpl() = default;
 
                     //-----------------------------------------------------------------------------
-                    //!
+                    //! \return The list of all streams on this device.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto RegisterStream(std::shared_ptr<StreamCpuImpl> spStreamImpl)
-                    -> void
-                    {
-                        std::lock_guard<std::mutex> lk(m_Mutex);
-
-                        // Register this stream on the device.
-                        m_vwpStreams.emplace_back(spStreamImpl);
-                    }
-                    //-----------------------------------------------------------------------------
-                    //!
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto UnregisterStream(StreamCpuImpl const * const pStream)
-                    -> void
-                    {
-                        std::lock_guard<std::mutex> lk(m_Mutex);
-
-                        // Unregister this stream from the device.
-                        m_vwpStreams.erase(
-                            std::remove_if(
-                                m_vwpStreams.begin(),
-                                m_vwpStreams.end(),
-                                [pStream](std::weak_ptr<detail::StreamCpuImpl> const & wp)
-                                {
-                                    return (pStream == wp.lock().get());
-                                }),
-                            m_vwpStreams.end());
-                    }
-                    //-----------------------------------------------------------------------------
-                    //!
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto GetRegisteredStreams() const
+                    ALPAKA_FCT_HOST auto GetAllStreams() const noexcept(false)
                     -> std::vector<std::shared_ptr<StreamCpuImpl>>
                     {
-                        std::vector<std::shared_ptr<devs::cpu::detail::StreamCpuImpl>> vspStreams;
+                        std::vector<std::shared_ptr<StreamCpuImpl>> vspStreams;
 
                         std::lock_guard<std::mutex> lk(m_Mutex);
 
-                        for(auto && wpStream : m_vwpStreams)
+                        for(auto const & pairStream : m_mapStreams)
                         {
-                            auto spStream(wpStream.lock());
+                            auto spStream(pairStream.second.lock());
                             if(spStream)
                             {
                                 vspStreams.emplace_back(std::move(spStream));
@@ -136,8 +111,49 @@ namespace alpaka
                     }
 
                 private:
+                    //-----------------------------------------------------------------------------
+                    //! Registers the given stream on this device.
+                    //! NOTE: Every stream has to be registered for correct functionality of device wait operations!
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST auto RegisterStream(std::shared_ptr<StreamCpuImpl> spStreamImpl)
+                    -> void
+                    {
+                        std::lock_guard<std::mutex> lk(m_Mutex);
+
+                        // Register this stream on the device.
+                        // NOTE: We have to store the plain pointer next to the weak pointer.
+                        // This is necessary to find the entry on unregistering because the weak pointer will already be invalid at that point.
+                        m_mapStreams.emplace(spStreamImpl.get(), spStreamImpl);
+                    }
+                    //-----------------------------------------------------------------------------
+                    //! Unregisters the given stream from this device.
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST auto UnregisterStream(StreamCpuImpl const * const pStream) noexcept(false)
+                    -> void
+                    {
+                        std::lock_guard<std::mutex> lk(m_Mutex);
+
+                        // Unregister this stream from the device.
+                        auto const itFind(std::find_if(
+                            m_mapStreams.begin(),
+                            m_mapStreams.end(),
+                            [pStream](std::pair<StreamCpuImpl *, std::weak_ptr<StreamCpuImpl>> const & pair)
+                            {
+                                return (pStream == pair.first);
+                            }));
+                        if(itFind != m_mapStreams.end())
+                        {
+                            m_mapStreams.erase(itFind);
+                        }
+                        else
+                        {
+                            throw std::logic_error("The stream to unregister from the device could not be found in the list of registered streams!");
+                        }
+                    }
+
+                private:
                     std::mutex mutable m_Mutex;
-                    std::vector<std::weak_ptr<StreamCpuImpl>> m_vwpStreams;
+                    std::map<StreamCpuImpl *, std::weak_ptr<StreamCpuImpl>> m_mapStreams;
                 };
             }
             //#############################################################################
@@ -173,7 +189,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST ~DevCpu() noexcept = default;
+                ALPAKA_FCT_HOST ~DevCpu() = default;
                 //-----------------------------------------------------------------------------
                 //! Equality comparison operator.
                 //-----------------------------------------------------------------------------
@@ -416,7 +432,7 @@ namespace alpaka
                     // Get all the streams on the device at the time of invocation.
                     // All streams added afterwards are ignored.
                     auto vspStreams(
-                        dev.m_spDevCpuImpl->GetRegisteredStreams());
+                        dev.m_spDevCpuImpl->GetAllStreams());
 
                     // Enqueue an event in every stream on the device.
                     // \TODO: This should be done atomically for all streams. 

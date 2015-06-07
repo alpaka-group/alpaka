@@ -71,7 +71,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA /*virtual*/ ~AtomicThreads() noexcept = default;
+                    ALPAKA_FCT_ACC_NO_CUDA /*virtual*/ ~AtomicThreads() = default;
 
                 private:
                     std::mutex mutable m_mtxAtomic; //!< The mutex protecting access for a atomic operation.

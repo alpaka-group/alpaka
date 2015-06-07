@@ -189,7 +189,7 @@ namespace alpaka
                     // Get all the streams on the device at the time of invocation.
                     // All streams added afterwards are ignored.
                     auto vspStreams(
-                        dev.m_spDevCpuImpl->GetRegisteredStreams());
+                        dev.m_spDevCpuImpl->GetAllStreams());
 
                     // Let all the streams wait for this event.
                     // \TODO: This should be done atomically for all streams. 

@@ -96,7 +96,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC ~BufPlainPtrWrapper() noexcept = default;
+            ALPAKA_FCT_HOST_ACC ~BufPlainPtrWrapper() = default;
 
         public:
             TElem * m_pMem;

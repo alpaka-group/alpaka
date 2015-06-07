@@ -28,7 +28,6 @@
 #include <alpaka/core/BasicDims.hpp>        // dim::Dim<N>
 #include <alpaka/core/IntegerSequence.hpp>  // detail::make_integer_sequence
 #include <alpaka/core/Common.hpp>           // ALPAKA_FCT_ACC
-#include <alpaka/core/Align.hpp>            // ALPAKA_ALIGN
 #include <alpaka/core/Fold.hpp>             // foldr
 
 #include <boost/predef.h>                   // workarounds
@@ -190,7 +189,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Destructor.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC ~Vec() noexcept = default;
+        ALPAKA_FCT_HOST_ACC ~Vec() = default;
 
         //-----------------------------------------------------------------------------
         //! Value reference accessor at the given non-unsigned integer index.

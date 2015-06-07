@@ -114,7 +114,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST ~ExecCpuFibersImpl() noexcept = default;
+                    ALPAKA_FCT_HOST ~ExecCpuFibersImpl() = default;
 
                     //-----------------------------------------------------------------------------
                     //! Executes the kernel functor.
@@ -355,7 +355,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST ~ExecCpuFibers() noexcept = default;
+                    ALPAKA_FCT_HOST ~ExecCpuFibers() = default;
 
                     //-----------------------------------------------------------------------------
                     //! Enqueues the kernel functor.

@@ -84,7 +84,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST ~ExecCpuSerialImpl() noexcept = default;
+                    ALPAKA_FCT_HOST ~ExecCpuSerialImpl() = default;
 
                     //-----------------------------------------------------------------------------
                     //! Executes the kernel functor.
@@ -198,7 +198,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST ~ExecCpuSerial() noexcept = default;
+                    ALPAKA_FCT_HOST ~ExecCpuSerial() = default;
 
                     //-----------------------------------------------------------------------------
                     //! Enqueues the kernel functor.

@@ -117,7 +117,7 @@ namespace alpaka
                             //-----------------------------------------------------------------------------
                             //! Destructor.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_ACC_NO_CUDA /*virtual*/ ~AccCpuOmp2Blocks() noexcept = default;
+                            ALPAKA_FCT_ACC_NO_CUDA /*virtual*/ ~AccCpuOmp2Blocks() = default;
 
                             //-----------------------------------------------------------------------------
                             //! \return The requested indices.
@@ -185,7 +185,8 @@ namespace alpaka
                                 static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
 
                                 m_vvuiSharedMem.emplace_back(
-                                    boost::alignment::aligned_alloc(16u, sizeof(T) * TuiNumElements));
+                                    reinterpret_cast<uint8_t *>(
+                                        boost::alignment::aligned_alloc(16u, sizeof(T) * TuiNumElements)));
                                 return reinterpret_cast<T*>(m_vvuiSharedMem.back().get());
                             }
 
