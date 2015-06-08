@@ -91,17 +91,14 @@
 # USE OR PERFORMANCE OF THIS SOFTWARE.
 ################################################################################
 
-# Find the root directory.
-FIND_PATH(_ALPAKA_ROOT_DIR
-  NAMES "include/alpaka/alpaka.hpp"
-  HINTS "${ALPAKA_ROOT}" ENV ALPAKA_ROOT
-  DOC "alpaka ROOT location")
+FIND_PATH(
+    _ALPAKA_ROOT_DIR
+    NAMES "include/alpaka/alpaka.hpp"
+    HINTS "${ALPAKA_ROOT}" ENV ALPAKA_ROOT
+    DOC "alpaka ROOT location")
 
-# Normalize the path (e.g. remove ../)
-GET_FILENAME_COMPONENT(_ALPAKA_ROOT_DIR "${_ALPAKA_ROOT_DIR}" ABSOLUTE)
-# Add the / at the end.
-SET(_ALPAKA_ROOT_DIR "${_ALPAKA_ROOT_DIR}/")
-
-# Use the configuration script.
-INCLUDE("${_ALPAKA_ROOT_DIR}alpakaConfig.cmake")
-    
+IF(_ALPAKA_ROOT_DIR)
+    INCLUDE("${_ALPAKA_ROOT_DIR}/alpakaConfig.cmake")
+ELSE()
+    MESSAGE(FATAL_ERROR "alpaka could not be found!")
+ENDIF()
