@@ -108,7 +108,7 @@ namespace alpaka
         namespace workdiv
         {
             //#############################################################################
-            //! The GPU CUDA accelerator work division block thread 3D extents trait specialization.
+            //! The GPU CUDA accelerator work division block thread extents trait specialization.
             //#############################################################################
             template<
                 typename TDim>
@@ -129,7 +129,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The GPU CUDA accelerator work division grid block 3D extents trait specialization.
+            //! The GPU CUDA accelerator work division grid block extents trait specialization.
             //#############################################################################
             template<
                 typename TDim>
