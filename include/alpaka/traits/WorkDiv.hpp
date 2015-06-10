@@ -24,7 +24,7 @@
 #include <alpaka/traits/Dim.hpp>        // Dim
 
 #include <alpaka/core/BasicDims.hpp>    // dim::Dim<N>
-#include <alpaka/core/Vec.hpp>          // Vec<N>, DimToVecT
+#include <alpaka/core/Vec.hpp>          // Vec<N>
 #include <alpaka/core/Positioning.hpp>  // origin::Grid/Blocks, unit::Blocks, unit::Threads
 #include <alpaka/core/Common.hpp>       // ALPAKA_FCT_ACC
 

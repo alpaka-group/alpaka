@@ -27,7 +27,7 @@
 
 #include <alpaka/core/BasicDims.hpp>        // dim::Dim<N>
 #include <alpaka/core/Positioning.hpp>      // origin::Grid/Blocks, unit::Blocks, unit::Threads
-#include <alpaka/core/Vec.hpp>              // DimToVecT
+#include <alpaka/core/Vec.hpp>              // Vec<N>
 #include <alpaka/core/Common.hpp>           // ALPAKA_FCT_ACC
 
 #include <utility>                          // std::forward
@@ -86,7 +86,7 @@ namespace alpaka
         namespace idx
         {
             //#############################################################################
-            //! The 3D grid thread index get trait specialization.
+            //! The grid thread index get trait specialization.
             //#############################################################################
             template<
                 typename TIdx>
