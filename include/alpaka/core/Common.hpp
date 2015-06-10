@@ -84,12 +84,24 @@
 //-----------------------------------------------------------------------------
 #ifdef __CUDA_ARCH__
     #if BOOST_COMP_MSVC
-        #define ALPAKA_UNROLL __pragma(unroll)
+        #define ALPAKA_UNROLL_WITHOUT_ARG() __pragma(unroll)
+        #define ALPAKA_UNROLL_WITH_ARG(Count) __pragma(unroll##Count)
     #else
-        #define ALPAKA_UNROLL _Pragma("unroll")
+        #define ALPAKA_UNROLL_WITHOUT_ARG() _Pragma("unroll")
+        #define ALPAKA_UNROLL_WITH_ARG(Count)  _Pragma("unroll"##Count)
     #endif
 #else
-    #define ALPAKA_UNROLL
+    #define ALPAKA_UNROLL_WITHOUT_ARG()
+    #define ALPAKA_UNROLL_WITH_ARG(Count)
+#endif
+
+#define ALPAKA_UNROLL_GET_MACRO(_0, _1, NAME, ...) NAME
+#if BOOST_COMP_MSVC
+    #define ALPAKA_UNROLL(...)\
+        ALPAKA_UNROLL_GET_MACRO(_0, __VA_ARGS__, ALPAKA_UNROLL_WITH_ARG, ALPAKA_UNROLL_WITHOUT_ARG)(__VA_ARGS__)
+#else
+    #define ALPAKA_UNROLL(...)\
+        ALPAKA_UNROLL_GET_MACRO(_0, ##__VA_ARGS__, ALPAKA_UNROLL_WITH_ARG, ALPAKA_UNROLL_WITHOUT_ARG)(__VA_ARGS__)
 #endif
 
 namespace alpaka
