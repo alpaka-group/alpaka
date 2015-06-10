@@ -21,11 +21,9 @@
 
 #pragma once
 
-#include <alpaka/core/BasicDims.hpp>    // dim::Dim<N>
-#include <alpaka/core/Vec.hpp>          // Vec<N>
+#include <alpaka/traits/mem/Buf.hpp>    // DevType, DimType, GetExtent,Copy, GetOffset, ...
 
-#include <alpaka/traits/Mem.hpp>        // traits::Copy, ...
-#include <alpaka/traits/Extent.hpp>     // traits::getXXX
+#include <alpaka/core/Vec.hpp>          // Vec<N>
 
 namespace alpaka
 {

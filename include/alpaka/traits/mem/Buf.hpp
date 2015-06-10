@@ -21,8 +21,7 @@
 
 #pragma once
 
-#include <alpaka/traits/Acc.hpp>        // AccT
-#include <alpaka/traits/mem/View.hpp>   // ViewType
+#include <alpaka/traits/mem/View.hpp>   // traits::ViewType
 
 #include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST
 

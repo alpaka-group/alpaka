@@ -21,20 +21,19 @@
 
 #pragma once
 
-#include <alpaka/traits/Dim.hpp>            // dim::DimType
-#include <alpaka/traits/Extent.hpp>         // traits::getXXX
+#include <alpaka/traits/mem/Buf.hpp>    // DevType, DimType, GetExtent,Copy, GetOffset, ...
 
-#include <alpaka/core/Common.hpp>           // ALPAKA_FCT_HOST
+#include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST
 
-// FIXME: This include can lead to circles!
-#include <alpaka/devs/cpu/Dev.hpp>          // DevCpu
+// FIXME: This include can lead to circular include problems!
+#include <alpaka/devs/cpu/Dev.hpp>      // DevCpu
 
-#include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
-#include <boost/predef.h>                   // workarounds
+#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+#include <boost/predef.h>               // workarounds
 
-#include <type_traits>                      // std::enable_if, std::is_array, std::extent
-#include <vector>                           // std::vector
-#include <array>                            // std::array
+#include <type_traits>                  // std::enable_if, std::is_array, std::extent
+#include <vector>                       // std::vector
+#include <array>                        // std::array
 
 namespace alpaka
 {

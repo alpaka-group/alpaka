@@ -21,7 +21,10 @@
 
 #pragma once
 
-#include <alpaka/traits/Dim.hpp>        // DimT
+#include <alpaka/traits/Dev.hpp>        // traits::DevType, ...
+#include <alpaka/traits/Dim.hpp>        // traits::DimType
+#include <alpaka/traits/Extent.hpp>     // traits::GetExtent
+#include <alpaka/traits/Offset.hpp>     // traits::GetOffset
 
 #include <alpaka/core/Fold.hpp>         // foldr
 #include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST
@@ -78,7 +81,7 @@ namespace alpaka
                 {
                     using IdxSequence = alpaka::detail::make_integer_sequence_start<UInt, TIdx::value, alpaka::dim::DimT<TView>::value - TIdx::value>;
                     return
-                         extentsProd(view, IdxSequence())
+                        extentsProd(view, IdxSequence())
                         * sizeof(typename ElemType<TView>::type);
                 }
             private:
@@ -94,9 +97,9 @@ namespace alpaka
                 {
                     // For the case that the sequence is empty (index out of range), 1 is returned.
                     return alpaka::foldr(
-                            std::multiplies<UInt>(),
-                            1u,
-                            alpaka::extent::getExtent<TIndices, UInt>(view)...);
+                        std::multiplies<UInt>(),
+                        1u,
+                        alpaka::extent::getExtent<TIndices, UInt>(view)...);
                 }
             };
 
