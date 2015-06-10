@@ -38,7 +38,7 @@ namespace alpaka
             namespace detail
             {
                 //#############################################################################
-                //! This fibers accelerator index provider.
+                //! The fibers accelerator index provider.
                 //#############################################################################
                 template<
                     typename TDim>

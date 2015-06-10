@@ -37,7 +37,7 @@ namespace alpaka
             namespace detail
             {
                 //#############################################################################
-                //! This threads accelerator index provider.
+                //! The threads accelerator index provider.
                 //#############################################################################
                 template<
                     typename TDim>

@@ -35,7 +35,7 @@ namespace alpaka
             namespace detail
             {
                 //#############################################################################
-                //! This CUDA accelerator ND index provider.
+                //! The CUDA accelerator ND index provider.
                 //#############################################################################
                 template<
                     typename TDim>

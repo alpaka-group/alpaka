@@ -38,7 +38,7 @@ namespace alpaka
             namespace detail
             {
                 //#############################################################################
-                //! This OpenMP accelerator index provider.
+                //! The OpenMP accelerator index provider.
                 //#############################################################################
                 template<
                     typename TDim>

@@ -34,7 +34,7 @@ namespace alpaka
             namespace detail
             {
                 //#############################################################################
-                //! This serial accelerator index provider.
+                //! The serial accelerator index provider.
                 //#############################################################################
                 template<
                     typename TDim>
@@ -122,7 +122,7 @@ namespace alpaka
                 unit::Threads>
             {
                 //-----------------------------------------------------------------------------
-                //! \return The 3index of the current thread in the block.
+                //! \return The index of the current thread in the block.
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
