@@ -47,7 +47,8 @@ namespace alpaka
             template<
                 typename TIdx,
                 typename TOrigin,
-                typename TUnit>
+                typename TUnit,
+                typename TSfinae = void>
             struct GetIdx;
         }
     }

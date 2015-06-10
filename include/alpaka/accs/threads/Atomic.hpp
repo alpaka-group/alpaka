@@ -44,7 +44,8 @@ namespace alpaka
                     template<
                         typename TAtomic,
                         typename TOp,
-                        typename T>
+                        typename T,
+                        typename TSfinae>
                     friend struct alpaka::traits::atomic::AtomicOp;
 
                 public:

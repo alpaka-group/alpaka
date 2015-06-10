@@ -38,7 +38,8 @@ namespace alpaka
             template<
                 typename TAtomic,
                 typename TOp,
-                typename T>
+                typename T,
+                typename TSfinae = void>
             struct AtomicOp;
         }
     }
