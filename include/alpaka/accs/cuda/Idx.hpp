@@ -122,11 +122,11 @@ namespace alpaka
                 template<
                     typename TWorkDiv>
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto getIdx(
-                    accs::cuda::detail::IdxCuda<TDim> const & index,
+                    accs::cuda::detail::IdxCuda<TDim> const & idx,
                     TWorkDiv const &)
                 -> alpaka::Vec<TDim>
                 {
-                    return index.getIdxBlockThread();
+                    return idx.getIdxBlockThread();
                 }
             };
 
@@ -146,11 +146,11 @@ namespace alpaka
                 template<
                     typename TWorkDiv>
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto getIdx(
-                    accs::cuda::detail::IdxCuda<TDim> const & index,
+                    accs::cuda::detail::IdxCuda<TDim> const & idx,
                     TWorkDiv const &)
                 -> alpaka::Vec<TDim>
                 {
-                    return index.getIdxGridBlock();
+                    return idx.getIdxGridBlock();
                 }
             };
         }

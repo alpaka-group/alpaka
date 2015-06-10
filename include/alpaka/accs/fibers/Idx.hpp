@@ -140,12 +140,12 @@ namespace alpaka
                 template<
                     typename TWorkDiv>
                 ALPAKA_FCT_ACC_NO_CUDA static auto getIdx(
-                    accs::fibers::detail::IdxFibers<TDim> const & index,
+                    accs::fibers::detail::IdxFibers<TDim> const & idx,
                     TWorkDiv const & workDiv)
                 -> alpaka::Vec<TDim>
                 {
                     boost::ignore_unused(workDiv);
-                    return index.getIdxBlockThread();
+                    return idx.getIdxBlockThread();
                 }
             };
 
@@ -165,12 +165,12 @@ namespace alpaka
                 template<
                     typename TWorkDiv>
                 ALPAKA_FCT_ACC_NO_CUDA static auto getIdx(
-                    accs::fibers::detail::IdxFibers<TDim> const & index,
+                    accs::fibers::detail::IdxFibers<TDim> const & idx,
                     TWorkDiv const & workDiv)
                 -> alpaka::Vec<TDim>
                 {
                     boost::ignore_unused(workDiv);
-                    return index.getIdxGridBlock();
+                    return idx.getIdxGridBlock();
                 }
             };
         }

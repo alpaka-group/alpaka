@@ -66,7 +66,7 @@ namespace alpaka
             typename TIdx,
             typename TWorkDiv>
         ALPAKA_FCT_ACC auto getIdx(
-            TIdx const & index,
+            TIdx const & idx,
             TWorkDiv const & workDiv)
         -> Vec<alpaka::dim::DimT<TWorkDiv>>
         {
@@ -75,7 +75,7 @@ namespace alpaka
                 TOrigin,
                 TUnit>
             ::getIdx(
-                index,
+                idx,
                 workDiv);
         }
     }
@@ -100,13 +100,13 @@ namespace alpaka
                 template<
                     typename TWorkDiv>
                 ALPAKA_FCT_ACC static auto getIdx(
-                    TIdx const & index,
+                    TIdx const & idx,
                     TWorkDiv const & workDiv)
                 -> alpaka::Vec<alpaka::dim::DimT<TWorkDiv>>
                 {
-                    return alpaka::idx::getIdx<origin::Grid, unit::Blocks>(index, workDiv)
+                    return alpaka::idx::getIdx<origin::Grid, unit::Blocks>(idx, workDiv)
                         * alpaka::workdiv::getWorkDiv<origin::Block, unit::Threads>(workDiv)
-                        + alpaka::idx::getIdx<origin::Block, unit::Threads>(index, workDiv);
+                        + alpaka::idx::getIdx<origin::Block, unit::Threads>(idx, workDiv);
                 }
             };
         }

@@ -55,7 +55,7 @@ namespace alpaka
                 typename TFunctor,
                 typename... TArgs>
             ALPAKA_FCT_HOST_ACC static auto ndLoop(
-                TIndex & index,
+                TIndex & idx,
                 TExtentsVec const & extents,
                 TFunctor && f,
                 TArgs && ... args)
@@ -71,9 +71,9 @@ namespace alpaka
                     dim::DimT<TIndex>::value > TuiCurDim,
                     "The current dimension has to be in the rang [0,dim-1]!");
 
-                for(index[TuiCurDim] = 0u; index[TuiCurDim] < extents[TuiCurDim]; ++index[TuiCurDim])
+                for(idx[TuiCurDim] = 0u; idx[TuiCurDim] < extents[TuiCurDim]; ++idx[TuiCurDim])
                 {
-                    std::forward<TFunctor>(f)(index, std::forward<TArgs>(args)...);
+                    std::forward<TFunctor>(f)(idx, std::forward<TArgs>(args)...);
                 }
             }
         };
@@ -94,7 +94,7 @@ namespace alpaka
                 typename TFunctor,
                 typename... TArgs>
             ALPAKA_FCT_HOST_ACC static auto ndLoop(
-                TIndex & index,
+                TIndex & idx,
                 TExtentsVec const & extents,
                 TFunctor && f,
                 TArgs && ... args)
@@ -110,13 +110,13 @@ namespace alpaka
                     dim::DimT<TIndex>::value > TuiCurDim,
                     "The current dimension has to be in the rang [0,dim-1]!");
 
-                for(index[TuiCurDim] = 0u; index[TuiCurDim] < extents[TuiCurDim]; ++index[TuiCurDim])
+                for(idx[TuiCurDim] = 0u; idx[TuiCurDim] < extents[TuiCurDim]; ++idx[TuiCurDim])
                 {
                     detail::NdLoop<
                         (TuiCurDim+2u == dim::DimT<TIndex>::value)>
                     ::template ndLoop<
                         TuiCurDim+1u>(
-                            index,
+                            idx,
                             extents,
                             std::forward<TFunctor>(f),
                             std::forward<TArgs>(args)...);
