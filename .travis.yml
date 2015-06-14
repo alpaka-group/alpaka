@@ -420,7 +420,7 @@ script:
     # Once only with errors returning a failure on error.
     #- if [ "${ALPAKA_ANALYSIS}" == "ON" ] ;then cppcheck --force --verbose --error-exitcode=1 -j2 vectorAdd/src/ matMul/src/ sharedMem/src/ mandelbrot/src/ ;fi
     # Once with warnings but no failure return code.
-    #- if [ "${ALPAKA_ANALYSIS}" == "ON" ] ;then cppcheck --force --verbose --enable=all -j2 vectorAdd/src/ matMul/src/ sharedMem/src/ mandelbrot/src/ ;fi    
+    #- if [ "${ALPAKA_ANALYSIS}" == "ON" ] ;then cppcheck --force --verbose --enable=all -j2 vectorAdd/src/ matMul/src/ sharedMem/src/ mandelbrot/src/ ;fi
 
     #-------------------------------------------------------------------------------
     # analysis

@@ -97,7 +97,7 @@ namespace alpaka
                 // GCC does not support alignments larger then 128: "warning: requested alignment 256 is larger than 128[-Wattributes]".
                 (TuiSizeBytes > 64)
                     ? 128
-                    : 
+                    :
 #endif
                 // Align at a minimum of 16 Bytes.
                         ((TuiSizeBytes <= 16)

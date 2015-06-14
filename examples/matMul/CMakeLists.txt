@@ -73,7 +73,7 @@ append_recursive_files_add_to_src_group("${_SOURCE_DIR}" "" "cpp" _FILES_SOURCE_
 append_recursive_files_add_to_src_group("${_SOURCE_DIR}" "" "cu" _FILES_SOURCE_CU)
 
 # Always add all files to the target executable build call to add them to the build project.
-IF(ALPAKA_GPU_CUDA_ENABLE)
+IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
     # Force the .cpp files to be recognized as headers and not be compiled so there wont be a second entry point.
     SET_SOURCE_FILES_PROPERTIES(
         ${_FILES_SOURCE_CXX}
