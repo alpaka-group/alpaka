@@ -25,6 +25,9 @@
 #include <alpaka/core/Vec.hpp>              // Vec
 #include <alpaka/core/IntegerSequence.hpp>  // integer_sequence
 
+#include <boost/mpl/apply.hpp>              // boost::mpl::apply
+#include <boost/mpl/and.hpp>                // boost::mpl::and_
+
 // cuda_runtime_api.h: CUDA Runtime API C-style interface that does not require compiling with nvcc.
 // cuda_runtime.h: CUDA Runtime API  C++-style interface built on top of the C API.
 //  It wraps some of the C API routines, using overloading, references and default arguments.
@@ -54,106 +57,46 @@
 
 namespace alpaka
 {
-    namespace detail
+    namespace cuda
     {
-        //-----------------------------------------------------------------------------
-        //! Applies the trait to all types and combines the result with &&.
-        //! Multiple argument version.
-        //-----------------------------------------------------------------------------
-        template<
-            template<typename, typename...> class TTrait,
-            typename THead,
-            typename... TTail>
-        struct ApplyAllCombineAndInternal
+        namespace detail
         {
-            enum
+            //-----------------------------------------------------------------------------
+            //! CUDA runtime API error checking with log and exception, ignoring specific error values
+            // NOTE: All ignored errors have to be convertible to cudaError_t.
+            //-----------------------------------------------------------------------------
+            template<
+                typename... TErrors,
+                typename = typename std::enable_if<
+                    boost::mpl::and_<
+                        boost::mpl::true_,
+                        boost::mpl::true_,
+                        boost::mpl::apply<
+                            std::is_convertible<
+                                boost::mpl::_1,
+                                cudaError_t>,
+                            TErrors>...
+                        >::value>::type>
+            ALPAKA_FCT_HOST auto cudaRtCheckIgnore(
+                cudaError_t const & error,
+                char const * cmd,
+                char const * file,
+                int const & line,
+                TErrors && ... ignoredErrorCodes)
+            -> void
             {
-                value = TTrait<THead>::value
-                    && ApplyAllCombineAndInternal<TTrait, TTail...>::value
-            };
-        };
-        //-----------------------------------------------------------------------------
-        //! Applies the trait to all types and combines the result with &&.
-        //! Single argument version.
-        //-----------------------------------------------------------------------------
-        template<
-            template<typename, typename...> class TTrait,
-            typename THead>
-        struct ApplyAllCombineAndInternal<
-            TTrait,
-            THead>
-        {
-            enum
-            {
-                value = TTrait<THead>::value
-            };
-        };
-        //-----------------------------------------------------------------------------
-        //! Applies the trait to all types and combines the result with &&.
-        //-----------------------------------------------------------------------------
-        template<
-            template<typename, typename...> class TTrait,
-            typename... TApplicants>
-        struct ApplyAllCombineAnd
-        {
-            enum
-            {
-                value = ApplyAllCombineAndInternal<
-                    TTrait,
-                    TApplicants...>::value
-            };
-        };
-        //-----------------------------------------------------------------------------
-        //! Applies the trait to all types and combines the result with &&.
-        //! Zero argument version always returns true.
-        //-----------------------------------------------------------------------------
-        template<
-            template<typename, typename...> class TTrait>
-        struct ApplyAllCombineAnd<
-            TTrait>
-        {
-            enum
-            {
-                value = true
-            };
-        };
-    }
-    namespace accs
-    {
-        namespace cuda
-        {
-            namespace detail
-            {
-                template <typename T>
-                using IsConvertibleCudaError = std::is_convertible<T, cudaError_t>;
-
-                //-----------------------------------------------------------------------------
-                //! CUDA runtime error checking with log and exception, ignoring specific error values
-                //-----------------------------------------------------------------------------
-                template<
-                    typename... TErrors,
-                    typename = typename std::enable_if<alpaka::detail::ApplyAllCombineAnd<IsConvertibleCudaError, TErrors...>::value>::type>
-                ALPAKA_FCT_HOST auto cudaRtCheckIgnore(
-                    cudaError_t const & error,
-                    char const * cmd,
-                    char const * file,
-                    int const & line,
-                    TErrors && ... ignoredErrorCodes)
-                -> void
+                // Even if we get the error directly from the command, we have to reset the global error state by getting it.
+                cudaGetLastError();
+                if(error != cudaSuccess)
                 {
-                    // Even if we get the error directly from the command, we have to reset the global error state by getting it.
-                    cudaGetLastError();
-                    if(error != cudaSuccess)
+                    // If the error code is not one of the ignored ones.
+                    std::array<cudaError_t, sizeof...(ignoredErrorCodes)> const aIgnoredErrorCodes{std::forward<TErrors>(ignoredErrorCodes)...};
+                    if(std::find(aIgnoredErrorCodes.cbegin(), aIgnoredErrorCodes.cend(), error) == aIgnoredErrorCodes.cend())
                     {
-                        // If the error code is not one of the ignored ones.
-                        std::array<cudaError_t, sizeof...(ignoredErrorCodes)> const aIgnoredErrorCodes{std::forward<TErrors>(ignoredErrorCodes)...};
-                        if(std::find(aIgnoredErrorCodes.cbegin(), aIgnoredErrorCodes.cend(), error) == aIgnoredErrorCodes.cend())
-                        {
-                            std::string const sError(std::string(file) + "(" + std::to_string(line) + ") '" + std::string(cmd) + "' returned error: '" + std::string(cudaGetErrorString(error)) + "' (possibly from a previous CUDA call)!");
-                            std::cerr << sError << std::endl;
-                            ALPAKA_DEBUG_BREAK;
-                            throw std::runtime_error(sError);
-                        }
+                        std::string const sError(std::string(file) + "(" + std::to_string(line) + ") '" + std::string(cmd) + "' returned error: '" + std::string(cudaGetErrorString(error)) + "' (possibly from a previous CUDA call)!");
+                        std::cerr << sError << std::endl;
+                        ALPAKA_DEBUG_BREAK;
+                        throw std::runtime_error(sError);
                     }
                 }
             }
@@ -166,13 +109,13 @@ namespace alpaka
     //! CUDA runtime error checking with log and exception, ignoring specific error values
     //-----------------------------------------------------------------------------
     #define ALPAKA_CUDA_RT_CHECK_IGNORE(cmd, ...)\
-        ::alpaka::accs::cuda::detail::cudaRtCheckIgnore(cmd, #cmd, __FILE__, __LINE__, __VA_ARGS__)
+        ::alpaka::cuda::detail::cudaRtCheckIgnore(cmd, #cmd, __FILE__, __LINE__, __VA_ARGS__)
 #else
     //-----------------------------------------------------------------------------
     //! CUDA runtime error checking with log and exception, ignoring specific error values
     //-----------------------------------------------------------------------------
     #define ALPAKA_CUDA_RT_CHECK_IGNORE(cmd, ...)\
-        ::alpaka::accs::cuda::detail::cudaRtCheckIgnore(cmd, #cmd, __FILE__, __LINE__, ##__VA_ARGS__)
+        ::alpaka::cuda::detail::cudaRtCheckIgnore(cmd, #cmd, __FILE__, __LINE__, ##__VA_ARGS__)
 #endif
 
 //-----------------------------------------------------------------------------
@@ -183,30 +126,27 @@ namespace alpaka
 
 /*namespace alpaka
 {
-    namespace accs
+    namespace cuda
     {
-        namespace cuda
+        namespace detail
         {
-            namespace detail
+            //-----------------------------------------------------------------------------
+            //! CUDA driver API error checking with log and exception, ignoring specific error values
+            //-----------------------------------------------------------------------------
+            ALPAKA_FCT_HOST auto cudaDrvCheck(
+                cudaError_t const & error,
+                char const * cmd,
+                char const * file,
+                int const & line)
+            -> void
             {
-                //-----------------------------------------------------------------------------
-                //! CUDA runtime error checking with log and exception, ignoring specific error values
-                //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST auto cudaDrvCheck(
-                    cudaError_t const & error,
-                    char const * cmd,
-                    char const * file,
-                    int const & line)
-                -> void
+                // Even if we get the error directly from the command, we have to reset the global error state by getting it.
+                if(error != CUDA_SUCCESS)
                 {
-                    // Even if we get the error directly from the command, we have to reset the global error state by getting it.
-                    if(error != CUDA_SUCCESS)
-                    {
-                        std::string const sError(std::to_string(file) + "(" + std::to_string(line) + ") '" + std::to_string(cmd) + "' returned error: '" + std::to_string(error) + "' (possibly from a previous CUDA call)!");
-                        std::cerr << sError << std::endl;
-                        ALPAKA_DEBUG_BREAK;
-                        throw std::runtime_error(sError);
-                    }
+                    std::string const sError(std::to_string(file) + "(" + std::to_string(line) + ") '" + std::to_string(cmd) + "' returned error: '" + std::to_string(error) + "' (possibly from a previous CUDA call)!");
+                    std::cerr << sError << std::endl;
+                    ALPAKA_DEBUG_BREAK;
+                    throw std::runtime_error(sError);
                 }
             }
         }
@@ -217,7 +157,7 @@ namespace alpaka
 //! CUDA driver error checking with log and exception.
 //-----------------------------------------------------------------------------
 #define ALPAKA_CUDA_DRV_CHECK(cmd)\
-    ::alpaka::accs::cuda::detail::cudaDrvCheck(cmd, #cmd, __FILE__, __LINE__)*/
+    ::cuda::detail::cudaDrvCheck(cmd, #cmd, __FILE__, __LINE__)*/
 
 
 //-----------------------------------------------------------------------------
@@ -225,19 +165,19 @@ namespace alpaka
 //-----------------------------------------------------------------------------
 namespace alpaka
 {
-    namespace traits
+    //-----------------------------------------------------------------------------
+    //! The CUDA traits.
+    //-----------------------------------------------------------------------------
+    namespace cuda
     {
-        //-----------------------------------------------------------------------------
-        //! The CUDA traits.
-        //-----------------------------------------------------------------------------
-        namespace cuda
+        namespace traits
         {
             //#############################################################################
             //! The CUDA vectors 1D dimension get trait specialization.
             //#############################################################################
             template<
                 typename T>
-            struct IsCudaBuiltinType :
+            struct IsCudaBuiltInType :
                 std::integral_constant<
                     bool,
                     std::is_same<T, char1>::value
@@ -291,7 +231,10 @@ namespace alpaka
                     || std::is_same<T, ushort4>::value>
             {};
         }
-        namespace dim
+    }
+    namespace dim
+    {
+        namespace traits
         {
             //#############################################################################
             //! The CUDA vectors 1D dimension get trait specialization.
@@ -314,7 +257,7 @@ namespace alpaka
                     || std::is_same<T, ulonglong1>::value
                     || std::is_same<T, ushort1>::value>::type>
             {
-                using type = alpaka::dim::Dim1;
+                using type = dim::Dim1;
             };
             //#############################################################################
             //! The CUDA vectors 2D dimension get trait specialization.
@@ -337,7 +280,7 @@ namespace alpaka
                     || std::is_same<T, ulonglong2>::value
                     || std::is_same<T, ushort2>::value>::type>
             {
-                using type = alpaka::dim::Dim2;
+                using type = dim::Dim2;
             };
             //#############################################################################
             //! The CUDA vectors 3D dimension get trait specialization.
@@ -361,7 +304,7 @@ namespace alpaka
                     || std::is_same<T, ulonglong3>::value
                     || std::is_same<T, ushort3>::value>::type>
             {
-                using type = alpaka::dim::Dim3;
+                using type = dim::Dim3;
             };
             //#############################################################################
             //! The CUDA vectors 4D dimension get trait specialization.
@@ -384,11 +327,13 @@ namespace alpaka
                     || std::is_same<T, ulonglong4>::value
                     || std::is_same<T, ushort4>::value>::type>
             {
-                using type = alpaka::dim::Dim4;
+                using type = dim::Dim4;
             };
         }
-
-        namespace extent
+    }
+    namespace extent
+    {
+        namespace traits
         {
             //#############################################################################
             //! The CUDA vectors extent get trait specialization.
@@ -396,11 +341,11 @@ namespace alpaka
             template<
                 typename TExtents>
             struct GetExtent<
-                alpaka::dim::Dim<alpaka::dim::DimT<TExtents>::value - 0u>,
+                dim::Dim<dim::DimT<TExtents>::value - 0u>,
                 TExtents,
                 typename std::enable_if<
-                    cuda::IsCudaBuiltinType<TExtents>::value
-                    && (alpaka::dim::DimT<TExtents>::value >= 1)>::type>
+                    cuda::traits::IsCudaBuiltInType<TExtents>::value
+                    && (dim::DimT<TExtents>::value >= 1)>::type>
             {
                 ALPAKA_FCT_HOST_ACC static auto getExtent(
                     TExtents const & extents)
@@ -415,11 +360,11 @@ namespace alpaka
             template<
                 typename TExtents>
             struct GetExtent<
-                alpaka::dim::Dim<alpaka::dim::DimT<TExtents>::value-1u>,
+                dim::Dim<dim::DimT<TExtents>::value-1u>,
                 TExtents,
                 typename std::enable_if<
-                    cuda::IsCudaBuiltinType<TExtents>::value
-                    && (alpaka::dim::DimT<TExtents>::value >= 2)>::type>
+                    cuda::traits::IsCudaBuiltInType<TExtents>::value
+                    && (dim::DimT<TExtents>::value >= 2)>::type>
             {
                 ALPAKA_FCT_HOST_ACC static auto getExtent(
                     TExtents const & extents)
@@ -434,11 +379,11 @@ namespace alpaka
             template<
                 typename TExtents>
             struct GetExtent<
-                alpaka::dim::Dim<alpaka::dim::DimT<TExtents>::value-2u>,
+                dim::Dim<dim::DimT<TExtents>::value-2u>,
                 TExtents,
                 typename std::enable_if<
-                    cuda::IsCudaBuiltinType<TExtents>::value
-                    && (alpaka::dim::DimT<TExtents>::value >= 3)>::type>
+                    cuda::traits::IsCudaBuiltInType<TExtents>::value
+                    && (dim::DimT<TExtents>::value >= 3)>::type>
             {
                 ALPAKA_FCT_HOST_ACC static auto getExtent(
                     TExtents const & extents)
@@ -453,11 +398,11 @@ namespace alpaka
             template<
                 typename TExtents>
             struct GetExtent<
-                alpaka::dim::Dim<alpaka::dim::DimT<TExtents>::value-3u>,
+                dim::Dim<dim::DimT<TExtents>::value-3u>,
                 TExtents,
                 typename std::enable_if<
-                    cuda::IsCudaBuiltinType<TExtents>::value
-                    && (alpaka::dim::DimT<TExtents>::value >= 4)>::type>
+                    cuda::traits::IsCudaBuiltInType<TExtents>::value
+                    && (dim::DimT<TExtents>::value >= 4)>::type>
             {
                 ALPAKA_FCT_HOST_ACC static auto getExtent(
                     TExtents const & extents)
@@ -472,11 +417,11 @@ namespace alpaka
             template<
                 typename TExtents>
             struct SetExtent<
-                alpaka::dim::Dim<alpaka::dim::DimT<TExtents>::value - 0u>,
+                dim::Dim<dim::DimT<TExtents>::value - 0u>,
                 TExtents,
                 typename std::enable_if<
-                    cuda::IsCudaBuiltinType<TExtents>::value
-                    && (alpaka::dim::DimT<TExtents>::value >= 1)>::type>
+                    cuda::traits::IsCudaBuiltInType<TExtents>::value
+                    && (dim::DimT<TExtents>::value >= 1)>::type>
             {
                 template<
                     typename TVal2>
@@ -494,11 +439,11 @@ namespace alpaka
             template<
                 typename TExtents>
             struct SetExtent<
-                alpaka::dim::Dim<alpaka::dim::DimT<TExtents>::value - 1u>,
+                dim::Dim<dim::DimT<TExtents>::value - 1u>,
                 TExtents,
                 typename std::enable_if<
-                    cuda::IsCudaBuiltinType<TExtents>::value
-                    && (alpaka::dim::DimT<TExtents>::value >= 2)>::type>
+                    cuda::traits::IsCudaBuiltInType<TExtents>::value
+                    && (dim::DimT<TExtents>::value >= 2)>::type>
             {
                 template<
                     typename TVal2>
@@ -516,11 +461,11 @@ namespace alpaka
             template<
                 typename TExtents>
             struct SetExtent<
-                alpaka::dim::Dim<alpaka::dim::DimT<TExtents>::value - 2u>,
+                dim::Dim<dim::DimT<TExtents>::value - 2u>,
                 TExtents,
                 typename std::enable_if<
-                    cuda::IsCudaBuiltinType<TExtents>::value
-                    && (alpaka::dim::DimT<TExtents>::value >= 3)>::type>
+                    cuda::traits::IsCudaBuiltInType<TExtents>::value
+                    && (dim::DimT<TExtents>::value >= 3)>::type>
             {
                 template<
                     typename TVal2>
@@ -538,11 +483,11 @@ namespace alpaka
             template<
                 typename TExtents>
             struct SetExtent<
-                alpaka::dim::Dim<alpaka::dim::DimT<TExtents>::value - 3u>,
+                dim::Dim<dim::DimT<TExtents>::value - 3u>,
                 TExtents,
                 typename std::enable_if<
-                    cuda::IsCudaBuiltinType<TExtents>::value
-                    && (alpaka::dim::DimT<TExtents>::value >= 4)>::type>
+                    cuda::traits::IsCudaBuiltInType<TExtents>::value
+                    && (dim::DimT<TExtents>::value >= 4)>::type>
             {
                 template<
                     typename TVal2>
@@ -555,8 +500,10 @@ namespace alpaka
                 }
             };
         }
-
-        namespace offset
+    }
+    namespace offset
+    {
+        namespace traits
         {
             //#############################################################################
             //! The CUDA vectors offset get trait specialization.
@@ -564,11 +511,11 @@ namespace alpaka
             template<
                 typename TOffsets>
             struct GetOffset<
-                alpaka::dim::Dim<alpaka::dim::DimT<TOffsets>::value - 0u>,
+                dim::Dim<dim::DimT<TOffsets>::value - 0u>,
                 TOffsets,
                 typename std::enable_if<
-                    cuda::IsCudaBuiltinType<TOffsets>::value
-                    && (alpaka::dim::DimT<TOffsets>::value >= 1)>::type>
+                    cuda::traits::IsCudaBuiltInType<TOffsets>::value
+                    && (dim::DimT<TOffsets>::value >= 1)>::type>
             {
                 ALPAKA_FCT_HOST_ACC static auto getOffset(
                     TOffsets const & offsets)
@@ -583,11 +530,11 @@ namespace alpaka
             template<
                 typename TOffsets>
             struct GetOffset<
-                alpaka::dim::Dim<alpaka::dim::DimT<TOffsets>::value - 1u>,
+                dim::Dim<dim::DimT<TOffsets>::value - 1u>,
                 TOffsets,
                 typename std::enable_if<
-                    cuda::IsCudaBuiltinType<TOffsets>::value
-                    && (alpaka::dim::DimT<TOffsets>::value >= 2)>::type>
+                    cuda::traits::IsCudaBuiltInType<TOffsets>::value
+                    && (dim::DimT<TOffsets>::value >= 2)>::type>
             {
                 ALPAKA_FCT_HOST_ACC static auto getOffset(
                     TOffsets const & offsets)
@@ -602,11 +549,11 @@ namespace alpaka
             template<
                 typename TOffsets>
             struct GetOffset<
-                alpaka::dim::Dim<alpaka::dim::DimT<TOffsets>::value - 2u>,
+                dim::Dim<dim::DimT<TOffsets>::value - 2u>,
                 TOffsets,
                 typename std::enable_if<
-                    cuda::IsCudaBuiltinType<TOffsets>::value
-                    && (alpaka::dim::DimT<TOffsets>::value >= 3)>::type>
+                    cuda::traits::IsCudaBuiltInType<TOffsets>::value
+                    && (dim::DimT<TOffsets>::value >= 3)>::type>
             {
                 ALPAKA_FCT_HOST_ACC static auto getOffset(
                     TOffsets const & offsets)
@@ -621,11 +568,11 @@ namespace alpaka
             template<
                 typename TOffsets>
             struct GetOffset<
-                alpaka::dim::Dim<alpaka::dim::DimT<TOffsets>::value - 3u>,
+                dim::Dim<dim::DimT<TOffsets>::value - 3u>,
                 TOffsets,
                 typename std::enable_if<
-                    cuda::IsCudaBuiltinType<TOffsets>::value
-                    && (alpaka::dim::DimT<TOffsets>::value >= 4)>::type>
+                    cuda::traits::IsCudaBuiltInType<TOffsets>::value
+                    && (dim::DimT<TOffsets>::value >= 4)>::type>
             {
                 ALPAKA_FCT_HOST_ACC static auto getOffset(
                     TOffsets const & offsets)
@@ -640,11 +587,11 @@ namespace alpaka
             template<
                 typename TOffsets>
             struct SetOffset<
-                alpaka::dim::Dim<alpaka::dim::DimT<TOffsets>::value - 0u>,
+                dim::Dim<dim::DimT<TOffsets>::value - 0u>,
                 TOffsets,
                 typename std::enable_if<
-                    cuda::IsCudaBuiltinType<TOffsets>::value
-                    && (alpaka::dim::DimT<TOffsets>::value >= 1)>::type>
+                    cuda::traits::IsCudaBuiltInType<TOffsets>::value
+                    && (dim::DimT<TOffsets>::value >= 1)>::type>
             {
                 template<
                     typename TVal2>
@@ -662,11 +609,11 @@ namespace alpaka
             template<
                 typename TOffsets>
             struct SetOffset<
-                alpaka::dim::Dim<alpaka::dim::DimT<TOffsets>::value - 1u>,
+                dim::Dim<dim::DimT<TOffsets>::value - 1u>,
                 TOffsets,
                 typename std::enable_if<
-                    cuda::IsCudaBuiltinType<TOffsets>::value
-                    && (alpaka::dim::DimT<TOffsets>::value >= 2)>::type>
+                    cuda::traits::IsCudaBuiltInType<TOffsets>::value
+                    && (dim::DimT<TOffsets>::value >= 2)>::type>
             {
                 template<
                     typename TVal2>
@@ -684,11 +631,11 @@ namespace alpaka
             template<
                 typename TOffsets>
             struct SetOffset<
-                alpaka::dim::Dim<alpaka::dim::DimT<TOffsets>::value - 2u>,
+                dim::Dim<dim::DimT<TOffsets>::value - 2u>,
                 TOffsets,
                 typename std::enable_if<
-                    cuda::IsCudaBuiltinType<TOffsets>::value
-                    && (alpaka::dim::DimT<TOffsets>::value >= 3)>::type>
+                    cuda::traits::IsCudaBuiltInType<TOffsets>::value
+                    && (dim::DimT<TOffsets>::value >= 3)>::type>
             {
                 template<
                     typename TVal2>
@@ -706,11 +653,11 @@ namespace alpaka
             template<
                 typename TOffsets>
             struct SetOffset<
-                alpaka::dim::Dim<alpaka::dim::DimT<TOffsets>::value - 3u>,
+                dim::Dim<dim::DimT<TOffsets>::value - 3u>,
                 TOffsets,
                 typename std::enable_if<
-                    cuda::IsCudaBuiltinType<TOffsets>::value
-                    && (alpaka::dim::DimT<TOffsets>::value >= 4)>::type>
+                    cuda::traits::IsCudaBuiltInType<TOffsets>::value
+                    && (dim::DimT<TOffsets>::value >= 4)>::type>
             {
                 template<
                     typename TVal2>

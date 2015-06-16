@@ -65,7 +65,7 @@ public:
             "The SharedMemKernel expects 1-dimensional indices!");
 
         // The number of threads in this block.
-        std::size_t const uiNumKernelsInBlock(acc.template getWorkDiv<alpaka::Block, alpaka::Threads>()[0u]);
+        std::size_t const uiNumKernelsInBlock(alpaka::workdiv::getWorkDiv<alpaka::Block, alpaka::Threads>(acc)[0u]);
 
         // Get the extern allocated shared memory.
         std::uint32_t * const pBlockShared(acc.template getBlockSharedExternMem<std::uint32_t>());
@@ -75,7 +75,7 @@ public:
         //std::uint32_t * const pBlockShared2(acc.template allocBlockSharedMem<std::uint32_t, TuiNumUselessWork::value>());
 
         // Calculate linearized index of the thread in the block.
-        std::size_t const uiIdxBlockThreadsLin(acc.template getIdx<alpaka::Block, alpaka::Threads>()[0u]);
+        std::size_t const uiIdxBlockThreadsLin(alpaka::idx::getIdx<alpaka::Block, alpaka::Threads>(acc)[0u]);
 
 
         // Fill the shared block with the thread ids [1+X, 2+X, 3+X, ..., #Threads+X].
@@ -106,7 +106,7 @@ public:
         // Now add up all the cells atomically and write the result to cell 0 of the shared memory.
         if(uiIdxBlockThreadsLin > 0)
         {
-            acc.template atomicOp<alpaka::ops::Add>(&pBlockShared[0], pBlockShared[uiIdxBlockThreadsLin]);
+            alpaka::atomic::atomicOp<alpaka::atomic::ops::Add>(acc, &pBlockShared[0], pBlockShared[uiIdxBlockThreadsLin]);
         }
 
 
@@ -116,7 +116,7 @@ public:
         if(uiIdxBlockThreadsLin==0)
         {
             // Calculate linearized block id.
-            std::size_t const uiblockIdx(acc.template getIdx<alpaka::Grid, alpaka::Blocks>()[0u]);
+            std::size_t const uiblockIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Blocks>(acc)[0u]);
 
             puiBlockRetVals[uiblockIdx] = pBlockShared[0] * m_uiMult * uiMult2;
         }
@@ -128,9 +128,9 @@ public:
 
 namespace alpaka
 {
-    namespace traits
+    namespace kernel
     {
-        namespace kernel
+        namespace traits
         {
             //#############################################################################
             //! The trait for getting the size of the block shared extern memory for a kernel.
@@ -179,7 +179,7 @@ struct SharedMemTester
         SharedMemKernel<TuiNumUselessWork> kernel(42);
 
         // Get the host device.
-        //auto devHost(alpaka::devs::cpu::getDev());
+        //auto devHost(alpaka::dev::cpu::getDev());
 
         // Select a device to execute on.
         alpaka::dev::DevT<TAcc> devAcc(
@@ -190,7 +190,7 @@ struct SharedMemTester
             alpaka::stream::create(devAcc));
 
         // Set the grid blocks extent.
-        alpaka::workdiv::BasicWorkDiv<alpaka::dim::Dim1> const workDiv(
+        alpaka::workdiv::WorkDivMembers<alpaka::dim::Dim1> const workDiv(
             alpaka::workdiv::getValidWorkDiv<
                 alpaka::examples::accs::EnabledAccs<alpaka::dim::Dim1>>(
                 512u));
@@ -212,8 +212,8 @@ struct SharedMemTester
 
         // Allocate accelerator buffers and copy.
         std::size_t const uiSizeElements(uiGridBlocksCount);
-        auto blockRetValsAcc(alpaka::mem::alloc<std::uint32_t>(devAcc, uiSizeElements));
-        alpaka::mem::copy(blockRetValsAcc, vuiBlockRetVals, uiSizeElements);
+        auto blockRetValsAcc(alpaka::mem::buf::alloc<std::uint32_t>(devAcc, uiSizeElements));
+        alpaka::mem::view::copy(blockRetValsAcc, vuiBlockRetVals, uiSizeElements);
 
         // Create the executor.
         auto exec(alpaka::exec::create<TAcc>(workDiv, stream));
@@ -222,13 +222,13 @@ struct SharedMemTester
             << alpaka::examples::measureKernelRunTimeMs(
                 exec,
                 kernel,
-                alpaka::mem::getPtrNative(blockRetValsAcc),
+                alpaka::mem::view::getPtrNative(blockRetValsAcc),
                 uiMult2)
             << " ms"
             << std::endl;
 
         // Copy back the result.
-        alpaka::mem::copy(vuiBlockRetVals, blockRetValsAcc, uiSizeElements);
+        alpaka::mem::view::copy(vuiBlockRetVals, blockRetValsAcc, uiSizeElements);
 
         // Assert that the results are correct.
         std::uint32_t const uiCorrectResult(

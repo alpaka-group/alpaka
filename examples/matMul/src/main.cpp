@@ -94,17 +94,17 @@ public:
             "The accelerator used for with MatMulKernel has to be 2 dimensional!");
 
         // Column and row of C to calculate.
-        auto const v2uiGridThreadIdx(acc.template getIdx<alpaka::Grid, alpaka::Threads>());
+        auto const v2uiGridThreadIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc));
         auto const & uiGridThreadIdxX(v2uiGridThreadIdx[1u]);
         auto const & uiGridThreadIdxY(v2uiGridThreadIdx[0u]);
 
         // Column and row inside the block of C to calculate.
-        auto const v2uiBlockThreadIdx(acc.template getIdx<alpaka::Block, alpaka::Threads>());
+        auto const v2uiBlockThreadIdx(alpaka::idx::getIdx<alpaka::Block, alpaka::Threads>(acc));
         auto const & uiBlockThreadIdxX(v2uiBlockThreadIdx[1u]);
         auto const & uiBlockThreadIdxY(v2uiBlockThreadIdx[0u]);
 
         // The block threads extents.
-        auto const v2uiBlockThreadsExtents(acc.template getWorkDiv<alpaka::Block, alpaka::Threads>());
+        auto const v2uiBlockThreadsExtents(alpaka::workdiv::getWorkDiv<alpaka::Block, alpaka::Threads>(acc));
         auto const & uiBlockThreadsExtentX(v2uiBlockThreadsExtents[1u]);
         auto const & uiBlockThreadsExtentY(v2uiBlockThreadsExtents[0u]);
         //assert(uiBlockThreadsExtentX == uiBlockThreadsExtentY);
@@ -170,9 +170,9 @@ public:
 
 namespace alpaka
 {
-    namespace traits
+    namespace kernel
     {
-        namespace kernel
+        namespace traits
         {
             //#############################################################################
             //! The trait for getting the size of the block shared extern memory for a kernel.
@@ -245,7 +245,7 @@ struct MatMulTester
         MatMulKernel kernel;
 
         // Get the host device.
-        auto devHost(alpaka::devs::cpu::getDev());
+        auto devHost(alpaka::dev::cpu::getDev());
 
         // Select a device to execute on.
         alpaka::dev::DevT<TAcc> devAcc(
@@ -269,7 +269,7 @@ struct MatMulTester
             static_cast<alpaka::Vec2<>::Val>(n));
 
         // Let alpaka calculate good block and grid sizes given our full problem extents.
-        alpaka::workdiv::BasicWorkDiv<alpaka::dim::Dim2> workDiv(
+        alpaka::workdiv::WorkDivMembers<alpaka::dim::Dim2> workDiv(
             bAdaptiveBlockThreadExtent
             ? alpaka::workdiv::getValidWorkDiv<boost::mpl::vector<TAcc>>(v2uiExtentsC, false)
             : alpaka::workdiv::getValidWorkDiv<alpaka::examples::accs::EnabledAccs<alpaka::dim::Dim2>>(v2uiExtentsC, false));
@@ -292,14 +292,14 @@ struct MatMulTester
             << ")" << std::endl;
 
         // Allocate the A and B matrices as st::vectors because this allows them to be filled with uint32_t(1).
-        // alpaka::mem::set only supports setting all bytes leading to a value of 16843009 in all elements.
+        // alpaka::mem::view::set only supports setting all bytes leading to a value of 16843009 in all elements.
         std::vector<std::uint32_t> vuiA(m * k, 1u);
         std::vector<std::uint32_t> vuiB(k * n, 1u);
         // Wrap the std::vectors into a memory buffer object.
-        // For 1D data this would not be required because alpaka::mem::copy is specialized for std::vector and std::array.
-        // For multi dimensional data you could directly create them using alpaka::mem::alloc<Type>(devHost, extents), which is not used here.
+        // For 1D data this would not be required because alpaka::mem::view::copy is specialized for std::vector and std::array.
+        // For multi dimensional data you could directly create them using alpaka::mem::buf::alloc<Type>(devHost, extents), which is not used here.
         // Instead we use BufPlainPtrWrapper to wrap the data.
-        using bufWrapper = alpaka::mem::BufPlainPtrWrapper<
+        using bufWrapper = alpaka::mem::buf::BufPlainPtrWrapper<
             std::uint32_t,
             alpaka::dim::Dim2,
             std::decay<decltype(devHost)>::type>;
@@ -307,18 +307,18 @@ struct MatMulTester
         bufWrapper bufBHost(vuiB.data(), devHost, v2uiExtentsB);
 
         // Allocate C and set it to zero.
-        auto bufCHost(alpaka::mem::alloc<std::uint32_t>(devHost, v2uiExtentsC));
-        alpaka::mem::set(bufCHost, 0u, v2uiExtentsC);
+        auto bufCHost(alpaka::mem::buf::alloc<std::uint32_t>(devHost, v2uiExtentsC));
+        alpaka::mem::view::set(bufCHost, 0u, v2uiExtentsC);
 
         // Allocate the buffers on the accelerator.
-        auto bufAAcc(alpaka::mem::alloc<std::uint32_t>(devAcc, v2uiExtentsA));
-        auto bufBAcc(alpaka::mem::alloc<std::uint32_t>(devAcc, v2uiExtentsB));
-        auto bufCAcc(alpaka::mem::alloc<std::uint32_t>(devAcc, v2uiExtentsC));
+        auto bufAAcc(alpaka::mem::buf::alloc<std::uint32_t>(devAcc, v2uiExtentsA));
+        auto bufBAcc(alpaka::mem::buf::alloc<std::uint32_t>(devAcc, v2uiExtentsB));
+        auto bufCAcc(alpaka::mem::buf::alloc<std::uint32_t>(devAcc, v2uiExtentsC));
 
         // Copy Host -> Acc.
-        alpaka::mem::copy(bufAAcc, bufAHost, v2uiExtentsA, stream);
-        alpaka::mem::copy(bufBAcc, bufBHost, v2uiExtentsB, stream);
-        alpaka::mem::copy(bufCAcc, bufCHost, v2uiExtentsC, stream);
+        alpaka::mem::view::copy(bufAAcc, bufAHost, v2uiExtentsA, stream);
+        alpaka::mem::view::copy(bufBAcc, bufBHost, v2uiExtentsB, stream);
+        alpaka::mem::view::copy(bufCAcc, bufCHost, v2uiExtentsC, stream);
 
         // Create the executor.
         auto exec(alpaka::exec::create<TAcc>(workDiv, stream));
@@ -331,18 +331,18 @@ struct MatMulTester
                 static_cast<std::uint32_t>(n),
                 static_cast<std::uint32_t>(k),
                 static_cast<std::uint32_t>(1u),
-                alpaka::mem::getPtrNative(bufAAcc),
-                alpaka::mem::getPitchElements<1u, std::uint32_t>(bufAAcc),
-                alpaka::mem::getPtrNative(bufBAcc),
-                alpaka::mem::getPitchElements<1u, std::uint32_t>(bufBAcc),
+                alpaka::mem::view::getPtrNative(bufAAcc),
+                alpaka::mem::view::getPitchElements<1u, std::uint32_t>(bufAAcc),
+                alpaka::mem::view::getPtrNative(bufBAcc),
+                alpaka::mem::view::getPitchElements<1u, std::uint32_t>(bufBAcc),
                 static_cast<std::uint32_t>(1u),
-                alpaka::mem::getPtrNative(bufCAcc),
-                alpaka::mem::getPitchElements<1u, std::uint32_t>(bufCAcc))
+                alpaka::mem::view::getPtrNative(bufCAcc),
+                alpaka::mem::view::getPitchElements<1u, std::uint32_t>(bufCAcc))
             << " ms"
             << std::endl;
 
         // Copy back the result.
-        alpaka::mem::copy(bufCHost, bufCAcc, v2uiExtentsC, stream);
+        alpaka::mem::view::copy(bufCHost, bufCAcc, v2uiExtentsC, stream);
 
         // Wait for the stream to finish the memory operation.
         alpaka::wait::wait(stream);
@@ -352,7 +352,7 @@ struct MatMulTester
         std::uint32_t const uiCorrectResult(static_cast<std::uint32_t>(k));
 
         bool bResultCorrect(true);
-        auto const pHostData(alpaka::mem::getPtrNative(bufCHost));
+        auto const pHostData(alpaka::mem::view::getPtrNative(bufCHost));
         for(std::size_t i(0u);
             i < m * n;
             ++i)

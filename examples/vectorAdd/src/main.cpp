@@ -61,7 +61,7 @@ public:
             alpaka::dim::DimT<TAcc>::value == 1,
             "The VectorAddKernel expects 1-dimensional indices!");
 
-        auto const uiGridThreadIdxX(acc.template getIdx<alpaka::Grid, alpaka::Threads>()[0u]);
+        auto const uiGridThreadIdxX(alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u]);
 
         if (uiGridThreadIdxX < uiNumElements)
         {
@@ -88,7 +88,7 @@ struct VectorAddKernelTester
         VectorAddKernel kernel;
 
         // Get the host device.
-        auto devHost(alpaka::devs::cpu::getDev());
+        auto devHost(alpaka::dev::cpu::getDev());
 
         // Select a device to execute on.
         alpaka::dev::DevT<TAcc> devAcc(
@@ -102,7 +102,7 @@ struct VectorAddKernelTester
             static_cast<alpaka::Vec1<>::Val>(uiNumElements));
 
         // Let alpaka calculate good block and grid sizes given our full problem extents.
-        alpaka::workdiv::BasicWorkDiv<alpaka::dim::Dim1> const workDiv(
+        alpaka::workdiv::WorkDivMembers<alpaka::dim::Dim1> const workDiv(
             alpaka::workdiv::getValidWorkDiv<boost::mpl::vector<TAcc>>(
                 v1uiExtents,
                 false));
@@ -116,25 +116,25 @@ struct VectorAddKernelTester
             << ")" << std::endl;
 
         // Allocate host memory buffers.
-        auto memBufHostA(alpaka::mem::alloc<float>(devHost, v1uiExtents));
-        auto memBufHostB(alpaka::mem::alloc<float>(devHost, v1uiExtents));
-        auto memBufHostC(alpaka::mem::alloc<float>(devHost, v1uiExtents));
+        auto memBufHostA(alpaka::mem::buf::alloc<float>(devHost, v1uiExtents));
+        auto memBufHostB(alpaka::mem::buf::alloc<float>(devHost, v1uiExtents));
+        auto memBufHostC(alpaka::mem::buf::alloc<float>(devHost, v1uiExtents));
 
         // Initialize the host input vectors
         for (std::size_t i(0); i < uiNumElements; ++i)
         {
-            alpaka::mem::getPtrNative(memBufHostA)[i] = static_cast<float>(rand())/static_cast<float>(RAND_MAX);
-            alpaka::mem::getPtrNative(memBufHostB)[i] = static_cast<float>(rand())/static_cast<float>(RAND_MAX);
+            alpaka::mem::view::getPtrNative(memBufHostA)[i] = static_cast<float>(rand())/static_cast<float>(RAND_MAX);
+            alpaka::mem::view::getPtrNative(memBufHostB)[i] = static_cast<float>(rand())/static_cast<float>(RAND_MAX);
         }
 
         // Allocate the buffer on the accelerator.
-        auto memBufAccA(alpaka::mem::alloc<float>(devAcc, v1uiExtents));
-        auto memBufAccB(alpaka::mem::alloc<float>(devAcc, v1uiExtents));
-        auto memBufAccC(alpaka::mem::alloc<float>(devAcc, v1uiExtents));
+        auto memBufAccA(alpaka::mem::buf::alloc<float>(devAcc, v1uiExtents));
+        auto memBufAccB(alpaka::mem::buf::alloc<float>(devAcc, v1uiExtents));
+        auto memBufAccC(alpaka::mem::buf::alloc<float>(devAcc, v1uiExtents));
 
         // Copy Host -> Acc.
-        alpaka::mem::copy(memBufAccA, memBufHostA, v1uiExtents, stream);
-        alpaka::mem::copy(memBufAccB, memBufHostB, v1uiExtents, stream);
+        alpaka::mem::view::copy(memBufAccA, memBufHostA, v1uiExtents, stream);
+        alpaka::mem::view::copy(memBufAccB, memBufHostB, v1uiExtents, stream);
 
         // Create the executor.
         auto exec(alpaka::exec::create<TAcc>(workDiv, stream));
@@ -143,27 +143,27 @@ struct VectorAddKernelTester
             << alpaka::examples::measureKernelRunTimeMs(
                 exec,
                 kernel,
-                alpaka::mem::getPtrNative(memBufAccA),
-                alpaka::mem::getPtrNative(memBufAccB),
-                alpaka::mem::getPtrNative(memBufAccC),
+                alpaka::mem::view::getPtrNative(memBufAccA),
+                alpaka::mem::view::getPtrNative(memBufAccB),
+                alpaka::mem::view::getPtrNative(memBufAccC),
                 static_cast<std::uint32_t>(uiNumElements))
             << " ms"
             << std::endl;
 
         // Copy back the result.
-        alpaka::mem::copy(memBufHostC, memBufAccC, v1uiExtents, stream);
+        alpaka::mem::view::copy(memBufHostC, memBufAccC, v1uiExtents, stream);
 
         // Wait for the stream to finish the memory operation.
         alpaka::wait::wait(stream);
 
         bool bResultCorrect(true);
-        auto const pHostData(alpaka::mem::getPtrNative(memBufHostC));
+        auto const pHostData(alpaka::mem::view::getPtrNative(memBufHostC));
         for(std::size_t i(0u);
             i < uiNumElements;
             ++i)
         {
             auto const & uiVal(pHostData[i]);
-            auto const uiCorrectResult(alpaka::mem::getPtrNative(memBufHostA)[i]+alpaka::mem::getPtrNative(memBufHostB)[i]);
+            auto const uiCorrectResult(alpaka::mem::view::getPtrNative(memBufHostA)[i]+alpaka::mem::view::getPtrNative(memBufHostB)[i]);
             if(uiVal != uiCorrectResult)
             {
                 std::cout << "C[" << i << "] == " << uiVal << " != " << uiCorrectResult << std::endl;

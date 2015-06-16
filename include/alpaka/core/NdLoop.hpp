@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/traits/Dim.hpp>    // DimT
+#include <alpaka/dim/Traits.hpp>    // DimT
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC
 #include <alpaka/core/Vec.hpp>      // Vec

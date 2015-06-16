@@ -21,19 +21,20 @@
 
 #pragma once
 
-#include <alpaka/traits/Dev.hpp>            // dev::DevManT
-#include <alpaka/traits/Acc.hpp>            // getAccDevProps
+#include <alpaka/workdiv/WorkDivMembers.hpp>    // workdiv::WorkDivMembers
 
-#include <alpaka/core/BasicWorkDiv.hpp>     // workdiv::BasicWorkDiv
-#include <alpaka/core/ForEachType.hpp>      // forEachType
-#include <alpaka/core/Vec.hpp>              // Vec
-#include <alpaka/core/Common.hpp>           // ALPAKA_FCT_HOST
+#include <alpaka/dev/Traits.hpp>                // dev::DevManT
+#include <alpaka/acc/Traits.hpp>                // getAccDevProps
 
-#include <boost/mpl/vector.hpp>             // boost::mpl::vector
+#include <alpaka/core/ForEachType.hpp>          // forEachType
+#include <alpaka/core/Vec.hpp>                  // Vec
+#include <alpaka/core/Common.hpp>               // ALPAKA_FCT_HOST
 
-#include <cmath>                            // std::ceil
-#include <algorithm>                        // std::min
-#include <functional>                       // std::bind
+#include <boost/mpl/vector.hpp>                 // boost::mpl::vector
+
+#include <cmath>                                // std::ceil
+#include <algorithm>                            // std::min
+#include <functional>                           // std::bind
 
 //-----------------------------------------------------------------------------
 //! The alpaka library.
@@ -199,7 +200,7 @@ namespace alpaka
                 Vec<TDim> const & vuiMaxBlockThreadExtents,
                 UInt const & uiMaxBlockThreadsCount,
                 bool bRequireBlockThreadExtentsToDivideGridThreadExtents = true)
-            -> BasicWorkDiv<TDim>
+            -> workdiv::WorkDivMembers<TDim>
             {
                 assert(uiMaxBlockThreadsCount>0);
                 for(std::size_t i(0); i<TDim::value; ++i)
@@ -245,7 +246,7 @@ namespace alpaka
                     vuiGridBlockExtents[i] = static_cast<UInt>(std::ceil(static_cast<double>(vuiGridThreadExtents[0u]) / static_cast<double>(vuiBlockThreadExtents[0u])));
                 }
 
-                return BasicWorkDiv<TDim>(vuiGridBlockExtents, vuiBlockThreadExtents);
+                return workdiv::WorkDivMembers<TDim>(vuiGridBlockExtents, vuiBlockThreadExtents);
             }
         }
 
@@ -261,7 +262,7 @@ namespace alpaka
         ALPAKA_FCT_HOST auto getValidWorkDiv(
             TExtents const & gridThreadExtents = TExtents(),
             bool bRequireBlockThreadExtentsToDivideGridThreadExtents = true)
-        -> BasicWorkDiv<dim::DimT<TExtents>>
+        -> workdiv::WorkDivMembers<dim::DimT<TExtents>>
         {
             static_assert(
                 boost::mpl::is_sequence<TAccSeq>::value,

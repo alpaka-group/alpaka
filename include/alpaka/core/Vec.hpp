@@ -21,17 +21,19 @@
 
 #pragma once
 
-#include <alpaka/traits/Dim.hpp>            // traits::getDim
-#include <alpaka/traits/Extent.hpp>         // traits::getWidth, ...
-#include <alpaka/traits/Offset.hpp>         // traits::getOffsetX, ...
+#include <alpaka/dim/Traits.hpp>            // dim::getDim
+#include <alpaka/dim/DimBasic.hpp>          // dim::Dim<N>
+#include <alpaka/extent/Traits.hpp>         // extent::getWidth, ...
+#include <alpaka/offset/Traits.hpp>         // offset::getOffsetX, ...
 
-#include <alpaka/core/BasicDims.hpp>        // dim::Dim<N>
 #include <alpaka/core/IntegerSequence.hpp>  // detail::make_integer_sequence
 #include <alpaka/core/Common.hpp>           // ALPAKA_FCT_ACC
 #include <alpaka/core/Fold.hpp>             // foldr
 
 #include <boost/predef.h>                   // workarounds
-#include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
+#if !defined(__CUDA_ARCH__)
+    #include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
+#endif
 
 #include <cstdint>                          // std::uint32_t
 #include <ostream>                          // std::ostream
@@ -99,7 +101,9 @@ namespace alpaka
             TArgs && ... args)
         -> Vec<TDim, TVal>
         {
+#if !defined(__CUDA_ARCH__)
             boost::ignore_unused(indices);
+#endif
             return Vec<TDim, TVal>(
                 (TTFunctor<TIndices>::create(std::forward<TArgs>(args)...))...);
         }
@@ -267,7 +271,9 @@ namespace alpaka
                 f,
                 ((*this)[TIndices])...))
         {
+#if !defined(__CUDA_ARCH__)
             boost::ignore_unused(indices);
+#endif
             return
                 foldr(
                     f,
@@ -633,9 +639,9 @@ namespace alpaka
         }
     }
 
-    namespace traits
+    namespace dim
     {
-        namespace dim
+        namespace traits
         {
             //#############################################################################
             //! The Vec dimension get trait specialization.
@@ -649,8 +655,10 @@ namespace alpaka
                 using type = TDim;
             };
         }
-
-        namespace extent
+    }
+    namespace extent
+    {
+        namespace traits
         {
             //#############################################################################
             //! The Vec extent get trait specialization.
@@ -694,8 +702,10 @@ namespace alpaka
                 }
             };
         }
-
-        namespace offset
+    }
+    namespace offset
+    {
+        namespace traits
         {
             //#############################################################################
             //! The Vec offset get trait specialization.

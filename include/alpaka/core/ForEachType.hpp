@@ -30,6 +30,9 @@
 #include <boost/mpl/aux_/unwrap.hpp>    // boost::mpl::aux::unwrap
 
 #include <boost/predef.h>               // Workarounds.
+#if !defined(__CUDA_ARCH__)
+    #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+#endif
 
 #include <type_traits>                  // std::is_same
 #include <utility>                      // std::forward
@@ -58,8 +61,10 @@ namespace alpaka
                 TArgs && ... args)
             -> void
             {
+#if !defined(__CUDA_ARCH__)
                 boost::ignore_unused(f);
                 boost::ignore_unused(args...);
+#endif
             }
         };
 

@@ -1,0 +1,91 @@
+/**
+* \file
+* Copyright 2014-2015 Benjamin Worpitz
+*
+* This file is part of alpaka.
+*
+* alpaka is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Lesser General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* alpaka is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU Lesser General Public License for more details.
+*
+* You should have received a copy of the GNU Lesser General Public License
+* along with alpaka.
+* If not, see <http://www.gnu.org/licenses/>.
+*/
+
+#pragma once
+
+#include <alpaka/atomic/Traits.hpp>                 // AtomicOp
+
+#include <boost/core/ignore_unused.hpp>             // boost::ignore_unused
+
+namespace alpaka
+{
+    namespace atomic
+    {
+        //#############################################################################
+        //! The CPU fibers accelerator atomic ops.
+        //#############################################################################
+        class AtomicNoOp
+        {
+        public:
+            using AtomicBase = AtomicNoOp;
+
+            //-----------------------------------------------------------------------------
+            //! Default constructor.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FCT_ACC_NO_CUDA AtomicNoOp() = default;
+            //-----------------------------------------------------------------------------
+            //! Copy constructor.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FCT_ACC_NO_CUDA AtomicNoOp(AtomicNoOp const &) = delete;
+            //-----------------------------------------------------------------------------
+            //! Move constructor.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FCT_ACC_NO_CUDA AtomicNoOp(AtomicNoOp &&) = delete;
+            //-----------------------------------------------------------------------------
+            //! Copy assignment operator.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FCT_ACC_NO_CUDA auto operator=(AtomicNoOp const &) -> AtomicNoOp & = delete;
+            //-----------------------------------------------------------------------------
+            //! Move assignment operator.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FCT_ACC_NO_CUDA auto operator=(AtomicNoOp &&) -> AtomicNoOp & = delete;
+            //-----------------------------------------------------------------------------
+            //! Destructor.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FCT_ACC_NO_CUDA /*virtual*/ ~AtomicNoOp() = default;
+        };
+
+        namespace traits
+        {
+            //#############################################################################
+            //! The CPU fibers accelerator atomic operation functor.
+            //#############################################################################
+            template<
+                typename TOp,
+                typename T>
+            struct AtomicOp<
+                TOp,
+                atomic::AtomicNoOp,
+                T>
+            {
+                ALPAKA_FCT_ACC_NO_CUDA static auto atomicOp(
+                    atomic::AtomicNoOp const & atomic,
+                    T * const addr,
+                    T const & value)
+                -> T
+                {
+                    boost::ignore_unused(atomic);
+                    return TOp()(addr, value);
+                }
+            };
+        }
+    }
+}

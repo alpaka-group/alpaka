@@ -6,17 +6,17 @@ The **alpaka** library is a header-only C++11 abstraction library for accelerato
 Its aim is to provide performance portability across accelerators through the abstraction (not hiding!) of the underlying levels of parallelism.
 
 It is platform independent and supports the concurrent and cooperative use of multiple devices such as the hosts CPU as well as attached accelerators as for instance CUDA GPUs and Xeon Phis (currently native execution only).
-A multitude of accelerator back-ends such as CUDA, OpenMP (2.0/4.0), Boost.Fiber, std::thread, serial execution and their variants is provided and can be selected depending on the device.
-Only one implementation of the kernel is required by utilizing the uniform kernel interface which is used by all accelerator back-ends.
+A multitude of accelerator back-end variants using CUDA, OpenMP (2.0/4.0), Boost.Fiber, std::thread and also serial execution is provided and can be selected depending on the device.
+Only one implementation of the user kernel is required by utilizing the uniform kernel interface which is used by all accelerator back-ends.
 There is no need to write special CUDA, OpenMP or custom threading code.
-Accelerator back-ends within a device stream can be mixed.
+Accelerator back-ends can be mixed within a device stream.
 The decision which accelerator back-end executes which kernel can be made at runtime.
 
 The **alpaka** API is currently unstable (alpha state).
 
 The abstraction used is very similar to the CUDA grid-blocks-threads division strategy.
 Algorithms that should be parallelized have to be divided into a multi-dimensional grid consisting of small uniform work items.
-The function being executed by each of this threads is called a kernel.
+These functions are called kernels and are executed in parallel threads.
 The threads in the grid are organized in blocks.
 All threads in a block are executed in parallel and can interact via fast shared memory.
 Blocks are executed independently and can not interact in any way.
@@ -55,7 +55,7 @@ Supported Compilers
 
 This library uses C++11 (or newer when available).
 
-|-|gcc 4.9.2|gcc 5.1|clang 3.5/3.6|clang 3.7|MSVC 2015|icc 15.0+ (untested)|
+|Accelerator Back-end|gcc 4.9.2|gcc 5.1|clang 3.5/3.6|clang 3.7|MSVC 2015|icc 15.0+ (untested)|
 |---|---|---|---|---|---|---|
 |Serial|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
 |OpenMP 2.0 blocks|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
@@ -65,7 +65,7 @@ This library uses C++11 (or newer when available).
 | Boost.Fiber |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|
 |CUDA 7.0|:white_check_mark:|:x:|:x:|:x:|:x:|:white_check_mark:|
 
-**NOTE**: :bangbang: Currently the *CUDA accelerator back-end* can not be enabled together with the *std::thread accelerator back-end* or the *Boost.Fiber accelerator back-end* :bangbang:
+**NOTE**: :bangbang: Currently the *CUDA accelerator back-end* can not be enabled together with the *std::thread accelerator back-end* or the *Boost.Fiber accelerator back-end* due to bugs in the NVIDIA nvcc compiler :bangbang:
 
 Build status master branch: [![Build Status](https://travis-ci.org/ComputationalRadiationPhysics/alpaka.svg?branch=master)](https://travis-ci.org/ComputationalRadiationPhysics/alpaka)
 
@@ -77,15 +77,14 @@ Dependencies
 
 [Boost](http://boost.org/) 1.56+ is the only mandatory external dependency.
 The **alpaka** library itself just requires header-only libraries.
-However some of the examples require different boost libraries to be built.
+However some of the examples require different boost libraries (e.g. program_options) to be built.
 
-When the *CUDA* accelerator back-end is enabled, version *7.0* of the *CUDA SDK* is the minimum requirement.
+When an accelerator back-end using *CUDA* is enabled, version *7.0* of the *CUDA SDK* is the minimum requirement.
 
-When one of the *OpenMP 2.0* accelerator back-ends is enabled, the compiler and the platform have to support *OpenMP 2.0* or newer.
+When an accelerator back-end using *OpenMP 2.0/4.0* is enabled, the compiler and the platform have to support the corresponding *OpenMP* version.
 
-When the *OpenMP 4.0* accelerator back-end is enabled, the compiler and the platform have to support *OpenMP 4.0* or newer.
-
-When the *Boost.Fiber* accelerator back-end is enabled, the develop branch of boost and the proposed boost library [`boost-fibers`](https://github.com/olk/boost-fiber) (develop branch) are required. `boost-fibers`, `boost-context` and all of its dependencies are required to be build in C++14 mode `./b2 cxxflags="-std=c++14"`.
+When an accelerator back-end using *Boost.Fiber* is enabled, the develop branch of boost and the proposed boost library [`boost-fibers`](https://github.com/olk/boost-fiber) (develop branch) are required.
+`boost-fibers`, `boost-context` and all of its dependencies are required to be build in C++14 mode `./b2 cxxflags="-std=c++14"`.
 
 
 Usage
@@ -111,11 +110,8 @@ Authors
 
 - Benjamin Worpitz
 
-### Scientific Supervision
-
-- Dr. Michael Bussmann
-
 ### Participants, Former Members and Thanks
 
+- Dr. Michael Bussmann
 - Rene Widera
 - Axel Huebl

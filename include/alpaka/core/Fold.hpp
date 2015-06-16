@@ -23,7 +23,9 @@
 
 #include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST_ACC
 
-#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+#if !defined(__CUDA_ARCH__)
+    #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+#endif
 
 #include <type_traits>                  // std::result_of
 
@@ -40,7 +42,9 @@ namespace alpaka
         T const & t)
     -> T
     {
+#if !defined(__CUDA_ARCH__)
         boost::ignore_unused(f);
+#endif
         return t;
     }
 #if __cplusplus >= 201402L

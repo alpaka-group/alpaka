@@ -24,7 +24,9 @@
 #include <alpaka/core/Vec.hpp>          // Vec
 #include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST_ACC
 
-#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+#if !defined(__CUDA_ARCH__)
+    #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+#endif
 
 namespace alpaka
 {
@@ -58,7 +60,9 @@ namespace alpaka
                 Vec<dim::Dim1, TElem> const & extents)
             -> Vec<dim::Dim1, TElem>
             {
+#if !defined(__CUDA_ARCH__)
                 boost::ignore_unused(extents);
+#endif
                 return idx;
             }
         };

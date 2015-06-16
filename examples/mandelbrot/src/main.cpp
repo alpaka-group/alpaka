@@ -161,7 +161,7 @@ public:
             alpaka::dim::DimT<TAcc>::value == 2,
             "The MandelbrotKernel expects 2-dimensional indices!");
 
-        auto const uiGridThreadIdx(acc.template getIdx<alpaka::Grid, alpaka::Threads>());
+        auto const uiGridThreadIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc));
         auto const & uiGridThreadIdxX(uiGridThreadIdx[1u]);
         auto const & uiGridThreadIdxY(uiGridThreadIdx[0u]);
 
@@ -264,12 +264,12 @@ auto writeTgaColorImage(
         alpaka::dim::DimT<TBuf>::value == 2,
         "The buffer has to be 2 dimensional!");
     static_assert(
-        std::is_integral<alpaka::mem::ElemT<TBuf>>::value,
+        std::is_integral<alpaka::mem::view::ElemT<TBuf>>::value,
         "The buffer element type has to be integral!");
 
     // The width of the input buffer is in input elements.
     auto const uiBufWidthElems(alpaka::extent::getWidth<std::size_t>(bufRgba));
-    auto const uiBufWidthBytes(uiBufWidthElems * sizeof(alpaka::mem::ElemT<TBuf>));
+    auto const uiBufWidthBytes(uiBufWidthElems * sizeof(alpaka::mem::view::ElemT<TBuf>));
     // The row width in bytes has to be dividable by 4 Bytes (RGBA).
     assert(uiBufWidthBytes % sizeof(std::uint32_t) == 0);
     // The number of colors in a row.
@@ -277,7 +277,7 @@ auto writeTgaColorImage(
     assert(uiBufWidthColors >= 1);
     auto const uiBufHeightColors(alpaka::extent::getHeight<std::size_t>(bufRgba));
     assert(uiBufHeightColors >= 1);
-    auto const uiBufPitchBytes(alpaka::mem::getPitchBytes<alpaka::dim::DimT<TBuf>::value - 1u, std::size_t>(bufRgba));
+    auto const uiBufPitchBytes(alpaka::mem::view::getPitchBytes<alpaka::dim::DimT<TBuf>::value - 1u, std::size_t>(bufRgba));
     assert(uiBufPitchBytes >= uiBufWidthBytes);
 
     std::ofstream ofs(
@@ -309,7 +309,7 @@ auto writeTgaColorImage(
     ofs.put(0x20);                      // Image Descriptor Byte.
 
     // Write the data.
-    char const * pData(reinterpret_cast<char const *>(alpaka::mem::getPtrNative(bufRgba)));
+    char const * pData(reinterpret_cast<char const *>(alpaka::mem::view::getPtrNative(bufRgba)));
     // If there is no padding, we can directly write the whole buffer data ...
     if(uiBufPitchBytes == uiBufWidthBytes)
     {
@@ -353,7 +353,7 @@ struct MandelbrotKernelTester
         MandelbrotKernel kernel;
 
         // Get the host device.
-        auto devHost(alpaka::devs::cpu::getDev());
+        auto devHost(alpaka::dev::cpu::getDev());
 
         // Select a device to execute on.
         alpaka::dev::DevT<TAcc> devAcc(
@@ -368,7 +368,7 @@ struct MandelbrotKernelTester
             static_cast<alpaka::Vec2<>::Val>(uiNumCols));
 
         // Let alpaka calculate good block and grid sizes given our full problem extents.
-        alpaka::workdiv::BasicWorkDiv<alpaka::dim::Dim2> const workDiv(
+        alpaka::workdiv::WorkDivMembers<alpaka::dim::Dim2> const workDiv(
             alpaka::workdiv::getValidWorkDiv<boost::mpl::vector<TAcc>>(
                 v2uiExtents,
                 false));
@@ -385,14 +385,14 @@ struct MandelbrotKernelTester
 
         // allocate host memory
         auto bufColorHost(
-            alpaka::mem::alloc<std::uint32_t>(devHost, v2uiExtents));
+            alpaka::mem::buf::alloc<std::uint32_t>(devHost, v2uiExtents));
 
         // Allocate the buffer on the accelerator.
         auto bufColorAcc(
-            alpaka::mem::alloc<std::uint32_t>(devAcc, v2uiExtents));
+            alpaka::mem::buf::alloc<std::uint32_t>(devAcc, v2uiExtents));
 
         // Copy Host -> Acc.
-        alpaka::mem::copy(bufColorAcc, bufColorHost, v2uiExtents, stream);
+        alpaka::mem::view::copy(bufColorAcc, bufColorHost, v2uiExtents, stream);
 
         // Create the executor.
         auto exec(alpaka::exec::create<TAcc>(workDiv, stream));
@@ -401,10 +401,10 @@ struct MandelbrotKernelTester
             << alpaka::examples::measureKernelRunTimeMs(
                 exec,
                 kernel,
-                alpaka::mem::getPtrNative(bufColorAcc),
+                alpaka::mem::view::getPtrNative(bufColorAcc),
                 static_cast<std::uint32_t>(uiNumRows),
                 static_cast<std::uint32_t>(uiNumCols),
-                alpaka::mem::getPitchElements<1u, std::uint32_t>(bufColorAcc),
+                alpaka::mem::view::getPitchElements<1u, std::uint32_t>(bufColorAcc),
                 fMinR,
                 fMaxR,
                 fMinI,
@@ -414,7 +414,7 @@ struct MandelbrotKernelTester
             << std::endl;
 
         // Copy back the result.
-        alpaka::mem::copy(bufColorHost, bufColorAcc, v2uiExtents, stream);
+        alpaka::mem::view::copy(bufColorHost, bufColorAcc, v2uiExtents, stream);
 
         // Wait for the stream to finish the memory operation.
         alpaka::wait::wait(stream);

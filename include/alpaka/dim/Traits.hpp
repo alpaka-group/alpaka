@@ -1,0 +1,73 @@
+/**
+* \file
+* Copyright 2014-2015 Benjamin Worpitz
+*
+* This file is part of alpaka.
+*
+* alpaka is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Lesser General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* alpaka is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU Lesser General Public License for more details.
+*
+* You should have received a copy of the GNU Lesser General Public License
+* along with alpaka.
+* If not, see <http://www.gnu.org/licenses/>.
+*/
+
+#pragma once
+
+#include <alpaka/dim/DimBasic.hpp>      // dim::Dim<N>
+
+#include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST_ACC
+
+#include <type_traits>                  // std::enable_if, std::is_integral, std::is_unsigned
+
+namespace alpaka
+{
+    //-----------------------------------------------------------------------------
+    //! The dimension specifics.
+    //-----------------------------------------------------------------------------
+    namespace dim
+    {
+        //-----------------------------------------------------------------------------
+        //! The dimension traits.
+        //-----------------------------------------------------------------------------
+        namespace traits
+        {
+            //#############################################################################
+            //! The dimension getter type trait.
+            //#############################################################################
+            template<
+                typename T,
+                typename TSfinae = void>
+            struct DimType;
+        }
+
+        template<
+            typename T>
+        using DimT = typename traits::DimType<T>::type;
+
+        //-----------------------------------------------------------------------------
+        // Trait specializations for unsigned integral types.
+        //-----------------------------------------------------------------------------
+        namespace traits
+        {
+            //#############################################################################
+            //! The unsigned integral dimension getter trait specialization.
+            //#############################################################################
+            template<
+                typename T>
+            struct DimType<
+                T,
+                typename std::enable_if<std::is_integral<T>::value && std::is_unsigned<T>::value>::type>
+            {
+                using type = Dim1;
+            };
+        }
+    }
+}
