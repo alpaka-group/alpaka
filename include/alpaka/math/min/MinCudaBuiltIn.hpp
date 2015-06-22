@@ -58,14 +58,14 @@ namespace alpaka
                     std::is_integral<Tx>::value
                     && std::is_integral<Ty>::value>::type>
             {
-                ALPAKA_FCT_ACC_NO_CUDA static auto min(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto min(
                     MinCudaBuiltIn const & min,
                     Tx const & x,
                     Ty const & y)
-                -> decltype(::min(arg))
+                -> decltype(::min(x, y))
                 {
                     //boost::ignore_unused(min);
-                    return ::min(arg);
+                    return ::min(x, y);
                 }
             };
             //#############################################################################
@@ -84,7 +84,7 @@ namespace alpaka
                     && !(std::is_integral<Tx>::value
                         && std::is_integral<Ty>::value)>::type>
             {
-                ALPAKA_FCT_ACC_NO_CUDA static auto max(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto max(
                     MinCudaBuiltIn const & min,
                     Tx const & x,
                     Ty const & y)

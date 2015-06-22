@@ -23,6 +23,8 @@
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC
 
+#include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
+
 namespace alpaka
 {
     namespace math
@@ -77,6 +79,46 @@ namespace alpaka
                 max,
                 x,
                 y);
+        }
+
+        namespace traits
+        {
+            //#############################################################################
+            //! The Max specialization for classes with MaxBase member type.
+            //#############################################################################
+            template<
+                typename T,
+                typename Tx,
+                typename Ty>
+            struct Max<
+                T,
+                Tx,
+                Ty,
+                typename std::enable_if<
+                    std::is_base_of<typename T::MaxBase, typename std::decay<T>::type>::value
+                    && (!std::is_same<typename T::MaxBase, typename std::decay<T>::type>::value)>::type>
+            {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST_ACC static auto max(
+                    T const & max,
+                    Tx const & x,
+                    Ty const & y)
+                -> decltype(
+                    math::max(
+                        static_cast<typename T::MaxBase const &>(max),
+                        x,
+                        y))
+                {
+                    // Delegate the call to the base class.
+                    return
+                        math::max(
+                            static_cast<typename T::MaxBase const &>(max),
+                            x,
+                            y);
+                }
+            };
         }
     }
 }

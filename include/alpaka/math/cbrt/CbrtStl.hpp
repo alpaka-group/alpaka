@@ -57,10 +57,10 @@ namespace alpaka
                 ALPAKA_FCT_ACC_NO_CUDA static auto cbrt(
                     CbrtStl const & cbrt,
                     TArg const & arg)
-                -> decltype(std::cbrt(value))
+                -> decltype(std::cbrt(arg))
                 {
                     boost::ignore_unused(cbrt);
-                    return std::cbrt(value);
+                    return std::cbrt(arg);
                 }
             };
         }

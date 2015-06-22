@@ -57,10 +57,10 @@ namespace alpaka
                 ALPAKA_FCT_ACC_NO_CUDA static auto rsqrt(
                     RsqrtStl const & rsqrt,
                     TArg const & arg)
-                -> decltype(std::sqrt(value))
+                -> decltype(std::sqrt(arg))
                 {
                     boost::ignore_unused(rsqrt);
-                    return static_cast<TArg>(1)/std::sqrt(value);
+                    return static_cast<TArg>(1)/std::sqrt(arg);
                 }
             };
         }

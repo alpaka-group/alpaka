@@ -23,6 +23,8 @@
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC
 
+#include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
+
 namespace alpaka
 {
     namespace math
@@ -76,6 +78,46 @@ namespace alpaka
                 pow,
                 base,
                 exp);
+        }
+
+        namespace traits
+        {
+            //#############################################################################
+            //! The Pow specialization for classes with PowBase member type.
+            //#############################################################################
+            template<
+                typename T,
+                typename TBase,
+                typename TExp>
+            struct Pow<
+                T,
+                TBase,
+                TExp,
+                typename std::enable_if<
+                    std::is_base_of<typename T::PowBase, typename std::decay<T>::type>::value
+                    && (!std::is_same<typename T::PowBase, typename std::decay<T>::type>::value)>::type>
+            {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST_ACC static auto pow(
+                    T const & pow,
+                    TBase const & base,
+                    TExp const & exp)
+                -> decltype(
+                    math::pow(
+                        static_cast<typename T::PowBase const &>(pow),
+                        base,
+                        exp))
+                {
+                    // Delegate the call to the base class.
+                    return
+                        math::pow(
+                            static_cast<typename T::PowBase const &>(pow),
+                            base,
+                            exp);
+                }
+            };
         }
     }
 }

@@ -23,6 +23,8 @@
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC
 
+#include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
+
 namespace alpaka
 {
     namespace math
@@ -67,6 +69,41 @@ namespace alpaka
             ::ceil(
                 ceil,
                 arg);
+        }
+
+        namespace traits
+        {
+            //#############################################################################
+            //! The Ceil specialization for classes with CeilBase member type.
+            //#############################################################################
+            template<
+                typename T,
+                typename TArg>
+            struct Ceil<
+                T,
+                TArg,
+                typename std::enable_if<
+                    std::is_base_of<typename T::CeilBase, typename std::decay<T>::type>::value
+                    && (!std::is_same<typename T::CeilBase, typename std::decay<T>::type>::value)>::type>
+            {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST_ACC static auto ceil(
+                    T const & ceil,
+                    TArg const & arg)
+                -> decltype(
+                    math::ceil(
+                        static_cast<typename T::CeilBase const &>(ceil),
+                        arg))
+                {
+                    // Delegate the call to the base class.
+                    return
+                        math::ceil(
+                            static_cast<typename T::CeilBase const &>(ceil),
+                            arg);
+                }
+            };
         }
     }
 }

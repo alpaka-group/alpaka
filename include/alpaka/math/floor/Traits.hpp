@@ -23,6 +23,8 @@
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC
 
+#include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
+
 namespace alpaka
 {
     namespace math
@@ -67,6 +69,41 @@ namespace alpaka
             ::floor(
                 floor,
                 arg);
+        }
+
+        namespace traits
+        {
+            //#############################################################################
+            //! The Floor specialization for classes with FloorBase member type.
+            //#############################################################################
+            template<
+                typename T,
+                typename TArg>
+            struct Floor<
+                T,
+                TArg,
+                typename std::enable_if<
+                    std::is_base_of<typename T::FloorBase, typename std::decay<T>::type>::value
+                    && (!std::is_same<typename T::FloorBase, typename std::decay<T>::type>::value)>::type>
+            {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST_ACC static auto floor(
+                    T const & floor,
+                    TArg const & arg)
+                -> decltype(
+                    math::floor(
+                        static_cast<typename T::FloorBase const &>(floor),
+                        arg))
+                {
+                    // Delegate the call to the base class.
+                    return
+                        math::floor(
+                            static_cast<typename T::FloorBase const &>(floor),
+                            arg);
+                }
+            };
         }
     }
 }

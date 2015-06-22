@@ -23,6 +23,8 @@
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC
 
+#include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
+
 namespace alpaka
 {
     namespace math
@@ -34,7 +36,7 @@ namespace alpaka
             //#############################################################################
             template<
                 typename T,
-                typename TVal,
+                typename TArg,
                 typename TSfinae = void>
             struct Acos;
         }
@@ -42,19 +44,64 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Computes the principal value of the arc cosine.
         //!
-        //! \tparam TVal The value type.
+        //! \tparam TArg The arg type.
         //! \param value The value.
         //-----------------------------------------------------------------------------
         template<
-            typename TVal>
+            typename T,
+            typename TArg>
         ALPAKA_FCT_HOST_ACC auto acos(
-            TVal const & value)
-        -> TVal
+            T const & acos,
+            TArg const & arg)
+        -> decltype(
+            traits::Acos<
+                T,
+                TArg>
+            ::acos(
+                acos,
+                arg))
         {
             return traits::Acos<
-                TVal>
+                T,
+                TArg>
             ::acos(
-                value);
+                acos,
+                arg);
+        }
+
+        namespace traits
+        {
+            //#############################################################################
+            //! The Acos specialization for classes with AcosBase member type.
+            //#############################################################################
+            template<
+                typename T,
+                typename TArg>
+            struct Acos<
+                T,
+                TArg,
+                typename std::enable_if<
+                    std::is_base_of<typename T::AcosBase, typename std::decay<T>::type>::value
+                    && (!std::is_same<typename T::AcosBase, typename std::decay<T>::type>::value)>::type>
+            {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST_ACC static auto acos(
+                    T const & acos,
+                    TArg const & arg)
+                -> decltype(
+                    math::acos(
+                        static_cast<typename T::AcosBase const &>(acos),
+                        arg))
+                {
+                    // Delegate the call to the base class.
+                    return
+                        math::acos(
+                            static_cast<typename T::AcosBase const &>(acos),
+                            arg);
+                }
+            };
         }
     }
 }

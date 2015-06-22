@@ -54,7 +54,7 @@ namespace alpaka
                 typename std::enable_if<
                     std::is_floating_point<TArg>::value>::type>
             {
-                ALPAKA_FCT_ACC_NO_CUDA static auto rint(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto rint(
                     RintCudaBuiltIn const & rint,
                     TArg const & arg)
                 -> decltype(::rint(arg))
@@ -74,7 +74,7 @@ namespace alpaka
                 typename std::enable_if<
                     std::is_floating_point<TArg>::value>::type>
             {
-                ALPAKA_FCT_ACC_NO_CUDA static auto lrint(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto lrint(
                     RintCudaBuiltIn const & lrint,
                     TArg const & arg)
                 -> long int
@@ -94,7 +94,7 @@ namespace alpaka
                 typename std::enable_if<
                     std::is_floating_point<TArg>::value>::type>
             {
-                ALPAKA_FCT_ACC_NO_CUDA static auto llrint(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto llrint(
                     RintCudaBuiltIn const & llrint,
                     TArg const & arg)
                 -> long int

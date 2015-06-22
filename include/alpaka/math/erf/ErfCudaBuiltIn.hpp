@@ -54,7 +54,7 @@ namespace alpaka
                 typename std::enable_if<
                     std::is_floating_point<TArg>::value>::type>
             {
-                ALPAKA_FCT_ACC_NO_CUDA static auto erf(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto erf(
                     ErfCudaBuiltIn const & erf,
                     TArg const & arg)
                 -> decltype(::erf(arg))

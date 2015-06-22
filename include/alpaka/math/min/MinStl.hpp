@@ -62,10 +62,10 @@ namespace alpaka
                     MinStl const & min,
                     Tx const & x,
                     Ty const & y)
-                -> decltype(std::min(arg))
+                -> decltype(std::min(x, y))
                 {
                     boost::ignore_unused(min);
-                    return std::min(arg);
+                    return std::min(x, y);
                 }
             };
             //#############################################################################

@@ -23,6 +23,8 @@
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC
 
+#include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
+
 namespace alpaka
 {
     namespace math
@@ -67,6 +69,41 @@ namespace alpaka
             ::sin(
                 sin,
                 arg);
+        }
+
+        namespace traits
+        {
+            //#############################################################################
+            //! The Sin specialization for classes with SinBase member type.
+            //#############################################################################
+            template<
+                typename T,
+                typename TArg>
+            struct Sin<
+                T,
+                TArg,
+                typename std::enable_if<
+                    std::is_base_of<typename T::SinBase, typename std::decay<T>::type>::value
+                    && (!std::is_same<typename T::SinBase, typename std::decay<T>::type>::value)>::type>
+            {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST_ACC static auto sin(
+                    T const & sin,
+                    TArg const & arg)
+                -> decltype(
+                    math::sin(
+                        static_cast<typename T::SinBase const &>(sin),
+                        arg))
+                {
+                    // Delegate the call to the base class.
+                    return
+                        math::sin(
+                            static_cast<typename T::SinBase const &>(sin),
+                            arg);
+                }
+            };
         }
     }
 }

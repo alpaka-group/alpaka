@@ -54,7 +54,7 @@ namespace alpaka
                 typename std::enable_if<
                     std::is_floating_point<TArg>::value>::type>
             {
-                ALPAKA_FCT_ACC_NO_CUDA static auto acos(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto acos(
                     AcosCudaBuiltIn const & acos,
                     TArg const & arg)
                 -> decltype(::acos(arg))

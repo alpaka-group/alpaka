@@ -23,6 +23,8 @@
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC
 
+#include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
+
 namespace alpaka
 {
     namespace math
@@ -67,6 +69,41 @@ namespace alpaka
             ::log(
                 log,
                 arg);
+        }
+
+        namespace traits
+        {
+            //#############################################################################
+            //! The Log specialization for classes with LogBase member type.
+            //#############################################################################
+            template<
+                typename T,
+                typename TArg>
+            struct Log<
+                T,
+                TArg,
+                typename std::enable_if<
+                    std::is_base_of<typename T::LogBase, typename std::decay<T>::type>::value
+                    && (!std::is_same<typename T::LogBase, typename std::decay<T>::type>::value)>::type>
+            {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST_ACC static auto log(
+                    T const & log,
+                    TArg const & arg)
+                -> decltype(
+                    math::log(
+                        static_cast<typename T::LogBase const &>(log),
+                        arg))
+                {
+                    // Delegate the call to the base class.
+                    return
+                        math::log(
+                            static_cast<typename T::LogBase const &>(log),
+                            arg);
+                }
+            };
         }
     }
 }

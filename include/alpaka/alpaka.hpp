@@ -34,6 +34,9 @@
 // Include the whole library.
 //#############################################################################
 
+//-----------------------------------------------------------------------------
+// acc
+//-----------------------------------------------------------------------------
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED
     #include <alpaka/acc/serial/Serial.hpp>
 #endif
@@ -67,32 +70,91 @@
 #include <alpaka/acc/AccDevProps.hpp>
 #include <alpaka/acc/Traits.hpp>
 
+//-----------------------------------------------------------------------------
+// atomic
+//-----------------------------------------------------------------------------
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
+    #include <alpaka/atomic/AtomicCudaBuiltIn.hpp>
+#endif
+#include <alpaka/atomic/AtomicNoOp.hpp>
+#include <alpaka/atomic/AtomicOmpCritSec.hpp>
+#include <alpaka/atomic/AtomicStlLock.hpp>
 #include <alpaka/atomic/Ops.hpp>
 #include <alpaka/atomic/Traits.hpp>
 
-#include <alpaka/dev/DevCpu.hpp>
+//-----------------------------------------------------------------------------
+// dev
+//-----------------------------------------------------------------------------
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
     #include <alpaka/dev/DevCudaRt.hpp>
 #endif
+#include <alpaka/dev/DevCpu.hpp>
 #include <alpaka/dev/Traits.hpp>
 
+//-----------------------------------------------------------------------------
+// dim
+//-----------------------------------------------------------------------------
 #include <alpaka/dim/DimIntegralConst.hpp>
 #include <alpaka/dim/Traits.hpp>
 
+//-----------------------------------------------------------------------------
+// event
+//-----------------------------------------------------------------------------
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
     #include <alpaka/event/EventCudaRt.hpp>
 #endif
 #include <alpaka/event/EventCpuAsync.hpp>
+#include <alpaka/event/EventCpuSync.hpp>
 #include <alpaka/event/Traits.hpp>
 
+//-----------------------------------------------------------------------------
+// exec
+//-----------------------------------------------------------------------------
 #include <alpaka/exec/Traits.hpp>
 
+//-----------------------------------------------------------------------------
+// extent
+//-----------------------------------------------------------------------------
 #include <alpaka/extent/Traits.hpp>
 
+//-----------------------------------------------------------------------------
+// idx
+//-----------------------------------------------------------------------------
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
+    #include <alpaka/idx/bt/IdxBtCudaBuiltIn.hpp>
+#endif
+#ifdef _OPENMP
+    #include <alpaka/idx/bt/IdxBtOmp.hpp>
+#endif
+#ifdef ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLED
+    #include <alpaka/idx/bt/IdxBtRefFiberIdMap.hpp>
+#endif
+#ifdef ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED
+    #include <alpaka/idx/bt/IdxBtRefThreadIdMap.hpp>
+#endif
+#include <alpaka/idx/bt/IdxBtZero.hpp>
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
+    #include <alpaka/idx/gb/IdxGbCudaBuiltIn.hpp>
+#endif
+#include <alpaka/idx/gb/IdxGbRef.hpp>
 #include <alpaka/idx/Traits.hpp>
 
+//-----------------------------------------------------------------------------
+// kernel
+//-----------------------------------------------------------------------------
 #include <alpaka/kernel/Traits.hpp>
 
+//-----------------------------------------------------------------------------
+// math
+//-----------------------------------------------------------------------------
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
+    #include <alpaka/math/MathCudaBuiltIn.hpp>
+#endif
+#include <alpaka/math/MathStl.hpp>
+
+//-----------------------------------------------------------------------------
+// mem
+//-----------------------------------------------------------------------------
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
     #include <alpaka/mem/buf/BufCudaRt.hpp>
 #endif
@@ -100,24 +162,47 @@
 #include <alpaka/mem/buf/BufPlainPtrWrapper.hpp>
 #include <alpaka/mem/buf/BufStdContainers.hpp>
 #include <alpaka/mem/buf/Traits.hpp>
-#include <alpaka/mem/view/Traits.hpp>
 #include <alpaka/mem/view/ViewBasic.hpp>
+#include <alpaka/mem/view/Traits.hpp>
 
+//-----------------------------------------------------------------------------
+// offset
+//-----------------------------------------------------------------------------
 #include <alpaka/offset/Traits.hpp>
 
+//-----------------------------------------------------------------------------
+// rand
+//-----------------------------------------------------------------------------
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
     #include <alpaka/rand/RandCuRand.hpp>
 #endif
 #include <alpaka/rand/RandStl.hpp>
 #include <alpaka/rand/Traits.hpp>
 
+//-----------------------------------------------------------------------------
+// stream
+//-----------------------------------------------------------------------------
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
+    #include <alpaka/stream/StreamCudaRt.hpp>
+#endif
+#include <alpaka/stream/StreamCpuAsync.hpp>
+#include <alpaka/stream/StreamCpuSync.hpp>
 #include <alpaka/stream/Traits.hpp>
 
+//-----------------------------------------------------------------------------
+// wait
+//-----------------------------------------------------------------------------
 #include <alpaka/wait/Traits.hpp>
 
-#include <alpaka/workdiv/Traits.hpp>
+//-----------------------------------------------------------------------------
+// workdiv
+//-----------------------------------------------------------------------------
 #include <alpaka/workdiv/WorkDivMembers.hpp>
+#include <alpaka/workdiv/Traits.hpp>
 
+//-----------------------------------------------------------------------------
+// core
+//-----------------------------------------------------------------------------
 #include <alpaka/core/Align.hpp>
 #include <alpaka/core/Common.hpp>
 #include <alpaka/core/Fold.hpp>

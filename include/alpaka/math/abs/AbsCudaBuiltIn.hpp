@@ -54,7 +54,7 @@ namespace alpaka
                 typename std::enable_if<
                     std::is_floating_point<TArg>::value>::type>
             {
-                ALPAKA_FCT_ACC_NO_CUDA static auto abs(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto abs(
                     AbsCudaBuiltIn const & abs,
                     TArg const & arg)
                 -> decltype(::abs(arg))

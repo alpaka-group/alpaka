@@ -54,7 +54,7 @@ namespace alpaka
                 typename std::enable_if<
                     std::is_floating_point<TArg>::value>::type>
             {
-                ALPAKA_FCT_ACC_NO_CUDA static auto round(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto round(
                     RoundCudaBuiltIn const & round,
                     TArg const & arg)
                 -> decltype(::round(arg))
@@ -74,7 +74,7 @@ namespace alpaka
                 typename std::enable_if<
                     std::is_floating_point<TArg>::value>::type>
             {
-                ALPAKA_FCT_ACC_NO_CUDA static auto lround(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto lround(
                     RoundCudaBuiltIn const & lround,
                     TArg const & arg)
                 -> long int
@@ -94,7 +94,7 @@ namespace alpaka
                 typename std::enable_if<
                     std::is_floating_point<TArg>::value>::type>
             {
-                ALPAKA_FCT_ACC_NO_CUDA static auto llround(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto llround(
                     RoundCudaBuiltIn const & llround,
                     TArg const & arg)
                 -> long int

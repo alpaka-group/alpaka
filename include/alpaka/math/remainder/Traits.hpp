@@ -23,6 +23,8 @@
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC
 
+#include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
+
 namespace alpaka
 {
     namespace math
@@ -34,7 +36,8 @@ namespace alpaka
             //#############################################################################
             template<
                 typename T,
-                typename TArg,
+                typename Tx,
+                typename Ty,
                 typename TSfinae = void>
             struct Remainder;
         }
@@ -75,6 +78,46 @@ namespace alpaka
                 remainder,
                 x,
                 y);
+        }
+
+        namespace traits
+        {
+            //#############################################################################
+            //! The Remainder specialization for classes with RemainderBase member type.
+            //#############################################################################
+            template<
+                typename T,
+                typename Tx,
+                typename Ty>
+            struct Remainder<
+                T,
+                Tx,
+                Ty,
+                typename std::enable_if<
+                    std::is_base_of<typename T::RemainderBase, typename std::decay<T>::type>::value
+                    && (!std::is_same<typename T::RemainderBase, typename std::decay<T>::type>::value)>::type>
+            {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST_ACC static auto remainder(
+                    T const & remainder,
+                    Tx const & x,
+                    Ty const & y)
+                -> decltype(
+                    math::remainder(
+                        static_cast<typename T::RemainderBase const &>(remainder),
+                        x,
+                        y))
+                {
+                    // Delegate the call to the base class.
+                    return
+                        math::remainder(
+                            static_cast<typename T::RemainderBase const &>(remainder),
+                            x,
+                            y);
+                }
+            };
         }
     }
 }

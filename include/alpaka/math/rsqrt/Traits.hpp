@@ -23,6 +23,8 @@
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC
 
+#include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
+
 namespace alpaka
 {
     namespace math
@@ -67,6 +69,41 @@ namespace alpaka
             ::rsqrt(
                 rsqrt,
                 arg);
+        }
+
+        namespace traits
+        {
+            //#############################################################################
+            //! The Rsqrt specialization for classes with RsqrtBase member type.
+            //#############################################################################
+            template<
+                typename T,
+                typename TArg>
+            struct Rsqrt<
+                T,
+                TArg,
+                typename std::enable_if<
+                    std::is_base_of<typename T::RsqrtBase, typename std::decay<T>::type>::value
+                    && (!std::is_same<typename T::RsqrtBase, typename std::decay<T>::type>::value)>::type>
+            {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST_ACC static auto rsqrt(
+                    T const & rsqrt,
+                    TArg const & arg)
+                -> decltype(
+                    math::rsqrt(
+                        static_cast<typename T::RsqrtBase const &>(rsqrt),
+                        arg))
+                {
+                    // Delegate the call to the base class.
+                    return
+                        math::rsqrt(
+                            static_cast<typename T::RsqrtBase const &>(rsqrt),
+                            arg);
+                }
+            };
         }
     }
 }

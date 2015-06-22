@@ -23,6 +23,8 @@
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC
 
+#include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
+
 namespace alpaka
 {
     namespace math
@@ -57,7 +59,7 @@ namespace alpaka
         ALPAKA_FCT_HOST_ACC auto atan2(
             T const & atan2,
             Ty const & y,
-            Ty const & x)
+            Tx const & x)
         -> decltype(
             traits::Atan2<
                 T,
@@ -76,6 +78,46 @@ namespace alpaka
                 atan2,
                 y,
                 x);
+        }
+
+        namespace traits
+        {
+            //#############################################################################
+            //! The Atan2 specialization for classes with Atan2Base member type.
+            //#############################################################################
+            template<
+                typename T,
+                typename Ty,
+                typename Tx>
+            struct Atan2<
+                T,
+                Ty,
+                Tx,
+                typename std::enable_if<
+                    std::is_base_of<typename T::Atan2Base, typename std::decay<T>::type>::value
+                    && (!std::is_same<typename T::Atan2Base, typename std::decay<T>::type>::value)>::type>
+            {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST_ACC static auto atan2(
+                    T const & atan2,
+                    Ty const & y,
+                    Tx const & x)
+                -> decltype(
+                    math::atan2(
+                        static_cast<typename T::Atan2Base const &>(atan2),
+                        y,
+                        x))
+                {
+                    // Delegate the call to the base class.
+                    return
+                        math::atan2(
+                            static_cast<typename T::Atan2Base const &>(atan2),
+                            y,
+                            x);
+                }
+            };
         }
     }
 }

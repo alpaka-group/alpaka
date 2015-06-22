@@ -23,6 +23,8 @@
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC
 
+#include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
+
 namespace alpaka
 {
     namespace math
@@ -67,6 +69,41 @@ namespace alpaka
             ::exp(
                 exp,
                 arg);
+        }
+
+        namespace traits
+        {
+            //#############################################################################
+            //! The Exp specialization for classes with ExpBase member type.
+            //#############################################################################
+            template<
+                typename T,
+                typename TArg>
+            struct Exp<
+                T,
+                TArg,
+                typename std::enable_if<
+                    std::is_base_of<typename T::ExpBase, typename std::decay<T>::type>::value
+                    && (!std::is_same<typename T::ExpBase, typename std::decay<T>::type>::value)>::type>
+            {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST_ACC static auto exp(
+                    T const & exp,
+                    TArg const & arg)
+                -> decltype(
+                    math::exp(
+                        static_cast<typename T::ExpBase const &>(exp),
+                        arg))
+                {
+                    // Delegate the call to the base class.
+                    return
+                        math::exp(
+                            static_cast<typename T::ExpBase const &>(exp),
+                            arg);
+                }
+            };
         }
     }
 }

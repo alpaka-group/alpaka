@@ -57,7 +57,7 @@ namespace alpaka
                     std::is_integral<Tx>::value
                     && std::is_integral<Ty>::value>::type>
             {
-                ALPAKA_FCT_ACC_NO_CUDA static auto max(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto max(
                     MaxCudaBuiltIn const & max,
                     Tx const & x,
                     Ty const & y)
@@ -83,7 +83,7 @@ namespace alpaka
                     && !(std::is_integral<Tx>::value
                         && std::is_integral<Ty>::value)>::type>
             {
-                ALPAKA_FCT_ACC_NO_CUDA static auto max(
+                ALPAKA_FCT_ACC_CUDA_ONLY static auto max(
                     MaxCudaBuiltIn const & max,
                     Tx const & x,
                     Ty const & y)

@@ -23,6 +23,8 @@
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC
 
+#include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
+
 namespace alpaka
 {
     namespace math
@@ -77,6 +79,46 @@ namespace alpaka
                 min,
                 x,
                 y);
+        }
+
+        namespace traits
+        {
+            //#############################################################################
+            //! The Min specialization for classes with MinBase member type.
+            //#############################################################################
+            template<
+                typename T,
+                typename Tx,
+                typename Ty>
+            struct Min<
+                T,
+                Tx,
+                Ty,
+                typename std::enable_if<
+                    std::is_base_of<typename T::MinBase, typename std::decay<T>::type>::value
+                    && (!std::is_same<typename T::MinBase, typename std::decay<T>::type>::value)>::type>
+            {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST_ACC static auto min(
+                    T const & min,
+                    Tx const & x,
+                    Ty const & y)
+                -> decltype(
+                    math::min(
+                        static_cast<typename T::MinBase const &>(min),
+                        x,
+                        y))
+                {
+                    // Delegate the call to the base class.
+                    return
+                        math::min(
+                            static_cast<typename T::MinBase const &>(min),
+                            x,
+                            y);
+                }
+            };
         }
     }
 }

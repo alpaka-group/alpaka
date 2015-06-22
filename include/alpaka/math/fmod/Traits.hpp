@@ -23,6 +23,8 @@
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC
 
+#include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
+
 namespace alpaka
 {
     namespace math
@@ -76,6 +78,41 @@ namespace alpaka
                 fmod,
                 x,
                 y);
+        }
+
+        namespace traits
+        {
+            //#############################################################################
+            //! The Fmod specialization for classes with FmodBase member type.
+            //#############################################################################
+            template<
+                typename T,
+                typename TArg>
+            struct Fmod<
+                T,
+                TArg,
+                typename std::enable_if<
+                    std::is_base_of<typename T::FmodBase, typename std::decay<T>::type>::value
+                    && (!std::is_same<typename T::FmodBase, typename std::decay<T>::type>::value)>::type>
+            {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST_ACC static auto fmod(
+                    T const & fmod,
+                    TArg const & arg)
+                -> decltype(
+                    math::fmod(
+                        static_cast<typename T::FmodBase const &>(fmod),
+                        arg))
+                {
+                    // Delegate the call to the base class.
+                    return
+                        math::fmod(
+                            static_cast<typename T::FmodBase const &>(fmod),
+                            arg);
+                }
+            };
         }
     }
 }

@@ -23,6 +23,8 @@
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC
 
+#include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
+
 namespace alpaka
 {
     namespace math
@@ -131,6 +133,103 @@ namespace alpaka
             ::llrint(
                 llrint,
                 arg);
+        }
+
+        namespace traits
+        {
+            //#############################################################################
+            //! The Rint specialization for classes with RintBase member type.
+            //#############################################################################
+            template<
+                typename T,
+                typename TArg>
+            struct Rint<
+                T,
+                TArg,
+                typename std::enable_if<
+                    std::is_base_of<typename T::RintBase, typename std::decay<T>::type>::value
+                    && (!std::is_same<typename T::RintBase, typename std::decay<T>::type>::value)>::type>
+            {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST_ACC static auto rint(
+                    T const & rint,
+                    TArg const & arg)
+                -> decltype(
+                    math::rint(
+                        static_cast<typename T::RintBase const &>(rint),
+                        arg))
+                {
+                    // Delegate the call to the base class.
+                    return
+                        math::rint(
+                            static_cast<typename T::RintBase const &>(rint),
+                            arg);
+                }
+            };
+            //#############################################################################
+            //! The Lrint specialization for classes with RintBase member type.
+            //#############################################################################
+            template<
+                typename T,
+                typename TArg>
+            struct Lrint<
+                T,
+                TArg,
+                typename std::enable_if<
+                    std::is_base_of<typename T::RintBase, typename std::decay<T>::type>::value
+                    && (!std::is_same<typename T::RintBase, typename std::decay<T>::type>::value)>::type>
+            {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST_ACC static auto lrint(
+                    T const & lrint,
+                    TArg const & arg)
+                -> decltype(
+                    math::lrint(
+                        static_cast<typename T::RintBase const &>(lrint),
+                        arg))
+                {
+                    // Delegate the call to the base class.
+                    return
+                        math::lrint(
+                            static_cast<typename T::RintBase const &>(lrint),
+                            arg);
+                }
+            };
+            //#############################################################################
+            //! The Llrint specialization for classes with RintBase member type.
+            //#############################################################################
+            template<
+                typename T,
+                typename TArg>
+            struct Llrint<
+                T,
+                TArg,
+                typename std::enable_if<
+                    std::is_base_of<typename T::RintBase, typename std::decay<T>::type>::value
+                    && (!std::is_same<typename T::RintBase, typename std::decay<T>::type>::value)>::type>
+            {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST_ACC static auto llrint(
+                    T const & llrint,
+                    TArg const & arg)
+                -> decltype(
+                    math::llrint(
+                        static_cast<typename T::RintBase const &>(llrint),
+                        arg))
+                {
+                    // Delegate the call to the base class.
+                    return
+                        math::llrint(
+                            static_cast<typename T::RintBase const &>(llrint),
+                            arg);
+                }
+            };
         }
     }
 }

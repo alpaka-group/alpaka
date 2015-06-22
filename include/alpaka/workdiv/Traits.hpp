@@ -28,6 +28,8 @@
 #include <alpaka/core/Positioning.hpp>      // origin::Grid/Blocks, unit::Blocks, unit::Threads
 #include <alpaka/core/Common.hpp>           // ALPAKA_FCT_ACC
 
+
+#include <type_traits>                      // std::enable_if, std::is_base_of, std::is_same, std::decay
 #include <utility>                          // std::forward
 
 namespace alpaka

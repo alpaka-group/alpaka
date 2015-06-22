@@ -23,6 +23,8 @@
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC
 
+#include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
+
 namespace alpaka
 {
     namespace math
@@ -34,7 +36,7 @@ namespace alpaka
             //#############################################################################
             template<
                 typename T,
-                typename TVal,
+                typename TArg,
                 typename TSfinae = void>
             struct Atan;
         }
@@ -42,19 +44,64 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Computes the principal value of the arc tangent.
         //!
-        //! \tparam TVal The value type.
+        //! \tparam TArg The arg type.
         //! \param value The value.
         //-----------------------------------------------------------------------------
         template<
-            typename TVal>
+            typename T,
+            typename TArg>
         ALPAKA_FCT_HOST_ACC auto atan(
-            TVal const & value)
-        -> TVal
+            T const & atan,
+            TArg const & arg)
+        -> decltype(
+            traits::Atan<
+                T,
+                TArg>
+            ::atan(
+                atan,
+                arg))
         {
             return traits::Atan<
-                TVal>
+                T,
+                TArg>
             ::atan(
-                value);
+                atan,
+                arg);
+        }
+
+        namespace traits
+        {
+            //#############################################################################
+            //! The Atan specialization for classes with AtanBase member type.
+            //#############################################################################
+            template<
+                typename T,
+                typename TArg>
+            struct Atan<
+                T,
+                TArg,
+                typename std::enable_if<
+                    std::is_base_of<typename T::AtanBase, typename std::decay<T>::type>::value
+                    && (!std::is_same<typename T::AtanBase, typename std::decay<T>::type>::value)>::type>
+            {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST_ACC static auto atan(
+                    T const & atan,
+                    TArg const & arg)
+                -> decltype(
+                    math::atan(
+                        static_cast<typename T::AtanBase const &>(atan),
+                        arg))
+                {
+                    // Delegate the call to the base class.
+                    return
+                        math::atan(
+                            static_cast<typename T::AtanBase const &>(atan),
+                            arg);
+                }
+            };
         }
     }
 }

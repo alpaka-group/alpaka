@@ -23,6 +23,8 @@
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC
 
+#include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
+
 namespace alpaka
 {
     namespace math
@@ -34,7 +36,7 @@ namespace alpaka
             //#############################################################################
             template<
                 typename T,
-                typename TVal,
+                typename TArg,
                 typename TSfinae = void>
             struct Asin;
         }
@@ -42,19 +44,64 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Computes the principal value of the arc sine.
         //!
-        //! \tparam TVal The value type.
+        //! \tparam TArg The arg type.
         //! \param value The value.
         //-----------------------------------------------------------------------------
         template<
-            typename TVal>
+            typename T,
+            typename TArg>
         ALPAKA_FCT_HOST_ACC auto asin(
-            TVal const & value)
-        -> TVal
+            T const & asin,
+            TArg const & arg)
+        -> decltype(
+            traits::Asin<
+                T,
+                TArg>
+            ::asin(
+                asin,
+                arg))
         {
             return traits::Asin<
-                TVal>
+                T,
+                TArg>
             ::asin(
-                value);
+                asin,
+                arg);
+        }
+
+        namespace traits
+        {
+            //#############################################################################
+            //! The Asin specialization for classes with AsinBase member type.
+            //#############################################################################
+            template<
+                typename T,
+                typename TArg>
+            struct Asin<
+                T,
+                TArg,
+                typename std::enable_if<
+                    std::is_base_of<typename T::AsinBase, typename std::decay<T>::type>::value
+                    && (!std::is_same<typename T::AsinBase, typename std::decay<T>::type>::value)>::type>
+            {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST_ACC static auto asin(
+                    T const & asin,
+                    TArg const & arg)
+                -> decltype(
+                    math::asin(
+                        static_cast<typename T::AsinBase const &>(asin),
+                        arg))
+                {
+                    // Delegate the call to the base class.
+                    return
+                        math::asin(
+                            static_cast<typename T::AsinBase const &>(asin),
+                            arg);
+                }
+            };
         }
     }
 }

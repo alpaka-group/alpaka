@@ -23,6 +23,8 @@
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC
 
+#include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
+
 namespace alpaka
 {
     namespace math
@@ -57,7 +59,7 @@ namespace alpaka
             T const & abs,
             TArg const & arg)
         -> decltype(
-            return traits::Abs<
+            traits::Abs<
                 T,
                 TArg>
             ::abs(
@@ -70,6 +72,41 @@ namespace alpaka
             ::abs(
                 abs,
                 arg);
+        }
+
+        namespace traits
+        {
+            //#############################################################################
+            //! The Abs specialization for classes with AbsBase member type.
+            //#############################################################################
+            template<
+                typename T,
+                typename TArg>
+            struct Abs<
+                T,
+                TArg,
+                typename std::enable_if<
+                    std::is_base_of<typename T::AbsBase, typename std::decay<T>::type>::value
+                    && (!std::is_same<typename T::AbsBase, typename std::decay<T>::type>::value)>::type>
+            {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST_ACC static auto abs(
+                    T const & abs,
+                    TArg const & arg)
+                -> decltype(
+                    math::abs(
+                        static_cast<typename T::AbsBase const &>(abs),
+                        arg))
+                {
+                    // Delegate the call to the base class.
+                    return
+                        math::abs(
+                            static_cast<typename T::AbsBase const &>(abs),
+                            arg);
+                }
+            };
         }
     }
 }
