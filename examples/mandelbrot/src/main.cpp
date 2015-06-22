@@ -29,6 +29,7 @@
 #include <typeinfo>                                 // typeid
 #include <utility>                                  // std::forward
 #include <fstream>                                  // std::ofstream
+#include <algorithm>                                // std::replace
 
 //#define ALPAKA_MANDELBROT_TEST_CONTINOUS_COLOR_MAPPING  // Define this to enable the continuous color mapping.
 
@@ -369,7 +370,8 @@ struct MandelbrotKernelTester
 
         // Let alpaka calculate good block and grid sizes given our full problem extents.
         alpaka::workdiv::WorkDivMembers<alpaka::dim::Dim2> const workDiv(
-            alpaka::workdiv::getValidWorkDiv<boost::mpl::vector<TAcc>>(
+            alpaka::workdiv::getValidWorkDiv<TAcc>(
+                devAcc,
                 v2uiExtents,
                 false));
 
@@ -420,7 +422,9 @@ struct MandelbrotKernelTester
         alpaka::wait::wait(stream);
 
         // Write the image to a file.
-        std::string const sFileName("mandelbrot"+std::to_string(uiNumCols)+"x"+std::to_string(uiNumRows)+"_"+alpaka::acc::getAccName<TAcc>()+".tga");
+        std::string sFileName("mandelbrot"+std::to_string(uiNumCols)+"x"+std::to_string(uiNumRows)+"_"+alpaka::acc::getAccName<TAcc>()+".tga");
+        std::replace(sFileName.begin(), sFileName.end(), '<', '_');
+        std::replace(sFileName.begin(), sFileName.end(), '>', '_');
         writeTgaColorImage(
             sFileName,
             bufColorHost);

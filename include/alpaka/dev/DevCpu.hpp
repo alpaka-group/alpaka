@@ -21,12 +21,12 @@
 
 #pragma once
 
-#include <alpaka/core/SysInfo.hpp>      // getCpuName, getGlobalMemSizeBytes
-
 #include <alpaka/dev/Traits.hpp>        // DevType
 #include <alpaka/event/Traits.hpp>      // EventType
 #include <alpaka/stream/Traits.hpp>     // StreamType
 #include <alpaka/wait/Traits.hpp>       // CurrentThreadWaitFor
+
+#include <alpaka/core/SysInfo.hpp>      // getCpuName, getGlobalMemSizeBytes
 
 #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 
@@ -238,6 +238,8 @@ namespace alpaka
             ALPAKA_FCT_HOST static auto getDevCount()
             -> std::size_t
             {
+                ALPAKA_DEBUG_FULL_LOG_SCOPE;
+
                 return 1;
             }
             //-----------------------------------------------------------------------------
@@ -247,6 +249,8 @@ namespace alpaka
                 std::size_t const & uiIdx)
             -> DevCpu
             {
+                ALPAKA_DEBUG_FULL_LOG_SCOPE;
+
                 std::size_t const uiNumDevices(getDevCount());
                 if(uiIdx >= uiNumDevices)
                 {
@@ -267,6 +271,8 @@ namespace alpaka
             ALPAKA_FCT_HOST auto getDev()
             -> DevCpu
             {
+                ALPAKA_DEBUG_FULL_LOG_SCOPE;
+
                 return DevManCpu::getDevByIdx(0);
             }
         }
@@ -381,6 +387,8 @@ namespace alpaka
                     dev::DevCpu const & dev)
                 -> void
                 {
+                    ALPAKA_DEBUG_FULL_LOG_SCOPE;
+
                     boost::ignore_unused(dev);
 
                     // The CPU does nothing on reset.
@@ -446,6 +454,8 @@ namespace alpaka
                     dev::DevCpu const & dev)
                 -> void
                 {
+                    ALPAKA_DEBUG_FULL_LOG_SCOPE;
+
                     // Get all the streams on the device at the time of invocation.
                     // All streams added afterwards are ignored.
                     auto vspStreams(

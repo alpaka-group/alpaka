@@ -23,19 +23,6 @@
 #include <alpaka/examples/MeasureKernelRunTime.hpp> // measureKernelRunTimeMs
 #include <alpaka/examples/accs/EnabledAccs.hpp>     // EnabledAccs
 
-#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
-    #if BOOST_COMP_MSVC
-        #pragma warning(push)
-        #pragma warning(disable: 4512)              // boost/program_options/options_description.hpp(265): warning C4512: 'boost::program_options::options_description': assignment operator was implicitly defined as deleted
-    #endif
-
-    #include <boost/program_options.hpp>            // boost::program_options
-
-    #if BOOST_COMP_MSVC
-        #pragma warning(pop)
-    #endif
-#endif
-
 #include <boost/core/ignore_unused.hpp>             // boost::ignore_unused
 
 #include <chrono>                                   // std::chrono::high_resolution_clock
@@ -234,8 +221,7 @@ struct MatMulTester
     auto operator()(
         std::size_t const & m,
         std::size_t const & n,
-        std::size_t const & k,
-        bool const & bAdaptiveBlockThreadExtent)
+        std::size_t const & k)
     -> void
     {
         std::cout << std::endl;
@@ -270,9 +256,10 @@ struct MatMulTester
 
         // Let alpaka calculate good block and grid sizes given our full problem extents.
         alpaka::workdiv::WorkDivMembers<alpaka::dim::Dim2> workDiv(
-            bAdaptiveBlockThreadExtent
-            ? alpaka::workdiv::getValidWorkDiv<boost::mpl::vector<TAcc>>(v2uiExtentsC, false)
-            : alpaka::workdiv::getValidWorkDiv<alpaka::examples::accs::EnabledAccs<alpaka::dim::Dim2>>(v2uiExtentsC, false));
+            alpaka::workdiv::getValidWorkDiv<TAcc>(
+                devAcc,
+                v2uiExtentsC,
+                false));
         // Assure that the extents are square.
         auto const uiMinExtent(std::min(workDiv.m_vuiBlockThreadExtents[0u], workDiv.m_vuiBlockThreadExtents[1u]));
         workDiv.m_vuiGridBlockExtents[0u] = static_cast<alpaka::Vec2<>::Val>(std::ceil(static_cast<double>(m) / static_cast<double>(uiMinExtent)));
@@ -282,7 +269,6 @@ struct MatMulTester
 
         std::cout
             << "profileAcceleratedMatMulKernel("
-            << "bAdaptiveBlockThreadExtent:" << bAdaptiveBlockThreadExtent
             << ", m:" << m
             << ", n:" << n
             << ", k:" << k
@@ -389,27 +375,6 @@ auto main(
 {
     try
     {
-#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
-        // Declare the supported options.
-        boost::program_options::options_description desc("Available options");
-        desc.add_options()
-            ("help",
-            "Prints the help message.")
-            ("adaptiveBlockThreadExtent,a",
-            boost::program_options::value<bool>()->default_value(true),
-            "If the size of a block is the minimum of all enabled accelerators (false), or adaptive to the current accelerator (true).")
-        ;
-        boost::program_options::variables_map vm;
-        boost::program_options::store(boost::program_options::parse_command_line(argc, argv, desc), vm);
-        boost::program_options::notify(vm);
-
-        if(vm.count("help") > 0u)
-        {
-            std::cout << desc << std::endl;
-            return EXIT_FAILURE;
-        }
-        else
-#endif
         {
             std::cout << std::endl;
             std::cout << "################################################################################" << std::endl;
@@ -421,14 +386,6 @@ auto main(
             alpaka::examples::accs::writeEnabledAccs<alpaka::dim::Dim2>(std::cout);
 
             std::cout << std::endl;
-
-#if (!BOOST_COMP_MSVC) || (BOOST_COMP_MSVC >= BOOST_VERSION_NUMBER(14, 0, 0))
-            assert(vm.count("adaptiveBlockThreadExtent") > 0);
-            bool const bAdaptiveBlockThreadExtent(vm["adaptiveBlockThreadExtent"].as<bool>());
-#else
-            bool const bAdaptiveBlockThreadExtent(true);
-#endif
-            std::cout << "Adaptive block thread size:" << bAdaptiveBlockThreadExtent << std::endl;
 
             MatMulTester matMulTester;
 
@@ -454,8 +411,7 @@ auto main(
                         alpaka::forEachType<
                             alpaka::examples::accs::EnabledAccs<alpaka::dim::Dim2>>(
                                 matMulTester,
-                                m, n, k,
-                                bAdaptiveBlockThreadExtent);
+                                m, n, k);
                     }
                 }
             }

@@ -103,7 +103,8 @@ struct VectorAddKernelTester
 
         // Let alpaka calculate good block and grid sizes given our full problem extents.
         alpaka::workdiv::WorkDivMembers<alpaka::dim::Dim1> const workDiv(
-            alpaka::workdiv::getValidWorkDiv<boost::mpl::vector<TAcc>>(
+            alpaka::workdiv::getValidWorkDiv<TAcc>(
+                devAcc,
                 v1uiExtents,
                 false));
 

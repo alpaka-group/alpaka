@@ -30,8 +30,6 @@
 #include <alpaka/core/Vec.hpp>                  // Vec
 #include <alpaka/core/Common.hpp>               // ALPAKA_FCT_HOST
 
-#include <boost/mpl/vector.hpp>                 // boost::mpl::vector
-
 #include <cmath>                                // std::ceil
 #include <algorithm>                            // std::min
 #include <functional>                           // std::bind
@@ -43,114 +41,6 @@ namespace alpaka
 {
     namespace workdiv
     {
-        namespace detail
-        {
-            //#############################################################################
-            //! The maximum block thread extents correction wrapper.
-            //#############################################################################
-            struct CorrectMaxBlockThreadExtents
-            {
-                //-----------------------------------------------------------------------------
-                //! Corrects the maximum block thread extents if it is larger then the one supported by the given accelerator type.
-                //-----------------------------------------------------------------------------
-                template<
-                    typename TAcc,
-                    typename TDim>
-                ALPAKA_FCT_HOST auto operator()(
-                    Vec<TDim> & vuiBlockThreadExtents)
-                -> void
-                {
-                    static_assert(
-                        TDim::value == dim::DimT<TAcc>::value,
-                        "The accelerator is required to have the same dimension as the block thread extents");
-
-                    auto const vDevs(dev::getDevs<dev::DevManT<TAcc>>());
-                    for(auto const & dev : vDevs)
-                    {
-                        auto const devProps(acc::getAccDevProps<TAcc>(dev));
-                        auto const & vuiBlockThreadExtentsMax(devProps.m_vuiBlockThreadExtentsMax);
-
-                        for(std::size_t i(0); i<TDim::value; ++i)
-                        {
-                            vuiBlockThreadExtents[i] = std::min(vuiBlockThreadExtents[i], vuiBlockThreadExtentsMax[i]);
-                        }
-                    }
-                }
-            };
-        }
-
-        //-----------------------------------------------------------------------------
-        //! \return The maximum block thread extents supported by all of the given accelerators.
-        //-----------------------------------------------------------------------------
-        template<
-            typename TAccSeq,
-            typename TAccDim>
-        ALPAKA_FCT_HOST auto getMaxBlockThreadExtentsAccsDevices()
-        -> Vec<TAccDim>
-        {
-            static_assert(
-                boost::mpl::is_sequence<TAccSeq>::value,
-                "TAccSeq is required to be a mpl::sequence!");
-
-            auto vuiMaxBlockThreadExtents(
-                Vec<TAccDim>::all(
-                    std::numeric_limits<UInt>::max()));
-
-            forEachType<TAccSeq>(
-                detail::CorrectMaxBlockThreadExtents(),
-                vuiMaxBlockThreadExtents);
-
-            return vuiMaxBlockThreadExtents;
-        }
-
-        namespace detail
-        {
-            //#############################################################################
-            //! The maximum block thread count correction wrapper.
-            //#############################################################################
-            struct CorrectMaxBlockThreadCount
-            {
-                //-----------------------------------------------------------------------------
-                //! Corrects the maximum block thread count if it is larger then the one supported by the given accelerator type.
-                //-----------------------------------------------------------------------------
-                template<
-                    typename TAcc>
-                ALPAKA_FCT_HOST auto operator()(
-                    UInt & uiBlockThreadCount)
-                -> void
-                {
-                    auto const vDevs(dev::getDevs<dev::DevManT<TAcc>>());
-                    for(auto const & dev : vDevs)
-                    {
-                        auto const devProps(acc::getAccDevProps<TAcc>(dev));
-                        auto const & uiBlockThreadCountMax(devProps.m_uiBlockThreadsCountMax);
-
-                        uiBlockThreadCount = std::min(uiBlockThreadCount, uiBlockThreadCountMax);
-                    }
-                }
-            };
-        }
-
-        //-----------------------------------------------------------------------------
-        //! \return The maximum block thread count supported by all of the given accelerators.
-        //-----------------------------------------------------------------------------
-        template<
-            typename TAccSeq>
-        ALPAKA_FCT_HOST auto getMaxBlockThreadCountAccsDevices()
-        -> UInt
-        {
-            static_assert(boost::mpl::is_sequence<TAccSeq>::value, "TAccSeq is required to be a mpl::sequence!");
-
-            UInt uiMaxBlockThreadCount(
-                std::numeric_limits<UInt>::max());
-
-            forEachType<TAccSeq>(
-                detail::CorrectMaxBlockThreadCount(),
-                uiMaxBlockThreadCount);
-
-            return uiMaxBlockThreadCount;
-        }
-
         namespace detail
         {
             //-----------------------------------------------------------------------------
@@ -257,20 +147,21 @@ namespace alpaka
         //! \return The work division.
         //-----------------------------------------------------------------------------
         template<
-            typename TAccSeq,
-            typename TExtents>
+            typename TAcc,
+            typename TExtents,
+            typename TDev>
         ALPAKA_FCT_HOST auto getValidWorkDiv(
+            TDev const & dev,
             TExtents const & gridThreadExtents = TExtents(),
             bool bRequireBlockThreadExtentsToDivideGridThreadExtents = true)
         -> workdiv::WorkDivMembers<dim::DimT<TExtents>>
         {
-            static_assert(
-                boost::mpl::is_sequence<TAccSeq>::value,
-                "TAccSeq is required to be a mpl::sequence!");
+            auto const devProps(acc::getAccDevProps<TAcc>(dev));
+
             return detail::subdivideGridThreads(
                 extent::getExtentsVec<UInt>(gridThreadExtents),
-                getMaxBlockThreadExtentsAccsDevices<TAccSeq, dim::DimT<TExtents>>(),
-                getMaxBlockThreadCountAccsDevices<TAccSeq>(),
+                devProps.m_vuiBlockThreadExtentsMax,
+                devProps.m_uiBlockThreadsCountMax,
                 bRequireBlockThreadExtentsToDivideGridThreadExtents);
         }
 

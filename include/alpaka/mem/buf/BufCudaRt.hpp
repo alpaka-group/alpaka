@@ -579,7 +579,7 @@ namespace alpaka
 
                         if(dev::getDev(buf) != dev)
                         {
-                            throw std::runtime_error("Unmapping memory from one CUDA device from an other CUDA device not implemented!");
+                            throw std::runtime_error("Unmapping memory mapped from one CUDA device into an other CUDA device not implemented!");
                         }
                         // If it is already the same device, nothing has to be unmapped.
                     }

@@ -105,6 +105,8 @@ namespace alpaka
             ALPAKA_FCT_HOST static auto getDevCount()
             -> std::size_t
             {
+                ALPAKA_DEBUG_FULL_LOG_SCOPE;
+
                 int iNumDevices(0);
                 ALPAKA_CUDA_RT_CHECK(cudaGetDeviceCount(&iNumDevices));
 
@@ -117,6 +119,8 @@ namespace alpaka
                 std::size_t const & uiIdx)
             -> DevCudaRt
             {
+                ALPAKA_DEBUG_FULL_LOG_SCOPE;
+
                 DevCudaRt dev;
 
                 std::size_t const uiNumDevices(getDevCount());
@@ -226,6 +230,8 @@ namespace alpaka
                 cudaDeviceProp const & devProp)
             -> void
             {
+                ALPAKA_DEBUG_FULL_LOG_SCOPE;
+
                 std::size_t const uiKiB(1024);
                 std::size_t const uiMiB(uiKiB * uiKiB);
                 std::cout << "name: " << devProp.name << std::endl;
@@ -418,6 +424,8 @@ namespace alpaka
                     dev::DevCudaRt const & dev)
                 -> void
                 {
+                    ALPAKA_DEBUG_FULL_LOG_SCOPE;
+
                     // \TODO: This should be secured by a lock.
 
                     // Set the current device to wait for.
@@ -494,6 +502,8 @@ namespace alpaka
                     dev::DevCudaRt const & dev)
                 -> void
                 {
+                    ALPAKA_DEBUG_FULL_LOG_SCOPE;
+
                     // \TODO: This should be secured by a lock.
 
                     // Set the current device to wait for.
