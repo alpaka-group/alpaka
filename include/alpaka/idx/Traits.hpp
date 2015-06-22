@@ -22,7 +22,7 @@
 #pragma once
 
 #include <alpaka/dim/Traits.hpp>            // Dim
-#include <alpaka/dim/DimBasic.hpp>          // dim::Dim<N>
+#include <alpaka/dim/DimIntegralConst.hpp>  // dim::Dim<N>
 #include <alpaka/workdiv/Traits.hpp>        // workdiv::getWorkDiv
 #include <alpaka/idx/Traits.hpp>            // idx::getIdx
 

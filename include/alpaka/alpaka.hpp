@@ -76,7 +76,7 @@
 #endif
 #include <alpaka/dev/Traits.hpp>
 
-#include <alpaka/dim/DimBasic.hpp>
+#include <alpaka/dim/DimIntegralConst.hpp>
 #include <alpaka/dim/Traits.hpp>
 
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)

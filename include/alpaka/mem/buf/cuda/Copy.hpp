@@ -23,7 +23,7 @@
 
 #include <alpaka/dev/DevCpu.hpp>            // DevCpu
 #include <alpaka/dev/DevCudaRt.hpp>         // DevCudaRt
-#include <alpaka/dim/DimBasic.hpp>          // dim::Dim<N>
+#include <alpaka/dim/DimIntegralConst.hpp>  // dim::Dim<N>
 #include <alpaka/extent/Traits.hpp>         // view::getXXX
 #include <alpaka/mem/view/Traits.hpp>       // view::Copy
 #include <alpaka/stream/StreamCudaRt.hpp>   // StreamCudaRt

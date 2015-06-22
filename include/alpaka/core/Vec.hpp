@@ -22,7 +22,7 @@
 #pragma once
 
 #include <alpaka/dim/Traits.hpp>            // dim::getDim
-#include <alpaka/dim/DimBasic.hpp>          // dim::Dim<N>
+#include <alpaka/dim/DimIntegralConst.hpp>  // dim::Dim<N>
 #include <alpaka/extent/Traits.hpp>         // extent::getWidth, ...
 #include <alpaka/offset/Traits.hpp>         // offset::getOffsetX, ...
 

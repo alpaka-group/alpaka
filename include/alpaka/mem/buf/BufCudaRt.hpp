@@ -22,7 +22,7 @@
 #pragma once
 
 #include <alpaka/dev/DevCudaRt.hpp>         // DevCudaRt
-#include <alpaka/dim/DimBasic.hpp>          // dim::Dim<N>
+#include <alpaka/dim/DimIntegralConst.hpp>  // dim::Dim<N>
 #include <alpaka/extent/Traits.hpp>         // view::getXXX
 #include <alpaka/mem/buf/BufCpu.hpp>        // BufCpu
 #include <alpaka/mem/buf/Traits.hpp>        // view::Copy, ...

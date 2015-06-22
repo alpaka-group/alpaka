@@ -21,15 +21,15 @@
 
 #pragma once
 
-#include <alpaka/dim/DimBasic.hpp>      // dim::Dim<N>
-#include <alpaka/extent/Traits.hpp>     // extent::getXXX
-#include <alpaka/mem/view/Traits.hpp>   // view::Copy, ...
-#include <alpaka/stream/StreamCpuAsync.hpp>  // StreamCpuAsync
+#include <alpaka/dim/DimIntegralConst.hpp>  // dim::Dim<N>
+#include <alpaka/extent/Traits.hpp>         // extent::getXXX
+#include <alpaka/mem/view/Traits.hpp>       // view::Copy, ...
+#include <alpaka/stream/StreamCpuAsync.hpp> // StreamCpuAsync
 
-#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+#include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
 
-#include <cassert>                      // assert
-#include <cstring>                      // std::memcpy
+#include <cassert>                          // assert
+#include <cstring>                          // std::memcpy
 
 namespace alpaka
 {

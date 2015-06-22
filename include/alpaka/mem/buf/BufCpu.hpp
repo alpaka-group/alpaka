@@ -21,21 +21,21 @@
 
 #pragma once
 
-#include <alpaka/dev/DevCpu.hpp>        // DevCpu
-#include <alpaka/dim/DimBasic.hpp>      // dim::Dim<N>
-#include <alpaka/extent/Traits.hpp>     // mem::view::getXXX
-#include <alpaka/mem/buf/Traits.hpp>    // mem::buf::Alloc, ...
-#include <alpaka/mem/view/ViewBasic.hpp>// ViewBasic
+#include <alpaka/dev/DevCpu.hpp>            // DevCpu
+#include <alpaka/dim/DimIntegralConst.hpp>  // dim::Dim<N>
+#include <alpaka/extent/Traits.hpp>         // mem::view::getXXX
+#include <alpaka/mem/buf/Traits.hpp>        // mem::buf::Alloc, ...
+#include <alpaka/mem/view/ViewBasic.hpp>    // ViewBasic
 
-#include <alpaka/core/Vec.hpp>          // Vec<TDim>
+#include <alpaka/core/Vec.hpp>              // Vec<TDim>
 
 // \TODO: Remove CUDA inclusion for BufCpu by replacing pinning with non CUDA code!
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
     #include <alpaka/core/Cuda.hpp>
 #endif
 
-#include <cassert>                      // assert
-#include <memory>                       // std::shared_ptr
+#include <cassert>                          // assert
+#include <memory>                           // std::shared_ptr
 
 namespace alpaka
 {

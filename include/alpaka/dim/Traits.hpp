@@ -21,11 +21,11 @@
 
 #pragma once
 
-#include <alpaka/dim/DimBasic.hpp>      // dim::Dim<N>
+#include <alpaka/dim/DimIntegralConst.hpp>  // dim::Dim<N>
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST_ACC
+#include <alpaka/core/Common.hpp>           // ALPAKA_FCT_HOST_ACC
 
-#include <type_traits>                  // std::enable_if, std::is_integral, std::is_unsigned
+#include <type_traits>                      // std::enable_if, std::is_integral, std::is_unsigned
 
 namespace alpaka
 {

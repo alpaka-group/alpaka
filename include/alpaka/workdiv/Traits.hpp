@@ -21,14 +21,14 @@
 
 #pragma once
 
-#include <alpaka/dim/Traits.hpp>        // Dim
-#include <alpaka/dim/DimBasic.hpp>      // dim::Dim<N>
+#include <alpaka/dim/Traits.hpp>            // Dim
+#include <alpaka/dim/DimIntegralConst.hpp>  // dim::Dim<N>
 
-#include <alpaka/core/Vec.hpp>          // Vec<N>
-#include <alpaka/core/Positioning.hpp>  // origin::Grid/Blocks, unit::Blocks, unit::Threads
-#include <alpaka/core/Common.hpp>       // ALPAKA_FCT_ACC
+#include <alpaka/core/Vec.hpp>              // Vec<N>
+#include <alpaka/core/Positioning.hpp>      // origin::Grid/Blocks, unit::Blocks, unit::Threads
+#include <alpaka/core/Common.hpp>           // ALPAKA_FCT_ACC
 
-#include <utility>                      // std::forward
+#include <utility>                          // std::forward
 
 namespace alpaka
 {
