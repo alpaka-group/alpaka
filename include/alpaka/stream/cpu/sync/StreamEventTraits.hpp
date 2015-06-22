@@ -30,12 +30,27 @@
 
 namespace alpaka
 {
+    namespace event
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The CPU device stream event type trait specialization.
+            //#############################################################################
+            template<>
+            struct EventType<
+                stream::StreamCpuSync>
+            {
+                using type = event::EventCpuSync;
+            };
+        }
+    }
     namespace stream
     {
         namespace traits
         {
             //#############################################################################
-            //! The CPU device enqueue trait specialization.
+            //! The CPU device stream enqueue trait specialization.
             //#############################################################################
             template<>
             struct StreamEnqueue<

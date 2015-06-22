@@ -40,7 +40,7 @@ namespace alpaka
         class DevManCudaRt;
 
         //#############################################################################
-        //! The CUDA device handle.
+        //! The CUDA RT device handle.
         //#############################################################################
         class DevCudaRt
         {
@@ -89,7 +89,7 @@ namespace alpaka
         };
 
         //#############################################################################
-        //! The CUDA device manager.
+        //! The CUDA RT device manager.
         //#############################################################################
         class DevManCudaRt
         {
@@ -303,7 +303,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CUDA device device type trait specialization.
+            //! The CUDA RT device device type trait specialization.
             //#############################################################################
             template<>
             struct DevType<
@@ -312,7 +312,7 @@ namespace alpaka
                 using type = dev::DevCudaRt;
             };
             //#############################################################################
-            //! The CUDA device manager device type trait specialization.
+            //! The CUDA RT device manager device type trait specialization.
             //#############################################################################
             template<>
             struct DevType<
@@ -322,7 +322,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The CUDA device device get trait specialization.
+            //! The CUDA RT device device get trait specialization.
             //#############################################################################
             template<>
             struct GetDev<
@@ -337,7 +337,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The CUDA device name get trait specialization.
+            //! The CUDA RT device name get trait specialization.
             //#############################################################################
             template<>
             struct GetName<
@@ -357,7 +357,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The CUDA device available memory get trait specialization.
+            //! The CUDA RT device available memory get trait specialization.
             //#############################################################################
             template<>
             struct GetMemBytes<
@@ -386,7 +386,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The CUDA device free memory get trait specialization.
+            //! The CUDA RT device free memory get trait specialization.
             //#############################################################################
             template<>
             struct GetFreeMemBytes<
@@ -414,7 +414,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The CUDA device reset trait specialization.
+            //! The CUDA RT device reset trait specialization.
             //#############################################################################
             template<>
             struct Reset<
@@ -435,7 +435,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The CUDA device device manager type trait specialization.
+            //! The CUDA RT device device manager type trait specialization.
             //#############################################################################
             template<>
             struct DevManType<
@@ -444,7 +444,7 @@ namespace alpaka
                 using type = dev::DevManCudaRt;
             };
             //#############################################################################
-            //! The CUDA device manager device manager type trait specialization.
+            //! The CUDA RT device manager device manager type trait specialization.
             //#############################################################################
             template<>
             struct DevManType<
@@ -454,27 +454,12 @@ namespace alpaka
             };
         }
     }
-    namespace event
-    {
-        namespace traits
-        {
-            //#############################################################################
-            //! The CUDA device event type trait specialization.
-            //#############################################################################
-            template<>
-            struct EventType<
-                dev::DevCudaRt>
-            {
-                using type = event::EventCudaRt;
-            };
-        }
-    }
     namespace stream
     {
         namespace traits
         {
             //#############################################################################
-            //! The CUDA device stream type trait specialization.
+            //! The CUDA RT device stream type trait specialization.
             //#############################################################################
             template<>
             struct StreamType<

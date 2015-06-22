@@ -65,8 +65,8 @@ namespace alpaka
                 //#############################################################################
                 class DevCpuImpl
                 {
-                    friend stream::StreamCpuAsync;                   // StreamCpuAsync::StreamCpuAsync calls RegisterStream.
-                    friend stream::cpu::detail::StreamCpuAsyncImpl;  // StreamCpuAsyncImpl::~StreamCpuAsyncImpl calls UnregisterStream.
+                    friend stream::StreamCpuAsync;                   // StreamCpuAsync::StreamCpuAsync calls RegisterAsyncStream.
+                    friend stream::cpu::detail::StreamCpuAsyncImpl;  // StreamCpuAsyncImpl::~StreamCpuAsyncImpl calls UnregisterAsyncStream.
                 public:
                     //-----------------------------------------------------------------------------
                     //! Constructor.
@@ -96,7 +96,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! \return The list of all streams on this device.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto GetAllStreams() const noexcept(false)
+                    ALPAKA_FCT_HOST auto GetAllAsyncStreamImpls() const noexcept(false)
                     -> std::vector<std::shared_ptr<stream::cpu::detail::StreamCpuAsyncImpl>>
                     {
                         std::vector<std::shared_ptr<stream::cpu::detail::StreamCpuAsyncImpl>> vspStreams;
@@ -123,7 +123,7 @@ namespace alpaka
                     //! Registers the given stream on this device.
                     //! NOTE: Every stream has to be registered for correct functionality of device wait operations!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto RegisterStream(std::shared_ptr<stream::cpu::detail::StreamCpuAsyncImpl> spStreamImpl)
+                    ALPAKA_FCT_HOST auto RegisterAsyncStream(std::shared_ptr<stream::cpu::detail::StreamCpuAsyncImpl> spStreamImpl)
                     -> void
                     {
                         std::lock_guard<std::mutex> lk(m_Mutex);
@@ -136,7 +136,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Unregisters the given stream from this device.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto UnregisterStream(stream::cpu::detail::StreamCpuAsyncImpl const * const pStream) noexcept(false)
+                    ALPAKA_FCT_HOST auto UnregisterAsyncStream(stream::cpu::detail::StreamCpuAsyncImpl const * const pStream) noexcept(false)
                     -> void
                     {
                         std::lock_guard<std::mutex> lk(m_Mutex);
@@ -406,21 +406,6 @@ namespace alpaka
             };
         }
     }
-    namespace event
-    {
-        namespace traits
-        {
-            //#############################################################################
-            //! The CPU device event type trait specialization.
-            //#############################################################################
-            template<>
-            struct EventType<
-                dev::DevCpu>
-            {
-                using type = event::EventCpuAsync;
-            };
-        }
-    }
     namespace stream
     {
         namespace traits
@@ -459,7 +444,7 @@ namespace alpaka
                     // Get all the streams on the device at the time of invocation.
                     // All streams added afterwards are ignored.
                     auto vspStreams(
-                        dev.m_spDevCpuImpl->GetAllStreams());
+                        dev.m_spDevCpuImpl->GetAllAsyncStreamImpls());
 
                     // Enqueue an event in every stream on the device.
                     // \TODO: This should be done atomically for all streams. 

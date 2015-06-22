@@ -98,7 +98,6 @@ namespace alpaka
 
         namespace traits
         {
-
             //#############################################################################
             //! The grid block index get trait specialization for classes with IdxGbBase member type.
             //#############################################################################

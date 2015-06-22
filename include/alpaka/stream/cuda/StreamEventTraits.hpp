@@ -28,12 +28,27 @@
 
 namespace alpaka
 {
+    namespace event
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The CUDA RT stream event type trait specialization.
+            //#############################################################################
+            template<>
+            struct EventType<
+                stream::StreamCudaRt>
+            {
+                using type = event::EventCudaRt;
+            };
+        }
+    }
     namespace stream
     {
         namespace traits
         {
             //#############################################################################
-            //! The CUDA device stream enqueue trait specialization.
+            //! The CUDA RT stream enqueue trait specialization.
             //#############################################################################
             template<>
             struct StreamEnqueue<
@@ -59,7 +74,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CUDA device stream event wait trait specialization.
+            //! The CUDA RT stream event wait trait specialization.
             //#############################################################################
             template<>
             struct WaiterWaitFor<
@@ -81,7 +96,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The CUDA device event wait trait specialization.
+            //! The CUDA RT device event wait trait specialization.
             //!
             //! Any future work submitted in any stream of this device will wait for event to complete before beginning execution.
             //#############################################################################

@@ -91,7 +91,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_HOST ~StreamCpuAsyncImpl() noexcept(false)
                     {
-                        m_Dev.m_spDevCpuImpl->UnregisterStream(this);
+                        m_Dev.m_spDevCpuImpl->UnregisterAsyncStream(this);
                     }
                 public:
                     boost::uuids::uuid const m_Uuid;    //!< The unique ID.
@@ -115,7 +115,7 @@ namespace alpaka
                 dev::DevCpu & dev) :
                     m_spAsyncStreamCpu(std::make_shared<cpu::detail::StreamCpuAsyncImpl>(dev))
             {
-                dev.m_spDevCpuImpl->RegisterStream(m_spAsyncStreamCpu);
+                dev.m_spDevCpuImpl->RegisterAsyncStream(m_spAsyncStreamCpu);
             }
             //-----------------------------------------------------------------------------
             //! Copy constructor.

@@ -43,7 +43,7 @@ namespace alpaka
             namespace detail
             {
                 //#############################################################################
-                //! The CUDA device stream implementation.
+                //! The CUDA RT stream implementation.
                 //#############################################################################
                 class StreamCudaImpl final
                 {
@@ -112,7 +112,7 @@ namespace alpaka
         }
 
         //#############################################################################
-        //! The CUDA device stream.
+        //! The CUDA RT stream.
         //#############################################################################
         class StreamCudaRt final
         {
@@ -171,7 +171,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CUDA device stream device get trait specialization.
+            //! The CUDA RT stream device get trait specialization.
             //#############################################################################
             template<>
             struct GetDev<
@@ -191,7 +191,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CUDA device stream stream type trait specialization.
+            //! The CUDA RT stream stream type trait specialization.
             //#############################################################################
             template<>
             struct StreamType<
@@ -201,7 +201,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The CUDA device stream test trait specialization.
+            //! The CUDA RT stream test trait specialization.
             //#############################################################################
             template<>
             struct StreamTest<
@@ -238,7 +238,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CUDA device stream thread wait trait specialization.
+            //! The CUDA RT stream thread wait trait specialization.
             //!
             //! Blocks execution of the calling thread until the stream has finished processing all previously requested tasks (kernels, data copies, ...)
             //#############################################################################

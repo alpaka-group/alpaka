@@ -32,12 +32,27 @@
 
 namespace alpaka
 {
+    namespace event
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The CPU device stream event type trait specialization.
+            //#############################################################################
+            template<>
+            struct EventType<
+                stream::StreamCpuAsync>
+            {
+                using type = event::EventCpuAsync;
+            };
+        }
+    }
     namespace stream
     {
         namespace traits
         {
             //#############################################################################
-            //! The CPU device enqueue trait specialization.
+            //! The CPU device stream enqueue trait specialization.
             //#############################################################################
             template<>
             struct StreamEnqueue<
@@ -105,7 +120,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The CPU device enqueue trait specialization.
+            //! The CPU device stream enqueue trait specialization.
             //#############################################################################
             template<>
             struct StreamEnqueue<
@@ -191,7 +206,7 @@ namespace alpaka
                     // Get all the streams on the device at the time of invocation.
                     // All streams added afterwards are ignored.
                     auto vspStreams(
-                        dev.m_spDevCpuImpl->GetAllStreams());
+                        dev.m_spDevCpuImpl->GetAllAsyncStreamImpls());
 
                     // Let all the streams wait for this event.
                     // \TODO: This should be done atomically for all streams. 

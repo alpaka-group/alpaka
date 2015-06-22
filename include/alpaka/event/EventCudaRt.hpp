@@ -41,7 +41,7 @@ namespace alpaka
             namespace detail
             {
                 //#############################################################################
-                //! The CUDA device event implementation.
+                //! The CUDA RT device event implementation.
                 //#############################################################################
                 class EventCudaImpl final
                 {
@@ -111,7 +111,7 @@ namespace alpaka
         }
 
         //#############################################################################
-        //! The CUDA device event.
+        //! The CUDA RT device event.
         //#############################################################################
         class EventCudaRt final
         {
@@ -173,7 +173,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CUDA device event device get trait specialization.
+            //! The CUDA RT device event device get trait specialization.
             //#############################################################################
             template<>
             struct GetDev<
@@ -193,7 +193,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CUDA device event event type trait specialization.
+            //! The CUDA RT device event event type trait specialization.
             //#############################################################################
             template<>
             struct EventType<
@@ -203,7 +203,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The CUDA device event test trait specialization.
+            //! The CUDA RT device event test trait specialization.
             //#############################################################################
             template<>
             struct EventTest<
@@ -240,7 +240,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CUDA device event thread wait trait specialization.
+            //! The CUDA RT device event thread wait trait specialization.
             //!
             //! Waits until the event itself and therefore all tasks preceding it in the stream it is enqueued to have been completed.
             //! If the event is not enqueued to a stream the method returns immediately.
