@@ -77,7 +77,7 @@ Dependencies
 
 [Boost](http://boost.org/) 1.56+ is the only mandatory external dependency.
 The **alpaka** library itself just requires header-only libraries.
-However some of the examples require different boost libraries (e.g. program_options) to be built.
+However some of the accelerator back-end implementations require different boost libraries to be built.
 
 When an accelerator back-end using *CUDA* is enabled, version *7.0* of the *CUDA SDK* is the minimum requirement.
 
