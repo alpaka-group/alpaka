@@ -26,14 +26,9 @@
 #include <alpaka/stream/Traits.hpp>             // stream::StreamEnqueue, ...
 #include <alpaka/wait/Traits.hpp>               // CurrentThreadWaitFor, WaiterWaitFor
 
-#include <alpaka/core/ConcurrentExecPool.hpp>   // ConcurrentExecPool
-
+#include <boost/core/ignore_unused.hpp>         // boost::ignore_unused
 #include <boost/uuid/uuid.hpp>                  // boost::uuids::uuid
 #include <boost/uuid/uuid_generators.hpp>       // boost::uuids::random_generator
-
-#include <type_traits>                          // std::is_base
-#include <thread>                               // std::thread
-#include <mutex>                                // std::mutex
 
 namespace alpaka
 {
@@ -46,58 +41,43 @@ namespace alpaka
                 //#############################################################################
                 //! The CPU device stream implementation.
                 //#############################################################################
-                class StreamCpuAsyncImpl final
+                class StreamCpuSyncImpl final
                 {
-                private:
-                    //#############################################################################
-                    //
-                    //#############################################################################
-                    using ThreadPool = alpaka::detail::ConcurrentExecPool<
-                        std::thread,                // The concurrent execution type.
-                        std::promise,               // The promise type.
-                        void,                       // The type yielding the current concurrent execution.
-                        std::mutex,                 // The mutex type to use. Only required if TbYield is true.
-                        std::condition_variable,    // The condition variable type to use. Only required if TbYield is true.
-                        false>;                     // If the threads should yield.
-
                 public:
                     //-----------------------------------------------------------------------------
                     //! Constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST StreamCpuAsyncImpl(
+                    ALPAKA_FCT_HOST StreamCpuSyncImpl(
                         dev::DevCpu & dev) :
                             m_Uuid(boost::uuids::random_generator()()),
-                            m_Dev(dev),
-                            m_workerThread(1u, 128u)
+                            m_Dev(dev)
                     {}
                     //-----------------------------------------------------------------------------
                     //! Copy constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST StreamCpuAsyncImpl(StreamCpuAsyncImpl const &) = delete;
+                    ALPAKA_FCT_HOST StreamCpuSyncImpl(StreamCpuSyncImpl const &) = delete;
                     //-----------------------------------------------------------------------------
                     //! Move constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST StreamCpuAsyncImpl(StreamCpuAsyncImpl &&) = default;
+                    ALPAKA_FCT_HOST StreamCpuSyncImpl(StreamCpuSyncImpl &&) = default;
                     //-----------------------------------------------------------------------------
                     //! Copy assignment operator.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto operator=(StreamCpuAsyncImpl const &) -> StreamCpuAsyncImpl & = delete;
+                    ALPAKA_FCT_HOST auto operator=(StreamCpuSyncImpl const &) -> StreamCpuSyncImpl & = delete;
                     //-----------------------------------------------------------------------------
                     //! Move assignment operator.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto operator=(StreamCpuAsyncImpl &&) -> StreamCpuAsyncImpl & = default;
+                    ALPAKA_FCT_HOST auto operator=(StreamCpuSyncImpl &&) -> StreamCpuSyncImpl & = default;
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST ~StreamCpuAsyncImpl() noexcept(false)
-                    {
-                        m_Dev.m_spDevCpuImpl->UnregisterStream(this);
-                    }
+                    ALPAKA_FCT_HOST ~StreamCpuSyncImpl() = default;// noexcept(false)
+                    //{
+                        //m_Dev.m_spDevCpuImpl->UnregisterStream(this);
+                    //}
                 public:
                     boost::uuids::uuid const m_Uuid;    //!< The unique ID.
                     dev::DevCpu const m_Dev;            //!< The device this stream is bound to.
-
-                    ThreadPool m_workerThread;
                 };
             }
         }
@@ -105,46 +85,46 @@ namespace alpaka
         //#############################################################################
         //! The CPU device stream.
         //#############################################################################
-        class StreamCpuAsync final
+        class StreamCpuSync final
         {
         public:
             //-----------------------------------------------------------------------------
             //! Constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST StreamCpuAsync(
+            ALPAKA_FCT_HOST StreamCpuSync(
                 dev::DevCpu & dev) :
-                    m_spAsyncStreamCpu(std::make_shared<cpu::detail::StreamCpuAsyncImpl>(dev))
+                    m_spSyncStreamCpu(std::make_shared<cpu::detail::StreamCpuSyncImpl>(dev))
             {
-                dev.m_spDevCpuImpl->RegisterStream(m_spAsyncStreamCpu);
+                //dev.m_spDevCpuImpl->RegisterStream(m_spAsyncStreamCpu);
             }
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST StreamCpuAsync(StreamCpuAsync const &) = default;
+            ALPAKA_FCT_HOST StreamCpuSync(StreamCpuSync const &) = default;
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST StreamCpuAsync(StreamCpuAsync &&) = default;
+            ALPAKA_FCT_HOST StreamCpuSync(StreamCpuSync &&) = default;
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator=(StreamCpuAsync const &) -> StreamCpuAsync & = default;
+            ALPAKA_FCT_HOST auto operator=(StreamCpuSync const &) -> StreamCpuSync & = default;
             //-----------------------------------------------------------------------------
             //! Move assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator=(StreamCpuAsync &&) -> StreamCpuAsync & = default;
+            ALPAKA_FCT_HOST auto operator=(StreamCpuSync &&) -> StreamCpuSync & = default;
             //-----------------------------------------------------------------------------
             //! Equality comparison operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator==(StreamCpuAsync const & rhs) const
+            ALPAKA_FCT_HOST auto operator==(StreamCpuSync const & rhs) const
             -> bool
             {
-                return (m_spAsyncStreamCpu->m_Uuid == rhs.m_spAsyncStreamCpu->m_Uuid);
+                return (m_spSyncStreamCpu->m_Uuid == rhs.m_spSyncStreamCpu->m_Uuid);
             }
             //-----------------------------------------------------------------------------
             //! Inequality comparison operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator!=(StreamCpuAsync const & rhs) const
+            ALPAKA_FCT_HOST auto operator!=(StreamCpuSync const & rhs) const
             -> bool
             {
                 return !((*this) == rhs);
@@ -152,10 +132,10 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST ~StreamCpuAsync() = default;
+            ALPAKA_FCT_HOST ~StreamCpuSync() = default;
 
         public:
-            std::shared_ptr<cpu::detail::StreamCpuAsyncImpl> m_spAsyncStreamCpu;
+            std::shared_ptr<cpu::detail::StreamCpuSyncImpl> m_spSyncStreamCpu;
         };
     }
 
@@ -168,13 +148,13 @@ namespace alpaka
             //#############################################################################
             template<>
             struct GetDev<
-                stream::StreamCpuAsync>
+                stream::StreamCpuSync>
             {
                 ALPAKA_FCT_HOST static auto getDev(
-                    stream::StreamCpuAsync const & stream)
+                    stream::StreamCpuSync const & stream)
                 -> dev::DevCpu
                 {
-                    return stream.m_spAsyncStreamCpu->m_Dev;
+                    return stream.m_spSyncStreamCpu->m_Dev;
                 }
             };
         }
@@ -188,9 +168,9 @@ namespace alpaka
             //#############################################################################
             template<>
             struct StreamType<
-                stream::StreamCpuAsync>
+                stream::StreamCpuSync>
             {
-                using type = stream::StreamCpuAsync;
+                using type = stream::StreamCpuSync;
             };
 
             //#############################################################################
@@ -198,17 +178,18 @@ namespace alpaka
             //#############################################################################
             template<>
             struct StreamTest<
-                stream::StreamCpuAsync>
+                stream::StreamCpuSync>
             {
                 ALPAKA_FCT_HOST static auto streamTest(
-                    stream::StreamCpuAsync const & stream)
+                    stream::StreamCpuSync const & stream)
                 -> bool
                 {
-                    return stream.m_spAsyncStreamCpu->m_workerThread.isQueueEmpty();
+                    boost::ignore_unused(stream);
+                    return true;
                 }
             };
         }
     }
 }
 
-#include <alpaka/stream/cpu/async/StreamEventTraits.hpp>
+#include <alpaka/stream/cpu/sync/StreamEventTraits.hpp>

@@ -41,17 +41,17 @@ namespace alpaka
             //#############################################################################
             template<>
             struct StreamEnqueue<
-                std::shared_ptr<stream::cpu::detail::StreamCpuImpl>,
+                std::shared_ptr<stream::cpu::detail::StreamCpuAsyncImpl>,
                 event::EventCpuAsync>
             {
                 ALPAKA_FCT_HOST static auto streamEnqueue(
-                    std::shared_ptr<stream::cpu::detail::StreamCpuImpl> & spStreamImpl,
+                    std::shared_ptr<stream::cpu::detail::StreamCpuAsyncImpl> & spStreamImpl,
                     event::EventCpuAsync & event)
                 -> void
                 {
                     // Copy the shared pointer of the event implementation.
                     // This is forwarded to the lambda that is enqueued into the stream to ensure that the event implementation is alive as long as it is enqueued.
-                    auto spEventCpuImpl(event.m_spEventCpuImpl);
+                    auto spEventCpuImpl(event.m_spEventCpuAsyncImpl);
 
                     // Setting the event state and enqueuing it has to be atomic.
                     std::lock_guard<std::mutex> lk(spEventCpuImpl->m_Mutex);
@@ -131,17 +131,17 @@ namespace alpaka
             //#############################################################################
             template<>
             struct WaiterWaitFor<
-                std::shared_ptr<stream::cpu::detail::StreamCpuImpl>,
+                std::shared_ptr<stream::cpu::detail::StreamCpuAsyncImpl>,
                 event::EventCpuAsync>
             {
                 ALPAKA_FCT_HOST static auto waiterWaitFor(
-                    std::shared_ptr<stream::cpu::detail::StreamCpuImpl> & spStream,
+                    std::shared_ptr<stream::cpu::detail::StreamCpuAsyncImpl> & spStream,
                     event::EventCpuAsync const & event)
                 -> void
                 {
                     // Copy the shared pointer of the event implementation.
                     // This is forwarded to the lambda that is enqueued into the stream to ensure that the event implementation is alive as long as it is enqueued.
-                    auto spEventCpuImpl(event.m_spEventCpuImpl);
+                    auto spEventCpuImpl(event.m_spEventCpuAsyncImpl);
 
                     {
                         std::lock_guard<std::mutex> lk(spEventCpuImpl->m_Mutex);

@@ -47,7 +47,7 @@ namespace alpaka
         {
             namespace detail
             {
-                class StreamCpuImpl;
+                class StreamCpuAsyncImpl;
             }
         }
     }
@@ -66,7 +66,7 @@ namespace alpaka
                 class DevCpuImpl
                 {
                     friend stream::StreamCpuAsync;                   // StreamCpuAsync::StreamCpuAsync calls RegisterStream.
-                    friend stream::cpu::detail::StreamCpuImpl;  // StreamCpuImpl::~StreamCpuImpl calls UnregisterStream.
+                    friend stream::cpu::detail::StreamCpuAsyncImpl;  // StreamCpuAsyncImpl::~StreamCpuAsyncImpl calls UnregisterStream.
                 public:
                     //-----------------------------------------------------------------------------
                     //! Constructor.
@@ -97,9 +97,9 @@ namespace alpaka
                     //! \return The list of all streams on this device.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_HOST auto GetAllStreams() const noexcept(false)
-                    -> std::vector<std::shared_ptr<stream::cpu::detail::StreamCpuImpl>>
+                    -> std::vector<std::shared_ptr<stream::cpu::detail::StreamCpuAsyncImpl>>
                     {
-                        std::vector<std::shared_ptr<stream::cpu::detail::StreamCpuImpl>> vspStreams;
+                        std::vector<std::shared_ptr<stream::cpu::detail::StreamCpuAsyncImpl>> vspStreams;
 
                         std::lock_guard<std::mutex> lk(m_Mutex);
 
@@ -123,7 +123,7 @@ namespace alpaka
                     //! Registers the given stream on this device.
                     //! NOTE: Every stream has to be registered for correct functionality of device wait operations!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto RegisterStream(std::shared_ptr<stream::cpu::detail::StreamCpuImpl> spStreamImpl)
+                    ALPAKA_FCT_HOST auto RegisterStream(std::shared_ptr<stream::cpu::detail::StreamCpuAsyncImpl> spStreamImpl)
                     -> void
                     {
                         std::lock_guard<std::mutex> lk(m_Mutex);
@@ -136,7 +136,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Unregisters the given stream from this device.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto UnregisterStream(stream::cpu::detail::StreamCpuImpl const * const pStream) noexcept(false)
+                    ALPAKA_FCT_HOST auto UnregisterStream(stream::cpu::detail::StreamCpuAsyncImpl const * const pStream) noexcept(false)
                     -> void
                     {
                         std::lock_guard<std::mutex> lk(m_Mutex);
@@ -145,7 +145,7 @@ namespace alpaka
                         auto const itFind(std::find_if(
                             m_mapStreams.begin(),
                             m_mapStreams.end(),
-                            [pStream](std::pair<stream::cpu::detail::StreamCpuImpl *, std::weak_ptr<stream::cpu::detail::StreamCpuImpl>> const & pair)
+                            [pStream](std::pair<stream::cpu::detail::StreamCpuAsyncImpl *, std::weak_ptr<stream::cpu::detail::StreamCpuAsyncImpl>> const & pair)
                             {
                                 return (pStream == pair.first);
                             }));
@@ -161,7 +161,7 @@ namespace alpaka
 
                 private:
                     std::mutex mutable m_Mutex;
-                    std::map<stream::cpu::detail::StreamCpuImpl *, std::weak_ptr<stream::cpu::detail::StreamCpuImpl>> m_mapStreams;
+                    std::map<stream::cpu::detail::StreamCpuAsyncImpl *, std::weak_ptr<stream::cpu::detail::StreamCpuAsyncImpl>> m_mapStreams;
                 };
             }
         }
