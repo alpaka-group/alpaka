@@ -26,6 +26,7 @@
 #include <alpaka/idx/gb/IdxGbCudaBuiltIn.hpp>       // IdxGbCudaBuiltIn
 #include <alpaka/idx/bt/IdxBtCudaBuiltIn.hpp>       // IdxBtCudaBuiltIn
 #include <alpaka/atomic/AtomicCudaBuiltIn.hpp>      // AtomicCudaBuiltIn
+#include <alpaka/math/MathCudaBuiltIn.hpp>          // MathCudaBuiltIn
 
 // Specialized traits.
 #include <alpaka/acc/Traits.hpp>                    // AccType
@@ -78,7 +79,8 @@ namespace alpaka
                     public workdiv::WorkDivCudaBuiltIn<TDim>,
                     public idx::gb::IdxGbCudaBuiltIn<TDim>,
                     public idx::bt::IdxBtCudaBuiltIn<TDim>,
-                    public atomic::AtomicCudaBuiltIn
+                    public atomic::AtomicCudaBuiltIn,
+                    public math::MathCudaBuiltIn
                 {
                 public:
                     /*template<
@@ -98,7 +100,8 @@ namespace alpaka
                         workdiv::WorkDivCudaBuiltIn<TDim>(),
                         idx::gb::IdxGbCudaBuiltIn<TDim>(),
                         idx::bt::IdxBtCudaBuiltIn<TDim>(),
-                        atomic::AtomicCudaBuiltIn()
+                        atomic::AtomicCudaBuiltIn(),
+                        math::MathCudaBuiltIn()
                     {}
 
                 public:

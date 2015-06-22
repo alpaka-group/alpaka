@@ -26,6 +26,7 @@
 #include <alpaka/idx/gb/IdxGbRef.hpp>           // IdxGbRef
 #include <alpaka/idx/bt/IdxBtOmp.hpp>           // IdxBtOmp
 #include <alpaka/atomic/AtomicOmpCritSec.hpp>   // AtomicOmpCritSec
+#include <alpaka/math/MathStl.hpp>              // MathStl
 
 // Specialized traits.
 #include <alpaka/acc/Traits.hpp>                // AccType
@@ -98,7 +99,8 @@ namespace alpaka
                             public workdiv::WorkDivMembers<TDim>,
                             public idx::gb::IdxGbRef<TDim>,
                             public idx::bt::IdxBtOmp<TDim>,
-                            public atomic::AtomicOmpCritSec
+                            public atomic::AtomicOmpCritSec,
+                            public math::MathStl
                         {
                         public:
                             friend class ::alpaka::exec::omp::omp4::cpu::detail::ExecCpuOmp4Impl<TDim>;
@@ -115,6 +117,7 @@ namespace alpaka
                                     idx::gb::IdxGbRef<TDim>(m_vuiGridBlockIdx),
                                     idx::bt::IdxBtOmp<TDim>(),
                                     atomic::AtomicOmpCritSec(),
+                                    math::MathStl(),
                                     m_vuiGridBlockIdx(Vec<TDim>::zeros())
                             {}
 

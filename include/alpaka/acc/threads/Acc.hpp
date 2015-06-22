@@ -27,6 +27,7 @@
 #include <alpaka/idx/bt/IdxBtRefThreadIdMap.hpp>    // IdxBtRefThreadIdMap
 #include <alpaka/atomic/AtomicStlLock.hpp>          // AtomicStlLock
 #include <alpaka/acc/threads/Barrier.hpp>           // BarrierThreads
+#include <alpaka/math/MathStl.hpp>              // MathStl
 
 // Specialized traits.
 #include <alpaka/acc/Traits.hpp>                    // AccType
@@ -88,7 +89,8 @@ namespace alpaka
                     public workdiv::WorkDivMembers<TDim>,
                     public idx::gb::IdxGbRef<TDim>,
                     public idx::bt::IdxBtRefThreadIdMap<TDim>,
-                    public atomic::AtomicStlLock
+                    public atomic::AtomicStlLock,
+                    public math::MathStl
                 {
                 public:
                     friend class ::alpaka::exec::threads::detail::ExecCpuThreadsImpl<TDim>;
@@ -105,6 +107,7 @@ namespace alpaka
                             idx::gb::IdxGbRef<TDim>(m_vuiGridBlockIdx),
                             idx::bt::IdxBtRefThreadIdMap<TDim>(m_mThreadsToIndices),
                             atomic::AtomicStlLock(),
+                            math::MathStl(),
                             m_vuiGridBlockIdx(Vec<TDim>::zeros()),
                             m_uiNumThreadsPerBlock(workdiv::getWorkDiv<Block, Threads>(workDiv).prod())
                     {}
