@@ -24,7 +24,7 @@
 #include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC
 
 #include <utility>                  // std::declval
-#include <type_traits>              // std::is_integral, ...
+#include <type_traits>              // std::is_integral, std::is_floating_point, ...
 
 namespace alpaka
 {
@@ -72,6 +72,18 @@ namespace alpaka
             }
 
             //-----------------------------------------------------------------------------
+            //! The type of the uniform floating point distribution.
+            //-----------------------------------------------------------------------------
+            template<
+                typename T,
+                typename TAcc>
+            using DistNormalRealT = decltype(
+                traits::CreateNormalReal<
+                    T,
+                    TAcc>
+                ::createNormalReal(
+                    std::declval<TAcc const &>()));
+            //-----------------------------------------------------------------------------
             //! \return A normal float distribution with mean 0.0f and standard deviation 1.0f.
             //-----------------------------------------------------------------------------
             template<
@@ -79,12 +91,7 @@ namespace alpaka
                 typename TAcc>
             ALPAKA_FCT_HOST_ACC auto createNormalReal(
                 TAcc const & acc)
-            -> decltype(
-                    traits::CreateNormalReal<
-                        TAcc,
-                        T>
-                    ::createNormalReal(
-                        std::declval<TAcc const &>()))
+            -> DistNormalRealT<T, TAcc>
             {
                 static_assert(
                     std::is_floating_point<T>::value,
@@ -96,20 +103,28 @@ namespace alpaka
                 ::createNormalReal(
                     acc);
             }
+
             //-----------------------------------------------------------------------------
-            //! \return A uniform float distribution [0.0, 1.0).
+            //! The type of the uniform floating point distribution.
+            //-----------------------------------------------------------------------------
+            template<
+                typename T,
+                typename TAcc>
+            using DistUniRealT = decltype(
+                traits::CreateUniformReal<
+                    T,
+                    TAcc>
+                ::createUniformReal(
+                    std::declval<TAcc const &>()));
+            //-----------------------------------------------------------------------------
+            //! \return A uniform floating point distribution [0.0, 1.0).
             //-----------------------------------------------------------------------------
             template<
                 typename T,
                 typename TAcc>
             ALPAKA_FCT_HOST_ACC auto createUniformReal(
                 TAcc const & acc)
-            -> decltype(
-                    traits::CreateUniformReal<
-                        TAcc,
-                        T>
-                    ::createUniformReal(
-                        std::declval<TAcc const &>()))
+            -> DistUniRealT<T, TAcc>
             {
                 static_assert(
                     std::is_floating_point<T>::value,
@@ -121,6 +136,19 @@ namespace alpaka
                 ::createUniformReal(
                     acc);
             }
+
+            //-----------------------------------------------------------------------------
+            //! The type of the uniform integer distribution.
+            //-----------------------------------------------------------------------------
+            template<
+                typename T,
+                typename TAcc>
+            using DistUniUintT = decltype(
+                traits::CreateUniformUint<
+                    T,
+                    TAcc>
+                ::createUniformUint(
+                    std::declval<TAcc const &>()));
             //-----------------------------------------------------------------------------
             //! \return A uniform integer distribution [0, UINT_MAX].
             //-----------------------------------------------------------------------------
@@ -129,12 +157,7 @@ namespace alpaka
                 typename TAcc>
             ALPAKA_FCT_HOST_ACC auto createUniformUint(
                 TAcc const & acc)
-            -> decltype(
-                    traits::CreateUniformUint<
-                        TAcc,
-                        T>
-                    ::createUniformUint(
-                        std::declval<TAcc const &>()))
+            -> DistUniUintT<T, TAcc>
             {
                 static_assert(
                     std::is_integral<T>::value && std::is_unsigned<T>::value,
@@ -167,6 +190,18 @@ namespace alpaka
             }
 
             //-----------------------------------------------------------------------------
+            //! The type of the default generator.
+            //-----------------------------------------------------------------------------
+            template<
+                typename TAcc>
+            using GenDefaultT = decltype(
+                traits::CreateDefault<
+                    TAcc>
+                ::createDefault(
+                    std::declval<TAcc const &>(),
+                    std::declval<std::uint32_t const &>(),
+                    std::declval<std::uint32_t const &>()));
+            //-----------------------------------------------------------------------------
             //! \return A default random number generator.
             //-----------------------------------------------------------------------------
             template<
@@ -175,13 +210,7 @@ namespace alpaka
                 TAcc const & acc,
                 std::uint32_t const & seed,
                 std::uint32_t const & subsequence)
-            -> decltype(
-                    traits::CreateDefault<
-                        TAcc>
-                    ::createDefault(
-                        acc,
-                        seed,
-                        subsequence))
+            -> GenDefaultT<TAcc>
             {
                 return traits::CreateDefault<
                     TAcc>
