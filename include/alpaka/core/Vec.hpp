@@ -373,6 +373,10 @@ namespace alpaka
         typename TVal = UInt>
     using Vec3 = Vec<dim::Dim3, TVal>;
 
+    template<
+        typename TVal = UInt>
+    using Vec4 = Vec<dim::Dim4, TVal>;
+
     //-----------------------------------------------------------------------------
     //! \return The element wise sum of two vectors.
     //-----------------------------------------------------------------------------

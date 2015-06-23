@@ -218,7 +218,7 @@ namespace alpaka
             //! The CPU device event thread wait trait specialization.
             //!
             //! Waits until the event itself and therefore all tasks preceding it in the stream it is enqueued to have been completed.
-            //! If the event is not enqueued to a stream the method returns immediately. 
+            //! If the event is not enqueued to a stream the method returns immediately.
             //#############################################################################
             template<>
             struct CurrentThreadWaitFor<
@@ -235,7 +235,7 @@ namespace alpaka
             //! The CPU device event implementation thread wait trait specialization.
             //!
             //! Waits until the event itself and therefore all tasks preceding it in the stream it is enqueued to have been completed.
-            //! If the event is not enqueued to a stream the method returns immediately. 
+            //! If the event is not enqueued to a stream the method returns immediately.
             //!
             //! NOTE: This method is for internal usage only.
             //#############################################################################

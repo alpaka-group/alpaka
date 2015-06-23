@@ -309,7 +309,7 @@ namespace alpaka
                             acc,
                             args...);
 
-                        // We have to sync all threads here because if a thread would finish before all threads have been started, 
+                        // We have to sync all threads here because if a thread would finish before all threads have been started,
                         // a new thread could get the recycled (then duplicate) thread id!
                         acc.syncBlockThreads(itThreadToBarrier);
                     }
@@ -376,7 +376,7 @@ namespace alpaka
             -> void
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-                        
+
                 auto const & workDiv(*static_cast<workdiv::WorkDivMembers<TDim> const *>(this));
 
                 m_Stream.m_spAsyncStreamCpu->m_workerThread.enqueueTask(

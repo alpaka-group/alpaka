@@ -22,8 +22,12 @@
 #pragma once
 
 #if BOOST_OS_WINDOWS || BOOST_OS_CYGWIN
-    #define NOMINMAX
-    #define WIN32_LEAN_AND_MEAN
+    #ifndef NOMINMAX
+        #define NOMINMAX
+    #endif
+    #ifndef WIN32_LEAN_AND_MEAN
+        #define WIN32_LEAN_AND_MEAN
+    #endif
     // We could use some more macros to reduce the number of sub-headers included, but this would restrict user code.
     #include <windows.h>
 #elif BOOST_OS_UNIX

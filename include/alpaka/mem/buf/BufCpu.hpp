@@ -352,7 +352,7 @@ namespace alpaka
                         return pitch.m_uiPitchBytes;
                     }
                 };
-            }            
+            }
         }
         namespace buf
         {

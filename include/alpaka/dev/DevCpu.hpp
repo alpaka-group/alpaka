@@ -277,7 +277,7 @@ namespace alpaka
             }
         }
     }
-    
+
     namespace event
     {
         class EventCpuAsync;
@@ -447,7 +447,7 @@ namespace alpaka
                         dev.m_spDevCpuImpl->GetAllAsyncStreamImpls());
 
                     // Enqueue an event in every stream on the device.
-                    // \TODO: This should be done atomically for all streams. 
+                    // \TODO: This should be done atomically for all streams.
                     // Furthermore there should not even be a chance to enqueue something between getting the streams and adding our wait events!
                     std::vector<event::EventCpuAsync> vEvents;
                     for(auto && spStream : vspStreams)

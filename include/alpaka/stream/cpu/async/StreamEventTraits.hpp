@@ -209,7 +209,7 @@ namespace alpaka
                         dev.m_spDevCpuImpl->GetAllAsyncStreamImpls());
 
                     // Let all the streams wait for this event.
-                    // \TODO: This should be done atomically for all streams. 
+                    // \TODO: This should be done atomically for all streams.
                     // Furthermore there should not even be a chance to enqueue something between getting the streams and adding our wait events!
                     for(auto && spStream : vspStreams)
                     {

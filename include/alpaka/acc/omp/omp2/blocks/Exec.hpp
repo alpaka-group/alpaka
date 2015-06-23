@@ -256,7 +256,7 @@ namespace alpaka
             -> void
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-                        
+
                 auto const & workDiv(*static_cast<workdiv::WorkDivMembers<TDim> const *>(this));
 
                 m_Stream.m_spAsyncStreamCpu->m_workerThread.enqueueTask(

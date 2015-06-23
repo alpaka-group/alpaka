@@ -67,7 +67,7 @@ namespace alpaka
                     typename... TArgs>
                 ALPAKA_FCT_HOST_ACC static auto getBlockSharedExternMemSizeBytes(
                     Vec<TDim> const & vuiBlockThreadExtents,
-                    TArgs && ... args)
+                    TArgs const & ... args)
                 -> UInt
                 {
                     boost::ignore_unused(vuiBlockThreadExtents);
