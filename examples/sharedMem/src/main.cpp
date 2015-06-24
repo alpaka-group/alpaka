@@ -191,10 +191,11 @@ struct SharedMemTester
 
         // Set the grid blocks extent.
         alpaka::workdiv::WorkDivMembers<alpaka::dim::Dim1> const workDiv(
-            alpaka::workdiv::getValidWorkDiv<
-                TAcc>(
+            alpaka::workdiv::getValidWorkDiv<TAcc>(
                 devAcc,
-                512u));
+                512u,
+                false,
+                alpaka::workdiv::BlockExtentsSubDivRestrictions::Unrestricted));
 
         std::cout
             << "SharedMemTester("

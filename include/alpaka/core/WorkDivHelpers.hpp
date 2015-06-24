@@ -33,6 +33,8 @@
 #include <cmath>                                // std::ceil
 #include <algorithm>                            // std::min
 #include <functional>                           // std::bind
+#include <set>                                  // std::set
+#include <array>                                // std::array
 
 //-----------------------------------------------------------------------------
 //! The alpaka library.
@@ -41,6 +43,16 @@ namespace alpaka
 {
     namespace workdiv
     {
+        //#############################################################################
+        //! The block extent subdivision restrictions.
+        //#############################################################################
+        enum class BlockExtentsSubDivRestrictions
+        {
+            EqualExtents,       //!< The block thread extents will be equal in all dimensions.
+            CloseToEqualExtents,//!< The block thread extents will be as close to equal as possible in all dimensions.
+            Unrestricted,
+        };
+
         namespace detail
         {
             //-----------------------------------------------------------------------------
@@ -53,91 +65,237 @@ namespace alpaka
             template<
                 typename T,
                 typename = typename std::enable_if<std::is_integral<T>::value && std::is_unsigned<T>::value>::type>
-            ALPAKA_FCT_HOST auto nextLowerOrEqualFactor(
+            ALPAKA_FCT_HOST auto nextDivisorLowerOrEqual(
                 T const & uiMaxDivisor,
                 T const & uiDividend)
             -> T
             {
                 T uiDivisor(uiMaxDivisor);
-                // \TODO: This is not very efficient. Replace with a better algorithm.
+
                 while((uiDividend%uiDivisor) != 0)
                 {
                     --uiDivisor;
                 }
+
                 return uiDivisor;
             }
-
-            //#############################################################################
-            //! Subdivides the given grid thread extents into blocks restricted by:
-            //! 1. The maximum block thread extents
-            //! 2. The maximum block thread count
-            //! 3. The requirement of the block thread extents to divide the grid thread extents without remainder
-            //!
-            //! \param vuiGridThreadExtents
-            //!     The full extents of threads in the grid.
-            //! \param vuiMaxBlockThreadExtents
-            //!     The maximum extents of threads in a block.
-            //! \param uiMaxBlockThreadsCount
-            //!     The maximum number of threads in a block.
-            //! \param bRequireBlockThreadExtentsToDivideGridThreadExtents
-            //!     If this is true, the grid thread extents will be multiples of the corresponding block thread extents.
-            //!     NOTE: If vuiGridThreadExtents is prime (or otherwise bad chosen) in a dimension, the block thread extent will be one in this dimension.
-            //#############################################################################
+            //-----------------------------------------------------------------------------
+            //! \param uiVal The value to find divisors of.
+            //! \param uiMaxDivisor The maximum.
+            //! \return A list of all divisors less then or euqal the given maximum.
+            //-----------------------------------------------------------------------------
             template<
-                typename TDim>
-            ALPAKA_FCT_HOST auto subdivideGridThreads(
-                Vec<TDim> const & vuiGridThreadExtents,
-                Vec<TDim> const & vuiMaxBlockThreadExtents,
-                UInt const & uiMaxBlockThreadsCount,
-                bool bRequireBlockThreadExtentsToDivideGridThreadExtents = true)
-            -> workdiv::WorkDivMembers<TDim>
+                typename T,
+                typename = typename std::enable_if<std::is_integral<T>::value && std::is_unsigned<T>::value>::type>
+            std::set<T> allDivisorsLessOrEqual(
+                T const & uiVal,
+                T const & uiMaxDivisor)
             {
-                assert(uiMaxBlockThreadsCount>0);
-                for(std::size_t i(0); i<TDim::value; ++i)
+                std::set<T> setDivisors;
+
+                for(T i(1); i <= std::min(uiVal, uiMaxDivisor); ++i)
                 {
-                    assert(vuiGridThreadExtents[i]>0);
+                    if(uiVal % i == 0)
+                    {
+                        setDivisors.insert(uiVal/i);
+                    }
                 }
 
-                // 1. Restrict the max block thread extents with the grid thread extents.
-                // This removes dimensions not required in the given grid thread extents.
-                // This has to be done before the uiMaxBlockThreadsCount clipping to get the maximum correctly.
-                auto vuiBlockThreadExtents(Vec<TDim>::ones());
-                for(std::size_t i(0); i<TDim::value; ++i)
-                {
-                    vuiBlockThreadExtents[i] = std::min(vuiMaxBlockThreadExtents[i], vuiGridThreadExtents[i]);
-                }
+                return setDivisors;
+            }
+        }
 
-                // 2. If the block thread extents require more threads then available on the accelerator, clip it.
-                if(vuiBlockThreadExtents.prod() > uiMaxBlockThreadsCount)
+        //-----------------------------------------------------------------------------
+        //! Subdivides the given grid thread extents into blocks restricted by:
+        //! 1. The maximum block thread extents
+        //! 2. The maximum block thread count
+        //! 3. The requirement of the block thread extents to divide the grid thread extents without remainder
+        //! 4. The requirement of the block extents.
+        //!
+        //! \param vuiGridThreadExtents
+        //!     The full extents of threads in the grid.
+        //! \param vuiMaxBlockThreadExtents
+        //!     The maximum extents of threads in a block.
+        //! \param uiMaxBlockThreadsCount
+        //!     The maximum number of threads in a block.
+        //! \param bRequireBlockThreadExtentsToDivideGridThreadExtents
+        //!     If this is true, the grid thread extents will be multiples of the corresponding block thread extents.
+        //!     NOTE: If this is true and vuiGridThreadExtents is prime (or otherwise bad chosen) in a dimension, the block thread extent will be one in this dimension.
+        //! \param eBlockExtentsSubDivRestrictions
+        //!     The block extent subdivision restrictions.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TDim>
+        ALPAKA_FCT_HOST auto subDivideGridThreads(
+            Vec<TDim> const & vuiGridThreadExtents,
+            Vec<TDim> const & vuiMaxBlockThreadExtents,
+            UInt const & uiMaxBlockThreadsCount,
+            bool bRequireBlockThreadExtentsToDivideGridThreadExtents = true,
+            BlockExtentsSubDivRestrictions eBlockExtentsSubDivRestrictions = BlockExtentsSubDivRestrictions::Unrestricted)
+        -> workdiv::WorkDivMembers<TDim>
+        {
+            // Assert valid input.
+            assert(uiMaxBlockThreadsCount>0u);
+            for(std::size_t i(0u); i<TDim::value; ++i)
+            {
+                assert(vuiGridThreadExtents[i]>0u);
+                assert(vuiMaxBlockThreadExtents[i]>0u);
+            }
+
+            // Initialize the block thread extents with the maximum possible.
+            auto vuiBlockThreadExtents(vuiMaxBlockThreadExtents);
+
+            // Restrict the max block thread extents with the grid thread extents.
+            // This removes dimensions not required in the given grid thread extents.
+            // This has to be done before the uiMaxBlockThreadsCount clipping to get the maximum correctly.
+            for(std::size_t i(0); i<TDim::value; ++i)
+            {
+                vuiBlockThreadExtents[i] = std::min(vuiBlockThreadExtents[i], vuiGridThreadExtents[i]);
+            }
+
+            // For equal block thread extents, restrict it to its minimum component.
+            // For example (512, 256, 1024) will get (256, 256, 256).
+            if(eBlockExtentsSubDivRestrictions == BlockExtentsSubDivRestrictions::EqualExtents)
+            {
+                auto const uiMinBlockThreadExtent(vuiBlockThreadExtents.min());
+                for(std::size_t i(0u); i<TDim::value; ++i)
                 {
-                    // Begin in last dimension.
-                    UInt uiDim(0u);
-                    // Very primitive clipping. Just halve it until it fits repeatedly iterating over the dimensions.
+                    vuiBlockThreadExtents[i] = uiMinBlockThreadExtent;
+                }
+            }
+
+            // Adjust vuiBlockThreadExtents if its product is too large.
+            if(vuiBlockThreadExtents.prod() > uiMaxBlockThreadsCount)
+            {
+                // Satisfy the following equation:
+                // uiMaxBlockThreadsCount >= vuiBlockThreadExtents.prod()
+                // For example 1024 >= 512 * 512 * 1024
+
+                // For equal block thread extent this is easily the nth root of uiMaxBlockThreadsCount.
+                if(eBlockExtentsSubDivRestrictions == BlockExtentsSubDivRestrictions::EqualExtents)
+                {
+                    double const fNthRoot(std::pow(uiMaxBlockThreadsCount, 1.0/static_cast<double>(TDim::value)));
+                    UInt const uiNthRoot(static_cast<UInt>(fNthRoot));
+                    for(std::size_t i(0u); i<TDim::value; ++i)
+                    {
+                        vuiBlockThreadExtents[i] = uiNthRoot;
+                    }
+                }
+                else if(eBlockExtentsSubDivRestrictions == BlockExtentsSubDivRestrictions::CloseToEqualExtents)
+                {
+                    // Very primitive clipping. Just halve the largest value until it fits.
                     while(vuiBlockThreadExtents.prod() > uiMaxBlockThreadsCount)
                     {
-                        vuiBlockThreadExtents[uiDim] = std::max(static_cast<UInt>(1u), static_cast<UInt>(vuiBlockThreadExtents[uiDim] / 2u));
-                        uiDim = (uiDim+1u) % TDim::value;
+                        auto const uiMaxElemIdx(vuiBlockThreadExtents.maxElem());
+                        vuiBlockThreadExtents[uiMaxElemIdx] = vuiBlockThreadExtents[uiMaxElemIdx] / 2u;
                     }
                 }
-
-                if(bRequireBlockThreadExtentsToDivideGridThreadExtents)
+                else
                 {
-                    // Make the block thread extents divide the grid thread extents.
+                    // Very primitive clipping. Just halve the smallest value until it fits.
+                    while(vuiBlockThreadExtents.prod() > uiMaxBlockThreadsCount)
+                    {
+                        // Compute the minimum element index but ignore ones. 
+                        // Ones compare always larger to everything else.
+                        auto const uiMinElemIdx(
+                            static_cast<UInt>(
+                                std::distance(
+                                    &vuiBlockThreadExtents[0],
+                                    std::min_element(
+                                        &vuiBlockThreadExtents[0],
+                                        &vuiBlockThreadExtents[TDim::value-1u],
+                                        [](UInt const & a, UInt const & b)
+                                        {
+                                            // This first case is redundant.
+                                            /*if((a == 1u) && (b == 1u))
+                                            {
+                                                return false;
+                                            }
+                                            else */if(a == 1u)
+                                            {
+                                                return false;
+                                            }
+                                            else if(b == 1u)
+                                            {
+                                                return true;
+                                            }
+                                            else
+                                            {
+                                                return a < b;
+                                            }
+                                        }))));
+                        vuiBlockThreadExtents[uiMinElemIdx] = vuiBlockThreadExtents[uiMinElemIdx] / 2u;
+                    }
+                }
+            }
+
+            // Make the block thread extents divide the grid thread extents.
+            if(bRequireBlockThreadExtentsToDivideGridThreadExtents)
+            {
+                if(eBlockExtentsSubDivRestrictions == BlockExtentsSubDivRestrictions::EqualExtents)
+                {
+                    // For equal size block extents we have to compute the gcd of all grid thread extents that is less then the current maximal block thread extent.
+                    // For this we compute the divisors of all grid thread extents less then the current maximal block thread extent.
+                    std::array<std::set<UInt>, TDim::value> gridThreadExtentsDivisors;
+                    for(std::size_t i(0u); i<TDim::value; ++i)
+                    {
+                        gridThreadExtentsDivisors[i] =
+                            detail::allDivisorsLessOrEqual(
+                                vuiGridThreadExtents[i],
+                                vuiBlockThreadExtents[i]);
+                    }
+                    // The maximal common divisor of all block thread extents is the optimal solution.
+                    std::set<UInt> intersects[2u];
+                    for(std::size_t i(1u); i<TDim::value; ++i)
+                    {
+                        intersects[(i-1u)%2u] = gridThreadExtentsDivisors[0];
+                        intersects[(i)%2u].clear();
+                        set_intersection(
+                            intersects[(i-1u)%2u].begin(),
+                            intersects[(i-1u)%2u].end(),
+                            gridThreadExtentsDivisors[i].begin(),
+                            gridThreadExtentsDivisors[i].end(),
+                            std::inserter(intersects[i%2], intersects[i%2u].begin()));
+                    }
+                    UInt const uiMaxCommonDivisor(*(--intersects[(TDim::value-1)%2u].end()));
+                    for(std::size_t i(0u); i<TDim::value; ++i)
+                    {
+                        vuiBlockThreadExtents[i] = uiMaxCommonDivisor;
+                    }
+                }
+                else if(eBlockExtentsSubDivRestrictions == BlockExtentsSubDivRestrictions::CloseToEqualExtents)
+                {
                     for(std::size_t i(0); i<TDim::value; ++i)
                     {
-                        vuiBlockThreadExtents[i] = detail::nextLowerOrEqualFactor(vuiBlockThreadExtents[i], vuiGridThreadExtents[i]);
+                        vuiBlockThreadExtents[i] =
+                            detail::nextDivisorLowerOrEqual(
+                                vuiBlockThreadExtents[i],
+                                vuiGridThreadExtents[i]);
                     }
                 }
-
-                // Set the grid block extents (rounded to the next integer not less then the quotient.
-                auto vuiGridBlockExtents(Vec<TDim>::ones());
-                for(std::size_t i(0); i<TDim::value; ++i)
+                else
                 {
-                    vuiGridBlockExtents[i] = static_cast<UInt>(std::ceil(static_cast<double>(vuiGridThreadExtents[0u]) / static_cast<double>(vuiBlockThreadExtents[0u])));
+                    for(std::size_t i(0); i<TDim::value; ++i)
+                    {
+                        vuiBlockThreadExtents[i] =
+                            detail::nextDivisorLowerOrEqual(
+                                vuiBlockThreadExtents[i],
+                                vuiGridThreadExtents[i]);
+                    }
                 }
-
-                return workdiv::WorkDivMembers<TDim>(vuiGridBlockExtents, vuiBlockThreadExtents);
             }
+
+            // Set the grid block extents (rounded to the next integer not less then the quotient.
+            auto vuiGridBlockExtents(Vec<TDim>::ones());
+            for(std::size_t i(0); i<TDim::value; ++i)
+            {
+                vuiGridBlockExtents[i] =
+                    static_cast<UInt>(
+                        std::ceil(static_cast<double>(vuiGridThreadExtents[i])
+                        / static_cast<double>(vuiBlockThreadExtents[i])));
+            }
+
+            return workdiv::WorkDivMembers<TDim>(vuiGridBlockExtents, vuiBlockThreadExtents);
         }
 
         //-----------------------------------------------------------------------------
@@ -153,16 +311,18 @@ namespace alpaka
         ALPAKA_FCT_HOST auto getValidWorkDiv(
             TDev const & dev,
             TExtents const & gridThreadExtents = TExtents(),
-            bool bRequireBlockThreadExtentsToDivideGridThreadExtents = true)
+            bool bRequireBlockThreadExtentsToDivideGridThreadExtents = true,
+            BlockExtentsSubDivRestrictions eBlockExtentsSubDivRestrictions = BlockExtentsSubDivRestrictions::Unrestricted)
         -> workdiv::WorkDivMembers<dim::DimT<TExtents>>
         {
             auto const devProps(acc::getAccDevProps<TAcc>(dev));
 
-            return detail::subdivideGridThreads(
+            return subDivideGridThreads(
                 extent::getExtentsVec<UInt>(gridThreadExtents),
                 devProps.m_vuiBlockThreadExtentsMax,
                 devProps.m_uiBlockThreadsCountMax,
-                bRequireBlockThreadExtentsToDivideGridThreadExtents);
+                bRequireBlockThreadExtentsToDivideGridThreadExtents,
+                eBlockExtentsSubDivRestrictions);
         }
 
         //-----------------------------------------------------------------------------

@@ -183,6 +183,8 @@ namespace alpaka
                     event::EventCpuSync const & event)
                 -> bool
                 {
+                    boost::ignore_unused(event);
+
                     return true;
                 }
             };

@@ -183,8 +183,7 @@ public:
         }
     }
     //-----------------------------------------------------------------------------
-    //! \return
-    //!     The number of iterations until the Mandelbrot iteration with the given Value reaches the absolute value of 2.
+    //! \return The number of iterations until the Mandelbrot iteration with the given Value reaches the absolute value of 2.
     //!     Only does uiMaxIterations steps and returns uiMaxIterations if the value would be higher.
     //-----------------------------------------------------------------------------
     ALPAKA_FCT_ACC static auto iterateMandelbrot(
@@ -373,7 +372,8 @@ struct MandelbrotKernelTester
             alpaka::workdiv::getValidWorkDiv<TAcc>(
                 devAcc,
                 v2uiExtents,
-                false));
+                false,
+                alpaka::workdiv::BlockExtentsSubDivRestrictions::Unrestricted));
 
         std::cout
             << "MandelbrotKernelTester("

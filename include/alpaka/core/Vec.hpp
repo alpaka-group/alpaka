@@ -39,6 +39,7 @@
 #include <ostream>                          // std::ostream
 #include <cassert>                          // assert
 #include <type_traits>                      // std::enable_if
+#include <algorithm>                        // std::min, std::max, std::min_element, std::max_element
 
 namespace alpaka
 {
@@ -317,6 +318,58 @@ namespace alpaka
         {
             return foldrAll(std::plus<TVal>());
         }
+        //-----------------------------------------------------------------------------
+        //! \return The min of all values.
+        //-----------------------------------------------------------------------------
+        ALPAKA_FCT_HOST_ACC auto min() const
+        -> TVal
+        {
+            return foldrAll(
+                [](TVal a, TVal b)
+                {
+                    return std::min(a,b);
+                });
+        }
+        //-----------------------------------------------------------------------------
+        //! \return The max of all values.
+        //-----------------------------------------------------------------------------
+        ALPAKA_FCT_HOST_ACC auto max() const
+        -> TVal
+        {
+            return foldrAll(
+                [](TVal a, TVal b)
+                {
+                    return std::max(a,b);
+                });
+        }
+        //-----------------------------------------------------------------------------
+        //! \return The index of the minimal element.
+        //-----------------------------------------------------------------------------
+        ALPAKA_FCT_HOST_ACC auto minElem() const
+        -> UInt
+        {
+            return
+                static_cast<UInt>(
+                    std::distance(
+                        std::begin(m_auiData),
+                        std::min_element(
+                            std::begin(m_auiData),
+                            std::end(m_auiData))));
+        }
+        //-----------------------------------------------------------------------------
+        //! \return The index of the maximal element.
+        //-----------------------------------------------------------------------------
+        ALPAKA_FCT_HOST_ACC auto maxElem() const
+        -> UInt
+        {
+            return
+                static_cast<UInt>(
+                    std::distance(
+                        std::begin(m_auiData),
+                        std::max_element(
+                            std::begin(m_auiData),
+                            std::end(m_auiData))));
+        }
 
     public: // \TODO: Make private.
         //#############################################################################
@@ -428,7 +481,7 @@ namespace alpaka
         Vec<TDim, TVal> const & v)
     -> std::ostream &
     {
-        os << "[";
+        os << "(";
         for(UInt i(0); i<TDim::value; ++i)
         {
             os << v[i];
@@ -437,7 +490,7 @@ namespace alpaka
                 os << ", ";
             }
         }
-        os << "]";
+        os << ")";
 
         return os;
     }

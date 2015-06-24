@@ -255,21 +255,16 @@ struct MatMulTester
             static_cast<alpaka::Vec2<>::Val>(n));
 
         // Let alpaka calculate good block and grid sizes given our full problem extents.
-        alpaka::workdiv::WorkDivMembers<alpaka::dim::Dim2> workDiv(
+        alpaka::workdiv::WorkDivMembers<alpaka::dim::Dim2> const workDiv(
             alpaka::workdiv::getValidWorkDiv<TAcc>(
                 devAcc,
                 v2uiExtentsC,
-                false));
-        // Assure that the extents are square.
-        auto const uiMinExtent(std::min(workDiv.m_vuiBlockThreadExtents[0u], workDiv.m_vuiBlockThreadExtents[1u]));
-        workDiv.m_vuiGridBlockExtents[0u] = static_cast<alpaka::Vec2<>::Val>(std::ceil(static_cast<double>(m) / static_cast<double>(uiMinExtent)));
-        workDiv.m_vuiBlockThreadExtents[0u] = uiMinExtent;
-        workDiv.m_vuiGridBlockExtents[1u] = static_cast<alpaka::Vec2<>::Val>(std::ceil(static_cast<double>(n) / static_cast<double>(uiMinExtent)));
-        workDiv.m_vuiBlockThreadExtents[1u] = uiMinExtent;
+                false,
+                alpaka::workdiv::BlockExtentsSubDivRestrictions::EqualExtents));
 
         std::cout
             << "profileAcceleratedMatMulKernel("
-            << ", m:" << m
+            << "m:" << m
             << ", n:" << n
             << ", k:" << k
             << ", accelerator: " << alpaka::acc::getAccName<TAcc>()
@@ -368,9 +363,7 @@ public:
 //-----------------------------------------------------------------------------
 //! Program entry point.
 //-----------------------------------------------------------------------------
-auto main(
-    int argc,
-    char * argv[])
+auto main()
 -> int
 {
     try

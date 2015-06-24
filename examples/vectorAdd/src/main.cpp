@@ -106,7 +106,8 @@ struct VectorAddKernelTester
             alpaka::workdiv::getValidWorkDiv<TAcc>(
                 devAcc,
                 v1uiExtents,
-                false));
+                false,
+                alpaka::workdiv::BlockExtentsSubDivRestrictions::Unrestricted));
 
         std::cout
             << "VectorAddKernelTester("
