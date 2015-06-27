@@ -99,4 +99,14 @@ namespace alpaka
     //-----------------------------------------------------------------------------
     // NOTE: Setting the value type to std::size_t leads to invalid data on CUDA devices (at least with VC12).
     using Uint = std::uint32_t;
+
+    //#############################################################################
+    //! A false_type being dependent on a ignored template parameter.
+    //! This allows to use static_assert in uninstantiated template specializations without triggering.
+    //#############################################################################
+    template<
+        typename T>
+    struct dependent_false_type :
+        std::false_type
+    {};
 }

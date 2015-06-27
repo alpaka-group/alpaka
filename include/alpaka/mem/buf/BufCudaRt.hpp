@@ -597,7 +597,7 @@ namespace alpaka
                     //!
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_HOST static auto pin(
-                        mem::buf::BufCudaRt<TElem, TDim> const & buf)
+                        mem::buf::BufCudaRt<TElem, TDim> & buf)
                     -> void
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -618,12 +618,34 @@ namespace alpaka
                     //!
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_HOST static auto unpin(
-                        mem::buf::BufCudaRt<TElem, TDim> const & buf)
+                        mem::buf::BufCudaRt<TElem, TDim> & buf)
                     -> void
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                         // CUDA device memory is always pinned, it can not be swapped out.
+                    }
+                };
+                //#############################################################################
+                //! The BufCudaRt memory pin state trait specialization.
+                //#############################################################################
+                template<
+                    typename TElem,
+                    typename TDim>
+                struct IsPinned<
+                    mem::buf::BufCudaRt<TElem, TDim>>
+                {
+                    //-----------------------------------------------------------------------------
+                    //!
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST static auto isPinned(
+                        mem::buf::BufCudaRt<TElem, TDim> const & buf)
+                    -> bool
+                    {
+                        ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                        // CUDA device memory is always pinned, it can not be swapped out.
+                        return true;
                     }
                 };
             }
@@ -680,7 +702,7 @@ namespace alpaka
                     //!
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_HOST static auto map(
-                        mem::buf::BufCpu<TElem, TDim> const & buf,
+                        mem::buf::BufCpu<TElem, TDim> & buf,
                         dev::DevCudaRt const & dev)
                     -> void
                     {
@@ -714,7 +736,7 @@ namespace alpaka
                     //!
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_HOST static auto unmap(
-                        mem::buf::BufCpu<TElem, TDim> const & buf,
+                        mem::buf::BufCpu<TElem, TDim> & buf,
                         dev::DevCudaRt const & dev)
                     -> void
                     {

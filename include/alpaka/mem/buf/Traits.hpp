@@ -95,6 +95,14 @@ namespace alpaka
                     typename TBuf,
                     typename TSfinae = void>
                 struct Unpin;
+
+                //#############################################################################
+                //! The memory pin state trait.
+                //#############################################################################
+                template<
+                    typename TBuf,
+                    typename TSfinae = void>
+                struct IsPinned;
             }
 
             //#############################################################################
@@ -152,7 +160,7 @@ namespace alpaka
                 typename TBuf,
                 typename TDev>
             ALPAKA_FCT_HOST auto map(
-                TBuf const & buf,
+                TBuf & buf,
                 TDev const & dev)
             -> void
             {
@@ -175,7 +183,7 @@ namespace alpaka
                 typename TBuf,
                 typename TDev>
             ALPAKA_FCT_HOST auto unmap(
-                TBuf const & buf,
+                TBuf & buf,
                 TDev const & dev)
             -> void
             {
@@ -190,12 +198,12 @@ namespace alpaka
             //! Pins the buffer.
             //!
             //! \tparam TBuf The buffer type.
-            //! \param buf The buffer to map into the device memory.
+            //! \param buf The buffer to pin in the device memory.
             //-----------------------------------------------------------------------------
             template<
                 typename TBuf>
             ALPAKA_FCT_HOST auto pin(
-                TBuf const & buf)
+                TBuf & buf)
             -> void
             {
                 return traits::Pin<
@@ -207,17 +215,34 @@ namespace alpaka
             //! Unpins the buffer.
             //!
             //! \tparam TBuf The buffer type.
-            //! \param buf The buffer to unmap from the device memory.
+            //! \param buf The buffer to unpin from the device memory.
             //-----------------------------------------------------------------------------
             template<
                 typename TBuf>
             ALPAKA_FCT_HOST auto unpin(
-                TBuf const & buf)
+                TBuf & buf)
             -> void
             {
                 return traits::Unpin<
                     TBuf>
                 ::unpin(
+                    buf);
+            }
+            //-----------------------------------------------------------------------------
+            //! The pin state of the buffer.
+            //!
+            //! \tparam TBuf The buffer type.
+            //! \param buf The buffer to get the pin state of.
+            //-----------------------------------------------------------------------------
+            template<
+                typename TBuf>
+            ALPAKA_FCT_HOST auto isPinned(
+                TBuf const & buf)
+            -> bool
+            {
+                return traits::IsPinned<
+                    TBuf>
+                ::isPinned(
                     buf);
             }
         }

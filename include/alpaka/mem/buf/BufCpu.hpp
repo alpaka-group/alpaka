@@ -43,6 +43,106 @@ namespace alpaka
     {
         namespace buf
         {
+            namespace cpu
+            {
+                namespace detail
+                {
+                    //#############################################################################
+                    //! The CPU memory buffer.
+                    //#############################################################################
+                    template<
+                        typename TElem,
+                        typename TDim>
+                    class BufCpuImpl
+                    {
+                    public:
+                        //-----------------------------------------------------------------------------
+                        //! Constructor
+                        //-----------------------------------------------------------------------------
+                        template<
+                            typename TExtents>
+                        ALPAKA_FCT_HOST BufCpuImpl(
+                            dev::DevCpu const & dev,
+                            TExtents const & extents) :
+                                m_Dev(dev),
+                                m_vExtentsElements(extent::getExtentsVecNd<TDim, Uint>(extents)),
+                                m_pMem(
+                                    reinterpret_cast<TElem *>(
+                                        boost::alignment::aligned_alloc(16u, sizeof(TElem) * computeElementCount(extents)))),
+                                m_uiPitchBytes(extent::getWidth<Uint>(extents) * sizeof(TElem))
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
+                                ,m_bPinned(false)
+#endif
+                        {
+                            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                            std::cout << BOOST_CURRENT_FUNCTION
+                                << " e: " << m_vExtentsElements
+                                << " ptr: " << static_cast<void *>(m_pMem)
+                                << " pitch: " << m_uiPitchBytes
+                                << std::endl;
+#endif
+                        }
+                        //-----------------------------------------------------------------------------
+                        //! Copy constructor.
+                        //-----------------------------------------------------------------------------
+                        ALPAKA_FCT_HOST BufCpuImpl(BufCpuImpl const &) = delete;
+                        //-----------------------------------------------------------------------------
+                        //! Move constructor.
+                        //-----------------------------------------------------------------------------
+                        ALPAKA_FCT_HOST BufCpuImpl(BufCpuImpl &&) = default;
+                        //-----------------------------------------------------------------------------
+                        //! Copy assignment operator.
+                        //-----------------------------------------------------------------------------
+                        ALPAKA_FCT_HOST auto operator=(BufCpuImpl const &) -> BufCpuImpl & = delete;
+                        //-----------------------------------------------------------------------------
+                        //! Move assignment operator.
+                        //-----------------------------------------------------------------------------
+                        ALPAKA_FCT_HOST auto operator=(BufCpuImpl &&) -> BufCpuImpl & = default;
+                        //-----------------------------------------------------------------------------
+                        //! Destructor.
+                        //-----------------------------------------------------------------------------
+                        ALPAKA_FCT_HOST ~BufCpuImpl() noexcept(false)
+                        {
+                            ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
+                            // Unpin this memory if it is currently pinned.
+                            mem::buf::unpin(*this);
+#endif
+                            assert(m_pMem);
+                            boost::alignment::aligned_free(
+                                reinterpret_cast<void *>(m_pMem));
+                        }
+
+                    private:
+                        //-----------------------------------------------------------------------------
+                        //! \return The number of elements to allocate.
+                        //-----------------------------------------------------------------------------
+                        template<
+                            typename TExtents>
+                        ALPAKA_FCT_HOST static auto computeElementCount(
+                            TExtents const & extents)
+                        -> Uint
+                        {
+                            auto const uiExtentsElementCount(extent::getProductOfExtents<Uint>(extents));
+                            assert(uiExtentsElementCount>0);
+
+                            return uiExtentsElementCount;
+                        }
+
+                    public:
+                        dev::DevCpu const m_Dev;
+                        Vec<TDim> const m_vExtentsElements;
+                        TElem * const m_pMem;
+                        Uint const m_uiPitchBytes;
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
+                        bool m_bPinned;
+#endif
+                    };
+                }
+            }
             //#############################################################################
             //! The CPU memory buffer.
             //#############################################################################
@@ -51,10 +151,6 @@ namespace alpaka
                 typename TDim>
             class BufCpu
             {
-            private:
-                using Elem = TElem;
-                using Dim = TDim;
-
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor
@@ -64,58 +160,27 @@ namespace alpaka
                 ALPAKA_FCT_HOST BufCpu(
                     dev::DevCpu const & dev,
                     TExtents const & extents) :
-                        m_Dev(dev),
-                        m_vExtentsElements(extent::getExtentsVecNd<TDim, UInt>(extents)),
-                        m_spMem(
-                            reinterpret_cast<TElem *>(
-                                boost::alignment::aligned_alloc(16u, sizeof(TElem) * computeElementCount(extents))), &BufCpu::freeBuffer),
-                        m_uiPitchBytes(extent::getWidth<UInt>(extents) * sizeof(TElem))
-                {
-                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                    std::cout << BOOST_CURRENT_FUNCTION
-                        << " e: " << m_vExtentsElements
-                        << " ptr: " << static_cast<void *>(m_spMem.get())
-                        << " pitch: " << m_uiPitchBytes
-                        << std::endl;
-#endif
-                }
-
-            private:
+                        m_spBufCpuImpl(std::make_shared<cpu::detail::BufCpuImpl<TElem, TDim>>(dev, extents))
+                {}
                 //-----------------------------------------------------------------------------
-                //! \return The number of elements to allocate.
+                //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                template<
-                    typename TExtents>
-                ALPAKA_FCT_HOST static auto computeElementCount(
-                    TExtents const & extents)
-                -> UInt
-                {
-                    auto const uiExtentsElementCount(extent::getProductOfExtents<UInt>(extents));
-                    assert(uiExtentsElementCount>0);
-
-                    return uiExtentsElementCount;
-                }
+                ALPAKA_FCT_HOST BufCpu(BufCpu const &) = default;
                 //-----------------------------------------------------------------------------
-                //! Frees the shared buffer.
+                //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto freeBuffer(
-                    TElem * pBuffer)
-                -> void
-                {
-                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-                    assert(pBuffer);
-                    boost::alignment::aligned_free(
-                        reinterpret_cast<void *>(pBuffer));
-                }
+                ALPAKA_FCT_HOST BufCpu(BufCpu &&) = default;
+                //-----------------------------------------------------------------------------
+                //! Copy assignment operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST auto operator=(BufCpu const &) -> BufCpu & = default;
+                //-----------------------------------------------------------------------------
+                //! Move assignment operator.
+                //-----------------------------------------------------------------------------
+                ALPAKA_FCT_HOST auto operator=(BufCpu &&) -> BufCpu & = default;
 
             public:
-                dev::DevCpu m_Dev;
-                Vec<TDim> m_vExtentsElements;
-                std::shared_ptr<TElem> m_spMem;
-                UInt m_uiPitchBytes;
+                std::shared_ptr<cpu::detail::BufCpuImpl<TElem, TDim>> m_spBufCpuImpl;
             };
         }
     }
@@ -128,7 +193,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The BufCudaRt device type trait specialization.
+            //! The BufCpu device type trait specialization.
             //#############################################################################
             template<
                 typename TElem,
@@ -151,7 +216,7 @@ namespace alpaka
                     mem::buf::BufCpu<TElem, TDim> const & buf)
                 -> dev::DevCpu
                 {
-                    return buf.m_Dev;
+                    return buf.m_spBufCpuImpl->m_Dev;
                 }
             };
         }
@@ -194,9 +259,9 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getExtent(
                     mem::buf::BufCpu<TElem, TDim> const & extents)
-                -> UInt
+                -> Uint
                 {
-                    return extents.m_vExtentsElements[TIdx::value];
+                    return extents.m_spBufCpuImpl->m_vExtentsElements[TIdx::value];
                 }
             };
         }
@@ -208,7 +273,7 @@ namespace alpaka
             namespace traits
             {
                 //#############################################################################
-                //! The CPU device memory view type trait specialization.
+                //! The BufCpu memory view type trait specialization.
                 //#############################################################################
                 template<
                     typename TElem,
@@ -275,7 +340,7 @@ namespace alpaka
                         mem::buf::BufCpu<TElem, TDim> const & buf)
                     -> TElem const *
                     {
-                        return buf.m_spMem.get();
+                        return buf.m_spBufCpuImpl->m_pMem;
                     }
                     //-----------------------------------------------------------------------------
                     //!
@@ -284,7 +349,7 @@ namespace alpaka
                         mem::buf::BufCpu<TElem, TDim> & buf)
                     -> TElem *
                     {
-                        return buf.m_spMem.get();
+                        return buf.m_spBufCpuImpl->m_pMem;
                     }
                 };
                 //#############################################################################
@@ -307,7 +372,7 @@ namespace alpaka
                     {
                         if(dev == dev::getDev(buf))
                         {
-                            return buf.m_spMem.get();
+                            return buf.m_spBufCpuImpl->m_pMem;
                         }
                         else
                         {
@@ -324,7 +389,7 @@ namespace alpaka
                     {
                         if(dev == dev::getDev(buf))
                         {
-                            return buf.m_spMem.get();
+                            return buf.m_spBufCpuImpl->m_pMem;
                         }
                         else
                         {
@@ -339,7 +404,7 @@ namespace alpaka
                     typename TElem,
                     typename TDim>
                 struct GetPitchBytes<
-                    std::integral_constant<UInt, TDim::value - 1u>,
+                    std::integral_constant<Uint, TDim::value - 1u>,
                     mem::buf::BufCpu<TElem, TDim>>
                 {
                     //-----------------------------------------------------------------------------
@@ -347,9 +412,9 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_HOST static auto getPitchBytes(
                         mem::buf::BufCpu<TElem, TDim> const & pitch)
-                    -> UInt
+                    -> Uint
                     {
-                        return pitch.m_uiPitchBytes;
+                        return pitch.m_spBufCpuImpl->m_uiPitchBytes;
                     }
                 };
             }
@@ -359,7 +424,7 @@ namespace alpaka
             namespace traits
             {
                 //#############################################################################
-                //! The CPU device memory buffer type trait specialization.
+                //! The BufCpu memory buffer type trait specialization.
                 //#############################################################################
                 template<
                     typename TElem,
@@ -372,7 +437,7 @@ namespace alpaka
                     using type = mem::buf::BufCpu<TElem, TDim>;
                 };
                 //#############################################################################
-                //! The CPU device memory allocation trait specialization.
+                //! The BufCpu memory allocation trait specialization.
                 //#############################################################################
                 template<
                     typename TElem,
@@ -402,7 +467,7 @@ namespace alpaka
                     }
                 };
                 //#############################################################################
-                //! The CPU device memory mapping trait specialization.
+                //! The BufCpu memory mapping trait specialization.
                 //#############################################################################
                 template<
                     typename TElem,
@@ -415,7 +480,7 @@ namespace alpaka
                     //!
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_HOST static auto map(
-                        mem::buf::BufCpu<TElem, TDim> const & buf,
+                        mem::buf::BufCpu<TElem, TDim> & buf,
                         dev::DevCpu const & dev)
                     -> void
                     {
@@ -429,7 +494,7 @@ namespace alpaka
                     }
                 };
                 //#############################################################################
-                //! The CPU device memory unmapping trait specialization.
+                //! The BufCpu memory unmapping trait specialization.
                 //#############################################################################
                 template<
                     typename TElem,
@@ -442,7 +507,7 @@ namespace alpaka
                     //!
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_HOST static auto unmap(
-                        mem::buf::BufCpu<TElem, TDim> const & buf,
+                        mem::buf::BufCpu<TElem, TDim> & buf,
                         dev::DevCpu const & dev)
                     -> void
                     {
@@ -456,7 +521,7 @@ namespace alpaka
                     }
                 };
                 //#############################################################################
-                //! The CPU device memory pinning trait specialization.
+                //! The BufCpu memory pinning trait specialization.
                 //#############################################################################
                 template<
                     typename TElem,
@@ -468,29 +533,36 @@ namespace alpaka
                     //!
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_HOST static auto pin(
-                        mem::buf::BufCpu<TElem, TDim> const & buf)
+                        mem::buf::BufCpu<TElem, TDim> & buf)
                     -> void
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
+                        if(!mem::buf::isPinned(buf))
+                        {
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
-                        // - cudaHostRegisterDefault:
-                        //   See http://cgi.cs.indiana.edu/~nhusted/dokuwiki/doku.php?id=programming:cudaperformance1
-                        // - cudaHostRegisterPortable:
-                        //   The memory returned by this call will be considered as pinned memory by all CUDA contexts, not just the one that performed the allocation.
-                        ALPAKA_CUDA_RT_CHECK_IGNORE(
-                            cudaHostRegister(
-                                const_cast<void *>(reinterpret_cast<void const *>(mem::view::getPtrNative(buf))),
-                                extent::getProductOfExtents<std::size_t>(buf) * sizeof(mem::view::ElemT<buf::BufCpu<TElem, TDim>>),
-                                cudaHostRegisterDefault),
-                            cudaErrorHostMemoryAlreadyRegistered);
+                            // - cudaHostRegisterDefault:
+                            //   See http://cgi.cs.indiana.edu/~nhusted/dokuwiki/doku.php?id=programming:cudaperformance1
+                            // - cudaHostRegisterPortable:
+                            //   The memory returned by this call will be considered as pinned memory by all CUDA contexts, not just the one that performed the allocation.
+                            ALPAKA_CUDA_RT_CHECK_IGNORE(
+                                cudaHostRegister(
+                                    const_cast<void *>(reinterpret_cast<void const *>(mem::view::getPtrNative(buf))),
+                                    extent::getProductOfExtents<std::size_t>(buf) * sizeof(mem::view::ElemT<buf::BufCpu<TElem, TDim>>),
+                                    cudaHostRegisterDefault),
+                                cudaErrorHostMemoryAlreadyRegistered);
+
+                            buf.m_spBufCpuImpl->m_bPinned = true;
 #else
-                        throw std::runtime_error("Memory pinning of BufCpu is not implemented when CUDA is not enabled!");
+                            static_assert(
+                                dependent_false_type<TElem>::value,
+                                "Memory pinning of BufCpu is not implemented when CUDA is not enabled!");
 #endif
+                        }
                     }
                 };
                 //#############################################################################
-                //! The CPU device memory unpinning trait specialization.
+                //! The BufCpu memory unpinning trait specialization.
                 //#############################################################################
                 template<
                     typename TElem,
@@ -502,18 +574,88 @@ namespace alpaka
                     //!
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_HOST static auto unpin(
-                        mem::buf::BufCpu<TElem, TDim> const & buf)
+                        mem::buf::BufCpu<TElem, TDim> & buf)
+                    -> void
+                    {
+                        mem::buf::unpin(*buf.m_spBufCpuImpl.get());
+                    }
+                };
+                //#############################################################################
+                //! The BufCpuImpl memory unpinning trait specialization.
+                //#############################################################################
+                template<
+                    typename TElem,
+                    typename TDim>
+                struct Unpin<
+                    mem::buf::cpu::detail::BufCpuImpl<TElem, TDim>>
+                {
+                    //-----------------------------------------------------------------------------
+                    //!
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST static auto unpin(
+                        mem::buf::cpu::detail::BufCpuImpl<TElem, TDim> & bufImpl)
                     -> void
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
+                        if(mem::buf::isPinned(bufImpl))
+                        {
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
-                        ALPAKA_CUDA_RT_CHECK_IGNORE(
-                            cudaHostUnregister(
-                                const_cast<void *>(reinterpret_cast<void const *>(mem::view::getPtrNative(buf)))),
-                            cudaErrorHostMemoryNotRegistered);
+                            ALPAKA_CUDA_RT_CHECK_IGNORE(
+                                cudaHostUnregister(
+                                    const_cast<void *>(reinterpret_cast<void const *>(bufImpl.m_pMem))),
+                                cudaErrorHostMemoryNotRegistered);
+
+                            bufImpl.m_bPinned = false;
 #else
-                        throw std::runtime_error("Memory unpinning of BufCpu is not implemented when CUDA is not enabled!");
+                            static_assert(
+                                dependent_false_type<TElem>::value,
+                                "Memory unpinning of BufCpu is not implemented when CUDA is not enabled!");
+#endif
+                        }
+                    }
+                };
+                //#############################################################################
+                //! The BufCpu memory pin state trait specialization.
+                //#############################################################################
+                template<
+                    typename TElem,
+                    typename TDim>
+                struct IsPinned<
+                    mem::buf::BufCpu<TElem, TDim>>
+                {
+                    //-----------------------------------------------------------------------------
+                    //!
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST static auto isPinned(
+                        mem::buf::BufCpu<TElem, TDim> const & buf)
+                    -> bool
+                    {
+                        return mem::buf::isPinned(*buf.m_spBufCpuImpl.get());
+                    }
+                };
+                //#############################################################################
+                //! The BufCpuImpl memory pin state trait specialization.
+                //#############################################################################
+                template<
+                    typename TElem,
+                    typename TDim>
+                struct IsPinned<
+                    mem::buf::cpu::detail::BufCpuImpl<TElem, TDim>>
+                {
+                    //-----------------------------------------------------------------------------
+                    //!
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FCT_HOST static auto isPinned(
+                        mem::buf::cpu::detail::BufCpuImpl<TElem, TDim> const & bufImpl)
+                    -> bool
+                    {
+                        ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+                        
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
+                        return bufImpl.m_bPinned;
+#else
+                        return false;
 #endif
                     }
                 };
@@ -540,7 +682,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getOffset(
                     mem::buf::BufCpu<TElem, TDim> const &)
-                -> UInt
+                -> Uint
                 {
                     return 0u;
                 }
