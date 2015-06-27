@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/atomic/Ops.hpp>                // Add, Sub, ...
+#include <alpaka/atomic/Op.hpp>                // Add, Sub, ...
 #include <alpaka/atomic/Traits.hpp>             // AtomicOp
 
 #include <alpaka/core/Common.hpp>               // ALPAKA_FCT_ACC_CUDA_ONLY
@@ -78,7 +78,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
-                ops::Add,
+                op::Add,
                 atomic::AtomicCudaBuiltIn,
                 int>
             {
@@ -96,7 +96,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
-                ops::Add,
+                op::Add,
                 atomic::AtomicCudaBuiltIn,
                 unsigned int>
             {
@@ -114,7 +114,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
-                ops::Add,
+                op::Add,
                 atomic::AtomicCudaBuiltIn,
                 unsigned long long int>
             {
@@ -132,7 +132,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
-                ops::Add,
+                op::Add,
                 atomic::AtomicCudaBuiltIn,
                 float>
             {
@@ -150,7 +150,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
-                ops::Add,
+                op::Add,
                 atomic::AtomicCudaBuiltIn,
                 double>
             {
@@ -183,7 +183,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
-                ops::Sub,
+                op::Sub,
                 atomic::AtomicCudaBuiltIn,
                 int>
             {
@@ -201,7 +201,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
-                ops::Sub,
+                op::Sub,
                 atomic::AtomicCudaBuiltIn,
                 unsigned int>
             {
@@ -222,7 +222,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
-                ops::Min,
+                op::Min,
                 atomic::AtomicCudaBuiltIn,
                 int>
             {
@@ -240,7 +240,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
-                ops::Min,
+                op::Min,
                 atomic::AtomicCudaBuiltIn,
                 unsigned int>
             {
@@ -258,7 +258,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             /*template<>
             struct AtomicOp<
-                ops::Min,
+                op::Min,
                 atomic::AtomicCudaBuiltIn,
                 unsigned long long int>
             {
@@ -279,7 +279,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
-                ops::Max,
+                op::Max,
                 atomic::AtomicCudaBuiltIn,
                 int>
             {
@@ -297,7 +297,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
-                ops::Max,
+                op::Max,
                 atomic::AtomicCudaBuiltIn,
                 unsigned int>
             {
@@ -315,7 +315,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             /*template<>
             struct AtomicOp<
-                ops::Max,
+                op::Max,
                 atomic::AtomicCudaBuiltIn,
                 unsigned long long int>
             {
@@ -336,7 +336,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
-                ops::Exch,
+                op::Exch,
                 atomic::AtomicCudaBuiltIn,
                 int>
             {
@@ -354,7 +354,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
-                ops::Exch,
+                op::Exch,
                 atomic::AtomicCudaBuiltIn,
                 unsigned int>
             {
@@ -372,7 +372,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
-                ops::Exch,
+                op::Exch,
                 atomic::AtomicCudaBuiltIn,
                 unsigned long long int>
             {
@@ -390,7 +390,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
-                ops::Exch,
+                op::Exch,
                 atomic::AtomicCudaBuiltIn,
                 float>
             {
@@ -411,7 +411,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
-                ops::Inc,
+                op::Inc,
                 atomic::AtomicCudaBuiltIn,
                 unsigned int>
             {
@@ -432,7 +432,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
-                ops::Dec,
+                op::Dec,
                 atomic::AtomicCudaBuiltIn,
                 unsigned int>
             {
@@ -453,7 +453,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
-                ops::And,
+                op::And,
                 atomic::AtomicCudaBuiltIn,
                 int>
             {
@@ -471,7 +471,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
-                ops::And,
+                op::And,
                 atomic::AtomicCudaBuiltIn,
                 unsigned int>
             {
@@ -489,7 +489,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             /*template<>
             struct AtomicOp<
-                ops::And,
+                op::And,
                 atomic::AtomicCudaBuiltIn,
                 unsigned long long int>
             {
@@ -510,7 +510,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
-                ops::Or,
+                op::Or,
                 atomic::AtomicCudaBuiltIn,
                 int>
             {
@@ -528,7 +528,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
-                ops::Or,
+                op::Or,
                 atomic::AtomicCudaBuiltIn,
                 unsigned int>
             {
@@ -546,7 +546,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             /*template<>
             struct AtomicOp<
-                ops::Or,
+                op::Or,
                 atomic::AtomicCudaBuiltIn,
                 unsigned long long int>
             {
@@ -567,7 +567,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
-                ops::Xor,
+                op::Xor,
                 atomic::AtomicCudaBuiltIn,
                 int>
             {
@@ -585,7 +585,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
-                ops::Xor,
+                op::Xor,
                 atomic::AtomicCudaBuiltIn,
                 unsigned int>
             {
@@ -603,7 +603,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             /*template<>
             struct AtomicOp<
-                ops::Xor,
+                op::Xor,
                 atomic::AtomicCudaBuiltIn,
                 unsigned long long int>
             {
@@ -624,7 +624,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
-                ops::Cas,
+                op::Cas,
                 atomic::AtomicCudaBuiltIn,
                 int>
             {
@@ -643,7 +643,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
-                ops::Cas,
+                op::Cas,
                 atomic::AtomicCudaBuiltIn,
                 unsigned int>
             {
@@ -662,7 +662,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<>
             struct AtomicOp<
-                ops::Cas,
+                op::Cas,
                 atomic::AtomicCudaBuiltIn,
                 unsigned long long int>
             {

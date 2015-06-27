@@ -79,7 +79,7 @@
 #include <alpaka/atomic/AtomicNoOp.hpp>
 #include <alpaka/atomic/AtomicOmpCritSec.hpp>
 #include <alpaka/atomic/AtomicStlLock.hpp>
-#include <alpaka/atomic/Ops.hpp>
+#include <alpaka/atomic/Op.hpp>
 #include <alpaka/atomic/Traits.hpp>
 
 //-----------------------------------------------------------------------------
