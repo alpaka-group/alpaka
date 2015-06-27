@@ -306,7 +306,7 @@ namespace alpaka
 
                         // Execute the kernel itself.
                         kernelFunctor(
-                            acc,
+                            const_cast<AccCpuThreads<TDim> const &>(acc),
                             args...);
 
                         // We have to sync all threads here because if a thread would finish before all threads have been started,

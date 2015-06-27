@@ -142,7 +142,7 @@ namespace alpaka
                                 acc.m_vuiGridBlockIdx = vuiBlockThreadIdx;
 
                                 kernelFunctor(
-                                    acc,
+                                    const_cast<AccCpuSerial<TDim> const &>(acc),
                                     args...);
 
                                 // After a block has been processed, the shared memory has to be deleted.

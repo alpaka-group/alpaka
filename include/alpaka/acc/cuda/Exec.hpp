@@ -70,7 +70,7 @@ namespace alpaka
                     acc::cuda::detail::AccGpuCuda<TDim> acc;
 
                     kernelFunctor(
-                        acc,
+                        const_cast<acc::cuda::detail::AccGpuCuda<TDim> const &>(acc),
                         args...);
                 }
             }

@@ -303,7 +303,7 @@ namespace alpaka
 
                         // Execute the kernel itself.
                         kernelFunctor(
-                            acc,
+                            const_cast<AccCpuFibers<TDim> const &>(acc),
                             args...);
 
                         // We have to sync all fibers here because if a fiber would finish before all fibers have been started, the new fiber could get a recycled (then duplicate) fiber id!

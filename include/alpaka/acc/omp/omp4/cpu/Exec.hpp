@@ -199,7 +199,7 @@ namespace alpaka
                                                 }
 #endif
                                                 kernelFunctor(
-                                                    acc,
+                                                    const_cast<AccCpuOmp4<TDim> const &>(acc),
                                                     args...);
 
                                                 // Wait for all threads to finish before deleting the shared memory.

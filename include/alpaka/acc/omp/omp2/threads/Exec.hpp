@@ -181,7 +181,7 @@ namespace alpaka
 #endif
 #endif
                                             kernelFunctor(
-                                                acc,
+                                                const_cast<AccCpuOmp2Threads<TDim> const &>(acc),
                                                 args...);
 
                                             // Wait for all threads to finish before deleting the shared memory.

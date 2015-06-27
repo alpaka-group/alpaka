@@ -177,7 +177,7 @@ namespace alpaka
                                                 vuiGridBlockExtents);
 
                                         kernelFunctor(
-                                            acc,
+                                            const_cast<AccCpuOmp2Blocks<TDim> const &>(acc),
                                             args...);
 
                                         // After a block has been processed, the shared memory has to be deleted.
