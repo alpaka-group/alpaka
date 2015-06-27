@@ -38,12 +38,12 @@
 #include <alpaka/math/min/MinStl.hpp>
 #include <alpaka/math/pow/PowStl.hpp>
 #include <alpaka/math/remainder/RemainderStl.hpp>
-#include <alpaka/math/rint/RintStl.hpp>
 #include <alpaka/math/round/RoundStl.hpp>
 #include <alpaka/math/rsqrt/RsqrtStl.hpp>
 #include <alpaka/math/sin/SinStl.hpp>
 #include <alpaka/math/sqrt/SqrtStl.hpp>
 #include <alpaka/math/tan/TanStl.hpp>
+#include <alpaka/math/trunc/TruncStl.hpp>
 
 namespace alpaka
 {
@@ -73,12 +73,12 @@ namespace alpaka
             public MinStl,
             public PowStl,
             public RemainderStl,
-            public RintStl,
             public RoundStl,
             public RsqrtStl,
             public SinStl,
             public SqrtStl,
-            public TanStl
+            public TanStl,
+            public TruncStl
         {};
     }
 }

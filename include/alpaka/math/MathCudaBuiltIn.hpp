@@ -38,12 +38,12 @@
 #include <alpaka/math/min/MinCudaBuiltIn.hpp>
 #include <alpaka/math/pow/PowCudaBuiltIn.hpp>
 #include <alpaka/math/remainder/RemainderCudaBuiltIn.hpp>
-#include <alpaka/math/rint/RintCudaBuiltIn.hpp>
 #include <alpaka/math/round/RoundCudaBuiltIn.hpp>
 #include <alpaka/math/rsqrt/RsqrtCudaBuiltIn.hpp>
 #include <alpaka/math/sin/SinCudaBuiltIn.hpp>
 #include <alpaka/math/sqrt/SqrtCudaBuiltIn.hpp>
 #include <alpaka/math/tan/TanCudaBuiltIn.hpp>
+#include <alpaka/math/trunc/TruncCudaBuiltIn.hpp>
 
 namespace alpaka
 {
@@ -73,12 +73,12 @@ namespace alpaka
             public MinCudaBuiltIn,
             public PowCudaBuiltIn,
             public RemainderCudaBuiltIn,
-            public RintCudaBuiltIn,
             public RoundCudaBuiltIn,
             public RsqrtCudaBuiltIn,
             public SinCudaBuiltIn,
             public SqrtCudaBuiltIn,
-            public TanCudaBuiltIn
+            public TanCudaBuiltIn,
+            public TruncCudaBuiltIn
         {};
     }
 }
