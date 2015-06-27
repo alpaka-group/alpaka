@@ -82,10 +82,10 @@ namespace alpaka
                         m_Buf(
                             mem::view::getPtrNative(buf),
                             dev::getDev(buf),
-                            extent::getExtentsVecNd<Dim, UInt>(buf),
-                            mem::view::getPitchBytes<Dim::value - 1u, UInt>(buf)),
-                        m_vOffsetsElements(offset::getOffsetsVecNd<Dim, UInt>(buf)),
-                        m_vExtentsElements(extent::getExtentsVecNd<Dim, UInt>(buf))
+                            extent::getExtentsVecNd<Dim, Uint>(buf),
+                            mem::view::getPitchBytes<Dim::value - 1u, Uint>(buf)),
+                        m_vOffsetsElements(offset::getOffsetsVecNd<Dim, Uint>(buf)),
+                        m_vExtentsElements(extent::getExtentsVecNd<Dim, Uint>(buf))
                 {}
                 //-----------------------------------------------------------------------------
                 //! Constructor.
@@ -98,10 +98,10 @@ namespace alpaka
                         m_Buf(
                             mem::view::getPtrNative(buf),
                             dev::getDev(buf),
-                            extent::getExtentsVecNd<Dim, UInt>(buf),
-                            mem::view::getPitchBytes<Dim::value - 1u, UInt>(buf)),
-                        m_vOffsetsElements(offset::getOffsetsVecNd<Dim, UInt>(buf)),
-                        m_vExtentsElements(extent::getExtentsVecNd<Dim, UInt>(buf))
+                            extent::getExtentsVecNd<Dim, Uint>(buf),
+                            mem::view::getPitchBytes<Dim::value - 1u, Uint>(buf)),
+                        m_vOffsetsElements(offset::getOffsetsVecNd<Dim, Uint>(buf)),
+                        m_vExtentsElements(extent::getExtentsVecNd<Dim, Uint>(buf))
                 {}
 
                 //-----------------------------------------------------------------------------
@@ -121,21 +121,21 @@ namespace alpaka
                         m_Buf(
                             mem::view::getPtrNative(buf),
                             dev::getDev(buf),
-                            extent::getExtentsVecNd<Dim, UInt>(buf),
-                            mem::view::getPitchBytes<Dim::value - 1u, UInt>(buf)),
-                        m_vExtentsElements(extent::getExtentsVecNd<Dim, UInt>(extentsElements)),
-                        m_vOffsetsElements(offset::getOffsetsVecNd<Dim, UInt>(relativeOffsetsElements) + offset::getOffsetsVecNd<Dim, UInt>(buf))
+                            extent::getExtentsVecNd<Dim, Uint>(buf),
+                            mem::view::getPitchBytes<Dim::value - 1u, Uint>(buf)),
+                        m_vExtentsElements(extent::getExtentsVecNd<Dim, Uint>(extentsElements)),
+                        m_vOffsetsElements(offset::getOffsetsVecNd<Dim, Uint>(relativeOffsetsElements) + offset::getOffsetsVecNd<Dim, Uint>(buf))
                 {
                     static_assert(
                         std::is_same<Dim, dim::DimT<TExtents>>::value,
                         "The buffer and the extents are required to have the same dimensionality!");
 
-                    assert(extent::getWidth<UInt>(relativeOffsetsElements) <= extent::getWidth<UInt>(buf));
-                    assert(extent::getHeight<UInt>(relativeOffsetsElements) <= extent::getHeight<UInt>(buf));
-                    assert(extent::getDepth<UInt>(relativeOffsetsElements) <= extent::getDepth<UInt>(buf));
-                    assert((offset::getOffsetX<UInt>(relativeOffsetsElements)+offset::getOffsetX<UInt>(buf)+extent::getWidth<UInt>(extentsElements)) <= extent::getWidth<UInt>(buf));
-                    assert((offset::getOffsetY<UInt>(relativeOffsetsElements)+offset::getOffsetY<UInt>(buf)+extent::getHeight<UInt>(extentsElements)) <= extent::getHeight<UInt>(buf));
-                    assert((offset::getOffsetZ<UInt>(relativeOffsetsElements)+offset::getOffsetZ<UInt>(buf)+extent::getDepth<UInt>(extentsElements)) <= extent::getDepth<UInt>(buf));
+                    assert(extent::getWidth<Uint>(relativeOffsetsElements) <= extent::getWidth<Uint>(buf));
+                    assert(extent::getHeight<Uint>(relativeOffsetsElements) <= extent::getHeight<Uint>(buf));
+                    assert(extent::getDepth<Uint>(relativeOffsetsElements) <= extent::getDepth<Uint>(buf));
+                    assert((offset::getOffsetX<Uint>(relativeOffsetsElements)+offset::getOffsetX<Uint>(buf)+extent::getWidth<Uint>(extentsElements)) <= extent::getWidth<Uint>(buf));
+                    assert((offset::getOffsetY<Uint>(relativeOffsetsElements)+offset::getOffsetY<Uint>(buf)+extent::getHeight<Uint>(extentsElements)) <= extent::getHeight<Uint>(buf));
+                    assert((offset::getOffsetZ<Uint>(relativeOffsetsElements)+offset::getOffsetZ<Uint>(buf)+extent::getDepth<Uint>(extentsElements)) <= extent::getDepth<Uint>(buf));
                 }
                 //-----------------------------------------------------------------------------
                 //! Constructor.
@@ -154,21 +154,21 @@ namespace alpaka
                         m_Buf(
                             mem::view::getPtrNative(buf),
                             dev::getDev(buf),
-                            extent::getExtentsVecNd<Dim, UInt>(buf),
-                            mem::view::getPitchBytes<Dim::value - 1u, UInt>(buf)),
-                        m_vExtentsElements(extent::getExtentsVecNd<Dim, UInt>(extentsElements)),
-                        m_vOffsetsElements(offset::getOffsetsVecNd<Dim, UInt>(relativeOffsetsElements) + offset::getOffsetsVecNd<Dim, UInt>(buf))
+                            extent::getExtentsVecNd<Dim, Uint>(buf),
+                            mem::view::getPitchBytes<Dim::value - 1u, Uint>(buf)),
+                        m_vExtentsElements(extent::getExtentsVecNd<Dim, Uint>(extentsElements)),
+                        m_vOffsetsElements(offset::getOffsetsVecNd<Dim, Uint>(relativeOffsetsElements) + offset::getOffsetsVecNd<Dim, Uint>(buf))
                 {
                     static_assert(
                         std::is_same<Dim, dim::DimT<TExtents>>::value,
                         "The buffer and the extents are required to have the same dimensionality!");
 
-                    assert(extent::getWidth<UInt>(relativeOffsetsElements) <= extent::getWidth<UInt>(buf));
-                    assert(extent::getHeight<UInt>(relativeOffsetsElements) <= extent::getHeight<UInt>(buf));
-                    assert(extent::getDepth<UInt>(relativeOffsetsElements) <= extent::getDepth<UInt>(buf));
-                    assert((offset::getOffsetX<UInt>(relativeOffsetsElements)+offset::getOffsetX<UInt>(buf)+extent::getWidth<UInt>(extentsElements)) <= extent::getWidth<UInt>(buf));
-                    assert((offset::getOffsetY<UInt>(relativeOffsetsElements)+offset::getOffsetY<UInt>(buf)+extent::getHeight<UInt>(extentsElements)) <= extent::getHeight<UInt>(buf));
-                    assert((offset::getOffsetZ<UInt>(relativeOffsetsElements)+offset::getOffsetZ<UInt>(buf)+extent::getDepth<UInt>(extentsElements)) <= extent::getDepth<UInt>(buf));
+                    assert(extent::getWidth<Uint>(relativeOffsetsElements) <= extent::getWidth<Uint>(buf));
+                    assert(extent::getHeight<Uint>(relativeOffsetsElements) <= extent::getHeight<Uint>(buf));
+                    assert(extent::getDepth<Uint>(relativeOffsetsElements) <= extent::getDepth<Uint>(buf));
+                    assert((offset::getOffsetX<Uint>(relativeOffsetsElements)+offset::getOffsetX<Uint>(buf)+extent::getWidth<Uint>(extentsElements)) <= extent::getWidth<Uint>(buf));
+                    assert((offset::getOffsetY<Uint>(relativeOffsetsElements)+offset::getOffsetY<Uint>(buf)+extent::getHeight<Uint>(extentsElements)) <= extent::getHeight<Uint>(buf));
+                    assert((offset::getOffsetZ<Uint>(relativeOffsetsElements)+offset::getOffsetZ<Uint>(buf)+extent::getDepth<Uint>(extentsElements)) <= extent::getDepth<Uint>(buf));
                 }
 
             public:
@@ -260,7 +260,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getExtent(
                     mem::view::ViewBasic<TElem, TDim, TDev> const & extents)
-                -> UInt
+                -> Uint
                 {
                     return extents.m_vExtentsElements[TIdx::value];
                 }
@@ -411,7 +411,7 @@ namespace alpaka
                     mem::view::ViewBasic<TElem, TDim, TDev>>
                 {
                 private:
-                    using IdxSequence = detail::make_integer_sequence<UInt, TDim::value>;
+                    using IdxSequence = detail::make_integer_sequence<Uint, TDim::value>;
                 public:
                     //-----------------------------------------------------------------------------
                     //!
@@ -443,33 +443,33 @@ namespace alpaka
                     template<
                         typename TView,
                         typename TBuf,
-                        UInt... TIndices>
+                        Uint... TIndices>
                     ALPAKA_FCT_HOST static auto pitchedOffsetElems(
                         TView const & view,
                         TBuf const & buf,
-                        detail::integer_sequence<UInt, TIndices...> const &)
-                    -> UInt
+                        detail::integer_sequence<Uint, TIndices...> const &)
+                    -> Uint
                     {
                         return
                             foldr(
-                                std::plus<UInt>(),
+                                std::plus<Uint>(),
                                 pitchedOffsetElemsPerDim<TIndices>(view, buf)...);
                     }
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
                     template<
-                        UInt TuiIdx,
+                        Uint TuiIdx,
                         typename TView,
                         typename TBuf>
                     ALPAKA_FCT_HOST static auto pitchedOffsetElemsPerDim(
                         TView const & view,
                         TBuf const & buf)
-                    -> UInt
+                    -> Uint
                     {
                         return
-                            offset::getOffset<TuiIdx, UInt>(view)
-                            * view::getPitchElements<TuiIdx + 1u, UInt>(buf);
+                            offset::getOffset<TuiIdx, Uint>(view)
+                            * view::getPitchElements<TuiIdx + 1u, Uint>(buf);
                     }
                 };
 
@@ -490,10 +490,10 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_HOST static auto getPitchBytes(
                         mem::view::ViewBasic<TElem, TDim, TDev> const & view)
-                    -> UInt
+                    -> Uint
                     {
                         return
-                            view::getPitchElements<TIdx::value, UInt>(
+                            view::getPitchElements<TIdx::value, Uint>(
                                 mem::view::getBuf(view));
                     }
                 };
@@ -522,7 +522,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getOffset(
                     mem::view::ViewBasic<TElem, TDim, TDev> const & offset)
-                -> UInt
+                -> Uint
                 {
                     return offset.m_vOffsetsElements[TIdx::value];
                 }

@@ -82,9 +82,9 @@ namespace alpaka
                                 std::is_same<mem::view::ElemT<TBufDst>, typename std::remove_const<mem::view::ElemT<TBufSrc>>::type>::value,
                                 "The source and the destination buffers are required to have the same element type!");
 
-                            auto const uiExtentWidth(extent::getWidth<UInt>(extents));
-                            auto const uiDstWidth(extent::getWidth<UInt>(bufDst));
-                            auto const uiSrcWidth(extent::getWidth<UInt>(bufSrc));
+                            auto const uiExtentWidth(extent::getWidth<Uint>(extents));
+                            auto const uiDstWidth(extent::getWidth<Uint>(bufDst));
+                            auto const uiSrcWidth(extent::getWidth<Uint>(bufSrc));
                             assert(uiExtentWidth <= uiDstWidth);
                             assert(uiExtentWidth <= uiSrcWidth);
 
@@ -138,9 +138,9 @@ namespace alpaka
                                 std::is_same<mem::view::ElemT<TBufDst>, typename std::remove_const<mem::view::ElemT<TBufSrc>>::type>::value,
                                 "The source and the destination buffers are required to have the same element type!");
 
-                            auto const uiExtentWidth(extent::getWidth<UInt>(extents));
-                            auto const uiDstWidth(extent::getWidth<UInt>(bufDst));
-                            auto const uiSrcWidth(extent::getWidth<UInt>(bufSrc));
+                            auto const uiExtentWidth(extent::getWidth<Uint>(extents));
+                            auto const uiDstWidth(extent::getWidth<Uint>(bufDst));
+                            auto const uiSrcWidth(extent::getWidth<Uint>(bufSrc));
                             assert(uiExtentWidth <= uiDstWidth);
                             assert(uiExtentWidth <= uiSrcWidth);
 
@@ -202,14 +202,14 @@ namespace alpaka
                                 std::is_same<mem::view::ElemT<TBufDst>, typename std::remove_const<mem::view::ElemT<TBufSrc>>::type>::value,
                                 "The source and the destination buffers are required to have the same element type!");
 
-                            auto const uiExtentWidth(extent::getWidth<UInt>(extents));
-                            auto const uiExtentHeight(extent::getHeight<UInt>(extents));
-                            auto const uiDstWidth(extent::getWidth<UInt>(bufDst));
-                            auto const uiDstHeight(extent::getHeight<UInt>(bufDst));
-                            auto const uiSrcWidth(extent::getWidth<UInt>(bufSrc));
-                            auto const uiSrcHeight(extent::getHeight<UInt>(bufSrc));
-                            auto const uiDstPitchBytes(mem::view::getPitchBytes<dim::DimT<TBufDst>::value - 1u, UInt>(bufDst));
-                            auto const uiSrcPitchBytes(mem::view::getPitchBytes<dim::DimT<TBufSrc>::value - 1u, UInt>(bufSrc));
+                            auto const uiExtentWidth(extent::getWidth<Uint>(extents));
+                            auto const uiExtentHeight(extent::getHeight<Uint>(extents));
+                            auto const uiDstWidth(extent::getWidth<Uint>(bufDst));
+                            auto const uiDstHeight(extent::getHeight<Uint>(bufDst));
+                            auto const uiSrcWidth(extent::getWidth<Uint>(bufSrc));
+                            auto const uiSrcHeight(extent::getHeight<Uint>(bufSrc));
+                            auto const uiDstPitchBytes(mem::view::getPitchBytes<dim::DimT<TBufDst>::value - 1u, Uint>(bufDst));
+                            auto const uiSrcPitchBytes(mem::view::getPitchBytes<dim::DimT<TBufSrc>::value - 1u, Uint>(bufSrc));
                             assert(uiExtentWidth <= uiDstWidth);
                             assert(uiExtentHeight <= uiDstHeight);
                             assert(uiExtentWidth <= uiSrcWidth);
@@ -273,14 +273,14 @@ namespace alpaka
                                 std::is_same<mem::view::ElemT<TBufDst>, typename std::remove_const<mem::view::ElemT<TBufSrc>>::type>::value,
                                 "The source and the destination buffers are required to have the same element type!");
 
-                            auto const uiExtentWidth(extent::getWidth<UInt>(extents));
-                            auto const uiExtentHeight(extent::getHeight<UInt>(extents));
-                            auto const uiDstWidth(extent::getWidth<UInt>(bufDst));
-                            auto const uiDstHeight(extent::getHeight<UInt>(bufDst));
-                            auto const uiSrcWidth(extent::getWidth<UInt>(bufSrc));
-                            auto const uiSrcHeight(extent::getHeight<UInt>(bufSrc));
-                            auto const uiDstPitchBytes(mem::view::getPitchBytes<dim::DimT<TBufDst>::value - 1u, UInt>(bufDst));
-                            auto const uiSrcPitchBytes(mem::view::getPitchBytes<dim::DimT<TBufSrc>::value - 1u, UInt>(bufSrc));
+                            auto const uiExtentWidth(extent::getWidth<Uint>(extents));
+                            auto const uiExtentHeight(extent::getHeight<Uint>(extents));
+                            auto const uiDstWidth(extent::getWidth<Uint>(bufDst));
+                            auto const uiDstHeight(extent::getHeight<Uint>(bufDst));
+                            auto const uiSrcWidth(extent::getWidth<Uint>(bufSrc));
+                            auto const uiSrcHeight(extent::getHeight<Uint>(bufSrc));
+                            auto const uiDstPitchBytes(mem::view::getPitchBytes<dim::DimT<TBufDst>::value - 1u, Uint>(bufDst));
+                            auto const uiSrcPitchBytes(mem::view::getPitchBytes<dim::DimT<TBufSrc>::value - 1u, Uint>(bufSrc));
                             assert(uiExtentWidth <= uiDstWidth);
                             assert(uiExtentHeight <= uiDstHeight);
                             assert(uiExtentWidth <= uiSrcWidth);
@@ -418,17 +418,17 @@ namespace alpaka
                                 std::is_same<mem::view::ElemT<TBufDst>, typename std::remove_const<mem::view::ElemT<TBufSrc>>::type>::value,
                                 "The source and the destination buffers are required to have the same element type!");
 
-                            auto const uiExtentWidth(extent::getWidth<UInt>(extents));
-                            auto const uiExtentHeight(extent::getHeight<UInt>(extents));
-                            auto const uiExtentDepth(extent::getDepth<UInt>(extents));
-                            auto const uiDstWidth(extent::getWidth<UInt>(bufDst));
-                            auto const uiDstHeight(extent::getHeight<UInt>(bufDst));
-                            auto const uiDstDepth(extent::getDepth<UInt>(bufDst));
-                            auto const uiSrcWidth(extent::getWidth<UInt>(bufSrc));
-                            auto const uiSrcHeight(extent::getHeight<UInt>(bufSrc));
-                            auto const uiSrcDepth(extent::getDepth<UInt>(bufSrc));
-                            auto const uiDstPitchBytes(mem::view::getPitchBytes<dim::DimT<TBufDst>::value - 1u, UInt>(bufDst));
-                            auto const uiSrcPitchBytes(mem::view::getPitchBytes<dim::DimT<TBufSrc>::value - 1u, UInt>(bufSrc));
+                            auto const uiExtentWidth(extent::getWidth<Uint>(extents));
+                            auto const uiExtentHeight(extent::getHeight<Uint>(extents));
+                            auto const uiExtentDepth(extent::getDepth<Uint>(extents));
+                            auto const uiDstWidth(extent::getWidth<Uint>(bufDst));
+                            auto const uiDstHeight(extent::getHeight<Uint>(bufDst));
+                            auto const uiDstDepth(extent::getDepth<Uint>(bufDst));
+                            auto const uiSrcWidth(extent::getWidth<Uint>(bufSrc));
+                            auto const uiSrcHeight(extent::getHeight<Uint>(bufSrc));
+                            auto const uiSrcDepth(extent::getDepth<Uint>(bufSrc));
+                            auto const uiDstPitchBytes(mem::view::getPitchBytes<dim::DimT<TBufDst>::value - 1u, Uint>(bufDst));
+                            auto const uiSrcPitchBytes(mem::view::getPitchBytes<dim::DimT<TBufSrc>::value - 1u, Uint>(bufSrc));
                             assert(uiExtentWidth <= uiDstWidth);
                             assert(uiExtentHeight <= uiDstHeight);
                             assert(uiExtentDepth <= uiDstDepth);
@@ -521,9 +521,9 @@ namespace alpaka
                                 std::is_same<mem::view::ElemT<TBufDst>, typename std::remove_const<mem::view::ElemT<TBufSrc>>::type>::value,
                                 "The source and the destination buffers are required to have the same element type!");
 
-                            auto const uiExtentWidth(extent::getWidth<UInt>(extents));
-                            auto const uiDstWidth(extent::getWidth<UInt>(bufDst));
-                            auto const uiSrcWidth(extent::getWidth<UInt>(bufSrc));
+                            auto const uiExtentWidth(extent::getWidth<Uint>(extents));
+                            auto const uiDstWidth(extent::getWidth<Uint>(bufDst));
+                            auto const uiSrcWidth(extent::getWidth<Uint>(bufSrc));
                             assert(uiExtentWidth <= uiDstWidth);
                             assert(uiExtentWidth <= uiSrcWidth);
 
@@ -578,9 +578,9 @@ namespace alpaka
                                 std::is_same<mem::view::ElemT<TBufDst>, typename std::remove_const<mem::view::ElemT<TBufSrc>>::type>::value,
                                 "The source and the destination buffers are required to have the same element type!");
 
-                            auto const uiExtentWidth(extent::getWidth<UInt>(extents));
-                            auto const uiDstWidth(extent::getWidth<UInt>(bufDst));
-                            auto const uiSrcWidth(extent::getWidth<UInt>(bufSrc));
+                            auto const uiExtentWidth(extent::getWidth<Uint>(extents));
+                            auto const uiDstWidth(extent::getWidth<Uint>(bufDst));
+                            auto const uiSrcWidth(extent::getWidth<Uint>(bufSrc));
                             assert(uiExtentWidth <= uiDstWidth);
                             assert(uiExtentWidth <= uiSrcWidth);
 
@@ -699,17 +699,17 @@ namespace alpaka
                                 std::is_same<mem::view::ElemT<TBufDst>, typename std::remove_const<mem::view::ElemT<TBufSrc>>::type>::value,
                                 "The source and the destination buffers are required to have the same element type!");
 
-                            auto const uiExtentWidth(extent::getWidth<UInt>(extents));
-                            auto const uiExtentHeight(extent::getHeight<UInt>(extents));
-                            auto const uiExtentDepth(extent::getDepth<UInt>(extents));
-                            auto const uiDstWidth(extent::getWidth<UInt>(bufDst));
-                            auto const uiDstHeight(extent::getHeight<UInt>(bufDst));
-                            auto const uiDstDepth(extent::getDepth<UInt>(bufDst));
-                            auto const uiSrcWidth(extent::getWidth<UInt>(bufSrc));
-                            auto const uiSrcHeight(extent::getHeight<UInt>(bufSrc));
-                            auto const uiSrcDepth(extent::getDepth<UInt>(bufSrc));
-                            auto const uiDstPitchBytes(mem::view::getPitchBytes<dim::DimT<TBufDst>::value - 1u, UInt>(bufDst));
-                            auto const uiSrcPitchBytes(mem::view::getPitchBytes<dim::DimT<TBufSrc>::value - 1u, UInt>(bufSrc));
+                            auto const uiExtentWidth(extent::getWidth<Uint>(extents));
+                            auto const uiExtentHeight(extent::getHeight<Uint>(extents));
+                            auto const uiExtentDepth(extent::getDepth<Uint>(extents));
+                            auto const uiDstWidth(extent::getWidth<Uint>(bufDst));
+                            auto const uiDstHeight(extent::getHeight<Uint>(bufDst));
+                            auto const uiDstDepth(extent::getDepth<Uint>(bufDst));
+                            auto const uiSrcWidth(extent::getWidth<Uint>(bufSrc));
+                            auto const uiSrcHeight(extent::getHeight<Uint>(bufSrc));
+                            auto const uiSrcDepth(extent::getDepth<Uint>(bufSrc));
+                            auto const uiDstPitchBytes(mem::view::getPitchBytes<dim::DimT<TBufDst>::value - 1u, Uint>(bufDst));
+                            auto const uiSrcPitchBytes(mem::view::getPitchBytes<dim::DimT<TBufSrc>::value - 1u, Uint>(bufSrc));
                             assert(uiExtentWidth <= uiDstWidth);
                             assert(uiExtentHeight <= uiDstHeight);
                             assert(uiExtentDepth <= uiDstDepth);

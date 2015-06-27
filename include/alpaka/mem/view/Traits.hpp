@@ -82,9 +82,9 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_HOST static auto getPitchBytes(
                         TView const & view)
-                    -> UInt
+                    -> Uint
                     {
-                        using IdxSequence = alpaka::detail::make_integer_sequence_start<UInt, TIdx::value, dim::DimT<TView>::value - TIdx::value>;
+                        using IdxSequence = alpaka::detail::make_integer_sequence_start<Uint, TIdx::value, dim::DimT<TView>::value - TIdx::value>;
                         return
                             extentsProd(view, IdxSequence())
                             * sizeof(typename ElemType<TView>::type);
@@ -94,17 +94,17 @@ namespace alpaka
                     //!
                     //-----------------------------------------------------------------------------
                     template<
-                        UInt... TIndices>
+                        Uint... TIndices>
                     ALPAKA_FCT_HOST static auto extentsProd(
                         TView const & view,
-                        alpaka::detail::integer_sequence<UInt, TIndices...> const &)
-                    -> UInt
+                        alpaka::detail::integer_sequence<Uint, TIndices...> const &)
+                    -> Uint
                     {
                         // For the case that the sequence is empty (index out of range), 1 is returned.
                         return alpaka::foldr(
-                            std::multiplies<UInt>(),
+                            std::multiplies<Uint>(),
                             1u,
-                            extent::getExtent<TIndices, UInt>(view)...);
+                            extent::getExtent<TIndices, Uint>(view)...);
                     }
                 };
 
@@ -249,7 +249,7 @@ namespace alpaka
             //! \return The pitch in bytes. This is the distance between two consecutive rows.
             //-----------------------------------------------------------------------------
             template<
-                UInt TuiIdx,
+                Uint TuiIdx,
                 typename TVal,
                 typename TView>
             ALPAKA_FCT_HOST auto getPitchBytes(
@@ -259,7 +259,7 @@ namespace alpaka
                 return
                     static_cast<TVal>(
                         traits::GetPitchBytes<
-                            std::integral_constant<UInt, TuiIdx>,
+                            std::integral_constant<Uint, TuiIdx>,
                             TView>
                         ::getPitchBytes(
                             buf));
@@ -270,7 +270,7 @@ namespace alpaka
             //! \TODO: Remove because pitches are not always multiple of the element size.
             //-----------------------------------------------------------------------------
             template<
-                UInt TuiIdx,
+                Uint TuiIdx,
                 typename TVal,
                 typename TView>
             ALPAKA_FCT_HOST auto getPitchElements(

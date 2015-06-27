@@ -36,8 +36,8 @@ namespace alpaka
         //! Maps a linear index to a N dimensional index.
         //#############################################################################
         template<
-            UInt TuiIdxDimOut,
-            UInt TuiIdxDimIn>
+            Uint TuiIdxDimOut,
+            Uint TuiIdxDimIn>
         struct MapIdx;
         //#############################################################################
         //! Maps a linear index to a linear index.
@@ -185,8 +185,8 @@ namespace alpaka
     //! \tparam TElem Type of the elements of the index vector to map from.
     //#############################################################################
     template<
-        UInt TuiIdxDimOut,
-        UInt TuiIdxDimIn,
+        Uint TuiIdxDimOut,
+        Uint TuiIdxDimIn,
         typename TElem>
     ALPAKA_FCT_HOST_ACC auto mapIdx(
         Vec<dim::Dim<TuiIdxDimIn>, TElem> const & idx,

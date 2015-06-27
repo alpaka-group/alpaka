@@ -239,14 +239,14 @@ namespace alpaka
                     boost::ignore_unused(dev);
 
 #if ALPAKA_INTEGRATION_TEST
-                    UInt const uiBlockThreadsCountMax(4u);
+                    Uint const uiBlockThreadsCountMax(4u);
 #else
                     // NOTE: ::omp_get_thread_limit() returns 2^31-1 (largest positive int value)...
                     //int const iThreadLimit(::omp_get_thread_limit());
                     //std::cout << BOOST_CURRENT_FUNCTION << " omp_get_thread_limit: " << iThreadLimit << std::endl;
                     // m_uiBlockThreadsCountMax
-                    //UInt uiBlockThreadsCountMax(static_cast<UInt>(iThreadLimit));
-                    UInt uiBlockThreadsCountMax(static_cast<UInt>(::omp_get_num_procs()));
+                    //Uint uiBlockThreadsCountMax(static_cast<Uint>(iThreadLimit));
+                    Uint uiBlockThreadsCountMax(static_cast<Uint>(::omp_get_num_procs()));
 #endif
                     return {
                         // m_uiMultiProcessorCount

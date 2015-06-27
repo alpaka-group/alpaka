@@ -50,7 +50,7 @@ namespace alpaka
             {
                 ALPAKA_FCT_HOST_ACC static auto getOffset(
                     T const &)
-                -> UInt
+                -> Uint
                 {
                     return 0u;
                 }
@@ -70,7 +70,7 @@ namespace alpaka
         //! \return The offset in the given dimension.
         //-----------------------------------------------------------------------------
         template<
-            UInt TuiIdx,
+            Uint TuiIdx,
             typename TVal,
             typename TOffsets>
         ALPAKA_FCT_HOST_ACC auto getOffset(
@@ -80,7 +80,7 @@ namespace alpaka
             return
                 static_cast<TVal>(
                     traits::GetOffset<
-                        std::integral_constant<UInt, TuiIdx>,
+                        std::integral_constant<Uint, TuiIdx>,
                         TOffsets>
                     ::getOffset(
                         offsets));
@@ -126,7 +126,7 @@ namespace alpaka
         //! Sets the offset in the given dimension.
         //-----------------------------------------------------------------------------
         template<
-            UInt TuiIdx,
+            Uint TuiIdx,
             typename TOffsets,
             typename TVal>
         ALPAKA_FCT_HOST_ACC auto setOffset(
@@ -135,7 +135,7 @@ namespace alpaka
         -> void
         {
             traits::SetOffset<
-                std::integral_constant<UInt, TuiIdx>,
+                std::integral_constant<Uint, TuiIdx>,
                 TOffsets>
             ::setOffset(
                 offsets,
@@ -192,15 +192,15 @@ namespace alpaka
             template<
                 typename T>
             struct GetOffset<
-                std::integral_constant<UInt, 0u>,
+                std::integral_constant<Uint, 0u>,
                 T,
                 typename std::enable_if<std::is_integral<T>::value && std::is_unsigned<T>::value>::type>
             {
                 ALPAKA_FCT_HOST_ACC static auto getOffset(
                     T const & offset)
-                -> UInt
+                -> Uint
                 {
-                    return static_cast<UInt>(offset);
+                    return static_cast<Uint>(offset);
                 }
             };
         }

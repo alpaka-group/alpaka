@@ -292,7 +292,7 @@ namespace alpaka
 
                         // We can not use the default syncBlockThreads here because it searches inside m_mFibersToBarrier for the thread id.
                         // Concurrently searching while others use emplace is unsafe!
-                        std::map<boost::fibers::fiber::id, UInt>::iterator itFiberToBarrier;
+                        std::map<boost::fibers::fiber::id, Uint>::iterator itFiberToBarrier;
 
                         // Save the fiber id, and index.
                         acc.m_mFibersToIndices.emplace(idFiber, vuiBlockThreadIdx);

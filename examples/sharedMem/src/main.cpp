@@ -150,7 +150,7 @@ namespace alpaka
                 ALPAKA_FCT_HOST static auto getBlockSharedExternMemSizeBytes(
                     alpaka::Vec<alpaka::dim::DimT<TAcc>> const & vuiBlockThreadsExtents,
                     TArgs && ...)
-                -> UInt
+                -> Uint
                 {
                     return vuiBlockThreadsExtents.prod() * sizeof(std::uint32_t);
                 }

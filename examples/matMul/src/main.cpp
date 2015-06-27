@@ -189,7 +189,7 @@ namespace alpaka
                     TElem const & beta,
                     TElem * const C,
                     TIndex const & ldc)
-                -> UInt
+                -> Uint
                 {
                     boost::ignore_unused(m);
                     boost::ignore_unused(n);

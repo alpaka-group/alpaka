@@ -128,7 +128,7 @@ namespace alpaka
                                     << std::endl;
 #endif
                                 // The number of blocks in the grid.
-                                UInt const uiNumBlocksInGrid(vuiGridBlockExtents.prod());
+                                Uint const uiNumBlocksInGrid(vuiGridBlockExtents.prod());
                                 // There is only ever one thread in a block in the OpenMP 2.0 block accelerator.
                                 assert(vuiBlockThreadExtents.prod() == 1u);
 
@@ -164,13 +164,13 @@ namespace alpaka
                                     for(i = 0; i < uiNumBlocksInGrid; ++i)
 #else
                                     #pragma omp for nowait
-                                    for(UInt i = 0; i < uiNumBlocksInGrid; ++i)
+                                    for(Uint i = 0; i < uiNumBlocksInGrid; ++i)
 #endif
                                     {
                                         acc.m_vuiGridBlockIdx =
                                             mapIdx<TDim::value>(
 #if _OPENMP < 200805
-                                                Vec1<>(static_cast<UInt>(i)),
+                                                Vec1<>(static_cast<Uint>(i)),
 #else
                                                 Vec1<>(i),
 #endif

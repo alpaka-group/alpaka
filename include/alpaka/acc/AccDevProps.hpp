@@ -42,8 +42,8 @@ namespace alpaka
             //! Default-constructor
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST AccDevProps(
-                UInt const & uiMultiProcessorCount,
-                UInt const & uiBlockThreadsCountMax,
+                Uint const & uiMultiProcessorCount,
+                Uint const & uiBlockThreadsCountMax,
                 Vec<TDim> const & vuiBlockThreadExtentsMax,
                 Vec<TDim> const & vuiGridBlockExtentsMax) :
                     m_uiMultiProcessorCount(uiMultiProcessorCount),
@@ -52,8 +52,8 @@ namespace alpaka
                     m_vuiGridBlockExtentsMax(vuiGridBlockExtentsMax)
             {}
 
-            UInt m_uiMultiProcessorCount;           //!< The number of multiprocessors.
-            UInt m_uiBlockThreadsCountMax;          //!< The maximum number of threads in a block.
+            Uint m_uiMultiProcessorCount;           //!< The number of multiprocessors.
+            Uint m_uiBlockThreadsCountMax;          //!< The maximum number of threads in a block.
             Vec<TDim> m_vuiBlockThreadExtentsMax;   //!< The maximum number of threads in each dimension of a block.
             Vec<TDim> m_vuiGridBlockExtentsMax;     //!< The maximum number of blocks in each dimension of the grid.
             //std::size_t m_uiSharedMemSizeBytes;   //!< Size of the available block shared memory in bytes.

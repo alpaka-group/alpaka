@@ -290,7 +290,7 @@ namespace alpaka
 
                         // We can not use the default syncBlockThreads here because it searches inside m_mThreadsToBarrier for the thread id.
                         // Concurrently searching while others use emplace is unsafe!
-                        std::map<std::thread::id, UInt>::iterator itThreadToBarrier;
+                        std::map<std::thread::id, Uint>::iterator itThreadToBarrier;
 
                         {
                             // The insertion of elements has to be done one thread at a time.

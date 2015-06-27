@@ -137,7 +137,7 @@ namespace alpaka
                                 }
 
                                 // The number of threads in this block.
-                                UInt const uiNumThreadsInBlock(vuiBlockThreadExtents.prod());
+                                Uint const uiNumThreadsInBlock(vuiBlockThreadExtents.prod());
                                 int const iNumThreadsInBlock(static_cast<int>(uiNumThreadsInBlock));
 
                                 // Force the environment to use the given number of threads.

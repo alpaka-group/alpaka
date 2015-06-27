@@ -57,8 +57,8 @@ namespace alpaka
                     TExtents const & extents = TExtents()) :
                         m_pMem(pMem),
                         m_Dev(dev),
-                        m_vExtentsElements(extent::getExtentsVecNd<TDim, UInt>(extents)),
-                        m_uiPitchBytes(extent::getWidth<UInt>(extents) * sizeof(TElem))
+                        m_vExtentsElements(extent::getExtentsVecNd<TDim, Uint>(extents)),
+                        m_uiPitchBytes(extent::getWidth<Uint>(extents) * sizeof(TElem))
                 {}
 
                 //-----------------------------------------------------------------------------
@@ -70,10 +70,10 @@ namespace alpaka
                     TElem * pMem,
                     TDev const dev,
                     TExtents const & extents,
-                    UInt const & uiPitch) :
+                    Uint const & uiPitch) :
                         m_pMem(pMem),
                         m_Dev(dev),
-                        m_vExtentsElements(extent::getExtentsVecNd<TDim, UInt>(extents)),
+                        m_vExtentsElements(extent::getExtentsVecNd<TDim, Uint>(extents)),
                         m_uiPitchBytes(uiPitch)
                 {}
 
@@ -102,7 +102,7 @@ namespace alpaka
                 TElem * m_pMem;
                 TDev m_Dev;
                 Vec<TDim> m_vExtentsElements;
-                UInt m_uiPitchBytes;
+                Uint m_uiPitchBytes;
             };
         }
     }
@@ -183,7 +183,7 @@ namespace alpaka
             {
                 ALPAKA_FCT_HOST_ACC static auto getExtent(
                     mem::buf::BufPlainPtrWrapper<TElem, TDim, TDev> const & extents)
-                -> UInt
+                -> Uint
                 {
                     return extents.m_vExtentsElements[TIdx::value];
                 }
@@ -271,12 +271,12 @@ namespace alpaka
                     typename TDim,
                     typename TDev>
                 struct GetPitchBytes<
-                    std::integral_constant<UInt, 0u>,
+                    std::integral_constant<Uint, 0u>,
                     buf::BufPlainPtrWrapper<TElem, TDim, TDev>>
                 {
                     ALPAKA_FCT_HOST_ACC static auto getPitchBytes(
                         buf::BufPlainPtrWrapper<TElem, TDim, TDev> const & buf)
-                    -> UInt
+                    -> Uint
                     {
                         return buf.m_uiPitchBytes;
                     }
@@ -305,7 +305,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST_ACC static auto getOffset(
                     mem::buf::BufPlainPtrWrapper<TElem, TDim, TDev> const &)
-                -> UInt
+                -> Uint
                 {
                     return 0u;
                 }

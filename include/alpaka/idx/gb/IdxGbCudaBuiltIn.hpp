@@ -113,7 +113,7 @@ namespace alpaka
                 -> Vec<TDim>
                 {
                     //boost::ignore_unused(idx);
-                    return offset::getOffsetsVecNd<TDim, UInt>(blockIdx);
+                    return offset::getOffsetsVecNd<TDim, Uint>(blockIdx);
                 }
             };
         }

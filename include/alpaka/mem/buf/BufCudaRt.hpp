@@ -61,10 +61,10 @@ namespace alpaka
                 ALPAKA_FCT_HOST BufCudaRt(
                     dev::DevCudaRt dev,
                     TElem * const pMem,
-                    UInt const & uiPitchBytes,
+                    Uint const & uiPitchBytes,
                     TExtents const & extents) :
                         m_Dev(dev),
-                        m_vExtentsElements(extent::getExtentsVecNd<TDim, UInt>(extents)),
+                        m_vExtentsElements(extent::getExtentsVecNd<TDim, Uint>(extents)),
                         m_spMem(
                             pMem,
                             std::bind(&BufCudaRt::freeBuffer, std::placeholders::_1, std::ref(m_Dev))),
@@ -101,7 +101,7 @@ namespace alpaka
                 dev::DevCudaRt m_Dev;
                 Vec<TDim> m_vExtentsElements;
                 std::shared_ptr<TElem> m_spMem;
-                UInt m_uiPitchBytes;
+                Uint m_uiPitchBytes;
             };
         }
     }
@@ -180,7 +180,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getExtent(
                     mem::buf::BufCudaRt<TElem, TDim> const & extent)
-                -> UInt
+                -> Uint
                 {
                     return extent.m_vExtentsElements[TIdx::value];
                 }
@@ -325,7 +325,7 @@ namespace alpaka
                     typename TElem,
                     typename TDim>
                 struct GetPitchBytes<
-                    std::integral_constant<UInt, TDim::value - 1u>,
+                    std::integral_constant<Uint, TDim::value - 1u>,
                     mem::buf::BufCudaRt<TElem, TDim>>
                 {
                     //-----------------------------------------------------------------------------
@@ -333,7 +333,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_HOST static auto getPitchBytes(
                         mem::buf::BufCudaRt<TElem, TDim> const & buf)
-                    -> UInt
+                    -> Uint
                     {
                         return buf.m_uiPitchBytes;
                     }
@@ -379,7 +379,7 @@ namespace alpaka
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                        auto const uiWidth(extent::getWidth<UInt>(extents));
+                        auto const uiWidth(extent::getWidth<Uint>(extents));
                         assert(uiWidth>0);
                         auto const uiWidthBytes(uiWidth * sizeof(T));
                         assert(uiWidthBytes>0);
@@ -431,10 +431,10 @@ namespace alpaka
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                        auto const uiWidth(extent::getWidth<UInt>(extents));
+                        auto const uiWidth(extent::getWidth<Uint>(extents));
                         auto const uiWidthBytes(uiWidth * sizeof(T));
                         assert(uiWidthBytes>0);
-                        auto const uiHeight(extent::getHeight<UInt>(extents));
+                        auto const uiHeight(extent::getHeight<Uint>(extents));
 #ifndef NDEBUG
                         auto const uiElementCount(uiWidth * uiHeight);
 #endif
@@ -467,7 +467,7 @@ namespace alpaka
                             mem::buf::BufCudaRt<T, dim::Dim2>(
                                 dev,
                                 reinterpret_cast<T *>(pBuffer),
-                                static_cast<UInt>(uiPitch),
+                                static_cast<Uint>(uiPitch),
                                 extents);
                     }
                 };
@@ -495,9 +495,9 @@ namespace alpaka
 
                         cudaExtent const cudaExtentVal(
                             make_cudaExtent(
-                                extent::getWidth<UInt>(extents) * sizeof(T),
-                                extent::getHeight<UInt>(extents),
-                                extent::getDepth<UInt>(extents)));
+                                extent::getWidth<Uint>(extents) * sizeof(T),
+                                extent::getHeight<Uint>(extents),
+                                extent::getDepth<Uint>(extents)));
 
                         // Set the current device.
                         ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
@@ -512,7 +512,7 @@ namespace alpaka
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                         std::cout << BOOST_CURRENT_FUNCTION
-                            << " ew: " << extent::getWidth<UInt>(extents)
+                            << " ew: " << extent::getWidth<Uint>(extents)
                             << " eh: " << cudaExtentVal.height
                             << " ed: " << cudaExtentVal.depth
                             << " ewb: " << cudaExtentVal.width
@@ -526,7 +526,7 @@ namespace alpaka
                             mem::buf::BufCudaRt<T, dim::Dim3>(
                                 dev,
                                 reinterpret_cast<T *>(cudaPitchedPtrVal.ptr),
-                                static_cast<UInt>(cudaPitchedPtrVal.pitch),
+                                static_cast<Uint>(cudaPitchedPtrVal.pitch),
                                 extents);
                     }
                 };
@@ -649,7 +649,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getOffset(
                    mem::buf::BufCudaRt<TElem, TDim> const &)
-                -> UInt
+                -> Uint
                 {
                     return 0u;
                 }

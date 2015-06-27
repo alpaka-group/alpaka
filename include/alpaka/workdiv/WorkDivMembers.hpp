@@ -55,8 +55,8 @@ namespace alpaka
             ALPAKA_FCT_HOST_ACC explicit WorkDivMembers(
                 TGridBlockExtents const & gridBlockExtents = TGridBlockExtents(),
                 TBlockThreadExtents const & blockThreadExtents = TBlockThreadExtents()) :
-                m_vuiGridBlockExtents(extent::getExtentsVecNd<TDim, UInt>(gridBlockExtents)),
-                m_vuiBlockThreadExtents(extent::getExtentsVecNd<TDim, UInt>(blockThreadExtents))
+                m_vuiGridBlockExtents(extent::getExtentsVecNd<TDim, Uint>(gridBlockExtents)),
+                m_vuiBlockThreadExtents(extent::getExtentsVecNd<TDim, Uint>(blockThreadExtents))
             {}
             //-----------------------------------------------------------------------------
             //! Copy constructor.

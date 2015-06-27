@@ -150,7 +150,7 @@ namespace alpaka
                     //! Syncs all threads in the current block.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_ACC_NO_CUDA auto syncBlockThreads(
-                        std::map<std::thread::id, UInt>::iterator const & itFind) const
+                        std::map<std::thread::id, Uint>::iterator const & itFind) const
                     -> void
                     {
                         assert(itFind != m_mThreadsToBarrier.end());
@@ -220,10 +220,10 @@ namespace alpaka
                     alignas(16u) Vec<TDim> mutable m_vuiGridBlockIdx;               //!< The index of the currently executed block.
 
                     // syncBlockThreads
-                    UInt const m_uiNumThreadsPerBlock;                              //!< The number of threads per block the barrier has to wait for.
+                    Uint const m_uiNumThreadsPerBlock;                              //!< The number of threads per block the barrier has to wait for.
                     std::map<
                         std::thread::id,
-                        UInt> mutable m_mThreadsToBarrier;                          //!< The mapping of thread id's to their current barrier.
+                        Uint> mutable m_mThreadsToBarrier;                          //!< The mapping of thread id's to their current barrier.
                     std::mutex mutable m_mtxBarrier;
                     ThreadBarrier mutable m_abarSyncThreads[2];             //!< The barriers for the synchronization of threads.
                     //!< We have to keep the current and the last barrier because one of the threads can reach the next barrier before a other thread was wakeup from the last one and has checked if it can run.
@@ -273,11 +273,11 @@ namespace alpaka
                     boost::ignore_unused(dev);
 
 #if ALPAKA_INTEGRATION_TEST
-                    UInt const uiBlockThreadsCountMax(8u);
+                    Uint const uiBlockThreadsCountMax(8u);
 #else
                     // \TODO: Magic number. What is the maximum? Just set a reasonable value? There is a implementation defined maximum where the creation of a new thread crashes.
                     // std::thread::hardware_concurrency can return 0, so 1 is the default case?
-                    UInt const uiBlockThreadsCountMax(std::max(1u, std::thread::hardware_concurrency() * 8u));
+                    Uint const uiBlockThreadsCountMax(std::max(1u, std::thread::hardware_concurrency() * 8u));
 #endif
                     return {
                         // m_uiMultiProcessorCount

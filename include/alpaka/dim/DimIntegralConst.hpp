@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>   // UInt
+#include <alpaka/core/Common.hpp>   // Uint
 
 #include <type_traits>              // std::integral_constant
 
@@ -33,8 +33,8 @@ namespace alpaka
         // N(th) dimension(s).
         //-----------------------------------------------------------------------------
         template<
-            UInt N>
-        using Dim = std::integral_constant<UInt, N>;
+            Uint N>
+        using Dim = std::integral_constant<Uint, N>;
 
         //-----------------------------------------------------------------------------
         //! One/First dimension.

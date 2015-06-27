@@ -153,7 +153,7 @@ namespace alpaka
                     //! Syncs all threads in the current block.
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_ACC_NO_CUDA auto syncBlockThreads(
-                        std::map<boost::fibers::fiber::id, UInt>::iterator const & itFind) const
+                        std::map<boost::fibers::fiber::id, Uint>::iterator const & itFind) const
                     -> void
                     {
                         assert(itFind != m_mFibersToBarrier.end());
@@ -218,10 +218,10 @@ namespace alpaka
                     alignas(16u) Vec<TDim> mutable m_vuiGridBlockIdx;           //!< The index of the currently executed block.
 
                     // syncBlockThreads
-                    UInt const m_uiNumThreadsPerBlock;                          //!< The number of threads per block the barrier has to wait for.
+                    Uint const m_uiNumThreadsPerBlock;                          //!< The number of threads per block the barrier has to wait for.
                     std::map<
                         boost::fibers::fiber::id,
-                        UInt> mutable m_mFibersToBarrier;                       //!< The mapping of fibers id's to their current barrier.
+                        Uint> mutable m_mFibersToBarrier;                       //!< The mapping of fibers id's to their current barrier.
                     FiberBarrier mutable m_abarSyncFibers[2];                   //!< The barriers for the synchronization of fibers.
                     //!< We have to keep the current and the last barrier because one of the fibers can reach the next barrier before another fiber was wakeup from the last one and has checked if it can run.
 
@@ -270,9 +270,9 @@ namespace alpaka
                     boost::ignore_unused(dev);
 
 #if ALPAKA_INTEGRATION_TEST
-                    UInt const uiBlockThreadsCountMax(24u);
+                    Uint const uiBlockThreadsCountMax(24u);
 #else
-                    UInt const uiBlockThreadsCountMax(32u);     // \TODO: What is the maximum? Just set a reasonable value?
+                    Uint const uiBlockThreadsCountMax(32u);     // \TODO: What is the maximum? Just set a reasonable value?
 #endif
                     return {
                         // m_uiMultiProcessorCount

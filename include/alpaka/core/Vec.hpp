@@ -48,20 +48,20 @@ namespace alpaka
     //#############################################################################
     template<
         typename TDim,
-        typename TVal = UInt>
+        typename TVal = Uint>
     class alignas(16u) Vec final
     {
     public:
         static_assert(TDim::value>0, "Size of the vector is required to be greater then zero!");
 
         using Dim = TDim;
-        static constexpr UInt s_uiDim = TDim::value;
+        static constexpr Uint s_uiDim = TDim::value;
         using Val = TVal;
 
     private:
         //! A sequence of integers from 0 to dim-1.
         //! This can be used to write compile time indexing algorithms.
-        using IdxSequence = alpaka::detail::make_integer_sequence<UInt, TDim::value>;
+        using IdxSequence = alpaka::detail::make_integer_sequence<Uint, TDim::value>;
 
     public:
         //-----------------------------------------------------------------------------
@@ -94,11 +94,11 @@ namespace alpaka
         //! Single value constructor helper.
         //-----------------------------------------------------------------------------
         template<
-            template<UInt> class TTFunctor,
+            template<Uint> class TTFunctor,
             typename... TArgs,
-            UInt... TIndices>
+            Uint... TIndices>
         ALPAKA_FCT_HOST_ACC static auto createHelper(
-            detail::integer_sequence<UInt, TIndices...> const & indices,
+            detail::integer_sequence<Uint, TIndices...> const & indices,
             TArgs && ... args)
         -> Vec<TDim, TVal>
         {
@@ -113,7 +113,7 @@ namespace alpaka
         //! Creator using func(idx, args...) to initialize all values of the vector.
         //-----------------------------------------------------------------------------
         template<
-            template<UInt> class TTFunctor,
+            template<Uint> class TTFunctor,
             typename... TArgs>
         ALPAKA_FCT_HOST_ACC static auto create(
             TArgs && ... args)
@@ -128,7 +128,7 @@ namespace alpaka
         //! A functor that returns the given value for each index.
         //#############################################################################
         template<
-            UInt TuiIdx>
+            Uint TuiIdx>
         struct CreateSingleVal
         {
             //-----------------------------------------------------------------------------
@@ -209,7 +209,7 @@ namespace alpaka
         -> TVal &
         {
             assert(0<=iIdx);
-            auto const uiIdx(static_cast<UInt>(iIdx));
+            auto const uiIdx(static_cast<Uint>(iIdx));
             assert(uiIdx<TDim::value);
             return m_auiData[uiIdx];
         }
@@ -227,7 +227,7 @@ namespace alpaka
         -> TVal
         {
             assert(0<=iIdx);
-            auto const uiIdx(static_cast<UInt>(iIdx));
+            auto const uiIdx(static_cast<Uint>(iIdx));
             assert(uiIdx<TDim::value);
             return m_auiData[uiIdx];
         }
@@ -239,7 +239,7 @@ namespace alpaka
             Vec const & rhs) const
         -> bool
         {
-            for(UInt i(0); i < TDim::value; i++)
+            for(Uint i(0); i < TDim::value; i++)
             {
                 if((*this)[i] != rhs[i])
                 {
@@ -263,10 +263,10 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TFunctor,
-            UInt... TIndices>
+            Uint... TIndices>
         ALPAKA_FCT_HOST auto foldrAllInternal(
             TFunctor const & f,
-            alpaka::detail::integer_sequence<UInt, TIndices...> const & indices) const
+            alpaka::detail::integer_sequence<Uint, TIndices...> const & indices) const
         -> decltype(
             foldr(
                 f,
@@ -346,10 +346,10 @@ namespace alpaka
         //! \return The index of the minimal element.
         //-----------------------------------------------------------------------------
         ALPAKA_FCT_HOST_ACC auto minElem() const
-        -> UInt
+        -> Uint
         {
             return
-                static_cast<UInt>(
+                static_cast<Uint>(
                     std::distance(
                         std::begin(m_auiData),
                         std::min_element(
@@ -360,10 +360,10 @@ namespace alpaka
         //! \return The index of the maximal element.
         //-----------------------------------------------------------------------------
         ALPAKA_FCT_HOST_ACC auto maxElem() const
-        -> UInt
+        -> Uint
         {
             return
-                static_cast<UInt>(
+                static_cast<Uint>(
                     std::distance(
                         std::begin(m_auiData),
                         std::max_element(
@@ -376,7 +376,7 @@ namespace alpaka
         //! A functor that returns the sum of the two input vectors elements.
         //#############################################################################
         template<
-            UInt TuiIdx>
+            Uint TuiIdx>
         struct CreateAdd
         {
             //-----------------------------------------------------------------------------
@@ -394,7 +394,7 @@ namespace alpaka
         //! A functor that returns the product of the two input vectors elements.
         //#############################################################################
         template<
-            UInt TuiIdx>
+            Uint TuiIdx>
         struct CreateMul
         {
             //-----------------------------------------------------------------------------
@@ -415,19 +415,19 @@ namespace alpaka
     };
 
     template<
-        typename TVal = UInt>
+        typename TVal = Uint>
     using Vec1 = Vec<dim::Dim1, TVal>;
 
     template<
-        typename TVal = UInt>
+        typename TVal = Uint>
     using Vec2 = Vec<dim::Dim2, TVal>;
 
     template<
-        typename TVal = UInt>
+        typename TVal = Uint>
     using Vec3 = Vec<dim::Dim3, TVal>;
 
     template<
-        typename TVal = UInt>
+        typename TVal = Uint>
     using Vec4 = Vec<dim::Dim4, TVal>;
 
     //-----------------------------------------------------------------------------
@@ -482,7 +482,7 @@ namespace alpaka
     -> std::ostream &
     {
         os << "(";
-        for(UInt i(0); i<TDim::value; ++i)
+        for(Uint i(0); i<TDim::value; ++i)
         {
             os << v[i];
             if(i<TDim::value-1)
@@ -506,10 +506,10 @@ namespace alpaka
         {
             template<
                 typename TVal,
-                UInt... TIndices>
+                Uint... TIndices>
             ALPAKA_FCT_HOST_ACC static auto subVecFromIndices(
                 Vec<TDim, TVal> const & vec,
-                alpaka::detail::integer_sequence<UInt, TIndices...> const &)
+                alpaka::detail::integer_sequence<Uint, TIndices...> const &)
             -> Vec<dim::Dim<sizeof...(TIndices)>, TVal>
             {
                 static_assert(sizeof...(TIndices) <= TDim::value, "The sub-vector has to be smaller (or same size) then the origin vector.");
@@ -524,13 +524,13 @@ namespace alpaka
             typename TDim>
         struct SubVecFromIndices<
             TDim,
-            alpaka::detail::make_integer_sequence<UInt, TDim::value>>
+            alpaka::detail::make_integer_sequence<Uint, TDim::value>>
         {
             template<
                 typename TVal>
             ALPAKA_FCT_HOST_ACC static auto subVecFromIndices(
                 Vec<TDim, TVal> const & vec,
-                alpaka::detail::make_integer_sequence<UInt, TDim::value> const &)
+                alpaka::detail::make_integer_sequence<Uint, TDim::value> const &)
             -> Vec<TDim, TVal>
             {
                 return vec;
@@ -545,16 +545,16 @@ namespace alpaka
     template<
         typename TDim,
         typename TVal,
-        UInt... TIndices>
+        Uint... TIndices>
     ALPAKA_FCT_HOST_ACC static auto subVecFromIndices(
         Vec<TDim, TVal> const & vec,
-        detail::integer_sequence<UInt, TIndices...> const & indices)
+        detail::integer_sequence<Uint, TIndices...> const & indices)
     -> Vec<dim::Dim<sizeof...(TIndices)>, TVal>
     {
         return
             detail::SubVecFromIndices<
                 TDim,
-                detail::integer_sequence<UInt, TIndices...>>
+                detail::integer_sequence<Uint, TIndices...>>
             ::subVecFromIndices(
                 vec,
                 indices);
@@ -573,7 +573,7 @@ namespace alpaka
         static_assert(TSubDim::value <= TDim::value, "The sub-vector has to be smaller (or same size) then the origin vector.");
 
         //! A sequence of integers from 0 to dim-1.
-        using IdxSubSequence = alpaka::detail::make_integer_sequence<UInt, TSubDim::value>;
+        using IdxSubSequence = alpaka::detail::make_integer_sequence<Uint, TSubDim::value>;
         return subVecFromIndices(vec, IdxSubSequence());
     }
     //-----------------------------------------------------------------------------
@@ -590,7 +590,7 @@ namespace alpaka
         static_assert(TSubDim::value <= TDim::value, "The sub-vector has to be smaller (or same size) then the origin vector.");
 
         //! A sequence of integers from 0 to dim-1.
-        using IdxSubSequence = alpaka::detail::make_integer_sequence_start<UInt, TDim::value-TSubDim::value, TSubDim::value>;
+        using IdxSubSequence = alpaka::detail::make_integer_sequence_start<Uint, TDim::value-TSubDim::value, TSubDim::value>;
         return subVecFromIndices(vec, IdxSubSequence());
     }
 
@@ -611,7 +611,7 @@ namespace alpaka
                 alpaka::detail::integer_sequence<TInt, TIndices...> const &)
             -> Vec<dim::Dim<sizeof...(TIndices)>, TVal>
             {
-                return {getExtent<(UInt)TIndices, TVal>(extents)...};
+                return {getExtent<(Uint)TIndices, TVal>(extents)...};
             }
         }
         //-----------------------------------------------------------------------------
@@ -662,7 +662,7 @@ namespace alpaka
                 alpaka::detail::integer_sequence<TInt, TIndices...> const &)
             -> Vec<dim::Dim<sizeof...(TIndices)>, TVal>
             {
-                return {getOffset<(UInt)TIndices, TVal>(offsets)...};
+                return {getOffset<(Uint)TIndices, TVal>(offsets)...};
             }
         }
         //-----------------------------------------------------------------------------

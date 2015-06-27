@@ -207,13 +207,13 @@ namespace alpaka
 
                     return {
                         // m_uiMultiProcessorCount
-                        static_cast<UInt>(cudaDevProp.multiProcessorCount),
+                        static_cast<Uint>(cudaDevProp.multiProcessorCount),
                         // m_uiBlockThreadsCountMax
-                        static_cast<UInt>(cudaDevProp.maxThreadsPerBlock),
+                        static_cast<Uint>(cudaDevProp.maxThreadsPerBlock),
                         // m_vuiBlockThreadExtentsMax
-                        alpaka::extent::getExtentsVecNd<TDim, UInt>(cudaDevProp.maxThreadsDim),
+                        alpaka::extent::getExtentsVecNd<TDim, Uint>(cudaDevProp.maxThreadsDim),
                         // m_vuiGridBlockExtentsMax
-                        alpaka::extent::getExtentsVecNd<TDim, UInt>(cudaDevProp.maxGridSize)};
+                        alpaka::extent::getExtentsVecNd<TDim, Uint>(cudaDevProp.maxGridSize)};
                 }
             };
             //#############################################################################

@@ -108,7 +108,7 @@ namespace alpaka
                 -> alpaka::Vec<TDim>
                 {
                     //boost::ignore_unused(workDiv);
-                    return extent::getExtentsVecNd<TDim, UInt>(blockDim);
+                    return extent::getExtentsVecNd<TDim, Uint>(blockDim);
                 }
             };
 
@@ -130,7 +130,7 @@ namespace alpaka
                 -> alpaka::Vec<TDim>
                 {
                     //boost::ignore_unused(workDiv);
-                    return extent::getExtentsVecNd<TDim, UInt>(gridDim);
+                    return extent::getExtentsVecNd<TDim, Uint>(gridDim);
                 }
             };
         }

@@ -128,10 +128,10 @@ namespace alpaka
                                     << std::endl;
 #endif
                                 // The number of blocks in the grid.
-                                UInt const uiNumBlocksInGrid(vuiGridBlockExtents.prod());
+                                Uint const uiNumBlocksInGrid(vuiGridBlockExtents.prod());
                                 int const iNumBlocksInGrid(static_cast<int>(uiNumBlocksInGrid));
                                 // The number of threads in a block.
-                                UInt const uiNumThreadsInBlock(vuiBlockThreadExtents.prod());
+                                Uint const uiNumThreadsInBlock(vuiBlockThreadExtents.prod());
                                 int const iNumThreadsInBlock(static_cast<int>(uiNumThreadsInBlock));
 
                                 // `When an if(scalar-expression) evaluates to false, the structured block is executed on the host.`
@@ -162,7 +162,7 @@ namespace alpaka
                                         }
 
                                         #pragma omp distribute
-                                        for(UInt b = 0u; b<uiNumBlocksInGrid; ++b)
+                                        for(Uint b = 0u; b<uiNumBlocksInGrid; ++b)
                                         {
                                             Vec1<> const v1iIdxGridBlock(b);
                                             // When this is not repeated here:

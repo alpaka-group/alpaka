@@ -115,7 +115,7 @@ namespace alpaka
             {
                 ALPAKA_FCT_HOST_ACC static constexpr auto getExtent(
                     TFixedSizeArray const & /*extents*/)
-                -> UInt
+                -> Uint
                 {
                     // C++14
                     /*boost::ignore_unused(extents);*/
@@ -206,7 +206,7 @@ namespace alpaka
                 template<
                     typename TFixedSizeArray>
                 struct GetPitchBytes<
-                    std::integral_constant<UInt, std::rank<TFixedSizeArray>::value - 1u>,
+                    std::integral_constant<Uint, std::rank<TFixedSizeArray>::value - 1u>,
                     TFixedSizeArray,
                     typename std::enable_if<
                         std::is_array<TFixedSizeArray>::value
@@ -216,7 +216,7 @@ namespace alpaka
 
                     ALPAKA_FCT_HOST_ACC static constexpr auto getPitchBytes(
                         TFixedSizeArray const &)
-                    -> UInt
+                    -> Uint
                     {
                         return sizeof(TElem) * std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 1u>::value;
                     }
@@ -244,7 +244,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getOffset(
                     TFixedSizeArray const &)
-                -> UInt
+                -> Uint
                 {
                     return 0u;
                 }
@@ -264,7 +264,7 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TElem,
-                UInt TuiSize>
+                Uint TuiSize>
             struct DevType<
                 std::array<TElem, TuiSize>>
             {
@@ -276,7 +276,7 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TElem,
-                UInt TuiSize>
+                Uint TuiSize>
             struct GetDev<
                 std::array<TElem, TuiSize>>
             {
@@ -298,7 +298,7 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TElem,
-                UInt TuiSize>
+                Uint TuiSize>
             struct DimType<
                 std::array<TElem, TuiSize>>
             {
@@ -315,14 +315,14 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TElem,
-                UInt TuiSize>
+                Uint TuiSize>
             struct GetExtent<
-                std::integral_constant<UInt, 0u>,
+                std::integral_constant<Uint, 0u>,
                 std::array<TElem, TuiSize>>
             {
                 ALPAKA_FCT_HOST_ACC static constexpr auto getExtent(
                     std::array<TElem, TuiSize> const & /*extents*/)
-                -> UInt
+                -> Uint
                 {
                     // C++14
                     /*boost::ignore_unused(extents);*/
@@ -342,7 +342,7 @@ namespace alpaka
                 //#############################################################################
                 template<
                     typename TElem,
-                    UInt TuiSize>
+                    Uint TuiSize>
                 struct ElemType<
                     std::array<TElem, TuiSize>>
                 {
@@ -354,7 +354,7 @@ namespace alpaka
                 //#############################################################################
                 template<
                     typename TElem,
-                    UInt TuiSize>
+                    Uint TuiSize>
                 struct GetBuf<
                     std::array<TElem, TuiSize>>
                 {
@@ -383,7 +383,7 @@ namespace alpaka
                 //#############################################################################
                 template<
                     typename TElem,
-                    UInt TuiSize>
+                    Uint TuiSize>
                 struct GetPtrNative<
                     std::array<TElem, TuiSize>>
                 {
@@ -406,14 +406,14 @@ namespace alpaka
                 //#############################################################################
                 template<
                     typename TElem,
-                    UInt TuiSize>
+                    Uint TuiSize>
                 struct GetPitchBytes<
-                    std::integral_constant<UInt, 0u>,
+                    std::integral_constant<Uint, 0u>,
                     std::array<TElem, TuiSize>>
                 {
                     ALPAKA_FCT_HOST_ACC static auto getPitchBytes(
                         std::array<TElem, TuiSize> const & pitch)
-                    -> UInt
+                    -> Uint
                     {
                         return sizeof(TElem) * pitch.size();
                     }
@@ -431,7 +431,7 @@ namespace alpaka
             template<
                 typename TIdx,
                 typename TElem,
-                UInt TuiSize>
+                Uint TuiSize>
             struct GetOffset<
                 TIdx,
                 std::array<TElem, TuiSize>>
@@ -441,7 +441,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getOffset(
                     std::array<TElem, TuiSize> const &)
-                -> UInt
+                -> Uint
                 {
                     return 0u;
                 }
@@ -514,14 +514,14 @@ namespace alpaka
                 typename TElem,
                 typename TAllocator>
             struct GetExtent<
-                std::integral_constant<UInt, 0u>,
+                std::integral_constant<Uint, 0u>,
                 std::vector<TElem, TAllocator>>
             {
                 ALPAKA_FCT_HOST_ACC static auto getExtent(
                     std::vector<TElem, TAllocator> const & extents)
-                -> UInt
+                -> Uint
                 {
-                    return static_cast<UInt>(extents.size());
+                    return static_cast<Uint>(extents.size());
                 }
             };
         }
@@ -603,14 +603,14 @@ namespace alpaka
                     typename TElem,
                     typename TAllocator>
                 struct GetPitchBytes<
-                    std::integral_constant<UInt, 0u>,
+                    std::integral_constant<Uint, 0u>,
                     std::vector<TElem, TAllocator>>
                 {
                     ALPAKA_FCT_HOST_ACC static auto getPitchBytes(
                         std::vector<TElem, TAllocator> const & pitch)
-                    -> UInt
+                    -> Uint
                     {
-                        return static_cast<UInt>(sizeof(TElem) * pitch.size());
+                        return static_cast<Uint>(sizeof(TElem) * pitch.size());
                     }
                 };
             }
@@ -636,7 +636,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getOffset(
                     std::vector<TElem, TAllocator> const &)
-                -> UInt
+                -> Uint
                 {
                     return 0u;
                 }

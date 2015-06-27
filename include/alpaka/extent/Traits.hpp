@@ -57,9 +57,9 @@ namespace alpaka
             {
                 ALPAKA_FCT_HOST_ACC static auto getExtent(
                     T const &)
-                -> UInt
+                -> Uint
                 {
-                    return static_cast<UInt>(1u);
+                    return static_cast<Uint>(1u);
                 }
             };
 
@@ -77,7 +77,7 @@ namespace alpaka
         //! \return The width.
         //-----------------------------------------------------------------------------
         template<
-            UInt TuiIdx,
+            Uint TuiIdx,
             typename TVal,
             typename TExtents>
         ALPAKA_FCT_HOST_ACC auto getExtent(
@@ -87,7 +87,7 @@ namespace alpaka
             return
                 static_cast<TVal>(
                     traits::GetExtent<
-                        std::integral_constant<UInt, TuiIdx>,
+                        std::integral_constant<Uint, TuiIdx>,
                         TExtents>
                     ::getExtent(
                         extents));
@@ -173,7 +173,7 @@ namespace alpaka
         //! \return The width.
         //-----------------------------------------------------------------------------
         template<
-            UInt TuiIdx,
+            Uint TuiIdx,
             typename TExtents,
             typename TVal>
         ALPAKA_FCT_HOST_ACC auto setExtent(
@@ -182,7 +182,7 @@ namespace alpaka
         -> void
         {
             return traits::SetExtent<
-                std::integral_constant<UInt, TuiIdx>,
+                std::integral_constant<Uint, TuiIdx>,
                 TExtents>
             ::setExtent(
                 extents,
@@ -239,16 +239,16 @@ namespace alpaka
             template<
                 typename T>
             struct GetExtent<
-                std::integral_constant<UInt, 0u>,
+                std::integral_constant<Uint, 0u>,
                 T,
                 typename std::enable_if<
                     std::is_integral<T>::value && std::is_unsigned<T>::value>::type>
             {
                 ALPAKA_FCT_HOST_ACC static auto getExtent(
                     T const & extent)
-                -> UInt
+                -> Uint
                 {
-                    return static_cast<UInt>(extent);
+                    return static_cast<Uint>(extent);
                 }
             };
         }

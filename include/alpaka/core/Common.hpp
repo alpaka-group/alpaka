@@ -98,5 +98,5 @@ namespace alpaka
     //! Defines the default index type.
     //-----------------------------------------------------------------------------
     // NOTE: Setting the value type to std::size_t leads to invalid data on CUDA devices (at least with VC12).
-    using UInt = std::uint32_t;
+    using Uint = std::uint32_t;
 }

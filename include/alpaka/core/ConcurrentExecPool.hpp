@@ -288,8 +288,8 @@ namespace alpaka
             //!                     Currently running tasks do not belong to the queue anymore.
             //-----------------------------------------------------------------------------
             ConcurrentExecPool(
-                UInt uiConcurrentExecutionCount,
-                UInt uiQueueSize = 128u) :
+                Uint uiConcurrentExecutionCount,
+                Uint uiQueueSize = 128u) :
                 m_vConcurrentExecs(),
                 m_qTasks(uiQueueSize),
                 m_bShutdownFlag(false)
@@ -385,7 +385,7 @@ namespace alpaka
             //! \return The number of concurrent executors available.
             //-----------------------------------------------------------------------------
             auto getConcurrentExecutionCount() const
-            -> UInt
+            -> Uint
             {
                 return m_vConcurrentExecs.size();
             }
@@ -493,8 +493,8 @@ namespace alpaka
             //!                     Currently running tasks do not belong to the queue anymore.
             //-----------------------------------------------------------------------------
             ConcurrentExecPool(
-                UInt uiConcurrentExecutionCount,
-                UInt uiQueueSize = 128u) :
+                Uint uiConcurrentExecutionCount,
+                Uint uiQueueSize = 128u) :
                 m_vConcurrentExecs(),
                 m_qTasks(uiQueueSize),
                 m_mtxWakeup(),
@@ -600,7 +600,7 @@ namespace alpaka
             //! \return The number of concurrent executors available.
             //-----------------------------------------------------------------------------
             auto getConcurrentExecutionCount() const
-            -> UInt
+            -> Uint
             {
                 return m_vConcurrentExecs.size();
             }

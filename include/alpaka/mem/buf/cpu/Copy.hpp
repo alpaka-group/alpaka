@@ -86,18 +86,18 @@ namespace alpaka
 
                         using Elem = mem::view::ElemT<TBufDst>;
 
-                        auto const uiExtentWidth(extent::getWidth<UInt>(extents));
-                        auto const uiExtentHeight(extent::getHeight<UInt>(extents));
-                        auto const uiExtentDepth(extent::getDepth<UInt>(extents));
-                        auto const uiDstWidth(extent::getWidth<UInt>(bufDst));
-                        auto const uiDstHeight(extent::getHeight<UInt>(bufDst));
+                        auto const uiExtentWidth(extent::getWidth<Uint>(extents));
+                        auto const uiExtentHeight(extent::getHeight<Uint>(extents));
+                        auto const uiExtentDepth(extent::getDepth<Uint>(extents));
+                        auto const uiDstWidth(extent::getWidth<Uint>(bufDst));
+                        auto const uiDstHeight(extent::getHeight<Uint>(bufDst));
 #if (!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
-                        auto const uiDstDepth(extent::getDepth<UInt>(bufDst));
+                        auto const uiDstDepth(extent::getDepth<Uint>(bufDst));
 #endif
-                        auto const uiSrcWidth(extent::getWidth<UInt>(bufSrc));
-                        auto const uiSrcHeight(extent::getHeight<UInt>(bufSrc));
+                        auto const uiSrcWidth(extent::getWidth<Uint>(bufSrc));
+                        auto const uiSrcHeight(extent::getHeight<Uint>(bufSrc));
 #if (!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
-                        auto const uiSrcDepth(extent::getDepth<UInt>(bufSrc));
+                        auto const uiSrcDepth(extent::getDepth<Uint>(bufSrc));
 #endif
                         assert(uiExtentWidth <= uiDstWidth);
                         assert(uiExtentHeight <= uiDstHeight);
@@ -107,8 +107,8 @@ namespace alpaka
                         assert(uiExtentDepth <= uiSrcDepth);
 
                         auto const uiExtentWidthBytes(uiExtentWidth * sizeof(Elem));
-                        auto const uiDstPitchBytes(mem::view::getPitchBytes<dim::DimT<TBufDst>::value - 1u, UInt>(bufDst));
-                        auto const uiSrcPitchBytes(mem::view::getPitchBytes<dim::DimT<TBufSrc>::value - 1u, UInt>(bufSrc));
+                        auto const uiDstPitchBytes(mem::view::getPitchBytes<dim::DimT<TBufDst>::value - 1u, Uint>(bufDst));
+                        auto const uiSrcPitchBytes(mem::view::getPitchBytes<dim::DimT<TBufSrc>::value - 1u, Uint>(bufSrc));
                         assert(uiExtentWidthBytes <= uiDstPitchBytes);
                         assert(uiExtentWidthBytes <= uiSrcPitchBytes);
 
@@ -119,10 +119,10 @@ namespace alpaka
 
                         auto const & dstBuf(mem::view::getBuf(bufDst));
                         auto const & srcBuf(mem::view::getBuf(bufSrc));
-                        auto const uiDstBufWidth(extent::getWidth<UInt>(dstBuf));
-                        auto const uiSrcBufWidth(extent::getWidth<UInt>(srcBuf));
-                        auto const uiDstBufHeight(extent::getHeight<UInt>(dstBuf));
-                        auto const uiSrcBufHeight(extent::getHeight<UInt>(srcBuf));
+                        auto const uiDstBufWidth(extent::getWidth<Uint>(dstBuf));
+                        auto const uiSrcBufWidth(extent::getWidth<Uint>(srcBuf));
+                        auto const uiDstBufHeight(extent::getHeight<Uint>(dstBuf));
+                        auto const uiSrcBufHeight(extent::getHeight<Uint>(srcBuf));
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                         std::cout << BOOST_CURRENT_FUNCTION
@@ -168,7 +168,7 @@ namespace alpaka
                         }
                         else
                         {
-                            for(UInt z(0); z < uiExtentDepth; ++z)
+                            for(Uint z(0); z < uiExtentDepth; ++z)
                             {
                                 // If:
                                 // - the copy extents width is identical to the dst and src extents width
@@ -188,7 +188,7 @@ namespace alpaka
                                 }
                                 else
                                 {
-                                    for(UInt y(0); y < uiExtentHeight; ++y)
+                                    for(Uint y(0); y < uiExtentHeight; ++y)
                                     {
                                         std::memcpy(
                                             reinterpret_cast<void *>(pDstNative + y*uiDstPitchBytes + z*uiDstSliceSizeBytes),

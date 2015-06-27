@@ -129,7 +129,7 @@ namespace alpaka
         ALPAKA_FCT_HOST auto subDivideGridThreads(
             Vec<TDim> const & vuiGridThreadExtents,
             Vec<TDim> const & vuiMaxBlockThreadExtents,
-            UInt const & uiMaxBlockThreadsCount,
+            Uint const & uiMaxBlockThreadsCount,
             bool bRequireBlockThreadExtentsToDivideGridThreadExtents = true,
             BlockExtentsSubDivRestrictions eBlockExtentsSubDivRestrictions = BlockExtentsSubDivRestrictions::Unrestricted)
         -> workdiv::WorkDivMembers<TDim>
@@ -175,7 +175,7 @@ namespace alpaka
                 if(eBlockExtentsSubDivRestrictions == BlockExtentsSubDivRestrictions::EqualExtents)
                 {
                     double const fNthRoot(std::pow(uiMaxBlockThreadsCount, 1.0/static_cast<double>(TDim::value)));
-                    UInt const uiNthRoot(static_cast<UInt>(fNthRoot));
+                    Uint const uiNthRoot(static_cast<Uint>(fNthRoot));
                     for(std::size_t i(0u); i<TDim::value; ++i)
                     {
                         vuiBlockThreadExtents[i] = uiNthRoot;
@@ -195,16 +195,16 @@ namespace alpaka
                     // Very primitive clipping. Just halve the smallest value until it fits.
                     while(vuiBlockThreadExtents.prod() > uiMaxBlockThreadsCount)
                     {
-                        // Compute the minimum element index but ignore ones. 
+                        // Compute the minimum element index but ignore ones.
                         // Ones compare always larger to everything else.
                         auto const uiMinElemIdx(
-                            static_cast<UInt>(
+                            static_cast<Uint>(
                                 std::distance(
                                     &vuiBlockThreadExtents[0],
                                     std::min_element(
                                         &vuiBlockThreadExtents[0],
                                         &vuiBlockThreadExtents[TDim::value-1u],
-                                        [](UInt const & a, UInt const & b)
+                                        [](Uint const & a, Uint const & b)
                                         {
                                             // This first case is redundant.
                                             /*if((a == 1u) && (b == 1u))
@@ -236,7 +236,7 @@ namespace alpaka
                 {
                     // For equal size block extents we have to compute the gcd of all grid thread extents that is less then the current maximal block thread extent.
                     // For this we compute the divisors of all grid thread extents less then the current maximal block thread extent.
-                    std::array<std::set<UInt>, TDim::value> gridThreadExtentsDivisors;
+                    std::array<std::set<Uint>, TDim::value> gridThreadExtentsDivisors;
                     for(std::size_t i(0u); i<TDim::value; ++i)
                     {
                         gridThreadExtentsDivisors[i] =
@@ -245,7 +245,7 @@ namespace alpaka
                                 vuiBlockThreadExtents[i]);
                     }
                     // The maximal common divisor of all block thread extents is the optimal solution.
-                    std::set<UInt> intersects[2u];
+                    std::set<Uint> intersects[2u];
                     for(std::size_t i(1u); i<TDim::value; ++i)
                     {
                         intersects[(i-1u)%2u] = gridThreadExtentsDivisors[0];
@@ -257,7 +257,7 @@ namespace alpaka
                             gridThreadExtentsDivisors[i].end(),
                             std::inserter(intersects[i%2], intersects[i%2u].begin()));
                     }
-                    UInt const uiMaxCommonDivisor(*(--intersects[(TDim::value-1)%2u].end()));
+                    Uint const uiMaxCommonDivisor(*(--intersects[(TDim::value-1)%2u].end()));
                     for(std::size_t i(0u); i<TDim::value; ++i)
                     {
                         vuiBlockThreadExtents[i] = uiMaxCommonDivisor;
@@ -290,7 +290,7 @@ namespace alpaka
             for(std::size_t i(0); i<TDim::value; ++i)
             {
                 vuiGridBlockExtents[i] =
-                    static_cast<UInt>(
+                    static_cast<Uint>(
                         std::ceil(static_cast<double>(vuiGridThreadExtents[i])
                         / static_cast<double>(vuiBlockThreadExtents[i])));
             }
@@ -318,7 +318,7 @@ namespace alpaka
             auto const devProps(acc::getAccDevProps<TAcc>(dev));
 
             return subDivideGridThreads(
-                extent::getExtentsVec<UInt>(gridThreadExtents),
+                extent::getExtentsVec<Uint>(gridThreadExtents),
                 devProps.m_vuiBlockThreadExtentsMax,
                 devProps.m_uiBlockThreadsCountMax,
                 bRequireBlockThreadExtentsToDivideGridThreadExtents,
