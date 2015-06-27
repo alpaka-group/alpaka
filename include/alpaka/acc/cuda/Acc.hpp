@@ -27,6 +27,7 @@
 #include <alpaka/idx/bt/IdxBtCudaBuiltIn.hpp>       // IdxBtCudaBuiltIn
 #include <alpaka/atomic/AtomicCudaBuiltIn.hpp>      // AtomicCudaBuiltIn
 #include <alpaka/math/MathCudaBuiltIn.hpp>          // MathCudaBuiltIn
+#include <alpaka/block/shared/BlockSharedAllocCudaBuiltIn.hpp>  // BlockSharedAllocCudaBuiltIn
 
 // Specialized traits.
 #include <alpaka/acc/Traits.hpp>                    // AccType
@@ -80,7 +81,8 @@ namespace alpaka
                     public idx::gb::IdxGbCudaBuiltIn<TDim>,
                     public idx::bt::IdxBtCudaBuiltIn<TDim>,
                     public atomic::AtomicCudaBuiltIn,
-                    public math::MathCudaBuiltIn
+                    public math::MathCudaBuiltIn,
+                    public block::shared::BlockSharedAllocCudaBuiltIn
                 {
                 public:
                     /*template<
@@ -101,7 +103,8 @@ namespace alpaka
                         idx::gb::IdxGbCudaBuiltIn<TDim>(),
                         idx::bt::IdxBtCudaBuiltIn<TDim>(),
                         atomic::AtomicCudaBuiltIn(),
-                        math::MathCudaBuiltIn()
+                        math::MathCudaBuiltIn(),
+                        block::shared::BlockSharedAllocCudaBuiltIn()
                     {}
 
                 public:
@@ -133,21 +136,6 @@ namespace alpaka
                     -> void
                     {
                         __syncthreads();
-                    }
-
-                    //-----------------------------------------------------------------------------
-                    //! \return Allocates block shared memory.
-                    //-----------------------------------------------------------------------------
-                    template<
-                        typename T,
-                        UInt TuiNumElements>
-                    ALPAKA_FCT_ACC_CUDA_ONLY auto allocBlockSharedMem() const
-                    -> T *
-                    {
-                        static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
-
-                        __shared__ T shMem[TuiNumElements];
-                        return shMem;
                     }
 
                     //-----------------------------------------------------------------------------

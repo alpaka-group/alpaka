@@ -71,8 +71,8 @@ public:
         std::uint32_t * const pBlockShared(acc.template getBlockSharedExternMem<std::uint32_t>());
 
         // Get some shared memory (allocate a second buffer directly afterwards to check for some synchronization bugs).
-        //std::uint32_t * const pBlockShared1(acc.template allocBlockSharedMem<std::uint32_t, TuiNumUselessWork::value>());
-        //std::uint32_t * const pBlockShared2(acc.template allocBlockSharedMem<std::uint32_t, TuiNumUselessWork::value>());
+        //std::uint32_t * const pBlockShared1(alpaka::block::shared::allocArr<std::uint32_t, TuiNumUselessWork::value>());
+        //std::uint32_t * const pBlockShared2(alpaka::block::shared::allocArr<std::uint32_t, TuiNumUselessWork::value>());
 
         // Calculate linearized index of the thread in the block.
         std::size_t const uiIdxBlockThreadsLin(alpaka::idx::getIdx<alpaka::Block, alpaka::Threads>(acc)[0u]);
@@ -106,7 +106,7 @@ public:
         // Now add up all the cells atomically and write the result to cell 0 of the shared memory.
         if(uiIdxBlockThreadsLin > 0)
         {
-            alpaka::atomic::atomicOp<alpaka::atomic::ops::Add>(acc, &pBlockShared[0], pBlockShared[uiIdxBlockThreadsLin]);
+            alpaka::atomic::atomicOp<alpaka::atomic::op::Add>(acc, &pBlockShared[0], pBlockShared[uiIdxBlockThreadsLin]);
         }
 
 

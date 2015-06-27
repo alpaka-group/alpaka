@@ -27,6 +27,7 @@
 #include <alpaka/idx/bt/IdxBtOmp.hpp>           // IdxBtOmp
 #include <alpaka/atomic/AtomicOmpCritSec.hpp>   // AtomicOmpCritSec
 #include <alpaka/math/MathStl.hpp>              // MathStl
+#include <alpaka/block/shared/BlockSharedAllocMasterSync.hpp>  // BlockSharedAllocMasterSync
 
 // Specialized traits.
 #include <alpaka/acc/Traits.hpp>                // AccType
@@ -39,10 +40,8 @@
 #include <alpaka/core/OpenMp.hpp>
 
 #include <boost/core/ignore_unused.hpp>         // boost::ignore_unused
-#include <boost/align.hpp>                      // boost::aligned_alloc
 
 #include <memory>                               // std::unique_ptr
-#include <vector>                               // std::vector
 
 namespace alpaka
 {
@@ -97,7 +96,8 @@ namespace alpaka
                             public idx::gb::IdxGbRef<TDim>,
                             public idx::bt::IdxBtOmp<TDim>,
                             public atomic::AtomicOmpCritSec,
-                            public math::MathStl
+                            public math::MathStl,
+                            public block::shared::BlockSharedAllocMasterSync
                         {
                         public:
                             friend class ::alpaka::exec::omp::omp2::threads::detail::ExecCpuOmp2ThreadsImpl<TDim>;
@@ -115,6 +115,9 @@ namespace alpaka
                                     idx::bt::IdxBtOmp<TDim>(),
                                     AtomicOmpCritSec(),
                                     math::MathStl(),
+                                    block::shared::BlockSharedAllocMasterSync(
+                                        [this](){syncBlockThreads();},
+                                        [](){return (::omp_get_thread_num() == 0);}),
                                     m_vuiGridBlockIdx(Vec<TDim>::zeros())
                             {}
 
@@ -152,32 +155,6 @@ namespace alpaka
                             }
 
                             //-----------------------------------------------------------------------------
-                            //! \return Allocates block shared memory.
-                            //-----------------------------------------------------------------------------
-                            template<
-                                typename T,
-                                UInt TuiNumElements>
-                            ALPAKA_FCT_ACC_NO_CUDA auto allocBlockSharedMem() const
-                            -> T *
-                            {
-                                static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
-
-                                // Assure that all threads have executed the return of the last allocBlockSharedMem function (if there was one before).
-                                syncBlockThreads();
-
-                                // Arbitrary decision: The thread with id 0 has to allocate the memory.
-                                if(::omp_get_thread_num() == 0)
-                                {
-                                    m_vvuiSharedMem.emplace_back(
-                                        reinterpret_cast<uint8_t *>(
-                                            boost::alignment::aligned_alloc(16u, sizeof(T) * TuiNumElements)));
-                                }
-                                syncBlockThreads();
-
-                                return reinterpret_cast<T*>(m_vvuiSharedMem.back().get());
-                            }
-
-                            //-----------------------------------------------------------------------------
                             //! \return The pointer to the externally allocated block shared memory.
                             //-----------------------------------------------------------------------------
                             template<
@@ -191,10 +168,6 @@ namespace alpaka
                         private:
                             // getIdx
                             alignas(16u) Vec<TDim> mutable m_vuiGridBlockIdx;            //!< The index of the currently executed block.
-
-                            // allocBlockSharedMem
-                            std::vector<
-                                std::unique_ptr<uint8_t, boost::alignment::aligned_delete>> mutable m_vvuiSharedMem;    //!< Block shared memory.
 
                             // getBlockSharedExternMem
                             std::unique_ptr<uint8_t, boost::alignment::aligned_delete> mutable m_vuiExternalSharedMem;  //!< External block shared memory.

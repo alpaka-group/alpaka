@@ -210,7 +210,7 @@ namespace alpaka
                                             ::omp_set_dynamic(iOmpIsDynamic);
 
                                             // After a block has been processed, the shared memory has to be deleted.
-                                            acc.m_vvuiSharedMem.clear();
+                                            block::shared::freeMem(acc);
                                         }
                                         // After all blocks have been processed, the external shared memory has to be deleted.
                                         acc.m_vuiExternalSharedMem.reset();

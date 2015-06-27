@@ -28,6 +28,7 @@
 #include <alpaka/atomic/AtomicNoOp.hpp>         // AtomicNoOp
 #include <alpaka/acc/fibers/Barrier.hpp>        // BarrierFibers
 #include <alpaka/math/MathStl.hpp>              // MathStl
+#include <alpaka/block/shared/BlockSharedAllocMasterSync.hpp>  // BlockSharedAllocMasterSync
 
 // Specialized traits.
 #include <alpaka/acc/Traits.hpp>                // AccType
@@ -41,11 +42,9 @@
 
 #include <boost/core/ignore_unused.hpp>         // boost::ignore_unused
 #include <boost/predef.h>                       // workarounds
-#include <boost/align.hpp>                      // boost::aligned_alloc
 
 #include <cassert>                              // assert
 #include <memory>                               // std::unique_ptr
-#include <vector>                               // std::vector
 
 namespace alpaka
 {
@@ -92,7 +91,8 @@ namespace alpaka
                     public idx::gb::IdxGbRef<TDim>,
                     public idx::bt::IdxBtRefFiberIdMap<TDim>,
                     public atomic::AtomicNoOp,
-                    public math::MathStl
+                    public math::MathStl,
+                    public block::shared::BlockSharedAllocMasterSync
                 {
                 public:
                     friend class ::alpaka::exec::fibers::detail::ExecCpuFibersImpl<TDim>;
@@ -110,6 +110,9 @@ namespace alpaka
                             idx::bt::IdxBtRefFiberIdMap<TDim>(m_mFibersToIndices),
                             atomic::AtomicNoOp(),
                             math::MathStl(),
+                            block::shared::BlockSharedAllocMasterSync(
+                                [this](){syncBlockThreads();},
+                                [this](){return (m_idMasterFiber == boost::this_fiber::get_id());}),
                             m_vuiGridBlockIdx(Vec<TDim>::zeros()),
                             m_uiNumThreadsPerBlock(workdiv::getWorkDiv<Block, Threads>(workDiv).prod())
                     {}
@@ -176,32 +179,6 @@ namespace alpaka
                     }
                 public:
                     //-----------------------------------------------------------------------------
-                    //! \return Allocates block shared memory.
-                    //-----------------------------------------------------------------------------
-                    template<
-                        typename T,
-                        UInt TuiNumElements>
-                    ALPAKA_FCT_ACC_NO_CUDA auto allocBlockSharedMem() const
-                    -> T *
-                    {
-                        static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
-
-                        // Assure that all fibers have executed the return of the last allocBlockSharedMem function (if there was one before).
-                        syncBlockThreads();
-
-                        // Arbitrary decision: The fiber that was created first has to allocate the memory.
-                        if(m_idMasterFiber == boost::this_fiber::get_id())
-                        {
-                            m_vvuiSharedMem.emplace_back(
-                                reinterpret_cast<uint8_t *>(
-                                    boost::alignment::aligned_alloc(16u, sizeof(T) * TuiNumElements)));
-                        }
-                        syncBlockThreads();
-
-                        return reinterpret_cast<T*>(m_vvuiSharedMem.back().get());
-                    }
-
-                    //-----------------------------------------------------------------------------
                     //! \return The pointer to the externally allocated block shared memory.
                     //-----------------------------------------------------------------------------
                     template<
@@ -225,10 +202,8 @@ namespace alpaka
                     FiberBarrier mutable m_abarSyncFibers[2];                   //!< The barriers for the synchronization of fibers.
                     //!< We have to keep the current and the last barrier because one of the fibers can reach the next barrier before another fiber was wakeup from the last one and has checked if it can run.
 
-                    // allocBlockSharedMem
+                    // allocBlockSharedArr
                     boost::fibers::fiber::id mutable m_idMasterFiber;           //!< The id of the master fiber.
-                    std::vector<
-                        std::unique_ptr<uint8_t, boost::alignment::aligned_delete>> mutable m_vvuiSharedMem;    //!< Block shared memory.
 
                     // getBlockSharedExternMem
                     std::unique_ptr<uint8_t, boost::alignment::aligned_delete> mutable m_vuiExternalSharedMem;  //!< External block shared memory.

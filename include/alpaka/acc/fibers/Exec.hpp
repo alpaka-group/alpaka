@@ -235,7 +235,7 @@ namespace alpaka
                         acc.m_mFibersToBarrier.clear();
 
                         // After a block has been processed, the shared memory has to be deleted.
-                        acc.m_vvuiSharedMem.clear();
+                        block::shared::freeMem(acc);
                     }
                     //-----------------------------------------------------------------------------
                     //! The function executed for each block thread.

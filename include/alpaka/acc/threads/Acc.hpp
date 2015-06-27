@@ -27,7 +27,8 @@
 #include <alpaka/idx/bt/IdxBtRefThreadIdMap.hpp>    // IdxBtRefThreadIdMap
 #include <alpaka/atomic/AtomicStlLock.hpp>          // AtomicStlLock
 #include <alpaka/acc/threads/Barrier.hpp>           // BarrierThreads
-#include <alpaka/math/MathStl.hpp>              // MathStl
+#include <alpaka/math/MathStl.hpp>                  // MathStl
+#include <alpaka/block/shared/BlockSharedAllocMasterSync.hpp>  // BlockSharedAllocMasterSync
 
 // Specialized traits.
 #include <alpaka/acc/Traits.hpp>                    // AccType
@@ -39,12 +40,10 @@
 
 #include <boost/core/ignore_unused.hpp>             // boost::ignore_unused
 #include <boost/predef.h>                           // workarounds
-#include <boost/align.hpp>                          // boost::aligned_alloc
 
 #include <cassert>                                  // assert
 #include <memory>                                   // std::unique_ptr
 #include <thread>                                   // std::thread
-#include <vector>                                   // std::vector
 #include <mutex>                                    // std::mutex
 
 namespace alpaka
@@ -90,7 +89,8 @@ namespace alpaka
                     public idx::gb::IdxGbRef<TDim>,
                     public idx::bt::IdxBtRefThreadIdMap<TDim>,
                     public atomic::AtomicStlLock,
-                    public math::MathStl
+                    public math::MathStl,
+                    public block::shared::BlockSharedAllocMasterSync
                 {
                 public:
                     friend class ::alpaka::exec::threads::detail::ExecCpuThreadsImpl<TDim>;
@@ -108,6 +108,9 @@ namespace alpaka
                             idx::bt::IdxBtRefThreadIdMap<TDim>(m_mThreadsToIndices),
                             atomic::AtomicStlLock(),
                             math::MathStl(),
+                            block::shared::BlockSharedAllocMasterSync(
+                                [this](){syncBlockThreads();},
+                                [this](){return (m_idMasterThread == std::this_thread::get_id());}),
                             m_vuiGridBlockIdx(Vec<TDim>::zeros()),
                             m_uiNumThreadsPerBlock(workdiv::getWorkDiv<Block, Threads>(workDiv).prod())
                     {}
@@ -177,32 +180,6 @@ namespace alpaka
                     }
                 public:
                     //-----------------------------------------------------------------------------
-                    //! \return Allocates block shared memory.
-                    //-----------------------------------------------------------------------------
-                    template<
-                        typename T,
-                        UInt TuiNumElements>
-                    ALPAKA_FCT_ACC_NO_CUDA auto allocBlockSharedMem() const
-                    -> T *
-                    {
-                        static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
-
-                        // Assure that all threads have executed the return of the last allocBlockSharedMem function (if there was one before).
-                        syncBlockThreads();
-
-                        // Arbitrary decision: The thread that was created first has to allocate the memory.
-                        if(m_idMasterThread == std::this_thread::get_id())
-                        {
-                            m_vvuiSharedMem.emplace_back(
-                                reinterpret_cast<uint8_t *>(
-                                    boost::alignment::aligned_alloc(16u, sizeof(T) * TuiNumElements)));
-                        }
-                        syncBlockThreads();
-
-                        return reinterpret_cast<T*>(m_vvuiSharedMem.back().get());
-                    }
-
-                    //-----------------------------------------------------------------------------
                     //! \return The pointer to the externally allocated block shared memory.
                     //-----------------------------------------------------------------------------
                     template<
@@ -228,10 +205,8 @@ namespace alpaka
                     ThreadBarrier mutable m_abarSyncThreads[2];             //!< The barriers for the synchronization of threads.
                     //!< We have to keep the current and the last barrier because one of the threads can reach the next barrier before a other thread was wakeup from the last one and has checked if it can run.
 
-                    // allocBlockSharedMem
+                    // allocBlockSharedArr
                     std::thread::id mutable m_idMasterThread;                       //!< The id of the master thread.
-                    std::vector<
-                        std::unique_ptr<uint8_t, boost::alignment::aligned_delete>> mutable m_vvuiSharedMem;        //!< Block shared memory.
 
                     // getBlockSharedExternMem
                     std::unique_ptr<uint8_t, boost::alignment::aligned_delete> mutable m_vuiExternalSharedMem;      //!< External block shared memory.

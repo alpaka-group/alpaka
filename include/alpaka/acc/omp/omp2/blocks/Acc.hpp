@@ -27,6 +27,7 @@
 #include <alpaka/idx/bt/IdxBtZero.hpp>          // IdxBtZero
 #include <alpaka/atomic/AtomicNoOp.hpp>         // AtomicNoOp
 #include <alpaka/math/MathStl.hpp>              // MathStl
+#include <alpaka/block/shared/BlockSharedAllocNoSync.hpp>  // BlockSharedAllocNoSync
 
 // Specialized traits.
 #include <alpaka/acc/Traits.hpp>                // AccType
@@ -39,10 +40,8 @@
 #include <alpaka/core/OpenMp.hpp>
 
 #include <boost/core/ignore_unused.hpp>         // boost::ignore_unused
-#include <boost/align.hpp>                      // boost::aligned_alloc
 
 #include <memory>                               // std::unique_ptr
-#include <vector>                               // std::vector
 
 namespace alpaka
 {
@@ -101,7 +100,8 @@ namespace alpaka
                             public idx::gb::IdxGbRef<TDim>,
                             public idx::bt::IdxBtZero<TDim>,
                             public atomic::AtomicNoOp,
-                            public math::MathStl
+                            public math::MathStl,
+                            public block::shared::BlockSharedAllocNoSync
                         {
                         public:
                             friend class ::alpaka::exec::omp::omp2::blocks::detail::ExecCpuOmp2BlocksImpl<TDim>;
@@ -119,6 +119,7 @@ namespace alpaka
                                     idx::bt::IdxBtZero<TDim>(),
                                     atomic::AtomicNoOp(),
                                     math::MathStl(),
+                                    block::shared::BlockSharedAllocNoSync(),
                                     m_vuiGridBlockIdx(Vec<TDim>::zeros())
                             {}
 
@@ -154,23 +155,6 @@ namespace alpaka
                             }
 
                             //-----------------------------------------------------------------------------
-                            //! \return Allocates block shared memory.
-                            //-----------------------------------------------------------------------------
-                            template<
-                                typename T,
-                                UInt TuiNumElements>
-                            ALPAKA_FCT_ACC_NO_CUDA auto allocBlockSharedMem() const
-                            -> T *
-                            {
-                                static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
-
-                                m_vvuiSharedMem.emplace_back(
-                                    reinterpret_cast<uint8_t *>(
-                                        boost::alignment::aligned_alloc(16u, sizeof(T) * TuiNumElements)));
-                                return reinterpret_cast<T*>(m_vvuiSharedMem.back().get());
-                            }
-
-                            //-----------------------------------------------------------------------------
                             //! \return The pointer to the externally allocated block shared memory.
                             //-----------------------------------------------------------------------------
                             template<
@@ -184,10 +168,6 @@ namespace alpaka
                         private:
                             // getIdx
                             alignas(16u) Vec<TDim> mutable m_vuiGridBlockIdx;          //!< The index of the currently executed block.
-
-                            // allocBlockSharedMem
-                            std::vector<
-                                std::unique_ptr<uint8_t, boost::alignment::aligned_delete>> mutable m_vvuiSharedMem;    //!< Block shared memory.
 
                             // getBlockSharedExternMem
                             std::unique_ptr<uint8_t, boost::alignment::aligned_delete> mutable m_vuiExternalSharedMem;  //!< External block shared memory.
