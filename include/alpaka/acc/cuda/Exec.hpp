@@ -58,10 +58,10 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TDim,
-                    typename TKernelFunctor,
+                    typename TKernelFuncObj,
                     typename... TArgs>
                 __global__ void cudaKernel(
-                    TKernelFunctor kernelFunctor,
+                    TKernelFuncObj kernelFuncObj,
                     TArgs ... args)
                 {
 #if defined(__CUDA_ARCH__) && (__CUDA_ARCH__ < 200)
@@ -69,7 +69,7 @@ namespace alpaka
 #endif
                     acc::cuda::detail::AccGpuCuda<TDim> acc;
 
-                    kernelFunctor(
+                    kernelFuncObj(
                         const_cast<acc::cuda::detail::AccGpuCuda<TDim> const &>(acc),
                         args...);
                 }
@@ -120,16 +120,16 @@ namespace alpaka
             ALPAKA_FCT_HOST ~ExecGpuCuda() = default;
 
             //-----------------------------------------------------------------------------
-            //! Executes the kernel functor.
+            //! Executes the kernel function object.
             //-----------------------------------------------------------------------------
             template<
-                typename TKernelFunctor,
+                typename TKernelFuncObj,
                 typename... TArgs>
             ALPAKA_FCT_HOST auto operator()(
                 // \NOTE: No const reference (const &) is allowed as the parameter type because the kernel launch language extension expects the arguments by value.
                 // This forces the type of a float argument given with std::forward to this function to be of type float instead of e.g. "float const & __ptr64" (MSVC).
                 // If not given by value, the kernel launch code does not copy the value but the pointer to the value location.
-                TKernelFunctor kernelFunctor,
+                TKernelFuncObj kernelFuncObj,
                 TArgs ... args) const
             -> void
             {
@@ -137,10 +137,10 @@ namespace alpaka
 
 #if (!__GLIBCXX__) // libstdc++ even for gcc-4.9 does not support std::is_trivially_copyable.
                 static_assert(
-                    std::is_trivially_copyable<TKernelFunctor>::value,
-                    "The given kernel functor has to fulfill is_trivially_copyable!");
+                    std::is_trivially_copyable<TKernelFuncObj>::value,
+                    "The given kernel function object has to fulfill is_trivially_copyable!");
 #endif
-                // TODO: Check that (sizeof(TKernelFunctor) * m_3uiBlockThreadExtents.prod()) < available memory size
+                // TODO: Check that (sizeof(TKernelFuncObj) * m_3uiBlockThreadExtents.prod()) < available memory size
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 //std::size_t uiPrintfFifoSize;
@@ -181,7 +181,7 @@ namespace alpaka
                 // Get the size of the block shared extern memory.
                 auto const uiBlockSharedExternMemSizeBytes(
                     kernel::getBlockSharedExternMemSizeBytes<
-                        typename std::decay<TKernelFunctor>::type,
+                        typename std::decay<TKernelFuncObj>::type,
                         AccGpuCuda<TDim>>(
                             vuiBlockThreadExtents,
                             args...));
@@ -195,7 +195,7 @@ namespace alpaka
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 // Log the function attributes.
                 cudaFuncAttributes funcAttrs;
-                cudaFuncGetAttributes(&funcAttrs, cuda::detail::cudaKernel<TDim, TKernelFunctor, TArgs...>);
+                cudaFuncGetAttributes(&funcAttrs, cuda::detail::cudaKernel<TDim, TKernelFuncObj, TArgs...>);
                 std::cout << BOOST_CURRENT_FUNCTION
                     << "binaryVersion: " << funcAttrs.binaryVersion
                     << "constSizeBytes: " << funcAttrs.constSizeBytes << " B"
@@ -211,12 +211,12 @@ namespace alpaka
                 ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
                     m_Stream.m_spStreamCudaImpl->m_Dev.m_iDevice));
                 // Enqueue the kernel execution.
-                cuda::detail::cudaKernel<TDim, TKernelFunctor, TArgs...><<<
+                cuda::detail::cudaKernel<TDim, TKernelFuncObj, TArgs...><<<
                     gridDim,
                     blockDim,
                     uiBlockSharedExternMemSizeBytes,
                     m_Stream.m_spStreamCudaImpl->m_CudaStream>>>(
-                        kernelFunctor,
+                        kernelFuncObj,
                         args...);
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
@@ -227,7 +227,7 @@ namespace alpaka
                 cudaError_t const error(cudaGetLastError());
                 if(error != cudaSuccess)
                 {
-                    std::string const sError("The execution of kernel '" + std::string(typeid(TKernelFunctor).name()) + " failed with error: '" + std::string(cudaGetErrorString(error)) + "'");
+                    std::string const sError("The execution of kernel '" + std::string(typeid(TKernelFuncObj).name()) + " failed with error: '" + std::string(cudaGetErrorString(error)) + "'");
                     std::cerr << sError << std::endl;
                     ALPAKA_DEBUG_BREAK;
                     throw std::runtime_error(sError);

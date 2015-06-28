@@ -35,10 +35,10 @@ namespace alpaka
     //!
     //-----------------------------------------------------------------------------
     template<
-        typename TFunctor,
+        typename TFuncObj,
         typename T>
     ALPAKA_FCT_HOST_ACC auto foldr(
-        TFunctor const & f,
+        TFuncObj const & f,
         T const & t)
     -> T
     {
@@ -52,12 +52,12 @@ namespace alpaka
     //!
     //-----------------------------------------------------------------------------
     template<
-        typename TFunctor,
+        typename TFuncObj,
         typename T0,
         typename T1,
         typename... Ts>
     ALPAKA_FCT_HOST_ACC auto foldr(
-        TFunctor const & f,
+        TFuncObj const & f,
         T0 const & t0,
         T1 const & t1,
         Ts const & ... ts)
@@ -71,17 +71,17 @@ namespace alpaka
         //!
         //#############################################################################
         template<
-            typename TFunctor,
+            typename TFuncObj,
             typename... T>
         struct TypeOfFold;
         //#############################################################################
         //!
         //#############################################################################
         template<
-            typename TFunctor,
+            typename TFuncObj,
             typename T>
         struct TypeOfFold<
-            TFunctor,
+            TFuncObj,
             T>
         {
             using type = T;
@@ -90,17 +90,17 @@ namespace alpaka
         //!
         //#############################################################################
         template<
-            typename TFunctor,
+            typename TFuncObj,
             typename T,
             typename... P>
         struct TypeOfFold<
-            TFunctor,
+            TFuncObj,
             T,
             P...>
         {
             using type =
                 typename std::result_of<
-                    TFunctor(T, typename TypeOfFold<TFunctor, P...>::type)>::type;
+                    TFuncObj(T, typename TypeOfFold<TFuncObj, P...>::type)>::type;
         };
     }
 
@@ -108,12 +108,12 @@ namespace alpaka
     //!
     //-----------------------------------------------------------------------------
     template<
-        typename TFunctor,
+        typename TFuncObj,
         typename T0,
         typename T1,
         typename... Ts>
     ALPAKA_FCT_HOST_ACC auto foldr(
-        TFunctor const & f,
+        TFuncObj const & f,
         T0 const & t0,
         T1 const & t1,
         Ts const & ... ts)
@@ -123,7 +123,7 @@ namespace alpaka
     // http://stackoverflow.com/questions/3744400/trailing-return-type-using-decltype-with-a-variadic-template-function
     // http://stackoverflow.com/questions/11596898/variadic-template-and-inferred-return-type-in-concat/11597196#11597196
     //-> decltype(f(t0, foldr(f, t1, ts...)))
-    -> typename detail::TypeOfFold<TFunctor, T0, T1, Ts...>::type
+    -> typename detail::TypeOfFold<TFuncObj, T0, T1, Ts...>::type
     {
         return f(t0, foldr(f, t1, ts...));
     }

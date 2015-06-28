@@ -44,13 +44,13 @@ namespace alpaka
             //#############################################################################
             //! The trait for getting the size of the block shared extern memory of a kernel.
             //!
-            //! \tparam TKernelFunctor The kernel functor.
+            //! \tparam TKernelFuncObj The kernel function object.
             //! \tparam TAcc The accelerator.
             //!
             //! The default implementation returns 0.
             //#############################################################################
             template<
-                typename TKernelFunctor,
+                typename TKernelFuncObj,
                 typename TAcc,
                 typename TSfinae = void>
             struct BlockSharedExternMemSizeBytes
@@ -86,7 +86,7 @@ namespace alpaka
         //! The default version always returns zero.
         //-----------------------------------------------------------------------------
         template<
-            typename TKernelFunctor,
+            typename TKernelFuncObj,
             typename TAcc,
             typename TDim,
             typename... TArgs>
@@ -96,7 +96,7 @@ namespace alpaka
         -> Uint
         {
             return traits::BlockSharedExternMemSizeBytes<
-                TKernelFunctor,
+                TKernelFuncObj,
                 TAcc>
             ::getBlockSharedExternMemSizeBytes(
                 vuiBlockThreadExtents,

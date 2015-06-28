@@ -227,7 +227,7 @@ struct MatMulTester
         std::cout << std::endl;
         std::cout << "################################################################################" << std::endl;
 
-        // Create the kernel functor.
+        // Create the kernel function object.
         MatMulKernel kernel;
 
         // Get the host device.

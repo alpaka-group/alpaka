@@ -35,7 +35,7 @@ namespace alpaka
         namespace op
         {
             //#############################################################################
-            //! The addition functor.
+            //! The addition function object.
             //!
             //! \return The old value of addr.
             //#############################################################################
@@ -55,7 +55,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The subtraction functor.
+            //! The subtraction function object.
             //!
             //! \return The old value of addr.
             //#############################################################################
@@ -75,7 +75,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The minimum functor.
+            //! The minimum function object.
             //!
             //! \return The old value of addr.
             //#############################################################################
@@ -95,7 +95,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The maximum functor.
+            //! The maximum function object.
             //!
             //! \return The old value of addr.
             //#############################################################################
@@ -115,7 +115,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The exchange functor.
+            //! The exchange function object.
             //!
             //! \return The old value of addr.
             //#############################################################################
@@ -135,7 +135,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The increment functor.
+            //! The increment function object.
             //!
             //! Increments up to value, then reset to 0.
             //!
@@ -157,7 +157,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The decrement functor.
+            //! The decrement function object.
             //!
             //! Decrement down to 0, then reset to value.
             //!
@@ -179,7 +179,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The and functor.
+            //! The and function object.
             //!
             //! \return The old value of addr.
             //#############################################################################
@@ -199,7 +199,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The or functor.
+            //! The or function object.
             //!
             //! \return The old value of addr.
             //#############################################################################
@@ -219,7 +219,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The exclusive or functor.
+            //! The exclusive or function object.
             //!
             //! \return The old value of addr.
             //#############################################################################
@@ -239,7 +239,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The compare and swap functor.
+            //! The compare and swap function object.
             //!
             //! \return The old value of addr.
             //#############################################################################

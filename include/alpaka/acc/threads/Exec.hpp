@@ -116,15 +116,15 @@ namespace alpaka
                     ALPAKA_FCT_HOST ~ExecCpuThreadsImpl() = default;
 
                     //-----------------------------------------------------------------------------
-                    //! Executes the kernel functor.
+                    //! Executes the kernel function object.
                     //-----------------------------------------------------------------------------
                     template<
                         typename TWorkDiv,
-                        typename TKernelFunctor,
+                        typename TKernelFuncObj,
                         typename... TArgs>
                     ALPAKA_FCT_HOST auto operator()(
                         TWorkDiv const & workDiv,
-                        TKernelFunctor const & kernelFunctor,
+                        TKernelFuncObj const & kernelFuncObj,
                         TArgs const & ... args) const
                     -> void
                     {
@@ -141,7 +141,7 @@ namespace alpaka
 
                         auto const uiBlockSharedExternMemSizeBytes(
                             kernel::getBlockSharedExternMemSizeBytes<
-                                typename std::decay<TKernelFunctor>::type,
+                                typename std::decay<TKernelFuncObj>::type,
                                 AccCpuThreads<TDim>>(
                                     vuiBlockThreadExtents,
                                     args...));
@@ -164,12 +164,12 @@ namespace alpaka
 
                         // Bind the kernel and its arguments to the grid block function.
                         auto boundGridBlockExecHost(std::bind(
-                            &ExecCpuThreadsImpl<TDim>::gridBlockExecHost<TKernelFunctor, TArgs...>,
+                            &ExecCpuThreadsImpl<TDim>::gridBlockExecHost<TKernelFuncObj, TArgs...>,
                             std::ref(acc),
                             std::placeholders::_1,
                             std::ref(vuiBlockThreadExtents),
                             std::ref(threadPool),
-                            std::ref(kernelFunctor),
+                            std::ref(kernelFuncObj),
                             std::ref(args)...));
 
                         // Execute the blocks serially.
@@ -186,14 +186,14 @@ namespace alpaka
                     //! The function executed for each grid block.
                     //-----------------------------------------------------------------------------
                     template<
-                        typename TKernelFunctor,
+                        typename TKernelFuncObj,
                         typename... TArgs>
                     ALPAKA_FCT_HOST static auto gridBlockExecHost(
                         AccCpuThreads<TDim> & acc,
                         Vec<TDim> const & vuiGridBlockIdx,
                         Vec<TDim> const & vuiBlockThreadExtents,
                         ThreadPool & threadPool,
-                        TKernelFunctor const & kernelFunctor,
+                        TKernelFuncObj const & kernelFuncObj,
                         TArgs const & ... args)
                     -> void
                     {
@@ -205,12 +205,12 @@ namespace alpaka
 
                         // Bind the kernel and its arguments to the host block thread execution function.
                         auto boundBlockThreadExecHost(std::bind(
-                            &ExecCpuThreadsImpl<TDim>::blockThreadExecHost<TKernelFunctor, TArgs...>,
+                            &ExecCpuThreadsImpl<TDim>::blockThreadExecHost<TKernelFuncObj, TArgs...>,
                             std::ref(acc),
                             std::ref(vFuturesInBlock),
                             std::placeholders::_1,
                             std::ref(threadPool),
-                            std::ref(kernelFunctor),
+                            std::ref(kernelFuncObj),
                             std::ref(args)...));
                         // Execute the block threads in parallel.
                         ndLoop(
@@ -239,14 +239,14 @@ namespace alpaka
                     //! The function executed for each block thread on the host.
                     //-----------------------------------------------------------------------------
                     template<
-                        typename TKernelFunctor,
+                        typename TKernelFuncObj,
                         typename... TArgs>
                     ALPAKA_FCT_HOST static auto blockThreadExecHost(
                         AccCpuThreads<TDim> & acc,
                         std::vector<std::future<void>> & vFuturesInBlock,
                         Vec<TDim> const & vuiBlockThreadIdx,
                         ThreadPool & threadPool,
-                        TKernelFunctor const & kernelFunctor,
+                        TKernelFuncObj const & kernelFuncObj,
                         TArgs const & ... args)
                     -> void
                     {
@@ -258,7 +258,7 @@ namespace alpaka
                                 blockThreadExecAcc(
                                     acc,
                                     vuiBlockThreadIdx,
-                                    kernelFunctor,
+                                    kernelFuncObj,
                                     args...);
                             });
                         // Add the bound function to the block thread pool.
@@ -270,12 +270,12 @@ namespace alpaka
                     //! The thread entry point on the accelerator.
                     //-----------------------------------------------------------------------------
                     template<
-                        typename TKernelFunctor,
+                        typename TKernelFuncObj,
                         typename... TArgs>
                     ALPAKA_FCT_HOST static auto blockThreadExecAcc(
                         AccCpuThreads<TDim> & acc,
                         Vec<TDim> const & vuiBlockThreadIdx,
-                        TKernelFunctor const & kernelFunctor,
+                        TKernelFuncObj const & kernelFuncObj,
                         TArgs const & ... args)
                     -> void
                     {
@@ -305,7 +305,7 @@ namespace alpaka
                         acc.syncBlockThreads(itThreadToBarrier);
 
                         // Execute the kernel itself.
-                        kernelFunctor(
+                        kernelFuncObj(
                             const_cast<AccCpuThreads<TDim> const &>(acc),
                             args...);
 
@@ -365,13 +365,13 @@ namespace alpaka
             ALPAKA_FCT_HOST ~ExecCpuThreads() = default;
 
             //-----------------------------------------------------------------------------
-            //! Enqueues the kernel functor.
+            //! Enqueues the kernel function object.
             //-----------------------------------------------------------------------------
             template<
-                typename TKernelFunctor,
+                typename TKernelFuncObj,
                 typename... TArgs>
             ALPAKA_FCT_HOST auto operator()(
-                TKernelFunctor const & kernelFunctor,
+                TKernelFuncObj const & kernelFuncObj,
                 TArgs const & ... args) const
             -> void
             {
@@ -380,12 +380,12 @@ namespace alpaka
                 auto const & workDiv(*static_cast<workdiv::WorkDivMembers<TDim> const *>(this));
 
                 m_Stream.m_spAsyncStreamCpu->m_workerThread.enqueueTask(
-                    [workDiv, kernelFunctor, args...]()
+                    [workDiv, kernelFuncObj, args...]()
                     {
                         threads::detail::ExecCpuThreadsImpl<TDim> exec;
                         exec(
                             workDiv,
-                            kernelFunctor,
+                            kernelFuncObj,
                             args...);
                     });
             }

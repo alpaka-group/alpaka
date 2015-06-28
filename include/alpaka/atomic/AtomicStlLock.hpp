@@ -76,7 +76,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU threads accelerator atomic operation functor.
+            //! The CPU threads accelerator atomic operation function object.
             //#############################################################################
             template<
                 typename TOp,

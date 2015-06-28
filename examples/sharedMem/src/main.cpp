@@ -175,7 +175,7 @@ struct SharedMemTester
         std::cout << std::endl;
         std::cout << "################################################################################" << std::endl;
 
-        // Create the kernel functor.
+        // Create the kernel function object.
         SharedMemKernel<TuiNumUselessWork> kernel(42);
 
         // Get the host device.

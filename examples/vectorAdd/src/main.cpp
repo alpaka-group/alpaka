@@ -84,7 +84,7 @@ struct VectorAddKernelTester
         std::cout << std::endl;
         std::cout << "################################################################################" << std::endl;
 
-        // Create the kernel functor.
+        // Create the kernel function object.
         VectorAddKernel kernel;
 
         // Get the host device.

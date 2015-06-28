@@ -94,7 +94,7 @@ namespace alpaka
         //! Single value constructor helper.
         //-----------------------------------------------------------------------------
         template<
-            template<Uint> class TTFunctor,
+            template<Uint> class TTFuncObj,
             typename... TArgs,
             Uint... TIndices>
         ALPAKA_FCT_HOST_ACC static auto createHelper(
@@ -106,26 +106,26 @@ namespace alpaka
             boost::ignore_unused(indices);
 #endif
             return Vec<TDim, TVal>(
-                (TTFunctor<TIndices>::create(std::forward<TArgs>(args)...))...);
+                (TTFuncObj<TIndices>::create(std::forward<TArgs>(args)...))...);
         }
     public:
         //-----------------------------------------------------------------------------
         //! Creator using func(idx, args...) to initialize all values of the vector.
         //-----------------------------------------------------------------------------
         template<
-            template<Uint> class TTFunctor,
+            template<Uint> class TTFuncObj,
             typename... TArgs>
         ALPAKA_FCT_HOST_ACC static auto create(
             TArgs && ... args)
         -> Vec<TDim, TVal>
         {
-            return createHelper<TTFunctor>(
+            return createHelper<TTFuncObj>(
                 IdxSequence(),
                 std::forward<TArgs>(args)...);
         }
     private:
         //#############################################################################
-        //! A functor that returns the given value for each index.
+        //! A function object that returns the given value for each index.
         //#############################################################################
         template<
             Uint TuiIdx>
@@ -262,10 +262,10 @@ namespace alpaka
         //!
         //-----------------------------------------------------------------------------
         template<
-            typename TFunctor,
+            typename TFuncObj,
             Uint... TIndices>
         ALPAKA_FCT_HOST auto foldrAllInternal(
-            TFunctor const & f,
+            TFuncObj const & f,
             alpaka::detail::integer_sequence<Uint, TIndices...> const & indices) const
         -> decltype(
             foldr(
@@ -285,9 +285,9 @@ namespace alpaka
         //!
         //-----------------------------------------------------------------------------
         template<
-            typename TFunctor>
+            typename TFuncObj>
         ALPAKA_FCT_HOST auto foldrAll(
-            TFunctor const & f) const
+            TFuncObj const & f) const
         -> decltype(
 #if (BOOST_COMP_GNUC) && (BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(5, 0, 0))
             this->foldrAllInternal(
@@ -373,7 +373,7 @@ namespace alpaka
 
     public: // \TODO: Make private.
         //#############################################################################
-        //! A functor that returns the sum of the two input vectors elements.
+        //! A function object that returns the sum of the two input vectors elements.
         //#############################################################################
         template<
             Uint TuiIdx>
@@ -391,7 +391,7 @@ namespace alpaka
             }
         };
         //#############################################################################
-        //! A functor that returns the product of the two input vectors elements.
+        //! A function object that returns the product of the two input vectors elements.
         //#############################################################################
         template<
             Uint TuiIdx>

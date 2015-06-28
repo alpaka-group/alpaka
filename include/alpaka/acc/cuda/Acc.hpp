@@ -63,10 +63,10 @@ namespace alpaka
             {
                 // Forward declarations.
                 /*template<
-                    typename TKernelFunctor,
+                    typename TKernelFuncObj,
                     typename... TArgs>
                 __global__ void cudaKernel(
-                    TKernelFunctor kernelFunctor,
+                    TKernelFuncObj kernelFuncObj,
                     TArgs ... args);*/
 
                 //#############################################################################
@@ -86,10 +86,10 @@ namespace alpaka
                 {
                 public:
                     /*template<
-                        typename TKernelFunctor,
+                        typename TKernelFuncObj,
                         typename... TArgs>
                     friend void ::alpaka::cuda::detail::cudaKernel(
-                        TKernelFunctor kernelFunctor,
+                        TKernelFuncObj kernelFuncObj,
                         TArgs ... args);*/
 
                     //friend class ::alpaka::cuda::detail::ExecGpuCuda<TDim>;

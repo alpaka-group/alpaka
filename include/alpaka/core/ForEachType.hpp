@@ -54,10 +54,10 @@ namespace alpaka
             template<
                 typename TElemIt,
                 typename TLastIt,
-                typename TFunctor,
+                typename TFuncObj,
                 typename... TArgs>
             ALPAKA_FCT_HOST_ACC static auto forEachTypeImpl(
-                TFunctor && f ,
+                TFuncObj && f ,
                 TArgs && ... args)
             -> void
             {
@@ -81,16 +81,16 @@ namespace alpaka
             template<
                 typename TElemIt,
                 typename TLastIt,
-                typename TFunctor,
+                typename TFuncObj,
                 typename... TArgs>
             ALPAKA_FCT_HOST_ACC static auto forEachTypeImpl(
-                TFunctor && f,
+                TFuncObj && f,
                 TArgs && ... args)
             -> void
             {
                 using Elem = typename boost::mpl::deref<TElemIt>::type;
 
-                // Call the functor template call operator.
+                // Call the function object template call operator.
 #if BOOST_COMP_MSVC
                 boost::mpl::aux::unwrap(f, 0).operator()<Elem>(
                     std::forward<TArgs>(args)...);
@@ -105,7 +105,7 @@ namespace alpaka
                 ::template forEachTypeImpl<
                     NextIt,
                     TLastIt>(
-                        std::forward<TFunctor>(f),
+                        std::forward<TFuncObj>(f),
                         std::forward<TArgs>(args)...);
             }
         };
@@ -117,10 +117,10 @@ namespace alpaka
     //-----------------------------------------------------------------------------
     template<
         typename TSequence,
-        typename TFunctor,
+        typename TFuncObj,
         typename... TArgs>
     ALPAKA_FCT_HOST_ACC auto forEachType(
-        TFunctor && f,
+        TFuncObj && f,
         TArgs && ... args)
     -> void
     {
@@ -136,7 +136,7 @@ namespace alpaka
         ::template forEachTypeImpl<
             FirstIt,
             LastIt>(
-                std::forward<TFunctor>(f),
+                std::forward<TFuncObj>(f),
                 std::forward<TArgs>(args)...);
     }
 }

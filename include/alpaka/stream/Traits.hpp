@@ -57,8 +57,8 @@ namespace alpaka
             //! The stream enqueue trait.
             //#############################################################################
             template<
-                typename TEvent,
                 typename TStream,
+                typename TEvent,
                 typename TSfinae = void>
             struct StreamEnqueue;
 

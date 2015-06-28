@@ -52,12 +52,12 @@ namespace alpaka
                 std::size_t TuiCurDim,
                 typename TIndex,
                 typename TExtentsVec,
-                typename TFunctor,
+                typename TFuncObj,
                 typename... TArgs>
             ALPAKA_FCT_HOST_ACC static auto ndLoop(
                 TIndex & idx,
                 TExtentsVec const & extents,
-                TFunctor && f,
+                TFuncObj && f,
                 TArgs && ... args)
             -> void
             {
@@ -73,7 +73,7 @@ namespace alpaka
 
                 for(idx[TuiCurDim] = 0u; idx[TuiCurDim] < extents[TuiCurDim]; ++idx[TuiCurDim])
                 {
-                    std::forward<TFunctor>(f)(idx, std::forward<TArgs>(args)...);
+                    std::forward<TFuncObj>(f)(idx, std::forward<TArgs>(args)...);
                 }
             }
         };
@@ -91,12 +91,12 @@ namespace alpaka
                 std::size_t TuiCurDim,
                 typename TIndex,
                 typename TExtentsVec,
-                typename TFunctor,
+                typename TFuncObj,
                 typename... TArgs>
             ALPAKA_FCT_HOST_ACC static auto ndLoop(
                 TIndex & idx,
                 TExtentsVec const & extents,
-                TFunctor && f,
+                TFuncObj && f,
                 TArgs && ... args)
             -> void
             {
@@ -118,7 +118,7 @@ namespace alpaka
                         TuiCurDim+1u>(
                             idx,
                             extents,
-                            std::forward<TFunctor>(f),
+                            std::forward<TFuncObj>(f),
                             std::forward<TArgs>(args)...);
                 }
             }
@@ -134,11 +134,11 @@ namespace alpaka
     //-----------------------------------------------------------------------------
     template<
         typename TExtentsVec,
-        typename TFunctor,
+        typename TFuncObj,
         typename... TArgs>
     ALPAKA_FCT_HOST_ACC auto ndLoop(
         TExtentsVec const & extents,
-        TFunctor && f,
+        TFuncObj && f,
         TArgs && ... args)
     -> void
     {
@@ -155,7 +155,7 @@ namespace alpaka
             0u>(
                 vuiIdx,
                 extents,
-                std::forward<TFunctor>(f),
+                std::forward<TFuncObj>(f),
                 std::forward<TArgs>(args)...);
     }
 }

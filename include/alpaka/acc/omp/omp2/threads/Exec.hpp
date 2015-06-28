@@ -93,15 +93,15 @@ namespace alpaka
                             ALPAKA_FCT_HOST ~ExecCpuOmp2ThreadsImpl() = default;
 
                             //-----------------------------------------------------------------------------
-                            //! Executes the kernel functor.
+                            //! Executes the kernel function object.
                             //-----------------------------------------------------------------------------
                             template<
                                 typename TWorkDiv,
-                                typename TKernelFunctor,
+                                typename TKernelFuncObj,
                                 typename... TArgs>
                             ALPAKA_FCT_HOST auto operator()(
                                 TWorkDiv const & workDiv,
-                                TKernelFunctor const & kernelFunctor,
+                                TKernelFuncObj const & kernelFuncObj,
                                 TArgs const & ... args) const
                             -> void
                             {
@@ -118,7 +118,7 @@ namespace alpaka
 
                                 auto const uiBlockSharedExternMemSizeBytes(
                                     kernel::getBlockSharedExternMemSizeBytes<
-                                        typename std::decay<TKernelFunctor>::type,
+                                        typename std::decay<TKernelFuncObj>::type,
                                         AccCpuOmp2Threads<TDim>>(
                                             vuiBlockThreadExtents,
                                             args...));
@@ -180,7 +180,7 @@ namespace alpaka
                                             }
 #endif
 #endif
-                                            kernelFunctor(
+                                            kernelFuncObj(
                                                 const_cast<AccCpuOmp2Threads<TDim> const &>(acc),
                                                 args...);
 
@@ -252,13 +252,13 @@ namespace alpaka
             ALPAKA_FCT_HOST ~ExecCpuOmp2Threads() = default;
 
             //-----------------------------------------------------------------------------
-            //! Enqueues the kernel functor.
+            //! Enqueues the kernel function object.
             //-----------------------------------------------------------------------------
             template<
-                typename TKernelFunctor,
+                typename TKernelFuncObj,
                 typename... TArgs>
             ALPAKA_FCT_HOST auto operator()(
-                TKernelFunctor const & kernelFunctor,
+                TKernelFuncObj const & kernelFuncObj,
                 TArgs const & ... args) const
             -> void
             {
@@ -267,12 +267,12 @@ namespace alpaka
                 auto const & workDiv(*static_cast<workdiv::WorkDivMembers<TDim> const *>(this));
 
                 m_Stream.m_spAsyncStreamCpu->m_workerThread.enqueueTask(
-                    [workDiv, kernelFunctor, args...]()
+                    [workDiv, kernelFuncObj, args...]()
                     {
                         omp::omp2::threads::detail::ExecCpuOmp2ThreadsImpl<TDim> exec;
                         exec(
                             workDiv,
-                            kernelFunctor,
+                            kernelFuncObj,
                             args...);
                     });
             }

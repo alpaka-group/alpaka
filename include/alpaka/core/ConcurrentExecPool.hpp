@@ -346,7 +346,7 @@ namespace alpaka
             //! Runs the given function on one of the pool in First In First Out (FIFO) order.
             //!
             //! \tparam TFunc   The function type.
-            //! \param task     Function or functor to be called on the pool.
+            //! \param task     Function or function object to be called on the pool.
             //!                 Takes an arbitrary number of arguments and arbitrary return type.
             //! \tparam TArgs   The argument types pack.
             //! \param args     Arguments for task, cannot be moved.
@@ -365,7 +365,7 @@ namespace alpaka
             {
                 auto boundTask(std::bind(std::forward<TFunc>(task), std::forward<TArgs>(args)...));
 
-                // Return type of the functor, can be void via specialization of TaskPkg.
+                // Return type of the function object, can be void via specialization of TaskPkg.
                 using FuncReturn = typename std::result_of<TFunc(TArgs...)>::type;
                 using TaskPackage = TaskPkg<TPromise, decltype(boundTask), FuncReturn>;
                 // Ensures no memory leak if push throws.
@@ -559,7 +559,7 @@ namespace alpaka
             //! Runs the given function on one of the pool in First In First Out (FIFO) order.
             //!
             //! \tparam TFunc   The function type.
-            //! \param task     Function or functor to be called on the pool.
+            //! \param task     Function or function object to be called on the pool.
             //!                 Takes an arbitrary number of arguments and arbitrary return type.
             //! \tparam TArgs   The argument types pack.
             //! \param args     Arguments for task, cannot be moved.
@@ -578,7 +578,7 @@ namespace alpaka
             {
                 auto boundTask(std::bind(std::forward<TFunc>(task), std::forward<TArgs>(args)...));
 
-                // Return type of the functor, can be void via specialization of TaskPkg.
+                // Return type of the function object, can be void via specialization of TaskPkg.
                 using FuncReturn = typename std::result_of<TFunc(TArgs...)>::type;
                 using TaskPackage = TaskPkg<TPromise, decltype(boundTask), FuncReturn>;
                 // Ensures no memory leak if push throws.
