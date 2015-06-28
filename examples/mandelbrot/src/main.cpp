@@ -150,7 +150,7 @@ public:
         std::uint32_t * const pColors,
         std::uint32_t const & uiNumRows,
         std::uint32_t const & uiNumCols,
-        std::uint32_t const & uiPitchElems,
+        std::uint32_t const & uiPitchBytes,
         float const & fMinR,
         float const & fMaxR,
         float const & fMinI,
@@ -174,7 +174,8 @@ public:
 
             auto const uiIterationCount(iterateMandelbrot(c, uiMaxIterations));
 
-            pColors[uiGridThreadIdxY*uiPitchElems + uiGridThreadIdxX] =
+            auto const pColorsRow(reinterpret_cast<std::uint32_t *>(reinterpret_cast<std::uint8_t *>(pColors) + uiGridThreadIdxY * uiPitchBytes));
+            pColorsRow[uiGridThreadIdxX] =
 #ifdef ALPAKA_MANDELBROT_TEST_CONTINOUS_COLOR_MAPPING
                 iterationCountToContinousColor(uiIterationCount, uiMaxIterations);
 #else
@@ -406,7 +407,7 @@ struct MandelbrotKernelTester
                 alpaka::mem::view::getPtrNative(bufColorAcc),
                 static_cast<std::uint32_t>(uiNumRows),
                 static_cast<std::uint32_t>(uiNumCols),
-                alpaka::mem::view::getPitchElements<1u, std::uint32_t>(bufColorAcc),
+                alpaka::mem::view::getPitchBytes<1u, std::uint32_t>(bufColorAcc),
                 fMinR,
                 fMaxR,
                 fMinI,

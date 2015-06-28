@@ -411,7 +411,7 @@ namespace alpaka
                     mem::view::ViewBasic<TElem, TDim, TDev>>
                 {
                 private:
-                    using IdxSequence = detail::make_integer_sequence<Uint, TDim::value>;
+                    using IdxSequence = alpaka::detail::make_integer_sequence<Uint, TDim::value>;
                 public:
                     //-----------------------------------------------------------------------------
                     //!
@@ -421,8 +421,11 @@ namespace alpaka
                     -> TElem const *
                     {
                         auto const & buf(mem::view::getBuf(view));
-                        // \TODO: Precalculate this pointer for faster execution.
-                        return mem::view::getPtrNative(buf) + pitchedOffsetElems(view, buf, IdxSequence());
+                        // \TODO: pre-calculate this pointer for faster execution.
+                        return
+                            reinterpret_cast<TElem const *>(
+                                reinterpret_cast<std::uint8_t const *>(mem::view::getPtrNative(buf))
+                                + pitchedOffsetBytes(view, buf, IdxSequence()));
                     }
                     //-----------------------------------------------------------------------------
                     //!
@@ -432,8 +435,11 @@ namespace alpaka
                     -> TElem *
                     {
                         auto & buf(mem::view::getBuf(view));
-                        // \TODO: Precalculate this pointer for faster execution.
-                        return mem::view::getPtrNative(buf) + pitchedOffsetElems(view, buf, IdxSequence());
+                        // \TODO: pre-calculate this pointer for faster execution.
+                        return
+                            reinterpret_cast<TElem *>(
+                                reinterpret_cast<std::uint8_t *>(mem::view::getPtrNative(buf))
+                                + pitchedOffsetBytes(view, buf, IdxSequence()));
                     }
 
                 private:
@@ -444,16 +450,16 @@ namespace alpaka
                         typename TView,
                         typename TBuf,
                         Uint... TIndices>
-                    ALPAKA_FCT_HOST static auto pitchedOffsetElems(
+                    ALPAKA_FCT_HOST static auto pitchedOffsetBytes(
                         TView const & view,
                         TBuf const & buf,
-                        detail::integer_sequence<Uint, TIndices...> const &)
+                        alpaka::detail::integer_sequence<Uint, TIndices...> const &)
                     -> Uint
                     {
                         return
                             foldr(
                                 std::plus<Uint>(),
-                                pitchedOffsetElemsPerDim<TIndices>(view, buf)...);
+                                pitchedOffsetBytesDim<TIndices>(view, buf)...);
                     }
                     //-----------------------------------------------------------------------------
                     //!
@@ -462,14 +468,14 @@ namespace alpaka
                         Uint TuiIdx,
                         typename TView,
                         typename TBuf>
-                    ALPAKA_FCT_HOST static auto pitchedOffsetElemsPerDim(
+                    ALPAKA_FCT_HOST static auto pitchedOffsetBytesDim(
                         TView const & view,
                         TBuf const & buf)
                     -> Uint
                     {
                         return
                             offset::getOffset<TuiIdx, Uint>(view)
-                            * view::getPitchElements<TuiIdx + 1u, Uint>(buf);
+                            * view::getPitchBytes<TuiIdx + 1u, Uint>(buf);
                     }
                 };
 
@@ -493,7 +499,7 @@ namespace alpaka
                     -> Uint
                     {
                         return
-                            view::getPitchElements<TIdx::value, Uint>(
+                            view::getPitchBytes<TIdx::value, Uint>(
                                 mem::view::getBuf(view));
                     }
                 };

@@ -29,6 +29,8 @@
 #include <alpaka/core/Fold.hpp>         // foldr
 #include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST
 
+#include <iosfwd>                       // std::ostream
+
 namespace alpaka
 {
     namespace mem
@@ -263,22 +265,6 @@ namespace alpaka
                             TView>
                         ::getPitchBytes(
                             buf));
-            }
-
-            //-----------------------------------------------------------------------------
-            //! \return The pitch in elements. This is the distance between two consecutive rows.
-            //! \TODO: Remove because pitches are not always multiple of the element size.
-            //-----------------------------------------------------------------------------
-            template<
-                Uint TuiIdx,
-                typename TVal,
-                typename TView>
-            ALPAKA_FCT_HOST auto getPitchElements(
-                TView const & buf)
-            -> TVal
-            {
-                assert((getPitchBytes<TuiIdx, TVal>(buf) % sizeof(ElemT<TView>)) == 0u);
-                return getPitchBytes<TuiIdx, TVal>(buf) / sizeof(ElemT<TView>);
             }
 
             //-----------------------------------------------------------------------------

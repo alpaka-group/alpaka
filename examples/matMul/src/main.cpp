@@ -308,17 +308,17 @@ struct MatMulTester
             << alpaka::examples::measureKernelRunTimeMs(
                 exec,
                 kernel,
-                static_cast<std::uint32_t>(m),
-                static_cast<std::uint32_t>(n),
-                static_cast<std::uint32_t>(k),
+                m,
+                n,
+                k,
                 static_cast<std::uint32_t>(1u),
                 alpaka::mem::view::getPtrNative(bufAAcc),
-                alpaka::mem::view::getPitchElements<1u, std::uint32_t>(bufAAcc),
+                alpaka::mem::view::getPitchBytes<1u, std::size_t>(bufAAcc) / sizeof(std::uint32_t),
                 alpaka::mem::view::getPtrNative(bufBAcc),
-                alpaka::mem::view::getPitchElements<1u, std::uint32_t>(bufBAcc),
+                alpaka::mem::view::getPitchBytes<1u, std::size_t>(bufBAcc) / sizeof(std::uint32_t),
                 static_cast<std::uint32_t>(1u),
                 alpaka::mem::view::getPtrNative(bufCAcc),
-                alpaka::mem::view::getPitchElements<1u, std::uint32_t>(bufCAcc))
+                alpaka::mem::view::getPitchBytes<1u, std::size_t>(bufCAcc) / sizeof(std::uint32_t))
             << " ms"
             << std::endl;
 
