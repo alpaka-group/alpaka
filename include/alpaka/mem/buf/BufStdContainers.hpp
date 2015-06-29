@@ -202,7 +202,6 @@ namespace alpaka
                 //#############################################################################
                 //! The fixed size array pitch get trait specialization.
                 //#############################################################################
-                // \FIXME: Calculate pitch for all dimensions, not only the last one.
                 template<
                     typename TFixedSizeArray>
                 struct GetPitchBytes<

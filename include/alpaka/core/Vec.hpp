@@ -293,14 +293,13 @@ namespace alpaka
         {
             return !((*this) == rhs);
         }
-    private:
         //-----------------------------------------------------------------------------
         //!
         //-----------------------------------------------------------------------------
         template<
             typename TFuncObj,
             Uint... TIndices>
-        ALPAKA_FCT_HOST auto foldrAllInternal(
+        ALPAKA_FCT_HOST auto foldrByIndices(
             TFuncObj const & f,
             alpaka::detail::integer_sequence<Uint, TIndices...> const & indices) const
         -> decltype(
@@ -316,7 +315,6 @@ namespace alpaka
                     f,
                     ((*this)[TIndices])...);
         }
-    public:
         //-----------------------------------------------------------------------------
         //!
         //-----------------------------------------------------------------------------
@@ -326,15 +324,15 @@ namespace alpaka
             TFuncObj const & f) const
         -> decltype(
 #if (BOOST_COMP_GNUC) && (BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(5, 0, 0))
-            this->foldrAllInternal(
+            this->foldrByIndices(
 #else
-            foldrAllInternal(
+            foldrByIndices(
 #endif
                 f,
                 IdxSequence()))
         {
             return
-                foldrAllInternal(
+                foldrByIndices(
                     f,
                     IdxSequence());
         }
@@ -407,7 +405,6 @@ namespace alpaka
                             std::end(m_auiData))));
         }
 
-    public: // \TODO: Make private.
         //#############################################################################
         //! A function object that returns the sum of the two input vectors elements.
         //#############################################################################
@@ -659,14 +656,63 @@ namespace alpaka
             //! NOTE: This template type is required because the template alias CreateExtentVal can not be defined inside the calling function.
             //#############################################################################
             template<
-                typename TVal>
-            struct CreateExtentValAlias
+                typename TVal,
+                typename TDim>
+            struct GetExtentsVec
             {
                 template<
                     Uint TuiIdx>
-                using
-                CreateExtentVal = CreateExtent<TuiIdx, TVal>;
+                using CreateExtentVal = CreateExtent<TuiIdx, TVal>;
+
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TExtents>
+                ALPAKA_FCT_HOST_ACC static auto getExtentsVec(
+                    TExtents const & extents)
+                -> Vec<TDim, TVal>
+                {
+                    return
+                        Vec<TDim, TVal>
+                        ::template createFromIndexedFct<
+                            CreateExtentVal>(
+                                extents);
+                }
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TExtents>
+                ALPAKA_FCT_HOST_ACC static auto getExtentsVecEnd(
+                    TExtents const & extents)
+                -> Vec<TDim, TVal>
+                {
+                    return
+                        Vec<TDim, TVal>
+                        ::template createFromIndexedFctEnd<
+                            CreateExtentVal,
+                            dim::DimT<TExtents>>(
+                                extents);
+                }
             };
+        }
+        //-----------------------------------------------------------------------------
+        //! \return The extents.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TVal,
+            typename TExtents>
+        ALPAKA_FCT_HOST_ACC auto getExtentsVec(
+            TExtents const & extents = TExtents())
+        -> Vec<dim::DimT<TExtents>, TVal>
+        {
+            return
+                detail::GetExtentsVec<
+                    TVal,
+                    dim::DimT<TExtents>>
+                ::template getExtentsVec(
+                    extents);
         }
         //-----------------------------------------------------------------------------
         //! \return The extents but only the last N elements.
@@ -680,27 +726,11 @@ namespace alpaka
         -> Vec<dim::Dim<TDim::value>, TVal>
         {
             return
-                Vec<dim::DimT<TExtents>, TVal>
-                ::template createFromIndexedFctEnd<
-                    typename detail::CreateExtentValAlias<TVal>::CreateExtentVal,
-                    dim::DimT<TExtents>>(
-                        extents);
-        }
-        //-----------------------------------------------------------------------------
-        //! \return The extents.
-        //-----------------------------------------------------------------------------
-        template<
-            typename TVal,
-            typename TExtents>
-        ALPAKA_FCT_HOST_ACC auto getExtentsVec(
-            TExtents const & extents = TExtents())
-        -> Vec<dim::DimT<TExtents>, TVal>
-        {
-            return
-                Vec<dim::DimT<TExtents>, TVal>
-                ::template createFromIndexedFct<
-                    typename detail::CreateExtentValAlias<TVal>::CreateExtentVal>(
-                        extents);
+                detail::GetExtentsVec<
+                    TVal,
+                    dim::Dim<TDim::value>>
+                ::template getExtentsVecEnd(
+                    extents);
         }
     }
 
@@ -714,7 +744,7 @@ namespace alpaka
             template<
                 Uint TuiIdx,
                 typename TVal>
-            struct CreateOffsets
+            struct CreateOffset
             {
                 //-----------------------------------------------------------------------------
                 //!
@@ -729,17 +759,66 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! NOTE: This template type is required because the template alias CreateExtentVal can not be defined inside the calling function.
+            //! NOTE: This template type is required because the template alias CreateOffsetsVal can not be defined inside the calling function.
             //#############################################################################
             template<
-                typename TVal>
-            struct CreateOffsetsValAlias
+                typename TVal,
+                typename TDim>
+            struct GetOffsetsVec
             {
                 template<
                     Uint TuiIdx>
-                using
-                CreateOffsetsVal = CreateOffsets<TuiIdx, TVal>;
+                using CreateOffsetVal = CreateOffset<TuiIdx, TVal>;
+
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TOffsets>
+                ALPAKA_FCT_HOST_ACC static auto getOffsetsVec(
+                    TOffsets const & offsets)
+                -> Vec<TDim, TVal>
+                {
+                    return
+                        Vec<TDim, TVal>
+                        ::template createFromIndexedFct<
+                            CreateOffsetVal>(
+                                offsets);
+                }
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TOffsets>
+                ALPAKA_FCT_HOST_ACC static auto getOffsetsVecEnd(
+                    TOffsets const & offsets)
+                -> Vec<TDim, TVal>
+                {
+                    return
+                        Vec<TDim, TVal>
+                        ::template createFromIndexedFctEnd<
+                            CreateOffsetVal,
+                            dim::DimT<TOffsets>>(
+                                offsets);
+                }
             };
+        }
+        //-----------------------------------------------------------------------------
+        //! \return The offsets.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TVal,
+            typename TOffsets>
+        ALPAKA_FCT_HOST_ACC auto getOffsetsVec(
+            TOffsets const & offsets = TOffsets())
+        -> Vec<dim::DimT<TOffsets>, TVal>
+        {
+            return
+                detail::GetOffsetsVec<
+                    TVal,
+                    dim::DimT<TOffsets>>
+                ::template getOffsetsVec(
+                    offsets);
         }
         //-----------------------------------------------------------------------------
         //! \return The offsets vector but only the last N elements.
@@ -753,27 +832,11 @@ namespace alpaka
         -> Vec<dim::Dim<TDim::value>, TVal>
         {
             return
-                Vec<dim::DimT<TOffsets>, TVal>
-                ::template createFromIndexedFctEnd<
-                    typename detail::CreateOffsetsValAlias<TVal>::CreateOffsetsVal,
-                    dim::DimT<TOffsets>>(
-                        extents);
-        }
-        //-----------------------------------------------------------------------------
-        //! \return The offsets.
-        //-----------------------------------------------------------------------------
-        template<
-            typename TVal,
-            typename TOffsets>
-        ALPAKA_FCT_HOST_ACC auto getOffsetsVec(
-            TOffsets const & offsets = TOffsets())
-        -> Vec<dim::DimT<TOffsets>, TVal>
-        {
-            return
-                Vec<dim::DimT<TOffsets>, TVal>
-                ::template createFromIndexedFct<
-                    typename detail::CreateOffsetsValAlias<TVal>::CreateOffsetsVal>(
-                        offsets);
+                detail::GetOffsetsVec<
+                    TVal,
+                    dim::Dim<TDim::value>>
+                ::template getOffsetsVecEnd(
+                    offsets);
         }
     }
 
