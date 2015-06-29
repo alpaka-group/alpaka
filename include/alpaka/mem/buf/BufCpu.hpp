@@ -65,7 +65,7 @@ namespace alpaka
                             dev::DevCpu const & dev,
                             TExtents const & extents) :
                                 m_Dev(dev),
-                                m_vExtentsElements(extent::getExtentsVecNd<TDim, Uint>(extents)),
+                                m_vExtentsElements(extent::getExtentsVecEnd<TDim, Uint>(extents)),
                                 m_pMem(
                                     reinterpret_cast<TElem *>(
                                         boost::alignment::aligned_alloc(16u, sizeof(TElem) * computeElementCount(extents)))),

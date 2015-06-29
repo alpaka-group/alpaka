@@ -85,7 +85,7 @@ See [here](https://www.xsede.org/documents/271087/586927/Edwards-2013-XSCALE13-K
 [here](http://on-demand.gputechconf.com/supercomputing/2013/presentation/SC3103_Towards-Performance-Portable-Applications-Kokkos.pdf)
 and  [here](http://dx.doi.org/10.3233/SPR-2012-0343).
 Source is available [here](https://github.com/trilinos/trilinos/tree/master/packages/kokkos).
-The project is similar to *alpaka* in the way it abstracts the kernel as templated functor. 
+The project is similar to *alpaka* in the way it abstracts the kernel as templated function object.
 It provides parallel_for, parallel_reduce, etc. similar to thrust.
 
 ### Positive
@@ -93,7 +93,7 @@ It provides parallel_for, parallel_reduce, etc. similar to thrust.
 
 ### Negative
 * License.
-* The parameters are required to be given to the functor constructor coupling algorithm and data together.
+* The parameters are required to be given to the function object constructor coupling algorithm and data together.
 * The implementation of accelerator methods (atomics, ...) is selected via macros defined by the nvcc compiler. So there is no way to select between different x86 implementations for different x86 accelerators. 
 
 

@@ -32,7 +32,7 @@ There are two possible ways to tell the kernel about the accelerator type:
   The only way to allow this would be to require the user to implement a templated copy constructor for every kernel.
   This is not allowed for kernels that should be copyable to a CUDA device because std::is_trivially_copyable requires the kernel to have no non-trivial copy constructors.
   * a) and inherits from the accelerator. 
-    * +/- To give a device function called from the kernel functor access to the accelerator methods, these methods have to be templated on the kernel functor and get a reference to the accelerator.
+    * +/- To give a device function called from the kernel function object access to the accelerator methods, these methods have to be templated on the kernel function object and get a reference to the accelerator.
     This allows to give them access not only to the accelerator methods but also to the other kernel methods.
     This is inconsistent because the kernel uses inheritance and subsequent function calls get a parameter.
     * - The kernel itself has to inherit at least protected from the accelerator to allow the KernelExecutor to access the Accelerator.

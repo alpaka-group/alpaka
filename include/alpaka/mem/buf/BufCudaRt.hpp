@@ -64,7 +64,7 @@ namespace alpaka
                     Uint const & uiPitchBytes,
                     TExtents const & extents) :
                         m_Dev(dev),
-                        m_vExtentsElements(extent::getExtentsVecNd<TDim, Uint>(extents)),
+                        m_vExtentsElements(extent::getExtentsVecEnd<TDim, Uint>(extents)),
                         m_spMem(
                             pMem,
                             std::bind(&BufCudaRt::freeBuffer, std::placeholders::_1, std::ref(m_Dev))),

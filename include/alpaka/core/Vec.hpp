@@ -89,7 +89,6 @@ namespace alpaka
             TArgs && ... args) :
                 m_auiData{std::forward<TArg0>(arg0), std::forward<TArgs>(args)...}
         {}
-    private:
         //-----------------------------------------------------------------------------
         //! Single value constructor helper.
         //-----------------------------------------------------------------------------
@@ -97,7 +96,7 @@ namespace alpaka
             template<Uint> class TTFuncObj,
             typename... TArgs,
             Uint... TIndices>
-        ALPAKA_FCT_HOST_ACC static auto createHelper(
+        ALPAKA_FCT_HOST_ACC static auto createFromIndexedFctArbitrary(
             detail::integer_sequence<Uint, TIndices...> const & indices,
             TArgs && ... args)
         -> Vec<TDim, TVal>
@@ -108,20 +107,55 @@ namespace alpaka
             return Vec<TDim, TVal>(
                 (TTFuncObj<TIndices>::create(std::forward<TArgs>(args)...))...);
         }
-    public:
         //-----------------------------------------------------------------------------
-        //! Creator using func(idx, args...) to initialize all values of the vector.
+        //! Creator using func<idx>(args...) to initialize all values of the vector.
+        //! The idx is in the range [0, TDim].
         //-----------------------------------------------------------------------------
         template<
             template<Uint> class TTFuncObj,
             typename... TArgs>
-        ALPAKA_FCT_HOST_ACC static auto create(
+        ALPAKA_FCT_HOST_ACC static auto createFromIndexedFct(
             TArgs && ... args)
         -> Vec<TDim, TVal>
         {
-            return createHelper<TTFuncObj>(
+            return createFromIndexedFctArbitrary<TTFuncObj>(
                 IdxSequence(),
                 std::forward<TArgs>(args)...);
+        }
+        //-----------------------------------------------------------------------------
+        //! Creator using func<idx>(args...) to initialize all values of the vector.
+        //! The idx is in the range [TIdxOffset, TIdxOffset + TDim].
+        //-----------------------------------------------------------------------------
+        template<
+            template<Uint> class TTFuncObj,
+            typename TIdxOffset,
+            typename... TArgs>
+        ALPAKA_FCT_HOST_ACC static auto createFromIndexedFctOffset(
+            TArgs && ... args)
+        -> Vec<TDim, TVal>
+        {
+            using IdxSubSequence = alpaka::detail::make_integer_sequence_start<Uint, TIdxOffset::value, TDim::value>;
+            return createFromIndexedFctArbitrary<TTFuncObj>(
+                IdxSubSequence(),
+                std::forward<TArgs>(args)...);
+        }
+        //-----------------------------------------------------------------------------
+        //! Creator using func<idx>(args...) to initialize all values of the vector.
+        //! The idx is in the range [TSrcDim-TDim, TSrcDim-TDim + TDim].
+        //-----------------------------------------------------------------------------
+        template<
+            template<Uint> class TTFuncObj,
+            typename TSrcDim,
+            typename... TArgs>
+        ALPAKA_FCT_HOST_ACC static auto createFromIndexedFctEnd(
+            TArgs && ... args)
+        -> Vec<TDim, TVal>
+        {
+            using IdxOffset = std::integral_constant<Uint, (Uint)(((std::intmax_t)TSrcDim::value)-((std::intmax_t)TDim::value))>;
+            return createFromIndexedFctOffset<
+                TTFuncObj,
+                IdxOffset>(
+                    std::forward<TArgs>(args)...);
         }
     private:
         //#############################################################################
@@ -156,8 +190,10 @@ namespace alpaka
             TVal2 && val)
         -> Vec<TDim, TVal>
         {
-            return create<CreateSingleVal>(
-                std::forward<TVal2>(val));
+            return
+                createFromIndexedFct<
+                    CreateSingleVal>(
+                        std::forward<TVal2>(val));
         }
         //-----------------------------------------------------------------------------
         //! Zero value constructor.
@@ -444,7 +480,7 @@ namespace alpaka
         return Vec<
             TDim,
             TVal>
-        ::template create<
+        ::template createFromIndexedFct<
             Vec<TDim, TVal>::template CreateAdd>(
                 p,
                 q);
@@ -464,7 +500,7 @@ namespace alpaka
         return Vec<
             TDim,
             TVal>
-        ::template create<
+        ::template createFromIndexedFct<
             Vec<TDim, TVal>::template CreateMul>(
                 p,
                 q);
@@ -571,7 +607,7 @@ namespace alpaka
         Vec<TDim, TVal> const & vec)
     -> Vec<TSubDim, TVal>
     {
-        static_assert(TSubDim::value <= TDim::value, "The sub-vector has to be smaller (or same size) then the origin vector.");
+        static_assert(TSubDim::value <= TDim::value, "The sub-Vec has to be smaller (or same size) then the original Vec.");
 
         //! A sequence of integers from 0 to dim-1.
         using IdxSubSequence = alpaka::detail::make_integer_sequence<Uint, TSubDim::value>;
@@ -588,7 +624,7 @@ namespace alpaka
         Vec<TDim, TVal> const & vec)
     -> Vec<TSubDim, TVal>
     {
-        static_assert(TSubDim::value <= TDim::value, "The sub-vector has to be smaller (or same size) then the origin vector.");
+        static_assert(TSubDim::value <= TDim::value, "The sub-Vec has to be smaller (or same size) then the original Vec.");
 
         //! A sequence of integers from 0 to dim-1.
         using IdxSubSequence = alpaka::detail::make_integer_sequence_start<Uint, TDim::value-TSubDim::value, TSubDim::value>;
@@ -599,21 +635,38 @@ namespace alpaka
     {
         namespace detail
         {
-            //-----------------------------------------------------------------------------
-            //!
-            //-----------------------------------------------------------------------------
+            //#############################################################################
+            //! A function object that returns the extent for each index.
+            //#############################################################################
             template<
-                typename TVal,
-                typename TExtents,
-                typename TInt,
-                TInt... TIndices>
-            ALPAKA_FCT_HOST static auto getExtentsVecInternal(
-                TExtents const & extents,
-                alpaka::detail::integer_sequence<TInt, TIndices...> const &)
-            -> Vec<dim::Dim<sizeof...(TIndices)>, TVal>
+                Uint TuiIdx,
+                typename TVal>
+            struct CreateExtent
             {
-                return {getExtent<(Uint)TIndices, TVal>(extents)...};
-            }
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TExtents>
+                ALPAKA_FCT_HOST_ACC static auto create(
+                    TExtents const & extents)
+                -> TVal
+                {
+                    return getExtent<TuiIdx, TVal>(extents);
+                }
+            };
+            //#############################################################################
+            //! NOTE: This template type is required because the template alias CreateExtentVal can not be defined inside the calling function.
+            //#############################################################################
+            template<
+                typename TVal>
+            struct CreateExtentValAlias
+            {
+                template<
+                    Uint TuiIdx>
+                using
+                CreateExtentVal = CreateExtent<TuiIdx, TVal>;
+            };
         }
         //-----------------------------------------------------------------------------
         //! \return The extents but only the last N elements.
@@ -622,15 +675,16 @@ namespace alpaka
             typename TDim,
             typename TVal,
             typename TExtents>
-        ALPAKA_FCT_HOST_ACC auto getExtentsVecNd(
+        ALPAKA_FCT_HOST_ACC auto getExtentsVecEnd(
             TExtents const & extents = TExtents())
         -> Vec<dim::Dim<TDim::value>, TVal>
         {
-            using DimSrc = dim::DimT<TExtents>;
-            using IdxSubSequence = alpaka::detail::make_integer_sequence_start<std::intmax_t, (((std::intmax_t)DimSrc::value)-((std::intmax_t)TDim::value)), TDim::value>;
-            return detail::getExtentsVecInternal<TVal>(
-                extents,
-                IdxSubSequence());
+            return
+                Vec<dim::DimT<TExtents>, TVal>
+                ::template createFromIndexedFctEnd<
+                    typename detail::CreateExtentValAlias<TVal>::CreateExtentVal,
+                    dim::DimT<TExtents>>(
+                        extents);
         }
         //-----------------------------------------------------------------------------
         //! \return The extents.
@@ -640,9 +694,13 @@ namespace alpaka
             typename TExtents>
         ALPAKA_FCT_HOST_ACC auto getExtentsVec(
             TExtents const & extents = TExtents())
-        -> decltype(getExtentsVecNd<dim::DimT<TExtents>, TVal>(extents))
+        -> Vec<dim::DimT<TExtents>, TVal>
         {
-            return getExtentsVecNd<dim::DimT<TExtents>, TVal>(extents);
+            return
+                Vec<dim::DimT<TExtents>, TVal>
+                ::template createFromIndexedFct<
+                    typename detail::CreateExtentValAlias<TVal>::CreateExtentVal>(
+                        extents);
         }
     }
 
@@ -650,21 +708,38 @@ namespace alpaka
     {
         namespace detail
         {
-            //-----------------------------------------------------------------------------
-            //!
-            //-----------------------------------------------------------------------------
+            //#############################################################################
+            //! A function object that returns the offsets for each index.
+            //#############################################################################
             template<
-                typename TVal,
-                typename TOffsets,
-                typename TInt,
-                TInt... TIndices>
-            ALPAKA_FCT_HOST static auto getOffsetsVecInternal(
-                TOffsets const & offsets,
-                alpaka::detail::integer_sequence<TInt, TIndices...> const &)
-            -> Vec<dim::Dim<sizeof...(TIndices)>, TVal>
+                Uint TuiIdx,
+                typename TVal>
+            struct CreateOffsets
             {
-                return {getOffset<(Uint)TIndices, TVal>(offsets)...};
-            }
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TOffsets>
+                ALPAKA_FCT_HOST_ACC static auto create(
+                    TOffsets const & offsets)
+                -> TVal
+                {
+                    return getOffset<TuiIdx, TVal>(offsets);
+                }
+            };
+            //#############################################################################
+            //! NOTE: This template type is required because the template alias CreateExtentVal can not be defined inside the calling function.
+            //#############################################################################
+            template<
+                typename TVal>
+            struct CreateOffsetsValAlias
+            {
+                template<
+                    Uint TuiIdx>
+                using
+                CreateOffsetsVal = CreateOffsets<TuiIdx, TVal>;
+            };
         }
         //-----------------------------------------------------------------------------
         //! \return The offsets vector but only the last N elements.
@@ -673,15 +748,16 @@ namespace alpaka
             typename TDim,
             typename TVal,
             typename TOffsets>
-        ALPAKA_FCT_HOST_ACC auto getOffsetsVecNd(
+        ALPAKA_FCT_HOST_ACC auto getOffsetsVecEnd(
             TOffsets const & offsets = TOffsets())
         -> Vec<dim::Dim<TDim::value>, TVal>
         {
-            using DimSrc = dim::DimT<TOffsets>;
-            using IdxSubSequence = alpaka::detail::make_integer_sequence_start<std::intmax_t, (((std::intmax_t)DimSrc::value)-((std::intmax_t)TDim::value)), TDim::value>;
-            return detail::getOffsetsVecInternal<TVal>(
-                offsets,
-                IdxSubSequence());
+            return
+                Vec<dim::DimT<TOffsets>, TVal>
+                ::template createFromIndexedFctEnd<
+                    typename detail::CreateOffsetsValAlias<TVal>::CreateOffsetsVal,
+                    dim::DimT<TOffsets>>(
+                        extents);
         }
         //-----------------------------------------------------------------------------
         //! \return The offsets.
@@ -691,9 +767,13 @@ namespace alpaka
             typename TOffsets>
         ALPAKA_FCT_HOST_ACC auto getOffsetsVec(
             TOffsets const & offsets = TOffsets())
-        -> decltype(getOffsetsVecNd<dim::DimT<TOffsets>, TVal>(offsets))
+        -> Vec<dim::DimT<TOffsets>, TVal>
         {
-            return getOffsetsVecNd<dim::DimT<TOffsets>, TVal>(offsets);
+            return
+                Vec<dim::DimT<TOffsets>, TVal>
+                ::template createFromIndexedFct<
+                    typename detail::CreateOffsetsValAlias<TVal>::CreateOffsetsVal>(
+                        offsets);
         }
     }
 
