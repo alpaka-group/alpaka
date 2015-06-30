@@ -34,6 +34,8 @@
     #include <alpaka/core/Cuda.hpp>
 #endif
 
+#include <alpaka/mem/alloc/AllocCpuBoostAligned.hpp>
+
 #include <cassert>                          // assert
 #include <memory>                           // std::shared_ptr
 
@@ -53,7 +55,8 @@ namespace alpaka
                     template<
                         typename TElem,
                         typename TDim>
-                    class BufCpuImpl
+                    class BufCpuImpl :
+                        public mem::alloc::AllocCpuBoostAligned<std::integral_constant<std::size_t, 16u>>
                     {
                     public:
                         //-----------------------------------------------------------------------------
@@ -64,11 +67,10 @@ namespace alpaka
                         ALPAKA_FCT_HOST BufCpuImpl(
                             dev::DevCpu const & dev,
                             TExtents const & extents) :
+                                mem::alloc::AllocCpuBoostAligned<std::integral_constant<std::size_t, 16u>>(),
                                 m_Dev(dev),
                                 m_vExtentsElements(extent::getExtentsVecEnd<TDim, Uint>(extents)),
-                                m_pMem(
-                                    reinterpret_cast<TElem *>(
-                                        boost::alignment::aligned_alloc(16u, sizeof(TElem) * computeElementCount(extents)))),
+                                m_pMem(mem::alloc::alloc<TElem>(*this, computeElementCount(extents))),
                                 m_uiPitchBytes(extent::getWidth<Uint>(extents) * sizeof(TElem))
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
                                 ,m_bPinned(false)
@@ -111,9 +113,8 @@ namespace alpaka
                             // Unpin this memory if it is currently pinned.
                             mem::buf::unpin(*this);
 #endif
-                            assert(m_pMem);
-                            boost::alignment::aligned_free(
-                                reinterpret_cast<void *>(m_pMem));
+                            // NOTE: m_pMem is allowed to be a nullptr here.
+                            mem::alloc::free(*this, m_pMem);
                         }
 
                     private:
