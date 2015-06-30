@@ -628,6 +628,46 @@ namespace alpaka
         return subVecFromIndices(vec, IdxSubSequence());
     }
 
+    namespace detail
+    {
+        //#############################################################################
+        //! A function object that returns the value at the index from the back of the vector.
+        //#############################################################################
+        template<
+            Uint TuiIdx>
+        struct CreateReverse
+        {
+            //-----------------------------------------------------------------------------
+            //!
+            //-----------------------------------------------------------------------------
+            template<
+                typename TDim,
+                typename TVal>
+            ALPAKA_FCT_HOST_ACC static auto create(
+                Vec<TDim, TVal> && vec)
+            -> TVal
+            {
+                return vec[TDim::value - 1u - TuiIdx];
+            }
+        };
+    }
+    //-----------------------------------------------------------------------------
+    //! \return The reverse vector.
+    //-----------------------------------------------------------------------------
+    template<
+        typename TDim,
+        typename TVal>
+    ALPAKA_FCT_HOST_ACC static auto reverseVec(
+        Vec<TDim, TVal> const & vec)
+    -> Vec<TDim, TVal>
+    {
+        return
+            Vec<TDim, TVal>
+                ::template createFromIndexedFct<
+                    detail::CreateReverse>(
+                        vec);
+    }
+
     namespace extent
     {
         namespace detail
