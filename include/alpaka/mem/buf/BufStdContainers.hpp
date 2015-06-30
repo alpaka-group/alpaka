@@ -41,9 +41,8 @@ namespace alpaka
     // Trait specializations for fixed size arrays.
     //
     // This allows the usage of multidimensional compile time arrays e.g. int[4][3] as argument to memory ops.
-    // Up to 3 dimensions are supported.
     //-----------------------------------------------------------------------------
-    namespace dev
+    /*namespace dev
     {
         namespace traits
         {
@@ -114,11 +113,11 @@ namespace alpaka
                     && (std::extent<TFixedSizeArray, TIdx::value>::value > 0u)>::type>
             {
                 ALPAKA_FCT_HOST_ACC static constexpr auto getExtent(
-                    TFixedSizeArray const & /*extents*/)
+                    TFixedSizeArray const & //extents
+                )
                 -> Uint
                 {
-                    // C++14
-                    /*boost::ignore_unused(extents);*/
+                    //boost::ignore_unused(extents);
                     return std::extent<TFixedSizeArray, TIdx::value>::value;
                 }
             };
@@ -249,7 +248,7 @@ namespace alpaka
                 }
             };
         }
-    }
+    }*/
 
     //-----------------------------------------------------------------------------
     // Trait specializations for std::array.

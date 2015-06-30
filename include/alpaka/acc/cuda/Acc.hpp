@@ -199,9 +199,9 @@ namespace alpaka
                         // m_uiBlockThreadsCountMax
                         static_cast<Uint>(cudaDevProp.maxThreadsPerBlock),
                         // m_vuiBlockThreadExtentsMax
-                        alpaka::extent::getExtentsVecEnd<TDim, Uint>(cudaDevProp.maxThreadsDim),
+                        alpaka::extent::getExtentsVecEnd<TDim, Uint>(alpaka::Vec<dim::Dim<3u>, int>(cudaDevProp.maxThreadsDim[2], cudaDevProp.maxThreadsDim[1], cudaDevProp.maxThreadsDim[0])),
                         // m_vuiGridBlockExtentsMax
-                        alpaka::extent::getExtentsVecEnd<TDim, Uint>(cudaDevProp.maxGridSize)};
+                        alpaka::extent::getExtentsVecEnd<TDim, Uint>(alpaka::Vec<dim::Dim<3u>, int>(cudaDevProp.maxGridSize[2], cudaDevProp.maxGridSize[1], cudaDevProp.maxGridSize[0]))};
                 }
             };
             //#############################################################################

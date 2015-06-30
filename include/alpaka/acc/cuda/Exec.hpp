@@ -197,13 +197,13 @@ namespace alpaka
                 cudaFuncAttributes funcAttrs;
                 cudaFuncGetAttributes(&funcAttrs, cuda::detail::cudaKernel<TDim, TKernelFuncObj, TArgs...>);
                 std::cout << BOOST_CURRENT_FUNCTION
-                    << "binaryVersion: " << funcAttrs.binaryVersion
-                    << "constSizeBytes: " << funcAttrs.constSizeBytes << " B"
-                    << "localSizeBytes: " << funcAttrs.localSizeBytes << " B"
-                    << "maxThreadsPerBlock: " << funcAttrs.maxThreadsPerBlock
-                    << "numRegs: " << funcAttrs.numRegs
-                    << "ptxVersion: " << funcAttrs.ptxVersion
-                    << "sharedSizeBytes: " << funcAttrs.sharedSizeBytes << " B"
+                    << " binaryVersion: " << funcAttrs.binaryVersion
+                    << " constSizeBytes: " << funcAttrs.constSizeBytes << " B"
+                    << " localSizeBytes: " << funcAttrs.localSizeBytes << " B"
+                    << " maxThreadsPerBlock: " << funcAttrs.maxThreadsPerBlock
+                    << " numRegs: " << funcAttrs.numRegs
+                    << " ptxVersion: " << funcAttrs.ptxVersion
+                    << " sharedSizeBytes: " << funcAttrs.sharedSizeBytes << " B"
                     << std::endl;
 #endif
 
@@ -227,7 +227,7 @@ namespace alpaka
                 cudaError_t const error(cudaGetLastError());
                 if(error != cudaSuccess)
                 {
-                    std::string const sError("The execution of kernel '" + std::string(typeid(TKernelFuncObj).name()) + " failed with error: '" + std::string(cudaGetErrorString(error)) + "'");
+                    std::string const sError("The execution of kernel '" + std::string(typeid(TKernelFuncObj).name()) + "' failed with error: '" + std::string(cudaGetErrorString(error)) + "'");
                     std::cerr << sError << std::endl;
                     ALPAKA_DEBUG_BREAK;
                     throw std::runtime_error(sError);
