@@ -515,7 +515,6 @@ namespace alpaka
                 ::getBuf(
                     view);
             }
-
             //-----------------------------------------------------------------------------
             //! Gets the memory buffer.
             //!
@@ -532,6 +531,125 @@ namespace alpaka
                     TView>
                 ::getBuf(
                     view);
+            }
+
+            namespace detail
+            {
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TDim,
+                    typename TView>
+                struct Print
+                {
+                    ALPAKA_FCT_HOST static auto print(
+                        TView const & view,
+                        ElemT<TView> const * const ptr,
+                        Vec<dim::DimT<TView>> const & extents,
+                        std::ostream & os,
+                        std::string const & elementSeparator,
+                        std::string const & rowSeparator,
+                        std::string const & rowPrefix,
+                        std::string const & rowSuffix)
+                    -> void
+                    {
+                        os << rowPrefix;
+
+                        auto const pitch(view::getPitchBytes<TDim::value+1u>(view));
+                        Uint const uiLastIdx(extents[TDim::value]-1u);
+                        for(Uint i(0u); i<=uiLastIdx ;++i)
+                        {
+                            Print<
+                                dim::Dim<TDim::value+1u>,
+                                TView>
+                            ::print(
+                                view,
+                                reinterpret_cast<ElemT<TView> const *>(reinterpret_cast<std::uint8_t const *>(ptr)+i*pitch),
+                                extents,
+                                os,
+                                elementSeparator,
+                                rowSeparator,
+                                rowPrefix,
+                                rowSuffix);
+
+                            // While we are not at the end of a row, add the row separator.
+                            if(i != uiLastIdx)
+                            {
+                                os << rowSeparator;
+                            }
+                        }
+
+                        os << rowSuffix;
+                    }
+                };
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                template<
+                    typename TView>
+                struct Print<
+                    dim::Dim<dim::DimT<TView>::value-1u>,
+                    TView>
+                {
+                    ALPAKA_FCT_HOST static auto print(
+                        TView const & view,
+                        ElemT<TView> const * const ptr,
+                        Vec<dim::DimT<TView>> const & extents,
+                        std::ostream & os,
+                        std::string const & elementSeparator,
+                        std::string const & rowSeparator,
+                        std::string const & rowPrefix,
+                        std::string const & rowSuffix)
+                    -> void
+                    {
+                        os << rowPrefix;
+
+                        Uint const uiLastIdx(extents[dim::DimT<TView>::value-1u]-1u);
+                        for(Uint i(0u); i<=uiLastIdx ;++i)
+                        {
+                            // Add the current element.
+                            os << *(ptr+i);
+
+                            // While we are not at the end of a line, add the element separator.
+                            if(i != uiLastIdx)
+                            {
+                                os << elementSeparator;
+                            }
+                        }
+
+                        os << rowSuffix;
+                    }
+                };
+            }
+            //-----------------------------------------------------------------------------
+            //! Prints the content of the view to the given stream.
+            // \TODO: Add precision flag.
+            // \TODO: Add column alignment flag.
+            //-----------------------------------------------------------------------------
+            template<
+                typename TView>
+            ALPAKA_FCT_HOST auto print(
+                TView const & view,
+                std::ostream & os,
+                std::string const & elementSeparator = ", ",
+                std::string const & rowSeparator = "\n",
+                std::string const & rowPrefix = "[",
+                std::string const & rowSuffix = "]")
+            -> void
+            {
+                detail::Print<
+                    dim::Dim<0u>,
+                    TView>
+                ::print(
+                    view,
+                    view::getPtrNative(view),
+                    extent::getExtentsVec<Uint>(view),
+                    os,
+                    elementSeparator,
+                    rowSeparator,
+                    rowPrefix,
+                    rowSuffix);
             }
         }
     }
