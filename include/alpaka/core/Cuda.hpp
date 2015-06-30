@@ -341,7 +341,7 @@ namespace alpaka
             template<
                 typename TExtents>
             struct GetExtent<
-                dim::Dim<dim::DimT<TExtents>::value - 0u>,
+                dim::Dim<dim::DimT<TExtents>::value - 1u>,
                 TExtents,
                 typename std::enable_if<
                     cuda::traits::IsCudaBuiltInType<TExtents>::value
@@ -360,7 +360,7 @@ namespace alpaka
             template<
                 typename TExtents>
             struct GetExtent<
-                dim::Dim<dim::DimT<TExtents>::value-1u>,
+                dim::Dim<dim::DimT<TExtents>::value - 2u>,
                 TExtents,
                 typename std::enable_if<
                     cuda::traits::IsCudaBuiltInType<TExtents>::value
@@ -379,7 +379,7 @@ namespace alpaka
             template<
                 typename TExtents>
             struct GetExtent<
-                dim::Dim<dim::DimT<TExtents>::value-2u>,
+                dim::Dim<dim::DimT<TExtents>::value - 3u>,
                 TExtents,
                 typename std::enable_if<
                     cuda::traits::IsCudaBuiltInType<TExtents>::value
@@ -398,7 +398,7 @@ namespace alpaka
             template<
                 typename TExtents>
             struct GetExtent<
-                dim::Dim<dim::DimT<TExtents>::value-3u>,
+                dim::Dim<dim::DimT<TExtents>::value - 4u>,
                 TExtents,
                 typename std::enable_if<
                     cuda::traits::IsCudaBuiltInType<TExtents>::value
@@ -417,7 +417,7 @@ namespace alpaka
             template<
                 typename TExtents>
             struct SetExtent<
-                dim::Dim<dim::DimT<TExtents>::value - 0u>,
+                dim::Dim<dim::DimT<TExtents>::value - 1u>,
                 TExtents,
                 typename std::enable_if<
                     cuda::traits::IsCudaBuiltInType<TExtents>::value
@@ -439,7 +439,7 @@ namespace alpaka
             template<
                 typename TExtents>
             struct SetExtent<
-                dim::Dim<dim::DimT<TExtents>::value - 1u>,
+                dim::Dim<dim::DimT<TExtents>::value - 2u>,
                 TExtents,
                 typename std::enable_if<
                     cuda::traits::IsCudaBuiltInType<TExtents>::value
@@ -461,7 +461,7 @@ namespace alpaka
             template<
                 typename TExtents>
             struct SetExtent<
-                dim::Dim<dim::DimT<TExtents>::value - 2u>,
+                dim::Dim<dim::DimT<TExtents>::value - 3u>,
                 TExtents,
                 typename std::enable_if<
                     cuda::traits::IsCudaBuiltInType<TExtents>::value
@@ -483,7 +483,7 @@ namespace alpaka
             template<
                 typename TExtents>
             struct SetExtent<
-                dim::Dim<dim::DimT<TExtents>::value - 3u>,
+                dim::Dim<dim::DimT<TExtents>::value - 4u>,
                 TExtents,
                 typename std::enable_if<
                     cuda::traits::IsCudaBuiltInType<TExtents>::value
@@ -511,7 +511,7 @@ namespace alpaka
             template<
                 typename TOffsets>
             struct GetOffset<
-                dim::Dim<dim::DimT<TOffsets>::value - 0u>,
+                dim::Dim<dim::DimT<TOffsets>::value - 1u>,
                 TOffsets,
                 typename std::enable_if<
                     cuda::traits::IsCudaBuiltInType<TOffsets>::value
@@ -530,7 +530,7 @@ namespace alpaka
             template<
                 typename TOffsets>
             struct GetOffset<
-                dim::Dim<dim::DimT<TOffsets>::value - 1u>,
+                dim::Dim<dim::DimT<TOffsets>::value - 2u>,
                 TOffsets,
                 typename std::enable_if<
                     cuda::traits::IsCudaBuiltInType<TOffsets>::value
@@ -549,7 +549,7 @@ namespace alpaka
             template<
                 typename TOffsets>
             struct GetOffset<
-                dim::Dim<dim::DimT<TOffsets>::value - 2u>,
+                dim::Dim<dim::DimT<TOffsets>::value - 3u>,
                 TOffsets,
                 typename std::enable_if<
                     cuda::traits::IsCudaBuiltInType<TOffsets>::value
@@ -568,7 +568,7 @@ namespace alpaka
             template<
                 typename TOffsets>
             struct GetOffset<
-                dim::Dim<dim::DimT<TOffsets>::value - 3u>,
+                dim::Dim<dim::DimT<TOffsets>::value - 4u>,
                 TOffsets,
                 typename std::enable_if<
                     cuda::traits::IsCudaBuiltInType<TOffsets>::value
@@ -587,7 +587,7 @@ namespace alpaka
             template<
                 typename TOffsets>
             struct SetOffset<
-                dim::Dim<dim::DimT<TOffsets>::value - 0u>,
+                dim::Dim<dim::DimT<TOffsets>::value - 1u>,
                 TOffsets,
                 typename std::enable_if<
                     cuda::traits::IsCudaBuiltInType<TOffsets>::value
@@ -609,7 +609,7 @@ namespace alpaka
             template<
                 typename TOffsets>
             struct SetOffset<
-                dim::Dim<dim::DimT<TOffsets>::value - 1u>,
+                dim::Dim<dim::DimT<TOffsets>::value - 2u>,
                 TOffsets,
                 typename std::enable_if<
                     cuda::traits::IsCudaBuiltInType<TOffsets>::value
@@ -631,7 +631,7 @@ namespace alpaka
             template<
                 typename TOffsets>
             struct SetOffset<
-                dim::Dim<dim::DimT<TOffsets>::value - 2u>,
+                dim::Dim<dim::DimT<TOffsets>::value - 3u>,
                 TOffsets,
                 typename std::enable_if<
                     cuda::traits::IsCudaBuiltInType<TOffsets>::value
@@ -653,7 +653,7 @@ namespace alpaka
             template<
                 typename TOffsets>
             struct SetOffset<
-                dim::Dim<dim::DimT<TOffsets>::value - 3u>,
+                dim::Dim<dim::DimT<TOffsets>::value - 4u>,
                 TOffsets,
                 typename std::enable_if<
                     cuda::traits::IsCudaBuiltInType<TOffsets>::value
