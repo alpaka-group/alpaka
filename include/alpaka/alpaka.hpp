@@ -94,6 +94,7 @@
 //-----------------------------------------------------------------------------
 // dim
 //-----------------------------------------------------------------------------
+#include <alpaka/dim/DimArithmetic.hpp>
 #include <alpaka/dim/DimIntegralConst.hpp>
 #include <alpaka/dim/Traits.hpp>
 

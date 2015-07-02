@@ -36,8 +36,8 @@ namespace alpaka
         //! Maps a linear index to a N dimensional index.
         //#############################################################################
         template<
-            Uint TuiIdxDimOut,
-            Uint TuiIdxDimIn>
+            std::size_t TuiIdxDimOut,
+            std::size_t TuiIdxDimIn>
         struct MapIdx;
         //#############################################################################
         //! Maps a linear index to a linear index.
@@ -56,9 +56,9 @@ namespace alpaka
             template<
                 typename TElem>
             ALPAKA_FCT_HOST_ACC static auto mapIdx(
-                Vec<dim::Dim1, TElem> const & idx,
-                Vec<dim::Dim1, TElem> const & extents)
-            -> Vec<dim::Dim1, TElem>
+                Vec<dim::Dim<1u>, TElem> const & idx,
+                Vec<dim::Dim<1u>, TElem> const & extents)
+            -> Vec<dim::Dim<1u>, TElem>
             {
 #if !defined(__CUDA_ARCH__)
                 boost::ignore_unused(extents);
@@ -83,9 +83,9 @@ namespace alpaka
             template<
                 typename TElem>
             ALPAKA_FCT_HOST_ACC static auto mapIdx(
-                Vec<dim::Dim1, TElem> const & idx,
-                Vec<dim::Dim3, TElem> const & extents)
-            -> Vec<dim::Dim3, TElem>
+                Vec<dim::Dim<1u>, TElem> const & idx,
+                Vec<dim::Dim<3u>, TElem> const & extents)
+            -> Vec<dim::Dim<3u>, TElem>
             {
                 auto const & uiIdx(idx[0]);
                 auto const uiXyExtentsProd(extents.prod());
@@ -114,9 +114,9 @@ namespace alpaka
             template<
                 typename TElem>
             ALPAKA_FCT_HOST_ACC static auto mapIdx(
-                Vec<dim::Dim1, TElem> const & idx,
-                Vec<dim::Dim2, TElem> const & extents)
-            -> Vec<dim::Dim2, TElem>
+                Vec<dim::Dim<1u>, TElem> const & idx,
+                Vec<dim::Dim<2u>, TElem> const & extents)
+            -> Vec<dim::Dim<2u>, TElem>
             {
                 auto const & uiIdx(idx[0]);
                 auto const & uiExtentX(extents[1]);
@@ -143,9 +143,9 @@ namespace alpaka
             template<
                 typename TElem>
             ALPAKA_FCT_HOST_ACC static auto mapIdx(
-                Vec<dim::Dim3, TElem> const & idx,
-                Vec<dim::Dim3, TElem> const & extents)
-            -> Vec<dim::Dim1, TElem>
+                Vec<dim::Dim<3u>, TElem> const & idx,
+                Vec<dim::Dim<3u>, TElem> const & extents)
+            -> Vec<dim::Dim<1u>, TElem>
             {
                 return (idx[0u] * extents[1u] + idx[1u]) * extents[2u] + idx[2u];
             }
@@ -167,9 +167,9 @@ namespace alpaka
             template<
                 typename TElem>
             ALPAKA_FCT_HOST_ACC static auto mapIdx(
-                Vec<dim::Dim2, TElem> const & idx,
-                Vec<dim::Dim2, TElem> const & extents)
-            -> Vec<dim::Dim1, TElem>
+                Vec<dim::Dim<2u>, TElem> const & idx,
+                Vec<dim::Dim<2u>, TElem> const & extents)
+            -> Vec<dim::Dim<1u>, TElem>
             {
                 return idx[0u] * extents[1u] + idx[1u];
             }
@@ -185,8 +185,8 @@ namespace alpaka
     //! \tparam TElem Type of the elements of the index vector to map from.
     //#############################################################################
     template<
-        Uint TuiIdxDimOut,
-        Uint TuiIdxDimIn,
+        std::size_t TuiIdxDimOut,
+        std::size_t TuiIdxDimIn,
         typename TElem>
     ALPAKA_FCT_HOST_ACC auto mapIdx(
         Vec<dim::Dim<TuiIdxDimIn>, TElem> const & idx,

@@ -174,10 +174,11 @@ namespace alpaka
                 //! \return The size of the shared memory allocated for a block.
                 //-----------------------------------------------------------------------------
                 template<
+                    typename TVec,
                     typename TIndex,
                     typename TElem>
                 ALPAKA_FCT_HOST static auto getBlockSharedExternMemSizeBytes(
-                    alpaka::Vec<alpaka::dim::DimT<TAcc>> const & vuiBlockThreadsExtents,
+                    TVec const & vuiBlockThreadsExtents,
                     TIndex const & m,
                     TIndex const & n,
                     TIndex const & k,
@@ -189,7 +190,7 @@ namespace alpaka
                     TElem const & beta,
                     TElem * const C,
                     TIndex const & ldc)
-                -> Uint
+                -> TIndex
                 {
                     boost::ignore_unused(m);
                     boost::ignore_unused(n);
@@ -217,15 +218,18 @@ namespace alpaka
 struct MatMulTester
 {
     template<
-        typename TAcc>
+        typename TAcc,
+        typename TSize>
     auto operator()(
-        std::size_t const & m,
-        std::size_t const & n,
-        std::size_t const & k)
+        TSize const & m,
+        TSize const & n,
+        TSize const & k)
     -> void
     {
         std::cout << std::endl;
         std::cout << "################################################################################" << std::endl;
+
+        using Val = std::uint32_t;
 
         // Create the kernel function object.
         MatMulKernel kernel;
@@ -241,21 +245,21 @@ struct MatMulTester
         alpaka::stream::StreamT<alpaka::dev::DevT<TAcc>> stream(
             alpaka::stream::create(devAcc));
 
-        alpaka::Vec2<> const v2uiExtentsA(
-            static_cast<alpaka::Vec2<>::Val>(m),
-            static_cast<alpaka::Vec2<>::Val>(k));
+        alpaka::Vec2<TSize> const v2uiExtentsA(
+            static_cast<TSize>(m),
+            static_cast<TSize>(k));
 
-        alpaka::Vec2<> const v2uiExtentsB(
-            static_cast<alpaka::Vec2<>::Val>(k),
-            static_cast<alpaka::Vec2<>::Val>(n));
+        alpaka::Vec2<TSize> const v2uiExtentsB(
+            static_cast<TSize>(k),
+            static_cast<TSize>(n));
 
         // Result matrix is MxN. We create one worker per result matrix cell.
-        alpaka::Vec2<> const v2uiExtentsC(
-            static_cast<alpaka::Vec2<>::Val>(m),
-            static_cast<alpaka::Vec2<>::Val>(n));
+        alpaka::Vec2<TSize> const v2uiExtentsC(
+            static_cast<TSize>(m),
+            static_cast<TSize>(n));
 
         // Let alpaka calculate good block and grid sizes given our full problem extents.
-        alpaka::workdiv::WorkDivMembers<alpaka::dim::Dim2> const workDiv(
+        alpaka::workdiv::WorkDivMembers<alpaka::dim::Dim<2u>, TSize> const workDiv(
             alpaka::workdiv::getValidWorkDiv<TAcc>(
                 devAcc,
                 v2uiExtentsC,
@@ -274,27 +278,28 @@ struct MatMulTester
 
         // Allocate the A and B matrices as st::vectors because this allows them to be filled with uint32_t(1).
         // alpaka::mem::view::set only supports setting all bytes leading to a value of 16843009 in all elements.
-        std::vector<std::uint32_t> vuiA(m * k, 1u);
-        std::vector<std::uint32_t> vuiB(k * n, 1u);
+        std::vector<Val> vuiA(m * k, static_cast<Val>(1));
+        std::vector<Val> vuiB(k * n, static_cast<Val>(1));
         // Wrap the std::vectors into a memory buffer object.
         // For 1D data this would not be required because alpaka::mem::view::copy is specialized for std::vector and std::array.
         // For multi dimensional data you could directly create them using alpaka::mem::buf::alloc<Type>(devHost, extents), which is not used here.
         // Instead we use BufPlainPtrWrapper to wrap the data.
         using bufWrapper = alpaka::mem::buf::BufPlainPtrWrapper<
-            std::uint32_t,
-            alpaka::dim::Dim2,
-            std::decay<decltype(devHost)>::type>;
+            std::decay<decltype(devHost)>::type,
+            Val,
+            alpaka::dim::Dim<2u>,
+            TSize>;
         bufWrapper bufAHost(vuiA.data(), devHost, v2uiExtentsA);
         bufWrapper bufBHost(vuiB.data(), devHost, v2uiExtentsB);
 
         // Allocate C and set it to zero.
-        auto bufCHost(alpaka::mem::buf::alloc<std::uint32_t>(devHost, v2uiExtentsC));
+        auto bufCHost(alpaka::mem::buf::alloc<Val, TSize>(devHost, v2uiExtentsC));
         alpaka::mem::view::set(bufCHost, 0u, v2uiExtentsC);
 
         // Allocate the buffers on the accelerator.
-        auto bufAAcc(alpaka::mem::buf::alloc<std::uint32_t>(devAcc, v2uiExtentsA));
-        auto bufBAcc(alpaka::mem::buf::alloc<std::uint32_t>(devAcc, v2uiExtentsB));
-        auto bufCAcc(alpaka::mem::buf::alloc<std::uint32_t>(devAcc, v2uiExtentsC));
+        auto bufAAcc(alpaka::mem::buf::alloc<Val, TSize>(devAcc, v2uiExtentsA));
+        auto bufBAcc(alpaka::mem::buf::alloc<Val, TSize>(devAcc, v2uiExtentsB));
+        auto bufCAcc(alpaka::mem::buf::alloc<Val, TSize>(devAcc, v2uiExtentsC));
 
         // Copy Host -> Acc.
         alpaka::mem::view::copy(bufAAcc, bufAHost, v2uiExtentsA, stream);
@@ -311,14 +316,14 @@ struct MatMulTester
                 m,
                 n,
                 k,
-                static_cast<std::uint32_t>(1u),
+                static_cast<Val>(1),
                 alpaka::mem::view::getPtrNative(bufAAcc),
-                alpaka::mem::view::getPitchBytes<1u, std::size_t>(bufAAcc) / sizeof(std::uint32_t),
+                static_cast<TSize>(alpaka::mem::view::getPitchBytes<1u>(bufAAcc) / sizeof(Val)),
                 alpaka::mem::view::getPtrNative(bufBAcc),
-                alpaka::mem::view::getPitchBytes<1u, std::size_t>(bufBAcc) / sizeof(std::uint32_t),
-                static_cast<std::uint32_t>(1u),
+                static_cast<TSize>(alpaka::mem::view::getPitchBytes<1u>(bufBAcc) / sizeof(Val)),
+                static_cast<Val>(1),
                 alpaka::mem::view::getPtrNative(bufCAcc),
-                alpaka::mem::view::getPitchBytes<1u, std::size_t>(bufCAcc) / sizeof(std::uint32_t))
+                static_cast<TSize>(alpaka::mem::view::getPitchBytes<1u>(bufCAcc) / sizeof(Val)))
             << " ms"
             << std::endl;
 
@@ -330,11 +335,11 @@ struct MatMulTester
 
         // Assert that the results are correct.
         // When multiplying square matrices filled with ones, the result of each cell is the size of the matrix.
-        std::uint32_t const uiCorrectResult(static_cast<std::uint32_t>(k));
+        auto const uiCorrectResult(static_cast<Val>(k));
 
         bool bResultCorrect(true);
         auto const pHostData(alpaka::mem::view::getPtrNative(bufCHost));
-        for(std::size_t i(0u);
+        for(TSize i(0u);
             i < m * n;
             ++i)
         {
@@ -376,7 +381,7 @@ auto main()
             std::cout << std::endl;
 
             // Logs the enabled accelerators.
-            alpaka::examples::accs::writeEnabledAccs<alpaka::dim::Dim2>(std::cout);
+            alpaka::examples::accs::writeEnabledAccs<alpaka::dim::Dim<2u>, std::uint32_t>(std::cout);
 
             std::cout << std::endl;
 
@@ -384,25 +389,25 @@ auto main()
 
             // For different matrix sizes.
 #if ALPAKA_INTEGRATION_TEST
-            for(std::size_t m(1u); m <= 64u; m *= 8u)
+            for(std::uint32_t m(1u); m <= 64u; m *= 8u)
             {
-                for(std::size_t n(1u); n <= 79u; n *= 79u)
+                for(std::uint32_t n(1u); n <= 79u; n *= 79u)
                 {
-                    for(std::size_t k(1u); k <= 23u; k *= 23u)
+                    for(std::uint32_t k(1u); k <= 23u; k *= 23u)
                     {
 #else
-            for(std::size_t m(1u); m <= 1024u; m *= 4u)
+            for(std::uint32_t m(1u); m <= 1024u; m *= 4u)
             {
-                for(std::size_t n(1u); n <= 1024u; n *= 4u)
+                for(std::uint32_t n(1u); n <= 1024u; n *= 4u)
                 {
-                    for(std::size_t k(1u); k <= 1024u; k *= 4u)
+                    for(std::uint32_t k(1u); k <= 1024u; k *= 4u)
                     {
 #endif
                         std::cout << std::endl;
 
                         // Execute the kernel on all enabled accelerators.
                         alpaka::forEachType<
-                            alpaka::examples::accs::EnabledAccs<alpaka::dim::Dim2>>(
+                            alpaka::examples::accs::EnabledAccs<alpaka::dim::Dim<2u>, std::uint32_t>>(
                                 matMulTester,
                                 m, n, k);
                     }

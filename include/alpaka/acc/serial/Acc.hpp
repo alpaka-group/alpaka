@@ -33,6 +33,7 @@
 #include <alpaka/acc/Traits.hpp>                // AccType
 #include <alpaka/dev/Traits.hpp>                // DevType
 #include <alpaka/exec/Traits.hpp>               // ExecType
+#include <alpaka/size/Traits.hpp>               // size::SizeT
 
 // Implementation details.
 #include <alpaka/dev/DevCpu.hpp>                // DevCpu
@@ -40,13 +41,15 @@
 #include <boost/core/ignore_unused.hpp>         // boost::ignore_unused
 
 #include <memory>                               // std::unique_ptr
+#include <typeinfo>                             // typeid
 
 namespace alpaka
 {
     namespace exec
     {
         template<
-            typename TDim>
+            typename TDim,
+            typename TSize>
         class ExecCpuSerial;
 
         namespace serial
@@ -54,7 +57,8 @@ namespace alpaka
             namespace detail
             {
                 template<
-                    typename TDim>
+                    typename TDim,
+                    typename TSize>
                 class ExecCpuSerialImpl;
             }
         }
@@ -78,17 +82,18 @@ namespace alpaka
                 //! The block size is restricted to 1x1x1 and all blocks are executed serially so there is no parallelism at all.
                 //#############################################################################
                 template<
-                    typename TDim>
+                    typename TDim,
+                    typename TSize>
                 class AccCpuSerial final :
-                    public workdiv::WorkDivMembers<TDim>,
-                    public idx::gb::IdxGbRef<TDim>,
-                    public idx::bt::IdxBtZero<TDim>,
+                    public workdiv::WorkDivMembers<TDim, TSize>,
+                    public idx::gb::IdxGbRef<TDim, TSize>,
+                    public idx::bt::IdxBtZero<TDim, TSize>,
                     public atomic::AtomicNoOp,
                     public math::MathStl,
                     public block::shared::BlockSharedAllocNoSync
                 {
                 public:
-                    friend class ::alpaka::exec::serial::detail::ExecCpuSerialImpl<TDim>;
+                    friend class ::alpaka::exec::serial::detail::ExecCpuSerialImpl<TDim, TSize>;
 
                 private:
                     //-----------------------------------------------------------------------------
@@ -98,13 +103,13 @@ namespace alpaka
                         typename TWorkDiv>
                     ALPAKA_FCT_ACC_NO_CUDA AccCpuSerial(
                         TWorkDiv const & workDiv) :
-                            workdiv::WorkDivMembers<TDim>(workDiv),
-                            idx::gb::IdxGbRef<TDim>(m_vuiGridBlockIdx),
-                            idx::bt::IdxBtZero<TDim>(),
+                            workdiv::WorkDivMembers<TDim, TSize>(workDiv),
+                            idx::gb::IdxGbRef<TDim, TSize>(m_vuiGridBlockIdx),
+                            idx::bt::IdxBtZero<TDim, TSize>(),
                             atomic::AtomicNoOp(),
                             math::MathStl(),
                             block::shared::BlockSharedAllocNoSync(),
-                            m_vuiGridBlockIdx(Vec<TDim>::zeros())
+                            m_vuiGridBlockIdx(Vec<TDim, TSize>::zeros())
                     {}
 
                 public:
@@ -151,7 +156,7 @@ namespace alpaka
 
                 private:
                     // getIdx
-                    alignas(16u) Vec<TDim> mutable m_vuiGridBlockIdx;            //!< The index of the currently executed block.
+                    alignas(16u) Vec<TDim, TSize> mutable m_vuiGridBlockIdx;    //!< The index of the currently executed block.
 
                     // getBlockSharedExternMem
                     std::unique_ptr<uint8_t, boost::alignment::aligned_delete> mutable m_vuiExternalSharedMem;  //!< External block shared memory.
@@ -161,8 +166,9 @@ namespace alpaka
     }
 
     template<
-        typename TDim>
-    using AccCpuSerial = acc::serial::detail::AccCpuSerial<TDim>;
+        typename TDim,
+        typename TSize>
+    using AccCpuSerial = acc::serial::detail::AccCpuSerial<TDim, TSize>;
 
     namespace acc
     {
@@ -172,49 +178,52 @@ namespace alpaka
             //! The CPU serial accelerator accelerator type trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct AccType<
-                acc::serial::detail::AccCpuSerial<TDim>>
+                acc::serial::detail::AccCpuSerial<TDim, TSize>>
             {
-                using type = acc::serial::detail::AccCpuSerial<TDim>;
+                using type = acc::serial::detail::AccCpuSerial<TDim, TSize>;
             };
             //#############################################################################
             //! The CPU serial accelerator device properties get trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct GetAccDevProps<
-                acc::serial::detail::AccCpuSerial<TDim>>
+                acc::serial::detail::AccCpuSerial<TDim, TSize>>
             {
                 ALPAKA_FCT_HOST static auto getAccDevProps(
                     dev::DevCpu const & dev)
-                -> alpaka::acc::AccDevProps<TDim>
+                -> acc::AccDevProps<TDim, TSize>
                 {
                     boost::ignore_unused(dev);
 
                     return {
                         // m_uiMultiProcessorCount
-                        1u,
+                        static_cast<TSize>(1),
                         // m_uiBlockThreadsCountMax
-                        1u,
+                        static_cast<TSize>(1),
                         // m_vuiBlockThreadExtentsMax
-                        Vec<TDim>::ones(),
+                        Vec<TDim, TSize>::ones(),
                         // m_vuiGridBlockExtentsMax
-                        Vec<TDim>::all(std::numeric_limits<typename Vec<TDim>::Val>::max())};
+                        Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max())};
                 }
             };
             //#############################################################################
             //! The CPU serial accelerator name trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct GetAccName<
-                acc::serial::detail::AccCpuSerial<TDim>>
+                acc::serial::detail::AccCpuSerial<TDim, TSize>>
             {
                 ALPAKA_FCT_HOST_ACC static auto getAccName()
                 -> std::string
                 {
-                    return "AccCpuSerial<" + std::to_string(TDim::value) + ">";
+                    return "AccCpuSerial<" + std::to_string(TDim::value) + "," + typeid(TSize).name() + ">";
                 }
             };
         }
@@ -227,9 +236,10 @@ namespace alpaka
             //! The CPU serial accelerator device type trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct DevType<
-                acc::serial::detail::AccCpuSerial<TDim>>
+                acc::serial::detail::AccCpuSerial<TDim, TSize>>
             {
                 using type = dev::DevCpu;
             };
@@ -237,9 +247,10 @@ namespace alpaka
             //! The CPU serial accelerator device type trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct DevManType<
-                acc::serial::detail::AccCpuSerial<TDim>>
+                acc::serial::detail::AccCpuSerial<TDim, TSize>>
             {
                 using type = dev::DevManCpu;
             };
@@ -253,9 +264,10 @@ namespace alpaka
             //! The CPU serial accelerator dimension getter trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct DimType<
-                acc::serial::detail::AccCpuSerial<TDim>>
+                acc::serial::detail::AccCpuSerial<TDim, TSize>>
             {
                 using type = TDim;
             };
@@ -269,11 +281,29 @@ namespace alpaka
             //! The CPU serial accelerator executor type trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct ExecType<
-                acc::serial::detail::AccCpuSerial<TDim>>
+                acc::serial::detail::AccCpuSerial<TDim, TSize>>
             {
-                using type = exec::ExecCpuSerial<TDim>;
+                using type = exec::ExecCpuSerial<TDim, TSize>;
+            };
+        }
+    }
+    namespace size
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The CPU serial accelerator size type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim,
+                typename TSize>
+            struct SizeType<
+                acc::serial::detail::AccCpuSerial<TDim, TSize>>
+            {
+                using type = TSize;
             };
         }
     }

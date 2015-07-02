@@ -35,6 +35,8 @@ namespace alpaka
             //#############################################################################
             //! A barrier.
             //#############################################################################
+            template<
+                typename TSize>
             class ThreadBarrier final
             {
             public:
@@ -42,7 +44,7 @@ namespace alpaka
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA explicit ThreadBarrier(
-                    Uint const uiNumThreadsToWaitFor = 0) :
+                    TSize const & uiNumThreadsToWaitFor = 0) :
                     m_uiNumThreadsToWaitFor(uiNumThreadsToWaitFor)
                 {}
                 //-----------------------------------------------------------------------------
@@ -91,7 +93,7 @@ namespace alpaka
                 //! NOTE: The value almost always is invalid the time you get it.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA auto getNumThreadsToWaitFor() const
-                -> Uint
+                -> TSize
                 {
                     return m_uiNumThreadsToWaitFor;
                 }
@@ -100,7 +102,7 @@ namespace alpaka
                 //! Resets the number of threads to wait for to the given number.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA auto reset(
-                    Uint const uiNumThreadsToWaitFor)
+                    TSize const & uiNumThreadsToWaitFor)
                 -> void
                 {
                     std::lock_guard<std::mutex> lock(m_mtxBarrier);
@@ -110,7 +112,7 @@ namespace alpaka
             private:
                 std::mutex m_mtxBarrier;
                 std::condition_variable m_cvAllThreadsReachedBarrier;
-                Uint m_uiNumThreadsToWaitFor;
+                TSize m_uiNumThreadsToWaitFor;
             };
         }
     }

@@ -53,6 +53,7 @@ namespace alpaka
                     //
                     //#############################################################################
                     using ThreadPool = alpaka::detail::ConcurrentExecPool<
+                        std::size_t,
                         std::thread,                // The concurrent execution type.
                         std::promise,               // The promise type.
                         void,                       // The type yielding the current concurrent execution.

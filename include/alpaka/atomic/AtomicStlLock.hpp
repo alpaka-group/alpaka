@@ -40,7 +40,7 @@ namespace alpaka
                 typename TOp,
                 typename T,
                 typename TSfinae>
-            friend struct alpaka::atomic::traits::AtomicOp;
+            friend struct atomic::traits::AtomicOp;
 
             using AtomicBase = AtomicStlLock;
 

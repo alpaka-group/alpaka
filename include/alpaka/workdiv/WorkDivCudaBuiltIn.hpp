@@ -21,13 +21,14 @@
 
 #pragma once
 
-#include <alpaka/workdiv/Traits.hpp>                // workdiv::GetWorkDiv
+#include <alpaka/workdiv/Traits.hpp>        // workdiv::GetWorkDiv
+#include <alpaka/size/Traits.hpp>           // size::SizeT
 
-#include <alpaka/core/Vec.hpp>                      // Vec, getExtentsVecEnd
-#include <alpaka/core/Common.hpp>                   // ALPAKA_FCT_ACC_CUDA_ONLY
-#include <alpaka/core/Cuda.hpp>                     // getExtent(dim3)
+#include <alpaka/core/Vec.hpp>              // Vec, getExtentsVecEnd
+#include <alpaka/core/Common.hpp>           // ALPAKA_FCT_ACC_CUDA_ONLY
+#include <alpaka/core/Cuda.hpp>             // getExtent(dim3)
 
-//#include <boost/core/ignore_unused.hpp>           // boost::ignore_unused
+//#include <boost/core/ignore_unused.hpp>   // boost::ignore_unused
 
 namespace alpaka
 {
@@ -37,7 +38,8 @@ namespace alpaka
         //! The GPU CUDA accelerator work division.
         //#############################################################################
         template<
-            typename TDim>
+            typename TDim,
+            typename TSize>
         class WorkDivCudaBuiltIn
         {
         public:
@@ -78,11 +80,29 @@ namespace alpaka
             //! The GPU CUDA accelerator work division dimension get trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct DimType<
-                workdiv::WorkDivCudaBuiltIn<TDim>>
+                workdiv::WorkDivCudaBuiltIn<TDim, TSize>>
             {
                 using type = TDim;
+            };
+        }
+    }
+    namespace size
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The GPU CUDA accelerator work division size type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim,
+                typename TSize>
+            struct SizeType<
+                workdiv::WorkDivCudaBuiltIn<TDim, TSize>>
+            {
+                using type = TSize;
             };
         }
     }
@@ -94,9 +114,10 @@ namespace alpaka
             //! The GPU CUDA accelerator work division block thread extents trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct GetWorkDiv<
-                WorkDivCudaBuiltIn<TDim>,
+                WorkDivCudaBuiltIn<TDim, TSize>,
                 origin::Block,
                 unit::Threads>
             {
@@ -104,11 +125,11 @@ namespace alpaka
                 //! \return The number of threads in each dimension of a block.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto getWorkDiv(
-                    WorkDivCudaBuiltIn<TDim> const & workDiv)
-                -> alpaka::Vec<TDim>
+                    WorkDivCudaBuiltIn<TDim, TSize> const & workDiv)
+                -> Vec<TDim, TSize>
                 {
                     //boost::ignore_unused(workDiv);
-                    return extent::getExtentsVecEnd<TDim, Uint>(blockDim);
+                    return castVec<TSize>(extent::getExtentsVecEnd<TDim>(blockDim));
                 }
             };
 
@@ -116,9 +137,10 @@ namespace alpaka
             //! The GPU CUDA accelerator work division grid block extents trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct GetWorkDiv<
-                WorkDivCudaBuiltIn<TDim>,
+                WorkDivCudaBuiltIn<TDim, TSize>,
                 origin::Grid,
                 unit::Blocks>
             {
@@ -126,11 +148,11 @@ namespace alpaka
                 //! \return The number of blocks in each dimension of the grid.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto getWorkDiv(
-                    WorkDivCudaBuiltIn<TDim> const & workDiv)
-                -> alpaka::Vec<TDim>
+                    WorkDivCudaBuiltIn<TDim, TSize> const & workDiv)
+                -> Vec<TDim, TSize>
                 {
                     //boost::ignore_unused(workDiv);
-                    return extent::getExtentsVecEnd<TDim, Uint>(gridDim);
+                    return castVec<TSize>(extent::getExtentsVecEnd<TDim>(gridDim));
                 }
             };
         }

@@ -26,6 +26,7 @@
 #include <alpaka/dev/Traits.hpp>                // DevType
 #include <alpaka/event/Traits.hpp>              // EventType
 #include <alpaka/exec/Traits.hpp>               // ExecType
+#include <alpaka/size/Traits.hpp>               // size::SizeT
 #include <alpaka/stream/Traits.hpp>             // StreamType
 
 // Implementation details.
@@ -63,7 +64,8 @@ namespace alpaka
                         //! The CPU OpenMP 2.0 block accelerator executor implementation.
                         //#############################################################################
                         template<
-                            typename TDim>
+                            typename TDim,
+                            typename TSize>
                         class ExecCpuOmp2BlocksImpl final
                         {
                         public:
@@ -97,11 +99,11 @@ namespace alpaka
                             //-----------------------------------------------------------------------------
                             template<
                                 typename TWorkDiv,
-                                typename TKernelFuncObj,
+                                typename TKernelFctObj,
                                 typename... TArgs>
                             ALPAKA_FCT_HOST auto operator()(
                                 TWorkDiv const & workDiv,
-                                TKernelFuncObj const & kernelFuncObj,
+                                TKernelFctObj const & kernelFctObj,
                                 TArgs const & ... args) const
                             -> void
                             {
@@ -118,8 +120,8 @@ namespace alpaka
 
                                 auto const uiBlockSharedExternMemSizeBytes(
                                     kernel::getBlockSharedExternMemSizeBytes<
-                                        typename std::decay<TKernelFuncObj>::type,
-                                        AccCpuOmp2Blocks<TDim>>(
+                                        typename std::decay<TKernelFctObj>::type,
+                                        AccCpuOmp2Blocks<TDim, TSize>>(
                                             vuiBlockThreadExtents,
                                             args...));
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -128,7 +130,7 @@ namespace alpaka
                                     << std::endl;
 #endif
                                 // The number of blocks in the grid.
-                                Uint const uiNumBlocksInGrid(vuiGridBlockExtents.prod());
+                                TSize const uiNumBlocksInGrid(vuiGridBlockExtents.prod());
                                 // There is only ever one thread in a block in the OpenMP 2.0 block accelerator.
                                 assert(vuiBlockThreadExtents.prod() == 1u);
 
@@ -148,7 +150,7 @@ namespace alpaka
                                         std::cout << BOOST_CURRENT_FUNCTION << " omp_get_num_threads: " << iNumThreads << std::endl;
                                     }
 #endif
-                                    AccCpuOmp2Blocks<TDim> acc(workDiv);
+                                    AccCpuOmp2Blocks<TDim, TSize> acc(workDiv);
 
                                     if(uiBlockSharedExternMemSizeBytes > 0u)
                                     {
@@ -164,20 +166,20 @@ namespace alpaka
                                     for(i = 0; i < uiNumBlocksInGrid; ++i)
 #else
                                     #pragma omp for nowait
-                                    for(Uint i = 0; i < uiNumBlocksInGrid; ++i)
+                                    for(TSize i = 0; i < uiNumBlocksInGrid; ++i)
 #endif
                                     {
                                         acc.m_vuiGridBlockIdx =
                                             mapIdx<TDim::value>(
 #if _OPENMP < 200805
-                                                Vec1<>(static_cast<Uint>(i)),
+                                                Vec1<TSize>(static_cast<TSize>(i)),
 #else
-                                                Vec1<>(i),
+                                                Vec1<TSize>(i),
 #endif
                                                 vuiGridBlockExtents);
 
-                                        kernelFuncObj(
-                                            const_cast<AccCpuOmp2Blocks<TDim> const &>(acc),
+                                        kernelFctObj(
+                                            const_cast<AccCpuOmp2Blocks<TDim, TSize> const &>(acc),
                                             args...);
 
                                         // After a block has been processed, the shared memory has to be deleted.
@@ -201,9 +203,10 @@ namespace alpaka
         //! The CPU OpenMP 2.0 block accelerator executor.
         //#############################################################################
         template<
-            typename TDim>
+            typename TDim,
+            typename TSize>
         class ExecCpuOmp2Blocks final :
-            public workdiv::WorkDivMembers<TDim>
+            public workdiv::WorkDivMembers<TDim, TSize>
         {
         public:
             //-----------------------------------------------------------------------------
@@ -214,7 +217,7 @@ namespace alpaka
             ALPAKA_FCT_HOST ExecCpuOmp2Blocks(
                 TWorkDiv const & workDiv,
                 stream::StreamCpuAsync & stream) :
-                    workdiv::WorkDivMembers<TDim>(workDiv),
+                    workdiv::WorkDivMembers<TDim, TSize>(workDiv),
                     m_Stream(stream)
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -248,24 +251,24 @@ namespace alpaka
             //! Enqueues the kernel function object.
             //-----------------------------------------------------------------------------
             template<
-                typename TKernelFuncObj,
+                typename TKernelFctObj,
                 typename... TArgs>
             ALPAKA_FCT_HOST auto operator()(
-                TKernelFuncObj const & kernelFuncObj,
+                TKernelFctObj const & kernelFctObj,
                 TArgs const & ... args) const
             -> void
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                auto const & workDiv(*static_cast<workdiv::WorkDivMembers<TDim> const *>(this));
+                auto const & workDiv(*static_cast<workdiv::WorkDivMembers<TDim, TSize> const *>(this));
 
                 m_Stream.m_spAsyncStreamCpu->m_workerThread.enqueueTask(
-                    [workDiv, kernelFuncObj, args...]()
+                    [workDiv, kernelFctObj, args...]()
                     {
-                        omp::omp2::blocks::detail::ExecCpuOmp2BlocksImpl<TDim> exec;
+                        omp::omp2::blocks::detail::ExecCpuOmp2BlocksImpl<TDim, TSize> exec;
                         exec(
                             workDiv,
-                            kernelFuncObj,
+                            kernelFctObj,
                             args...);
                     });
             }
@@ -283,11 +286,12 @@ namespace alpaka
             //! The CPU OpenMP 2.0 grid block executor accelerator type trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct AccType<
-                exec::ExecCpuOmp2Blocks<TDim>>
+                exec::ExecCpuOmp2Blocks<TDim, TSize>>
             {
-                using type = acc::omp::omp2::blocks::detail::AccCpuOmp2Blocks<TDim>;
+                using type = acc::omp::omp2::blocks::detail::AccCpuOmp2Blocks<TDim, TSize>;
             };
         }
     }
@@ -299,9 +303,10 @@ namespace alpaka
             //! The CPU OpenMP 2.0 grid block executor device type trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct DevType<
-                exec::ExecCpuOmp2Blocks<TDim>>
+                exec::ExecCpuOmp2Blocks<TDim, TSize>>
             {
                 using type = dev::DevCpu;
             };
@@ -309,9 +314,10 @@ namespace alpaka
             //! The CPU OpenMP 2.0 grid block executor device manager type trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct DevManType<
-                exec::ExecCpuOmp2Blocks<TDim>>
+                exec::ExecCpuOmp2Blocks<TDim, TSize>>
             {
                 using type = dev::DevManCpu;
             };
@@ -325,9 +331,10 @@ namespace alpaka
             //! The CPU OpenMP 2.0 grid block executor dimension getter trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct DimType<
-                exec::ExecCpuOmp2Blocks<TDim>>
+                exec::ExecCpuOmp2Blocks<TDim, TSize>>
             {
                 using type = TDim;
             };
@@ -341,9 +348,10 @@ namespace alpaka
             //! The CPU OpenMP 2.0 grid block executor event type trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct EventType<
-                exec::ExecCpuOmp2Blocks<TDim>>
+                exec::ExecCpuOmp2Blocks<TDim, TSize>>
             {
                 using type = event::EventCpuAsync;
             };
@@ -357,11 +365,29 @@ namespace alpaka
             //! The CPU OpenMP 2.0 grid block executor executor type trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct ExecType<
-                exec::ExecCpuOmp2Blocks<TDim>>
+                exec::ExecCpuOmp2Blocks<TDim, TSize>>
             {
-                using type = exec::ExecCpuOmp2Blocks<TDim>;
+                using type = exec::ExecCpuOmp2Blocks<TDim, TSize>;
+            };
+        }
+    }
+    namespace size
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The CPU OpenMP 2.0 block executor size type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim,
+                typename TSize>
+            struct SizeType<
+                exec::ExecCpuOmp2Blocks<TDim, TSize>>
+            {
+                using type = TSize;
             };
         }
     }
@@ -373,9 +399,10 @@ namespace alpaka
             //! The CPU OpenMP 2.0 grid block executor stream type trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct StreamType<
-                exec::ExecCpuOmp2Blocks<TDim>>
+                exec::ExecCpuOmp2Blocks<TDim, TSize>>
             {
                 using type = stream::StreamCpuAsync;
             };
@@ -383,12 +410,13 @@ namespace alpaka
             //! The CPU OpenMP 2.0 grid block executor stream get trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct GetStream<
-                exec::ExecCpuOmp2Blocks<TDim>>
+                exec::ExecCpuOmp2Blocks<TDim, TSize>>
             {
                 ALPAKA_FCT_HOST static auto getStream(
-                    exec::ExecCpuOmp2Blocks<TDim> const & exec)
+                    exec::ExecCpuOmp2Blocks<TDim, TSize> const & exec)
                 -> stream::StreamCpuAsync
                 {
                     return exec.m_Stream;

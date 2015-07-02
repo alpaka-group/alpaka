@@ -269,16 +269,16 @@ auto writeTgaColorImage(
         "The buffer element type has to be integral!");
 
     // The width of the input buffer is in input elements.
-    auto const uiBufWidthElems(alpaka::extent::getWidth<std::size_t>(bufRgba));
+    auto const uiBufWidthElems(alpaka::extent::getWidth(bufRgba));
     auto const uiBufWidthBytes(uiBufWidthElems * sizeof(alpaka::mem::view::ElemT<TBuf>));
     // The row width in bytes has to be dividable by 4 Bytes (RGBA).
     assert(uiBufWidthBytes % sizeof(std::uint32_t) == 0);
     // The number of colors in a row.
     auto const uiBufWidthColors(uiBufWidthBytes / sizeof(std::uint32_t));
     assert(uiBufWidthColors >= 1);
-    auto const uiBufHeightColors(alpaka::extent::getHeight<std::size_t>(bufRgba));
+    auto const uiBufHeightColors(alpaka::extent::getHeight(bufRgba));
     assert(uiBufHeightColors >= 1);
-    auto const uiBufPitchBytes(alpaka::mem::view::getPitchBytes<alpaka::dim::DimT<TBuf>::value - 1u, std::size_t>(bufRgba));
+    auto const uiBufPitchBytes(alpaka::mem::view::getPitchBytes<alpaka::dim::DimT<TBuf>::value - 1u>(bufRgba));
     assert(uiBufPitchBytes >= uiBufWidthBytes);
 
     std::ofstream ofs(
@@ -321,7 +321,7 @@ auto writeTgaColorImage(
     // ... else we have to write row by row.
     else
     {
-        for(std::size_t uiRow(0u); uiRow<uiBufHeightColors; ++uiRow)
+        for(auto uiRow(decltype(uiBufHeightColors)(0)); uiRow<uiBufHeightColors; ++uiRow)
         {
             ofs.write(
                 pData + uiBufPitchBytes*uiRow,
@@ -336,19 +336,22 @@ auto writeTgaColorImage(
 struct MandelbrotKernelTester
 {
     template<
-        typename TAcc>
+        typename TAcc,
+        typename TSize>
     auto operator()(
-        std::size_t const & uiNumRows,
-        std::size_t const & uiNumCols,
+        TSize const & uiNumRows,
+        TSize const & uiNumCols,
         float const & fMinR,
         float const & fMaxR,
         float const & fMinI,
         float const & fMaxI,
-        std::size_t const & uiMaxIterations)
+        TSize const & uiMaxIterations)
     -> void
     {
         std::cout << std::endl;
         std::cout << "################################################################################" << std::endl;
+
+        using Val = std::uint32_t;
 
         // Create the kernel function object.
         MandelbrotKernel kernel;
@@ -364,12 +367,12 @@ struct MandelbrotKernelTester
         alpaka::stream::StreamT<alpaka::dev::DevT<TAcc>> stream(
             alpaka::stream::create(devAcc));
 
-        alpaka::Vec2<> const v2uiExtents(
-            static_cast<alpaka::Vec2<>::Val>(uiNumRows),
-            static_cast<alpaka::Vec2<>::Val>(uiNumCols));
+        alpaka::Vec2<TSize> const v2uiExtents(
+            static_cast<TSize>(uiNumRows),
+            static_cast<TSize>(uiNumCols));
 
         // Let alpaka calculate good block and grid sizes given our full problem extents.
-        alpaka::workdiv::WorkDivMembers<alpaka::dim::Dim2> const workDiv(
+        alpaka::workdiv::WorkDivMembers<alpaka::dim::Dim<2u>, TSize> const workDiv(
             alpaka::workdiv::getValidWorkDiv<TAcc>(
                 devAcc,
                 v2uiExtents,
@@ -388,11 +391,11 @@ struct MandelbrotKernelTester
 
         // allocate host memory
         auto bufColorHost(
-            alpaka::mem::buf::alloc<std::uint32_t>(devHost, v2uiExtents));
+            alpaka::mem::buf::alloc<Val, TSize>(devHost, v2uiExtents));
 
         // Allocate the buffer on the accelerator.
         auto bufColorAcc(
-            alpaka::mem::buf::alloc<std::uint32_t>(devAcc, v2uiExtents));
+            alpaka::mem::buf::alloc<Val, TSize>(devAcc, v2uiExtents));
 
         // Copy Host -> Acc.
         alpaka::mem::view::copy(bufColorAcc, bufColorHost, v2uiExtents, stream);
@@ -405,14 +408,14 @@ struct MandelbrotKernelTester
                 exec,
                 kernel,
                 alpaka::mem::view::getPtrNative(bufColorAcc),
-                static_cast<std::uint32_t>(uiNumRows),
-                static_cast<std::uint32_t>(uiNumCols),
-                alpaka::mem::view::getPitchBytes<1u, std::uint32_t>(bufColorAcc),
+                uiNumRows,
+                uiNumCols,
+                alpaka::mem::view::getPitchBytes<1u>(bufColorAcc),
                 fMinR,
                 fMaxR,
                 fMinI,
                 fMaxI,
-                static_cast<std::uint32_t>(uiMaxIterations))
+                uiMaxIterations)
             << " ms"
             << std::endl;
 
@@ -449,14 +452,14 @@ auto main()
         std::cout << std::endl;
 
         // Logs the enabled accelerators.
-        alpaka::examples::accs::writeEnabledAccs<alpaka::dim::Dim2>(std::cout);
+        alpaka::examples::accs::writeEnabledAccs<alpaka::dim::Dim<2u>, std::uint32_t>(std::cout);
 
         std::cout << std::endl;
 
         MandelbrotKernelTester mandelbrotTester;
 
         // For different sizes.
-        for(std::size_t uiSize(1u<<3u);
+        for(std::uint32_t uiSize(1u<<3u);
 #if ALPAKA_INTEGRATION_TEST
             uiSize <= 1u<<8u;
 #else
@@ -468,7 +471,7 @@ auto main()
 
             // Execute the kernel on all enabled accelerators.
             alpaka::forEachType<
-                alpaka::examples::accs::EnabledAccs<alpaka::dim::Dim2>>(
+                alpaka::examples::accs::EnabledAccs<alpaka::dim::Dim<2u>, std::uint32_t>>(
                     mandelbrotTester,
                     uiSize,
                     uiSize,

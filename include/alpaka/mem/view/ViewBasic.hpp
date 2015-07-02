@@ -24,8 +24,9 @@
 #include <alpaka/dim/Traits.hpp>                    // DimT
 #include <alpaka/dev/Traits.hpp>                    // DevT
 #include <alpaka/extent/Traits.hpp>                 // view::getXXX
-#include <alpaka/offset/Traits.hpp>                 // traits::getOffsetX
 #include <alpaka/mem/view/Traits.hpp>
+#include <alpaka/offset/Traits.hpp>                 // traits::getOffsetX
+#include <alpaka/size/Traits.hpp>                   // size::SizeT
 
 #include <alpaka/mem/buf/BufPlainPtrWrapper.hpp>    // BufPlainPtrWrapper
 #include <alpaka/core/Vec.hpp>                      // Vec
@@ -57,16 +58,17 @@ namespace alpaka
             //! A memory buffer view.
             //#############################################################################
             template<
+                typename TDev,
                 typename TElem,
                 typename TDim,
-                typename TDev>
+                typename TSize>
             class ViewBasic
             {
             public:
+                using Dev = TDev;
                 using Elem = TElem;
                 using Dim = TDim;
-                using Dev = TDev;
-                using Buf = buf::BufPlainPtrWrapper<TElem, TDim, TDev>;
+                using Buf = buf::BufPlainPtrWrapper<TDev, TElem, TDim, TSize>;
                 // If the value type is const, we store a const buffer.
                 //using BufC = detail::MimicConst<TElem, Buf>;
 
@@ -82,10 +84,10 @@ namespace alpaka
                         m_Buf(
                             mem::view::getPtrNative(buf),
                             dev::getDev(buf),
-                            extent::getExtentsVecEnd<Dim, Uint>(buf),
-                            mem::view::getPitchBytes<Dim::value - 1u, Uint>(buf)),
-                        m_vOffsetsElements(offset::getOffsetsVecEnd<Dim, Uint>(buf)),
-                        m_vExtentsElements(extent::getExtentsVecEnd<Dim, Uint>(buf))
+                            extent::getExtentsVecEnd<TDim>(buf),
+                            mem::view::getPitchBytes<TDim::value - 1u>(buf)),
+                        m_vOffsetsElements(offset::getOffsetsVecEnd<TDim>(buf)),
+                        m_vExtentsElements(extent::getExtentsVecEnd<TDim>(buf))
                 {}
                 //-----------------------------------------------------------------------------
                 //! Constructor.
@@ -98,11 +100,15 @@ namespace alpaka
                         m_Buf(
                             mem::view::getPtrNative(buf),
                             dev::getDev(buf),
-                            extent::getExtentsVecEnd<Dim, Uint>(buf),
-                            mem::view::getPitchBytes<Dim::value - 1u, Uint>(buf)),
-                        m_vOffsetsElements(offset::getOffsetsVecEnd<Dim, Uint>(buf)),
-                        m_vExtentsElements(extent::getExtentsVecEnd<Dim, Uint>(buf))
-                {}
+                            extent::getExtentsVecEnd<TDim>(buf),
+                            mem::view::getPitchBytes<TDim::value - 1u>(buf)),
+                        m_vOffsetsElements(offset::getOffsetsVecEnd<TDim>(buf)),
+                        m_vExtentsElements(extent::getExtentsVecEnd<TDim>(buf))
+                {
+                    static_assert(
+                        std::is_same<TSize, size::SizeT<TBuf>>::value,
+                        "The size type of TBuf and the TSize template parameter have to be identical!");
+                }
 
                 //-----------------------------------------------------------------------------
                 //! Constructor.
@@ -121,21 +127,27 @@ namespace alpaka
                         m_Buf(
                             mem::view::getPtrNative(buf),
                             dev::getDev(buf),
-                            extent::getExtentsVecEnd<Dim, Uint>(buf),
-                            mem::view::getPitchBytes<Dim::value - 1u, Uint>(buf)),
-                        m_vExtentsElements(extent::getExtentsVecEnd<Dim, Uint>(extentsElements)),
-                        m_vOffsetsElements(offset::getOffsetsVecEnd<Dim, Uint>(relativeOffsetsElements) + offset::getOffsetsVecEnd<Dim, Uint>(buf))
+                            extent::getExtentsVecEnd<TDim>(buf),
+                            mem::view::getPitchBytes<TDim::value - 1u>(buf)),
+                        m_vExtentsElements(extent::getExtentsVecEnd<TDim>(extentsElements)),
+                        m_vOffsetsElements(offset::getOffsetsVecEnd<TDim>(relativeOffsetsElements) + offset::getOffsetsVecEnd<TDim>(buf))
                 {
                     static_assert(
-                        std::is_same<Dim, dim::DimT<TExtents>>::value,
+                        std::is_same<TDim, dim::DimT<TExtents>>::value,
                         "The buffer and the extents are required to have the same dimensionality!");
+                    static_assert(
+                        std::is_same<TSize, size::SizeT<TExtents>>::value,
+                        "The size type of TExtents and the TSize template parameter have to be identical!");
+                    static_assert(
+                        std::is_same<TSize, size::SizeT<TBuf>>::value,
+                        "The size type of TBuf and the TSize template parameter have to be identical!");
 
-                    assert(extent::getWidth<Uint>(relativeOffsetsElements) <= extent::getWidth<Uint>(buf));
-                    assert(extent::getHeight<Uint>(relativeOffsetsElements) <= extent::getHeight<Uint>(buf));
-                    assert(extent::getDepth<Uint>(relativeOffsetsElements) <= extent::getDepth<Uint>(buf));
-                    assert((offset::getOffsetX<Uint>(relativeOffsetsElements)+offset::getOffsetX<Uint>(buf)+extent::getWidth<Uint>(extentsElements)) <= extent::getWidth<Uint>(buf));
-                    assert((offset::getOffsetY<Uint>(relativeOffsetsElements)+offset::getOffsetY<Uint>(buf)+extent::getHeight<Uint>(extentsElements)) <= extent::getHeight<Uint>(buf));
-                    assert((offset::getOffsetZ<Uint>(relativeOffsetsElements)+offset::getOffsetZ<Uint>(buf)+extent::getDepth<Uint>(extentsElements)) <= extent::getDepth<Uint>(buf));
+                    assert(extent::getWidth(relativeOffsetsElements) <= extent::getWidth(buf));
+                    assert(extent::getHeight(relativeOffsetsElements) <= extent::getHeight(buf));
+                    assert(extent::getDepth(relativeOffsetsElements) <= extent::getDepth(buf));
+                    assert((offset::getOffsetX(relativeOffsetsElements)+offset::getOffsetX(buf)+extent::getWidth(extentsElements)) <= extent::getWidth(buf));
+                    assert((offset::getOffsetY(relativeOffsetsElements)+offset::getOffsetY(buf)+extent::getHeight(extentsElements)) <= extent::getHeight(buf));
+                    assert((offset::getOffsetZ(relativeOffsetsElements)+offset::getOffsetZ(buf)+extent::getDepth(extentsElements)) <= extent::getDepth(buf));
                 }
                 //-----------------------------------------------------------------------------
                 //! Constructor.
@@ -154,27 +166,33 @@ namespace alpaka
                         m_Buf(
                             mem::view::getPtrNative(buf),
                             dev::getDev(buf),
-                            extent::getExtentsVecEnd<Dim, Uint>(buf),
-                            mem::view::getPitchBytes<Dim::value - 1u, Uint>(buf)),
-                        m_vExtentsElements(extent::getExtentsVecEnd<Dim, Uint>(extentsElements)),
-                        m_vOffsetsElements(offset::getOffsetsVecEnd<Dim, Uint>(relativeOffsetsElements) + offset::getOffsetsVecEnd<Dim, Uint>(buf))
+                            extent::getExtentsVecEnd<TDim>(buf),
+                            mem::view::getPitchBytes<TDim::value - 1u>(buf)),
+                        m_vExtentsElements(extent::getExtentsVecEnd<TDim>(extentsElements)),
+                        m_vOffsetsElements(offset::getOffsetsVecEnd<TDim>(relativeOffsetsElements) + offset::getOffsetsVecEnd<TDim>(buf))
                 {
                     static_assert(
-                        std::is_same<Dim, dim::DimT<TExtents>>::value,
+                        std::is_same<TDim, dim::DimT<TExtents>>::value,
                         "The buffer and the extents are required to have the same dimensionality!");
+                    static_assert(
+                        std::is_same<TSize, size::SizeT<TExtents>>::value,
+                        "The size type of TExtents and the TSize template parameter have to be identical!");
+                    static_assert(
+                        std::is_same<TBuf, size::SizeT<TExtents>>::value,
+                        "The size type of TBuf and the TSize template parameter have to be identical!");
 
-                    assert(extent::getWidth<Uint>(relativeOffsetsElements) <= extent::getWidth<Uint>(buf));
-                    assert(extent::getHeight<Uint>(relativeOffsetsElements) <= extent::getHeight<Uint>(buf));
-                    assert(extent::getDepth<Uint>(relativeOffsetsElements) <= extent::getDepth<Uint>(buf));
-                    assert((offset::getOffsetX<Uint>(relativeOffsetsElements)+offset::getOffsetX<Uint>(buf)+extent::getWidth<Uint>(extentsElements)) <= extent::getWidth<Uint>(buf));
-                    assert((offset::getOffsetY<Uint>(relativeOffsetsElements)+offset::getOffsetY<Uint>(buf)+extent::getHeight<Uint>(extentsElements)) <= extent::getHeight<Uint>(buf));
-                    assert((offset::getOffsetZ<Uint>(relativeOffsetsElements)+offset::getOffsetZ<Uint>(buf)+extent::getDepth<Uint>(extentsElements)) <= extent::getDepth<Uint>(buf));
+                    assert(extent::getWidth(relativeOffsetsElements) <= extent::getWidth(buf));
+                    assert(extent::getHeight(relativeOffsetsElements) <= extent::getHeight(buf));
+                    assert(extent::getDepth(relativeOffsetsElements) <= extent::getDepth(buf));
+                    assert((offset::getOffsetX(relativeOffsetsElements)+offset::getOffsetX(buf)+extent::getWidth(extentsElements)) <= extent::getWidth(buf));
+                    assert((offset::getOffsetY(relativeOffsetsElements)+offset::getOffsetY(buf)+extent::getHeight(extentsElements)) <= extent::getHeight(buf));
+                    assert((offset::getOffsetZ(relativeOffsetsElements)+offset::getOffsetZ(buf)+extent::getDepth(extentsElements)) <= extent::getDepth(buf));
                 }
 
             public:
                 Buf m_Buf;
-                Vec<Dim> m_vExtentsElements;
-                Vec<Dim> m_vOffsetsElements;
+                Vec<TDim, TSize> m_vExtentsElements;
+                Vec<TDim, TSize> m_vOffsetsElements;
             };
         }
     }
@@ -192,9 +210,10 @@ namespace alpaka
             template<
                 typename TElem,
                 typename TDim,
-                typename TDev>
+                typename TDev,
+                typename TSize>
             struct DevType<
-                mem::view::ViewBasic<TElem, TDim, TDev>>
+                mem::view::ViewBasic<TDev, TElem, TDim, TSize>>
             {
                 using type = TDev;
             };
@@ -205,12 +224,13 @@ namespace alpaka
             template<
                 typename TElem,
                 typename TDim,
-                typename TDev>
+                typename TDev,
+                typename TSize>
             struct GetDev<
-                mem::view::ViewBasic<TElem, TDim, TDev>>
+                mem::view::ViewBasic<TDev, TElem, TDim, TSize>>
             {
                 ALPAKA_FCT_HOST static auto getDev(
-                    mem::view::ViewBasic<TElem, TDim, TDev> const & view)
+                    mem::view::ViewBasic<TDev, TElem, TDim, TSize> const & view)
                 -> TDev
                 {
                     return
@@ -230,9 +250,10 @@ namespace alpaka
             template<
                 typename TElem,
                 typename TDim,
-                typename TDev>
+                typename TDev,
+                typename TSize>
             struct DimType<
-                mem::view::ViewBasic<TElem, TDim, TDev>>
+                mem::view::ViewBasic<TDev, TElem, TDim, TSize>>
             {
                 using type = TDim;
             };
@@ -249,18 +270,19 @@ namespace alpaka
                 typename TIdx,
                 typename TElem,
                 typename TDim,
-                typename TDev>
+                typename TDev,
+                typename TSize>
             struct GetExtent<
                 TIdx,
-                mem::view::ViewBasic<TElem, TDim, TDev>,
+                mem::view::ViewBasic<TDev, TElem, TDim, TSize>,
                 typename std::enable_if<(TDim::value > TIdx::value)>::type>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getExtent(
-                    mem::view::ViewBasic<TElem, TDim, TDev> const & extents)
-                -> Uint
+                    mem::view::ViewBasic<TDev, TElem, TDim, TSize> const & extents)
+                -> TSize
                 {
                     return extents.m_vExtentsElements[TIdx::value];
                 }
@@ -279,9 +301,10 @@ namespace alpaka
                 template<
                     typename TElem,
                     typename TDim,
-                    typename TDev>
+                    typename TDev,
+                    typename TSize>
                 struct ElemType<
-                    mem::view::ViewBasic<TElem, TDim, TDev>>
+                    mem::view::ViewBasic<TDev, TElem, TDim, TSize>>
                 {
                     using type = TElem;
                 };
@@ -292,9 +315,10 @@ namespace alpaka
                 template<
                     typename TElem,
                     typename TDim,
-                    typename TDev>
+                    typename TDev,
+                    typename TSize>
                 struct CreateView<
-                    mem::view::ViewBasic<TElem, TDim, TDev>>
+                    mem::view::ViewBasic<TDev, TElem, TDim, TSize>>
                 {
                     //-----------------------------------------------------------------------------
                     //!
@@ -303,12 +327,13 @@ namespace alpaka
                         typename TBuf>
                     ALPAKA_FCT_HOST static auto createView(
                         TBuf const & buf)
-                    -> mem::view::ViewBasic<typename std::add_const<TElem>::type, TDim, TDev>
+                    -> mem::view::ViewBasic<typename std::add_const<TElem>::type, TDim, TDev, TSize>
                     {
                         return mem::view::ViewBasic<
                             typename std::add_const<TElem>::type,
                             TDim,
-                            TDev>(
+                            TDev,
+                            TSize>(
                                 buf);
                     }
                     //-----------------------------------------------------------------------------
@@ -318,12 +343,13 @@ namespace alpaka
                         typename TBuf>
                     ALPAKA_FCT_HOST static auto createView(
                         TBuf & buf)
-                    -> mem::view::ViewBasic<TElem, TDim, TDev>
+                    -> mem::view::ViewBasic<TDev, TElem, TDim, TSize>
                     {
                         return mem::view::ViewBasic<
                             TElem,
                             TDim,
-                            TDev>(
+                            TDev,
+                            TSize>(
                                 buf);
                     }
                     //-----------------------------------------------------------------------------
@@ -337,12 +363,13 @@ namespace alpaka
                         TBuf const & buf,
                         TExtents const & extentsElements,
                         TOffsets const & relativeOffsetsElements)
-                    -> mem::view::ViewBasic<typename std::add_const<TElem>::type, TDim, TDev>
+                    -> mem::view::ViewBasic<typename std::add_const<TElem>::type, TDim, TDev, TSize>
                     {
                         return mem::view::ViewBasic<
                             typename std::add_const<TElem>::type,
                             TDim,
-                            TDev>(
+                            TDev,
+                            TSize>(
                                 buf,
                                 extentsElements,
                                 relativeOffsetsElements);
@@ -358,12 +385,13 @@ namespace alpaka
                         TBuf & buf,
                         TExtents const & extentsElements,
                         TOffsets const & relativeOffsetsElements)
-                    -> mem::view::ViewBasic<TElem, TDim, TDev>
+                    -> mem::view::ViewBasic<TDev, TElem, TDim, TSize>
                     {
                         return mem::view::ViewBasic<
                             TElem,
                             TDim,
-                            TDev>(
+                            TDev,
+                            TSize>(
                                 buf,
                                 extentsElements,
                                 relativeOffsetsElements);
@@ -376,16 +404,17 @@ namespace alpaka
                 template<
                     typename TElem,
                     typename TDim,
-                    typename TDev>
+                    typename TDev,
+                    typename TSize>
                 struct GetBuf<
-                    mem::view::ViewBasic<TElem, TDim, TDev>>
+                    mem::view::ViewBasic<TDev, TElem, TDim, TSize>>
                 {
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_HOST static auto getBuf(
-                        mem::view::ViewBasic<TElem, TDim, TDev> const & view)
-                    -> typename mem::view::ViewBasic<TElem, TDim, TDev>::Buf const &
+                        mem::view::ViewBasic<TDev, TElem, TDim, TSize> const & view)
+                    -> typename mem::view::ViewBasic<TDev, TElem, TDim, TSize>::Buf const &
                     {
                         return view.m_Buf;
                     }
@@ -393,8 +422,8 @@ namespace alpaka
                     //!
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_HOST static auto getBuf(
-                        mem::view::ViewBasic<TElem, TDim, TDev> & view)
-                    -> typename mem::view::ViewBasic<TElem, TDim, TDev>::Buf &
+                        mem::view::ViewBasic<TDev, TElem, TDim, TSize> & view)
+                    -> typename mem::view::ViewBasic<TDev, TElem, TDim, TSize>::Buf &
                     {
                         return view.m_Buf;
                     }
@@ -406,18 +435,19 @@ namespace alpaka
                 template<
                     typename TElem,
                     typename TDim,
-                    typename TDev>
+                    typename TDev,
+                    typename TSize>
                 struct GetPtrNative<
-                    mem::view::ViewBasic<TElem, TDim, TDev>>
+                    mem::view::ViewBasic<TDev, TElem, TDim, TSize>>
                 {
                 private:
-                    using IdxSequence = alpaka::detail::make_integer_sequence<Uint, TDim::value>;
+                    using IdxSequence = alpaka::detail::make_integer_sequence<std::size_t, TDim::value>;
                 public:
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_HOST static auto getPtrNative(
-                        mem::view::ViewBasic<TElem, TDim, TDev> const & view)
+                        mem::view::ViewBasic<TDev, TElem, TDim, TSize> const & view)
                     -> TElem const *
                     {
                         auto const & buf(mem::view::getBuf(view));
@@ -431,7 +461,7 @@ namespace alpaka
                     //!
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_HOST static auto getPtrNative(
-                        mem::view::ViewBasic<TElem, TDim, TDev> & view)
+                        mem::view::ViewBasic<TDev, TElem, TDim, TSize> & view)
                     -> TElem *
                     {
                         auto & buf(mem::view::getBuf(view));
@@ -449,33 +479,33 @@ namespace alpaka
                     template<
                         typename TView,
                         typename TBuf,
-                        Uint... TIndices>
+                        std::size_t... TIndices>
                     ALPAKA_FCT_HOST static auto pitchedOffsetBytes(
                         TView const & view,
                         TBuf const & buf,
-                        alpaka::detail::integer_sequence<Uint, TIndices...> const &)
-                    -> Uint
+                        alpaka::detail::integer_sequence<std::size_t, TIndices...> const &)
+                    -> TSize
                     {
                         return
                             foldr(
-                                std::plus<Uint>(),
+                                std::plus<TSize>(),
                                 pitchedOffsetBytesDim<TIndices>(view, buf)...);
                     }
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
                     template<
-                        Uint TuiIdx,
+                        std::size_t TuiIdx,
                         typename TView,
                         typename TBuf>
                     ALPAKA_FCT_HOST static auto pitchedOffsetBytesDim(
                         TView const & view,
                         TBuf const & buf)
-                    -> Uint
+                    -> TSize
                     {
                         return
-                            offset::getOffset<TuiIdx, Uint>(view)
-                            * view::getPitchBytes<TuiIdx + 1u, Uint>(buf);
+                            offset::getOffset<TuiIdx>(view)
+                            * view::getPitchBytes<TuiIdx + 1u>(buf);
                     }
                 };
 
@@ -486,20 +516,21 @@ namespace alpaka
                     typename TIdx,
                     typename TElem,
                     typename TDim,
-                    typename TDev>
+                    typename TDev,
+                    typename TSize>
                 struct GetPitchBytes<
                     TIdx,
-                    mem::view::ViewBasic<TElem, TDim, TDev>>
+                    mem::view::ViewBasic<TDev, TElem, TDim, TSize>>
                 {
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_HOST static auto getPitchBytes(
-                        mem::view::ViewBasic<TElem, TDim, TDev> const & view)
-                    -> Uint
+                        mem::view::ViewBasic<TDev, TElem, TDim, TSize> const & view)
+                    -> TSize
                     {
                         return
-                            view::getPitchBytes<TIdx::value, Uint>(
+                            view::getPitchBytes<TIdx::value>(
                                 mem::view::getBuf(view));
                     }
                 };
@@ -517,21 +548,41 @@ namespace alpaka
                 typename TIdx,
                 typename TElem,
                 typename TDim,
-                typename TDev>
+                typename TDev,
+                typename TSize>
             struct GetOffset<
                 TIdx,
-                mem::view::ViewBasic<TElem, TDim, TDev>,
+                mem::view::ViewBasic<TDev, TElem, TDim, TSize>,
                 typename std::enable_if<(TDim::value > TIdx::value)>::type>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getOffset(
-                    mem::view::ViewBasic<TElem, TDim, TDev> const & offset)
-                -> Uint
+                    mem::view::ViewBasic<TDev, TElem, TDim, TSize> const & offset)
+                -> TSize
                 {
                     return offset.m_vOffsetsElements[TIdx::value];
                 }
+            };
+        }
+    }
+    namespace size
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The ViewBasic size type trait specialization.
+            //#############################################################################
+            template<
+                typename TElem,
+                typename TDim,
+                typename TDev,
+                typename TSize>
+            struct SizeType<
+                mem::view::ViewBasic<TDev, TElem, TDim, TSize>>
+            {
+                using type = TSize;
             };
         }
     }

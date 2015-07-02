@@ -33,6 +33,7 @@
 #include <alpaka/acc/Traits.hpp>                // AccType
 #include <alpaka/exec/Traits.hpp>               // ExecType
 #include <alpaka/dev/Traits.hpp>                // DevType
+#include <alpaka/size/Traits.hpp>               // size::SizeT
 
 // Implementation details.
 #include <alpaka/dev/DevCpu.hpp>                // DevCpu
@@ -42,13 +43,15 @@
 #include <boost/core/ignore_unused.hpp>         // boost::ignore_unused
 
 #include <memory>                               // std::unique_ptr
+#include <typeinfo>                             // typeid
 
 namespace alpaka
 {
     namespace exec
     {
         template<
-            typename TDim>
+            typename TDim,
+            typename TSize>
         class ExecCpuOmp4;
 
         namespace omp
@@ -60,7 +63,8 @@ namespace alpaka
                     namespace detail
                     {
                         template<
-                            typename TDim>
+                            typename TDim,
+                            typename TSize>
                         class ExecCpuOmp4Impl;
                     }
                 }
@@ -93,17 +97,18 @@ namespace alpaka
                         //! It uses CPU OpenMP4 to implement the parallelism.
                         //#############################################################################
                         template<
-                            typename TDim>
+                            typename TDim,
+                            typename TSize>
                         class AccCpuOmp4 final :
-                            public workdiv::WorkDivMembers<TDim>,
-                            public idx::gb::IdxGbRef<TDim>,
-                            public idx::bt::IdxBtOmp<TDim>,
+                            public workdiv::WorkDivMembers<TDim, TSize>,
+                            public idx::gb::IdxGbRef<TDim, TSize>,
+                            public idx::bt::IdxBtOmp<TDim, TSize>,
                             public atomic::AtomicOmpCritSec,
                             public math::MathStl,
                             public block::shared::BlockSharedAllocMasterSync
                         {
                         public:
-                            friend class ::alpaka::exec::omp::omp4::cpu::detail::ExecCpuOmp4Impl<TDim>;
+                            friend class ::alpaka::exec::omp::omp4::cpu::detail::ExecCpuOmp4Impl<TDim, TSize>;
 
                         private:
                             //-----------------------------------------------------------------------------
@@ -113,15 +118,15 @@ namespace alpaka
                                 typename TWorkDiv>
                             ALPAKA_FCT_ACC_NO_CUDA AccCpuOmp4(
                                 TWorkDiv const & workDiv) :
-                                    workdiv::WorkDivMembers<TDim>(workDiv),
-                                    idx::gb::IdxGbRef<TDim>(m_vuiGridBlockIdx),
-                                    idx::bt::IdxBtOmp<TDim>(),
+                                    workdiv::WorkDivMembers<TDim, TSize>(workDiv),
+                                    idx::gb::IdxGbRef<TDim, TSize>(m_vuiGridBlockIdx),
+                                    idx::bt::IdxBtOmp<TDim, TSize>(),
                                     atomic::AtomicOmpCritSec(),
                                     math::MathStl(),
                                     block::shared::BlockSharedAllocMasterSync(
                                         [this](){syncBlockThreads();},
                                         [](){return (::omp_get_thread_num() == 0);}),
-                                    m_vuiGridBlockIdx(Vec<TDim>::zeros())
+                                    m_vuiGridBlockIdx(Vec<TDim, TSize>::zeros())
                             {}
 
                         public:
@@ -168,7 +173,7 @@ namespace alpaka
 
                         private:
                             // getIdx
-                            alignas(16u) Vec<TDim> mutable m_vuiGridBlockIdx;            //!< The index of the currently executed block.
+                            alignas(16u) Vec<TDim, TSize> mutable m_vuiGridBlockIdx;    //!< The index of the currently executed block.
 
                             // getBlockSharedExternMem
                             std::unique_ptr<uint8_t, boost::alignment::aligned_delete> mutable m_vuiExternalSharedMem;  //!< External block shared memory.
@@ -180,8 +185,9 @@ namespace alpaka
     }
 
     template<
-        typename TDim>
-    using AccCpuOmp4 = acc::omp::omp4::cpu::detail::AccCpuOmp4<TDim>;
+        typename TDim,
+        typename TSize>
+    using AccCpuOmp4 = acc::omp::omp4::cpu::detail::AccCpuOmp4<TDim, TSize>;
 
     namespace acc
     {
@@ -191,59 +197,58 @@ namespace alpaka
             //! The CPU OpenMP 4.0 accelerator accelerator type trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct AccType<
-                acc::omp::omp4::cpu::detail::AccCpuOmp4<TDim>>
+                acc::omp::omp4::cpu::detail::AccCpuOmp4<TDim, TSize>>
             {
-                using type = acc::omp::omp4::cpu::detail::AccCpuOmp4<TDim>;
+                using type = acc::omp::omp4::cpu::detail::AccCpuOmp4<TDim, TSize>;
             };
             //#############################################################################
             //! The CPU OpenMP 4.0 accelerator device properties get trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct GetAccDevProps<
-                acc::omp::omp4::cpu::detail::AccCpuOmp4<TDim>>
+                acc::omp::omp4::cpu::detail::AccCpuOmp4<TDim, TSize>>
             {
                 ALPAKA_FCT_HOST static auto getAccDevProps(
                     dev::DevCpu const & dev)
-                -> alpaka::acc::AccDevProps<TDim>
+                -> acc::AccDevProps<TDim, TSize>
                 {
                     boost::ignore_unused(dev);
 
 #if ALPAKA_INTEGRATION_TEST
-                    Uint const uiBlockThreadsCountMax(4u);
+                    auto const uiBlockThreadsCountMax(static_cast<TSize>(4));
 #else
                     // NOTE: ::omp_get_thread_limit() returns 2^31-1 (largest positive int value)...
-                    //int const iThreadLimit(::omp_get_thread_limit());
-                    //std::cout << BOOST_CURRENT_FUNCTION << " omp_get_thread_limit: " << iThreadLimit << std::endl;
-                    // m_uiBlockThreadsCountMax
-                    //Uint uiBlockThreadsCountMax(static_cast<Uint>(iThreadLimit));
-                    Uint uiBlockThreadsCountMax(static_cast<Uint>(::omp_get_num_procs()));
+                    auto const uiBlockThreadsCountMax(static_cast<TSize>(::omp_get_num_procs()));
 #endif
                     return {
                         // m_uiMultiProcessorCount
-                        1u,
+                        static_cast<TSize>(1),
                         // m_uiBlockThreadsCountMax
                         uiBlockThreadsCountMax,
                         // m_vuiBlockThreadExtentsMax
-                        Vec<TDim>::all(uiBlockThreadsCountMax),
+                        Vec<TDim, TSize>::all(uiBlockThreadsCountMax),
                         // m_vuiGridBlockExtentsMax
-                        Vec<TDim>::all(std::numeric_limits<typename Vec<TDim>::Val>::max())};
+                        Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max())};
                 }
             };
             //#############################################################################
             //! The CPU OpenMP 4.0 accelerator name trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct GetAccName<
-                acc::omp::omp4::cpu::detail::AccCpuOmp4<TDim>>
+                acc::omp::omp4::cpu::detail::AccCpuOmp4<TDim, TSize>>
             {
                 ALPAKA_FCT_HOST_ACC static auto getAccName()
                 -> std::string
                 {
-                    return "AccCpuOmp4<" + std::to_string(TDim::value) + ">";
+                    return "AccCpuOmp4<" + std::to_string(TDim::value) + "," + typeid(TSize).name() + ">";
                 }
             };
         }
@@ -256,9 +261,10 @@ namespace alpaka
             //! The CPU OpenMP 4.0 accelerator device type trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct DevType<
-                acc::omp::omp4::cpu::detail::AccCpuOmp4<TDim>>
+                acc::omp::omp4::cpu::detail::AccCpuOmp4<TDim, TSize>>
             {
                 using type = dev::DevCpu;
             };
@@ -266,9 +272,10 @@ namespace alpaka
             //! The CPU OpenMP 4.0 accelerator device type trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct DevManType<
-                acc::omp::omp4::cpu::detail::AccCpuOmp4<TDim>>
+                acc::omp::omp4::cpu::detail::AccCpuOmp4<TDim, TSize>>
             {
                 using type = dev::DevManCpu;
             };
@@ -282,9 +289,10 @@ namespace alpaka
             //! The CPU OpenMP 4.0 accelerator dimension getter trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct DimType<
-                acc::omp::omp4::cpu::detail::AccCpuOmp4<TDim>>
+                acc::omp::omp4::cpu::detail::AccCpuOmp4<TDim, TSize>>
             {
                 using type = TDim;
             };
@@ -298,11 +306,29 @@ namespace alpaka
             //! The CPU OpenMP 4.0 accelerator executor type trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct ExecType<
-                acc::omp::omp4::cpu::detail::AccCpuOmp4<TDim>>
+                acc::omp::omp4::cpu::detail::AccCpuOmp4<TDim, TSize>>
             {
-                using type = exec::ExecCpuOmp4<TDim>;
+                using type = exec::ExecCpuOmp4<TDim, TSize>;
+            };
+        }
+    }
+    namespace size
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The CPU OpenMP 4.0 accelerator size type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim,
+                typename TSize>
+            struct SizeType<
+                acc::omp::omp4::cpu::detail::AccCpuOmp4<TDim, TSize>>
+            {
+                using type = TSize;
             };
         }
     }

@@ -257,7 +257,7 @@ namespace alpaka
                     || std::is_same<T, ulonglong1>::value
                     || std::is_same<T, ushort1>::value>::type>
             {
-                using type = dim::Dim1;
+                using type = dim::Dim<1u>;
             };
             //#############################################################################
             //! The CUDA vectors 2D dimension get trait specialization.
@@ -280,7 +280,7 @@ namespace alpaka
                     || std::is_same<T, ulonglong2>::value
                     || std::is_same<T, ushort2>::value>::type>
             {
-                using type = dim::Dim2;
+                using type = dim::Dim<2u>;
             };
             //#############################################################################
             //! The CUDA vectors 3D dimension get trait specialization.
@@ -304,7 +304,7 @@ namespace alpaka
                     || std::is_same<T, ulonglong3>::value
                     || std::is_same<T, ushort3>::value>::type>
             {
-                using type = dim::Dim3;
+                using type = dim::Dim<3u>;
             };
             //#############################################################################
             //! The CUDA vectors 4D dimension get trait specialization.
@@ -327,7 +327,7 @@ namespace alpaka
                     || std::is_same<T, ulonglong4>::value
                     || std::is_same<T, ushort4>::value>::type>
             {
-                using type = dim::Dim4;
+                using type = dim::Dim<4u>;
             };
         }
     }
@@ -585,19 +585,19 @@ namespace alpaka
             //! The CUDA vectors offset set trait specialization.
             //#############################################################################
             template<
-                typename TOffsets>
+                typename TOffsets,
+                typename TOffset>
             struct SetOffset<
                 dim::Dim<dim::DimT<TOffsets>::value - 1u>,
                 TOffsets,
+                TOffset,
                 typename std::enable_if<
                     cuda::traits::IsCudaBuiltInType<TOffsets>::value
                     && (dim::DimT<TOffsets>::value >= 1)>::type>
             {
-                template<
-                    typename TVal2>
                 ALPAKA_FCT_HOST_ACC static auto setOffset(
                     TOffsets const & offsets,
-                    TVal2 const & offset)
+                    TOffset const & offset)
                 -> void
                 {
                     offsets.x = offset;
@@ -607,19 +607,19 @@ namespace alpaka
             //! The CUDA vectors offset set trait specialization.
             //#############################################################################
             template<
-                typename TOffsets>
+                typename TOffsets,
+                typename TOffset>
             struct SetOffset<
                 dim::Dim<dim::DimT<TOffsets>::value - 2u>,
                 TOffsets,
+                TOffset,
                 typename std::enable_if<
                     cuda::traits::IsCudaBuiltInType<TOffsets>::value
                     && (dim::DimT<TOffsets>::value >= 2)>::type>
             {
-                template<
-                    typename TVal2>
                 ALPAKA_FCT_HOST_ACC static auto setOffset(
                     TOffsets const & offsets,
-                    TVal2 const & offset)
+                    TOffset const & offset)
                 -> void
                 {
                     offsets.y = offset;
@@ -629,19 +629,19 @@ namespace alpaka
             //! The CUDA vectors offset set trait specialization.
             //#############################################################################
             template<
-                typename TOffsets>
+                typename TOffsets,
+                typename TOffset>
             struct SetOffset<
                 dim::Dim<dim::DimT<TOffsets>::value - 3u>,
                 TOffsets,
+                TOffset,
                 typename std::enable_if<
                     cuda::traits::IsCudaBuiltInType<TOffsets>::value
                     && (dim::DimT<TOffsets>::value >= 3)>::type>
             {
-                template<
-                    typename TVal2>
                 ALPAKA_FCT_HOST_ACC static auto setOffset(
                     TOffsets const & offsets,
-                    TVal2 const & offset)
+                    TOffset const & offset)
                 -> void
                 {
                     offsets.z = offset;
@@ -651,23 +651,41 @@ namespace alpaka
             //! The CUDA vectors offset set trait specialization.
             //#############################################################################
             template<
-                typename TOffsets>
+                typename TOffsets,
+                typename TOffset>
             struct SetOffset<
                 dim::Dim<dim::DimT<TOffsets>::value - 4u>,
                 TOffsets,
+                TOffset,
                 typename std::enable_if<
                     cuda::traits::IsCudaBuiltInType<TOffsets>::value
                     && (dim::DimT<TOffsets>::value >= 4)>::type>
             {
-                template<
-                    typename TVal2>
                 ALPAKA_FCT_HOST_ACC static auto setOffset(
                     TOffsets const & offsets,
-                    TVal2 const & offset)
+                    TOffset const & offset)
                 -> void
                 {
                     offsets.w = offset;
                 }
+            };
+        }
+    }
+    namespace size
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The CUDA vectors size type trait specialization.
+            //#############################################################################
+            template<
+                typename TSize>
+            struct SizeType<
+                TSize,
+                typename std::enable_if<
+                    cuda::traits::IsCudaBuiltInType<TSize>::value>::type>
+            {
+                using type = decltype(TSize().x);
             };
         }
     }

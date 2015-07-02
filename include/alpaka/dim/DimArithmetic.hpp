@@ -21,31 +21,30 @@
 
 #pragma once
 
-#include <type_traits>                      // std::enable_if, std::is_integral, std::is_unsigned
+#include <alpaka/dim/Traits.hpp>
+
+#include <type_traits>              // std::is_arithmetic, std::integral_constant
 
 namespace alpaka
 {
-    //-----------------------------------------------------------------------------
-    //! The dimension specifics.
-    //-----------------------------------------------------------------------------
     namespace dim
     {
         //-----------------------------------------------------------------------------
-        //! The dimension traits.
+        // Trait specializations for unsigned integral types.
         //-----------------------------------------------------------------------------
         namespace traits
         {
             //#############################################################################
-            //! The dimension getter type trait.
+            //! The arithmetic type dimension getter trait specialization.
             //#############################################################################
             template<
-                typename T,
-                typename TSfinae = void>
-            struct DimType;
+                typename T>
+            struct DimType<
+                T,
+                typename std::enable_if<std::is_arithmetic<T>::value>::type>
+            {
+                using type = std::integral_constant<std::size_t, 1u>;
+            };
         }
-
-        template<
-            typename T>
-        using DimT = typename traits::DimType<T>::type;
     }
 }

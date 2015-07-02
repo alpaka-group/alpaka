@@ -21,11 +21,9 @@
 
 #pragma once
 
-#include <alpaka/idx/Traits.hpp>                // idx::getIdx
+#include <alpaka/idx/Traits.hpp>            // idx::getIdx
 
-#include <alpaka/dim/Traits.hpp>                // dim::DimT
-
-#include <boost/core/ignore_unused.hpp>         // boost::ignore_unused
+#include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
 
 namespace alpaka
 {
@@ -37,7 +35,8 @@ namespace alpaka
             //! A zero block thread index provider.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             class IdxBtZero
             {
             public:
@@ -79,9 +78,10 @@ namespace alpaka
             //! The zero block thread index provider dimension get trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct DimType<
-                idx::bt::IdxBtZero<TDim>>
+                idx::bt::IdxBtZero<TDim, TSize>>
             {
                 using type = TDim;
             };
@@ -95,9 +95,10 @@ namespace alpaka
             //! The zero block thread index provider block thread index get trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct GetIdx<
-                bt::IdxBtZero<TDim>,
+                idx::bt::IdxBtZero<TDim, TSize>,
                 origin::Block,
                 unit::Threads>
             {
@@ -107,14 +108,31 @@ namespace alpaka
                 template<
                     typename TWorkDiv>
                 ALPAKA_FCT_ACC_NO_CUDA static auto getIdx(
-                    bt::IdxBtZero<TDim> const & idx,
+                    idx::bt::IdxBtZero<TDim, TSize> const & idx,
                     TWorkDiv const & workDiv)
-                -> Vec<TDim>
+                -> Vec<TDim, TSize>
                 {
                     boost::ignore_unused(idx);
                     boost::ignore_unused(workDiv);
-                    return Vec<TDim>::zeros();
+                    return Vec<TDim, TSize>::zeros();
                 }
+            };
+        }
+    }
+    namespace size
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The zero block thread index size type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim,
+                typename TSize>
+            struct SizeType<
+                idx::bt::IdxBtZero<TDim, TSize>>
+            {
+                using type = TSize;
             };
         }
     }

@@ -21,11 +21,11 @@
 
 #pragma once
 
-#include <alpaka/idx/Traits.hpp>                // idx::getIdx
+#include <alpaka/idx/Traits.hpp>            // idx::getIdx
 
-#include <alpaka/dim/Traits.hpp>                // dim::DimT
+#include <alpaka/dim/Traits.hpp>            // dim::DimT
 
-#include <boost/core/ignore_unused.hpp>         // boost::ignore_unused
+#include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
 
 namespace alpaka
 {
@@ -34,10 +34,11 @@ namespace alpaka
         namespace gb
         {
             //#############################################################################
-            //! A reference block thread index provider.
+            //! A IdxGbRef grid block index.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             class IdxGbRef
             {
             public:
@@ -47,7 +48,7 @@ namespace alpaka
                 //! Default constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA IdxGbRef(
-                    Vec<TDim> const & vuiGridBlockIdx) :
+                    Vec<TDim, TSize> const & vuiGridBlockIdx) :
                         m_vuiGridBlockIdx(vuiGridBlockIdx)
                 {}
                 //-----------------------------------------------------------------------------
@@ -72,7 +73,7 @@ namespace alpaka
                 ALPAKA_FCT_ACC_NO_CUDA /*virtual*/ ~IdxGbRef() = default;
 
             public:
-                alignas(16u) Vec<TDim> const & m_vuiGridBlockIdx;
+                alignas(16u) Vec<TDim, TSize> const & m_vuiGridBlockIdx;
             };
         }
     }
@@ -82,12 +83,13 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The reference block thread index provider dimension get trait specialization.
+            //! The IdxGbRef grid block index dimension get trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct DimType<
-                idx::gb::IdxGbRef<TDim>>
+                idx::gb::IdxGbRef<TDim, TSize>>
             {
                 using type = TDim;
             };
@@ -98,12 +100,13 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The reference block thread index provider grid block index get trait specialization.
+            //! The IdxGbRef grid block index grid block index get trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct GetIdx<
-                gb::IdxGbRef<TDim>,
+                idx::gb::IdxGbRef<TDim, TSize>,
                 origin::Grid,
                 unit::Blocks>
             {
@@ -113,13 +116,30 @@ namespace alpaka
                 template<
                     typename TWorkDiv>
                 ALPAKA_FCT_ACC_NO_CUDA static auto getIdx(
-                    gb::IdxGbRef<TDim> const & idx,
+                    idx::gb::IdxGbRef<TDim, TSize> const & idx,
                     TWorkDiv const & workDiv)
-                -> Vec<TDim>
+                -> Vec<TDim, TSize>
                 {
                     boost::ignore_unused(workDiv);
                     return idx.m_vuiGridBlockIdx;
                 }
+            };
+        }
+    }
+    namespace size
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The IdxGbRef grid block index size type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim,
+                typename TSize>
+            struct SizeType<
+                idx::gb::IdxGbRef<TDim, TSize>>
+            {
+                using type = TSize;
             };
         }
     }

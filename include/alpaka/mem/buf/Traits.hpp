@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/mem/view/Traits.hpp>   // mem::view::ViewType
+#include <alpaka/mem/view/Traits.hpp>   // base concept
 
 #include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST
 
@@ -46,9 +46,10 @@ namespace alpaka
                 //! The memory buffer type trait.
                 //#############################################################################
                 template<
+                    typename TDev,
                     typename TElem,
                     typename TDim,
-                    typename TDev,
+                    typename TSize,
                     typename TSfinae = void>
                 struct BufType;
 
@@ -58,6 +59,7 @@ namespace alpaka
                 template<
                     typename TElem,
                     typename TDim,
+                    typename TSize,
                     typename TDev,
                     typename TSfinae = void>
                 struct Alloc;
@@ -109,10 +111,11 @@ namespace alpaka
             //! The memory buffer type trait alias template to remove the ::type.
             //#############################################################################
             template<
+                typename TDev,
                 typename TElem,
                 typename TDim,
-                typename TDev>
-            using BufT = typename traits::BufType<TElem, TDim, TDev>::type;
+                typename TSize>
+            using BufT = typename traits::BufType<TElem, TDim, TDev, TSize>::type;
 
             //-----------------------------------------------------------------------------
             //! Allocates memory on the given device.
@@ -126,6 +129,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TElem,
+                typename TSize,
                 typename TExtents,
                 typename TDev>
             ALPAKA_FCT_HOST auto alloc(
@@ -135,6 +139,7 @@ namespace alpaka
                 traits::Alloc<
                     TElem,
                     dim::DimT<TExtents>,
+                    TSize,
                     TDev>
                 ::alloc(
                     dev,
@@ -143,6 +148,7 @@ namespace alpaka
                 return traits::Alloc<
                     TElem,
                     dim::DimT<TExtents>,
+                    TSize,
                     TDev>
                 ::alloc(
                     dev,

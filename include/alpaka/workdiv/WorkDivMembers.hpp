@@ -21,12 +21,13 @@
 
 #pragma once
 
-#include <alpaka/workdiv/Traits.hpp>                // GetWorkDiv
+#include <alpaka/workdiv/Traits.hpp>    // GetWorkDiv
+#include <alpaka/size/Traits.hpp>       // size::SizeT
 
-#include <alpaka/core/Vec.hpp>                      // Vec
-#include <alpaka/core/Common.hpp>                   // ALPAKA_FCT_HOST
+#include <alpaka/core/Vec.hpp>          // Vec
+#include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST
 
-#include <iosfwd>                                   // std::ostream
+#include <iosfwd>                       // std::ostream
 
 namespace alpaka
 {
@@ -36,7 +37,8 @@ namespace alpaka
         //! A basic class holding the work division as grid block extents and block thread extents.
         //#############################################################################
         template<
-            typename TDim>
+            typename TDim,
+            typename TSize>
         class WorkDivMembers
         {
         public:
@@ -55,14 +57,14 @@ namespace alpaka
             ALPAKA_FCT_HOST_ACC explicit WorkDivMembers(
                 TGridBlockExtents const & gridBlockExtents = TGridBlockExtents(),
                 TBlockThreadExtents const & blockThreadExtents = TBlockThreadExtents()) :
-                m_vuiGridBlockExtents(extent::getExtentsVecEnd<TDim, Uint>(gridBlockExtents)),
-                m_vuiBlockThreadExtents(extent::getExtentsVecEnd<TDim, Uint>(blockThreadExtents))
+                m_vuiGridBlockExtents(extent::getExtentsVecEnd<TDim>(gridBlockExtents)),
+                m_vuiBlockThreadExtents(extent::getExtentsVecEnd<TDim>(blockThreadExtents))
             {}
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FCT_HOST_ACC explicit WorkDivMembers(
-                WorkDivMembers<TDim> const & other) :
+                WorkDivMembers const & other) :
                     m_vuiGridBlockExtents(other.m_vuiGridBlockExtents),
                     m_vuiBlockThreadExtents(other.m_vuiBlockThreadExtents)
             {}
@@ -73,21 +75,21 @@ namespace alpaka
                 typename TWorkDiv>
             ALPAKA_FCT_HOST_ACC explicit WorkDivMembers(
                 TWorkDiv const & other) :
-                    m_vuiGridBlockExtents(alpaka::subVecEnd<TDim>(getWorkDiv<Grid, Blocks>(other))),
-                    m_vuiBlockThreadExtents(alpaka::subVecEnd<TDim>(getWorkDiv<Block, Threads>(other)))
+                    m_vuiGridBlockExtents(subVecEnd<TDim>(getWorkDiv<Grid, Blocks>(other))),
+                    m_vuiBlockThreadExtents(subVecEnd<TDim>(getWorkDiv<Block, Threads>(other)))
             {}
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC WorkDivMembers(WorkDivMembers<TDim> &&) = default;
+            ALPAKA_FCT_HOST_ACC WorkDivMembers(WorkDivMembers &&) = default;
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC auto operator=(WorkDivMembers<TDim> const &) -> WorkDivMembers<TDim> & = default;
+            ALPAKA_FCT_HOST_ACC auto operator=(WorkDivMembers const &) -> WorkDivMembers & = default;
             //-----------------------------------------------------------------------------
             //! Move assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC auto operator=(WorkDivMembers<TDim> &&) -> WorkDivMembers<TDim> & = default;
+            ALPAKA_FCT_HOST_ACC auto operator=(WorkDivMembers &&) -> WorkDivMembers & = default;
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
@@ -95,10 +97,10 @@ namespace alpaka
                 typename TWorkDiv>
             ALPAKA_FCT_HOST_ACC auto operator=(
                 TWorkDiv const & other)
-            -> WorkDivMembers<TDim> &
+            -> WorkDivMembers<TDim, TSize> &
             {
-                m_vuiGridBlockExtents = alpaka::subVecEnd<TDim>(getWorkDiv<Grid, Blocks>(other));
-                m_vuiBlockThreadExtents = alpaka::subVecEnd<TDim>(getWorkDiv<Block, Threads>(other));
+                m_vuiGridBlockExtents = subVecEnd<TDim>(getWorkDiv<Grid, Blocks>(other));
+                m_vuiBlockThreadExtents = subVecEnd<TDim>(getWorkDiv<Block, Threads>(other));
                 return *this;
             }
             //-----------------------------------------------------------------------------
@@ -107,18 +109,19 @@ namespace alpaka
             ALPAKA_FCT_HOST_ACC /*virtual*/ ~WorkDivMembers() = default;
 
         public:
-            Vec<TDim> m_vuiGridBlockExtents;
-            Vec<TDim> m_vuiBlockThreadExtents;
+            Vec<TDim, TSize> m_vuiGridBlockExtents;
+            Vec<TDim, TSize> m_vuiBlockThreadExtents;
         };
 
         //-----------------------------------------------------------------------------
         //! Stream out operator.
         //-----------------------------------------------------------------------------
         template<
-            typename TDim>
+            typename TDim,
+            typename TSize>
         ALPAKA_FCT_HOST auto operator<<(
             std::ostream & os,
-            WorkDivMembers<TDim> const & workDiv)
+            WorkDivMembers<TDim, TSize> const & workDiv)
         -> std::ostream &
         {
             return (os
@@ -136,11 +139,29 @@ namespace alpaka
             //! The WorkDivMembers dimension get trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct DimType<
-                workdiv::WorkDivMembers<TDim>>
+                workdiv::WorkDivMembers<TDim, TSize>>
             {
                 using type = TDim;
+            };
+        }
+    }
+    namespace size
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The WorkDivMembers size type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim,
+                typename TSize>
+            struct SizeType<
+                workdiv::WorkDivMembers<TDim, TSize>>
+            {
+                using type = TSize;
             };
         }
     }
@@ -152,9 +173,10 @@ namespace alpaka
             //! The WorkDivMembers block thread extents trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct GetWorkDiv<
-                WorkDivMembers<TDim>,
+                WorkDivMembers<TDim, TSize>,
                 origin::Block,
                 unit::Threads>
             {
@@ -162,8 +184,8 @@ namespace alpaka
                 //! \return The number of threads in each dimension of a block.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST_ACC static auto getWorkDiv(
-                    WorkDivMembers<TDim> const & workDiv)
-                -> Vec<TDim>
+                    WorkDivMembers<TDim, TSize> const & workDiv)
+                -> Vec<TDim, TSize>
                 {
                     return workDiv.m_vuiBlockThreadExtents;
                 }
@@ -173,9 +195,10 @@ namespace alpaka
             //! The WorkDivMembers grid block extents trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct GetWorkDiv<
-                WorkDivMembers<TDim>,
+                WorkDivMembers<TDim, TSize>,
                 origin::Grid,
                 unit::Blocks>
             {
@@ -183,8 +206,8 @@ namespace alpaka
                 //! \return The number of blocks in each dimension of the grid.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST_ACC static auto getWorkDiv(
-                    WorkDivMembers<TDim> const & workDiv)
-                -> Vec<TDim>
+                    WorkDivMembers<TDim, TSize> const & workDiv)
+                -> Vec<TDim, TSize>
                 {
                     return workDiv.m_vuiGridBlockExtents;
                 }

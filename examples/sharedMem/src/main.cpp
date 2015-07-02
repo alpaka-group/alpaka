@@ -146,11 +146,12 @@ namespace alpaka
                 //! \return The size of the shared memory allocated for a block.
                 //-----------------------------------------------------------------------------
                 template<
+                    typename TVec,
                     typename... TArgs>
                 ALPAKA_FCT_HOST static auto getBlockSharedExternMemSizeBytes(
-                    alpaka::Vec<alpaka::dim::DimT<TAcc>> const & vuiBlockThreadsExtents,
+                    TVec const & vuiBlockThreadsExtents,
                     TArgs && ...)
-                -> Uint
+                -> std::uint32_t
                 {
                     return vuiBlockThreadsExtents.prod() * sizeof(std::uint32_t);
                 }
@@ -167,9 +168,12 @@ template<
 struct SharedMemTester
 {
     template<
-        typename TAcc>
+        typename TAcc,
+        typename TSize,
+        typename TVal>
     auto operator()(
-        std::uint32_t const uiMult2)
+        TSize const uiNumElements,
+        TVal const uiMult2)
     -> void
     {
         std::cout << std::endl;
@@ -190,10 +194,10 @@ struct SharedMemTester
             alpaka::stream::create(devAcc));
 
         // Set the grid blocks extent.
-        alpaka::workdiv::WorkDivMembers<alpaka::dim::Dim1> const workDiv(
+        alpaka::workdiv::WorkDivMembers<alpaka::dim::Dim<1u>, TSize> const workDiv(
             alpaka::workdiv::getValidWorkDiv<TAcc>(
                 devAcc,
-                512u,
+                uiNumElements,
                 false,
                 alpaka::workdiv::BlockExtentsSubDivRestrictions::Unrestricted));
 
@@ -204,17 +208,17 @@ struct SharedMemTester
             << ", workDiv: " << workDiv
             << ")" << std::endl;
 
-        std::size_t const uiGridBlocksCount(
+        TSize const uiGridBlocksCount(
             alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Blocks>(workDiv)[0u]);
-        std::size_t const uiBlockThreadsCount(
+        TSize const uiBlockThreadsCount(
             alpaka::workdiv::getWorkDiv<alpaka::Block, alpaka::Threads>(workDiv)[0u]);
 
         // An array for the return values calculated by the blocks.
-        std::vector<std::uint32_t> vuiBlockRetVals(uiGridBlocksCount, 0);
+        std::vector<TVal> vuiBlockRetVals(uiGridBlocksCount, static_cast<TVal>(0));
 
         // Allocate accelerator buffers and copy.
-        std::size_t const uiSizeElements(uiGridBlocksCount);
-        auto blockRetValsAcc(alpaka::mem::buf::alloc<std::uint32_t>(devAcc, uiSizeElements));
+        TSize const uiSizeElements(uiGridBlocksCount);
+        auto blockRetValsAcc(alpaka::mem::buf::alloc<TVal, TSize>(devAcc, uiSizeElements));
         alpaka::mem::view::copy(blockRetValsAcc, vuiBlockRetVals, uiSizeElements);
 
         // Create the executor.
@@ -233,8 +237,8 @@ struct SharedMemTester
         alpaka::mem::view::copy(vuiBlockRetVals, blockRetValsAcc, uiSizeElements);
 
         // Assert that the results are correct.
-        std::uint32_t const uiCorrectResult(
-            static_cast<std::uint32_t>(uiBlockThreadsCount*uiBlockThreadsCount)
+        TVal const uiCorrectResult(
+            static_cast<TVal>(uiBlockThreadsCount*uiBlockThreadsCount)
             * kernel.m_uiMult
             * uiMult2);
 
@@ -277,7 +281,7 @@ auto main()
         std::cout << std::endl;
 
         // Logs the enabled accelerators.
-        alpaka::examples::accs::writeEnabledAccs<alpaka::dim::Dim1>(std::cout);
+        alpaka::examples::accs::writeEnabledAccs<alpaka::dim::Dim<1u>, std::uint32_t>(std::cout);
 
         std::cout << std::endl;
 
@@ -288,8 +292,9 @@ auto main()
 
         // Execute the kernel on all enabled accelerators.
         alpaka::forEachType<
-            alpaka::examples::accs::EnabledAccs<alpaka::dim::Dim1>>(
+            alpaka::examples::accs::EnabledAccs<alpaka::dim::Dim<1u>, std::uint32_t>>(
                 sharedMemTester,
+                static_cast<std::uint32_t>(512u),
                 uiMult2);
 
         return sharedMemTester.bAllResultsCorrect ? EXIT_SUCCESS : EXIT_FAILURE;

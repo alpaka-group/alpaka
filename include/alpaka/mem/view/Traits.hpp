@@ -43,6 +43,17 @@ namespace alpaka
             namespace traits
             {
                 //#############################################################################
+                //! The memory buffer view type trait.
+                //#############################################################################
+                template<
+                    typename TDev,
+                    typename TElem,
+                    typename TDim,
+                    typename TSize,
+                    typename TSfinae = void>
+                struct ViewType;
+
+                //#############################################################################
                 //! The memory element type trait.
                 //#############################################################################
                 template<
@@ -84,9 +95,9 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_FCT_HOST static auto getPitchBytes(
                         TView const & view)
-                    -> Uint
+                    -> size::SizeT<TView>
                     {
-                        using IdxSequence = alpaka::detail::make_integer_sequence_start<Uint, TIdx::value, dim::DimT<TView>::value - TIdx::value>;
+                        using IdxSequence = alpaka::detail::make_integer_sequence_offset<std::size_t, TIdx::value, dim::DimT<TView>::value - TIdx::value>;
                         return
                             extentsProd(view, IdxSequence())
                             * sizeof(typename ElemType<TView>::type);
@@ -96,17 +107,18 @@ namespace alpaka
                     //!
                     //-----------------------------------------------------------------------------
                     template<
-                        Uint... TIndices>
+                        std::size_t... TIndices>
                     ALPAKA_FCT_HOST static auto extentsProd(
                         TView const & view,
-                        alpaka::detail::integer_sequence<Uint, TIndices...> const &)
-                    -> Uint
+                        alpaka::detail::integer_sequence<std::size_t, TIndices...> const &)
+                    -> size::SizeT<TView>
                     {
                         // For the case that the sequence is empty (index out of range), 1 is returned.
-                        return alpaka::foldr(
-                            std::multiplies<Uint>(),
-                            1u,
-                            extent::getExtent<TIndices, Uint>(view)...);
+                        return
+                            foldr(
+                                std::multiplies<size::SizeT<TView>>(),
+                                1u,
+                                extent::getExtent<TIndices>(view)...);
                     }
                 };
 
@@ -134,16 +146,6 @@ namespace alpaka
                 struct Copy;
 
                 //#############################################################################
-                //! The memory buffer view type trait.
-                //#############################################################################
-                template<
-                    typename TElem,
-                    typename TDim,
-                    typename TDev,
-                    typename TSfinae = void>
-                struct ViewType;
-
-                //#############################################################################
                 //! The memory buffer view creation type trait.
                 //#############################################################################
                 template<
@@ -166,6 +168,16 @@ namespace alpaka
             template<
                 typename TView>
             using ElemT = typename std::remove_volatile<typename traits::ElemType<TView>::type>::type;
+
+            //#############################################################################
+            //! The memory buffer view type trait alias template to remove the ::type.
+            //#############################################################################
+            template<
+                typename TDev,
+                typename TElem,
+                typename TDim,
+                typename TSize>
+            using ViewT = typename traits::ViewType<TElem, TDim, TDev, TSize>::type;
 
             //-----------------------------------------------------------------------------
             //! Gets the native pointer of the memory buffer.
@@ -251,20 +263,18 @@ namespace alpaka
             //! \return The pitch in bytes. This is the distance between two consecutive rows.
             //-----------------------------------------------------------------------------
             template<
-                Uint TuiIdx,
-                typename TVal,
+                std::size_t TuiIdx,
                 typename TView>
             ALPAKA_FCT_HOST auto getPitchBytes(
                 TView const & buf)
-            -> TVal
+            -> size::SizeT<TView>
             {
                 return
-                    static_cast<TVal>(
-                        traits::GetPitchBytes<
-                            std::integral_constant<Uint, TuiIdx>,
-                            TView>
-                        ::getPitchBytes(
-                            buf));
+                    traits::GetPitchBytes<
+                        std::integral_constant<std::size_t, TuiIdx>,
+                        TView>
+                    ::getPitchBytes(
+                        buf);
             }
 
             //-----------------------------------------------------------------------------
@@ -408,15 +418,6 @@ namespace alpaka
                     stream);
             }
 
-            //#############################################################################
-            //! The memory buffer view type trait alias template to remove the ::type.
-            //#############################################################################
-            template<
-                typename TElem,
-                typename TDim,
-                typename TDev>
-            using ViewT = typename traits::ViewType<TElem, TDim, TDev>::type;
-
             //-----------------------------------------------------------------------------
             //! Constructor.
             //! \param buf This can be either a memory buffer or a memory view.
@@ -546,7 +547,7 @@ namespace alpaka
                     ALPAKA_FCT_HOST static auto print(
                         TView const & view,
                         ElemT<TView> const * const ptr,
-                        Vec<dim::DimT<TView>> const & extents,
+                        Vec<dim::DimT<TView>, size::SizeT<TView>> const & extents,
                         std::ostream & os,
                         std::string const & elementSeparator,
                         std::string const & rowSeparator,
@@ -557,8 +558,8 @@ namespace alpaka
                         os << rowPrefix;
 
                         auto const pitch(view::getPitchBytes<TDim::value+1u>(view));
-                        Uint const uiLastIdx(extents[TDim::value]-1u);
-                        for(Uint i(0u); i<=uiLastIdx ;++i)
+                        auto const uiLastIdx(extents[TDim::value]-1u);
+                        for(auto i(decltype(uiLastIdx)(0)); i<=uiLastIdx ;++i)
                         {
                             Print<
                                 dim::Dim<TDim::value+1u>,
@@ -595,7 +596,7 @@ namespace alpaka
                     ALPAKA_FCT_HOST static auto print(
                         TView const & view,
                         ElemT<TView> const * const ptr,
-                        Vec<dim::DimT<TView>> const & extents,
+                        Vec<dim::DimT<TView>, size::SizeT<TView>> const & extents,
                         std::ostream & os,
                         std::string const & elementSeparator,
                         std::string const & rowSeparator,
@@ -605,8 +606,8 @@ namespace alpaka
                     {
                         os << rowPrefix;
 
-                        Uint const uiLastIdx(extents[dim::DimT<TView>::value-1u]-1u);
-                        for(Uint i(0u); i<=uiLastIdx ;++i)
+                        auto const uiLastIdx(extents[dim::DimT<TView>::value-1u]-1u);
+                        for(auto i(decltype(uiLastIdx)(0)); i<=uiLastIdx ;++i)
                         {
                             // Add the current element.
                             os << *(ptr+i);
@@ -644,7 +645,7 @@ namespace alpaka
                 ::print(
                     view,
                     view::getPtrNative(view),
-                    extent::getExtentsVec<Uint>(view),
+                    extent::getExtentsVec(view),
                     os,
                     elementSeparator,
                     rowSeparator,

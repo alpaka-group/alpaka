@@ -21,12 +21,12 @@
 
 #pragma once
 
-#include <alpaka/idx/Traits.hpp>                // idx::getIdx
+#include <alpaka/idx/Traits.hpp>            // idx::getIdx
 
-#include <alpaka/core/Vec.hpp>                  // Vec, getOffsetsVecEnd
-#include <alpaka/core/Cuda.hpp>                 // getOffset(dim3)
+#include <alpaka/core/Vec.hpp>              // Vec, getOffsetsVecEnd
+#include <alpaka/core/Cuda.hpp>             // getOffset(dim3)
 
-//#include <boost/core/ignore_unused.hpp>         // boost::ignore_unused
+//#include <boost/core/ignore_unused.hpp>   // boost::ignore_unused
 
 namespace alpaka
 {
@@ -38,7 +38,8 @@ namespace alpaka
             //! The CUDA accelerator ND index provider.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             class IdxGbCudaBuiltIn
             {
             public:
@@ -80,9 +81,10 @@ namespace alpaka
             //! The GPU CUDA accelerator index dimension get trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct DimType<
-                idx::gb::IdxGbCudaBuiltIn<TDim>>
+                idx::gb::IdxGbCudaBuiltIn<TDim, TSize>>
             {
                 using type = TDim;
             };
@@ -96,9 +98,10 @@ namespace alpaka
             //! The GPU CUDA accelerator grid block index get trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct GetIdx<
-                gb::IdxGbCudaBuiltIn<TDim>,
+                idx::gb::IdxGbCudaBuiltIn<TDim, TSize>,
                 origin::Grid,
                 unit::Blocks>
             {
@@ -108,13 +111,30 @@ namespace alpaka
                 template<
                     typename TWorkDiv>
                 ALPAKA_FCT_ACC_CUDA_ONLY static auto getIdx(
-                    gb::IdxGbCudaBuiltIn<TDim> const & idx,
+                    idx::gb::IdxGbCudaBuiltIn<TDim, TSize> const & idx,
                     TWorkDiv const &)
-                -> Vec<TDim>
+                -> Vec<TDim, TSize>
                 {
                     //boost::ignore_unused(idx);
-                    return offset::getOffsetsVecEnd<TDim, Uint>(blockIdx);
+                    return castVec<TSize>(offset::getOffsetsVecEnd<TDim>(blockIdx));
                 }
+            };
+        }
+    }
+    namespace size
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The GPU CUDA accelerator grid block index size type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim,
+                typename TSize>
+            struct SizeType<
+                idx::gb::IdxGbCudaBuiltIn<TDim, TSize>>
+            {
+                using type = TSize;
             };
         }
     }

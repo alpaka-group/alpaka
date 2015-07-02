@@ -24,9 +24,12 @@
 #include <alpaka/acc/Traits.hpp>            // acc::getAccName
 #include <alpaka/dev/Traits.hpp>            // dev::getDev
 #include <alpaka/workdiv/Traits.hpp>        // workdiv::getWorkDiv
+#include <alpaka/size/Traits.hpp>           // size::SizeT
 
 #include <alpaka/core/WorkDivHelpers.hpp>   // workdiv::isValidWorkDiv
 #include <alpaka/core/Common.hpp>           // ALPAKA_FCT_HOST
+
+#include <type_traits>                      // std::is_same
 
 namespace alpaka
 {
@@ -70,7 +73,10 @@ namespace alpaka
         {
             static_assert(
                 dim::DimT<TWorkDiv>::value == dim::DimT<TAcc>::value,
-                "The dimensions of the accelerator and the work division have to be identical!");
+                "The dimensions of TAcc and TWorkDiv have to be identical!");
+            static_assert(
+                std::is_same<size::SizeT<TWorkDiv>, size::SizeT<TAcc>>::value,
+                "The size type of TAcc and the size type of TWorkDiv have to be identical!");
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
             std::cout << BOOST_CURRENT_FUNCTION
@@ -112,9 +118,10 @@ namespace alpaka
             return
                 create<TAcc>(
                     workdiv::WorkDivMembers<
-                        dim::Dim<dim::DimT<TAcc>::value>>(
-                        gridBlockExtents,
-                        blockThreadExtents),
+                        dim::Dim<dim::DimT<TAcc>::value>,
+                        size::SizeT<TAcc>>(
+                            gridBlockExtents,
+                            blockThreadExtents),
                     stream);
         }
     }

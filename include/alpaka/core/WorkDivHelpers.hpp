@@ -125,18 +125,19 @@ namespace alpaka
         //!     The block extent subdivision restrictions.
         //-----------------------------------------------------------------------------
         template<
-            typename TDim>
+            typename TDim,
+            typename TSize>
         ALPAKA_FCT_HOST auto subDivideGridThreads(
-            Vec<TDim> const & vuiGridThreadExtents,
-            Vec<TDim> const & vuiMaxBlockThreadExtents,
-            Uint const & uiMaxBlockThreadsCount,
+            Vec<TDim, TSize> const & vuiGridThreadExtents,
+            Vec<TDim, TSize> const & vuiMaxBlockThreadExtents,
+            TSize const & uiMaxBlockThreadsCount,
             bool bRequireBlockThreadExtentsToDivideGridThreadExtents = true,
             BlockExtentsSubDivRestrictions eBlockExtentsSubDivRestrictions = BlockExtentsSubDivRestrictions::Unrestricted)
-        -> workdiv::WorkDivMembers<TDim>
+        -> workdiv::WorkDivMembers<TDim, TSize>
         {
             // Assert valid input.
             assert(uiMaxBlockThreadsCount>0u);
-            for(std::size_t i(0u); i<TDim::value; ++i)
+            for(typename TDim::value_type i(0u); i<TDim::value; ++i)
             {
                 assert(vuiGridThreadExtents[i]>0u);
                 assert(vuiMaxBlockThreadExtents[i]>0u);
@@ -148,7 +149,7 @@ namespace alpaka
             // Restrict the max block thread extents with the grid thread extents.
             // This removes dimensions not required in the given grid thread extents.
             // This has to be done before the uiMaxBlockThreadsCount clipping to get the maximum correctly.
-            for(std::size_t i(0); i<TDim::value; ++i)
+            for(typename TDim::value_type i(0); i<TDim::value; ++i)
             {
                 vuiBlockThreadExtents[i] = std::min(vuiBlockThreadExtents[i], vuiGridThreadExtents[i]);
             }
@@ -158,7 +159,7 @@ namespace alpaka
             if(eBlockExtentsSubDivRestrictions == BlockExtentsSubDivRestrictions::EqualExtents)
             {
                 auto const uiMinBlockThreadExtent(vuiBlockThreadExtents.min());
-                for(std::size_t i(0u); i<TDim::value; ++i)
+                for(typename TDim::value_type i(0u); i<TDim::value; ++i)
                 {
                     vuiBlockThreadExtents[i] = uiMinBlockThreadExtent;
                 }
@@ -175,8 +176,8 @@ namespace alpaka
                 if(eBlockExtentsSubDivRestrictions == BlockExtentsSubDivRestrictions::EqualExtents)
                 {
                     double const fNthRoot(std::pow(uiMaxBlockThreadsCount, 1.0/static_cast<double>(TDim::value)));
-                    Uint const uiNthRoot(static_cast<Uint>(fNthRoot));
-                    for(std::size_t i(0u); i<TDim::value; ++i)
+                    TSize const uiNthRoot(static_cast<TSize>(fNthRoot));
+                    for(typename TDim::value_type i(0u); i<TDim::value; ++i)
                     {
                         vuiBlockThreadExtents[i] = uiNthRoot;
                     }
@@ -198,13 +199,13 @@ namespace alpaka
                         // Compute the minimum element index but ignore ones.
                         // Ones compare always larger to everything else.
                         auto const uiMinElemIdx(
-                            static_cast<Uint>(
+                            static_cast<TSize>(
                                 std::distance(
                                     &vuiBlockThreadExtents[0],
                                     std::min_element(
                                         &vuiBlockThreadExtents[0],
                                         &vuiBlockThreadExtents[TDim::value-1u],
-                                        [](Uint const & a, Uint const & b)
+                                        [](TSize const & a, TSize const & b)
                                         {
                                             // This first case is redundant.
                                             /*if((a == 1u) && (b == 1u))
@@ -236,8 +237,8 @@ namespace alpaka
                 {
                     // For equal size block extents we have to compute the gcd of all grid thread extents that is less then the current maximal block thread extent.
                     // For this we compute the divisors of all grid thread extents less then the current maximal block thread extent.
-                    std::array<std::set<Uint>, TDim::value> gridThreadExtentsDivisors;
-                    for(std::size_t i(0u); i<TDim::value; ++i)
+                    std::array<std::set<TSize>, TDim::value> gridThreadExtentsDivisors;
+                    for(typename TDim::value_type i(0u); i<TDim::value; ++i)
                     {
                         gridThreadExtentsDivisors[i] =
                             detail::allDivisorsLessOrEqual(
@@ -245,8 +246,8 @@ namespace alpaka
                                 vuiBlockThreadExtents[i]);
                     }
                     // The maximal common divisor of all block thread extents is the optimal solution.
-                    std::set<Uint> intersects[2u];
-                    for(std::size_t i(1u); i<TDim::value; ++i)
+                    std::set<TSize> intersects[2u];
+                    for(typename TDim::value_type i(1u); i<TDim::value; ++i)
                     {
                         intersects[(i-1u)%2u] = gridThreadExtentsDivisors[0];
                         intersects[(i)%2u].clear();
@@ -257,15 +258,15 @@ namespace alpaka
                             gridThreadExtentsDivisors[i].end(),
                             std::inserter(intersects[i%2], intersects[i%2u].begin()));
                     }
-                    Uint const uiMaxCommonDivisor(*(--intersects[(TDim::value-1)%2u].end()));
-                    for(std::size_t i(0u); i<TDim::value; ++i)
+                    TSize const uiMaxCommonDivisor(*(--intersects[(TDim::value-1)%2u].end()));
+                    for(typename TDim::value_type i(0u); i<TDim::value; ++i)
                     {
                         vuiBlockThreadExtents[i] = uiMaxCommonDivisor;
                     }
                 }
                 else if(eBlockExtentsSubDivRestrictions == BlockExtentsSubDivRestrictions::CloseToEqualExtents)
                 {
-                    for(std::size_t i(0); i<TDim::value; ++i)
+                    for(typename TDim::value_type i(0); i<TDim::value; ++i)
                     {
                         vuiBlockThreadExtents[i] =
                             detail::nextDivisorLowerOrEqual(
@@ -275,7 +276,7 @@ namespace alpaka
                 }
                 else
                 {
-                    for(std::size_t i(0); i<TDim::value; ++i)
+                    for(typename TDim::value_type i(0); i<TDim::value; ++i)
                     {
                         vuiBlockThreadExtents[i] =
                             detail::nextDivisorLowerOrEqual(
@@ -286,16 +287,16 @@ namespace alpaka
             }
 
             // Set the grid block extents (rounded to the next integer not less then the quotient.
-            auto vuiGridBlockExtents(Vec<TDim>::ones());
-            for(std::size_t i(0); i<TDim::value; ++i)
+            auto vuiGridBlockExtents(Vec<TDim, TSize>::ones());
+            for(typename TDim::value_type i(0); i<TDim::value; ++i)
             {
                 vuiGridBlockExtents[i] =
-                    static_cast<Uint>(
+                    static_cast<TSize>(
                         std::ceil(static_cast<double>(vuiGridThreadExtents[i])
                         / static_cast<double>(vuiBlockThreadExtents[i])));
             }
 
-            return workdiv::WorkDivMembers<TDim>(vuiGridBlockExtents, vuiBlockThreadExtents);
+            return workdiv::WorkDivMembers<TDim, TSize>(vuiGridBlockExtents, vuiBlockThreadExtents);
         }
 
         //-----------------------------------------------------------------------------
@@ -313,12 +314,19 @@ namespace alpaka
             TExtents const & gridThreadExtents = TExtents(),
             bool bRequireBlockThreadExtentsToDivideGridThreadExtents = true,
             BlockExtentsSubDivRestrictions eBlockExtentsSubDivRestrictions = BlockExtentsSubDivRestrictions::Unrestricted)
-        -> workdiv::WorkDivMembers<dim::DimT<TExtents>>
+        -> workdiv::WorkDivMembers<dim::DimT<TExtents>, size::SizeT<TAcc>>
         {
+            static_assert(
+                dim::DimT<TExtents>::value == dim::DimT<TAcc>::value,
+                "The dimension of TAcc and the dimension of TExtents have to be identical!");
+            static_assert(
+                std::is_same<size::SizeT<TExtents>, size::SizeT<TAcc>>::value,
+                "The size type of TAcc and the size type of TExtents have to be identical!");
+
             auto const devProps(acc::getAccDevProps<TAcc>(dev));
 
             return subDivideGridThreads(
-                extent::getExtentsVec<Uint>(gridThreadExtents),
+                extent::getExtentsVec(gridThreadExtents),
                 devProps.m_vuiBlockThreadExtentsMax,
                 devProps.m_uiBlockThreadsCountMax,
                 bRequireBlockThreadExtentsToDivideGridThreadExtents,
@@ -352,7 +360,7 @@ namespace alpaka
                 return false;
             }
 
-            for(std::size_t i(0); i<dim::DimT<TWorkDiv>::value; ++i)
+            for(typename dim::DimT<TWorkDiv>::value_type i(0); i<dim::DimT<TWorkDiv>::value; ++i)
             {
                 if((vuiGridBlockExtents[i] == 0)
                     || (vuiBlockThreadExtents[i] == 0)

@@ -89,7 +89,7 @@ namespace alpaka
                 //#############################################################################
                 template<
                     typename T,
-                    Uint TuiNumElements>
+                    std::size_t TuiNumElements>
                 struct AllocArr<
                     T,
                     TuiNumElements,

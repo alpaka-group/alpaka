@@ -76,28 +76,28 @@ namespace alpaka
                             dim::DimT<TBuf>::value == dim::DimT<TExtents>::value,
                             "The destination buffer and the extents are required to have the same dimensionality!");
 
-                        auto const uiExtentWidth(extent::getWidth<Uint>(extents));
-                        auto const uiExtentHeight(extent::getHeight<Uint>(extents));
-                        auto const uiExtentDepth(extent::getDepth<Uint>(extents));
-                        auto const uiDstWidth(extent::getWidth<Uint>(buf));
-                        auto const uiDstHeight(extent::getHeight<Uint>(buf));
+                        auto const uiExtentWidth(extent::getWidth(extents));
+                        auto const uiExtentHeight(extent::getHeight(extents));
+                        auto const uiExtentDepth(extent::getDepth(extents));
+                        auto const uiDstWidth(extent::getWidth(buf));
+                        auto const uiDstHeight(extent::getHeight(buf));
 #if (!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
-                        auto const uiDstDepth(extent::getDepth<Uint>(buf));
+                        auto const uiDstDepth(extent::getDepth(buf));
 #endif
                         assert(uiExtentWidth <= uiDstWidth);
                         assert(uiExtentHeight <= uiDstHeight);
                         assert(uiExtentDepth <= uiDstDepth);
 
                         auto const uiExtentWidthBytes(uiExtentWidth * sizeof(Elem));
-                        auto const uiDstPitchBytes(mem::view::getPitchBytes<dim::DimT<TBuf>::value - 1u, Uint>(buf));
+                        auto const uiDstPitchBytes(mem::view::getPitchBytes<dim::DimT<TBuf>::value - 1u>(buf));
                         assert(uiExtentWidthBytes <= uiDstPitchBytes);
 
                         auto const pDstNative(reinterpret_cast<std::uint8_t *>(mem::view::getPtrNative(buf)));
                         auto const uiDstSliceSizeBytes(uiDstPitchBytes * uiDstHeight);
 
                         auto const & dstBuf(mem::view::getBuf(buf));
-                        auto const uiDstBufWidth(extent::getWidth<Uint>(dstBuf));
-                        auto const uiDstBufHeight(extent::getHeight<Uint>(dstBuf));
+                        auto const uiDstBufWidth(extent::getWidth(dstBuf));
+                        auto const uiDstBufHeight(extent::getHeight(dstBuf));
 
                         int iByte(static_cast<int>(byte));
 
@@ -131,7 +131,7 @@ namespace alpaka
                         }
                         else
                         {
-                            for(Uint z(0); z < uiExtentDepth; ++z)
+                            for(auto z(decltype(uiExtentDepth)(0)); z < uiExtentDepth; ++z)
                             {
                                 // If:
                                 // - the set extents width is identical to the dst extents width
@@ -146,7 +146,7 @@ namespace alpaka
                                 }
                                 else
                                 {
-                                    for(Uint y(0); y < uiExtentHeight; ++y)
+                                    for(auto y(decltype(uiExtentHeight)(0)); y < uiExtentHeight; ++y)
                                     {
                                         std::memset(
                                             reinterpret_cast<void *>(pDstNative + y*uiDstPitchBytes + z*uiDstSliceSizeBytes),

@@ -25,6 +25,8 @@
 #include <alpaka/event/Traits.hpp>      // EventType
 #include <alpaka/stream/Traits.hpp>     // StreamType
 #include <alpaka/wait/Traits.hpp>       // CurrentThreadWaitFor
+#include <alpaka/mem/buf/Traits.hpp>    // BufType
+#include <alpaka/mem/view/Traits.hpp>   // ViewType
 
 #include <alpaka/core/SysInfo.hpp>      // getCpuName, getGlobalMemSizeBytes
 
@@ -404,6 +406,64 @@ namespace alpaka
             {
                 using type = dev::DevManCpu;
             };
+        }
+    }
+    namespace mem
+    {
+        namespace buf
+        {
+            template<
+                typename TElem,
+                typename TDim,
+                typename TSize>
+            class BufCpu;
+
+            namespace traits
+            {
+                //#############################################################################
+                //! The CPU device memory buffer type trait specialization.
+                //#############################################################################
+                template<
+                    typename TElem,
+                    typename TDim,
+                    typename TSize>
+                struct BufType<
+                    dev::DevCpu,
+                    TElem,
+                    TDim,
+                    TSize>
+                {
+                    using type = mem::buf::BufCpu<TElem, TDim, TSize>;
+                };
+            }
+        }
+        namespace view
+        {
+            template<
+                typename TDev,
+                typename TElem,
+                typename TDim,
+                typename TSize>
+            class ViewBasic;
+
+            namespace traits
+            {
+                //#############################################################################
+                //! The CPU device memory view type trait specialization.
+                //#############################################################################
+                template<
+                    typename TElem,
+                    typename TDim,
+                    typename TSize>
+                struct ViewType<
+                    dev::DevCpu,
+                    TElem,
+                    TDim,
+                    TSize>
+                {
+                    using type = mem::view::ViewBasic<dev::DevCpu, TElem, TDim, TSize>;
+                };
+            }
         }
     }
     namespace stream

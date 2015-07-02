@@ -21,12 +21,12 @@
 
 #pragma once
 
-#include <alpaka/idx/Traits.hpp>                // idx::getIdx
+#include <alpaka/idx/Traits.hpp>            // idx::getIdx
 
-#include <boost/core/ignore_unused.hpp>         // boost::ignore_unused
+#include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
 
-#include <thread>                               // std::thread
-#include <map>                                  // std::map
+#include <thread>                           // std::thread
+#include <map>                              // std::map
 
 namespace alpaka
 {
@@ -38,13 +38,14 @@ namespace alpaka
             //! The threads accelerator index provider.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             class IdxBtRefThreadIdMap
             {
             public:
                 using IdxBtBase = IdxBtRefThreadIdMap;
 
-                using ThreadIdToIdxMap = std::map<std::thread::id, Vec<TDim>>;
+                using ThreadIdToIdxMap = std::map<std::thread::id, Vec<TDim, TSize>>;
 
                 //-----------------------------------------------------------------------------
                 //! Constructor.
@@ -88,9 +89,10 @@ namespace alpaka
             //! The CPU threads accelerator index dimension get trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct DimType<
-                idx::bt::IdxBtRefThreadIdMap<TDim>>
+                idx::bt::IdxBtRefThreadIdMap<TDim, TSize>>
             {
                 using type = TDim;
             };
@@ -104,9 +106,10 @@ namespace alpaka
             //! The CPU threads accelerator block thread index get trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct GetIdx<
-                bt::IdxBtRefThreadIdMap<TDim>,
+                idx::bt::IdxBtRefThreadIdMap<TDim, TSize>,
                 origin::Block,
                 unit::Threads>
             {
@@ -116,9 +119,9 @@ namespace alpaka
                 template<
                     typename TWorkDiv>
                 ALPAKA_FCT_ACC_NO_CUDA static auto getIdx(
-                    bt::IdxBtRefThreadIdMap<TDim> const & idx,
+                    idx::bt::IdxBtRefThreadIdMap<TDim, TSize> const & idx,
                     TWorkDiv const & workDiv)
-                -> Vec<TDim>
+                -> Vec<TDim, TSize>
                 {
                     boost::ignore_unused(workDiv);
                     auto const idThread(std::this_thread::get_id());
@@ -126,6 +129,23 @@ namespace alpaka
                     assert(itFind != idx.m_mThreadsToIndices.end());
                     return itFind->second;
                 }
+            };
+        }
+    }
+    namespace size
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The CPU threads accelerator block thread index size type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim,
+                typename TSize>
+            struct SizeType<
+                idx::bt::IdxBtRefThreadIdMap<TDim, TSize>>
+            {
+                using type = TSize;
             };
         }
     }

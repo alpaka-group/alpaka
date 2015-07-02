@@ -21,13 +21,13 @@
 
 #pragma once
 
-#include <alpaka/idx/Traits.hpp>                // idx::getIdx
+#include <alpaka/idx/Traits.hpp>            // idx::getIdx
 
 #include <alpaka/core/Fibers.hpp>
 
-#include <boost/core/ignore_unused.hpp>         // boost::ignore_unused
+#include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
 
-#include <map>                                  // std::map
+#include <map>                              // std::map
 
 namespace alpaka
 {
@@ -39,13 +39,14 @@ namespace alpaka
             //! The fibers accelerator index provider.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             class IdxBtRefFiberIdMap
             {
             public:
                 using IdxBtBase = IdxBtRefFiberIdMap;
 
-                using FiberIdToIdxMap = std::map<boost::fibers::fiber::id, Vec<TDim>>;
+                using FiberIdToIdxMap = std::map<boost::fibers::fiber::id, Vec<TDim, TSize>>;
 
                 //-----------------------------------------------------------------------------
                 //! Constructor.
@@ -89,9 +90,10 @@ namespace alpaka
             //! The CPU fibers accelerator index dimension get trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct DimType<
-                idx::bt::IdxBtRefFiberIdMap<TDim>>
+                idx::bt::IdxBtRefFiberIdMap<TDim, TSize>>
             {
                 using type = TDim;
             };
@@ -105,9 +107,10 @@ namespace alpaka
             //! The CPU fibers accelerator block thread index get trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct GetIdx<
-                bt::IdxBtRefFiberIdMap<TDim>,
+                idx::bt::IdxBtRefFiberIdMap<TDim, TSize>,
                 origin::Block,
                 unit::Threads>
             {
@@ -117,9 +120,9 @@ namespace alpaka
                 template<
                     typename TWorkDiv>
                 ALPAKA_FCT_ACC_NO_CUDA static auto getIdx(
-                    bt::IdxBtRefFiberIdMap<TDim> const & idx,
+                    idx::bt::IdxBtRefFiberIdMap<TDim, TSize> const & idx,
                     TWorkDiv const & workDiv)
-                -> Vec<TDim>
+                -> Vec<TDim, TSize>
                 {
                     boost::ignore_unused(workDiv);
                     auto const idFiber(boost::this_fiber::get_id());
@@ -127,6 +130,23 @@ namespace alpaka
                     assert(itFind != idx.m_mFibersToIndices.end());
                     return itFind->second;
                 }
+            };
+        }
+    }
+    namespace size
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The CPU fibers accelerator block thread index size type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim,
+                typename TSize>
+            struct SizeType<
+                idx::bt::IdxBtRefFiberIdMap<TDim, TSize>>
+            {
+                using type = TSize;
             };
         }
     }

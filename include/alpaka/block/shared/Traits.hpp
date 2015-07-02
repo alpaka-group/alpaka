@@ -52,7 +52,7 @@ namespace alpaka
                 //#############################################################################
                 template<
                     typename T,
-                    Uint TuiNumElements,
+                    std::size_t TuiNumElements,
                     typename TBlockSharedAlloc,
                     typename TSfinae = void>
                 struct AllocArr;
@@ -96,7 +96,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename T,
-                Uint TuiNumElements,
+                std::size_t TuiNumElements,
                 typename TBlockSharedAlloc>
             ALPAKA_FCT_HOST_ACC auto allocArr(
                 TBlockSharedAlloc const & blockSharedAlloc)
@@ -138,8 +138,8 @@ namespace alpaka
                 //! The AllocVar trait specialization for classes with BlockSharedAllocBase member type.
                 //#############################################################################
                 template<
-                    typename T,
-                    typename TBlockSharedAlloc>
+                    typename TBlockSharedAlloc,
+                    typename T>
                 struct AllocVar<
                     T,
                     TBlockSharedAlloc,
@@ -165,9 +165,9 @@ namespace alpaka
                 //! The AllocArr trait specialization for classes with BlockSharedAllocBase member type.
                 //#############################################################################
                 template<
+                    typename TBlockSharedAlloc,
                     typename T,
-                    Uint TuiNumElements,
-                    typename TBlockSharedAlloc>
+                    std::size_t TuiNumElements>
                 struct AllocArr<
                     T,
                     TuiNumElements,

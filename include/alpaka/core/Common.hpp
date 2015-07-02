@@ -25,8 +25,6 @@
 
 #include <boost/predef.h>           // workarounds
 
-#include <cstdint>                  // std::uint32_t
-
 //-----------------------------------------------------------------------------
 //! Disable nvcc warning:
 //! calling a __host__ function from __host__ __device__ function.
@@ -42,9 +40,11 @@
 //-----------------------------------------------------------------------------
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
     #if BOOST_COMP_MSVC
-        #define ALPAKA_NO_HOST_ACC_WARNING __pragma(hd_warning_disable)
+        #define ALPAKA_NO_HOST_ACC_WARNING\
+            __pragma(hd_warning_disable)
     #else
-        #define ALPAKA_NO_HOST_ACC_WARNING _Pragma("hd_warning_disable")
+        #define ALPAKA_NO_HOST_ACC_WARNING\
+            _Pragma("hd_warning_disable")
     #endif
 #else
     #define ALPAKA_NO_HOST_ACC_WARNING
@@ -57,15 +57,21 @@
 //! ALPAKA_FCT_ACC int add(int a, int b);
 //-----------------------------------------------------------------------------
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
-    #define ALPAKA_FCT_ACC_CUDA_ONLY __device__ __forceinline__
-    #define ALPAKA_FCT_ACC_NO_CUDA __host__ __forceinline__
-    #define ALPAKA_FCT_ACC \
-        ALPAKA_NO_HOST_ACC_WARNING \
+    #define ALPAKA_FCT_ACC_CUDA_ONLY\
+        ALPAKA_NO_HOST_ACC_WARNING\
+        __device__ __forceinline__
+    #define ALPAKA_FCT_ACC_NO_CUDA\
+        ALPAKA_NO_HOST_ACC_WARNING\
+        __host__ __forceinline__
+    #define ALPAKA_FCT_ACC\
+        ALPAKA_NO_HOST_ACC_WARNING\
         __device__ __host__ __forceinline__
-    #define ALPAKA_FCT_HOST_ACC \
-        ALPAKA_NO_HOST_ACC_WARNING \
+    #define ALPAKA_FCT_HOST_ACC\
+        ALPAKA_NO_HOST_ACC_WARNING\
         __device__ __host__ __forceinline__
-    #define ALPAKA_FCT_HOST __host__ __forceinline__
+    #define ALPAKA_FCT_HOST\
+        ALPAKA_NO_HOST_ACC_WARNING\
+        __host__ __forceinline__
 #else
     //#define ALPAKA_FCT_ACC_CUDA_ONLY inline
     #define ALPAKA_FCT_ACC_NO_CUDA inline
@@ -94,12 +100,6 @@
 
 namespace alpaka
 {
-    //-----------------------------------------------------------------------------
-    //! Defines the default index type.
-    //-----------------------------------------------------------------------------
-    // NOTE: Setting the value type to std::size_t leads to invalid data on CUDA devices (at least with VC12).
-    using Uint = std::uint32_t;
-
     //#############################################################################
     //! A false_type being dependent on a ignored template parameter.
     //! This allows to use static_assert in uninstantiated template specializations without triggering.

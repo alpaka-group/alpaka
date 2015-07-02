@@ -21,12 +21,12 @@
 
 #pragma once
 
-#include <alpaka/idx/Traits.hpp>                // idx::GetIdx
+#include <alpaka/idx/Traits.hpp>            // idx::GetIdx
 
 #include <alpaka/core/OpenMp.hpp>
-#include <alpaka/core/MapIdx.hpp>               // mapIdx
+#include <alpaka/core/MapIdx.hpp>           // mapIdx
 
-#include <boost/core/ignore_unused.hpp>         // boost::ignore_unused
+#include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
 
 namespace alpaka
 {
@@ -38,7 +38,8 @@ namespace alpaka
             //! The OpenMP accelerator index provider.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             class IdxBtOmp
             {
             public:
@@ -80,9 +81,10 @@ namespace alpaka
             //! The OpenMP accelerator index dimension get trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct DimType<
-                idx::bt::IdxBtOmp<TDim>>
+                idx::bt::IdxBtOmp<TDim, TSize>>
             {
                 using type = TDim;
             };
@@ -96,9 +98,10 @@ namespace alpaka
             //! The OpenMP accelerator block thread index get trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct GetIdx<
-                bt::IdxBtOmp<TDim>,
+                idx::bt::IdxBtOmp<TDim, TSize>,
                 origin::Block,
                 unit::Threads>
             {
@@ -108,18 +111,35 @@ namespace alpaka
                 template<
                     typename TWorkDiv>
                 ALPAKA_FCT_ACC_NO_CUDA static auto getIdx(
-                    bt::IdxBtOmp<TDim> const & idx,
+                    idx::bt::IdxBtOmp<TDim, TSize> const & idx,
                     TWorkDiv const & workDiv)
-                -> Vec<TDim>
+                -> Vec<TDim, TSize>
                 {
                     boost::ignore_unused(idx);
                     // We assume that the thread id is positive.
                     assert(::omp_get_thread_num()>=0);
                     // \TODO: Would it be faster to precompute the index and cache it inside an array?
                     return mapIdx<TDim::value>(
-                        Vec1<>(static_cast<Vec1<>::Val>(::omp_get_thread_num())),
+                        Vec1<TSize>(static_cast<TSize>(::omp_get_thread_num())),
                         workdiv::getWorkDiv<Block, Threads>(workDiv));
                 }
+            };
+        }
+    }
+    namespace size
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The OpenMP accelerator block thread index size type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim,
+                typename TSize>
+            struct SizeType<
+                idx::bt::IdxBtOmp<TDim, TSize>>
+            {
+                using type = TSize;
             };
         }
     }

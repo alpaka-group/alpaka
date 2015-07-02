@@ -65,13 +65,16 @@ namespace alpaka
         {};
 
         template<class T, T TuiBegin, T TuiSize>
-        using make_integer_sequence_start = typename make_integer_sequence_helper<(TuiSize < 0), (TuiSize == 0), T, TuiBegin, std::integral_constant<T, TuiBegin+TuiSize>, integer_sequence<T> >::type;
+        using make_integer_sequence_offset = typename make_integer_sequence_helper<(TuiSize < 0), (TuiSize == 0), T, TuiBegin, std::integral_constant<T, TuiBegin+TuiSize>, integer_sequence<T> >::type;
 
         template<class T, T TuiSize>
-        using make_integer_sequence = make_integer_sequence_start<T, 0u, TuiSize>;
+        using make_integer_sequence = make_integer_sequence_offset<T, 0u, TuiSize>;
 
         template<std::size_t... TVals>
         using index_sequence = integer_sequence<std::size_t, TVals...>;
+
+        template<class T, T TuiBegin, T TuiSize>
+        using make_index_sequence_offset = make_integer_sequence_offset<std::size_t, TuiBegin, TuiSize>;
 
         template<std::size_t TuiSize>
         using make_index_sequence = make_integer_sequence<std::size_t, TuiSize>;

@@ -21,13 +21,11 @@
 
 #pragma once
 
-#include <alpaka/dim/Traits.hpp>            // Dim
-#include <alpaka/dim/DimIntegralConst.hpp>  // dim::Dim<N>
+#include <alpaka/size/Traits.hpp>           // SizeT
 
 #include <alpaka/core/Vec.hpp>              // Vec<N>
 #include <alpaka/core/Positioning.hpp>      // origin::Grid/Blocks, unit::Blocks, unit::Threads
 #include <alpaka/core/Common.hpp>           // ALPAKA_FCT_ACC
-
 
 #include <type_traits>                      // std::enable_if, std::is_base_of, std::is_same, std::decay
 #include <utility>                          // std::forward
@@ -64,14 +62,15 @@ namespace alpaka
             typename TWorkDiv = void>
         ALPAKA_FCT_HOST_ACC auto getWorkDiv(
             TWorkDiv const & workDiv)
-        -> Vec<dim::DimT<TWorkDiv>>
+        -> Vec<dim::DimT<TWorkDiv>, size::SizeT<TWorkDiv>>
         {
-            return traits::GetWorkDiv<
-                TWorkDiv,
-                TOrigin,
-                TUnit>
-            ::getWorkDiv(
-                workDiv);
+            return
+                traits::GetWorkDiv<
+                    TWorkDiv,
+                    TOrigin,
+                    TUnit>
+                ::getWorkDiv(
+                    workDiv);
         }
 
         namespace traits
@@ -96,7 +95,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST_ACC static auto getWorkDiv(
                     TWorkDiv const & workDiv)
-                -> Vec<dim::DimT<typename TWorkDiv::WorkDivBase>>
+                -> Vec<dim::DimT<typename TWorkDiv::WorkDivBase>, size::SizeT<TWorkDiv>>
                 {
                     // Delegate the call to the base class.
                     return
@@ -122,9 +121,10 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST_ACC static auto getWorkDiv(
                     TWorkDiv const & workDiv)
-                -> Vec<dim::DimT<TWorkDiv>>
+                -> Vec<dim::DimT<typename TWorkDiv::WorkDivBase>, size::SizeT<TWorkDiv>>
                 {
-                    return workdiv::getWorkDiv<origin::Grid, unit::Blocks>(workDiv)
+                    return
+                        workdiv::getWorkDiv<origin::Grid, unit::Blocks>(workDiv)
                         * workdiv::getWorkDiv<origin::Block, unit::Threads>(workDiv);
                 }
             };

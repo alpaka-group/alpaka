@@ -52,81 +52,96 @@ namespace alpaka
             {
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED
                 template<
-                    typename TDim>
-                using AccCpuSerialIfAvailableElseVoid = AccCpuSerial<TDim>;
+                    typename TDim,
+                    typename TSize>
+                using AccCpuSerialIfAvailableElseVoid = AccCpuSerial<TDim, TSize>;
 #else
                 template<
-                    typename TDim>
+                    typename TDim,
+                    typename TSize>
                 using AccCpuSerialIfAvailableElseVoid = void;
 #endif
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED
                 template<
-                    typename TDim>
-                using AccCpuThreadsIfAvailableElseVoid = AccCpuThreads<TDim>;
+                    typename TDim,
+                    typename TSize>
+                using AccCpuThreadsIfAvailableElseVoid = AccCpuThreads<TDim, TSize>;
 #else
                 template<
-                    typename TDim>
+                    typename TDim,
+                    typename TSize>
                 using AccCpuThreadsIfAvailableElseVoid = void;
 #endif
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLED
                 template<
-                    typename TDim>
-                using AccCpuFibersIfAvailableElseVoid = AccCpuFibers<TDim>;
+                    typename TDim,
+                    typename TSize>
+                using AccCpuFibersIfAvailableElseVoid = AccCpuFibers<TDim, TSize>;
 #else
                 template<
-                    typename TDim>
+                    typename TDim,
+                    typename TSize>
                 using AccCpuFibersIfAvailableElseVoid = void;
 #endif
 #ifdef ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED
                 template<
-                    typename TDim>
-                using AccCpuOmp2BlocksIfAvailableElseVoid = AccCpuOmp2Blocks<TDim>;
+                    typename TDim,
+                    typename TSize>
+                using AccCpuOmp2BlocksIfAvailableElseVoid = AccCpuOmp2Blocks<TDim, TSize>;
 #else
                 template<
-                    typename TDim>
+                    typename TDim,
+                    typename TSize>
                 using AccCpuOmp2BlocksIfAvailableElseVoid = void;
 #endif
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED
                 template<
-                    typename TDim>
-                using AccCpuOmp2ThreadsIfAvailableElseVoid = AccCpuOmp2Threads<TDim>;
+                    typename TDim,
+                    typename TSize>
+                using AccCpuOmp2ThreadsIfAvailableElseVoid = AccCpuOmp2Threads<TDim, TSize>;
 #else
                 template<
-                    typename TDim>
+                    typename TDim,
+                    typename TSize>
                 using AccCpuOmp2ThreadsIfAvailableElseVoid = void;
 #endif
 #ifdef ALPAKA_ACC_CPU_BT_OMP4_ENABLED
                 template<
-                    typename TDim>
-                using AccCpuOmp4CpuIfAvailableElseVoid = AccCpuOmp4<TDim>;
+                    typename TDim,
+                    typename TSize>
+                using AccCpuOmp4CpuIfAvailableElseVoid = AccCpuOmp4<TDim, TSize>;
 #else
                 template<
-                    typename TDim>
+                    typename TDim,
+                    typename TSize>
                 using AccCpuOmp4CpuIfAvailableElseVoid = void;
 #endif
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
                 template<
-                    typename TDim>
-                using AccGpuCudaIfAvailableElseVoid = AccGpuCuda<TDim>;
+                    typename TDim,
+                    typename TSize>
+                using AccGpuCudaIfAvailableElseVoid = AccGpuCuda<TDim, TSize>;
 #else
                 template<
-                    typename TDim>
+                    typename TDim,
+                    typename TSize>
                 using AccGpuCudaIfAvailableElseVoid = void;
 #endif
                 //#############################################################################
                 //! A vector containing all available accelerators and void's.
                 //#############################################################################
                 template<
-                    typename TDim>
+                    typename TDim,
+                    typename TSize>
                 using EnabledAccsVoid =
                     boost::mpl::vector<
-                        AccCpuSerialIfAvailableElseVoid<TDim>,
-                        AccCpuThreadsIfAvailableElseVoid<TDim>,
-                        AccCpuFibersIfAvailableElseVoid<TDim>,
-                        AccCpuOmp2BlocksIfAvailableElseVoid<TDim>,
-                        AccCpuOmp2ThreadsIfAvailableElseVoid<TDim>,
-                        AccCpuOmp4CpuIfAvailableElseVoid<TDim>,
-                        AccGpuCudaIfAvailableElseVoid<TDim>
+                        AccCpuSerialIfAvailableElseVoid<TDim, TSize>,
+                        AccCpuThreadsIfAvailableElseVoid<TDim, TSize>,
+                        AccCpuFibersIfAvailableElseVoid<TDim, TSize>,
+                        AccCpuOmp2BlocksIfAvailableElseVoid<TDim, TSize>,
+                        AccCpuOmp2ThreadsIfAvailableElseVoid<TDim, TSize>,
+                        AccCpuOmp4CpuIfAvailableElseVoid<TDim, TSize>,
+                        AccGpuCudaIfAvailableElseVoid<TDim, TSize>
                     >;
             }
 
@@ -134,10 +149,11 @@ namespace alpaka
             //! A vector containing all available accelerators.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             using EnabledAccs =
                 typename boost::mpl::filter_view<
-                    detail::EnabledAccsVoid<TDim>,
+                    detail::EnabledAccsVoid<TDim, TSize>,
                     boost::mpl::not_<
                         boost::is_same<
                             boost::mpl::_1,
@@ -169,7 +185,8 @@ namespace alpaka
             //! Writes the enabled accelerators to the given stream.
             //-----------------------------------------------------------------------------
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             ALPAKA_FCT_HOST_ACC auto writeEnabledAccs(
                 std::ostream & os)
             -> void
@@ -177,7 +194,7 @@ namespace alpaka
                 os << "Accelerators enabled: ";
 
                 forEachType<
-                    EnabledAccs<TDim>>(
+                    EnabledAccs<TDim, TSize>>(
                         detail::StreamOutAccName(),
                         std::ref(os));
 

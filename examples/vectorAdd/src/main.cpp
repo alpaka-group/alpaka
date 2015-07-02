@@ -48,13 +48,14 @@ public:
     //-----------------------------------------------------------------------------
     template<
         typename TAcc,
-        typename TElem>
+        typename TElem,
+        typename TSize>
     ALPAKA_FCT_ACC auto operator()(
         TAcc const & acc,
         TElem const * const A,
         TElem const * const B,
         TElem * const C,
-        std::size_t const & uiNumElements) const
+        TSize const & uiNumElements) const
     -> void
     {
         static_assert(
@@ -76,13 +77,16 @@ public:
 struct VectorAddKernelTester
 {
     template<
-        typename TAcc>
+        typename TAcc,
+        typename TSize>
     auto operator()(
-        std::size_t const & uiNumElements)
+        TSize const & uiNumElements)
     -> void
     {
         std::cout << std::endl;
         std::cout << "################################################################################" << std::endl;
+
+        using Val = float;
 
         // Create the kernel function object.
         VectorAddKernel kernel;
@@ -98,11 +102,11 @@ struct VectorAddKernelTester
         alpaka::stream::StreamT<alpaka::dev::DevT<TAcc>> stream(
             alpaka::stream::create(devAcc));
 
-        alpaka::Vec1<> const v1uiExtents(
-            static_cast<alpaka::Vec1<>::Val>(uiNumElements));
+        alpaka::Vec1<TSize> const v1uiExtents(
+            uiNumElements);
 
         // Let alpaka calculate good block and grid sizes given our full problem extents.
-        alpaka::workdiv::WorkDivMembers<alpaka::dim::Dim1> const workDiv(
+        alpaka::workdiv::WorkDivMembers<alpaka::dim::Dim<1u>, TSize> const workDiv(
             alpaka::workdiv::getValidWorkDiv<TAcc>(
                 devAcc,
                 v1uiExtents,
@@ -118,21 +122,21 @@ struct VectorAddKernelTester
             << ")" << std::endl;
 
         // Allocate host memory buffers.
-        auto memBufHostA(alpaka::mem::buf::alloc<float>(devHost, v1uiExtents));
-        auto memBufHostB(alpaka::mem::buf::alloc<float>(devHost, v1uiExtents));
-        auto memBufHostC(alpaka::mem::buf::alloc<float>(devHost, v1uiExtents));
+        auto memBufHostA(alpaka::mem::buf::alloc<Val, TSize>(devHost, v1uiExtents));
+        auto memBufHostB(alpaka::mem::buf::alloc<Val, TSize>(devHost, v1uiExtents));
+        auto memBufHostC(alpaka::mem::buf::alloc<Val, TSize>(devHost, v1uiExtents));
 
         // Initialize the host input vectors
-        for (std::size_t i(0); i < uiNumElements; ++i)
+        for (TSize i(0); i < uiNumElements; ++i)
         {
-            alpaka::mem::view::getPtrNative(memBufHostA)[i] = static_cast<float>(rand())/static_cast<float>(RAND_MAX);
-            alpaka::mem::view::getPtrNative(memBufHostB)[i] = static_cast<float>(rand())/static_cast<float>(RAND_MAX);
+            alpaka::mem::view::getPtrNative(memBufHostA)[i] = static_cast<Val>(rand());
+            alpaka::mem::view::getPtrNative(memBufHostB)[i] = static_cast<Val>(rand());
         }
 
         // Allocate the buffer on the accelerator.
-        auto memBufAccA(alpaka::mem::buf::alloc<float>(devAcc, v1uiExtents));
-        auto memBufAccB(alpaka::mem::buf::alloc<float>(devAcc, v1uiExtents));
-        auto memBufAccC(alpaka::mem::buf::alloc<float>(devAcc, v1uiExtents));
+        auto memBufAccA(alpaka::mem::buf::alloc<Val, TSize>(devAcc, v1uiExtents));
+        auto memBufAccB(alpaka::mem::buf::alloc<Val, TSize>(devAcc, v1uiExtents));
+        auto memBufAccC(alpaka::mem::buf::alloc<Val, TSize>(devAcc, v1uiExtents));
 
         // Copy Host -> Acc.
         alpaka::mem::view::copy(memBufAccA, memBufHostA, v1uiExtents, stream);
@@ -148,7 +152,7 @@ struct VectorAddKernelTester
                 alpaka::mem::view::getPtrNative(memBufAccA),
                 alpaka::mem::view::getPtrNative(memBufAccB),
                 alpaka::mem::view::getPtrNative(memBufAccC),
-                static_cast<std::uint32_t>(uiNumElements))
+                uiNumElements)
             << " ms"
             << std::endl;
 
@@ -160,7 +164,7 @@ struct VectorAddKernelTester
 
         bool bResultCorrect(true);
         auto const pHostData(alpaka::mem::view::getPtrNative(memBufHostC));
-        for(std::size_t i(0u);
+        for(TSize i(0u);
             i < uiNumElements;
             ++i)
         {
@@ -202,7 +206,7 @@ auto main()
         std::cout << std::endl;
 
         // Logs the enabled accelerators.
-        alpaka::examples::accs::writeEnabledAccs<alpaka::dim::Dim1>(std::cout);
+        alpaka::examples::accs::writeEnabledAccs<alpaka::dim::Dim<1u>, std::size_t>(std::cout);
 
         std::cout << std::endl;
 
@@ -219,7 +223,7 @@ auto main()
 
             // Execute the kernel on all enabled accelerators.
             alpaka::forEachType<
-                alpaka::examples::accs::EnabledAccs<alpaka::dim::Dim1>>(
+                alpaka::examples::accs::EnabledAccs<alpaka::dim::Dim<1u>, std::size_t>>(
                     vectorAddKernelTester,
                     uiSize);
         }

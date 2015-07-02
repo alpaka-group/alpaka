@@ -26,6 +26,7 @@
 #include <alpaka/dev/Traits.hpp>                // DevType
 #include <alpaka/event/Traits.hpp>              // EventType
 #include <alpaka/exec/Traits.hpp>               // ExecType
+#include <alpaka/size/Traits.hpp>               // size::SizeT
 #include <alpaka/stream/Traits.hpp>             // StreamType
 
 // Implementation details.
@@ -63,7 +64,8 @@ namespace alpaka
                         //! The CPU OpenMP 4.0 accelerator executor implementation.
                         //#############################################################################
                         template<
-                            typename TDim>
+                            typename TDim,
+                            typename TSize>
                         class ExecCpuOmp4Impl final
                         {
                         public:
@@ -97,11 +99,11 @@ namespace alpaka
                             //-----------------------------------------------------------------------------
                             template<
                                 typename TWorkDiv,
-                                typename TKernelFuncObj,
+                                typename TKernelFctObj,
                                 typename... TArgs>
                             ALPAKA_FCT_HOST auto operator()(
                                 TWorkDiv const & workDiv,
-                                TKernelFuncObj const & kernelFuncObj,
+                                TKernelFctObj const & kernelFctObj,
                                 TArgs const & ... args) const
                             -> void
                             {
@@ -118,8 +120,8 @@ namespace alpaka
 
                                 auto const uiBlockSharedExternMemSizeBytes(
                                     kernel::getBlockSharedExternMemSizeBytes<
-                                        typename std::decay<TKernelFuncObj>::type,
-                                        AccCpuOmp4<TDim>>(
+                                        typename std::decay<TKernelFctObj>::type,
+                                        AccCpuOmp4<TDim, TSize>>(
                                             vuiBlockThreadExtents,
                                             args...));
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -128,10 +130,10 @@ namespace alpaka
                                     << std::endl;
 #endif
                                 // The number of blocks in the grid.
-                                Uint const uiNumBlocksInGrid(vuiGridBlockExtents.prod());
+                                TSize const uiNumBlocksInGrid(vuiGridBlockExtents.prod());
                                 int const iNumBlocksInGrid(static_cast<int>(uiNumBlocksInGrid));
                                 // The number of threads in a block.
-                                Uint const uiNumThreadsInBlock(vuiBlockThreadExtents.prod());
+                                TSize const uiNumThreadsInBlock(vuiBlockThreadExtents.prod());
                                 int const iNumThreadsInBlock(static_cast<int>(uiNumThreadsInBlock));
 
                                 // `When an if(scalar-expression) evaluates to false, the structured block is executed on the host.`
@@ -152,7 +154,7 @@ namespace alpaka
                                             }
                                         }
 #endif
-                                        AccCpuOmp4<TDim> acc(workDiv);
+                                        AccCpuOmp4<TDim, TSize> acc(workDiv);
 
                                         if(uiBlockSharedExternMemSizeBytes > 0u)
                                         {
@@ -162,9 +164,9 @@ namespace alpaka
                                         }
 
                                         #pragma omp distribute
-                                        for(Uint b = 0u; b<uiNumBlocksInGrid; ++b)
+                                        for(TSize b = 0u; b<uiNumBlocksInGrid; ++b)
                                         {
-                                            Vec1<> const v1iIdxGridBlock(b);
+                                            Vec1<TSize> const v1iIdxGridBlock(b);
                                             // When this is not repeated here:
                                             // error: ‘vuiGridBlockExtents’ referenced in target region does not have a mappable type
                                             auto const vuiGridBlockExtents2(
@@ -198,8 +200,8 @@ namespace alpaka
                                                     }
                                                 }
 #endif
-                                                kernelFuncObj(
-                                                    const_cast<AccCpuOmp4<TDim> const &>(acc),
+                                                kernelFctObj(
+                                                    const_cast<AccCpuOmp4<TDim, TSize> const &>(acc),
                                                     args...);
 
                                                 // Wait for all threads to finish before deleting the shared memory.
@@ -227,9 +229,10 @@ namespace alpaka
         //! The CPU OpenMP 4.0 accelerator executor.
         //#############################################################################
         template<
-            typename TDim>
+            typename TDim,
+            typename TSize>
         class ExecCpuOmp4 final :
-            public alpaka::workdiv::WorkDivMembers<TDim>
+            public workdiv::WorkDivMembers<TDim, TSize>
         {
         public:
             //-----------------------------------------------------------------------------
@@ -240,7 +243,7 @@ namespace alpaka
             ALPAKA_FCT_HOST ExecCpuOmp4(
                 TWorkDiv const & workDiv,
                 stream::StreamCpuAsync & stream) :
-                    alpaka::workdiv::WorkDivMembers<TDim>(workDiv),
+                    workdiv::WorkDivMembers<TDim, TSize>(workDiv),
                     m_Stream(stream)
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -274,24 +277,24 @@ namespace alpaka
             //! Enqueues the kernel function object.
             //-----------------------------------------------------------------------------
             template<
-                typename TKernelFuncObj,
+                typename TKernelFctObj,
                 typename... TArgs>
             ALPAKA_FCT_HOST auto operator()(
-                TKernelFuncObj const & kernelFuncObj,
+                TKernelFctObj const & kernelFctObj,
                 TArgs const & ... args) const
             -> void
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                auto const & workDiv(*static_cast<workdiv::WorkDivMembers<TDim> const *>(this));
+                auto const & workDiv(*static_cast<workdiv::WorkDivMembers<TDim, TSize> const *>(this));
 
                 m_Stream.m_spAsyncStreamCpu->m_workerThread.enqueueTask(
-                    [workDiv, kernelFuncObj, args...]()
+                    [workDiv, kernelFctObj, args...]()
                     {
-                        omp::omp4::cpu::detail::ExecCpuOmp4Impl<TDim> exec;
+                        omp::omp4::cpu::detail::ExecCpuOmp4Impl<TDim, TSize> exec;
                         exec(
                             workDiv,
-                            kernelFuncObj,
+                            kernelFctObj,
                             args...);
                     });
             }
@@ -309,11 +312,12 @@ namespace alpaka
             //! The CPU OpenMP4 executor accelerator type trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct AccType<
-                exec::ExecCpuOmp4<TDim>>
+                exec::ExecCpuOmp4<TDim, TSize>>
             {
-                using type = acc::omp::omp4::cpu::detail::AccCpuOmp4<TDim>;
+                using type = acc::omp::omp4::cpu::detail::AccCpuOmp4<TDim, TSize>;
             };
         }
     }
@@ -325,9 +329,10 @@ namespace alpaka
             //! The CPU OpenMP4 executor device type trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct DevType<
-                exec::ExecCpuOmp4<TDim>>
+                exec::ExecCpuOmp4<TDim, TSize>>
             {
                 using type = dev::DevCpu;
             };
@@ -335,9 +340,10 @@ namespace alpaka
             //! The CPU OpenMP4 executor device manager type trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct DevManType<
-                exec::ExecCpuOmp4<TDim>>
+                exec::ExecCpuOmp4<TDim, TSize>>
             {
                 using type = dev::DevManCpu;
             };
@@ -351,9 +357,10 @@ namespace alpaka
             //! The CPU OpenMP4 executor dimension getter trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct DimType<
-                exec::ExecCpuOmp4<TDim>>
+                exec::ExecCpuOmp4<TDim, TSize>>
             {
                 using type = TDim;
             };
@@ -367,9 +374,10 @@ namespace alpaka
             //! The CPU OpenMP4 executor event type trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct EventType<
-                exec::ExecCpuOmp4<TDim>>
+                exec::ExecCpuOmp4<TDim, TSize>>
             {
                 using type = event::EventCpuAsync;
             };
@@ -383,11 +391,29 @@ namespace alpaka
             //! The CPU OpenMP4 executor executor type trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct ExecType<
-                exec::ExecCpuOmp4<TDim>>
+                exec::ExecCpuOmp4<TDim, TSize>>
             {
-                using type = exec::ExecCpuOmp4<TDim>;
+                using type = exec::ExecCpuOmp4<TDim, TSize>;
+            };
+        }
+    }
+    namespace size
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The CPU OpenMP 4.0 executor size type trait specialization.
+            //#############################################################################
+            template<
+                typename TDim,
+                typename TSize>
+            struct SizeType<
+                exec::ExecCpuOmp4<TDim, TSize>>
+            {
+                using type = TSize;
             };
         }
     }
@@ -399,9 +425,10 @@ namespace alpaka
             //! The CPU OpenMP4 executor stream type trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct StreamType<
-                exec::ExecCpuOmp4<TDim>>
+                exec::ExecCpuOmp4<TDim, TSize>>
             {
                 using type = stream::StreamCpuAsync;
             };
@@ -409,12 +436,13 @@ namespace alpaka
             //! The CPU OpenMP4 executor stream get trait specialization.
             //#############################################################################
             template<
-                typename TDim>
+                typename TDim,
+                typename TSize>
             struct GetStream<
-                exec::ExecCpuOmp4<TDim>>
+                exec::ExecCpuOmp4<TDim, TSize>>
             {
                 ALPAKA_FCT_HOST static auto getStream(
-                    exec::ExecCpuOmp4<TDim> const & exec)
+                    exec::ExecCpuOmp4<TDim, TSize> const & exec)
                 -> stream::StreamCpuAsync
                 {
                     return exec.m_Stream;

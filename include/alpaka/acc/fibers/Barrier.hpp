@@ -37,6 +37,8 @@ namespace alpaka
             //! A barrier.
             // NOTE: We do not use the boost::fibers::barrier because it does not support simple resetting.
             //#############################################################################
+            template<
+                typename TSize>
             class FiberBarrier
             {
             public:
@@ -44,7 +46,7 @@ namespace alpaka
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA explicit FiberBarrier(
-                    Uint uiNumFibersToWaitFor = 0) :
+                    TSize const & uiNumFibersToWaitFor = 0) :
                     m_uiNumFibersToWaitFor{uiNumFibersToWaitFor}
                 {}
                 //-----------------------------------------------------------------------------
@@ -90,7 +92,7 @@ namespace alpaka
                 //! NOTE: The value almost always is invalid the time you get it.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA auto getNumFibersToWaitFor() const
-                -> Uint
+                -> TSize
                 {
                     return m_uiNumFibersToWaitFor;
                 }
@@ -99,7 +101,7 @@ namespace alpaka
                 //! Resets the number of fibers to wait for to the given number.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_ACC_NO_CUDA auto reset(
-                    Uint uiNumFibersToWaitFor)
+                    TSize const & uiNumFibersToWaitFor)
                 -> void
                 {
                     // A lock is not required in the fiber implementation.
@@ -110,7 +112,7 @@ namespace alpaka
             private:
                 boost::fibers::mutex m_mtxBarrier;
                 boost::fibers::condition_variable m_cvAllFibersReachedBarrier;
-                Uint m_uiNumFibersToWaitFor;
+                TSize m_uiNumFibersToWaitFor;
             };
         }
     }

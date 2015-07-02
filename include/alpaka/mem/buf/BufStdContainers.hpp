@@ -115,7 +115,7 @@ namespace alpaka
                 ALPAKA_FCT_HOST_ACC static constexpr auto getExtent(
                     TFixedSizeArray const & //extents
                 )
-                -> Uint
+                -> size::SizeT<TFixedSizeArray>
                 {
                     //boost::ignore_unused(extents);
                     return std::extent<TFixedSizeArray, TIdx::value>::value;
@@ -204,7 +204,7 @@ namespace alpaka
                 template<
                     typename TFixedSizeArray>
                 struct GetPitchBytes<
-                    std::integral_constant<Uint, std::rank<TFixedSizeArray>::value - 1u>,
+                    std::integral_constant<std::size_t, std::rank<TFixedSizeArray>::value - 1u>,
                     TFixedSizeArray,
                     typename std::enable_if<
                         std::is_array<TFixedSizeArray>::value
@@ -214,7 +214,7 @@ namespace alpaka
 
                     ALPAKA_FCT_HOST_ACC static constexpr auto getPitchBytes(
                         TFixedSizeArray const &)
-                    -> Uint
+                    -> size::SizeT<TFixedSizeArray>
                     {
                         return sizeof(TElem) * std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 1u>::value;
                     }
@@ -242,10 +242,27 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getOffset(
                     TFixedSizeArray const &)
-                -> Uint
+                -> size::SizeT<TFixedSizeArray>
                 {
                     return 0u;
                 }
+            };
+        }
+    }
+    namespace size
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The std::vector size type trait specialization.
+            //#############################################################################
+            template<
+                typename TFixedSizeArray>
+            struct SizeType<
+                TFixedSizeArray,
+                typename std::enable_if<std::is_array<TFixedSizeArray>::value>::type>
+            {
+                using type = std::size_t;
             };
         }
     }*/
@@ -262,7 +279,7 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TElem,
-                Uint TuiSize>
+                std::size_t TuiSize>
             struct DevType<
                 std::array<TElem, TuiSize>>
             {
@@ -274,7 +291,7 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TElem,
-                Uint TuiSize>
+                std::size_t TuiSize>
             struct GetDev<
                 std::array<TElem, TuiSize>>
             {
@@ -296,11 +313,11 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TElem,
-                Uint TuiSize>
+                std::size_t TuiSize>
             struct DimType<
                 std::array<TElem, TuiSize>>
             {
-                using type = dim::Dim1;
+                using type = dim::Dim<1u>;
             };
         }
     }
@@ -313,14 +330,14 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TElem,
-                Uint TuiSize>
+                std::size_t TuiSize>
             struct GetExtent<
-                std::integral_constant<Uint, 0u>,
+                std::integral_constant<std::size_t, 0u>,
                 std::array<TElem, TuiSize>>
             {
                 ALPAKA_FCT_HOST_ACC static constexpr auto getExtent(
                     std::array<TElem, TuiSize> const & /*extents*/)
-                -> Uint
+                -> size::SizeT<std::array<TElem, TuiSize>>
                 {
                     // C++14
                     /*boost::ignore_unused(extents);*/
@@ -340,7 +357,7 @@ namespace alpaka
                 //#############################################################################
                 template<
                     typename TElem,
-                    Uint TuiSize>
+                    std::size_t TuiSize>
                 struct ElemType<
                     std::array<TElem, TuiSize>>
                 {
@@ -352,7 +369,7 @@ namespace alpaka
                 //#############################################################################
                 template<
                     typename TElem,
-                    Uint TuiSize>
+                    std::size_t TuiSize>
                 struct GetBuf<
                     std::array<TElem, TuiSize>>
                 {
@@ -381,7 +398,7 @@ namespace alpaka
                 //#############################################################################
                 template<
                     typename TElem,
-                    Uint TuiSize>
+                    std::size_t TuiSize>
                 struct GetPtrNative<
                     std::array<TElem, TuiSize>>
                 {
@@ -404,14 +421,14 @@ namespace alpaka
                 //#############################################################################
                 template<
                     typename TElem,
-                    Uint TuiSize>
+                    std::size_t TuiSize>
                 struct GetPitchBytes<
-                    std::integral_constant<Uint, 0u>,
+                    std::integral_constant<std::size_t, 0u>,
                     std::array<TElem, TuiSize>>
                 {
                     ALPAKA_FCT_HOST_ACC static auto getPitchBytes(
                         std::array<TElem, TuiSize> const & pitch)
-                    -> Uint
+                    -> size::SizeT<std::array<TElem, TuiSize>>
                     {
                         return sizeof(TElem) * pitch.size();
                     }
@@ -429,7 +446,7 @@ namespace alpaka
             template<
                 typename TIdx,
                 typename TElem,
-                Uint TuiSize>
+                std::size_t TuiSize>
             struct GetOffset<
                 TIdx,
                 std::array<TElem, TuiSize>>
@@ -439,10 +456,27 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getOffset(
                     std::array<TElem, TuiSize> const &)
-                -> Uint
+                -> size::SizeT<std::array<TElem, TuiSize>>
                 {
                     return 0u;
                 }
+            };
+        }
+    }
+    namespace size
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The std::vector size type trait specialization.
+            //#############################################################################
+            template<
+                typename TElem,
+                std::size_t TuiSize>
+            struct SizeType<
+                std::array<TElem, TuiSize>>
+            {
+                using type = std::size_t;
             };
         }
     }
@@ -497,7 +531,7 @@ namespace alpaka
             struct DimType<
                 std::vector<TElem, TAllocator>>
             {
-                using type = dim::Dim1;
+                using type = dim::Dim<1u>;
             };
         }
     }
@@ -512,14 +546,14 @@ namespace alpaka
                 typename TElem,
                 typename TAllocator>
             struct GetExtent<
-                std::integral_constant<Uint, 0u>,
+                std::integral_constant<std::size_t, 0u>,
                 std::vector<TElem, TAllocator>>
             {
                 ALPAKA_FCT_HOST_ACC static auto getExtent(
                     std::vector<TElem, TAllocator> const & extents)
-                -> Uint
+                -> size::SizeT<std::vector<TElem, TAllocator>>
                 {
-                    return static_cast<Uint>(extents.size());
+                    return extents.size();
                 }
             };
         }
@@ -601,14 +635,14 @@ namespace alpaka
                     typename TElem,
                     typename TAllocator>
                 struct GetPitchBytes<
-                    std::integral_constant<Uint, 0u>,
+                    std::integral_constant<std::size_t, 0u>,
                     std::vector<TElem, TAllocator>>
                 {
                     ALPAKA_FCT_HOST_ACC static auto getPitchBytes(
                         std::vector<TElem, TAllocator> const & pitch)
-                    -> Uint
+                    -> size::SizeT<std::vector<TElem, TAllocator>>
                     {
-                        return static_cast<Uint>(sizeof(TElem) * pitch.size());
+                        return sizeof(TElem) * pitch.size();
                     }
                 };
             }
@@ -634,10 +668,27 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FCT_HOST static auto getOffset(
                     std::vector<TElem, TAllocator> const &)
-                -> Uint
+                -> size::SizeT<std::vector<TElem, TAllocator>>
                 {
                     return 0u;
                 }
+            };
+        }
+    }
+    namespace size
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The std::vector size type trait specialization.
+            //#############################################################################
+            template<
+                typename TElem,
+                typename TAllocator>
+            struct SizeType<
+                std::vector<TElem, TAllocator>>
+            {
+                using type = std::size_t;
             };
         }
     }

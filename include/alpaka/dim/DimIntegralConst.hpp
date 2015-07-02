@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>   // Uint
+#include <alpaka/dim/Traits.hpp>
 
 #include <type_traits>              // std::integral_constant
 
@@ -33,24 +33,24 @@ namespace alpaka
         // N(th) dimension(s).
         //-----------------------------------------------------------------------------
         template<
-            Uint N>
-        using Dim = std::integral_constant<Uint, N>;
+            std::size_t N>
+        using Dim = std::integral_constant<std::size_t, N>;
 
         //-----------------------------------------------------------------------------
-        //! One/First dimension.
+        // Trait specializations for integral_constant types.
         //-----------------------------------------------------------------------------
-        using Dim1 = Dim<1u>;
-        //-----------------------------------------------------------------------------
-        //! Two/Second dimension(s).
-        //-----------------------------------------------------------------------------
-        using Dim2 = Dim<2u>;
-        //-----------------------------------------------------------------------------
-        //! Three/Third dimension(s).
-        //-----------------------------------------------------------------------------
-        using Dim3 = Dim<3u>;
-        //-----------------------------------------------------------------------------
-        //! Four/Fourth dimension(s).
-        //-----------------------------------------------------------------------------
-        using Dim4 = Dim<4u>;
+        /*namespace traits
+        {
+            //#############################################################################
+            //! The arithmetic type dimension getter trait specialization.
+            //#############################################################################
+            template<
+                std::size_t N>
+            struct DimType<
+                std::integral_constant<std::size_t, N>
+            {
+                using type = Dim<N>;
+            };
+        }*/
     }
 }

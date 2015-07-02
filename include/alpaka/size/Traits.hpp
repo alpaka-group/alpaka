@@ -26,26 +26,44 @@
 namespace alpaka
 {
     //-----------------------------------------------------------------------------
-    //! The dimension specifics.
+    //! The size specifics.
     //-----------------------------------------------------------------------------
-    namespace dim
+    namespace size
     {
         //-----------------------------------------------------------------------------
-        //! The dimension traits.
+        //! The size traits.
         //-----------------------------------------------------------------------------
         namespace traits
         {
             //#############################################################################
-            //! The dimension getter type trait.
+            //! The size type trait.
             //#############################################################################
             template<
                 typename T,
                 typename TSfinae = void>
-            struct DimType;
+            struct SizeType;
         }
 
         template<
             typename T>
-        using DimT = typename traits::DimType<T>::type;
+        using SizeT = typename traits::SizeType<T>::type;
+
+        //-----------------------------------------------------------------------------
+        // Trait specializations for unsigned integral types.
+        //-----------------------------------------------------------------------------
+        namespace traits
+        {
+            //#############################################################################
+            //! The arithmetic size type trait specialization.
+            //#############################################################################
+            template<
+                typename T>
+            struct SizeType<
+                T,
+                typename std::enable_if<std::is_arithmetic<T>::value>::type>
+            {
+                using type = T;
+            };
+        }
     }
 }

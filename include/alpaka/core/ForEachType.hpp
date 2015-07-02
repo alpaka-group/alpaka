@@ -54,10 +54,10 @@ namespace alpaka
             template<
                 typename TElemIt,
                 typename TLastIt,
-                typename TFuncObj,
+                typename TFctObj,
                 typename... TArgs>
             ALPAKA_FCT_HOST_ACC static auto forEachTypeImpl(
-                TFuncObj && f ,
+                TFctObj && f ,
                 TArgs && ... args)
             -> void
             {
@@ -81,10 +81,10 @@ namespace alpaka
             template<
                 typename TElemIt,
                 typename TLastIt,
-                typename TFuncObj,
+                typename TFctObj,
                 typename... TArgs>
             ALPAKA_FCT_HOST_ACC static auto forEachTypeImpl(
-                TFuncObj && f,
+                TFctObj && f,
                 TArgs && ... args)
             -> void
             {
@@ -105,7 +105,7 @@ namespace alpaka
                 ::template forEachTypeImpl<
                     NextIt,
                     TLastIt>(
-                        std::forward<TFuncObj>(f),
+                        std::forward<TFctObj>(f),
                         std::forward<TArgs>(args)...);
             }
         };
@@ -117,10 +117,10 @@ namespace alpaka
     //-----------------------------------------------------------------------------
     template<
         typename TSequence,
-        typename TFuncObj,
+        typename TFctObj,
         typename... TArgs>
     ALPAKA_FCT_HOST_ACC auto forEachType(
-        TFuncObj && f,
+        TFctObj && f,
         TArgs && ... args)
     -> void
     {
@@ -136,7 +136,7 @@ namespace alpaka
         ::template forEachTypeImpl<
             FirstIt,
             LastIt>(
-                std::forward<TFuncObj>(f),
+                std::forward<TFctObj>(f),
                 std::forward<TArgs>(args)...);
     }
 }
