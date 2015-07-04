@@ -54,7 +54,7 @@ namespace alpaka
                 typename std::enable_if<
                     std::is_floating_point<TArg>::value>::type>
             {
-                ALPAKA_FCT_ACC_NO_CUDA static auto sqrt(
+                ALPAKA_FN_ACC_NO_CUDA static auto sqrt(
                     SqrtCudaBuiltIn const & sqrt,
                     TArg const & arg)
                 -> decltype(::sqrt(arg))

@@ -57,7 +57,7 @@ namespace alpaka
                 stream::StreamCpuSync,
                 event::EventCpuSync>
             {
-                ALPAKA_FCT_HOST static auto streamEnqueue(
+                ALPAKA_FN_HOST static auto streamEnqueue(
                     stream::StreamCpuSync & stream,
                     event::EventCpuSync & event)
                 -> void
@@ -80,7 +80,7 @@ namespace alpaka
                 stream::StreamCpuSync,
                 event::EventCpuSync>
             {
-                ALPAKA_FCT_HOST static auto waiterWaitFor(
+                ALPAKA_FN_HOST static auto waiterWaitFor(
                     stream::StreamCpuSync & stream,
                     event::EventCpuSync const & event)
                 -> void
@@ -100,7 +100,7 @@ namespace alpaka
                 dev::DevCpu,
                 event::EventCpuSync>
             {
-                ALPAKA_FCT_HOST static auto waiterWaitFor(
+                ALPAKA_FN_HOST static auto waiterWaitFor(
                     dev::DevCpu & dev,
                     event::EventCpuSync const & event)
                 -> void
@@ -119,7 +119,7 @@ namespace alpaka
             struct CurrentThreadWaitFor<
                 stream::StreamCpuSync>
             {
-                ALPAKA_FCT_HOST static auto currentThreadWaitFor(
+                ALPAKA_FN_HOST static auto currentThreadWaitFor(
                     stream::StreamCpuSync const & stream)
                 -> void
                 {

@@ -73,32 +73,32 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST DevCpuImpl() = default;
+                    ALPAKA_FN_HOST DevCpuImpl() = default;
                     //-----------------------------------------------------------------------------
                     //! Copy constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST DevCpuImpl(DevCpuImpl const &) = default;
+                    ALPAKA_FN_HOST DevCpuImpl(DevCpuImpl const &) = default;
                     //-----------------------------------------------------------------------------
                     //! Move constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST DevCpuImpl(DevCpuImpl &&) = default;
+                    ALPAKA_FN_HOST DevCpuImpl(DevCpuImpl &&) = default;
                     //-----------------------------------------------------------------------------
                     //! Copy assignment operator.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto operator=(DevCpuImpl const &) -> DevCpuImpl & = default;
+                    ALPAKA_FN_HOST auto operator=(DevCpuImpl const &) -> DevCpuImpl & = default;
                     //-----------------------------------------------------------------------------
                     //! Move assignment operator.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto operator=(DevCpuImpl &&) -> DevCpuImpl & = default;
+                    ALPAKA_FN_HOST auto operator=(DevCpuImpl &&) -> DevCpuImpl & = default;
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST ~DevCpuImpl() = default;
+                    ALPAKA_FN_HOST ~DevCpuImpl() = default;
 
                     //-----------------------------------------------------------------------------
                     //! \return The list of all streams on this device.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto GetAllAsyncStreamImpls() const noexcept(false)
+                    ALPAKA_FN_HOST auto GetAllAsyncStreamImpls() const noexcept(false)
                     -> std::vector<std::shared_ptr<stream::cpu::detail::StreamCpuAsyncImpl>>
                     {
                         std::vector<std::shared_ptr<stream::cpu::detail::StreamCpuAsyncImpl>> vspStreams;
@@ -125,7 +125,7 @@ namespace alpaka
                     //! Registers the given stream on this device.
                     //! NOTE: Every stream has to be registered for correct functionality of device wait operations!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto RegisterAsyncStream(std::shared_ptr<stream::cpu::detail::StreamCpuAsyncImpl> spStreamImpl)
+                    ALPAKA_FN_HOST auto RegisterAsyncStream(std::shared_ptr<stream::cpu::detail::StreamCpuAsyncImpl> spStreamImpl)
                     -> void
                     {
                         std::lock_guard<std::mutex> lk(m_Mutex);
@@ -138,7 +138,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Unregisters the given stream from this device.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto UnregisterAsyncStream(stream::cpu::detail::StreamCpuAsyncImpl const * const pStream) noexcept(false)
+                    ALPAKA_FN_HOST auto UnregisterAsyncStream(stream::cpu::detail::StreamCpuAsyncImpl const * const pStream) noexcept(false)
                     -> void
                     {
                         std::lock_guard<std::mutex> lk(m_Mutex);
@@ -178,34 +178,34 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST DevCpu() :
+            ALPAKA_FN_HOST DevCpu() :
                 m_spDevCpuImpl(std::make_shared<cpu::detail::DevCpuImpl>())
             {}
         public:
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST DevCpu(DevCpu const &) = default;
+            ALPAKA_FN_HOST DevCpu(DevCpu const &) = default;
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST DevCpu(DevCpu &&) = default;
+            ALPAKA_FN_HOST DevCpu(DevCpu &&) = default;
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator=(DevCpu const &) -> DevCpu & = default;
+            ALPAKA_FN_HOST auto operator=(DevCpu const &) -> DevCpu & = default;
             //-----------------------------------------------------------------------------
             //! Move assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator=(DevCpu &&) -> DevCpu & = default;
+            ALPAKA_FN_HOST auto operator=(DevCpu &&) -> DevCpu & = default;
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST ~DevCpu() = default;
+            ALPAKA_FN_HOST ~DevCpu() = default;
             //-----------------------------------------------------------------------------
             //! Equality comparison operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator==(DevCpu const &) const
+            ALPAKA_FN_HOST auto operator==(DevCpu const &) const
             -> bool
             {
                 return true;
@@ -213,7 +213,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Inequality comparison operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator!=(DevCpu const & rhs) const
+            ALPAKA_FN_HOST auto operator!=(DevCpu const & rhs) const
             -> bool
             {
                 return !((*this) == rhs);
@@ -232,12 +232,12 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST DevManCpu() = delete;
+            ALPAKA_FN_HOST DevManCpu() = delete;
 
             //-----------------------------------------------------------------------------
             //! \return The number of devices available.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST static auto getDevCount()
+            ALPAKA_FN_HOST static auto getDevCount()
             -> std::size_t
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
@@ -247,7 +247,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! \return The number of devices available.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST static auto getDevByIdx(
+            ALPAKA_FN_HOST static auto getDevByIdx(
                 std::size_t const & uiIdx)
             -> DevCpu
             {
@@ -270,7 +270,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! \return The device this object is bound to.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto getDev()
+            ALPAKA_FN_HOST auto getDev()
             -> DevCpu
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
@@ -318,7 +318,7 @@ namespace alpaka
             struct GetDev<
                 dev::DevCpu>
             {
-                ALPAKA_FCT_HOST static auto getDev(
+                ALPAKA_FN_HOST static auto getDev(
                     dev::DevCpu const & dev)
                 -> dev::DevCpu
                 {
@@ -333,7 +333,7 @@ namespace alpaka
             struct GetName<
                 dev::DevCpu>
             {
-                ALPAKA_FCT_HOST static auto getName(
+                ALPAKA_FN_HOST static auto getName(
                     dev::DevCpu const & dev)
                 -> std::string
                 {
@@ -350,7 +350,7 @@ namespace alpaka
             struct GetMemBytes<
                 dev::DevCpu>
             {
-                ALPAKA_FCT_HOST static auto getMemBytes(
+                ALPAKA_FN_HOST static auto getMemBytes(
                     dev::DevCpu const & dev)
                 -> std::size_t
                 {
@@ -367,7 +367,7 @@ namespace alpaka
             struct GetFreeMemBytes<
                 dev::DevCpu>
             {
-                ALPAKA_FCT_HOST static auto getFreeMemBytes(
+                ALPAKA_FN_HOST static auto getFreeMemBytes(
                     dev::DevCpu const & dev)
                 -> std::size_t
                 {
@@ -385,7 +385,7 @@ namespace alpaka
             struct Reset<
                 dev::DevCpu>
             {
-                ALPAKA_FCT_HOST static auto reset(
+                ALPAKA_FN_HOST static auto reset(
                     dev::DevCpu const & dev)
                 -> void
                 {
@@ -495,7 +495,7 @@ namespace alpaka
             struct CurrentThreadWaitFor<
                 dev::DevCpu>
             {
-                ALPAKA_FCT_HOST static auto currentThreadWaitFor(
+                ALPAKA_FN_HOST static auto currentThreadWaitFor(
                     dev::DevCpu const & dev)
                 -> void
                 {

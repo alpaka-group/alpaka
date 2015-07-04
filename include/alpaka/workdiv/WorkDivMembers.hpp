@@ -25,7 +25,7 @@
 #include <alpaka/size/Traits.hpp>       // size::SizeT
 
 #include <alpaka/core/Vec.hpp>          // Vec
-#include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST
 
 #include <iosfwd>                       // std::ostream
 
@@ -47,14 +47,14 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Default constructor.
             //-----------------------------------------------------------------------------
-            //ALPAKA_FCT_HOST WorkDivMembers() = delete;
+            //ALPAKA_FN_HOST WorkDivMembers() = delete;
             //-----------------------------------------------------------------------------
             //! Constructor from values.
             //-----------------------------------------------------------------------------
             template<
                 typename TGridBlockExtents,
                 typename TBlockThreadExtents>
-            ALPAKA_FCT_HOST_ACC explicit WorkDivMembers(
+            ALPAKA_FN_HOST_ACC explicit WorkDivMembers(
                 TGridBlockExtents const & gridBlockExtents = TGridBlockExtents(),
                 TBlockThreadExtents const & blockThreadExtents = TBlockThreadExtents()) :
                 m_vuiGridBlockExtents(extent::getExtentsVecEnd<TDim>(gridBlockExtents)),
@@ -63,7 +63,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC explicit WorkDivMembers(
+            ALPAKA_FN_HOST_ACC explicit WorkDivMembers(
                 WorkDivMembers const & other) :
                     m_vuiGridBlockExtents(other.m_vuiGridBlockExtents),
                     m_vuiBlockThreadExtents(other.m_vuiBlockThreadExtents)
@@ -73,7 +73,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TWorkDiv>
-            ALPAKA_FCT_HOST_ACC explicit WorkDivMembers(
+            ALPAKA_FN_HOST_ACC explicit WorkDivMembers(
                 TWorkDiv const & other) :
                     m_vuiGridBlockExtents(subVecEnd<TDim>(getWorkDiv<Grid, Blocks>(other))),
                     m_vuiBlockThreadExtents(subVecEnd<TDim>(getWorkDiv<Block, Threads>(other)))
@@ -81,21 +81,21 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC WorkDivMembers(WorkDivMembers &&) = default;
+            ALPAKA_FN_HOST_ACC WorkDivMembers(WorkDivMembers &&) = default;
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC auto operator=(WorkDivMembers const &) -> WorkDivMembers & = default;
+            ALPAKA_FN_HOST_ACC auto operator=(WorkDivMembers const &) -> WorkDivMembers & = default;
             //-----------------------------------------------------------------------------
             //! Move assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC auto operator=(WorkDivMembers &&) -> WorkDivMembers & = default;
+            ALPAKA_FN_HOST_ACC auto operator=(WorkDivMembers &&) -> WorkDivMembers & = default;
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
             template<
                 typename TWorkDiv>
-            ALPAKA_FCT_HOST_ACC auto operator=(
+            ALPAKA_FN_HOST_ACC auto operator=(
                 TWorkDiv const & other)
             -> WorkDivMembers<TDim, TSize> &
             {
@@ -106,7 +106,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC /*virtual*/ ~WorkDivMembers() = default;
+            ALPAKA_FN_HOST_ACC /*virtual*/ ~WorkDivMembers() = default;
 
         public:
             Vec<TDim, TSize> m_vuiGridBlockExtents;
@@ -119,7 +119,7 @@ namespace alpaka
         template<
             typename TDim,
             typename TSize>
-        ALPAKA_FCT_HOST auto operator<<(
+        ALPAKA_FN_HOST auto operator<<(
             std::ostream & os,
             WorkDivMembers<TDim, TSize> const & workDiv)
         -> std::ostream &
@@ -183,7 +183,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of threads in each dimension of a block.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST_ACC static auto getWorkDiv(
+                ALPAKA_FN_HOST_ACC static auto getWorkDiv(
                     WorkDivMembers<TDim, TSize> const & workDiv)
                 -> Vec<TDim, TSize>
                 {
@@ -205,7 +205,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of blocks in each dimension of the grid.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST_ACC static auto getWorkDiv(
+                ALPAKA_FN_HOST_ACC static auto getWorkDiv(
                     WorkDivMembers<TDim, TSize> const & workDiv)
                 -> Vec<TDim, TSize>
                 {

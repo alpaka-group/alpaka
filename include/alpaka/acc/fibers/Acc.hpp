@@ -108,7 +108,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     template<
                         typename TWorkDiv>
-                    ALPAKA_FCT_ACC_NO_CUDA AccCpuFibers(
+                    ALPAKA_FN_ACC_NO_CUDA AccCpuFibers(
                         TWorkDiv const & workDiv) :
                             workdiv::WorkDivMembers<TDim, TSize>(workDiv),
                             idx::gb::IdxGbRef<TDim, TSize>(m_vuiGridBlockIdx),
@@ -126,28 +126,28 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Copy constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA AccCpuFibers(AccCpuFibers const &) = delete;
+                    ALPAKA_FN_ACC_NO_CUDA AccCpuFibers(AccCpuFibers const &) = delete;
                     //-----------------------------------------------------------------------------
                     //! Move constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA AccCpuFibers(AccCpuFibers &&) = delete;
+                    ALPAKA_FN_ACC_NO_CUDA AccCpuFibers(AccCpuFibers &&) = delete;
                     //-----------------------------------------------------------------------------
                     //! Copy assignment operator.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA auto operator=(AccCpuFibers const &) -> AccCpuFibers & = delete;
+                    ALPAKA_FN_ACC_NO_CUDA auto operator=(AccCpuFibers const &) -> AccCpuFibers & = delete;
                     //-----------------------------------------------------------------------------
                     //! Move assignment operator.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA auto operator=(AccCpuFibers &&) -> AccCpuFibers & = delete;
+                    ALPAKA_FN_ACC_NO_CUDA auto operator=(AccCpuFibers &&) -> AccCpuFibers & = delete;
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA /*virtual*/ ~AccCpuFibers() = default;
+                    ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~AccCpuFibers() = default;
 
                     //-----------------------------------------------------------------------------
                     //! Syncs all threads in the current block.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA auto syncBlockThreads() const
+                    ALPAKA_FN_ACC_NO_CUDA auto syncBlockThreads() const
                     -> void
                     {
                         auto const idFiber(boost::this_fiber::get_id());
@@ -160,7 +160,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Syncs all threads in the current block.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA auto syncBlockThreads(
+                    ALPAKA_FN_ACC_NO_CUDA auto syncBlockThreads(
                         typename std::map<boost::fibers::fiber::id, TSize>::iterator const & itFind) const
                     -> void
                     {
@@ -188,7 +188,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     template<
                         typename T>
-                    ALPAKA_FCT_ACC_NO_CUDA auto getBlockSharedExternMem() const
+                    ALPAKA_FN_ACC_NO_CUDA auto getBlockSharedExternMem() const
                     -> T *
                     {
                         return reinterpret_cast<T*>(m_vuiExternalSharedMem.get());
@@ -246,7 +246,7 @@ namespace alpaka
             struct GetAccDevProps<
                 acc::fibers::detail::AccCpuFibers<TDim, TSize>>
             {
-                ALPAKA_FCT_HOST static auto getAccDevProps(
+                ALPAKA_FN_HOST static auto getAccDevProps(
                     dev::DevCpu const & dev)
                 -> alpaka::acc::AccDevProps<TDim, TSize>
                 {
@@ -277,7 +277,7 @@ namespace alpaka
             struct GetAccName<
                 acc::fibers::detail::AccCpuFibers<TDim, TSize>>
             {
-                ALPAKA_FCT_HOST_ACC static auto getAccName()
+                ALPAKA_FN_HOST_ACC static auto getAccName()
                 -> std::string
                 {
                     return "AccCpuFibers<" + std::to_string(TDim::value) + "," + typeid(TSize).name() + ">";

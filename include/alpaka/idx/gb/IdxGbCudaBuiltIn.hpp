@@ -48,27 +48,27 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Default constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY IdxGbCudaBuiltIn() = default;
+                ALPAKA_FN_ACC_CUDA_ONLY IdxGbCudaBuiltIn() = default;
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY IdxGbCudaBuiltIn(IdxGbCudaBuiltIn const &) = delete;
+                ALPAKA_FN_ACC_CUDA_ONLY IdxGbCudaBuiltIn(IdxGbCudaBuiltIn const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY IdxGbCudaBuiltIn(IdxGbCudaBuiltIn &&) = delete;
+                ALPAKA_FN_ACC_CUDA_ONLY IdxGbCudaBuiltIn(IdxGbCudaBuiltIn &&) = delete;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY auto operator=(IdxGbCudaBuiltIn const & ) -> IdxGbCudaBuiltIn & = delete;
+                ALPAKA_FN_ACC_CUDA_ONLY auto operator=(IdxGbCudaBuiltIn const & ) -> IdxGbCudaBuiltIn & = delete;
                 //-----------------------------------------------------------------------------
                 //! Move assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY auto operator=(IdxGbCudaBuiltIn &&) -> IdxGbCudaBuiltIn & = delete;
+                ALPAKA_FN_ACC_CUDA_ONLY auto operator=(IdxGbCudaBuiltIn &&) -> IdxGbCudaBuiltIn & = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY /*virtual*/ ~IdxGbCudaBuiltIn() = default;
+                ALPAKA_FN_ACC_CUDA_ONLY /*virtual*/ ~IdxGbCudaBuiltIn() = default;
             };
         }
     }
@@ -110,7 +110,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
-                ALPAKA_FCT_ACC_CUDA_ONLY static auto getIdx(
+                ALPAKA_FN_ACC_CUDA_ONLY static auto getIdx(
                     idx::gb::IdxGbCudaBuiltIn<TDim, TSize> const & idx,
                     TWorkDiv const &)
                 -> Vec<TDim, TSize>

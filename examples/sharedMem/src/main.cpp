@@ -54,7 +54,7 @@ public:
     //-----------------------------------------------------------------------------
     template<
         typename TAcc>
-    ALPAKA_FCT_ACC auto operator()(
+    ALPAKA_FN_ACC auto operator()(
         TAcc const & acc,
         std::uint32_t * const puiBlockRetVals,
         std::uint32_t const uiMult2) const
@@ -148,7 +148,7 @@ namespace alpaka
                 template<
                     typename TVec,
                     typename... TArgs>
-                ALPAKA_FCT_HOST static auto getBlockSharedExternMemSizeBytes(
+                ALPAKA_FN_HOST static auto getBlockSharedExternMemSizeBytes(
                     TVec const & vuiBlockThreadsExtents,
                     TArgs && ...)
                 -> std::uint32_t

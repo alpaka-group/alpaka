@@ -25,7 +25,7 @@
 
 #include <alpaka/core/Vec.hpp>              // Vec<N>
 #include <alpaka/core/Positioning.hpp>      // origin::Grid/Blocks, unit::Blocks, unit::Threads
-#include <alpaka/core/Common.hpp>           // ALPAKA_FCT_ACC
+#include <alpaka/core/Common.hpp>           // ALPAKA_FN_ACC
 
 #include <type_traits>                      // std::enable_if, std::is_base_of, std::is_same, std::decay
 #include <utility>                          // std::forward
@@ -60,7 +60,7 @@ namespace alpaka
             typename TOrigin,
             typename TUnit,
             typename TWorkDiv = void>
-        ALPAKA_FCT_HOST_ACC auto getWorkDiv(
+        ALPAKA_FN_HOST_ACC auto getWorkDiv(
             TWorkDiv const & workDiv)
         -> Vec<dim::DimT<TWorkDiv>, size::SizeT<TWorkDiv>>
         {
@@ -93,7 +93,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of threads in each dimension of a block.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST_ACC static auto getWorkDiv(
+                ALPAKA_FN_HOST_ACC static auto getWorkDiv(
                     TWorkDiv const & workDiv)
                 -> Vec<dim::DimT<typename TWorkDiv::WorkDivBase>, size::SizeT<TWorkDiv>>
                 {
@@ -119,7 +119,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of threads in each dimension of the grid.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST_ACC static auto getWorkDiv(
+                ALPAKA_FN_HOST_ACC static auto getWorkDiv(
                     TWorkDiv const & workDiv)
                 -> Vec<dim::DimT<typename TWorkDiv::WorkDivBase>, size::SizeT<TWorkDiv>>
                 {

@@ -23,7 +23,7 @@
 
 #include <alpaka/block/shared/Traits.hpp>   // AllocVar, AllocArr
 
-#include <alpaka/core/Common.hpp>           // ALPAKA_FCT_ACC_NO_CUDA
+#include <alpaka/core/Common.hpp>           // ALPAKA_FN_ACC_NO_CUDA
 
 #include <boost/align.hpp>                  // boost::aligned_alloc
 
@@ -47,27 +47,27 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Default constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA BlockSharedAllocNoSync() = default;
+                ALPAKA_FN_ACC_NO_CUDA BlockSharedAllocNoSync() = default;
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA BlockSharedAllocNoSync(BlockSharedAllocNoSync const &) = delete;
+                ALPAKA_FN_ACC_NO_CUDA BlockSharedAllocNoSync(BlockSharedAllocNoSync const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA BlockSharedAllocNoSync(BlockSharedAllocNoSync &&) = delete;
+                ALPAKA_FN_ACC_NO_CUDA BlockSharedAllocNoSync(BlockSharedAllocNoSync &&) = delete;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA auto operator=(BlockSharedAllocNoSync const &) -> BlockSharedAllocNoSync & = delete;
+                ALPAKA_FN_ACC_NO_CUDA auto operator=(BlockSharedAllocNoSync const &) -> BlockSharedAllocNoSync & = delete;
                 //-----------------------------------------------------------------------------
                 //! Move assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA auto operator=(BlockSharedAllocNoSync &&) -> BlockSharedAllocNoSync & = delete;
+                ALPAKA_FN_ACC_NO_CUDA auto operator=(BlockSharedAllocNoSync &&) -> BlockSharedAllocNoSync & = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA /*virtual*/ ~BlockSharedAllocNoSync() = default;
+                ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~BlockSharedAllocNoSync() = default;
 
             public:
                 // TODO: We should add the size of the (current) allocation.
@@ -90,7 +90,7 @@ namespace alpaka
                     T,
                     BlockSharedAllocNoSync>
                 {
-                    ALPAKA_FCT_ACC_NO_CUDA static auto allocVar(
+                    ALPAKA_FN_ACC_NO_CUDA static auto allocVar(
                         block::shared::BlockSharedAllocNoSync const & blockSharedAlloc)
                     -> T &
                     {
@@ -114,7 +114,7 @@ namespace alpaka
                     TuiNumElements,
                     BlockSharedAllocNoSync>
                 {
-                    ALPAKA_FCT_ACC_NO_CUDA static auto allocArr(
+                    ALPAKA_FN_ACC_NO_CUDA static auto allocArr(
                         block::shared::BlockSharedAllocNoSync const & blockSharedAlloc)
                     -> T *
                     {
@@ -133,7 +133,7 @@ namespace alpaka
                 struct FreeMem<
                     BlockSharedAllocNoSync>
                 {
-                    ALPAKA_FCT_ACC_NO_CUDA static auto freeMem(
+                    ALPAKA_FN_ACC_NO_CUDA static auto freeMem(
                         block::shared::BlockSharedAllocNoSync const & blockSharedAlloc)
                     -> void
                     {

@@ -72,38 +72,38 @@ namespace alpaka
                             //-----------------------------------------------------------------------------
                             //! Constructor.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_HOST ExecCpuOmp4Impl() = default;
+                            ALPAKA_FN_HOST ExecCpuOmp4Impl() = default;
                             //-----------------------------------------------------------------------------
                             //! Copy constructor.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_HOST ExecCpuOmp4Impl(ExecCpuOmp4Impl const & other) = default;
+                            ALPAKA_FN_HOST ExecCpuOmp4Impl(ExecCpuOmp4Impl const & other) = default;
                             //-----------------------------------------------------------------------------
                             //! Move constructor.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_HOST ExecCpuOmp4Impl(ExecCpuOmp4Impl && other) = default;
+                            ALPAKA_FN_HOST ExecCpuOmp4Impl(ExecCpuOmp4Impl && other) = default;
                             //-----------------------------------------------------------------------------
                             //! Copy assignment operator.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_HOST auto operator=(ExecCpuOmp4Impl const &) -> ExecCpuOmp4Impl & = default;
+                            ALPAKA_FN_HOST auto operator=(ExecCpuOmp4Impl const &) -> ExecCpuOmp4Impl & = default;
                             //-----------------------------------------------------------------------------
                             //! Move assignment operator.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_HOST auto operator=(ExecCpuOmp4Impl &&) -> ExecCpuOmp4Impl & = default;
+                            ALPAKA_FN_HOST auto operator=(ExecCpuOmp4Impl &&) -> ExecCpuOmp4Impl & = default;
                             //-----------------------------------------------------------------------------
                             //! Destructor.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_HOST ~ExecCpuOmp4Impl() = default;
+                            ALPAKA_FN_HOST ~ExecCpuOmp4Impl() = default;
 
                             //-----------------------------------------------------------------------------
                             //! Executes the kernel function object.
                             //-----------------------------------------------------------------------------
                             template<
                                 typename TWorkDiv,
-                                typename TKernelFctObj,
+                                typename TKernelFnObj,
                                 typename... TArgs>
-                            ALPAKA_FCT_HOST auto operator()(
+                            ALPAKA_FN_HOST auto operator()(
                                 TWorkDiv const & workDiv,
-                                TKernelFctObj const & kernelFctObj,
+                                TKernelFnObj const & kernelFnObj,
                                 TArgs const & ... args) const
                             -> void
                             {
@@ -120,7 +120,7 @@ namespace alpaka
 
                                 auto const uiBlockSharedExternMemSizeBytes(
                                     kernel::getBlockSharedExternMemSizeBytes<
-                                        typename std::decay<TKernelFctObj>::type,
+                                        typename std::decay<TKernelFnObj>::type,
                                         AccCpuOmp4<TDim, TSize>>(
                                             vuiBlockThreadExtents,
                                             args...));
@@ -200,7 +200,7 @@ namespace alpaka
                                                     }
                                                 }
 #endif
-                                                kernelFctObj(
+                                                kernelFnObj(
                                                     const_cast<AccCpuOmp4<TDim, TSize> const &>(acc),
                                                     args...);
 
@@ -240,7 +240,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TWorkDiv>
-            ALPAKA_FCT_HOST ExecCpuOmp4(
+            ALPAKA_FN_HOST ExecCpuOmp4(
                 TWorkDiv const & workDiv,
                 stream::StreamCpuAsync & stream) :
                     workdiv::WorkDivMembers<TDim, TSize>(workDiv),
@@ -255,32 +255,32 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST ExecCpuOmp4(ExecCpuOmp4 const & other) = default;
+            ALPAKA_FN_HOST ExecCpuOmp4(ExecCpuOmp4 const & other) = default;
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST ExecCpuOmp4(ExecCpuOmp4 && other) = default;
+            ALPAKA_FN_HOST ExecCpuOmp4(ExecCpuOmp4 && other) = default;
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator=(ExecCpuOmp4 const &) -> ExecCpuOmp4 & = default;
+            ALPAKA_FN_HOST auto operator=(ExecCpuOmp4 const &) -> ExecCpuOmp4 & = default;
             //-----------------------------------------------------------------------------
             //! Move assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator=(ExecCpuOmp4 &&) -> ExecCpuOmp4 & = default;
+            ALPAKA_FN_HOST auto operator=(ExecCpuOmp4 &&) -> ExecCpuOmp4 & = default;
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST ~ExecCpuOmp4() = default;
+            ALPAKA_FN_HOST ~ExecCpuOmp4() = default;
 
             //-----------------------------------------------------------------------------
             //! Enqueues the kernel function object.
             //-----------------------------------------------------------------------------
             template<
-                typename TKernelFctObj,
+                typename TKernelFnObj,
                 typename... TArgs>
-            ALPAKA_FCT_HOST auto operator()(
-                TKernelFctObj const & kernelFctObj,
+            ALPAKA_FN_HOST auto operator()(
+                TKernelFnObj const & kernelFnObj,
                 TArgs const & ... args) const
             -> void
             {
@@ -289,12 +289,12 @@ namespace alpaka
                 auto const & workDiv(*static_cast<workdiv::WorkDivMembers<TDim, TSize> const *>(this));
 
                 m_Stream.m_spAsyncStreamCpu->m_workerThread.enqueueTask(
-                    [workDiv, kernelFctObj, args...]()
+                    [workDiv, kernelFnObj, args...]()
                     {
                         omp::omp4::cpu::detail::ExecCpuOmp4Impl<TDim, TSize> exec;
                         exec(
                             workDiv,
-                            kernelFctObj,
+                            kernelFnObj,
                             args...);
                     });
             }
@@ -441,7 +441,7 @@ namespace alpaka
             struct GetStream<
                 exec::ExecCpuOmp4<TDim, TSize>>
             {
-                ALPAKA_FCT_HOST static auto getStream(
+                ALPAKA_FN_HOST static auto getStream(
                     exec::ExecCpuOmp4<TDim, TSize> const & exec)
                 -> stream::StreamCpuAsync
                 {

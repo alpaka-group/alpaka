@@ -27,7 +27,7 @@
 #include <alpaka/size/Traits.hpp>           // size::SizeT
 
 #include <alpaka/core/WorkDivHelpers.hpp>   // workdiv::isValidWorkDiv
-#include <alpaka/core/Common.hpp>           // ALPAKA_FCT_HOST
+#include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST
 
 #include <type_traits>                      // std::is_same
 
@@ -66,7 +66,7 @@ namespace alpaka
             typename TAcc,
             typename TStream,
             typename TWorkDiv>
-        ALPAKA_FCT_HOST auto create(
+        ALPAKA_FN_HOST auto create(
             TWorkDiv const & workDiv,
             TStream & stream)
         -> ExecT<TAcc>
@@ -105,7 +105,7 @@ namespace alpaka
             typename TStream,
             typename TGridBlockExtents,
             typename TBlockThreadExtents>
-        ALPAKA_FCT_HOST auto create(
+        ALPAKA_FN_HOST auto create(
             TGridBlockExtents const & gridBlockExtents,
             TBlockThreadExtents const & blockThreadExtents,
             TStream & stream)

@@ -75,7 +75,7 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         //! Yields the current fiber.
                         //-----------------------------------------------------------------------------
-                        ALPAKA_FCT_ACC_NO_CUDA static auto yield()
+                        ALPAKA_FN_ACC_NO_CUDA static auto yield()
                         -> void
                         {
                             boost::this_fiber::yield();
@@ -98,38 +98,38 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST ExecCpuFibersImpl() = default;
+                    ALPAKA_FN_HOST ExecCpuFibersImpl() = default;
                     //-----------------------------------------------------------------------------
                     //! Copy constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST ExecCpuFibersImpl(ExecCpuFibersImpl const &) = default;
+                    ALPAKA_FN_HOST ExecCpuFibersImpl(ExecCpuFibersImpl const &) = default;
                     //-----------------------------------------------------------------------------
                     //! Move constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST ExecCpuFibersImpl(ExecCpuFibersImpl &&) = default;
+                    ALPAKA_FN_HOST ExecCpuFibersImpl(ExecCpuFibersImpl &&) = default;
                     //-----------------------------------------------------------------------------
                     //! Copy assignment operator.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto operator=(ExecCpuFibersImpl const &) -> ExecCpuFibersImpl & = default;
+                    ALPAKA_FN_HOST auto operator=(ExecCpuFibersImpl const &) -> ExecCpuFibersImpl & = default;
                     //-----------------------------------------------------------------------------
                     //! Move assignment operator.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto operator=(ExecCpuFibersImpl &&) -> ExecCpuFibersImpl & = default;
+                    ALPAKA_FN_HOST auto operator=(ExecCpuFibersImpl &&) -> ExecCpuFibersImpl & = default;
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST ~ExecCpuFibersImpl() = default;
+                    ALPAKA_FN_HOST ~ExecCpuFibersImpl() = default;
 
                     //-----------------------------------------------------------------------------
                     //! Executes the kernel function object.
                     //-----------------------------------------------------------------------------
                     template<
                         typename TWorkDiv,
-                        typename TKernelFctObj,
+                        typename TKernelFnObj,
                         typename... TArgs>
-                    ALPAKA_FCT_HOST auto operator()(
+                    ALPAKA_FN_HOST auto operator()(
                         TWorkDiv const & workDiv,
-                        TKernelFctObj const & kernelFctObj,
+                        TKernelFnObj const & kernelFnObj,
                         TArgs const & ... args) const
                     -> void
                     {
@@ -146,7 +146,7 @@ namespace alpaka
 
                         auto const uiBlockSharedExternMemSizeBytes(
                             kernel::getBlockSharedExternMemSizeBytes<
-                                typename std::decay<TKernelFctObj>::type,
+                                typename std::decay<TKernelFnObj>::type,
                                 AccCpuFibers<TDim, TSize>>(
                                     vuiBlockThreadExtents,
                                     args...));
@@ -169,12 +169,12 @@ namespace alpaka
 
                         // Bind the kernel and its arguments to the grid block function.
                         auto boundGridBlockExecHost(std::bind(
-                            &ExecCpuFibersImpl<TDim, TSize>::gridBlockExecHost<TKernelFctObj, TArgs...>,
+                            &ExecCpuFibersImpl<TDim, TSize>::gridBlockExecHost<TKernelFnObj, TArgs...>,
                             std::ref(acc),
                             std::placeholders::_1,
                             std::ref(vuiBlockThreadExtents),
                             std::ref(fiberPool),
-                            std::ref(kernelFctObj),
+                            std::ref(kernelFnObj),
                             std::ref(args)...));
 
                         // Execute the blocks serially.
@@ -191,14 +191,14 @@ namespace alpaka
                     //! The function executed for each grid block.
                     //-----------------------------------------------------------------------------
                     template<
-                        typename TKernelFctObj,
+                        typename TKernelFnObj,
                         typename... TArgs>
-                    ALPAKA_FCT_HOST static auto gridBlockExecHost(
+                    ALPAKA_FN_HOST static auto gridBlockExecHost(
                         AccCpuFibers<TDim, TSize> & acc,
                         Vec<TDim, TSize> const & vuiGridBlockIdx,
                         Vec<TDim, TSize> const & vuiBlockThreadExtents,
                         FiberPool & fiberPool,
-                        TKernelFctObj const & kernelFctObj,
+                        TKernelFnObj const & kernelFnObj,
                         TArgs const & ... args)
                     -> void
                     {
@@ -210,12 +210,12 @@ namespace alpaka
 
                         // Bind the kernel and its arguments to the host block thread execution function.
                         auto boundBlockThreadExecHost(std::bind(
-                            &ExecCpuFibersImpl<TDim, TSize>::blockThreadExecHost<TKernelFctObj, TArgs...>,
+                            &ExecCpuFibersImpl<TDim, TSize>::blockThreadExecHost<TKernelFnObj, TArgs...>,
                             std::ref(acc),
                             std::ref(vFuturesInBlock),
                             std::placeholders::_1,
                             std::ref(fiberPool),
-                            std::ref(kernelFctObj),
+                            std::ref(kernelFnObj),
                             std::ref(args)...));
                         // Execute the block threads in parallel.
                         ndLoop(
@@ -244,14 +244,14 @@ namespace alpaka
                     //! The function executed for each block thread.
                     //-----------------------------------------------------------------------------
                     template<
-                        typename TKernelFctObj,
+                        typename TKernelFnObj,
                         typename... TArgs>
-                    ALPAKA_FCT_HOST static auto blockThreadExecHost(
+                    ALPAKA_FN_HOST static auto blockThreadExecHost(
                         AccCpuFibers<TDim, TSize> & acc,
                         std::vector<boost::fibers::future<void>> & vFuturesInBlock,
                         Vec<TDim, TSize> const & vuiBlockThreadIdx,
                         FiberPool & fiberPool,
-                        TKernelFctObj const & kernelFctObj,
+                        TKernelFnObj const & kernelFnObj,
                         TArgs const & ... args)
                     -> void
                     {
@@ -260,10 +260,10 @@ namespace alpaka
                         auto boundBlockThreadExecAcc(
                             [&, vuiBlockThreadIdx]()
                             {
-                                blockThreadFiberFct(
+                                blockThreadFiberFn(
                                     acc,
                                     vuiBlockThreadIdx,
-                                    kernelFctObj,
+                                    kernelFnObj,
                                     args...);
                             });
                         // Add the bound function to the block thread pool.
@@ -275,12 +275,12 @@ namespace alpaka
                     //! The fiber entry point.
                     //-----------------------------------------------------------------------------
                     template<
-                        typename TKernelFctObj,
+                        typename TKernelFnObj,
                         typename... TArgs>
-                    ALPAKA_FCT_HOST static auto blockThreadFiberFct(
+                    ALPAKA_FN_HOST static auto blockThreadFiberFn(
                         AccCpuFibers<TDim, TSize> & acc,
                         Vec<TDim, TSize> const & vuiBlockThreadIdx,
-                        TKernelFctObj const & kernelFctObj,
+                        TKernelFnObj const & kernelFnObj,
                         TArgs const & ... args)
                     -> void
                     {
@@ -305,7 +305,7 @@ namespace alpaka
                         acc.syncBlockThreads(itFiberToBarrier);
 
                         // Execute the kernel itself.
-                        kernelFctObj(
+                        kernelFnObj(
                             const_cast<AccCpuFibers<TDim, TSize> const &>(acc),
                             args...);
 
@@ -331,7 +331,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TWorkDiv>
-            ALPAKA_FCT_HOST ExecCpuFibers(
+            ALPAKA_FN_HOST ExecCpuFibers(
                 TWorkDiv const & workDiv,
                 stream::StreamCpuAsync & stream) :
                     workdiv::WorkDivMembers<TDim, TSize>(workDiv),
@@ -346,32 +346,32 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST ExecCpuFibers(ExecCpuFibers const &) = default;
+            ALPAKA_FN_HOST ExecCpuFibers(ExecCpuFibers const &) = default;
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST ExecCpuFibers(ExecCpuFibers &&) = default;
+            ALPAKA_FN_HOST ExecCpuFibers(ExecCpuFibers &&) = default;
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator=(ExecCpuFibers const &) -> ExecCpuFibers & = default;
+            ALPAKA_FN_HOST auto operator=(ExecCpuFibers const &) -> ExecCpuFibers & = default;
             //-----------------------------------------------------------------------------
             //! Move assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator=(ExecCpuFibers &&) -> ExecCpuFibers & = default;
+            ALPAKA_FN_HOST auto operator=(ExecCpuFibers &&) -> ExecCpuFibers & = default;
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST ~ExecCpuFibers() = default;
+            ALPAKA_FN_HOST ~ExecCpuFibers() = default;
 
             //-----------------------------------------------------------------------------
             //! Enqueues the kernel function object.
             //-----------------------------------------------------------------------------
             template<
-                typename TKernelFctObj,
+                typename TKernelFnObj,
                 typename... TArgs>
-            ALPAKA_FCT_HOST auto operator()(
-                TKernelFctObj const & kernelFctObj,
+            ALPAKA_FN_HOST auto operator()(
+                TKernelFnObj const & kernelFnObj,
                 TArgs const & ... args) const
             -> void
             {
@@ -380,12 +380,12 @@ namespace alpaka
                 auto const & workDiv(*static_cast<workdiv::WorkDivMembers<TDim, TSize> const *>(this));
 
                 m_Stream.m_spAsyncStreamCpu->m_workerThread.enqueueTask(
-                    [workDiv, kernelFctObj, args...]()
+                    [workDiv, kernelFnObj, args...]()
                     {
                         fibers::detail::ExecCpuFibersImpl<TDim, TSize> exec;
                         exec(
                             workDiv,
-                            kernelFctObj,
+                            kernelFnObj,
                             args...);
                     });
             }
@@ -532,7 +532,7 @@ namespace alpaka
             struct GetStream<
                 exec::ExecCpuFibers<TDim, TSize>>
             {
-                ALPAKA_FCT_HOST static auto getStream(
+                ALPAKA_FN_HOST static auto getStream(
                     exec::ExecCpuFibers<TDim, TSize> const & exec)
                 -> stream::StreamCpuAsync
                 {

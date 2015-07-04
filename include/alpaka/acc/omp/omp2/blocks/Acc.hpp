@@ -117,7 +117,7 @@ namespace alpaka
                             //-----------------------------------------------------------------------------
                             template<
                                 typename TWorkDiv>
-                            ALPAKA_FCT_ACC_NO_CUDA AccCpuOmp2Blocks(
+                            ALPAKA_FN_ACC_NO_CUDA AccCpuOmp2Blocks(
                                 TWorkDiv const & workDiv) :
                                     workdiv::WorkDivMembers<TDim, TSize>(workDiv),
                                     idx::gb::IdxGbRef<TDim, TSize>(m_vuiGridBlockIdx),
@@ -132,28 +132,28 @@ namespace alpaka
                             //-----------------------------------------------------------------------------
                             //! Copy constructor.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_ACC_NO_CUDA AccCpuOmp2Blocks(AccCpuOmp2Blocks const &) = delete;
+                            ALPAKA_FN_ACC_NO_CUDA AccCpuOmp2Blocks(AccCpuOmp2Blocks const &) = delete;
                             //-----------------------------------------------------------------------------
                             //! Move constructor.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_ACC_NO_CUDA AccCpuOmp2Blocks(AccCpuOmp2Blocks &&) = delete;
+                            ALPAKA_FN_ACC_NO_CUDA AccCpuOmp2Blocks(AccCpuOmp2Blocks &&) = delete;
                             //-----------------------------------------------------------------------------
                             //! Copy assignment operator.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_ACC_NO_CUDA auto operator=(AccCpuOmp2Blocks const &) -> AccCpuOmp2Blocks & = delete;
+                            ALPAKA_FN_ACC_NO_CUDA auto operator=(AccCpuOmp2Blocks const &) -> AccCpuOmp2Blocks & = delete;
                             //-----------------------------------------------------------------------------
                             //! Move assignment operator.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_ACC_NO_CUDA auto operator=(AccCpuOmp2Blocks &&) -> AccCpuOmp2Blocks & = delete;
+                            ALPAKA_FN_ACC_NO_CUDA auto operator=(AccCpuOmp2Blocks &&) -> AccCpuOmp2Blocks & = delete;
                             //-----------------------------------------------------------------------------
                             //! Destructor.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_ACC_NO_CUDA /*virtual*/ ~AccCpuOmp2Blocks() = default;
+                            ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~AccCpuOmp2Blocks() = default;
 
                             //-----------------------------------------------------------------------------
                             //! Syncs all threads in the current block.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_ACC_NO_CUDA auto syncBlockThreads() const
+                            ALPAKA_FN_ACC_NO_CUDA auto syncBlockThreads() const
                             -> void
                             {
                                 // Nothing to do in here because only one thread in a group is allowed.
@@ -164,7 +164,7 @@ namespace alpaka
                             //-----------------------------------------------------------------------------
                             template<
                                 typename T>
-                            ALPAKA_FCT_ACC_NO_CUDA auto getBlockSharedExternMem() const
+                            ALPAKA_FN_ACC_NO_CUDA auto getBlockSharedExternMem() const
                             -> T *
                             {
                                 return reinterpret_cast<T*>(m_vuiExternalSharedMem.get());
@@ -212,7 +212,7 @@ namespace alpaka
             struct GetAccDevProps<
                 acc::omp::omp2::blocks::detail::AccCpuOmp2Blocks<TDim, TSize>>
             {
-                ALPAKA_FCT_HOST static auto getAccDevProps(
+                ALPAKA_FN_HOST static auto getAccDevProps(
                     dev::DevCpu const & dev)
                 -> alpaka::acc::AccDevProps<TDim, TSize>
                 {
@@ -238,7 +238,7 @@ namespace alpaka
             struct GetAccName<
                 acc::omp::omp2::blocks::detail::AccCpuOmp2Blocks<TDim, TSize>>
             {
-                ALPAKA_FCT_HOST_ACC static auto getAccName()
+                ALPAKA_FN_HOST_ACC static auto getAccName()
                 -> std::string
                 {
                     return "AccCpuOmp2Blocks<" + std::to_string(TDim::value) + "," + typeid(TSize).name() + ">";

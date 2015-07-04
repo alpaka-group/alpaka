@@ -67,38 +67,38 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST ExecCpuSerialImpl() = default;
+                    ALPAKA_FN_HOST ExecCpuSerialImpl() = default;
                     //-----------------------------------------------------------------------------
                     //! Copy constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST ExecCpuSerialImpl(ExecCpuSerialImpl const &) = default;
+                    ALPAKA_FN_HOST ExecCpuSerialImpl(ExecCpuSerialImpl const &) = default;
                     //-----------------------------------------------------------------------------
                     //! Move constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST ExecCpuSerialImpl(ExecCpuSerialImpl &&) = default;
+                    ALPAKA_FN_HOST ExecCpuSerialImpl(ExecCpuSerialImpl &&) = default;
                     //-----------------------------------------------------------------------------
                     //! Copy assignment operator.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto operator=(ExecCpuSerialImpl const &) -> ExecCpuSerialImpl & = default;
+                    ALPAKA_FN_HOST auto operator=(ExecCpuSerialImpl const &) -> ExecCpuSerialImpl & = default;
                     //-----------------------------------------------------------------------------
                     //! Move assignment operator.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto operator=(ExecCpuSerialImpl &&) -> ExecCpuSerialImpl & = default;
+                    ALPAKA_FN_HOST auto operator=(ExecCpuSerialImpl &&) -> ExecCpuSerialImpl & = default;
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST ~ExecCpuSerialImpl() = default;
+                    ALPAKA_FN_HOST ~ExecCpuSerialImpl() = default;
 
                     //-----------------------------------------------------------------------------
                     //! Executes the kernel function object.
                     //-----------------------------------------------------------------------------
                     template<
                         typename TWorkDiv,
-                        typename TKernelFctObj,
+                        typename TKernelFnObj,
                         typename... TArgs>
-                    ALPAKA_FCT_HOST auto operator()(
+                    ALPAKA_FN_HOST auto operator()(
                         TWorkDiv const & workDiv,
-                        TKernelFctObj const & kernelFctObj,
+                        TKernelFnObj const & kernelFnObj,
                         TArgs const & ... args) const
                     -> void
                     {
@@ -115,7 +115,7 @@ namespace alpaka
 
                         auto const uiBlockSharedExternMemSizeBytes(
                             kernel::getBlockSharedExternMemSizeBytes<
-                                typename std::decay<TKernelFctObj>::type,
+                                typename std::decay<TKernelFnObj>::type,
                                 AccCpuSerial<TDim, TSize>>(
                                     vuiBlockThreadExtents,
                                     args...));
@@ -143,7 +143,7 @@ namespace alpaka
                             {
                                 acc.m_vuiGridBlockIdx = vuiBlockThreadIdx;
 
-                                kernelFctObj(
+                                kernelFnObj(
                                     const_cast<AccCpuSerial<TDim, TSize> const &>(acc),
                                     args...);
 
@@ -173,7 +173,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TWorkDiv>
-            ALPAKA_FCT_HOST ExecCpuSerial(
+            ALPAKA_FN_HOST ExecCpuSerial(
                 TWorkDiv const & workDiv,
                 stream::StreamCpuAsync & stream) :
                     workdiv::WorkDivMembers<TDim, TSize>(workDiv),
@@ -188,32 +188,32 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST ExecCpuSerial(ExecCpuSerial const &) = default;
+            ALPAKA_FN_HOST ExecCpuSerial(ExecCpuSerial const &) = default;
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST ExecCpuSerial(ExecCpuSerial &&) = default;
+            ALPAKA_FN_HOST ExecCpuSerial(ExecCpuSerial &&) = default;
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator=(ExecCpuSerial const &) -> ExecCpuSerial & = default;
+            ALPAKA_FN_HOST auto operator=(ExecCpuSerial const &) -> ExecCpuSerial & = default;
             //-----------------------------------------------------------------------------
             //! Move assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator=(ExecCpuSerial &&) -> ExecCpuSerial & = default;
+            ALPAKA_FN_HOST auto operator=(ExecCpuSerial &&) -> ExecCpuSerial & = default;
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST ~ExecCpuSerial() = default;
+            ALPAKA_FN_HOST ~ExecCpuSerial() = default;
 
             //-----------------------------------------------------------------------------
             //! Enqueues the kernel function object.
             //-----------------------------------------------------------------------------
             template<
-                typename TKernelFctObj,
+                typename TKernelFnObj,
                 typename... TArgs>
-            ALPAKA_FCT_HOST auto operator()(
-                TKernelFctObj const & kernelFctObj,
+            ALPAKA_FN_HOST auto operator()(
+                TKernelFnObj const & kernelFnObj,
                 TArgs const & ... args) const
             -> void
             {
@@ -222,12 +222,12 @@ namespace alpaka
                 auto const & workDiv(*static_cast<workdiv::WorkDivMembers<TDim, TSize> const *>(this));
 
                 m_Stream.m_spAsyncStreamCpu->m_workerThread.enqueueTask(
-                    [workDiv, kernelFctObj, args...]()
+                    [workDiv, kernelFnObj, args...]()
                     {
                         serial::detail::ExecCpuSerialImpl<TDim, TSize> exec;
                         exec(
                             workDiv,
-                            kernelFctObj,
+                            kernelFnObj,
                             args...);
                     });
             }
@@ -374,7 +374,7 @@ namespace alpaka
             struct GetStream<
                 exec::ExecCpuSerial<TDim, TSize>>
             {
-                ALPAKA_FCT_HOST static auto getStream(
+                ALPAKA_FN_HOST static auto getStream(
                     exec::ExecCpuSerial<TDim, TSize> const & exec)
                 -> stream::StreamCpuAsync
                 {

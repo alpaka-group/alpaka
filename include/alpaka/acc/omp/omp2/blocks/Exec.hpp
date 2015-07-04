@@ -72,38 +72,38 @@ namespace alpaka
                             //-----------------------------------------------------------------------------
                             //! Constructor.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_HOST ExecCpuOmp2BlocksImpl() = default;
+                            ALPAKA_FN_HOST ExecCpuOmp2BlocksImpl() = default;
                             //-----------------------------------------------------------------------------
                             //! Copy constructor.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_HOST ExecCpuOmp2BlocksImpl(ExecCpuOmp2BlocksImpl const &) = default;
+                            ALPAKA_FN_HOST ExecCpuOmp2BlocksImpl(ExecCpuOmp2BlocksImpl const &) = default;
                             //-----------------------------------------------------------------------------
                             //! Move constructor.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_HOST ExecCpuOmp2BlocksImpl(ExecCpuOmp2BlocksImpl &&) = default;
+                            ALPAKA_FN_HOST ExecCpuOmp2BlocksImpl(ExecCpuOmp2BlocksImpl &&) = default;
                             //-----------------------------------------------------------------------------
                             //! Copy assignment operator.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_HOST auto operator=(ExecCpuOmp2BlocksImpl const &) -> ExecCpuOmp2BlocksImpl & = default;
+                            ALPAKA_FN_HOST auto operator=(ExecCpuOmp2BlocksImpl const &) -> ExecCpuOmp2BlocksImpl & = default;
                             //-----------------------------------------------------------------------------
                             //! Move assignment operator.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_HOST auto operator=(ExecCpuOmp2BlocksImpl &&) -> ExecCpuOmp2BlocksImpl & = default;
+                            ALPAKA_FN_HOST auto operator=(ExecCpuOmp2BlocksImpl &&) -> ExecCpuOmp2BlocksImpl & = default;
                             //-----------------------------------------------------------------------------
                             //! Destructor.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_HOST ~ExecCpuOmp2BlocksImpl() = default;
+                            ALPAKA_FN_HOST ~ExecCpuOmp2BlocksImpl() = default;
 
                             //-----------------------------------------------------------------------------
                             //! Executes the kernel function object.
                             //-----------------------------------------------------------------------------
                             template<
                                 typename TWorkDiv,
-                                typename TKernelFctObj,
+                                typename TKernelFnObj,
                                 typename... TArgs>
-                            ALPAKA_FCT_HOST auto operator()(
+                            ALPAKA_FN_HOST auto operator()(
                                 TWorkDiv const & workDiv,
-                                TKernelFctObj const & kernelFctObj,
+                                TKernelFnObj const & kernelFnObj,
                                 TArgs const & ... args) const
                             -> void
                             {
@@ -120,7 +120,7 @@ namespace alpaka
 
                                 auto const uiBlockSharedExternMemSizeBytes(
                                     kernel::getBlockSharedExternMemSizeBytes<
-                                        typename std::decay<TKernelFctObj>::type,
+                                        typename std::decay<TKernelFnObj>::type,
                                         AccCpuOmp2Blocks<TDim, TSize>>(
                                             vuiBlockThreadExtents,
                                             args...));
@@ -178,7 +178,7 @@ namespace alpaka
 #endif
                                                 vuiGridBlockExtents);
 
-                                        kernelFctObj(
+                                        kernelFnObj(
                                             const_cast<AccCpuOmp2Blocks<TDim, TSize> const &>(acc),
                                             args...);
 
@@ -214,7 +214,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TWorkDiv>
-            ALPAKA_FCT_HOST ExecCpuOmp2Blocks(
+            ALPAKA_FN_HOST ExecCpuOmp2Blocks(
                 TWorkDiv const & workDiv,
                 stream::StreamCpuAsync & stream) :
                     workdiv::WorkDivMembers<TDim, TSize>(workDiv),
@@ -229,32 +229,32 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST ExecCpuOmp2Blocks(ExecCpuOmp2Blocks const &) = default;
+            ALPAKA_FN_HOST ExecCpuOmp2Blocks(ExecCpuOmp2Blocks const &) = default;
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST ExecCpuOmp2Blocks(ExecCpuOmp2Blocks &&) = default;
+            ALPAKA_FN_HOST ExecCpuOmp2Blocks(ExecCpuOmp2Blocks &&) = default;
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator=(ExecCpuOmp2Blocks const &) -> ExecCpuOmp2Blocks & = default;
+            ALPAKA_FN_HOST auto operator=(ExecCpuOmp2Blocks const &) -> ExecCpuOmp2Blocks & = default;
             //-----------------------------------------------------------------------------
             //! Move assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator=(ExecCpuOmp2Blocks &&) -> ExecCpuOmp2Blocks & = default;
+            ALPAKA_FN_HOST auto operator=(ExecCpuOmp2Blocks &&) -> ExecCpuOmp2Blocks & = default;
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST ~ExecCpuOmp2Blocks() = default;
+            ALPAKA_FN_HOST ~ExecCpuOmp2Blocks() = default;
 
             //-----------------------------------------------------------------------------
             //! Enqueues the kernel function object.
             //-----------------------------------------------------------------------------
             template<
-                typename TKernelFctObj,
+                typename TKernelFnObj,
                 typename... TArgs>
-            ALPAKA_FCT_HOST auto operator()(
-                TKernelFctObj const & kernelFctObj,
+            ALPAKA_FN_HOST auto operator()(
+                TKernelFnObj const & kernelFnObj,
                 TArgs const & ... args) const
             -> void
             {
@@ -263,12 +263,12 @@ namespace alpaka
                 auto const & workDiv(*static_cast<workdiv::WorkDivMembers<TDim, TSize> const *>(this));
 
                 m_Stream.m_spAsyncStreamCpu->m_workerThread.enqueueTask(
-                    [workDiv, kernelFctObj, args...]()
+                    [workDiv, kernelFnObj, args...]()
                     {
                         omp::omp2::blocks::detail::ExecCpuOmp2BlocksImpl<TDim, TSize> exec;
                         exec(
                             workDiv,
-                            kernelFctObj,
+                            kernelFnObj,
                             args...);
                     });
             }
@@ -415,7 +415,7 @@ namespace alpaka
             struct GetStream<
                 exec::ExecCpuOmp2Blocks<TDim, TSize>>
             {
-                ALPAKA_FCT_HOST static auto getStream(
+                ALPAKA_FN_HOST static auto getStream(
                     exec::ExecCpuOmp2Blocks<TDim, TSize> const & exec)
                 -> stream::StreamCpuAsync
                 {

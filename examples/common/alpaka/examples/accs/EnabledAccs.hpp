@@ -171,7 +171,7 @@ namespace alpaka
                 {
                     template<
                         typename TAcc>
-                    ALPAKA_FCT_HOST_ACC auto operator()(
+                    ALPAKA_FN_HOST_ACC auto operator()(
                         std::ostream & os)
                     -> void
                     {
@@ -187,7 +187,7 @@ namespace alpaka
             template<
                 typename TDim,
                 typename TSize>
-            ALPAKA_FCT_HOST_ACC auto writeEnabledAccs(
+            ALPAKA_FN_HOST_ACC auto writeEnabledAccs(
                 std::ostream & os)
             -> void
             {

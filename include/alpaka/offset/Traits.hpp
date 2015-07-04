@@ -23,7 +23,7 @@
 
 #include <alpaka/size/Traits.hpp>   // SizeT
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC
+#include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST_ACC
 
 #include <type_traits>              // std::enable_if
 
@@ -50,7 +50,7 @@ namespace alpaka
                 typename TSfinae = void>
             struct GetOffset
             {
-                ALPAKA_FCT_HOST_ACC static auto getOffset(
+                ALPAKA_FN_HOST_ACC static auto getOffset(
                     TOffsets const &)
                 -> size::SizeT<TOffsets>
                 {
@@ -75,7 +75,7 @@ namespace alpaka
         template<
             std::size_t TuiIdx,
             typename TOffsets>
-        ALPAKA_FCT_HOST_ACC auto getOffset(
+        ALPAKA_FN_HOST_ACC auto getOffset(
             TOffsets const & offsets)
         -> size::SizeT<TOffsets>
         {
@@ -92,7 +92,7 @@ namespace alpaka
         template<
             typename TVal,
             typename TOffsets>
-        ALPAKA_FCT_HOST_ACC auto getOffsetX(
+        ALPAKA_FN_HOST_ACC auto getOffsetX(
             TOffsets const & offsets = TOffsets())
         -> size::SizeT<TOffsets>
         {
@@ -104,7 +104,7 @@ namespace alpaka
         template<
             typename TVal,
             typename TOffsets>
-        ALPAKA_FCT_HOST_ACC auto getOffsetY(
+        ALPAKA_FN_HOST_ACC auto getOffsetY(
             TOffsets const & offsets = TOffsets())
         -> size::SizeT<TOffsets>
         {
@@ -116,7 +116,7 @@ namespace alpaka
         template<
             typename TVal,
             typename TOffsets>
-        ALPAKA_FCT_HOST_ACC auto getOffsetZ(
+        ALPAKA_FN_HOST_ACC auto getOffsetZ(
             TOffsets const & offsets = TOffsets())
         -> size::SizeT<TOffsets>
         {
@@ -130,7 +130,7 @@ namespace alpaka
             std::size_t TuiIdx,
             typename TOffsets,
             typename TOffset>
-        ALPAKA_FCT_HOST_ACC auto setOffset(
+        ALPAKA_FN_HOST_ACC auto setOffset(
             TOffsets const & offsets,
             TOffset const & offset)
         -> void
@@ -149,7 +149,7 @@ namespace alpaka
         template<
             typename TOffsets,
             typename TOffset>
-        ALPAKA_FCT_HOST_ACC auto setOffsetX(
+        ALPAKA_FN_HOST_ACC auto setOffsetX(
             TOffsets const & offsets,
             TOffset const & offset)
         -> void
@@ -162,7 +162,7 @@ namespace alpaka
         template<
             typename TOffsets,
             typename TOffset>
-        ALPAKA_FCT_HOST_ACC auto setOffsetY(
+        ALPAKA_FN_HOST_ACC auto setOffsetY(
             TOffsets const & offsets,
             TOffset const & offset)
         -> void
@@ -175,7 +175,7 @@ namespace alpaka
         template<
             typename TOffsets,
             typename TOffset>
-        ALPAKA_FCT_HOST_ACC auto setOffsetZ(
+        ALPAKA_FN_HOST_ACC auto setOffsetZ(
             TOffsets const & offsets,
             TOffset const & offset)
         -> void
@@ -199,7 +199,7 @@ namespace alpaka
                 typename std::enable_if<
                     std::is_integral<TOffsets>::value && std::is_unsigned<TOffsets>::value>::type>
             {
-                ALPAKA_FCT_HOST_ACC static auto getOffset(
+                ALPAKA_FN_HOST_ACC static auto getOffset(
                     TOffsets const & offset)
                 -> size::SizeT<TOffsets>
                 {
@@ -219,7 +219,7 @@ namespace alpaka
                 typename std::enable_if<
                     std::is_integral<TOffsets>::value && std::is_unsigned<TOffsets>::value>::type>
             {
-                ALPAKA_FCT_HOST_ACC static auto setOffset(
+                ALPAKA_FN_HOST_ACC static auto setOffset(
                     TOffsets const & offsets,
                     TOffset const & offset)
                 -> void

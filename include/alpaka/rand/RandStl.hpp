@@ -23,7 +23,7 @@
 
 #include <alpaka/rand/Traits.hpp>       // CreateNormalReal, ...
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST_ACC
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
 
 #include <random>                       // std::mt19937, std::uniform_real_distribution, ...
 #include <type_traits>                  // std::enable_if
@@ -51,7 +51,7 @@ namespace alpaka
                             dev::DevCpu>::value
                         && std::is_floating_point<T>::value>::type>
                 {
-                    ALPAKA_FCT_HOST_ACC static auto createNormalReal(
+                    ALPAKA_FN_HOST_ACC static auto createNormalReal(
                         TAcc const & acc)
                     -> std::normal_distribution<T>
                     {
@@ -73,7 +73,7 @@ namespace alpaka
                             dev::DevCpu>::value
                         && std::is_floating_point<T>::value>::type>
                 {
-                    ALPAKA_FCT_HOST_ACC static auto createUniformReal(
+                    ALPAKA_FN_HOST_ACC static auto createUniformReal(
                         TAcc const & acc)
                     -> std::uniform_real_distribution<T>
                     {
@@ -95,7 +95,7 @@ namespace alpaka
                             dev::DevCpu>::value
                         && std::is_integral<T>::value>::type>
                 {
-                    ALPAKA_FCT_HOST_ACC static auto createUniformUint(
+                    ALPAKA_FN_HOST_ACC static auto createUniformUint(
                         TAcc const & acc)
                     -> std::uniform_int_distribution<T>
                     {
@@ -122,7 +122,7 @@ namespace alpaka
                             dev::DevT<TAcc>,
                             dev::DevCpu>::value>::type>
                 {
-                    ALPAKA_FCT_HOST_ACC static auto createDefault(
+                    ALPAKA_FN_HOST_ACC static auto createDefault(
                         TAcc const & acc,
                         std::uint32_t const & seed,
                         std::uint32_t const & subsequence)

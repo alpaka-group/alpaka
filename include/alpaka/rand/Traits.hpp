@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC
+#include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST_ACC
 
 #include <utility>                  // std::declval
 #include <type_traits>              // std::is_integral, std::is_floating_point, ...
@@ -89,7 +89,7 @@ namespace alpaka
             template<
                 typename T,
                 typename TAcc>
-            ALPAKA_FCT_HOST_ACC auto createNormalReal(
+            ALPAKA_FN_HOST_ACC auto createNormalReal(
                 TAcc const & acc)
             -> DistNormalRealT<T, TAcc>
             {
@@ -122,7 +122,7 @@ namespace alpaka
             template<
                 typename T,
                 typename TAcc>
-            ALPAKA_FCT_HOST_ACC auto createUniformReal(
+            ALPAKA_FN_HOST_ACC auto createUniformReal(
                 TAcc const & acc)
             -> DistUniRealT<T, TAcc>
             {
@@ -155,7 +155,7 @@ namespace alpaka
             template<
                 typename T,
                 typename TAcc>
-            ALPAKA_FCT_HOST_ACC auto createUniformUint(
+            ALPAKA_FN_HOST_ACC auto createUniformUint(
                 TAcc const & acc)
             -> DistUniUintT<T, TAcc>
             {
@@ -206,7 +206,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TAcc>
-            ALPAKA_FCT_HOST_ACC auto createDefault(
+            ALPAKA_FN_HOST_ACC auto createDefault(
                 TAcc const & acc,
                 std::uint32_t const & seed,
                 std::uint32_t const & subsequence)

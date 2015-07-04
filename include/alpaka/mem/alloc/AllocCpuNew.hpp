@@ -23,7 +23,7 @@
 
 #include <alpaka/mem/alloc/Traits.hpp>  // mem::alloc::Alloc, mem::alloc::Free
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST
 
 namespace alpaka
 {
@@ -56,7 +56,7 @@ namespace alpaka
                     T,
                     AllocCpuNew>
                 {
-                    ALPAKA_FCT_HOST static auto alloc(
+                    ALPAKA_FN_HOST static auto alloc(
                         AllocCpuNew const & alloc,
                         std::size_t const & sizeElems)
                     -> T *
@@ -76,7 +76,7 @@ namespace alpaka
                     T,
                     AllocCpuNew>
                 {
-                    ALPAKA_FCT_HOST static auto free(
+                    ALPAKA_FN_HOST static auto free(
                         AllocCpuNew const & alloc,
                         T const * const ptr)
                     -> void

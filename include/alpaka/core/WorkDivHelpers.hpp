@@ -28,7 +28,7 @@
 
 #include <alpaka/core/ForEachType.hpp>          // forEachType
 #include <alpaka/core/Vec.hpp>                  // Vec
-#include <alpaka/core/Common.hpp>               // ALPAKA_FCT_HOST
+#include <alpaka/core/Common.hpp>               // ALPAKA_FN_HOST
 
 #include <cmath>                                // std::ceil
 #include <algorithm>                            // std::min
@@ -65,7 +65,7 @@ namespace alpaka
             template<
                 typename T,
                 typename = typename std::enable_if<std::is_integral<T>::value && std::is_unsigned<T>::value>::type>
-            ALPAKA_FCT_HOST auto nextDivisorLowerOrEqual(
+            ALPAKA_FN_HOST auto nextDivisorLowerOrEqual(
                 T const & uiMaxDivisor,
                 T const & uiDividend)
             -> T
@@ -127,7 +127,7 @@ namespace alpaka
         template<
             typename TDim,
             typename TSize>
-        ALPAKA_FCT_HOST auto subDivideGridThreads(
+        ALPAKA_FN_HOST auto subDivideGridThreads(
             Vec<TDim, TSize> const & vuiGridThreadExtents,
             Vec<TDim, TSize> const & vuiMaxBlockThreadExtents,
             TSize const & uiMaxBlockThreadsCount,
@@ -309,7 +309,7 @@ namespace alpaka
             typename TAcc,
             typename TExtents,
             typename TDev>
-        ALPAKA_FCT_HOST auto getValidWorkDiv(
+        ALPAKA_FN_HOST auto getValidWorkDiv(
             TDev const & dev,
             TExtents const & gridThreadExtents = TExtents(),
             bool bRequireBlockThreadExtentsToDivideGridThreadExtents = true,
@@ -343,7 +343,7 @@ namespace alpaka
             typename TAcc,
             typename TDev,
             typename TWorkDiv>
-        ALPAKA_FCT_HOST auto isValidWorkDiv(
+        ALPAKA_FN_HOST auto isValidWorkDiv(
             TDev const & dev,
             TWorkDiv const & workDiv)
         -> bool

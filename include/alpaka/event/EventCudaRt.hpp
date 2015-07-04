@@ -49,7 +49,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST EventCudaImpl(
+                    ALPAKA_FN_HOST EventCudaImpl(
                         dev::DevCudaRt const & dev,
                         bool bBusyWait) :
                             m_Dev(dev),
@@ -73,23 +73,23 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Copy constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST EventCudaImpl(EventCudaImpl const &) = delete;
+                    ALPAKA_FN_HOST EventCudaImpl(EventCudaImpl const &) = delete;
                     //-----------------------------------------------------------------------------
                     //! Move constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST EventCudaImpl(EventCudaImpl &&) = default;
+                    ALPAKA_FN_HOST EventCudaImpl(EventCudaImpl &&) = default;
                     //-----------------------------------------------------------------------------
                     //! Copy assignment operator.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto operator=(EventCudaImpl const &) -> EventCudaImpl & = delete;
+                    ALPAKA_FN_HOST auto operator=(EventCudaImpl const &) -> EventCudaImpl & = delete;
                     //-----------------------------------------------------------------------------
                     //! Move assignment operator.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto operator=(EventCudaImpl &&) -> EventCudaImpl & = default;
+                    ALPAKA_FN_HOST auto operator=(EventCudaImpl &&) -> EventCudaImpl & = default;
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST ~EventCudaImpl()
+                    ALPAKA_FN_HOST ~EventCudaImpl()
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -119,7 +119,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST EventCudaRt(
+            ALPAKA_FN_HOST EventCudaRt(
                 dev::DevCudaRt const & dev,
                 bool bBusyWait = true) :
                     m_spEventCudaImpl(std::make_shared<cuda::detail::EventCudaImpl>(dev, bBusyWait))
@@ -129,23 +129,23 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST EventCudaRt(EventCudaRt const &) = default;
+            ALPAKA_FN_HOST EventCudaRt(EventCudaRt const &) = default;
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST EventCudaRt(EventCudaRt &&) = default;
+            ALPAKA_FN_HOST EventCudaRt(EventCudaRt &&) = default;
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator=(EventCudaRt const &) -> EventCudaRt & = default;
+            ALPAKA_FN_HOST auto operator=(EventCudaRt const &) -> EventCudaRt & = default;
             //-----------------------------------------------------------------------------
             //! Move assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator=(EventCudaRt &&) -> EventCudaRt & = default;
+            ALPAKA_FN_HOST auto operator=(EventCudaRt &&) -> EventCudaRt & = default;
             //-----------------------------------------------------------------------------
             //! Equality comparison operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator==(EventCudaRt const & rhs) const
+            ALPAKA_FN_HOST auto operator==(EventCudaRt const & rhs) const
             -> bool
             {
                 return (m_spEventCudaImpl->m_CudaEvent == m_spEventCudaImpl->m_CudaEvent);
@@ -153,7 +153,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Equality comparison operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator!=(EventCudaRt const & rhs) const
+            ALPAKA_FN_HOST auto operator!=(EventCudaRt const & rhs) const
             -> bool
             {
                 return !((*this) == rhs);
@@ -161,7 +161,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST ~EventCudaRt() = default;
+            ALPAKA_FN_HOST ~EventCudaRt() = default;
 
         public:
             std::shared_ptr<cuda::detail::EventCudaImpl> m_spEventCudaImpl;
@@ -179,7 +179,7 @@ namespace alpaka
             struct GetDev<
                 event::EventCudaRt>
             {
-                ALPAKA_FCT_HOST static auto getDev(
+                ALPAKA_FN_HOST static auto getDev(
                     event::EventCudaRt const & event)
                 -> dev::DevCudaRt
                 {
@@ -209,7 +209,7 @@ namespace alpaka
             struct EventTest<
                 event::EventCudaRt>
             {
-                ALPAKA_FCT_HOST static auto eventTest(
+                ALPAKA_FN_HOST static auto eventTest(
                     event::EventCudaRt const & event)
                 -> bool
                 {
@@ -249,7 +249,7 @@ namespace alpaka
             struct CurrentThreadWaitFor<
                 event::EventCudaRt>
             {
-                ALPAKA_FCT_HOST static auto currentThreadWaitFor(
+                ALPAKA_FN_HOST static auto currentThreadWaitFor(
                     event::EventCudaRt const & event)
                 -> void
                 {

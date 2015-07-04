@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC
+#include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST_ACC
 
 #include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
 
@@ -50,7 +50,7 @@ namespace alpaka
         template<
             typename T,
             typename TArg>
-        ALPAKA_FCT_HOST_ACC auto acos(
+        ALPAKA_FN_HOST_ACC auto acos(
             T const & acos,
             TArg const & arg)
         -> decltype(
@@ -87,7 +87,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST_ACC static auto acos(
+                ALPAKA_FN_HOST_ACC static auto acos(
                     T const & acos,
                     TArg const & arg)
                 -> decltype(

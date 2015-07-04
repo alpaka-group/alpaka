@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST
+#include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST
 
 namespace alpaka
 {
@@ -64,7 +64,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TDev>
-        ALPAKA_FCT_HOST auto create(
+        ALPAKA_FN_HOST auto create(
             TDev const & dev)
         -> EventT<TDev>
         {
@@ -76,7 +76,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TEvent>
-        ALPAKA_FCT_HOST auto test(
+        ALPAKA_FN_HOST auto test(
             TEvent const & event)
         -> bool
         {

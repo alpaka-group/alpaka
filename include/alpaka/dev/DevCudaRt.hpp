@@ -51,28 +51,28 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST DevCudaRt() = default;
+            ALPAKA_FN_HOST DevCudaRt() = default;
         public:
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST DevCudaRt(DevCudaRt const &) = default;
+            ALPAKA_FN_HOST DevCudaRt(DevCudaRt const &) = default;
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST DevCudaRt(DevCudaRt &&) = default;
+            ALPAKA_FN_HOST DevCudaRt(DevCudaRt &&) = default;
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator=(DevCudaRt const &) -> DevCudaRt & = default;
+            ALPAKA_FN_HOST auto operator=(DevCudaRt const &) -> DevCudaRt & = default;
             //-----------------------------------------------------------------------------
             //! Move assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator=(DevCudaRt &&) -> DevCudaRt & = default;
+            ALPAKA_FN_HOST auto operator=(DevCudaRt &&) -> DevCudaRt & = default;
             //-----------------------------------------------------------------------------
             //! Equality comparison operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator==(DevCudaRt const & rhs) const
+            ALPAKA_FN_HOST auto operator==(DevCudaRt const & rhs) const
             -> bool
             {
                 return m_iDevice == rhs.m_iDevice;
@@ -80,7 +80,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Inequality comparison operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator!=(DevCudaRt const & rhs) const
+            ALPAKA_FN_HOST auto operator!=(DevCudaRt const & rhs) const
             -> bool
             {
                 return !((*this) == rhs);
@@ -99,12 +99,12 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST DevManCudaRt() = delete;
+            ALPAKA_FN_HOST DevManCudaRt() = delete;
 
             //-----------------------------------------------------------------------------
             //! \return The number of devices available.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST static auto getDevCount()
+            ALPAKA_FN_HOST static auto getDevCount()
             -> std::size_t
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
@@ -117,7 +117,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! \return The number of devices available.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST static auto getDevByIdx(
+            ALPAKA_FN_HOST static auto getDevByIdx(
                 std::size_t const & uiIdx)
             -> DevCudaRt
             {
@@ -169,7 +169,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! \return If the device is usable.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST static auto isDevUsable(
+            ALPAKA_FN_HOST static auto isDevUsable(
                 std::size_t iDevice)
             -> bool
             {
@@ -200,7 +200,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Initializes the cuda runtime.
             //-----------------------------------------------------------------------------
-            /*ALPAKA_FCT_HOST static auto init()
+            /*ALPAKA_FN_HOST static auto init()
             -> void
             {
                 static bool s_bInitialized = false;
@@ -330,7 +330,7 @@ namespace alpaka
             struct GetDev<
                 dev::DevCudaRt>
             {
-                ALPAKA_FCT_HOST static auto getDev(
+                ALPAKA_FN_HOST static auto getDev(
                     dev::DevCudaRt const & dev)
                 -> dev::DevCudaRt
                 {
@@ -345,7 +345,7 @@ namespace alpaka
             struct GetName<
                 dev::DevCudaRt>
             {
-                ALPAKA_FCT_HOST static auto getName(
+                ALPAKA_FN_HOST static auto getName(
                     dev::DevCudaRt const & dev)
                 -> std::string
                 {
@@ -365,7 +365,7 @@ namespace alpaka
             struct GetMemBytes<
                 dev::DevCudaRt>
             {
-                ALPAKA_FCT_HOST static auto getMemBytes(
+                ALPAKA_FN_HOST static auto getMemBytes(
                     dev::DevCudaRt const & dev)
                 -> std::size_t
                 {
@@ -394,7 +394,7 @@ namespace alpaka
             struct GetFreeMemBytes<
                 dev::DevCudaRt>
             {
-                ALPAKA_FCT_HOST static auto getFreeMemBytes(
+                ALPAKA_FN_HOST static auto getFreeMemBytes(
                     dev::DevCudaRt const & dev)
                 -> std::size_t
                 {
@@ -422,7 +422,7 @@ namespace alpaka
             struct Reset<
                 dev::DevCudaRt>
             {
-                ALPAKA_FCT_HOST static auto reset(
+                ALPAKA_FN_HOST static auto reset(
                     dev::DevCudaRt const & dev)
                 -> void
                 {
@@ -543,7 +543,7 @@ namespace alpaka
             struct CurrentThreadWaitFor<
                 dev::DevCudaRt>
             {
-                ALPAKA_FCT_HOST static auto currentThreadWaitFor(
+                ALPAKA_FN_HOST static auto currentThreadWaitFor(
                     dev::DevCudaRt const & dev)
                 -> void
                 {

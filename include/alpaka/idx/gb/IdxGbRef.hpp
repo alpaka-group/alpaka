@@ -47,30 +47,30 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Default constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA IdxGbRef(
+                ALPAKA_FN_ACC_NO_CUDA IdxGbRef(
                     Vec<TDim, TSize> const & vuiGridBlockIdx) :
                         m_vuiGridBlockIdx(vuiGridBlockIdx)
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA IdxGbRef(IdxGbRef const &) = delete;
+                ALPAKA_FN_ACC_NO_CUDA IdxGbRef(IdxGbRef const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA IdxGbRef(IdxGbRef &&) = delete;
+                ALPAKA_FN_ACC_NO_CUDA IdxGbRef(IdxGbRef &&) = delete;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA auto operator=(IdxGbRef const &) -> IdxGbRef & = delete;
+                ALPAKA_FN_ACC_NO_CUDA auto operator=(IdxGbRef const &) -> IdxGbRef & = delete;
                 //-----------------------------------------------------------------------------
                 //! Move assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA auto operator=(IdxGbRef &&) -> IdxGbRef & = delete;
+                ALPAKA_FN_ACC_NO_CUDA auto operator=(IdxGbRef &&) -> IdxGbRef & = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA /*virtual*/ ~IdxGbRef() = default;
+                ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~IdxGbRef() = default;
 
             public:
                 alignas(16u) Vec<TDim, TSize> const & m_vuiGridBlockIdx;
@@ -115,7 +115,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
-                ALPAKA_FCT_ACC_NO_CUDA static auto getIdx(
+                ALPAKA_FN_ACC_NO_CUDA static auto getIdx(
                     idx::gb::IdxGbRef<TDim, TSize> const & idx,
                     TWorkDiv const & workDiv)
                 -> Vec<TDim, TSize>

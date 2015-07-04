@@ -50,7 +50,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST EventCpuAsyncImpl(
+                    ALPAKA_FN_HOST EventCpuAsyncImpl(
                         dev::DevCpu const & dev) :
                             m_Uuid(boost::uuids::random_generator()()),
                             m_Dev(dev),
@@ -62,23 +62,23 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Copy constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST EventCpuAsyncImpl(EventCpuAsyncImpl const &) = delete;
+                    ALPAKA_FN_HOST EventCpuAsyncImpl(EventCpuAsyncImpl const &) = delete;
                     //-----------------------------------------------------------------------------
                     //! Move constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST EventCpuAsyncImpl(EventCpuAsyncImpl &&) = default;
+                    ALPAKA_FN_HOST EventCpuAsyncImpl(EventCpuAsyncImpl &&) = default;
                     //-----------------------------------------------------------------------------
                     //! Copy assignment operator.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto operator=(EventCpuAsyncImpl const &) -> EventCpuAsyncImpl & = delete;
+                    ALPAKA_FN_HOST auto operator=(EventCpuAsyncImpl const &) -> EventCpuAsyncImpl & = delete;
                     //-----------------------------------------------------------------------------
                     //! Move assignment operator.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto operator=(EventCpuAsyncImpl &&) -> EventCpuAsyncImpl & = default;
+                    ALPAKA_FN_HOST auto operator=(EventCpuAsyncImpl &&) -> EventCpuAsyncImpl & = default;
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST ~EventCpuAsyncImpl() noexcept
+                    ALPAKA_FN_HOST ~EventCpuAsyncImpl() noexcept
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                     {
                         // If a event is enqueued to a stream and gets waited on but destructed before it is completed it is kept alive until completed.
@@ -113,30 +113,30 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST EventCpuAsync(
+            ALPAKA_FN_HOST EventCpuAsync(
                 dev::DevCpu const & dev) :
                     m_spEventCpuAsyncImpl(std::make_shared<cpu::detail::EventCpuAsyncImpl>(dev))
             {}
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST EventCpuAsync(EventCpuAsync const &) = default;
+            ALPAKA_FN_HOST EventCpuAsync(EventCpuAsync const &) = default;
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST EventCpuAsync(EventCpuAsync &&) = default;
+            ALPAKA_FN_HOST EventCpuAsync(EventCpuAsync &&) = default;
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator=(EventCpuAsync const &) -> EventCpuAsync & = default;
+            ALPAKA_FN_HOST auto operator=(EventCpuAsync const &) -> EventCpuAsync & = default;
             //-----------------------------------------------------------------------------
             //! Move assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator=(EventCpuAsync &&) -> EventCpuAsync & = default;
+            ALPAKA_FN_HOST auto operator=(EventCpuAsync &&) -> EventCpuAsync & = default;
             //-----------------------------------------------------------------------------
             //! Equality comparison operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator==(EventCpuAsync const & rhs) const
+            ALPAKA_FN_HOST auto operator==(EventCpuAsync const & rhs) const
             -> bool
             {
                 return (m_spEventCpuAsyncImpl->m_Uuid == rhs.m_spEventCpuAsyncImpl->m_Uuid);
@@ -144,7 +144,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Inequality comparison operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator!=(EventCpuAsync const & rhs) const
+            ALPAKA_FN_HOST auto operator!=(EventCpuAsync const & rhs) const
             -> bool
             {
                 return !((*this) == rhs);
@@ -166,7 +166,7 @@ namespace alpaka
             struct GetDev<
                 event::EventCpuAsync>
             {
-                ALPAKA_FCT_HOST static auto getDev(
+                ALPAKA_FN_HOST static auto getDev(
                     event::EventCpuAsync const & event)
                 -> dev::DevCpu
                 {
@@ -199,7 +199,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return If the event is not waiting within a stream (not enqueued or already handled).
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto eventTest(
+                ALPAKA_FN_HOST static auto eventTest(
                     event::EventCpuAsync const & event)
                 -> bool
                 {
@@ -224,7 +224,7 @@ namespace alpaka
             struct CurrentThreadWaitFor<
                 event::EventCpuAsync>
             {
-                ALPAKA_FCT_HOST static auto currentThreadWaitFor(
+                ALPAKA_FN_HOST static auto currentThreadWaitFor(
                     event::EventCpuAsync const & event)
                 -> void
                 {
@@ -243,7 +243,7 @@ namespace alpaka
             struct CurrentThreadWaitFor<
                 std::shared_ptr<event::cpu::detail::EventCpuAsyncImpl>>
             {
-                ALPAKA_FCT_HOST static auto currentThreadWaitFor(
+                ALPAKA_FN_HOST static auto currentThreadWaitFor(
                     std::shared_ptr<event::cpu::detail::EventCpuAsyncImpl> const & spEventCpuImpl)
                 -> void
                 {

@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_ACC_NO_CUDA
+#include <alpaka/core/Common.hpp>   // ALPAKA_FN_ACC_NO_CUDA
 
 #include <mutex>                    // std::mutex
 #include <condition_variable>       // std::condition_variable
@@ -43,38 +43,38 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA explicit ThreadBarrier(
+                ALPAKA_FN_ACC_NO_CUDA explicit ThreadBarrier(
                     TSize const & uiNumThreadsToWaitFor = 0) :
                     m_uiNumThreadsToWaitFor(uiNumThreadsToWaitFor)
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA ThreadBarrier(
+                ALPAKA_FN_ACC_NO_CUDA ThreadBarrier(
                     ThreadBarrier const & other) = delete;/* :
                     m_uiNumThreadsToWaitFor(other.m_uiNumThreadsToWaitFor)
                 {}*/
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA ThreadBarrier(ThreadBarrier &&) = delete;
+                ALPAKA_FN_ACC_NO_CUDA ThreadBarrier(ThreadBarrier &&) = delete;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA auto operator=(ThreadBarrier const &) -> ThreadBarrier & = delete;
+                ALPAKA_FN_ACC_NO_CUDA auto operator=(ThreadBarrier const &) -> ThreadBarrier & = delete;
                 //-----------------------------------------------------------------------------
                 //! Move assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA auto operator=(ThreadBarrier &&) -> ThreadBarrier & = delete;
+                ALPAKA_FN_ACC_NO_CUDA auto operator=(ThreadBarrier &&) -> ThreadBarrier & = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA ~ThreadBarrier() = default;
+                ALPAKA_FN_ACC_NO_CUDA ~ThreadBarrier() = default;
 
                 //-----------------------------------------------------------------------------
                 //! Waits for all the other threads to reach the barrier.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA auto wait()
+                ALPAKA_FN_ACC_NO_CUDA auto wait()
                 -> void
                 {
                     std::unique_lock<std::mutex> lock(m_mtxBarrier);
@@ -92,7 +92,7 @@ namespace alpaka
                 //! \return The number of threads to wait for.
                 //! NOTE: The value almost always is invalid the time you get it.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA auto getNumThreadsToWaitFor() const
+                ALPAKA_FN_ACC_NO_CUDA auto getNumThreadsToWaitFor() const
                 -> TSize
                 {
                     return m_uiNumThreadsToWaitFor;
@@ -101,7 +101,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Resets the number of threads to wait for to the given number.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA auto reset(
+                ALPAKA_FN_ACC_NO_CUDA auto reset(
                     TSize const & uiNumThreadsToWaitFor)
                 -> void
                 {

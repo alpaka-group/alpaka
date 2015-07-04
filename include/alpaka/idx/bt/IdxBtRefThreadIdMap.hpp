@@ -50,30 +50,30 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA IdxBtRefThreadIdMap(
+                ALPAKA_FN_ACC_NO_CUDA IdxBtRefThreadIdMap(
                     ThreadIdToIdxMap const & mThreadsToIndices) :
                     m_mThreadsToIndices(mThreadsToIndices)
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA IdxBtRefThreadIdMap(IdxBtRefThreadIdMap const &) = delete;
+                ALPAKA_FN_ACC_NO_CUDA IdxBtRefThreadIdMap(IdxBtRefThreadIdMap const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA IdxBtRefThreadIdMap(IdxBtRefThreadIdMap &&) = delete;
+                ALPAKA_FN_ACC_NO_CUDA IdxBtRefThreadIdMap(IdxBtRefThreadIdMap &&) = delete;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA auto operator=(IdxBtRefThreadIdMap const &) -> IdxBtRefThreadIdMap & = delete;
+                ALPAKA_FN_ACC_NO_CUDA auto operator=(IdxBtRefThreadIdMap const &) -> IdxBtRefThreadIdMap & = delete;
                 //-----------------------------------------------------------------------------
                 //! Move assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA auto operator=(IdxBtRefThreadIdMap &&) -> IdxBtRefThreadIdMap & = delete;
+                ALPAKA_FN_ACC_NO_CUDA auto operator=(IdxBtRefThreadIdMap &&) -> IdxBtRefThreadIdMap & = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA /*virtual*/ ~IdxBtRefThreadIdMap() = default;
+                ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~IdxBtRefThreadIdMap() = default;
 
             public:
                 ThreadIdToIdxMap const & m_mThreadsToIndices;   //!< The mapping of thread id's to thread indices.
@@ -118,7 +118,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
-                ALPAKA_FCT_ACC_NO_CUDA static auto getIdx(
+                ALPAKA_FN_ACC_NO_CUDA static auto getIdx(
                     idx::bt::IdxBtRefThreadIdMap<TDim, TSize> const & idx,
                     TWorkDiv const & workDiv)
                 -> Vec<TDim, TSize>

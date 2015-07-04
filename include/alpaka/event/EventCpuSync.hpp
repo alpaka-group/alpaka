@@ -51,7 +51,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST EventCpuSyncImpl(
+                    ALPAKA_FN_HOST EventCpuSyncImpl(
                         dev::DevCpu const & dev) :
                             m_Uuid(boost::uuids::random_generator()()),
                             m_Dev(dev)
@@ -59,23 +59,23 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Copy constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST EventCpuSyncImpl(EventCpuSyncImpl const &) = delete;
+                    ALPAKA_FN_HOST EventCpuSyncImpl(EventCpuSyncImpl const &) = delete;
                     //-----------------------------------------------------------------------------
                     //! Move constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST EventCpuSyncImpl(EventCpuSyncImpl &&) = default;
+                    ALPAKA_FN_HOST EventCpuSyncImpl(EventCpuSyncImpl &&) = default;
                     //-----------------------------------------------------------------------------
                     //! Copy assignment operator.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto operator=(EventCpuSyncImpl const &) -> EventCpuSyncImpl & = delete;
+                    ALPAKA_FN_HOST auto operator=(EventCpuSyncImpl const &) -> EventCpuSyncImpl & = delete;
                     //-----------------------------------------------------------------------------
                     //! Move assignment operator.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto operator=(EventCpuSyncImpl &&) -> EventCpuSyncImpl & = default;
+                    ALPAKA_FN_HOST auto operator=(EventCpuSyncImpl &&) -> EventCpuSyncImpl & = default;
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST ~EventCpuSyncImpl() noexcept = default;
+                    ALPAKA_FN_HOST ~EventCpuSyncImpl() noexcept = default;
 
                 public:
                     boost::uuids::uuid const m_Uuid;                        //!< The unique ID.
@@ -93,30 +93,30 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST EventCpuSync(
+            ALPAKA_FN_HOST EventCpuSync(
                 dev::DevCpu const & dev) :
                     m_spEventCpuSyncImpl(std::make_shared<cpu::detail::EventCpuSyncImpl>(dev))
             {}
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST EventCpuSync(EventCpuSync const &) = default;
+            ALPAKA_FN_HOST EventCpuSync(EventCpuSync const &) = default;
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST EventCpuSync(EventCpuSync &&) = default;
+            ALPAKA_FN_HOST EventCpuSync(EventCpuSync &&) = default;
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator=(EventCpuSync const &) -> EventCpuSync & = default;
+            ALPAKA_FN_HOST auto operator=(EventCpuSync const &) -> EventCpuSync & = default;
             //-----------------------------------------------------------------------------
             //! Move assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator=(EventCpuSync &&) -> EventCpuSync & = default;
+            ALPAKA_FN_HOST auto operator=(EventCpuSync &&) -> EventCpuSync & = default;
             //-----------------------------------------------------------------------------
             //! Equality comparison operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator==(EventCpuSync const & rhs) const
+            ALPAKA_FN_HOST auto operator==(EventCpuSync const & rhs) const
             -> bool
             {
                 return (m_spEventCpuSyncImpl->m_Uuid == rhs.m_spEventCpuSyncImpl->m_Uuid);
@@ -124,7 +124,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Inequality comparison operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator!=(EventCpuSync const & rhs) const
+            ALPAKA_FN_HOST auto operator!=(EventCpuSync const & rhs) const
             -> bool
             {
                 return !((*this) == rhs);
@@ -146,7 +146,7 @@ namespace alpaka
             struct GetDev<
                 event::EventCpuSync>
             {
-                ALPAKA_FCT_HOST static auto getDev(
+                ALPAKA_FN_HOST static auto getDev(
                     event::EventCpuSync const & event)
                 -> dev::DevCpu
                 {
@@ -179,7 +179,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return If the event is not waiting within a stream (not enqueued or already handled).
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto eventTest(
+                ALPAKA_FN_HOST static auto eventTest(
                     event::EventCpuSync const & event)
                 -> bool
                 {
@@ -204,7 +204,7 @@ namespace alpaka
             struct CurrentThreadWaitFor<
                 event::EventCpuSync>
             {
-                ALPAKA_FCT_HOST static auto currentThreadWaitFor(
+                ALPAKA_FN_HOST static auto currentThreadWaitFor(
                     event::EventCpuSync const & event)
                 -> void
                 {

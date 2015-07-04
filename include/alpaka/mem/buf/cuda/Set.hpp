@@ -56,7 +56,7 @@ namespace alpaka
                     template<
                         typename TExtents,
                         typename TBuf>
-                    ALPAKA_FCT_HOST static auto set(
+                    ALPAKA_FN_HOST static auto set(
                         TBuf & buf,
                         std::uint8_t const & byte,
                         TExtents const & extents)
@@ -91,7 +91,7 @@ namespace alpaka
                     template<
                         typename TBuf,
                         typename TExtents>
-                    ALPAKA_FCT_HOST static auto set(
+                    ALPAKA_FN_HOST static auto set(
                         TBuf & buf,
                         std::uint8_t const & byte,
                         TExtents const & extents,
@@ -137,7 +137,7 @@ namespace alpaka
                     template<
                         typename TExtents,
                         typename TBuf>
-                    ALPAKA_FCT_HOST static auto set(
+                    ALPAKA_FN_HOST static auto set(
                         TBuf & buf,
                         std::uint8_t const & byte,
                         TExtents const & extents)
@@ -178,7 +178,7 @@ namespace alpaka
                     template<
                         typename TExtents,
                         typename TBuf>
-                    ALPAKA_FCT_HOST static auto set(
+                    ALPAKA_FN_HOST static auto set(
                         TBuf & buf,
                         std::uint8_t const & byte,
                         TExtents const & extents,
@@ -230,7 +230,7 @@ namespace alpaka
                     template<
                         typename TExtents,
                         typename TBuf>
-                    ALPAKA_FCT_HOST static auto set(
+                    ALPAKA_FN_HOST static auto set(
                         TBuf & buf,
                         std::uint8_t const & byte,
                         TExtents const & extents)
@@ -286,7 +286,7 @@ namespace alpaka
                     template<
                         typename TExtents,
                         typename TBuf>
-                    ALPAKA_FCT_HOST static auto set(
+                    ALPAKA_FN_HOST static auto set(
                         TBuf & buf,
                         std::uint8_t const & byte,
                         TExtents const & extents,

@@ -54,7 +54,7 @@ namespace alpaka
                 typename std::enable_if<
                     std::is_arithmetic<TArg>::value>::type>
             {
-                ALPAKA_FCT_ACC_NO_CUDA static auto sin(
+                ALPAKA_FN_ACC_NO_CUDA static auto sin(
                     SinStl const & sin,
                     TArg const & arg)
                 -> decltype(std::sin(arg))

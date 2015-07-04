@@ -48,27 +48,27 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA IdxBtOmp() = default;
+                ALPAKA_FN_ACC_NO_CUDA IdxBtOmp() = default;
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA IdxBtOmp(IdxBtOmp const &) = delete;
+                ALPAKA_FN_ACC_NO_CUDA IdxBtOmp(IdxBtOmp const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA IdxBtOmp(IdxBtOmp &&) = delete;
+                ALPAKA_FN_ACC_NO_CUDA IdxBtOmp(IdxBtOmp &&) = delete;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA auto operator=(IdxBtOmp const &) -> IdxBtOmp & = delete;
+                ALPAKA_FN_ACC_NO_CUDA auto operator=(IdxBtOmp const &) -> IdxBtOmp & = delete;
                 //-----------------------------------------------------------------------------
                 //! Move assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA auto operator=(IdxBtOmp &&) -> IdxBtOmp & = delete;
+                ALPAKA_FN_ACC_NO_CUDA auto operator=(IdxBtOmp &&) -> IdxBtOmp & = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA /*virtual*/ ~IdxBtOmp() = default;
+                ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~IdxBtOmp() = default;
             };
         }
     }
@@ -110,7 +110,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
-                ALPAKA_FCT_ACC_NO_CUDA static auto getIdx(
+                ALPAKA_FN_ACC_NO_CUDA static auto getIdx(
                     idx::bt::IdxBtOmp<TDim, TSize> const & idx,
                     TWorkDiv const & workDiv)
                 -> Vec<TDim, TSize>

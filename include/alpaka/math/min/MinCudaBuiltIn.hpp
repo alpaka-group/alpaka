@@ -58,7 +58,7 @@ namespace alpaka
                     std::is_integral<Tx>::value
                     && std::is_integral<Ty>::value>::type>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static auto min(
+                ALPAKA_FN_ACC_CUDA_ONLY static auto min(
                     MinCudaBuiltIn const & min,
                     Tx const & x,
                     Ty const & y)
@@ -84,7 +84,7 @@ namespace alpaka
                     && !(std::is_integral<Tx>::value
                         && std::is_integral<Ty>::value)>::type>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static auto max(
+                ALPAKA_FN_ACC_CUDA_ONLY static auto max(
                     MinCudaBuiltIn const & min,
                     Tx const & x,
                     Ty const & y)

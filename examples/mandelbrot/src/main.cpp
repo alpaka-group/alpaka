@@ -44,7 +44,7 @@ public:
     //-----------------------------------------------------------------------------
     //! Constructor.
     //-----------------------------------------------------------------------------
-    ALPAKA_FCT_HOST_ACC SimpleComplex(
+    ALPAKA_FN_HOST_ACC SimpleComplex(
         T const & a,
         T const & b) :
             r(a),
@@ -53,7 +53,7 @@ public:
     //-----------------------------------------------------------------------------
     //!
     //-----------------------------------------------------------------------------
-    ALPAKA_FCT_HOST_ACC auto absSq()
+    ALPAKA_FN_HOST_ACC auto absSq()
     -> T
     {
         return r*r + i*i;
@@ -61,7 +61,7 @@ public:
     //-----------------------------------------------------------------------------
     //!
     //-----------------------------------------------------------------------------
-    ALPAKA_FCT_HOST_ACC auto operator*(SimpleComplex const & a)
+    ALPAKA_FN_HOST_ACC auto operator*(SimpleComplex const & a)
     -> SimpleComplex
     {
         return SimpleComplex(r*a.r - i*a.i, i*a.r + r*a.i);
@@ -69,7 +69,7 @@ public:
     //-----------------------------------------------------------------------------
     //!
     //-----------------------------------------------------------------------------
-    ALPAKA_FCT_HOST_ACC auto operator*(float const & a)
+    ALPAKA_FN_HOST_ACC auto operator*(float const & a)
     -> SimpleComplex
     {
         return SimpleComplex(r*a, i*a);
@@ -77,7 +77,7 @@ public:
     //-----------------------------------------------------------------------------
     //!
     //-----------------------------------------------------------------------------
-    ALPAKA_FCT_HOST_ACC auto operator+(SimpleComplex const & a)
+    ALPAKA_FN_HOST_ACC auto operator+(SimpleComplex const & a)
     -> SimpleComplex
     {
         return SimpleComplex(r+a.r, i+a.i);
@@ -85,7 +85,7 @@ public:
     //-----------------------------------------------------------------------------
     //!
     //-----------------------------------------------------------------------------
-    ALPAKA_FCT_HOST_ACC auto operator+(float const & a)
+    ALPAKA_FN_HOST_ACC auto operator+(float const & a)
     -> SimpleComplex
     {
         return SimpleComplex(r+a, i);
@@ -107,7 +107,7 @@ public:
     //-----------------------------------------------------------------------------
     //! Constructor.
     //-----------------------------------------------------------------------------
-    ALPAKA_FCT_ACC MandelbrotKernel()
+    ALPAKA_FN_ACC MandelbrotKernel()
     {
         // Banding can be prevented by a continuous color functions.
         m_aColors[0u] = convertRgbSingleToBgra(66, 30, 15);
@@ -145,7 +145,7 @@ public:
     //-----------------------------------------------------------------------------
     template<
         typename TAcc>
-    ALPAKA_FCT_ACC auto operator()(
+    ALPAKA_FN_ACC auto operator()(
         TAcc const & acc,
         std::uint32_t * const pColors,
         std::uint32_t const & uiNumRows,
@@ -187,7 +187,7 @@ public:
     //! \return The number of iterations until the Mandelbrot iteration with the given Value reaches the absolute value of 2.
     //!     Only does uiMaxIterations steps and returns uiMaxIterations if the value would be higher.
     //-----------------------------------------------------------------------------
-    ALPAKA_FCT_ACC static auto iterateMandelbrot(
+    ALPAKA_FN_ACC static auto iterateMandelbrot(
         SimpleComplex<float> const & c,
         std::uint32_t const & uiMaxIterations)
     -> std::uint32_t
@@ -207,7 +207,7 @@ public:
     //-----------------------------------------------------------------------------
     //!
     //-----------------------------------------------------------------------------
-    ALPAKA_FCT_ACC static auto convertRgbSingleToBgra(
+    ALPAKA_FN_ACC static auto convertRgbSingleToBgra(
         std::uint32_t const & r,
         std::uint32_t const & g,
         std::uint32_t const & b)
@@ -221,7 +221,7 @@ public:
     //! This uses a simple mapping from iteration count to colors.
     //! This leads to banding but allows a all pixels to be colored.
     //-----------------------------------------------------------------------------
-    ALPAKA_FCT_ACC static auto iterationCountToContinousColor(
+    ALPAKA_FN_ACC static auto iterationCountToContinousColor(
         std::uint32_t const & uiIterationCount,
         std::uint32_t const & uiMaxIterations)
     -> std::uint32_t
@@ -240,7 +240,7 @@ public:
     //! This uses a simple mapping from iteration count to colors.
     //! This leads to banding but allows a all pixels to be colored.
     //-----------------------------------------------------------------------------
-    ALPAKA_FCT_ACC auto iterationCountToRepeatedColor(
+    ALPAKA_FN_ACC auto iterationCountToRepeatedColor(
         std::uint32_t const & uiIterationCount) const
     -> std::uint32_t
     {

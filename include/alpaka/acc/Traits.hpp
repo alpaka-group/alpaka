@@ -22,7 +22,7 @@
 #pragma once
 
 #include <alpaka/acc/AccDevProps.hpp>   // AccDevProps
-#include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST_ACC
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
 
 #include <string>                       // std::string
 #include <typeinfo>                     // typeid
@@ -65,7 +65,7 @@ namespace alpaka
                 typename TSfinae = void>
             struct GetAccName
             {
-                ALPAKA_FCT_HOST_ACC static auto getAccName()
+                ALPAKA_FN_HOST_ACC static auto getAccName()
                 -> std::string
                 {
                     return typeid(TAcc).name();
@@ -86,7 +86,7 @@ namespace alpaka
         template<
             typename TAcc,
             typename TDev>
-        ALPAKA_FCT_HOST auto getAccDevProps(
+        ALPAKA_FN_HOST auto getAccDevProps(
             TDev const & dev)
         -> AccDevProps<dim::DimT<TAcc>, size::SizeT<TAcc>>
         {
@@ -103,7 +103,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TAcc>
-        ALPAKA_FCT_HOST_ACC auto getAccName()
+        ALPAKA_FN_HOST_ACC auto getAccName()
         -> std::string
         {
             return traits::GetAccName<

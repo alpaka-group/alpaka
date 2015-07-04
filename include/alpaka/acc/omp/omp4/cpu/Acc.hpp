@@ -116,7 +116,7 @@ namespace alpaka
                             //-----------------------------------------------------------------------------
                             template<
                                 typename TWorkDiv>
-                            ALPAKA_FCT_ACC_NO_CUDA AccCpuOmp4(
+                            ALPAKA_FN_ACC_NO_CUDA AccCpuOmp4(
                                 TWorkDiv const & workDiv) :
                                     workdiv::WorkDivMembers<TDim, TSize>(workDiv),
                                     idx::gb::IdxGbRef<TDim, TSize>(m_vuiGridBlockIdx),
@@ -133,28 +133,28 @@ namespace alpaka
                             //-----------------------------------------------------------------------------
                             //! Copy constructor.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_ACC_NO_CUDA AccCpuOmp4(AccCpuOmp4 const &) = delete;
+                            ALPAKA_FN_ACC_NO_CUDA AccCpuOmp4(AccCpuOmp4 const &) = delete;
                             //-----------------------------------------------------------------------------
                             //! Move constructor.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_ACC_NO_CUDA AccCpuOmp4(AccCpuOmp4 &&) = delete;
+                            ALPAKA_FN_ACC_NO_CUDA AccCpuOmp4(AccCpuOmp4 &&) = delete;
                             //-----------------------------------------------------------------------------
                             //! Copy assignment operator.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_ACC_NO_CUDA auto operator=(AccCpuOmp4 const &) -> AccCpuOmp4 & = delete;
+                            ALPAKA_FN_ACC_NO_CUDA auto operator=(AccCpuOmp4 const &) -> AccCpuOmp4 & = delete;
                             //-----------------------------------------------------------------------------
                             //! Move assignment operator.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_ACC_NO_CUDA auto operator=(AccCpuOmp4 &&) -> AccCpuOmp4 & = delete;
+                            ALPAKA_FN_ACC_NO_CUDA auto operator=(AccCpuOmp4 &&) -> AccCpuOmp4 & = delete;
                             //-----------------------------------------------------------------------------
                             //! Destructor.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_ACC_NO_CUDA ~AccCpuOmp4() = default;
+                            ALPAKA_FN_ACC_NO_CUDA ~AccCpuOmp4() = default;
 
                             //-----------------------------------------------------------------------------
                             //! Syncs all threads in the current block.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FCT_ACC_NO_CUDA auto syncBlockThreads() const
+                            ALPAKA_FN_ACC_NO_CUDA auto syncBlockThreads() const
                             -> void
                             {
                                 #pragma omp barrier
@@ -165,7 +165,7 @@ namespace alpaka
                             //-----------------------------------------------------------------------------
                             template<
                                 typename T>
-                            ALPAKA_FCT_ACC_NO_CUDA auto getBlockSharedExternMem() const
+                            ALPAKA_FN_ACC_NO_CUDA auto getBlockSharedExternMem() const
                             -> T *
                             {
                                 return reinterpret_cast<T*>(m_vuiExternalSharedMem.get());
@@ -213,7 +213,7 @@ namespace alpaka
             struct GetAccDevProps<
                 acc::omp::omp4::cpu::detail::AccCpuOmp4<TDim, TSize>>
             {
-                ALPAKA_FCT_HOST static auto getAccDevProps(
+                ALPAKA_FN_HOST static auto getAccDevProps(
                     dev::DevCpu const & dev)
                 -> acc::AccDevProps<TDim, TSize>
                 {
@@ -245,7 +245,7 @@ namespace alpaka
             struct GetAccName<
                 acc::omp::omp4::cpu::detail::AccCpuOmp4<TDim, TSize>>
             {
-                ALPAKA_FCT_HOST_ACC static auto getAccName()
+                ALPAKA_FN_HOST_ACC static auto getAccName()
                 -> std::string
                 {
                     return "AccCpuOmp4<" + std::to_string(TDim::value) + "," + typeid(TSize).name() + ">";

@@ -57,7 +57,7 @@ namespace alpaka
                     std::is_arithmetic<Tx>::value
                     && std::is_arithmetic<Ty>::value>::type>
             {
-                ALPAKA_FCT_ACC_NO_CUDA static auto fmod(
+                ALPAKA_FN_ACC_NO_CUDA static auto fmod(
                     FmodStl const & fmod,
                     Tx const & x,
                     Ty const & y)

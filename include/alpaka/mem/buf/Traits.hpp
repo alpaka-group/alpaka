@@ -23,7 +23,7 @@
 
 #include <alpaka/mem/view/Traits.hpp>   // base concept
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST
 
 namespace alpaka
 {
@@ -132,7 +132,7 @@ namespace alpaka
                 typename TSize,
                 typename TExtents,
                 typename TDev>
-            ALPAKA_FCT_HOST auto alloc(
+            ALPAKA_FN_HOST auto alloc(
                 TDev const & dev,
                 TExtents const & extents = TExtents())
             -> decltype(
@@ -165,7 +165,7 @@ namespace alpaka
             template<
                 typename TBuf,
                 typename TDev>
-            ALPAKA_FCT_HOST auto map(
+            ALPAKA_FN_HOST auto map(
                 TBuf & buf,
                 TDev const & dev)
             -> void
@@ -188,7 +188,7 @@ namespace alpaka
             template<
                 typename TBuf,
                 typename TDev>
-            ALPAKA_FCT_HOST auto unmap(
+            ALPAKA_FN_HOST auto unmap(
                 TBuf & buf,
                 TDev const & dev)
             -> void
@@ -208,7 +208,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TBuf>
-            ALPAKA_FCT_HOST auto pin(
+            ALPAKA_FN_HOST auto pin(
                 TBuf & buf)
             -> void
             {
@@ -225,7 +225,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TBuf>
-            ALPAKA_FCT_HOST auto unpin(
+            ALPAKA_FN_HOST auto unpin(
                 TBuf & buf)
             -> void
             {
@@ -242,7 +242,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TBuf>
-            ALPAKA_FCT_HOST auto isPinned(
+            ALPAKA_FN_HOST auto isPinned(
                 TBuf const & buf)
             -> bool
             {

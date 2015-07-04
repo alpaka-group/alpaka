@@ -25,7 +25,7 @@
 #include <alpaka/size/Traits.hpp>           // size::SizeT
 
 #include <alpaka/core/Vec.hpp>              // Vec, getExtentsVecEnd
-#include <alpaka/core/Common.hpp>           // ALPAKA_FCT_ACC_CUDA_ONLY
+#include <alpaka/core/Common.hpp>           // ALPAKA_FN_ACC_CUDA_ONLY
 #include <alpaka/core/Cuda.hpp>             // getExtent(dim3)
 
 //#include <boost/core/ignore_unused.hpp>   // boost::ignore_unused
@@ -48,27 +48,27 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Default constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_ACC_CUDA_ONLY WorkDivCudaBuiltIn() = default;
+            ALPAKA_FN_ACC_CUDA_ONLY WorkDivCudaBuiltIn() = default;
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_ACC_CUDA_ONLY WorkDivCudaBuiltIn(WorkDivCudaBuiltIn const &) = delete;
+            ALPAKA_FN_ACC_CUDA_ONLY WorkDivCudaBuiltIn(WorkDivCudaBuiltIn const &) = delete;
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_ACC_CUDA_ONLY WorkDivCudaBuiltIn(WorkDivCudaBuiltIn &&) = delete;
+            ALPAKA_FN_ACC_CUDA_ONLY WorkDivCudaBuiltIn(WorkDivCudaBuiltIn &&) = delete;
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_ACC_CUDA_ONLY auto operator=(WorkDivCudaBuiltIn const &) -> WorkDivCudaBuiltIn & = delete;
+            ALPAKA_FN_ACC_CUDA_ONLY auto operator=(WorkDivCudaBuiltIn const &) -> WorkDivCudaBuiltIn & = delete;
             //-----------------------------------------------------------------------------
             //! Move assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_ACC_CUDA_ONLY auto operator=(WorkDivCudaBuiltIn &&) -> WorkDivCudaBuiltIn & = delete;
+            ALPAKA_FN_ACC_CUDA_ONLY auto operator=(WorkDivCudaBuiltIn &&) -> WorkDivCudaBuiltIn & = delete;
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_ACC_CUDA_ONLY /*virtual*/ ~WorkDivCudaBuiltIn() = default;
+            ALPAKA_FN_ACC_CUDA_ONLY /*virtual*/ ~WorkDivCudaBuiltIn() = default;
         };
     }
 
@@ -124,7 +124,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of threads in each dimension of a block.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY static auto getWorkDiv(
+                ALPAKA_FN_ACC_CUDA_ONLY static auto getWorkDiv(
                     WorkDivCudaBuiltIn<TDim, TSize> const & workDiv)
                 -> Vec<TDim, TSize>
                 {
@@ -147,7 +147,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of blocks in each dimension of the grid.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY static auto getWorkDiv(
+                ALPAKA_FN_ACC_CUDA_ONLY static auto getWorkDiv(
                     WorkDivCudaBuiltIn<TDim, TSize> const & workDiv)
                 -> Vec<TDim, TSize>
                 {

@@ -23,7 +23,7 @@
 
 #include <alpaka/block/shared/Traits.hpp>   // AllocVar, AllocArr
 
-#include <alpaka/core/Common.hpp>           // ALPAKA_FCT_ACC_CUDA_ONLY
+#include <alpaka/core/Common.hpp>           // ALPAKA_FN_ACC_CUDA_ONLY
 
 namespace alpaka
 {
@@ -42,27 +42,27 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Default constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY BlockSharedAllocCudaBuiltIn() = default;
+                ALPAKA_FN_ACC_CUDA_ONLY BlockSharedAllocCudaBuiltIn() = default;
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY BlockSharedAllocCudaBuiltIn(BlockSharedAllocCudaBuiltIn const &) = delete;
+                ALPAKA_FN_ACC_CUDA_ONLY BlockSharedAllocCudaBuiltIn(BlockSharedAllocCudaBuiltIn const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY BlockSharedAllocCudaBuiltIn(BlockSharedAllocCudaBuiltIn &&) = delete;
+                ALPAKA_FN_ACC_CUDA_ONLY BlockSharedAllocCudaBuiltIn(BlockSharedAllocCudaBuiltIn &&) = delete;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY auto operator=(BlockSharedAllocCudaBuiltIn const &) -> BlockSharedAllocCudaBuiltIn & = delete;
+                ALPAKA_FN_ACC_CUDA_ONLY auto operator=(BlockSharedAllocCudaBuiltIn const &) -> BlockSharedAllocCudaBuiltIn & = delete;
                 //-----------------------------------------------------------------------------
                 //! Move assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY auto operator=(BlockSharedAllocCudaBuiltIn &&) -> BlockSharedAllocCudaBuiltIn & = delete;
+                ALPAKA_FN_ACC_CUDA_ONLY auto operator=(BlockSharedAllocCudaBuiltIn &&) -> BlockSharedAllocCudaBuiltIn & = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_CUDA_ONLY /*virtual*/ ~BlockSharedAllocCudaBuiltIn() = default;
+                ALPAKA_FN_ACC_CUDA_ONLY /*virtual*/ ~BlockSharedAllocCudaBuiltIn() = default;
             };
 
             namespace traits
@@ -76,7 +76,7 @@ namespace alpaka
                     T,
                     BlockSharedAllocCudaBuiltIn>
                 {
-                    ALPAKA_FCT_ACC_CUDA_ONLY static auto allocVar(
+                    ALPAKA_FN_ACC_CUDA_ONLY static auto allocVar(
                         block::shared::BlockSharedAllocCudaBuiltIn const &)
                     -> T &
                     {
@@ -97,7 +97,7 @@ namespace alpaka
                 {
                     static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
 
-                    ALPAKA_FCT_ACC_CUDA_ONLY static auto allocArr(
+                    ALPAKA_FN_ACC_CUDA_ONLY static auto allocArr(
                         block::shared::BlockSharedAllocCudaBuiltIn const &)
                     -> T *
                     {
@@ -112,7 +112,7 @@ namespace alpaka
                 struct FreeMem<
                     BlockSharedAllocCudaBuiltIn>
                 {
-                    ALPAKA_FCT_ACC_CUDA_ONLY static auto freeMem(
+                    ALPAKA_FN_ACC_CUDA_ONLY static auto freeMem(
                         block::shared::BlockSharedAllocCudaBuiltIn const &)
                     -> void
                     {

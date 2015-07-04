@@ -54,7 +54,7 @@ namespace alpaka
                 typename std::enable_if<
                     std::is_arithmetic<TArg>::value>::type>
             {
-                ALPAKA_FCT_ACC_NO_CUDA static auto cos(
+                ALPAKA_FN_ACC_NO_CUDA static auto cos(
                     CosStl const & cos,
                     TArg const & arg)
                 -> decltype(std::cos(arg))

@@ -22,7 +22,7 @@
 #pragma once
 
 #include <alpaka/core/Vec.hpp>      // Vec
-#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC
+#include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST_ACC
 
 #include <vector>                   // std::vector
 #include <string>                   // std::string
@@ -42,7 +42,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Default-constructor
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST AccDevProps(
+            ALPAKA_FN_HOST AccDevProps(
                 TSize const & uiMultiProcessorCount,
                 TSize const & uiBlockThreadsCountMax,
                 Vec<TDim, TSize> const & vuiBlockThreadExtentsMax,

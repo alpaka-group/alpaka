@@ -23,7 +23,7 @@
 
 #include <alpaka/core/Fibers.hpp>
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_ACC_NO_CUDA
+#include <alpaka/core/Common.hpp>   // ALPAKA_FN_ACC_NO_CUDA
 
 #include <mutex>                    // std::unique_lock
 
@@ -45,35 +45,35 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA explicit FiberBarrier(
+                ALPAKA_FN_ACC_NO_CUDA explicit FiberBarrier(
                     TSize const & uiNumFibersToWaitFor = 0) :
                     m_uiNumFibersToWaitFor{uiNumFibersToWaitFor}
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA FiberBarrier(FiberBarrier const &) = delete;
+                ALPAKA_FN_ACC_NO_CUDA FiberBarrier(FiberBarrier const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA FiberBarrier(FiberBarrier &&) = delete;
+                ALPAKA_FN_ACC_NO_CUDA FiberBarrier(FiberBarrier &&) = delete;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA auto operator=(FiberBarrier const &) -> FiberBarrier & = delete;
+                ALPAKA_FN_ACC_NO_CUDA auto operator=(FiberBarrier const &) -> FiberBarrier & = delete;
                 //-----------------------------------------------------------------------------
                 //! Move assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA auto operator=(FiberBarrier &&) -> FiberBarrier & = delete;
+                ALPAKA_FN_ACC_NO_CUDA auto operator=(FiberBarrier &&) -> FiberBarrier & = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA /*virtual*/ ~FiberBarrier() = default;
+                ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~FiberBarrier() = default;
 
                 //-----------------------------------------------------------------------------
                 //! Waits for all the other fibers to reach the barrier.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA auto wait()
+                ALPAKA_FN_ACC_NO_CUDA auto wait()
                 -> void
                 {
                     std::unique_lock<boost::fibers::mutex> lock(m_mtxBarrier);
@@ -91,7 +91,7 @@ namespace alpaka
                 //! \return The number of fibers to wait for.
                 //! NOTE: The value almost always is invalid the time you get it.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA auto getNumFibersToWaitFor() const
+                ALPAKA_FN_ACC_NO_CUDA auto getNumFibersToWaitFor() const
                 -> TSize
                 {
                     return m_uiNumFibersToWaitFor;
@@ -100,7 +100,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Resets the number of fibers to wait for to the given number.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA auto reset(
+                ALPAKA_FN_ACC_NO_CUDA auto reset(
                     TSize const & uiNumFibersToWaitFor)
                 -> void
                 {

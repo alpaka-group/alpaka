@@ -28,7 +28,7 @@
 #include <alpaka/size/Traits.hpp>           // size::SizeType
 
 #include <alpaka/core/IntegerSequence.hpp>  // detail::make_integer_sequence
-#include <alpaka/core/Common.hpp>           // ALPAKA_FCT_ACC
+#include <alpaka/core/Common.hpp>           // ALPAKA_FN_ACC
 #include <alpaka/core/Fold.hpp>             // foldr
 
 #include <boost/predef.h>                   // workarounds
@@ -55,19 +55,19 @@ namespace alpaka
     //-----------------------------------------------------------------------------
     template<
         typename TDim,
-        template<std::size_t> class TTFctObj,
+        template<std::size_t> class TTFnObj,
         typename... TArgs,
         std::size_t... TIndices>
-    ALPAKA_FCT_HOST_ACC auto createVecFromIndexedFctArbitrary(
+    ALPAKA_FN_HOST_ACC auto createVecFromIndexedFnArbitrary(
         detail::integer_sequence<std::size_t, TIndices...> const & indices,
         TArgs && ... args)
-    -> Vec<TDim, decltype(TTFctObj<0>::create(std::forward<TArgs>(args)...))>
+    -> Vec<TDim, decltype(TTFnObj<0>::create(std::forward<TArgs>(args)...))>
     {
 #if !defined(__CUDA_ARCH__)
         boost::ignore_unused(indices);
 #endif
-        return Vec<TDim, decltype(TTFctObj<0>::create(std::forward<TArgs>(args)...))>(
-            (TTFctObj<TIndices>::create(std::forward<TArgs>(args)...))...);
+        return Vec<TDim, decltype(TTFnObj<0>::create(std::forward<TArgs>(args)...))>(
+            (TTFnObj<TIndices>::create(std::forward<TArgs>(args)...))...);
     }
     //-----------------------------------------------------------------------------
     //! Creator using func<idx>(args...) to initialize all values of the vector.
@@ -75,22 +75,22 @@ namespace alpaka
     //-----------------------------------------------------------------------------
     template<
         typename TDim,
-        template<std::size_t> class TTFctObj,
+        template<std::size_t> class TTFnObj,
         typename... TArgs>
-    ALPAKA_FCT_HOST_ACC auto createVecFromIndexedFct(
+    ALPAKA_FN_HOST_ACC auto createVecFromIndexedFn(
         TArgs && ... args)
     -> decltype(
-        createVecFromIndexedFctArbitrary<
+        createVecFromIndexedFnArbitrary<
             TDim,
-            TTFctObj>(
+            TTFnObj>(
                 alpaka::detail::make_integer_sequence<std::size_t, TDim::value>(),
                 std::forward<TArgs>(args)...))
     {
         using IdxSequence = alpaka::detail::make_integer_sequence<std::size_t, TDim::value>;
         return
-            createVecFromIndexedFctArbitrary<
+            createVecFromIndexedFnArbitrary<
                 TDim,
-                TTFctObj>(
+                TTFnObj>(
                     IdxSequence(),
                     std::forward<TArgs>(args)...);
     }
@@ -100,23 +100,23 @@ namespace alpaka
     //-----------------------------------------------------------------------------
     template<
         typename TDim,
-        template<std::size_t> class TTFctObj,
+        template<std::size_t> class TTFnObj,
         typename TIdxOffset,
         typename... TArgs>
-    ALPAKA_FCT_HOST_ACC auto createVecFromIndexedFctOffset(
+    ALPAKA_FN_HOST_ACC auto createVecFromIndexedFnOffset(
         TArgs && ... args)
     -> decltype(
-        createVecFromIndexedFctArbitrary<
+        createVecFromIndexedFnArbitrary<
             TDim,
-            TTFctObj>(
+            TTFnObj>(
                 alpaka::detail::make_integer_sequence_offset<std::size_t, TIdxOffset::value, TDim::value>(),
                 std::forward<TArgs>(args)...))
     {
         using IdxSubSequence = alpaka::detail::make_integer_sequence_offset<std::size_t, TIdxOffset::value, TDim::value>;
         return
-            createVecFromIndexedFctArbitrary<
+            createVecFromIndexedFnArbitrary<
                 TDim,
-                TTFctObj>(
+                TTFnObj>(
                     IdxSubSequence(),
                     std::forward<TArgs>(args)...);
     }
@@ -163,7 +163,7 @@ namespace alpaka
                     // ... or the first argument is not applicable for the copy constructor.
                     || (!std::is_same<typename std::decay<TArg0>::type, Vec<TDim, TVal>>::value))
                 >::type>
-        ALPAKA_FCT_HOST_ACC Vec(
+        ALPAKA_FN_HOST_ACC Vec(
             TArg0 && arg0,
             TArgs && ... args) :
                 m_auiData{std::forward<TArg0>(arg0), std::forward<TArgs>(args)...}
@@ -174,10 +174,10 @@ namespace alpaka
         //! Creator using func<idx>(args...) to initialize all values of the vector.
         //-----------------------------------------------------------------------------
         template<
-            template<std::size_t> class TTFctObj,
+            template<std::size_t> class TTFnObj,
             typename... TArgs,
             std::size_t... TIndices>
-        ALPAKA_FCT_HOST_ACC static auto createVecFromIndexedFctArbitrary(
+        ALPAKA_FN_HOST_ACC static auto createVecFromIndexedFnArbitrary(
             detail::integer_sequence<std::size_t, TIndices...> const & indices,
             TArgs && ... args)
         -> Vec<TDim, TVal>
@@ -186,22 +186,22 @@ namespace alpaka
             boost::ignore_unused(indices);
 #endif
             return Vec<TDim, TVal>(
-                (TTFctObj<TIndices>::create(std::forward<TArgs>(args)...))...);
+                (TTFnObj<TIndices>::create(std::forward<TArgs>(args)...))...);
         }
         //-----------------------------------------------------------------------------
         //! Creator using func<idx>(args...) to initialize all values of the vector.
         //! The idx is in the range [0, TDim].
         //-----------------------------------------------------------------------------
         template<
-            template<std::size_t> class TTFctObj,
+            template<std::size_t> class TTFnObj,
             typename... TArgs>
-        ALPAKA_FCT_HOST_ACC static auto createVecFromIndexedFct(
+        ALPAKA_FN_HOST_ACC static auto createVecFromIndexedFn(
             TArgs && ... args)
         -> Vec<TDim, TVal>
         {
             return
-                createVecFromIndexedFctArbitrary<
-                    TTFctObj>(
+                createVecFromIndexedFnArbitrary<
+                    TTFnObj>(
                         IdxSequence(),
                         std::forward<TArgs>(args)...);
         }
@@ -210,17 +210,17 @@ namespace alpaka
         //! The idx is in the range [TIdxOffset, TIdxOffset + TDim].
         //-----------------------------------------------------------------------------
         template<
-            template<std::size_t> class TTFctObj,
+            template<std::size_t> class TTFnObj,
             typename TIdxOffset,
             typename... TArgs>
-        ALPAKA_FCT_HOST_ACC static auto createVecFromIndexedFctOffset(
+        ALPAKA_FN_HOST_ACC static auto createVecFromIndexedFnOffset(
             TArgs && ... args)
         -> Vec<TDim, TVal>
         {
             using IdxSubSequence = alpaka::detail::make_integer_sequence_offset<std::size_t, TIdxOffset::value, TDim::value>;
             return
-                createVecFromIndexedFctArbitrary<
-                    TTFctObj>(
+                createVecFromIndexedFnArbitrary<
+                    TTFnObj>(
                         IdxSubSequence(),
                         std::forward<TArgs>(args)...);
         }
@@ -229,23 +229,23 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Copy constructor.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC Vec(Vec const &) = default;
+        ALPAKA_FN_HOST_ACC Vec(Vec const &) = default;
         //-----------------------------------------------------------------------------
         //! Move constructor.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC Vec(Vec &&) = default;
+        ALPAKA_FN_HOST_ACC Vec(Vec &&) = default;
         //-----------------------------------------------------------------------------
         //! Copy assignment operator.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC auto operator=(Vec const &) -> Vec & = default;
+        ALPAKA_FN_HOST_ACC auto operator=(Vec const &) -> Vec & = default;
         //-----------------------------------------------------------------------------
         //! Move assignment operator.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC auto operator=(Vec &&) -> Vec & = default;
+        ALPAKA_FN_HOST_ACC auto operator=(Vec &&) -> Vec & = default;
         //-----------------------------------------------------------------------------
         //! Destructor.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC ~Vec() = default;
+        ALPAKA_FN_HOST_ACC ~Vec() = default;
 
     private:
         //#############################################################################
@@ -258,7 +258,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //!
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST_ACC static auto create(
+            ALPAKA_FN_HOST_ACC static auto create(
                 TVal const & val)
             -> TVal
             {
@@ -272,12 +272,12 @@ namespace alpaka
         //! Creates a vector with all values set to val.
         //! \param val The initial value.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC static auto all(
+        ALPAKA_FN_HOST_ACC static auto all(
             TVal const & val)
         -> Vec<TDim, TVal>
         {
             return
-                createVecFromIndexedFct<
+                createVecFromIndexedFn<
 #ifndef __CUDACC__
                     TDim,
 #endif
@@ -287,7 +287,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Zero value constructor.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC static auto zeros()
+        ALPAKA_FN_HOST_ACC static auto zeros()
         -> Vec<TDim, TVal>
         {
             return all(static_cast<TVal>(0));
@@ -295,7 +295,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! One value constructor.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC static auto ones()
+        ALPAKA_FN_HOST_ACC static auto ones()
             -> Vec<TDim, TVal>
         {
             return all(static_cast<TVal>(1));
@@ -309,7 +309,7 @@ namespace alpaka
             typename TIdx,
             typename = typename std::enable_if<
                 std::is_integral<TIdx>::value>::type>
-        ALPAKA_FCT_HOST_ACC auto operator[](
+        ALPAKA_FN_HOST_ACC auto operator[](
             TIdx const iIdx)
         -> TVal &
         {
@@ -327,7 +327,7 @@ namespace alpaka
             typename TIdx,
             typename = typename std::enable_if<
                 std::is_integral<TIdx>::value>::type>
-        ALPAKA_FCT_HOST_ACC auto operator[](
+        ALPAKA_FN_HOST_ACC auto operator[](
             TIdx const iIdx) const
         -> TVal
         {
@@ -340,7 +340,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         // Equality comparison operator.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC auto operator==(
+        ALPAKA_FN_HOST_ACC auto operator==(
             Vec const & rhs) const
         -> bool
         {
@@ -356,7 +356,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         // Inequality comparison operator.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC auto operator!=(
+        ALPAKA_FN_HOST_ACC auto operator!=(
             Vec const & rhs) const
         -> bool
         {
@@ -366,10 +366,10 @@ namespace alpaka
         //!
         //-----------------------------------------------------------------------------
         template<
-            typename TFctObj,
+            typename TFnObj,
             std::size_t... TIndices>
-        ALPAKA_FCT_HOST auto foldrByIndices(
-            TFctObj const & f,
+        ALPAKA_FN_HOST auto foldrByIndices(
+            TFnObj const & f,
             alpaka::detail::integer_sequence<std::size_t, TIndices...> const & indices) const
         -> decltype(
             foldr(
@@ -388,9 +388,9 @@ namespace alpaka
         //!
         //-----------------------------------------------------------------------------
         template<
-            typename TFctObj>
-        ALPAKA_FCT_HOST auto foldrAll(
-            TFctObj const & f) const
+            typename TFnObj>
+        ALPAKA_FN_HOST auto foldrAll(
+            TFnObj const & f) const
         -> decltype(
 #if (BOOST_COMP_GNUC) && (BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(5, 0, 0))
             this->foldrByIndices(
@@ -408,7 +408,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The product of all values.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC auto prod() const
+        ALPAKA_FN_HOST_ACC auto prod() const
         -> TVal
         {
             return foldrAll(std::multiplies<TVal>());
@@ -416,7 +416,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The sum of all values.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC auto sum() const
+        ALPAKA_FN_HOST_ACC auto sum() const
         -> TVal
         {
             return foldrAll(std::plus<TVal>());
@@ -424,7 +424,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The min of all values.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC auto min() const
+        ALPAKA_FN_HOST_ACC auto min() const
         -> TVal
         {
             return foldrAll(
@@ -436,7 +436,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The max of all values.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC auto max() const
+        ALPAKA_FN_HOST_ACC auto max() const
         -> TVal
         {
             return foldrAll(
@@ -448,7 +448,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The index of the minimal element.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC auto minElem() const
+        ALPAKA_FN_HOST_ACC auto minElem() const
         -> typename TDim::value_type
         {
             return
@@ -462,7 +462,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The index of the maximal element.
         //-----------------------------------------------------------------------------
-        ALPAKA_FCT_HOST_ACC auto maxElem() const
+        ALPAKA_FN_HOST_ACC auto maxElem() const
         -> typename TDim::value_type
         {
             return
@@ -510,7 +510,7 @@ namespace alpaka
             template<
                 typename TDim,
                 typename TVal>
-            ALPAKA_FCT_HOST_ACC static auto create(
+            ALPAKA_FN_HOST_ACC static auto create(
                 Vec<TDim, TVal> const & p,
                 Vec<TDim, TVal> const & q)
             -> TVal
@@ -525,7 +525,7 @@ namespace alpaka
     template<
         typename TDim,
         typename TVal>
-    ALPAKA_FCT_HOST_ACC auto operator+(
+    ALPAKA_FN_HOST_ACC auto operator+(
         Vec<TDim, TVal> const & p,
         Vec<TDim, TVal> const & q)
     -> Vec<TDim, TVal>
@@ -534,7 +534,7 @@ namespace alpaka
 #ifdef __CUDACC__
             Vec<TDim, TVal>::template
 #endif
-            createVecFromIndexedFct<
+            createVecFromIndexedFn<
 #ifndef __CUDACC__
                 TDim,
 #endif
@@ -558,7 +558,7 @@ namespace alpaka
             template<
                 typename TDim,
                 typename TVal>
-            ALPAKA_FCT_HOST_ACC static auto create(
+            ALPAKA_FN_HOST_ACC static auto create(
                 Vec<TDim, TVal> const & p,
                 Vec<TDim, TVal> const & q)
             -> TVal
@@ -573,7 +573,7 @@ namespace alpaka
     template<
         typename TDim,
         typename TVal>
-    ALPAKA_FCT_HOST_ACC auto operator*(
+    ALPAKA_FN_HOST_ACC auto operator*(
         Vec<TDim, TVal> const & p,
         Vec<TDim, TVal> const & q)
     -> Vec<TDim, TVal>
@@ -582,7 +582,7 @@ namespace alpaka
 #ifdef __CUDACC__
             Vec<TDim, TVal>::template
 #endif
-            createVecFromIndexedFct<
+            createVecFromIndexedFn<
 #ifndef __CUDACC__
                 TDim,
 #endif
@@ -597,7 +597,7 @@ namespace alpaka
     template<
         typename TDim,
         typename TVal>
-    ALPAKA_FCT_HOST auto operator<<(
+    ALPAKA_FN_HOST auto operator<<(
         std::ostream & os,
         Vec<TDim, TVal> const & v)
     -> std::ostream &
@@ -629,7 +629,7 @@ namespace alpaka
             template<
                 typename TVal,
                 std::size_t... TIndices>
-            ALPAKA_FCT_HOST_ACC static auto subVecFromIndices(
+            ALPAKA_FN_HOST_ACC static auto subVecFromIndices(
                 Vec<TDim, TVal> const & vec,
                 alpaka::detail::integer_sequence<std::size_t, TIndices...> const &)
             -> Vec<dim::Dim<sizeof...(TIndices)>, TVal>
@@ -650,7 +650,7 @@ namespace alpaka
         {
             template<
                 typename TVal>
-            ALPAKA_FCT_HOST_ACC static auto subVecFromIndices(
+            ALPAKA_FN_HOST_ACC static auto subVecFromIndices(
                 Vec<TDim, TVal> const & vec,
                 alpaka::detail::make_integer_sequence<std::size_t, TDim::value> const &)
             -> Vec<TDim, TVal>
@@ -668,7 +668,7 @@ namespace alpaka
         typename TDim,
         typename TVal,
         std::size_t... TIndices>
-    ALPAKA_FCT_HOST_ACC auto subVecFromIndices(
+    ALPAKA_FN_HOST_ACC auto subVecFromIndices(
         Vec<TDim, TVal> const & vec,
         detail::integer_sequence<std::size_t, TIndices...> const & indices)
     -> Vec<dim::Dim<sizeof...(TIndices)>, TVal>
@@ -688,7 +688,7 @@ namespace alpaka
         typename TSubDim,
         typename TDim,
         typename TVal>
-    ALPAKA_FCT_HOST_ACC auto subVecBegin(
+    ALPAKA_FN_HOST_ACC auto subVecBegin(
         Vec<TDim, TVal> const & vec)
     -> Vec<TSubDim, TVal>
     {
@@ -705,7 +705,7 @@ namespace alpaka
         typename TSubDim,
         typename TDim,
         typename TVal>
-    ALPAKA_FCT_HOST_ACC auto subVecEnd(
+    ALPAKA_FN_HOST_ACC auto subVecEnd(
         Vec<TDim, TVal> const & vec)
     -> Vec<TSubDim, TVal>
     {
@@ -732,7 +732,7 @@ namespace alpaka
                 typename TValNew,
                 typename TDim,
                 typename TVal>
-            ALPAKA_FCT_HOST_ACC static auto create(
+            ALPAKA_FN_HOST_ACC static auto create(
                 TValNew const &/* valNew*/,
                 Vec<TDim, TVal> const & vec)
             -> TValNew
@@ -748,14 +748,14 @@ namespace alpaka
         typename TValNew,
         typename TDim,
         typename TVal>
-    ALPAKA_FCT_HOST_ACC static auto castVec(Vec<TDim, TVal> const & other)
+    ALPAKA_FN_HOST_ACC static auto castVec(Vec<TDim, TVal> const & other)
     -> Vec<TDim, TValNew>
     {
         return
 #ifdef __CUDACC__
         Vec<TDim, TValNew>::template
 #endif
-            createVecFromIndexedFct<
+            createVecFromIndexedFn<
 #ifndef __CUDACC__
                 TDim,
 #endif
@@ -778,7 +778,7 @@ namespace alpaka
             template<
                 typename TDim,
                 typename TVal>
-            ALPAKA_FCT_HOST_ACC static auto create(
+            ALPAKA_FN_HOST_ACC static auto create(
                 Vec<TDim, TVal> const & vec)
             -> TVal
             {
@@ -792,7 +792,7 @@ namespace alpaka
     template<
         typename TDim,
         typename TVal>
-    ALPAKA_FCT_HOST_ACC auto reverseVec(
+    ALPAKA_FN_HOST_ACC auto reverseVec(
         Vec<TDim, TVal> const & vec)
     -> Vec<TDim, TVal>
     {
@@ -800,7 +800,7 @@ namespace alpaka
 #ifdef __CUDACC__
             Vec<TDim, TVal>::template
 #endif
-            createVecFromIndexedFct<
+            createVecFromIndexedFn<
 #ifndef __CUDACC__
                 TDim,
 #endif
@@ -824,7 +824,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TExtents>
-                ALPAKA_FCT_HOST_ACC static auto create(
+                ALPAKA_FN_HOST_ACC static auto create(
                     TExtents const & extents)
                 -> size::SizeT<TExtents>
                 {
@@ -837,7 +837,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TExtents>
-        ALPAKA_FCT_HOST_ACC auto getExtentsVec(
+        ALPAKA_FN_HOST_ACC auto getExtentsVec(
             TExtents const & extents = TExtents())
         -> Vec<dim::DimT<TExtents>, size::SizeT<TExtents>>
         {
@@ -845,7 +845,7 @@ namespace alpaka
 #ifdef __CUDACC__
             Vec<dim::DimT<TExtents>, size::SizeT<TExtents>>::template
 #endif
-                createVecFromIndexedFct<
+                createVecFromIndexedFn<
 #ifndef __CUDACC__
                     dim::DimT<TExtents>,
 #endif
@@ -858,7 +858,7 @@ namespace alpaka
         template<
             typename TDim,
             typename TExtents>
-        ALPAKA_FCT_HOST_ACC auto getExtentsVecEnd(
+        ALPAKA_FN_HOST_ACC auto getExtentsVecEnd(
             TExtents const & extents = TExtents())
         -> Vec<TDim, size::SizeT<TExtents>>
         {
@@ -867,7 +867,7 @@ namespace alpaka
 #ifdef __CUDACC__
             Vec<TDim, size::SizeT<TExtents>>::template
 #endif
-                createVecFromIndexedFctOffset<
+                createVecFromIndexedFnOffset<
 #ifndef __CUDACC__
                     TDim,
 #endif
@@ -893,7 +893,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TOffsets>
-                ALPAKA_FCT_HOST_ACC static auto create(
+                ALPAKA_FN_HOST_ACC static auto create(
                     TOffsets const & offsets)
                 -> size::SizeT<TOffsets>
                 {
@@ -906,7 +906,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TOffsets>
-        ALPAKA_FCT_HOST_ACC auto getOffsetsVec(
+        ALPAKA_FN_HOST_ACC auto getOffsetsVec(
             TOffsets const & offsets = TOffsets())
         -> Vec<dim::DimT<TOffsets>, size::SizeT<TOffsets>>
         {
@@ -914,7 +914,7 @@ namespace alpaka
 #ifdef __CUDACC__
             Vec<dim::DimT<TOffsets>, size::SizeT<TOffsets>>::template
 #endif
-                createVecFromIndexedFct<
+                createVecFromIndexedFn<
 #ifndef __CUDACC__
                     dim::DimT<TOffsets>,
 #endif
@@ -927,7 +927,7 @@ namespace alpaka
         template<
             typename TDim,
             typename TOffsets>
-        ALPAKA_FCT_HOST_ACC auto getOffsetsVecEnd(
+        ALPAKA_FN_HOST_ACC auto getOffsetsVecEnd(
             TOffsets const & offsets = TOffsets())
         -> Vec<TDim, size::SizeT<TOffsets>>
         {
@@ -936,7 +936,7 @@ namespace alpaka
 #ifdef __CUDACC__
             Vec<TDim, size::SizeT<TOffsets>>::template
 #endif
-                createVecFromIndexedFctOffset<
+                createVecFromIndexedFnOffset<
 #ifndef __CUDACC__
                     TDim,
 #endif
@@ -978,7 +978,7 @@ namespace alpaka
                 Vec<TDim, TVal>,
                 typename std::enable_if<(TDim::value > TIdx::value)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static auto getExtent(
+                ALPAKA_FN_HOST_ACC static auto getExtent(
                     Vec<TDim, TVal> const & extents)
                 -> TVal
                 {
@@ -999,7 +999,7 @@ namespace alpaka
             {
                 template<
                     typename TVal2>
-                ALPAKA_FCT_HOST_ACC static auto setExtent(
+                ALPAKA_FN_HOST_ACC static auto setExtent(
                     Vec<TDim, TVal> & extents,
                     TVal2 const & extent)
                 -> void
@@ -1025,7 +1025,7 @@ namespace alpaka
                 Vec<TDim, TVal>,
                 typename std::enable_if<(TDim::value > TIdx::value)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static auto getOffset(
+                ALPAKA_FN_HOST_ACC static auto getOffset(
                     Vec<TDim, TVal> const & offsets)
                 -> TVal
                 {
@@ -1046,7 +1046,7 @@ namespace alpaka
                 TOffset,
                 typename std::enable_if<(TDim::value > TIdx::value)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static auto setOffset(
+                ALPAKA_FN_HOST_ACC static auto setOffset(
                     Vec<TDim, TVal> & offsets,
                     TOffset const & offset)
                 -> void

@@ -55,7 +55,7 @@ namespace alpaka
                 stream::StreamCudaRt,
                 event::EventCudaRt>
             {
-                ALPAKA_FCT_HOST static auto streamEnqueue(
+                ALPAKA_FN_HOST static auto streamEnqueue(
                     stream::StreamCudaRt & stream,
                     event::EventCudaRt & event)
                 -> void
@@ -81,7 +81,7 @@ namespace alpaka
                 stream::StreamCudaRt,
                 event::EventCudaRt>
             {
-                ALPAKA_FCT_HOST static auto waiterWaitFor(
+                ALPAKA_FN_HOST static auto waiterWaitFor(
                     stream::StreamCudaRt & stream,
                     event::EventCudaRt const & event)
                 -> void
@@ -105,7 +105,7 @@ namespace alpaka
                 dev::DevCudaRt,
                 event::EventCudaRt>
             {
-                ALPAKA_FCT_HOST static auto waiterWaitFor(
+                ALPAKA_FN_HOST static auto waiterWaitFor(
                     dev::DevCudaRt & dev,
                     event::EventCudaRt const & event)
                 -> void

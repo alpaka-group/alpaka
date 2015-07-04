@@ -43,7 +43,7 @@ namespace alpaka
             {
                 template<
                     typename T>
-                ALPAKA_FCT_HOST_ACC auto operator()(
+                ALPAKA_FN_HOST_ACC auto operator()(
                     T * const addr,
                     T const & value) const
                 -> T
@@ -63,7 +63,7 @@ namespace alpaka
             {
                 template<
                     typename T>
-                ALPAKA_FCT_HOST_ACC auto operator()(
+                ALPAKA_FN_HOST_ACC auto operator()(
                     T * const addr,
                     T const & value) const
                 -> T
@@ -83,7 +83,7 @@ namespace alpaka
             {
                 template<
                     typename T>
-                ALPAKA_FCT_HOST_ACC auto operator()(
+                ALPAKA_FN_HOST_ACC auto operator()(
                     T * const addr,
                     T const & value) const
                 -> T
@@ -103,7 +103,7 @@ namespace alpaka
             {
                 template<
                     typename T>
-                ALPAKA_FCT_HOST_ACC auto operator()(
+                ALPAKA_FN_HOST_ACC auto operator()(
                     T * const addr,
                     T const & value) const
                 -> T
@@ -123,7 +123,7 @@ namespace alpaka
             {
                 template<
                     typename T>
-                ALPAKA_FCT_HOST_ACC auto operator()(
+                ALPAKA_FN_HOST_ACC auto operator()(
                     T * const addr,
                     T const & value) const
                 -> T
@@ -145,7 +145,7 @@ namespace alpaka
             {
                 template<
                     typename T>
-                ALPAKA_FCT_HOST_ACC auto operator()(
+                ALPAKA_FN_HOST_ACC auto operator()(
                     T * const addr,
                     T const & value) const
                 -> T
@@ -167,7 +167,7 @@ namespace alpaka
             {
                 template<
                     typename T>
-                ALPAKA_FCT_HOST_ACC auto operator()(
+                ALPAKA_FN_HOST_ACC auto operator()(
                     T * const addr,
                     T const & value) const
                 -> T
@@ -187,7 +187,7 @@ namespace alpaka
             {
                 template<
                     typename T>
-                ALPAKA_FCT_HOST_ACC auto operator()(
+                ALPAKA_FN_HOST_ACC auto operator()(
                     T * const addr,
                     T const & value) const
                 -> T
@@ -207,7 +207,7 @@ namespace alpaka
             {
                 template<
                     typename T>
-                ALPAKA_FCT_HOST_ACC auto operator()(
+                ALPAKA_FN_HOST_ACC auto operator()(
                     T * const addr,
                     T const & value) const
                 -> T
@@ -227,7 +227,7 @@ namespace alpaka
             {
                 template<
                     typename T>
-                ALPAKA_FCT_HOST_ACC auto operator()(
+                ALPAKA_FN_HOST_ACC auto operator()(
                     T * const addr,
                     T const & value) const
                 -> T
@@ -247,7 +247,7 @@ namespace alpaka
             {
                 template<
                     typename T>
-                ALPAKA_FCT_HOST_ACC auto operator()(
+                ALPAKA_FN_HOST_ACC auto operator()(
                     T * addr,
                     T const & compare,
                     T const & value) const

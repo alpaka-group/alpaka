@@ -54,7 +54,7 @@ namespace alpaka
                 typename std::enable_if<
                     std::is_arithmetic<TArg>::value>::type>
             {
-                ALPAKA_FCT_ACC_NO_CUDA static auto tan(
+                ALPAKA_FN_ACC_NO_CUDA static auto tan(
                     TanStl const & tan,
                     TArg const & arg)
                 -> decltype(std::tan(arg))

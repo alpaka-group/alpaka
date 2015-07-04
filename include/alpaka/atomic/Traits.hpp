@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC
+#include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST_ACC
 
 #include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
 
@@ -62,7 +62,7 @@ namespace alpaka
             typename TOp,
             typename TAtomic,
             typename T>
-        ALPAKA_FCT_HOST_ACC auto atomicOp(
+        ALPAKA_FN_HOST_ACC auto atomicOp(
             TAtomic const & atomic,
             T * const addr,
             T const & value)
@@ -98,7 +98,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of threads in each dimension of a block.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST_ACC static auto atomicOp(
+                ALPAKA_FN_HOST_ACC static auto atomicOp(
                     TAtomic const & atomic,
                     T * const addr,
                     T const & value)

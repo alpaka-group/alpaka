@@ -60,10 +60,10 @@ namespace alpaka
                 template<
                     typename TDim,
                     typename TSize,
-                    typename TKernelFctObj,
+                    typename TKernelFnObj,
                     typename... TArgs>
                 __global__ void cudaKernel(
-                    TKernelFctObj kernelFctObj,
+                    TKernelFnObj kernelFnObj,
                     TArgs ... args)
                 {
 #if defined(__CUDA_ARCH__) && (__CUDA_ARCH__ < 200)
@@ -71,7 +71,7 @@ namespace alpaka
 #endif
                     acc::cuda::detail::AccGpuCuda<TDim, TSize> acc;
 
-                    kernelFctObj(
+                    kernelFnObj(
                         const_cast<acc::cuda::detail::AccGpuCuda<TDim, TSize> const &>(acc),
                         args...);
                 }
@@ -93,7 +93,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TWorkDiv>
-            ALPAKA_FCT_HOST ExecGpuCuda(
+            ALPAKA_FN_HOST ExecGpuCuda(
                 TWorkDiv const & workDiv,
                 stream::StreamCudaRt & stream) :
                     workdiv::WorkDivMembers<TDim, TSize>(workDiv),
@@ -104,35 +104,35 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST ExecGpuCuda(ExecGpuCuda const &) = default;
+            ALPAKA_FN_HOST ExecGpuCuda(ExecGpuCuda const &) = default;
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST ExecGpuCuda(ExecGpuCuda &&) = default;
+            ALPAKA_FN_HOST ExecGpuCuda(ExecGpuCuda &&) = default;
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator=(ExecGpuCuda const &) -> ExecGpuCuda & = default;
+            ALPAKA_FN_HOST auto operator=(ExecGpuCuda const &) -> ExecGpuCuda & = default;
             //-----------------------------------------------------------------------------
             //! Move assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator=(ExecGpuCuda &&) -> ExecGpuCuda & = default;
+            ALPAKA_FN_HOST auto operator=(ExecGpuCuda &&) -> ExecGpuCuda & = default;
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST ~ExecGpuCuda() = default;
+            ALPAKA_FN_HOST ~ExecGpuCuda() = default;
 
             //-----------------------------------------------------------------------------
             //! Executes the kernel function object.
             //-----------------------------------------------------------------------------
             template<
-                typename TKernelFctObj,
+                typename TKernelFnObj,
                 typename... TArgs>
-            ALPAKA_FCT_HOST auto operator()(
+            ALPAKA_FN_HOST auto operator()(
                 // \NOTE: No const reference (const &) is allowed as the parameter type because the kernel launch language extension expects the arguments by value.
                 // This forces the type of a float argument given with std::forward to this function to be of type float instead of e.g. "float const & __ptr64" (MSVC).
                 // If not given by value, the kernel launch code does not copy the value but the pointer to the value location.
-                TKernelFctObj kernelFctObj,
+                TKernelFnObj kernelFnObj,
                 TArgs ... args) const
             -> void
             {
@@ -140,10 +140,10 @@ namespace alpaka
 
 #if (!__GLIBCXX__) // libstdc++ even for gcc-4.9 does not support std::is_trivially_copyable.
                 static_assert(
-                    std::is_trivially_copyable<TKernelFctObj>::value,
+                    std::is_trivially_copyable<TKernelFnObj>::value,
                     "The given kernel function object has to fulfill is_trivially_copyable!");
 #endif
-                // TODO: Check that (sizeof(TKernelFctObj) * m_3uiBlockThreadExtents.prod()) < available memory size
+                // TODO: Check that (sizeof(TKernelFnObj) * m_3uiBlockThreadExtents.prod()) < available memory size
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 //std::size_t uiPrintfFifoSize;
@@ -184,7 +184,7 @@ namespace alpaka
                 // Get the size of the block shared extern memory.
                 auto const uiBlockSharedExternMemSizeBytes(
                     kernel::getBlockSharedExternMemSizeBytes<
-                        typename std::decay<TKernelFctObj>::type,
+                        typename std::decay<TKernelFnObj>::type,
                         AccGpuCuda<TDim, TSize>>(
                             vuiBlockThreadExtents,
                             args...));
@@ -198,7 +198,7 @@ namespace alpaka
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 // Log the function attributes.
                 cudaFuncAttributes funcAttrs;
-                cudaFuncGetAttributes(&funcAttrs, cuda::detail::cudaKernel<TDim, TSize, TKernelFctObj, TArgs...>);
+                cudaFuncGetAttributes(&funcAttrs, cuda::detail::cudaKernel<TDim, TSize, TKernelFnObj, TArgs...>);
                 std::cout << BOOST_CURRENT_FUNCTION
                     << " binaryVersion: " << funcAttrs.binaryVersion
                     << " constSizeBytes: " << funcAttrs.constSizeBytes << " B"
@@ -214,12 +214,12 @@ namespace alpaka
                 ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
                     m_Stream.m_spStreamCudaImpl->m_Dev.m_iDevice));
                 // Enqueue the kernel execution.
-                cuda::detail::cudaKernel<TDim, TSize, TKernelFctObj, TArgs...><<<
+                cuda::detail::cudaKernel<TDim, TSize, TKernelFnObj, TArgs...><<<
                     gridDim,
                     blockDim,
                     uiBlockSharedExternMemSizeBytes,
                     m_Stream.m_spStreamCudaImpl->m_CudaStream>>>(
-                        kernelFctObj,
+                        kernelFnObj,
                         args...);
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
@@ -230,7 +230,7 @@ namespace alpaka
                 cudaError_t const error(cudaGetLastError());
                 if(error != cudaSuccess)
                 {
-                    std::string const sError("The execution of kernel '" + std::string(typeid(TKernelFctObj).name()) + "' failed with error: '" + std::string(cudaGetErrorString(error)) + "'");
+                    std::string const sError("The execution of kernel '" + std::string(typeid(TKernelFnObj).name()) + "' failed with error: '" + std::string(cudaGetErrorString(error)) + "'");
                     std::cerr << sError << std::endl;
                     ALPAKA_DEBUG_BREAK;
                     throw std::runtime_error(sError);
@@ -380,7 +380,7 @@ namespace alpaka
             struct GetStream<
                 exec::ExecGpuCuda<TDim, TSize>>
             {
-                ALPAKA_FCT_HOST static auto getStream(
+                ALPAKA_FN_HOST static auto getStream(
                     exec::ExecGpuCuda<TDim, TSize> const & exec)
                 -> stream::StreamCudaRt
                 {

@@ -22,7 +22,7 @@
 #pragma once
 
 #include <alpaka/core/Vec.hpp>          // Vec
-#include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST_ACC
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
 
 #if !defined(__CUDA_ARCH__)
     #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
@@ -55,7 +55,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TElem>
-            ALPAKA_FCT_HOST_ACC static auto mapIdx(
+            ALPAKA_FN_HOST_ACC static auto mapIdx(
                 Vec<dim::Dim<1u>, TElem> const & idx,
                 Vec<dim::Dim<1u>, TElem> const & extents)
             -> Vec<dim::Dim<1u>, TElem>
@@ -82,7 +82,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TElem>
-            ALPAKA_FCT_HOST_ACC static auto mapIdx(
+            ALPAKA_FN_HOST_ACC static auto mapIdx(
                 Vec<dim::Dim<1u>, TElem> const & idx,
                 Vec<dim::Dim<3u>, TElem> const & extents)
             -> Vec<dim::Dim<3u>, TElem>
@@ -113,7 +113,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TElem>
-            ALPAKA_FCT_HOST_ACC static auto mapIdx(
+            ALPAKA_FN_HOST_ACC static auto mapIdx(
                 Vec<dim::Dim<1u>, TElem> const & idx,
                 Vec<dim::Dim<2u>, TElem> const & extents)
             -> Vec<dim::Dim<2u>, TElem>
@@ -142,7 +142,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TElem>
-            ALPAKA_FCT_HOST_ACC static auto mapIdx(
+            ALPAKA_FN_HOST_ACC static auto mapIdx(
                 Vec<dim::Dim<3u>, TElem> const & idx,
                 Vec<dim::Dim<3u>, TElem> const & extents)
             -> Vec<dim::Dim<1u>, TElem>
@@ -166,7 +166,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TElem>
-            ALPAKA_FCT_HOST_ACC static auto mapIdx(
+            ALPAKA_FN_HOST_ACC static auto mapIdx(
                 Vec<dim::Dim<2u>, TElem> const & idx,
                 Vec<dim::Dim<2u>, TElem> const & extents)
             -> Vec<dim::Dim<1u>, TElem>
@@ -188,7 +188,7 @@ namespace alpaka
         std::size_t TuiIdxDimOut,
         std::size_t TuiIdxDimIn,
         typename TElem>
-    ALPAKA_FCT_HOST_ACC auto mapIdx(
+    ALPAKA_FN_HOST_ACC auto mapIdx(
         Vec<dim::Dim<TuiIdxDimIn>, TElem> const & idx,
         Vec<dim::Dim<(TuiIdxDimOut < TuiIdxDimIn) ? TuiIdxDimIn : TuiIdxDimOut>, TElem> const & extents)
     -> Vec<dim::Dim<TuiIdxDimOut>, TElem>

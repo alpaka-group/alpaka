@@ -22,7 +22,7 @@
 #pragma once
 
 #include <alpaka/acc/AccDevProps.hpp>   // AccDevProps
-#include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST
 
 namespace alpaka
 {
@@ -115,7 +115,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename T>
-        ALPAKA_FCT_HOST auto getDev(
+        ALPAKA_FN_HOST auto getDev(
             T const & t)
         -> decltype(traits::GetDev<T>::getDev(t))
         {
@@ -130,7 +130,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TDevMan>
-        ALPAKA_FCT_HOST auto getDevs()
+        ALPAKA_FN_HOST auto getDevs()
         -> std::vector<DevT<TDevMan>>
         {
             std::vector<DevT<TDevMan>> vDevices;
@@ -149,7 +149,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TDev>
-        ALPAKA_FCT_HOST auto getName(
+        ALPAKA_FN_HOST auto getName(
             TDev const & dev)
         -> std::string
         {
@@ -164,7 +164,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TDev>
-        ALPAKA_FCT_HOST auto getMemBytes(
+        ALPAKA_FN_HOST auto getMemBytes(
             TDev const & dev)
         -> std::size_t
         {
@@ -179,7 +179,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TDev>
-        ALPAKA_FCT_HOST auto getFreeMemBytes(
+        ALPAKA_FN_HOST auto getFreeMemBytes(
             TDev const & dev)
         -> std::size_t
         {
@@ -195,7 +195,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TDev>
-        ALPAKA_FCT_HOST auto reset(
+        ALPAKA_FN_HOST auto reset(
             TDev const & dev)
         -> void
         {

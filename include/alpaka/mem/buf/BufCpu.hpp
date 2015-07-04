@@ -69,7 +69,7 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         template<
                             typename TExtents>
-                        ALPAKA_FCT_HOST BufCpuImpl(
+                        ALPAKA_FN_HOST BufCpuImpl(
                             dev::DevCpu const & dev,
                             TExtents const & extents) :
                                 mem::alloc::AllocCpuBoostAligned<std::integral_constant<std::size_t, 16u>>(),
@@ -101,23 +101,23 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         //! Copy constructor.
                         //-----------------------------------------------------------------------------
-                        ALPAKA_FCT_HOST BufCpuImpl(BufCpuImpl const &) = delete;
+                        ALPAKA_FN_HOST BufCpuImpl(BufCpuImpl const &) = delete;
                         //-----------------------------------------------------------------------------
                         //! Move constructor.
                         //-----------------------------------------------------------------------------
-                        ALPAKA_FCT_HOST BufCpuImpl(BufCpuImpl &&) = default;
+                        ALPAKA_FN_HOST BufCpuImpl(BufCpuImpl &&) = default;
                         //-----------------------------------------------------------------------------
                         //! Copy assignment operator.
                         //-----------------------------------------------------------------------------
-                        ALPAKA_FCT_HOST auto operator=(BufCpuImpl const &) -> BufCpuImpl & = delete;
+                        ALPAKA_FN_HOST auto operator=(BufCpuImpl const &) -> BufCpuImpl & = delete;
                         //-----------------------------------------------------------------------------
                         //! Move assignment operator.
                         //-----------------------------------------------------------------------------
-                        ALPAKA_FCT_HOST auto operator=(BufCpuImpl &&) -> BufCpuImpl & = default;
+                        ALPAKA_FN_HOST auto operator=(BufCpuImpl &&) -> BufCpuImpl & = default;
                         //-----------------------------------------------------------------------------
                         //! Destructor.
                         //-----------------------------------------------------------------------------
-                        ALPAKA_FCT_HOST ~BufCpuImpl() noexcept(false)
+                        ALPAKA_FN_HOST ~BufCpuImpl() noexcept(false)
                         {
                             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -135,7 +135,7 @@ namespace alpaka
                         //-----------------------------------------------------------------------------
                         template<
                             typename TExtents>
-                        ALPAKA_FCT_HOST static auto computeElementCount(
+                        ALPAKA_FN_HOST static auto computeElementCount(
                             TExtents const & extents)
                         -> TSize
                         {
@@ -171,7 +171,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TExtents>
-                ALPAKA_FCT_HOST BufCpu(
+                ALPAKA_FN_HOST BufCpu(
                     dev::DevCpu const & dev,
                     TExtents const & extents) :
                         m_spBufCpuImpl(std::make_shared<cpu::detail::BufCpuImpl<TElem, TDim, TSize>>(dev, extents))
@@ -179,19 +179,19 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST BufCpu(BufCpu const &) = default;
+                ALPAKA_FN_HOST BufCpu(BufCpu const &) = default;
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST BufCpu(BufCpu &&) = default;
+                ALPAKA_FN_HOST BufCpu(BufCpu &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST auto operator=(BufCpu const &) -> BufCpu & = default;
+                ALPAKA_FN_HOST auto operator=(BufCpu const &) -> BufCpu & = default;
                 //-----------------------------------------------------------------------------
                 //! Move assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST auto operator=(BufCpu &&) -> BufCpu & = default;
+                ALPAKA_FN_HOST auto operator=(BufCpu &&) -> BufCpu & = default;
 
             public:
                 std::shared_ptr<cpu::detail::BufCpuImpl<TElem, TDim, TSize>> m_spBufCpuImpl;
@@ -228,7 +228,7 @@ namespace alpaka
             struct GetDev<
                 mem::buf::BufCpu<TElem, TDim, TSize>>
             {
-                ALPAKA_FCT_HOST static auto getDev(
+                ALPAKA_FN_HOST static auto getDev(
                     mem::buf::BufCpu<TElem, TDim, TSize> const & buf)
                 -> dev::DevCpu
                 {
@@ -275,7 +275,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getExtent(
+                ALPAKA_FN_HOST static auto getExtent(
                     mem::buf::BufCpu<TElem, TDim, TSize> const & extents)
                 -> TSize
                 {
@@ -315,7 +315,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto getBuf(
+                    ALPAKA_FN_HOST static auto getBuf(
                         mem::buf::BufCpu<TElem, TDim, TSize> const & buf)
                     -> mem::buf::BufCpu<TElem, TDim, TSize> const &
                     {
@@ -324,7 +324,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto getBuf(
+                    ALPAKA_FN_HOST static auto getBuf(
                         mem::buf::BufCpu<TElem, TDim, TSize> & buf)
                     -> mem::buf::BufCpu<TElem, TDim, TSize> &
                     {
@@ -344,7 +344,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto getPtrNative(
+                    ALPAKA_FN_HOST static auto getPtrNative(
                         mem::buf::BufCpu<TElem, TDim, TSize> const & buf)
                     -> TElem const *
                     {
@@ -353,7 +353,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto getPtrNative(
+                    ALPAKA_FN_HOST static auto getPtrNative(
                         mem::buf::BufCpu<TElem, TDim, TSize> & buf)
                     -> TElem *
                     {
@@ -374,7 +374,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto getPtrDev(
+                    ALPAKA_FN_HOST static auto getPtrDev(
                         mem::buf::BufCpu<TElem, TDim, TSize> const & buf,
                         dev::DevCpu const & dev)
                     -> TElem const *
@@ -391,7 +391,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto getPtrDev(
+                    ALPAKA_FN_HOST static auto getPtrDev(
                         mem::buf::BufCpu<TElem, TDim, TSize> & buf,
                         dev::DevCpu const & dev)
                     -> TElem *
@@ -420,7 +420,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto getPitchBytes(
+                    ALPAKA_FN_HOST static auto getPitchBytes(
                         mem::buf::BufCpu<TElem, TDim, TSize> const & pitch)
                     -> TSize
                     {
@@ -451,7 +451,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     template<
                         typename TExtents>
-                    ALPAKA_FCT_HOST static auto alloc(
+                    ALPAKA_FN_HOST static auto alloc(
                         dev::DevCpu const & dev,
                         TExtents const & extents)
                     -> mem::buf::BufCpu<TElem, TDim, TSize>
@@ -480,7 +480,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto map(
+                    ALPAKA_FN_HOST static auto map(
                         mem::buf::BufCpu<TElem, TDim, TSize> & buf,
                         dev::DevCpu const & dev)
                     -> void
@@ -508,7 +508,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto unmap(
+                    ALPAKA_FN_HOST static auto unmap(
                         mem::buf::BufCpu<TElem, TDim, TSize> & buf,
                         dev::DevCpu const & dev)
                     -> void
@@ -535,7 +535,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto pin(
+                    ALPAKA_FN_HOST static auto pin(
                         mem::buf::BufCpu<TElem, TDim, TSize> & buf)
                     -> void
                     {
@@ -577,7 +577,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto unpin(
+                    ALPAKA_FN_HOST static auto unpin(
                         mem::buf::BufCpu<TElem, TDim, TSize> & buf)
                     -> void
                     {
@@ -597,7 +597,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto unpin(
+                    ALPAKA_FN_HOST static auto unpin(
                         mem::buf::cpu::detail::BufCpuImpl<TElem, TDim, TSize> & bufImpl)
                     -> void
                     {
@@ -633,7 +633,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto isPinned(
+                    ALPAKA_FN_HOST static auto isPinned(
                         mem::buf::BufCpu<TElem, TDim, TSize> const & buf)
                     -> bool
                     {
@@ -653,7 +653,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto isPinned(
+                    ALPAKA_FN_HOST static auto isPinned(
                         mem::buf::cpu::detail::BufCpuImpl<TElem, TDim, TSize> const & bufImpl)
                     -> bool
                     {
@@ -688,7 +688,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getOffset(
+                ALPAKA_FN_HOST static auto getOffset(
                     mem::buf::BufCpu<TElem, TDim, TSize> const &)
                 -> TSize
                 {

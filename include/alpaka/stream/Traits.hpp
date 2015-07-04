@@ -23,7 +23,7 @@
 
 #include <alpaka/wait/Traits.hpp>   // CurrentThreadWaitFor, WaiterWaitFor
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST
+#include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST
 
 namespace alpaka
 {
@@ -83,7 +83,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TDev>
-        ALPAKA_FCT_HOST auto create(
+        ALPAKA_FN_HOST auto create(
             TDev & dev)
         -> StreamT<TDev>
         {
@@ -99,7 +99,7 @@ namespace alpaka
         template<
             typename TStream,
             typename TTask>
-        ALPAKA_FCT_HOST auto enqueue(
+        ALPAKA_FN_HOST auto enqueue(
             TStream & stream,
             TTask & task)
         -> void
@@ -117,7 +117,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TStream>
-        ALPAKA_FCT_HOST auto test(
+        ALPAKA_FN_HOST auto test(
             TStream const & stream)
         -> bool
         {
@@ -132,7 +132,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename T>
-        ALPAKA_FCT_HOST_ACC auto getStream(
+        ALPAKA_FN_HOST_ACC auto getStream(
             T const & type)
         -> decltype(traits::GetStream<T>::getStream(type))
         {

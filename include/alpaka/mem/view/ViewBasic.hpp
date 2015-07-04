@@ -30,7 +30,7 @@
 
 #include <alpaka/mem/buf/BufPlainPtrWrapper.hpp>    // BufPlainPtrWrapper
 #include <alpaka/core/Vec.hpp>                      // Vec
-#include <alpaka/core/Common.hpp>                   // ALPAKA_FCT_HOST
+#include <alpaka/core/Common.hpp>                   // ALPAKA_FN_HOST
 
 #include <type_traits>                              // std::conditional, ...
 
@@ -229,7 +229,7 @@ namespace alpaka
             struct GetDev<
                 mem::view::ViewBasic<TDev, TElem, TDim, TSize>>
             {
-                ALPAKA_FCT_HOST static auto getDev(
+                ALPAKA_FN_HOST static auto getDev(
                     mem::view::ViewBasic<TDev, TElem, TDim, TSize> const & view)
                 -> TDev
                 {
@@ -280,7 +280,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getExtent(
+                ALPAKA_FN_HOST static auto getExtent(
                     mem::view::ViewBasic<TDev, TElem, TDim, TSize> const & extents)
                 -> TSize
                 {
@@ -325,7 +325,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     template<
                         typename TBuf>
-                    ALPAKA_FCT_HOST static auto createView(
+                    ALPAKA_FN_HOST static auto createView(
                         TBuf const & buf)
                     -> mem::view::ViewBasic<typename std::add_const<TElem>::type, TDim, TDev, TSize>
                     {
@@ -341,7 +341,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     template<
                         typename TBuf>
-                    ALPAKA_FCT_HOST static auto createView(
+                    ALPAKA_FN_HOST static auto createView(
                         TBuf & buf)
                     -> mem::view::ViewBasic<TDev, TElem, TDim, TSize>
                     {
@@ -359,7 +359,7 @@ namespace alpaka
                         typename TBuf,
                         typename TExtents,
                         typename TOffsets>
-                    ALPAKA_FCT_HOST static auto createView(
+                    ALPAKA_FN_HOST static auto createView(
                         TBuf const & buf,
                         TExtents const & extentsElements,
                         TOffsets const & relativeOffsetsElements)
@@ -381,7 +381,7 @@ namespace alpaka
                         typename TBuf,
                         typename TExtents,
                         typename TOffsets>
-                    ALPAKA_FCT_HOST static auto createView(
+                    ALPAKA_FN_HOST static auto createView(
                         TBuf & buf,
                         TExtents const & extentsElements,
                         TOffsets const & relativeOffsetsElements)
@@ -412,7 +412,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto getBuf(
+                    ALPAKA_FN_HOST static auto getBuf(
                         mem::view::ViewBasic<TDev, TElem, TDim, TSize> const & view)
                     -> typename mem::view::ViewBasic<TDev, TElem, TDim, TSize>::Buf const &
                     {
@@ -421,7 +421,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto getBuf(
+                    ALPAKA_FN_HOST static auto getBuf(
                         mem::view::ViewBasic<TDev, TElem, TDim, TSize> & view)
                     -> typename mem::view::ViewBasic<TDev, TElem, TDim, TSize>::Buf &
                     {
@@ -446,7 +446,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto getPtrNative(
+                    ALPAKA_FN_HOST static auto getPtrNative(
                         mem::view::ViewBasic<TDev, TElem, TDim, TSize> const & view)
                     -> TElem const *
                     {
@@ -460,7 +460,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto getPtrNative(
+                    ALPAKA_FN_HOST static auto getPtrNative(
                         mem::view::ViewBasic<TDev, TElem, TDim, TSize> & view)
                     -> TElem *
                     {
@@ -480,7 +480,7 @@ namespace alpaka
                         typename TView,
                         typename TBuf,
                         std::size_t... TIndices>
-                    ALPAKA_FCT_HOST static auto pitchedOffsetBytes(
+                    ALPAKA_FN_HOST static auto pitchedOffsetBytes(
                         TView const & view,
                         TBuf const & buf,
                         alpaka::detail::integer_sequence<std::size_t, TIndices...> const &)
@@ -498,7 +498,7 @@ namespace alpaka
                         std::size_t TuiIdx,
                         typename TView,
                         typename TBuf>
-                    ALPAKA_FCT_HOST static auto pitchedOffsetBytesDim(
+                    ALPAKA_FN_HOST static auto pitchedOffsetBytesDim(
                         TView const & view,
                         TBuf const & buf)
                     -> TSize
@@ -525,7 +525,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto getPitchBytes(
+                    ALPAKA_FN_HOST static auto getPitchBytes(
                         mem::view::ViewBasic<TDev, TElem, TDim, TSize> const & view)
                     -> TSize
                     {
@@ -558,7 +558,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getOffset(
+                ALPAKA_FN_HOST static auto getOffset(
                     mem::view::ViewBasic<TDev, TElem, TDim, TSize> const & offset)
                 -> TSize
                 {

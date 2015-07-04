@@ -54,7 +54,7 @@ namespace alpaka
                 typename std::enable_if<
                     std::is_arithmetic<TArg>::value>::type>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static auto cbrt(
+                ALPAKA_FN_ACC_CUDA_ONLY static auto cbrt(
                     CbrtCudaBuiltIn const & cbrt,
                     TArg const & arg)
                 -> decltype(std::cbrt(arg))

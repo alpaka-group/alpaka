@@ -101,7 +101,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     template<
                         typename TWorkDiv>
-                    ALPAKA_FCT_ACC_NO_CUDA AccCpuSerial(
+                    ALPAKA_FN_ACC_NO_CUDA AccCpuSerial(
                         TWorkDiv const & workDiv) :
                             workdiv::WorkDivMembers<TDim, TSize>(workDiv),
                             idx::gb::IdxGbRef<TDim, TSize>(m_vuiGridBlockIdx),
@@ -117,28 +117,28 @@ namespace alpaka
                     //! Copy constructor.
                     // Do not copy most members because they are initialized by the executor for each execution.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA AccCpuSerial(AccCpuSerial const &) = delete;
+                    ALPAKA_FN_ACC_NO_CUDA AccCpuSerial(AccCpuSerial const &) = delete;
                     //-----------------------------------------------------------------------------
                     //! Move constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA AccCpuSerial(AccCpuSerial &&) = delete;
+                    ALPAKA_FN_ACC_NO_CUDA AccCpuSerial(AccCpuSerial &&) = delete;
                     //-----------------------------------------------------------------------------
                     //! Copy assignment operator.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA auto operator=(AccCpuSerial const &) -> AccCpuSerial & = delete;
+                    ALPAKA_FN_ACC_NO_CUDA auto operator=(AccCpuSerial const &) -> AccCpuSerial & = delete;
                     //-----------------------------------------------------------------------------
                     //! Move assignment operator.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA auto operator=(AccCpuSerial &&) -> AccCpuSerial & = delete;
+                    ALPAKA_FN_ACC_NO_CUDA auto operator=(AccCpuSerial &&) -> AccCpuSerial & = delete;
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA /*virtual*/ ~AccCpuSerial() = default;
+                    ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~AccCpuSerial() = default;
 
                     //-----------------------------------------------------------------------------
                     //! Syncs all threads in the current block.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_NO_CUDA void syncBlockThreads() const
+                    ALPAKA_FN_ACC_NO_CUDA void syncBlockThreads() const
                     {
                         // Nothing to do in here because only one thread in a group is allowed.
                     }
@@ -148,7 +148,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     template<
                         typename T>
-                    ALPAKA_FCT_ACC_NO_CUDA auto getBlockSharedExternMem() const
+                    ALPAKA_FN_ACC_NO_CUDA auto getBlockSharedExternMem() const
                     -> T *
                     {
                         return reinterpret_cast<T*>(m_vuiExternalSharedMem.get());
@@ -194,7 +194,7 @@ namespace alpaka
             struct GetAccDevProps<
                 acc::serial::detail::AccCpuSerial<TDim, TSize>>
             {
-                ALPAKA_FCT_HOST static auto getAccDevProps(
+                ALPAKA_FN_HOST static auto getAccDevProps(
                     dev::DevCpu const & dev)
                 -> acc::AccDevProps<TDim, TSize>
                 {
@@ -220,7 +220,7 @@ namespace alpaka
             struct GetAccName<
                 acc::serial::detail::AccCpuSerial<TDim, TSize>>
             {
-                ALPAKA_FCT_HOST_ACC static auto getAccName()
+                ALPAKA_FN_HOST_ACC static auto getAccName()
                 -> std::string
                 {
                     return "AccCpuSerial<" + std::to_string(TDim::value) + "," + typeid(TSize).name() + ">";

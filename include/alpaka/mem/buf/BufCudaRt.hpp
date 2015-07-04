@@ -73,7 +73,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TExtents>
-                ALPAKA_FCT_HOST BufCudaRt(
+                ALPAKA_FN_HOST BufCudaRt(
                     dev::DevCudaRt dev,
                     TElem * const pMem,
                     TSize const & uiPitchBytes,
@@ -99,7 +99,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Frees the shared buffer.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto freeBuffer(
+                ALPAKA_FN_HOST static auto freeBuffer(
                     TElem * pBuffer,
                     dev::DevCudaRt const & dev)
                 -> void
@@ -153,7 +153,7 @@ namespace alpaka
             struct GetDev<
                 mem::buf::BufCudaRt<TElem, TDim, TSize>>
             {
-                ALPAKA_FCT_HOST static auto getDev(
+                ALPAKA_FN_HOST static auto getDev(
                     mem::buf::BufCudaRt<TElem, TDim, TSize> const & buf)
                 -> dev::DevCudaRt
                 {
@@ -200,7 +200,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getExtent(
+                ALPAKA_FN_HOST static auto getExtent(
                     mem::buf::BufCudaRt<TElem, TDim, TSize> const & extent)
                 -> TSize
                 {
@@ -240,7 +240,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto getBuf(
+                    ALPAKA_FN_HOST static auto getBuf(
                         mem::buf::BufCudaRt<TElem, TDim, TSize> const & buf)
                     -> mem::buf::BufCudaRt<TElem, TDim, TSize> const &
                     {
@@ -249,7 +249,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto getBuf(
+                    ALPAKA_FN_HOST static auto getBuf(
                         mem::buf::BufCudaRt<TElem, TDim, TSize> & buf)
                     -> mem::buf::BufCudaRt<TElem, TDim, TSize> &
                     {
@@ -269,7 +269,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto getPtrNative(
+                    ALPAKA_FN_HOST static auto getPtrNative(
                         mem::buf::BufCudaRt<TElem, TDim, TSize> const & buf)
                     -> TElem const *
                     {
@@ -278,7 +278,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto getPtrNative(
+                    ALPAKA_FN_HOST static auto getPtrNative(
                         mem::buf::BufCudaRt<TElem, TDim, TSize> & buf)
                     -> TElem *
                     {
@@ -299,7 +299,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto getPtrDev(
+                    ALPAKA_FN_HOST static auto getPtrDev(
                         mem::buf::BufCudaRt<TElem, TDim, TSize> const & buf,
                         dev::DevCudaRt const & dev)
                     -> TElem const *
@@ -316,7 +316,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto getPtrDev(
+                    ALPAKA_FN_HOST static auto getPtrDev(
                         mem::buf::BufCudaRt<TElem, TDim, TSize> & buf,
                         dev::DevCudaRt const & dev)
                     -> TElem *
@@ -345,7 +345,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto getPitchBytes(
+                    ALPAKA_FN_HOST static auto getPitchBytes(
                         mem::buf::BufCudaRt<TElem, TDim, TSize> const & buf)
                     -> TSize
                     {
@@ -375,7 +375,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     template<
                         typename TExtents>
-                    ALPAKA_FCT_HOST static auto alloc(
+                    ALPAKA_FN_HOST static auto alloc(
                         dev::DevCudaRt const & dev,
                         TExtents const & extents)
                     -> mem::buf::BufCudaRt<T, dim::Dim<1u>, TSize>
@@ -429,7 +429,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     template<
                         typename TExtents>
-                    ALPAKA_FCT_HOST static auto alloc(
+                    ALPAKA_FN_HOST static auto alloc(
                         dev::DevCudaRt const & dev,
                         TExtents const & extents)
                     -> mem::buf::BufCudaRt<T, dim::Dim<2u>, TSize>
@@ -493,7 +493,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     template<
                         typename TExtents>
-                    ALPAKA_FCT_HOST static auto alloc(
+                    ALPAKA_FN_HOST static auto alloc(
                         dev::DevCudaRt const & dev,
                         TExtents const & extents)
                     -> mem::buf::BufCudaRt<T, dim::Dim<3u>, TSize>
@@ -551,7 +551,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto map(
+                    ALPAKA_FN_HOST static auto map(
                         mem::buf::BufCudaRt<TElem, TDim, TSize> const & buf,
                         dev::DevCudaRt const & dev)
                     -> void
@@ -579,7 +579,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto unmap(
+                    ALPAKA_FN_HOST static auto unmap(
                         mem::buf::BufCudaRt<TElem, TDim, TSize> const & buf,
                         dev::DevCudaRt const & dev)
                     -> void
@@ -606,7 +606,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto pin(
+                    ALPAKA_FN_HOST static auto pin(
                         mem::buf::BufCudaRt<TElem, TDim, TSize> & buf)
                     -> void
                     {
@@ -628,7 +628,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto unpin(
+                    ALPAKA_FN_HOST static auto unpin(
                         mem::buf::BufCudaRt<TElem, TDim, TSize> & buf)
                     -> void
                     {
@@ -650,7 +650,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto isPinned(
+                    ALPAKA_FN_HOST static auto isPinned(
                         mem::buf::BufCudaRt<TElem, TDim, TSize> const & buf)
                     -> bool
                     {
@@ -682,7 +682,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST static auto getOffset(
+                ALPAKA_FN_HOST static auto getOffset(
                    mem::buf::BufCudaRt<TElem, TDim, TSize> const &)
                 -> TSize
                 {
@@ -733,7 +733,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto map(
+                    ALPAKA_FN_HOST static auto map(
                         mem::buf::BufCpu<TElem, TDim, TSize> & buf,
                         dev::DevCudaRt const & dev)
                     -> void
@@ -768,7 +768,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto unmap(
+                    ALPAKA_FN_HOST static auto unmap(
                         mem::buf::BufCpu<TElem, TDim, TSize> & buf,
                         dev::DevCudaRt const & dev)
                     -> void
@@ -806,7 +806,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto getPtrDev(
+                    ALPAKA_FN_HOST static auto getPtrDev(
                         mem::buf::BufCpu<TElem, TDim, TSize> const & buf,
                         dev::DevCudaRt const & dev)
                     -> TElem const *
@@ -823,7 +823,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto getPtrDev(
+                    ALPAKA_FN_HOST static auto getPtrDev(
                         mem::buf::BufCpu<TElem, TDim, TSize> & buf,
                         dev::DevCudaRt const & dev)
                     -> TElem *

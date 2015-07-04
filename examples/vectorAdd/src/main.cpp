@@ -50,7 +50,7 @@ public:
         typename TAcc,
         typename TElem,
         typename TSize>
-    ALPAKA_FCT_ACC auto operator()(
+    ALPAKA_FN_ACC auto operator()(
         TAcc const & acc,
         TElem const * const A,
         TElem const * const B,

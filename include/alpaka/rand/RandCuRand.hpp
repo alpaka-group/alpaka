@@ -25,7 +25,7 @@
 
 #include <alpaka/dev/DevCudaRt.hpp>       // DevCudaRt
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FCT_ACC_CUDA_ONLY
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_ACC_CUDA_ONLY
 #include <alpaka/core/Cuda.hpp>         // ALPAKA_CUDA_RT_CHECK
 
 #include <curand_kernel.h>              // curand_init, ...
@@ -49,7 +49,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_CUDA_ONLY Xor(
+                    ALPAKA_FN_ACC_CUDA_ONLY Xor(
                         std::uint32_t const & seed,
                         std::uint32_t const & subsequence = 0,
                         std::uint32_t const & offset = 0)
@@ -88,14 +88,14 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_CUDA_ONLY NormalReal() = default;
+                    ALPAKA_FN_ACC_CUDA_ONLY NormalReal() = default;
 
                     //-----------------------------------------------------------------------------
                     //! Call operator.
                     //-----------------------------------------------------------------------------
                     template<
                         typename TGenerator>
-                    ALPAKA_FCT_ACC_CUDA_ONLY auto operator()(
+                    ALPAKA_FN_ACC_CUDA_ONLY auto operator()(
                         TGenerator const & generator)
                     -> float
                     {
@@ -113,14 +113,14 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_CUDA_ONLY NormalReal() = default;
+                    ALPAKA_FN_ACC_CUDA_ONLY NormalReal() = default;
 
                     //-----------------------------------------------------------------------------
                     //! Call operator.
                     //-----------------------------------------------------------------------------
                     template<
                         typename TGenerator>
-                    ALPAKA_FCT_ACC_CUDA_ONLY auto operator()(
+                    ALPAKA_FN_ACC_CUDA_ONLY auto operator()(
                         TGenerator const & generator)
                     -> double
                     {
@@ -146,14 +146,14 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_CUDA_ONLY UniformReal() = default;
+                    ALPAKA_FN_ACC_CUDA_ONLY UniformReal() = default;
 
                     //-----------------------------------------------------------------------------
                     //! Call operator.
                     //-----------------------------------------------------------------------------
                     template<
                         typename TGenerator>
-                    ALPAKA_FCT_ACC_CUDA_ONLY auto operator()(
+                    ALPAKA_FN_ACC_CUDA_ONLY auto operator()(
                         TGenerator const & generator)
                     -> float
                     {
@@ -175,14 +175,14 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_CUDA_ONLY UniformReal() = default;
+                    ALPAKA_FN_ACC_CUDA_ONLY UniformReal() = default;
 
                     //-----------------------------------------------------------------------------
                     //! Call operator.
                     //-----------------------------------------------------------------------------
                     template<
                         typename TGenerator>
-                    ALPAKA_FCT_ACC_CUDA_ONLY auto operator()(
+                    ALPAKA_FN_ACC_CUDA_ONLY auto operator()(
                         TGenerator const & generator)
                     -> double
                     {
@@ -212,14 +212,14 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_CUDA_ONLY UniformUint() = default;
+                    ALPAKA_FN_ACC_CUDA_ONLY UniformUint() = default;
 
                     //-----------------------------------------------------------------------------
                     //! Call operator.
                     //-----------------------------------------------------------------------------
                     template<
                         typename TGenerator>
-                    ALPAKA_FCT_ACC_CUDA_ONLY auto operator()(
+                    ALPAKA_FN_ACC_CUDA_ONLY auto operator()(
                         TGenerator const & generator)
                     -> unsigned int
                     {
@@ -248,7 +248,7 @@ namespace alpaka
                             dev::DevCudaRt>::value
                         && std::is_floating_point<T>::value>::type>
                 {
-                    ALPAKA_FCT_ACC_CUDA_ONLY static auto createNormalReal(
+                    ALPAKA_FN_ACC_CUDA_ONLY static auto createNormalReal(
                         TAcc const & acc)
                     -> rand::distribution::cuda::NormalReal<T>
                     {
@@ -270,7 +270,7 @@ namespace alpaka
                             dev::DevCudaRt>::value
                         && std::is_floating_point<T>::value>::type>
                 {
-                    ALPAKA_FCT_ACC_CUDA_ONLY static auto createUniformReal(
+                    ALPAKA_FN_ACC_CUDA_ONLY static auto createUniformReal(
                         TAcc const & acc)
                     -> rand::distribution::cuda::UniformReal<T>
                     {
@@ -292,7 +292,7 @@ namespace alpaka
                             dev::DevCudaRt>::value
                         && std::is_integral<T>::value>::type>
                 {
-                    ALPAKA_FCT_ACC_CUDA_ONLY static auto createUniformUint(
+                    ALPAKA_FN_ACC_CUDA_ONLY static auto createUniformUint(
                         TAcc const & acc)
                     -> rand::distribution::cuda::UniformUint<T>
                     {
@@ -317,7 +317,7 @@ namespace alpaka
                             dev::DevT<TAcc>,
                             dev::DevCudaRt>::value>::type>
                 {
-                    ALPAKA_FCT_ACC_CUDA_ONLY static auto createDefault(
+                    ALPAKA_FN_ACC_CUDA_ONLY static auto createDefault(
                         TAcc const & acc,
                         std::uint32_t const & seed,
                         std::uint32_t const & subsequence)

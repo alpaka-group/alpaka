@@ -40,27 +40,27 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Default constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_ACC_NO_CUDA AtomicOmpCritSec() = default;
+            ALPAKA_FN_ACC_NO_CUDA AtomicOmpCritSec() = default;
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_ACC_NO_CUDA AtomicOmpCritSec(AtomicOmpCritSec const &) = delete;
+            ALPAKA_FN_ACC_NO_CUDA AtomicOmpCritSec(AtomicOmpCritSec const &) = delete;
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_ACC_NO_CUDA AtomicOmpCritSec(AtomicOmpCritSec &&) = delete;
+            ALPAKA_FN_ACC_NO_CUDA AtomicOmpCritSec(AtomicOmpCritSec &&) = delete;
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_ACC_NO_CUDA auto operator=(AtomicOmpCritSec const &) -> AtomicOmpCritSec & = delete;
+            ALPAKA_FN_ACC_NO_CUDA auto operator=(AtomicOmpCritSec const &) -> AtomicOmpCritSec & = delete;
             //-----------------------------------------------------------------------------
             //! Move assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_ACC_NO_CUDA auto operator=(AtomicOmpCritSec &&) -> AtomicOmpCritSec & = delete;
+            ALPAKA_FN_ACC_NO_CUDA auto operator=(AtomicOmpCritSec &&) -> AtomicOmpCritSec & = delete;
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_ACC_NO_CUDA /*virtual*/ ~AtomicOmpCritSec() = default;
+            ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~AtomicOmpCritSec() = default;
         };
 
         namespace traits
@@ -79,7 +79,7 @@ namespace alpaka
                 atomic::AtomicOmpCritSec,
                 T>
             {
-                ALPAKA_FCT_ACC_NO_CUDA static auto atomicOp(
+                ALPAKA_FN_ACC_NO_CUDA static auto atomicOp(
                     atomic::AtomicOmpCritSec const & atomic,
                     T * const addr,
                     T const & value)

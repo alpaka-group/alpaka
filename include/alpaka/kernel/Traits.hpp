@@ -22,7 +22,7 @@
 #pragma once
 
 #include <alpaka/core/Vec.hpp>          // Vec
-#include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST_ACC
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
 
 #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 
@@ -44,13 +44,13 @@ namespace alpaka
             //#############################################################################
             //! The trait for getting the size of the block shared extern memory of a kernel.
             //!
-            //! \tparam TKernelFctObj The kernel function object.
+            //! \tparam TKernelFnObj The kernel function object.
             //! \tparam TAcc The accelerator.
             //!
             //! The default implementation returns 0.
             //#############################################################################
             template<
-                typename TKernelFctObj,
+                typename TKernelFnObj,
                 typename TAcc,
                 typename TSfinae = void>
             struct BlockSharedExternMemSizeBytes
@@ -65,7 +65,7 @@ namespace alpaka
                 template<
                     typename TDim,
                     typename... TArgs>
-                ALPAKA_FCT_HOST_ACC static auto getBlockSharedExternMemSizeBytes(
+                ALPAKA_FN_HOST_ACC static auto getBlockSharedExternMemSizeBytes(
                     Vec<TDim, size::SizeT<TAcc>> const & vuiBlockThreadExtents,
                     TArgs const & ... args)
                 -> size::SizeT<TAcc>
@@ -86,17 +86,17 @@ namespace alpaka
         //! The default version always returns zero.
         //-----------------------------------------------------------------------------
         template<
-            typename TKernelFctObj,
+            typename TKernelFnObj,
             typename TAcc,
             typename TDim,
             typename... TArgs>
-        ALPAKA_FCT_HOST_ACC auto getBlockSharedExternMemSizeBytes(
+        ALPAKA_FN_HOST_ACC auto getBlockSharedExternMemSizeBytes(
             Vec<TDim, size::SizeT<TAcc>> const & vuiBlockThreadExtents,
             TArgs const & ... args)
         -> size::SizeT<TAcc>
         {
             return traits::BlockSharedExternMemSizeBytes<
-                TKernelFctObj,
+                TKernelFnObj,
                 TAcc>
             ::getBlockSharedExternMemSizeBytes(
                 vuiBlockThreadExtents,

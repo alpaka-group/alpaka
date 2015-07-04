@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC
+#include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST_ACC
 
 #include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
 
@@ -56,7 +56,7 @@ namespace alpaka
             typename T,
             typename Ty,
             typename Tx>
-        ALPAKA_FCT_HOST_ACC auto atan2(
+        ALPAKA_FN_HOST_ACC auto atan2(
             T const & atan2,
             Ty const & y,
             Tx const & x)
@@ -100,7 +100,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST_ACC static auto atan2(
+                ALPAKA_FN_HOST_ACC static auto atan2(
                     T const & atan2,
                     Ty const & y,
                     Tx const & x)

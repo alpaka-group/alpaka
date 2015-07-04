@@ -51,30 +51,30 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA IdxBtRefFiberIdMap(
+                ALPAKA_FN_ACC_NO_CUDA IdxBtRefFiberIdMap(
                     FiberIdToIdxMap const & mFibersToIndices) :
                     m_mFibersToIndices(mFibersToIndices)
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA IdxBtRefFiberIdMap(IdxBtRefFiberIdMap const &) = delete;
+                ALPAKA_FN_ACC_NO_CUDA IdxBtRefFiberIdMap(IdxBtRefFiberIdMap const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA IdxBtRefFiberIdMap(IdxBtRefFiberIdMap &&) = delete;
+                ALPAKA_FN_ACC_NO_CUDA IdxBtRefFiberIdMap(IdxBtRefFiberIdMap &&) = delete;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA auto operator=(IdxBtRefFiberIdMap const &) -> IdxBtRefFiberIdMap & = delete;
+                ALPAKA_FN_ACC_NO_CUDA auto operator=(IdxBtRefFiberIdMap const &) -> IdxBtRefFiberIdMap & = delete;
                 //-----------------------------------------------------------------------------
                 //! Move assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA auto operator=(IdxBtRefFiberIdMap &&) -> IdxBtRefFiberIdMap & = delete;
+                ALPAKA_FN_ACC_NO_CUDA auto operator=(IdxBtRefFiberIdMap &&) -> IdxBtRefFiberIdMap & = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_ACC_NO_CUDA /*virtual*/ ~IdxBtRefFiberIdMap() = default;
+                ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~IdxBtRefFiberIdMap() = default;
 
             public:
                 FiberIdToIdxMap const & m_mFibersToIndices;         //!< The mapping of fibers id's to fibers indices.
@@ -119,7 +119,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
-                ALPAKA_FCT_ACC_NO_CUDA static auto getIdx(
+                ALPAKA_FN_ACC_NO_CUDA static auto getIdx(
                     idx::bt::IdxBtRefFiberIdMap<TDim, TSize> const & idx,
                     TWorkDiv const & workDiv)
                 -> Vec<TDim, TSize>

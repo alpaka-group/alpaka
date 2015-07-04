@@ -62,7 +62,7 @@ namespace alpaka
                             typename TExtents,
                             typename TBufSrc,
                             typename TBufDst>
-                        ALPAKA_FCT_HOST static auto memCopyCuda(
+                        ALPAKA_FN_HOST static auto memCopyCuda(
                             TBufDst & bufDst,
                             TBufSrc const & bufSrc,
                             TExtents const & extents,
@@ -117,7 +117,7 @@ namespace alpaka
                             typename TExtents,
                             typename TBufSrc,
                             typename TBufDst>
-                        ALPAKA_FCT_HOST static auto memCopyCuda(
+                        ALPAKA_FN_HOST static auto memCopyCuda(
                             TBufDst & bufDst,
                             TBufSrc const & bufSrc,
                             TExtents const & extents,
@@ -182,7 +182,7 @@ namespace alpaka
                             typename TExtents,
                             typename TBufSrc,
                             typename TBufDst>
-                        ALPAKA_FCT_HOST static auto memCopyCuda(
+                        ALPAKA_FN_HOST static auto memCopyCuda(
                             TBufDst & bufDst,
                             TBufSrc const & bufSrc,
                             TExtents const & extents,
@@ -252,7 +252,7 @@ namespace alpaka
                             typename TExtents,
                             typename TBufSrc,
                             typename TBufDst>
-                        ALPAKA_FCT_HOST static auto memCopyCuda(
+                        ALPAKA_FN_HOST static auto memCopyCuda(
                             TBufDst & bufDst,
                             TBufSrc const & bufSrc,
                             TExtents const & extents,
@@ -332,7 +332,7 @@ namespace alpaka
                             typename TExtents,
                             typename TBufSrc,
                             typename TBufDst>
-                        ALPAKA_FCT_HOST static auto memCopyCuda(
+                        ALPAKA_FN_HOST static auto memCopyCuda(
                             TBufDst & bufDst,
                             TBufSrc const & bufSrc,
                             TExtents const & extents,
@@ -364,7 +364,7 @@ namespace alpaka
                             typename TExtents,
                             typename TBufSrc,
                             typename TBufDst>
-                        ALPAKA_FCT_HOST static auto memCopyCuda(
+                        ALPAKA_FN_HOST static auto memCopyCuda(
                             TBufDst & bufDst,
                             TBufSrc const & bufSrc,
                             TExtents const & extents,
@@ -399,7 +399,7 @@ namespace alpaka
                             typename TExtents,
                             typename TBufSrc,
                             typename TBufDst>
-                        ALPAKA_FCT_HOST static auto buildCudaMemcpy3DParms(
+                        ALPAKA_FN_HOST static auto buildCudaMemcpy3DParms(
                             TBufDst & bufDst,
                             TBufSrc const & bufSrc,
                             TExtents const & extents,
@@ -503,7 +503,7 @@ namespace alpaka
                             typename TExtents,
                             typename TBufSrc,
                             typename TBufDst>
-                        ALPAKA_FCT_HOST static auto memCopyCudaPeer(
+                        ALPAKA_FN_HOST static auto memCopyCudaPeer(
                             TBufDst & bufDst,
                             TBufSrc const & bufSrc,
                             TExtents const & extents)
@@ -559,7 +559,7 @@ namespace alpaka
                             typename TExtents,
                             typename TBufSrc,
                             typename TBufDst>
-                        ALPAKA_FCT_HOST static auto memCopyCudaPeer(
+                        ALPAKA_FN_HOST static auto memCopyCudaPeer(
                             TBufDst & bufDst,
                             TBufSrc const & bufSrc,
                             TExtents const & extents,
@@ -625,7 +625,7 @@ namespace alpaka
                             typename TExtents,
                             typename TBufSrc,
                             typename TBufDst>
-                        ALPAKA_FCT_HOST static auto memCopyCudaPeer(
+                        ALPAKA_FN_HOST static auto memCopyCudaPeer(
                             TBufDst & bufDst,
                             TBufSrc const & bufSrc,
                             TExtents const & extents)
@@ -651,7 +651,7 @@ namespace alpaka
                             typename TExtents,
                             typename TBufSrc,
                             typename TBufDst>
-                        ALPAKA_FCT_HOST static auto memCopyCudaPeer(
+                        ALPAKA_FN_HOST static auto memCopyCudaPeer(
                             TBufDst & bufDst,
                             TBufSrc const & bufSrc,
                             TExtents const & extents,
@@ -681,7 +681,7 @@ namespace alpaka
                             typename TExtents,
                             typename TBufSrc,
                             typename TBufDst>
-                        ALPAKA_FCT_HOST static auto buildCudaMemcpy3DPeerParms(
+                        ALPAKA_FN_HOST static auto buildCudaMemcpy3DPeerParms(
                             TBufDst & bufDst,
                             TBufSrc const & bufSrc,
                             TExtents const & extents)
@@ -783,7 +783,7 @@ namespace alpaka
                             typename TExtents,
                             typename TBufSrc,
                             typename TBufDst>
-                        ALPAKA_FCT_HOST static auto memCopyCudaPeer(
+                        ALPAKA_FN_HOST static auto memCopyCudaPeer(
                             TBufDst & bufDst,
                             TBufSrc const & bufSrc,
                             TExtents const & extents)
@@ -807,7 +807,7 @@ namespace alpaka
                             typename TExtents,
                             typename TBufSrc,
                             typename TBufDst>
-                        ALPAKA_FCT_HOST static auto memCopyCudaPeer(
+                        ALPAKA_FN_HOST static auto memCopyCudaPeer(
                             TBufDst & bufDst,
                             TBufSrc const & bufSrc,
                             TExtents const & extents,
@@ -858,7 +858,7 @@ namespace alpaka
                         typename TExtents,
                         typename TBufSrc,
                         typename TBufDst>
-                    ALPAKA_FCT_HOST static auto copy(
+                    ALPAKA_FN_HOST static auto copy(
                         TBufDst & bufDst,
                         TBufSrc const & bufSrc,
                         TExtents const & extents)
@@ -880,7 +880,7 @@ namespace alpaka
                         typename TExtents,
                         typename TBufSrc,
                         typename TBufDst>
-                    ALPAKA_FCT_HOST static auto copy(
+                    ALPAKA_FN_HOST static auto copy(
                         TBufDst & bufDst,
                         TBufSrc const & bufSrc,
                         TExtents const & extents,
@@ -915,7 +915,7 @@ namespace alpaka
                         typename TExtents,
                         typename TBufSrc,
                         typename TBufDst>
-                    ALPAKA_FCT_HOST static auto copy(
+                    ALPAKA_FN_HOST static auto copy(
                         TBufDst & bufDst,
                         TBufSrc const & bufSrc,
                         TExtents const & extents)
@@ -937,7 +937,7 @@ namespace alpaka
                         typename TExtents,
                         typename TBufSrc,
                         typename TBufDst>
-                    ALPAKA_FCT_HOST static auto copy(
+                    ALPAKA_FN_HOST static auto copy(
                         TBufDst & bufDst,
                         TBufSrc const & bufSrc,
                         TExtents const & extents,
@@ -972,7 +972,7 @@ namespace alpaka
                         typename TExtents,
                         typename TBufSrc,
                         typename TBufDst>
-                    ALPAKA_FCT_HOST static auto copy(
+                    ALPAKA_FN_HOST static auto copy(
                         TBufDst & bufDst,
                         TBufSrc const & bufSrc,
                         TExtents const & extents)
@@ -1004,7 +1004,7 @@ namespace alpaka
                         typename TExtents,
                         typename TBufSrc,
                         typename TBufDst>
-                    ALPAKA_FCT_HOST static auto copy(
+                    ALPAKA_FN_HOST static auto copy(
                         TBufDst & bufDst,
                         TBufSrc const & bufSrc,
                         TExtents const & extents,

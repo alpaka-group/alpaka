@@ -25,7 +25,7 @@
 #include <alpaka/dim/Traits.hpp>        // dim::DimType
 #include <alpaka/extent/Traits.hpp>     // extent::GetExtent
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST
 
 namespace alpaka
 {
@@ -63,7 +63,7 @@ namespace alpaka
             template<
                 typename T,
                 typename TAlloc>
-            ALPAKA_FCT_HOST auto alloc(
+            ALPAKA_FN_HOST auto alloc(
                 TAlloc const & alloc,
                 std::size_t const & sizeElems)
             -> T *
@@ -83,7 +83,7 @@ namespace alpaka
             template<
                 typename TAlloc,
                 typename T>
-            ALPAKA_FCT_HOST auto free(
+            ALPAKA_FN_HOST auto free(
                 TAlloc const & alloc,
                 T const * const ptr)
             -> void
@@ -114,7 +114,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST_ACC static auto alloc(
+                    ALPAKA_FN_HOST_ACC static auto alloc(
                         TAlloc const & alloc,
                         std::size_t const & sizeElems)
                     -> T *
@@ -144,7 +144,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST_ACC static auto free(
+                    ALPAKA_FN_HOST_ACC static auto free(
                         TAlloc const & alloc,
                         T const * const ptr)
                     -> void

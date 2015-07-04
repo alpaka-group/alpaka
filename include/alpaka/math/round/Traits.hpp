@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC
+#include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST_ACC
 
 #include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
 
@@ -70,7 +70,7 @@ namespace alpaka
         template<
             typename T,
             typename TArg>
-        ALPAKA_FCT_HOST_ACC auto round(
+        ALPAKA_FN_HOST_ACC auto round(
             T const & round,
             TArg const & arg)
         -> decltype(
@@ -99,7 +99,7 @@ namespace alpaka
         template<
             typename T,
             typename TArg>
-        ALPAKA_FCT_HOST_ACC auto lround(
+        ALPAKA_FN_HOST_ACC auto lround(
             T const & lround,
             TArg const & arg)
         -> long int
@@ -122,7 +122,7 @@ namespace alpaka
         template<
             typename T,
             typename TArg>
-        ALPAKA_FCT_HOST_ACC auto llround(
+        ALPAKA_FN_HOST_ACC auto llround(
             T const & llround,
             TArg const & arg)
         -> long long int
@@ -153,7 +153,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST_ACC static auto round(
+                ALPAKA_FN_HOST_ACC static auto round(
                     T const & round,
                     TArg const & arg)
                 -> decltype(
@@ -184,7 +184,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST_ACC static auto lround(
+                ALPAKA_FN_HOST_ACC static auto lround(
                     T const & lround,
                     TArg const & arg)
                 -> decltype(
@@ -215,7 +215,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //
                 //-----------------------------------------------------------------------------
-                ALPAKA_FCT_HOST_ACC static auto llround(
+                ALPAKA_FN_HOST_ACC static auto llround(
                     T const & llround,
                     TArg const & arg)
                 -> decltype(

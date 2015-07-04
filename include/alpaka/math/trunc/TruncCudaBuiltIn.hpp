@@ -54,7 +54,7 @@ namespace alpaka
                 typename std::enable_if<
                     std::is_floating_point<TArg>::value>::type>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static auto trunc(
+                ALPAKA_FN_ACC_CUDA_ONLY static auto trunc(
                     TruncCudaBuiltIn const & trunc,
                     TArg const & arg)
                 -> decltype(::trunc(arg))

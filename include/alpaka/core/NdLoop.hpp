@@ -23,7 +23,7 @@
 
 #include <alpaka/dim/Traits.hpp>    // DimT
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC
+#include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST_ACC
 #include <alpaka/core/Vec.hpp>      // Vec
 
 #include <utility>                  // std::forward
@@ -52,12 +52,12 @@ namespace alpaka
                 std::size_t TuiCurDim,
                 typename TIndex,
                 typename TExtentsVec,
-                typename TFctObj,
+                typename TFnObj,
                 typename... TArgs>
-            ALPAKA_FCT_HOST_ACC static auto ndLoop(
+            ALPAKA_FN_HOST_ACC static auto ndLoop(
                 TIndex & idx,
                 TExtentsVec const & extents,
-                TFctObj && f,
+                TFnObj && f,
                 TArgs && ... args)
             -> void
             {
@@ -73,7 +73,7 @@ namespace alpaka
 
                 for(idx[TuiCurDim] = 0u; idx[TuiCurDim] < extents[TuiCurDim]; ++idx[TuiCurDim])
                 {
-                    std::forward<TFctObj>(f)(idx, std::forward<TArgs>(args)...);
+                    std::forward<TFnObj>(f)(idx, std::forward<TArgs>(args)...);
                 }
             }
         };
@@ -91,12 +91,12 @@ namespace alpaka
                 std::size_t TuiCurDim,
                 typename TIndex,
                 typename TExtentsVec,
-                typename TFctObj,
+                typename TFnObj,
                 typename... TArgs>
-            ALPAKA_FCT_HOST_ACC static auto ndLoop(
+            ALPAKA_FN_HOST_ACC static auto ndLoop(
                 TIndex & idx,
                 TExtentsVec const & extents,
-                TFctObj && f,
+                TFnObj && f,
                 TArgs && ... args)
             -> void
             {
@@ -118,7 +118,7 @@ namespace alpaka
                         TuiCurDim+1u>(
                             idx,
                             extents,
-                            std::forward<TFctObj>(f),
+                            std::forward<TFnObj>(f),
                             std::forward<TArgs>(args)...);
                 }
             }
@@ -134,11 +134,11 @@ namespace alpaka
     //-----------------------------------------------------------------------------
     template<
         typename TExtentsVec,
-        typename TFctObj,
+        typename TFnObj,
         typename... TArgs>
-    ALPAKA_FCT_HOST_ACC auto ndLoop(
+    ALPAKA_FN_HOST_ACC auto ndLoop(
         TExtentsVec const & extents,
-        TFctObj && f,
+        TFnObj && f,
         TArgs && ... args)
     -> void
     {
@@ -155,7 +155,7 @@ namespace alpaka
             0u>(
                 vuiIdx,
                 extents,
-                std::forward<TFctObj>(f),
+                std::forward<TFnObj>(f),
                 std::forward<TArgs>(args)...);
     }
 }

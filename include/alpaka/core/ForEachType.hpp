@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST_ACC
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
 
 #include <boost/mpl/is_sequence.hpp>    // boost::mpl::is_sequence
 #include <boost/mpl/begin_end.hpp>      // boost::mpl::begin/end
@@ -54,10 +54,10 @@ namespace alpaka
             template<
                 typename TElemIt,
                 typename TLastIt,
-                typename TFctObj,
+                typename TFnObj,
                 typename... TArgs>
-            ALPAKA_FCT_HOST_ACC static auto forEachTypeImpl(
-                TFctObj && f ,
+            ALPAKA_FN_HOST_ACC static auto forEachTypeImpl(
+                TFnObj && f ,
                 TArgs && ... args)
             -> void
             {
@@ -81,10 +81,10 @@ namespace alpaka
             template<
                 typename TElemIt,
                 typename TLastIt,
-                typename TFctObj,
+                typename TFnObj,
                 typename... TArgs>
-            ALPAKA_FCT_HOST_ACC static auto forEachTypeImpl(
-                TFctObj && f,
+            ALPAKA_FN_HOST_ACC static auto forEachTypeImpl(
+                TFnObj && f,
                 TArgs && ... args)
             -> void
             {
@@ -105,7 +105,7 @@ namespace alpaka
                 ::template forEachTypeImpl<
                     NextIt,
                     TLastIt>(
-                        std::forward<TFctObj>(f),
+                        std::forward<TFnObj>(f),
                         std::forward<TArgs>(args)...);
             }
         };
@@ -117,10 +117,10 @@ namespace alpaka
     //-----------------------------------------------------------------------------
     template<
         typename TSequence,
-        typename TFctObj,
+        typename TFnObj,
         typename... TArgs>
-    ALPAKA_FCT_HOST_ACC auto forEachType(
-        TFctObj && f,
+    ALPAKA_FN_HOST_ACC auto forEachType(
+        TFnObj && f,
         TArgs && ... args)
     -> void
     {
@@ -136,7 +136,7 @@ namespace alpaka
         ::template forEachTypeImpl<
             FirstIt,
             LastIt>(
-                std::forward<TFctObj>(f),
+                std::forward<TFnObj>(f),
                 std::forward<TArgs>(args)...);
     }
 }

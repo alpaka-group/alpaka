@@ -56,7 +56,7 @@ namespace alpaka
                     std::is_arithmetic<TArg>::value
                     && std::is_signed<TArg>::value>::type>
             {
-                ALPAKA_FCT_ACC_NO_CUDA static auto abs(
+                ALPAKA_FN_ACC_NO_CUDA static auto abs(
                     AbsStl const & abs,
                     TArg const & arg)
                 -> decltype(std::abs(arg))

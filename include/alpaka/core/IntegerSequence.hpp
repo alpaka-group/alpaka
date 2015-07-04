@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC
+#include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST_ACC
 
 #include <boost/predef.h>           // workarounds
 
@@ -43,7 +43,7 @@ namespace alpaka
             typedef integer_sequence<T, TVals...> type;
             typedef T value_type;
 
-            ALPAKA_FCT_HOST_ACC static auto size() noexcept
+            ALPAKA_FN_HOST_ACC static auto size() noexcept
             -> std::size_t
             {
                 return (sizeof...(TVals));

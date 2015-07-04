@@ -40,27 +40,27 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Default constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_ACC_NO_CUDA AtomicNoOp() = default;
+            ALPAKA_FN_ACC_NO_CUDA AtomicNoOp() = default;
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_ACC_NO_CUDA AtomicNoOp(AtomicNoOp const &) = delete;
+            ALPAKA_FN_ACC_NO_CUDA AtomicNoOp(AtomicNoOp const &) = delete;
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_ACC_NO_CUDA AtomicNoOp(AtomicNoOp &&) = delete;
+            ALPAKA_FN_ACC_NO_CUDA AtomicNoOp(AtomicNoOp &&) = delete;
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_ACC_NO_CUDA auto operator=(AtomicNoOp const &) -> AtomicNoOp & = delete;
+            ALPAKA_FN_ACC_NO_CUDA auto operator=(AtomicNoOp const &) -> AtomicNoOp & = delete;
             //-----------------------------------------------------------------------------
             //! Move assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_ACC_NO_CUDA auto operator=(AtomicNoOp &&) -> AtomicNoOp & = delete;
+            ALPAKA_FN_ACC_NO_CUDA auto operator=(AtomicNoOp &&) -> AtomicNoOp & = delete;
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_ACC_NO_CUDA /*virtual*/ ~AtomicNoOp() = default;
+            ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~AtomicNoOp() = default;
         };
 
         namespace traits
@@ -76,7 +76,7 @@ namespace alpaka
                 atomic::AtomicNoOp,
                 T>
             {
-                ALPAKA_FCT_ACC_NO_CUDA static auto atomicOp(
+                ALPAKA_FN_ACC_NO_CUDA static auto atomicOp(
                     atomic::AtomicNoOp const & atomic,
                     T * const addr,
                     T const & value)

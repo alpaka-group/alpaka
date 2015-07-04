@@ -66,7 +66,7 @@ namespace alpaka
                         typename TExtents,
                         typename TBufSrc,
                         typename TBufDst>
-                    ALPAKA_FCT_HOST static auto copy(
+                    ALPAKA_FN_HOST static auto copy(
                         TBufDst & bufDst,
                         TBufSrc const & bufSrc,
                         TExtents const & extents)
@@ -206,7 +206,7 @@ namespace alpaka
                         typename TExtents,
                         typename TBufSrc,
                         typename TBufDst>
-                    ALPAKA_FCT_HOST static auto copy(
+                    ALPAKA_FN_HOST static auto copy(
                         TBufDst & bufDst,
                         TBufSrc const & bufSrc,
                         TExtents const & extents,

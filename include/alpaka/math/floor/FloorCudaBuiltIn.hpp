@@ -54,7 +54,7 @@ namespace alpaka
                 typename std::enable_if<
                     std::is_floating_point<TArg>::value>::type>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static auto floor(
+                ALPAKA_FN_ACC_CUDA_ONLY static auto floor(
                     FloorCudaBuiltIn const & floor,
                     TArg const & arg)
                 -> decltype(::floor(arg))

@@ -28,7 +28,7 @@
 
 #include <alpaka/core/Positioning.hpp>      // origin::Grid/Blocks, unit::Blocks, unit::Threads
 #include <alpaka/core/Vec.hpp>              // Vec<N>
-#include <alpaka/core/Common.hpp>           // ALPAKA_FCT_ACC
+#include <alpaka/core/Common.hpp>           // ALPAKA_FN_ACC
 
 #include <utility>                          // std::forward
 
@@ -63,7 +63,7 @@ namespace alpaka
             typename TUnit,
             typename TIdx,
             typename TWorkDiv>
-        ALPAKA_FCT_ACC auto getIdx(
+        ALPAKA_FN_ACC auto getIdx(
             TIdx const & idx,
             TWorkDiv const & workDiv)
         -> Vec<dim::DimT<TWorkDiv>, size::SizeT<TIdx>>
@@ -83,7 +83,7 @@ namespace alpaka
             typename TOrigin,
             typename TUnit,
             typename TIdxWorkDiv>
-        ALPAKA_FCT_ACC auto getIdx(
+        ALPAKA_FN_ACC auto getIdx(
             TIdxWorkDiv const & idxWorkDiv)
         -> Vec<dim::DimT<TIdxWorkDiv>, size::SizeT<TIdxWorkDiv>>
         {
@@ -116,7 +116,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
-                ALPAKA_FCT_ACC static auto getIdx(
+                ALPAKA_FN_ACC static auto getIdx(
                     TIdxGb const & idx,
                     TWorkDiv const & workDiv)
                 -> Vec<dim::DimT<typename TIdxGb::IdxGbBase>, size::SizeT<typename TIdxGb::IdxGbBase>>
@@ -149,7 +149,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
-                ALPAKA_FCT_ACC static auto getIdx(
+                ALPAKA_FN_ACC static auto getIdx(
                     TIdxBt const & idx,
                     TWorkDiv const & workDiv)
                 -> Vec<dim::DimT<typename TIdxBt::IdxBtBase>, size::SizeT<typename TIdxBt::IdxBtBase>>
@@ -179,7 +179,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 template<
                     typename TWorkDiv>
-                ALPAKA_FCT_ACC static auto getIdx(
+                ALPAKA_FN_ACC static auto getIdx(
                     TIdx const & idx,
                     TWorkDiv const & workDiv)
                 -> Vec<dim::DimT<TIdx>, size::SizeT<TIdx>>

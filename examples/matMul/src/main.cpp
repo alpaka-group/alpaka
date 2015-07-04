@@ -62,7 +62,7 @@ public:
         typename TAcc,
         typename TElem,
         typename TIndex>
-    ALPAKA_FCT_ACC auto operator()(
+    ALPAKA_FN_ACC auto operator()(
         TAcc const & acc,
         TIndex const & m,
         TIndex const & n,
@@ -177,7 +177,7 @@ namespace alpaka
                     typename TVec,
                     typename TIndex,
                     typename TElem>
-                ALPAKA_FCT_HOST static auto getBlockSharedExternMemSizeBytes(
+                ALPAKA_FN_HOST static auto getBlockSharedExternMemSizeBytes(
                     TVec const & vuiBlockThreadsExtents,
                     TIndex const & m,
                     TIndex const & n,

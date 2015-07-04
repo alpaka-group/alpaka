@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST_ACC
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
 
 #if !defined(__CUDA_ARCH__)
     #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
@@ -35,10 +35,10 @@ namespace alpaka
     //!
     //-----------------------------------------------------------------------------
     template<
-        typename TFctObj,
+        typename TFnObj,
         typename T>
-    ALPAKA_FCT_HOST_ACC auto foldr(
-        TFctObj const & f,
+    ALPAKA_FN_HOST_ACC auto foldr(
+        TFnObj const & f,
         T const & t)
     -> T
     {
@@ -52,12 +52,12 @@ namespace alpaka
     //!
     //-----------------------------------------------------------------------------
     template<
-        typename TFctObj,
+        typename TFnObj,
         typename T0,
         typename T1,
         typename... Ts>
-    ALPAKA_FCT_HOST_ACC auto foldr(
-        TFctObj const & f,
+    ALPAKA_FN_HOST_ACC auto foldr(
+        TFnObj const & f,
         T0 const & t0,
         T1 const & t1,
         Ts const & ... ts)
@@ -71,17 +71,17 @@ namespace alpaka
         //!
         //#############################################################################
         template<
-            typename TFctObj,
+            typename TFnObj,
             typename... T>
         struct TypeOfFold;
         //#############################################################################
         //!
         //#############################################################################
         template<
-            typename TFctObj,
+            typename TFnObj,
             typename T>
         struct TypeOfFold<
-            TFctObj,
+            TFnObj,
             T>
         {
             using type = T;
@@ -90,17 +90,17 @@ namespace alpaka
         //!
         //#############################################################################
         template<
-            typename TFctObj,
+            typename TFnObj,
             typename T,
             typename... P>
         struct TypeOfFold<
-            TFctObj,
+            TFnObj,
             T,
             P...>
         {
             using type =
                 typename std::result_of<
-                    TFctObj(T, typename TypeOfFold<TFctObj, P...>::type)>::type;
+                    TFnObj(T, typename TypeOfFold<TFnObj, P...>::type)>::type;
         };
     }
 
@@ -108,12 +108,12 @@ namespace alpaka
     //!
     //-----------------------------------------------------------------------------
     template<
-        typename TFctObj,
+        typename TFnObj,
         typename T0,
         typename T1,
         typename... Ts>
-    ALPAKA_FCT_HOST_ACC auto foldr(
-        TFctObj const & f,
+    ALPAKA_FN_HOST_ACC auto foldr(
+        TFnObj const & f,
         T0 const & t0,
         T1 const & t1,
         Ts const & ... ts)
@@ -123,7 +123,7 @@ namespace alpaka
     // http://stackoverflow.com/questions/3744400/trailing-return-type-using-decltype-with-a-variadic-template-function
     // http://stackoverflow.com/questions/11596898/variadic-template-and-inferred-return-type-in-concat/11597196#11597196
     //-> decltype(f(t0, foldr(f, t1, ts...)))
-    -> typename detail::TypeOfFold<TFctObj, T0, T1, Ts...>::type
+    -> typename detail::TypeOfFold<TFnObj, T0, T1, Ts...>::type
     {
         return f(t0, foldr(f, t1, ts...));
     }

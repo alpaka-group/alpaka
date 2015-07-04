@@ -23,7 +23,7 @@
 
 #include <alpaka/mem/alloc/Traits.hpp>  // mem::alloc::Alloc, mem::alloc::Free
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST
 
 #include <boost/align.hpp>              // boost::aligned_alloc
 
@@ -63,7 +63,7 @@ namespace alpaka
                     T,
                     AllocCpuBoostAligned<TAlignment>>
                 {
-                    ALPAKA_FCT_HOST static auto alloc(
+                    ALPAKA_FN_HOST static auto alloc(
                         AllocCpuBoostAligned<TAlignment> const & alloc,
                         std::size_t const & sizeElems)
                     -> T *
@@ -86,7 +86,7 @@ namespace alpaka
                     T,
                     AllocCpuBoostAligned<TAlignment>>
                 {
-                    ALPAKA_FCT_HOST static auto free(
+                    ALPAKA_FN_HOST static auto free(
                         AllocCpuBoostAligned<TAlignment> const & alloc,
                         T const * const ptr)
                     -> void

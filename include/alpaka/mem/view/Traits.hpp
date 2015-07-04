@@ -27,7 +27,7 @@
 #include <alpaka/offset/Traits.hpp>     // offset::GetOffset
 
 #include <alpaka/core/Fold.hpp>         // foldr
-#include <alpaka/core/Common.hpp>       // ALPAKA_FCT_HOST
+#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST
 
 #include <iosfwd>                       // std::ostream
 
@@ -93,7 +93,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST static auto getPitchBytes(
+                    ALPAKA_FN_HOST static auto getPitchBytes(
                         TView const & view)
                     -> size::SizeT<TView>
                     {
@@ -108,7 +108,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     template<
                         std::size_t... TIndices>
-                    ALPAKA_FCT_HOST static auto extentsProd(
+                    ALPAKA_FN_HOST static auto extentsProd(
                         TView const & view,
                         alpaka::detail::integer_sequence<std::size_t, TIndices...> const &)
                     -> size::SizeT<TView>
@@ -187,7 +187,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TBuf>
-            ALPAKA_FCT_HOST auto getPtrNative(
+            ALPAKA_FN_HOST auto getPtrNative(
                 TBuf const & buf)
             -> ElemT<TBuf> const *
             {
@@ -204,7 +204,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TBuf>
-            ALPAKA_FCT_HOST auto getPtrNative(
+            ALPAKA_FN_HOST auto getPtrNative(
                 TBuf & buf)
             -> ElemT<TBuf> *
             {
@@ -224,7 +224,7 @@ namespace alpaka
             template<
                 typename TBuf,
                 typename TDev>
-            ALPAKA_FCT_HOST auto getPtrDev(
+            ALPAKA_FN_HOST auto getPtrDev(
                 TBuf const & buf,
                 TDev const & dev)
             -> ElemT<TBuf> const *
@@ -246,7 +246,7 @@ namespace alpaka
             template<
                 typename TBuf,
                 typename TDev>
-            ALPAKA_FCT_HOST auto getPtrDev(
+            ALPAKA_FN_HOST auto getPtrDev(
                 TBuf & buf,
                 TDev const & dev)
             -> ElemT<TBuf> *
@@ -265,7 +265,7 @@ namespace alpaka
             template<
                 std::size_t TuiIdx,
                 typename TView>
-            ALPAKA_FCT_HOST auto getPitchBytes(
+            ALPAKA_FN_HOST auto getPitchBytes(
                 TView const & buf)
             -> size::SizeT<TView>
             {
@@ -287,7 +287,7 @@ namespace alpaka
             template<
                 typename TView,
                 typename TExtents>
-            ALPAKA_FCT_HOST auto set(
+            ALPAKA_FN_HOST auto set(
                 TView & buf,
                 std::uint8_t const & byte,
                 TExtents const & extents)
@@ -318,7 +318,7 @@ namespace alpaka
                 typename TView,
                 typename TExtents,
                 typename TStream>
-            ALPAKA_FCT_HOST auto set(
+            ALPAKA_FN_HOST auto set(
                 TView & buf,
                 std::uint8_t const & byte,
                 TExtents const & extents,
@@ -351,7 +351,7 @@ namespace alpaka
                 typename TBufDst,
                 typename TBufSrc,
                 typename TExtents>
-            ALPAKA_FCT_HOST auto copy(
+            ALPAKA_FN_HOST auto copy(
                 TBufDst & bufDst,
                 TBufSrc const & bufSrc,
                 TExtents const & extents)
@@ -390,7 +390,7 @@ namespace alpaka
                 typename TBufSrc,
                 typename TExtents,
                 typename TStream>
-            ALPAKA_FCT_HOST auto copy(
+            ALPAKA_FN_HOST auto copy(
                 TBufDst & bufDst,
                 TBufSrc const & bufSrc,
                 TExtents const & extents,
@@ -425,7 +425,7 @@ namespace alpaka
             template<
                 typename TView,
                 typename TBuf>
-            ALPAKA_FCT_HOST auto createView(
+            ALPAKA_FN_HOST auto createView(
                 TBuf const & buf)
             -> decltype(traits::CreateView<TView>::createView(buf))
             {
@@ -441,7 +441,7 @@ namespace alpaka
             template<
                 typename TView,
                 typename TBuf>
-            ALPAKA_FCT_HOST auto createView(
+            ALPAKA_FN_HOST auto createView(
                 TBuf & buf)
             -> decltype(traits::CreateView<TView>::createView(buf))
             {
@@ -461,7 +461,7 @@ namespace alpaka
                 typename TBuf,
                 typename TExtents,
                 typename TOffsets>
-            ALPAKA_FCT_HOST auto createView(
+            ALPAKA_FN_HOST auto createView(
                 TBuf const & buf,
                 TExtents const & extentsElements,
                 TOffsets const & relativeOffsetsElements = TOffsets())
@@ -485,7 +485,7 @@ namespace alpaka
                 typename TBuf,
                 typename TExtents,
                 typename TOffsets>
-            ALPAKA_FCT_HOST auto createView(
+            ALPAKA_FN_HOST auto createView(
                 TBuf & buf,
                 TExtents const & extentsElements,
                 TOffsets const & relativeOffsetsElements = TOffsets())
@@ -507,7 +507,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TView>
-            ALPAKA_FCT_HOST auto getBuf(
+            ALPAKA_FN_HOST auto getBuf(
                 TView const & view)
             -> decltype(traits::GetBuf<TView>::getBuf(view))
             {
@@ -524,7 +524,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TView>
-            ALPAKA_FCT_HOST auto getBuf(
+            ALPAKA_FN_HOST auto getBuf(
                 TView & view)
             -> decltype(traits::GetBuf<TView>::getBuf(view))
             {
@@ -544,7 +544,7 @@ namespace alpaka
                     typename TView>
                 struct Print
                 {
-                    ALPAKA_FCT_HOST static auto print(
+                    ALPAKA_FN_HOST static auto print(
                         TView const & view,
                         ElemT<TView> const * const ptr,
                         Vec<dim::DimT<TView>, size::SizeT<TView>> const & extents,
@@ -593,7 +593,7 @@ namespace alpaka
                     dim::Dim<dim::DimT<TView>::value-1u>,
                     TView>
                 {
-                    ALPAKA_FCT_HOST static auto print(
+                    ALPAKA_FN_HOST static auto print(
                         TView const & view,
                         ElemT<TView> const * const ptr,
                         Vec<dim::DimT<TView>, size::SizeT<TView>> const & extents,
@@ -630,7 +630,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TView>
-            ALPAKA_FCT_HOST auto print(
+            ALPAKA_FN_HOST auto print(
                 TView const & view,
                 std::ostream & os,
                 std::string const & elementSeparator = ", ",

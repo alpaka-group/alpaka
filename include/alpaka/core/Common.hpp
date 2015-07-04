@@ -51,33 +51,33 @@
 #endif
 
 //-----------------------------------------------------------------------------
-//! All functions that can be used on an accelerator have to be attributed with ALPAKA_FCT_ACC_CUDA_ONLY or ALPAKA_FCT_ACC.
+//! All functions that can be used on an accelerator have to be attributed with ALPAKA_FN_ACC_CUDA_ONLY or ALPAKA_FN_ACC.
 //!
 //! Usage:
-//! ALPAKA_FCT_ACC int add(int a, int b);
+//! ALPAKA_FN_ACC int add(int a, int b);
 //-----------------------------------------------------------------------------
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
-    #define ALPAKA_FCT_ACC_CUDA_ONLY\
+    #define ALPAKA_FN_ACC_CUDA_ONLY\
         ALPAKA_NO_HOST_ACC_WARNING\
         __device__ __forceinline__
-    #define ALPAKA_FCT_ACC_NO_CUDA\
+    #define ALPAKA_FN_ACC_NO_CUDA\
         ALPAKA_NO_HOST_ACC_WARNING\
         __host__ __forceinline__
-    #define ALPAKA_FCT_ACC\
+    #define ALPAKA_FN_ACC\
         ALPAKA_NO_HOST_ACC_WARNING\
         __device__ __host__ __forceinline__
-    #define ALPAKA_FCT_HOST_ACC\
+    #define ALPAKA_FN_HOST_ACC\
         ALPAKA_NO_HOST_ACC_WARNING\
         __device__ __host__ __forceinline__
-    #define ALPAKA_FCT_HOST\
+    #define ALPAKA_FN_HOST\
         ALPAKA_NO_HOST_ACC_WARNING\
         __host__ __forceinline__
 #else
-    //#define ALPAKA_FCT_ACC_CUDA_ONLY inline
-    #define ALPAKA_FCT_ACC_NO_CUDA inline
-    #define ALPAKA_FCT_ACC inline
-    #define ALPAKA_FCT_HOST_ACC inline
-    #define ALPAKA_FCT_HOST inline
+    //#define ALPAKA_FN_ACC_CUDA_ONLY inline
+    #define ALPAKA_FN_ACC_NO_CUDA inline
+    #define ALPAKA_FN_ACC inline
+    #define ALPAKA_FN_HOST_ACC inline
+    #define ALPAKA_FN_HOST inline
 #endif
 
 //-----------------------------------------------------------------------------

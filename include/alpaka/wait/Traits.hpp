@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST
+#include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST
 
 namespace alpaka
 {
@@ -58,7 +58,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TAwaited>
-        ALPAKA_FCT_HOST auto wait(
+        ALPAKA_FN_HOST auto wait(
             TAwaited const & awaited)
         -> void
         {
@@ -74,7 +74,7 @@ namespace alpaka
         template<
             typename TWaiter,
             typename TAwaited>
-        ALPAKA_FCT_HOST auto wait(
+        ALPAKA_FN_HOST auto wait(
             TWaiter & waiter,
             TAwaited const & awaited)
         -> void

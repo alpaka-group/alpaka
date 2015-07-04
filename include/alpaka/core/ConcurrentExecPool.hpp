@@ -161,13 +161,13 @@ namespace alpaka
         //! TaskPkg with return type.
         //!
         //! \tparam TPromise The promise type returned by the task.
-        //! \tparam TFctObj The type of the function to execute.
-        //! \tparam TFctObjReturn The return type of the TFctObj. Used for class specialization.
+        //! \tparam TFnObj The type of the function to execute.
+        //! \tparam TFnObjReturn The return type of the TFnObj. Used for class specialization.
         //#############################################################################
         template<
-            template<typename TFctObjReturn> class TPromise,
-            typename TFctObj,
-            typename TFctObjReturn>
+            template<typename TFnObjReturn> class TPromise,
+            typename TFnObj,
+            typename TFnObjReturn>
         class TaskPkg :
             public ITaskPkg
         {
@@ -176,9 +176,9 @@ namespace alpaka
             //! Constructor.
             //-----------------------------------------------------------------------------
             TaskPkg(
-                TFctObj && func) :
+                TFnObj && func) :
                     m_Promise(),
-                    m_FctObj(std::forward<TFctObj>(func))
+                    m_FnObj(std::forward<TFnObj>(func))
             {}
 
         private:
@@ -188,7 +188,7 @@ namespace alpaka
             virtual auto run()
             -> void final
             {
-                m_Promise.set_value(this->m_FctObj());
+                m_Promise.set_value(this->m_FnObj());
             }
         public:
             //-----------------------------------------------------------------------------
@@ -201,23 +201,23 @@ namespace alpaka
                 m_Promise.set_exception(exceptPtr);
             }
 
-            TPromise<TFctObjReturn> m_Promise;
+            TPromise<TFnObjReturn> m_Promise;
         private:
-            TFctObj m_FctObj;
+            TFnObj m_FnObj;
         };
 
         //#############################################################################
         //! TaskPkg without return type.
         //!
         //! \tparam TPromise The promise type returned by the task.
-        //! \tparam TFctObj The type of the function to execute.
+        //! \tparam TFnObj The type of the function to execute.
         //#############################################################################
         template<
-            template<typename TFctObjReturn> class TPromise,
-            typename TFctObj>
+            template<typename TFnObjReturn> class TPromise,
+            typename TFnObj>
         class TaskPkg<
             TPromise,
-            TFctObj,
+            TFnObj,
             void> :
             public ITaskPkg
         {
@@ -226,9 +226,9 @@ namespace alpaka
             //! Constructor.
             //-----------------------------------------------------------------------------
             TaskPkg(
-                TFctObj && func) :
+                TFnObj && func) :
                     m_Promise(),
-                    m_FctObj(std::forward<TFctObj>(func))
+                    m_FnObj(std::forward<TFnObj>(func))
             {}
 
         private:
@@ -238,7 +238,7 @@ namespace alpaka
             virtual auto run()
             -> void final
             {
-                this->m_FctObj();
+                this->m_FnObj();
                 m_Promise.set_value();
             }
         public:
@@ -254,7 +254,7 @@ namespace alpaka
 
             TPromise<void> m_Promise;
         private:
-            TFctObj m_FctObj;
+            TFnObj m_FnObj;
         };
 
         //#############################################################################
@@ -270,7 +270,7 @@ namespace alpaka
         template<
             typename TSize,
             typename TConcurrentExec,
-            template<typename TFctObjReturn> class TPromise,
+            template<typename TFnObjReturn> class TPromise,
             typename TYield,
             typename TMutex = void,
             typename TCondVar = void,
@@ -300,7 +300,7 @@ namespace alpaka
                 // Create all concurrent executors.
                 for(size_t uiConcurrentExec(0u); uiConcurrentExec < uiConcurrentExecutionCount; ++uiConcurrentExec)
                 {
-                    m_vConcurrentExecs.emplace_back(std::bind(&ConcurrentExecPool::concurrentExecFct, this));
+                    m_vConcurrentExecs.emplace_back(std::bind(&ConcurrentExecPool::concurrentExecFn, this));
                 }
             }
             //-----------------------------------------------------------------------------
@@ -346,7 +346,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Runs the given function on one of the pool in First In First Out (FIFO) order.
             //!
-            //! \tparam TFctObj   The function type.
+            //! \tparam TFnObj   The function type.
             //! \param task     Function object to be called on the pool.
             //!                 Takes an arbitrary number of arguments and arbitrary return type.
             //! \tparam TArgs   The argument types pack.
@@ -357,18 +357,18 @@ namespace alpaka
             //!         Also results in an exception if the pool is destroyed before execution has begun.
             //-----------------------------------------------------------------------------
             template<
-                typename TFctObj,
+                typename TFnObj,
                 typename ... TArgs>
             auto enqueueTask(
-                TFctObj && task,
+                TFnObj && task,
                 TArgs && ... args)
-            -> typename std::result_of< decltype(&TPromise<typename std::result_of<TFctObj(TArgs...)>::type>::get_future)(TPromise<typename std::result_of<TFctObj(TArgs...)>::type>) >::type
+            -> typename std::result_of< decltype(&TPromise<typename std::result_of<TFnObj(TArgs...)>::type>::get_future)(TPromise<typename std::result_of<TFnObj(TArgs...)>::type>) >::type
             {
-                auto boundTask(std::bind(std::forward<TFctObj>(task), std::forward<TArgs>(args)...));
+                auto boundTask(std::bind(std::forward<TFnObj>(task), std::forward<TArgs>(args)...));
 
                 // Return type of the function object, can be void via specialization of TaskPkg.
-                using FctObjReturn = typename std::result_of<TFctObj(TArgs...)>::type;
-                using TaskPackage = TaskPkg<TPromise, decltype(boundTask), FctObjReturn>;
+                using FnObjReturn = typename std::result_of<TFnObj(TArgs...)>::type;
+                using TaskPackage = TaskPkg<TPromise, decltype(boundTask), FnObjReturn>;
                 // Ensures no memory leak if push throws.
                 // \TODO: C++14 std::make_unique would be better.
                 auto packagePtr(std::unique_ptr<TaskPackage>(new TaskPackage(std::move(boundTask))));
@@ -407,7 +407,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The function the concurrent executors are executing.
             //-----------------------------------------------------------------------------
-            void concurrentExecFct()
+            void concurrentExecFn()
             {
                 // Checks whether pool is being destroyed, if so, stop running.
                 while(!m_bShutdownFlag.load(std::memory_order_relaxed))
@@ -471,7 +471,7 @@ namespace alpaka
         template<
             typename TSize,
             typename TConcurrentExec,
-            template<typename TFctObjReturn> class TPromise,
+            template<typename TFnObjReturn> class TPromise,
             typename TYield,
             typename TMutex,
             typename TCondVar>
@@ -509,7 +509,7 @@ namespace alpaka
                 // Create all concurrent executors.
                 for(TSize uiConcurrentExec(0u); uiConcurrentExec < uiConcurrentExecutionCount; ++uiConcurrentExec)
                 {
-                    m_vConcurrentExecs.emplace_back(std::bind(&ConcurrentExecPool::concurrentExecFct, this));
+                    m_vConcurrentExecs.emplace_back(std::bind(&ConcurrentExecPool::concurrentExecFn, this));
                 }
             }
             //-----------------------------------------------------------------------------
@@ -561,7 +561,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Runs the given function on one of the pool in First In First Out (FIFO) order.
             //!
-            //! \tparam TFctObj   The function type.
+            //! \tparam TFnObj   The function type.
             //! \param task     Function object to be called on the pool.
             //!                 Takes an arbitrary number of arguments and arbitrary return type.
             //! \tparam TArgs   The argument types pack.
@@ -572,18 +572,18 @@ namespace alpaka
             //!         Also results in an exception if the pool is destroyed before execution has begun.
             //-----------------------------------------------------------------------------
             template<
-                typename TFctObj,
+                typename TFnObj,
                 typename ... TArgs>
             auto enqueueTask(
-                TFctObj && task,
+                TFnObj && task,
                 TArgs && ... args)
-            -> typename std::result_of< decltype(&TPromise<typename std::result_of<TFctObj(TArgs...)>::type>::get_future)(TPromise<typename std::result_of<TFctObj(TArgs...)>::type>) >::type
+            -> typename std::result_of< decltype(&TPromise<typename std::result_of<TFnObj(TArgs...)>::type>::get_future)(TPromise<typename std::result_of<TFnObj(TArgs...)>::type>) >::type
             {
-                auto boundTask(std::bind(std::forward<TFctObj>(task), std::forward<TArgs>(args)...));
+                auto boundTask(std::bind(std::forward<TFnObj>(task), std::forward<TArgs>(args)...));
 
                 // Return type of the function object, can be void via specialization of TaskPkg.
-                using FctObjReturn = typename std::result_of<TFctObj(TArgs...)>::type;
-                using TaskPackage = TaskPkg<TPromise, decltype(boundTask), FctObjReturn>;
+                using FnObjReturn = typename std::result_of<TFnObj(TArgs...)>::type;
+                using TaskPackage = TaskPkg<TPromise, decltype(boundTask), FnObjReturn>;
                 // Ensures no memory leak if push throws.
                 // \TODO: C++14 std::make_unique would be better.
                 auto packagePtr(std::unique_ptr<TaskPackage>(new TaskPackage(std::move(boundTask))));
@@ -624,7 +624,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! The function the concurrent executors are executing.
             //-----------------------------------------------------------------------------
-            void concurrentExecFct()
+            void concurrentExecFn()
             {
                 // Checks whether pool is being destroyed, if so, stop running (lazy check without mutex).
                 while(!m_bShutdownFlag)

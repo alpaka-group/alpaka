@@ -74,19 +74,19 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Copy constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST StreamCudaImpl(StreamCudaImpl const &) = delete;
+                    ALPAKA_FN_HOST StreamCudaImpl(StreamCudaImpl const &) = delete;
                     //-----------------------------------------------------------------------------
                     //! Move constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST StreamCudaImpl(StreamCudaImpl &&) = default;
+                    ALPAKA_FN_HOST StreamCudaImpl(StreamCudaImpl &&) = default;
                     //-----------------------------------------------------------------------------
                     //! Copy assignment operator.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto operator=(StreamCudaImpl const &) -> StreamCudaImpl & = delete;
+                    ALPAKA_FN_HOST auto operator=(StreamCudaImpl const &) -> StreamCudaImpl & = delete;
                     //-----------------------------------------------------------------------------
                     //! Move assignment operator.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST auto operator=(StreamCudaImpl &&) -> StreamCudaImpl & = default;
+                    ALPAKA_FN_HOST auto operator=(StreamCudaImpl &&) -> StreamCudaImpl & = default;
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
@@ -120,30 +120,30 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST StreamCudaRt(
+            ALPAKA_FN_HOST StreamCudaRt(
                 dev::DevCudaRt & dev) :
                 m_spStreamCudaImpl(std::make_shared<cuda::detail::StreamCudaImpl>(dev))
             {}
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST StreamCudaRt(StreamCudaRt const &) = default;
+            ALPAKA_FN_HOST StreamCudaRt(StreamCudaRt const &) = default;
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST StreamCudaRt(StreamCudaRt &&) = default;
+            ALPAKA_FN_HOST StreamCudaRt(StreamCudaRt &&) = default;
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator=(StreamCudaRt const &) -> StreamCudaRt & = default;
+            ALPAKA_FN_HOST auto operator=(StreamCudaRt const &) -> StreamCudaRt & = default;
             //-----------------------------------------------------------------------------
             //! Move assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator=(StreamCudaRt &&) -> StreamCudaRt & = default;
+            ALPAKA_FN_HOST auto operator=(StreamCudaRt &&) -> StreamCudaRt & = default;
             //-----------------------------------------------------------------------------
             //! Equality comparison operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator==(StreamCudaRt const & rhs) const
+            ALPAKA_FN_HOST auto operator==(StreamCudaRt const & rhs) const
             -> bool
             {
                 return (m_spStreamCudaImpl->m_CudaStream == rhs.m_spStreamCudaImpl->m_CudaStream);
@@ -151,7 +151,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Equality comparison operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto operator!=(StreamCudaRt const & rhs) const
+            ALPAKA_FN_HOST auto operator!=(StreamCudaRt const & rhs) const
             -> bool
             {
                 return !((*this) == rhs);
@@ -159,7 +159,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST ~StreamCudaRt() = default;
+            ALPAKA_FN_HOST ~StreamCudaRt() = default;
 
         public:
             std::shared_ptr<cuda::detail::StreamCudaImpl> m_spStreamCudaImpl;
@@ -177,7 +177,7 @@ namespace alpaka
             struct GetDev<
                 stream::StreamCudaRt>
             {
-                ALPAKA_FCT_HOST static auto getDev(
+                ALPAKA_FN_HOST static auto getDev(
                     stream::StreamCudaRt const & stream)
                 -> dev::DevCudaRt
                 {
@@ -207,7 +207,7 @@ namespace alpaka
             struct StreamTest<
                 stream::StreamCudaRt>
             {
-                ALPAKA_FCT_HOST static auto streamTest(
+                ALPAKA_FN_HOST static auto streamTest(
                     stream::StreamCudaRt const & stream)
                 -> bool
                 {
@@ -246,7 +246,7 @@ namespace alpaka
             struct CurrentThreadWaitFor<
                 stream::StreamCudaRt>
             {
-                ALPAKA_FCT_HOST static auto currentThreadWaitFor(
+                ALPAKA_FN_HOST static auto currentThreadWaitFor(
                     stream::StreamCudaRt const & stream)
                 -> void
                 {

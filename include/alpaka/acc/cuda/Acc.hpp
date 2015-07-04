@@ -67,10 +67,10 @@ namespace alpaka
             {
                 // Forward declarations.
                 /*template<
-                    typename TKernelFctObj,
+                    typename TKernelFnObj,
                     typename... TArgs>
                 __global__ void cudaKernel(
-                    TKernelFctObj kernelFctObj,
+                    TKernelFnObj kernelFnObj,
                     TArgs ... args);*/
 
                 //#############################################################################
@@ -91,10 +91,10 @@ namespace alpaka
                 {
                 public:
                     /*template<
-                        typename TKernelFctObj,
+                        typename TKernelFnObj,
                         typename... TArgs>
                     friend void ::alpaka::cuda::detail::cudaKernel(
-                        TKernelFctObj kernelFctObj,
+                        TKernelFnObj kernelFnObj,
                         TArgs ... args);*/
 
                     //friend class ::alpaka::cuda::detail::ExecGpuCuda<TDim, TSize>;
@@ -103,7 +103,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_CUDA_ONLY AccGpuCuda() :
+                    ALPAKA_FN_ACC_CUDA_ONLY AccGpuCuda() :
                         workdiv::WorkDivCudaBuiltIn<TDim, TSize>(),
                         idx::gb::IdxGbCudaBuiltIn<TDim, TSize>(),
                         idx::bt::IdxBtCudaBuiltIn<TDim, TSize>(),
@@ -116,28 +116,28 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Copy constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_CUDA_ONLY AccGpuCuda(AccGpuCuda const &) = delete;
+                    ALPAKA_FN_ACC_CUDA_ONLY AccGpuCuda(AccGpuCuda const &) = delete;
                     //-----------------------------------------------------------------------------
                     //! Move constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_CUDA_ONLY AccGpuCuda(AccGpuCuda &&) = delete;
+                    ALPAKA_FN_ACC_CUDA_ONLY AccGpuCuda(AccGpuCuda &&) = delete;
                     //-----------------------------------------------------------------------------
                     //! Copy assignment operator.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_CUDA_ONLY auto operator=(AccGpuCuda const &) -> AccGpuCuda & = delete;
+                    ALPAKA_FN_ACC_CUDA_ONLY auto operator=(AccGpuCuda const &) -> AccGpuCuda & = delete;
                     //-----------------------------------------------------------------------------
                     //! Move assignment operator.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_CUDA_ONLY auto operator=(AccGpuCuda &&) -> AccGpuCuda & = delete;
+                    ALPAKA_FN_ACC_CUDA_ONLY auto operator=(AccGpuCuda &&) -> AccGpuCuda & = delete;
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_CUDA_ONLY ~AccGpuCuda() = default;
+                    ALPAKA_FN_ACC_CUDA_ONLY ~AccGpuCuda() = default;
 
                     //-----------------------------------------------------------------------------
                     //! Syncs all threads in the current block.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_ACC_CUDA_ONLY auto syncBlockThreads() const
+                    ALPAKA_FN_ACC_CUDA_ONLY auto syncBlockThreads() const
                     -> void
                     {
                         __syncthreads();
@@ -148,7 +148,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     template<
                         typename T>
-                    ALPAKA_FCT_ACC_CUDA_ONLY auto getBlockSharedExternMem() const
+                    ALPAKA_FN_ACC_CUDA_ONLY auto getBlockSharedExternMem() const
                     -> T *
                     {
                         // Because unaligned access to variables is not allowed in device code,
@@ -192,7 +192,7 @@ namespace alpaka
             struct GetAccDevProps<
                 acc::cuda::detail::AccGpuCuda<TDim, TSize>>
             {
-                ALPAKA_FCT_HOST static auto getAccDevProps(
+                ALPAKA_FN_HOST static auto getAccDevProps(
                     dev::DevCudaRt const & dev)
                 -> acc::AccDevProps<TDim, TSize>
                 {
@@ -229,7 +229,7 @@ namespace alpaka
             struct GetAccName<
                 acc::cuda::detail::AccGpuCuda<TDim, TSize>>
             {
-                ALPAKA_FCT_HOST_ACC static auto getAccName()
+                ALPAKA_FN_HOST_ACC static auto getAccName()
                 -> std::string
                 {
                     return "AccGpuCuda<" + std::to_string(TDim::value) + "," + typeid(TSize).name() + ">";

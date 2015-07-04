@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>           // ALPAKA_FCT_HOST
+#include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST
 #include <alpaka/core/Vec.hpp>              // Vec
 #include <alpaka/core/IntegerSequence.hpp>  // integer_sequence
 
@@ -77,7 +77,7 @@ namespace alpaka
                                 cudaError_t>,
                             TErrors>...
                         >::value>::type>
-            ALPAKA_FCT_HOST auto cudaRtCheckIgnore(
+            ALPAKA_FN_HOST auto cudaRtCheckIgnore(
                 cudaError_t const & error,
                 char const * cmd,
                 char const * file,
@@ -133,7 +133,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! CUDA driver API error checking with log and exception, ignoring specific error values
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_HOST auto cudaDrvCheck(
+            ALPAKA_FN_HOST auto cudaDrvCheck(
                 cudaError_t const & error,
                 char const * cmd,
                 char const * file,
@@ -347,7 +347,7 @@ namespace alpaka
                     cuda::traits::IsCudaBuiltInType<TExtents>::value
                     && (dim::DimT<TExtents>::value >= 1)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static auto getExtent(
+                ALPAKA_FN_HOST_ACC static auto getExtent(
                     TExtents const & extents)
                 -> decltype(extents.x)
                 {
@@ -366,7 +366,7 @@ namespace alpaka
                     cuda::traits::IsCudaBuiltInType<TExtents>::value
                     && (dim::DimT<TExtents>::value >= 2)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static auto getExtent(
+                ALPAKA_FN_HOST_ACC static auto getExtent(
                     TExtents const & extents)
                 -> decltype(extents.y)
                 {
@@ -385,7 +385,7 @@ namespace alpaka
                     cuda::traits::IsCudaBuiltInType<TExtents>::value
                     && (dim::DimT<TExtents>::value >= 3)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static auto getExtent(
+                ALPAKA_FN_HOST_ACC static auto getExtent(
                     TExtents const & extents)
                 -> decltype(extents.z)
                 {
@@ -404,7 +404,7 @@ namespace alpaka
                     cuda::traits::IsCudaBuiltInType<TExtents>::value
                     && (dim::DimT<TExtents>::value >= 4)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static auto getExtent(
+                ALPAKA_FN_HOST_ACC static auto getExtent(
                     TExtents const & extents)
                 -> decltype(extents.w)
                 {
@@ -425,7 +425,7 @@ namespace alpaka
             {
                 template<
                     typename TVal2>
-                ALPAKA_FCT_HOST_ACC static auto setExtent(
+                ALPAKA_FN_HOST_ACC static auto setExtent(
                     TExtents const & extents,
                     TVal2 const & extent)
                 -> void
@@ -447,7 +447,7 @@ namespace alpaka
             {
                 template<
                     typename TVal2>
-                ALPAKA_FCT_HOST_ACC static auto setExtent(
+                ALPAKA_FN_HOST_ACC static auto setExtent(
                     TExtents const & extents,
                     TVal2 const & extent)
                 -> void
@@ -469,7 +469,7 @@ namespace alpaka
             {
                 template<
                     typename TVal2>
-                ALPAKA_FCT_HOST_ACC static auto setExtent(
+                ALPAKA_FN_HOST_ACC static auto setExtent(
                     TExtents const & extents,
                     TVal2 const & extent)
                 -> void
@@ -491,7 +491,7 @@ namespace alpaka
             {
                 template<
                     typename TVal2>
-                ALPAKA_FCT_HOST_ACC static auto setExtent(
+                ALPAKA_FN_HOST_ACC static auto setExtent(
                     TExtents const & extents,
                     TVal2 const & extent)
                 -> void
@@ -517,7 +517,7 @@ namespace alpaka
                     cuda::traits::IsCudaBuiltInType<TOffsets>::value
                     && (dim::DimT<TOffsets>::value >= 1)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static auto getOffset(
+                ALPAKA_FN_HOST_ACC static auto getOffset(
                     TOffsets const & offsets)
                 -> decltype(offsets.x)
                 {
@@ -536,7 +536,7 @@ namespace alpaka
                     cuda::traits::IsCudaBuiltInType<TOffsets>::value
                     && (dim::DimT<TOffsets>::value >= 2)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static auto getOffset(
+                ALPAKA_FN_HOST_ACC static auto getOffset(
                     TOffsets const & offsets)
                 -> decltype(offsets.y)
                 {
@@ -555,7 +555,7 @@ namespace alpaka
                     cuda::traits::IsCudaBuiltInType<TOffsets>::value
                     && (dim::DimT<TOffsets>::value >= 3)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static auto getOffset(
+                ALPAKA_FN_HOST_ACC static auto getOffset(
                     TOffsets const & offsets)
                 -> decltype(offsets.z)
                 {
@@ -574,7 +574,7 @@ namespace alpaka
                     cuda::traits::IsCudaBuiltInType<TOffsets>::value
                     && (dim::DimT<TOffsets>::value >= 4)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static auto getOffset(
+                ALPAKA_FN_HOST_ACC static auto getOffset(
                     TOffsets const & offsets)
                 -> decltype(offsets.w)
                 {
@@ -595,7 +595,7 @@ namespace alpaka
                     cuda::traits::IsCudaBuiltInType<TOffsets>::value
                     && (dim::DimT<TOffsets>::value >= 1)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static auto setOffset(
+                ALPAKA_FN_HOST_ACC static auto setOffset(
                     TOffsets const & offsets,
                     TOffset const & offset)
                 -> void
@@ -617,7 +617,7 @@ namespace alpaka
                     cuda::traits::IsCudaBuiltInType<TOffsets>::value
                     && (dim::DimT<TOffsets>::value >= 2)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static auto setOffset(
+                ALPAKA_FN_HOST_ACC static auto setOffset(
                     TOffsets const & offsets,
                     TOffset const & offset)
                 -> void
@@ -639,7 +639,7 @@ namespace alpaka
                     cuda::traits::IsCudaBuiltInType<TOffsets>::value
                     && (dim::DimT<TOffsets>::value >= 3)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static auto setOffset(
+                ALPAKA_FN_HOST_ACC static auto setOffset(
                     TOffsets const & offsets,
                     TOffset const & offset)
                 -> void
@@ -661,7 +661,7 @@ namespace alpaka
                     cuda::traits::IsCudaBuiltInType<TOffsets>::value
                     && (dim::DimT<TOffsets>::value >= 4)>::type>
             {
-                ALPAKA_FCT_HOST_ACC static auto setOffset(
+                ALPAKA_FN_HOST_ACC static auto setOffset(
                     TOffsets const & offsets,
                     TOffset const & offset)
                 -> void

@@ -24,7 +24,7 @@
 #include <alpaka/atomic/Op.hpp>                // Add, Sub, ...
 #include <alpaka/atomic/Traits.hpp>             // AtomicOp
 
-#include <alpaka/core/Common.hpp>               // ALPAKA_FCT_ACC_CUDA_ONLY
+#include <alpaka/core/Common.hpp>               // ALPAKA_FN_ACC_CUDA_ONLY
 
 namespace alpaka
 {
@@ -41,27 +41,27 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Default constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_ACC_CUDA_ONLY AtomicCudaBuiltIn() = default;
+            ALPAKA_FN_ACC_CUDA_ONLY AtomicCudaBuiltIn() = default;
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_ACC_CUDA_ONLY AtomicCudaBuiltIn(AtomicCudaBuiltIn const &) = delete;
+            ALPAKA_FN_ACC_CUDA_ONLY AtomicCudaBuiltIn(AtomicCudaBuiltIn const &) = delete;
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_ACC_CUDA_ONLY AtomicCudaBuiltIn(AtomicCudaBuiltIn &&) = delete;
+            ALPAKA_FN_ACC_CUDA_ONLY AtomicCudaBuiltIn(AtomicCudaBuiltIn &&) = delete;
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_ACC_CUDA_ONLY auto operator=(AtomicCudaBuiltIn const &) -> AtomicCudaBuiltIn & = delete;
+            ALPAKA_FN_ACC_CUDA_ONLY auto operator=(AtomicCudaBuiltIn const &) -> AtomicCudaBuiltIn & = delete;
             //-----------------------------------------------------------------------------
             //! Move assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_ACC_CUDA_ONLY auto operator=(AtomicCudaBuiltIn &&) -> AtomicCudaBuiltIn & = delete;
+            ALPAKA_FN_ACC_CUDA_ONLY auto operator=(AtomicCudaBuiltIn &&) -> AtomicCudaBuiltIn & = delete;
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_ACC_CUDA_ONLY /*virtual*/ ~AtomicCudaBuiltIn() = default;
+            ALPAKA_FN_ACC_CUDA_ONLY /*virtual*/ ~AtomicCudaBuiltIn() = default;
         };
 
         namespace traits
@@ -82,7 +82,7 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
+                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     int * const addr,
                     int const & value)
@@ -100,7 +100,7 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 unsigned int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
+                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned int * const addr,
                     unsigned int const & value)
@@ -118,7 +118,7 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 unsigned long long int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
+                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned long long int * const addr,
                     unsigned long long int const & value)
@@ -136,7 +136,7 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 float>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
+                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     float * const addr,
                     float const & value)
@@ -154,7 +154,7 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 double>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
+                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     double * const addr,
                     double const & value)
@@ -187,7 +187,7 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
+                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     int * const addr,
                     int const & value)
@@ -205,7 +205,7 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 unsigned int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
+                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned int * const addr,
                     unsigned int const & value)
@@ -226,7 +226,7 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
+                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     int * const addr,
                     int const & value)
@@ -244,7 +244,7 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 unsigned int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
+                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned int * const addr,
                     unsigned int const & value)
@@ -262,7 +262,7 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 unsigned long long int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
+                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned long long int * const addr,
                     unsigned long long int const & value)
@@ -283,7 +283,7 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
+                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     int * const addr,
                     int const & value)
@@ -301,7 +301,7 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 unsigned int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
+                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned int * const addr,
                     unsigned int const & value)
@@ -319,7 +319,7 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 unsigned long long int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
+                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned long long int * const addr,
                     unsigned long long int const & value)
@@ -340,7 +340,7 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
+                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     int * const addr,
                     int const & value)
@@ -358,7 +358,7 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 unsigned int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
+                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned int * const addr,
                     unsigned int const & value)
@@ -376,7 +376,7 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 unsigned long long int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
+                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned long long int * const addr,
                     unsigned long long int const & value)
@@ -394,7 +394,7 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 float>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
+                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     float * const addr,
                     float const & value)
@@ -415,7 +415,7 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 unsigned int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
+                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned int * const addr,
                     unsigned int const & value)
@@ -436,7 +436,7 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 unsigned int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
+                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned int * const addr,
                     unsigned int const & value)
@@ -457,7 +457,7 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
+                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     int * const addr,
                     int const & value)
@@ -475,7 +475,7 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 unsigned int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
+                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned int * const addr,
                     unsigned int const & value)
@@ -493,7 +493,7 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 unsigned long long int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
+                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned long long int * const addr,
                     unsigned long long int const & value)
@@ -514,7 +514,7 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
+                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     int * const addr,
                     int const & value)
@@ -532,7 +532,7 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 unsigned int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
+                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned int * const addr,
                     unsigned int const & value)
@@ -550,7 +550,7 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 unsigned long long int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
+                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned long long int * const addr,
                     unsigned long long int const & value)
@@ -571,7 +571,7 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
+                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     int * const addr,
                     int const & value)
@@ -589,7 +589,7 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 unsigned int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
+                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned int * const addr,
                     unsigned int const & value)
@@ -607,7 +607,7 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 unsigned long long int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
+                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned long long int * const addr,
                     unsigned long long int const & value)
@@ -628,7 +628,7 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
+                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     int * const addr,
                     int const & compare,
@@ -647,7 +647,7 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 unsigned int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
+                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned int * const addr,
                     unsigned int const & compare,
@@ -666,7 +666,7 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 unsigned long long int>
             {
-                ALPAKA_FCT_ACC_CUDA_ONLY static auto atomicOp(
+                ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned long long int * const addr,
                     unsigned long long int const & compare,

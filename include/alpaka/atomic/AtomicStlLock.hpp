@@ -47,27 +47,27 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Default constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_ACC_NO_CUDA AtomicStlLock() = default;
+            ALPAKA_FN_ACC_NO_CUDA AtomicStlLock() = default;
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_ACC_NO_CUDA AtomicStlLock(AtomicStlLock const &) = delete;
+            ALPAKA_FN_ACC_NO_CUDA AtomicStlLock(AtomicStlLock const &) = delete;
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_ACC_NO_CUDA AtomicStlLock(AtomicStlLock &&) = delete;
+            ALPAKA_FN_ACC_NO_CUDA AtomicStlLock(AtomicStlLock &&) = delete;
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_ACC_NO_CUDA auto operator=(AtomicStlLock const &) -> AtomicStlLock & = delete;
+            ALPAKA_FN_ACC_NO_CUDA auto operator=(AtomicStlLock const &) -> AtomicStlLock & = delete;
             //-----------------------------------------------------------------------------
             //! Move assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_ACC_NO_CUDA auto operator=(AtomicStlLock &&) -> AtomicStlLock & = delete;
+            ALPAKA_FN_ACC_NO_CUDA auto operator=(AtomicStlLock &&) -> AtomicStlLock & = delete;
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FCT_ACC_NO_CUDA /*virtual*/ ~AtomicStlLock() = default;
+            ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~AtomicStlLock() = default;
 
         private:
             std::mutex mutable m_mtxAtomic; //!< The mutex protecting access for a atomic operation.
@@ -86,7 +86,7 @@ namespace alpaka
                 atomic::AtomicStlLock,
                 T>
             {
-                ALPAKA_FCT_ACC_NO_CUDA static auto atomicOp(
+                ALPAKA_FN_ACC_NO_CUDA static auto atomicOp(
                     atomic::AtomicStlLock const & atomic,
                     T * const addr,
                     T const & value)

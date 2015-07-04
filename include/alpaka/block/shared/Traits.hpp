@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>   // ALPAKA_FCT_HOST_ACC
+#include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST_ACC
 
 #include <type_traits>              // std::enable_if, std::is_base_of, std::is_same, std::decay
 
@@ -75,7 +75,7 @@ namespace alpaka
             template<
                 typename T,
                 typename TBlockSharedAlloc>
-            ALPAKA_FCT_HOST_ACC auto allocVar(
+            ALPAKA_FN_HOST_ACC auto allocVar(
                 TBlockSharedAlloc const & blockSharedAlloc)
             -> T &
             {
@@ -98,7 +98,7 @@ namespace alpaka
                 typename T,
                 std::size_t TuiNumElements,
                 typename TBlockSharedAlloc>
-            ALPAKA_FCT_HOST_ACC auto allocArr(
+            ALPAKA_FN_HOST_ACC auto allocArr(
                 TBlockSharedAlloc const & blockSharedAlloc)
             -> T *
             {
@@ -122,7 +122,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TBlockSharedAlloc>
-            ALPAKA_FCT_HOST_ACC auto freeMem(
+            ALPAKA_FN_HOST_ACC auto freeMem(
                 TBlockSharedAlloc & blockSharedAlloc)
             -> void
             {
@@ -150,7 +150,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! \return The number of threads in each dimension of a block.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST_ACC static auto allocVar(
+                    ALPAKA_FN_HOST_ACC static auto allocVar(
                         TBlockSharedAlloc const & blockSharedAlloc)
                     -> T &
                     {
@@ -179,7 +179,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! \return The number of threads in each dimension of a block.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST_ACC static auto allocArr(
+                    ALPAKA_FN_HOST_ACC static auto allocArr(
                         TBlockSharedAlloc const & blockSharedAlloc)
                     -> T *
                     {
@@ -205,7 +205,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! \return The number of threads in each dimension of a block.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FCT_HOST_ACC static auto freeMem(
+                    ALPAKA_FN_HOST_ACC static auto freeMem(
                         TBlockSharedAlloc & blockSharedAlloc)
                     -> void
                     {
