@@ -109,15 +109,16 @@ $(document).ready(function(){initNavTree('core_2Cuda_8hpp.html','');});
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#define-members">Macros</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">Cuda.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;<a class="el" href="core_2Common_8hpp_source.html">alpaka/core/Common.hpp</a>&gt;</code><br />
+<div class="textblock"><code>#include &lt;<a class="el" href="Common_8hpp_source.html">alpaka/core/Common.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Vec_8hpp_source.html">alpaka/core/Vec.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="IntegerSequence_8hpp_source.html">alpaka/core/IntegerSequence.hpp</a>&gt;</code><br />
+<code>#include &lt;boost/mpl/apply.hpp&gt;</code><br />
+<code>#include &lt;boost/mpl/and.hpp&gt;</code><br />
 <code>#include &lt;cuda_runtime.h&gt;</code><br />
 <code>#include &lt;array&gt;</code><br />
 <code>#include &lt;type_traits&gt;</code><br />
@@ -131,80 +132,71 @@ $(document).ready(function(){initNavTree('core_2Cuda_8hpp.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1ApplyAllCombineAnd.html">alpaka::detail::ApplyAllCombineAnd&lt; TTrait, TApplicants &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the trait to all types and combines the result with &amp;&amp;.  <a href="structalpaka_1_1detail_1_1ApplyAllCombineAnd.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1cuda_1_1traits_1_1IsCudaBuiltInType.html">alpaka::cuda::traits::IsCudaBuiltInType&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors 1D dimension get trait specialization.  <a href="structalpaka_1_1cuda_1_1traits_1_1IsCudaBuiltInType.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1ApplyAllCombineAnd_3_01TTrait_01_4.html">alpaka::detail::ApplyAllCombineAnd&lt; TTrait &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the trait to all types and combines the result with &amp;&amp;. Zero argument version always returns true.  <a href="structalpaka_1_1detail_1_1ApplyAllCombineAnd_3_01TTrait_01_4.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1dim_1_1traits_1_1DimType_3_01T_00_01typename_01std_1_1enable__if_3_01std_1_1is__c7ec48a1c376d8f997a62383d66ee919.html">alpaka::dim::traits::DimType&lt; T, typename std::enable_if&lt; std::is_same&lt; T, char1 &gt;::value||std::is_same&lt; T, double1 &gt;::value||std::is_same&lt; T, float1 &gt;::value||std::is_same&lt; T, int1 &gt;::value||std::is_same&lt; T, long1 &gt;::value||std::is_same&lt; T, longlong1 &gt;::value||std::is_same&lt; T, short1 &gt;::value||std::is_same&lt; T, uchar1 &gt;::value||std::is_same&lt; T, uint1 &gt;::value||std::is_same&lt; T, ulong1 &gt;::value||std::is_same&lt; T, ulonglong1 &gt;::value||std::is_same&lt; T, ushort1 &gt;::value &gt;::type &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors 1D dimension get trait specialization.  <a href="structalpaka_1_1dim_1_1traits_1_1DimType_3_01T_00_01typename_01std_1_1enable__if_3_01std_1_1is__c7ec48a1c376d8f997a62383d66ee919.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1ApplyAllCombineAndInternal.html">alpaka::detail::ApplyAllCombineAndInternal&lt; TTrait, THead, TTail &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the trait to all types and combines the result with &amp;&amp;. Multiple argument version.  <a href="structalpaka_1_1detail_1_1ApplyAllCombineAndInternal.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1dim_1_1traits_1_1DimType_3_01T_00_01typename_01std_1_1enable__if_3_01std_1_1is__80500d732e9b5b66e905328544505791.html">alpaka::dim::traits::DimType&lt; T, typename std::enable_if&lt; std::is_same&lt; T, char2 &gt;::value||std::is_same&lt; T, double2 &gt;::value||std::is_same&lt; T, float2 &gt;::value||std::is_same&lt; T, int2 &gt;::value||std::is_same&lt; T, long2 &gt;::value||std::is_same&lt; T, longlong2 &gt;::value||std::is_same&lt; T, short2 &gt;::value||std::is_same&lt; T, uchar2 &gt;::value||std::is_same&lt; T, uint2 &gt;::value||std::is_same&lt; T, ulong2 &gt;::value||std::is_same&lt; T, ulonglong2 &gt;::value||std::is_same&lt; T, ushort2 &gt;::value &gt;::type &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors 2D dimension get trait specialization.  <a href="structalpaka_1_1dim_1_1traits_1_1DimType_3_01T_00_01typename_01std_1_1enable__if_3_01std_1_1is__80500d732e9b5b66e905328544505791.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1ApplyAllCombineAndInternal_3_01TTrait_00_01THead_01_4.html">alpaka::detail::ApplyAllCombineAndInternal&lt; TTrait, THead &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the trait to all types and combines the result with &amp;&amp;. Single argument version.  <a href="structalpaka_1_1detail_1_1ApplyAllCombineAndInternal_3_01TTrait_00_01THead_01_4.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1dim_1_1traits_1_1DimType_3_01T_00_01typename_01std_1_1enable__if_3_01std_1_1is__b46a886bead13cf6d6152ac13d3693c9.html">alpaka::dim::traits::DimType&lt; T, typename std::enable_if&lt; std::is_same&lt; T, char3 &gt;::value||std::is_same&lt; T, dim3 &gt;::value||std::is_same&lt; T, double3 &gt;::value||std::is_same&lt; T, float3 &gt;::value||std::is_same&lt; T, int3 &gt;::value||std::is_same&lt; T, long3 &gt;::value||std::is_same&lt; T, longlong3 &gt;::value||std::is_same&lt; T, short3 &gt;::value||std::is_same&lt; T, uchar3 &gt;::value||std::is_same&lt; T, uint3 &gt;::value||std::is_same&lt; T, ulong3 &gt;::value||std::is_same&lt; T, ulonglong3 &gt;::value||std::is_same&lt; T, ushort3 &gt;::value &gt;::type &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors 3D dimension get trait specialization.  <a href="structalpaka_1_1dim_1_1traits_1_1DimType_3_01T_00_01typename_01std_1_1enable__if_3_01std_1_1is__b46a886bead13cf6d6152ac13d3693c9.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1cuda_1_1IsCudaBuiltinType.html">alpaka::traits::cuda::IsCudaBuiltinType&lt; T &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors 1D dimension get trait specialization.  <a href="structalpaka_1_1traits_1_1cuda_1_1IsCudaBuiltinType.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1dim_1_1traits_1_1DimType_3_01T_00_01typename_01std_1_1enable__if_3_01std_1_1is__5240d663c8cffbacb9c096a714cef7fb.html">alpaka::dim::traits::DimType&lt; T, typename std::enable_if&lt; std::is_same&lt; T, char4 &gt;::value||std::is_same&lt; T, double4 &gt;::value||std::is_same&lt; T, float4 &gt;::value||std::is_same&lt; T, int4 &gt;::value||std::is_same&lt; T, long4 &gt;::value||std::is_same&lt; T, longlong4 &gt;::value||std::is_same&lt; T, short4 &gt;::value||std::is_same&lt; T, uchar4 &gt;::value||std::is_same&lt; T, uint4 &gt;::value||std::is_same&lt; T, ulong4 &gt;::value||std::is_same&lt; T, ulonglong4 &gt;::value||std::is_same&lt; T, ushort4 &gt;::value &gt;::type &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors 4D dimension get trait specialization.  <a href="structalpaka_1_1dim_1_1traits_1_1DimType_3_01T_00_01typename_01std_1_1enable__if_3_01std_1_1is__5240d663c8cffbacb9c096a714cef7fb.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1dim_1_1DimType_3_01T_00_01typename_01std_1_1enable__if_3_01std_1_1is__88d1a77b6604ce7c37ee15beb0642a04.html">alpaka::traits::dim::DimType&lt; T, typename std::enable_if&lt; std::is_same&lt; T, char1 &gt;::value||std::is_same&lt; T, double1 &gt;::value||std::is_same&lt; T, float1 &gt;::value||std::is_same&lt; T, int1 &gt;::value||std::is_same&lt; T, long1 &gt;::value||std::is_same&lt; T, longlong1 &gt;::value||std::is_same&lt; T, short1 &gt;::value||std::is_same&lt; T, uchar1 &gt;::value||std::is_same&lt; T, uint1 &gt;::value||std::is_same&lt; T, ulong1 &gt;::value||std::is_same&lt; T, ulonglong1 &gt;::value||std::is_same&lt; T, ushort1 &gt;::value &gt;::type &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors 1D dimension get trait specialization.  <a href="structalpaka_1_1traits_1_1dim_1_1DimType_3_01T_00_01typename_01std_1_1enable__if_3_01std_1_1is__88d1a77b6604ce7c37ee15beb0642a04.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1extent_1_1traits_1_1GetExtent_1_1type.html">alpaka::extent::traits::GetExtent&lt; TIdx, TExtents, TSfinae &gt;::type&lt; TExtents &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors extent get trait specialization.  <a href="structalpaka_1_1extent_1_1traits_1_1GetExtent_1_1type.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1dim_1_1DimType_3_01T_00_01typename_01std_1_1enable__if_3_01std_1_1is__6becc790305cdb5a312471849f50ed3d.html">alpaka::traits::dim::DimType&lt; T, typename std::enable_if&lt; std::is_same&lt; T, char2 &gt;::value||std::is_same&lt; T, double2 &gt;::value||std::is_same&lt; T, float2 &gt;::value||std::is_same&lt; T, int2 &gt;::value||std::is_same&lt; T, long2 &gt;::value||std::is_same&lt; T, longlong2 &gt;::value||std::is_same&lt; T, short2 &gt;::value||std::is_same&lt; T, uchar2 &gt;::value||std::is_same&lt; T, uint2 &gt;::value||std::is_same&lt; T, ulong2 &gt;::value||std::is_same&lt; T, ulonglong2 &gt;::value||std::is_same&lt; T, ushort2 &gt;::value &gt;::type &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors 2D dimension get trait specialization.  <a href="structalpaka_1_1traits_1_1dim_1_1DimType_3_01T_00_01typename_01std_1_1enable__if_3_01std_1_1is__6becc790305cdb5a312471849f50ed3d.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1extent_1_1traits_1_1GetExtent_1_1type.html">alpaka::extent::traits::GetExtent&lt; TIdx, TExtents, TSfinae &gt;::type&lt; TExtents &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors extent get trait specialization.  <a href="structalpaka_1_1extent_1_1traits_1_1GetExtent_1_1type.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1dim_1_1DimType_3_01T_00_01typename_01std_1_1enable__if_3_01std_1_1is__5755fadd6eec1cc6e644ba48e426055c.html">alpaka::traits::dim::DimType&lt; T, typename std::enable_if&lt; std::is_same&lt; T, char3 &gt;::value||std::is_same&lt; T, dim3 &gt;::value||std::is_same&lt; T, double3 &gt;::value||std::is_same&lt; T, float3 &gt;::value||std::is_same&lt; T, int3 &gt;::value||std::is_same&lt; T, long3 &gt;::value||std::is_same&lt; T, longlong3 &gt;::value||std::is_same&lt; T, short3 &gt;::value||std::is_same&lt; T, uchar3 &gt;::value||std::is_same&lt; T, uint3 &gt;::value||std::is_same&lt; T, ulong3 &gt;::value||std::is_same&lt; T, ulonglong3 &gt;::value||std::is_same&lt; T, ushort3 &gt;::value &gt;::type &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors 3D dimension get trait specialization.  <a href="structalpaka_1_1traits_1_1dim_1_1DimType_3_01T_00_01typename_01std_1_1enable__if_3_01std_1_1is__5755fadd6eec1cc6e644ba48e426055c.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1extent_1_1traits_1_1GetExtent_1_1type.html">alpaka::extent::traits::GetExtent&lt; TIdx, TExtents, TSfinae &gt;::type&lt; TExtents &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors extent get trait specialization.  <a href="structalpaka_1_1extent_1_1traits_1_1GetExtent_1_1type.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1dim_1_1DimType_3_01T_00_01typename_01std_1_1enable__if_3_01std_1_1is__fe975cb8a6aa6ca47ee30f9fc9228aa9.html">alpaka::traits::dim::DimType&lt; T, typename std::enable_if&lt; std::is_same&lt; T, char4 &gt;::value||std::is_same&lt; T, double4 &gt;::value||std::is_same&lt; T, float4 &gt;::value||std::is_same&lt; T, int4 &gt;::value||std::is_same&lt; T, long4 &gt;::value||std::is_same&lt; T, longlong4 &gt;::value||std::is_same&lt; T, short4 &gt;::value||std::is_same&lt; T, uchar4 &gt;::value||std::is_same&lt; T, uint4 &gt;::value||std::is_same&lt; T, ulong4 &gt;::value||std::is_same&lt; T, ulonglong4 &gt;::value||std::is_same&lt; T, ushort4 &gt;::value &gt;::type &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors 4D dimension get trait specialization.  <a href="structalpaka_1_1traits_1_1dim_1_1DimType_3_01T_00_01typename_01std_1_1enable__if_3_01std_1_1is__fe975cb8a6aa6ca47ee30f9fc9228aa9.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1extent_1_1traits_1_1GetExtent_1_1type.html">alpaka::extent::traits::GetExtent&lt; TIdx, TExtents, TSfinae &gt;::type&lt; TExtents &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors extent get trait specialization.  <a href="structalpaka_1_1extent_1_1traits_1_1GetExtent_1_1type.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1extent_1_1GetExtent_1_1type.html">alpaka::traits::extent::GetExtent&lt; TIdx, T, TSfinae &gt;::type&lt; TExtents &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors extent get trait specialization.  <a href="structalpaka_1_1traits_1_1extent_1_1GetExtent_1_1type.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1extent_1_1traits_1_1SetExtent_1_1type.html">alpaka::extent::traits::SetExtent&lt; TIdx, TExtents, TExtent, TSfinae &gt;::type&lt; TExtents, TExtent &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors extent set trait specialization.  <a href="structalpaka_1_1extent_1_1traits_1_1SetExtent_1_1type.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1extent_1_1GetExtent_1_1type.html">alpaka::traits::extent::GetExtent&lt; TIdx, T, TSfinae &gt;::type&lt; TExtents &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors extent get trait specialization.  <a href="structalpaka_1_1traits_1_1extent_1_1GetExtent_1_1type.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1extent_1_1traits_1_1SetExtent_1_1type.html">alpaka::extent::traits::SetExtent&lt; TIdx, TExtents, TExtent, TSfinae &gt;::type&lt; TExtents, TExtent &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors extent set trait specialization.  <a href="structalpaka_1_1extent_1_1traits_1_1SetExtent_1_1type.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1extent_1_1GetExtent_1_1type.html">alpaka::traits::extent::GetExtent&lt; TIdx, T, TSfinae &gt;::type&lt; TExtents &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors extent get trait specialization.  <a href="structalpaka_1_1traits_1_1extent_1_1GetExtent_1_1type.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1extent_1_1traits_1_1SetExtent_1_1type.html">alpaka::extent::traits::SetExtent&lt; TIdx, TExtents, TExtent, TSfinae &gt;::type&lt; TExtents, TExtent &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors extent set trait specialization.  <a href="structalpaka_1_1extent_1_1traits_1_1SetExtent_1_1type.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1extent_1_1GetExtent_1_1type.html">alpaka::traits::extent::GetExtent&lt; TIdx, T, TSfinae &gt;::type&lt; TExtents &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors extent get trait specialization.  <a href="structalpaka_1_1traits_1_1extent_1_1GetExtent_1_1type.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1extent_1_1traits_1_1SetExtent_1_1type.html">alpaka::extent::traits::SetExtent&lt; TIdx, TExtents, TExtent, TSfinae &gt;::type&lt; TExtents, TExtent &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors extent set trait specialization.  <a href="structalpaka_1_1extent_1_1traits_1_1SetExtent_1_1type.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1extent_1_1SetExtent_1_1type.html">alpaka::traits::extent::SetExtent&lt; TIdx, T, TSfinae &gt;::type&lt; TExtents &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors extent set trait specialization.  <a href="structalpaka_1_1traits_1_1extent_1_1SetExtent_1_1type.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1offset_1_1traits_1_1GetOffset_1_1type.html">alpaka::offset::traits::GetOffset&lt; TIdx, TOffsets, TSfinae &gt;::type&lt; TOffsets &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors offset get trait specialization.  <a href="structalpaka_1_1offset_1_1traits_1_1GetOffset_1_1type.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1extent_1_1SetExtent_1_1type.html">alpaka::traits::extent::SetExtent&lt; TIdx, T, TSfinae &gt;::type&lt; TExtents &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors extent set trait specialization.  <a href="structalpaka_1_1traits_1_1extent_1_1SetExtent_1_1type.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1offset_1_1traits_1_1GetOffset_1_1type.html">alpaka::offset::traits::GetOffset&lt; TIdx, TOffsets, TSfinae &gt;::type&lt; TOffsets &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors offset get trait specialization.  <a href="structalpaka_1_1offset_1_1traits_1_1GetOffset_1_1type.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1extent_1_1SetExtent_1_1type.html">alpaka::traits::extent::SetExtent&lt; TIdx, T, TSfinae &gt;::type&lt; TExtents &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors extent set trait specialization.  <a href="structalpaka_1_1traits_1_1extent_1_1SetExtent_1_1type.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1offset_1_1traits_1_1GetOffset_1_1type.html">alpaka::offset::traits::GetOffset&lt; TIdx, TOffsets, TSfinae &gt;::type&lt; TOffsets &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors offset get trait specialization.  <a href="structalpaka_1_1offset_1_1traits_1_1GetOffset_1_1type.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1extent_1_1SetExtent_1_1type.html">alpaka::traits::extent::SetExtent&lt; TIdx, T, TSfinae &gt;::type&lt; TExtents &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors extent set trait specialization.  <a href="structalpaka_1_1traits_1_1extent_1_1SetExtent_1_1type.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1offset_1_1traits_1_1GetOffset_1_1type.html">alpaka::offset::traits::GetOffset&lt; TIdx, TOffsets, TSfinae &gt;::type&lt; TOffsets &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors offset get trait specialization.  <a href="structalpaka_1_1offset_1_1traits_1_1GetOffset_1_1type.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1offset_1_1GetOffset_1_1type.html">alpaka::traits::offset::GetOffset&lt; TIdx, T, TSfinae &gt;::type&lt; TOffsets &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors offset get trait specialization.  <a href="structalpaka_1_1traits_1_1offset_1_1GetOffset_1_1type.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1offset_1_1traits_1_1SetOffset_1_1type.html">alpaka::offset::traits::SetOffset&lt; TIdx, TOffsets, TOffset, TSfinae &gt;::type&lt; TOffsets, TOffset &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors offset set trait specialization.  <a href="structalpaka_1_1offset_1_1traits_1_1SetOffset_1_1type.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1offset_1_1GetOffset_1_1type.html">alpaka::traits::offset::GetOffset&lt; TIdx, T, TSfinae &gt;::type&lt; TOffsets &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors offset get trait specialization.  <a href="structalpaka_1_1traits_1_1offset_1_1GetOffset_1_1type.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1offset_1_1traits_1_1SetOffset_1_1type.html">alpaka::offset::traits::SetOffset&lt; TIdx, TOffsets, TOffset, TSfinae &gt;::type&lt; TOffsets, TOffset &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors offset set trait specialization.  <a href="structalpaka_1_1offset_1_1traits_1_1SetOffset_1_1type.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1offset_1_1GetOffset_1_1type.html">alpaka::traits::offset::GetOffset&lt; TIdx, T, TSfinae &gt;::type&lt; TOffsets &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors offset get trait specialization.  <a href="structalpaka_1_1traits_1_1offset_1_1GetOffset_1_1type.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1offset_1_1traits_1_1SetOffset_1_1type.html">alpaka::offset::traits::SetOffset&lt; TIdx, TOffsets, TOffset, TSfinae &gt;::type&lt; TOffsets, TOffset &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors offset set trait specialization.  <a href="structalpaka_1_1offset_1_1traits_1_1SetOffset_1_1type.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1offset_1_1GetOffset_1_1type.html">alpaka::traits::offset::GetOffset&lt; TIdx, T, TSfinae &gt;::type&lt; TOffsets &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors offset get trait specialization.  <a href="structalpaka_1_1traits_1_1offset_1_1GetOffset_1_1type.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1offset_1_1traits_1_1SetOffset_1_1type.html">alpaka::offset::traits::SetOffset&lt; TIdx, TOffsets, TOffset, TSfinae &gt;::type&lt; TOffsets, TOffset &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors offset set trait specialization.  <a href="structalpaka_1_1offset_1_1traits_1_1SetOffset_1_1type.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1offset_1_1SetOffset_1_1type.html">alpaka::traits::offset::SetOffset&lt; TIdx, T, TSfinae &gt;::type&lt; TOffsets &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors offset set trait specialization.  <a href="structalpaka_1_1traits_1_1offset_1_1SetOffset_1_1type.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1offset_1_1SetOffset_1_1type.html">alpaka::traits::offset::SetOffset&lt; TIdx, T, TSfinae &gt;::type&lt; TOffsets &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors offset set trait specialization.  <a href="structalpaka_1_1traits_1_1offset_1_1SetOffset_1_1type.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1offset_1_1SetOffset_1_1type.html">alpaka::traits::offset::SetOffset&lt; TIdx, T, TSfinae &gt;::type&lt; TOffsets &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors offset set trait specialization.  <a href="structalpaka_1_1traits_1_1offset_1_1SetOffset_1_1type.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1offset_1_1SetOffset_1_1type.html">alpaka::traits::offset::SetOffset&lt; TIdx, T, TSfinae &gt;::type&lt; TOffsets &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors offset set trait specialization.  <a href="structalpaka_1_1traits_1_1offset_1_1SetOffset_1_1type.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1size_1_1traits_1_1SizeType_3_01TSize_00_01typename_01std_1_1enable__if_3_01cuda_d22e8f64acf6f3e4386570e81462b856.html">alpaka::size::traits::SizeType&lt; TSize, typename std::enable_if&lt; cuda::traits::IsCudaBuiltInType&lt; TSize &gt;::value &gt;::type &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors size type trait specialization.  <a href="structalpaka_1_1size_1_1traits_1_1SizeType_3_01TSize_00_01typename_01std_1_1enable__if_3_01cuda_d22e8f64acf6f3e4386570e81462b856.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -212,32 +204,36 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacealpaka"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html">alpaka</a></td></tr>
 <tr class="memdesc:namespacealpaka"><td class="mdescLeft">&#160;</td><td class="mdescRight">The alpaka library. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1accs"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1accs.html">alpaka::accs</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1accs"><td class="mdescLeft">&#160;</td><td class="mdescRight">The accelerators. <br /></td></tr>
+<tr class="memitem:namespacealpaka_1_1cuda"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1cuda.html">alpaka::cuda</a></td></tr>
+<tr class="memdesc:namespacealpaka_1_1cuda"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA specifics. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1accs_1_1cuda"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1accs_1_1cuda.html">alpaka::accs::cuda</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1accs_1_1cuda"><td class="mdescLeft">&#160;</td><td class="mdescRight">The GPU CUDA accelerator. <br /></td></tr>
+<tr class="memitem:namespacealpaka_1_1cuda_1_1detail"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1cuda_1_1detail.html">alpaka::cuda::detail</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1accs_1_1cuda_1_1detail"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1accs_1_1cuda_1_1detail.html">alpaka::accs::cuda::detail</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1accs_1_1cuda_1_1detail"><td class="mdescLeft">&#160;</td><td class="mdescRight">The GPU CUDA accelerator implementation details. <br /></td></tr>
+<tr class="memitem:namespacealpaka_1_1cuda_1_1traits"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1cuda_1_1traits.html">alpaka::cuda::traits</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1detail"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html">alpaka::detail</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1detail"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines implementation details that should not be used directly by the user. <br /></td></tr>
+<tr class="memitem:namespacealpaka_1_1dim"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dim.html">alpaka::dim</a></td></tr>
+<tr class="memdesc:namespacealpaka_1_1dim"><td class="mdescLeft">&#160;</td><td class="mdescRight">The dimension specifics. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1traits"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1traits.html">alpaka::traits</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1traits"><td class="mdescLeft">&#160;</td><td class="mdescRight">The traits. <br /></td></tr>
+<tr class="memitem:namespacealpaka_1_1dim_1_1traits"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dim_1_1traits.html">alpaka::dim::traits</a></td></tr>
+<tr class="memdesc:namespacealpaka_1_1dim_1_1traits"><td class="mdescLeft">&#160;</td><td class="mdescRight">The dimension traits. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1traits_1_1cuda"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1traits_1_1cuda.html">alpaka::traits::cuda</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1traits_1_1cuda"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA traits. <br /></td></tr>
+<tr class="memitem:namespacealpaka_1_1extent"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1extent.html">alpaka::extent</a></td></tr>
+<tr class="memdesc:namespacealpaka_1_1extent"><td class="mdescLeft">&#160;</td><td class="mdescRight">The extent specifics. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1traits_1_1dim"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1traits_1_1dim.html">alpaka::traits::dim</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1traits_1_1dim"><td class="mdescLeft">&#160;</td><td class="mdescRight">The dimension traits. <br /></td></tr>
+<tr class="memitem:namespacealpaka_1_1extent_1_1traits"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1extent_1_1traits.html">alpaka::extent::traits</a></td></tr>
+<tr class="memdesc:namespacealpaka_1_1extent_1_1traits"><td class="mdescLeft">&#160;</td><td class="mdescRight">The extent traits. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1traits_1_1extent"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1traits_1_1extent.html">alpaka::traits::extent</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1traits_1_1extent"><td class="mdescLeft">&#160;</td><td class="mdescRight">The extent traits. <br /></td></tr>
+<tr class="memitem:namespacealpaka_1_1offset"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1offset.html">alpaka::offset</a></td></tr>
+<tr class="memdesc:namespacealpaka_1_1offset"><td class="mdescLeft">&#160;</td><td class="mdescRight">The offset specifics. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1traits_1_1offset"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1traits_1_1offset.html">alpaka::traits::offset</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1traits_1_1offset"><td class="mdescLeft">&#160;</td><td class="mdescRight">The offset traits. <br /></td></tr>
+<tr class="memitem:namespacealpaka_1_1offset_1_1traits"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1offset_1_1traits.html">alpaka::offset::traits</a></td></tr>
+<tr class="memdesc:namespacealpaka_1_1offset_1_1traits"><td class="mdescLeft">&#160;</td><td class="mdescRight">The offset traits. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacealpaka_1_1size"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1size.html">alpaka::size</a></td></tr>
+<tr class="memdesc:namespacealpaka_1_1size"><td class="mdescLeft">&#160;</td><td class="mdescRight">The size specifics. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacealpaka_1_1size_1_1traits"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1size_1_1traits.html">alpaka::size::traits</a></td></tr>
+<tr class="memdesc:namespacealpaka_1_1size_1_1traits"><td class="mdescLeft">&#160;</td><td class="mdescRight">The size traits. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
@@ -245,22 +241,16 @@ Macros</h2></td></tr>
 <tr class="memitem:a69aee482f007066dfdb79c831e8ba771"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_2Cuda_8hpp.html#a69aee482f007066dfdb79c831e8ba771">ALPAKA_CUDA_RT_CHECK</a>(cmd)&#160;&#160;&#160;<a class="el" href="core_2Cuda_8hpp.html#a9a16799e40e87bdbe70e027f2bf8bf5c">ALPAKA_CUDA_RT_CHECK_IGNORE</a>(cmd)</td></tr>
 <tr class="memdesc:a69aee482f007066dfdb79c831e8ba771"><td class="mdescLeft">&#160;</td><td class="mdescRight">CUDA runtime error checking with log and exception.  <a href="#a69aee482f007066dfdb79c831e8ba771">More...</a><br /></td></tr>
 <tr class="separator:a69aee482f007066dfdb79c831e8ba771"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9a16799e40e87bdbe70e027f2bf8bf5c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_2Cuda_8hpp.html#a9a16799e40e87bdbe70e027f2bf8bf5c">ALPAKA_CUDA_RT_CHECK_IGNORE</a>(cmd, ...)&#160;&#160;&#160;::<a class="el" href="namespacealpaka_1_1accs_1_1cuda_1_1detail.html#add32b12efc5d5ac8370c324ddce0199f">alpaka::accs::cuda::detail::cudaRtCheckIgnore</a>(cmd, #cmd, __FILE__, __LINE__, ##__VA_ARGS__)</td></tr>
+<tr class="memitem:a9a16799e40e87bdbe70e027f2bf8bf5c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_2Cuda_8hpp.html#a9a16799e40e87bdbe70e027f2bf8bf5c">ALPAKA_CUDA_RT_CHECK_IGNORE</a>(cmd, ...)&#160;&#160;&#160;::<a class="el" href="namespacealpaka_1_1cuda_1_1detail.html#ade7a272280aba5d875eb53106e584b95">alpaka::cuda::detail::cudaRtCheckIgnore</a>(cmd, #cmd, __FILE__, __LINE__, ##__VA_ARGS__)</td></tr>
 <tr class="memdesc:a9a16799e40e87bdbe70e027f2bf8bf5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">CUDA runtime error checking with log and exception, ignoring specific error values.  <a href="#a9a16799e40e87bdbe70e027f2bf8bf5c">More...</a><br /></td></tr>
 <tr class="separator:a9a16799e40e87bdbe70e027f2bf8bf5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:a51d9525d89a01d56410c30c14d699325"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a51d9525d89a01d56410c30c14d699325"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1accs_1_1cuda_1_1detail.html#a51d9525d89a01d56410c30c14d699325">alpaka::accs::cuda::detail::IsConvertibleCudaError</a> = std::is_convertible&lt; T, cudaError_t &gt;</td></tr>
-<tr class="separator:a51d9525d89a01d56410c30c14d699325"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:add32b12efc5d5ac8370c324ddce0199f"><td class="memTemplParams" colspan="2">template&lt;typename... TErrors, typename  = typename std::enable_if&lt;alpaka::detail::ApplyAllCombineAnd&lt;IsConvertibleCudaError, TErrors...&gt;::value&gt;::type&gt; </td></tr>
-<tr class="memitem:add32b12efc5d5ac8370c324ddce0199f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1accs_1_1cuda_1_1detail.html#add32b12efc5d5ac8370c324ddce0199f">alpaka::accs::cuda::detail::cudaRtCheckIgnore</a> (cudaError_t const &amp;error, char const *cmd, char const *file, int const &amp;line, TErrors &amp;&amp;...ignoredErrorCodes) -&gt; void</td></tr>
-<tr class="memdesc:add32b12efc5d5ac8370c324ddce0199f"><td class="mdescLeft">&#160;</td><td class="mdescRight">CUDA runtime error checking with log and exception, ignoring specific error values.  <a href="#add32b12efc5d5ac8370c324ddce0199f">More...</a><br /></td></tr>
-<tr class="separator:add32b12efc5d5ac8370c324ddce0199f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade7a272280aba5d875eb53106e584b95"><td class="memTemplParams" colspan="2">template&lt;typename... TErrors, typename  = typename std::enable_if&lt;                    boost::mpl::and_&lt;                        boost::mpl::true_,                        boost::mpl::true_,                        boost::mpl::apply&lt;                            std::is_convertible&lt;                                boost::mpl::_1,                                cudaError_t&gt;,                            TErrors&gt;...                        &gt;::value&gt;::type&gt; </td></tr>
+<tr class="memitem:ade7a272280aba5d875eb53106e584b95"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1cuda_1_1detail.html#ade7a272280aba5d875eb53106e584b95">alpaka::cuda::detail::cudaRtCheckIgnore</a> (cudaError_t const &amp;error, char const *cmd, char const *file, int const &amp;line, TErrors &amp;&amp;...ignoredErrorCodes) -&gt; void</td></tr>
+<tr class="memdesc:ade7a272280aba5d875eb53106e584b95"><td class="mdescLeft">&#160;</td><td class="mdescRight">CUDA runtime API error checking with log and exception, ignoring specific error values.  <a href="#ade7a272280aba5d875eb53106e584b95">More...</a><br /></td></tr>
+<tr class="separator:ade7a272280aba5d875eb53106e584b95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Copyright 2014-2015 Benjamin Worpitz</p>
@@ -287,7 +277,7 @@ Functions</h2></td></tr>
 
 <p>CUDA runtime error checking with log and exception. </p>
 
-<p>Definition at line <a class="el" href="core_2Cuda_8hpp_source.html#l00181">181</a> of file <a class="el" href="core_2Cuda_8hpp_source.html">Cuda.hpp</a>.</p>
+<p>Definition at line <a class="el" href="core_2Cuda_8hpp_source.html#l00124">124</a> of file <a class="el" href="core_2Cuda_8hpp_source.html">Cuda.hpp</a>.</p>
 
 </div>
 </div>
@@ -310,14 +300,14 @@ Functions</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td>&#160;&#160;&#160;::<a class="el" href="namespacealpaka_1_1accs_1_1cuda_1_1detail.html#add32b12efc5d5ac8370c324ddce0199f">alpaka::accs::cuda::detail::cudaRtCheckIgnore</a>(cmd, #cmd, __FILE__, __LINE__, ##__VA_ARGS__)</td>
+          <td></td><td>&#160;&#160;&#160;::<a class="el" href="namespacealpaka_1_1cuda_1_1detail.html#ade7a272280aba5d875eb53106e584b95">alpaka::cuda::detail::cudaRtCheckIgnore</a>(cmd, #cmd, __FILE__, __LINE__, ##__VA_ARGS__)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>CUDA runtime error checking with log and exception, ignoring specific error values. </p>
 
-<p>Definition at line <a class="el" href="core_2Cuda_8hpp_source.html#l00174">174</a> of file <a class="el" href="core_2Cuda_8hpp_source.html">Cuda.hpp</a>.</p>
+<p>Definition at line <a class="el" href="core_2Cuda_8hpp_source.html#l00117">117</a> of file <a class="el" href="core_2Cuda_8hpp_source.html">Cuda.hpp</a>.</p>
 
 </div>
 </div>
@@ -327,7 +317,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="core_2Cuda_8hpp.html">Cuda.hpp</a></li>
-    <li class="footer">Generated on Sat May 23 2015 14:48:26 for alpaka by
+    <li class="footer">Generated on Sun Jul 5 2015 17:25:35 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

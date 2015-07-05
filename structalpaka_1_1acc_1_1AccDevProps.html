@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.9"/>
-<title>alpaka: alpaka::acc::AccDevProps&lt; TDim &gt; Struct Template Reference</title>
+<title>alpaka: alpaka::acc::AccDevProps&lt; TDim, TSize &gt; Struct Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -111,7 +111,7 @@ $(document).ready(function(){initNavTree('structalpaka_1_1acc_1_1AccDevProps.htm
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="structalpaka_1_1acc_1_1AccDevProps-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">alpaka::acc::AccDevProps&lt; TDim &gt; Struct Template Reference</div>  </div>
+<div class="title">alpaka::acc::AccDevProps&lt; TDim, TSize &gt; Struct Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -122,64 +122,64 @@ $(document).ready(function(){initNavTree('structalpaka_1_1acc_1_1AccDevProps.htm
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a46e43cebfd3d0156231c5060a0041db3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html#a46e43cebfd3d0156231c5060a0041db3">AccDevProps</a> (<a class="el" href="namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5">UInt</a> const &amp;uiMultiProcessorCount, <a class="el" href="namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5">UInt</a> const &amp;uiBlockThreadsCountMax, <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim &gt; const &amp;vuiBlockThreadExtentsMax, <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim &gt; const &amp;vuiGridBlockExtentsMax)</td></tr>
-<tr class="memdesc:a46e43cebfd3d0156231c5060a0041db3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default-constructor.  <a href="#a46e43cebfd3d0156231c5060a0041db3">More...</a><br /></td></tr>
-<tr class="separator:a46e43cebfd3d0156231c5060a0041db3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc0348719cf1c330924953386ed2e7d5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html#adc0348719cf1c330924953386ed2e7d5">AccDevProps</a> (TSize const &amp;uiMultiProcessorCount, TSize const &amp;uiBlockThreadsCountMax, <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TSize &gt; const &amp;vuiBlockThreadExtentsMax, <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TSize &gt; const &amp;vuiGridBlockExtentsMax)</td></tr>
+<tr class="memdesc:adc0348719cf1c330924953386ed2e7d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default-constructor.  <a href="#adc0348719cf1c330924953386ed2e7d5">More...</a><br /></td></tr>
+<tr class="separator:adc0348719cf1c330924953386ed2e7d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a28eb24964fab38fb08f79475ac9e3cc0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5">UInt</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html#a28eb24964fab38fb08f79475ac9e3cc0">m_uiBlockThreadsCountMax</a></td></tr>
-<tr class="memdesc:a28eb24964fab38fb08f79475ac9e3cc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum number of threads in a block.  <a href="#a28eb24964fab38fb08f79475ac9e3cc0">More...</a><br /></td></tr>
-<tr class="separator:a28eb24964fab38fb08f79475ac9e3cc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d7edc829aee8696a713d4e3edf341fa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5">UInt</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html#a6d7edc829aee8696a713d4e3edf341fa">m_uiMultiProcessorCount</a></td></tr>
-<tr class="memdesc:a6d7edc829aee8696a713d4e3edf341fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of multiprocessors.  <a href="#a6d7edc829aee8696a713d4e3edf341fa">More...</a><br /></td></tr>
-<tr class="separator:a6d7edc829aee8696a713d4e3edf341fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad203cb53b0039f1fc937816c16b3962b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html#ad203cb53b0039f1fc937816c16b3962b">m_vuiBlockThreadExtentsMax</a></td></tr>
-<tr class="memdesc:ad203cb53b0039f1fc937816c16b3962b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum number of threads in each dimension of a block.  <a href="#ad203cb53b0039f1fc937816c16b3962b">More...</a><br /></td></tr>
-<tr class="separator:ad203cb53b0039f1fc937816c16b3962b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a49e10a656539181de80aea632f23cae5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html#a49e10a656539181de80aea632f23cae5">m_vuiGridBlockExtentsMax</a></td></tr>
-<tr class="memdesc:a49e10a656539181de80aea632f23cae5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum number of blocks in each dimension of the grid.  <a href="#a49e10a656539181de80aea632f23cae5">More...</a><br /></td></tr>
-<tr class="separator:a49e10a656539181de80aea632f23cae5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba955ac450216e0b58cb8f51decc1ac9"><td class="memItemLeft" align="right" valign="top">TSize&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html#aba955ac450216e0b58cb8f51decc1ac9">m_uiBlockThreadsCountMax</a></td></tr>
+<tr class="memdesc:aba955ac450216e0b58cb8f51decc1ac9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum number of threads in a block.  <a href="#aba955ac450216e0b58cb8f51decc1ac9">More...</a><br /></td></tr>
+<tr class="separator:aba955ac450216e0b58cb8f51decc1ac9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a406db7d0721c26bfd8c87528ad6f438f"><td class="memItemLeft" align="right" valign="top">TSize&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html#a406db7d0721c26bfd8c87528ad6f438f">m_uiMultiProcessorCount</a></td></tr>
+<tr class="memdesc:a406db7d0721c26bfd8c87528ad6f438f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of multiprocessors.  <a href="#a406db7d0721c26bfd8c87528ad6f438f">More...</a><br /></td></tr>
+<tr class="separator:a406db7d0721c26bfd8c87528ad6f438f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee8553cfeca249013087484a1db5bb01"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TSize &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html#aee8553cfeca249013087484a1db5bb01">m_vuiBlockThreadExtentsMax</a></td></tr>
+<tr class="memdesc:aee8553cfeca249013087484a1db5bb01"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum number of threads in each dimension of a block.  <a href="#aee8553cfeca249013087484a1db5bb01">More...</a><br /></td></tr>
+<tr class="separator:aee8553cfeca249013087484a1db5bb01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac729bbb26c991b111afb485e83abd24a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TSize &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html#ac729bbb26c991b111afb485e83abd24a">m_vuiGridBlockExtentsMax</a></td></tr>
+<tr class="memdesc:ac729bbb26c991b111afb485e83abd24a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum number of blocks in each dimension of the grid.  <a href="#ac729bbb26c991b111afb485e83abd24a">More...</a><br /></td></tr>
+<tr class="separator:ac729bbb26c991b111afb485e83abd24a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;typename TDim&gt;<br />
-struct alpaka::acc::AccDevProps&lt; TDim &gt;</h3>
+<div class="textblock"><h3>template&lt;typename TDim, typename TSize&gt;<br />
+struct alpaka::acc::AccDevProps&lt; TDim, TSize &gt;</h3>
 
 <p>The acceleration properties on a device. </p>
 
-<p>Definition at line <a class="el" href="AccDevProps_8hpp_source.html#l00038">38</a> of file <a class="el" href="AccDevProps_8hpp_source.html">AccDevProps.hpp</a>.</p>
+<p>Definition at line <a class="el" href="AccDevProps_8hpp_source.html#l00040">40</a> of file <a class="el" href="AccDevProps_8hpp_source.html">AccDevProps.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a46e43cebfd3d0156231c5060a0041db3"></a>
+<a class="anchor" id="adc0348719cf1c330924953386ed2e7d5"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TDim &gt; </div>
+template&lt;typename TDim , typename TSize &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html">alpaka::acc::AccDevProps</a>&lt; TDim &gt;::<a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html">AccDevProps</a> </td>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> <a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html">alpaka::acc::AccDevProps</a>&lt; TDim, TSize &gt;::<a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html">AccDevProps</a> </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5">UInt</a> const &amp;&#160;</td>
+          <td class="paramtype">TSize const &amp;&#160;</td>
           <td class="paramname"><em>uiMultiProcessorCount</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5">UInt</a> const &amp;&#160;</td>
+          <td class="paramtype">TSize const &amp;&#160;</td>
           <td class="paramname"><em>uiBlockThreadsCountMax</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TSize &gt; const &amp;&#160;</td>
           <td class="paramname"><em>vuiBlockThreadExtentsMax</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim &gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TSize &gt; const &amp;&#160;</td>
           <td class="paramname"><em>vuiGridBlockExtentsMax</em>&#160;</td>
         </tr>
         <tr>
@@ -197,85 +197,85 @@ template&lt;typename TDim &gt; </div>
 
 <p>Default-constructor. </p>
 
-<p>Definition at line <a class="el" href="AccDevProps_8hpp_source.html#l00043">43</a> of file <a class="el" href="AccDevProps_8hpp_source.html">AccDevProps.hpp</a>.</p>
+<p>Definition at line <a class="el" href="AccDevProps_8hpp_source.html#l00046">46</a> of file <a class="el" href="AccDevProps_8hpp_source.html">AccDevProps.hpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a28eb24964fab38fb08f79475ac9e3cc0"></a>
+<a class="anchor" id="aba955ac450216e0b58cb8f51decc1ac9"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TDim &gt; </div>
+template&lt;typename TDim , typename TSize &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5">UInt</a> <a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html">alpaka::acc::AccDevProps</a>&lt; TDim &gt;::m_uiBlockThreadsCountMax</td>
+          <td class="memname">TSize <a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html">alpaka::acc::AccDevProps</a>&lt; TDim, TSize &gt;::m_uiBlockThreadsCountMax</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>The maximum number of threads in a block. </p>
 
-<p>Definition at line <a class="el" href="AccDevProps_8hpp_source.html#l00055">55</a> of file <a class="el" href="AccDevProps_8hpp_source.html">AccDevProps.hpp</a>.</p>
+<p>Definition at line <a class="el" href="AccDevProps_8hpp_source.html#l00058">58</a> of file <a class="el" href="AccDevProps_8hpp_source.html">AccDevProps.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a6d7edc829aee8696a713d4e3edf341fa"></a>
+<a class="anchor" id="a406db7d0721c26bfd8c87528ad6f438f"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TDim &gt; </div>
+template&lt;typename TDim , typename TSize &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5">UInt</a> <a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html">alpaka::acc::AccDevProps</a>&lt; TDim &gt;::m_uiMultiProcessorCount</td>
+          <td class="memname">TSize <a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html">alpaka::acc::AccDevProps</a>&lt; TDim, TSize &gt;::m_uiMultiProcessorCount</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>The number of multiprocessors. </p>
 
-<p>Definition at line <a class="el" href="AccDevProps_8hpp_source.html#l00054">54</a> of file <a class="el" href="AccDevProps_8hpp_source.html">AccDevProps.hpp</a>.</p>
+<p>Definition at line <a class="el" href="AccDevProps_8hpp_source.html#l00057">57</a> of file <a class="el" href="AccDevProps_8hpp_source.html">AccDevProps.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ad203cb53b0039f1fc937816c16b3962b"></a>
+<a class="anchor" id="aee8553cfeca249013087484a1db5bb01"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TDim &gt; </div>
+template&lt;typename TDim , typename TSize &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;TDim&gt; <a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html">alpaka::acc::AccDevProps</a>&lt; TDim &gt;::m_vuiBlockThreadExtentsMax</td>
+          <td class="memname"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;TDim, TSize&gt; <a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html">alpaka::acc::AccDevProps</a>&lt; TDim, TSize &gt;::m_vuiBlockThreadExtentsMax</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>The maximum number of threads in each dimension of a block. </p>
 
-<p>Definition at line <a class="el" href="AccDevProps_8hpp_source.html#l00056">56</a> of file <a class="el" href="AccDevProps_8hpp_source.html">AccDevProps.hpp</a>.</p>
+<p>Definition at line <a class="el" href="AccDevProps_8hpp_source.html#l00059">59</a> of file <a class="el" href="AccDevProps_8hpp_source.html">AccDevProps.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a49e10a656539181de80aea632f23cae5"></a>
+<a class="anchor" id="ac729bbb26c991b111afb485e83abd24a"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TDim &gt; </div>
+template&lt;typename TDim , typename TSize &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;TDim&gt; <a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html">alpaka::acc::AccDevProps</a>&lt; TDim &gt;::m_vuiGridBlockExtentsMax</td>
+          <td class="memname"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;TDim, TSize&gt; <a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html">alpaka::acc::AccDevProps</a>&lt; TDim, TSize &gt;::m_vuiGridBlockExtentsMax</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>The maximum number of blocks in each dimension of the grid. </p>
 
-<p>Definition at line <a class="el" href="AccDevProps_8hpp_source.html#l00057">57</a> of file <a class="el" href="AccDevProps_8hpp_source.html">AccDevProps.hpp</a>.</p>
+<p>Definition at line <a class="el" href="AccDevProps_8hpp_source.html#l00060">60</a> of file <a class="el" href="AccDevProps_8hpp_source.html">AccDevProps.hpp</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>C:/dev/alpaka/include/alpaka/core/<a class="el" href="AccDevProps_8hpp_source.html">AccDevProps.hpp</a></li>
+<li>C:/dev/alpaka/include/alpaka/acc/<a class="el" href="AccDevProps_8hpp_source.html">AccDevProps.hpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -283,7 +283,7 @@ template&lt;typename TDim &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1acc.html">acc</a></li><li class="navelem"><a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html">AccDevProps</a></li>
-    <li class="footer">Generated on Sat May 23 2015 14:48:26 for alpaka by
+    <li class="footer">Generated on Sun Jul 5 2015 17:25:36 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

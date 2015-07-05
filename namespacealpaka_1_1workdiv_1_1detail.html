@@ -106,41 +106,69 @@ $(document).ready(function(){initNavTree('namespacealpaka_1_1workdiv_1_1detail.h
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">alpaka::workdiv::detail Namespace Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1workdiv_1_1detail_1_1CorrectMaxBlockThreadCount.html">CorrectMaxBlockThreadCount</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum block thread count correction wrapper.  <a href="structalpaka_1_1workdiv_1_1detail_1_1CorrectMaxBlockThreadCount.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1workdiv_1_1detail_1_1CorrectMaxBlockThreadExtents.html">CorrectMaxBlockThreadExtents</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum block thread extents correction wrapper.  <a href="structalpaka_1_1workdiv_1_1detail_1_1CorrectMaxBlockThreadExtents.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a21bb2264ae48912f73c3f36c6461f562"><td class="memTemplParams" colspan="2">template&lt;typename T , typename  = typename std::enable_if&lt;std::is_integral&lt;T&gt;::value &amp;&amp; std::is_unsigned&lt;T&gt;::value&gt;::type&gt; </td></tr>
-<tr class="memitem:a21bb2264ae48912f73c3f36c6461f562"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1workdiv_1_1detail.html#a21bb2264ae48912f73c3f36c6461f562">nextLowerOrEqualFactor</a> (T const &amp;uiMaxDivisor, T const &amp;uiDividend) -&gt; T</td></tr>
-<tr class="separator:a21bb2264ae48912f73c3f36c6461f562"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00c6c9eb9a1fdfdc9802fe5065bba622"><td class="memTemplParams" colspan="2">template&lt;typename TDim &gt; </td></tr>
-<tr class="memitem:a00c6c9eb9a1fdfdc9802fe5065bba622"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1workdiv_1_1detail.html#a00c6c9eb9a1fdfdc9802fe5065bba622">subdivideGridThreads</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim &gt; const &amp;vuiGridThreadExtents, <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim &gt; const &amp;vuiMaxBlockThreadExtents, <a class="el" href="namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5">UInt</a> const &amp;uiMaxBlockThreadsCount, bool bRequireBlockThreadExtentsToDivideGridThreadExtents=true) -&gt; <a class="el" href="classalpaka_1_1workdiv_1_1BasicWorkDiv.html">BasicWorkDiv</a>&lt; TDim &gt;</td></tr>
-<tr class="memdesc:a00c6c9eb9a1fdfdc9802fe5065bba622"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subdivides the given grid thread extents into blocks restricted by:  <a href="#a00c6c9eb9a1fdfdc9802fe5065bba622">More...</a><br /></td></tr>
-<tr class="separator:a00c6c9eb9a1fdfdc9802fe5065bba622"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a746d04d7e9b2376e1435458038454a36"><td class="memTemplParams" colspan="2">template&lt;typename T , typename  = typename std::enable_if&lt;std::is_integral&lt;T&gt;::value&gt;::type&gt; </td></tr>
+<tr class="memitem:a746d04d7e9b2376e1435458038454a36"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1workdiv_1_1detail.html#a746d04d7e9b2376e1435458038454a36">allDivisorsLessOrEqual</a> (T const &amp;uiVal, T const &amp;uiMaxDivisor) -&gt; std::set&lt; T &gt;</td></tr>
+<tr class="separator:a746d04d7e9b2376e1435458038454a36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a529677cf332fcf2c611d933d6007047f"><td class="memTemplParams" colspan="2">template&lt;typename T , typename  = typename std::enable_if&lt;std::is_integral&lt;T&gt;::value&gt;::type&gt; </td></tr>
+<tr class="memitem:a529677cf332fcf2c611d933d6007047f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1workdiv_1_1detail.html#a529677cf332fcf2c611d933d6007047f">nextDivisorLowerOrEqual</a> (T const &amp;uiMaxDivisor, T const &amp;uiDividend) -&gt; T</td></tr>
+<tr class="separator:a529677cf332fcf2c611d933d6007047f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="a21bb2264ae48912f73c3f36c6461f562"></a>
+<a class="anchor" id="a746d04d7e9b2376e1435458038454a36"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename  = typename std::enable_if&lt;std::is_integral&lt;T&gt;::value &amp;&amp; std::is_unsigned&lt;T&gt;::value&gt;::type&gt; </div>
+template&lt;typename T , typename  = typename std::enable_if&lt;std::is_integral&lt;T&gt;::value&gt;::type&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto alpaka::workdiv::detail::nextLowerOrEqualFactor </td>
+          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::workdiv::detail::allDivisorsLessOrEqual </td>
+          <td>(</td>
+          <td class="paramtype">T const &amp;&#160;</td>
+          <td class="paramname"><em>uiVal</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T const &amp;&#160;</td>
+          <td class="paramname"><em>uiMaxDivisor</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; std::set&lt;T&gt;
+            </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">uiVal</td><td>The value to find divisors of. </td></tr>
+    <tr><td class="paramname">uiMaxDivisor</td><td>The maximum. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A list of all divisors less then or equal to the given maximum. </dd></dl>
+
+<p>Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00095">95</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a529677cf332fcf2c611d933d6007047f"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename  = typename std::enable_if&lt;std::is_integral&lt;T&gt;::value&gt;::type&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::workdiv::detail::nextDivisorLowerOrEqual </td>
           <td>(</td>
           <td class="paramtype">T const &amp;&#160;</td>
           <td class="paramname"><em>uiMaxDivisor</em>, </td>
@@ -168,66 +196,7 @@ template&lt;typename T , typename  = typename std::enable_if&lt;std::is_integral
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The biggest number that satisfies the following conditions: 1) uiDividend/ret==0 2) ret&lt;=uiMaxDivisor </dd></dl>
 
-<p>Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00165">165</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a00c6c9eb9a1fdfdc9802fe5065bba622"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename TDim &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto alpaka::workdiv::detail::subdivideGridThreads </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim &gt; const &amp;&#160;</td>
-          <td class="paramname"><em>vuiGridThreadExtents</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim &gt; const &amp;&#160;</td>
-          <td class="paramname"><em>vuiMaxBlockThreadExtents</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5">UInt</a> const &amp;&#160;</td>
-          <td class="paramname"><em>uiMaxBlockThreadsCount</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>bRequireBlockThreadExtentsToDivideGridThreadExtents</em> = <code>true</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> -&gt; <a class="el" href="classalpaka_1_1workdiv_1_1BasicWorkDiv.html">BasicWorkDiv</a>&lt;TDim&gt;
-            </td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Subdivides the given grid thread extents into blocks restricted by: </p>
-<ol type="1">
-<li>The maximum block thread extents</li>
-<li>The maximum block thread count</li>
-<li>The requirement of the block thread extents to divide the grid thread extents without remainder</li>
-</ol>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">vuiGridThreadExtents</td><td>The full extents of threads in the grid. </td></tr>
-    <tr><td class="paramname">vuiMaxBlockThreadExtents</td><td>The maximum extents of threads in a block. </td></tr>
-    <tr><td class="paramname">uiMaxBlockThreadsCount</td><td>The maximum number of threads in a block. </td></tr>
-    <tr><td class="paramname">bRequireBlockThreadExtentsToDivideGridThreadExtents</td><td>If this is true, the grid thread extents will be multiples of the corresponding block thread extents. NOTE: If vuiGridThreadExtents is prime (or otherwise bad chosen) in a dimension, the block thread extent will be one in this dimension. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00197">197</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
+<p>Definition at line <a class="el" href="WorkDivHelpers_8hpp_source.html#l00069">69</a> of file <a class="el" href="WorkDivHelpers_8hpp_source.html">WorkDivHelpers.hpp</a>.</p>
 
 </div>
 </div>
@@ -237,7 +206,7 @@ template&lt;typename TDim &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1workdiv.html">workdiv</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1workdiv_1_1detail.html">detail</a></li>
-    <li class="footer">Generated on Sat May 23 2015 14:48:35 for alpaka by
+    <li class="footer">Generated on Sun Jul 5 2015 17:25:50 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

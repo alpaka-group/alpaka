@@ -113,8 +113,8 @@ $(document).ready(function(){initNavTree('NdLoop_8hpp.html','');});
 <div class="title">NdLoop.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;<a class="el" href="Dim_8hpp_source.html">alpaka/traits/Dim.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="core_2Common_8hpp_source.html">alpaka/core/Common.hpp</a>&gt;</code><br />
+<div class="textblock"><code>#include &lt;<a class="el" href="dim_2Traits_8hpp_source.html">alpaka/dim/Traits.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="Common_8hpp_source.html">alpaka/core/Common.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Vec_8hpp_source.html">alpaka/core/Vec.hpp</a>&gt;</code><br />
 <code>#include &lt;utility&gt;</code><br />
 </div>
@@ -143,10 +143,10 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a2d5276186bfee16d6b3ccd913708aaee"><td class="memTemplParams" colspan="2">template&lt;typename TExtentsVec , typename TFunctor , typename... TArgs&gt; </td></tr>
-<tr class="memitem:a2d5276186bfee16d6b3ccd913708aaee"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a2d5276186bfee16d6b3ccd913708aaee">alpaka::ndLoop</a> (TExtentsVec const &amp;extents, TFunctor &amp;&amp;f, TArgs &amp;&amp;...args) -&gt; void</td></tr>
-<tr class="memdesc:a2d5276186bfee16d6b3ccd913708aaee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loops over an n-dimensional iteration index variable calling f(idx, args...) for each iteration. The loops are nested from index zero outmost to index (dim-1) innermost.  <a href="#a2d5276186bfee16d6b3ccd913708aaee">More...</a><br /></td></tr>
-<tr class="separator:a2d5276186bfee16d6b3ccd913708aaee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17b48542a8de3b4206980f1a516c2d75"><td class="memTemplParams" colspan="2">template&lt;typename TExtentsVec , typename TFnObj , typename... TArgs&gt; </td></tr>
+<tr class="memitem:a17b48542a8de3b4206980f1a516c2d75"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a17b48542a8de3b4206980f1a516c2d75">alpaka::ndLoop</a> (TExtentsVec const &amp;extents, TFnObj &amp;&amp;f, TArgs &amp;&amp;...args) -&gt; void</td></tr>
+<tr class="memdesc:a17b48542a8de3b4206980f1a516c2d75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loops over an n-dimensional iteration index variable calling f(idx, args...) for each iteration. The loops are nested from index zero outmost to index (dim-1) innermost.  <a href="#a17b48542a8de3b4206980f1a516c2d75">More...</a><br /></td></tr>
+<tr class="separator:a17b48542a8de3b4206980f1a516c2d75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Copyright 2014-2015 Benjamin Worpitz</p>
@@ -162,7 +162,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="NdLoop_8hpp.html">NdLoop.hpp</a></li>
-    <li class="footer">Generated on Sat May 23 2015 14:48:26 for alpaka by
+    <li class="footer">Generated on Sun Jul 5 2015 17:25:35 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

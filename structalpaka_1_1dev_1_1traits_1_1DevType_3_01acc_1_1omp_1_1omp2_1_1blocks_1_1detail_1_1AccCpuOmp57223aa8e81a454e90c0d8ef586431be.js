@@ -1,0 +1,4 @@
+var structalpaka_1_1dev_1_1traits_1_1DevType_3_01acc_1_1omp_1_1omp2_1_1blocks_1_1detail_1_1AccCpuOmp57223aa8e81a454e90c0d8ef586431be =
+[
+    [ "type", "structalpaka_1_1dev_1_1traits_1_1DevType_3_01acc_1_1omp_1_1omp2_1_1blocks_1_1detail_1_1AccCpuOmp57223aa8e81a454e90c0d8ef586431be.html#aaa8ba2ca456f853852dfd4c8cdc80bcd", null ]
+];

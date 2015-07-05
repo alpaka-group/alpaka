@@ -132,124 +132,132 @@ $(document).ready(function(){initNavTree('Fold_8hpp_source.html','');});
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="core_2Common_8hpp.html">alpaka/core/Common.hpp</a>&gt;</span>       <span class="comment">// ALPAKA_FCT_HOST_ACC</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Common_8hpp.html">alpaka/core/Common.hpp</a>&gt;</span>       <span class="comment">// ALPAKA_FN_HOST_ACC</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;boost/core/ignore_unused.hpp&gt;</span> <span class="comment">// boost::ignore_unused</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;type_traits&gt;</span>                  <span class="comment">// std::result_of</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#if !defined(__CUDA_ARCH__)</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">    #include &lt;boost/core/ignore_unused.hpp&gt;</span> <span class="comment">// boost::ignore_unused</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka.html">alpaka</a></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;{</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">    //!</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment"></span>    <span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keyword">template</span>&lt;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <span class="keyword">typename</span> TFunctor,</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="namespacealpaka.html#a8bc4b043f01da4652bc7b1c03dc20c31">   38</a></span>&#160;    <a class="code" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a8bc4b043f01da4652bc7b1c03dc20c31">foldr</a>(</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        TFunctor <span class="keyword">const</span> &amp; f,</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        T <span class="keyword">const</span> &amp; t)</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    -&gt; T</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    {</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        boost::ignore_unused(f);</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <span class="keywordflow">return</span> t;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    }</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#if __cplusplus &gt;= 201402L</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">    //!</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment"></span>    <span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keyword">template</span>&lt;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="keyword">typename</span> TFunctor,</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="keyword">typename</span> T0,</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="keyword">typename</span> T1,</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keyword">typename</span>... Ts&gt;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <a class="code" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a8bc4b043f01da4652bc7b1c03dc20c31">foldr</a>(</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        TFunctor <span class="keyword">const</span> &amp; f,</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        T0 <span class="keyword">const</span> &amp; t0,</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        T1 <span class="keyword">const</span> &amp; t1,</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        Ts <span class="keyword">const</span> &amp; ... ts)</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    {</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keywordflow">return</span> f(t0, <a class="code" href="namespacealpaka.html#a8bc4b043f01da4652bc7b1c03dc20c31">foldr</a>(f, t1, ts...));</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    }</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keyword">namespace </span>detail</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    {</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="comment">//#############################################################################</span><span class="comment"></span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment">        //!</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment"></span>        <span class="comment">//#############################################################################</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="keyword">template</span>&lt;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            <span class="keyword">typename</span> TFunctor,</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            <span class="keyword">typename</span>... T&gt;</div>
-<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="structalpaka_1_1detail_1_1TypeOfFold.html">   72</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1detail_1_1TypeOfFold.html">TypeOfFold</a>;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="comment">//#############################################################################</span><span class="comment"></span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment">        //!</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="comment"></span>        <span class="comment">//#############################################################################</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <span class="keyword">template</span>&lt;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            <span class="keyword">typename</span> TFunctor,</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            <span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="structalpaka_1_1detail_1_1TypeOfFold_3_01TFunctor_00_01T_01_4.html">   79</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1detail_1_1TypeOfFold.html">TypeOfFold</a>&lt;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            TFunctor,</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            T&gt;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        {</div>
-<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="structalpaka_1_1detail_1_1TypeOfFold_3_01TFunctor_00_01T_01_4.html#a7c5970d445657a647d61ada36351a36e">   83</a></span>&#160;            <span class="keyword">using</span> <a class="code" href="structalpaka_1_1detail_1_1TypeOfFold_3_01TFunctor_00_01T_01_4.html#a7c5970d445657a647d61ada36351a36e">type</a> = T;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        };</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="comment">//#############################################################################</span><span class="comment"></span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="comment">        //!</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="comment"></span>        <span class="comment">//#############################################################################</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        <span class="keyword">template</span>&lt;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            <span class="keyword">typename</span> TFunctor,</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            <span class="keyword">typename</span> T,</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            <span class="keyword">typename</span>... P&gt;</div>
-<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="structalpaka_1_1detail_1_1TypeOfFold_3_01TFunctor_00_01T_00_01P_8_8_8_4.html">   92</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1detail_1_1TypeOfFold.html">TypeOfFold</a>&lt;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            TFunctor,</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            T,</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            P...&gt;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        {</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            <span class="keyword">using</span> <a class="code" href="structalpaka_1_1detail_1_1TypeOfFold_3_01TFunctor_00_01T_00_01P_8_8_8_4.html#a999174a838ba7cfd3b14167d217bcfc0">type</a> =</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                <span class="keyword">typename</span> std::result_of&lt;</div>
-<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="structalpaka_1_1detail_1_1TypeOfFold_3_01TFunctor_00_01T_00_01P_8_8_8_4.html#a999174a838ba7cfd3b14167d217bcfc0">   99</a></span>&#160;                    TFunctor(T, <span class="keyword">typename</span> <a class="code" href="structalpaka_1_1detail_1_1TypeOfFold.html">TypeOfFold&lt;TFunctor, P...&gt;::type</a>)&gt;<a class="code" href="structalpaka_1_1detail_1_1TypeOfFold_3_01TFunctor_00_01T_00_01P_8_8_8_4.html#a999174a838ba7cfd3b14167d217bcfc0">::type</a>;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        };</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    }</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="comment">    //!</span></div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="comment"></span>    <span class="comment">//-----------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <span class="keyword">template</span>&lt;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        <span class="keyword">typename</span> TFunctor,</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        <span class="keyword">typename</span> T0,</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        <span class="keyword">typename</span> T1,</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        <span class="keyword">typename</span>... Ts&gt;</div>
-<div class="line"><a name="l00111"></a><span class="lineno"><a class="line" href="namespacealpaka.html#a4d563a6625c49e6d1e26d05ad9f1072f">  111</a></span>&#160;    <a class="code" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a8bc4b043f01da4652bc7b1c03dc20c31">foldr</a>(</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        TFunctor <span class="keyword">const</span> &amp; f,</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        T0 <span class="keyword">const</span> &amp; t0,</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        T1 <span class="keyword">const</span> &amp; t1,</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        Ts <span class="keyword">const</span> &amp; ... ts)</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="comment">// NOTE: This is not allowed because the point of function declaration is after the trailing return type.</span></div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="comment">// Thus the function itself is not available inside its return type declaration. </span></div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <span class="comment">// http://www.open-std.org/jtc1/sc22/wg21/docs/cwg_closed.html#1433</span></div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <span class="comment">// http://stackoverflow.com/questions/3744400/trailing-return-type-using-decltype-with-a-variadic-template-function</span></div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    <span class="comment">// http://stackoverflow.com/questions/11596898/variadic-template-and-inferred-return-type-in-concat/11597196#11597196</span></div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <span class="comment">//-&gt; decltype(f(t0, foldr(f, t1, ts...)))</span></div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    -&gt; <span class="keyword">typename</span> <a class="code" href="structalpaka_1_1detail_1_1TypeOfFold.html">detail::TypeOfFold</a>&lt;TFunctor, T0, T1, Ts...&gt;::type</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    {</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        <span class="keywordflow">return</span> f(t0, <a class="code" href="namespacealpaka.html#a8bc4b043f01da4652bc7b1c03dc20c31">foldr</a>(f, t1, ts...));</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    }</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;}</div>
-<div class="ttc" id="structalpaka_1_1detail_1_1TypeOfFold_3_01TFunctor_00_01T_01_4_html_a7c5970d445657a647d61ada36351a36e"><div class="ttname"><a href="structalpaka_1_1detail_1_1TypeOfFold_3_01TFunctor_00_01T_01_4.html#a7c5970d445657a647d61ada36351a36e">alpaka::detail::TypeOfFold&lt; TFunctor, T &gt;::type</a></div><div class="ttdeci">T type</div><div class="ttdef"><b>Definition:</b> <a href="Fold_8hpp_source.html#l00083">Fold.hpp:83</a></div></div>
-<div class="ttc" id="structalpaka_1_1detail_1_1TypeOfFold_3_01TFunctor_00_01T_00_01P_8_8_8_4_html_a999174a838ba7cfd3b14167d217bcfc0"><div class="ttname"><a href="structalpaka_1_1detail_1_1TypeOfFold_3_01TFunctor_00_01T_00_01P_8_8_8_4.html#a999174a838ba7cfd3b14167d217bcfc0">alpaka::detail::TypeOfFold&lt; TFunctor, T, P...&gt;::type</a></div><div class="ttdeci">typename std::result_of&lt; TFunctor(T, typename TypeOfFold&lt; TFunctor, P...&gt;::type)&gt;::type type</div><div class="ttdef"><b>Definition:</b> <a href="Fold_8hpp_source.html#l00099">Fold.hpp:99</a></div></div>
-<div class="ttc" id="structalpaka_1_1detail_1_1TypeOfFold_html"><div class="ttname"><a href="structalpaka_1_1detail_1_1TypeOfFold.html">alpaka::detail::TypeOfFold</a></div><div class="ttdef"><b>Definition:</b> <a href="Fold_8hpp_source.html#l00072">Fold.hpp:72</a></div></div>
-<div class="ttc" id="namespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">The alpaka library. </div><div class="ttdef"><b>Definition:</b> <a href="Accs_8hpp_source.html#l00065">Accs.hpp:65</a></div></div>
-<div class="ttc" id="namespacealpaka_html_a8bc4b043f01da4652bc7b1c03dc20c31"><div class="ttname"><a href="namespacealpaka.html#a8bc4b043f01da4652bc7b1c03dc20c31">alpaka::foldr</a></div><div class="ttdeci">ALPAKA_FCT_HOST_ACC auto foldr(TFunctor const &amp;f, T const &amp;t) -&gt; T</div><div class="ttdef"><b>Definition:</b> <a href="Fold_8hpp_source.html#l00038">Fold.hpp:38</a></div></div>
-<div class="ttc" id="core_2Common_8hpp_html"><div class="ttname"><a href="core_2Common_8hpp.html">Common.hpp</a></div></div>
-<div class="ttc" id="core_2Common_8hpp_html_a58b8d1373dd28be3a64937d6cb48b7c0"><div class="ttname"><a href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a></div><div class="ttdeci">#define ALPAKA_FCT_HOST_ACC</div><div class="ttdef"><b>Definition:</b> <a href="core_2Common_8hpp_source.html#l00075">Common.hpp:75</a></div></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;type_traits&gt;</span>                  <span class="comment">// std::result_of</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacealpaka.html">alpaka</a></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;{</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">    //!</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment"></span>    <span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <a class="code" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keyword">template</span>&lt;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="keyword">typename</span> TFnObj,</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="namespacealpaka.html#a88c494ee74e6f1910715c3a80b587d2e">   41</a></span>&#160;    <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a88c494ee74e6f1910715c3a80b587d2e">foldr</a>(</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        TFnObj <span class="keyword">const</span> &amp; f,</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        T <span class="keyword">const</span> &amp; t)</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    -&gt; T</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#if !defined(__CUDA_ARCH__)</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        boost::ignore_unused(f);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keywordflow">return</span> t;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    }</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">#if __cplusplus &gt;= 201402L</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">    //!</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment"></span>    <span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <a class="code" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keyword">template</span>&lt;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        <span class="keyword">typename</span> TFnObj,</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        <span class="keyword">typename</span> T0,</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <span class="keyword">typename</span> T1,</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <span class="keyword">typename</span>... Ts&gt;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a88c494ee74e6f1910715c3a80b587d2e">foldr</a>(</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        TFnObj <span class="keyword">const</span> &amp; f,</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        T0 <span class="keyword">const</span> &amp; t0,</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        T1 <span class="keyword">const</span> &amp; t1,</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        Ts <span class="keyword">const</span> &amp; ... ts)</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    {</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <span class="keywordflow">return</span> f(t0, <a class="code" href="namespacealpaka.html#a88c494ee74e6f1910715c3a80b587d2e">foldr</a>(f, t1, ts...));</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    }</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keyword">namespace </span>detail</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    {</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="comment">//#############################################################################</span><span class="comment"></span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment">        //!</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment"></span>        <span class="comment">//#############################################################################</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="keyword">template</span>&lt;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            <span class="keyword">typename</span> TFnObj,</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            <span class="keyword">typename</span>... T&gt;</div>
+<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="structalpaka_1_1detail_1_1TypeOfFold.html">   78</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1detail_1_1TypeOfFold.html">TypeOfFold</a>;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <span class="comment">//#############################################################################</span><span class="comment"></span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="comment">        //!</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="comment"></span>        <span class="comment">//#############################################################################</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="keyword">template</span>&lt;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            <span class="keyword">typename</span> TFnObj,</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            <span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="structalpaka_1_1detail_1_1TypeOfFold_3_01TFnObj_00_01T_01_4.html">   85</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1detail_1_1TypeOfFold.html">TypeOfFold</a>&lt;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            TFnObj,</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            T&gt;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        {</div>
+<div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="structalpaka_1_1detail_1_1TypeOfFold_3_01TFnObj_00_01T_01_4.html#a51f09c6cb646f68c44d6b25f8af40a19">   89</a></span>&#160;            <span class="keyword">using</span> <a class="code" href="structalpaka_1_1detail_1_1TypeOfFold_3_01TFnObj_00_01T_01_4.html#a51f09c6cb646f68c44d6b25f8af40a19">type</a> = T;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        };</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <span class="comment">//#############################################################################</span><span class="comment"></span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="comment">        //!</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="comment"></span>        <span class="comment">//#############################################################################</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <span class="keyword">template</span>&lt;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            <span class="keyword">typename</span> TFnObj,</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            <span class="keyword">typename</span> T,</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            <span class="keyword">typename</span>... P&gt;</div>
+<div class="line"><a name="l00098"></a><span class="lineno"><a class="line" href="structalpaka_1_1detail_1_1TypeOfFold_3_01TFnObj_00_01T_00_01P_8_8_8_4.html">   98</a></span>&#160;        <span class="keyword">struct </span><a class="code" href="structalpaka_1_1detail_1_1TypeOfFold.html">TypeOfFold</a>&lt;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            TFnObj,</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            T,</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            P...&gt;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        {</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <span class="keyword">using</span> <a class="code" href="structalpaka_1_1detail_1_1TypeOfFold_3_01TFnObj_00_01T_00_01P_8_8_8_4.html#ac8ea1eb4fb0455e193094a0d5b40c5ee">type</a> =</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                <span class="keyword">typename</span> std::result_of&lt;</div>
+<div class="line"><a name="l00105"></a><span class="lineno"><a class="line" href="structalpaka_1_1detail_1_1TypeOfFold_3_01TFnObj_00_01T_00_01P_8_8_8_4.html#ac8ea1eb4fb0455e193094a0d5b40c5ee">  105</a></span>&#160;                    TFnObj(T, <span class="keyword">typename</span> <a class="code" href="structalpaka_1_1detail_1_1TypeOfFold.html">TypeOfFold&lt;TFnObj, P...&gt;::type</a>)&gt;<a class="code" href="structalpaka_1_1detail_1_1TypeOfFold_3_01TFnObj_00_01T_00_01P_8_8_8_4.html#ac8ea1eb4fb0455e193094a0d5b40c5ee">::type</a>;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        };</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    }</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <span class="comment">//-----------------------------------------------------------------------------</span><span class="comment"></span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="comment">    //!</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="comment"></span>    <span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <a class="code" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="keyword">template</span>&lt;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        <span class="keyword">typename</span> TFnObj,</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        <span class="keyword">typename</span> T0,</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        <span class="keyword">typename</span> T1,</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        <span class="keyword">typename</span>... Ts&gt;</div>
+<div class="line"><a name="l00118"></a><span class="lineno"><a class="line" href="namespacealpaka.html#a11eb911217b99625ab3e05b356af07f3">  118</a></span>&#160;    <a class="code" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> <span class="keyword">auto</span> <a class="code" href="namespacealpaka.html#a88c494ee74e6f1910715c3a80b587d2e">foldr</a>(</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        TFnObj <span class="keyword">const</span> &amp; f,</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        T0 <span class="keyword">const</span> &amp; t0,</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        T1 <span class="keyword">const</span> &amp; t1,</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        Ts <span class="keyword">const</span> &amp; ... ts)</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <span class="comment">// NOTE: This is not allowed because the point of function declaration is after the trailing return type.</span></div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="comment">// Thus the function itself is not available inside its return type declaration.</span></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <span class="comment">// http://www.open-std.org/jtc1/sc22/wg21/docs/cwg_closed.html#1433</span></div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="comment">// http://stackoverflow.com/questions/3744400/trailing-return-type-using-decltype-with-a-variadic-template-function</span></div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    <span class="comment">// http://stackoverflow.com/questions/11596898/variadic-template-and-inferred-return-type-in-concat/11597196#11597196</span></div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="comment">//-&gt; decltype(f(t0, foldr(f, t1, ts...)))</span></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    -&gt; <span class="keyword">typename</span> <a class="code" href="structalpaka_1_1detail_1_1TypeOfFold.html">detail::TypeOfFold</a>&lt;TFnObj, T0, T1, Ts...&gt;::type</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    {</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        <span class="keywordflow">return</span> f(t0, <a class="code" href="namespacealpaka.html#a88c494ee74e6f1910715c3a80b587d2e">foldr</a>(f, t1, ts...));</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    }</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;}</div>
+<div class="ttc" id="Common_8hpp_html_aa8d02f0c4379afabdb7f4ee2e8f7954c"><div class="ttname"><a href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a></div><div class="ttdeci">#define ALPAKA_NO_HOST_ACC_WARNING</div><div class="ttdoc">Disable nvcc warning: &#39;calling a host function from host device function.&#39;. </div><div class="ttdef"><b>Definition:</b> <a href="Common_8hpp_source.html#l00055">Common.hpp:55</a></div></div>
+<div class="ttc" id="namespacealpaka_html_a88c494ee74e6f1910715c3a80b587d2e"><div class="ttname"><a href="namespacealpaka.html#a88c494ee74e6f1910715c3a80b587d2e">alpaka::foldr</a></div><div class="ttdeci">ALPAKA_NO_HOST_ACC_WARNING ALPAKA_FN_HOST_ACC auto foldr(TFnObj const &amp;f, T const &amp;t) -&gt; T</div><div class="ttdef"><b>Definition:</b> <a href="Fold_8hpp_source.html#l00041">Fold.hpp:41</a></div></div>
+<div class="ttc" id="structalpaka_1_1detail_1_1TypeOfFold_html"><div class="ttname"><a href="structalpaka_1_1detail_1_1TypeOfFold.html">alpaka::detail::TypeOfFold</a></div><div class="ttdef"><b>Definition:</b> <a href="Fold_8hpp_source.html#l00078">Fold.hpp:78</a></div></div>
+<div class="ttc" id="namespacealpaka_html"><div class="ttname"><a href="namespacealpaka.html">alpaka</a></div><div class="ttdoc">The alpaka library. </div><div class="ttdef"><b>Definition:</b> <a href="AccDevProps_8hpp_source.html#l00030">AccDevProps.hpp:30</a></div></div>
+<div class="ttc" id="structalpaka_1_1detail_1_1TypeOfFold_3_01TFnObj_00_01T_01_4_html_a51f09c6cb646f68c44d6b25f8af40a19"><div class="ttname"><a href="structalpaka_1_1detail_1_1TypeOfFold_3_01TFnObj_00_01T_01_4.html#a51f09c6cb646f68c44d6b25f8af40a19">alpaka::detail::TypeOfFold&lt; TFnObj, T &gt;::type</a></div><div class="ttdeci">T type</div><div class="ttdef"><b>Definition:</b> <a href="Fold_8hpp_source.html#l00089">Fold.hpp:89</a></div></div>
+<div class="ttc" id="Common_8hpp_html_a4a195bd41eac945cee512865b6ef73f3"><div class="ttname"><a href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a></div><div class="ttdeci">#define ALPAKA_FN_HOST_ACC</div><div class="ttdef"><b>Definition:</b> <a href="Common_8hpp_source.html#l00074">Common.hpp:74</a></div></div>
+<div class="ttc" id="structalpaka_1_1detail_1_1TypeOfFold_3_01TFnObj_00_01T_00_01P_8_8_8_4_html_ac8ea1eb4fb0455e193094a0d5b40c5ee"><div class="ttname"><a href="structalpaka_1_1detail_1_1TypeOfFold_3_01TFnObj_00_01T_00_01P_8_8_8_4.html#ac8ea1eb4fb0455e193094a0d5b40c5ee">alpaka::detail::TypeOfFold&lt; TFnObj, T, P...&gt;::type</a></div><div class="ttdeci">typename std::result_of&lt; TFnObj(T, typename TypeOfFold&lt; TFnObj, P...&gt;::type)&gt;::type type</div><div class="ttdef"><b>Definition:</b> <a href="Fold_8hpp_source.html#l00105">Fold.hpp:105</a></div></div>
+<div class="ttc" id="Common_8hpp_html"><div class="ttname"><a href="Common_8hpp.html">Common.hpp</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="Fold_8hpp.html">Fold.hpp</a></li>
-    <li class="footer">Generated on Sat May 23 2015 14:48:25 for alpaka by
+    <li class="footer">Generated on Sun Jul 5 2015 17:25:34 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

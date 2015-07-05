@@ -82,7 +82,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions_func.html"><span>Functions</span></a></li>
       <li><a href="functions_vars.html"><span>Variables</span></a></li>
       <li><a href="functions_type.html"><span>Typedefs</span></a></li>
-      <li><a href="functions_eval.html"><span>Enumerator</span></a></li>
       <li><a href="functions_rela.html"><span>Related&#160;Functions</span></a></li>
     </ul>
   </div>
@@ -97,6 +96,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li class="current"><a href="functions_f.html#index_f"><span>f</span></a></li>
       <li><a href="functions_g.html#index_g"><span>g</span></a></li>
       <li><a href="functions_i.html#index_i"><span>i</span></a></li>
+      <li><a href="functions_l.html#index_l"><span>l</span></a></li>
       <li><a href="functions_m.html#index_m"><span>m</span></a></li>
       <li><a href="functions_n.html#index_n"><span>n</span></a></li>
       <li><a href="functions_o.html#index_o"><span>o</span></a></li>
@@ -108,7 +108,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions_v.html#index_v"><span>v</span></a></li>
       <li><a href="functions_w.html#index_w"><span>w</span></a></li>
       <li><a href="functions_x.html#index_x"><span>x</span></a></li>
-      <li><a href="functions_y.html#index_y"><span>y</span></a></li>
       <li><a href="functions_z.html#index_z"><span>z</span></a></li>
       <li><a href="functions_~.html#index_~"><span>~</span></a></li>
     </ul>
@@ -147,17 +146,49 @@ $(document).ready(function(){initNavTree('functions_f.html','');});
 
 <h3><a class="anchor" id="index_f"></a>- f -</h3><ul>
 <li>FiberBarrier()
-: <a class="el" href="classalpaka_1_1accs_1_1fibers_1_1detail_1_1FiberBarrier.html#ae42fbab156443e08999049c70821dcb4">alpaka::accs::fibers::detail::FiberBarrier</a>
+: <a class="el" href="classalpaka_1_1acc_1_1fibers_1_1FiberBarrier.html#aaa89892e2a22bac76aa172a5d880166a">alpaka::acc::fibers::FiberBarrier&lt; TSize &gt;</a>
 </li>
 <li>FiberIdToIdxMap
-: <a class="el" href="classalpaka_1_1accs_1_1fibers_1_1detail_1_1IdxFibers.html#ad494fd84c27381bf797217652e66e46d">alpaka::accs::fibers::detail::IdxFibers&lt; TDim &gt;</a>
+: <a class="el" href="classalpaka_1_1idx_1_1bt_1_1IdxBtRefFiberIdMap.html#afef7d61b41bd26457caa84f087b4e562">alpaka::idx::bt::IdxBtRefFiberIdMap&lt; TDim, TSize &gt;</a>
+</li>
+<li>floor()
+: <a class="el" href="structalpaka_1_1math_1_1traits_1_1Floor_3_01FloorCudaBuiltIn_00_01TArg_00_01typename_01std_1_1en4c4f6648b95dfea06f66e1b4a0765dbf.html#a5ec5b744ce6225796930710f07f5ae9c">alpaka::math::traits::Floor&lt; FloorCudaBuiltIn, TArg, typename std::enable_if&lt; std::is_floating_point&lt; TArg &gt;::value &gt;::type &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1traits_1_1Floor_3_01FloorStl_00_01TArg_00_01typename_01std_1_1enable__ifdd46ec0b3792745a5e0199809ba4a7df.html#a85a2d96a3595a302367ee224ef059789">alpaka::math::traits::Floor&lt; FloorStl, TArg, typename std::enable_if&lt; std::is_arithmetic&lt; TArg &gt;::value &gt;::type &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1traits_1_1Floor_3_01T_00_01TArg_00_01typename_01std_1_1enable__if_3_01stc3e92791874f51c175631d59f9f4489b.html#ad3cabd29299c997cf749a422a0293ccc">alpaka::math::traits::Floor&lt; T, TArg, typename std::enable_if&lt; std::is_base_of&lt; typename T::FloorBase, typename std::decay&lt; T &gt;::type &gt;::value &amp;&amp;(!std::is_same&lt; typename T::FloorBase, typename std::decay&lt; T &gt;::type &gt;::value)&gt;::type &gt;</a>
+</li>
+<li>FloorBase
+: <a class="el" href="classalpaka_1_1math_1_1FloorCudaBuiltIn.html#a2530009d43cdd86db19cc5ed3f85ada8">alpaka::math::FloorCudaBuiltIn</a>
+, <a class="el" href="classalpaka_1_1math_1_1FloorStl.html#a9823a33e329feb3c5ef721618331aaaa">alpaka::math::FloorStl</a>
+</li>
+<li>fmod()
+: <a class="el" href="structalpaka_1_1math_1_1traits_1_1Fmod_3_01FmodCudaBuiltIn_00_01Tx_00_01Ty_00_01typename_01std_174ea70ff112e4543b44029c7f164778d.html#ac6d1db4c06e44ad8bc25626e9df67f80">alpaka::math::traits::Fmod&lt; FmodCudaBuiltIn, Tx, Ty, typename std::enable_if&lt; std::is_floating_point&lt; Tx &gt;::value &amp;&amp;std::is_floating_point&lt; Ty &gt;::value &gt;::type &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1traits_1_1Fmod_3_01FmodStl_00_01Tx_00_01Ty_00_01typename_01std_1_1enablefc8a0b28155605c9a9f5279f93b95925.html#a49e131c644a09711ca6d3d8861ce0926">alpaka::math::traits::Fmod&lt; FmodStl, Tx, Ty, typename std::enable_if&lt; std::is_arithmetic&lt; Tx &gt;::value &amp;&amp;std::is_arithmetic&lt; Ty &gt;::value &gt;::type &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1traits_1_1Fmod_3_01T_00_01TArg_00_01typename_01std_1_1enable__if_3_01stdc850d0b6b2a1b9d18ec84f1bf4f62fd4.html#aa3b1e1bbb0f7cc5985da34b20f7cee7f">alpaka::math::traits::Fmod&lt; T, TArg, typename std::enable_if&lt; std::is_base_of&lt; typename T::FmodBase, typename std::decay&lt; T &gt;::type &gt;::value &amp;&amp;(!std::is_same&lt; typename T::FmodBase, typename std::decay&lt; T &gt;::type &gt;::value)&gt;::type &gt;</a>
+</li>
+<li>FmodBase
+: <a class="el" href="classalpaka_1_1math_1_1FmodCudaBuiltIn.html#a4e7f1882e050962951a935cf43cbb71c">alpaka::math::FmodCudaBuiltIn</a>
+, <a class="el" href="classalpaka_1_1math_1_1FmodStl.html#aa8a95b211cbb939cb11dfcb622a04390">alpaka::math::FmodStl</a>
 </li>
 <li>foldrAll()
-: <a class="el" href="classalpaka_1_1Vec.html#a99a234ca630bba22eefe0b904cffe08c">alpaka::Vec&lt; TDim, TVal &gt;</a>
+: <a class="el" href="classalpaka_1_1Vec.html#a4f895a00d67e3949b9d0caefad4a4780">alpaka::Vec&lt; TDim, TVal &gt;</a>
+</li>
+<li>foldrByIndices()
+: <a class="el" href="classalpaka_1_1Vec.html#a0b6751f97a6cc5f9aec97ddd83f0860a">alpaka::Vec&lt; TDim, TVal &gt;</a>
 </li>
 <li>forEachTypeImpl()
-: <a class="el" href="structalpaka_1_1detail_1_1ForEachTypeImpl.html#ac59679e64291a355197d06e45b1700e3">alpaka::detail::ForEachTypeImpl&lt; TbDone &gt;</a>
-, <a class="el" href="structalpaka_1_1detail_1_1ForEachTypeImpl_3_01false_01_4.html#a7ee5edfc316d6d5239b0aa9eca1ea32a">alpaka::detail::ForEachTypeImpl&lt; false &gt;</a>
+: <a class="el" href="structalpaka_1_1detail_1_1ForEachTypeImpl.html#a19fd5d6fb058a9614dddd55df12654da">alpaka::detail::ForEachTypeImpl&lt; TbDone &gt;</a>
+, <a class="el" href="structalpaka_1_1detail_1_1ForEachTypeImpl_3_01false_01_4.html#a306b6ec8dede6a9908eab847ca974013">alpaka::detail::ForEachTypeImpl&lt; false &gt;</a>
+</li>
+<li>free()
+: <a class="el" href="structalpaka_1_1mem_1_1alloc_1_1traits_1_1Free_3_01T_00_01AllocCpuBoostAligned_3_01TAlignment_01_4_01_4.html#a479ff1c2899d99aaa8053adbcf4ceb23">alpaka::mem::alloc::traits::Free&lt; T, AllocCpuBoostAligned&lt; TAlignment &gt; &gt;</a>
+, <a class="el" href="structalpaka_1_1mem_1_1alloc_1_1traits_1_1Free_3_01T_00_01AllocCpuNew_01_4.html#aeb281f4ac6d5a221d793c4cbaa346db8">alpaka::mem::alloc::traits::Free&lt; T, AllocCpuNew &gt;</a>
+, <a class="el" href="structalpaka_1_1mem_1_1alloc_1_1traits_1_1Free_3_01T_00_01TAlloc_00_01typename_01std_1_1enable__3540d377e97b8e6f809e2391fa0074ea.html#ad309e57cabed09334e3fca270f405f90">alpaka::mem::alloc::traits::Free&lt; T, TAlloc, typename std::enable_if&lt; std::is_base_of&lt; typename TAlloc::AllocBase, typename std::decay&lt; TAlloc &gt;::type &gt;::value &amp;&amp;(!std::is_same&lt; typename TAlloc::AllocBase, typename std::decay&lt; TAlloc &gt;::type &gt;::value)&gt;::type &gt;</a>
+</li>
+<li>freeMem()
+: <a class="el" href="structalpaka_1_1block_1_1shared_1_1traits_1_1FreeMem_3_01BlockSharedAllocCudaBuiltIn_01_4.html#a2ad49a5ef85ee3b006c14a3af24f56cd">alpaka::block::shared::traits::FreeMem&lt; BlockSharedAllocCudaBuiltIn &gt;</a>
+, <a class="el" href="structalpaka_1_1block_1_1shared_1_1traits_1_1FreeMem_3_01BlockSharedAllocMasterSync_01_4.html#a7a185b1d8b9243e61c523c830f504499">alpaka::block::shared::traits::FreeMem&lt; BlockSharedAllocMasterSync &gt;</a>
+, <a class="el" href="structalpaka_1_1block_1_1shared_1_1traits_1_1FreeMem_3_01BlockSharedAllocNoSync_01_4.html#ae4ee2e458f5256945d244bb55d876461">alpaka::block::shared::traits::FreeMem&lt; BlockSharedAllocNoSync &gt;</a>
+, <a class="el" href="structalpaka_1_1block_1_1shared_1_1traits_1_1FreeMem_3_01TBlockSharedAlloc_00_01typename_01std_1a0a4f8f98e9f3cf493f92e679d7bda75.html#aa831e8018603c83c68ea1e2bd3587c46">alpaka::block::shared::traits::FreeMem&lt; TBlockSharedAlloc, typename std::enable_if&lt; std::is_base_of&lt; typename TBlockSharedAlloc::BlockSharedAllocBase, typename std::decay&lt; TBlockSharedAlloc &gt;::type &gt;::value &amp;&amp;(!std::is_same&lt; typename TBlockSharedAlloc::BlockSharedAllocBase, typename std::decay&lt; TBlockSharedAlloc &gt;::type &gt;::value)&gt;::type &gt;</a>
 </li>
 </ul>
 </div><!-- contents -->
@@ -165,7 +196,7 @@ $(document).ready(function(){initNavTree('functions_f.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat May 23 2015 14:48:36 for alpaka by
+    <li class="footer">Generated on Sun Jul 5 2015 17:25:52 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

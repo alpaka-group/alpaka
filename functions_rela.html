@@ -82,7 +82,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions_func.html"><span>Functions</span></a></li>
       <li><a href="functions_vars.html"><span>Variables</span></a></li>
       <li><a href="functions_type.html"><span>Typedefs</span></a></li>
-      <li><a href="functions_eval.html"><span>Enumerator</span></a></li>
       <li class="current"><a href="functions_rela.html"><span>Related&#160;Functions</span></a></li>
     </ul>
   </div>
@@ -117,29 +116,32 @@ $(document).ready(function(){initNavTree('functions_rela.html','');});
 
 <div class="contents">
 &#160;<ul>
-<li>::alpaka::accs::fibers::detail::ExecCpuFibers&lt; TDim &gt;
-: <a class="el" href="classalpaka_1_1accs_1_1fibers_1_1detail_1_1AccCpuFibers.html#ad74bb655c0c1a48198d2c1e80d02827f">alpaka::accs::fibers::detail::AccCpuFibers&lt; TDim &gt;</a>
+<li>::alpaka::exec::fibers::detail::ExecCpuFibersImpl&lt; TDim, TSize &gt;
+: <a class="el" href="classalpaka_1_1acc_1_1fibers_1_1detail_1_1AccCpuFibers.html#a4d98bbc9aaa8e6025128833e39116ed3">alpaka::acc::fibers::detail::AccCpuFibers&lt; TDim, TSize &gt;</a>
 </li>
-<li>::alpaka::accs::omp::omp2::detail::ExecCpuOmp2&lt; TDim &gt;
-: <a class="el" href="classalpaka_1_1accs_1_1omp_1_1omp2_1_1detail_1_1AccCpuOmp2.html#a5eee439c6ea0a84f216500e21aefcf40">alpaka::accs::omp::omp2::detail::AccCpuOmp2&lt; TDim &gt;</a>
+<li>::alpaka::exec::omp::omp2::blocks::detail::ExecCpuOmp2BlocksImpl&lt; TDim, TSize &gt;
+: <a class="el" href="classalpaka_1_1acc_1_1omp_1_1omp2_1_1blocks_1_1detail_1_1AccCpuOmp2Blocks.html#a177d9bfdb44670b193bebc83401c4842">alpaka::acc::omp::omp2::blocks::detail::AccCpuOmp2Blocks&lt; TDim, TSize &gt;</a>
 </li>
-<li>::alpaka::accs::omp::omp4::cpu::detail::ExecCpuOmp4&lt; TDim &gt;
-: <a class="el" href="classalpaka_1_1accs_1_1omp_1_1omp4_1_1cpu_1_1detail_1_1AccCpuOmp4.html#a9c91f5eacdbb1c8606c153f3c1845c37">alpaka::accs::omp::omp4::cpu::detail::AccCpuOmp4&lt; TDim &gt;</a>
+<li>::alpaka::exec::omp::omp2::threads::detail::ExecCpuOmp2ThreadsImpl&lt; TDim, TSize &gt;
+: <a class="el" href="classalpaka_1_1acc_1_1omp_1_1omp2_1_1threads_1_1detail_1_1AccCpuOmp2Threads.html#ad23d4efa8c2760f6ccd32a9232c1d32f">alpaka::acc::omp::omp2::threads::detail::AccCpuOmp2Threads&lt; TDim, TSize &gt;</a>
 </li>
-<li>::alpaka::accs::serial::detail::ExecCpuSerial&lt; TDim &gt;
-: <a class="el" href="classalpaka_1_1accs_1_1serial_1_1detail_1_1AccCpuSerial.html#a6f433ac0c92faa454fe102d383181d69">alpaka::accs::serial::detail::AccCpuSerial&lt; TDim &gt;</a>
+<li>::alpaka::exec::omp::omp4::cpu::detail::ExecCpuOmp4Impl&lt; TDim, TSize &gt;
+: <a class="el" href="classalpaka_1_1acc_1_1omp_1_1omp4_1_1cpu_1_1detail_1_1AccCpuOmp4.html#a9b16c88375070f9d5d068ca3c90b2e6d">alpaka::acc::omp::omp4::cpu::detail::AccCpuOmp4&lt; TDim, TSize &gt;</a>
 </li>
-<li>::alpaka::accs::threads::detail::ExecCpuThreads&lt; TDim &gt;
-: <a class="el" href="classalpaka_1_1accs_1_1threads_1_1detail_1_1AccCpuThreads.html#a1e2d4bd988a1e77b14fa4daed7a1193d">alpaka::accs::threads::detail::AccCpuThreads&lt; TDim &gt;</a>
+<li>::alpaka::exec::serial::detail::ExecCpuSerialImpl&lt; TDim, TSize &gt;
+: <a class="el" href="classalpaka_1_1acc_1_1serial_1_1detail_1_1AccCpuSerial.html#a759450a372a0241e9cbbeb13fa9a64d0">alpaka::acc::serial::detail::AccCpuSerial&lt; TDim, TSize &gt;</a>
 </li>
-<li>alpaka::traits::atomic::AtomicOp
-: <a class="el" href="classalpaka_1_1accs_1_1threads_1_1detail_1_1AtomicThreads.html#abe67d5723bd2009cdca7659d696719e8">alpaka::accs::threads::detail::AtomicThreads</a>
+<li>::alpaka::exec::threads::detail::ExecCpuThreadsImpl&lt; TDim, TSize &gt;
+: <a class="el" href="classalpaka_1_1acc_1_1threads_1_1detail_1_1AccCpuThreads.html#a3a01d04b7dedfec9133a057b7ae97693">alpaka::acc::threads::detail::AccCpuThreads&lt; TDim, TSize &gt;</a>
+</li>
+<li>atomic::traits::AtomicOp
+: <a class="el" href="classalpaka_1_1atomic_1_1AtomicStlLock.html#a16708b0526c2ce862c1e3ca9ddc580e8">alpaka::atomic::AtomicStlLock</a>
 </li>
 <li>DevManCpu
-: <a class="el" href="classalpaka_1_1devs_1_1cpu_1_1DevCpu.html#ac1fee66b7a4cc1cddb917e0dea644b1b">alpaka::devs::cpu::DevCpu</a>
+: <a class="el" href="classalpaka_1_1dev_1_1DevCpu.html#ac1fee66b7a4cc1cddb917e0dea644b1b">alpaka::dev::DevCpu</a>
 </li>
-<li>DevManCuda
-: <a class="el" href="classalpaka_1_1devs_1_1cuda_1_1DevCuda.html#a692bf768825fc65880c4ca07a7fdbd0d">alpaka::devs::cuda::DevCuda</a>
+<li>DevManCudaRt
+: <a class="el" href="classalpaka_1_1dev_1_1DevCudaRt.html#a21992bfd9cc7df576fa75bfa0577c70f">alpaka::dev::DevCudaRt</a>
 </li>
 </ul>
 </div><!-- contents -->
@@ -147,7 +149,7 @@ $(document).ready(function(){initNavTree('functions_rela.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat May 23 2015 14:48:36 for alpaka by
+    <li class="footer">Generated on Sun Jul 5 2015 17:25:52 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

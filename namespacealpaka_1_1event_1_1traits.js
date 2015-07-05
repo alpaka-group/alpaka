@@ -1,0 +1,21 @@
+var namespacealpaka_1_1event_1_1traits =
+[
+    [ "EventTest", "structalpaka_1_1event_1_1traits_1_1EventTest.html", null ],
+    [ "EventTest< event::EventCpuAsync >", "structalpaka_1_1event_1_1traits_1_1EventTest_3_01event_1_1EventCpuAsync_01_4.html", "structalpaka_1_1event_1_1traits_1_1EventTest_3_01event_1_1EventCpuAsync_01_4" ],
+    [ "EventTest< event::EventCpuSync >", "structalpaka_1_1event_1_1traits_1_1EventTest_3_01event_1_1EventCpuSync_01_4.html", "structalpaka_1_1event_1_1traits_1_1EventTest_3_01event_1_1EventCpuSync_01_4" ],
+    [ "EventTest< event::EventCudaRt >", "structalpaka_1_1event_1_1traits_1_1EventTest_3_01event_1_1EventCudaRt_01_4.html", "structalpaka_1_1event_1_1traits_1_1EventTest_3_01event_1_1EventCudaRt_01_4" ],
+    [ "EventType", "structalpaka_1_1event_1_1traits_1_1EventType.html", null ],
+    [ "EventType< event::EventCpuAsync >", "structalpaka_1_1event_1_1traits_1_1EventType_3_01event_1_1EventCpuAsync_01_4.html", "structalpaka_1_1event_1_1traits_1_1EventType_3_01event_1_1EventCpuAsync_01_4" ],
+    [ "EventType< event::EventCpuSync >", "structalpaka_1_1event_1_1traits_1_1EventType_3_01event_1_1EventCpuSync_01_4.html", "structalpaka_1_1event_1_1traits_1_1EventType_3_01event_1_1EventCpuSync_01_4" ],
+    [ "EventType< event::EventCudaRt >", "structalpaka_1_1event_1_1traits_1_1EventType_3_01event_1_1EventCudaRt_01_4.html", "structalpaka_1_1event_1_1traits_1_1EventType_3_01event_1_1EventCudaRt_01_4" ],
+    [ "EventType< exec::ExecCpuFibers< TDim, TSize > >", "structalpaka_1_1event_1_1traits_1_1EventType_3_01exec_1_1ExecCpuFibers_3_01TDim_00_01TSize_01_4_01_4.html", "structalpaka_1_1event_1_1traits_1_1EventType_3_01exec_1_1ExecCpuFibers_3_01TDim_00_01TSize_01_4_01_4" ],
+    [ "EventType< exec::ExecCpuOmp2Blocks< TDim, TSize > >", "structalpaka_1_1event_1_1traits_1_1EventType_3_01exec_1_1ExecCpuOmp2Blocks_3_01TDim_00_01TSize_01_4_01_4.html", "structalpaka_1_1event_1_1traits_1_1EventType_3_01exec_1_1ExecCpuOmp2Blocks_3_01TDim_00_01TSize_01_4_01_4" ],
+    [ "EventType< exec::ExecCpuOmp2Threads< TDim, TSize > >", "structalpaka_1_1event_1_1traits_1_1EventType_3_01exec_1_1ExecCpuOmp2Threads_3_01TDim_00_01TSize_01_4_01_4.html", "structalpaka_1_1event_1_1traits_1_1EventType_3_01exec_1_1ExecCpuOmp2Threads_3_01TDim_00_01TSize_01_4_01_4" ],
+    [ "EventType< exec::ExecCpuOmp4< TDim, TSize > >", "structalpaka_1_1event_1_1traits_1_1EventType_3_01exec_1_1ExecCpuOmp4_3_01TDim_00_01TSize_01_4_01_4.html", "structalpaka_1_1event_1_1traits_1_1EventType_3_01exec_1_1ExecCpuOmp4_3_01TDim_00_01TSize_01_4_01_4" ],
+    [ "EventType< exec::ExecCpuSerial< TDim, TSize > >", "structalpaka_1_1event_1_1traits_1_1EventType_3_01exec_1_1ExecCpuSerial_3_01TDim_00_01TSize_01_4_01_4.html", "structalpaka_1_1event_1_1traits_1_1EventType_3_01exec_1_1ExecCpuSerial_3_01TDim_00_01TSize_01_4_01_4" ],
+    [ "EventType< exec::ExecCpuThreads< TDim, TSize > >", "structalpaka_1_1event_1_1traits_1_1EventType_3_01exec_1_1ExecCpuThreads_3_01TDim_00_01TSize_01_4_01_4.html", "structalpaka_1_1event_1_1traits_1_1EventType_3_01exec_1_1ExecCpuThreads_3_01TDim_00_01TSize_01_4_01_4" ],
+    [ "EventType< exec::ExecGpuCuda< TDim, TSize > >", "structalpaka_1_1event_1_1traits_1_1EventType_3_01exec_1_1ExecGpuCuda_3_01TDim_00_01TSize_01_4_01_4.html", "structalpaka_1_1event_1_1traits_1_1EventType_3_01exec_1_1ExecGpuCuda_3_01TDim_00_01TSize_01_4_01_4" ],
+    [ "EventType< stream::StreamCpuAsync >", "structalpaka_1_1event_1_1traits_1_1EventType_3_01stream_1_1StreamCpuAsync_01_4.html", "structalpaka_1_1event_1_1traits_1_1EventType_3_01stream_1_1StreamCpuAsync_01_4" ],
+    [ "EventType< stream::StreamCpuSync >", "structalpaka_1_1event_1_1traits_1_1EventType_3_01stream_1_1StreamCpuSync_01_4.html", "structalpaka_1_1event_1_1traits_1_1EventType_3_01stream_1_1StreamCpuSync_01_4" ],
+    [ "EventType< stream::StreamCudaRt >", "structalpaka_1_1event_1_1traits_1_1EventType_3_01stream_1_1StreamCudaRt_01_4.html", "structalpaka_1_1event_1_1traits_1_1EventType_3_01stream_1_1StreamCudaRt_01_4" ]
+];

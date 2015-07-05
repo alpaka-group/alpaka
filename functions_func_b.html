@@ -82,7 +82,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li class="current"><a href="functions_func.html"><span>Functions</span></a></li>
       <li><a href="functions_vars.html"><span>Variables</span></a></li>
       <li><a href="functions_type.html"><span>Typedefs</span></a></li>
-      <li><a href="functions_eval.html"><span>Enumerator</span></a></li>
       <li><a href="functions_rela.html"><span>Related&#160;Functions</span></a></li>
     </ul>
   </div>
@@ -96,6 +95,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions_func_f.html#index_f"><span>f</span></a></li>
       <li><a href="functions_func_g.html#index_g"><span>g</span></a></li>
       <li><a href="functions_func_i.html#index_i"><span>i</span></a></li>
+      <li><a href="functions_func_l.html#index_l"><span>l</span></a></li>
       <li><a href="functions_func_m.html#index_m"><span>m</span></a></li>
       <li><a href="functions_func_n.html#index_n"><span>n</span></a></li>
       <li><a href="functions_func_o.html#index_o"><span>o</span></a></li>
@@ -107,7 +107,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions_func_v.html#index_v"><span>v</span></a></li>
       <li><a href="functions_func_w.html#index_w"><span>w</span></a></li>
       <li><a href="functions_func_x.html#index_x"><span>x</span></a></li>
-      <li><a href="functions_func_y.html#index_y"><span>y</span></a></li>
       <li><a href="functions_func_z.html#index_z"><span>z</span></a></li>
       <li><a href="functions_func_~.html#index_~"><span>~</span></a></li>
     </ul>
@@ -145,17 +144,26 @@ $(document).ready(function(){initNavTree('functions_func_b.html','');});
 &#160;
 
 <h3><a class="anchor" id="index_b"></a>- b -</h3><ul>
-<li>BasicWorkDiv()
-: <a class="el" href="classalpaka_1_1workdiv_1_1BasicWorkDiv.html#a0f338594039d316453dcbdec25a3423a">alpaka::workdiv::BasicWorkDiv&lt; TDim &gt;</a>
+<li>BlockSharedAllocCudaBuiltIn()
+: <a class="el" href="classalpaka_1_1block_1_1shared_1_1BlockSharedAllocCudaBuiltIn.html#a66c6c44f6613885c61c5c753ef092986">alpaka::block::shared::BlockSharedAllocCudaBuiltIn</a>
+</li>
+<li>BlockSharedAllocMasterSync()
+: <a class="el" href="classalpaka_1_1block_1_1shared_1_1BlockSharedAllocMasterSync.html#aea4d25e320373dbba8b5255b44b709e9">alpaka::block::shared::BlockSharedAllocMasterSync</a>
+</li>
+<li>BlockSharedAllocNoSync()
+: <a class="el" href="classalpaka_1_1block_1_1shared_1_1BlockSharedAllocNoSync.html#a0208023dac86dd5b116ad0f11432e505">alpaka::block::shared::BlockSharedAllocNoSync</a>
 </li>
 <li>BufCpu()
-: <a class="el" href="classalpaka_1_1devs_1_1cpu_1_1detail_1_1BufCpu.html#a5cce0873d8739f5a25ccb74bafc4e3fd">alpaka::devs::cpu::detail::BufCpu&lt; TElem, TDim &gt;</a>
+: <a class="el" href="classalpaka_1_1mem_1_1buf_1_1BufCpu.html#a01297155d9dd83c822051dab10ae9d53">alpaka::mem::buf::BufCpu&lt; TElem, TDim, TSize &gt;</a>
 </li>
-<li>BufCuda()
-: <a class="el" href="classalpaka_1_1devs_1_1cuda_1_1detail_1_1BufCuda.html#ab339e0da44adbb793804af7f648d3661">alpaka::devs::cuda::detail::BufCuda&lt; TElem, TDim &gt;</a>
+<li>BufCpuImpl()
+: <a class="el" href="classalpaka_1_1mem_1_1buf_1_1cpu_1_1detail_1_1BufCpuImpl.html#adbeacb76b314fd9fba0ec6899250ad01">alpaka::mem::buf::cpu::detail::BufCpuImpl&lt; TElem, TDim, TSize &gt;</a>
+</li>
+<li>BufCudaRt()
+: <a class="el" href="classalpaka_1_1mem_1_1buf_1_1BufCudaRt.html#a80ad82afa6b7b8e5c5b92cf4bb827ae6">alpaka::mem::buf::BufCudaRt&lt; TElem, TDim, TSize &gt;</a>
 </li>
 <li>BufPlainPtrWrapper()
-: <a class="el" href="classalpaka_1_1mem_1_1BufPlainPtrWrapper.html#af4c4ad76b453402b604ce9efe51a3a8e">alpaka::mem::BufPlainPtrWrapper&lt; TElem, TDim, TDev &gt;</a>
+: <a class="el" href="classalpaka_1_1mem_1_1buf_1_1BufPlainPtrWrapper.html#a9fbf28cf503ebd6223c216fe8904ffeb">alpaka::mem::buf::BufPlainPtrWrapper&lt; TDev, TElem, TDim, TSize &gt;</a>
 </li>
 </ul>
 </div><!-- contents -->
@@ -163,7 +171,7 @@ $(document).ready(function(){initNavTree('functions_func_b.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat May 23 2015 14:48:36 for alpaka by
+    <li class="footer">Generated on Sun Jul 5 2015 17:25:52 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

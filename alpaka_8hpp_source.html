@@ -139,70 +139,255 @@ $(document).ready(function(){initNavTree('alpaka_8hpp_source.html','');});
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;boost/predef/version_number.h&gt;</span>    <span class="comment">// BOOST_VERSION_NUMBER</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment"></span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">//! The alpaka library version number</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="alpaka_8hpp.html#a9639bc6e4b859663f62c4c64a8855ff0">   31</a></span>&#160;<span class="comment"></span><span class="preprocessor">#define ALPAKA_VERSION BOOST_VERSION_NUMBER(1, 0, 0)</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="alpaka_8hpp.html#a9639bc6e4b859663f62c4c64a8855ff0">   31</a></span>&#160;<span class="comment"></span><span class="preprocessor">#define ALPAKA_VERSION BOOST_VERSION_NUMBER(1, 1, 0)</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">//#############################################################################</span></div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">// Include the whole library.</span></div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">//#############################################################################</span></div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Accs_8hpp.html">alpaka/accs/Accs.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="BasicDims_8hpp.html">alpaka/core/BasicDims.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="BasicWorkDiv_8hpp.html">alpaka/core/BasicWorkDiv.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="core_2Common_8hpp.html">alpaka/core/Common.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Fold_8hpp.html">alpaka/core/Fold.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="ForEachType_8hpp.html">alpaka/core/ForEachType.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="BufPlainPtrWrapper_8hpp.html">alpaka/core/mem/BufPlainPtrWrapper.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="BufStdContainers_8hpp.html">alpaka/core/mem/BufStdContainers.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="core_2mem_2View_8hpp.html">alpaka/core/mem/View.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Ops_8hpp.html">alpaka/core/Ops.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Positioning_8hpp.html">alpaka/core/Positioning.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Vec_8hpp.html">alpaka/core/Vec.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="WorkDivHelpers_8hpp.html">alpaka/core/WorkDivHelpers.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Devs_8hpp.html">alpaka/devs/Devs.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="traits_2Acc_8hpp.html">alpaka/traits/Acc.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="traits_2Atomic_8hpp.html">alpaka/traits/Atomic.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Kernel_8hpp.html">alpaka/traits/Kernel.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="traits_2Dev_8hpp.html">alpaka/traits/Dev.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Dim_8hpp.html">alpaka/traits/Dim.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="traits_2Event_8hpp.html">alpaka/traits/Event.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="traits_2Exec_8hpp.html">alpaka/traits/Exec.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Extent_8hpp.html">alpaka/traits/Extent.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Offset_8hpp.html">alpaka/traits/Offset.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="traits_2Idx_8hpp.html">alpaka/traits/Idx.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="traits_2Mem_8hpp.html">alpaka/traits/Mem.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="traits_2Stream_8hpp.html">alpaka/traits/Stream.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Wait_8hpp.html">alpaka/traits/Wait.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="traits_2WorkDiv_8hpp.html">alpaka/traits/WorkDiv.hpp</a>&gt;</span></div>
-<div class="ttc" id="Devs_8hpp_html"><div class="ttname"><a href="Devs_8hpp.html">Devs.hpp</a></div></div>
-<div class="ttc" id="Dim_8hpp_html"><div class="ttname"><a href="Dim_8hpp.html">Dim.hpp</a></div></div>
-<div class="ttc" id="traits_2Atomic_8hpp_html"><div class="ttname"><a href="traits_2Atomic_8hpp.html">Atomic.hpp</a></div></div>
-<div class="ttc" id="Accs_8hpp_html"><div class="ttname"><a href="Accs_8hpp.html">Accs.hpp</a></div></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">// acc</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#ifdef ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">    #include &lt;<a class="code" href="Serial_8hpp.html">alpaka/acc/serial/Serial.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#ifdef ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">    #include &lt;<a class="code" href="Threads_8hpp.html">alpaka/acc/threads/Threads.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#ifdef ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLED</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">    #include &lt;<a class="code" href="acc_2fibers_2Fibers_8hpp.html">alpaka/acc/fibers/Fibers.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#ifdef ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor">    #if _OPENMP &lt; 200203</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">        #error If ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED is set, the compiler has to support OpenMP 2.0 or higher!</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="preprocessor">    #include &lt;<a class="code" href="Omp2Blocks_8hpp.html">alpaka/acc/omp/omp2/blocks/Omp2Blocks.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#ifdef ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="preprocessor">    #if _OPENMP &lt; 200203</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor">        #error If ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED is set, the compiler has to support OpenMP 2.0 or higher!</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor">    #include &lt;<a class="code" href="Omp2Threads_8hpp.html">alpaka/acc/omp/omp2/threads/Omp2Threads.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#ifdef ALPAKA_ACC_CPU_BT_OMP4_ENABLED</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="preprocessor">    #if _OPENMP &lt; 201307</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">        #error If ALPAKA_ACC_CPU_BT_OMP4_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">    #include &lt;<a class="code" href="Omp4Cpu_8hpp.html">alpaka/acc/omp/omp4/cpu/Omp4Cpu.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) &amp;&amp; defined(__CUDACC__)</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">    #include &lt;<a class="code" href="acc_2cuda_2Cuda_8hpp.html">alpaka/acc/cuda/Cuda.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="AccDevProps_8hpp.html">alpaka/acc/AccDevProps.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="acc_2Traits_8hpp.html">alpaka/acc/Traits.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment">// atomic</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="preprocessor">#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) &amp;&amp; defined(__CUDACC__)</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="preprocessor">    #include &lt;<a class="code" href="AtomicCudaBuiltIn_8hpp.html">alpaka/atomic/AtomicCudaBuiltIn.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="AtomicNoOp_8hpp.html">alpaka/atomic/AtomicNoOp.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="AtomicOmpCritSec_8hpp.html">alpaka/atomic/AtomicOmpCritSec.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="AtomicStlLock_8hpp.html">alpaka/atomic/AtomicStlLock.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Op_8hpp.html">alpaka/atomic/Op.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="atomic_2Traits_8hpp.html">alpaka/atomic/Traits.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="comment">// dev</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="preprocessor">#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) &amp;&amp; defined(__CUDACC__)</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor">    #include &lt;<a class="code" href="DevCudaRt_8hpp.html">alpaka/dev/DevCudaRt.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="DevCpu_8hpp.html">alpaka/dev/DevCpu.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="dev_2Traits_8hpp.html">alpaka/dev/Traits.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="comment">// dim</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="DimArithmetic_8hpp.html">alpaka/dim/DimArithmetic.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="DimIntegralConst_8hpp.html">alpaka/dim/DimIntegralConst.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="dim_2Traits_8hpp.html">alpaka/dim/Traits.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="comment">// event</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="preprocessor">#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) &amp;&amp; defined(__CUDACC__)</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="preprocessor">    #include &lt;<a class="code" href="EventCudaRt_8hpp.html">alpaka/event/EventCudaRt.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="EventCpuAsync_8hpp.html">alpaka/event/EventCpuAsync.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="EventCpuSync_8hpp.html">alpaka/event/EventCpuSync.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="event_2Traits_8hpp.html">alpaka/event/Traits.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="comment">// exec</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="exec_2Traits_8hpp.html">alpaka/exec/Traits.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="comment">// extent</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="extent_2Traits_8hpp.html">alpaka/extent/Traits.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="comment">// idx</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="preprocessor">#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) &amp;&amp; defined(__CUDACC__)</span></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="preprocessor">    #include &lt;<a class="code" href="IdxBtCudaBuiltIn_8hpp.html">alpaka/idx/bt/IdxBtCudaBuiltIn.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="preprocessor">#ifdef _OPENMP</span></div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="preprocessor">    #include &lt;<a class="code" href="IdxBtOmp_8hpp.html">alpaka/idx/bt/IdxBtOmp.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="preprocessor">#ifdef ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLED</span></div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="preprocessor">    #include &lt;<a class="code" href="IdxBtRefFiberIdMap_8hpp.html">alpaka/idx/bt/IdxBtRefFiberIdMap.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="preprocessor">#ifdef ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED</span></div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="preprocessor">    #include &lt;<a class="code" href="IdxBtRefThreadIdMap_8hpp.html">alpaka/idx/bt/IdxBtRefThreadIdMap.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="IdxBtZero_8hpp.html">alpaka/idx/bt/IdxBtZero.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="preprocessor">#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) &amp;&amp; defined(__CUDACC__)</span></div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;<span class="preprocessor">    #include &lt;<a class="code" href="IdxGbCudaBuiltIn_8hpp.html">alpaka/idx/gb/IdxGbCudaBuiltIn.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="IdxGbRef_8hpp.html">alpaka/idx/gb/IdxGbRef.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="idx_2Traits_8hpp.html">alpaka/idx/Traits.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="comment">// kernel</span></div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="kernel_2Traits_8hpp.html">alpaka/kernel/Traits.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="comment">// math</span></div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="preprocessor">#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) &amp;&amp; defined(__CUDACC__)</span></div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="preprocessor">    #include &lt;<a class="code" href="MathCudaBuiltIn_8hpp.html">alpaka/math/MathCudaBuiltIn.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="MathStl_8hpp.html">alpaka/math/MathStl.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="comment">// mem</span></div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="preprocessor">#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) &amp;&amp; defined(__CUDACC__)</span></div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="preprocessor">    #include &lt;<a class="code" href="BufCudaRt_8hpp.html">alpaka/mem/buf/BufCudaRt.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="BufCpu_8hpp.html">alpaka/mem/buf/BufCpu.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="BufPlainPtrWrapper_8hpp.html">alpaka/mem/buf/BufPlainPtrWrapper.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="BufStdContainers_8hpp.html">alpaka/mem/buf/BufStdContainers.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="mem_2buf_2Traits_8hpp.html">alpaka/mem/buf/Traits.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="ViewBasic_8hpp.html">alpaka/mem/view/ViewBasic.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="mem_2view_2Traits_8hpp.html">alpaka/mem/view/Traits.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;<span class="comment">// offset</span></div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="offset_2Traits_8hpp.html">alpaka/offset/Traits.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;<span class="comment">// rand</span></div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;<span class="preprocessor">#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) &amp;&amp; defined(__CUDACC__)</span></div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;<span class="preprocessor">    #include &lt;<a class="code" href="RandCuRand_8hpp.html">alpaka/rand/RandCuRand.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="RandStl_8hpp.html">alpaka/rand/RandStl.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="rand_2Traits_8hpp.html">alpaka/rand/Traits.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;<span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;<span class="comment">// stream</span></div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;<span class="preprocessor">#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) &amp;&amp; defined(__CUDACC__)</span></div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;<span class="preprocessor">    #include &lt;<a class="code" href="StreamCudaRt_8hpp.html">alpaka/stream/StreamCudaRt.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="StreamCpuAsync_8hpp.html">alpaka/stream/StreamCpuAsync.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="StreamCpuSync_8hpp.html">alpaka/stream/StreamCpuSync.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="stream_2Traits_8hpp.html">alpaka/stream/Traits.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;<span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="comment">// wait</span></div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;<span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="wait_2Traits_8hpp.html">alpaka/wait/Traits.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;<span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;<span class="comment">// workdiv</span></div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;<span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="WorkDivMembers_8hpp.html">alpaka/workdiv/WorkDivMembers.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="workdiv_2Traits_8hpp.html">alpaka/workdiv/Traits.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;<span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;<span class="comment">// core</span></div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;<span class="comment">//-----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Align_8hpp.html">alpaka/core/Align.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Common_8hpp.html">alpaka/core/Common.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Fold_8hpp.html">alpaka/core/Fold.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="ForEachType_8hpp.html">alpaka/core/ForEachType.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="MapIdx_8hpp.html">alpaka/core/MapIdx.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="NdLoop_8hpp.html">alpaka/core/NdLoop.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Positioning_8hpp.html">alpaka/core/Positioning.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="Vec_8hpp.html">alpaka/core/Vec.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="WorkDivHelpers_8hpp.html">alpaka/core/WorkDivHelpers.hpp</a>&gt;</span></div>
+<div class="ttc" id="MathStl_8hpp_html"><div class="ttname"><a href="MathStl_8hpp.html">MathStl.hpp</a></div></div>
+<div class="ttc" id="BufCpu_8hpp_html"><div class="ttname"><a href="BufCpu_8hpp.html">BufCpu.hpp</a></div></div>
+<div class="ttc" id="mem_2view_2Traits_8hpp_html"><div class="ttname"><a href="mem_2view_2Traits_8hpp.html">Traits.hpp</a></div></div>
+<div class="ttc" id="EventCpuSync_8hpp_html"><div class="ttname"><a href="EventCpuSync_8hpp.html">EventCpuSync.hpp</a></div></div>
+<div class="ttc" id="DevCpu_8hpp_html"><div class="ttname"><a href="DevCpu_8hpp.html">DevCpu.hpp</a></div></div>
+<div class="ttc" id="StreamCpuSync_8hpp_html"><div class="ttname"><a href="StreamCpuSync_8hpp.html">StreamCpuSync.hpp</a></div></div>
+<div class="ttc" id="acc_2cuda_2Cuda_8hpp_html"><div class="ttname"><a href="acc_2cuda_2Cuda_8hpp.html">Cuda.hpp</a></div></div>
+<div class="ttc" id="MathCudaBuiltIn_8hpp_html"><div class="ttname"><a href="MathCudaBuiltIn_8hpp.html">MathCudaBuiltIn.hpp</a></div></div>
+<div class="ttc" id="EventCudaRt_8hpp_html"><div class="ttname"><a href="EventCudaRt_8hpp.html">EventCudaRt.hpp</a></div></div>
 <div class="ttc" id="BufStdContainers_8hpp_html"><div class="ttname"><a href="BufStdContainers_8hpp.html">BufStdContainers.hpp</a></div></div>
-<div class="ttc" id="traits_2Acc_8hpp_html"><div class="ttname"><a href="traits_2Acc_8hpp.html">Acc.hpp</a></div></div>
-<div class="ttc" id="traits_2Idx_8hpp_html"><div class="ttname"><a href="traits_2Idx_8hpp.html">Idx.hpp</a></div></div>
-<div class="ttc" id="traits_2Dev_8hpp_html"><div class="ttname"><a href="traits_2Dev_8hpp.html">Dev.hpp</a></div></div>
+<div class="ttc" id="AtomicCudaBuiltIn_8hpp_html"><div class="ttname"><a href="AtomicCudaBuiltIn_8hpp.html">AtomicCudaBuiltIn.hpp</a></div></div>
+<div class="ttc" id="DimArithmetic_8hpp_html"><div class="ttname"><a href="DimArithmetic_8hpp.html">DimArithmetic.hpp</a></div></div>
+<div class="ttc" id="Serial_8hpp_html"><div class="ttname"><a href="Serial_8hpp.html">Serial.hpp</a></div></div>
+<div class="ttc" id="exec_2Traits_8hpp_html"><div class="ttname"><a href="exec_2Traits_8hpp.html">Traits.hpp</a></div></div>
+<div class="ttc" id="acc_2Traits_8hpp_html"><div class="ttname"><a href="acc_2Traits_8hpp.html">Traits.hpp</a></div></div>
+<div class="ttc" id="AccDevProps_8hpp_html"><div class="ttname"><a href="AccDevProps_8hpp.html">AccDevProps.hpp</a></div></div>
+<div class="ttc" id="AtomicNoOp_8hpp_html"><div class="ttname"><a href="AtomicNoOp_8hpp.html">AtomicNoOp.hpp</a></div></div>
+<div class="ttc" id="idx_2Traits_8hpp_html"><div class="ttname"><a href="idx_2Traits_8hpp.html">Traits.hpp</a></div></div>
+<div class="ttc" id="Omp2Blocks_8hpp_html"><div class="ttname"><a href="Omp2Blocks_8hpp.html">Omp2Blocks.hpp</a></div></div>
+<div class="ttc" id="Op_8hpp_html"><div class="ttname"><a href="Op_8hpp.html">Op.hpp</a></div></div>
+<div class="ttc" id="IdxGbCudaBuiltIn_8hpp_html"><div class="ttname"><a href="IdxGbCudaBuiltIn_8hpp.html">IdxGbCudaBuiltIn.hpp</a></div></div>
+<div class="ttc" id="workdiv_2Traits_8hpp_html"><div class="ttname"><a href="workdiv_2Traits_8hpp.html">Traits.hpp</a></div></div>
+<div class="ttc" id="IdxBtRefFiberIdMap_8hpp_html"><div class="ttname"><a href="IdxBtRefFiberIdMap_8hpp.html">IdxBtRefFiberIdMap.hpp</a></div></div>
+<div class="ttc" id="IdxBtZero_8hpp_html"><div class="ttname"><a href="IdxBtZero_8hpp.html">IdxBtZero.hpp</a></div></div>
+<div class="ttc" id="Align_8hpp_html"><div class="ttname"><a href="Align_8hpp.html">Align.hpp</a></div></div>
 <div class="ttc" id="Fold_8hpp_html"><div class="ttname"><a href="Fold_8hpp.html">Fold.hpp</a></div></div>
-<div class="ttc" id="Offset_8hpp_html"><div class="ttname"><a href="Offset_8hpp.html">Offset.hpp</a></div></div>
-<div class="ttc" id="traits_2Event_8hpp_html"><div class="ttname"><a href="traits_2Event_8hpp.html">Event.hpp</a></div></div>
-<div class="ttc" id="Wait_8hpp_html"><div class="ttname"><a href="Wait_8hpp.html">Wait.hpp</a></div></div>
-<div class="ttc" id="Extent_8hpp_html"><div class="ttname"><a href="Extent_8hpp.html">Extent.hpp</a></div></div>
-<div class="ttc" id="traits_2Mem_8hpp_html"><div class="ttname"><a href="traits_2Mem_8hpp.html">Mem.hpp</a></div></div>
-<div class="ttc" id="Kernel_8hpp_html"><div class="ttname"><a href="Kernel_8hpp.html">Kernel.hpp</a></div></div>
-<div class="ttc" id="core_2mem_2View_8hpp_html"><div class="ttname"><a href="core_2mem_2View_8hpp.html">View.hpp</a></div></div>
-<div class="ttc" id="BasicWorkDiv_8hpp_html"><div class="ttname"><a href="BasicWorkDiv_8hpp.html">BasicWorkDiv.hpp</a></div></div>
+<div class="ttc" id="offset_2Traits_8hpp_html"><div class="ttname"><a href="offset_2Traits_8hpp.html">Traits.hpp</a></div></div>
+<div class="ttc" id="event_2Traits_8hpp_html"><div class="ttname"><a href="event_2Traits_8hpp.html">Traits.hpp</a></div></div>
+<div class="ttc" id="IdxGbRef_8hpp_html"><div class="ttname"><a href="IdxGbRef_8hpp.html">IdxGbRef.hpp</a></div></div>
+<div class="ttc" id="BufCudaRt_8hpp_html"><div class="ttname"><a href="BufCudaRt_8hpp.html">BufCudaRt.hpp</a></div></div>
+<div class="ttc" id="WorkDivMembers_8hpp_html"><div class="ttname"><a href="WorkDivMembers_8hpp.html">WorkDivMembers.hpp</a></div></div>
+<div class="ttc" id="dev_2Traits_8hpp_html"><div class="ttname"><a href="dev_2Traits_8hpp.html">Traits.hpp</a></div></div>
+<div class="ttc" id="IdxBtCudaBuiltIn_8hpp_html"><div class="ttname"><a href="IdxBtCudaBuiltIn_8hpp.html">IdxBtCudaBuiltIn.hpp</a></div></div>
+<div class="ttc" id="wait_2Traits_8hpp_html"><div class="ttname"><a href="wait_2Traits_8hpp.html">Traits.hpp</a></div></div>
+<div class="ttc" id="RandCuRand_8hpp_html"><div class="ttname"><a href="RandCuRand_8hpp.html">RandCuRand.hpp</a></div></div>
+<div class="ttc" id="ViewBasic_8hpp_html"><div class="ttname"><a href="ViewBasic_8hpp.html">ViewBasic.hpp</a></div></div>
+<div class="ttc" id="RandStl_8hpp_html"><div class="ttname"><a href="RandStl_8hpp.html">RandStl.hpp</a></div></div>
+<div class="ttc" id="DevCudaRt_8hpp_html"><div class="ttname"><a href="DevCudaRt_8hpp.html">DevCudaRt.hpp</a></div></div>
+<div class="ttc" id="AtomicOmpCritSec_8hpp_html"><div class="ttname"><a href="AtomicOmpCritSec_8hpp.html">AtomicOmpCritSec.hpp</a></div></div>
+<div class="ttc" id="Omp4Cpu_8hpp_html"><div class="ttname"><a href="Omp4Cpu_8hpp.html">Omp4Cpu.hpp</a></div></div>
+<div class="ttc" id="dim_2Traits_8hpp_html"><div class="ttname"><a href="dim_2Traits_8hpp.html">Traits.hpp</a></div></div>
+<div class="ttc" id="atomic_2Traits_8hpp_html"><div class="ttname"><a href="atomic_2Traits_8hpp.html">Traits.hpp</a></div></div>
+<div class="ttc" id="StreamCpuAsync_8hpp_html"><div class="ttname"><a href="StreamCpuAsync_8hpp.html">StreamCpuAsync.hpp</a></div></div>
+<div class="ttc" id="DimIntegralConst_8hpp_html"><div class="ttname"><a href="DimIntegralConst_8hpp.html">DimIntegralConst.hpp</a></div></div>
+<div class="ttc" id="IdxBtOmp_8hpp_html"><div class="ttname"><a href="IdxBtOmp_8hpp.html">IdxBtOmp.hpp</a></div></div>
+<div class="ttc" id="extent_2Traits_8hpp_html"><div class="ttname"><a href="extent_2Traits_8hpp.html">Traits.hpp</a></div></div>
 <div class="ttc" id="ForEachType_8hpp_html"><div class="ttname"><a href="ForEachType_8hpp.html">ForEachType.hpp</a></div></div>
-<div class="ttc" id="traits_2Stream_8hpp_html"><div class="ttname"><a href="traits_2Stream_8hpp.html">Stream.hpp</a></div></div>
-<div class="ttc" id="traits_2Exec_8hpp_html"><div class="ttname"><a href="traits_2Exec_8hpp.html">Exec.hpp</a></div></div>
-<div class="ttc" id="BasicDims_8hpp_html"><div class="ttname"><a href="BasicDims_8hpp.html">BasicDims.hpp</a></div></div>
+<div class="ttc" id="rand_2Traits_8hpp_html"><div class="ttname"><a href="rand_2Traits_8hpp.html">Traits.hpp</a></div></div>
+<div class="ttc" id="mem_2buf_2Traits_8hpp_html"><div class="ttname"><a href="mem_2buf_2Traits_8hpp.html">Traits.hpp</a></div></div>
+<div class="ttc" id="MapIdx_8hpp_html"><div class="ttname"><a href="MapIdx_8hpp.html">MapIdx.hpp</a></div></div>
+<div class="ttc" id="stream_2Traits_8hpp_html"><div class="ttname"><a href="stream_2Traits_8hpp.html">Traits.hpp</a></div></div>
+<div class="ttc" id="AtomicStlLock_8hpp_html"><div class="ttname"><a href="AtomicStlLock_8hpp.html">AtomicStlLock.hpp</a></div></div>
 <div class="ttc" id="WorkDivHelpers_8hpp_html"><div class="ttname"><a href="WorkDivHelpers_8hpp.html">WorkDivHelpers.hpp</a></div></div>
-<div class="ttc" id="traits_2WorkDiv_8hpp_html"><div class="ttname"><a href="traits_2WorkDiv_8hpp.html">WorkDiv.hpp</a></div></div>
 <div class="ttc" id="Vec_8hpp_html"><div class="ttname"><a href="Vec_8hpp.html">Vec.hpp</a></div></div>
+<div class="ttc" id="EventCpuAsync_8hpp_html"><div class="ttname"><a href="EventCpuAsync_8hpp.html">EventCpuAsync.hpp</a></div></div>
+<div class="ttc" id="Threads_8hpp_html"><div class="ttname"><a href="Threads_8hpp.html">Threads.hpp</a></div></div>
+<div class="ttc" id="Common_8hpp_html"><div class="ttname"><a href="Common_8hpp.html">Common.hpp</a></div></div>
+<div class="ttc" id="IdxBtRefThreadIdMap_8hpp_html"><div class="ttname"><a href="IdxBtRefThreadIdMap_8hpp.html">IdxBtRefThreadIdMap.hpp</a></div></div>
 <div class="ttc" id="Positioning_8hpp_html"><div class="ttname"><a href="Positioning_8hpp.html">Positioning.hpp</a></div></div>
-<div class="ttc" id="core_2Common_8hpp_html"><div class="ttname"><a href="core_2Common_8hpp.html">Common.hpp</a></div></div>
-<div class="ttc" id="Ops_8hpp_html"><div class="ttname"><a href="Ops_8hpp.html">Ops.hpp</a></div></div>
+<div class="ttc" id="kernel_2Traits_8hpp_html"><div class="ttname"><a href="kernel_2Traits_8hpp.html">Traits.hpp</a></div></div>
+<div class="ttc" id="acc_2fibers_2Fibers_8hpp_html"><div class="ttname"><a href="acc_2fibers_2Fibers_8hpp.html">Fibers.hpp</a></div></div>
+<div class="ttc" id="StreamCudaRt_8hpp_html"><div class="ttname"><a href="StreamCudaRt_8hpp.html">StreamCudaRt.hpp</a></div></div>
+<div class="ttc" id="Omp2Threads_8hpp_html"><div class="ttname"><a href="Omp2Threads_8hpp.html">Omp2Threads.hpp</a></div></div>
+<div class="ttc" id="NdLoop_8hpp_html"><div class="ttname"><a href="NdLoop_8hpp.html">NdLoop.hpp</a></div></div>
 <div class="ttc" id="BufPlainPtrWrapper_8hpp_html"><div class="ttname"><a href="BufPlainPtrWrapper_8hpp.html">BufPlainPtrWrapper.hpp</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -210,7 +395,7 @@ $(document).ready(function(){initNavTree('alpaka_8hpp_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="alpaka_8hpp.html">alpaka.hpp</a></li>
-    <li class="footer">Generated on Sat May 23 2015 14:48:25 for alpaka by
+    <li class="footer">Generated on Sun Jul 5 2015 17:25:33 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

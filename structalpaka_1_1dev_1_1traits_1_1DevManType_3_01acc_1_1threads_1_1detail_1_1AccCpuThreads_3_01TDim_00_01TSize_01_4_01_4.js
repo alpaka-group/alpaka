@@ -1,0 +1,4 @@
+var structalpaka_1_1dev_1_1traits_1_1DevManType_3_01acc_1_1threads_1_1detail_1_1AccCpuThreads_3_01TDim_00_01TSize_01_4_01_4 =
+[
+    [ "type", "structalpaka_1_1dev_1_1traits_1_1DevManType_3_01acc_1_1threads_1_1detail_1_1AccCpuThreads_3_01TDim_00_01TSize_01_4_01_4.html#a485ecfcb760c96e7651fca533d3d4a77", null ]
+];

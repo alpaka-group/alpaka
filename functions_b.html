@@ -82,7 +82,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions_func.html"><span>Functions</span></a></li>
       <li><a href="functions_vars.html"><span>Variables</span></a></li>
       <li><a href="functions_type.html"><span>Typedefs</span></a></li>
-      <li><a href="functions_eval.html"><span>Enumerator</span></a></li>
       <li><a href="functions_rela.html"><span>Related&#160;Functions</span></a></li>
     </ul>
   </div>
@@ -97,6 +96,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions_f.html#index_f"><span>f</span></a></li>
       <li><a href="functions_g.html#index_g"><span>g</span></a></li>
       <li><a href="functions_i.html#index_i"><span>i</span></a></li>
+      <li><a href="functions_l.html#index_l"><span>l</span></a></li>
       <li><a href="functions_m.html#index_m"><span>m</span></a></li>
       <li><a href="functions_n.html#index_n"><span>n</span></a></li>
       <li><a href="functions_o.html#index_o"><span>o</span></a></li>
@@ -108,7 +108,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions_v.html#index_v"><span>v</span></a></li>
       <li><a href="functions_w.html#index_w"><span>w</span></a></li>
       <li><a href="functions_x.html#index_x"><span>x</span></a></li>
-      <li><a href="functions_y.html#index_y"><span>y</span></a></li>
       <li><a href="functions_z.html#index_z"><span>z</span></a></li>
       <li><a href="functions_~.html#index_~"><span>~</span></a></li>
     </ul>
@@ -146,20 +145,34 @@ $(document).ready(function(){initNavTree('functions_b.html','');});
 <div class="textblock">Here is a list of all class members with links to the classes they belong to:</div>
 
 <h3><a class="anchor" id="index_b"></a>- b -</h3><ul>
-<li>BasicWorkDiv()
-: <a class="el" href="classalpaka_1_1workdiv_1_1BasicWorkDiv.html#a0f338594039d316453dcbdec25a3423a">alpaka::workdiv::BasicWorkDiv&lt; TDim &gt;</a>
+<li>BlockSharedAllocBase
+: <a class="el" href="classalpaka_1_1block_1_1shared_1_1BlockSharedAllocCudaBuiltIn.html#aafdf152a2b201246d4a7e48d0aaa5c78">alpaka::block::shared::BlockSharedAllocCudaBuiltIn</a>
+, <a class="el" href="classalpaka_1_1block_1_1shared_1_1BlockSharedAllocMasterSync.html#a7b188ca381269d5ba02bb783b82d9563">alpaka::block::shared::BlockSharedAllocMasterSync</a>
+, <a class="el" href="classalpaka_1_1block_1_1shared_1_1BlockSharedAllocNoSync.html#a76866e1c8b7ee48e16a5c4be88c84afd">alpaka::block::shared::BlockSharedAllocNoSync</a>
+</li>
+<li>BlockSharedAllocCudaBuiltIn()
+: <a class="el" href="classalpaka_1_1block_1_1shared_1_1BlockSharedAllocCudaBuiltIn.html#a66c6c44f6613885c61c5c753ef092986">alpaka::block::shared::BlockSharedAllocCudaBuiltIn</a>
+</li>
+<li>BlockSharedAllocMasterSync()
+: <a class="el" href="classalpaka_1_1block_1_1shared_1_1BlockSharedAllocMasterSync.html#ae82076adbc49cf19ab518f2c088c9c2e">alpaka::block::shared::BlockSharedAllocMasterSync</a>
+</li>
+<li>BlockSharedAllocNoSync()
+: <a class="el" href="classalpaka_1_1block_1_1shared_1_1BlockSharedAllocNoSync.html#a35f1dc431b6071a2a5a1770a547cfcb7">alpaka::block::shared::BlockSharedAllocNoSync</a>
 </li>
 <li>Buf
-: <a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html#a0f12fc2c899b2a742b7f53d86d2a7cdd">alpaka::mem::detail::View&lt; TElem, TDim, TDev &gt;</a>
+: <a class="el" href="classalpaka_1_1mem_1_1view_1_1ViewBasic.html#a0184d04b458e436a1df0390ab4a31995">alpaka::mem::view::ViewBasic&lt; TDev, TElem, TDim, TSize &gt;</a>
 </li>
 <li>BufCpu()
-: <a class="el" href="classalpaka_1_1devs_1_1cpu_1_1detail_1_1BufCpu.html#a5cce0873d8739f5a25ccb74bafc4e3fd">alpaka::devs::cpu::detail::BufCpu&lt; TElem, TDim &gt;</a>
+: <a class="el" href="classalpaka_1_1mem_1_1buf_1_1BufCpu.html#a8aae2cccc7ea66e8f3129a2e7b5af83e">alpaka::mem::buf::BufCpu&lt; TElem, TDim, TSize &gt;</a>
 </li>
-<li>BufCuda()
-: <a class="el" href="classalpaka_1_1devs_1_1cuda_1_1detail_1_1BufCuda.html#ab339e0da44adbb793804af7f648d3661">alpaka::devs::cuda::detail::BufCuda&lt; TElem, TDim &gt;</a>
+<li>BufCpuImpl()
+: <a class="el" href="classalpaka_1_1mem_1_1buf_1_1cpu_1_1detail_1_1BufCpuImpl.html#adbeacb76b314fd9fba0ec6899250ad01">alpaka::mem::buf::cpu::detail::BufCpuImpl&lt; TElem, TDim, TSize &gt;</a>
+</li>
+<li>BufCudaRt()
+: <a class="el" href="classalpaka_1_1mem_1_1buf_1_1BufCudaRt.html#a80ad82afa6b7b8e5c5b92cf4bb827ae6">alpaka::mem::buf::BufCudaRt&lt; TElem, TDim, TSize &gt;</a>
 </li>
 <li>BufPlainPtrWrapper()
-: <a class="el" href="classalpaka_1_1mem_1_1BufPlainPtrWrapper.html#af4c4ad76b453402b604ce9efe51a3a8e">alpaka::mem::BufPlainPtrWrapper&lt; TElem, TDim, TDev &gt;</a>
+: <a class="el" href="classalpaka_1_1mem_1_1buf_1_1BufPlainPtrWrapper.html#a9fbf28cf503ebd6223c216fe8904ffeb">alpaka::mem::buf::BufPlainPtrWrapper&lt; TDev, TElem, TDim, TSize &gt;</a>
 </li>
 </ul>
 </div><!-- contents -->
@@ -167,7 +180,7 @@ $(document).ready(function(){initNavTree('functions_b.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat May 23 2015 14:48:36 for alpaka by
+    <li class="footer">Generated on Sun Jul 5 2015 17:25:52 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

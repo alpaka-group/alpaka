@@ -1,4 +1,0 @@
-var structalpaka_1_1traits_1_1dev_1_1GetDev_3_01alpaka_1_1mem_1_1detail_1_1View_3_01TElem_00_01TDim_00_01TDev_01_4_01_4 =
-[
-    [ "getDev", "structalpaka_1_1traits_1_1dev_1_1GetDev_3_01alpaka_1_1mem_1_1detail_1_1View_3_01TElem_00_01TDim_00_01TDev_01_4_01_4.html#a830bba1f99181a49711da70265f04548", null ]
-];

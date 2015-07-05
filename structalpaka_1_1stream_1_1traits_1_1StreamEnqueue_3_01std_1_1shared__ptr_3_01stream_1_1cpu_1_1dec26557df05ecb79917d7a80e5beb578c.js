@@ -1,0 +1,4 @@
+var structalpaka_1_1stream_1_1traits_1_1StreamEnqueue_3_01std_1_1shared__ptr_3_01stream_1_1cpu_1_1dec26557df05ecb79917d7a80e5beb578c =
+[
+    [ "streamEnqueue", "structalpaka_1_1stream_1_1traits_1_1StreamEnqueue_3_01std_1_1shared__ptr_3_01stream_1_1cpu_1_1dec26557df05ecb79917d7a80e5beb578c.html#a08ff66b483190c3966cd8742ea18e92d", null ]
+];

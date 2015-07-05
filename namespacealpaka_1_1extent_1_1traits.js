@@ -1,0 +1,11 @@
+var namespacealpaka_1_1extent_1_1traits =
+[
+    [ "GetExtent", "structalpaka_1_1extent_1_1traits_1_1GetExtent.html", "structalpaka_1_1extent_1_1traits_1_1GetExtent" ],
+    [ "GetExtent< std::integral_constant< std::size_t, 0u >, std::array< TElem, TuiSize > >", "structalpaka_1_1extent_1_1traits_1_1GetExtent_3_01std_1_1integral__constant_3_01std_1_1size__t_01c6d0c540b6c189aefaf25d79bfa402b.html", "structalpaka_1_1extent_1_1traits_1_1GetExtent_3_01std_1_1integral__constant_3_01std_1_1size__t_01c6d0c540b6c189aefaf25d79bfa402b" ],
+    [ "GetExtent< std::integral_constant< std::size_t, 0u >, std::vector< TElem, TAllocator > >", "structalpaka_1_1extent_1_1traits_1_1GetExtent_3_01std_1_1integral__constant_3_01std_1_1size__t_08994061dd103ebc910e0c6a97b7b860d.html", "structalpaka_1_1extent_1_1traits_1_1GetExtent_3_01std_1_1integral__constant_3_01std_1_1size__t_08994061dd103ebc910e0c6a97b7b860d" ],
+    [ "GetExtent< std::integral_constant< std::size_t, 0u >, TExtents, typename std::enable_if< std::is_integral< TExtents >::value &&std::is_unsigned< TExtents >::value >::type >", "structalpaka_1_1extent_1_1traits_1_1GetExtent_3_01std_1_1integral__constant_3_01std_1_1size__t_0b880dccc3b7dd08fbb0433342845f007.html", "structalpaka_1_1extent_1_1traits_1_1GetExtent_3_01std_1_1integral__constant_3_01std_1_1size__t_0b880dccc3b7dd08fbb0433342845f007" ],
+    [ "SetExtent", "structalpaka_1_1extent_1_1traits_1_1SetExtent.html", [
+      [ "type", "structalpaka_1_1extent_1_1traits_1_1SetExtent_1_1type.html", "structalpaka_1_1extent_1_1traits_1_1SetExtent_1_1type" ]
+    ] ],
+    [ "SetExtent< std::integral_constant< std::size_t, 0u >, TExtents, TExtent, typename std::enable_if< std::is_integral< TExtents >::value &&std::is_unsigned< TExtents >::value >::type >", "structalpaka_1_1extent_1_1traits_1_1SetExtent_3_01std_1_1integral__constant_3_01std_1_1size__t_06818931b34326811a0793aa0636f326d.html", "structalpaka_1_1extent_1_1traits_1_1SetExtent_3_01std_1_1integral__constant_3_01std_1_1size__t_06818931b34326811a0793aa0636f326d" ]
+];

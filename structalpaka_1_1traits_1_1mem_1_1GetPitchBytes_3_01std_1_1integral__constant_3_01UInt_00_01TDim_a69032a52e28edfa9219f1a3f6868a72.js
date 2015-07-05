@@ -1,4 +1,0 @@
-var structalpaka_1_1traits_1_1mem_1_1GetPitchBytes_3_01std_1_1integral__constant_3_01UInt_00_01TDim_a69032a52e28edfa9219f1a3f6868a72 =
-[
-    [ "getPitchBytes", "structalpaka_1_1traits_1_1mem_1_1GetPitchBytes_3_01std_1_1integral__constant_3_01UInt_00_01TDim_a69032a52e28edfa9219f1a3f6868a72.html#afa453e86a161ea93e204573521c5fd0d", null ]
-];

@@ -7,6 +7,7 @@ var IntegerSequence_8hpp =
     [ "index_sequence", "IntegerSequence_8hpp.html#ab83a5bf6bfc1c3aa19a43c8e56ab7a3c", null ],
     [ "index_sequence_for", "IntegerSequence_8hpp.html#a0a3825903b37e20824bc306a436e2097", null ],
     [ "make_index_sequence", "IntegerSequence_8hpp.html#ab35617eb9daa8674989fa3d02901b47d", null ],
-    [ "make_integer_sequence", "IntegerSequence_8hpp.html#ac4399ea08d6fcd2b5304e1f1b18da5e8", null ],
-    [ "make_integer_sequence_start", "IntegerSequence_8hpp.html#acae3a0fce250808d07592cb3d5edc43d", null ]
+    [ "make_index_sequence_offset", "IntegerSequence_8hpp.html#a7e5cf3ef4945a41f3ac34f2dc97908ab", null ],
+    [ "make_integer_sequence", "IntegerSequence_8hpp.html#a4877b3361a52e7573ff2e1819d17fa83", null ],
+    [ "make_integer_sequence_offset", "IntegerSequence_8hpp.html#a7e4a5a8e53553afaba638c0bbcc56dc5", null ]
 ];

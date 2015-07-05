@@ -1,0 +1,4 @@
+var structalpaka_1_1mem_1_1view_1_1traits_1_1ElemType_3_01buf_1_1BufPlainPtrWrapper_3_01TDev_00_01TEaa310a3a7422998b87f80506804e25da =
+[
+    [ "type", "structalpaka_1_1mem_1_1view_1_1traits_1_1ElemType_3_01buf_1_1BufPlainPtrWrapper_3_01TDev_00_01TEaa310a3a7422998b87f80506804e25da.html#ab4930800da0a58241233e02d1d849370", null ]
+];

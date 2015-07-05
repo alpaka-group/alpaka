@@ -1,0 +1,12 @@
+var block_2shared_2Traits_8hpp =
+[
+    [ "AllocArr", "structalpaka_1_1block_1_1shared_1_1traits_1_1AllocArr.html", null ],
+    [ "AllocArr< T, TuiNumElements, TBlockSharedAlloc, typename std::enable_if< std::is_base_of< typename TBlockSharedAlloc::BlockSharedAllocBase, typename std::decay< TBlockSharedAlloc >::type >::value &&(!std::is_same< typename TBlockSharedAlloc::BlockSharedAllocBase, typename std::decay< TBlockSharedAlloc >::type >::value)>::type >", "structalpaka_1_1block_1_1shared_1_1traits_1_1AllocArr_3_01T_00_01TuiNumElements_00_01TBlockShare6cf674ab2427d7f8563bec16d3f6e7af.html", "structalpaka_1_1block_1_1shared_1_1traits_1_1AllocArr_3_01T_00_01TuiNumElements_00_01TBlockShare6cf674ab2427d7f8563bec16d3f6e7af" ],
+    [ "AllocVar", "structalpaka_1_1block_1_1shared_1_1traits_1_1AllocVar.html", null ],
+    [ "AllocVar< T, TBlockSharedAlloc, typename std::enable_if< std::is_base_of< typename TBlockSharedAlloc::BlockSharedAllocBase, typename std::decay< TBlockSharedAlloc >::type >::value &&(!std::is_same< typename TBlockSharedAlloc::BlockSharedAllocBase, typename std::decay< TBlockSharedAlloc >::type >::value)>::type >", "structalpaka_1_1block_1_1shared_1_1traits_1_1AllocVar_3_01T_00_01TBlockSharedAlloc_00_01typename2b43bc36538249c6ded4d38556e720d7.html", "structalpaka_1_1block_1_1shared_1_1traits_1_1AllocVar_3_01T_00_01TBlockSharedAlloc_00_01typename2b43bc36538249c6ded4d38556e720d7" ],
+    [ "FreeMem", "structalpaka_1_1block_1_1shared_1_1traits_1_1FreeMem.html", null ],
+    [ "FreeMem< TBlockSharedAlloc, typename std::enable_if< std::is_base_of< typename TBlockSharedAlloc::BlockSharedAllocBase, typename std::decay< TBlockSharedAlloc >::type >::value &&(!std::is_same< typename TBlockSharedAlloc::BlockSharedAllocBase, typename std::decay< TBlockSharedAlloc >::type >::value)>::type >", "structalpaka_1_1block_1_1shared_1_1traits_1_1FreeMem_3_01TBlockSharedAlloc_00_01typename_01std_1a0a4f8f98e9f3cf493f92e679d7bda75.html", "structalpaka_1_1block_1_1shared_1_1traits_1_1FreeMem_3_01TBlockSharedAlloc_00_01typename_01std_1a0a4f8f98e9f3cf493f92e679d7bda75" ],
+    [ "allocArr", "block_2shared_2Traits_8hpp.html#a05e0a018bed2f861d634a47fe0042d47", null ],
+    [ "allocVar", "block_2shared_2Traits_8hpp.html#ac2cd4763a70c74f6d8acc6983bc23b41", null ],
+    [ "freeMem", "block_2shared_2Traits_8hpp.html#a6fb57a23b4bdffcb977150b5bc9b6212", null ]
+];

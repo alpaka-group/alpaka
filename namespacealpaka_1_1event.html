@@ -106,6 +106,8 @@ $(document).ready(function(){initNavTree('namespacealpaka_1_1event.html','');});
 
 <div class="header">
   <div class="summary">
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
@@ -113,65 +115,83 @@ $(document).ready(function(){initNavTree('namespacealpaka_1_1event.html','');});
 </div><!--header-->
 <div class="contents">
 
-<p>The event management trait accessors.  
+<p>The event management specifics.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespacealpaka_1_1event_1_1cpu"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1event_1_1cpu.html">cpu</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacealpaka_1_1event_1_1cuda"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1event_1_1cuda.html">cuda</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacealpaka_1_1event_1_1traits"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1event_1_1traits.html">traits</a></td></tr>
+<tr class="memdesc:namespacealpaka_1_1event_1_1traits"><td class="mdescLeft">&#160;</td><td class="mdescRight">The event management traits. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1event_1_1EventCpuAsync.html">EventCpuAsync</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU device event.  <a href="classalpaka_1_1event_1_1EventCpuAsync.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1event_1_1EventCpuSync.html">EventCpuSync</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU device synchronous event.  <a href="classalpaka_1_1event_1_1EventCpuSync.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1event_1_1EventCudaRt.html">EventCudaRt</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA RT device event.  <a href="classalpaka_1_1event_1_1EventCudaRt.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a97981e29c7e55ab7de97b11480654107"><td class="memTemplParams" colspan="2">template&lt;typename TAcc &gt; </td></tr>
-<tr class="memitem:a97981e29c7e55ab7de97b11480654107"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1event.html#a97981e29c7e55ab7de97b11480654107">EventT</a> = typename <a class="el" href="structalpaka_1_1traits_1_1event_1_1EventType.html">traits::event::EventType</a>&lt; TAcc &gt;::type</td></tr>
-<tr class="memdesc:a97981e29c7e55ab7de97b11480654107"><td class="mdescLeft">&#160;</td><td class="mdescRight">The event type trait alias template to remove the ::type.  <a href="#a97981e29c7e55ab7de97b11480654107">More...</a><br /></td></tr>
-<tr class="separator:a97981e29c7e55ab7de97b11480654107"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1240adc9f1a701e621f2e20ff7eb1613"><td class="memTemplParams" colspan="2">template&lt;typename TAcc &gt; </td></tr>
+<tr class="memitem:a1240adc9f1a701e621f2e20ff7eb1613"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1event.html#a1240adc9f1a701e621f2e20ff7eb1613">Event</a> = typename <a class="el" href="structalpaka_1_1event_1_1traits_1_1EventType.html">traits::EventType</a>&lt; TAcc &gt;::type</td></tr>
+<tr class="memdesc:a1240adc9f1a701e621f2e20ff7eb1613"><td class="mdescLeft">&#160;</td><td class="mdescRight">The event type trait alias template to remove the ::type.  <a href="#a1240adc9f1a701e621f2e20ff7eb1613">More...</a><br /></td></tr>
+<tr class="separator:a1240adc9f1a701e621f2e20ff7eb1613"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a14b43f58e81783a36f17689272f6d504"><td class="memTemplParams" colspan="2">template&lt;typename TDev &gt; </td></tr>
-<tr class="memitem:a14b43f58e81783a36f17689272f6d504"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1event.html#a14b43f58e81783a36f17689272f6d504">create</a> (TDev const &amp;dev) -&gt; <a class="el" href="namespacealpaka_1_1event.html#a97981e29c7e55ab7de97b11480654107">EventT</a>&lt; TDev &gt;</td></tr>
-<tr class="memdesc:a14b43f58e81783a36f17689272f6d504"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an event on a device.  <a href="#a14b43f58e81783a36f17689272f6d504">More...</a><br /></td></tr>
-<tr class="separator:a14b43f58e81783a36f17689272f6d504"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a180ae3b5b8d405cebb248d9e2a6a5c3a"><td class="memTemplParams" colspan="2">template&lt;typename TEvent , typename TStream &gt; </td></tr>
-<tr class="memitem:a180ae3b5b8d405cebb248d9e2a6a5c3a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1event.html#a180ae3b5b8d405cebb248d9e2a6a5c3a">enqueue</a> (TEvent const &amp;event, TStream const &amp;stream) -&gt; void</td></tr>
-<tr class="memdesc:a180ae3b5b8d405cebb248d9e2a6a5c3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queues the given event in the given stream.  <a href="#a180ae3b5b8d405cebb248d9e2a6a5c3a">More...</a><br /></td></tr>
-<tr class="separator:a180ae3b5b8d405cebb248d9e2a6a5c3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae5c1edae98afd948fddbb7da8a2ff1d"><td class="memTemplParams" colspan="2">template&lt;typename TEvent &gt; </td></tr>
-<tr class="memitem:aae5c1edae98afd948fddbb7da8a2ff1d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1event.html#aae5c1edae98afd948fddbb7da8a2ff1d">test</a> (TEvent const &amp;event) -&gt; bool</td></tr>
-<tr class="memdesc:aae5c1edae98afd948fddbb7da8a2ff1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tests if the given event has already be completed.  <a href="#aae5c1edae98afd948fddbb7da8a2ff1d">More...</a><br /></td></tr>
-<tr class="separator:aae5c1edae98afd948fddbb7da8a2ff1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59aa5ccb6a71e594f0fbdc06dee04880"><td class="memTemplParams" colspan="2">template&lt;typename TDev &gt; </td></tr>
+<tr class="memitem:a59aa5ccb6a71e594f0fbdc06dee04880"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1event.html#a59aa5ccb6a71e594f0fbdc06dee04880">create</a> (TDev const &amp;dev) -&gt; <a class="el" href="namespacealpaka_1_1event.html#a1240adc9f1a701e621f2e20ff7eb1613">Event</a>&lt; TDev &gt;</td></tr>
+<tr class="memdesc:a59aa5ccb6a71e594f0fbdc06dee04880"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an event on a device.  <a href="#a59aa5ccb6a71e594f0fbdc06dee04880">More...</a><br /></td></tr>
+<tr class="separator:a59aa5ccb6a71e594f0fbdc06dee04880"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aafd00f42ef5f6163ec0124f2c7a8c781"><td class="memTemplParams" colspan="2">template&lt;typename TEvent &gt; </td></tr>
+<tr class="memitem:aafd00f42ef5f6163ec0124f2c7a8c781"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1event.html#aafd00f42ef5f6163ec0124f2c7a8c781">test</a> (TEvent const &amp;event) -&gt; bool</td></tr>
+<tr class="memdesc:aafd00f42ef5f6163ec0124f2c7a8c781"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tests if the given event has already be completed.  <a href="#aafd00f42ef5f6163ec0124f2c7a8c781">More...</a><br /></td></tr>
+<tr class="separator:aafd00f42ef5f6163ec0124f2c7a8c781"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>The event management trait accessors. </p>
+<div class="textblock"><p>The event management specifics. </p>
 </div><h2 class="groupheader">Typedef Documentation</h2>
-<a class="anchor" id="a97981e29c7e55ab7de97b11480654107"></a>
+<a class="anchor" id="a1240adc9f1a701e621f2e20ff7eb1613"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename TAcc &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacealpaka_1_1event.html#a97981e29c7e55ab7de97b11480654107">alpaka::event::EventT</a> = typedef typename <a class="el" href="structalpaka_1_1traits_1_1event_1_1EventType.html">traits::event::EventType</a>&lt;TAcc&gt;::type</td>
+          <td class="memname">using <a class="el" href="namespacealpaka_1_1event.html#a1240adc9f1a701e621f2e20ff7eb1613">alpaka::event::Event</a> = typedef typename <a class="el" href="structalpaka_1_1event_1_1traits_1_1EventType.html">traits::EventType</a>&lt;TAcc&gt;::type</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>The event type trait alias template to remove the ::type. </p>
 
-<p>Definition at line <a class="el" href="traits_2Event_8hpp_source.html#l00072">72</a> of file <a class="el" href="traits_2Event_8hpp_source.html">Event.hpp</a>.</p>
+<p>Definition at line <a class="el" href="event_2Traits_8hpp_source.html#l00060">60</a> of file <a class="el" href="event_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="a14b43f58e81783a36f17689272f6d504"></a>
+<a class="anchor" id="a59aa5ccb6a71e594f0fbdc06dee04880"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename TDev &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto alpaka::event::create </td>
+          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::event::create </td>
           <td>(</td>
           <td class="paramtype">TDev const &amp;&#160;</td>
           <td class="paramname"><em>dev</em></td><td>)</td>
-          <td> -&gt; <a class="el" href="namespacealpaka_1_1event.html#a97981e29c7e55ab7de97b11480654107">EventT</a>&lt;TDev&gt;
+          <td> -&gt; <a class="el" href="namespacealpaka_1_1event.html#a1240adc9f1a701e621f2e20ff7eb1613">Event</a>&lt;TDev&gt;
         </td>
         </tr>
       </table>
@@ -179,52 +199,18 @@ template&lt;typename TDev &gt; </div>
 
 <p>Creates an event on a device. </p>
 
-<p>Definition at line <a class="el" href="traits_2Event_8hpp_source.html#l00079">79</a> of file <a class="el" href="traits_2Event_8hpp_source.html">Event.hpp</a>.</p>
+<p>Definition at line <a class="el" href="event_2Traits_8hpp_source.html#l00067">67</a> of file <a class="el" href="event_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a180ae3b5b8d405cebb248d9e2a6a5c3a"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename TEvent , typename TStream &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto alpaka::event::enqueue </td>
-          <td>(</td>
-          <td class="paramtype">TEvent const &amp;&#160;</td>
-          <td class="paramname"><em>event</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">TStream const &amp;&#160;</td>
-          <td class="paramname"><em>stream</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> -&gt; void
-        </td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Queues the given event in the given stream. </p>
-<p>If it has previously been queued, then this call will overwrite any existing state of the event. Any subsequent calls which examine the status of event will only examine the completion of this most recent call to enqueue. </p>
-
-<p>Definition at line <a class="el" href="traits_2Event_8hpp_source.html#l00095">95</a> of file <a class="el" href="traits_2Event_8hpp_source.html">Event.hpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aae5c1edae98afd948fddbb7da8a2ff1d"></a>
+<a class="anchor" id="aafd00f42ef5f6163ec0124f2c7a8c781"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename TEvent &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7">ALPAKA_FCT_HOST</a> auto alpaka::event::test </td>
+          <td class="memname"><a class="el" href="Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575">ALPAKA_FN_HOST</a> auto alpaka::event::test </td>
           <td>(</td>
           <td class="paramtype">TEvent const &amp;&#160;</td>
           <td class="paramname"><em>event</em></td><td>)</td>
@@ -236,7 +222,7 @@ template&lt;typename TEvent &gt; </div>
 
 <p>Tests if the given event has already be completed. </p>
 
-<p>Definition at line <a class="el" href="traits_2Event_8hpp_source.html#l00113">113</a> of file <a class="el" href="traits_2Event_8hpp_source.html">Event.hpp</a>.</p>
+<p>Definition at line <a class="el" href="event_2Traits_8hpp_source.html#l00079">79</a> of file <a class="el" href="event_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -246,7 +232,7 @@ template&lt;typename TEvent &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1event.html">event</a></li>
-    <li class="footer">Generated on Sat May 23 2015 14:48:28 for alpaka by
+    <li class="footer">Generated on Sun Jul 5 2015 17:25:41 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

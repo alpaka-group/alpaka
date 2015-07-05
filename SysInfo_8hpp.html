@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.9"/>
-<title>alpaka: C:/dev/alpaka/include/alpaka/devs/cpu/SysInfo.hpp File Reference</title>
+<title>alpaka: C:/dev/alpaka/include/alpaka/core/SysInfo.hpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -123,19 +123,19 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacealpaka"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html">alpaka</a></td></tr>
 <tr class="memdesc:namespacealpaka"><td class="mdescLeft">&#160;</td><td class="mdescRight">The alpaka library. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1devs"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1devs.html">alpaka::devs</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1devs"><td class="mdescLeft">&#160;</td><td class="mdescRight">The devices. <br /></td></tr>
+<tr class="memitem:namespacealpaka_1_1dev"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dev.html">alpaka::dev</a></td></tr>
+<tr class="memdesc:namespacealpaka_1_1dev"><td class="mdescLeft">&#160;</td><td class="mdescRight">The device specifics. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1devs_1_1cpu"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1devs_1_1cpu.html">alpaka::devs::cpu</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1devs_1_1cpu"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU device. <br /></td></tr>
+<tr class="memitem:namespacealpaka_1_1dev_1_1cpu"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dev_1_1cpu.html">alpaka::dev::cpu</a></td></tr>
+<tr class="memdesc:namespacealpaka_1_1dev_1_1cpu"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU device. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ae625bd75819a61cb582ad5065aa3e4ef"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1devs_1_1cpu.html#ae625bd75819a61cb582ad5065aa3e4ef">alpaka::devs::cpu::getCpuName</a> () -&gt; std::string</td></tr>
-<tr class="separator:ae625bd75819a61cb582ad5065aa3e4ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab42814b18e259bc175fa73327ecb6500"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1devs_1_1cpu.html#ab42814b18e259bc175fa73327ecb6500">alpaka::devs::cpu::getGlobalMemSizeBytes</a> () -&gt; std::size_t</td></tr>
-<tr class="separator:ab42814b18e259bc175fa73327ecb6500"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0b22f15ec6cda268375149639362469"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dev_1_1cpu.html#ad0b22f15ec6cda268375149639362469">alpaka::dev::cpu::getCpuName</a> () -&gt; std::string</td></tr>
+<tr class="separator:ad0b22f15ec6cda268375149639362469"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac776de141dcb66a8ab660f9e80134e1c"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dev_1_1cpu.html#ac776de141dcb66a8ab660f9e80134e1c">alpaka::dev::cpu::getGlobalMemSizeBytes</a> () -&gt; std::size_t</td></tr>
+<tr class="separator:ac776de141dcb66a8ab660f9e80134e1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Copyright 2014-2015 Benjamin Worpitz</p>
@@ -150,8 +150,8 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_f30568ec026b3fd596caf4e09e00e56f.html">devs</a></li><li class="navelem"><a class="el" href="dir_66a0a4d3b86b006f710fc4db468f4ae8.html">cpu</a></li><li class="navelem"><a class="el" href="SysInfo_8hpp.html">SysInfo.hpp</a></li>
-    <li class="footer">Generated on Sat May 23 2015 14:48:26 for alpaka by
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="SysInfo_8hpp.html">SysInfo.hpp</a></li>
+    <li class="footer">Generated on Sun Jul 5 2015 17:25:35 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

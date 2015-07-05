@@ -1,0 +1,4 @@
+var structalpaka_1_1detail_1_1SubVecFromIndices_3_01TDim_00_01alpaka_1_1detail_1_1make__integer__seqde206ec4ab80bb06fd05bf1754afbd34 =
+[
+    [ "subVecFromIndices", "structalpaka_1_1detail_1_1SubVecFromIndices_3_01TDim_00_01alpaka_1_1detail_1_1make__integer__seqde206ec4ab80bb06fd05bf1754afbd34.html#a6458637a5f1212e62e1c673e492f124f", null ]
+];

@@ -1,0 +1,4 @@
+var structalpaka_1_1math_1_1traits_1_1Cbrt_3_01T_00_01TArg_00_01typename_01std_1_1enable__if_3_01std2502ca82123ba6c51e8b57fe6ac1606c =
+[
+    [ "cbrt", "structalpaka_1_1math_1_1traits_1_1Cbrt_3_01T_00_01TArg_00_01typename_01std_1_1enable__if_3_01std2502ca82123ba6c51e8b57fe6ac1606c.html#ad31c7fd44e2c3cc0c0d38308d261f234", null ]
+];

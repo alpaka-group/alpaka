@@ -1,0 +1,4 @@
+var structalpaka_1_1math_1_1traits_1_1Llround_3_01T_00_01TArg_00_01typename_01std_1_1enable__if_3_0177f57a49bedc98fdbc8166aa88e40e38 =
+[
+    [ "llround", "structalpaka_1_1math_1_1traits_1_1Llround_3_01T_00_01TArg_00_01typename_01std_1_1enable__if_3_0177f57a49bedc98fdbc8166aa88e40e38.html#a19c5ab9cf73677083e10162643faac61", null ]
+];

@@ -1,4 +1,0 @@
-var structalpaka_1_1traits_1_1stream_1_1GetStream_3_01accs_1_1cuda_1_1detail_1_1ExecGpuCuda_3_01TDim_01_4_01_4 =
-[
-    [ "getStream", "structalpaka_1_1traits_1_1stream_1_1GetStream_3_01accs_1_1cuda_1_1detail_1_1ExecGpuCuda_3_01TDim_01_4_01_4.html#a02dad4fc00e81b5de97e7f24bd677c3e", null ]
-];

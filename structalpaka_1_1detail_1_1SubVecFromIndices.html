@@ -121,9 +121,9 @@ $(document).ready(function(){initNavTree('structalpaka_1_1detail_1_1SubVecFromIn
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ac9b5e356f3c820f2a5c9093c1f883aaf"><td class="memTemplParams" colspan="2">template&lt;typename TVal , UInt... TIndices&gt; </td></tr>
-<tr class="memitem:ac9b5e356f3c820f2a5c9093c1f883aaf"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1SubVecFromIndices.html#ac9b5e356f3c820f2a5c9093c1f883aaf">subVecFromIndices</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;vec, <a class="el" href="structalpaka_1_1detail_1_1integer__sequence.html">alpaka::detail::integer_sequence</a>&lt; <a class="el" href="namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5">UInt</a>, TIndices...&gt; const &amp;) -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#a39323e2b42723a0275c03f9a68e6d830">dim::Dim</a>&lt; sizeof...(TIndices)&gt;, TVal &gt;</td></tr>
-<tr class="separator:ac9b5e356f3c820f2a5c9093c1f883aaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecea5bcd4d4cab1806710acac1b37eab"><td class="memTemplParams" colspan="2">template&lt;typename TVal , std::size_t... TIndices&gt; </td></tr>
+<tr class="memitem:aecea5bcd4d4cab1806710acac1b37eab"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> static <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structalpaka_1_1detail_1_1SubVecFromIndices.html#aecea5bcd4d4cab1806710acac1b37eab">subVecFromIndices</a> (<a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;vec, <a class="el" href="structalpaka_1_1detail_1_1integer__sequence.html">alpaka::detail::integer_sequence</a>&lt; std::size_t, TIndices...&gt; const &amp;) -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">dim::DimInt</a>&lt; sizeof...(TIndices)&gt;, TVal &gt;</td></tr>
+<tr class="separator:aecea5bcd4d4cab1806710acac1b37eab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename TDim, typename TIndexSequence&gt;<br />
@@ -131,21 +131,21 @@ struct alpaka::detail::SubVecFromIndices&lt; TDim, TIndexSequence &gt;</h3>
 
 <p>Specialization for selecting a sub-vector. </p>
 
-<p>Definition at line <a class="el" href="Vec_8hpp_source.html#l00454">454</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p>Definition at line <a class="el" href="Vec_8hpp_source.html#l00659">659</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="ac9b5e356f3c820f2a5c9093c1f883aaf"></a>
+<a class="anchor" id="aecea5bcd4d4cab1806710acac1b37eab"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename TDim , typename TIndexSequence &gt; </div>
 <div class="memtemplate">
-template&lt;typename TVal , UInt... TIndices&gt; </div>
+template&lt;typename TVal , std::size_t... TIndices&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static <a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto <a class="el" href="structalpaka_1_1detail_1_1SubVecFromIndices.html">alpaka::detail::SubVecFromIndices</a>&lt; TDim, TIndexSequence &gt;::subVecFromIndices </td>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> static <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto <a class="el" href="structalpaka_1_1detail_1_1SubVecFromIndices.html">alpaka::detail::SubVecFromIndices</a>&lt; TDim, TIndexSequence &gt;::subVecFromIndices </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, TVal &gt; const &amp;&#160;</td>
           <td class="paramname"><em>vec</em>, </td>
@@ -153,13 +153,13 @@ template&lt;typename TVal , UInt... TIndices&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structalpaka_1_1detail_1_1integer__sequence.html">alpaka::detail::integer_sequence</a>&lt; <a class="el" href="namespacealpaka.html#aff48a11ea7d01a9b5b6b06f7c20285f5">UInt</a>, TIndices...&gt; const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structalpaka_1_1detail_1_1integer__sequence.html">alpaka::detail::integer_sequence</a>&lt; std::size_t, TIndices...&gt; const &amp;&#160;</td>
           <td class="paramname">&#160;</td>
         </tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;<a class="el" href="namespacealpaka_1_1dim.html#a39323e2b42723a0275c03f9a68e6d830">dim::Dim</a>&lt;sizeof...(TIndices)&gt;, TVal&gt;
+          <td></td><td> -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;<a class="el" href="namespacealpaka_1_1dim.html#ad66ea6ab062639c8c88f734f1bbaaabb">dim::DimInt</a>&lt;sizeof...(TIndices)&gt;, TVal&gt;
             </td>
         </tr>
       </table>
@@ -170,7 +170,7 @@ template&lt;typename TVal , UInt... TIndices&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="Vec_8hpp_source.html#l00459">459</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p>Definition at line <a class="el" href="Vec_8hpp_source.html#l00665">665</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
@@ -183,7 +183,7 @@ template&lt;typename TVal , UInt... TIndices&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1detail.html">detail</a></li><li class="navelem"><a class="el" href="structalpaka_1_1detail_1_1SubVecFromIndices.html">SubVecFromIndices</a></li>
-    <li class="footer">Generated on Sat May 23 2015 14:48:28 for alpaka by
+    <li class="footer">Generated on Sun Jul 5 2015 17:25:39 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

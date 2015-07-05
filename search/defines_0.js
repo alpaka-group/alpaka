@@ -1,8 +1,5 @@
 var searchData=
 [
-  ['alpaka_5falign',['ALPAKA_ALIGN',['../core_2Common_8hpp.html#ab7d373a2050fc4dec0b1ccb4d5ac0586',1,'Common.hpp']]],
-  ['alpaka_5falign_5f8',['ALPAKA_ALIGN_8',['../core_2Common_8hpp.html#ac5ccd67d1c0a60661c91ddda2e685937',1,'Common.hpp']]],
-  ['alpaka_5falignof',['ALPAKA_ALIGNOF',['../core_2Common_8hpp.html#a23dd202bda92266c949271cfa64612e5',1,'Common.hpp']]],
   ['alpaka_5fcuda_5frt_5fcheck',['ALPAKA_CUDA_RT_CHECK',['../core_2Cuda_8hpp.html#a69aee482f007066dfdb79c831e8ba771',1,'Cuda.hpp']]],
   ['alpaka_5fcuda_5frt_5fcheck_5fignore',['ALPAKA_CUDA_RT_CHECK_IGNORE',['../core_2Cuda_8hpp.html#a9a16799e40e87bdbe70e027f2bf8bf5c',1,'Cuda.hpp']]],
   ['alpaka_5fdebug',['ALPAKA_DEBUG',['../Debug_8hpp.html#a7f84384a17e301a636770e17c2951383',1,'Debug.hpp']]],
@@ -12,12 +9,12 @@ var searchData=
   ['alpaka_5fdebug_5ffull_5flog_5fscope',['ALPAKA_DEBUG_FULL_LOG_SCOPE',['../Debug_8hpp.html#ac65b6c44ec8afefe76a919847dd5ccec',1,'Debug.hpp']]],
   ['alpaka_5fdebug_5fminimal',['ALPAKA_DEBUG_MINIMAL',['../Debug_8hpp.html#a6a8e5f5a48b0bff7946528ab4e3e9f62',1,'Debug.hpp']]],
   ['alpaka_5fdebug_5fminimal_5flog_5fscope',['ALPAKA_DEBUG_MINIMAL_LOG_SCOPE',['../Debug_8hpp.html#ac556c317f934c69c8c8c083c5068f681',1,'Debug.hpp']]],
-  ['alpaka_5ffct_5facc',['ALPAKA_FCT_ACC',['../core_2Common_8hpp.html#a5f7933db4117e5cf67c10b559b645656',1,'Common.hpp']]],
-  ['alpaka_5ffct_5facc_5fno_5fcuda',['ALPAKA_FCT_ACC_NO_CUDA',['../core_2Common_8hpp.html#afd4b3f79dd504b2b49d64c9b01f098c5',1,'Common.hpp']]],
-  ['alpaka_5ffct_5fhost',['ALPAKA_FCT_HOST',['../core_2Common_8hpp.html#a0a2517d207990fa333bdfcd804895ee7',1,'Common.hpp']]],
-  ['alpaka_5ffct_5fhost_5facc',['ALPAKA_FCT_HOST_ACC',['../core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0',1,'Common.hpp']]],
-  ['alpaka_5fno_5fhost_5facc_5fwarning',['ALPAKA_NO_HOST_ACC_WARNING',['../core_2Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c',1,'Common.hpp']]],
-  ['alpaka_5foptimal_5falignment',['ALPAKA_OPTIMAL_ALIGNMENT',['../core_2Common_8hpp.html#a1259a647639e3950f2bdd1bdca98652a',1,'Common.hpp']]],
-  ['alpaka_5funroll',['ALPAKA_UNROLL',['../core_2Common_8hpp.html#a5dc1b91c2ff61cf069b5a3100d324883',1,'Common.hpp']]],
+  ['alpaka_5ffn_5facc',['ALPAKA_FN_ACC',['../Common_8hpp.html#a1bfb3a7f88316271e795e20d2810755a',1,'Common.hpp']]],
+  ['alpaka_5ffn_5facc_5fno_5fcuda',['ALPAKA_FN_ACC_NO_CUDA',['../Common_8hpp.html#abdd6790bfd7b8850c72cfb0a15834195',1,'Common.hpp']]],
+  ['alpaka_5ffn_5fhost',['ALPAKA_FN_HOST',['../Common_8hpp.html#a30cf38ce8c63908b355f69eb893da575',1,'Common.hpp']]],
+  ['alpaka_5ffn_5fhost_5facc',['ALPAKA_FN_HOST_ACC',['../Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3',1,'Common.hpp']]],
+  ['alpaka_5fno_5fhost_5facc_5fwarning',['ALPAKA_NO_HOST_ACC_WARNING',['../Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c',1,'Common.hpp']]],
+  ['alpaka_5foptimal_5falignment',['ALPAKA_OPTIMAL_ALIGNMENT',['../Align_8hpp.html#aa6a12fcf6b7bbcccd44dbdc51a1acbfa',1,'Align.hpp']]],
+  ['alpaka_5funroll',['ALPAKA_UNROLL',['../Common_8hpp.html#a57dd84fb3aa4dccb871fa74c30a4fe2f',1,'Common.hpp']]],
   ['alpaka_5fversion',['ALPAKA_VERSION',['../alpaka_8hpp.html#a9639bc6e4b859663f62c4c64a8855ff0',1,'alpaka.hpp']]]
 ];

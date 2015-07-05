@@ -1,4 +1,0 @@
-var structalpaka_1_1traits_1_1mem_1_1Alloc_3_01T_00_01alpaka_1_1dim_1_1Dim1_00_01devs_1_1cuda_1_1DevCuda_01_4 =
-[
-    [ "alloc", "structalpaka_1_1traits_1_1mem_1_1Alloc_3_01T_00_01alpaka_1_1dim_1_1Dim1_00_01devs_1_1cuda_1_1DevCuda_01_4.html#a3f79533cb4086785b9e91002e1f2b439", null ]
-];

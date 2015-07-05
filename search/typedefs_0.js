@@ -1,16 +1,19 @@
 var searchData=
 [
-  ['acccpufibers',['AccCpuFibers',['../namespacealpaka.html#a60ae0ab0c1c609321213784b3784cb50',1,'alpaka']]],
-  ['acccpufibersifavailableelsevoid',['AccCpuFibersIfAvailableElseVoid',['../namespacealpaka_1_1accs_1_1detail.html#a04017df1d6b57b9d22be5c89d0643c86',1,'alpaka::accs::detail']]],
-  ['acccpuomp2',['AccCpuOmp2',['../namespacealpaka.html#a7ffafa8232e496bb64f374031d4e08e5',1,'alpaka']]],
-  ['acccpuomp2ifavailableelsevoid',['AccCpuOmp2IfAvailableElseVoid',['../namespacealpaka_1_1accs_1_1detail.html#a3d3774521bf86f2c09c2f3360f8b0a6e',1,'alpaka::accs::detail']]],
-  ['acccpuomp4',['AccCpuOmp4',['../namespacealpaka.html#a3aa317def187faa76f333390d98cb120',1,'alpaka']]],
-  ['acccpuomp4cpuifavailableelsevoid',['AccCpuOmp4CpuIfAvailableElseVoid',['../namespacealpaka_1_1accs_1_1detail.html#af27f5956b8166627dc027c55d1a3c4bb',1,'alpaka::accs::detail']]],
-  ['acccpuserial',['AccCpuSerial',['../namespacealpaka.html#a255b17f08e879007b8bd147baa222f14',1,'alpaka']]],
-  ['acccpuserialifavailableelsevoid',['AccCpuSerialIfAvailableElseVoid',['../namespacealpaka_1_1accs_1_1detail.html#a74dabd9751eb2db12ff027f6ed01f868',1,'alpaka::accs::detail']]],
-  ['acccputhreads',['AccCpuThreads',['../namespacealpaka.html#afdafff77fb7ba52f778388ac85f2b80f',1,'alpaka']]],
-  ['acccputhreadsifavailableelsevoid',['AccCpuThreadsIfAvailableElseVoid',['../namespacealpaka_1_1accs_1_1detail.html#ac5fd8ee522cd556b81718d0b293af62b',1,'alpaka::accs::detail']]],
-  ['accgpucuda',['AccGpuCuda',['../namespacealpaka.html#ae8f8fd84d250486262e216c2485d247e',1,'alpaka']]],
-  ['accgpucudaifavailableelsevoid',['AccGpuCudaIfAvailableElseVoid',['../namespacealpaka_1_1accs_1_1detail.html#a7cf807f1bfbe56677e0682de1c4e1e5e',1,'alpaka::accs::detail']]],
-  ['acct',['AccT',['../namespacealpaka_1_1acc.html#a78e45df13b4706c02cb65cf25786d38e',1,'alpaka::acc']]]
+  ['absbase',['AbsBase',['../classalpaka_1_1math_1_1AbsCudaBuiltIn.html#aeb238567f61b69c23883785913f872f6',1,'alpaka::math::AbsCudaBuiltIn::AbsBase()'],['../classalpaka_1_1math_1_1AbsStl.html#ab67e91b0e7a0c0e9ed7f5f329ff171a8',1,'alpaka::math::AbsStl::AbsBase()']]],
+  ['acc',['Acc',['../namespacealpaka_1_1acc.html#a9c1f52fe72bb5b7b0b9124ddda895d50',1,'alpaka::acc']]],
+  ['acccpufibers',['AccCpuFibers',['../namespacealpaka.html#a95891e6b97d99fea90654331b16dc32c',1,'alpaka']]],
+  ['acccpuomp2blocks',['AccCpuOmp2Blocks',['../namespacealpaka.html#ab27729a393ee9ff8c2a2f410f33381d8',1,'alpaka']]],
+  ['acccpuomp2threads',['AccCpuOmp2Threads',['../namespacealpaka.html#a9419e8b4e8d71c5097583a90607d11fa',1,'alpaka']]],
+  ['acccpuomp4',['AccCpuOmp4',['../namespacealpaka.html#a2d78435e42114941d058a130dcd45fe4',1,'alpaka']]],
+  ['acccpuserial',['AccCpuSerial',['../namespacealpaka.html#a5ee12634114318d88e512be1aebf2136',1,'alpaka']]],
+  ['acccputhreads',['AccCpuThreads',['../namespacealpaka.html#a502b6c26c65a981186b52ef7233e5a5b',1,'alpaka']]],
+  ['accgpucuda',['AccGpuCuda',['../namespacealpaka.html#a108e4359df30e5fe6443b7349a428afe',1,'alpaka']]],
+  ['acosbase',['AcosBase',['../classalpaka_1_1math_1_1AcosCudaBuiltIn.html#a638b4d45e1a5dbc036546a77c7465d16',1,'alpaka::math::AcosCudaBuiltIn::AcosBase()'],['../classalpaka_1_1math_1_1AcosStl.html#a9226ae48233cc11916b5517d9bc22187',1,'alpaka::math::AcosStl::AcosBase()']]],
+  ['allocbase',['AllocBase',['../classalpaka_1_1mem_1_1alloc_1_1AllocCpuBoostAligned.html#a23f9e05c7ac0b69d787d71b1b674f620',1,'alpaka::mem::alloc::AllocCpuBoostAligned::AllocBase()'],['../classalpaka_1_1mem_1_1alloc_1_1AllocCpuNew.html#aff5bb7ab46e8df1dbeb1b0c9f4c0765f',1,'alpaka::mem::alloc::AllocCpuNew::AllocBase()']]],
+  ['alloccreatespitch',['AllocCreatesPitch',['../classalpaka_1_1mem_1_1alloc_1_1AllocCpuBoostAligned.html#a43cf515b70b055bbed30b84d09d44e47',1,'alpaka::mem::alloc::AllocCpuBoostAligned::AllocCreatesPitch()'],['../classalpaka_1_1mem_1_1alloc_1_1AllocCpuNew.html#a1c528e95ebc48e4ae6b076a6eaa0f7d2',1,'alpaka::mem::alloc::AllocCpuNew::AllocCreatesPitch()']]],
+  ['asinbase',['AsinBase',['../classalpaka_1_1math_1_1AsinCudaBuiltIn.html#afb527b4193ab675840244f34a91c5dc8',1,'alpaka::math::AsinCudaBuiltIn::AsinBase()'],['../classalpaka_1_1math_1_1AsinStl.html#a8b7695732763929ca7711734e166d522',1,'alpaka::math::AsinStl::AsinBase()']]],
+  ['atan2base',['Atan2Base',['../classalpaka_1_1math_1_1Atan2CudaBuiltIn.html#a4b45a2464929f0c8026b20acea26fdc7',1,'alpaka::math::Atan2CudaBuiltIn::Atan2Base()'],['../classalpaka_1_1math_1_1Atan2Stl.html#a291e16b48ee7e33b37e5f832cb751b5d',1,'alpaka::math::Atan2Stl::Atan2Base()']]],
+  ['atanbase',['AtanBase',['../classalpaka_1_1math_1_1AtanCudaBuiltIn.html#a9b9892b04d5bec5fd710c4bbab9f2911',1,'alpaka::math::AtanCudaBuiltIn::AtanBase()'],['../classalpaka_1_1math_1_1AtanStl.html#a723f01d35d251fb877611d1696e98f17',1,'alpaka::math::AtanStl::AtanBase()']]],
+  ['atomicbase',['AtomicBase',['../classalpaka_1_1atomic_1_1AtomicCudaBuiltIn.html#ae7eba5e18abed2ffe166eb579298c25d',1,'alpaka::atomic::AtomicCudaBuiltIn::AtomicBase()'],['../classalpaka_1_1atomic_1_1AtomicNoOp.html#abbf53568e1af9452095ba5bf52faabc7',1,'alpaka::atomic::AtomicNoOp::AtomicBase()'],['../classalpaka_1_1atomic_1_1AtomicOmpCritSec.html#ada53fd8642df784101320a3a7df12803',1,'alpaka::atomic::AtomicOmpCritSec::AtomicBase()'],['../classalpaka_1_1atomic_1_1AtomicStlLock.html#ae940b99e60792e973bcd0af40fa4a46c',1,'alpaka::atomic::AtomicStlLock::AtomicBase()']]]
 ];

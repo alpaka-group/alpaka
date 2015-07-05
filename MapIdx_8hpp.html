@@ -114,7 +114,7 @@ $(document).ready(function(){initNavTree('MapIdx_8hpp.html','');});
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;<a class="el" href="Vec_8hpp_source.html">alpaka/core/Vec.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="core_2Common_8hpp_source.html">alpaka/core/Common.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="Common_8hpp_source.html">alpaka/core/Common.hpp</a>&gt;</code><br />
 <code>#include &lt;boost/core/ignore_unused.hpp&gt;</code><br />
 </div>
 <p><a href="MapIdx_8hpp_source.html">Go to the source code of this file.</a></p>
@@ -151,10 +151,10 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a2c6a5776135710708cb091b7e21a4e3f"><td class="memTemplParams" colspan="2">template&lt;UInt TuiIdxDimOut, UInt TuiIdxDimIn, typename TElem &gt; </td></tr>
-<tr class="memitem:a2c6a5776135710708cb091b7e21a4e3f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a2c6a5776135710708cb091b7e21a4e3f">alpaka::mapIdx</a> (Vec&lt; dim::Dim&lt; TuiIdxDimIn &gt;, TElem &gt; const &amp;index, Vec&lt; dim::Dim&lt;(TuiIdxDimOut&lt; TuiIdxDimIn)?TuiIdxDimIn:TuiIdxDimOut &gt;, TElem &gt; const &amp;extents) -&gt; Vec&lt; dim::Dim&lt; TuiIdxDimOut &gt;, TElem &gt;</td></tr>
-<tr class="memdesc:a2c6a5776135710708cb091b7e21a4e3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps a N dimensional index to a N dimensional position.  <a href="#a2c6a5776135710708cb091b7e21a4e3f">More...</a><br /></td></tr>
-<tr class="separator:a2c6a5776135710708cb091b7e21a4e3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86407f17722279b1ba706200cec75fa9"><td class="memTemplParams" colspan="2">template&lt;std::size_t TuiIdxDimOut, std::size_t TuiIdxDimIn, typename TElem &gt; </td></tr>
+<tr class="memitem:a86407f17722279b1ba706200cec75fa9"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka.html#a86407f17722279b1ba706200cec75fa9">alpaka::mapIdx</a> (Vec&lt; dim::DimInt&lt; TuiIdxDimIn &gt;, TElem &gt; const &amp;idx, Vec&lt; dim::DimInt&lt;(TuiIdxDimOut&lt; TuiIdxDimIn)?TuiIdxDimIn:TuiIdxDimOut &gt;, TElem &gt; const &amp;extents) -&gt; Vec&lt; dim::DimInt&lt; TuiIdxDimOut &gt;, TElem &gt;</td></tr>
+<tr class="memdesc:a86407f17722279b1ba706200cec75fa9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps a N dimensional index to a N dimensional position.  <a href="#a86407f17722279b1ba706200cec75fa9">More...</a><br /></td></tr>
+<tr class="separator:a86407f17722279b1ba706200cec75fa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Copyright 2014-2015 Benjamin Worpitz</p>
@@ -170,7 +170,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="MapIdx_8hpp.html">MapIdx.hpp</a></li>
-    <li class="footer">Generated on Sat May 23 2015 14:48:26 for alpaka by
+    <li class="footer">Generated on Sun Jul 5 2015 17:25:35 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

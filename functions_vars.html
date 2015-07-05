@@ -82,7 +82,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions_func.html"><span>Functions</span></a></li>
       <li class="current"><a href="functions_vars.html"><span>Variables</span></a></li>
       <li><a href="functions_type.html"><span>Typedefs</span></a></li>
-      <li><a href="functions_eval.html"><span>Enumerator</span></a></li>
       <li><a href="functions_rela.html"><span>Related&#160;Functions</span></a></li>
     </ul>
   </div>
@@ -125,84 +124,157 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 &#160;
 
 <h3><a class="anchor" id="index_m"></a>- m -</h3><ul>
+<li>m_bIsReady
+: <a class="el" href="classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuAsyncImpl.html#a77d8d4690b1508a955f4ad5bade48d67">alpaka::event::cpu::detail::EventCpuAsyncImpl</a>
+</li>
+<li>m_bIsWaitedFor
+: <a class="el" href="classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuAsyncImpl.html#a92beade26e55ccc4c2b15df7647d6e25">alpaka::event::cpu::detail::EventCpuAsyncImpl</a>
+</li>
 <li>m_Buf
-: <a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html#a1e58597dd1fb13f4f28db738deb8863b">alpaka::mem::detail::View&lt; TElem, TDim, TDev &gt;</a>
+: <a class="el" href="classalpaka_1_1mem_1_1view_1_1ViewBasic.html#a37e50ef46b4db7cc7558e3f426a10c43">alpaka::mem::view::ViewBasic&lt; TDev, TElem, TDim, TSize &gt;</a>
+</li>
+<li>m_ConditionVariable
+: <a class="el" href="classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuAsyncImpl.html#ae53c5ab283eaa37da8308fc0ecebc3b3">alpaka::event::cpu::detail::EventCpuAsyncImpl</a>
+</li>
+<li>m_CudaEvent
+: <a class="el" href="classalpaka_1_1event_1_1cuda_1_1detail_1_1EventCudaImpl.html#a9878d8bf7a7180fef586902ce9bea46d">alpaka::event::cuda::detail::EventCudaImpl</a>
+</li>
+<li>m_CudaStream
+: <a class="el" href="classalpaka_1_1stream_1_1cuda_1_1detail_1_1StreamCudaImpl.html#a661440b9f7bb672cf530e359ae1b509c">alpaka::stream::cuda::detail::StreamCudaImpl</a>
 </li>
 <li>m_Dev
-: <a class="el" href="classalpaka_1_1devs_1_1cpu_1_1detail_1_1BufCpu.html#aa60e51aa6c2807cd83e11d1e85793be2">alpaka::devs::cpu::detail::BufCpu&lt; TElem, TDim &gt;</a>
-, <a class="el" href="classalpaka_1_1devs_1_1cpu_1_1EventCpu.html#a8200c60242011466589cd4ae49b70402">alpaka::devs::cpu::EventCpu</a>
-, <a class="el" href="classalpaka_1_1devs_1_1cpu_1_1StreamCpu.html#a72ae99a81ca0532ae85f1a05d6b546b3">alpaka::devs::cpu::StreamCpu</a>
-, <a class="el" href="classalpaka_1_1devs_1_1cuda_1_1detail_1_1BufCuda.html#a3c44bd03d4d6e90479e2a3227b0dd1e3">alpaka::devs::cuda::detail::BufCuda&lt; TElem, TDim &gt;</a>
-, <a class="el" href="classalpaka_1_1devs_1_1cuda_1_1EventCuda.html#a724283658d8ee8d8cda97fcf54ba02c2">alpaka::devs::cuda::EventCuda</a>
-, <a class="el" href="classalpaka_1_1devs_1_1cuda_1_1StreamCuda.html#a83e53fa8279e1c08ddc8205c2d9cf6f6">alpaka::devs::cuda::StreamCuda</a>
-, <a class="el" href="classalpaka_1_1mem_1_1BufPlainPtrWrapper.html#a0bc6c5343e360ebe3d49db96e21f7944">alpaka::mem::BufPlainPtrWrapper&lt; TElem, TDim, TDev &gt;</a>
+: <a class="el" href="classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuAsyncImpl.html#a2ef058226e2f82d2a92ed3446d9028bf">alpaka::event::cpu::detail::EventCpuAsyncImpl</a>
+, <a class="el" href="classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuSyncImpl.html#a0704a3f86912dcc1feb3ee224d6635ef">alpaka::event::cpu::detail::EventCpuSyncImpl</a>
+, <a class="el" href="classalpaka_1_1event_1_1cuda_1_1detail_1_1EventCudaImpl.html#aab5d459f1c6d23cec373fef2496187f9">alpaka::event::cuda::detail::EventCudaImpl</a>
+, <a class="el" href="classalpaka_1_1mem_1_1buf_1_1BufCudaRt.html#a824c016922fa70e02458e425c3d6a775">alpaka::mem::buf::BufCudaRt&lt; TElem, TDim, TSize &gt;</a>
+, <a class="el" href="classalpaka_1_1mem_1_1buf_1_1BufPlainPtrWrapper.html#a8d203ebfb49f7535f9e60175ceb07786">alpaka::mem::buf::BufPlainPtrWrapper&lt; TDev, TElem, TDim, TSize &gt;</a>
+, <a class="el" href="classalpaka_1_1mem_1_1buf_1_1cpu_1_1detail_1_1BufCpuImpl.html#ae3f9d2bede4b721f4fcff07d334b4aa7">alpaka::mem::buf::cpu::detail::BufCpuImpl&lt; TElem, TDim, TSize &gt;</a>
+, <a class="el" href="classalpaka_1_1stream_1_1cpu_1_1detail_1_1StreamCpuAsyncImpl.html#a2b620f532f4436258404f76f0c9908d9">alpaka::stream::cpu::detail::StreamCpuAsyncImpl</a>
+, <a class="el" href="classalpaka_1_1stream_1_1cpu_1_1detail_1_1StreamCpuSyncImpl.html#a8b22d1abe138bc1827240580436f1881">alpaka::stream::cpu::detail::StreamCpuSyncImpl</a>
+, <a class="el" href="classalpaka_1_1stream_1_1cuda_1_1detail_1_1StreamCudaImpl.html#add5b3985b8ba52fd3c36c4509d9097f3">alpaka::stream::cuda::detail::StreamCudaImpl</a>
+</li>
+<li>m_funcIsMasterThread
+: <a class="el" href="classalpaka_1_1block_1_1shared_1_1BlockSharedAllocMasterSync.html#a0b3fdbacb3277c39a5454c88235a9587">alpaka::block::shared::BlockSharedAllocMasterSync</a>
+</li>
+<li>m_funcSync
+: <a class="el" href="classalpaka_1_1block_1_1shared_1_1BlockSharedAllocMasterSync.html#aac8ceff0d53cb674d2d97a3233a47f5e">alpaka::block::shared::BlockSharedAllocMasterSync</a>
 </li>
 <li>m_iDevice
-: <a class="el" href="classalpaka_1_1devs_1_1cuda_1_1DevCuda.html#a175443bce5c65f8ecb25d3c1db415533">alpaka::devs::cuda::DevCuda</a>
+: <a class="el" href="classalpaka_1_1dev_1_1DevCudaRt.html#ae96298eff0ad73a477d6b7dc53ae6d64">alpaka::dev::DevCudaRt</a>
+</li>
+<li>m_mFibersToIndices
+: <a class="el" href="classalpaka_1_1idx_1_1bt_1_1IdxBtRefFiberIdMap.html#a3cdcc923845bcf60978c7a7ff2e255f4">alpaka::idx::bt::IdxBtRefFiberIdMap&lt; TDim, TSize &gt;</a>
+</li>
+<li>m_mThreadsToIndices
+: <a class="el" href="classalpaka_1_1idx_1_1bt_1_1IdxBtRefThreadIdMap.html#a918885e164dfdebec5a666b252887842">alpaka::idx::bt::IdxBtRefThreadIdMap&lt; TDim, TSize &gt;</a>
+</li>
+<li>m_Mutex
+: <a class="el" href="classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuAsyncImpl.html#aa1dd607cd4bf43d4ee93dc7bbaa016ea">alpaka::event::cpu::detail::EventCpuAsyncImpl</a>
 </li>
 <li>m_pMem
-: <a class="el" href="classalpaka_1_1mem_1_1BufPlainPtrWrapper.html#a2c297b36a44ddb24d66d953e4b123779">alpaka::mem::BufPlainPtrWrapper&lt; TElem, TDim, TDev &gt;</a>
+: <a class="el" href="classalpaka_1_1mem_1_1buf_1_1BufPlainPtrWrapper.html#ab91547a91d670caf433fa7d0db77e65f">alpaka::mem::buf::BufPlainPtrWrapper&lt; TDev, TElem, TDim, TSize &gt;</a>
+, <a class="el" href="classalpaka_1_1mem_1_1buf_1_1cpu_1_1detail_1_1BufCpuImpl.html#af189d0a39a339bd5f358cecc2f4aff1c">alpaka::mem::buf::cpu::detail::BufCpuImpl&lt; TElem, TDim, TSize &gt;</a>
 </li>
 <li>m_Promise
-: <a class="el" href="classalpaka_1_1detail_1_1TaskPkg.html#ae11be611ab6aeab35f8390c67cc410dd">alpaka::detail::TaskPkg&lt; TPromise, TFunc, TFuncReturn &gt;</a>
-, <a class="el" href="classalpaka_1_1detail_1_1TaskPkg_3_01TPromise_00_01TFunc_00_01void_01_4.html#a9f1b8447e9eb514ceca346757931576d">alpaka::detail::TaskPkg&lt; TPromise, TFunc, void &gt;</a>
+: <a class="el" href="classalpaka_1_1detail_1_1TaskPkg.html#ab9fff6f8ce5fb23633ce4115ba673aef">alpaka::detail::TaskPkg&lt; TPromise, TFnObj, TFnObjReturn &gt;</a>
+, <a class="el" href="classalpaka_1_1detail_1_1TaskPkg_3_01TPromise_00_01TFnObj_00_01void_01_4.html#ad6d2fde2d4dc34fae5c7929af2eacb83">alpaka::detail::TaskPkg&lt; TPromise, TFnObj, void &gt;</a>
 </li>
-<li>m_spCudaEvent
-: <a class="el" href="classalpaka_1_1devs_1_1cuda_1_1EventCuda.html#aa569e367f8171ed6bfc84d75bbfeb5b8">alpaka::devs::cuda::EventCuda</a>
+<li>m_spAsyncStreamCpu
+: <a class="el" href="classalpaka_1_1stream_1_1StreamCpuAsync.html#aab5a323b3c30cbabc66ec7269d2ba382">alpaka::stream::StreamCpuAsync</a>
 </li>
-<li>m_spCudaStream
-: <a class="el" href="classalpaka_1_1devs_1_1cuda_1_1StreamCuda.html#ae69fce40eececd2e172ff5acef133212">alpaka::devs::cuda::StreamCuda</a>
+<li>m_spBufCpuImpl
+: <a class="el" href="classalpaka_1_1mem_1_1buf_1_1BufCpu.html#a0e5c2a6c2a4959884c79099f28dbee11">alpaka::mem::buf::BufCpu&lt; TElem, TDim, TSize &gt;</a>
+</li>
+<li>m_spDevCpuImpl
+: <a class="el" href="classalpaka_1_1dev_1_1DevCpu.html#a0da5a3ee9bbf87272dedbfa09962762b">alpaka::dev::DevCpu</a>
+</li>
+<li>m_spEventCpuAsyncImpl
+: <a class="el" href="classalpaka_1_1event_1_1EventCpuAsync.html#a204713481094ff29fdef4c58fabc6588">alpaka::event::EventCpuAsync</a>
+</li>
+<li>m_spEventCpuSyncImpl
+: <a class="el" href="classalpaka_1_1event_1_1EventCpuSync.html#ad45284082d5cd5e869364353876db602">alpaka::event::EventCpuSync</a>
+</li>
+<li>m_spEventCudaImpl
+: <a class="el" href="classalpaka_1_1event_1_1EventCudaRt.html#a00f52aa91c339879d8b09e80278b239a">alpaka::event::EventCudaRt</a>
 </li>
 <li>m_spMem
-: <a class="el" href="classalpaka_1_1devs_1_1cpu_1_1detail_1_1BufCpu.html#aaac426ca2fbbae18b7b18bd5b6e88e17">alpaka::devs::cpu::detail::BufCpu&lt; TElem, TDim &gt;</a>
-, <a class="el" href="classalpaka_1_1devs_1_1cuda_1_1detail_1_1BufCuda.html#a28f992dba0bfc2d22b04d1a38927e600">alpaka::devs::cuda::detail::BufCuda&lt; TElem, TDim &gt;</a>
+: <a class="el" href="classalpaka_1_1mem_1_1buf_1_1BufCudaRt.html#a7d93317f6cff26f8c68cd8784aa39c97">alpaka::mem::buf::BufCudaRt&lt; TElem, TDim, TSize &gt;</a>
+</li>
+<li>m_spStreamCudaImpl
+: <a class="el" href="classalpaka_1_1stream_1_1StreamCudaRt.html#aee464432b8b4126583151a4adc167c2c">alpaka::stream::StreamCudaRt</a>
+</li>
+<li>m_spSyncStreamCpu
+: <a class="el" href="classalpaka_1_1stream_1_1StreamCpuSync.html#aebb814eef758bf7656f46ec4a91604fa">alpaka::stream::StreamCpuSync</a>
+</li>
+<li>m_State
+: <a class="el" href="classalpaka_1_1rand_1_1generator_1_1cuda_1_1Xor.html#aa48626f85962465f3c0710932eca1d90">alpaka::rand::generator::cuda::Xor</a>
 </li>
 <li>m_Stream
-: <a class="el" href="classalpaka_1_1accs_1_1cuda_1_1detail_1_1ExecGpuCuda.html#aeea1f3534dc41b97ee6cf1d7505c7ec8">alpaka::accs::cuda::detail::ExecGpuCuda&lt; TDim &gt;</a>
-, <a class="el" href="classalpaka_1_1accs_1_1fibers_1_1detail_1_1ExecCpuFibers.html#a2693e945f0b4836d0cb2a21ab6e03e6d">alpaka::accs::fibers::detail::ExecCpuFibers&lt; TDim &gt;</a>
-, <a class="el" href="classalpaka_1_1accs_1_1omp_1_1omp2_1_1detail_1_1ExecCpuOmp2.html#af647ff7c8cbcf4add64fbd2329f8ef84">alpaka::accs::omp::omp2::detail::ExecCpuOmp2&lt; TDim &gt;</a>
-, <a class="el" href="classalpaka_1_1accs_1_1omp_1_1omp4_1_1cpu_1_1detail_1_1ExecCpuOmp4.html#abb4e56ea862cfcc730a6fcb91416e1d2">alpaka::accs::omp::omp4::cpu::detail::ExecCpuOmp4&lt; TDim &gt;</a>
-, <a class="el" href="classalpaka_1_1accs_1_1serial_1_1detail_1_1ExecCpuSerial.html#a4d4953820112d9fcbab6d2c8f7afd801">alpaka::accs::serial::detail::ExecCpuSerial&lt; TDim &gt;</a>
-, <a class="el" href="classalpaka_1_1accs_1_1threads_1_1detail_1_1ExecCpuThreads.html#a841bd9691f0605dfd099ad5aa4fef416">alpaka::accs::threads::detail::ExecCpuThreads&lt; TDim &gt;</a>
+: <a class="el" href="classalpaka_1_1exec_1_1ExecCpuFibers.html#a3c282c79cf89b806e01cb94bfa88dc8a">alpaka::exec::ExecCpuFibers&lt; TDim, TSize &gt;</a>
+, <a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Blocks.html#afb1f2c07ebda492b985350766a72da36">alpaka::exec::ExecCpuOmp2Blocks&lt; TDim, TSize &gt;</a>
+, <a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp2Threads.html#aab790de3aa4e882ebf4a28f0f98b89ba">alpaka::exec::ExecCpuOmp2Threads&lt; TDim, TSize &gt;</a>
+, <a class="el" href="classalpaka_1_1exec_1_1ExecCpuOmp4.html#ac74fb2e4d0772d5942a089ef5d0948f1">alpaka::exec::ExecCpuOmp4&lt; TDim, TSize &gt;</a>
+, <a class="el" href="classalpaka_1_1exec_1_1ExecCpuSerial.html#a4b252f884f826f5b47b93d824ab83a33">alpaka::exec::ExecCpuSerial&lt; TDim, TSize &gt;</a>
+, <a class="el" href="classalpaka_1_1exec_1_1ExecCpuThreads.html#aea247cf6119b831dfe11bfeb17ceb339">alpaka::exec::ExecCpuThreads&lt; TDim, TSize &gt;</a>
+, <a class="el" href="classalpaka_1_1exec_1_1ExecGpuCuda.html#afbac9566f2f6f2fb4f3f340447ef1ee3">alpaka::exec::ExecGpuCuda&lt; TDim, TSize &gt;</a>
 </li>
 <li>m_uiBlockThreadsCountMax
-: <a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html#a28eb24964fab38fb08f79475ac9e3cc0">alpaka::acc::AccDevProps&lt; TDim &gt;</a>
+: <a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html#aba955ac450216e0b58cb8f51decc1ac9">alpaka::acc::AccDevProps&lt; TDim, TSize &gt;</a>
 </li>
 <li>m_uiMultiProcessorCount
-: <a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html#a6d7edc829aee8696a713d4e3edf341fa">alpaka::acc::AccDevProps&lt; TDim &gt;</a>
+: <a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html#a406db7d0721c26bfd8c87528ad6f438f">alpaka::acc::AccDevProps&lt; TDim, TSize &gt;</a>
+</li>
+<li>m_uiNumCanceledEnqueues
+: <a class="el" href="classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuAsyncImpl.html#a6af45a98082442ba6bd0ecefeb8fa074">alpaka::event::cpu::detail::EventCpuAsyncImpl</a>
 </li>
 <li>m_uiPitchBytes
-: <a class="el" href="classalpaka_1_1devs_1_1cpu_1_1detail_1_1BufCpu.html#a6a72e53dc8c0a492ac4e29da60c8e610">alpaka::devs::cpu::detail::BufCpu&lt; TElem, TDim &gt;</a>
-, <a class="el" href="classalpaka_1_1devs_1_1cuda_1_1detail_1_1BufCuda.html#ab34c7800764d8c7877cc857d188b0cbc">alpaka::devs::cuda::detail::BufCuda&lt; TElem, TDim &gt;</a>
-, <a class="el" href="classalpaka_1_1mem_1_1BufPlainPtrWrapper.html#aceb95345cefd0717fb1c5dbe39533279">alpaka::mem::BufPlainPtrWrapper&lt; TElem, TDim, TDev &gt;</a>
+: <a class="el" href="classalpaka_1_1mem_1_1buf_1_1BufCudaRt.html#a3a074ff074563ef155a4a187daf16ac2">alpaka::mem::buf::BufCudaRt&lt; TElem, TDim, TSize &gt;</a>
+, <a class="el" href="classalpaka_1_1mem_1_1buf_1_1BufPlainPtrWrapper.html#a139535ceb7d91b68065d74fb683e2814">alpaka::mem::buf::BufPlainPtrWrapper&lt; TDev, TElem, TDim, TSize &gt;</a>
+, <a class="el" href="classalpaka_1_1mem_1_1buf_1_1cpu_1_1detail_1_1BufCpuImpl.html#a92b93e5b5be5d24b7be9e9382b56a3d5">alpaka::mem::buf::cpu::detail::BufCpuImpl&lt; TElem, TDim, TSize &gt;</a>
+</li>
+<li>m_Uuid
+: <a class="el" href="classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuAsyncImpl.html#ad09754457a5aec4cebe84641f90d1f51">alpaka::event::cpu::detail::EventCpuAsyncImpl</a>
+, <a class="el" href="classalpaka_1_1event_1_1cpu_1_1detail_1_1EventCpuSyncImpl.html#a39332ad53e03c9743c9be9f22cf7ef23">alpaka::event::cpu::detail::EventCpuSyncImpl</a>
+, <a class="el" href="classalpaka_1_1stream_1_1cpu_1_1detail_1_1StreamCpuAsyncImpl.html#af27cd6f6f361077b80b3834304e1fc4f">alpaka::stream::cpu::detail::StreamCpuAsyncImpl</a>
+, <a class="el" href="classalpaka_1_1stream_1_1cpu_1_1detail_1_1StreamCpuSyncImpl.html#ab820010f350ea0cd61684c4f85de1f52">alpaka::stream::cpu::detail::StreamCpuSyncImpl</a>
 </li>
 <li>m_vExtentsElements
-: <a class="el" href="classalpaka_1_1devs_1_1cpu_1_1detail_1_1BufCpu.html#a77eaef02b27abd60bc1008ec5aefd8f1">alpaka::devs::cpu::detail::BufCpu&lt; TElem, TDim &gt;</a>
-, <a class="el" href="classalpaka_1_1devs_1_1cuda_1_1detail_1_1BufCuda.html#ad15a4eac0caae59c613631942eff6722">alpaka::devs::cuda::detail::BufCuda&lt; TElem, TDim &gt;</a>
-, <a class="el" href="classalpaka_1_1mem_1_1BufPlainPtrWrapper.html#a683279b0ef63b6ad4632cae4606cafa4">alpaka::mem::BufPlainPtrWrapper&lt; TElem, TDim, TDev &gt;</a>
-, <a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html#a075088ccc87cda0f5e88c3490ad6a905">alpaka::mem::detail::View&lt; TElem, TDim, TDev &gt;</a>
+: <a class="el" href="classalpaka_1_1mem_1_1buf_1_1BufCudaRt.html#a22e2a8283f45299aece46a6b9b651e2d">alpaka::mem::buf::BufCudaRt&lt; TElem, TDim, TSize &gt;</a>
+, <a class="el" href="classalpaka_1_1mem_1_1buf_1_1BufPlainPtrWrapper.html#aa11abe958f66fdebb9becdd64818defb">alpaka::mem::buf::BufPlainPtrWrapper&lt; TDev, TElem, TDim, TSize &gt;</a>
+, <a class="el" href="classalpaka_1_1mem_1_1buf_1_1cpu_1_1detail_1_1BufCpuImpl.html#a5c78475a32d49af75011f995759977a0">alpaka::mem::buf::cpu::detail::BufCpuImpl&lt; TElem, TDim, TSize &gt;</a>
+, <a class="el" href="classalpaka_1_1mem_1_1view_1_1ViewBasic.html#a5478e50d454d5975685294d9f62c4c24">alpaka::mem::view::ViewBasic&lt; TDev, TElem, TDim, TSize &gt;</a>
 </li>
 <li>m_vOffsetsElements
-: <a class="el" href="classalpaka_1_1mem_1_1detail_1_1View.html#a8171c112657be245b7b4010e97f2a63f">alpaka::mem::detail::View&lt; TElem, TDim, TDev &gt;</a>
+: <a class="el" href="classalpaka_1_1mem_1_1view_1_1ViewBasic.html#a2d6cf1ab97f2dd7440104a3121fed6d1">alpaka::mem::view::ViewBasic&lt; TDev, TElem, TDim, TSize &gt;</a>
 </li>
 <li>m_vuiBlockThreadExtents
-: <a class="el" href="classalpaka_1_1workdiv_1_1BasicWorkDiv.html#aa11bc0e5f07e05e32ca9d73e2fd2e2a9">alpaka::workdiv::BasicWorkDiv&lt; TDim &gt;</a>
+: <a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html#a11149d4db13272541b5fc8c6e2ccb606">alpaka::workdiv::WorkDivMembers&lt; TDim, TSize &gt;</a>
 </li>
 <li>m_vuiBlockThreadExtentsMax
-: <a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html#ad203cb53b0039f1fc937816c16b3962b">alpaka::acc::AccDevProps&lt; TDim &gt;</a>
+: <a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html#aee8553cfeca249013087484a1db5bb01">alpaka::acc::AccDevProps&lt; TDim, TSize &gt;</a>
 </li>
 <li>m_vuiGridBlockExtents
-: <a class="el" href="classalpaka_1_1workdiv_1_1BasicWorkDiv.html#a9a145cc3f9e4e6dc16c14b2801927e53">alpaka::workdiv::BasicWorkDiv&lt; TDim &gt;</a>
+: <a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html#a6942dbc4fe0af1e729ce8ed574399fcf">alpaka::workdiv::WorkDivMembers&lt; TDim, TSize &gt;</a>
 </li>
 <li>m_vuiGridBlockExtentsMax
-: <a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html#a49e10a656539181de80aea632f23cae5">alpaka::acc::AccDevProps&lt; TDim &gt;</a>
+: <a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html#ac729bbb26c991b111afb485e83abd24a">alpaka::acc::AccDevProps&lt; TDim, TSize &gt;</a>
+</li>
+<li>m_vuiGridBlockIdx
+: <a class="el" href="classalpaka_1_1idx_1_1gb_1_1IdxGbRef.html#af57cf79b1c216e1e99373ab8966212d7">alpaka::idx::gb::IdxGbRef&lt; TDim, TSize &gt;</a>
+</li>
+<li>m_vvuiSharedMem
+: <a class="el" href="classalpaka_1_1block_1_1shared_1_1BlockSharedAllocMasterSync.html#a588c1c2a1ad9b0d6132948fcb3227bb0">alpaka::block::shared::BlockSharedAllocMasterSync</a>
+, <a class="el" href="classalpaka_1_1block_1_1shared_1_1BlockSharedAllocNoSync.html#a8bfe6e331749d0da7d006a51a0444292">alpaka::block::shared::BlockSharedAllocNoSync</a>
+</li>
+<li>m_workerThread
+: <a class="el" href="classalpaka_1_1stream_1_1cpu_1_1detail_1_1StreamCpuAsyncImpl.html#afd9527c2a43ad4e8d3b7ca48b8507d86">alpaka::stream::cpu::detail::StreamCpuAsyncImpl</a>
 </li>
 </ul>
 
 
 <h3><a class="anchor" id="index_s"></a>- s -</h3><ul>
 <li>s_uiDim
-: <a class="el" href="classalpaka_1_1Vec.html#ab386d760d4e8dbcd66d76c92c7f084f9">alpaka::Vec&lt; TDim, TVal &gt;</a>
+: <a class="el" href="classalpaka_1_1Vec.html#a56622623fa76a9e1ff4a59d5e381e6ca">alpaka::Vec&lt; TDim, TVal &gt;</a>
 </li>
 </ul>
 </div><!-- contents -->
@@ -210,7 +282,7 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat May 23 2015 14:48:36 for alpaka by
+    <li class="footer">Generated on Sun Jul 5 2015 17:25:52 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

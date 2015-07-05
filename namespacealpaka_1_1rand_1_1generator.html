@@ -106,32 +106,68 @@ $(document).ready(function(){initNavTree('namespacealpaka_1_1rand_1_1generator.h
 
 <div class="header">
   <div class="summary">
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">alpaka::rand::generator Namespace Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>The random number generator method trait accessors.  
+<p>The random number generator specifics.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespacealpaka_1_1rand_1_1generator_1_1cuda"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1rand_1_1generator_1_1cuda.html">cuda</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacealpaka_1_1rand_1_1generator_1_1traits"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1rand_1_1generator_1_1traits.html">traits</a></td></tr>
+<tr class="memdesc:namespacealpaka_1_1rand_1_1generator_1_1traits"><td class="mdescLeft">&#160;</td><td class="mdescRight">The random number generator traits. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:af4c1aadbe274458a28e9faac03f0c908"><td class="memTemplParams" colspan="2">template&lt;typename TAcc &gt; </td></tr>
+<tr class="memitem:af4c1aadbe274458a28e9faac03f0c908"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1rand_1_1generator.html#af4c1aadbe274458a28e9faac03f0c908">GenDefaultT</a> = decltype(<a class="el" href="structalpaka_1_1rand_1_1generator_1_1traits_1_1CreateDefault.html">traits::CreateDefault</a>&lt; TAcc &gt;::<a class="el" href="namespacealpaka_1_1rand_1_1generator.html#a15305f1af5702514d3274db9b6eac00f">createDefault</a>(std::declval&lt; TAcc const &amp; &gt;(), std::declval&lt; std::uint32_t const &amp; &gt;(), std::declval&lt; std::uint32_t const &amp; &gt;()))</td></tr>
+<tr class="memdesc:af4c1aadbe274458a28e9faac03f0c908"><td class="mdescLeft">&#160;</td><td class="mdescRight">The type of the default generator.  <a href="#af4c1aadbe274458a28e9faac03f0c908">More...</a><br /></td></tr>
+<tr class="separator:af4c1aadbe274458a28e9faac03f0c908"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a1447c042121f6dfb53ac0503e0a47a73"><td class="memTemplParams" colspan="2">template&lt;typename TAcc &gt; </td></tr>
-<tr class="memitem:a1447c042121f6dfb53ac0503e0a47a73"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1rand_1_1generator.html#a1447c042121f6dfb53ac0503e0a47a73">createDefault</a> (TAcc const &amp;acc, std::uint32_t const &amp;seed, std::uint32_t const &amp;subsequence) -&gt; decltype(<a class="el" href="structalpaka_1_1traits_1_1rand_1_1generator_1_1CreateDefault.html">traits::rand::generator::CreateDefault</a>&lt; TAcc &gt;::createDefault(acc, seed, subsequence))</td></tr>
-<tr class="separator:a1447c042121f6dfb53ac0503e0a47a73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15305f1af5702514d3274db9b6eac00f"><td class="memTemplParams" colspan="2">template&lt;typename TAcc &gt; </td></tr>
+<tr class="memitem:a15305f1af5702514d3274db9b6eac00f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1rand_1_1generator.html#a15305f1af5702514d3274db9b6eac00f">createDefault</a> (TAcc const &amp;acc, std::uint32_t const &amp;seed, std::uint32_t const &amp;subsequence) -&gt; <a class="el" href="namespacealpaka_1_1rand_1_1generator.html#af4c1aadbe274458a28e9faac03f0c908">GenDefaultT</a>&lt; TAcc &gt;</td></tr>
+<tr class="separator:a15305f1af5702514d3274db9b6eac00f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>The random number generator method trait accessors. </p>
-</div><h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="a1447c042121f6dfb53ac0503e0a47a73"></a>
+<div class="textblock"><p>The random number generator specifics. </p>
+</div><h2 class="groupheader">Typedef Documentation</h2>
+<a class="anchor" id="af4c1aadbe274458a28e9faac03f0c908"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename TAcc &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto alpaka::rand::generator::createDefault </td>
+          <td class="memname">using <a class="el" href="namespacealpaka_1_1rand_1_1generator.html#af4c1aadbe274458a28e9faac03f0c908">alpaka::rand::generator::GenDefaultT</a> = typedef decltype( <a class="el" href="structalpaka_1_1rand_1_1generator_1_1traits_1_1CreateDefault.html">traits::CreateDefault</a>&lt; TAcc&gt; ::<a class="el" href="namespacealpaka_1_1rand_1_1generator.html#a15305f1af5702514d3274db9b6eac00f">createDefault</a>( std::declval&lt;TAcc const &amp;&gt;(), std::declval&lt;std::uint32_t const &amp;&gt;(), std::declval&lt;std::uint32_t const &amp;&gt;()))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The type of the default generator. </p>
+
+<p>Definition at line <a class="el" href="rand_2Traits_8hpp_source.html#l00206">206</a> of file <a class="el" href="rand_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="a15305f1af5702514d3274db9b6eac00f"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TAcc &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::rand::generator::createDefault </td>
           <td>(</td>
           <td class="paramtype">TAcc const &amp;&#160;</td>
           <td class="paramname"><em>acc</em>, </td>
@@ -151,20 +187,14 @@ template&lt;typename TAcc &gt; </div>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt; decltype(
-                    <a class="el" href="structalpaka_1_1traits_1_1rand_1_1generator_1_1CreateDefault.html">traits::rand::generator::CreateDefault</a>&lt;
-                        TAcc&gt;
-                    ::createDefault(
-                        acc,
-                        seed,
-                        subsequence))
+          <td></td><td> -&gt; <a class="el" href="namespacealpaka_1_1rand_1_1generator.html#af4c1aadbe274458a28e9faac03f0c908">GenDefaultT</a>&lt;TAcc&gt;
             </td>
         </tr>
       </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>A default random number generator. </dd></dl>
 
-<p>Definition at line <a class="el" href="traits_2Rand_8hpp_source.html#l00178">178</a> of file <a class="el" href="traits_2Rand_8hpp_source.html">Rand.hpp</a>.</p>
+<p>Definition at line <a class="el" href="rand_2Traits_8hpp_source.html#l00213">213</a> of file <a class="el" href="rand_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -174,7 +204,7 @@ template&lt;typename TAcc &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1rand.html">rand</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1rand_1_1generator.html">generator</a></li>
-    <li class="footer">Generated on Sat May 23 2015 14:48:29 for alpaka by
+    <li class="footer">Generated on Sun Jul 5 2015 17:25:48 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

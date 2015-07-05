@@ -168,7 +168,7 @@ $(document).ready(function(){initNavTree('md_C_1_dev_alpaka_doc_Distinction.html
 <li>Those back-ends never got really mature and up-to-date.</li>
 </ul>
 <h2>KOKKOS </h2>
-<p>See <a href="https://www.xsede.org/documents/271087/586927/Edwards-2013-XSCALE13-Kokkos.pdf">here</a> <a href="http://trilinos.org/oldsite/events/trilinos_user_group_2013/presentations/2013-11-TUG-Kokkos-Tutorial.pdf">here</a> <a href="http://on-demand.gputechconf.com/supercomputing/2013/presentation/SC3103_Towards-Performance-Portable-Applications-Kokkos.pdf">here</a> and <a href="http://dx.doi.org/10.3233/SPR-2012-0343">here</a>. Source is available <a href="https://github.com/trilinos/trilinos/tree/master/packages/kokkos">here</a>. The project is similar to <em>alpaka</em> in the way it abstracts the kernel as templated functor. It provides parallel_for, parallel_reduce, etc. similar to thrust.</p>
+<p>See <a href="https://www.xsede.org/documents/271087/586927/Edwards-2013-XSCALE13-Kokkos.pdf">here</a> <a href="http://trilinos.org/oldsite/events/trilinos_user_group_2013/presentations/2013-11-TUG-Kokkos-Tutorial.pdf">here</a> <a href="http://on-demand.gputechconf.com/supercomputing/2013/presentation/SC3103_Towards-Performance-Portable-Applications-Kokkos.pdf">here</a> and <a href="http://dx.doi.org/10.3233/SPR-2012-0343">here</a>. Source is available <a href="https://github.com/trilinos/trilinos/tree/master/packages/kokkos">here</a>. The project is similar to <em>alpaka</em> in the way it abstracts the kernel as templated function object. It provides parallel_for, parallel_reduce, etc. similar to thrust.</p>
 <h3>Positive</h3>
 <ul>
 <li>Offers buffer views with a neutral indexing scheme that maps to the underlying hardware (row/col-major, blocking, ...).</li>
@@ -176,7 +176,7 @@ $(document).ready(function(){initNavTree('md_C_1_dev_alpaka_doc_Distinction.html
 <h3>Negative</h3>
 <ul>
 <li>License.</li>
-<li>The parameters are required to be given to the functor constructor coupling algorithm and data together.</li>
+<li>The parameters are required to be given to the function object constructor coupling algorithm and data together.</li>
 <li>The implementation of accelerator methods (atomics, ...) is selected via macros defined by the nvcc compiler. So there is no way to select between different x86 implementations for different x86 accelerators.</li>
 </ul>
 <h2>Phalanx </h2>
@@ -201,7 +201,7 @@ $(document).ready(function(){initNavTree('md_C_1_dev_alpaka_doc_Distinction.html
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat May 23 2015 14:48:26 for alpaka by
+    <li class="footer">Generated on Sun Jul 5 2015 17:25:36 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.9"/>
-<title>alpaka: C:/dev/alpaka/include/alpaka/accs/threads/Barrier.hpp File Reference</title>
+<title>alpaka: C:/dev/alpaka/include/alpaka/acc/threads/Barrier.hpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -112,7 +112,7 @@ $(document).ready(function(){initNavTree('threads_2Barrier_8hpp.html','');});
 <div class="title">Barrier.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;<a class="el" href="core_2Common_8hpp_source.html">alpaka/core/Common.hpp</a>&gt;</code><br />
+<div class="textblock"><code>#include &lt;<a class="el" href="Common_8hpp_source.html">alpaka/core/Common.hpp</a>&gt;</code><br />
 <code>#include &lt;mutex&gt;</code><br />
 <code>#include &lt;condition_variable&gt;</code><br />
 </div>
@@ -120,8 +120,8 @@ $(document).ready(function(){initNavTree('threads_2Barrier_8hpp.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1accs_1_1threads_1_1detail_1_1ThreadBarrier.html">alpaka::accs::threads::detail::ThreadBarrier</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A barrier.  <a href="classalpaka_1_1accs_1_1threads_1_1detail_1_1ThreadBarrier.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1acc_1_1threads_1_1ThreadBarrier.html">alpaka::acc::threads::ThreadBarrier&lt; TSize &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A barrier.  <a href="classalpaka_1_1acc_1_1threads_1_1ThreadBarrier.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -129,14 +129,11 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacealpaka"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html">alpaka</a></td></tr>
 <tr class="memdesc:namespacealpaka"><td class="mdescLeft">&#160;</td><td class="mdescRight">The alpaka library. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1accs"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1accs.html">alpaka::accs</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1accs"><td class="mdescLeft">&#160;</td><td class="mdescRight">The accelerators. <br /></td></tr>
+<tr class="memitem:namespacealpaka_1_1acc"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1acc.html">alpaka::acc</a></td></tr>
+<tr class="memdesc:namespacealpaka_1_1acc"><td class="mdescLeft">&#160;</td><td class="mdescRight">The accelerator specifics. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1accs_1_1threads"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1accs_1_1threads.html">alpaka::accs::threads</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1accs_1_1threads"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU threads accelerator. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1accs_1_1threads_1_1detail"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1accs_1_1threads_1_1detail.html">alpaka::accs::threads::detail</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1accs_1_1threads_1_1detail"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU threads accelerator implementation details. <br /></td></tr>
+<tr class="memitem:namespacealpaka_1_1acc_1_1threads"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1acc_1_1threads.html">alpaka::acc::threads</a></td></tr>
+<tr class="memdesc:namespacealpaka_1_1acc_1_1threads"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU threads accelerator. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -152,8 +149,8 @@ Namespaces</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_68e39f1068b7c8e11271b44791d3a102.html">accs</a></li><li class="navelem"><a class="el" href="dir_58c52c9102b1c01885153255a25d26f5.html">threads</a></li><li class="navelem"><a class="el" href="threads_2Barrier_8hpp.html">Barrier.hpp</a></li>
-    <li class="footer">Generated on Sat May 23 2015 14:48:26 for alpaka by
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_5102b3d0a04409366ecc41cbc514a3dd.html">acc</a></li><li class="navelem"><a class="el" href="dir_12184248f82c4bd35b3741b5ce15b7c5.html">threads</a></li><li class="navelem"><a class="el" href="threads_2Barrier_8hpp.html">Barrier.hpp</a></li>
+    <li class="footer">Generated on Sun Jul 5 2015 17:25:35 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

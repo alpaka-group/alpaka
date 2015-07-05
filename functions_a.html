@@ -82,7 +82,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions_func.html"><span>Functions</span></a></li>
       <li><a href="functions_vars.html"><span>Variables</span></a></li>
       <li><a href="functions_type.html"><span>Typedefs</span></a></li>
-      <li><a href="functions_eval.html"><span>Enumerator</span></a></li>
       <li><a href="functions_rela.html"><span>Related&#160;Functions</span></a></li>
     </ul>
   </div>
@@ -97,6 +96,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions_f.html#index_f"><span>f</span></a></li>
       <li><a href="functions_g.html#index_g"><span>g</span></a></li>
       <li><a href="functions_i.html#index_i"><span>i</span></a></li>
+      <li><a href="functions_l.html#index_l"><span>l</span></a></li>
       <li><a href="functions_m.html#index_m"><span>m</span></a></li>
       <li><a href="functions_n.html#index_n"><span>n</span></a></li>
       <li><a href="functions_o.html#index_o"><span>o</span></a></li>
@@ -108,7 +108,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions_v.html#index_v"><span>v</span></a></li>
       <li><a href="functions_w.html#index_w"><span>w</span></a></li>
       <li><a href="functions_x.html#index_x"><span>x</span></a></li>
-      <li><a href="functions_y.html#index_y"><span>y</span></a></li>
       <li><a href="functions_z.html#index_z"><span>z</span></a></li>
       <li><a href="functions_~.html#index_~"><span>~</span></a></li>
     </ul>
@@ -146,102 +145,163 @@ $(document).ready(function(){initNavTree('functions_a.html','');});
 <div class="textblock">Here is a list of all class members with links to the classes they belong to:</div>
 
 <h3><a class="anchor" id="index_a"></a>- a -</h3><ul>
-<li>AccCpuFibers()
-: <a class="el" href="classalpaka_1_1accs_1_1fibers_1_1detail_1_1AccCpuFibers.html#ad0ddd1f38d332c6ddf44f36844d37c4e">alpaka::accs::fibers::detail::AccCpuFibers&lt; TDim &gt;</a>
+<li>abs()
+: <a class="el" href="structalpaka_1_1math_1_1traits_1_1Abs_3_01AbsCudaBuiltIn_00_01TArg_00_01typename_01std_1_1enable78bd1598e2acfeb97c721392c8a83f7d.html#a6af8b4010957923e7996eabcace96128">alpaka::math::traits::Abs&lt; AbsCudaBuiltIn, TArg, typename std::enable_if&lt; std::is_floating_point&lt; TArg &gt;::value &gt;::type &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1traits_1_1Abs_3_01AbsStl_00_01TArg_00_01typename_01std_1_1enable__if_3_097f2b82c60819ee915a378d8179e1d05.html#a5db8cbea3c456fa581f5987d5eff8241">alpaka::math::traits::Abs&lt; AbsStl, TArg, typename std::enable_if&lt; std::is_arithmetic&lt; TArg &gt;::value &amp;&amp;std::is_signed&lt; TArg &gt;::value &gt;::type &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1traits_1_1Abs_3_01T_00_01TArg_00_01typename_01std_1_1enable__if_3_01std_3e943232a7f25486d65495090534704f.html#a0aca0b96f882d0ccbb7d14d420b7ef7c">alpaka::math::traits::Abs&lt; T, TArg, typename std::enable_if&lt; std::is_base_of&lt; typename T::AbsBase, typename std::decay&lt; T &gt;::type &gt;::value &amp;&amp;(!std::is_same&lt; typename T::AbsBase, typename std::decay&lt; T &gt;::type &gt;::value)&gt;::type &gt;</a>
 </li>
-<li>AccCpuOmp2()
-: <a class="el" href="classalpaka_1_1accs_1_1omp_1_1omp2_1_1detail_1_1AccCpuOmp2.html#ac17683e355fa050449facc6b5f61a4ad">alpaka::accs::omp::omp2::detail::AccCpuOmp2&lt; TDim &gt;</a>
+<li>AbsBase
+: <a class="el" href="classalpaka_1_1math_1_1AbsCudaBuiltIn.html#aeb238567f61b69c23883785913f872f6">alpaka::math::AbsCudaBuiltIn</a>
+, <a class="el" href="classalpaka_1_1math_1_1AbsStl.html#ab67e91b0e7a0c0e9ed7f5f329ff171a8">alpaka::math::AbsStl</a>
+</li>
+<li>AccCpuFibers()
+: <a class="el" href="classalpaka_1_1acc_1_1fibers_1_1detail_1_1AccCpuFibers.html#a63e560c9e7612b0e480d9d1b86d7a3c4">alpaka::acc::fibers::detail::AccCpuFibers&lt; TDim, TSize &gt;</a>
+</li>
+<li>AccCpuOmp2Blocks()
+: <a class="el" href="classalpaka_1_1acc_1_1omp_1_1omp2_1_1blocks_1_1detail_1_1AccCpuOmp2Blocks.html#a776d73b06f33b411c254f25873ffc5b8">alpaka::acc::omp::omp2::blocks::detail::AccCpuOmp2Blocks&lt; TDim, TSize &gt;</a>
+</li>
+<li>AccCpuOmp2Threads()
+: <a class="el" href="classalpaka_1_1acc_1_1omp_1_1omp2_1_1threads_1_1detail_1_1AccCpuOmp2Threads.html#a1503065b226879da156d62dc42533a38">alpaka::acc::omp::omp2::threads::detail::AccCpuOmp2Threads&lt; TDim, TSize &gt;</a>
 </li>
 <li>AccCpuOmp4()
-: <a class="el" href="classalpaka_1_1accs_1_1omp_1_1omp4_1_1cpu_1_1detail_1_1AccCpuOmp4.html#acf028d9edb8be586bb942129ff450138">alpaka::accs::omp::omp4::cpu::detail::AccCpuOmp4&lt; TDim &gt;</a>
+: <a class="el" href="classalpaka_1_1acc_1_1omp_1_1omp4_1_1cpu_1_1detail_1_1AccCpuOmp4.html#a495dbeaf0af3f67434a7dddc6401af4b">alpaka::acc::omp::omp4::cpu::detail::AccCpuOmp4&lt; TDim, TSize &gt;</a>
 </li>
 <li>AccCpuSerial()
-: <a class="el" href="classalpaka_1_1accs_1_1serial_1_1detail_1_1AccCpuSerial.html#aacebd0ad3a585f61f6f1765cea067bd4">alpaka::accs::serial::detail::AccCpuSerial&lt; TDim &gt;</a>
+: <a class="el" href="classalpaka_1_1acc_1_1serial_1_1detail_1_1AccCpuSerial.html#ac3869114c61daf28f94a56f8dfbfd79f">alpaka::acc::serial::detail::AccCpuSerial&lt; TDim, TSize &gt;</a>
 </li>
 <li>AccCpuThreads()
-: <a class="el" href="classalpaka_1_1accs_1_1threads_1_1detail_1_1AccCpuThreads.html#a747b275d1e484c0c09947bb75ace354d">alpaka::accs::threads::detail::AccCpuThreads&lt; TDim &gt;</a>
+: <a class="el" href="classalpaka_1_1acc_1_1threads_1_1detail_1_1AccCpuThreads.html#a37c899e448a5f461c77c95295cb741c1">alpaka::acc::threads::detail::AccCpuThreads&lt; TDim, TSize &gt;</a>
 </li>
 <li>AccDevProps()
-: <a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html#a46e43cebfd3d0156231c5060a0041db3">alpaka::acc::AccDevProps&lt; TDim &gt;</a>
+: <a class="el" href="structalpaka_1_1acc_1_1AccDevProps.html#adc0348719cf1c330924953386ed2e7d5">alpaka::acc::AccDevProps&lt; TDim, TSize &gt;</a>
 </li>
 <li>AccGpuCuda()
-: <a class="el" href="classalpaka_1_1accs_1_1cuda_1_1detail_1_1AccGpuCuda.html#a64ef292cc9204561d813d74bfee11ead">alpaka::accs::cuda::detail::AccGpuCuda&lt; TDim &gt;</a>
+: <a class="el" href="classalpaka_1_1acc_1_1cuda_1_1detail_1_1AccGpuCuda.html#ac4eae836d12e98db50625a80c05398f9">alpaka::acc::cuda::detail::AccGpuCuda&lt; TDim, TSize &gt;</a>
+</li>
+<li>acos()
+: <a class="el" href="structalpaka_1_1math_1_1traits_1_1Acos_3_01AcosCudaBuiltIn_00_01TArg_00_01typename_01std_1_1enab47d6c3a5eec6d1a5e4880e04729b085e.html#adb86d8b0b054eaf38299a59df200f6b4">alpaka::math::traits::Acos&lt; AcosCudaBuiltIn, TArg, typename std::enable_if&lt; std::is_floating_point&lt; TArg &gt;::value &gt;::type &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1traits_1_1Acos_3_01AcosStl_00_01TArg_00_01typename_01std_1_1enable__if_3368993606a0febfc8e60ed6c4995ec3b.html#af7ef057144d1465550481cb6d786007c">alpaka::math::traits::Acos&lt; AcosStl, TArg, typename std::enable_if&lt; std::is_arithmetic&lt; TArg &gt;::value &gt;::type &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1traits_1_1Acos_3_01T_00_01TArg_00_01typename_01std_1_1enable__if_3_01std6756031ebb359d66b654b08430764a1c.html#a8dd60fae89824aabe04908f53bd7a2a8">alpaka::math::traits::Acos&lt; T, TArg, typename std::enable_if&lt; std::is_base_of&lt; typename T::AcosBase, typename std::decay&lt; T &gt;::type &gt;::value &amp;&amp;(!std::is_same&lt; typename T::AcosBase, typename std::decay&lt; T &gt;::type &gt;::value)&gt;::type &gt;</a>
+</li>
+<li>AcosBase
+: <a class="el" href="classalpaka_1_1math_1_1AcosCudaBuiltIn.html#a638b4d45e1a5dbc036546a77c7465d16">alpaka::math::AcosCudaBuiltIn</a>
+, <a class="el" href="classalpaka_1_1math_1_1AcosStl.html#a9226ae48233cc11916b5517d9bc22187">alpaka::math::AcosStl</a>
 </li>
 <li>all()
-: <a class="el" href="classalpaka_1_1Vec.html#a8222873db2f27c6437b3802eb470969d">alpaka::Vec&lt; TDim, TVal &gt;</a>
+: <a class="el" href="classalpaka_1_1Vec.html#ae34b38c137f62df4df21d58a0bac8ad2">alpaka::Vec&lt; TDim, TVal &gt;</a>
 </li>
 <li>alloc()
-: <a class="el" href="structalpaka_1_1traits_1_1mem_1_1Alloc_3_01T_00_01alpaka_1_1dim_1_1Dim1_00_01devs_1_1cuda_1_1DevCuda_01_4.html#a3f79533cb4086785b9e91002e1f2b439">alpaka::traits::mem::Alloc&lt; T, alpaka::dim::Dim1, devs::cuda::DevCuda &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1mem_1_1Alloc_3_01T_00_01alpaka_1_1dim_1_1Dim2_00_01devs_1_1cuda_1_1DevCuda_01_4.html#afa3df5643745a658ab5fc090056cd38f">alpaka::traits::mem::Alloc&lt; T, alpaka::dim::Dim2, devs::cuda::DevCuda &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1mem_1_1Alloc_3_01T_00_01alpaka_1_1dim_1_1Dim3_00_01devs_1_1cuda_1_1DevCuda_01_4.html#a1f963b8ebf1c13ab85309191829d7b71">alpaka::traits::mem::Alloc&lt; T, alpaka::dim::Dim3, devs::cuda::DevCuda &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1mem_1_1Alloc_3_01TElem_00_01TDim_00_01devs_1_1cpu_1_1DevCpu_01_4.html#a0ecbdddc3dede19ff2836852fe88632e">alpaka::traits::mem::Alloc&lt; TElem, TDim, devs::cpu::DevCpu &gt;</a>
+: <a class="el" href="structalpaka_1_1mem_1_1alloc_1_1traits_1_1Alloc_3_01T_00_01AllocCpuBoostAligned_3_01TAlignment_01_4_01_4.html#a8293a2b4580739e5556a1d875f4baf74">alpaka::mem::alloc::traits::Alloc&lt; T, AllocCpuBoostAligned&lt; TAlignment &gt; &gt;</a>
+, <a class="el" href="structalpaka_1_1mem_1_1alloc_1_1traits_1_1Alloc_3_01T_00_01AllocCpuNew_01_4.html#ae021b6da2c6e4a9af812eba94e740603">alpaka::mem::alloc::traits::Alloc&lt; T, AllocCpuNew &gt;</a>
+, <a class="el" href="structalpaka_1_1mem_1_1alloc_1_1traits_1_1Alloc_3_01T_00_01TAlloc_00_01typename_01std_1_1enable_6c5207f64f44b5cf13448ac2ee0a8c20.html#adc2c67b720b3a1e28b9022b1047b635e">alpaka::mem::alloc::traits::Alloc&lt; T, TAlloc, typename std::enable_if&lt; std::is_base_of&lt; typename TAlloc::AllocBase, typename std::decay&lt; TAlloc &gt;::type &gt;::value &amp;&amp;(!std::is_same&lt; typename TAlloc::AllocBase, typename std::decay&lt; TAlloc &gt;::type &gt;::value)&gt;::type &gt;</a>
+, <a class="el" href="structalpaka_1_1mem_1_1buf_1_1traits_1_1Alloc_3_01T_00_01dim_1_1DimInt_3_011u_01_4_00_01TSize_00_01dev_1_1DevCudaRt_01_4.html#adcd97d5a26e920005e2b5fb53b577ff7">alpaka::mem::buf::traits::Alloc&lt; T, dim::DimInt&lt; 1u &gt;, TSize, dev::DevCudaRt &gt;</a>
+, <a class="el" href="structalpaka_1_1mem_1_1buf_1_1traits_1_1Alloc_3_01T_00_01dim_1_1DimInt_3_012u_01_4_00_01TSize_00_01dev_1_1DevCudaRt_01_4.html#a8e57302d9cf328531eaa0629b57f855e">alpaka::mem::buf::traits::Alloc&lt; T, dim::DimInt&lt; 2u &gt;, TSize, dev::DevCudaRt &gt;</a>
+, <a class="el" href="structalpaka_1_1mem_1_1buf_1_1traits_1_1Alloc_3_01T_00_01dim_1_1DimInt_3_013u_01_4_00_01TSize_00_01dev_1_1DevCudaRt_01_4.html#a45f690324cdcc415ef628d2b4a597c5e">alpaka::mem::buf::traits::Alloc&lt; T, dim::DimInt&lt; 3u &gt;, TSize, dev::DevCudaRt &gt;</a>
+, <a class="el" href="structalpaka_1_1mem_1_1buf_1_1traits_1_1Alloc_3_01TElem_00_01TDim_00_01TSize_00_01dev_1_1DevCpu_01_4.html#a088c5b2d6489da6eedc903005682513e">alpaka::mem::buf::traits::Alloc&lt; TElem, TDim, TSize, dev::DevCpu &gt;</a>
 </li>
-<li>allocBlockSharedMem()
-: <a class="el" href="classalpaka_1_1accs_1_1cuda_1_1detail_1_1AccGpuCuda.html#a9a4051d12fedde2d59581a8e7b753292">alpaka::accs::cuda::detail::AccGpuCuda&lt; TDim &gt;</a>
-, <a class="el" href="classalpaka_1_1accs_1_1fibers_1_1detail_1_1AccCpuFibers.html#ad24b40392972fc69a2d43ed735a321e6">alpaka::accs::fibers::detail::AccCpuFibers&lt; TDim &gt;</a>
-, <a class="el" href="classalpaka_1_1accs_1_1omp_1_1omp2_1_1detail_1_1AccCpuOmp2.html#a0b58ed25eb010983d9002e1fa14f58d1">alpaka::accs::omp::omp2::detail::AccCpuOmp2&lt; TDim &gt;</a>
-, <a class="el" href="classalpaka_1_1accs_1_1omp_1_1omp4_1_1cpu_1_1detail_1_1AccCpuOmp4.html#ab1bdee1f9d756b7b2f423dec644e37ce">alpaka::accs::omp::omp4::cpu::detail::AccCpuOmp4&lt; TDim &gt;</a>
-, <a class="el" href="classalpaka_1_1accs_1_1serial_1_1detail_1_1AccCpuSerial.html#a5d6795c67ff7aeff74c46afb7028b42c">alpaka::accs::serial::detail::AccCpuSerial&lt; TDim &gt;</a>
-, <a class="el" href="classalpaka_1_1accs_1_1threads_1_1detail_1_1AccCpuThreads.html#af272dc8e9e5dc3deb8cda52829d35217">alpaka::accs::threads::detail::AccCpuThreads&lt; TDim &gt;</a>
+<li>allocArr()
+: <a class="el" href="structalpaka_1_1block_1_1shared_1_1traits_1_1AllocArr_3_01T_00_01TuiNumElements_00_01BlockSharedAllocCudaBuiltIn_01_4.html#af6779e22287f4ecd4e9fda871214361d">alpaka::block::shared::traits::AllocArr&lt; T, TuiNumElements, BlockSharedAllocCudaBuiltIn &gt;</a>
+, <a class="el" href="structalpaka_1_1block_1_1shared_1_1traits_1_1AllocArr_3_01T_00_01TuiNumElements_00_01BlockSharedAllocMasterSync_01_4.html#a13a60e24d0c7e716312bc824889d3f31">alpaka::block::shared::traits::AllocArr&lt; T, TuiNumElements, BlockSharedAllocMasterSync &gt;</a>
+, <a class="el" href="structalpaka_1_1block_1_1shared_1_1traits_1_1AllocArr_3_01T_00_01TuiNumElements_00_01BlockSharedAllocNoSync_01_4.html#aeb672afbaf64054e40cf3a5e3fb26acd">alpaka::block::shared::traits::AllocArr&lt; T, TuiNumElements, BlockSharedAllocNoSync &gt;</a>
+, <a class="el" href="structalpaka_1_1block_1_1shared_1_1traits_1_1AllocArr_3_01T_00_01TuiNumElements_00_01TBlockShare6cf674ab2427d7f8563bec16d3f6e7af.html#a122776a809c62382602575d81e316b21">alpaka::block::shared::traits::AllocArr&lt; T, TuiNumElements, TBlockSharedAlloc, typename std::enable_if&lt; std::is_base_of&lt; typename TBlockSharedAlloc::BlockSharedAllocBase, typename std::decay&lt; TBlockSharedAlloc &gt;::type &gt;::value &amp;&amp;(!std::is_same&lt; typename TBlockSharedAlloc::BlockSharedAllocBase, typename std::decay&lt; TBlockSharedAlloc &gt;::type &gt;::value)&gt;::type &gt;</a>
 </li>
-<li>alpaka::traits::atomic::AtomicOp
-: <a class="el" href="classalpaka_1_1accs_1_1threads_1_1detail_1_1AtomicThreads.html#abe67d5723bd2009cdca7659d696719e8">alpaka::accs::threads::detail::AtomicThreads</a>
+<li>AllocBase
+: <a class="el" href="classalpaka_1_1mem_1_1alloc_1_1AllocCpuBoostAligned.html#a23f9e05c7ac0b69d787d71b1b674f620">alpaka::mem::alloc::AllocCpuBoostAligned&lt; TAlignment &gt;</a>
+, <a class="el" href="classalpaka_1_1mem_1_1alloc_1_1AllocCpuNew.html#aff5bb7ab46e8df1dbeb1b0c9f4c0765f">alpaka::mem::alloc::AllocCpuNew</a>
 </li>
-<li>ALPAKA_ALIGN()
-: <a class="el" href="classalpaka_1_1devs_1_1cuda_1_1rand_1_1generator_1_1detail_1_1Xor.html#a4a2e0b87332d946130c9c99398fd7c6a">alpaka::devs::cuda::rand::generator::detail::Xor</a>
+<li>AllocCreatesPitch
+: <a class="el" href="classalpaka_1_1mem_1_1alloc_1_1AllocCpuBoostAligned.html#a43cf515b70b055bbed30b84d09d44e47">alpaka::mem::alloc::AllocCpuBoostAligned&lt; TAlignment &gt;</a>
+, <a class="el" href="classalpaka_1_1mem_1_1alloc_1_1AllocCpuNew.html#a1c528e95ebc48e4ae6b076a6eaa0f7d2">alpaka::mem::alloc::AllocCpuNew</a>
 </li>
-<li>AtomicCuda()
-: <a class="el" href="classalpaka_1_1accs_1_1cuda_1_1detail_1_1AtomicCuda.html#a8f3e43c8b06c08582a6e88d6c4d2b9ca">alpaka::accs::cuda::detail::AtomicCuda</a>
+<li>allocVar()
+: <a class="el" href="structalpaka_1_1block_1_1shared_1_1traits_1_1AllocVar_3_01T_00_01BlockSharedAllocCudaBuiltIn_01_4.html#a4723009f737197a3cd08f9aa4dbc338f">alpaka::block::shared::traits::AllocVar&lt; T, BlockSharedAllocCudaBuiltIn &gt;</a>
+, <a class="el" href="structalpaka_1_1block_1_1shared_1_1traits_1_1AllocVar_3_01T_00_01BlockSharedAllocMasterSync_01_4.html#a9af6c01453fd5358297dda3681d46257">alpaka::block::shared::traits::AllocVar&lt; T, BlockSharedAllocMasterSync &gt;</a>
+, <a class="el" href="structalpaka_1_1block_1_1shared_1_1traits_1_1AllocVar_3_01T_00_01BlockSharedAllocNoSync_01_4.html#a6e612f6110f5bf9508dd5e70ebdebf53">alpaka::block::shared::traits::AllocVar&lt; T, BlockSharedAllocNoSync &gt;</a>
+, <a class="el" href="structalpaka_1_1block_1_1shared_1_1traits_1_1AllocVar_3_01T_00_01TBlockSharedAlloc_00_01typename2b43bc36538249c6ded4d38556e720d7.html#a459e311f15b1d6c230516c00256c66ea">alpaka::block::shared::traits::AllocVar&lt; T, TBlockSharedAlloc, typename std::enable_if&lt; std::is_base_of&lt; typename TBlockSharedAlloc::BlockSharedAllocBase, typename std::decay&lt; TBlockSharedAlloc &gt;::type &gt;::value &amp;&amp;(!std::is_same&lt; typename TBlockSharedAlloc::BlockSharedAllocBase, typename std::decay&lt; TBlockSharedAlloc &gt;::type &gt;::value)&gt;::type &gt;</a>
 </li>
-<li>AtomicFibers()
-: <a class="el" href="classalpaka_1_1accs_1_1fibers_1_1detail_1_1AtomicFibers.html#a7ea1a73813a7ba53f49873f9915bd31e">alpaka::accs::fibers::detail::AtomicFibers</a>
+<li>asin()
+: <a class="el" href="structalpaka_1_1math_1_1traits_1_1Asin_3_01AsinCudaBuiltIn_00_01TArg_00_01typename_01std_1_1enab9d5ddbb2f2e6e69f38557d2dd3bf6ff0.html#aa9134bfda8f3d394ef1ee2ced5c855c5">alpaka::math::traits::Asin&lt; AsinCudaBuiltIn, TArg, typename std::enable_if&lt; std::is_floating_point&lt; TArg &gt;::value &gt;::type &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1traits_1_1Asin_3_01AsinStl_00_01TArg_00_01typename_01std_1_1enable__if_3c8f1308a266566b9ca515dd38328d004.html#afb7e8b702843e3fc68331580b5c3ee43">alpaka::math::traits::Asin&lt; AsinStl, TArg, typename std::enable_if&lt; std::is_arithmetic&lt; TArg &gt;::value &gt;::type &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1traits_1_1Asin_3_01T_00_01TArg_00_01typename_01std_1_1enable__if_3_01std2239b6015465020ab6cab30e4ed49920.html#a4173d901e23998cadc03bc338d7b08e0">alpaka::math::traits::Asin&lt; T, TArg, typename std::enable_if&lt; std::is_base_of&lt; typename T::AsinBase, typename std::decay&lt; T &gt;::type &gt;::value &amp;&amp;(!std::is_same&lt; typename T::AsinBase, typename std::decay&lt; T &gt;::type &gt;::value)&gt;::type &gt;</a>
 </li>
-<li>AtomicOmp()
-: <a class="el" href="classalpaka_1_1accs_1_1omp_1_1detail_1_1AtomicOmp.html#ad3ec4cc84b86570d261588dca6950f8f">alpaka::accs::omp::detail::AtomicOmp</a>
+<li>AsinBase
+: <a class="el" href="classalpaka_1_1math_1_1AsinCudaBuiltIn.html#afb527b4193ab675840244f34a91c5dc8">alpaka::math::AsinCudaBuiltIn</a>
+, <a class="el" href="classalpaka_1_1math_1_1AsinStl.html#a8b7695732763929ca7711734e166d522">alpaka::math::AsinStl</a>
+</li>
+<li>assertValueUnsigned()
+: <a class="el" href="structalpaka_1_1detail_1_1AssertValueUnsigned_3_01TArg_00_01typename_01std_1_1enable__if_3_01std8860c0be22212d136c108eb4f7b854ee.html#a00932a6969bedf0b861bdbac6588b6e2">alpaka::detail::AssertValueUnsigned&lt; TArg, typename std::enable_if&lt; std::is_unsigned&lt; TArg &gt;::value &gt;::type &gt;</a>
+, <a class="el" href="structalpaka_1_1detail_1_1AssertValueUnsigned_3_01TArg_00_01typename_01std_1_1enable__if_3_9std_65c35f50c3fbc2aa1b484ac552cd9f71.html#aa58128b033a099cd0f680a519f2b5f64">alpaka::detail::AssertValueUnsigned&lt; TArg, typename std::enable_if&lt;!std::is_unsigned&lt; TArg &gt;::value &gt;::type &gt;</a>
+</li>
+<li>atan()
+: <a class="el" href="structalpaka_1_1math_1_1traits_1_1Atan_3_01AtanCudaBuiltIn_00_01TArg_00_01typename_01std_1_1enab8012160ce6c9b2d5e0ed85157ada3046.html#aadec3390c51b0804f05a7941e6c8da80">alpaka::math::traits::Atan&lt; AtanCudaBuiltIn, TArg, typename std::enable_if&lt; std::is_floating_point&lt; TArg &gt;::value &gt;::type &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1traits_1_1Atan_3_01AtanStl_00_01TArg_00_01typename_01std_1_1enable__if_302cfc333b8585f84f9e9d6ef7c90b2b8.html#a53eebd9e48d6288dc6c70dfcd1841006">alpaka::math::traits::Atan&lt; AtanStl, TArg, typename std::enable_if&lt; std::is_arithmetic&lt; TArg &gt;::value &gt;::type &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1traits_1_1Atan_3_01T_00_01TArg_00_01typename_01std_1_1enable__if_3_01std4bc76bdf37a01c323912bfe09c0e5505.html#a7f3caa7e9dee4192b878e396ea7e0f84">alpaka::math::traits::Atan&lt; T, TArg, typename std::enable_if&lt; std::is_base_of&lt; typename T::AtanBase, typename std::decay&lt; T &gt;::type &gt;::value &amp;&amp;(!std::is_same&lt; typename T::AtanBase, typename std::decay&lt; T &gt;::type &gt;::value)&gt;::type &gt;</a>
+</li>
+<li>atan2()
+: <a class="el" href="structalpaka_1_1math_1_1traits_1_1Atan2_3_01Atan2CudaBuiltIn_00_01Ty_00_01Tx_00_01typename_01stdd6c2744e2885461c375e075d4b55eaa8.html#a39724627ce2028511fd98d53f415efa5">alpaka::math::traits::Atan2&lt; Atan2CudaBuiltIn, Ty, Tx, typename std::enable_if&lt; std::is_floating_point&lt; Ty &gt;::value &amp;&amp;std::is_floating_point&lt; Tx &gt;::value &gt;::type &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1traits_1_1Atan2_3_01Atan2Stl_00_01Ty_00_01Tx_00_01typename_01std_1_1enabb93eaf4ccdca3b429aa9b9ea527c8e93.html#a4babbf14f059ad858640a15be2956f83">alpaka::math::traits::Atan2&lt; Atan2Stl, Ty, Tx, typename std::enable_if&lt; std::is_arithmetic&lt; Ty &gt;::value &amp;&amp;std::is_arithmetic&lt; Tx &gt;::value &gt;::type &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1traits_1_1Atan2_3_01T_00_01Ty_00_01Tx_00_01typename_01std_1_1enable__if_7f58c78f57dc670388617ce2d2d11f33.html#a416375a80aa3ab884b5082e7a6f1856d">alpaka::math::traits::Atan2&lt; T, Ty, Tx, typename std::enable_if&lt; std::is_base_of&lt; typename T::Atan2Base, typename std::decay&lt; T &gt;::type &gt;::value &amp;&amp;(!std::is_same&lt; typename T::Atan2Base, typename std::decay&lt; T &gt;::type &gt;::value)&gt;::type &gt;</a>
+</li>
+<li>Atan2Base
+: <a class="el" href="classalpaka_1_1math_1_1Atan2CudaBuiltIn.html#a4b45a2464929f0c8026b20acea26fdc7">alpaka::math::Atan2CudaBuiltIn</a>
+, <a class="el" href="classalpaka_1_1math_1_1Atan2Stl.html#a291e16b48ee7e33b37e5f832cb751b5d">alpaka::math::Atan2Stl</a>
+</li>
+<li>AtanBase
+: <a class="el" href="classalpaka_1_1math_1_1AtanCudaBuiltIn.html#a9b9892b04d5bec5fd710c4bbab9f2911">alpaka::math::AtanCudaBuiltIn</a>
+, <a class="el" href="classalpaka_1_1math_1_1AtanStl.html#a723f01d35d251fb877611d1696e98f17">alpaka::math::AtanStl</a>
+</li>
+<li>atomic::traits::AtomicOp
+: <a class="el" href="classalpaka_1_1atomic_1_1AtomicStlLock.html#a16708b0526c2ce862c1e3ca9ddc580e8">alpaka::atomic::AtomicStlLock</a>
+</li>
+<li>AtomicBase
+: <a class="el" href="classalpaka_1_1atomic_1_1AtomicCudaBuiltIn.html#ae7eba5e18abed2ffe166eb579298c25d">alpaka::atomic::AtomicCudaBuiltIn</a>
+, <a class="el" href="classalpaka_1_1atomic_1_1AtomicNoOp.html#abbf53568e1af9452095ba5bf52faabc7">alpaka::atomic::AtomicNoOp</a>
+, <a class="el" href="classalpaka_1_1atomic_1_1AtomicOmpCritSec.html#ada53fd8642df784101320a3a7df12803">alpaka::atomic::AtomicOmpCritSec</a>
+, <a class="el" href="classalpaka_1_1atomic_1_1AtomicStlLock.html#ae940b99e60792e973bcd0af40fa4a46c">alpaka::atomic::AtomicStlLock</a>
+</li>
+<li>AtomicCudaBuiltIn()
+: <a class="el" href="classalpaka_1_1atomic_1_1AtomicCudaBuiltIn.html#a7478ce88bac227ca735f39251db856f9">alpaka::atomic::AtomicCudaBuiltIn</a>
+</li>
+<li>AtomicNoOp()
+: <a class="el" href="classalpaka_1_1atomic_1_1AtomicNoOp.html#a3bbf821375eab3606f74964d5f83232a">alpaka::atomic::AtomicNoOp</a>
+</li>
+<li>AtomicOmpCritSec()
+: <a class="el" href="classalpaka_1_1atomic_1_1AtomicOmpCritSec.html#a8a5823bdb37530ba5302d7c629dd5405">alpaka::atomic::AtomicOmpCritSec</a>
 </li>
 <li>atomicOp()
-: <a class="el" href="classalpaka_1_1accs_1_1cuda_1_1detail_1_1AccGpuCuda.html#a604d5abf27bb4417100c66da3c543987">alpaka::accs::cuda::detail::AccGpuCuda&lt; TDim &gt;</a>
-, <a class="el" href="classalpaka_1_1accs_1_1fibers_1_1detail_1_1AccCpuFibers.html#a3177aff944bc7e8efeea5c598246716a">alpaka::accs::fibers::detail::AccCpuFibers&lt; TDim &gt;</a>
-, <a class="el" href="classalpaka_1_1accs_1_1omp_1_1omp2_1_1detail_1_1AccCpuOmp2.html#a59bb1de660c36c31cba5bf6732b170bb">alpaka::accs::omp::omp2::detail::AccCpuOmp2&lt; TDim &gt;</a>
-, <a class="el" href="classalpaka_1_1accs_1_1omp_1_1omp4_1_1cpu_1_1detail_1_1AccCpuOmp4.html#a5c71b20f7a94008ef6af632e7c20ed16">alpaka::accs::omp::omp4::cpu::detail::AccCpuOmp4&lt; TDim &gt;</a>
-, <a class="el" href="classalpaka_1_1accs_1_1serial_1_1detail_1_1AccCpuSerial.html#ac7295e3596b3e3ad4b9150c85b982d1f">alpaka::accs::serial::detail::AccCpuSerial&lt; TDim &gt;</a>
-, <a class="el" href="classalpaka_1_1accs_1_1threads_1_1detail_1_1AccCpuThreads.html#aeaf4c2583b002dbd1f19e1dadf3c3d4b">alpaka::accs::threads::detail::AccCpuThreads&lt; TDim &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1atomic_1_1AtomicOp_3_01accs_1_1cuda_1_1detail_1_1AtomicCuda_00_01ops_1_1Add_00_01double_01_4.html#ad6f05574d6024beb249a7294226586b3">alpaka::traits::atomic::AtomicOp&lt; accs::cuda::detail::AtomicCuda, ops::Add, double &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1atomic_1_1AtomicOp_3_01accs_1_1cuda_1_1detail_1_1AtomicCuda_00_01ops_1_1Add_00_01float_01_4.html#a9d4af6c9fe6ee8b2ee39092d1522c89c">alpaka::traits::atomic::AtomicOp&lt; accs::cuda::detail::AtomicCuda, ops::Add, float &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1atomic_1_1AtomicOp_3_01accs_1_1cuda_1_1detail_1_1AtomicCuda_00_01ops_1_1Add_00_01int_01_4.html#addf820ad46c0e1dba3e9f599a94f526f">alpaka::traits::atomic::AtomicOp&lt; accs::cuda::detail::AtomicCuda, ops::Add, int &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1atomic_1_1AtomicOp_3_01accs_1_1cuda_1_1detail_1_1AtomicCuda_00_01ops_1_1Add_00_01unsigned_01int_01_4.html#a0b921f9550722d77581af491760d06bb">alpaka::traits::atomic::AtomicOp&lt; accs::cuda::detail::AtomicCuda, ops::Add, unsigned int &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1atomic_1_1AtomicOp_3_01accs_1_1cuda_1_1detail_1_1AtomicCuda_00_01ops_16a040c4f2b7d901c95e7bf840d457b2c.html#aba39cd83ecc2207c94dc5a9816764bb8">alpaka::traits::atomic::AtomicOp&lt; accs::cuda::detail::AtomicCuda, ops::Add, unsigned long long int &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1atomic_1_1AtomicOp_3_01accs_1_1cuda_1_1detail_1_1AtomicCuda_00_01ops_1_1And_00_01int_01_4.html#a3554666523c0cd0ed8af426f137fcfac">alpaka::traits::atomic::AtomicOp&lt; accs::cuda::detail::AtomicCuda, ops::And, int &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1atomic_1_1AtomicOp_3_01accs_1_1cuda_1_1detail_1_1AtomicCuda_00_01ops_1_1And_00_01unsigned_01int_01_4.html#a5b2639c3119542477970117d98635cdd">alpaka::traits::atomic::AtomicOp&lt; accs::cuda::detail::AtomicCuda, ops::And, unsigned int &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1atomic_1_1AtomicOp_3_01accs_1_1cuda_1_1detail_1_1AtomicCuda_00_01ops_1_1Cas_00_01int_01_4.html#a40c99e6a2ffe60a27dc6587626188079">alpaka::traits::atomic::AtomicOp&lt; accs::cuda::detail::AtomicCuda, ops::Cas, int &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1atomic_1_1AtomicOp_3_01accs_1_1cuda_1_1detail_1_1AtomicCuda_00_01ops_1_1Cas_00_01unsigned_01int_01_4.html#a298b3733fd130462421e4a97872357b2">alpaka::traits::atomic::AtomicOp&lt; accs::cuda::detail::AtomicCuda, ops::Cas, unsigned int &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1atomic_1_1AtomicOp_3_01accs_1_1cuda_1_1detail_1_1AtomicCuda_00_01ops_1c1a3be0ea024d06d46fb9da8bf87b490.html#afb6001359bf05a6eb7a945be48665921">alpaka::traits::atomic::AtomicOp&lt; accs::cuda::detail::AtomicCuda, ops::Cas, unsigned long long int &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1atomic_1_1AtomicOp_3_01accs_1_1cuda_1_1detail_1_1AtomicCuda_00_01ops_1_1Dec_00_01unsigned_01int_01_4.html#a355a50b0ded065677f0491e6e7328fb8">alpaka::traits::atomic::AtomicOp&lt; accs::cuda::detail::AtomicCuda, ops::Dec, unsigned int &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1atomic_1_1AtomicOp_3_01accs_1_1cuda_1_1detail_1_1AtomicCuda_00_01ops_1_1Exch_00_01float_01_4.html#a086df5baad51217bf6451ad6c730d062">alpaka::traits::atomic::AtomicOp&lt; accs::cuda::detail::AtomicCuda, ops::Exch, float &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1atomic_1_1AtomicOp_3_01accs_1_1cuda_1_1detail_1_1AtomicCuda_00_01ops_1_1Exch_00_01int_01_4.html#a532629aef86a2f7baacd7463ce57f6d3">alpaka::traits::atomic::AtomicOp&lt; accs::cuda::detail::AtomicCuda, ops::Exch, int &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1atomic_1_1AtomicOp_3_01accs_1_1cuda_1_1detail_1_1AtomicCuda_00_01ops_1_1Exch_00_01unsigned_01int_01_4.html#a6a2f77666df95190ba343f791e8284bb">alpaka::traits::atomic::AtomicOp&lt; accs::cuda::detail::AtomicCuda, ops::Exch, unsigned int &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1atomic_1_1AtomicOp_3_01accs_1_1cuda_1_1detail_1_1AtomicCuda_00_01ops_1c0ee600458b1c038e7dce75f32834118.html#a105766f2d4371491b9134a63b75600f5">alpaka::traits::atomic::AtomicOp&lt; accs::cuda::detail::AtomicCuda, ops::Exch, unsigned long long int &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1atomic_1_1AtomicOp_3_01accs_1_1cuda_1_1detail_1_1AtomicCuda_00_01ops_1_1Inc_00_01unsigned_01int_01_4.html#ab2e02d9cb66c600fa992acaa37632af1">alpaka::traits::atomic::AtomicOp&lt; accs::cuda::detail::AtomicCuda, ops::Inc, unsigned int &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1atomic_1_1AtomicOp_3_01accs_1_1cuda_1_1detail_1_1AtomicCuda_00_01ops_1_1Max_00_01int_01_4.html#af4f75013a1c4761b8f0c306fdc8f4e6f">alpaka::traits::atomic::AtomicOp&lt; accs::cuda::detail::AtomicCuda, ops::Max, int &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1atomic_1_1AtomicOp_3_01accs_1_1cuda_1_1detail_1_1AtomicCuda_00_01ops_1_1Max_00_01unsigned_01int_01_4.html#ad828ab19425862352a00f988547fbfc3">alpaka::traits::atomic::AtomicOp&lt; accs::cuda::detail::AtomicCuda, ops::Max, unsigned int &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1atomic_1_1AtomicOp_3_01accs_1_1cuda_1_1detail_1_1AtomicCuda_00_01ops_1_1Min_00_01int_01_4.html#a0356b9f7fa0e1b8288b2e721c06e8c8f">alpaka::traits::atomic::AtomicOp&lt; accs::cuda::detail::AtomicCuda, ops::Min, int &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1atomic_1_1AtomicOp_3_01accs_1_1cuda_1_1detail_1_1AtomicCuda_00_01ops_1_1Min_00_01unsigned_01int_01_4.html#a6d75e55a6581c355396ad39762fdace8">alpaka::traits::atomic::AtomicOp&lt; accs::cuda::detail::AtomicCuda, ops::Min, unsigned int &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1atomic_1_1AtomicOp_3_01accs_1_1cuda_1_1detail_1_1AtomicCuda_00_01ops_1_1Or_00_01int_01_4.html#ade8428708b3f0b785cd7f107fb709140">alpaka::traits::atomic::AtomicOp&lt; accs::cuda::detail::AtomicCuda, ops::Or, int &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1atomic_1_1AtomicOp_3_01accs_1_1cuda_1_1detail_1_1AtomicCuda_00_01ops_1_1Or_00_01unsigned_01int_01_4.html#a0c45631499b7612491cdff150819b513">alpaka::traits::atomic::AtomicOp&lt; accs::cuda::detail::AtomicCuda, ops::Or, unsigned int &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1atomic_1_1AtomicOp_3_01accs_1_1cuda_1_1detail_1_1AtomicCuda_00_01ops_1_1Sub_00_01int_01_4.html#af35e9b20776d3c3c15a42ccf5f236f07">alpaka::traits::atomic::AtomicOp&lt; accs::cuda::detail::AtomicCuda, ops::Sub, int &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1atomic_1_1AtomicOp_3_01accs_1_1cuda_1_1detail_1_1AtomicCuda_00_01ops_1_1Sub_00_01unsigned_01int_01_4.html#af68a476450c673d55ce1a20ac11b71b0">alpaka::traits::atomic::AtomicOp&lt; accs::cuda::detail::AtomicCuda, ops::Sub, unsigned int &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1atomic_1_1AtomicOp_3_01accs_1_1cuda_1_1detail_1_1AtomicCuda_00_01ops_1_1Xor_00_01int_01_4.html#a913b4d7ba8c8379bbe48d325649a2265">alpaka::traits::atomic::AtomicOp&lt; accs::cuda::detail::AtomicCuda, ops::Xor, int &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1atomic_1_1AtomicOp_3_01accs_1_1cuda_1_1detail_1_1AtomicCuda_00_01ops_1_1Xor_00_01unsigned_01int_01_4.html#a9566306bb4aa6ce2cfa11d6df3ba5d4d">alpaka::traits::atomic::AtomicOp&lt; accs::cuda::detail::AtomicCuda, ops::Xor, unsigned int &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1atomic_1_1AtomicOp_3_01accs_1_1fibers_1_1detail_1_1AtomicFibers_00_01TOp_00_01T_01_4.html#ae0192abf32cd54316650c9ba4e4c5ef4">alpaka::traits::atomic::AtomicOp&lt; accs::fibers::detail::AtomicFibers, TOp, T &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1atomic_1_1AtomicOp_3_01accs_1_1omp_1_1detail_1_1AtomicOmp_00_01TOp_00_01T_01_4.html#a859829c7256a46cfbdbd6fb6283d8e68">alpaka::traits::atomic::AtomicOp&lt; accs::omp::detail::AtomicOmp, TOp, T &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1atomic_1_1AtomicOp_3_01accs_1_1serial_1_1detail_1_1AtomicSerial_00_01TOp_00_01T_01_4.html#a1a84351f2abf6378a44dbf89e7138723">alpaka::traits::atomic::AtomicOp&lt; accs::serial::detail::AtomicSerial, TOp, T &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1atomic_1_1AtomicOp_3_01accs_1_1threads_1_1detail_1_1AtomicThreads_00_01TOp_00_01T_01_4.html#a4126b2bc5d3cf57caa57e4358a11367c">alpaka::traits::atomic::AtomicOp&lt; accs::threads::detail::AtomicThreads, TOp, T &gt;</a>
+: <a class="el" href="structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1Add_00_01atomic_1_1AtomicCudaBuiltIn_00_01double_01_4.html#aa5b333f9b18f5baab7562427254c473b">alpaka::atomic::traits::AtomicOp&lt; op::Add, atomic::AtomicCudaBuiltIn, double &gt;</a>
+, <a class="el" href="structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1Add_00_01atomic_1_1AtomicCudaBuiltIn_00_01float_01_4.html#a165a5fedbdb50ce137ab8ef236e6c03b">alpaka::atomic::traits::AtomicOp&lt; op::Add, atomic::AtomicCudaBuiltIn, float &gt;</a>
+, <a class="el" href="structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1Add_00_01atomic_1_1AtomicCudaBuiltIn_00_01int_01_4.html#af83306ec807ab70f7cc30236d9c290f1">alpaka::atomic::traits::AtomicOp&lt; op::Add, atomic::AtomicCudaBuiltIn, int &gt;</a>
+, <a class="el" href="structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1Add_00_01atomic_1_1AtomicCudaBuiltIn_00_01unsigned_01int_01_4.html#ab5a3513d75d9b77a5d7612d1d4605480">alpaka::atomic::traits::AtomicOp&lt; op::Add, atomic::AtomicCudaBuiltIn, unsigned int &gt;</a>
+, <a class="el" href="structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1Add_00_01atomic_1_1AtomicCudaBuiltIn_00_0712a3129b26393066ffa3fd9885c0d0c.html#aa5cb1877188415926bc6f91d8e52de03">alpaka::atomic::traits::AtomicOp&lt; op::Add, atomic::AtomicCudaBuiltIn, unsigned long long int &gt;</a>
+, <a class="el" href="structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1And_00_01atomic_1_1AtomicCudaBuiltIn_00_01int_01_4.html#a27819e14c39bdd75c49d0553f5dbdd2a">alpaka::atomic::traits::AtomicOp&lt; op::And, atomic::AtomicCudaBuiltIn, int &gt;</a>
+, <a class="el" href="structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1And_00_01atomic_1_1AtomicCudaBuiltIn_00_01unsigned_01int_01_4.html#a447181abd1429a266c6038897639f9e8">alpaka::atomic::traits::AtomicOp&lt; op::And, atomic::AtomicCudaBuiltIn, unsigned int &gt;</a>
+, <a class="el" href="structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1Cas_00_01atomic_1_1AtomicCudaBuiltIn_00_01int_01_4.html#a5bdc00560c9c913e5db1e0258daa962e">alpaka::atomic::traits::AtomicOp&lt; op::Cas, atomic::AtomicCudaBuiltIn, int &gt;</a>
+, <a class="el" href="structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1Cas_00_01atomic_1_1AtomicCudaBuiltIn_00_01unsigned_01int_01_4.html#a8745844bda015e65669768aff1f7bc7d">alpaka::atomic::traits::AtomicOp&lt; op::Cas, atomic::AtomicCudaBuiltIn, unsigned int &gt;</a>
+, <a class="el" href="structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1Cas_00_01atomic_1_1AtomicCudaBuiltIn_00_09c82c3b0331fb6a8212c7bf965a82cd1.html#a6a5b5ee6cf63f41a436beb04b5e02336">alpaka::atomic::traits::AtomicOp&lt; op::Cas, atomic::AtomicCudaBuiltIn, unsigned long long int &gt;</a>
+, <a class="el" href="structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1Dec_00_01atomic_1_1AtomicCudaBuiltIn_00_01unsigned_01int_01_4.html#a463de6ace9551703653ca90a66c009f7">alpaka::atomic::traits::AtomicOp&lt; op::Dec, atomic::AtomicCudaBuiltIn, unsigned int &gt;</a>
+, <a class="el" href="structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1Exch_00_01atomic_1_1AtomicCudaBuiltIn_00_01float_01_4.html#a83f162fc9dd2a201ccd1602291d5a667">alpaka::atomic::traits::AtomicOp&lt; op::Exch, atomic::AtomicCudaBuiltIn, float &gt;</a>
+, <a class="el" href="structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1Exch_00_01atomic_1_1AtomicCudaBuiltIn_00_01int_01_4.html#a3eedc31e8114293983b1241a5398c6ba">alpaka::atomic::traits::AtomicOp&lt; op::Exch, atomic::AtomicCudaBuiltIn, int &gt;</a>
+, <a class="el" href="structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1Exch_00_01atomic_1_1AtomicCudaBuiltIn_00_01unsigned_01int_01_4.html#ac6448adf0177ee761b70287c105bed1a">alpaka::atomic::traits::AtomicOp&lt; op::Exch, atomic::AtomicCudaBuiltIn, unsigned int &gt;</a>
+, <a class="el" href="structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1Exch_00_01atomic_1_1AtomicCudaBuiltIn_00_d794008e97aeb08ca01c18e15bb8182e.html#a1138f1661563e9999beae5292ed5e639">alpaka::atomic::traits::AtomicOp&lt; op::Exch, atomic::AtomicCudaBuiltIn, unsigned long long int &gt;</a>
+, <a class="el" href="structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1Inc_00_01atomic_1_1AtomicCudaBuiltIn_00_01unsigned_01int_01_4.html#a9470f883f500dec3288e575c70d07fb0">alpaka::atomic::traits::AtomicOp&lt; op::Inc, atomic::AtomicCudaBuiltIn, unsigned int &gt;</a>
+, <a class="el" href="structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1Max_00_01atomic_1_1AtomicCudaBuiltIn_00_01int_01_4.html#a9fdfc14ea1f8fcbfd3e29c36bc626786">alpaka::atomic::traits::AtomicOp&lt; op::Max, atomic::AtomicCudaBuiltIn, int &gt;</a>
+, <a class="el" href="structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1Max_00_01atomic_1_1AtomicCudaBuiltIn_00_01unsigned_01int_01_4.html#a4dd8d25b221cba403b961f24b14a9d4a">alpaka::atomic::traits::AtomicOp&lt; op::Max, atomic::AtomicCudaBuiltIn, unsigned int &gt;</a>
+, <a class="el" href="structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1Min_00_01atomic_1_1AtomicCudaBuiltIn_00_01int_01_4.html#a100504debd05d133d58677e45577b778">alpaka::atomic::traits::AtomicOp&lt; op::Min, atomic::AtomicCudaBuiltIn, int &gt;</a>
+, <a class="el" href="structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1Min_00_01atomic_1_1AtomicCudaBuiltIn_00_01unsigned_01int_01_4.html#ac7cb225d67f19d9d11433085fcfc0364">alpaka::atomic::traits::AtomicOp&lt; op::Min, atomic::AtomicCudaBuiltIn, unsigned int &gt;</a>
+, <a class="el" href="structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1Or_00_01atomic_1_1AtomicCudaBuiltIn_00_01int_01_4.html#a364deff32464431abb78952ca0aed96b">alpaka::atomic::traits::AtomicOp&lt; op::Or, atomic::AtomicCudaBuiltIn, int &gt;</a>
+, <a class="el" href="structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1Or_00_01atomic_1_1AtomicCudaBuiltIn_00_01unsigned_01int_01_4.html#a4b501c459b68556191573aa95f0a07af">alpaka::atomic::traits::AtomicOp&lt; op::Or, atomic::AtomicCudaBuiltIn, unsigned int &gt;</a>
+, <a class="el" href="structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1Sub_00_01atomic_1_1AtomicCudaBuiltIn_00_01int_01_4.html#aa75a16a633ddd109308b18ecc29b5f41">alpaka::atomic::traits::AtomicOp&lt; op::Sub, atomic::AtomicCudaBuiltIn, int &gt;</a>
+, <a class="el" href="structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1Sub_00_01atomic_1_1AtomicCudaBuiltIn_00_01unsigned_01int_01_4.html#ae9ac0adf2dbe300fad3ee3f1215f05a7">alpaka::atomic::traits::AtomicOp&lt; op::Sub, atomic::AtomicCudaBuiltIn, unsigned int &gt;</a>
+, <a class="el" href="structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1Xor_00_01atomic_1_1AtomicCudaBuiltIn_00_01int_01_4.html#a7c42e77a68ba8bfb86d9ed1ccdf5225c">alpaka::atomic::traits::AtomicOp&lt; op::Xor, atomic::AtomicCudaBuiltIn, int &gt;</a>
+, <a class="el" href="structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01op_1_1Xor_00_01atomic_1_1AtomicCudaBuiltIn_00_01unsigned_01int_01_4.html#a15ccb0de8f0fa543567eaef58d32820b">alpaka::atomic::traits::AtomicOp&lt; op::Xor, atomic::AtomicCudaBuiltIn, unsigned int &gt;</a>
+, <a class="el" href="structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01TOp_00_01atomic_1_1AtomicNoOp_00_01T_01_4.html#a6bfb5c5ab0154746afacae437980f7c0">alpaka::atomic::traits::AtomicOp&lt; TOp, atomic::AtomicNoOp, T &gt;</a>
+, <a class="el" href="structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01TOp_00_01atomic_1_1AtomicOmpCritSec_00_01T_01_4.html#a55fba81ebced065dddca6cfb23c1bcd8">alpaka::atomic::traits::AtomicOp&lt; TOp, atomic::AtomicOmpCritSec, T &gt;</a>
+, <a class="el" href="structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01TOp_00_01atomic_1_1AtomicStlLock_00_01T_01_4.html#a57b9b260aeb54621da71be03af70e62e">alpaka::atomic::traits::AtomicOp&lt; TOp, atomic::AtomicStlLock, T &gt;</a>
+, <a class="el" href="structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01TOp_00_01TAtomic_00_01T_00_01typename_01std_1_118e2bceee973c80528db953d97963c78.html#a0a79eae26545d5f598acae47f5a0ae3a">alpaka::atomic::traits::AtomicOp&lt; TOp, TAtomic, T, typename std::enable_if&lt; std::is_base_of&lt; typename TAtomic::AtomicBase, typename std::decay&lt; TAtomic &gt;::type &gt;::value &amp;&amp;(!std::is_same&lt; typename TAtomic::AtomicBase, typename std::decay&lt; TAtomic &gt;::type &gt;::value)&gt;::type &gt;</a>
 </li>
-<li>AtomicSerial()
-: <a class="el" href="classalpaka_1_1accs_1_1serial_1_1detail_1_1AtomicSerial.html#aa05f4f1c898618b533f7de41b4bb79bd">alpaka::accs::serial::detail::AtomicSerial</a>
-</li>
-<li>AtomicThreads()
-: <a class="el" href="classalpaka_1_1accs_1_1threads_1_1detail_1_1AtomicThreads.html#a06cfdc3e51a329659053fc9d7efeaeef">alpaka::accs::threads::detail::AtomicThreads</a>
+<li>AtomicStlLock()
+: <a class="el" href="classalpaka_1_1atomic_1_1AtomicStlLock.html#aa0f9fc01dc5401e852d342d2f4b80166">alpaka::atomic::AtomicStlLock</a>
 </li>
 </ul>
 </div><!-- contents -->
@@ -249,7 +309,7 @@ $(document).ready(function(){initNavTree('functions_a.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat May 23 2015 14:48:36 for alpaka by
+    <li class="footer">Generated on Sun Jul 5 2015 17:25:52 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

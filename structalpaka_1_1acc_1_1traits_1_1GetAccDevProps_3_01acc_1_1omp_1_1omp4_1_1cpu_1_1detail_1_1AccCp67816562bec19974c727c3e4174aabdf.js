@@ -1,0 +1,4 @@
+var structalpaka_1_1acc_1_1traits_1_1GetAccDevProps_3_01acc_1_1omp_1_1omp4_1_1cpu_1_1detail_1_1AccCp67816562bec19974c727c3e4174aabdf =
+[
+    [ "getAccDevProps", "structalpaka_1_1acc_1_1traits_1_1GetAccDevProps_3_01acc_1_1omp_1_1omp4_1_1cpu_1_1detail_1_1AccCp67816562bec19974c727c3e4174aabdf.html#a7ceea846c396ce1d3fbcbfc42e74884e", null ]
+];

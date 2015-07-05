@@ -1,0 +1,4 @@
+var structalpaka_1_1mem_1_1alloc_1_1traits_1_1Alloc_3_01T_00_01AllocCpuBoostAligned_3_01TAlignment_01_4_01_4 =
+[
+    [ "alloc", "structalpaka_1_1mem_1_1alloc_1_1traits_1_1Alloc_3_01T_00_01AllocCpuBoostAligned_3_01TAlignment_01_4_01_4.html#a8293a2b4580739e5556a1d875f4baf74", null ]
+];

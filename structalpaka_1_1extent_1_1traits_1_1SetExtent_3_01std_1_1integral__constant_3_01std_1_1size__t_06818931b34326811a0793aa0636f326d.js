@@ -1,0 +1,4 @@
+var structalpaka_1_1extent_1_1traits_1_1SetExtent_3_01std_1_1integral__constant_3_01std_1_1size__t_06818931b34326811a0793aa0636f326d =
+[
+    [ "setExtent", "structalpaka_1_1extent_1_1traits_1_1SetExtent_3_01std_1_1integral__constant_3_01std_1_1size__t_06818931b34326811a0793aa0636f326d.html#ab626197055a72a015d2c1ed084908348", null ]
+];

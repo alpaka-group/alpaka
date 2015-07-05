@@ -1,4 +1,0 @@
-var structalpaka_1_1traits_1_1dim_1_1DimType_3_01accs_1_1cuda_1_1detail_1_1AccGpuCuda_3_01TDim_01_4_01_4 =
-[
-    [ "type", "structalpaka_1_1traits_1_1dim_1_1DimType_3_01accs_1_1cuda_1_1detail_1_1AccGpuCuda_3_01TDim_01_4_01_4.html#aabd78602bc888404e8daeb09fb4fe687", null ]
-];

@@ -1,4 +1,0 @@
-var structalpaka_1_1traits_1_1mem_1_1Unpin_3_01devs_1_1cpu_1_1detail_1_1BufCpu_3_01TElem_00_01TDim_01_4_01_4 =
-[
-    [ "unpin", "structalpaka_1_1traits_1_1mem_1_1Unpin_3_01devs_1_1cpu_1_1detail_1_1BufCpu_3_01TElem_00_01TDim_01_4_01_4.html#ab0fbd06cc63e07633f833d47c174973f", null ]
-];

@@ -196,7 +196,7 @@ $(document).ready(function(){initNavTree('Distinction_8md.html','');});
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;[here](http://on-demand.gputechconf.com/supercomputing/2013/presentation/SC3103_Towards-Performance-Portable-Applications-Kokkos.pdf)</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;and  [here](http://dx.doi.org/10.3233/SPR-2012-0343).</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;Source is available [here](https://github.com/trilinos/trilinos/tree/master/packages/kokkos).</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;The project is similar to *alpaka* in the way it abstracts the kernel as templated functor. </div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;The project is similar to *alpaka* in the way it abstracts the kernel as templated function object.</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;It provides parallel_for, parallel_reduce, etc. similar to thrust.</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;### Positive</div>
@@ -204,7 +204,7 @@ $(document).ready(function(){initNavTree('Distinction_8md.html','');});
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;### Negative</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;* License.</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;* The parameters are required to be given to the functor constructor coupling algorithm and data together.</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;* The parameters are required to be given to the function object constructor coupling algorithm and data together.</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;* The implementation of accelerator methods (atomics, ...) is selected via macros defined by the nvcc compiler. So there is no way to select between different x86 implementations for different x86 accelerators. </div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
@@ -240,7 +240,7 @@ $(document).ready(function(){initNavTree('Distinction_8md.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="Distinction_8md.html">Distinction.md</a></li>
-    <li class="footer">Generated on Sat May 23 2015 14:48:24 for alpaka by
+    <li class="footer">Generated on Sun Jul 5 2015 17:25:33 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

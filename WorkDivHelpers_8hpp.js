@@ -1,11 +1,13 @@
 var WorkDivHelpers_8hpp =
 [
-    [ "CorrectMaxBlockThreadCount", "structalpaka_1_1workdiv_1_1detail_1_1CorrectMaxBlockThreadCount.html", "structalpaka_1_1workdiv_1_1detail_1_1CorrectMaxBlockThreadCount" ],
-    [ "CorrectMaxBlockThreadExtents", "structalpaka_1_1workdiv_1_1detail_1_1CorrectMaxBlockThreadExtents.html", "structalpaka_1_1workdiv_1_1detail_1_1CorrectMaxBlockThreadExtents" ],
-    [ "getMaxBlockThreadCountAccsDevices", "WorkDivHelpers_8hpp.html#a32c6297d57c4989f6b487f0823a2ca71", null ],
-    [ "getMaxBlockThreadExtentsAccsDevices", "WorkDivHelpers_8hpp.html#ae615f39c8aa2ca04916483056b38d458", null ],
-    [ "getValidWorkDiv", "WorkDivHelpers_8hpp.html#adddb2c4b683e8be9da35e9400e2a9bbc", null ],
-    [ "isValidWorkDiv", "WorkDivHelpers_8hpp.html#a3bfed7ff9daedecf5fcf79c23e714127", null ],
-    [ "nextLowerOrEqualFactor", "WorkDivHelpers_8hpp.html#a21bb2264ae48912f73c3f36c6461f562", null ],
-    [ "subdivideGridThreads", "WorkDivHelpers_8hpp.html#a00c6c9eb9a1fdfdc9802fe5065bba622", null ]
+    [ "GridBlockExtentsSubDivRestrictions", "WorkDivHelpers_8hpp.html#aa8f3416178f53f4063087ecae0fd7990", [
+      [ "EqualExtents", "WorkDivHelpers_8hpp.html#aa8f3416178f53f4063087ecae0fd7990a670593ce76066f5d5228f90cec0431bf", null ],
+      [ "CloseToEqualExtents", "WorkDivHelpers_8hpp.html#aa8f3416178f53f4063087ecae0fd7990a3c514f37efb118ef80d00172d20d2175", null ],
+      [ "Unrestricted", "WorkDivHelpers_8hpp.html#aa8f3416178f53f4063087ecae0fd7990a89c6caacc7047b0a535412d7f939f870", null ]
+    ] ],
+    [ "allDivisorsLessOrEqual", "WorkDivHelpers_8hpp.html#a746d04d7e9b2376e1435458038454a36", null ],
+    [ "getValidWorkDiv", "WorkDivHelpers_8hpp.html#a9b58df2ac2118e42f6690194aeaa0b61", null ],
+    [ "isValidWorkDiv", "WorkDivHelpers_8hpp.html#ad8a3f6a58910f715e46a8348da258e9f", null ],
+    [ "nextDivisorLowerOrEqual", "WorkDivHelpers_8hpp.html#a529677cf332fcf2c611d933d6007047f", null ],
+    [ "subDivideGridThreads", "WorkDivHelpers_8hpp.html#aff63236dbe85a33ede3269211772d23b", null ]
 ];

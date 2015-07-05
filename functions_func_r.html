@@ -82,7 +82,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li class="current"><a href="functions_func.html"><span>Functions</span></a></li>
       <li><a href="functions_vars.html"><span>Variables</span></a></li>
       <li><a href="functions_type.html"><span>Typedefs</span></a></li>
-      <li><a href="functions_eval.html"><span>Enumerator</span></a></li>
       <li><a href="functions_rela.html"><span>Related&#160;Functions</span></a></li>
     </ul>
   </div>
@@ -96,6 +95,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions_func_f.html#index_f"><span>f</span></a></li>
       <li><a href="functions_func_g.html#index_g"><span>g</span></a></li>
       <li><a href="functions_func_i.html#index_i"><span>i</span></a></li>
+      <li><a href="functions_func_l.html#index_l"><span>l</span></a></li>
       <li><a href="functions_func_m.html#index_m"><span>m</span></a></li>
       <li><a href="functions_func_n.html#index_n"><span>n</span></a></li>
       <li><a href="functions_func_o.html#index_o"><span>o</span></a></li>
@@ -107,7 +107,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions_func_v.html#index_v"><span>v</span></a></li>
       <li><a href="functions_func_w.html#index_w"><span>w</span></a></li>
       <li><a href="functions_func_x.html#index_x"><span>x</span></a></li>
-      <li><a href="functions_func_y.html#index_y"><span>y</span></a></li>
       <li><a href="functions_func_z.html#index_z"><span>z</span></a></li>
       <li><a href="functions_func_~.html#index_~"><span>~</span></a></li>
     </ul>
@@ -145,11 +144,26 @@ $(document).ready(function(){initNavTree('functions_func_r.html','');});
 &#160;
 
 <h3><a class="anchor" id="index_r"></a>- r -</h3><ul>
+<li>remainder()
+: <a class="el" href="structalpaka_1_1math_1_1traits_1_1Remainder_3_01RemainderCudaBuiltIn_00_01TArg_00_01typename_01s44616c0535ae551699aea67984b61bb5.html#a6aede466c175b275933dc268d7ed1ae5">alpaka::math::traits::Remainder&lt; RemainderCudaBuiltIn, TArg, typename std::enable_if&lt; std::is_floating_point&lt; TArg &gt;::value &gt;::type &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1traits_1_1Remainder_3_01RemainderStl_00_01Tx_00_01Ty_00_01typename_01stdaeea600c336a3be504100b01daf433d3.html#a5b6300e70e239a6b4f967c6dae69b632">alpaka::math::traits::Remainder&lt; RemainderStl, Tx, Ty, typename std::enable_if&lt; std::is_integral&lt; Tx &gt;::value &amp;&amp;std::is_integral&lt; Ty &gt;::value &gt;::type &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1traits_1_1Remainder_3_01T_00_01Tx_00_01Ty_00_01typename_01std_1_1enable_9024febc11a44be315a88376c8a66949.html#a4a2b0d21369df9d73a0e7704daf08a2d">alpaka::math::traits::Remainder&lt; T, Tx, Ty, typename std::enable_if&lt; std::is_base_of&lt; typename T::RemainderBase, typename std::decay&lt; T &gt;::type &gt;::value &amp;&amp;(!std::is_same&lt; typename T::RemainderBase, typename std::decay&lt; T &gt;::type &gt;::value)&gt;::type &gt;</a>
+</li>
 <li>reset()
-: <a class="el" href="classalpaka_1_1accs_1_1fibers_1_1detail_1_1FiberBarrier.html#a29caf890e8af8fc4eb6137f52e952ccb">alpaka::accs::fibers::detail::FiberBarrier</a>
-, <a class="el" href="classalpaka_1_1accs_1_1threads_1_1detail_1_1ThreadBarrier.html#a79ad44ffafbc04e8bc31210c4cfd2615">alpaka::accs::threads::detail::ThreadBarrier</a>
-, <a class="el" href="structalpaka_1_1traits_1_1dev_1_1Reset_3_01devs_1_1cpu_1_1DevCpu_01_4.html#ab531413b2b282eb20d54d19a8a99e905">alpaka::traits::dev::Reset&lt; devs::cpu::DevCpu &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1dev_1_1Reset_3_01devs_1_1cuda_1_1DevCuda_01_4.html#a10753592a8de269367b721bd76f9ff6e">alpaka::traits::dev::Reset&lt; devs::cuda::DevCuda &gt;</a>
+: <a class="el" href="classalpaka_1_1acc_1_1fibers_1_1FiberBarrier.html#aca9140fc4e16e9c5d0ec53d912959f77">alpaka::acc::fibers::FiberBarrier&lt; TSize &gt;</a>
+, <a class="el" href="classalpaka_1_1acc_1_1threads_1_1ThreadBarrier.html#a0bae4736aaaf34c2c383ff5724c05c47">alpaka::acc::threads::ThreadBarrier&lt; TSize &gt;</a>
+, <a class="el" href="structalpaka_1_1dev_1_1traits_1_1Reset_3_01dev_1_1DevCpu_01_4.html#a52585233bf120aa90d441e37eff01193">alpaka::dev::traits::Reset&lt; dev::DevCpu &gt;</a>
+, <a class="el" href="structalpaka_1_1dev_1_1traits_1_1Reset_3_01dev_1_1DevCudaRt_01_4.html#a531283b8a9182e633a073b44aa24ee26">alpaka::dev::traits::Reset&lt; dev::DevCudaRt &gt;</a>
+</li>
+<li>round()
+: <a class="el" href="structalpaka_1_1math_1_1traits_1_1Round_3_01RoundCudaBuiltIn_00_01TArg_00_01typename_01std_1_1en9dda70da7d764bbc67907ee723ee3d65.html#a16df99618ea0b99592c8832bc211230c">alpaka::math::traits::Round&lt; RoundCudaBuiltIn, TArg, typename std::enable_if&lt; std::is_floating_point&lt; TArg &gt;::value &gt;::type &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1traits_1_1Round_3_01RoundStl_00_01TArg_00_01typename_01std_1_1enable__if132be0453b349a626c92733ae02439e1.html#a9d23def6daa76b9c85f5c6bf089a77b3">alpaka::math::traits::Round&lt; RoundStl, TArg, typename std::enable_if&lt; std::is_arithmetic&lt; TArg &gt;::value &gt;::type &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1traits_1_1Round_3_01T_00_01TArg_00_01typename_01std_1_1enable__if_3_01st7a133ad8bb4694204772580e7452c6b8.html#ac5588968f20fd042e69eafd5a2b2f167">alpaka::math::traits::Round&lt; T, TArg, typename std::enable_if&lt; std::is_base_of&lt; typename T::RoundBase, typename std::decay&lt; T &gt;::type &gt;::value &amp;&amp;(!std::is_same&lt; typename T::RoundBase, typename std::decay&lt; T &gt;::type &gt;::value)&gt;::type &gt;</a>
+</li>
+<li>rsqrt()
+: <a class="el" href="structalpaka_1_1math_1_1traits_1_1Rsqrt_3_01RsqrtCudaBuiltIn_00_01TArg_00_01typename_01std_1_1en22f0cad6857759c184dd6c5e2b18da8f.html#a6840d890bf9017fc8413d9ecd33b4d6d">alpaka::math::traits::Rsqrt&lt; RsqrtCudaBuiltIn, TArg, typename std::enable_if&lt; std::is_arithmetic&lt; TArg &gt;::value &gt;::type &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1traits_1_1Rsqrt_3_01RsqrtStl_00_01TArg_00_01typename_01std_1_1enable__ifaf9176836a6393cfb64d36eed3a7e189.html#a6163b2217d7ca0d7f15964cf33ca9ff1">alpaka::math::traits::Rsqrt&lt; RsqrtStl, TArg, typename std::enable_if&lt; std::is_arithmetic&lt; TArg &gt;::value &gt;::type &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1traits_1_1Rsqrt_3_01T_00_01TArg_00_01typename_01std_1_1enable__if_3_01st08f95e995d0cf61c907fe6083c738744.html#a482eab3ba3c0a51638ac2107bf184062">alpaka::math::traits::Rsqrt&lt; T, TArg, typename std::enable_if&lt; std::is_base_of&lt; typename T::RsqrtBase, typename std::decay&lt; T &gt;::type &gt;::value &amp;&amp;(!std::is_same&lt; typename T::RsqrtBase, typename std::decay&lt; T &gt;::type &gt;::value)&gt;::type &gt;</a>
 </li>
 <li>runTask()
 : <a class="el" href="classalpaka_1_1detail_1_1ITaskPkg.html#a8ec466548e782fa2ff343bff9d83a563">alpaka::detail::ITaskPkg</a>
@@ -160,7 +174,7 @@ $(document).ready(function(){initNavTree('functions_func_r.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat May 23 2015 14:48:36 for alpaka by
+    <li class="footer">Generated on Sun Jul 5 2015 17:25:52 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

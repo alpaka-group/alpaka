@@ -113,194 +113,197 @@ $(document).ready(function(){initNavTree('namespacealpaka_1_1offset.html','');})
 </div><!--header-->
 <div class="contents">
 
-<p>The offset trait accessors.  
+<p>The offset specifics.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacealpaka_1_1offset_1_1detail"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1offset_1_1detail.html">detail</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacealpaka_1_1offset_1_1traits"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1offset_1_1traits.html">traits</a></td></tr>
+<tr class="memdesc:namespacealpaka_1_1offset_1_1traits"><td class="mdescLeft">&#160;</td><td class="mdescRight">The offset traits. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a61854eef9353aec5f807228380e789a8"><td class="memTemplParams" colspan="2">template&lt;UInt TuiIdx, typename TVal , typename TOffsets &gt; </td></tr>
-<tr class="memitem:a61854eef9353aec5f807228380e789a8"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1offset.html#a61854eef9353aec5f807228380e789a8">getOffset</a> (TOffsets const &amp;offsets) -&gt; TVal</td></tr>
-<tr class="separator:a61854eef9353aec5f807228380e789a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a18170cb3ef72f97241c614918a0e8440"><td class="memTemplParams" colspan="2">template&lt;typename TVal , typename TOffsets &gt; </td></tr>
-<tr class="memitem:a18170cb3ef72f97241c614918a0e8440"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1offset.html#a18170cb3ef72f97241c614918a0e8440">getOffsetsVec</a> (TOffsets const &amp;offsets=TOffsets()) -&gt; decltype(<a class="el" href="namespacealpaka_1_1offset.html#a8f0551fe7dd7969448402517cdea28d8">getOffsetsVecNd</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#a3cd5c34a55999be55481237289ef4737">dim::DimT</a>&lt; TOffsets &gt;, TVal &gt;(offsets))</td></tr>
-<tr class="separator:a18170cb3ef72f97241c614918a0e8440"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f0551fe7dd7969448402517cdea28d8"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TVal , typename TOffsets &gt; </td></tr>
-<tr class="memitem:a8f0551fe7dd7969448402517cdea28d8"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1offset.html#a8f0551fe7dd7969448402517cdea28d8">getOffsetsVecNd</a> (TOffsets const &amp;offsets=TOffsets()) -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#a39323e2b42723a0275c03f9a68e6d830">dim::Dim</a>&lt; TDim::value &gt;, TVal &gt;</td></tr>
-<tr class="separator:a8f0551fe7dd7969448402517cdea28d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac8b89c594d1236fa39dfb0c287f894e2"><td class="memTemplParams" colspan="2">template&lt;typename TVal , typename TOffsets &gt; </td></tr>
-<tr class="memitem:ac8b89c594d1236fa39dfb0c287f894e2"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1offset.html#ac8b89c594d1236fa39dfb0c287f894e2">getOffsetX</a> (TOffsets const &amp;offsets=TOffsets()) -&gt; decltype(<a class="el" href="namespacealpaka_1_1offset.html#a61854eef9353aec5f807228380e789a8">getOffset</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#a3cd5c34a55999be55481237289ef4737">dim::DimT</a>&lt; TOffsets &gt;::value-1u, TVal &gt;(offsets))</td></tr>
-<tr class="separator:ac8b89c594d1236fa39dfb0c287f894e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c55eaa8319a9517eef9df6c71f4bf31"><td class="memTemplParams" colspan="2">template&lt;typename TVal , typename TOffsets &gt; </td></tr>
-<tr class="memitem:a9c55eaa8319a9517eef9df6c71f4bf31"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1offset.html#a9c55eaa8319a9517eef9df6c71f4bf31">getOffsetY</a> (TOffsets const &amp;offsets=TOffsets()) -&gt; decltype(<a class="el" href="namespacealpaka_1_1offset.html#a61854eef9353aec5f807228380e789a8">getOffset</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#a3cd5c34a55999be55481237289ef4737">dim::DimT</a>&lt; TOffsets &gt;::value-2u, TVal &gt;(offsets))</td></tr>
-<tr class="separator:a9c55eaa8319a9517eef9df6c71f4bf31"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a448957e8b2012c318e7c3ea41e23a1c6"><td class="memTemplParams" colspan="2">template&lt;typename TVal , typename TOffsets &gt; </td></tr>
-<tr class="memitem:a448957e8b2012c318e7c3ea41e23a1c6"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1offset.html#a448957e8b2012c318e7c3ea41e23a1c6">getOffsetZ</a> (TOffsets const &amp;offsets=TOffsets()) -&gt; decltype(<a class="el" href="namespacealpaka_1_1offset.html#a61854eef9353aec5f807228380e789a8">getOffset</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#a3cd5c34a55999be55481237289ef4737">dim::DimT</a>&lt; TOffsets &gt;::value-3u, TVal &gt;(offsets))</td></tr>
-<tr class="separator:a448957e8b2012c318e7c3ea41e23a1c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9bc6103755a30beaf846697de20a1230"><td class="memTemplParams" colspan="2">template&lt;UInt TuiIdx, typename TOffsets , typename TVal &gt; </td></tr>
-<tr class="memitem:a9bc6103755a30beaf846697de20a1230"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1offset.html#a9bc6103755a30beaf846697de20a1230">setOffset</a> (TOffsets const &amp;offsets, TVal const &amp;offset) -&gt; void</td></tr>
-<tr class="memdesc:a9bc6103755a30beaf846697de20a1230"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the offset in the given dimension.  <a href="#a9bc6103755a30beaf846697de20a1230">More...</a><br /></td></tr>
-<tr class="separator:a9bc6103755a30beaf846697de20a1230"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aedd22edf6725fe2ba668d2a32da3d270"><td class="memTemplParams" colspan="2">template&lt;typename TOffsets , typename TVal &gt; </td></tr>
-<tr class="memitem:aedd22edf6725fe2ba668d2a32da3d270"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1offset.html#aedd22edf6725fe2ba668d2a32da3d270">setOffsetX</a> (TOffsets const &amp;offsets, TVal const &amp;offset) -&gt; void</td></tr>
-<tr class="memdesc:aedd22edf6725fe2ba668d2a32da3d270"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the offset in x dimension.  <a href="#aedd22edf6725fe2ba668d2a32da3d270">More...</a><br /></td></tr>
-<tr class="separator:aedd22edf6725fe2ba668d2a32da3d270"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a99bb7e01e975bdcca0cbaf4de37445cb"><td class="memTemplParams" colspan="2">template&lt;typename TOffsets , typename TVal &gt; </td></tr>
-<tr class="memitem:a99bb7e01e975bdcca0cbaf4de37445cb"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1offset.html#a99bb7e01e975bdcca0cbaf4de37445cb">setOffsetY</a> (TOffsets const &amp;offsets, TVal const &amp;offset) -&gt; void</td></tr>
-<tr class="memdesc:a99bb7e01e975bdcca0cbaf4de37445cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the offset in y dimension.  <a href="#a99bb7e01e975bdcca0cbaf4de37445cb">More...</a><br /></td></tr>
-<tr class="separator:a99bb7e01e975bdcca0cbaf4de37445cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac70a1a193c73af64f8d18f4db19f52c6"><td class="memTemplParams" colspan="2">template&lt;typename TOffsets , typename TVal &gt; </td></tr>
-<tr class="memitem:ac70a1a193c73af64f8d18f4db19f52c6"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1offset.html#ac70a1a193c73af64f8d18f4db19f52c6">setOffsetZ</a> (TOffsets const &amp;offsets, TVal const &amp;offset) -&gt; void</td></tr>
-<tr class="memdesc:ac70a1a193c73af64f8d18f4db19f52c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the offset in z dimension.  <a href="#ac70a1a193c73af64f8d18f4db19f52c6">More...</a><br /></td></tr>
-<tr class="separator:ac70a1a193c73af64f8d18f4db19f52c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61cde9732258b34444e161d938922624"><td class="memTemplParams" colspan="2">template&lt;std::size_t TuiIdx, typename TOffsets &gt; </td></tr>
+<tr class="memitem:a61cde9732258b34444e161d938922624"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1offset.html#a61cde9732258b34444e161d938922624">getOffset</a> (TOffsets const &amp;offsets) -&gt; <a class="el" href="namespacealpaka_1_1size.html#a943eb13b75c70a3ca34c383132339132">size::Size</a>&lt; TOffsets &gt;</td></tr>
+<tr class="separator:a61cde9732258b34444e161d938922624"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cb5a45b7f503d4fea8f15eb34fbffb5"><td class="memTemplParams" colspan="2">template&lt;typename TOffsets &gt; </td></tr>
+<tr class="memitem:a7cb5a45b7f503d4fea8f15eb34fbffb5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1offset.html#a7cb5a45b7f503d4fea8f15eb34fbffb5">getOffsetsVec</a> (TOffsets const &amp;offsets=TOffsets()) -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; <a class="el" href="namespacealpaka_1_1dim.html#aceb4451273503cd2e4933da45bd9e923">dim::Dim</a>&lt; TOffsets &gt;, <a class="el" href="namespacealpaka_1_1size.html#a943eb13b75c70a3ca34c383132339132">size::Size</a>&lt; TOffsets &gt;&gt;</td></tr>
+<tr class="separator:a7cb5a45b7f503d4fea8f15eb34fbffb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62d59d7f9ffa85290ab88c251fa7a9b6"><td class="memTemplParams" colspan="2">template&lt;typename TDim , typename TOffsets &gt; </td></tr>
+<tr class="memitem:a62d59d7f9ffa85290ab88c251fa7a9b6"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1offset.html#a62d59d7f9ffa85290ab88c251fa7a9b6">getOffsetsVecEnd</a> (TOffsets const &amp;offsets=TOffsets()) -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt; TDim, <a class="el" href="namespacealpaka_1_1size.html#a943eb13b75c70a3ca34c383132339132">size::Size</a>&lt; TOffsets &gt;&gt;</td></tr>
+<tr class="separator:a62d59d7f9ffa85290ab88c251fa7a9b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93927f5636d60291c082d7d72654881e"><td class="memTemplParams" colspan="2">template&lt;typename TOffsets &gt; </td></tr>
+<tr class="memitem:a93927f5636d60291c082d7d72654881e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1offset.html#a93927f5636d60291c082d7d72654881e">getOffsetX</a> (TOffsets const &amp;offsets=TOffsets()) -&gt; <a class="el" href="namespacealpaka_1_1size.html#a943eb13b75c70a3ca34c383132339132">size::Size</a>&lt; TOffsets &gt;</td></tr>
+<tr class="separator:a93927f5636d60291c082d7d72654881e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8e7280b423d45784f6b418061344130"><td class="memTemplParams" colspan="2">template&lt;typename TOffsets &gt; </td></tr>
+<tr class="memitem:ab8e7280b423d45784f6b418061344130"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1offset.html#ab8e7280b423d45784f6b418061344130">getOffsetY</a> (TOffsets const &amp;offsets=TOffsets()) -&gt; <a class="el" href="namespacealpaka_1_1size.html#a943eb13b75c70a3ca34c383132339132">size::Size</a>&lt; TOffsets &gt;</td></tr>
+<tr class="separator:ab8e7280b423d45784f6b418061344130"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85eba6e88b3603c25ac4dfa58f86e71d"><td class="memTemplParams" colspan="2">template&lt;typename TOffsets &gt; </td></tr>
+<tr class="memitem:a85eba6e88b3603c25ac4dfa58f86e71d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1offset.html#a85eba6e88b3603c25ac4dfa58f86e71d">getOffsetZ</a> (TOffsets const &amp;offsets=TOffsets()) -&gt; <a class="el" href="namespacealpaka_1_1size.html#a943eb13b75c70a3ca34c383132339132">size::Size</a>&lt; TOffsets &gt;</td></tr>
+<tr class="separator:a85eba6e88b3603c25ac4dfa58f86e71d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40471495621b836a67aa72d9afcad1ea"><td class="memTemplParams" colspan="2">template&lt;std::size_t TuiIdx, typename TOffsets , typename TOffset &gt; </td></tr>
+<tr class="memitem:a40471495621b836a67aa72d9afcad1ea"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1offset.html#a40471495621b836a67aa72d9afcad1ea">setOffset</a> (TOffsets const &amp;offsets, TOffset const &amp;offset) -&gt; void</td></tr>
+<tr class="memdesc:a40471495621b836a67aa72d9afcad1ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the offset in the given dimension.  <a href="#a40471495621b836a67aa72d9afcad1ea">More...</a><br /></td></tr>
+<tr class="separator:a40471495621b836a67aa72d9afcad1ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a913fc1aac4832da4c17c87757c1007b3"><td class="memTemplParams" colspan="2">template&lt;typename TOffsets , typename TOffset &gt; </td></tr>
+<tr class="memitem:a913fc1aac4832da4c17c87757c1007b3"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1offset.html#a913fc1aac4832da4c17c87757c1007b3">setOffsetX</a> (TOffsets const &amp;offsets, TOffset const &amp;offset) -&gt; void</td></tr>
+<tr class="memdesc:a913fc1aac4832da4c17c87757c1007b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the offset in x dimension.  <a href="#a913fc1aac4832da4c17c87757c1007b3">More...</a><br /></td></tr>
+<tr class="separator:a913fc1aac4832da4c17c87757c1007b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0062c11c487443af3007d74624f59a7"><td class="memTemplParams" colspan="2">template&lt;typename TOffsets , typename TOffset &gt; </td></tr>
+<tr class="memitem:ad0062c11c487443af3007d74624f59a7"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1offset.html#ad0062c11c487443af3007d74624f59a7">setOffsetY</a> (TOffsets const &amp;offsets, TOffset const &amp;offset) -&gt; void</td></tr>
+<tr class="memdesc:ad0062c11c487443af3007d74624f59a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the offset in y dimension.  <a href="#ad0062c11c487443af3007d74624f59a7">More...</a><br /></td></tr>
+<tr class="separator:ad0062c11c487443af3007d74624f59a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6cf0f10ef93b71e42b41d56bf8767724"><td class="memTemplParams" colspan="2">template&lt;typename TOffsets , typename TOffset &gt; </td></tr>
+<tr class="memitem:a6cf0f10ef93b71e42b41d56bf8767724"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1offset.html#a6cf0f10ef93b71e42b41d56bf8767724">setOffsetZ</a> (TOffsets const &amp;offsets, TOffset const &amp;offset) -&gt; void</td></tr>
+<tr class="memdesc:a6cf0f10ef93b71e42b41d56bf8767724"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the offset in z dimension.  <a href="#a6cf0f10ef93b71e42b41d56bf8767724">More...</a><br /></td></tr>
+<tr class="separator:a6cf0f10ef93b71e42b41d56bf8767724"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>The offset trait accessors. </p>
+<div class="textblock"><p>The offset specifics. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="a61854eef9353aec5f807228380e789a8"></a>
+<a class="anchor" id="a61cde9732258b34444e161d938922624"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;UInt TuiIdx, typename TVal , typename TOffsets &gt; </div>
+template&lt;std::size_t TuiIdx, typename TOffsets &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto alpaka::offset::getOffset </td>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::offset::getOffset </td>
           <td>(</td>
           <td class="paramtype">TOffsets const &amp;&#160;</td>
           <td class="paramname"><em>offsets</em></td><td>)</td>
-          <td> -&gt; TVal
+          <td> -&gt; <a class="el" href="namespacealpaka_1_1size.html#a943eb13b75c70a3ca34c383132339132">size::Size</a>&lt;TOffsets&gt;
         </td>
         </tr>
       </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The offset in the given dimension. </dd></dl>
 
-<p>Definition at line <a class="el" href="Offset_8hpp_source.html#l00079">79</a> of file <a class="el" href="Offset_8hpp_source.html">Offset.hpp</a>.</p>
+<p>Definition at line <a class="el" href="offset_2Traits_8hpp_source.html#l00080">80</a> of file <a class="el" href="offset_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a18170cb3ef72f97241c614918a0e8440"></a>
+<a class="anchor" id="a7cb5a45b7f503d4fea8f15eb34fbffb5"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TVal , typename TOffsets &gt; </div>
+template&lt;typename TOffsets &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto alpaka::offset::getOffsetsVec </td>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::offset::getOffsetsVec </td>
           <td>(</td>
           <td class="paramtype">TOffsets const &amp;&#160;</td>
           <td class="paramname"><em>offsets</em> = <code>TOffsets()</code></td><td>)</td>
-          <td> -&gt; decltype(<a class="el" href="namespacealpaka_1_1offset.html#a8f0551fe7dd7969448402517cdea28d8">getOffsetsVecNd</a>&lt;<a class="el" href="namespacealpaka_1_1dim.html#a3cd5c34a55999be55481237289ef4737">dim::DimT</a>&lt;TOffsets&gt;, TVal&gt;(offsets))
+          <td> -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;<a class="el" href="namespacealpaka_1_1dim.html#aceb4451273503cd2e4933da45bd9e923">dim::Dim</a>&lt;TOffsets&gt;, <a class="el" href="namespacealpaka_1_1size.html#a943eb13b75c70a3ca34c383132339132">size::Size</a>&lt;TOffsets&gt;&gt;
         </td>
         </tr>
       </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The offsets. </dd></dl>
 
-<p>Definition at line <a class="el" href="Vec_8hpp_source.html#l00664">664</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p>Definition at line <a class="el" href="Vec_8hpp_source.html#l00955">955</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a8f0551fe7dd7969448402517cdea28d8"></a>
+<a class="anchor" id="a62d59d7f9ffa85290ab88c251fa7a9b6"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TDim , typename TVal , typename TOffsets &gt; </div>
+template&lt;typename TDim , typename TOffsets &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto alpaka::offset::getOffsetsVecNd </td>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::offset::getOffsetsVecEnd </td>
           <td>(</td>
           <td class="paramtype">TOffsets const &amp;&#160;</td>
           <td class="paramname"><em>offsets</em> = <code>TOffsets()</code></td><td>)</td>
-          <td> -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;<a class="el" href="namespacealpaka_1_1dim.html#a39323e2b42723a0275c03f9a68e6d830">dim::Dim</a>&lt;TDim::value&gt;, TVal&gt;
+          <td> -&gt; <a class="el" href="classalpaka_1_1Vec.html">Vec</a>&lt;TDim, <a class="el" href="namespacealpaka_1_1size.html#a943eb13b75c70a3ca34c383132339132">size::Size</a>&lt;TOffsets&gt;&gt;
         </td>
         </tr>
       </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The offsets vector but only the last N elements. </dd></dl>
 
-<p>Definition at line <a class="el" href="Vec_8hpp_source.html#l00644">644</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
+<p>Definition at line <a class="el" href="Vec_8hpp_source.html#l00977">977</a> of file <a class="el" href="Vec_8hpp_source.html">Vec.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ac8b89c594d1236fa39dfb0c287f894e2"></a>
+<a class="anchor" id="a93927f5636d60291c082d7d72654881e"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TVal , typename TOffsets &gt; </div>
+template&lt;typename TOffsets &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto alpaka::offset::getOffsetX </td>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::offset::getOffsetX </td>
           <td>(</td>
           <td class="paramtype">TOffsets const &amp;&#160;</td>
           <td class="paramname"><em>offsets</em> = <code>TOffsets()</code></td><td>)</td>
-          <td> -&gt; decltype(<a class="el" href="namespacealpaka_1_1offset.html#a61854eef9353aec5f807228380e789a8">getOffset</a>&lt;<a class="el" href="namespacealpaka_1_1dim.html#a3cd5c34a55999be55481237289ef4737">dim::DimT</a>&lt;TOffsets&gt;::value - 1u, TVal&gt;(offsets))
+          <td> -&gt; <a class="el" href="namespacealpaka_1_1size.html#a943eb13b75c70a3ca34c383132339132">size::Size</a>&lt;TOffsets&gt;
         </td>
         </tr>
       </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The offset in x dimension. </dd></dl>
 
-<p>Definition at line <a class="el" href="Offset_8hpp_source.html#l00097">97</a> of file <a class="el" href="Offset_8hpp_source.html">Offset.hpp</a>.</p>
+<p>Definition at line <a class="el" href="offset_2Traits_8hpp_source.html#l00097">97</a> of file <a class="el" href="offset_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a9c55eaa8319a9517eef9df6c71f4bf31"></a>
+<a class="anchor" id="ab8e7280b423d45784f6b418061344130"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TVal , typename TOffsets &gt; </div>
+template&lt;typename TOffsets &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto alpaka::offset::getOffsetY </td>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::offset::getOffsetY </td>
           <td>(</td>
           <td class="paramtype">TOffsets const &amp;&#160;</td>
           <td class="paramname"><em>offsets</em> = <code>TOffsets()</code></td><td>)</td>
-          <td> -&gt; decltype(<a class="el" href="namespacealpaka_1_1offset.html#a61854eef9353aec5f807228380e789a8">getOffset</a>&lt;<a class="el" href="namespacealpaka_1_1dim.html#a3cd5c34a55999be55481237289ef4737">dim::DimT</a>&lt;TOffsets&gt;::value - 2u, TVal&gt;(offsets))
+          <td> -&gt; <a class="el" href="namespacealpaka_1_1size.html#a943eb13b75c70a3ca34c383132339132">size::Size</a>&lt;TOffsets&gt;
         </td>
         </tr>
       </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The offset in y dimension. </dd></dl>
 
-<p>Definition at line <a class="el" href="Offset_8hpp_source.html#l00109">109</a> of file <a class="el" href="Offset_8hpp_source.html">Offset.hpp</a>.</p>
+<p>Definition at line <a class="el" href="offset_2Traits_8hpp_source.html#l00109">109</a> of file <a class="el" href="offset_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a448957e8b2012c318e7c3ea41e23a1c6"></a>
+<a class="anchor" id="a85eba6e88b3603c25ac4dfa58f86e71d"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TVal , typename TOffsets &gt; </div>
+template&lt;typename TOffsets &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto alpaka::offset::getOffsetZ </td>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::offset::getOffsetZ </td>
           <td>(</td>
           <td class="paramtype">TOffsets const &amp;&#160;</td>
           <td class="paramname"><em>offsets</em> = <code>TOffsets()</code></td><td>)</td>
-          <td> -&gt; decltype(<a class="el" href="namespacealpaka_1_1offset.html#a61854eef9353aec5f807228380e789a8">getOffset</a>&lt;<a class="el" href="namespacealpaka_1_1dim.html#a3cd5c34a55999be55481237289ef4737">dim::DimT</a>&lt;TOffsets&gt;::value - 3u, TVal&gt;(offsets))
+          <td> -&gt; <a class="el" href="namespacealpaka_1_1size.html#a943eb13b75c70a3ca34c383132339132">size::Size</a>&lt;TOffsets&gt;
         </td>
         </tr>
       </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The offset in z dimension. </dd></dl>
 
-<p>Definition at line <a class="el" href="Offset_8hpp_source.html#l00121">121</a> of file <a class="el" href="Offset_8hpp_source.html">Offset.hpp</a>.</p>
+<p>Definition at line <a class="el" href="offset_2Traits_8hpp_source.html#l00121">121</a> of file <a class="el" href="offset_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a9bc6103755a30beaf846697de20a1230"></a>
+<a class="anchor" id="a40471495621b836a67aa72d9afcad1ea"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;UInt TuiIdx, typename TOffsets , typename TVal &gt; </div>
+template&lt;std::size_t TuiIdx, typename TOffsets , typename TOffset &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto alpaka::offset::setOffset </td>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::offset::setOffset </td>
           <td>(</td>
           <td class="paramtype">TOffsets const &amp;&#160;</td>
           <td class="paramname"><em>offsets</em>, </td>
@@ -308,7 +311,7 @@ template&lt;UInt TuiIdx, typename TOffsets , typename TVal &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">TVal const &amp;&#160;</td>
+          <td class="paramtype">TOffset const &amp;&#160;</td>
           <td class="paramname"><em>offset</em>&#160;</td>
         </tr>
         <tr>
@@ -322,18 +325,18 @@ template&lt;UInt TuiIdx, typename TOffsets , typename TVal &gt; </div>
 
 <p>Sets the offset in the given dimension. </p>
 
-<p>Definition at line <a class="el" href="Offset_8hpp_source.html#l00135">135</a> of file <a class="el" href="Offset_8hpp_source.html">Offset.hpp</a>.</p>
+<p>Definition at line <a class="el" href="offset_2Traits_8hpp_source.html#l00136">136</a> of file <a class="el" href="offset_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="aedd22edf6725fe2ba668d2a32da3d270"></a>
+<a class="anchor" id="a913fc1aac4832da4c17c87757c1007b3"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TOffsets , typename TVal &gt; </div>
+template&lt;typename TOffsets , typename TOffset &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto alpaka::offset::setOffsetX </td>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::offset::setOffsetX </td>
           <td>(</td>
           <td class="paramtype">TOffsets const &amp;&#160;</td>
           <td class="paramname"><em>offsets</em>, </td>
@@ -341,7 +344,7 @@ template&lt;typename TOffsets , typename TVal &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">TVal const &amp;&#160;</td>
+          <td class="paramtype">TOffset const &amp;&#160;</td>
           <td class="paramname"><em>offset</em>&#160;</td>
         </tr>
         <tr>
@@ -355,18 +358,18 @@ template&lt;typename TOffsets , typename TVal &gt; </div>
 
 <p>Sets the offset in x dimension. </p>
 
-<p>Definition at line <a class="el" href="Offset_8hpp_source.html#l00153">153</a> of file <a class="el" href="Offset_8hpp_source.html">Offset.hpp</a>.</p>
+<p>Definition at line <a class="el" href="offset_2Traits_8hpp_source.html#l00156">156</a> of file <a class="el" href="offset_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a99bb7e01e975bdcca0cbaf4de37445cb"></a>
+<a class="anchor" id="ad0062c11c487443af3007d74624f59a7"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TOffsets , typename TVal &gt; </div>
+template&lt;typename TOffsets , typename TOffset &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto alpaka::offset::setOffsetY </td>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::offset::setOffsetY </td>
           <td>(</td>
           <td class="paramtype">TOffsets const &amp;&#160;</td>
           <td class="paramname"><em>offsets</em>, </td>
@@ -374,7 +377,7 @@ template&lt;typename TOffsets , typename TVal &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">TVal const &amp;&#160;</td>
+          <td class="paramtype">TOffset const &amp;&#160;</td>
           <td class="paramname"><em>offset</em>&#160;</td>
         </tr>
         <tr>
@@ -388,18 +391,18 @@ template&lt;typename TOffsets , typename TVal &gt; </div>
 
 <p>Sets the offset in y dimension. </p>
 
-<p>Definition at line <a class="el" href="Offset_8hpp_source.html#l00166">166</a> of file <a class="el" href="Offset_8hpp_source.html">Offset.hpp</a>.</p>
+<p>Definition at line <a class="el" href="offset_2Traits_8hpp_source.html#l00170">170</a> of file <a class="el" href="offset_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ac70a1a193c73af64f8d18f4db19f52c6"></a>
+<a class="anchor" id="a6cf0f10ef93b71e42b41d56bf8767724"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TOffsets , typename TVal &gt; </div>
+template&lt;typename TOffsets , typename TOffset &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto alpaka::offset::setOffsetZ </td>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::offset::setOffsetZ </td>
           <td>(</td>
           <td class="paramtype">TOffsets const &amp;&#160;</td>
           <td class="paramname"><em>offsets</em>, </td>
@@ -407,7 +410,7 @@ template&lt;typename TOffsets , typename TVal &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">TVal const &amp;&#160;</td>
+          <td class="paramtype">TOffset const &amp;&#160;</td>
           <td class="paramname"><em>offset</em>&#160;</td>
         </tr>
         <tr>
@@ -421,7 +424,7 @@ template&lt;typename TOffsets , typename TVal &gt; </div>
 
 <p>Sets the offset in z dimension. </p>
 
-<p>Definition at line <a class="el" href="Offset_8hpp_source.html#l00179">179</a> of file <a class="el" href="Offset_8hpp_source.html">Offset.hpp</a>.</p>
+<p>Definition at line <a class="el" href="offset_2Traits_8hpp_source.html#l00184">184</a> of file <a class="el" href="offset_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -431,7 +434,7 @@ template&lt;typename TOffsets , typename TVal &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1offset.html">offset</a></li>
-    <li class="footer">Generated on Sat May 23 2015 14:48:28 for alpaka by
+    <li class="footer">Generated on Sun Jul 5 2015 17:25:48 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

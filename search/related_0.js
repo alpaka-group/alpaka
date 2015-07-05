@@ -1,8 +1,9 @@
 var searchData=
 [
-  ['execcpufibers_3c_20tdim_20_3e',['ExecCpuFibers&lt; TDim &gt;',['../classalpaka_1_1accs_1_1fibers_1_1detail_1_1AccCpuFibers.html#ad74bb655c0c1a48198d2c1e80d02827f',1,'alpaka::accs::fibers::detail::AccCpuFibers']]],
-  ['execcpuomp2_3c_20tdim_20_3e',['ExecCpuOmp2&lt; TDim &gt;',['../classalpaka_1_1accs_1_1omp_1_1omp2_1_1detail_1_1AccCpuOmp2.html#a5eee439c6ea0a84f216500e21aefcf40',1,'alpaka::accs::omp::omp2::detail::AccCpuOmp2']]],
-  ['execcpuomp4_3c_20tdim_20_3e',['ExecCpuOmp4&lt; TDim &gt;',['../classalpaka_1_1accs_1_1omp_1_1omp4_1_1cpu_1_1detail_1_1AccCpuOmp4.html#a9c91f5eacdbb1c8606c153f3c1845c37',1,'alpaka::accs::omp::omp4::cpu::detail::AccCpuOmp4']]],
-  ['execcpuserial_3c_20tdim_20_3e',['ExecCpuSerial&lt; TDim &gt;',['../classalpaka_1_1accs_1_1serial_1_1detail_1_1AccCpuSerial.html#a6f433ac0c92faa454fe102d383181d69',1,'alpaka::accs::serial::detail::AccCpuSerial']]],
-  ['execcputhreads_3c_20tdim_20_3e',['ExecCpuThreads&lt; TDim &gt;',['../classalpaka_1_1accs_1_1threads_1_1detail_1_1AccCpuThreads.html#a1e2d4bd988a1e77b14fa4daed7a1193d',1,'alpaka::accs::threads::detail::AccCpuThreads']]]
+  ['execcpufibersimpl_3c_20tdim_2c_20tsize_20_3e',['ExecCpuFibersImpl&lt; TDim, TSize &gt;',['../classalpaka_1_1acc_1_1fibers_1_1detail_1_1AccCpuFibers.html#a4d98bbc9aaa8e6025128833e39116ed3',1,'alpaka::acc::fibers::detail::AccCpuFibers']]],
+  ['execcpuomp2blocksimpl_3c_20tdim_2c_20tsize_20_3e',['ExecCpuOmp2BlocksImpl&lt; TDim, TSize &gt;',['../classalpaka_1_1acc_1_1omp_1_1omp2_1_1blocks_1_1detail_1_1AccCpuOmp2Blocks.html#a177d9bfdb44670b193bebc83401c4842',1,'alpaka::acc::omp::omp2::blocks::detail::AccCpuOmp2Blocks']]],
+  ['execcpuomp2threadsimpl_3c_20tdim_2c_20tsize_20_3e',['ExecCpuOmp2ThreadsImpl&lt; TDim, TSize &gt;',['../classalpaka_1_1acc_1_1omp_1_1omp2_1_1threads_1_1detail_1_1AccCpuOmp2Threads.html#ad23d4efa8c2760f6ccd32a9232c1d32f',1,'alpaka::acc::omp::omp2::threads::detail::AccCpuOmp2Threads']]],
+  ['execcpuomp4impl_3c_20tdim_2c_20tsize_20_3e',['ExecCpuOmp4Impl&lt; TDim, TSize &gt;',['../classalpaka_1_1acc_1_1omp_1_1omp4_1_1cpu_1_1detail_1_1AccCpuOmp4.html#a9b16c88375070f9d5d068ca3c90b2e6d',1,'alpaka::acc::omp::omp4::cpu::detail::AccCpuOmp4']]],
+  ['execcpuserialimpl_3c_20tdim_2c_20tsize_20_3e',['ExecCpuSerialImpl&lt; TDim, TSize &gt;',['../classalpaka_1_1acc_1_1serial_1_1detail_1_1AccCpuSerial.html#a759450a372a0241e9cbbeb13fa9a64d0',1,'alpaka::acc::serial::detail::AccCpuSerial']]],
+  ['execcputhreadsimpl_3c_20tdim_2c_20tsize_20_3e',['ExecCpuThreadsImpl&lt; TDim, TSize &gt;',['../classalpaka_1_1acc_1_1threads_1_1detail_1_1AccCpuThreads.html#a3a01d04b7dedfec9133a057b7ae97693',1,'alpaka::acc::threads::detail::AccCpuThreads']]]
 ];

@@ -1,9 +1,0 @@
-var namespacealpaka_1_1traits_1_1workdiv =
-[
-    [ "GetWorkDiv", "structalpaka_1_1traits_1_1workdiv_1_1GetWorkDiv.html", null ],
-    [ "GetWorkDiv< accs::cuda::detail::WorkDivCuda< TDim >, origin::Block, unit::Threads >", "structalpaka_1_1traits_1_1workdiv_1_1GetWorkDiv_3_01accs_1_1cuda_1_1detail_1_1WorkDivCuda_3_01TDd80caa7aa0276d0cbc3887f1083a624e.html", "structalpaka_1_1traits_1_1workdiv_1_1GetWorkDiv_3_01accs_1_1cuda_1_1detail_1_1WorkDivCuda_3_01TDd80caa7aa0276d0cbc3887f1083a624e" ],
-    [ "GetWorkDiv< accs::cuda::detail::WorkDivCuda< TDim >, origin::Grid, unit::Blocks >", "structalpaka_1_1traits_1_1workdiv_1_1GetWorkDiv_3_01accs_1_1cuda_1_1detail_1_1WorkDivCuda_3_01TD6cd3a5e3c79eeb8ed62b8ebbb516cfae.html", "structalpaka_1_1traits_1_1workdiv_1_1GetWorkDiv_3_01accs_1_1cuda_1_1detail_1_1WorkDivCuda_3_01TD6cd3a5e3c79eeb8ed62b8ebbb516cfae" ],
-    [ "GetWorkDiv< alpaka::workdiv::BasicWorkDiv< TDim >, origin::Block, unit::Threads >", "structalpaka_1_1traits_1_1workdiv_1_1GetWorkDiv_3_01alpaka_1_1workdiv_1_1BasicWorkDiv_3_01TDim_08b6d22cc671ae5cf2bae03f6482582ee.html", "structalpaka_1_1traits_1_1workdiv_1_1GetWorkDiv_3_01alpaka_1_1workdiv_1_1BasicWorkDiv_3_01TDim_08b6d22cc671ae5cf2bae03f6482582ee" ],
-    [ "GetWorkDiv< alpaka::workdiv::BasicWorkDiv< TDim >, origin::Grid, unit::Blocks >", "structalpaka_1_1traits_1_1workdiv_1_1GetWorkDiv_3_01alpaka_1_1workdiv_1_1BasicWorkDiv_3_01TDim_0353568b349871dac2bd83d8c7306d92a.html", "structalpaka_1_1traits_1_1workdiv_1_1GetWorkDiv_3_01alpaka_1_1workdiv_1_1BasicWorkDiv_3_01TDim_0353568b349871dac2bd83d8c7306d92a" ],
-    [ "GetWorkDiv< TWorkDiv, origin::Grid, unit::Threads >", "structalpaka_1_1traits_1_1workdiv_1_1GetWorkDiv_3_01TWorkDiv_00_01origin_1_1Grid_00_01unit_1_1Threads_01_4.html", "structalpaka_1_1traits_1_1workdiv_1_1GetWorkDiv_3_01TWorkDiv_00_01origin_1_1Grid_00_01unit_1_1Threads_01_4" ]
-];

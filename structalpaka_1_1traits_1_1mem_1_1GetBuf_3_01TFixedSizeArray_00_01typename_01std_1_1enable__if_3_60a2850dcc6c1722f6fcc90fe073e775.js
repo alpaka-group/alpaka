@@ -1,5 +1,0 @@
-var structalpaka_1_1traits_1_1mem_1_1GetBuf_3_01TFixedSizeArray_00_01typename_01std_1_1enable__if_3_60a2850dcc6c1722f6fcc90fe073e775 =
-[
-    [ "getBuf", "structalpaka_1_1traits_1_1mem_1_1GetBuf_3_01TFixedSizeArray_00_01typename_01std_1_1enable__if_3_60a2850dcc6c1722f6fcc90fe073e775.html#ab66587d18445a081d38ad608c236104d", null ],
-    [ "getBuf", "structalpaka_1_1traits_1_1mem_1_1GetBuf_3_01TFixedSizeArray_00_01typename_01std_1_1enable__if_3_60a2850dcc6c1722f6fcc90fe073e775.html#aeb4bcd09f2221a25acb43513939b3f84", null ]
-];

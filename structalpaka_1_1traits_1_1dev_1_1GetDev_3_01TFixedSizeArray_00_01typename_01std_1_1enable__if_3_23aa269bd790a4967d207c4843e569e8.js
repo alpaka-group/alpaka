@@ -1,4 +1,0 @@
-var structalpaka_1_1traits_1_1dev_1_1GetDev_3_01TFixedSizeArray_00_01typename_01std_1_1enable__if_3_23aa269bd790a4967d207c4843e569e8 =
-[
-    [ "getDev", "structalpaka_1_1traits_1_1dev_1_1GetDev_3_01TFixedSizeArray_00_01typename_01std_1_1enable__if_3_23aa269bd790a4967d207c4843e569e8.html#aa6efdd18433eaabaeadc2fc5e4de0292", null ]
-];

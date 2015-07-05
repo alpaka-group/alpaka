@@ -1,0 +1,4 @@
+var structalpaka_1_1block_1_1shared_1_1traits_1_1AllocVar_3_01T_00_01TBlockSharedAlloc_00_01typename2b43bc36538249c6ded4d38556e720d7 =
+[
+    [ "allocVar", "structalpaka_1_1block_1_1shared_1_1traits_1_1AllocVar_3_01T_00_01TBlockSharedAlloc_00_01typename2b43bc36538249c6ded4d38556e720d7.html#a459e311f15b1d6c230516c00256c66ea", null ]
+];

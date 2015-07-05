@@ -82,7 +82,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li class="current"><a href="functions_func.html"><span>Functions</span></a></li>
       <li><a href="functions_vars.html"><span>Variables</span></a></li>
       <li><a href="functions_type.html"><span>Typedefs</span></a></li>
-      <li><a href="functions_eval.html"><span>Enumerator</span></a></li>
       <li><a href="functions_rela.html"><span>Related&#160;Functions</span></a></li>
     </ul>
   </div>
@@ -96,6 +95,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions_func_f.html#index_f"><span>f</span></a></li>
       <li><a href="functions_func_g.html#index_g"><span>g</span></a></li>
       <li><a href="functions_func_i.html#index_i"><span>i</span></a></li>
+      <li><a href="functions_func_l.html#index_l"><span>l</span></a></li>
       <li><a href="functions_func_m.html#index_m"><span>m</span></a></li>
       <li><a href="functions_func_n.html#index_n"><span>n</span></a></li>
       <li><a href="functions_func_o.html#index_o"><span>o</span></a></li>
@@ -107,7 +107,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions_func_v.html#index_v"><span>v</span></a></li>
       <li><a href="functions_func_w.html#index_w"><span>w</span></a></li>
       <li><a href="functions_func_x.html#index_x"><span>x</span></a></li>
-      <li><a href="functions_func_y.html#index_y"><span>y</span></a></li>
       <li><a href="functions_func_z.html#index_z"><span>z</span></a></li>
       <li><a href="functions_func_~.html#index_~"><span>~</span></a></li>
     </ul>
@@ -145,12 +144,22 @@ $(document).ready(function(){initNavTree('functions_func_t.html','');});
 &#160;
 
 <h3><a class="anchor" id="index_t"></a>- t -</h3><ul>
+<li>tan()
+: <a class="el" href="structalpaka_1_1math_1_1traits_1_1Tan_3_01T_00_01TArg_00_01typename_01std_1_1enable__if_3_01std_9c2c43990666d3fd0349e31c3dc56245.html#a2674888fd286e2cc9b0daf370a2acd47">alpaka::math::traits::Tan&lt; T, TArg, typename std::enable_if&lt; std::is_base_of&lt; typename T::TanBase, typename std::decay&lt; T &gt;::type &gt;::value &amp;&amp;(!std::is_same&lt; typename T::TanBase, typename std::decay&lt; T &gt;::type &gt;::value)&gt;::type &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1traits_1_1Tan_3_01TanCudaBuiltIn_00_01TArg_00_01typename_01std_1_1enable7a9640baad61b7f14abc6abe08cabaed.html#a3ce6aaff32e90dd4a1f6f1d55f818b9b">alpaka::math::traits::Tan&lt; TanCudaBuiltIn, TArg, typename std::enable_if&lt; std::is_floating_point&lt; TArg &gt;::value &gt;::type &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1traits_1_1Tan_3_01TanStl_00_01TArg_00_01typename_01std_1_1enable__if_3_03050bf5add1468a8c04ab2f27926b53a.html#a04fc337329671c7a1874194632408d83">alpaka::math::traits::Tan&lt; TanStl, TArg, typename std::enable_if&lt; std::is_arithmetic&lt; TArg &gt;::value &gt;::type &gt;</a>
+</li>
 <li>TaskPkg()
-: <a class="el" href="classalpaka_1_1detail_1_1TaskPkg.html#aa4e7e9320f7924d48602fe28c0a5f6f1">alpaka::detail::TaskPkg&lt; TPromise, TFunc, TFuncReturn &gt;</a>
-, <a class="el" href="classalpaka_1_1detail_1_1TaskPkg_3_01TPromise_00_01TFunc_00_01void_01_4.html#ad4810853c150b48b72fd0c86c0932500">alpaka::detail::TaskPkg&lt; TPromise, TFunc, void &gt;</a>
+: <a class="el" href="classalpaka_1_1detail_1_1TaskPkg.html#a58b746efa3d25ae91b03d3313ba02046">alpaka::detail::TaskPkg&lt; TPromise, TFnObj, TFnObjReturn &gt;</a>
+, <a class="el" href="classalpaka_1_1detail_1_1TaskPkg_3_01TPromise_00_01TFnObj_00_01void_01_4.html#a24882e61a6fc91a272efda955114ba41">alpaka::detail::TaskPkg&lt; TPromise, TFnObj, void &gt;</a>
 </li>
 <li>ThreadBarrier()
-: <a class="el" href="classalpaka_1_1accs_1_1threads_1_1detail_1_1ThreadBarrier.html#a57b421338a217ed2ca365769a4ce08ae">alpaka::accs::threads::detail::ThreadBarrier</a>
+: <a class="el" href="classalpaka_1_1acc_1_1threads_1_1ThreadBarrier.html#a335b2736088cb5c39bac792763f785c1">alpaka::acc::threads::ThreadBarrier&lt; TSize &gt;</a>
+</li>
+<li>trunc()
+: <a class="el" href="structalpaka_1_1math_1_1traits_1_1Trunc_3_01T_00_01TArg_00_01typename_01std_1_1enable__if_3_01st455fd71648f81c6181742115f4e62290.html#ad53d77b6701724a64d9c92a083f25402">alpaka::math::traits::Trunc&lt; T, TArg, typename std::enable_if&lt; std::is_base_of&lt; typename T::TruncBase, typename std::decay&lt; T &gt;::type &gt;::value &amp;&amp;(!std::is_same&lt; typename T::TruncBase, typename std::decay&lt; T &gt;::type &gt;::value)&gt;::type &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1traits_1_1Trunc_3_01TruncCudaBuiltIn_00_01TArg_00_01typename_01std_1_1en2db41213f7497899542622e26650d9e1.html#a5ded00aba4deb64af6ecf3ebb4f690e4">alpaka::math::traits::Trunc&lt; TruncCudaBuiltIn, TArg, typename std::enable_if&lt; std::is_floating_point&lt; TArg &gt;::value &gt;::type &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1traits_1_1Trunc_3_01TruncStl_00_01TArg_00_01typename_01std_1_1enable__ifa3e4e933dab10b864aab0fbf1075a4b2.html#a70532565e6ed66cabf963dcd16dbc71a">alpaka::math::traits::Trunc&lt; TruncStl, TArg, typename std::enable_if&lt; std::is_arithmetic&lt; TArg &gt;::value &gt;::type &gt;</a>
 </li>
 </ul>
 </div><!-- contents -->
@@ -158,7 +167,7 @@ $(document).ready(function(){initNavTree('functions_func_t.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat May 23 2015 14:48:36 for alpaka by
+    <li class="footer">Generated on Sun Jul 5 2015 17:25:52 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

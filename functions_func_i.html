@@ -82,7 +82,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li class="current"><a href="functions_func.html"><span>Functions</span></a></li>
       <li><a href="functions_vars.html"><span>Variables</span></a></li>
       <li><a href="functions_type.html"><span>Typedefs</span></a></li>
-      <li><a href="functions_eval.html"><span>Enumerator</span></a></li>
       <li><a href="functions_rela.html"><span>Related&#160;Functions</span></a></li>
     </ul>
   </div>
@@ -96,6 +95,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions_func_f.html#index_f"><span>f</span></a></li>
       <li><a href="functions_func_g.html#index_g"><span>g</span></a></li>
       <li class="current"><a href="functions_func_i.html#index_i"><span>i</span></a></li>
+      <li><a href="functions_func_l.html#index_l"><span>l</span></a></li>
       <li><a href="functions_func_m.html#index_m"><span>m</span></a></li>
       <li><a href="functions_func_n.html#index_n"><span>n</span></a></li>
       <li><a href="functions_func_o.html#index_o"><span>o</span></a></li>
@@ -107,7 +107,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions_func_v.html#index_v"><span>v</span></a></li>
       <li><a href="functions_func_w.html#index_w"><span>w</span></a></li>
       <li><a href="functions_func_x.html#index_x"><span>x</span></a></li>
-      <li><a href="functions_func_y.html#index_y"><span>y</span></a></li>
       <li><a href="functions_func_z.html#index_z"><span>z</span></a></li>
       <li><a href="functions_func_~.html#index_~"><span>~</span></a></li>
     </ul>
@@ -145,20 +144,35 @@ $(document).ready(function(){initNavTree('functions_func_i.html','');});
 &#160;
 
 <h3><a class="anchor" id="index_i"></a>- i -</h3><ul>
-<li>IdxCuda()
-: <a class="el" href="classalpaka_1_1accs_1_1cuda_1_1detail_1_1IdxCuda.html#a8c3468b93f12ba1ca2d27af0efeb94f2">alpaka::accs::cuda::detail::IdxCuda&lt; TDim &gt;</a>
+<li>IdxBtCudaBuiltIn()
+: <a class="el" href="classalpaka_1_1idx_1_1bt_1_1IdxBtCudaBuiltIn.html#a45701fc3a735fc9e6ae2ee6de460e65e">alpaka::idx::bt::IdxBtCudaBuiltIn&lt; TDim, TSize &gt;</a>
 </li>
-<li>IdxFibers()
-: <a class="el" href="classalpaka_1_1accs_1_1fibers_1_1detail_1_1IdxFibers.html#ad2d9bc9eb6056e8f0cb0372aca133490">alpaka::accs::fibers::detail::IdxFibers&lt; TDim &gt;</a>
+<li>IdxBtOmp()
+: <a class="el" href="classalpaka_1_1idx_1_1bt_1_1IdxBtOmp.html#af153f49a66635e72aa322d09cee2ad64">alpaka::idx::bt::IdxBtOmp&lt; TDim, TSize &gt;</a>
 </li>
-<li>IdxOmp()
-: <a class="el" href="classalpaka_1_1accs_1_1omp_1_1detail_1_1IdxOmp.html#ae2463023049fdc931f2ca3bcfc1ca9b4">alpaka::accs::omp::detail::IdxOmp&lt; TDim &gt;</a>
+<li>IdxBtRefFiberIdMap()
+: <a class="el" href="classalpaka_1_1idx_1_1bt_1_1IdxBtRefFiberIdMap.html#ac9d3dc04a336334be0ed3f161e8f6853">alpaka::idx::bt::IdxBtRefFiberIdMap&lt; TDim, TSize &gt;</a>
 </li>
-<li>IdxSerial()
-: <a class="el" href="classalpaka_1_1accs_1_1serial_1_1detail_1_1IdxSerial.html#a00fb7a54fdfe3276b2da9239910a04d8">alpaka::accs::serial::detail::IdxSerial&lt; TDim &gt;</a>
+<li>IdxBtRefThreadIdMap()
+: <a class="el" href="classalpaka_1_1idx_1_1bt_1_1IdxBtRefThreadIdMap.html#af21a674b033aa0d43bb0b471effc1b1e">alpaka::idx::bt::IdxBtRefThreadIdMap&lt; TDim, TSize &gt;</a>
 </li>
-<li>IdxThreads()
-: <a class="el" href="classalpaka_1_1accs_1_1threads_1_1detail_1_1IdxThreads.html#ab2e387e153b22b50fce273b93495b3cf">alpaka::accs::threads::detail::IdxThreads&lt; TDim &gt;</a>
+<li>IdxBtZero()
+: <a class="el" href="classalpaka_1_1idx_1_1bt_1_1IdxBtZero.html#abafc03d8187a2e36185716ae07c2caaf">alpaka::idx::bt::IdxBtZero&lt; TDim, TSize &gt;</a>
+</li>
+<li>IdxGbCudaBuiltIn()
+: <a class="el" href="classalpaka_1_1idx_1_1gb_1_1IdxGbCudaBuiltIn.html#a5aa3e7dc6a7dbc32f3792838a3705d4b">alpaka::idx::gb::IdxGbCudaBuiltIn&lt; TDim, TSize &gt;</a>
+</li>
+<li>IdxGbRef()
+: <a class="el" href="classalpaka_1_1idx_1_1gb_1_1IdxGbRef.html#a5b23fad3e085adb3e8641c359782aead">alpaka::idx::gb::IdxGbRef&lt; TDim, TSize &gt;</a>
+</li>
+<li>isPinned()
+: <a class="el" href="structalpaka_1_1mem_1_1buf_1_1traits_1_1IsPinned_3_01mem_1_1buf_1_1BufCpu_3_01TElem_00_01TDim_00_01TSize_01_4_01_4.html#aad2a2affffd9e89d9a6bf7d2f0d72c01">alpaka::mem::buf::traits::IsPinned&lt; mem::buf::BufCpu&lt; TElem, TDim, TSize &gt; &gt;</a>
+, <a class="el" href="structalpaka_1_1mem_1_1buf_1_1traits_1_1IsPinned_3_01mem_1_1buf_1_1BufCudaRt_3_01TElem_00_01TDim_00_01TSize_01_4_01_4.html#abf4cb1b39195608bd352b95be7cd446a">alpaka::mem::buf::traits::IsPinned&lt; mem::buf::BufCudaRt&lt; TElem, TDim, TSize &gt; &gt;</a>
+, <a class="el" href="structalpaka_1_1mem_1_1buf_1_1traits_1_1IsPinned_3_01mem_1_1buf_1_1cpu_1_1detail_1_1BufCpuImpl_3333372b81d80ee9f88c38f6c29be44be.html#a5b6741a91da390e8abed046195453be7">alpaka::mem::buf::traits::IsPinned&lt; mem::buf::cpu::detail::BufCpuImpl&lt; TElem, TDim, TSize &gt; &gt;</a>
+</li>
+<li>isQueueEmpty()
+: <a class="el" href="classalpaka_1_1detail_1_1ConcurrentExecPool.html#ace686e0caec7414f117caeaaae41ff93">alpaka::detail::ConcurrentExecPool&lt; TSize, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TbYield &gt;</a>
+, <a class="el" href="classalpaka_1_1detail_1_1ConcurrentExecPool_3_01TSize_00_01TConcurrentExec_00_01TPromise_00_01TYd49b013b7549be323898a9cfaaf186ef.html#a50a54eb8451bb7d8e0b0be251d8c55af">alpaka::detail::ConcurrentExecPool&lt; TSize, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, false &gt;</a>
 </li>
 </ul>
 </div><!-- contents -->
@@ -166,7 +180,7 @@ $(document).ready(function(){initNavTree('functions_func_i.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat May 23 2015 14:48:36 for alpaka by
+    <li class="footer">Generated on Sun Jul 5 2015 17:25:52 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

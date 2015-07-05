@@ -1,0 +1,4 @@
+var structalpaka_1_1math_1_1traits_1_1Log_3_01LogStl_00_01TArg_00_01typename_01std_1_1enable__if_3_02c20a63bd40edfc49fb2b4f9de871383 =
+[
+    [ "log", "structalpaka_1_1math_1_1traits_1_1Log_3_01LogStl_00_01TArg_00_01typename_01std_1_1enable__if_3_02c20a63bd40edfc49fb2b4f9de871383.html#a73d299fd2ef1bae6cba2fe085f137e3a", null ]
+];

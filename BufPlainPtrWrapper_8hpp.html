@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.9"/>
-<title>alpaka: C:/dev/alpaka/include/alpaka/core/mem/BufPlainPtrWrapper.hpp File Reference</title>
+<title>alpaka: C:/dev/alpaka/include/alpaka/mem/buf/BufPlainPtrWrapper.hpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -112,44 +112,45 @@ $(document).ready(function(){initNavTree('BufPlainPtrWrapper_8hpp.html','');});
 <div class="title">BufPlainPtrWrapper.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;<a class="el" href="BasicDims_8hpp_source.html">alpaka/core/BasicDims.hpp</a>&gt;</code><br />
+<div class="textblock"><code>#include &lt;<a class="el" href="mem_2buf_2Traits_8hpp_source.html">alpaka/mem/buf/Traits.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="Vec_8hpp_source.html">alpaka/core/Vec.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="traits_2Mem_8hpp_source.html">alpaka/traits/Mem.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="Extent_8hpp_source.html">alpaka/traits/Extent.hpp</a>&gt;</code><br />
 </div>
 <p><a href="BufPlainPtrWrapper_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1mem_1_1BufPlainPtrWrapper.html">alpaka::mem::BufPlainPtrWrapper&lt; TElem, TDim, TDev &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The memory buffer wrapper used to wrap plain pointers.  <a href="classalpaka_1_1mem_1_1BufPlainPtrWrapper.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1dev_1_1traits_1_1DevType_3_01mem_1_1buf_1_1BufPlainPtrWrapper_3_01TDev_00_01TEle1f3c81c803b52eab99dd990d69f671b1.html">alpaka::dev::traits::DevType&lt; mem::buf::BufPlainPtrWrapper&lt; TDev, TElem, TDim, TSize &gt; &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The BufPlainPtrWrapper device type trait specialization.  <a href="structalpaka_1_1dev_1_1traits_1_1DevType_3_01mem_1_1buf_1_1BufPlainPtrWrapper_3_01TDev_00_01TEle1f3c81c803b52eab99dd990d69f671b1.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1dev_1_1DevType_3_01alpaka_1_1mem_1_1BufPlainPtrWrapper_3_01TElem_00_01TDim_00_01TDev_01_4_01_4.html">alpaka::traits::dev::DevType&lt; alpaka::mem::BufPlainPtrWrapper&lt; TElem, TDim, TDev &gt; &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The BufPlainPtrWrapper device type trait specialization.  <a href="structalpaka_1_1traits_1_1dev_1_1DevType_3_01alpaka_1_1mem_1_1BufPlainPtrWrapper_3_01TElem_00_01TDim_00_01TDev_01_4_01_4.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1dev_1_1traits_1_1GetDev_3_01mem_1_1buf_1_1BufPlainPtrWrapper_3_01TDev_00_01TElem_00_01TDim_00_01TSize_01_4_01_4.html">alpaka::dev::traits::GetDev&lt; mem::buf::BufPlainPtrWrapper&lt; TDev, TElem, TDim, TSize &gt; &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The BufPlainPtrWrapper device get trait specialization.  <a href="structalpaka_1_1dev_1_1traits_1_1GetDev_3_01mem_1_1buf_1_1BufPlainPtrWrapper_3_01TDev_00_01TElem_00_01TDim_00_01TSize_01_4_01_4.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1dev_1_1GetDev_3_01alpaka_1_1mem_1_1BufPlainPtrWrapper_3_01TElem_00_01TDim_00_01TDev_01_4_01_4.html">alpaka::traits::dev::GetDev&lt; alpaka::mem::BufPlainPtrWrapper&lt; TElem, TDim, TDev &gt; &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The BufPlainPtrWrapper device get trait specialization.  <a href="structalpaka_1_1traits_1_1dev_1_1GetDev_3_01alpaka_1_1mem_1_1BufPlainPtrWrapper_3_01TElem_00_01TDim_00_01TDev_01_4_01_4.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1dim_1_1traits_1_1DimType_3_01mem_1_1buf_1_1BufPlainPtrWrapper_3_01TDev_00_01TEle51ce27871a8bad17b551953093af7eea.html">alpaka::dim::traits::DimType&lt; mem::buf::BufPlainPtrWrapper&lt; TDev, TElem, TDim, TSize &gt; &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The BufPlainPtrWrapper dimension getter trait.  <a href="structalpaka_1_1dim_1_1traits_1_1DimType_3_01mem_1_1buf_1_1BufPlainPtrWrapper_3_01TDev_00_01TEle51ce27871a8bad17b551953093af7eea.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1dim_1_1DimType_3_01alpaka_1_1mem_1_1BufPlainPtrWrapper_3_01TElem_00_01TDim_00_01TDev_01_4_01_4.html">alpaka::traits::dim::DimType&lt; alpaka::mem::BufPlainPtrWrapper&lt; TElem, TDim, TDev &gt; &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The BufPlainPtrWrapper dimension getter trait.  <a href="structalpaka_1_1traits_1_1dim_1_1DimType_3_01alpaka_1_1mem_1_1BufPlainPtrWrapper_3_01TElem_00_01TDim_00_01TDev_01_4_01_4.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1extent_1_1traits_1_1GetExtent_1_1type.html">alpaka::extent::traits::GetExtent&lt; TIdx, TExtents, TSfinae &gt;::type&lt; TExtents &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors extent get trait specialization.  <a href="structalpaka_1_1extent_1_1traits_1_1GetExtent_1_1type.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1extent_1_1GetExtent_1_1type.html">alpaka::traits::extent::GetExtent&lt; TIdx, T, TSfinae &gt;::type&lt; TExtents &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CUDA vectors extent get trait specialization.  <a href="structalpaka_1_1traits_1_1extent_1_1GetExtent_1_1type.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1mem_1_1buf_1_1BufPlainPtrWrapper.html">alpaka::mem::buf::BufPlainPtrWrapper&lt; TDev, TElem, TDim, TSize &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The memory buffer wrapper used to wrap plain pointers.  <a href="classalpaka_1_1mem_1_1buf_1_1BufPlainPtrWrapper.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1mem_1_1ElemType_3_01alpaka_1_1mem_1_1BufPlainPtrWrapper_3_01TElem_00_01TDim_00_01TDev_01_4_01_4.html">alpaka::traits::mem::ElemType&lt; alpaka::mem::BufPlainPtrWrapper&lt; TElem, TDim, TDev &gt; &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The BufPlainPtrWrapper memory element type get trait specialization.  <a href="structalpaka_1_1traits_1_1mem_1_1ElemType_3_01alpaka_1_1mem_1_1BufPlainPtrWrapper_3_01TElem_00_01TDim_00_01TDev_01_4_01_4.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1ElemType_3_01buf_1_1BufPlainPtrWrapper_3_01TDev_00_01TEaa310a3a7422998b87f80506804e25da.html">alpaka::mem::view::traits::ElemType&lt; buf::BufPlainPtrWrapper&lt; TDev, TElem, TDim, TSize &gt; &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The BufPlainPtrWrapper memory element type get trait specialization.  <a href="structalpaka_1_1mem_1_1view_1_1traits_1_1ElemType_3_01buf_1_1BufPlainPtrWrapper_3_01TDev_00_01TEaa310a3a7422998b87f80506804e25da.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1mem_1_1GetBuf_3_01alpaka_1_1mem_1_1BufPlainPtrWrapper_3_01TElem_00_01TDim_00_01TDev_01_4_01_4.html">alpaka::traits::mem::GetBuf&lt; alpaka::mem::BufPlainPtrWrapper&lt; TElem, TDim, TDev &gt; &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The BufPlainPtrWrapper buf trait specialization.  <a href="structalpaka_1_1traits_1_1mem_1_1GetBuf_3_01alpaka_1_1mem_1_1BufPlainPtrWrapper_3_01TElem_00_01TDim_00_01TDev_01_4_01_4.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1GetBuf_3_01buf_1_1BufPlainPtrWrapper_3_01TDev_00_01TEle612fc00368100fec13fbcf2920f1552c.html">alpaka::mem::view::traits::GetBuf&lt; buf::BufPlainPtrWrapper&lt; TDev, TElem, TDim, TSize &gt; &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The BufPlainPtrWrapper buf trait specialization.  <a href="structalpaka_1_1mem_1_1view_1_1traits_1_1GetBuf_3_01buf_1_1BufPlainPtrWrapper_3_01TDev_00_01TEle612fc00368100fec13fbcf2920f1552c.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1mem_1_1GetPitchBytes_3_01std_1_1integral__constant_3_01UInt_00_010u_015142ad2faa293d1ffc6b1551b62acc36.html">alpaka::traits::mem::GetPitchBytes&lt; std::integral_constant&lt; UInt, 0u &gt;, alpaka::mem::BufPlainPtrWrapper&lt; TElem, TDim, TDev &gt; &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The BufPlainPtrWrapper memory pitch get trait specialization.  <a href="structalpaka_1_1traits_1_1mem_1_1GetPitchBytes_3_01std_1_1integral__constant_3_01UInt_00_010u_015142ad2faa293d1ffc6b1551b62acc36.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1GetPitchBytes_3_01std_1_1integral__constant_3_01std_1_1911b02f39240723ca457e9bcc2fb1d7d.html">alpaka::mem::view::traits::GetPitchBytes&lt; std::integral_constant&lt; std::size_t, 0u &gt;, buf::BufPlainPtrWrapper&lt; TDev, TElem, TDim, TSize &gt; &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The BufPlainPtrWrapper memory pitch get trait specialization.  <a href="structalpaka_1_1mem_1_1view_1_1traits_1_1GetPitchBytes_3_01std_1_1integral__constant_3_01std_1_1911b02f39240723ca457e9bcc2fb1d7d.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1mem_1_1GetPtrNative_3_01alpaka_1_1mem_1_1BufPlainPtrWrapper_3_01TElem_00_01TDim_00_01TDev_01_4_01_4.html">alpaka::traits::mem::GetPtrNative&lt; alpaka::mem::BufPlainPtrWrapper&lt; TElem, TDim, TDev &gt; &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The BufPlainPtrWrapper native pointer get trait specialization.  <a href="structalpaka_1_1traits_1_1mem_1_1GetPtrNative_3_01alpaka_1_1mem_1_1BufPlainPtrWrapper_3_01TElem_00_01TDim_00_01TDev_01_4_01_4.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1GetPtrNative_3_01buf_1_1BufPlainPtrWrapper_3_01TDev_00_480a354607445fadf424f00518392ce2.html">alpaka::mem::view::traits::GetPtrNative&lt; buf::BufPlainPtrWrapper&lt; TDev, TElem, TDim, TSize &gt; &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The BufPlainPtrWrapper native pointer get trait specialization.  <a href="structalpaka_1_1mem_1_1view_1_1traits_1_1GetPtrNative_3_01buf_1_1BufPlainPtrWrapper_3_01TDev_00_480a354607445fadf424f00518392ce2.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1traits_1_1offset_1_1GetOffset_3_01TIdx_00_01alpaka_1_1mem_1_1BufPlainPtrWrapper_eaab75c5a6d831fadad7003ba0191bed.html">alpaka::traits::offset::GetOffset&lt; TIdx, alpaka::mem::BufPlainPtrWrapper&lt; TElem, TDim, TDev &gt; &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The BufPlainPtrWrapper offset get trait specialization.  <a href="structalpaka_1_1traits_1_1offset_1_1GetOffset_3_01TIdx_00_01alpaka_1_1mem_1_1BufPlainPtrWrapper_eaab75c5a6d831fadad7003ba0191bed.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1offset_1_1traits_1_1GetOffset_3_01TIdx_00_01mem_1_1buf_1_1BufPlainPtrWrapper_3_0df5a3e21ccb570b7697e84ebf87c1a15.html">alpaka::offset::traits::GetOffset&lt; TIdx, mem::buf::BufPlainPtrWrapper&lt; TDev, TElem, TDim, TSize &gt; &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The BufPlainPtrWrapper offset get trait specialization.  <a href="structalpaka_1_1offset_1_1traits_1_1GetOffset_3_01TIdx_00_01mem_1_1buf_1_1BufPlainPtrWrapper_3_0df5a3e21ccb570b7697e84ebf87c1a15.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structalpaka_1_1size_1_1traits_1_1SizeType_3_01mem_1_1buf_1_1BufPlainPtrWrapper_3_01TDev_00_01TE3d0de8a371d0b63494487a524f9e4fa3.html">alpaka::size::traits::SizeType&lt; mem::buf::BufPlainPtrWrapper&lt; TDev, TElem, TDim, TSize &gt; &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The BufPlainPtrWrapper size type trait specialization.  <a href="structalpaka_1_1size_1_1traits_1_1SizeType_3_01mem_1_1buf_1_1BufPlainPtrWrapper_3_01TDev_00_01TE3d0de8a371d0b63494487a524f9e4fa3.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -157,26 +158,46 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacealpaka"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka.html">alpaka</a></td></tr>
 <tr class="memdesc:namespacealpaka"><td class="mdescLeft">&#160;</td><td class="mdescRight">The alpaka library. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacealpaka_1_1dev"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dev.html">alpaka::dev</a></td></tr>
+<tr class="memdesc:namespacealpaka_1_1dev"><td class="mdescLeft">&#160;</td><td class="mdescRight">The device specifics. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacealpaka_1_1dev_1_1traits"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dev_1_1traits.html">alpaka::dev::traits</a></td></tr>
+<tr class="memdesc:namespacealpaka_1_1dev_1_1traits"><td class="mdescLeft">&#160;</td><td class="mdescRight">The device traits. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacealpaka_1_1dim"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dim.html">alpaka::dim</a></td></tr>
+<tr class="memdesc:namespacealpaka_1_1dim"><td class="mdescLeft">&#160;</td><td class="mdescRight">The dimension specifics. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacealpaka_1_1dim_1_1traits"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1dim_1_1traits.html">alpaka::dim::traits</a></td></tr>
+<tr class="memdesc:namespacealpaka_1_1dim_1_1traits"><td class="mdescLeft">&#160;</td><td class="mdescRight">The dimension traits. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacealpaka_1_1extent"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1extent.html">alpaka::extent</a></td></tr>
+<tr class="memdesc:namespacealpaka_1_1extent"><td class="mdescLeft">&#160;</td><td class="mdescRight">The extent specifics. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacealpaka_1_1extent_1_1traits"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1extent_1_1traits.html">alpaka::extent::traits</a></td></tr>
+<tr class="memdesc:namespacealpaka_1_1extent_1_1traits"><td class="mdescLeft">&#160;</td><td class="mdescRight">The extent traits. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacealpaka_1_1mem"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem.html">alpaka::mem</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1mem"><td class="mdescLeft">&#160;</td><td class="mdescRight">The memory trait accessors. <br /></td></tr>
+<tr class="memdesc:namespacealpaka_1_1mem"><td class="mdescLeft">&#160;</td><td class="mdescRight">The memory specifics. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1traits"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1traits.html">alpaka::traits</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1traits"><td class="mdescLeft">&#160;</td><td class="mdescRight">The traits. <br /></td></tr>
+<tr class="memitem:namespacealpaka_1_1mem_1_1buf"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1buf.html">alpaka::mem::buf</a></td></tr>
+<tr class="memdesc:namespacealpaka_1_1mem_1_1buf"><td class="mdescLeft">&#160;</td><td class="mdescRight">The buffer specifics. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1traits_1_1dev"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1traits_1_1dev.html">alpaka::traits::dev</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1traits_1_1dev"><td class="mdescLeft">&#160;</td><td class="mdescRight">The device traits. <br /></td></tr>
+<tr class="memitem:namespacealpaka_1_1mem_1_1view"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view.html">alpaka::mem::view</a></td></tr>
+<tr class="memdesc:namespacealpaka_1_1mem_1_1view"><td class="mdescLeft">&#160;</td><td class="mdescRight">The buffer specifics. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1traits_1_1dim"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1traits_1_1dim.html">alpaka::traits::dim</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1traits_1_1dim"><td class="mdescLeft">&#160;</td><td class="mdescRight">The dimension traits. <br /></td></tr>
+<tr class="memitem:namespacealpaka_1_1mem_1_1view_1_1traits"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1mem_1_1view_1_1traits.html">alpaka::mem::view::traits</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1traits_1_1extent"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1traits_1_1extent.html">alpaka::traits::extent</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1traits_1_1extent"><td class="mdescLeft">&#160;</td><td class="mdescRight">The extent traits. <br /></td></tr>
+<tr class="memitem:namespacealpaka_1_1offset"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1offset.html">alpaka::offset</a></td></tr>
+<tr class="memdesc:namespacealpaka_1_1offset"><td class="mdescLeft">&#160;</td><td class="mdescRight">The offset specifics. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1traits_1_1mem"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1traits_1_1mem.html">alpaka::traits::mem</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1traits_1_1mem"><td class="mdescLeft">&#160;</td><td class="mdescRight">The memory traits. <br /></td></tr>
+<tr class="memitem:namespacealpaka_1_1offset_1_1traits"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1offset_1_1traits.html">alpaka::offset::traits</a></td></tr>
+<tr class="memdesc:namespacealpaka_1_1offset_1_1traits"><td class="mdescLeft">&#160;</td><td class="mdescRight">The offset traits. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacealpaka_1_1traits_1_1offset"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1traits_1_1offset.html">alpaka::traits::offset</a></td></tr>
-<tr class="memdesc:namespacealpaka_1_1traits_1_1offset"><td class="mdescLeft">&#160;</td><td class="mdescRight">The offset traits. <br /></td></tr>
+<tr class="memitem:namespacealpaka_1_1size"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1size.html">alpaka::size</a></td></tr>
+<tr class="memdesc:namespacealpaka_1_1size"><td class="mdescLeft">&#160;</td><td class="mdescRight">The size specifics. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacealpaka_1_1size_1_1traits"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1size_1_1traits.html">alpaka::size::traits</a></td></tr>
+<tr class="memdesc:namespacealpaka_1_1size_1_1traits"><td class="mdescLeft">&#160;</td><td class="mdescRight">The size traits. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -192,8 +213,8 @@ Namespaces</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="dir_e65b2effc7ef5bc848f2688617c8fe39.html">mem</a></li><li class="navelem"><a class="el" href="BufPlainPtrWrapper_8hpp.html">BufPlainPtrWrapper.hpp</a></li>
-    <li class="footer">Generated on Sat May 23 2015 14:48:26 for alpaka by
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_fb1128c962bebe125e17152b21133100.html">mem</a></li><li class="navelem"><a class="el" href="dir_e9c63de0e8709741f56550be53020686.html">buf</a></li><li class="navelem"><a class="el" href="BufPlainPtrWrapper_8hpp.html">BufPlainPtrWrapper.hpp</a></li>
+    <li class="footer">Generated on Sun Jul 5 2015 17:25:36 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

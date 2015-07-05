@@ -1,6 +1,0 @@
-var structalpaka_1_1traits_1_1mem_1_1GetPtrNative_3_01TFixedSizeArray_00_01typename_01std_1_1enable_74900adc50ffe5a7975d1155b3c1a5c1 =
-[
-    [ "TElem", "structalpaka_1_1traits_1_1mem_1_1GetPtrNative_3_01TFixedSizeArray_00_01typename_01std_1_1enable_74900adc50ffe5a7975d1155b3c1a5c1.html#a832f65dc4eb34298422f4f784b92b476", null ],
-    [ "getPtrNative", "structalpaka_1_1traits_1_1mem_1_1GetPtrNative_3_01TFixedSizeArray_00_01typename_01std_1_1enable_74900adc50ffe5a7975d1155b3c1a5c1.html#a054396f5dc02c58998ffdf20b3435ff9", null ],
-    [ "getPtrNative", "structalpaka_1_1traits_1_1mem_1_1GetPtrNative_3_01TFixedSizeArray_00_01typename_01std_1_1enable_74900adc50ffe5a7975d1155b3c1a5c1.html#ad9330755334fdd430ac6b08625078d3f", null ]
-];

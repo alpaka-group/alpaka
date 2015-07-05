@@ -1,0 +1,4 @@
+var structalpaka_1_1mem_1_1buf_1_1traits_1_1Unpin_3_01mem_1_1buf_1_1cpu_1_1detail_1_1BufCpuImpl_3_01426a8197b20f49a7eb799281f81ca287 =
+[
+    [ "unpin", "structalpaka_1_1mem_1_1buf_1_1traits_1_1Unpin_3_01mem_1_1buf_1_1cpu_1_1detail_1_1BufCpuImpl_3_01426a8197b20f49a7eb799281f81ca287.html#adc2608dca74cf45f77b7156f962f1bcd", null ]
+];

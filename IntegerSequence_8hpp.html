@@ -113,7 +113,8 @@ $(document).ready(function(){initNavTree('IntegerSequence_8hpp.html','');});
 <div class="title">IntegerSequence.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;boost/predef.h&gt;</code><br />
+<div class="textblock"><code>#include &lt;<a class="el" href="Common_8hpp_source.html">alpaka/core/Common.hpp</a>&gt;</code><br />
+<code>#include &lt;boost/predef.h&gt;</code><br />
 <code>#include &lt;type_traits&gt;</code><br />
 <code>#include &lt;cstddef&gt;</code><br />
 </div>
@@ -150,12 +151,15 @@ Typedefs</h2></td></tr>
 <tr class="memitem:ab35617eb9daa8674989fa3d02901b47d"><td class="memTemplParams" colspan="2">template&lt;std::size_t TuiSize&gt; </td></tr>
 <tr class="memitem:ab35617eb9daa8674989fa3d02901b47d"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html#ab35617eb9daa8674989fa3d02901b47d">alpaka::detail::make_index_sequence</a> = make_integer_sequence&lt; std::size_t, TuiSize &gt;</td></tr>
 <tr class="separator:ab35617eb9daa8674989fa3d02901b47d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4399ea08d6fcd2b5304e1f1b18da5e8"><td class="memTemplParams" colspan="2">template&lt;class T , T TuiSize&gt; </td></tr>
-<tr class="memitem:ac4399ea08d6fcd2b5304e1f1b18da5e8"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html#ac4399ea08d6fcd2b5304e1f1b18da5e8">alpaka::detail::make_integer_sequence</a> = make_integer_sequence_start&lt; T, 0u, TuiSize &gt;</td></tr>
-<tr class="separator:ac4399ea08d6fcd2b5304e1f1b18da5e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acae3a0fce250808d07592cb3d5edc43d"><td class="memTemplParams" colspan="2">template&lt;class T , T TuiBegin, T TuiSize&gt; </td></tr>
-<tr class="memitem:acae3a0fce250808d07592cb3d5edc43d"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html#acae3a0fce250808d07592cb3d5edc43d">alpaka::detail::make_integer_sequence_start</a> = typename make_integer_sequence_helper&lt;(TuiSize&lt; 0),(TuiSize==0), T, TuiBegin, std::integral_constant&lt; T, TuiBegin+TuiSize &gt;, integer_sequence&lt; T &gt; &gt;::type</td></tr>
-<tr class="separator:acae3a0fce250808d07592cb3d5edc43d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e5cf3ef4945a41f3ac34f2dc97908ab"><td class="memTemplParams" colspan="2">template&lt;class T , T TuiBegin, T TuiSize&gt; </td></tr>
+<tr class="memitem:a7e5cf3ef4945a41f3ac34f2dc97908ab"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html#a7e5cf3ef4945a41f3ac34f2dc97908ab">alpaka::detail::make_index_sequence_offset</a> = make_integer_sequence_offset&lt; std::size_t, TuiBegin, TuiSize &gt;</td></tr>
+<tr class="separator:a7e5cf3ef4945a41f3ac34f2dc97908ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4877b3361a52e7573ff2e1819d17fa83"><td class="memTemplParams" colspan="2">template&lt;class T , T TuiSize&gt; </td></tr>
+<tr class="memitem:a4877b3361a52e7573ff2e1819d17fa83"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html#a4877b3361a52e7573ff2e1819d17fa83">alpaka::detail::make_integer_sequence</a> = make_integer_sequence_offset&lt; T, 0u, TuiSize &gt;</td></tr>
+<tr class="separator:a4877b3361a52e7573ff2e1819d17fa83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e4a5a8e53553afaba638c0bbcc56dc5"><td class="memTemplParams" colspan="2">template&lt;class T , T TuiBegin, T TuiSize&gt; </td></tr>
+<tr class="memitem:a7e4a5a8e53553afaba638c0bbcc56dc5"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1detail.html#a7e4a5a8e53553afaba638c0bbcc56dc5">alpaka::detail::make_integer_sequence_offset</a> = typename make_integer_sequence_helper&lt;(TuiSize&lt; 0),(TuiSize==0), T, TuiBegin, std::integral_constant&lt; T, TuiBegin+TuiSize &gt;, integer_sequence&lt; T &gt; &gt;::type</td></tr>
+<tr class="separator:a7e4a5a8e53553afaba638c0bbcc56dc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Copyright 2014-2015 Benjamin Worpitz</p>
@@ -171,7 +175,7 @@ Typedefs</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_f712bff28b6ff1ff870a222047d04675.html">alpaka</a></li><li class="navelem"><a class="el" href="dir_cfa240ccb1fbe815dea98e3774bff08a.html">core</a></li><li class="navelem"><a class="el" href="IntegerSequence_8hpp.html">IntegerSequence.hpp</a></li>
-    <li class="footer">Generated on Sat May 23 2015 14:48:26 for alpaka by
+    <li class="footer">Generated on Sun Jul 5 2015 17:25:35 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

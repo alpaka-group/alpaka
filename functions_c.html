@@ -82,7 +82,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions_func.html"><span>Functions</span></a></li>
       <li><a href="functions_vars.html"><span>Variables</span></a></li>
       <li><a href="functions_type.html"><span>Typedefs</span></a></li>
-      <li><a href="functions_eval.html"><span>Enumerator</span></a></li>
       <li><a href="functions_rela.html"><span>Related&#160;Functions</span></a></li>
     </ul>
   </div>
@@ -97,6 +96,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions_f.html#index_f"><span>f</span></a></li>
       <li><a href="functions_g.html#index_g"><span>g</span></a></li>
       <li><a href="functions_i.html#index_i"><span>i</span></a></li>
+      <li><a href="functions_l.html#index_l"><span>l</span></a></li>
       <li><a href="functions_m.html#index_m"><span>m</span></a></li>
       <li><a href="functions_n.html#index_n"><span>n</span></a></li>
       <li><a href="functions_o.html#index_o"><span>o</span></a></li>
@@ -108,7 +108,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions_v.html#index_v"><span>v</span></a></li>
       <li><a href="functions_w.html#index_w"><span>w</span></a></li>
       <li><a href="functions_x.html#index_x"><span>x</span></a></li>
-      <li><a href="functions_y.html#index_y"><span>y</span></a></li>
       <li><a href="functions_z.html#index_z"><span>z</span></a></li>
       <li><a href="functions_~.html#index_~"><span>~</span></a></li>
     </ul>
@@ -146,47 +145,80 @@ $(document).ready(function(){initNavTree('functions_c.html','');});
 <div class="textblock">Here is a list of all class members with links to the classes they belong to:</div>
 
 <h3><a class="anchor" id="index_c"></a>- c -</h3><ul>
+<li>cbrt()
+: <a class="el" href="structalpaka_1_1math_1_1traits_1_1Cbrt_3_01CbrtCudaBuiltIn_00_01TArg_00_01typename_01std_1_1enabbbd8264b82079af8aef6f170099951f3.html#ab869ef18355b085a09dd55dcea61c903">alpaka::math::traits::Cbrt&lt; CbrtCudaBuiltIn, TArg, typename std::enable_if&lt; std::is_arithmetic&lt; TArg &gt;::value &gt;::type &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1traits_1_1Cbrt_3_01CbrtStl_00_01TArg_00_01typename_01std_1_1enable__if_3f922ed2337837c8a681739b6f130dce6.html#afb5983fcf11c193bd2a14e190a9c1710">alpaka::math::traits::Cbrt&lt; CbrtStl, TArg, typename std::enable_if&lt; std::is_arithmetic&lt; TArg &gt;::value &gt;::type &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1traits_1_1Cbrt_3_01T_00_01TArg_00_01typename_01std_1_1enable__if_3_01std2502ca82123ba6c51e8b57fe6ac1606c.html#ad31c7fd44e2c3cc0c0d38308d261f234">alpaka::math::traits::Cbrt&lt; T, TArg, typename std::enable_if&lt; std::is_base_of&lt; typename T::CbrtBase, typename std::decay&lt; T &gt;::type &gt;::value &amp;&amp;(!std::is_same&lt; typename T::CbrtBase, typename std::decay&lt; T &gt;::type &gt;::value)&gt;::type &gt;</a>
+</li>
+<li>CbrtBase
+: <a class="el" href="classalpaka_1_1math_1_1CbrtCudaBuiltIn.html#a6568dfac694b3c9fdb0851246a617f21">alpaka::math::CbrtCudaBuiltIn</a>
+, <a class="el" href="classalpaka_1_1math_1_1CbrtStl.html#a0e0354318792bef75bf43d61b84efba6">alpaka::math::CbrtStl</a>
+</li>
+<li>ceil()
+: <a class="el" href="structalpaka_1_1math_1_1traits_1_1Ceil_3_01CeilCudaBuiltIn_00_01TArg_00_01typename_01std_1_1enabd5e300e06460e64d950b3e69c025cbe9.html#acec44bd99e0e2df1862c2b12d67a88ee">alpaka::math::traits::Ceil&lt; CeilCudaBuiltIn, TArg, typename std::enable_if&lt; std::is_floating_point&lt; TArg &gt;::value &gt;::type &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1traits_1_1Ceil_3_01CeilStl_00_01TArg_00_01typename_01std_1_1enable__if_3276f04ab39d2077e983b27cd4ed65b5c.html#a17af3dce813742a460725d3875799c31">alpaka::math::traits::Ceil&lt; CeilStl, TArg, typename std::enable_if&lt; std::is_arithmetic&lt; TArg &gt;::value &gt;::type &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1traits_1_1Ceil_3_01T_00_01TArg_00_01typename_01std_1_1enable__if_3_01std0de58631c3c7c08d466eb1ca4d2b6764.html#aa7db519710c3df408917ade879958e47">alpaka::math::traits::Ceil&lt; T, TArg, typename std::enable_if&lt; std::is_base_of&lt; typename T::CeilBase, typename std::decay&lt; T &gt;::type &gt;::value &amp;&amp;(!std::is_same&lt; typename T::CeilBase, typename std::decay&lt; T &gt;::type &gt;::value)&gt;::type &gt;</a>
+</li>
+<li>CeilBase
+: <a class="el" href="classalpaka_1_1math_1_1CeilCudaBuiltIn.html#aa6b94e4710053884bf581358acd2957a">alpaka::math::CeilCudaBuiltIn</a>
+, <a class="el" href="classalpaka_1_1math_1_1CeilStl.html#ae051d19c17d10d0705c5c56d0b0ef9d2">alpaka::math::CeilStl</a>
+</li>
 <li>ConcurrentExecPool()
-: <a class="el" href="classalpaka_1_1detail_1_1ConcurrentExecPool.html#aca5d2e8b35feae5728996a49b342be41">alpaka::detail::ConcurrentExecPool&lt; TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TbYield &gt;</a>
-, <a class="el" href="classalpaka_1_1detail_1_1ConcurrentExecPool_3_01TConcurrentExec_00_01TPromise_00_01TYield_00_01Tb852a219d408599791c606e727c5a08c.html#a32368b3c4212c09e40e7eaef4a00f624">alpaka::detail::ConcurrentExecPool&lt; TConcurrentExec, TPromise, TYield, TMutex, TCondVar, false &gt;</a>
+: <a class="el" href="classalpaka_1_1detail_1_1ConcurrentExecPool.html#ae48d06505a548de2ccf5278392e0ce29">alpaka::detail::ConcurrentExecPool&lt; TSize, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, TbYield &gt;</a>
+, <a class="el" href="classalpaka_1_1detail_1_1ConcurrentExecPool_3_01TSize_00_01TConcurrentExec_00_01TPromise_00_01TYd49b013b7549be323898a9cfaaf186ef.html#acd306b1ef1fd02cbf68b151742ef91e2">alpaka::detail::ConcurrentExecPool&lt; TSize, TConcurrentExec, TPromise, TYield, TMutex, TCondVar, false &gt;</a>
 </li>
 <li>copy()
-: <a class="el" href="structalpaka_1_1traits_1_1mem_1_1Copy_3_01TDim_00_01devs_1_1cpu_1_1DevCpu_00_01devs_1_1cpu_1_1DevCpu_01_4.html#a7f31dd17d0c8eae6a3f956b5fde2587e">alpaka::traits::mem::Copy&lt; TDim, devs::cpu::DevCpu, devs::cpu::DevCpu &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1mem_1_1Copy_3_01TDim_00_01devs_1_1cpu_1_1DevCpu_00_01devs_1_1cuda_1_1DevCuda_01_4.html#a0288526ad752201134e25cbca5d801a7">alpaka::traits::mem::Copy&lt; TDim, devs::cpu::DevCpu, devs::cuda::DevCuda &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1mem_1_1Copy_3_01TDim_00_01devs_1_1cuda_1_1DevCuda_00_01devs_1_1cpu_1_1DevCpu_01_4.html#afce9623a292d139c47b11f028e7723d4">alpaka::traits::mem::Copy&lt; TDim, devs::cuda::DevCuda, devs::cpu::DevCpu &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1mem_1_1Copy_3_01TDim_00_01devs_1_1cuda_1_1DevCuda_00_01devs_1_1cuda_1_1DevCuda_01_4.html#a92bebe6f90b4909331ed77babb1b3ba8">alpaka::traits::mem::Copy&lt; TDim, devs::cuda::DevCuda, devs::cuda::DevCuda &gt;</a>
+: <a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1Copy_3_01TDim_00_01dev_1_1DevCpu_00_01dev_1_1DevCpu_01_4.html#a10d4a5dbcb3b0a067c0f16ae8a4bc2f4">alpaka::mem::view::traits::Copy&lt; TDim, dev::DevCpu, dev::DevCpu &gt;</a>
+, <a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1Copy_3_01TDim_00_01dev_1_1DevCpu_00_01dev_1_1DevCudaRt_01_4.html#a9f2b9c5660604a8834ae30ef804221c9">alpaka::mem::view::traits::Copy&lt; TDim, dev::DevCpu, dev::DevCudaRt &gt;</a>
+, <a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1Copy_3_01TDim_00_01dev_1_1DevCudaRt_00_01dev_1_1DevCpu_01_4.html#a879871015aef56ca5d8e976d3878dbaf">alpaka::mem::view::traits::Copy&lt; TDim, dev::DevCudaRt, dev::DevCpu &gt;</a>
+, <a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1Copy_3_01TDim_00_01dev_1_1DevCudaRt_00_01dev_1_1DevCudaRt_01_4.html#a295ffdf4179b833b10d3c649753f6f1c">alpaka::mem::view::traits::Copy&lt; TDim, dev::DevCudaRt, dev::DevCudaRt &gt;</a>
+</li>
+<li>cos()
+: <a class="el" href="structalpaka_1_1math_1_1traits_1_1Cos_3_01CosCudaBuiltIn_00_01TArg_00_01typename_01std_1_1enablee3794875a2eb2b4dd36b1f826894a408.html#ac8c6e93462233b026d9c32ef6fec4766">alpaka::math::traits::Cos&lt; CosCudaBuiltIn, TArg, typename std::enable_if&lt; std::is_floating_point&lt; TArg &gt;::value &gt;::type &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1traits_1_1Cos_3_01CosStl_00_01TArg_00_01typename_01std_1_1enable__if_3_04087aaba2097e3e75519f7a7c02778ec.html#ac3840e61efdeeffa4095767b5ac8c245">alpaka::math::traits::Cos&lt; CosStl, TArg, typename std::enable_if&lt; std::is_arithmetic&lt; TArg &gt;::value &gt;::type &gt;</a>
+, <a class="el" href="structalpaka_1_1math_1_1traits_1_1Cos_3_01T_00_01TArg_00_01typename_01std_1_1enable__if_3_01std_b712ec8eb5dba73b605fbb6e61fa2fa9.html#ad5ef11210b564f396c3aa3e8f4859069">alpaka::math::traits::Cos&lt; T, TArg, typename std::enable_if&lt; std::is_base_of&lt; typename T::CosBase, typename std::decay&lt; T &gt;::type &gt;::value &amp;&amp;(!std::is_same&lt; typename T::CosBase, typename std::decay&lt; T &gt;::type &gt;::value)&gt;::type &gt;</a>
+</li>
+<li>CosBase
+: <a class="el" href="classalpaka_1_1math_1_1CosCudaBuiltIn.html#ab712f243e287d0049707a051c879b91a">alpaka::math::CosCudaBuiltIn</a>
+, <a class="el" href="classalpaka_1_1math_1_1CosStl.html#a445ae6ab854da4f7dcd8528475fcdb24">alpaka::math::CosStl</a>
 </li>
 <li>create()
-: <a class="el" href="classalpaka_1_1Vec.html#a837be3b71e0f78184c2f21fde5b842c4">alpaka::Vec&lt; TDim, TVal &gt;</a>
-, <a class="el" href="structalpaka_1_1Vec_1_1CreateAdd.html#abcdfeece0faa6ddc40c65084db81ba68">alpaka::Vec&lt; TDim, TVal &gt;::CreateAdd&lt; TuiIdx &gt;</a>
-, <a class="el" href="structalpaka_1_1Vec_1_1CreateMul.html#aa0c0c37c8eb43807fcff85c25e83fc12">alpaka::Vec&lt; TDim, TVal &gt;::CreateMul&lt; TuiIdx &gt;</a>
+: <a class="el" href="structalpaka_1_1detail_1_1CreateAdd.html#a9233d7e00dcf32bdaf6886309636d8df">alpaka::detail::CreateAdd&lt; TuiIdx &gt;</a>
+, <a class="el" href="structalpaka_1_1detail_1_1CreateCast.html#a1850c3db75d786ddcc01d4c174a853cc">alpaka::detail::CreateCast&lt; TuiIdx &gt;</a>
+, <a class="el" href="structalpaka_1_1detail_1_1CreateMul.html#abc49812512ce58b4c186c00a917a78e6">alpaka::detail::CreateMul&lt; TuiIdx &gt;</a>
+, <a class="el" href="structalpaka_1_1detail_1_1CreateReverse.html#a429d2ece698857368fcfbeb47e7c839c">alpaka::detail::CreateReverse&lt; TuiIdx &gt;</a>
+, <a class="el" href="structalpaka_1_1extent_1_1detail_1_1CreateExtent.html#a8f1e6416d725e4de3fd63695c76b59d0">alpaka::extent::detail::CreateExtent&lt; TuiIdx &gt;</a>
+, <a class="el" href="structalpaka_1_1offset_1_1detail_1_1CreateOffset.html#a4a3af83875d336c6745f860783e41476">alpaka::offset::detail::CreateOffset&lt; TuiIdx &gt;</a>
 </li>
 <li>createDefault()
-: <a class="el" href="structalpaka_1_1traits_1_1rand_1_1generator_1_1CreateDefault_3_01TAcc_00_01typename_01std_1_1enaf9b220e1b8ccdfdb7be5e55f9c71a45c.html#a45002c1066d64995603a08d7c0411fa3">alpaka::traits::rand::generator::CreateDefault&lt; TAcc, typename std::enable_if&lt; std::is_same&lt; alpaka::dev::DevT&lt; TAcc &gt;, alpaka::devs::cuda::DevCuda &gt;::value &gt;::type &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1rand_1_1generator_1_1CreateDefault_3_01TAcc_00_01typename_01std_1_1ena24d6f951691f13b03d6238f2c9365118.html#a6f40fc190c6c0a4b14511c97d0b2c9ee">alpaka::traits::rand::generator::CreateDefault&lt; TAcc, typename std::enable_if&lt; std::is_same&lt; alpaka::dev::DevT&lt; TAcc &gt;, devs::cpu::DevCpu &gt;::value &gt;::type &gt;</a>
+: <a class="el" href="structalpaka_1_1rand_1_1generator_1_1traits_1_1CreateDefault_3_01TAcc_00_01typename_01std_1_1ena87c7d28bca05839bccc4e30807026925.html#ae1d9138569e6e0f5f87cb1465ab4d2b8">alpaka::rand::generator::traits::CreateDefault&lt; TAcc, typename std::enable_if&lt; std::is_same&lt; dev::Dev&lt; TAcc &gt;, dev::DevCpu &gt;::value &gt;::type &gt;</a>
+, <a class="el" href="structalpaka_1_1rand_1_1generator_1_1traits_1_1CreateDefault_3_01TAcc_00_01typename_01std_1_1ena8ac8e42b307887a3180d48251744af91.html#acecab6bf44da1917a0ea0a25d26a2fdb">alpaka::rand::generator::traits::CreateDefault&lt; TAcc, typename std::enable_if&lt; std::is_same&lt; dev::Dev&lt; TAcc &gt;, dev::DevCudaRt &gt;::value &gt;::type &gt;</a>
 </li>
 <li>createNormalReal()
-: <a class="el" href="structalpaka_1_1traits_1_1rand_1_1distribution_1_1CreateNormalReal_3_01TAcc_00_01T_00_01typenamef7784f0c322a19508e51918728894d6f.html#a2b1bec5534eea1469d8ac17546868f57">alpaka::traits::rand::distribution::CreateNormalReal&lt; TAcc, T, typename std::enable_if&lt; std::is_same&lt; alpaka::dev::DevT&lt; TAcc &gt;, alpaka::devs::cuda::DevCuda &gt;::value &amp;&amp;std::is_floating_point&lt; T &gt;::value &gt;::type &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1rand_1_1distribution_1_1CreateNormalReal_3_01TAcc_00_01T_00_01typename7004e71ea9e1128c1a507dcfb99edb3b.html#a4e8e4733857793e977ef4963bfe2db09">alpaka::traits::rand::distribution::CreateNormalReal&lt; TAcc, T, typename std::enable_if&lt; std::is_same&lt; alpaka::dev::DevT&lt; TAcc &gt;, devs::cpu::DevCpu &gt;::value &amp;&amp;std::is_floating_point&lt; T &gt;::value &gt;::type &gt;</a>
+: <a class="el" href="structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateNormalReal_3_01TAcc_00_01T_00_01typename51dce9d22e8f8e24ab81e3cff70f1a06.html#a284ccf28e17fa5aa6c2e0994f987c7f6">alpaka::rand::distribution::traits::CreateNormalReal&lt; TAcc, T, typename std::enable_if&lt; std::is_same&lt; dev::Dev&lt; TAcc &gt;, dev::DevCpu &gt;::value &amp;&amp;std::is_floating_point&lt; T &gt;::value &gt;::type &gt;</a>
+, <a class="el" href="structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateNormalReal_3_01TAcc_00_01T_00_01typename8ec7126a360cd5367e8ee8667707b161.html#aeff3e396907171d19fad2b0acde5da1b">alpaka::rand::distribution::traits::CreateNormalReal&lt; TAcc, T, typename std::enable_if&lt; std::is_same&lt; dev::Dev&lt; TAcc &gt;, dev::DevCudaRt &gt;::value &amp;&amp;std::is_floating_point&lt; T &gt;::value &gt;::type &gt;</a>
 </li>
 <li>createUniformReal()
-: <a class="el" href="structalpaka_1_1traits_1_1rand_1_1distribution_1_1CreateUniformReal_3_01TAcc_00_01T_00_01typenamd234be0baba4ad6e3d2f598d61138733.html#a0affda287807cc3c362ba9fb37ce568c">alpaka::traits::rand::distribution::CreateUniformReal&lt; TAcc, T, typename std::enable_if&lt; std::is_same&lt; alpaka::dev::DevT&lt; TAcc &gt;, alpaka::devs::cuda::DevCuda &gt;::value &amp;&amp;std::is_floating_point&lt; T &gt;::value &gt;::type &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1rand_1_1distribution_1_1CreateUniformReal_3_01TAcc_00_01T_00_01typenam2e5f30576014cf25fd95732c8f3c2925.html#ae92135a50663e987ba411594679ace2e">alpaka::traits::rand::distribution::CreateUniformReal&lt; TAcc, T, typename std::enable_if&lt; std::is_same&lt; alpaka::dev::DevT&lt; TAcc &gt;, devs::cpu::DevCpu &gt;::value &amp;&amp;std::is_floating_point&lt; T &gt;::value &gt;::type &gt;</a>
+: <a class="el" href="structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateUniformReal_3_01TAcc_00_01T_00_01typenam19ee54b3dc0d319dcb18aa4fe07ea971.html#a44b7357ac260c36136bc3c5842234bc0">alpaka::rand::distribution::traits::CreateUniformReal&lt; TAcc, T, typename std::enable_if&lt; std::is_same&lt; dev::Dev&lt; TAcc &gt;, dev::DevCpu &gt;::value &amp;&amp;std::is_floating_point&lt; T &gt;::value &gt;::type &gt;</a>
+, <a class="el" href="structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateUniformReal_3_01TAcc_00_01T_00_01typenamd003d9ef4f8605a6279b33051d27d63a.html#a9cd68c3dfbe092a05f8c6b18394e00e3">alpaka::rand::distribution::traits::CreateUniformReal&lt; TAcc, T, typename std::enable_if&lt; std::is_same&lt; dev::Dev&lt; TAcc &gt;, dev::DevCudaRt &gt;::value &amp;&amp;std::is_floating_point&lt; T &gt;::value &gt;::type &gt;</a>
 </li>
 <li>createUniformUint()
-: <a class="el" href="structalpaka_1_1traits_1_1rand_1_1distribution_1_1CreateUniformUint_3_01TAcc_00_01T_00_01typenam37260b701d35ba3237ee2721c800d69b.html#aa7cefee1c48d1e542e86b34de27b4d77">alpaka::traits::rand::distribution::CreateUniformUint&lt; TAcc, T, typename std::enable_if&lt; std::is_same&lt; alpaka::dev::DevT&lt; TAcc &gt;, alpaka::devs::cuda::DevCuda &gt;::value &amp;&amp;std::is_integral&lt; T &gt;::value &gt;::type &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1rand_1_1distribution_1_1CreateUniformUint_3_01TAcc_00_01T_00_01typenama5b4fff1dba602b755d7c4ecdde74a6f.html#aa63991f7d4ab064da4637a016765c593">alpaka::traits::rand::distribution::CreateUniformUint&lt; TAcc, T, typename std::enable_if&lt; std::is_same&lt; alpaka::dev::DevT&lt; TAcc &gt;, devs::cpu::DevCpu &gt;::value &amp;&amp;std::is_integral&lt; T &gt;::value &gt;::type &gt;</a>
+: <a class="el" href="structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateUniformUint_3_01TAcc_00_01T_00_01typenam4f0f9fc4c20d4207b26f930f5c63b3b0.html#a0e73d9dd2be4019989e24e2e874ae9d0">alpaka::rand::distribution::traits::CreateUniformUint&lt; TAcc, T, typename std::enable_if&lt; std::is_same&lt; dev::Dev&lt; TAcc &gt;, dev::DevCpu &gt;::value &amp;&amp;std::is_integral&lt; T &gt;::value &gt;::type &gt;</a>
+, <a class="el" href="structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateUniformUint_3_01TAcc_00_01T_00_01typenam94f71ae6641ea4aca38762a4585ab6ff.html#a35fc0135dfe61d6c0e6293e537054eb6">alpaka::rand::distribution::traits::CreateUniformUint&lt; TAcc, T, typename std::enable_if&lt; std::is_same&lt; dev::Dev&lt; TAcc &gt;, dev::DevCudaRt &gt;::value &amp;&amp;std::is_integral&lt; T &gt;::value &gt;::type &gt;</a>
 </li>
 <li>createView()
-: <a class="el" href="structalpaka_1_1traits_1_1mem_1_1CreateView_3_01alpaka_1_1mem_1_1detail_1_1View_3_01TElem_00_01TDim_00_01TDev_01_4_01_4.html#aa17efa37709faf74ca3eda2871f6a0bc">alpaka::traits::mem::CreateView&lt; alpaka::mem::detail::View&lt; TElem, TDim, TDev &gt; &gt;</a>
+: <a class="el" href="structalpaka_1_1mem_1_1view_1_1traits_1_1CreateView_3_01mem_1_1view_1_1ViewBasic_3_01TDev_00_01T2c1b1c403243d1c0ddd167d32be4294f.html#a64a4f339f372e12e08a3fa590c468b90">alpaka::mem::view::traits::CreateView&lt; mem::view::ViewBasic&lt; TDev, TElem, TDim, TSize &gt; &gt;</a>
 </li>
 <li>currentThreadWaitFor()
-: <a class="el" href="structalpaka_1_1traits_1_1wait_1_1CurrentThreadWaitFor_3_01devs_1_1cpu_1_1DevCpu_01_4.html#affc9bd5cf0d9273135aae34da42b2924">alpaka::traits::wait::CurrentThreadWaitFor&lt; devs::cpu::DevCpu &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1wait_1_1CurrentThreadWaitFor_3_01devs_1_1cpu_1_1EventCpu_01_4.html#a3e8a527aae4903aacdaa207dd5104551">alpaka::traits::wait::CurrentThreadWaitFor&lt; devs::cpu::EventCpu &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1wait_1_1CurrentThreadWaitFor_3_01devs_1_1cpu_1_1StreamCpu_01_4.html#a83f1d771a95d54f5bab5804634073246">alpaka::traits::wait::CurrentThreadWaitFor&lt; devs::cpu::StreamCpu &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1wait_1_1CurrentThreadWaitFor_3_01devs_1_1cuda_1_1DevCuda_01_4.html#af3f10974dc9d210170ec03f62b668009">alpaka::traits::wait::CurrentThreadWaitFor&lt; devs::cuda::DevCuda &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1wait_1_1CurrentThreadWaitFor_3_01devs_1_1cuda_1_1EventCuda_01_4.html#a564441afea7f20599ef3315688d1133f">alpaka::traits::wait::CurrentThreadWaitFor&lt; devs::cuda::EventCuda &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1wait_1_1CurrentThreadWaitFor_3_01devs_1_1cuda_1_1StreamCuda_01_4.html#a5f95ba1d7391f31f163d4bffddc64c7e">alpaka::traits::wait::CurrentThreadWaitFor&lt; devs::cuda::StreamCuda &gt;</a>
+: <a class="el" href="structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor_3_01dev_1_1DevCpu_01_4.html#a02dcbe346fcd75cf863f4eb2071fa88c">alpaka::wait::traits::CurrentThreadWaitFor&lt; dev::DevCpu &gt;</a>
+, <a class="el" href="structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor_3_01dev_1_1DevCudaRt_01_4.html#a1d30b02cb6c5c0e57d18fddaf126745d">alpaka::wait::traits::CurrentThreadWaitFor&lt; dev::DevCudaRt &gt;</a>
+, <a class="el" href="structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor_3_01event_1_1EventCpuAsync_01_4.html#ae85c63e5a5bcbcf1b4b4bec352ba2e9c">alpaka::wait::traits::CurrentThreadWaitFor&lt; event::EventCpuAsync &gt;</a>
+, <a class="el" href="structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor_3_01event_1_1EventCpuSync_01_4.html#a25fdec980c3bf8e721ea514ed9736952">alpaka::wait::traits::CurrentThreadWaitFor&lt; event::EventCpuSync &gt;</a>
+, <a class="el" href="structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor_3_01event_1_1EventCudaRt_01_4.html#a5a0508528c6b07a27f6b6dbffd0e8036">alpaka::wait::traits::CurrentThreadWaitFor&lt; event::EventCudaRt &gt;</a>
+, <a class="el" href="structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor_3_01std_1_1shared__ptr_3_01event_1_1cpu_1433bb4daedd2fb2367fc6fdb3d0cb905.html#a67f4d305c51dd276e0a7b4f92e37bd30">alpaka::wait::traits::CurrentThreadWaitFor&lt; std::shared_ptr&lt; event::cpu::detail::EventCpuAsyncImpl &gt; &gt;</a>
+, <a class="el" href="structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor_3_01stream_1_1StreamCpuAsync_01_4.html#ac2adba0f53c6c319d363b1128a43e818">alpaka::wait::traits::CurrentThreadWaitFor&lt; stream::StreamCpuAsync &gt;</a>
+, <a class="el" href="structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor_3_01stream_1_1StreamCpuSync_01_4.html#afe6b27f50f806a2dfffb760ce01eb4e0">alpaka::wait::traits::CurrentThreadWaitFor&lt; stream::StreamCpuSync &gt;</a>
+, <a class="el" href="structalpaka_1_1wait_1_1traits_1_1CurrentThreadWaitFor_3_01stream_1_1StreamCudaRt_01_4.html#a7ccb682f1b301e4354a84d67f7d65c58">alpaka::wait::traits::CurrentThreadWaitFor&lt; stream::StreamCudaRt &gt;</a>
 </li>
 </ul>
 </div><!-- contents -->
@@ -194,7 +226,7 @@ $(document).ready(function(){initNavTree('functions_c.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat May 23 2015 14:48:36 for alpaka by
+    <li class="footer">Generated on Sun Jul 5 2015 17:25:52 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

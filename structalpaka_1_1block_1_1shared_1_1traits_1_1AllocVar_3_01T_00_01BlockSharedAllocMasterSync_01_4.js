@@ -1,0 +1,4 @@
+var structalpaka_1_1block_1_1shared_1_1traits_1_1AllocVar_3_01T_00_01BlockSharedAllocMasterSync_01_4 =
+[
+    [ "allocVar", "structalpaka_1_1block_1_1shared_1_1traits_1_1AllocVar_3_01T_00_01BlockSharedAllocMasterSync_01_4.html#a9af6c01453fd5358297dda3681d46257", null ]
+];

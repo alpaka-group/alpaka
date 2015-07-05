@@ -1,7 +1,9 @@
 var searchData=
 [
-  ['waiterwaitfor',['WaiterWaitFor',['../structalpaka_1_1traits_1_1wait_1_1WaiterWaitFor.html',1,'alpaka::traits::wait']]],
-  ['waiterwaitfor_3c_20devs_3a_3acpu_3a_3astreamcpu_2c_20devs_3a_3acpu_3a_3aeventcpu_20_3e',['WaiterWaitFor&lt; devs::cpu::StreamCpu, devs::cpu::EventCpu &gt;',['../structalpaka_1_1traits_1_1wait_1_1WaiterWaitFor_3_01devs_1_1cpu_1_1StreamCpu_00_01devs_1_1cpu_1_1EventCpu_01_4.html',1,'alpaka::traits::wait']]],
-  ['waiterwaitfor_3c_20devs_3a_3acuda_3a_3astreamcuda_2c_20devs_3a_3acuda_3a_3aeventcuda_20_3e',['WaiterWaitFor&lt; devs::cuda::StreamCuda, devs::cuda::EventCuda &gt;',['../structalpaka_1_1traits_1_1wait_1_1WaiterWaitFor_3_01devs_1_1cuda_1_1StreamCuda_00_01devs_1_1cuda_1_1EventCuda_01_4.html',1,'alpaka::traits::wait']]],
-  ['workdivcuda',['WorkDivCuda',['../classalpaka_1_1accs_1_1cuda_1_1detail_1_1WorkDivCuda.html',1,'alpaka::accs::cuda::detail']]]
+  ['vec',['Vec',['../classalpaka_1_1Vec.html',1,'alpaka']]],
+  ['vec_3c_20tdim_2c_20tsize_20_3e',['Vec&lt; TDim, TSize &gt;',['../classalpaka_1_1Vec.html',1,'alpaka']]],
+  ['viewbasic',['ViewBasic',['../classalpaka_1_1mem_1_1view_1_1ViewBasic.html',1,'alpaka::mem::view']]],
+  ['viewtype',['ViewType',['../structalpaka_1_1mem_1_1view_1_1traits_1_1ViewType.html',1,'alpaka::mem::view::traits']]],
+  ['viewtype_3c_20dev_3a_3adevcpu_2c_20telem_2c_20tdim_2c_20tsize_20_3e',['ViewType&lt; dev::DevCpu, TElem, TDim, TSize &gt;',['../structalpaka_1_1mem_1_1view_1_1traits_1_1ViewType_3_01dev_1_1DevCpu_00_01TElem_00_01TDim_00_01TSize_01_4.html',1,'alpaka::mem::view::traits']]],
+  ['viewtype_3c_20dev_3a_3adevcudart_2c_20telem_2c_20tdim_2c_20tsize_20_3e',['ViewType&lt; dev::DevCudaRt, TElem, TDim, TSize &gt;',['../structalpaka_1_1mem_1_1view_1_1traits_1_1ViewType_3_01dev_1_1DevCudaRt_00_01TElem_00_01TDim_00_01TSize_01_4.html',1,'alpaka::mem::view::traits']]]
 ];

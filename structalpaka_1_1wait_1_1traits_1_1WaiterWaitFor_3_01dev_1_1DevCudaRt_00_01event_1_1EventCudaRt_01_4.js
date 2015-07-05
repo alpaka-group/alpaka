@@ -1,0 +1,4 @@
+var structalpaka_1_1wait_1_1traits_1_1WaiterWaitFor_3_01dev_1_1DevCudaRt_00_01event_1_1EventCudaRt_01_4 =
+[
+    [ "waiterWaitFor", "structalpaka_1_1wait_1_1traits_1_1WaiterWaitFor_3_01dev_1_1DevCudaRt_00_01event_1_1EventCudaRt_01_4.html#a3165f2fcaa5af1eb10fbba52a60fba50", null ]
+];

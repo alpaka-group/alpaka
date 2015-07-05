@@ -106,108 +106,173 @@ $(document).ready(function(){initNavTree('namespacealpaka_1_1rand_1_1distributio
 
 <div class="header">
   <div class="summary">
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">alpaka::rand::distribution Namespace Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>The random number generator distribution trait accessors.  
+<p>The random number generator distribution specifics.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespacealpaka_1_1rand_1_1distribution_1_1cuda"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1rand_1_1distribution_1_1cuda.html">cuda</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacealpaka_1_1rand_1_1distribution_1_1traits"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1rand_1_1distribution_1_1traits.html">traits</a></td></tr>
+<tr class="memdesc:namespacealpaka_1_1rand_1_1distribution_1_1traits"><td class="mdescLeft">&#160;</td><td class="mdescRight">The random number generator distribution traits. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:aa5a2c00b4d836986c50a3d7ab97792a4"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TAcc &gt; </td></tr>
+<tr class="memitem:aa5a2c00b4d836986c50a3d7ab97792a4"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1rand_1_1distribution.html#aa5a2c00b4d836986c50a3d7ab97792a4">DistNormalRealT</a> = decltype(<a class="el" href="structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateNormalReal.html">traits::CreateNormalReal</a>&lt; T, TAcc &gt;::<a class="el" href="namespacealpaka_1_1rand_1_1distribution.html#a9c5e728376e1aeb47b7ca1d602545049">createNormalReal</a>(std::declval&lt; TAcc const &amp; &gt;()))</td></tr>
+<tr class="memdesc:aa5a2c00b4d836986c50a3d7ab97792a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The type of the uniform floating point distribution.  <a href="#aa5a2c00b4d836986c50a3d7ab97792a4">More...</a><br /></td></tr>
+<tr class="separator:aa5a2c00b4d836986c50a3d7ab97792a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa45c7df6f1782cde2e4b68f8281115fd"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TAcc &gt; </td></tr>
+<tr class="memitem:aa45c7df6f1782cde2e4b68f8281115fd"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1rand_1_1distribution.html#aa45c7df6f1782cde2e4b68f8281115fd">DistUniRealT</a> = decltype(<a class="el" href="structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateUniformReal.html">traits::CreateUniformReal</a>&lt; T, TAcc &gt;::<a class="el" href="namespacealpaka_1_1rand_1_1distribution.html#a20a93262b4a5531f890c42dad43d91f5">createUniformReal</a>(std::declval&lt; TAcc const &amp; &gt;()))</td></tr>
+<tr class="memdesc:aa45c7df6f1782cde2e4b68f8281115fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">The type of the uniform floating point distribution.  <a href="#aa45c7df6f1782cde2e4b68f8281115fd">More...</a><br /></td></tr>
+<tr class="separator:aa45c7df6f1782cde2e4b68f8281115fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d2720449553172ea084cdcb26d7835e"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TAcc &gt; </td></tr>
+<tr class="memitem:a6d2720449553172ea084cdcb26d7835e"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1rand_1_1distribution.html#a6d2720449553172ea084cdcb26d7835e">DistUniUintT</a> = decltype(<a class="el" href="structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateUniformUint.html">traits::CreateUniformUint</a>&lt; T, TAcc &gt;::<a class="el" href="namespacealpaka_1_1rand_1_1distribution.html#ad20ea791bc6ff4bf1ff46f3c17dc1ccf">createUniformUint</a>(std::declval&lt; TAcc const &amp; &gt;()))</td></tr>
+<tr class="memdesc:a6d2720449553172ea084cdcb26d7835e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The type of the uniform integer distribution.  <a href="#a6d2720449553172ea084cdcb26d7835e">More...</a><br /></td></tr>
+<tr class="separator:a6d2720449553172ea084cdcb26d7835e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a44bef36676a54155f7ed898953c6df09"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TAcc &gt; </td></tr>
-<tr class="memitem:a44bef36676a54155f7ed898953c6df09"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1rand_1_1distribution.html#a44bef36676a54155f7ed898953c6df09">createNormalReal</a> (TAcc const &amp;acc) -&gt; decltype(<a class="el" href="structalpaka_1_1traits_1_1rand_1_1distribution_1_1CreateNormalReal.html">traits::rand::distribution::CreateNormalReal</a>&lt; TAcc, T &gt;::createNormalReal(std::declval&lt; TAcc const &amp; &gt;()))</td></tr>
-<tr class="separator:a44bef36676a54155f7ed898953c6df09"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af6727178ec95d89389e4a52a541d7b1a"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TAcc &gt; </td></tr>
-<tr class="memitem:af6727178ec95d89389e4a52a541d7b1a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1rand_1_1distribution.html#af6727178ec95d89389e4a52a541d7b1a">createUniformReal</a> (TAcc const &amp;acc) -&gt; decltype(<a class="el" href="structalpaka_1_1traits_1_1rand_1_1distribution_1_1CreateUniformReal.html">traits::rand::distribution::CreateUniformReal</a>&lt; TAcc, T &gt;::createUniformReal(std::declval&lt; TAcc const &amp; &gt;()))</td></tr>
-<tr class="separator:af6727178ec95d89389e4a52a541d7b1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a251e8faca3b522c2e5a9041c7a5e4510"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TAcc &gt; </td></tr>
-<tr class="memitem:a251e8faca3b522c2e5a9041c7a5e4510"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1rand_1_1distribution.html#a251e8faca3b522c2e5a9041c7a5e4510">createUniformUint</a> (TAcc const &amp;acc) -&gt; decltype(<a class="el" href="structalpaka_1_1traits_1_1rand_1_1distribution_1_1CreateUniformUint.html">traits::rand::distribution::CreateUniformUint</a>&lt; TAcc, T &gt;::createUniformUint(std::declval&lt; TAcc const &amp; &gt;()))</td></tr>
-<tr class="separator:a251e8faca3b522c2e5a9041c7a5e4510"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c5e728376e1aeb47b7ca1d602545049"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TAcc &gt; </td></tr>
+<tr class="memitem:a9c5e728376e1aeb47b7ca1d602545049"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1rand_1_1distribution.html#a9c5e728376e1aeb47b7ca1d602545049">createNormalReal</a> (TAcc const &amp;acc) -&gt; <a class="el" href="namespacealpaka_1_1rand_1_1distribution.html#aa5a2c00b4d836986c50a3d7ab97792a4">DistNormalRealT</a>&lt; T, TAcc &gt;</td></tr>
+<tr class="separator:a9c5e728376e1aeb47b7ca1d602545049"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20a93262b4a5531f890c42dad43d91f5"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TAcc &gt; </td></tr>
+<tr class="memitem:a20a93262b4a5531f890c42dad43d91f5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1rand_1_1distribution.html#a20a93262b4a5531f890c42dad43d91f5">createUniformReal</a> (TAcc const &amp;acc) -&gt; <a class="el" href="namespacealpaka_1_1rand_1_1distribution.html#aa45c7df6f1782cde2e4b68f8281115fd">DistUniRealT</a>&lt; T, TAcc &gt;</td></tr>
+<tr class="separator:a20a93262b4a5531f890c42dad43d91f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad20ea791bc6ff4bf1ff46f3c17dc1ccf"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TAcc &gt; </td></tr>
+<tr class="memitem:ad20ea791bc6ff4bf1ff46f3c17dc1ccf"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1rand_1_1distribution.html#ad20ea791bc6ff4bf1ff46f3c17dc1ccf">createUniformUint</a> (TAcc const &amp;acc) -&gt; <a class="el" href="namespacealpaka_1_1rand_1_1distribution.html#a6d2720449553172ea084cdcb26d7835e">DistUniUintT</a>&lt; T, TAcc &gt;</td></tr>
+<tr class="separator:ad20ea791bc6ff4bf1ff46f3c17dc1ccf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>The random number generator distribution trait accessors. </p>
-</div><h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="a44bef36676a54155f7ed898953c6df09"></a>
+<div class="textblock"><p>The random number generator distribution specifics. </p>
+</div><h2 class="groupheader">Typedef Documentation</h2>
+<a class="anchor" id="aa5a2c00b4d836986c50a3d7ab97792a4"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename T , typename TAcc &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto alpaka::rand::distribution::createNormalReal </td>
+          <td class="memname">using <a class="el" href="namespacealpaka_1_1rand_1_1distribution.html#aa5a2c00b4d836986c50a3d7ab97792a4">alpaka::rand::distribution::DistNormalRealT</a> = typedef decltype( <a class="el" href="structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateNormalReal.html">traits::CreateNormalReal</a>&lt; T, TAcc&gt; ::<a class="el" href="namespacealpaka_1_1rand_1_1distribution.html#a9c5e728376e1aeb47b7ca1d602545049">createNormalReal</a>( std::declval&lt;TAcc const &amp;&gt;()))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The type of the uniform floating point distribution. </p>
+
+<p>Definition at line <a class="el" href="rand_2Traits_8hpp_source.html#l00085">85</a> of file <a class="el" href="rand_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa45c7df6f1782cde2e4b68f8281115fd"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename TAcc &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacealpaka_1_1rand_1_1distribution.html#aa45c7df6f1782cde2e4b68f8281115fd">alpaka::rand::distribution::DistUniRealT</a> = typedef decltype( <a class="el" href="structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateUniformReal.html">traits::CreateUniformReal</a>&lt; T, TAcc&gt; ::<a class="el" href="namespacealpaka_1_1rand_1_1distribution.html#a20a93262b4a5531f890c42dad43d91f5">createUniformReal</a>( std::declval&lt;TAcc const &amp;&gt;()))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The type of the uniform floating point distribution. </p>
+
+<p>Definition at line <a class="el" href="rand_2Traits_8hpp_source.html#l00119">119</a> of file <a class="el" href="rand_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a6d2720449553172ea084cdcb26d7835e"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename TAcc &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacealpaka_1_1rand_1_1distribution.html#a6d2720449553172ea084cdcb26d7835e">alpaka::rand::distribution::DistUniUintT</a> = typedef decltype( <a class="el" href="structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateUniformUint.html">traits::CreateUniformUint</a>&lt; T, TAcc&gt; ::<a class="el" href="namespacealpaka_1_1rand_1_1distribution.html#ad20ea791bc6ff4bf1ff46f3c17dc1ccf">createUniformUint</a>( std::declval&lt;TAcc const &amp;&gt;()))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The type of the uniform integer distribution. </p>
+
+<p>Definition at line <a class="el" href="rand_2Traits_8hpp_source.html#l00153">153</a> of file <a class="el" href="rand_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="a9c5e728376e1aeb47b7ca1d602545049"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename TAcc &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::rand::distribution::createNormalReal </td>
           <td>(</td>
           <td class="paramtype">TAcc const &amp;&#160;</td>
           <td class="paramname"><em>acc</em></td><td>)</td>
-          <td> -&gt; decltype(
-                    <a class="el" href="structalpaka_1_1traits_1_1rand_1_1distribution_1_1CreateNormalReal.html">traits::rand::distribution::CreateNormalReal</a>&lt;
-                        TAcc,
-                        T&gt;
-                    ::createNormalReal(
-                        std::declval&lt;TAcc const &amp;&gt;()))
+          <td> -&gt; <a class="el" href="namespacealpaka_1_1rand_1_1distribution.html#aa5a2c00b4d836986c50a3d7ab97792a4">DistNormalRealT</a>&lt;T, TAcc&gt;
             </td>
         </tr>
       </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>A normal float distribution with mean 0.0f and standard deviation 1.0f. </dd></dl>
 
-<p>Definition at line <a class="el" href="traits_2Rand_8hpp_source.html#l00097">97</a> of file <a class="el" href="traits_2Rand_8hpp_source.html">Rand.hpp</a>.</p>
+<p>Definition at line <a class="el" href="rand_2Traits_8hpp_source.html#l00093">93</a> of file <a class="el" href="rand_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="af6727178ec95d89389e4a52a541d7b1a"></a>
+<a class="anchor" id="a20a93262b4a5531f890c42dad43d91f5"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename T , typename TAcc &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto alpaka::rand::distribution::createUniformReal </td>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::rand::distribution::createUniformReal </td>
           <td>(</td>
           <td class="paramtype">TAcc const &amp;&#160;</td>
           <td class="paramname"><em>acc</em></td><td>)</td>
-          <td> -&gt; decltype(
-                    <a class="el" href="structalpaka_1_1traits_1_1rand_1_1distribution_1_1CreateUniformReal.html">traits::rand::distribution::CreateUniformReal</a>&lt;
-                        TAcc,
-                        T&gt;
-                    ::createUniformReal(
-                        std::declval&lt;TAcc const &amp;&gt;()))
+          <td> -&gt; <a class="el" href="namespacealpaka_1_1rand_1_1distribution.html#aa45c7df6f1782cde2e4b68f8281115fd">DistUniRealT</a>&lt;T, TAcc&gt;
             </td>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>A uniform float distribution [0.0, 1.0). </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A uniform floating point distribution [0.0, 1.0). </dd></dl>
 
-<p>Definition at line <a class="el" href="traits_2Rand_8hpp_source.html#l00122">122</a> of file <a class="el" href="traits_2Rand_8hpp_source.html">Rand.hpp</a>.</p>
+<p>Definition at line <a class="el" href="rand_2Traits_8hpp_source.html#l00127">127</a> of file <a class="el" href="rand_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a251e8faca3b522c2e5a9041c7a5e4510"></a>
+<a class="anchor" id="ad20ea791bc6ff4bf1ff46f3c17dc1ccf"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename T , typename TAcc &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto alpaka::rand::distribution::createUniformUint </td>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::rand::distribution::createUniformUint </td>
           <td>(</td>
           <td class="paramtype">TAcc const &amp;&#160;</td>
           <td class="paramname"><em>acc</em></td><td>)</td>
-          <td> -&gt; decltype(
-                    <a class="el" href="structalpaka_1_1traits_1_1rand_1_1distribution_1_1CreateUniformUint.html">traits::rand::distribution::CreateUniformUint</a>&lt;
-                        TAcc,
-                        T&gt;
-                    ::createUniformUint(
-                        std::declval&lt;TAcc const &amp;&gt;()))
+          <td> -&gt; <a class="el" href="namespacealpaka_1_1rand_1_1distribution.html#a6d2720449553172ea084cdcb26d7835e">DistUniUintT</a>&lt;T, TAcc&gt;
             </td>
         </tr>
       </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>A uniform integer distribution [0, UINT_MAX]. </dd></dl>
 
-<p>Definition at line <a class="el" href="traits_2Rand_8hpp_source.html#l00147">147</a> of file <a class="el" href="traits_2Rand_8hpp_source.html">Rand.hpp</a>.</p>
+<p>Definition at line <a class="el" href="rand_2Traits_8hpp_source.html#l00161">161</a> of file <a class="el" href="rand_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -217,7 +282,7 @@ template&lt;typename T , typename TAcc &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1rand.html">rand</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1rand_1_1distribution.html">distribution</a></li>
-    <li class="footer">Generated on Sat May 23 2015 14:48:29 for alpaka by
+    <li class="footer">Generated on Sun Jul 5 2015 17:25:48 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

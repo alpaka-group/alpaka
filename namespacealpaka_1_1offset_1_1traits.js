@@ -1,0 +1,14 @@
+var namespacealpaka_1_1offset_1_1traits =
+[
+    [ "GetOffset", "structalpaka_1_1offset_1_1traits_1_1GetOffset.html", "structalpaka_1_1offset_1_1traits_1_1GetOffset" ],
+    [ "GetOffset< std::integral_constant< std::size_t, 0u >, TOffsets, typename std::enable_if< std::is_integral< TOffsets >::value &&std::is_unsigned< TOffsets >::value >::type >", "structalpaka_1_1offset_1_1traits_1_1GetOffset_3_01std_1_1integral__constant_3_01std_1_1size__t_020860f7a146c7e3872967367b60100cf.html", "structalpaka_1_1offset_1_1traits_1_1GetOffset_3_01std_1_1integral__constant_3_01std_1_1size__t_020860f7a146c7e3872967367b60100cf" ],
+    [ "GetOffset< TIdx, mem::buf::BufCpu< TElem, TDim, TSize > >", "structalpaka_1_1offset_1_1traits_1_1GetOffset_3_01TIdx_00_01mem_1_1buf_1_1BufCpu_3_01TElem_00_01TDim_00_01TSize_01_4_01_4.html", "structalpaka_1_1offset_1_1traits_1_1GetOffset_3_01TIdx_00_01mem_1_1buf_1_1BufCpu_3_01TElem_00_01TDim_00_01TSize_01_4_01_4" ],
+    [ "GetOffset< TIdx, mem::buf::BufCudaRt< TElem, TDim, TSize > >", "structalpaka_1_1offset_1_1traits_1_1GetOffset_3_01TIdx_00_01mem_1_1buf_1_1BufCudaRt_3_01TElem_00_01TDim_00_01TSize_01_4_01_4.html", "structalpaka_1_1offset_1_1traits_1_1GetOffset_3_01TIdx_00_01mem_1_1buf_1_1BufCudaRt_3_01TElem_00_01TDim_00_01TSize_01_4_01_4" ],
+    [ "GetOffset< TIdx, mem::buf::BufPlainPtrWrapper< TDev, TElem, TDim, TSize > >", "structalpaka_1_1offset_1_1traits_1_1GetOffset_3_01TIdx_00_01mem_1_1buf_1_1BufPlainPtrWrapper_3_0df5a3e21ccb570b7697e84ebf87c1a15.html", "structalpaka_1_1offset_1_1traits_1_1GetOffset_3_01TIdx_00_01mem_1_1buf_1_1BufPlainPtrWrapper_3_0df5a3e21ccb570b7697e84ebf87c1a15" ],
+    [ "GetOffset< TIdx, std::array< TElem, TuiSize > >", "structalpaka_1_1offset_1_1traits_1_1GetOffset_3_01TIdx_00_01std_1_1array_3_01TElem_00_01TuiSize_01_4_01_4.html", "structalpaka_1_1offset_1_1traits_1_1GetOffset_3_01TIdx_00_01std_1_1array_3_01TElem_00_01TuiSize_01_4_01_4" ],
+    [ "GetOffset< TIdx, std::vector< TElem, TAllocator > >", "structalpaka_1_1offset_1_1traits_1_1GetOffset_3_01TIdx_00_01std_1_1vector_3_01TElem_00_01TAllocator_01_4_01_4.html", "structalpaka_1_1offset_1_1traits_1_1GetOffset_3_01TIdx_00_01std_1_1vector_3_01TElem_00_01TAllocator_01_4_01_4" ],
+    [ "SetOffset", "structalpaka_1_1offset_1_1traits_1_1SetOffset.html", [
+      [ "type", "structalpaka_1_1offset_1_1traits_1_1SetOffset_1_1type.html", "structalpaka_1_1offset_1_1traits_1_1SetOffset_1_1type" ]
+    ] ],
+    [ "SetOffset< std::integral_constant< std::size_t, 0u >, TOffsets, TOffset, typename std::enable_if< std::is_integral< TOffsets >::value &&std::is_unsigned< TOffsets >::value >::type >", "structalpaka_1_1offset_1_1traits_1_1SetOffset_3_01std_1_1integral__constant_3_01std_1_1size__t_076fe7a8a341fafc4bbc0af0c5e4431af.html", "structalpaka_1_1offset_1_1traits_1_1SetOffset_3_01std_1_1integral__constant_3_01std_1_1size__t_076fe7a8a341fafc4bbc0af0c5e4431af" ]
+];

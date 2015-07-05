@@ -106,48 +106,74 @@ $(document).ready(function(){initNavTree('namespacealpaka_1_1atomic.html','');})
 
 <div class="header">
   <div class="summary">
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">alpaka::atomic Namespace Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>The atomic operation traits accessors.  
+<p>The atomic operation traits specifics.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespacealpaka_1_1atomic_1_1op"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1atomic_1_1op.html">op</a></td></tr>
+<tr class="memdesc:namespacealpaka_1_1atomic_1_1op"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines operation functors. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacealpaka_1_1atomic_1_1traits"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1atomic_1_1traits.html">traits</a></td></tr>
+<tr class="memdesc:namespacealpaka_1_1atomic_1_1traits"><td class="mdescLeft">&#160;</td><td class="mdescRight">The atomic operation traits. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1atomic_1_1AtomicCudaBuiltIn.html">AtomicCudaBuiltIn</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The GPU CUDA accelerator atomic ops.  <a href="classalpaka_1_1atomic_1_1AtomicCudaBuiltIn.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1atomic_1_1AtomicNoOp.html">AtomicNoOp</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU fibers accelerator atomic ops.  <a href="classalpaka_1_1atomic_1_1AtomicNoOp.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1atomic_1_1AtomicOmpCritSec.html">AtomicOmpCritSec</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The OpenMP accelerator atomic ops.  <a href="classalpaka_1_1atomic_1_1AtomicOmpCritSec.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classalpaka_1_1atomic_1_1AtomicStlLock.html">AtomicStlLock</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CPU threads accelerator atomic ops.  <a href="classalpaka_1_1atomic_1_1AtomicStlLock.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a7a105336eaf7df4cfda728056d1087cf"><td class="memTemplParams" colspan="2">template&lt;typename TOp , typename T , typename TAtomic &gt; </td></tr>
-<tr class="memitem:a7a105336eaf7df4cfda728056d1087cf"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1atomic.html#a7a105336eaf7df4cfda728056d1087cf">atomicOp</a> (unsigned int *const addr, unsigned int const &amp;value, TAtomic const &amp;atomic) -&gt; T</td></tr>
-<tr class="memdesc:a7a105336eaf7df4cfda728056d1087cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes the given operation atomically.  <a href="#a7a105336eaf7df4cfda728056d1087cf">More...</a><br /></td></tr>
-<tr class="separator:a7a105336eaf7df4cfda728056d1087cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a175aae6242de41631f65887f3202629a"><td class="memTemplParams" colspan="2">template&lt;typename TOp , typename TAtomic , typename T &gt; </td></tr>
+<tr class="memitem:a175aae6242de41631f65887f3202629a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacealpaka_1_1atomic.html#a175aae6242de41631f65887f3202629a">atomicOp</a> (TAtomic const &amp;atomic, T *const addr, T const &amp;value) -&gt; T</td></tr>
+<tr class="memdesc:a175aae6242de41631f65887f3202629a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes the given operation atomically.  <a href="#a175aae6242de41631f65887f3202629a">More...</a><br /></td></tr>
+<tr class="separator:a175aae6242de41631f65887f3202629a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>The atomic operation traits accessors. </p>
+<div class="textblock"><p>The atomic operation traits specifics. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="a7a105336eaf7df4cfda728056d1087cf"></a>
+<a class="anchor" id="a175aae6242de41631f65887f3202629a"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename TOp , typename T , typename TAtomic &gt; </div>
+template&lt;typename TOp , typename TAtomic , typename T &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="core_2Common_8hpp.html#a58b8d1373dd28be3a64937d6cb48b7c0">ALPAKA_FCT_HOST_ACC</a> auto alpaka::atomic::atomicOp </td>
+          <td class="memname"><a class="el" href="Common_8hpp.html#aa8d02f0c4379afabdb7f4ee2e8f7954c">ALPAKA_NO_HOST_ACC_WARNING</a> <a class="el" href="Common_8hpp.html#a4a195bd41eac945cee512865b6ef73f3">ALPAKA_FN_HOST_ACC</a> auto alpaka::atomic::atomicOp </td>
           <td>(</td>
-          <td class="paramtype">unsigned int *const&#160;</td>
+          <td class="paramtype">TAtomic const &amp;&#160;</td>
+          <td class="paramname"><em>atomic</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T *const&#160;</td>
           <td class="paramname"><em>addr</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">unsigned int const &amp;&#160;</td>
-          <td class="paramname"><em>value</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">TAtomic const &amp;&#160;</td>
-          <td class="paramname"><em>atomic</em>&#160;</td>
+          <td class="paramtype">T const &amp;&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -176,7 +202,7 @@ template&lt;typename TOp , typename T , typename TAtomic &gt; </div>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="traits_2Atomic_8hpp_source.html#l00065">65</a> of file <a class="el" href="traits_2Atomic_8hpp_source.html">Atomic.hpp</a>.</p>
+<p>Definition at line <a class="el" href="atomic_2Traits_8hpp_source.html#l00066">66</a> of file <a class="el" href="atomic_2Traits_8hpp_source.html">Traits.hpp</a>.</p>
 
 </div>
 </div>
@@ -186,7 +212,7 @@ template&lt;typename TOp , typename T , typename TAtomic &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacealpaka.html">alpaka</a></li><li class="navelem"><a class="el" href="namespacealpaka_1_1atomic.html">atomic</a></li>
-    <li class="footer">Generated on Sat May 23 2015 14:48:27 for alpaka by
+    <li class="footer">Generated on Sun Jul 5 2015 17:25:37 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>

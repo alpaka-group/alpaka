@@ -1,4 +1,0 @@
-var structalpaka_1_1traits_1_1dev_1_1DevType_3_01accs_1_1fibers_1_1detail_1_1ExecCpuFibers_3_01TDim_01_4_01_4 =
-[
-    [ "type", "structalpaka_1_1traits_1_1dev_1_1DevType_3_01accs_1_1fibers_1_1detail_1_1ExecCpuFibers_3_01TDim_01_4_01_4.html#a5901d49edbcff503a5dc91a21471f651", null ]
-];

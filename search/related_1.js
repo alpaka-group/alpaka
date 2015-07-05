@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['atomicop',['AtomicOp',['../classalpaka_1_1accs_1_1threads_1_1detail_1_1AtomicThreads.html#abe67d5723bd2009cdca7659d696719e8',1,'alpaka::accs::threads::detail::AtomicThreads']]]
+  ['atomicop',['AtomicOp',['../classalpaka_1_1atomic_1_1AtomicStlLock.html#a16708b0526c2ce862c1e3ca9ddc580e8',1,'alpaka::atomic::AtomicStlLock']]]
 ];

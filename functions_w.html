@@ -82,7 +82,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions_func.html"><span>Functions</span></a></li>
       <li><a href="functions_vars.html"><span>Variables</span></a></li>
       <li><a href="functions_type.html"><span>Typedefs</span></a></li>
-      <li><a href="functions_eval.html"><span>Enumerator</span></a></li>
       <li><a href="functions_rela.html"><span>Related&#160;Functions</span></a></li>
     </ul>
   </div>
@@ -97,6 +96,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions_f.html#index_f"><span>f</span></a></li>
       <li><a href="functions_g.html#index_g"><span>g</span></a></li>
       <li><a href="functions_i.html#index_i"><span>i</span></a></li>
+      <li><a href="functions_l.html#index_l"><span>l</span></a></li>
       <li><a href="functions_m.html#index_m"><span>m</span></a></li>
       <li><a href="functions_n.html#index_n"><span>n</span></a></li>
       <li><a href="functions_o.html#index_o"><span>o</span></a></li>
@@ -108,7 +108,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions_v.html#index_v"><span>v</span></a></li>
       <li class="current"><a href="functions_w.html#index_w"><span>w</span></a></li>
       <li><a href="functions_x.html#index_x"><span>x</span></a></li>
-      <li><a href="functions_y.html#index_y"><span>y</span></a></li>
       <li><a href="functions_z.html#index_z"><span>z</span></a></li>
       <li><a href="functions_~.html#index_~"><span>~</span></a></li>
     </ul>
@@ -147,15 +146,27 @@ $(document).ready(function(){initNavTree('functions_w.html','');});
 
 <h3><a class="anchor" id="index_w"></a>- w -</h3><ul>
 <li>wait()
-: <a class="el" href="classalpaka_1_1accs_1_1fibers_1_1detail_1_1FiberBarrier.html#a078f0eb50c8a6380023ddc927e24ac5d">alpaka::accs::fibers::detail::FiberBarrier</a>
-, <a class="el" href="classalpaka_1_1accs_1_1threads_1_1detail_1_1ThreadBarrier.html#ae91f1a878610fc0bf986b6b2d3317c47">alpaka::accs::threads::detail::ThreadBarrier</a>
+: <a class="el" href="classalpaka_1_1acc_1_1fibers_1_1FiberBarrier.html#ae29c34b721050364de1fc19a0b7bb482">alpaka::acc::fibers::FiberBarrier&lt; TSize &gt;</a>
+, <a class="el" href="classalpaka_1_1acc_1_1threads_1_1ThreadBarrier.html#a586e22563d46fe025f58e656ceab09c4">alpaka::acc::threads::ThreadBarrier&lt; TSize &gt;</a>
 </li>
 <li>waiterWaitFor()
-: <a class="el" href="structalpaka_1_1traits_1_1wait_1_1WaiterWaitFor_3_01devs_1_1cpu_1_1StreamCpu_00_01devs_1_1cpu_1_1EventCpu_01_4.html#a3c5bf0f88325c8878a0305467801f51f">alpaka::traits::wait::WaiterWaitFor&lt; devs::cpu::StreamCpu, devs::cpu::EventCpu &gt;</a>
-, <a class="el" href="structalpaka_1_1traits_1_1wait_1_1WaiterWaitFor_3_01devs_1_1cuda_1_1StreamCuda_00_01devs_1_1cuda_1_1EventCuda_01_4.html#a7013af566de95dc9748d68458b05ccb1">alpaka::traits::wait::WaiterWaitFor&lt; devs::cuda::StreamCuda, devs::cuda::EventCuda &gt;</a>
+: <a class="el" href="structalpaka_1_1wait_1_1traits_1_1WaiterWaitFor_3_01dev_1_1DevCpu_00_01event_1_1EventCpuAsync_01_4.html#a2f5e4a0d5a9e501b77b51f70eb786842">alpaka::wait::traits::WaiterWaitFor&lt; dev::DevCpu, event::EventCpuAsync &gt;</a>
+, <a class="el" href="structalpaka_1_1wait_1_1traits_1_1WaiterWaitFor_3_01dev_1_1DevCpu_00_01event_1_1EventCpuSync_01_4.html#ac8bc4a9d474cb74abec31e7caf142771">alpaka::wait::traits::WaiterWaitFor&lt; dev::DevCpu, event::EventCpuSync &gt;</a>
+, <a class="el" href="structalpaka_1_1wait_1_1traits_1_1WaiterWaitFor_3_01dev_1_1DevCudaRt_00_01event_1_1EventCudaRt_01_4.html#a3165f2fcaa5af1eb10fbba52a60fba50">alpaka::wait::traits::WaiterWaitFor&lt; dev::DevCudaRt, event::EventCudaRt &gt;</a>
+, <a class="el" href="structalpaka_1_1wait_1_1traits_1_1WaiterWaitFor_3_01std_1_1shared__ptr_3_01stream_1_1cpu_1_1deta06cc3480304705fa0de43033b88db69e.html#ad5438cf05cd3a4ff96a8237ffcc69160">alpaka::wait::traits::WaiterWaitFor&lt; std::shared_ptr&lt; stream::cpu::detail::StreamCpuAsyncImpl &gt;, event::EventCpuAsync &gt;</a>
+, <a class="el" href="structalpaka_1_1wait_1_1traits_1_1WaiterWaitFor_3_01stream_1_1StreamCpuAsync_00_01event_1_1EventCpuAsync_01_4.html#a2e13a766b69d317cee1ced357f0a5efe">alpaka::wait::traits::WaiterWaitFor&lt; stream::StreamCpuAsync, event::EventCpuAsync &gt;</a>
+, <a class="el" href="structalpaka_1_1wait_1_1traits_1_1WaiterWaitFor_3_01stream_1_1StreamCpuSync_00_01event_1_1EventCpuSync_01_4.html#a092e77b134866c25c9c55f625aa31059">alpaka::wait::traits::WaiterWaitFor&lt; stream::StreamCpuSync, event::EventCpuSync &gt;</a>
+, <a class="el" href="structalpaka_1_1wait_1_1traits_1_1WaiterWaitFor_3_01stream_1_1StreamCudaRt_00_01event_1_1EventCudaRt_01_4.html#a3e22f46c8c4be95cfc1960d8622a8f27">alpaka::wait::traits::WaiterWaitFor&lt; stream::StreamCudaRt, event::EventCudaRt &gt;</a>
 </li>
-<li>WorkDivCuda()
-: <a class="el" href="classalpaka_1_1accs_1_1cuda_1_1detail_1_1WorkDivCuda.html#a768d8058b8576e1cf7f48c8a58ea8e7d">alpaka::accs::cuda::detail::WorkDivCuda&lt; TDim &gt;</a>
+<li>WorkDivBase
+: <a class="el" href="classalpaka_1_1workdiv_1_1WorkDivCudaBuiltIn.html#a8e85085f80096808f5a1177976b259bb">alpaka::workdiv::WorkDivCudaBuiltIn&lt; TDim, TSize &gt;</a>
+, <a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html#a6d859d3cdafaca826089e64fb43fefd0">alpaka::workdiv::WorkDivMembers&lt; TDim, TSize &gt;</a>
+</li>
+<li>WorkDivCudaBuiltIn()
+: <a class="el" href="classalpaka_1_1workdiv_1_1WorkDivCudaBuiltIn.html#a4491cfb2d2829b677ea439209abcd026">alpaka::workdiv::WorkDivCudaBuiltIn&lt; TDim, TSize &gt;</a>
+</li>
+<li>WorkDivMembers()
+: <a class="el" href="classalpaka_1_1workdiv_1_1WorkDivMembers.html#a244aa4200933e7c18c2039d99d2c3a75">alpaka::workdiv::WorkDivMembers&lt; TDim, TSize &gt;</a>
 </li>
 </ul>
 </div><!-- contents -->
@@ -163,7 +174,7 @@ $(document).ready(function(){initNavTree('functions_w.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat May 23 2015 14:48:36 for alpaka by
+    <li class="footer">Generated on Sun Jul 5 2015 17:25:52 for alpaka by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9 </li>
   </ul>
