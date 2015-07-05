@@ -30,6 +30,7 @@
 #include <alpaka/core/Vec.hpp>                  // Vec
 #include <alpaka/core/Common.hpp>               // ALPAKA_FN_HOST
 
+#include <cassert>                              // assert
 #include <cmath>                                // std::ceil
 #include <algorithm>                            // std::min
 #include <functional>                           // std::bind
@@ -64,13 +65,17 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename T,
-                typename = typename std::enable_if<std::is_integral<T>::value && std::is_unsigned<T>::value>::type>
+                typename = typename std::enable_if<std::is_integral<T>::value>::type>
             ALPAKA_FN_HOST auto nextDivisorLowerOrEqual(
                 T const & uiMaxDivisor,
                 T const & uiDividend)
             -> T
             {
                 T uiDivisor(uiMaxDivisor);
+
+                assert(0 <= uiDividend);
+                assert(0 <= uiMaxDivisor);
+                assert(uiDividend <= uiMaxDivisor);
 
                 while((uiDividend%uiDivisor) != 0)
                 {
@@ -82,16 +87,21 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! \param uiVal The value to find divisors of.
             //! \param uiMaxDivisor The maximum.
-            //! \return A list of all divisors less then or euqal the given maximum.
+            //! \return A list of all divisors less then or equal to the given maximum.
             //-----------------------------------------------------------------------------
             template<
                 typename T,
-                typename = typename std::enable_if<std::is_integral<T>::value && std::is_unsigned<T>::value>::type>
-            std::set<T> allDivisorsLessOrEqual(
+                typename = typename std::enable_if<std::is_integral<T>::value>::type>
+            ALPAKA_FN_HOST auto allDivisorsLessOrEqual(
                 T const & uiVal,
                 T const & uiMaxDivisor)
+            -> std::set<T>
             {
                 std::set<T> setDivisors;
+
+                assert(0 <= uiVal);
+                assert(0 <= uiMaxDivisor);
+                assert(uiMaxDivisor <= uiVal);
 
                 for(T i(1); i <= std::min(uiVal, uiMaxDivisor); ++i)
                 {

@@ -177,7 +177,7 @@ namespace alpaka
                 typename TElem,
                 typename TDim,
                 typename TSize>
-            using ViewT = typename traits::ViewType<TElem, TDim, TDev, TSize>::type;
+            using ViewT = typename traits::ViewType<TDev, TElem, TDim, TSize>::type;
 
             //-----------------------------------------------------------------------------
             //! Gets the native pointer of the memory buffer.

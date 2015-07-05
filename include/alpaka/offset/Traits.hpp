@@ -90,7 +90,6 @@ namespace alpaka
         //! \return The offset in x dimension.
         //-----------------------------------------------------------------------------
         template<
-            typename TVal,
             typename TOffsets>
         ALPAKA_FN_HOST_ACC auto getOffsetX(
             TOffsets const & offsets = TOffsets())
@@ -102,7 +101,6 @@ namespace alpaka
         //! \return The offset in y dimension.
         //-----------------------------------------------------------------------------
         template<
-            typename TVal,
             typename TOffsets>
         ALPAKA_FN_HOST_ACC auto getOffsetY(
             TOffsets const & offsets = TOffsets())
@@ -114,7 +112,6 @@ namespace alpaka
         //! \return The offset in z dimension.
         //-----------------------------------------------------------------------------
         template<
-            typename TVal,
             typename TOffsets>
         ALPAKA_FN_HOST_ACC auto getOffsetZ(
             TOffsets const & offsets = TOffsets())

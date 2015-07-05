@@ -178,7 +178,7 @@ namespace alpaka
                         std::is_same<TSize, size::SizeT<TExtents>>::value,
                         "The size type of TExtents and the TSize template parameter have to be identical!");
                     static_assert(
-                        std::is_same<TBuf, size::SizeT<TExtents>>::value,
+                        std::is_same<TSize, size::SizeT<TBuf>>::value,
                         "The size type of TBuf and the TSize template parameter have to be identical!");
 
                     assert(extent::getWidth(relativeOffsetsElements) <= extent::getWidth(buf));
@@ -330,9 +330,9 @@ namespace alpaka
                     -> mem::view::ViewBasic<typename std::add_const<TElem>::type, TDim, TDev, TSize>
                     {
                         return mem::view::ViewBasic<
+                            TDev,
                             typename std::add_const<TElem>::type,
                             TDim,
-                            TDev,
                             TSize>(
                                 buf);
                     }
@@ -346,9 +346,9 @@ namespace alpaka
                     -> mem::view::ViewBasic<TDev, TElem, TDim, TSize>
                     {
                         return mem::view::ViewBasic<
+                            TDev,
                             TElem,
                             TDim,
-                            TDev,
                             TSize>(
                                 buf);
                     }
@@ -366,9 +366,9 @@ namespace alpaka
                     -> mem::view::ViewBasic<typename std::add_const<TElem>::type, TDim, TDev, TSize>
                     {
                         return mem::view::ViewBasic<
+                            TDev,
                             typename std::add_const<TElem>::type,
                             TDim,
-                            TDev,
                             TSize>(
                                 buf,
                                 extentsElements,
@@ -388,9 +388,9 @@ namespace alpaka
                     -> mem::view::ViewBasic<TDev, TElem, TDim, TSize>
                     {
                         return mem::view::ViewBasic<
+                            TDev,
                             TElem,
                             TDim,
-                            TDev,
                             TSize>(
                                 buf,
                                 extentsElements,
