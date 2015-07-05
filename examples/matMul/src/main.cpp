@@ -265,7 +265,7 @@ struct MatMulTester
                 devAcc,
                 v2uiExtentsC,
                 false,
-                alpaka::workdiv::BlockExtentsSubDivRestrictions::EqualExtents));
+                alpaka::workdiv::GridBlockExtentsSubDivRestrictions::EqualExtents));
 
         std::cout
             << "profileAcceleratedMatMulKernel("

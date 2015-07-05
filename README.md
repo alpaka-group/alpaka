@@ -7,7 +7,7 @@ Its aim is to provide performance portability across accelerators through the ab
 
 It is platform independent and supports the concurrent and cooperative use of multiple devices such as the hosts CPU as well as attached accelerators as for instance CUDA GPUs and Xeon Phis (currently native execution only).
 A multitude of accelerator back-end variants using CUDA, OpenMP (2.0/4.0), Boost.Fiber, std::thread and also serial execution is provided and can be selected depending on the device.
-Only one implementation of the user kernel is required by utilizing the uniform kernel interface which is used by all accelerator back-ends.
+Only one implementation of the user kernel is required by representing them as function objects with a special interface.
 There is no need to write special CUDA, OpenMP or custom threading code.
 Accelerator back-ends can be mixed within a device stream.
 The decision which accelerator back-end executes which kernel can be made at runtime.
@@ -21,7 +21,7 @@ The threads in the grid are organized in blocks.
 All threads in a block are executed in parallel and can interact via fast shared memory.
 Blocks are executed independently and can not interact in any way.
 The block execution order is unspecified and depends on the accelerator in use.
-By using this abstraction the execution can be optimally adapted to the available accelerators.
+By using this abstraction the execution can be optimally adapted to the available hardware.
 
 
 Software License
@@ -79,12 +79,12 @@ Dependencies
 The **alpaka** library itself just requires header-only libraries.
 However some of the accelerator back-end implementations require different boost libraries to be built.
 
+When an accelerator back-end using *Boost.Fiber* is enabled, the develop branch of boost and the proposed boost library [`boost-fibers`](https://github.com/olk/boost-fiber) (develop branch) are required.
+`boost-fibers`, `boost-context` and all of its dependencies are required to be build in C++14 mode `./b2 cxxflags="-std=c++14"`.
+
 When an accelerator back-end using *CUDA* is enabled, version *7.0* of the *CUDA SDK* is the minimum requirement.
 
 When an accelerator back-end using *OpenMP 2.0/4.0* is enabled, the compiler and the platform have to support the corresponding *OpenMP* version.
-
-When an accelerator back-end using *Boost.Fiber* is enabled, the develop branch of boost and the proposed boost library [`boost-fibers`](https://github.com/olk/boost-fiber) (develop branch) are required.
-`boost-fibers`, `boost-context` and all of its dependencies are required to be build in C++14 mode `./b2 cxxflags="-std=c++14"`.
 
 
 Usage

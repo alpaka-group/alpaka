@@ -389,7 +389,7 @@ struct MandelbrotKernelTester
                 devAcc,
                 v2uiExtents,
                 false,
-                alpaka::workdiv::BlockExtentsSubDivRestrictions::Unrestricted));
+                alpaka::workdiv::GridBlockExtentsSubDivRestrictions::Unrestricted));
 
         std::cout
             << "MandelbrotKernelTester("

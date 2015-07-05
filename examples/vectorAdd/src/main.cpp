@@ -112,7 +112,7 @@ struct VectorAddKernelTester
                 devAcc,
                 v1uiExtents,
                 false,
-                alpaka::workdiv::BlockExtentsSubDivRestrictions::Unrestricted));
+                alpaka::workdiv::GridBlockExtentsSubDivRestrictions::Unrestricted));
 
         std::cout
             << "VectorAddKernelTester("

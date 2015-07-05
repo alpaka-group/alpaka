@@ -200,7 +200,7 @@ struct SharedMemTester
                 devAcc,
                 uiNumElements,
                 false,
-                alpaka::workdiv::BlockExtentsSubDivRestrictions::Unrestricted));
+                alpaka::workdiv::GridBlockExtentsSubDivRestrictions::Unrestricted));
 
         std::cout
             << "SharedMemTester("

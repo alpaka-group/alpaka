@@ -48,7 +48,7 @@ namespace alpaka
         //! \tparam T The type of the object specializing Remainder.
         //! \tparam Tx The type of the first argument.
         //! \tparam Ty The type of the second argument.
-        //! \param max The object specializing Max.
+        //! \param remainder The object specializing Max.
         //! \param x The first argument.
         //! \param y The second argument.
         //-----------------------------------------------------------------------------

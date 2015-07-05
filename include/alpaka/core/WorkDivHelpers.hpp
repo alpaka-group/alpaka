@@ -45,9 +45,9 @@ namespace alpaka
     namespace workdiv
     {
         //#############################################################################
-        //! The block extent subdivision restrictions.
+        //! The grid block extents subdivision restrictions.
         //#############################################################################
-        enum class BlockExtentsSubDivRestrictions
+        enum class GridBlockExtentsSubDivRestrictions
         {
             EqualExtents,       //!< The block thread extents will be equal in all dimensions.
             CloseToEqualExtents,//!< The block thread extents will be as close to equal as possible in all dimensions.
@@ -131,8 +131,8 @@ namespace alpaka
         //! \param bRequireBlockThreadExtentsToDivideGridThreadExtents
         //!     If this is true, the grid thread extents will be multiples of the corresponding block thread extents.
         //!     NOTE: If this is true and vuiGridThreadExtents is prime (or otherwise bad chosen) in a dimension, the block thread extent will be one in this dimension.
-        //! \param eBlockExtentsSubDivRestrictions
-        //!     The block extent subdivision restrictions.
+        //! \param eGridBlockExtentsSubDivRestrictions
+        //!     The grid block extent subdivision restrictions.
         //-----------------------------------------------------------------------------
         template<
             typename TDim,
@@ -142,7 +142,7 @@ namespace alpaka
             Vec<TDim, TSize> const & vuiMaxBlockThreadExtents,
             TSize const & uiMaxBlockThreadsCount,
             bool bRequireBlockThreadExtentsToDivideGridThreadExtents = true,
-            BlockExtentsSubDivRestrictions eBlockExtentsSubDivRestrictions = BlockExtentsSubDivRestrictions::Unrestricted)
+            GridBlockExtentsSubDivRestrictions eGridBlockExtentsSubDivRestrictions = GridBlockExtentsSubDivRestrictions::Unrestricted)
         -> workdiv::WorkDivMembers<TDim, TSize>
         {
             // Assert valid input.
@@ -166,7 +166,7 @@ namespace alpaka
 
             // For equal block thread extents, restrict it to its minimum component.
             // For example (512, 256, 1024) will get (256, 256, 256).
-            if(eBlockExtentsSubDivRestrictions == BlockExtentsSubDivRestrictions::EqualExtents)
+            if(eGridBlockExtentsSubDivRestrictions == GridBlockExtentsSubDivRestrictions::EqualExtents)
             {
                 auto const uiMinBlockThreadExtent(vuiBlockThreadExtents.min());
                 for(typename TDim::value_type i(0u); i<TDim::value; ++i)
@@ -183,7 +183,7 @@ namespace alpaka
                 // For example 1024 >= 512 * 512 * 1024
 
                 // For equal block thread extent this is easily the nth root of uiMaxBlockThreadsCount.
-                if(eBlockExtentsSubDivRestrictions == BlockExtentsSubDivRestrictions::EqualExtents)
+                if(eGridBlockExtentsSubDivRestrictions == GridBlockExtentsSubDivRestrictions::EqualExtents)
                 {
                     double const fNthRoot(std::pow(uiMaxBlockThreadsCount, 1.0/static_cast<double>(TDim::value)));
                     TSize const uiNthRoot(static_cast<TSize>(fNthRoot));
@@ -192,7 +192,7 @@ namespace alpaka
                         vuiBlockThreadExtents[i] = uiNthRoot;
                     }
                 }
-                else if(eBlockExtentsSubDivRestrictions == BlockExtentsSubDivRestrictions::CloseToEqualExtents)
+                else if(eGridBlockExtentsSubDivRestrictions == GridBlockExtentsSubDivRestrictions::CloseToEqualExtents)
                 {
                     // Very primitive clipping. Just halve the largest value until it fits.
                     while(vuiBlockThreadExtents.prod() > uiMaxBlockThreadsCount)
@@ -243,7 +243,7 @@ namespace alpaka
             // Make the block thread extents divide the grid thread extents.
             if(bRequireBlockThreadExtentsToDivideGridThreadExtents)
             {
-                if(eBlockExtentsSubDivRestrictions == BlockExtentsSubDivRestrictions::EqualExtents)
+                if(eGridBlockExtentsSubDivRestrictions == GridBlockExtentsSubDivRestrictions::EqualExtents)
                 {
                     // For equal size block extents we have to compute the gcd of all grid thread extents that is less then the current maximal block thread extent.
                     // For this we compute the divisors of all grid thread extents less then the current maximal block thread extent.
@@ -274,7 +274,7 @@ namespace alpaka
                         vuiBlockThreadExtents[i] = uiMaxCommonDivisor;
                     }
                 }
-                else if(eBlockExtentsSubDivRestrictions == BlockExtentsSubDivRestrictions::CloseToEqualExtents)
+                else if(eGridBlockExtentsSubDivRestrictions == GridBlockExtentsSubDivRestrictions::CloseToEqualExtents)
                 {
                     for(typename TDim::value_type i(0); i<TDim::value; ++i)
                     {
@@ -310,9 +310,11 @@ namespace alpaka
         }
 
         //-----------------------------------------------------------------------------
-        //! \tparam TAccSeq The accelerator sequence for which this work division has to be valid.
+        //! \tparam TAcc The accelerator for which this work division has to be valid.
+        //! \param dev The device for which this work division has to be valid.
         //! \param gridThreadExtents The full extents of threads in the grid.
         //! \param bRequireBlockThreadExtentsToDivideGridThreadExtents If the grid thread extents have to be a multiple of the block thread extents.
+        //! \param eGridBlockExtentsSubDivRestrictions The grid block extent subdivision restrictions.
         //! \return The work division.
         //-----------------------------------------------------------------------------
         template<
@@ -323,7 +325,7 @@ namespace alpaka
             TDev const & dev,
             TExtents const & gridThreadExtents = TExtents(),
             bool bRequireBlockThreadExtentsToDivideGridThreadExtents = true,
-            BlockExtentsSubDivRestrictions eBlockExtentsSubDivRestrictions = BlockExtentsSubDivRestrictions::Unrestricted)
+            GridBlockExtentsSubDivRestrictions eGridBlockExtentsSubDivRestrictions = GridBlockExtentsSubDivRestrictions::Unrestricted)
         -> workdiv::WorkDivMembers<dim::Dim<TExtents>, size::Size<TAcc>>
         {
             static_assert(
@@ -340,7 +342,7 @@ namespace alpaka
                 devProps.m_vuiBlockThreadExtentsMax,
                 devProps.m_uiBlockThreadsCountMax,
                 bRequireBlockThreadExtentsToDivideGridThreadExtents,
-                eBlockExtentsSubDivRestrictions);
+                eGridBlockExtentsSubDivRestrictions);
         }
 
         //-----------------------------------------------------------------------------
