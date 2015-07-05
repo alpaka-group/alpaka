@@ -47,7 +47,7 @@ namespace alpaka
                     T,
                     typename std::enable_if<
                         std::is_same<
-                            dev::DevT<TAcc>,
+                            dev::Dev<TAcc>,
                             dev::DevCpu>::value
                         && std::is_floating_point<T>::value>::type>
                 {
@@ -69,7 +69,7 @@ namespace alpaka
                     T,
                     typename std::enable_if<
                         std::is_same<
-                            dev::DevT<TAcc>,
+                            dev::Dev<TAcc>,
                             dev::DevCpu>::value
                         && std::is_floating_point<T>::value>::type>
                 {
@@ -91,7 +91,7 @@ namespace alpaka
                     T,
                     typename std::enable_if<
                         std::is_same<
-                            dev::DevT<TAcc>,
+                            dev::Dev<TAcc>,
                             dev::DevCpu>::value
                         && std::is_integral<T>::value>::type>
                 {
@@ -119,7 +119,7 @@ namespace alpaka
                     TAcc,
                     typename std::enable_if<
                         std::is_same<
-                            dev::DevT<TAcc>,
+                            dev::Dev<TAcc>,
                             dev::DevCpu>::value>::type>
                 {
                     ALPAKA_FN_HOST_ACC static auto createDefault(

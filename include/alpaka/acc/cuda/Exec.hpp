@@ -26,7 +26,7 @@
 #include <alpaka/dev/Traits.hpp>            // DevType
 #include <alpaka/event/Traits.hpp>          // EventType
 #include <alpaka/exec/Traits.hpp>           // ExecType
-#include <alpaka/size/Traits.hpp>           // size::SizeT
+#include <alpaka/size/Traits.hpp>           // size::SizeType
 #include <alpaka/stream/Traits.hpp>         // StreamType
 
 // Implementation details.

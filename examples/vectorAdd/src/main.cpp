@@ -59,7 +59,7 @@ public:
     -> void
     {
         static_assert(
-            alpaka::dim::DimT<TAcc>::value == 1,
+            alpaka::dim::Dim<TAcc>::value == 1,
             "The VectorAddKernel expects 1-dimensional indices!");
 
         auto const uiGridThreadIdxX(alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u]);
@@ -95,18 +95,18 @@ struct VectorAddKernelTester
         auto devHost(alpaka::dev::cpu::getDev());
 
         // Select a device to execute on.
-        alpaka::dev::DevT<TAcc> devAcc(
-            alpaka::dev::DevManT<TAcc>::getDevByIdx(0));
+        alpaka::dev::Dev<TAcc> devAcc(
+            alpaka::dev::DevMan<TAcc>::getDevByIdx(0));
 
         // Get a stream on this device.
-        alpaka::stream::StreamT<alpaka::dev::DevT<TAcc>> stream(
+        alpaka::stream::Stream<alpaka::dev::Dev<TAcc>> stream(
             alpaka::stream::create(devAcc));
 
         alpaka::Vec1<TSize> const v1uiExtents(
             uiNumElements);
 
         // Let alpaka calculate good block and grid sizes given our full problem extents.
-        alpaka::workdiv::WorkDivMembers<alpaka::dim::Dim<1u>, TSize> const workDiv(
+        alpaka::workdiv::WorkDivMembers<alpaka::dim::DimInt<1u>, TSize> const workDiv(
             alpaka::workdiv::getValidWorkDiv<TAcc>(
                 devAcc,
                 v1uiExtents,
@@ -206,7 +206,7 @@ auto main()
         std::cout << std::endl;
 
         // Logs the enabled accelerators.
-        alpaka::examples::accs::writeEnabledAccs<alpaka::dim::Dim<1u>, std::size_t>(std::cout);
+        alpaka::examples::accs::writeEnabledAccs<alpaka::dim::DimInt<1u>, std::size_t>(std::cout);
 
         std::cout << std::endl;
 
@@ -223,7 +223,7 @@ auto main()
 
             // Execute the kernel on all enabled accelerators.
             alpaka::forEachType<
-                alpaka::examples::accs::EnabledAccs<alpaka::dim::Dim<1u>, std::size_t>>(
+                alpaka::examples::accs::EnabledAccs<alpaka::dim::DimInt<1u>, std::size_t>>(
                     vectorAddKernelTester,
                     uiSize);
         }

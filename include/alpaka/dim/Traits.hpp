@@ -46,6 +46,6 @@ namespace alpaka
 
         template<
             typename T>
-        using DimT = typename traits::DimType<T>::type;
+        using Dim = typename traits::DimType<T>::type;
     }
 }

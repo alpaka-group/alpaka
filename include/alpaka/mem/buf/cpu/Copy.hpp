@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/dim/DimIntegralConst.hpp>  // dim::Dim<N>
+#include <alpaka/dim/DimIntegralConst.hpp>  // dim::DimInt<N>
 #include <alpaka/extent/Traits.hpp>         // extent::getXXX
 #include <alpaka/mem/view/Traits.hpp>       // view::Copy, ...
 #include <alpaka/stream/StreamCpuAsync.hpp> // StreamCpuAsync
@@ -75,10 +75,10 @@ namespace alpaka
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                         static_assert(
-                            dim::DimT<TBufDst>::value == dim::DimT<TBufSrc>::value,
+                            dim::Dim<TBufDst>::value == dim::Dim<TBufSrc>::value,
                             "The source and the destination buffers are required to have the same dimensionality!");
                         static_assert(
-                            dim::DimT<TBufDst>::value == dim::DimT<TExtents>::value,
+                            dim::Dim<TBufDst>::value == dim::Dim<TExtents>::value,
                             "The buffers and the extents are required to have the same dimensionality!");
                         static_assert(
                             std::is_same<mem::view::ElemT<TBufDst>, typename std::remove_const<mem::view::ElemT<TBufSrc>>::type>::value,
@@ -107,8 +107,8 @@ namespace alpaka
                         assert(uiExtentDepth <= uiSrcDepth);
 
                         auto const uiExtentWidthBytes(uiExtentWidth * sizeof(Elem));
-                        auto const uiDstPitchBytes(mem::view::getPitchBytes<dim::DimT<TBufDst>::value - 1u>(bufDst));
-                        auto const uiSrcPitchBytes(mem::view::getPitchBytes<dim::DimT<TBufSrc>::value - 1u>(bufSrc));
+                        auto const uiDstPitchBytes(mem::view::getPitchBytes<dim::Dim<TBufDst>::value - 1u>(bufDst));
+                        auto const uiSrcPitchBytes(mem::view::getPitchBytes<dim::Dim<TBufSrc>::value - 1u>(bufSrc));
                         assert(uiExtentWidthBytes <= uiDstPitchBytes);
                         assert(uiExtentWidthBytes <= uiSrcPitchBytes);
 

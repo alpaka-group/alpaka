@@ -22,7 +22,7 @@
 #pragma once
 
 #include <alpaka/dev/DevCudaRt.hpp>         // DevCudaRt
-#include <alpaka/dim/DimIntegralConst.hpp>  // dim::Dim<N>
+#include <alpaka/dim/DimIntegralConst.hpp>  // dim::DimInt<N>
 #include <alpaka/extent/Traits.hpp>         // view::getXXX
 #include <alpaka/mem/view/Traits.hpp>       // view::Set
 #include <alpaka/stream/StreamCudaRt.hpp>   // StreamCudaRt
@@ -47,7 +47,7 @@ namespace alpaka
                 //#############################################################################
                 template<>
                 struct Set<
-                    dim::Dim<1u>,
+                    dim::DimInt<1u>,
                     dev::DevCudaRt>
                 {
                     //-----------------------------------------------------------------------------
@@ -65,10 +65,10 @@ namespace alpaka
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                         static_assert(
-                            dim::DimT<TBuf>::value == dim::Dim<1u>::value,
-                            "The destination buffer is required to have the dimensionality dim::Dim<1u> for this specialization!");
+                            dim::Dim<TBuf>::value == 1u,
+                            "The destination buffer is required to be 1-dimensional for this specialization!");
                         static_assert(
-                            dim::DimT<TBuf>::value == dim::DimT<TExtents>::value,
+                            dim::Dim<TBuf>::value == dim::Dim<TExtents>::value,
                             "The destination buffer and the extents are required to have the same dimensionality!");
 
                         auto const uiExtentWidth(extent::getWidth(extents));
@@ -101,10 +101,10 @@ namespace alpaka
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                         static_assert(
-                            dim::DimT<TBuf>::value == dim::Dim<1u>::value,
-                            "The destination buffer is required to have the dimensionality dim::Dim<1u> for this specialization!");
+                            dim::Dim<TBuf>::value == 1u,
+                            "The destination buffer is required to be 1-dimensional for this specialization!");
                         static_assert(
-                            dim::DimT<TBuf>::value == dim::DimT<TExtents>::value,
+                            dim::Dim<TBuf>::value == dim::Dim<TExtents>::value,
                             "The destination buffer and the extents are required to have the same dimensionality!");
 
                         auto const uiExtentWidth(extent::getWidth(extents));
@@ -128,7 +128,7 @@ namespace alpaka
                 //#############################################################################
                 template<>
                 struct Set<
-                    dim::Dim<2u>,
+                    dim::DimInt<2u>,
                     dev::DevCudaRt>
                 {
                     //-----------------------------------------------------------------------------
@@ -146,17 +146,17 @@ namespace alpaka
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                         static_assert(
-                            dim::DimT<TBuf>::value == dim::Dim<2u>::value,
-                            "The destination buffer is required to have the dimensionality dim::Dim<2u> for this specialization!");
+                            dim::Dim<TBuf>::value == 2u,
+                            "The destination buffer is required to be 2-dimensional for this specialization!");
                         static_assert(
-                            dim::DimT<TBuf>::value == dim::DimT<TExtents>::value,
+                            dim::Dim<TBuf>::value == dim::Dim<TExtents>::value,
                             "The destination buffer and the extents are required to have the same dimensionality!");
 
                         auto const uiExtentWidth(extent::getWidth(extents));
                         auto const uiExtentHeight(extent::getHeight(extents));
                         auto const uiDstWidth(extent::getWidth(buf));
                         auto const uiDstHeight(extent::getHeight(buf));
-                        auto const uiDstPitchBytes(mem::view::getPitchBytes<dim::DimT<TBuf>::value - 1u>(buf));
+                        auto const uiDstPitchBytes(mem::view::getPitchBytes<dim::Dim<TBuf>::value - 1u>(buf));
                         assert(uiExtentWidth <= uiDstWidth);
                         assert(uiExtentHeight <= uiDstHeight);
 
@@ -188,17 +188,17 @@ namespace alpaka
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                         static_assert(
-                            dim::DimT<TBuf>::value == dim::Dim<2u>::value,
-                            "The destination buffer is required to have the dimensionality dim::Dim<2u> for this specialization!");
+                            dim::Dim<TBuf>::value == 2u,
+                            "The destination buffer is required to be 2-dimensional for this specialization!");
                         static_assert(
-                            dim::DimT<TBuf>::value == dim::DimT<TExtents>::value,
+                            dim::Dim<TBuf>::value == dim::Dim<TExtents>::value,
                             "The destination buffer and the extents are required to have the same dimensionality!");
 
                         auto const uiExtentWidth(extent::getWidth(extents));
                         auto const uiExtentHeight(extent::getHeight(extents));
                         auto const uiDstWidth(extent::getWidth(buf));
                         auto const uiDstHeight(extent::getHeight(buf));
-                        auto const uiDstPitchBytes(mem::view::getPitchBytes<std::integral_constant<std::size_t, dim::DimT<TBuf>::value - 1u>>(buf));
+                        auto const uiDstPitchBytes(mem::view::getPitchBytes<std::integral_constant<std::size_t, dim::Dim<TBuf>::value - 1u>>(buf));
                         assert(uiExtentWidth <= uiDstWidth);
                         assert(uiExtentHeight <= uiDstHeight);
 
@@ -221,7 +221,7 @@ namespace alpaka
                 //#############################################################################
                 template<>
                 struct Set<
-                    dim::Dim<3u>,
+                    dim::DimInt<3u>,
                     dev::DevCudaRt>
                 {
                     //-----------------------------------------------------------------------------
@@ -239,10 +239,10 @@ namespace alpaka
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                         static_assert(
-                            dim::DimT<TBuf>::value == dim::Dim<3u>::value,
-                            "The destination buffer is required to have the dimensionality dim::Dim<3u> for this specialization!");
+                            dim::Dim<TBuf>::value == 3u,
+                            "The destination buffer is required to be 3-dimensional for this specialization!");
                         static_assert(
-                            dim::DimT<TBuf>::value == dim::DimT<TExtents>::value,
+                            dim::Dim<TBuf>::value == dim::Dim<TExtents>::value,
                             "The destination buffer and the extents are required to have the same dimensionality!");
 
                         auto const uiExtentWidth(extent::getWidth(extents));
@@ -251,7 +251,7 @@ namespace alpaka
                         auto const uiDstWidth(extent::getWidth(buf));
                         auto const uiDstHeight(extent::getHeight(buf));
                         auto const uiDstDepth(extent::getDepth(buf));
-                        auto const uiDstPitchBytes(mem::view::getPitchBytes<dim::DimT<TBuf>::value - 1u>(buf));
+                        auto const uiDstPitchBytes(mem::view::getPitchBytes<dim::Dim<TBuf>::value - 1u>(buf));
                         assert(uiExtentWidth <= uiDstWidth);
                         assert(uiExtentHeight <= uiDstHeight);
                         assert(uiExtentDepth <= uiDstDepth);
@@ -296,10 +296,10 @@ namespace alpaka
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                         static_assert(
-                            dim::DimT<TBuf>::value == dim::Dim<3u>::value,
-                            "The destination buffer is required to have the dimensionality dim::Dim<3u> for this specialization!");
+                            dim::Dim<TBuf>::value == 3u,
+                            "The destination buffer is required to be 3-dimensional for this specialization!");
                         static_assert(
-                            dim::DimT<TBuf>::value == dim::DimT<TExtents>::value,
+                            dim::Dim<TBuf>::value == dim::Dim<TExtents>::value,
                             "The destination buffer and the extents are required to have the same dimensionality!");
 
                         auto const uiExtentWidth(extent::getWidth(extents));
@@ -308,7 +308,7 @@ namespace alpaka
                         auto const uiDstWidth(extent::getWidth(buf));
                         auto const uiDstHeight(extent::getHeight(buf));
                         auto const uiDstDepth(extent::getDepth(buf));
-                        auto const uiDstPitchBytes(mem::view::getPitchBytes<std::integral_constant<std::size_t, dim::DimT<TBuf>::value - 1u>>(buf));
+                        auto const uiDstPitchBytes(mem::view::getPitchBytes<std::integral_constant<std::size_t, dim::Dim<TBuf>::value - 1u>>(buf));
                         assert(uiExtentWidth <= uiDstWidth);
                         assert(uiExtentHeight <= uiDstHeight);
                         assert(uiExtentDepth <= uiDstDepth);

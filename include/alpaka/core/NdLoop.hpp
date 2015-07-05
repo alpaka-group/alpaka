@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/dim/Traits.hpp>    // DimT
+#include <alpaka/dim/Traits.hpp>    // Dim
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST_ACC
 #include <alpaka/core/Vec.hpp>      // Vec
@@ -62,13 +62,13 @@ namespace alpaka
             -> void
             {
                 static_assert(
-                    dim::DimT<TIndex>::value > 0u,
+                    dim::Dim<TIndex>::value > 0u,
                     "The dimension given to ndLoop has to be larger than zero!");
                 static_assert(
-                    dim::DimT<TIndex>::value == dim::DimT<TExtentsVec>::value,
+                    dim::Dim<TIndex>::value == dim::Dim<TExtentsVec>::value,
                     "The dimensions of the iteration vector and the extents vector have to be identical!");
                 static_assert(
-                    dim::DimT<TIndex>::value > TuiCurDim,
+                    dim::Dim<TIndex>::value > TuiCurDim,
                     "The current dimension has to be in the rang [0,dim-1]!");
 
                 for(idx[TuiCurDim] = 0u; idx[TuiCurDim] < extents[TuiCurDim]; ++idx[TuiCurDim])
@@ -101,19 +101,19 @@ namespace alpaka
             -> void
             {
                 static_assert(
-                    dim::DimT<TIndex>::value > 0u,
+                    dim::Dim<TIndex>::value > 0u,
                     "The dimension given to ndLoop has to be larger than zero!");
                 static_assert(
-                    dim::DimT<TIndex>::value == dim::DimT<TExtentsVec>::value,
+                    dim::Dim<TIndex>::value == dim::Dim<TExtentsVec>::value,
                     "The dimensions of the iteration vector and the extents vector have to be identical!");
                 static_assert(
-                    dim::DimT<TIndex>::value > TuiCurDim,
+                    dim::Dim<TIndex>::value > TuiCurDim,
                     "The current dimension has to be in the rang [0,dim-1]!");
 
                 for(idx[TuiCurDim] = 0u; idx[TuiCurDim] < extents[TuiCurDim]; ++idx[TuiCurDim])
                 {
                     detail::NdLoop<
-                        (TuiCurDim+2u == dim::DimT<TIndex>::value)>
+                        (TuiCurDim+2u == dim::Dim<TIndex>::value)>
                     ::template ndLoop<
                         TuiCurDim+1u>(
                             idx,
@@ -143,14 +143,14 @@ namespace alpaka
     -> void
     {
         static_assert(
-            dim::DimT<TExtentsVec>::value > 0u,
+            dim::Dim<TExtentsVec>::value > 0u,
             "The dimension given to ndLoop has to be larger than zero!");
 
         auto vuiIdx(
-            Vec<dim::DimT<TExtentsVec>, size::SizeT<TExtentsVec>>::zeros());
+            Vec<dim::Dim<TExtentsVec>, size::Size<TExtentsVec>>::zeros());
 
         detail::NdLoop<
-            (dim::DimT<TExtentsVec>::value == 1u)>
+            (dim::Dim<TExtentsVec>::value == 1u)>
         ::template ndLoop<
             0u>(
                 vuiIdx,

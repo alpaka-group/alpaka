@@ -159,7 +159,7 @@ public:
     -> void
     {
         static_assert(
-            alpaka::dim::DimT<TAcc>::value == 2,
+            alpaka::dim::Dim<TAcc>::value == 2,
             "The MandelbrotKernel expects 2-dimensional indices!");
 
         auto const uiGridThreadIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc));
@@ -262,7 +262,7 @@ auto writeTgaColorImage(
 -> void
 {
     static_assert(
-        alpaka::dim::DimT<TBuf>::value == 2,
+        alpaka::dim::Dim<TBuf>::value == 2,
         "The buffer has to be 2 dimensional!");
     static_assert(
         std::is_integral<alpaka::mem::view::ElemT<TBuf>>::value,
@@ -278,7 +278,7 @@ auto writeTgaColorImage(
     assert(uiBufWidthColors >= 1);
     auto const uiBufHeightColors(alpaka::extent::getHeight(bufRgba));
     assert(uiBufHeightColors >= 1);
-    auto const uiBufPitchBytes(alpaka::mem::view::getPitchBytes<alpaka::dim::DimT<TBuf>::value - 1u>(bufRgba));
+    auto const uiBufPitchBytes(alpaka::mem::view::getPitchBytes<alpaka::dim::Dim<TBuf>::value - 1u>(bufRgba));
     assert(uiBufPitchBytes >= uiBufWidthBytes);
 
     std::ofstream ofs(
@@ -360,11 +360,11 @@ struct MandelbrotKernelTester
         auto devHost(alpaka::dev::cpu::getDev());
 
         // Select a device to execute on.
-        alpaka::dev::DevT<TAcc> devAcc(
-            alpaka::dev::DevManT<TAcc>::getDevByIdx(0));
+        alpaka::dev::Dev<TAcc> devAcc(
+            alpaka::dev::DevMan<TAcc>::getDevByIdx(0));
 
         // Get a stream on this device.
-        alpaka::stream::StreamT<alpaka::dev::DevT<TAcc>> stream(
+        alpaka::stream::Stream<alpaka::dev::Dev<TAcc>> stream(
             alpaka::stream::create(devAcc));
 
         alpaka::Vec2<TSize> const v2uiExtents(
@@ -372,7 +372,7 @@ struct MandelbrotKernelTester
             static_cast<TSize>(uiNumCols));
 
         // Let alpaka calculate good block and grid sizes given our full problem extents.
-        alpaka::workdiv::WorkDivMembers<alpaka::dim::Dim<2u>, TSize> const workDiv(
+        alpaka::workdiv::WorkDivMembers<alpaka::dim::DimInt<2u>, TSize> const workDiv(
             alpaka::workdiv::getValidWorkDiv<TAcc>(
                 devAcc,
                 v2uiExtents,
@@ -452,7 +452,7 @@ auto main()
         std::cout << std::endl;
 
         // Logs the enabled accelerators.
-        alpaka::examples::accs::writeEnabledAccs<alpaka::dim::Dim<2u>, std::uint32_t>(std::cout);
+        alpaka::examples::accs::writeEnabledAccs<alpaka::dim::DimInt<2u>, std::uint32_t>(std::cout);
 
         std::cout << std::endl;
 
@@ -471,7 +471,7 @@ auto main()
 
             // Execute the kernel on all enabled accelerators.
             alpaka::forEachType<
-                alpaka::examples::accs::EnabledAccs<alpaka::dim::Dim<2u>, std::uint32_t>>(
+                alpaka::examples::accs::EnabledAccs<alpaka::dim::DimInt<2u>, std::uint32_t>>(
                     mandelbrotTester,
                     uiSize,
                     uiSize,

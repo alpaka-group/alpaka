@@ -115,7 +115,7 @@ namespace alpaka
                 typename TElem,
                 typename TDim,
                 typename TSize>
-            using BufT = typename traits::BufType<TDev, TElem, TDim, TSize>::type;
+            using Buf = typename traits::BufType<TDev, TElem, TDim, TSize>::type;
 
             //-----------------------------------------------------------------------------
             //! Allocates memory on the given device.
@@ -138,7 +138,7 @@ namespace alpaka
             -> decltype(
                 traits::Alloc<
                     TElem,
-                    dim::DimT<TExtents>,
+                    dim::Dim<TExtents>,
                     TSize,
                     TDev>
                 ::alloc(
@@ -147,7 +147,7 @@ namespace alpaka
             {
                 return traits::Alloc<
                     TElem,
-                    dim::DimT<TExtents>,
+                    dim::Dim<TExtents>,
                     TSize,
                     TDev>
                 ::alloc(

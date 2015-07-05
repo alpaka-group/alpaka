@@ -95,9 +95,9 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto getPitchBytes(
                         TView const & view)
-                    -> size::SizeT<TView>
+                    -> size::Size<TView>
                     {
-                        using IdxSequence = alpaka::detail::make_integer_sequence_offset<std::size_t, TIdx::value, dim::DimT<TView>::value - TIdx::value>;
+                        using IdxSequence = alpaka::detail::make_integer_sequence_offset<std::size_t, TIdx::value, dim::Dim<TView>::value - TIdx::value>;
                         return
                             extentsProd(view, IdxSequence())
                             * sizeof(typename ElemType<TView>::type);
@@ -111,12 +111,12 @@ namespace alpaka
                     ALPAKA_FN_HOST static auto extentsProd(
                         TView const & view,
                         alpaka::detail::integer_sequence<std::size_t, TIndices...> const &)
-                    -> size::SizeT<TView>
+                    -> size::Size<TView>
                     {
                         // For the case that the sequence is empty (index out of range), 1 is returned.
                         return
                             foldr(
-                                std::multiplies<size::SizeT<TView>>(),
+                                std::multiplies<size::Size<TView>>(),
                                 1u,
                                 extent::getExtent<TIndices>(view)...);
                     }
@@ -177,7 +177,7 @@ namespace alpaka
                 typename TElem,
                 typename TDim,
                 typename TSize>
-            using ViewT = typename traits::ViewType<TDev, TElem, TDim, TSize>::type;
+            using View = typename traits::ViewType<TDev, TElem, TDim, TSize>::type;
 
             //-----------------------------------------------------------------------------
             //! Gets the native pointer of the memory buffer.
@@ -267,7 +267,7 @@ namespace alpaka
                 typename TView>
             ALPAKA_FN_HOST auto getPitchBytes(
                 TView const & buf)
-            -> size::SizeT<TView>
+            -> size::Size<TView>
             {
                 return
                     traits::GetPitchBytes<
@@ -294,12 +294,12 @@ namespace alpaka
             -> void
             {
                 static_assert(
-                    dim::DimT<TView>::value == dim::DimT<TExtents>::value,
+                    dim::Dim<TView>::value == dim::Dim<TExtents>::value,
                     "The buffer and the extents are required to have the same dimensionality!");
 
                 traits::Set<
-                    dim::DimT<TView>,
-                    dev::DevT<TView>>
+                    dim::Dim<TView>,
+                    dev::Dev<TView>>
                 ::set(
                     buf,
                     byte,
@@ -326,12 +326,12 @@ namespace alpaka
             -> void
             {
                 static_assert(
-                    dim::DimT<TView>::value == dim::DimT<TExtents>::value,
+                    dim::Dim<TView>::value == dim::Dim<TExtents>::value,
                     "The buffer and the extents are required to have the same dimensionality!");
 
                 traits::Set<
-                    dim::DimT<TView>,
-                    dev::DevT<TView>,
+                    dim::Dim<TView>,
+                    dev::Dev<TView>,
                     TStream>
                 ::set(
                     buf,
@@ -358,19 +358,19 @@ namespace alpaka
             -> void
             {
                 static_assert(
-                    dim::DimT<TBufDst>::value == dim::DimT<TBufSrc>::value,
+                    dim::Dim<TBufDst>::value == dim::Dim<TBufSrc>::value,
                     "The source and the destination buffers are required to have the same dimensionality!");
                 static_assert(
-                    dim::DimT<TBufDst>::value == dim::DimT<TExtents>::value,
+                    dim::Dim<TBufDst>::value == dim::Dim<TExtents>::value,
                     "The destination buffer and the extents are required to have the same dimensionality!");
                 static_assert(
                     std::is_same<ElemT<TBufDst>, typename std::remove_const<ElemT<TBufSrc>>::type>::value,
                     "The source and the destination buffers are required to have the same element type!");
 
                 traits::Copy<
-                    dim::DimT<TBufDst>,
-                    dev::DevT<TBufDst>,
-                    dev::DevT<TBufSrc>>
+                    dim::Dim<TBufDst>,
+                    dev::Dev<TBufDst>,
+                    dev::Dev<TBufSrc>>
                 ::copy(
                     bufDst,
                     bufSrc,
@@ -398,19 +398,19 @@ namespace alpaka
             -> void
             {
                 static_assert(
-                    dim::DimT<TBufDst>::value == dim::DimT<TBufSrc>::value,
+                    dim::Dim<TBufDst>::value == dim::Dim<TBufSrc>::value,
                     "The source and the destination buffers are required to have the same dimensionality!");
                 static_assert(
-                    dim::DimT<TBufDst>::value == dim::DimT<TExtents>::value,
+                    dim::Dim<TBufDst>::value == dim::Dim<TExtents>::value,
                     "The destination buffer and the extents are required to have the same dimensionality!");
                 static_assert(
                     std::is_same<ElemT<TBufDst>, typename std::remove_const<ElemT<TBufSrc>>::type>::value,
                     "The source and the destination buffers are required to have the same element type!");
 
                 traits::Copy<
-                    dim::DimT<TBufDst>,
-                    dev::DevT<TBufDst>,
-                    dev::DevT<TBufSrc>>
+                    dim::Dim<TBufDst>,
+                    dev::Dev<TBufDst>,
+                    dev::Dev<TBufSrc>>
                 ::copy(
                     bufDst,
                     bufSrc,
@@ -547,7 +547,7 @@ namespace alpaka
                     ALPAKA_FN_HOST static auto print(
                         TView const & view,
                         ElemT<TView> const * const ptr,
-                        Vec<dim::DimT<TView>, size::SizeT<TView>> const & extents,
+                        Vec<dim::Dim<TView>, size::Size<TView>> const & extents,
                         std::ostream & os,
                         std::string const & elementSeparator,
                         std::string const & rowSeparator,
@@ -562,7 +562,7 @@ namespace alpaka
                         for(auto i(decltype(uiLastIdx)(0)); i<=uiLastIdx ;++i)
                         {
                             Print<
-                                dim::Dim<TDim::value+1u>,
+                                dim::DimInt<TDim::value+1u>,
                                 TView>
                             ::print(
                                 view,
@@ -590,13 +590,13 @@ namespace alpaka
                 template<
                     typename TView>
                 struct Print<
-                    dim::Dim<dim::DimT<TView>::value-1u>,
+                    dim::DimInt<dim::Dim<TView>::value-1u>,
                     TView>
                 {
                     ALPAKA_FN_HOST static auto print(
                         TView const & view,
                         ElemT<TView> const * const ptr,
-                        Vec<dim::DimT<TView>, size::SizeT<TView>> const & extents,
+                        Vec<dim::Dim<TView>, size::Size<TView>> const & extents,
                         std::ostream & os,
                         std::string const & elementSeparator,
                         std::string const & rowSeparator,
@@ -606,7 +606,7 @@ namespace alpaka
                     {
                         os << rowPrefix;
 
-                        auto const uiLastIdx(extents[dim::DimT<TView>::value-1u]-1u);
+                        auto const uiLastIdx(extents[dim::Dim<TView>::value-1u]-1u);
                         for(auto i(decltype(uiLastIdx)(0)); i<=uiLastIdx ;++i)
                         {
                             // Add the current element.
@@ -640,7 +640,7 @@ namespace alpaka
             -> void
             {
                 detail::Print<
-                    dim::Dim<0u>,
+                    dim::DimInt<0u>,
                     TView>
                 ::print(
                     view,

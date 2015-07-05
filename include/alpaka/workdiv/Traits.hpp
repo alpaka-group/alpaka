@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/size/Traits.hpp>           // SizeT
+#include <alpaka/size/Traits.hpp>           // Size
 
 #include <alpaka/core/Vec.hpp>              // Vec<N>
 #include <alpaka/core/Positioning.hpp>      // origin::Grid/Blocks, unit::Blocks, unit::Threads
@@ -62,7 +62,7 @@ namespace alpaka
             typename TWorkDiv = void>
         ALPAKA_FN_HOST_ACC auto getWorkDiv(
             TWorkDiv const & workDiv)
-        -> Vec<dim::DimT<TWorkDiv>, size::SizeT<TWorkDiv>>
+        -> Vec<dim::Dim<TWorkDiv>, size::Size<TWorkDiv>>
         {
             return
                 traits::GetWorkDiv<
@@ -95,7 +95,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST_ACC static auto getWorkDiv(
                     TWorkDiv const & workDiv)
-                -> Vec<dim::DimT<typename TWorkDiv::WorkDivBase>, size::SizeT<TWorkDiv>>
+                -> Vec<dim::Dim<typename TWorkDiv::WorkDivBase>, size::Size<TWorkDiv>>
                 {
                     // Delegate the call to the base class.
                     return
@@ -121,7 +121,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST_ACC static auto getWorkDiv(
                     TWorkDiv const & workDiv)
-                -> Vec<dim::DimT<typename TWorkDiv::WorkDivBase>, size::SizeT<TWorkDiv>>
+                -> Vec<dim::Dim<typename TWorkDiv::WorkDivBase>, size::Size<TWorkDiv>>
                 {
                     return
                         workdiv::getWorkDiv<origin::Grid, unit::Blocks>(workDiv)

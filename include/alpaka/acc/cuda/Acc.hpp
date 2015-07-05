@@ -33,7 +33,7 @@
 #include <alpaka/acc/Traits.hpp>                    // AccType
 #include <alpaka/dev/Traits.hpp>                    // DevType
 #include <alpaka/exec/Traits.hpp>                   // ExecType
-#include <alpaka/size/Traits.hpp>                   // size::SizeT
+#include <alpaka/size/Traits.hpp>                   // size::SizeType
 
 // Implementation details.
 #include <alpaka/dev/DevCudaRt.hpp>                 // DevCudaRt
@@ -208,13 +208,13 @@ namespace alpaka
                         static_cast<TSize>(cudaDevProp.maxThreadsPerBlock),
                         // m_vuiBlockThreadExtentsMax
                         extent::getExtentsVecEnd<TDim>(
-                            Vec<dim::Dim<3u>, TSize>(
+                            Vec<dim::DimInt<3u>, TSize>(
                                 static_cast<TSize>(cudaDevProp.maxThreadsDim[2]),
                                 static_cast<TSize>(cudaDevProp.maxThreadsDim[1]),
                                 static_cast<TSize>(cudaDevProp.maxThreadsDim[0]))),
                         // m_vuiGridBlockExtentsMax
                         extent::getExtentsVecEnd<TDim>(
-                            Vec<dim::Dim<3u>, TSize>(
+                            Vec<dim::DimInt<3u>, TSize>(
                                 static_cast<TSize>(cudaDevProp.maxGridSize[2]),
                                 static_cast<TSize>(cudaDevProp.maxGridSize[1]),
                                 static_cast<TSize>(cudaDevProp.maxGridSize[0])))};

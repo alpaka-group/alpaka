@@ -22,10 +22,8 @@
 #pragma once
 
 #include <alpaka/dev/Traits.hpp>            // dev::DevType
-#include <alpaka/dim/DimIntegralConst.hpp>  // dim::Dim<N>
-#include <alpaka/extent/Traits.hpp>         // view::getXXX
+#include <alpaka/dim/DimIntegralConst.hpp>  // dim::DimInt<N>
 #include <alpaka/mem/buf/Traits.hpp>        // view::Copy, ...
-#include <alpaka/size/Traits.hpp>           // size::SizeT
 
 #include <alpaka/core/Vec.hpp>              // Vec<TDim, TSize>
 #include <alpaka/core/Cuda.hpp>             // cudaMalloc, ...
@@ -88,10 +86,10 @@ namespace alpaka
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                     static_assert(
-                        TDim::value == dim::DimT<TExtents>::value,
+                        TDim::value == dim::Dim<TExtents>::value,
                         "The dimensionality of TExtents and the dimensionality of the TDim template parameter have to be identical!");
                     static_assert(
-                        std::is_same<TSize, size::SizeT<TExtents>>::value,
+                        std::is_same<TSize, size::Size<TExtents>>::value,
                         "The size type of TExtents and the TSize template parameter have to be identical!");
                 }
 
@@ -366,7 +364,7 @@ namespace alpaka
                     typename TSize>
                 struct Alloc<
                     T,
-                    dim::Dim<1u>,
+                    dim::DimInt<1u>,
                     TSize,
                     dev::DevCudaRt>
                 {
@@ -378,7 +376,7 @@ namespace alpaka
                     ALPAKA_FN_HOST static auto alloc(
                         dev::DevCudaRt const & dev,
                         TExtents const & extents)
-                    -> mem::buf::BufCudaRt<T, dim::Dim<1u>, TSize>
+                    -> mem::buf::BufCudaRt<T, dim::DimInt<1u>, TSize>
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -405,7 +403,7 @@ namespace alpaka
                             << std::endl;
 #endif
                         return
-                            mem::buf::BufCudaRt<T, dim::Dim<1u>, TSize>(
+                            mem::buf::BufCudaRt<T, dim::DimInt<1u>, TSize>(
                                 dev,
                                 reinterpret_cast<T *>(pBuffer),
                                 uiWidthBytes,
@@ -420,7 +418,7 @@ namespace alpaka
                     typename TSize>
                 struct Alloc<
                     T,
-                    dim::Dim<2u>,
+                    dim::DimInt<2u>,
                     TSize,
                     dev::DevCudaRt>
                 {
@@ -432,7 +430,7 @@ namespace alpaka
                     ALPAKA_FN_HOST static auto alloc(
                         dev::DevCudaRt const & dev,
                         TExtents const & extents)
-                    -> mem::buf::BufCudaRt<T, dim::Dim<2u>, TSize>
+                    -> mem::buf::BufCudaRt<T, dim::DimInt<2u>, TSize>
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -469,7 +467,7 @@ namespace alpaka
                             << std::endl;
 #endif
                         return
-                            mem::buf::BufCudaRt<T, dim::Dim<2u>, TSize>(
+                            mem::buf::BufCudaRt<T, dim::DimInt<2u>, TSize>(
                                 dev,
                                 reinterpret_cast<T *>(pBuffer),
                                 static_cast<TSize>(uiPitch),
@@ -484,7 +482,7 @@ namespace alpaka
                     typename TSize>
                 struct Alloc<
                     T,
-                    dim::Dim<3u>,
+                    dim::DimInt<3u>,
                     TSize,
                     dev::DevCudaRt>
                 {
@@ -496,7 +494,7 @@ namespace alpaka
                     ALPAKA_FN_HOST static auto alloc(
                         dev::DevCudaRt const & dev,
                         TExtents const & extents)
-                    -> mem::buf::BufCudaRt<T, dim::Dim<3u>, TSize>
+                    -> mem::buf::BufCudaRt<T, dim::DimInt<3u>, TSize>
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -530,7 +528,7 @@ namespace alpaka
                             << std::endl;
 #endif
                         return
-                            mem::buf::BufCudaRt<T, dim::Dim<3u>, TSize>(
+                            mem::buf::BufCudaRt<T, dim::DimInt<3u>, TSize>(
                                 dev,
                                 reinterpret_cast<T *>(cudaPitchedPtrVal.ptr),
                                 static_cast<TSize>(cudaPitchedPtrVal.pitch),

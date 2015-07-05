@@ -22,10 +22,7 @@
 #pragma once
 
 #include <alpaka/dev/Traits.hpp>            // dev::DevType
-#include <alpaka/dim/DimIntegralConst.hpp>  // dim::Dim<N>
-#include <alpaka/extent/Traits.hpp>         // mem::view::getXXX
 #include <alpaka/mem/buf/Traits.hpp>        // mem::buf::Alloc, ...
-#include <alpaka/size/Traits.hpp>           // size::SizeT
 
 #include <alpaka/core/Vec.hpp>              // Vec<TDim, TSize>
 
@@ -84,10 +81,10 @@ namespace alpaka
                             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                             static_assert(
-                                TDim::value == dim::DimT<TExtents>::value,
+                                TDim::value == dim::Dim<TExtents>::value,
                                 "The dimensionality of TExtents and the dimensionality of the TDim template parameter have to be identical!");
                             static_assert(
-                                std::is_same<TSize, size::SizeT<TExtents>>::value,
+                                std::is_same<TSize, size::Size<TExtents>>::value,
                                 "The size type of TExtents and the TSize template parameter have to be identical!");
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL

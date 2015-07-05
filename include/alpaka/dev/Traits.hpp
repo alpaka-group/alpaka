@@ -101,14 +101,14 @@ namespace alpaka
         //#############################################################################
         template<
             typename T>
-        using DevT = typename traits::DevType<T>::type;
+        using Dev = typename traits::DevType<T>::type;
 
         //#############################################################################
         //! The device manager type trait alias template to remove the ::type.
         //#############################################################################
         template<
             typename T>
-        using DevManT = typename traits::DevManType<T>::type;
+        using DevMan = typename traits::DevManType<T>::type;
 
         //-----------------------------------------------------------------------------
         //! \return The device this object is bound to.
@@ -131,9 +131,9 @@ namespace alpaka
         template<
             typename TDevMan>
         ALPAKA_FN_HOST auto getDevs()
-        -> std::vector<DevT<TDevMan>>
+        -> std::vector<Dev<TDevMan>>
         {
-            std::vector<DevT<TDevMan>> vDevices;
+            std::vector<Dev<TDevMan>> vDevices;
 
             std::size_t const uiDeviceCount(TDevMan::getDevCount());
             for(std::size_t uiDeviceIdx(0); uiDeviceIdx < uiDeviceCount; ++uiDeviceIdx)

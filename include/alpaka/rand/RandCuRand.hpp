@@ -244,7 +244,7 @@ namespace alpaka
                     T,
                     typename std::enable_if<
                         std::is_same<
-                            dev::DevT<TAcc>,
+                            dev::Dev<TAcc>,
                             dev::DevCudaRt>::value
                         && std::is_floating_point<T>::value>::type>
                 {
@@ -266,7 +266,7 @@ namespace alpaka
                     T,
                     typename std::enable_if<
                         std::is_same<
-                            dev::DevT<TAcc>,
+                            dev::Dev<TAcc>,
                             dev::DevCudaRt>::value
                         && std::is_floating_point<T>::value>::type>
                 {
@@ -288,7 +288,7 @@ namespace alpaka
                     T,
                     typename std::enable_if<
                         std::is_same<
-                            dev::DevT<TAcc>,
+                            dev::Dev<TAcc>,
                             dev::DevCudaRt>::value
                         && std::is_integral<T>::value>::type>
                 {
@@ -314,7 +314,7 @@ namespace alpaka
                     TAcc,
                     typename std::enable_if<
                         std::is_same<
-                            dev::DevT<TAcc>,
+                            dev::Dev<TAcc>,
                             dev::DevCudaRt>::value>::type>
                 {
                     ALPAKA_FN_ACC_CUDA_ONLY static auto createDefault(

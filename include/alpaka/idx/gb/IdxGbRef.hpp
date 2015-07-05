@@ -23,7 +23,7 @@
 
 #include <alpaka/idx/Traits.hpp>            // idx::getIdx
 
-#include <alpaka/dim/Traits.hpp>            // dim::DimT
+#include <alpaka/dim/Traits.hpp>            // dim::Dim
 
 #include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
 

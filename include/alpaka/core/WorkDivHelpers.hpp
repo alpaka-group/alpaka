@@ -23,7 +23,7 @@
 
 #include <alpaka/workdiv/WorkDivMembers.hpp>    // workdiv::WorkDivMembers
 
-#include <alpaka/dev/Traits.hpp>                // dev::DevManT
+#include <alpaka/dev/Traits.hpp>                // dev::DevMan
 #include <alpaka/acc/Traits.hpp>                // getAccDevProps
 
 #include <alpaka/core/ForEachType.hpp>          // forEachType
@@ -324,13 +324,13 @@ namespace alpaka
             TExtents const & gridThreadExtents = TExtents(),
             bool bRequireBlockThreadExtentsToDivideGridThreadExtents = true,
             BlockExtentsSubDivRestrictions eBlockExtentsSubDivRestrictions = BlockExtentsSubDivRestrictions::Unrestricted)
-        -> workdiv::WorkDivMembers<dim::DimT<TExtents>, size::SizeT<TAcc>>
+        -> workdiv::WorkDivMembers<dim::Dim<TExtents>, size::Size<TAcc>>
         {
             static_assert(
-                dim::DimT<TExtents>::value == dim::DimT<TAcc>::value,
+                dim::Dim<TExtents>::value == dim::Dim<TAcc>::value,
                 "The dimension of TAcc and the dimension of TExtents have to be identical!");
             static_assert(
-                std::is_same<size::SizeT<TExtents>, size::SizeT<TAcc>>::value,
+                std::is_same<size::Size<TExtents>, size::Size<TAcc>>::value,
                 "The size type of TAcc and the size type of TExtents have to be identical!");
 
             auto const devProps(acc::getAccDevProps<TAcc>(dev));
@@ -362,7 +362,7 @@ namespace alpaka
             auto const vuiBlockThreadExtents(getWorkDiv<Block, Threads>(workDiv));
 
             auto const devProps(acc::getAccDevProps<TAcc>(dev));
-            auto const vuiBlockThreadExtentsMax(subVecEnd<dim::DimT<TWorkDiv>>(devProps.m_vuiBlockThreadExtentsMax));
+            auto const vuiBlockThreadExtentsMax(subVecEnd<dim::Dim<TWorkDiv>>(devProps.m_vuiBlockThreadExtentsMax));
             auto const uiBlockThreadCountMax(devProps.m_uiBlockThreadsCountMax);
 
             if(uiBlockThreadCountMax < vuiBlockThreadExtents.prod())
@@ -370,7 +370,7 @@ namespace alpaka
                 return false;
             }
 
-            for(typename dim::DimT<TWorkDiv>::value_type i(0); i<dim::DimT<TWorkDiv>::value; ++i)
+            for(typename dim::Dim<TWorkDiv>::value_type i(0); i<dim::Dim<TWorkDiv>::value; ++i)
             {
                 if((vuiGridBlockExtents[i] == 0)
                     || (vuiBlockThreadExtents[i] == 0)

@@ -22,7 +22,7 @@
 #pragma once
 
 #include <alpaka/dim/Traits.hpp>            // dim::DimType
-#include <alpaka/dim/DimIntegralConst.hpp>  // dim::Dim<N>
+#include <alpaka/dim/DimIntegralConst.hpp>  // dim::DimInt<N>
 #include <alpaka/size/Traits.hpp>           // size::SizeType
 #include <alpaka/workdiv/Traits.hpp>        // workdiv::getWorkDiv
 
@@ -66,7 +66,7 @@ namespace alpaka
         ALPAKA_FN_ACC auto getIdx(
             TIdx const & idx,
             TWorkDiv const & workDiv)
-        -> Vec<dim::DimT<TWorkDiv>, size::SizeT<TIdx>>
+        -> Vec<dim::Dim<TWorkDiv>, size::Size<TIdx>>
         {
             return traits::GetIdx<
                 TIdx,
@@ -85,7 +85,7 @@ namespace alpaka
             typename TIdxWorkDiv>
         ALPAKA_FN_ACC auto getIdx(
             TIdxWorkDiv const & idxWorkDiv)
-        -> Vec<dim::DimT<TIdxWorkDiv>, size::SizeT<TIdxWorkDiv>>
+        -> Vec<dim::Dim<TIdxWorkDiv>, size::Size<TIdxWorkDiv>>
         {
             return traits::GetIdx<
                 TIdxWorkDiv,
@@ -119,7 +119,7 @@ namespace alpaka
                 ALPAKA_FN_ACC static auto getIdx(
                     TIdxGb const & idx,
                     TWorkDiv const & workDiv)
-                -> Vec<dim::DimT<typename TIdxGb::IdxGbBase>, size::SizeT<typename TIdxGb::IdxGbBase>>
+                -> Vec<dim::Dim<typename TIdxGb::IdxGbBase>, size::Size<typename TIdxGb::IdxGbBase>>
                 {
                     // Delegate the call to the base class.
                     return
@@ -152,7 +152,7 @@ namespace alpaka
                 ALPAKA_FN_ACC static auto getIdx(
                     TIdxBt const & idx,
                     TWorkDiv const & workDiv)
-                -> Vec<dim::DimT<typename TIdxBt::IdxBtBase>, size::SizeT<typename TIdxBt::IdxBtBase>>
+                -> Vec<dim::Dim<typename TIdxBt::IdxBtBase>, size::Size<typename TIdxBt::IdxBtBase>>
                 {
                     // Delegate the call to the base class.
                     return
@@ -182,7 +182,7 @@ namespace alpaka
                 ALPAKA_FN_ACC static auto getIdx(
                     TIdx const & idx,
                     TWorkDiv const & workDiv)
-                -> Vec<dim::DimT<TIdx>, size::SizeT<TIdx>>
+                -> Vec<dim::Dim<TIdx>, size::Size<TIdx>>
                 {
                     return
                         idx::getIdx<origin::Grid, unit::Blocks>(idx, workDiv)

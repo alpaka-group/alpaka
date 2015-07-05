@@ -90,7 +90,7 @@ namespace alpaka
                 TFixedSizeArray,
                 typename std::enable_if<std::is_array<TFixedSizeArray>::value>::type>
             {
-                using type = dim::Dim<std::rank<TFixedSizeArray>::value>;
+                using type = dim::DimInt<std::rank<TFixedSizeArray>::value>;
             };
         }
     }
@@ -115,7 +115,7 @@ namespace alpaka
                 ALPAKA_FN_HOST_ACC static constexpr auto getExtent(
                     TFixedSizeArray const & //extents
                 )
-                -> size::SizeT<TFixedSizeArray>
+                -> size::Size<TFixedSizeArray>
                 {
                     //boost::ignore_unused(extents);
                     return std::extent<TFixedSizeArray, TIdx::value>::value;
@@ -214,7 +214,7 @@ namespace alpaka
 
                     ALPAKA_FN_HOST_ACC static constexpr auto getPitchBytes(
                         TFixedSizeArray const &)
-                    -> size::SizeT<TFixedSizeArray>
+                    -> size::Size<TFixedSizeArray>
                     {
                         return sizeof(TElem) * std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 1u>::value;
                     }
@@ -242,7 +242,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getOffset(
                     TFixedSizeArray const &)
-                -> size::SizeT<TFixedSizeArray>
+                -> size::Size<TFixedSizeArray>
                 {
                     return 0u;
                 }
@@ -317,7 +317,7 @@ namespace alpaka
             struct DimType<
                 std::array<TElem, TuiSize>>
             {
-                using type = dim::Dim<1u>;
+                using type = dim::DimInt<1u>;
             };
         }
     }
@@ -337,7 +337,7 @@ namespace alpaka
             {
                 ALPAKA_FN_HOST_ACC static constexpr auto getExtent(
                     std::array<TElem, TuiSize> const & /*extents*/)
-                -> size::SizeT<std::array<TElem, TuiSize>>
+                -> size::Size<std::array<TElem, TuiSize>>
                 {
                     // C++14
                     /*boost::ignore_unused(extents);*/
@@ -428,7 +428,7 @@ namespace alpaka
                 {
                     ALPAKA_FN_HOST_ACC static auto getPitchBytes(
                         std::array<TElem, TuiSize> const & pitch)
-                    -> size::SizeT<std::array<TElem, TuiSize>>
+                    -> size::Size<std::array<TElem, TuiSize>>
                     {
                         return sizeof(TElem) * pitch.size();
                     }
@@ -456,7 +456,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getOffset(
                     std::array<TElem, TuiSize> const &)
-                -> size::SizeT<std::array<TElem, TuiSize>>
+                -> size::Size<std::array<TElem, TuiSize>>
                 {
                     return 0u;
                 }
@@ -531,7 +531,7 @@ namespace alpaka
             struct DimType<
                 std::vector<TElem, TAllocator>>
             {
-                using type = dim::Dim<1u>;
+                using type = dim::DimInt<1u>;
             };
         }
     }
@@ -551,7 +551,7 @@ namespace alpaka
             {
                 ALPAKA_FN_HOST_ACC static auto getExtent(
                     std::vector<TElem, TAllocator> const & extents)
-                -> size::SizeT<std::vector<TElem, TAllocator>>
+                -> size::Size<std::vector<TElem, TAllocator>>
                 {
                     return extents.size();
                 }
@@ -640,7 +640,7 @@ namespace alpaka
                 {
                     ALPAKA_FN_HOST_ACC static auto getPitchBytes(
                         std::vector<TElem, TAllocator> const & pitch)
-                    -> size::SizeT<std::vector<TElem, TAllocator>>
+                    -> size::Size<std::vector<TElem, TAllocator>>
                     {
                         return sizeof(TElem) * pitch.size();
                     }
@@ -668,7 +668,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getOffset(
                     std::vector<TElem, TAllocator> const &)
-                -> size::SizeT<std::vector<TElem, TAllocator>>
+                -> size::Size<std::vector<TElem, TAllocator>>
                 {
                     return 0u;
                 }

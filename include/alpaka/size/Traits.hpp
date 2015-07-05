@@ -46,7 +46,7 @@ namespace alpaka
 
         template<
             typename T>
-        using SizeT = typename traits::SizeType<T>::type;
+        using Size = typename traits::SizeType<T>::type;
 
         //-----------------------------------------------------------------------------
         // Trait specializations for unsigned integral types.

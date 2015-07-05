@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/size/Traits.hpp>   // SizeT
+#include <alpaka/size/Traits.hpp>   // Size
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST_ACC
 
@@ -52,9 +52,9 @@ namespace alpaka
             {
                 ALPAKA_FN_HOST_ACC static auto getOffset(
                     TOffsets const &)
-                -> size::SizeT<TOffsets>
+                -> size::Size<TOffsets>
                 {
-                    return static_cast<size::SizeT<TOffsets>>(0);
+                    return static_cast<size::Size<TOffsets>>(0);
                 }
             };
 
@@ -77,7 +77,7 @@ namespace alpaka
             typename TOffsets>
         ALPAKA_FN_HOST_ACC auto getOffset(
             TOffsets const & offsets)
-        -> size::SizeT<TOffsets>
+        -> size::Size<TOffsets>
         {
             return
                 traits::GetOffset<
@@ -93,9 +93,9 @@ namespace alpaka
             typename TOffsets>
         ALPAKA_FN_HOST_ACC auto getOffsetX(
             TOffsets const & offsets = TOffsets())
-        -> size::SizeT<TOffsets>
+        -> size::Size<TOffsets>
         {
-            return getOffset<dim::DimT<TOffsets>::value - 1u, TVal>(offsets);
+            return getOffset<dim::Dim<TOffsets>::value - 1u, TVal>(offsets);
         }
         //-----------------------------------------------------------------------------
         //! \return The offset in y dimension.
@@ -104,9 +104,9 @@ namespace alpaka
             typename TOffsets>
         ALPAKA_FN_HOST_ACC auto getOffsetY(
             TOffsets const & offsets = TOffsets())
-        -> size::SizeT<TOffsets>
+        -> size::Size<TOffsets>
         {
-            return getOffset<dim::DimT<TOffsets>::value - 2u, TVal>(offsets);
+            return getOffset<dim::Dim<TOffsets>::value - 2u, TVal>(offsets);
         }
         //-----------------------------------------------------------------------------
         //! \return The offset in z dimension.
@@ -115,9 +115,9 @@ namespace alpaka
             typename TOffsets>
         ALPAKA_FN_HOST_ACC auto getOffsetZ(
             TOffsets const & offsets = TOffsets())
-        -> size::SizeT<TOffsets>
+        -> size::Size<TOffsets>
         {
-            return getOffset<dim::DimT<TOffsets>::value - 3u, TVal>(offsets);
+            return getOffset<dim::Dim<TOffsets>::value - 3u, TVal>(offsets);
         }
 
         //-----------------------------------------------------------------------------
@@ -151,7 +151,7 @@ namespace alpaka
             TOffset const & offset)
         -> void
         {
-            setOffset<dim::DimT<TOffsets>::value - 1u>(offsets, offset);
+            setOffset<dim::Dim<TOffsets>::value - 1u>(offsets, offset);
         }
         //-----------------------------------------------------------------------------
         //! Sets the offset in y dimension.
@@ -164,7 +164,7 @@ namespace alpaka
             TOffset const & offset)
         -> void
         {
-            setOffset<dim::DimT<TOffsets>::value - 2u>(offsets, offset);
+            setOffset<dim::Dim<TOffsets>::value - 2u>(offsets, offset);
         }
         //-----------------------------------------------------------------------------
         //! Sets the offset in z dimension.
@@ -177,7 +177,7 @@ namespace alpaka
             TOffset const & offset)
         -> void
         {
-            setOffset<dim::DimT<TOffsets>::value - 3u>(offsets, offset);
+            setOffset<dim::Dim<TOffsets>::value - 3u>(offsets, offset);
         }
 
         //-----------------------------------------------------------------------------
@@ -198,7 +198,7 @@ namespace alpaka
             {
                 ALPAKA_FN_HOST_ACC static auto getOffset(
                     TOffsets const & offset)
-                -> size::SizeT<TOffsets>
+                -> size::Size<TOffsets>
                 {
                     return offset;
                 }

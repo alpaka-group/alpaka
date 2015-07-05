@@ -57,7 +57,7 @@ namespace alpaka
         //#############################################################################
         template<
             typename TAcc>
-        using EventT = typename traits::EventType<TAcc>::type;
+        using Event = typename traits::EventType<TAcc>::type;
 
         //-----------------------------------------------------------------------------
         //! Creates an event on a device.
@@ -66,9 +66,9 @@ namespace alpaka
             typename TDev>
         ALPAKA_FN_HOST auto create(
             TDev const & dev)
-        -> EventT<TDev>
+        -> Event<TDev>
         {
-            return EventT<TDev>(dev);
+            return Event<TDev>(dev);
         }
 
         //-----------------------------------------------------------------------------

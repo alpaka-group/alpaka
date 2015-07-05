@@ -22,7 +22,7 @@
 #pragma once
 
 #include <alpaka/dim/Traits.hpp>            // dim::getDim
-#include <alpaka/dim/DimIntegralConst.hpp>  // dim::Dim<N>
+#include <alpaka/dim/DimIntegralConst.hpp>  // dim::DimInt<N>
 #include <alpaka/extent/Traits.hpp>         // extent::getWidth, ...
 #include <alpaka/offset/Traits.hpp>         // offset::getOffsetX, ...
 #include <alpaka/size/Traits.hpp>           // size::SizeType
@@ -481,19 +481,19 @@ namespace alpaka
 
     template<
         typename TVal>
-    using Vec1 = Vec<dim::Dim<1u>, TVal>;
+    using Vec1 = Vec<dim::DimInt<1u>, TVal>;
 
     template<
         typename TVal>
-    using Vec2 = Vec<dim::Dim<2u>, TVal>;
+    using Vec2 = Vec<dim::DimInt<2u>, TVal>;
 
     template<
         typename TVal>
-    using Vec3 = Vec<dim::Dim<3u>, TVal>;
+    using Vec3 = Vec<dim::DimInt<3u>, TVal>;
 
     template<
         typename TVal>
-    using Vec4 = Vec<dim::Dim<4u>, TVal>;
+    using Vec4 = Vec<dim::DimInt<4u>, TVal>;
 
     namespace detail
     {
@@ -632,11 +632,11 @@ namespace alpaka
             ALPAKA_FN_HOST_ACC static auto subVecFromIndices(
                 Vec<TDim, TVal> const & vec,
                 alpaka::detail::integer_sequence<std::size_t, TIndices...> const &)
-            -> Vec<dim::Dim<sizeof...(TIndices)>, TVal>
+            -> Vec<dim::DimInt<sizeof...(TIndices)>, TVal>
             {
                 static_assert(sizeof...(TIndices) <= TDim::value, "The sub-vector has to be smaller (or same size) then the origin vector.");
 
-                return Vec<dim::Dim<sizeof...(TIndices)>, TVal>(vec[TIndices]...);
+                return Vec<dim::DimInt<sizeof...(TIndices)>, TVal>(vec[TIndices]...);
             }
         };
         //#############################################################################
@@ -671,7 +671,7 @@ namespace alpaka
     ALPAKA_FN_HOST_ACC auto subVecFromIndices(
         Vec<TDim, TVal> const & vec,
         detail::integer_sequence<std::size_t, TIndices...> const & indices)
-    -> Vec<dim::Dim<sizeof...(TIndices)>, TVal>
+    -> Vec<dim::DimInt<sizeof...(TIndices)>, TVal>
     {
         return
             detail::SubVecFromIndices<
@@ -826,7 +826,7 @@ namespace alpaka
                     typename TExtents>
                 ALPAKA_FN_HOST_ACC static auto create(
                     TExtents const & extents)
-                -> size::SizeT<TExtents>
+                -> size::Size<TExtents>
                 {
                     return extent::getExtent<TuiIdx>(extents);
                 }
@@ -839,15 +839,15 @@ namespace alpaka
             typename TExtents>
         ALPAKA_FN_HOST_ACC auto getExtentsVec(
             TExtents const & extents = TExtents())
-        -> Vec<dim::DimT<TExtents>, size::SizeT<TExtents>>
+        -> Vec<dim::Dim<TExtents>, size::Size<TExtents>>
         {
             return
 #ifdef __CUDACC__
-            Vec<dim::DimT<TExtents>, size::SizeT<TExtents>>::template
+            Vec<dim::Dim<TExtents>, size::Size<TExtents>>::template
 #endif
                 createVecFromIndexedFn<
 #ifndef __CUDACC__
-                    dim::DimT<TExtents>,
+                    dim::Dim<TExtents>,
 #endif
                     detail::CreateExtent>(
                         extents);
@@ -860,12 +860,12 @@ namespace alpaka
             typename TExtents>
         ALPAKA_FN_HOST_ACC auto getExtentsVecEnd(
             TExtents const & extents = TExtents())
-        -> Vec<TDim, size::SizeT<TExtents>>
+        -> Vec<TDim, size::Size<TExtents>>
         {
-            using IdxOffset = std::integral_constant<std::size_t, (std::size_t)(((std::intmax_t)dim::DimT<TExtents>::value)-((std::intmax_t)TDim::value))>;
+            using IdxOffset = std::integral_constant<std::size_t, (std::size_t)(((std::intmax_t)dim::Dim<TExtents>::value)-((std::intmax_t)TDim::value))>;
             return
 #ifdef __CUDACC__
-            Vec<TDim, size::SizeT<TExtents>>::template
+            Vec<TDim, size::Size<TExtents>>::template
 #endif
                 createVecFromIndexedFnOffset<
 #ifndef __CUDACC__
@@ -895,7 +895,7 @@ namespace alpaka
                     typename TOffsets>
                 ALPAKA_FN_HOST_ACC static auto create(
                     TOffsets const & offsets)
-                -> size::SizeT<TOffsets>
+                -> size::Size<TOffsets>
                 {
                     return offset::getOffset<TuiIdx>(offsets);
                 }
@@ -908,15 +908,15 @@ namespace alpaka
             typename TOffsets>
         ALPAKA_FN_HOST_ACC auto getOffsetsVec(
             TOffsets const & offsets = TOffsets())
-        -> Vec<dim::DimT<TOffsets>, size::SizeT<TOffsets>>
+        -> Vec<dim::Dim<TOffsets>, size::Size<TOffsets>>
         {
             return
 #ifdef __CUDACC__
-            Vec<dim::DimT<TOffsets>, size::SizeT<TOffsets>>::template
+            Vec<dim::Dim<TOffsets>, size::Size<TOffsets>>::template
 #endif
                 createVecFromIndexedFn<
 #ifndef __CUDACC__
-                    dim::DimT<TOffsets>,
+                    dim::Dim<TOffsets>,
 #endif
                     detail::CreateOffset>(
                         offsets);
@@ -929,12 +929,12 @@ namespace alpaka
             typename TOffsets>
         ALPAKA_FN_HOST_ACC auto getOffsetsVecEnd(
             TOffsets const & offsets = TOffsets())
-        -> Vec<TDim, size::SizeT<TOffsets>>
+        -> Vec<TDim, size::Size<TOffsets>>
         {
-            using IdxOffset = std::integral_constant<std::size_t, (std::size_t)(((std::intmax_t)dim::DimT<TOffsets>::value)-((std::intmax_t)TDim::value))>;
+            using IdxOffset = std::integral_constant<std::size_t, (std::size_t)(((std::intmax_t)dim::Dim<TOffsets>::value)-((std::intmax_t)TDim::value))>;
             return
 #ifdef __CUDACC__
-            Vec<TDim, size::SizeT<TOffsets>>::template
+            Vec<TDim, size::Size<TOffsets>>::template
 #endif
                 createVecFromIndexedFnOffset<
 #ifndef __CUDACC__

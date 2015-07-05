@@ -33,7 +33,7 @@
 #include <alpaka/acc/Traits.hpp>                // AccType
 #include <alpaka/exec/Traits.hpp>               // ExecType
 #include <alpaka/dev/Traits.hpp>                // DevType
-#include <alpaka/size/Traits.hpp>               // size::SizeT
+#include <alpaka/size/Traits.hpp>               // size::SizeType
 
 // Implementation details.
 #include <alpaka/dev/DevCpu.hpp>                // DevCpu

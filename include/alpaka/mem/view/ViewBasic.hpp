@@ -21,12 +21,12 @@
 
 #pragma once
 
-#include <alpaka/dim/Traits.hpp>                    // DimT
-#include <alpaka/dev/Traits.hpp>                    // DevT
+#include <alpaka/dim/Traits.hpp>                    // Dim
+#include <alpaka/dev/Traits.hpp>                    // Dev
 #include <alpaka/extent/Traits.hpp>                 // view::getXXX
 #include <alpaka/mem/view/Traits.hpp>
 #include <alpaka/offset/Traits.hpp>                 // traits::getOffsetX
-#include <alpaka/size/Traits.hpp>                   // size::SizeT
+#include <alpaka/size/Traits.hpp>                   // size::SizeType
 
 #include <alpaka/mem/buf/BufPlainPtrWrapper.hpp>    // BufPlainPtrWrapper
 #include <alpaka/core/Vec.hpp>                      // Vec
@@ -106,7 +106,7 @@ namespace alpaka
                         m_vExtentsElements(extent::getExtentsVecEnd<TDim>(buf))
                 {
                     static_assert(
-                        std::is_same<TSize, size::SizeT<TBuf>>::value,
+                        std::is_same<TSize, size::Size<TBuf>>::value,
                         "The size type of TBuf and the TSize template parameter have to be identical!");
                 }
 
@@ -133,13 +133,13 @@ namespace alpaka
                         m_vOffsetsElements(offset::getOffsetsVecEnd<TDim>(relativeOffsetsElements) + offset::getOffsetsVecEnd<TDim>(buf))
                 {
                     static_assert(
-                        std::is_same<TDim, dim::DimT<TExtents>>::value,
+                        std::is_same<TDim, dim::Dim<TExtents>>::value,
                         "The buffer and the extents are required to have the same dimensionality!");
                     static_assert(
-                        std::is_same<TSize, size::SizeT<TExtents>>::value,
+                        std::is_same<TSize, size::Size<TExtents>>::value,
                         "The size type of TExtents and the TSize template parameter have to be identical!");
                     static_assert(
-                        std::is_same<TSize, size::SizeT<TBuf>>::value,
+                        std::is_same<TSize, size::Size<TBuf>>::value,
                         "The size type of TBuf and the TSize template parameter have to be identical!");
 
                     assert(extent::getWidth(relativeOffsetsElements) <= extent::getWidth(buf));
@@ -172,13 +172,13 @@ namespace alpaka
                         m_vOffsetsElements(offset::getOffsetsVecEnd<TDim>(relativeOffsetsElements) + offset::getOffsetsVecEnd<TDim>(buf))
                 {
                     static_assert(
-                        std::is_same<TDim, dim::DimT<TExtents>>::value,
+                        std::is_same<TDim, dim::Dim<TExtents>>::value,
                         "The buffer and the extents are required to have the same dimensionality!");
                     static_assert(
-                        std::is_same<TSize, size::SizeT<TExtents>>::value,
+                        std::is_same<TSize, size::Size<TExtents>>::value,
                         "The size type of TExtents and the TSize template parameter have to be identical!");
                     static_assert(
-                        std::is_same<TSize, size::SizeT<TBuf>>::value,
+                        std::is_same<TSize, size::Size<TBuf>>::value,
                         "The size type of TBuf and the TSize template parameter have to be identical!");
 
                     assert(extent::getWidth(relativeOffsetsElements) <= extent::getWidth(buf));

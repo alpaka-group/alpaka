@@ -66,9 +66,9 @@ namespace alpaka
                     typename TDim,
                     typename... TArgs>
                 ALPAKA_FN_HOST_ACC static auto getBlockSharedExternMemSizeBytes(
-                    Vec<TDim, size::SizeT<TAcc>> const & vuiBlockThreadExtents,
+                    Vec<TDim, size::Size<TAcc>> const & vuiBlockThreadExtents,
                     TArgs const & ... args)
-                -> size::SizeT<TAcc>
+                -> size::Size<TAcc>
                 {
                     boost::ignore_unused(vuiBlockThreadExtents);
                     boost::ignore_unused(args...);
@@ -91,9 +91,9 @@ namespace alpaka
             typename TDim,
             typename... TArgs>
         ALPAKA_FN_HOST_ACC auto getBlockSharedExternMemSizeBytes(
-            Vec<TDim, size::SizeT<TAcc>> const & vuiBlockThreadExtents,
+            Vec<TDim, size::Size<TAcc>> const & vuiBlockThreadExtents,
             TArgs const & ... args)
-        -> size::SizeT<TAcc>
+        -> size::Size<TAcc>
         {
             return traits::BlockSharedExternMemSizeBytes<
                 TKernelFnObj,

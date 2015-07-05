@@ -24,7 +24,7 @@
 #include <alpaka/acc/Traits.hpp>            // acc::getAccName
 #include <alpaka/dev/Traits.hpp>            // dev::getDev
 #include <alpaka/workdiv/Traits.hpp>        // workdiv::getWorkDiv
-#include <alpaka/size/Traits.hpp>           // size::SizeT
+#include <alpaka/size/Traits.hpp>           // size::Size
 
 #include <alpaka/core/WorkDivHelpers.hpp>   // workdiv::isValidWorkDiv
 #include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST
@@ -72,10 +72,10 @@ namespace alpaka
         -> ExecT<TAcc>
         {
             static_assert(
-                dim::DimT<TWorkDiv>::value == dim::DimT<TAcc>::value,
+                dim::Dim<TWorkDiv>::value == dim::Dim<TAcc>::value,
                 "The dimensions of TAcc and TWorkDiv have to be identical!");
             static_assert(
-                std::is_same<size::SizeT<TWorkDiv>, size::SizeT<TAcc>>::value,
+                std::is_same<size::Size<TWorkDiv>, size::Size<TAcc>>::value,
                 "The size type of TAcc and the size type of TWorkDiv have to be identical!");
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -112,14 +112,14 @@ namespace alpaka
         -> ExecT<TAcc>
         {
             static_assert(
-                (dim::DimT<TAcc>::value >= dim::DimT<TBlockThreadExtents>::value) && (dim::DimT<TAcc>::value >= dim::DimT<TGridBlockExtents>::value),
+                (dim::Dim<TAcc>::value >= dim::Dim<TBlockThreadExtents>::value) && (dim::Dim<TAcc>::value >= dim::Dim<TGridBlockExtents>::value),
                 "The dimension of the accelerator has to be larger or equal dimensionality than the grid block and block thread extents!");
 
             return
                 create<TAcc>(
                     workdiv::WorkDivMembers<
-                        dim::Dim<dim::DimT<TAcc>::value>,
-                        size::SizeT<TAcc>>(
+                        dim::DimInt<dim::Dim<TAcc>::value>,
+                        size::Size<TAcc>>(
                             gridBlockExtents,
                             blockThreadExtents),
                     stream);

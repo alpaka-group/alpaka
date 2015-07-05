@@ -61,7 +61,7 @@ public:
     -> void
     {
         static_assert(
-            alpaka::dim::DimT<TAcc>::value == 1,
+            alpaka::dim::Dim<TAcc>::value == 1,
             "The SharedMemKernel expects 1-dimensional indices!");
 
         // The number of threads in this block.
@@ -186,15 +186,15 @@ struct SharedMemTester
         //auto devHost(alpaka::dev::cpu::getDev());
 
         // Select a device to execute on.
-        alpaka::dev::DevT<TAcc> devAcc(
-            alpaka::dev::DevManT<TAcc>::getDevByIdx(0));
+        alpaka::dev::Dev<TAcc> devAcc(
+            alpaka::dev::DevMan<TAcc>::getDevByIdx(0));
 
         // Get a stream on this device.
-        alpaka::stream::StreamT<alpaka::dev::DevT<TAcc>> stream(
+        alpaka::stream::Stream<alpaka::dev::Dev<TAcc>> stream(
             alpaka::stream::create(devAcc));
 
         // Set the grid blocks extent.
-        alpaka::workdiv::WorkDivMembers<alpaka::dim::Dim<1u>, TSize> const workDiv(
+        alpaka::workdiv::WorkDivMembers<alpaka::dim::DimInt<1u>, TSize> const workDiv(
             alpaka::workdiv::getValidWorkDiv<TAcc>(
                 devAcc,
                 uiNumElements,
@@ -281,7 +281,7 @@ auto main()
         std::cout << std::endl;
 
         // Logs the enabled accelerators.
-        alpaka::examples::accs::writeEnabledAccs<alpaka::dim::Dim<1u>, std::uint32_t>(std::cout);
+        alpaka::examples::accs::writeEnabledAccs<alpaka::dim::DimInt<1u>, std::uint32_t>(std::cout);
 
         std::cout << std::endl;
 
@@ -292,7 +292,7 @@ auto main()
 
         // Execute the kernel on all enabled accelerators.
         alpaka::forEachType<
-            alpaka::examples::accs::EnabledAccs<alpaka::dim::Dim<1u>, std::uint32_t>>(
+            alpaka::examples::accs::EnabledAccs<alpaka::dim::DimInt<1u>, std::uint32_t>>(
                 sharedMemTester,
                 static_cast<std::uint32_t>(512u),
                 uiMult2);

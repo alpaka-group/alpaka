@@ -22,7 +22,7 @@
 #pragma once
 
 #include <alpaka/workdiv/Traits.hpp>    // GetWorkDiv
-#include <alpaka/size/Traits.hpp>       // size::SizeT
+#include <alpaka/size/Traits.hpp>       // size::Size
 
 #include <alpaka/core/Vec.hpp>          // Vec
 #include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST

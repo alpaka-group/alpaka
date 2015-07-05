@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/dim/DimIntegralConst.hpp>  // dim::Dim<N>
+#include <alpaka/dim/DimIntegralConst.hpp>  // dim::DimInt<N>
 #include <alpaka/extent/Traits.hpp>         // view::getXXX
 #include <alpaka/mem/view/Traits.hpp>       // view::Set, ...
 #include <alpaka/stream/StreamCpuAsync.hpp> // StreamCpuAsync
@@ -73,7 +73,7 @@ namespace alpaka
                         using Elem = mem::view::ElemT<TBuf>;
 
                         static_assert(
-                            dim::DimT<TBuf>::value == dim::DimT<TExtents>::value,
+                            dim::Dim<TBuf>::value == dim::Dim<TExtents>::value,
                             "The destination buffer and the extents are required to have the same dimensionality!");
 
                         auto const uiExtentWidth(extent::getWidth(extents));
@@ -89,7 +89,7 @@ namespace alpaka
                         assert(uiExtentDepth <= uiDstDepth);
 
                         auto const uiExtentWidthBytes(uiExtentWidth * sizeof(Elem));
-                        auto const uiDstPitchBytes(mem::view::getPitchBytes<dim::DimT<TBuf>::value - 1u>(buf));
+                        auto const uiDstPitchBytes(mem::view::getPitchBytes<dim::Dim<TBuf>::value - 1u>(buf));
                         assert(uiExtentWidthBytes <= uiDstPitchBytes);
 
                         auto const pDstNative(reinterpret_cast<std::uint8_t *>(mem::view::getPtrNative(buf)));

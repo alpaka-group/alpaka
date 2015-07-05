@@ -26,7 +26,7 @@
 #include <alpaka/dev/Traits.hpp>                // DevType
 #include <alpaka/event/Traits.hpp>              // EventType
 #include <alpaka/exec/Traits.hpp>               // ExecType
-#include <alpaka/size/Traits.hpp>               // size::SizeT
+#include <alpaka/size/Traits.hpp>               // size::SizeType
 #include <alpaka/stream/Traits.hpp>             // StreamType
 
 // Implementation details.
@@ -110,7 +110,7 @@ namespace alpaka
                                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                                 static_assert(
-                                    dim::DimT<TWorkDiv>::value == TDim::value,
+                                    dim::Dim<TWorkDiv>::value == TDim::value,
                                     "The work division and the executor have to of the same dimensionality!");
 
                                 auto const vuiGridBlockExtents(
@@ -223,7 +223,7 @@ namespace alpaka
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                 static_assert(
-                    dim::DimT<TWorkDiv>::value == TDim::value,
+                    dim::Dim<TWorkDiv>::value == TDim::value,
                     "The work division and the executor have to of the same dimensionality!");
             }
             //-----------------------------------------------------------------------------

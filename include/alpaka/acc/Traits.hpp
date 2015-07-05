@@ -78,7 +78,7 @@ namespace alpaka
         //#############################################################################
         template<
             typename T>
-        using AccT = typename traits::AccType<T>::type;
+        using Acc = typename traits::AccType<T>::type;
 
         //-----------------------------------------------------------------------------
         //! \return The acceleration properties on the given device.
@@ -88,7 +88,7 @@ namespace alpaka
             typename TDev>
         ALPAKA_FN_HOST auto getAccDevProps(
             TDev const & dev)
-        -> AccDevProps<dim::DimT<TAcc>, size::SizeT<TAcc>>
+        -> AccDevProps<dim::Dim<TAcc>, size::Size<TAcc>>
         {
             return traits::GetAccDevProps<
                 TAcc>

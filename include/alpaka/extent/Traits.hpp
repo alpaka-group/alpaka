@@ -57,9 +57,9 @@ namespace alpaka
             {
                 ALPAKA_FN_HOST_ACC static auto getExtent(
                     TExtents const &)
-                -> size::SizeT<TExtents>
+                -> size::Size<TExtents>
                 {
-                    return static_cast<size::SizeT<TExtents>>(1);
+                    return static_cast<size::Size<TExtents>>(1);
                 }
             };
 
@@ -82,7 +82,7 @@ namespace alpaka
             typename TExtents>
         ALPAKA_FN_HOST_ACC auto getExtent(
             TExtents const & extents = TExtents())
-        -> size::SizeT<TExtents>
+        -> size::Size<TExtents>
         {
             return
                 traits::GetExtent<
@@ -98,9 +98,9 @@ namespace alpaka
             typename TExtents>
         ALPAKA_FN_HOST_ACC auto getWidth(
             TExtents const & extents = TExtents())
-        -> size::SizeT<TExtents>
+        -> size::Size<TExtents>
         {
-            return getExtent<dim::DimT<TExtents>::value - 1u>(extents);
+            return getExtent<dim::Dim<TExtents>::value - 1u>(extents);
         }
         //-----------------------------------------------------------------------------
         //! \return The height.
@@ -109,9 +109,9 @@ namespace alpaka
             typename TExtents>
         ALPAKA_FN_HOST_ACC auto getHeight(
             TExtents const & extents = TExtents())
-        -> size::SizeT<TExtents>
+        -> size::Size<TExtents>
         {
-            return getExtent<dim::DimT<TExtents>::value - 2u>(extents);
+            return getExtent<dim::Dim<TExtents>::value - 2u>(extents);
         }
         //-----------------------------------------------------------------------------
         //! \return The depth.
@@ -120,9 +120,9 @@ namespace alpaka
             typename TExtents>
         ALPAKA_FN_HOST_ACC auto getDepth(
             TExtents const & extents = TExtents())
-        -> size::SizeT<TExtents>
+        -> size::Size<TExtents>
         {
-            return getExtent<dim::DimT<TExtents>::value - 3u>(extents);
+            return getExtent<dim::Dim<TExtents>::value - 3u>(extents);
         }
 
         namespace detail
@@ -136,14 +136,14 @@ namespace alpaka
             ALPAKA_FN_HOST static auto getProductOfExtentsInternal(
                 TExtents const & extents,
                 alpaka::detail::index_sequence<TIndices...> const & indices)
-            -> size::SizeT<TExtents>
+            -> size::Size<TExtents>
             {
 #if !defined(__CUDA_ARCH__)
                 boost::ignore_unused(indices);
 #endif
                 return
                     foldr(
-                        std::multiplies<size::SizeT<TExtents>>(),
+                        std::multiplies<size::Size<TExtents>>(),
                         getExtent<TIndices>(extents)...);
             }
         }
@@ -155,9 +155,9 @@ namespace alpaka
             typename TExtents>
         ALPAKA_FN_HOST_ACC auto getProductOfExtents(
             TExtents const & extents = TExtents())
-        -> size::SizeT<TExtents>
+        -> size::Size<TExtents>
         {
-            using IdxSequence = alpaka::detail::make_index_sequence<dim::DimT<TExtents>::value>;
+            using IdxSequence = alpaka::detail::make_index_sequence<dim::Dim<TExtents>::value>;
             return
                 detail::getProductOfExtentsInternal(
                     extents,
@@ -195,7 +195,7 @@ namespace alpaka
             TExtent const & width)
         -> void
         {
-            setExtent<dim::DimT<TExtents>::value - 1u>(extents, width);
+            setExtent<dim::Dim<TExtents>::value - 1u>(extents, width);
         }
         //-----------------------------------------------------------------------------
         //! Sets the height.
@@ -208,7 +208,7 @@ namespace alpaka
             TExtent const & height)
         -> void
         {
-            setExtent<dim::DimT<TExtents>::value - 2u>(extents, height);
+            setExtent<dim::Dim<TExtents>::value - 2u>(extents, height);
         }
         //-----------------------------------------------------------------------------
         //! Sets the depth.
@@ -221,7 +221,7 @@ namespace alpaka
             TExtent const & depth)
         -> void
         {
-            setExtent<dim::DimT<TExtents>::value - 3u>(extents, depth);
+            setExtent<dim::Dim<TExtents>::value - 3u>(extents, depth);
         }
 
         //-----------------------------------------------------------------------------
@@ -242,7 +242,7 @@ namespace alpaka
             {
                 ALPAKA_FN_HOST_ACC static auto getExtent(
                     TExtents const & extents)
-                -> size::SizeT<TExtents>
+                -> size::Size<TExtents>
                 {
                     return extents;
                 }

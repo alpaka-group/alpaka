@@ -34,7 +34,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             std::size_t N>
-        using Dim = std::integral_constant<std::size_t, N>;
+        using DimInt = std::integral_constant<std::size_t, N>;
 
         //-----------------------------------------------------------------------------
         // Trait specializations for integral_constant types.
@@ -49,7 +49,7 @@ namespace alpaka
             struct DimType<
                 std::integral_constant<std::size_t, N>
             {
-                using type = Dim<N>;
+                using type = DimInt<N>;
             };
         }*/
     }

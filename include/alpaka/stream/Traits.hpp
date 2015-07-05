@@ -76,7 +76,7 @@ namespace alpaka
         //#############################################################################
         template<
             typename TAcc>
-        using StreamT = typename traits::StreamType<TAcc>::type;
+        using Stream = typename traits::StreamType<TAcc>::type;
 
         //-----------------------------------------------------------------------------
         //! Creates a stream on a device.
@@ -85,9 +85,9 @@ namespace alpaka
             typename TDev>
         ALPAKA_FN_HOST auto create(
             TDev & dev)
-        -> StreamT<TDev>
+        -> Stream<TDev>
         {
-            return StreamT<TDev>(dev);
+            return Stream<TDev>(dev);
         }
 
         //-----------------------------------------------------------------------------
