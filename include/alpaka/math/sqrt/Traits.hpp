@@ -49,6 +49,7 @@ namespace alpaka
         //! \param sqrt The object specializing Sqrt.
         //! \param arg The arg.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename T,
             typename TArg>
@@ -89,6 +90,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //
                 //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto sqrt(
                     T const & sqrt,
                     TArg const & arg)

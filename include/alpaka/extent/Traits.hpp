@@ -55,6 +55,7 @@ namespace alpaka
                 typename TSfinae = void>
             struct GetExtent
             {
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getExtent(
                     TExtents const &)
                 -> size::Size<TExtents>
@@ -77,6 +78,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The width.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             std::size_t TuiIdx,
             typename TExtents>
@@ -94,6 +96,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The width.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TExtents>
         ALPAKA_FN_HOST_ACC auto getWidth(
@@ -105,6 +108,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The height.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TExtents>
         ALPAKA_FN_HOST_ACC auto getHeight(
@@ -116,6 +120,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The depth.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TExtents>
         ALPAKA_FN_HOST_ACC auto getDepth(
@@ -130,6 +135,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //!
             //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename TExtents,
                 size_t... TIndices>
@@ -151,6 +157,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The product of the extents.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TExtents>
         ALPAKA_FN_HOST_ACC auto getProductOfExtents(
@@ -167,6 +174,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The width.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             std::size_t TuiIdx,
             typename TExtents,
@@ -187,6 +195,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Sets the width.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TExtents,
             typename TExtent>
@@ -200,6 +209,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Sets the height.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TExtents,
             typename TExtent>
@@ -213,6 +223,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Sets the depth.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TExtents,
             typename TExtent>
@@ -240,6 +251,7 @@ namespace alpaka
                 typename std::enable_if<
                     std::is_integral<TExtents>::value && std::is_unsigned<TExtents>::value>::type>
             {
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getExtent(
                     TExtents const & extents)
                 -> size::Size<TExtents>
@@ -260,6 +272,7 @@ namespace alpaka
                 typename std::enable_if<
                     std::is_integral<TExtents>::value && std::is_unsigned<TExtents>::value>::type>
             {
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto setExtent(
                     TExtents const & extents,
                     TExtent const & extent)

@@ -52,6 +52,7 @@ namespace alpaka
         //! \param y The y arg.
         //! \param x The x arg.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename T,
             typename Ty,
@@ -100,6 +101,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //
                 //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto atan2(
                     T const & atan2,
                     Ty const & y,

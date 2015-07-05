@@ -28,7 +28,7 @@
 
 #include <alpaka/core/Positioning.hpp>      // origin::Grid/Blocks, unit::Blocks, unit::Threads
 #include <alpaka/core/Vec.hpp>              // Vec<N>
-#include <alpaka/core/Common.hpp>           // ALPAKA_FN_ACC
+#include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
 
 #include <utility>                          // std::forward
 
@@ -58,12 +58,13 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Get the indices requested.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TOrigin,
             typename TUnit,
             typename TIdx,
             typename TWorkDiv>
-        ALPAKA_FN_ACC auto getIdx(
+        ALPAKA_FN_HOST_ACC auto getIdx(
             TIdx const & idx,
             TWorkDiv const & workDiv)
         -> Vec<dim::Dim<TWorkDiv>, size::Size<TIdx>>
@@ -79,11 +80,12 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Get the indices requested.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TOrigin,
             typename TUnit,
             typename TIdxWorkDiv>
-        ALPAKA_FN_ACC auto getIdx(
+        ALPAKA_FN_HOST_ACC auto getIdx(
             TIdxWorkDiv const & idxWorkDiv)
         -> Vec<dim::Dim<TIdxWorkDiv>, size::Size<TIdxWorkDiv>>
         {
@@ -114,9 +116,10 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The index of the current thread in the grid.
                 //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename TWorkDiv>
-                ALPAKA_FN_ACC static auto getIdx(
+                ALPAKA_FN_HOST_ACC static auto getIdx(
                     TIdxGb const & idx,
                     TWorkDiv const & workDiv)
                 -> Vec<dim::Dim<typename TIdxGb::IdxGbBase>, size::Size<typename TIdxGb::IdxGbBase>>
@@ -147,9 +150,10 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The index of the current thread in the grid.
                 //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename TWorkDiv>
-                ALPAKA_FN_ACC static auto getIdx(
+                ALPAKA_FN_HOST_ACC static auto getIdx(
                     TIdxBt const & idx,
                     TWorkDiv const & workDiv)
                 -> Vec<dim::Dim<typename TIdxBt::IdxBtBase>, size::Size<typename TIdxBt::IdxBtBase>>
@@ -177,9 +181,10 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The index of the current thread in the grid.
                 //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename TWorkDiv>
-                ALPAKA_FN_ACC static auto getIdx(
+                ALPAKA_FN_HOST_ACC static auto getIdx(
                     TIdx const & idx,
                     TWorkDiv const & workDiv)
                 -> Vec<dim::Dim<TIdx>, size::Size<TIdx>>

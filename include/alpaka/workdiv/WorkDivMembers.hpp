@@ -51,6 +51,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Constructor from values.
             //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename TGridBlockExtents,
                 typename TBlockThreadExtents>
@@ -63,6 +64,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
             ALPAKA_FN_HOST_ACC explicit WorkDivMembers(
                 WorkDivMembers const & other) :
                     m_vuiGridBlockExtents(other.m_vuiGridBlockExtents),
@@ -71,6 +73,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename TWorkDiv>
             ALPAKA_FN_HOST_ACC explicit WorkDivMembers(
@@ -81,18 +84,22 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
             ALPAKA_FN_HOST_ACC WorkDivMembers(WorkDivMembers &&) = default;
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
             ALPAKA_FN_HOST_ACC auto operator=(WorkDivMembers const &) -> WorkDivMembers & = default;
             //-----------------------------------------------------------------------------
             //! Move assignment operator.
             //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
             ALPAKA_FN_HOST_ACC auto operator=(WorkDivMembers &&) -> WorkDivMembers & = default;
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename TWorkDiv>
             ALPAKA_FN_HOST_ACC auto operator=(
@@ -106,6 +113,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
             ALPAKA_FN_HOST_ACC /*virtual*/ ~WorkDivMembers() = default;
 
         public:
@@ -183,6 +191,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of threads in each dimension of a block.
                 //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getWorkDiv(
                     WorkDivMembers<TDim, TSize> const & workDiv)
                 -> Vec<TDim, TSize>
@@ -205,6 +214,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of blocks in each dimension of the grid.
                 //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getWorkDiv(
                     WorkDivMembers<TDim, TSize> const & workDiv)
                 -> Vec<TDim, TSize>

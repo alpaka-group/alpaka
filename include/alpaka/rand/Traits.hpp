@@ -86,6 +86,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! \return A normal float distribution with mean 0.0f and standard deviation 1.0f.
             //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename T,
                 typename TAcc>
@@ -119,6 +120,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! \return A uniform floating point distribution [0.0, 1.0).
             //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename T,
                 typename TAcc>
@@ -152,6 +154,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! \return A uniform integer distribution [0, UINT_MAX].
             //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename T,
                 typename TAcc>
@@ -204,6 +207,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! \return A default random number generator.
             //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename TAcc>
             ALPAKA_FN_HOST_ACC auto createDefault(

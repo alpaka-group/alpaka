@@ -49,6 +49,7 @@ namespace alpaka
         //! \param sin The object specializing Sin.
         //! \param arg The arg.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename T,
             typename TArg>
@@ -89,6 +90,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //
                 //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto sin(
                     T const & sin,
                     TArg const & arg)

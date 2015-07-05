@@ -53,6 +53,7 @@ namespace alpaka
         //! \param x The first argument.
         //! \param y The second argument.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename T,
             typename Tx,
@@ -101,6 +102,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //
                 //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto max(
                     T const & max,
                     Tx const & x,

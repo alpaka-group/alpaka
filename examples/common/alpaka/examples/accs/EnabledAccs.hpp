@@ -169,6 +169,7 @@ namespace alpaka
                 //#############################################################################
                 struct StreamOutAccName
                 {
+                    ALPAKA_NO_HOST_ACC_WARNING
                     template<
                         typename TAcc>
                     ALPAKA_FN_HOST_ACC auto operator()(
@@ -184,6 +185,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Writes the enabled accelerators to the given stream.
             //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename TDim,
                 typename TSize>

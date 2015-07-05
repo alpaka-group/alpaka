@@ -67,6 +67,9 @@ namespace alpaka
                 TFixedSizeArray,
                 typename std::enable_if<std::is_array<TFixedSizeArray>::value>::type>
             {
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getDev(
                     TFixedSizeArray const & buf)
                 -> dev::DevCpu
@@ -112,6 +115,10 @@ namespace alpaka
                     && (std::rank<TFixedSizeArray>::value > TIdx::value)
                     && (std::extent<TFixedSizeArray, TIdx::value>::value > 0u)>::type>
             {
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static constexpr auto getExtent(
                     TFixedSizeArray const & //extents
                 )
@@ -184,12 +191,20 @@ namespace alpaka
                 {
                     using TElem = typename std::remove_all_extents<TFixedSizeArray>::type;
 
+                    //-----------------------------------------------------------------------------
+                    //!
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_NO_HOST_ACC_WARNING
                     ALPAKA_FN_HOST_ACC static auto getPtrNative(
                         TFixedSizeArray const & buf)
                     -> TElem const *
                     {
                         return buf;
                     }
+                    //-----------------------------------------------------------------------------
+                    //!
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_NO_HOST_ACC_WARNING
                     ALPAKA_FN_HOST_ACC static auto getPtrNative(
                         TFixedSizeArray & buf)
                     -> TElem *
@@ -212,6 +227,10 @@ namespace alpaka
                 {
                     using TElem = typename std::remove_all_extents<TFixedSizeArray>::type;
 
+                    //-----------------------------------------------------------------------------
+                    //!
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_NO_HOST_ACC_WARNING
                     ALPAKA_FN_HOST_ACC static constexpr auto getPitchBytes(
                         TFixedSizeArray const &)
                     -> size::Size<TFixedSizeArray>
@@ -240,7 +259,8 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_HOST static auto getOffset(
+                ALPAKA_NO_HOST_ACC_WARNING
+                ALPAKA_FN_HOST_ACC static auto getOffset(
                     TFixedSizeArray const &)
                 -> size::Size<TFixedSizeArray>
                 {
@@ -295,6 +315,9 @@ namespace alpaka
             struct GetDev<
                 std::array<TElem, TuiSize>>
             {
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getDev(
                     std::array<TElem, TuiSize> const & buf)
                 -> dev::DevCpu
@@ -335,7 +358,10 @@ namespace alpaka
                 std::integral_constant<std::size_t, 0u>,
                 std::array<TElem, TuiSize>>
             {
-                ALPAKA_FN_HOST_ACC static constexpr auto getExtent(
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_HOST static constexpr auto getExtent(
                     std::array<TElem, TuiSize> const & /*extents*/)
                 -> size::Size<std::array<TElem, TuiSize>>
                 {
@@ -402,13 +428,19 @@ namespace alpaka
                 struct GetPtrNative<
                     std::array<TElem, TuiSize>>
                 {
-                    ALPAKA_FN_HOST_ACC static auto getPtrNative(
+                    //-----------------------------------------------------------------------------
+                    //!
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FN_HOST static auto getPtrNative(
                         std::array<TElem, TuiSize> const & buf)
                     -> TElem const *
                     {
                         return buf.data();
                     }
-                    ALPAKA_FN_HOST_ACC static auto getPtrNative(
+                    //-----------------------------------------------------------------------------
+                    //!
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FN_HOST static auto getPtrNative(
                         std::array<TElem, TuiSize> & buf)
                     -> TElem *
                     {
@@ -426,7 +458,10 @@ namespace alpaka
                     std::integral_constant<std::size_t, 0u>,
                     std::array<TElem, TuiSize>>
                 {
-                    ALPAKA_FN_HOST_ACC static auto getPitchBytes(
+                    //-----------------------------------------------------------------------------
+                    //!
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FN_HOST static auto getPitchBytes(
                         std::array<TElem, TuiSize> const & pitch)
                     -> size::Size<std::array<TElem, TuiSize>>
                     {
@@ -509,6 +544,9 @@ namespace alpaka
             struct GetDev<
                 std::vector<TElem, TAllocator>>
             {
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getDev(
                     std::vector<TElem, TAllocator> const & buf)
                 -> dev::DevCpu
@@ -549,7 +587,10 @@ namespace alpaka
                 std::integral_constant<std::size_t, 0u>,
                 std::vector<TElem, TAllocator>>
             {
-                ALPAKA_FN_HOST_ACC static auto getExtent(
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_HOST static auto getExtent(
                     std::vector<TElem, TAllocator> const & extents)
                 -> size::Size<std::vector<TElem, TAllocator>>
                 {
@@ -614,13 +655,19 @@ namespace alpaka
                 struct GetPtrNative<
                     std::vector<TElem, TAllocator>>
                 {
-                    ALPAKA_FN_HOST_ACC static auto getPtrNative(
+                    //-----------------------------------------------------------------------------
+                    //!
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FN_HOST static auto getPtrNative(
                         std::vector<TElem, TAllocator> const & buf)
                     -> TElem const *
                     {
                         return buf.data();
                     }
-                    ALPAKA_FN_HOST_ACC static auto getPtrNative(
+                    //-----------------------------------------------------------------------------
+                    //!
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FN_HOST static auto getPtrNative(
                         std::vector<TElem, TAllocator> & buf)
                     -> TElem *
                     {
@@ -638,7 +685,10 @@ namespace alpaka
                     std::integral_constant<std::size_t, 0u>,
                     std::vector<TElem, TAllocator>>
                 {
-                    ALPAKA_FN_HOST_ACC static auto getPitchBytes(
+                    //-----------------------------------------------------------------------------
+                    //!
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_FN_HOST static auto getPitchBytes(
                         std::vector<TElem, TAllocator> const & pitch)
                     -> size::Size<std::vector<TElem, TAllocator>>
                     {

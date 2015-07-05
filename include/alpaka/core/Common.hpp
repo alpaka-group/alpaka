@@ -23,11 +23,16 @@
 
 #include <alpaka/core/Debug.hpp>
 
-#include <boost/predef.h>           // workarounds
+#include <type_traits>                      // std::enable_if
+
+#if !defined(__CUDA_ARCH__)
+    #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+#endif
+#include <boost/predef.h>                   // workarounds
 
 //-----------------------------------------------------------------------------
 //! Disable nvcc warning:
-//! calling a __host__ function from __host__ __device__ function.
+//! 'calling a __host__ function from __host__ __device__ function.'
 //!
 //! Usage:
 //! ALPAKA_NO_HOST_ACC_WARNING
@@ -57,21 +62,11 @@
 //! ALPAKA_FN_ACC int add(int a, int b);
 //-----------------------------------------------------------------------------
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
-    #define ALPAKA_FN_ACC_CUDA_ONLY\
-        ALPAKA_NO_HOST_ACC_WARNING\
-        __device__ __forceinline__
-    #define ALPAKA_FN_ACC_NO_CUDA\
-        ALPAKA_NO_HOST_ACC_WARNING\
-        __host__ __forceinline__
-    #define ALPAKA_FN_ACC\
-        ALPAKA_NO_HOST_ACC_WARNING\
-        __device__ __host__ __forceinline__
-    #define ALPAKA_FN_HOST_ACC\
-        ALPAKA_NO_HOST_ACC_WARNING\
-        __device__ __host__ __forceinline__
-    #define ALPAKA_FN_HOST\
-        ALPAKA_NO_HOST_ACC_WARNING\
-        __host__ __forceinline__
+    #define ALPAKA_FN_ACC_CUDA_ONLY __device__ __forceinline__
+    #define ALPAKA_FN_ACC_NO_CUDA __host__ __forceinline__
+    #define ALPAKA_FN_ACC __device__ __host__ __forceinline__
+    #define ALPAKA_FN_HOST_ACC __device__ __host__ __forceinline__
+    #define ALPAKA_FN_HOST __host__ __forceinline__
 #else
     //#define ALPAKA_FN_ACC_CUDA_ONLY inline
     #define ALPAKA_FN_ACC_NO_CUDA inline
@@ -109,4 +104,68 @@ namespace alpaka
     struct dependent_false_type :
         std::false_type
     {};
+
+    namespace detail
+    {
+        //#############################################################################
+        //!
+        //#############################################################################
+        template<
+            typename TArg,
+            typename TSfinae = void>
+        struct AssertValueUnsigned;
+        //#############################################################################
+        //!
+        //#############################################################################
+        template<
+            typename TArg>
+        struct AssertValueUnsigned<
+            TArg,
+            typename std::enable_if<!std::is_unsigned<TArg>::value>::type>
+        {
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_HOST_ACC static auto assertValueUnsigned(
+                TArg const & arg)
+            -> void
+            {
+                assert(arg >= 0);
+            }
+        };
+        //#############################################################################
+        //!
+        //#############################################################################
+        template<
+            typename TArg>
+        struct AssertValueUnsigned<
+            TArg,
+            typename std::enable_if<std::is_unsigned<TArg>::value>::type>
+        {
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_HOST_ACC static auto assertValueUnsigned(
+                TArg const & arg)
+            -> void
+            {
+#if !defined(__CUDA_ARCH__)
+                boost::ignore_unused(arg);
+#endif
+                // Nothing to do for unsigned types.
+            }
+        };
+    }
+    //-----------------------------------------------------------------------------
+    //! This method checks integral values if they are greater or equal zero.
+    //! The implementation prevents warnings for checking this for unsigned types.
+    //-----------------------------------------------------------------------------
+    template<
+        typename TArg>
+    ALPAKA_NO_HOST_ACC_WARNING
+    ALPAKA_FN_HOST_ACC auto assertValueUnsigned(
+        TArg const & arg)
+    -> void
+    {
+        detail::AssertValueUnsigned<
+            TArg>
+        ::assertValueUnsigned(
+            arg);
+    }
 }

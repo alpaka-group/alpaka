@@ -220,6 +220,7 @@ namespace alpaka
             struct GetAccName<
                 acc::serial::detail::AccCpuSerial<TDim, TSize>>
             {
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getAccName()
                 -> std::string
                 {

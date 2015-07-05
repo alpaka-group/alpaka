@@ -58,6 +58,7 @@ public:
     //! \param C The pointer to the matrix C data.
     //! \param ldc The pitch of the C matrix in elements.
     //-----------------------------------------------------------------------------
+    ALPAKA_NO_HOST_ACC_WARNING
     template<
         typename TAcc,
         typename TElem,

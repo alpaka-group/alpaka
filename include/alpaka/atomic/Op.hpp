@@ -41,6 +41,7 @@ namespace alpaka
             //#############################################################################
             struct Add
             {
+                ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename T>
                 ALPAKA_FN_HOST_ACC auto operator()(
@@ -61,6 +62,7 @@ namespace alpaka
             //#############################################################################
             struct Sub
             {
+                ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename T>
                 ALPAKA_FN_HOST_ACC auto operator()(
@@ -81,6 +83,7 @@ namespace alpaka
             //#############################################################################
             struct Min
             {
+                ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename T>
                 ALPAKA_FN_HOST_ACC auto operator()(
@@ -101,6 +104,7 @@ namespace alpaka
             //#############################################################################
             struct Max
             {
+                ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename T>
                 ALPAKA_FN_HOST_ACC auto operator()(
@@ -121,6 +125,7 @@ namespace alpaka
             //#############################################################################
             struct Exch
             {
+                ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename T>
                 ALPAKA_FN_HOST_ACC auto operator()(
@@ -143,6 +148,7 @@ namespace alpaka
             //#############################################################################
             struct Inc
             {
+                ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename T>
                 ALPAKA_FN_HOST_ACC auto operator()(
@@ -165,6 +171,7 @@ namespace alpaka
             //#############################################################################
             struct Dec
             {
+                ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename T>
                 ALPAKA_FN_HOST_ACC auto operator()(
@@ -185,6 +192,7 @@ namespace alpaka
             //#############################################################################
             struct And
             {
+                ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename T>
                 ALPAKA_FN_HOST_ACC auto operator()(
@@ -205,6 +213,7 @@ namespace alpaka
             //#############################################################################
             struct Or
             {
+                ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename T>
                 ALPAKA_FN_HOST_ACC auto operator()(
@@ -225,6 +234,7 @@ namespace alpaka
             //#############################################################################
             struct Xor
             {
+                ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename T>
                 ALPAKA_FN_HOST_ACC auto operator()(
@@ -245,6 +255,7 @@ namespace alpaka
             //#############################################################################
             struct Cas
             {
+                ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename T>
                 ALPAKA_FN_HOST_ACC auto operator()(

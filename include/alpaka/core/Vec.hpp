@@ -28,7 +28,7 @@
 #include <alpaka/size/Traits.hpp>           // size::SizeType
 
 #include <alpaka/core/IntegerSequence.hpp>  // detail::make_integer_sequence
-#include <alpaka/core/Common.hpp>           // ALPAKA_FN_ACC
+#include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
 #include <alpaka/core/Fold.hpp>             // foldr
 
 #include <boost/predef.h>                   // workarounds
@@ -53,6 +53,7 @@ namespace alpaka
     //-----------------------------------------------------------------------------
     //! Single value constructor helper.
     //-----------------------------------------------------------------------------
+    ALPAKA_NO_HOST_ACC_WARNING
     template<
         typename TDim,
         template<std::size_t> class TTFnObj,
@@ -73,6 +74,7 @@ namespace alpaka
     //! Creator using func<idx>(args...) to initialize all values of the vector.
     //! The idx is in the range [0, TDim].
     //-----------------------------------------------------------------------------
+    ALPAKA_NO_HOST_ACC_WARNING
     template<
         typename TDim,
         template<std::size_t> class TTFnObj,
@@ -98,6 +100,7 @@ namespace alpaka
     //! Creator using func<idx>(args...) to initialize all values of the vector.
     //! The idx is in the range [TIdxOffset, TIdxOffset + TDim].
     //-----------------------------------------------------------------------------
+    ALPAKA_NO_HOST_ACC_WARNING
     template<
         typename TDim,
         template<std::size_t> class TTFnObj,
@@ -151,6 +154,7 @@ namespace alpaka
         //! Value constructor.
         //! This constructor is only available if the number of parameters matches the vector size.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TArg0,
             typename... TArgs,
@@ -173,6 +177,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Creator using func<idx>(args...) to initialize all values of the vector.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             template<std::size_t> class TTFnObj,
             typename... TArgs,
@@ -192,6 +197,7 @@ namespace alpaka
         //! Creator using func<idx>(args...) to initialize all values of the vector.
         //! The idx is in the range [0, TDim].
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             template<std::size_t> class TTFnObj,
             typename... TArgs>
@@ -209,6 +215,7 @@ namespace alpaka
         //! Creator using func<idx>(args...) to initialize all values of the vector.
         //! The idx is in the range [TIdxOffset, TIdxOffset + TDim].
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             template<std::size_t> class TTFnObj,
             typename TIdxOffset,
@@ -229,22 +236,27 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Copy constructor.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         ALPAKA_FN_HOST_ACC Vec(Vec const &) = default;
         //-----------------------------------------------------------------------------
         //! Move constructor.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         ALPAKA_FN_HOST_ACC Vec(Vec &&) = default;
         //-----------------------------------------------------------------------------
         //! Copy assignment operator.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         ALPAKA_FN_HOST_ACC auto operator=(Vec const &) -> Vec & = default;
         //-----------------------------------------------------------------------------
         //! Move assignment operator.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         ALPAKA_FN_HOST_ACC auto operator=(Vec &&) -> Vec & = default;
         //-----------------------------------------------------------------------------
         //! Destructor.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         ALPAKA_FN_HOST_ACC ~Vec() = default;
 
     private:
@@ -258,6 +270,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //!
             //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
             ALPAKA_FN_HOST_ACC static auto create(
                 TVal const & val)
             -> TVal
@@ -272,6 +285,7 @@ namespace alpaka
         //! Creates a vector with all values set to val.
         //! \param val The initial value.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         ALPAKA_FN_HOST_ACC static auto all(
             TVal const & val)
         -> Vec<TDim, TVal>
@@ -287,6 +301,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Zero value constructor.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         ALPAKA_FN_HOST_ACC static auto zeros()
         -> Vec<TDim, TVal>
         {
@@ -295,6 +310,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! One value constructor.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         ALPAKA_FN_HOST_ACC static auto ones()
             -> Vec<TDim, TVal>
         {
@@ -305,6 +321,7 @@ namespace alpaka
         //! Value reference accessor at the given non-unsigned integer index.
         //! \return A reference to the value at the given index.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TIdx,
             typename = typename std::enable_if<
@@ -313,7 +330,7 @@ namespace alpaka
             TIdx const iIdx)
         -> TVal &
         {
-            assert(0<=iIdx);
+            assertValueUnsigned(iIdx);
             auto const uiIdx(static_cast<typename TDim::value_type>(iIdx));
             assert(uiIdx<TDim::value);
             return m_auiData[uiIdx];
@@ -323,6 +340,7 @@ namespace alpaka
         //! Value accessor at the given non-unsigned integer index.
         //! \return The value at the given index.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TIdx,
             typename = typename std::enable_if<
@@ -331,7 +349,7 @@ namespace alpaka
             TIdx const iIdx) const
         -> TVal
         {
-            assert(0<=iIdx);
+            assertValueUnsigned(iIdx);
             auto const uiIdx(static_cast<typename TDim::value_type>(iIdx));
             assert(uiIdx<TDim::value);
             return m_auiData[uiIdx];
@@ -340,6 +358,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         // Equality comparison operator.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         ALPAKA_FN_HOST_ACC auto operator==(
             Vec const & rhs) const
         -> bool
@@ -356,6 +375,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         // Inequality comparison operator.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         ALPAKA_FN_HOST_ACC auto operator!=(
             Vec const & rhs) const
         -> bool
@@ -365,10 +385,11 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //!
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TFnObj,
             std::size_t... TIndices>
-        ALPAKA_FN_HOST auto foldrByIndices(
+        ALPAKA_FN_HOST_ACC auto foldrByIndices(
             TFnObj const & f,
             alpaka::detail::integer_sequence<std::size_t, TIndices...> const & indices) const
         -> decltype(
@@ -387,9 +408,10 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //!
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TFnObj>
-        ALPAKA_FN_HOST auto foldrAll(
+        ALPAKA_FN_HOST_ACC auto foldrAll(
             TFnObj const & f) const
         -> decltype(
 #if (BOOST_COMP_GNUC) && (BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(5, 0, 0))
@@ -408,6 +430,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The product of all values.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         ALPAKA_FN_HOST_ACC auto prod() const
         -> TVal
         {
@@ -416,6 +439,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The sum of all values.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         ALPAKA_FN_HOST_ACC auto sum() const
         -> TVal
         {
@@ -424,6 +448,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The min of all values.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         ALPAKA_FN_HOST_ACC auto min() const
         -> TVal
         {
@@ -436,6 +461,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The max of all values.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         ALPAKA_FN_HOST_ACC auto max() const
         -> TVal
         {
@@ -448,6 +474,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The index of the minimal element.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         ALPAKA_FN_HOST_ACC auto minElem() const
         -> typename TDim::value_type
         {
@@ -462,6 +489,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The index of the maximal element.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         ALPAKA_FN_HOST_ACC auto maxElem() const
         -> typename TDim::value_type
         {
@@ -507,6 +535,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //!
             //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename TDim,
                 typename TVal>
@@ -522,6 +551,7 @@ namespace alpaka
     //-----------------------------------------------------------------------------
     //! \return The element wise sum of two vectors.
     //-----------------------------------------------------------------------------
+    ALPAKA_NO_HOST_ACC_WARNING
     template<
         typename TDim,
         typename TVal>
@@ -555,6 +585,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //!
             //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename TDim,
                 typename TVal>
@@ -570,6 +601,7 @@ namespace alpaka
     //-----------------------------------------------------------------------------
     //! \return The element wise product of two vectors.
     //-----------------------------------------------------------------------------
+    ALPAKA_NO_HOST_ACC_WARNING
     template<
         typename TDim,
         typename TVal>
@@ -626,6 +658,7 @@ namespace alpaka
             typename TIndexSequence>
         struct SubVecFromIndices
         {
+            ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename TVal,
                 std::size_t... TIndices>
@@ -648,6 +681,7 @@ namespace alpaka
             TDim,
             alpaka::detail::make_integer_sequence<std::size_t, TDim::value>>
         {
+            ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename TVal>
             ALPAKA_FN_HOST_ACC static auto subVecFromIndices(
@@ -664,6 +698,7 @@ namespace alpaka
     //! Repeating and swizzling elements is allowed.
     //! \return The sub-vector consisting of the elements specified by the indices.
     //-----------------------------------------------------------------------------
+    ALPAKA_NO_HOST_ACC_WARNING
     template<
         typename TDim,
         typename TVal,
@@ -684,6 +719,7 @@ namespace alpaka
     //-----------------------------------------------------------------------------
     //! \return The sub-vector consisting of the first N elements of the source vector.
     //-----------------------------------------------------------------------------
+    ALPAKA_NO_HOST_ACC_WARNING
     template<
         typename TSubDim,
         typename TDim,
@@ -701,6 +737,7 @@ namespace alpaka
     //-----------------------------------------------------------------------------
     //! \return The sub-vector consisting of the last N elements of the source vector.
     //-----------------------------------------------------------------------------
+    ALPAKA_NO_HOST_ACC_WARNING
     template<
         typename TSubDim,
         typename TDim,
@@ -728,6 +765,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //!
             //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename TValNew,
                 typename TDim,
@@ -744,6 +782,7 @@ namespace alpaka
     //-----------------------------------------------------------------------------
     //! Cast constructor.
     //-----------------------------------------------------------------------------
+    ALPAKA_NO_HOST_ACC_WARNING
     template<
         typename TValNew,
         typename TDim,
@@ -775,6 +814,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //!
             //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename TDim,
                 typename TVal>
@@ -789,6 +829,7 @@ namespace alpaka
     //-----------------------------------------------------------------------------
     //! \return The reverse vector.
     //-----------------------------------------------------------------------------
+    ALPAKA_NO_HOST_ACC_WARNING
     template<
         typename TDim,
         typename TVal>
@@ -822,6 +863,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename TExtents>
                 ALPAKA_FN_HOST_ACC static auto create(
@@ -835,6 +877,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The extents.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TExtents>
         ALPAKA_FN_HOST_ACC auto getExtentsVec(
@@ -855,6 +898,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The extents but only the last N elements.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TDim,
             typename TExtents>
@@ -891,6 +935,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename TOffsets>
                 ALPAKA_FN_HOST_ACC static auto create(
@@ -904,6 +949,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The offsets.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TOffsets>
         ALPAKA_FN_HOST_ACC auto getOffsetsVec(
@@ -924,6 +970,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The offsets vector but only the last N elements.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TDim,
             typename TOffsets>
@@ -978,6 +1025,7 @@ namespace alpaka
                 Vec<TDim, TVal>,
                 typename std::enable_if<(TDim::value > TIdx::value)>::type>
             {
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getExtent(
                     Vec<TDim, TVal> const & extents)
                 -> TVal
@@ -991,17 +1039,18 @@ namespace alpaka
             template<
                 typename TIdx,
                 typename TDim,
-                typename TVal>
+                typename TVal,
+                typename TExtent>
             struct SetExtent<
                 TIdx,
                 Vec<TDim, TVal>,
+                TExtent,
                 typename std::enable_if<(TDim::value > TIdx::value)>::type>
             {
-                template<
-                    typename TVal2>
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto setExtent(
                     Vec<TDim, TVal> & extents,
-                    TVal2 const & extent)
+                    TExtent const & extent)
                 -> void
                 {
                     extents[TIdx::value] = extent;
@@ -1025,6 +1074,7 @@ namespace alpaka
                 Vec<TDim, TVal>,
                 typename std::enable_if<(TDim::value > TIdx::value)>::type>
             {
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getOffset(
                     Vec<TDim, TVal> const & offsets)
                 -> TVal
@@ -1046,6 +1096,7 @@ namespace alpaka
                 TOffset,
                 typename std::enable_if<(TDim::value > TIdx::value)>::type>
             {
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto setOffset(
                     Vec<TDim, TVal> & offsets,
                     TOffset const & offset)

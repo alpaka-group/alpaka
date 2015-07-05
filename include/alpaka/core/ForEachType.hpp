@@ -51,6 +51,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //!
             //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename TElemIt,
                 typename TLastIt,
@@ -78,6 +79,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //!
             //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename TElemIt,
                 typename TLastIt,
@@ -115,6 +117,7 @@ namespace alpaka
     //! Equivalent to boost::mpl::for_each but does not require the types of the sequence to be default constructible.
     //! This function does not create instances of the types instead it passes the types as template parameter.
     //-----------------------------------------------------------------------------
+    ALPAKA_NO_HOST_ACC_WARNING
     template<
         typename TSequence,
         typename TFnObj,

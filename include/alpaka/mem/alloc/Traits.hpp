@@ -114,6 +114,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //
                     //-----------------------------------------------------------------------------
+                    ALPAKA_NO_HOST_ACC_WARNING
                     ALPAKA_FN_HOST_ACC static auto alloc(
                         TAlloc const & alloc,
                         std::size_t const & sizeElems)
@@ -144,6 +145,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //
                     //-----------------------------------------------------------------------------
+                    ALPAKA_NO_HOST_ACC_WARNING
                     ALPAKA_FN_HOST_ACC static auto free(
                         TAlloc const & alloc,
                         T const * const ptr)

@@ -53,6 +53,7 @@ namespace alpaka
             // \param Extents Spatial size to map the index to.
             // \return Vector of dimension TuiDimDst.
             //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename TElem>
             ALPAKA_FN_HOST_ACC static auto mapIdx(
@@ -80,6 +81,7 @@ namespace alpaka
             // \param Extents Spatial size to map the index to.
             // \return Vector of dimension TuiDimDst.
             //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename TElem>
             ALPAKA_FN_HOST_ACC static auto mapIdx(
@@ -111,6 +113,7 @@ namespace alpaka
             // \param Extents Spatial size to map the index to.
             // \return Vector of dimension TuiDimDst.
             //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename TElem>
             ALPAKA_FN_HOST_ACC static auto mapIdx(
@@ -140,6 +143,7 @@ namespace alpaka
             // \param Extents Spatial size to map the index to.
             // \return Vector of dimension TuiDimDst.
             //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename TElem>
             ALPAKA_FN_HOST_ACC static auto mapIdx(
@@ -164,6 +168,7 @@ namespace alpaka
             // \param Extents Spatial size to map the index to.
             // \return Vector of dimension TuiDimDst.
             //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename TElem>
             ALPAKA_FN_HOST_ACC static auto mapIdx(
@@ -184,6 +189,7 @@ namespace alpaka
     //! \tparam TuiIdxDimExt Dimension of the extents vector to map use for mapping.
     //! \tparam TElem Type of the elements of the index vector to map from.
     //#############################################################################
+    ALPAKA_NO_HOST_ACC_WARNING
     template<
         std::size_t TuiIdxDimOut,
         std::size_t TuiIdxDimIn,

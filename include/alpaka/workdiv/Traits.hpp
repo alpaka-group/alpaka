@@ -25,7 +25,7 @@
 
 #include <alpaka/core/Vec.hpp>              // Vec<N>
 #include <alpaka/core/Positioning.hpp>      // origin::Grid/Blocks, unit::Blocks, unit::Threads
-#include <alpaka/core/Common.hpp>           // ALPAKA_FN_ACC
+#include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
 
 #include <type_traits>                      // std::enable_if, std::is_base_of, std::is_same, std::decay
 #include <utility>                          // std::forward
@@ -56,6 +56,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Get the extents requested.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TOrigin,
             typename TUnit,
@@ -93,6 +94,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of threads in each dimension of a block.
                 //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getWorkDiv(
                     TWorkDiv const & workDiv)
                 -> Vec<dim::Dim<typename TWorkDiv::WorkDivBase>, size::Size<TWorkDiv>>
@@ -119,6 +121,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of threads in each dimension of the grid.
                 //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getWorkDiv(
                     TWorkDiv const & workDiv)
                 -> Vec<dim::Dim<typename TWorkDiv::WorkDivBase>, size::Size<TWorkDiv>>

@@ -50,6 +50,7 @@ namespace alpaka
                 typename TSfinae = void>
             struct GetOffset
             {
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getOffset(
                     TOffsets const &)
                 -> size::Size<TOffsets>
@@ -72,6 +73,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The offset in the given dimension.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             std::size_t TuiIdx,
             typename TOffsets>
@@ -89,6 +91,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The offset in x dimension.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TOffsets>
         ALPAKA_FN_HOST_ACC auto getOffsetX(
@@ -100,6 +103,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The offset in y dimension.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TOffsets>
         ALPAKA_FN_HOST_ACC auto getOffsetY(
@@ -111,6 +115,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! \return The offset in z dimension.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TOffsets>
         ALPAKA_FN_HOST_ACC auto getOffsetZ(
@@ -123,6 +128,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Sets the offset in the given dimension.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             std::size_t TuiIdx,
             typename TOffsets,
@@ -143,6 +149,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Sets the offset in x dimension.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TOffsets,
             typename TOffset>
@@ -156,6 +163,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Sets the offset in y dimension.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TOffsets,
             typename TOffset>
@@ -169,6 +177,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         //! Sets the offset in z dimension.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TOffsets,
             typename TOffset>
@@ -196,6 +205,7 @@ namespace alpaka
                 typename std::enable_if<
                     std::is_integral<TOffsets>::value && std::is_unsigned<TOffsets>::value>::type>
             {
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getOffset(
                     TOffsets const & offset)
                 -> size::Size<TOffsets>
@@ -216,6 +226,7 @@ namespace alpaka
                 typename std::enable_if<
                     std::is_integral<TOffsets>::value && std::is_unsigned<TOffsets>::value>::type>
             {
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto setOffset(
                     TOffsets const & offsets,
                     TOffset const & offset)

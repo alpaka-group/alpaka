@@ -58,6 +58,7 @@ namespace alpaka
         //! \param value The value used in the atomic operation.
         //! \param atomic The atomic implementation.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TOp,
             typename TAtomic,
@@ -98,6 +99,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! \return The number of threads in each dimension of a block.
                 //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto atomicOp(
                     TAtomic const & atomic,
                     T * const addr,

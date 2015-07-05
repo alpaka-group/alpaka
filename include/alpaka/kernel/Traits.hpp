@@ -62,6 +62,7 @@ namespace alpaka
                 //! \return The size of the shared memory allocated for a block in bytes.
                 //! The default version always returns zero.
                 //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename TDim,
                     typename... TArgs>
@@ -85,6 +86,7 @@ namespace alpaka
         //! \return The size of the shared memory allocated for a block in bytes.
         //! The default version always returns zero.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TKernelFnObj,
             typename TAcc,

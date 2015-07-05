@@ -73,8 +73,8 @@ namespace alpaka
             {
                 T uiDivisor(uiMaxDivisor);
 
-                assert(0 <= uiDividend);
-                assert(0 <= uiMaxDivisor);
+                assertValueUnsigned(uiDividend);
+                assertValueUnsigned(uiMaxDivisor);
                 assert(uiDividend <= uiMaxDivisor);
 
                 while((uiDividend%uiDivisor) != 0)
@@ -99,8 +99,8 @@ namespace alpaka
             {
                 std::set<T> setDivisors;
 
-                assert(0 <= uiVal);
-                assert(0 <= uiMaxDivisor);
+                assertValueUnsigned(uiVal);
+                assertValueUnsigned(uiMaxDivisor);
                 assert(uiMaxDivisor <= uiVal);
 
                 for(T i(1); i <= std::min(uiVal, uiMaxDivisor); ++i)

@@ -50,6 +50,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor
                 //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename TExtents>
                 ALPAKA_FN_HOST_ACC BufPlainPtrWrapper(
@@ -65,6 +66,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor
                 //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename TExtents>
                 ALPAKA_FN_HOST_ACC BufPlainPtrWrapper(
@@ -81,22 +83,27 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC BufPlainPtrWrapper(BufPlainPtrWrapper const &) = delete;
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC BufPlainPtrWrapper(BufPlainPtrWrapper &&) = default;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment operator.
                 //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC auto operator=(BufPlainPtrWrapper const &) -> BufPlainPtrWrapper & = delete;
                 //-----------------------------------------------------------------------------
                 //! Move assignment operator.
                 //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC auto operator=(BufPlainPtrWrapper &&) -> BufPlainPtrWrapper & = default;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC ~BufPlainPtrWrapper() = default;
 
             public:
@@ -140,6 +147,7 @@ namespace alpaka
             struct GetDev<
                 mem::buf::BufPlainPtrWrapper<TDev, TElem, TDim, TSize>>
             {
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getDev(
                     mem::buf::BufPlainPtrWrapper<TDev, TElem, TDim, TSize> const & buf)
                     -> TDev
@@ -186,6 +194,7 @@ namespace alpaka
                 mem::buf::BufPlainPtrWrapper<TDev, TElem, TDim, TSize>,
                 typename std::enable_if<(TDim::value > TIdx::value)>::type>
             {
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getExtent(
                     mem::buf::BufPlainPtrWrapper<TDev, TElem, TDim, TSize> const & extents)
                 -> TSize
@@ -229,6 +238,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
+                    ALPAKA_NO_HOST_ACC_WARNING
                     ALPAKA_FN_HOST_ACC static auto getBuf(
                         buf::BufPlainPtrWrapper<TDev, TElem, TDim, TSize> const & buf)
                     -> buf::BufPlainPtrWrapper<TDev, TElem, TDim, TSize> const &
@@ -238,6 +248,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
+                    ALPAKA_NO_HOST_ACC_WARNING
                     ALPAKA_FN_HOST_ACC static auto getBuf(
                         buf::BufPlainPtrWrapper<TDev, TElem, TDim, TSize> & buf)
                     -> buf::BufPlainPtrWrapper<TDev, TElem, TDim, TSize> &
@@ -257,12 +268,14 @@ namespace alpaka
                 struct GetPtrNative<
                     buf::BufPlainPtrWrapper<TDev, TElem, TDim, TSize>>
                 {
+                    ALPAKA_NO_HOST_ACC_WARNING
                     ALPAKA_FN_HOST_ACC static auto getPtrNative(
                         buf::BufPlainPtrWrapper<TDev, TElem, TDim, TSize> const & buf)
                     -> TElem const *
                     {
                         return buf.m_pMem;
                     }
+                    ALPAKA_NO_HOST_ACC_WARNING
                     ALPAKA_FN_HOST_ACC static auto getPtrNative(
                         buf::BufPlainPtrWrapper<TDev, TElem, TDim, TSize> & buf)
                     -> TElem *
@@ -283,6 +296,7 @@ namespace alpaka
                     std::integral_constant<std::size_t, 0u>,
                     buf::BufPlainPtrWrapper<TDev, TElem, TDim, TSize>>
                 {
+                    ALPAKA_NO_HOST_ACC_WARNING
                     ALPAKA_FN_HOST_ACC static auto getPitchBytes(
                         buf::BufPlainPtrWrapper<TDev, TElem, TDim, TSize> const & buf)
                     -> TSize
@@ -313,6 +327,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getOffset(
                     mem::buf::BufPlainPtrWrapper<TDev, TElem, TDim, TSize> const &)
                 -> TSize

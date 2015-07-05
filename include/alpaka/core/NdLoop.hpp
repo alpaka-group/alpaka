@@ -48,6 +48,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //!
             //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
             template<
                 std::size_t TuiCurDim,
                 typename TIndex,
@@ -87,6 +88,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //!
             //-----------------------------------------------------------------------------
+            ALPAKA_NO_HOST_ACC_WARNING
             template<
                 std::size_t TuiCurDim,
                 typename TIndex,
@@ -132,6 +134,7 @@ namespace alpaka
     //! \param f The function called at each iteration.
     //! \param args,... The additional arguments given to each function call.
     //-----------------------------------------------------------------------------
+    ALPAKA_NO_HOST_ACC_WARNING
     template<
         typename TExtentsVec,
         typename TFnObj,

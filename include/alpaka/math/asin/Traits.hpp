@@ -47,6 +47,7 @@ namespace alpaka
         //! \tparam TArg The arg type.
         //! \param value The value.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename T,
             typename TArg>
@@ -87,6 +88,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //
                 //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto asin(
                     T const & asin,
                     TArg const & arg)

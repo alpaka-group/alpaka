@@ -132,7 +132,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename T>
-        ALPAKA_FN_HOST_ACC auto getStream(
+        ALPAKA_FN_HOST auto getStream(
             T const & type)
         -> decltype(traits::GetStream<T>::getStream(type))
         {

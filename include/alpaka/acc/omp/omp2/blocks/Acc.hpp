@@ -238,6 +238,7 @@ namespace alpaka
             struct GetAccName<
                 acc::omp::omp2::blocks::detail::AccCpuOmp2Blocks<TDim, TSize>>
             {
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getAccName()
                 -> std::string
                 {

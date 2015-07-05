@@ -52,6 +52,7 @@ namespace alpaka
         //! \param base The base.
         //! \param exp The exponent.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename T,
             typename TBase,
@@ -100,6 +101,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //
                 //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto pow(
                     T const & pow,
                     TBase const & base,

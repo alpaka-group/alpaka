@@ -347,6 +347,7 @@ namespace alpaka
                     cuda::traits::IsCudaBuiltInType<TExtents>::value
                     && (dim::Dim<TExtents>::value >= 1)>::type>
             {
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getExtent(
                     TExtents const & extents)
                 -> decltype(extents.x)
@@ -366,6 +367,7 @@ namespace alpaka
                     cuda::traits::IsCudaBuiltInType<TExtents>::value
                     && (dim::Dim<TExtents>::value >= 2)>::type>
             {
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getExtent(
                     TExtents const & extents)
                 -> decltype(extents.y)
@@ -385,6 +387,7 @@ namespace alpaka
                     cuda::traits::IsCudaBuiltInType<TExtents>::value
                     && (dim::Dim<TExtents>::value >= 3)>::type>
             {
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getExtent(
                     TExtents const & extents)
                 -> decltype(extents.z)
@@ -404,6 +407,7 @@ namespace alpaka
                     cuda::traits::IsCudaBuiltInType<TExtents>::value
                     && (dim::Dim<TExtents>::value >= 4)>::type>
             {
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getExtent(
                     TExtents const & extents)
                 -> decltype(extents.w)
@@ -415,19 +419,20 @@ namespace alpaka
             //! The CUDA vectors extent set trait specialization.
             //#############################################################################
             template<
-                typename TExtents>
+                typename TExtents,
+                typename TExtent>
             struct SetExtent<
                 dim::DimInt<dim::Dim<TExtents>::value - 1u>,
                 TExtents,
+                TExtent,
                 typename std::enable_if<
                     cuda::traits::IsCudaBuiltInType<TExtents>::value
                     && (dim::Dim<TExtents>::value >= 1)>::type>
             {
-                template<
-                    typename TVal2>
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto setExtent(
                     TExtents const & extents,
-                    TVal2 const & extent)
+                    TExtent const & extent)
                 -> void
                 {
                     extents.x = extent;
@@ -437,19 +442,20 @@ namespace alpaka
             //! The CUDA vectors extent set trait specialization.
             //#############################################################################
             template<
-                typename TExtents>
+                typename TExtents,
+                typename TExtent>
             struct SetExtent<
                 dim::DimInt<dim::Dim<TExtents>::value - 2u>,
                 TExtents,
+                TExtent,
                 typename std::enable_if<
                     cuda::traits::IsCudaBuiltInType<TExtents>::value
                     && (dim::Dim<TExtents>::value >= 2)>::type>
             {
-                template<
-                    typename TVal2>
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto setExtent(
                     TExtents const & extents,
-                    TVal2 const & extent)
+                    TExtent const & extent)
                 -> void
                 {
                     extents.y = extent;
@@ -459,19 +465,20 @@ namespace alpaka
             //! The CUDA vectors extent set trait specialization.
             //#############################################################################
             template<
-                typename TExtents>
+                typename TExtents,
+                typename TExtent>
             struct SetExtent<
                 dim::DimInt<dim::Dim<TExtents>::value - 3u>,
                 TExtents,
+                TExtent,
                 typename std::enable_if<
                     cuda::traits::IsCudaBuiltInType<TExtents>::value
                     && (dim::Dim<TExtents>::value >= 3)>::type>
             {
-                template<
-                    typename TVal2>
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto setExtent(
                     TExtents const & extents,
-                    TVal2 const & extent)
+                    TExtent const & extent)
                 -> void
                 {
                     extents.z = extent;
@@ -481,19 +488,20 @@ namespace alpaka
             //! The CUDA vectors extent set trait specialization.
             //#############################################################################
             template<
-                typename TExtents>
+                typename TExtents,
+                typename TExtent>
             struct SetExtent<
                 dim::DimInt<dim::Dim<TExtents>::value - 4u>,
                 TExtents,
+                TExtent,
                 typename std::enable_if<
                     cuda::traits::IsCudaBuiltInType<TExtents>::value
                     && (dim::Dim<TExtents>::value >= 4)>::type>
             {
-                template<
-                    typename TVal2>
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto setExtent(
                     TExtents const & extents,
-                    TVal2 const & extent)
+                    TExtent const & extent)
                 -> void
                 {
                     extents.w = extent;
@@ -517,6 +525,7 @@ namespace alpaka
                     cuda::traits::IsCudaBuiltInType<TOffsets>::value
                     && (dim::Dim<TOffsets>::value >= 1)>::type>
             {
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getOffset(
                     TOffsets const & offsets)
                 -> decltype(offsets.x)
@@ -536,6 +545,7 @@ namespace alpaka
                     cuda::traits::IsCudaBuiltInType<TOffsets>::value
                     && (dim::Dim<TOffsets>::value >= 2)>::type>
             {
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getOffset(
                     TOffsets const & offsets)
                 -> decltype(offsets.y)
@@ -555,6 +565,7 @@ namespace alpaka
                     cuda::traits::IsCudaBuiltInType<TOffsets>::value
                     && (dim::Dim<TOffsets>::value >= 3)>::type>
             {
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getOffset(
                     TOffsets const & offsets)
                 -> decltype(offsets.z)
@@ -574,6 +585,7 @@ namespace alpaka
                     cuda::traits::IsCudaBuiltInType<TOffsets>::value
                     && (dim::Dim<TOffsets>::value >= 4)>::type>
             {
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getOffset(
                     TOffsets const & offsets)
                 -> decltype(offsets.w)
@@ -595,6 +607,7 @@ namespace alpaka
                     cuda::traits::IsCudaBuiltInType<TOffsets>::value
                     && (dim::Dim<TOffsets>::value >= 1)>::type>
             {
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto setOffset(
                     TOffsets const & offsets,
                     TOffset const & offset)
@@ -617,6 +630,7 @@ namespace alpaka
                     cuda::traits::IsCudaBuiltInType<TOffsets>::value
                     && (dim::Dim<TOffsets>::value >= 2)>::type>
             {
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto setOffset(
                     TOffsets const & offsets,
                     TOffset const & offset)
@@ -639,6 +653,7 @@ namespace alpaka
                     cuda::traits::IsCudaBuiltInType<TOffsets>::value
                     && (dim::Dim<TOffsets>::value >= 3)>::type>
             {
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto setOffset(
                     TOffsets const & offsets,
                     TOffset const & offset)
@@ -661,6 +676,7 @@ namespace alpaka
                     cuda::traits::IsCudaBuiltInType<TOffsets>::value
                     && (dim::Dim<TOffsets>::value >= 4)>::type>
             {
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto setOffset(
                     TOffsets const & offsets,
                     TOffset const & offset)

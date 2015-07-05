@@ -49,6 +49,7 @@ namespace alpaka
         //! \param ceil The object specializing Ceil.
         //! \param arg The arg.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename T,
             typename TArg>
@@ -89,6 +90,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //
                 //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto ceil(
                     T const & ceil,
                     TArg const & arg)

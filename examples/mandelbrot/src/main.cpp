@@ -44,6 +44,7 @@ public:
     //-----------------------------------------------------------------------------
     //! Constructor.
     //-----------------------------------------------------------------------------
+    ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_HOST_ACC SimpleComplex(
         T const & a,
         T const & b) :
@@ -53,6 +54,7 @@ public:
     //-----------------------------------------------------------------------------
     //!
     //-----------------------------------------------------------------------------
+    ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_HOST_ACC auto absSq()
     -> T
     {
@@ -61,6 +63,7 @@ public:
     //-----------------------------------------------------------------------------
     //!
     //-----------------------------------------------------------------------------
+    ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_HOST_ACC auto operator*(SimpleComplex const & a)
     -> SimpleComplex
     {
@@ -69,6 +72,7 @@ public:
     //-----------------------------------------------------------------------------
     //!
     //-----------------------------------------------------------------------------
+    ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_HOST_ACC auto operator*(float const & a)
     -> SimpleComplex
     {
@@ -77,6 +81,7 @@ public:
     //-----------------------------------------------------------------------------
     //!
     //-----------------------------------------------------------------------------
+    ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_HOST_ACC auto operator+(SimpleComplex const & a)
     -> SimpleComplex
     {
@@ -85,6 +90,7 @@ public:
     //-----------------------------------------------------------------------------
     //!
     //-----------------------------------------------------------------------------
+    ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_HOST_ACC auto operator+(float const & a)
     -> SimpleComplex
     {
@@ -107,6 +113,7 @@ public:
     //-----------------------------------------------------------------------------
     //! Constructor.
     //-----------------------------------------------------------------------------
+    ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_ACC MandelbrotKernel()
     {
         // Banding can be prevented by a continuous color functions.
@@ -143,6 +150,7 @@ public:
     //! \param fMaxI The top border.
     //! \param uiMaxIterations The maximum number of iterations.
     //-----------------------------------------------------------------------------
+    ALPAKA_NO_HOST_ACC_WARNING
     template<
         typename TAcc>
     ALPAKA_FN_ACC auto operator()(
@@ -187,6 +195,7 @@ public:
     //! \return The number of iterations until the Mandelbrot iteration with the given Value reaches the absolute value of 2.
     //!     Only does uiMaxIterations steps and returns uiMaxIterations if the value would be higher.
     //-----------------------------------------------------------------------------
+    ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_ACC static auto iterateMandelbrot(
         SimpleComplex<float> const & c,
         std::uint32_t const & uiMaxIterations)
@@ -207,6 +216,7 @@ public:
     //-----------------------------------------------------------------------------
     //!
     //-----------------------------------------------------------------------------
+    ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_ACC static auto convertRgbSingleToBgra(
         std::uint32_t const & r,
         std::uint32_t const & g,
@@ -221,6 +231,7 @@ public:
     //! This uses a simple mapping from iteration count to colors.
     //! This leads to banding but allows a all pixels to be colored.
     //-----------------------------------------------------------------------------
+    ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_ACC static auto iterationCountToContinousColor(
         std::uint32_t const & uiIterationCount,
         std::uint32_t const & uiMaxIterations)
@@ -240,6 +251,7 @@ public:
     //! This uses a simple mapping from iteration count to colors.
     //! This leads to banding but allows a all pixels to be colored.
     //-----------------------------------------------------------------------------
+    ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_ACC auto iterationCountToRepeatedColor(
         std::uint32_t const & uiIterationCount) const
     -> std::uint32_t

@@ -67,6 +67,7 @@ namespace alpaka
         //! \param round The object specializing Round.
         //! \param arg The arg.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename T,
             typename TArg>
@@ -96,6 +97,7 @@ namespace alpaka
         //! \param round The object specializing Round.
         //! \param arg The arg.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename T,
             typename TArg>
@@ -119,6 +121,7 @@ namespace alpaka
         //! \param round The object specializing Round.
         //! \param arg The arg.
         //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename T,
             typename TArg>
@@ -153,6 +156,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //
                 //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto round(
                     T const & round,
                     TArg const & arg)
@@ -184,6 +188,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //
                 //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto lround(
                     T const & lround,
                     TArg const & arg)
@@ -215,6 +220,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //
                 //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto llround(
                     T const & llround,
                     TArg const & arg)
