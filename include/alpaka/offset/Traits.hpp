@@ -95,7 +95,7 @@ namespace alpaka
             TOffsets const & offsets = TOffsets())
         -> size::Size<TOffsets>
         {
-            return getOffset<dim::Dim<TOffsets>::value - 1u, TVal>(offsets);
+            return getOffset<dim::Dim<TOffsets>::value - 1u>(offsets);
         }
         //-----------------------------------------------------------------------------
         //! \return The offset in y dimension.
@@ -106,7 +106,7 @@ namespace alpaka
             TOffsets const & offsets = TOffsets())
         -> size::Size<TOffsets>
         {
-            return getOffset<dim::Dim<TOffsets>::value - 2u, TVal>(offsets);
+            return getOffset<dim::Dim<TOffsets>::value - 2u>(offsets);
         }
         //-----------------------------------------------------------------------------
         //! \return The offset in z dimension.
@@ -117,7 +117,7 @@ namespace alpaka
             TOffsets const & offsets = TOffsets())
         -> size::Size<TOffsets>
         {
-            return getOffset<dim::Dim<TOffsets>::value - 3u, TVal>(offsets);
+            return getOffset<dim::Dim<TOffsets>::value - 3u>(offsets);
         }
 
         //-----------------------------------------------------------------------------
