@@ -65,14 +65,6 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             namespace detail
             {
-                // Forward declarations.
-                /*template<
-                    typename TKernelFnObj,
-                    typename... TArgs>
-                __global__ void cudaKernel(
-                    TKernelFnObj kernelFnObj,
-                    TArgs ... args);*/
-
                 //#############################################################################
                 //! The GPU CUDA accelerator.
                 //!
@@ -90,16 +82,6 @@ namespace alpaka
                     public block::shared::BlockSharedAllocCudaBuiltIn
                 {
                 public:
-                    /*template<
-                        typename TKernelFnObj,
-                        typename... TArgs>
-                    friend void ::alpaka::cuda::detail::cudaKernel(
-                        TKernelFnObj kernelFnObj,
-                        TArgs ... args);*/
-
-                    //friend class ::alpaka::cuda::detail::ExecGpuCuda<TDim, TSize>;
-
-                //private:
                     //-----------------------------------------------------------------------------
                     //! Constructor.
                     //-----------------------------------------------------------------------------

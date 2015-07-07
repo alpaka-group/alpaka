@@ -39,6 +39,8 @@
 #include <alpaka/core/Cuda.hpp>             // ALPAKA_CUDA_RT_CHECK
 
 #include <boost/predef.h>                   // workarounds
+#include <boost/mpl/apply.hpp>              // boost::mpl::apply
+#include <boost/mpl/and.hpp>                // boost::mpl::and_
 
 #include <stdexcept>                        // std::runtime_error
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
@@ -55,7 +57,7 @@ namespace alpaka
             {
                 //-----------------------------------------------------------------------------
                 //! The GPU CUDA kernel entry point.
-                // \NOTE: A __global__ function or function template cannot have a trailing return type.
+                // \NOTE: 'A __global__ function or function template cannot have a trailing return type.'
                 //-----------------------------------------------------------------------------
                 template<
                     typename TDim,
@@ -140,8 +142,17 @@ namespace alpaka
 
 #if (!__GLIBCXX__) // libstdc++ even for gcc-4.9 does not support std::is_trivially_copyable.
                 static_assert(
-                    std::is_trivially_copyable<TKernelFnObj>::value,
-                    "The given kernel function object has to fulfill is_trivially_copyable!");
+                    boost::mpl::and_<
+                        // This true_ is required for the zero argument case because and_ requires at least two arguments.
+                        boost::mpl::true_,
+                        std::is_trivially_copyable<
+                            TKernelFnObj>,
+                        boost::mpl::apply<
+                            std::is_trivially_copyable<
+                                boost::mpl::_1>,
+                                TArgs>...
+                        >::value,
+                    "The given kernel function object and its arguments have to fulfill is_trivially_copyable!");
 #endif
                 // TODO: Check that (sizeof(TKernelFnObj) * m_3uiBlockThreadExtents.prod()) < available memory size
 
