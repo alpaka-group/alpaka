@@ -38,7 +38,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The abstract atomic operation trait.
+            //! The atomic operation trait.
             //#############################################################################
             template<
                 typename TOp,

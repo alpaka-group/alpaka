@@ -156,6 +156,10 @@
 //-----------------------------------------------------------------------------
 // mem
 //-----------------------------------------------------------------------------
+#include <alpaka/mem/alloc/AllocCpuBoostAligned.hpp>
+#include <alpaka/mem/alloc/AllocCpuNew.hpp>
+#include <alpaka/mem/alloc/Traits.hpp>
+
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
     #include <alpaka/mem/buf/BufCudaRt.hpp>
 #endif
@@ -163,6 +167,7 @@
 #include <alpaka/mem/buf/BufPlainPtrWrapper.hpp>
 #include <alpaka/mem/buf/BufStdContainers.hpp>
 #include <alpaka/mem/buf/Traits.hpp>
+
 #include <alpaka/mem/view/ViewBasic.hpp>
 #include <alpaka/mem/view/Traits.hpp>
 

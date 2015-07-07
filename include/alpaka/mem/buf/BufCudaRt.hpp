@@ -746,7 +746,7 @@ namespace alpaka
                             ALPAKA_CUDA_RT_CHECK(
                                 cudaHostRegister(
                                     const_cast<void *>(reinterpret_cast<void const *>(mem::view::getPtrNative(buf))),
-                                    extent::getProductOfExtents(buf) * sizeof(mem::view::ElemT<BufCpu<TElem, TDim, TSize>>),
+                                    extent::getProductOfExtents(buf) * sizeof(mem::view::Elem<BufCpu<TElem, TDim, TSize>>),
                                     cudaHostRegisterMapped));
                         }
                         // If it is already the same device, nothing has to be mapped.

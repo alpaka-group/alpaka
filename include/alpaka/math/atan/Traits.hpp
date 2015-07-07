@@ -45,7 +45,8 @@ namespace alpaka
         //! Computes the principal value of the arc tangent.
         //!
         //! \tparam TArg The arg type.
-        //! \param value The value.
+        //! \param atan The object specializing Atan.
+        //! \param arg The arg.
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<

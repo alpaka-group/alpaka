@@ -548,7 +548,7 @@ namespace alpaka
                             ALPAKA_CUDA_RT_CHECK_IGNORE(
                                 cudaHostRegister(
                                     const_cast<void *>(reinterpret_cast<void const *>(mem::view::getPtrNative(buf))),
-                                    extent::getProductOfExtents(buf) * sizeof(mem::view::ElemT<buf::BufCpu<TElem, TDim, TSize>>),
+                                    extent::getProductOfExtents(buf) * sizeof(mem::view::Elem<buf::BufCpu<TElem, TDim, TSize>>),
                                     cudaHostRegisterDefault),
                                 cudaErrorHostMemoryAlreadyRegistered);
 

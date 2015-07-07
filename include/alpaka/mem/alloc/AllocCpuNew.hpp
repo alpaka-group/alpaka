@@ -41,8 +41,6 @@ namespace alpaka
             {
             public:
                 using AllocBase = AllocCpuNew;
-
-                using AllocCreatesPitch = std::false_type;
             };
 
             namespace traits

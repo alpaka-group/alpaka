@@ -70,7 +70,7 @@ namespace alpaka
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                        using Elem = mem::view::ElemT<TBuf>;
+                        using Elem = mem::view::Elem<TBuf>;
 
                         static_assert(
                             dim::Dim<TBuf>::value == dim::Dim<TExtents>::value,

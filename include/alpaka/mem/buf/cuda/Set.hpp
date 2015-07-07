@@ -83,7 +83,7 @@ namespace alpaka
                             cudaMemset(
                                 reinterpret_cast<void *>(mem::view::getPtrNative(buf)),
                                 static_cast<int>(byte),
-                                uiExtentWidth * sizeof(mem::view::ElemT<TBuf>)));
+                                uiExtentWidth * sizeof(mem::view::Elem<TBuf>)));
                     }
                     //-----------------------------------------------------------------------------
                     //!
@@ -119,7 +119,7 @@ namespace alpaka
                             cudaMemsetAsync(
                                 reinterpret_cast<void *>(mem::view::getPtrNative(buf)),
                                 static_cast<int>(byte),
-                                uiExtentWidth * sizeof(mem::view::ElemT<TBuf>),
+                                uiExtentWidth * sizeof(mem::view::Elem<TBuf>),
                                 stream.m_spStreamCudaImpl->m_CudaStream));
                     }
                 };
@@ -169,7 +169,7 @@ namespace alpaka
                                 reinterpret_cast<void *>(mem::view::getPtrNative(buf)),
                                 uiDstPitchBytes,
                                 static_cast<int>(byte),
-                                uiExtentWidth * sizeof(mem::view::ElemT<TBuf>),
+                                uiExtentWidth * sizeof(mem::view::Elem<TBuf>),
                                 uiExtentHeight));
                     }
                     //-----------------------------------------------------------------------------
@@ -211,7 +211,7 @@ namespace alpaka
                                 reinterpret_cast<void *>(mem::view::getPtrNative(buf)),
                                 uiDstPitchBytes,
                                 static_cast<int>(byte),
-                                uiExtentWidth * sizeof(mem::view::ElemT<TBuf>),
+                                uiExtentWidth * sizeof(mem::view::Elem<TBuf>),
                                 uiExtentHeight,
                                 stream.m_spStreamCudaImpl->m_CudaStream));
                     }

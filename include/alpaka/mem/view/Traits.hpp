@@ -167,7 +167,7 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TView>
-            using ElemT = typename std::remove_volatile<typename traits::ElemType<TView>::type>::type;
+            using Elem = typename std::remove_volatile<typename traits::ElemType<TView>::type>::type;
 
             //#############################################################################
             //! The memory buffer view type trait alias template to remove the ::type.
@@ -189,7 +189,7 @@ namespace alpaka
                 typename TBuf>
             ALPAKA_FN_HOST auto getPtrNative(
                 TBuf const & buf)
-            -> ElemT<TBuf> const *
+            -> Elem<TBuf> const *
             {
                 return traits::GetPtrNative<
                     TBuf>
@@ -206,7 +206,7 @@ namespace alpaka
                 typename TBuf>
             ALPAKA_FN_HOST auto getPtrNative(
                 TBuf & buf)
-            -> ElemT<TBuf> *
+            -> Elem<TBuf> *
             {
                 return traits::GetPtrNative<
                     TBuf>
@@ -227,7 +227,7 @@ namespace alpaka
             ALPAKA_FN_HOST auto getPtrDev(
                 TBuf const & buf,
                 TDev const & dev)
-            -> ElemT<TBuf> const *
+            -> Elem<TBuf> const *
             {
                 return traits::GetPtrDev<
                     TBuf,
@@ -249,7 +249,7 @@ namespace alpaka
             ALPAKA_FN_HOST auto getPtrDev(
                 TBuf & buf,
                 TDev const & dev)
-            -> ElemT<TBuf> *
+            -> Elem<TBuf> *
             {
                 return traits::GetPtrDev<
                     TBuf,
@@ -364,7 +364,7 @@ namespace alpaka
                     dim::Dim<TBufDst>::value == dim::Dim<TExtents>::value,
                     "The destination buffer and the extents are required to have the same dimensionality!");
                 static_assert(
-                    std::is_same<ElemT<TBufDst>, typename std::remove_const<ElemT<TBufSrc>>::type>::value,
+                    std::is_same<Elem<TBufDst>, typename std::remove_const<Elem<TBufSrc>>::type>::value,
                     "The source and the destination buffers are required to have the same element type!");
 
                 traits::Copy<
@@ -404,7 +404,7 @@ namespace alpaka
                     dim::Dim<TBufDst>::value == dim::Dim<TExtents>::value,
                     "The destination buffer and the extents are required to have the same dimensionality!");
                 static_assert(
-                    std::is_same<ElemT<TBufDst>, typename std::remove_const<ElemT<TBufSrc>>::type>::value,
+                    std::is_same<Elem<TBufDst>, typename std::remove_const<Elem<TBufSrc>>::type>::value,
                     "The source and the destination buffers are required to have the same element type!");
 
                 traits::Copy<
@@ -546,7 +546,7 @@ namespace alpaka
                 {
                     ALPAKA_FN_HOST static auto print(
                         TView const & view,
-                        ElemT<TView> const * const ptr,
+                        Elem<TView> const * const ptr,
                         Vec<dim::Dim<TView>, size::Size<TView>> const & extents,
                         std::ostream & os,
                         std::string const & elementSeparator,
@@ -566,7 +566,7 @@ namespace alpaka
                                 TView>
                             ::print(
                                 view,
-                                reinterpret_cast<ElemT<TView> const *>(reinterpret_cast<std::uint8_t const *>(ptr)+i*pitch),
+                                reinterpret_cast<Elem<TView> const *>(reinterpret_cast<std::uint8_t const *>(ptr)+i*pitch),
                                 extents,
                                 os,
                                 elementSeparator,
@@ -595,7 +595,7 @@ namespace alpaka
                 {
                     ALPAKA_FN_HOST static auto print(
                         TView const & view,
-                        ElemT<TView> const * const ptr,
+                        Elem<TView> const * const ptr,
                         Vec<dim::Dim<TView>, size::Size<TView>> const & extents,
                         std::ostream & os,
                         std::string const & elementSeparator,

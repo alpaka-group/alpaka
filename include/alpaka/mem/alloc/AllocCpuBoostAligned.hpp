@@ -47,8 +47,6 @@ namespace alpaka
             {
             public:
                 using AllocBase = AllocCpuBoostAligned<TAlignment>;
-
-                using AllocCreatesPitch = std::false_type;
             };
 
             namespace traits

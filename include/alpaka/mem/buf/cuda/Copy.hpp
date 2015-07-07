@@ -79,7 +79,7 @@ namespace alpaka
                                 dim::Dim<TBufDst>::value == dim::Dim<TExtents>::value,
                                 "The destination buffer and the extents are required to have the same dimensionality!");
                             static_assert(
-                                std::is_same<mem::view::ElemT<TBufDst>, typename std::remove_const<mem::view::ElemT<TBufSrc>>::type>::value,
+                                std::is_same<mem::view::Elem<TBufDst>, typename std::remove_const<mem::view::Elem<TBufSrc>>::type>::value,
                                 "The source and the destination buffers are required to have the same element type!");
 
                             auto const uiExtentWidth(extent::getWidth(extents));
@@ -96,13 +96,13 @@ namespace alpaka
                                 cudaMemcpy(
                                     reinterpret_cast<void *>(mem::view::getPtrNative(bufDst)),
                                     reinterpret_cast<void const *>(mem::view::getPtrNative(bufSrc)),
-                                    uiExtentWidth * sizeof(mem::view::ElemT<TBufDst>),
+                                    uiExtentWidth * sizeof(mem::view::Elem<TBufDst>),
                                     p_cudaMemcpyKind));
 
         #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                             std::cout << BOOST_CURRENT_FUNCTION
                                 << " ew: " << uiExtentWidth
-                                << " ewb: " << uiExtentWidth * sizeof(mem::view::ElemT<TBufDst>)
+                                << " ewb: " << uiExtentWidth * sizeof(mem::view::Elem<TBufDst>)
                                 << " dw: " << uiDstWidth
                                 << " dptr: " << reinterpret_cast<void *>(mem::view::getPtrNative(bufDst))
                                 << " sw: " << uiSrcWidth
@@ -135,7 +135,7 @@ namespace alpaka
                                 dim::Dim<TBufDst>::value == dim::Dim<TExtents>::value,
                                 "The destination buffer and the extents are required to have the same dimensionality!");
                             static_assert(
-                                std::is_same<mem::view::ElemT<TBufDst>, typename std::remove_const<mem::view::ElemT<TBufSrc>>::type>::value,
+                                std::is_same<mem::view::Elem<TBufDst>, typename std::remove_const<mem::view::Elem<TBufSrc>>::type>::value,
                                 "The source and the destination buffers are required to have the same element type!");
 
                             auto const uiExtentWidth(extent::getWidth(extents));
@@ -152,14 +152,14 @@ namespace alpaka
                                 cudaMemcpyAsync(
                                     reinterpret_cast<void *>(mem::view::getPtrNative(bufDst)),
                                     reinterpret_cast<void const *>(mem::view::getPtrNative(bufSrc)),
-                                    uiExtentWidth * sizeof(mem::view::ElemT<TBufDst>),
+                                    uiExtentWidth * sizeof(mem::view::Elem<TBufDst>),
                                     p_cudaMemcpyKind,
                                     stream.m_spStreamCudaImpl->m_CudaStream));
 
         #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                             std::cout << BOOST_CURRENT_FUNCTION
                                 << " ew: " << uiExtentWidth
-                                << " ewb: " << uiExtentWidth * sizeof(mem::view::ElemT<TBufDst>)
+                                << " ewb: " << uiExtentWidth * sizeof(mem::view::Elem<TBufDst>)
                                 << " dw: " << uiDstWidth
                                 << " dptr: " << reinterpret_cast<void *>(mem::view::getPtrNative(bufDst))
                                 << " sw: " << uiSrcWidth
@@ -199,7 +199,7 @@ namespace alpaka
                                 dim::Dim<TBufDst>::value == dim::Dim<TExtents>::value,
                                 "The destination buffer and the extents are required to have the same dimensionality!");
                             static_assert(
-                                std::is_same<mem::view::ElemT<TBufDst>, typename std::remove_const<mem::view::ElemT<TBufSrc>>::type>::value,
+                                std::is_same<mem::view::Elem<TBufDst>, typename std::remove_const<mem::view::Elem<TBufSrc>>::type>::value,
                                 "The source and the destination buffers are required to have the same element type!");
 
                             auto const uiExtentWidth(extent::getWidth(extents));
@@ -225,7 +225,7 @@ namespace alpaka
                                     uiDstPitchBytes,
                                     reinterpret_cast<void const *>(mem::view::getPtrNative(bufSrc)),
                                     uiSrcPitchBytes,
-                                    uiExtentWidth * sizeof(mem::view::ElemT<TBufDst>),
+                                    uiExtentWidth * sizeof(mem::view::Elem<TBufDst>),
                                     uiExtentHeight,
                                     p_cudaMemcpyKind));
 
@@ -233,7 +233,7 @@ namespace alpaka
                             std::cout << BOOST_CURRENT_FUNCTION
                                 << " ew: " << uiExtentWidth
                                 << " eh: " << uiExtentHeight
-                                << " ewb: " << uiExtentWidth * sizeof(mem::view::ElemT<TBufDst>)
+                                << " ewb: " << uiExtentWidth * sizeof(mem::view::Elem<TBufDst>)
                                 << " dw: " << uiDstWidth
                                 << " dh: " << uiDstHeight
                                 << " dptr: " << reinterpret_cast<void *>(mem::view::getPtrNative(bufDst))
@@ -270,7 +270,7 @@ namespace alpaka
                                 dim::Dim<TBufDst>::value == dim::Dim<TExtents>::value,
                                 "The destination buffer and the extents are required to have the same dimensionality!");
                             static_assert(
-                                std::is_same<mem::view::ElemT<TBufDst>, typename std::remove_const<mem::view::ElemT<TBufSrc>>::type>::value,
+                                std::is_same<mem::view::Elem<TBufDst>, typename std::remove_const<mem::view::Elem<TBufSrc>>::type>::value,
                                 "The source and the destination buffers are required to have the same element type!");
 
                             auto const uiExtentWidth(extent::getWidth(extents));
@@ -296,7 +296,7 @@ namespace alpaka
                                     uiDstPitchBytes,
                                     reinterpret_cast<void const *>(mem::view::getPtrNative(bufSrc)),
                                     uiSrcPitchBytes,
-                                    uiExtentWidth * sizeof(mem::view::ElemT<TBufDst>),
+                                    uiExtentWidth * sizeof(mem::view::Elem<TBufDst>),
                                     uiExtentHeight,
                                     p_cudaMemcpyKind,
                                     stream.m_spStreamCudaImpl->m_CudaStream));
@@ -305,7 +305,7 @@ namespace alpaka
                             std::cout << BOOST_CURRENT_FUNCTION
                                 << " ew: " << uiExtentWidth
                                 << " eh: " << uiExtentHeight
-                                << " ewb: " << uiExtentWidth * sizeof(mem::view::ElemT<TBufDst>)
+                                << " ewb: " << uiExtentWidth * sizeof(mem::view::Elem<TBufDst>)
                                 << " dw: " << uiDstWidth
                                 << " dh: " << uiDstHeight
                                 << " dptr: " << reinterpret_cast<void *>(mem::view::getPtrNative(bufDst))
@@ -415,7 +415,7 @@ namespace alpaka
                                 dim::Dim<TBufDst>::value == dim::Dim<TExtents>::value,
                                 "The destination buffer and the extents are required to have the same dimensionality!");
                             static_assert(
-                                std::is_same<mem::view::ElemT<TBufDst>, typename std::remove_const<mem::view::ElemT<TBufSrc>>::type>::value,
+                                std::is_same<mem::view::Elem<TBufDst>, typename std::remove_const<mem::view::Elem<TBufSrc>>::type>::value,
                                 "The source and the destination buffers are required to have the same element type!");
 
                             auto const uiExtentWidth(extent::getWidth(extents));
@@ -456,7 +456,7 @@ namespace alpaka
                                     uiDstHeight);
                             l_cudaMemcpy3DParms.extent =
                                 make_cudaExtent(
-                                    uiExtentWidth * sizeof(mem::view::ElemT<TBufDst>),
+                                    uiExtentWidth * sizeof(mem::view::Elem<TBufDst>),
                                     uiExtentHeight,
                                     uiExtentDepth);
                             l_cudaMemcpy3DParms.kind = p_cudaMemcpyKind;
@@ -466,7 +466,7 @@ namespace alpaka
                                 << " ew: " << uiExtentWidth
                                 << " eh: " << uiExtentHeight
                                 << " ed: " << uiExtentDepth
-                                << " ewb: " << uiExtentWidth * sizeof(mem::view::ElemT<TBufDst>)
+                                << " ewb: " << uiExtentWidth * sizeof(mem::view::Elem<TBufDst>)
                                 << " dw: " << uiDstWidth
                                 << " dh: " << uiDstHeight
                                 << " dd: " << uiDstDepth
@@ -518,7 +518,7 @@ namespace alpaka
                                 dim::Dim<TBufDst>::value == dim::Dim<TExtents>::value,
                                 "The destination buffer and the extents are required to have the same dimensionality!");
                             static_assert(
-                                std::is_same<mem::view::ElemT<TBufDst>, typename std::remove_const<mem::view::ElemT<TBufSrc>>::type>::value,
+                                std::is_same<mem::view::Elem<TBufDst>, typename std::remove_const<mem::view::Elem<TBufSrc>>::type>::value,
                                 "The source and the destination buffers are required to have the same element type!");
 
                             auto const uiExtentWidth(extent::getWidth(extents));
@@ -537,12 +537,12 @@ namespace alpaka
                                     uiDstDev,
                                     reinterpret_cast<void const *>(mem::view::getPtrNative(bufSrc)),
                                     uiSrcDev,
-                                    uiExtentWidth * sizeof(mem::view::ElemT<TBufDst>)));
+                                    uiExtentWidth * sizeof(mem::view::Elem<TBufDst>)));
 
         #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                             std::cout << BOOST_CURRENT_FUNCTION
                                 << " ew: " << uiExtentWidth
-                                << " ewb: " << uiExtentWidth * sizeof(mem::view::ElemT<TBufDst>)
+                                << " ewb: " << uiExtentWidth * sizeof(mem::view::Elem<TBufDst>)
                                 << " dw: " << uiDstWidth
                                 << " dptr: " << reinterpret_cast<void *>(mem::view::getPtrNative(bufDst))
                                 << " ddev: " << uiDstDev
@@ -575,7 +575,7 @@ namespace alpaka
                                 dim::Dim<TBufDst>::value == dim::Dim<TExtents>::value,
                                 "The destination buffer and the extents are required to have the same dimensionality!");
                             static_assert(
-                                std::is_same<mem::view::ElemT<TBufDst>, typename std::remove_const<mem::view::ElemT<TBufSrc>>::type>::value,
+                                std::is_same<mem::view::Elem<TBufDst>, typename std::remove_const<mem::view::Elem<TBufSrc>>::type>::value,
                                 "The source and the destination buffers are required to have the same element type!");
 
                             auto const uiExtentWidth(extent::getWidth(extents));
@@ -594,13 +594,13 @@ namespace alpaka
                                     uiDstDev,
                                     reinterpret_cast<void const *>(mem::view::getPtrNative(bufSrc)),
                                     uiSrcDev,
-                                    uiExtentWidth * sizeof(mem::view::ElemT<TBufDst>),
+                                    uiExtentWidth * sizeof(mem::view::Elem<TBufDst>),
                                     stream.m_spStreamCudaImpl->m_CudaStream));
 
         #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                             std::cout << BOOST_CURRENT_FUNCTION
                                 << " ew: " << uiExtentWidth
-                                << " ewb: " << uiExtentWidth * sizeof(mem::view::ElemT<TBufDst>)
+                                << " ewb: " << uiExtentWidth * sizeof(mem::view::Elem<TBufDst>)
                                 << " dw: " << uiDstWidth
                                 << " dptr: " << reinterpret_cast<void *>(mem::view::getPtrNative(bufDst))
                                 << " ddev: " << uiDstDev
@@ -696,7 +696,7 @@ namespace alpaka
                                 dim::Dim<TBufDst>::value == dim::Dim<TExtents>::value,
                                 "The destination buffer and the extents are required to have the same dimensionality!");
                             static_assert(
-                                std::is_same<mem::view::ElemT<TBufDst>, typename std::remove_const<mem::view::ElemT<TBufSrc>>::type>::value,
+                                std::is_same<mem::view::Elem<TBufDst>, typename std::remove_const<mem::view::Elem<TBufSrc>>::type>::value,
                                 "The source and the destination buffers are required to have the same element type!");
 
                             auto const uiExtentWidth(extent::getWidth(extents));
@@ -733,7 +733,7 @@ namespace alpaka
                                     uiDstHeight);
                             l_cudaMemcpy3DPeerParms.extent =
                                 make_cudaExtent(
-                                    uiExtentWidth * sizeof(mem::view::ElemT<TBufDst>),
+                                    uiExtentWidth * sizeof(mem::view::Elem<TBufDst>),
                                     uiExtentHeight,
                                     uiExtentDepth);
                             //l_cudaMemcpy3DPeerParms.srcArray;     // Either srcArray or srcPtr.
@@ -751,7 +751,7 @@ namespace alpaka
                                 << " ew: " << uiExtentWidth
                                 << " eh: " << uiExtentHeight
                                 << " ed: " << uiExtentDepth
-                                << " ewb: " << uiExtentWidth * sizeof(mem::view::ElemT<TBufDst>)
+                                << " ewb: " << uiExtentWidth * sizeof(mem::view::Elem<TBufDst>)
                                 << " dw: " << uiDstWidth
                                 << " dh: " << uiDstHeight
                                 << " dd: " << uiDstDepth

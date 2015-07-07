@@ -45,7 +45,8 @@ namespace alpaka
         //! Computes the principal value of the arc cosine.
         //!
         //! \tparam TArg The arg type.
-        //! \param value The value.
+        //! \param acos The object specializing Acos.
+        //! \param arg The arg.
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<

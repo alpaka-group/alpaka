@@ -81,10 +81,10 @@ namespace alpaka
                             dim::Dim<TBufDst>::value == dim::Dim<TExtents>::value,
                             "The buffers and the extents are required to have the same dimensionality!");
                         static_assert(
-                            std::is_same<mem::view::ElemT<TBufDst>, typename std::remove_const<mem::view::ElemT<TBufSrc>>::type>::value,
+                            std::is_same<mem::view::Elem<TBufDst>, typename std::remove_const<mem::view::Elem<TBufSrc>>::type>::value,
                             "The source and the destination buffers are required to have the same element type!");
 
-                        using Elem = mem::view::ElemT<TBufDst>;
+                        using Elem = mem::view::Elem<TBufDst>;
 
                         auto const uiExtentWidth(extent::getWidth(extents));
                         auto const uiExtentHeight(extent::getHeight(extents));
