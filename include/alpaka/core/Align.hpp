@@ -113,14 +113,14 @@ namespace alpaka
             ((uiSizeBytes)<=4?4:\
             ((uiSizeBytes)<=8?8:\*/
 #if BOOST_COMP_GNUC || BOOST_COMP_INTEL
-    #define ALPAKA_OPTIMAL_ALIGNMENT_SIZE(uiSizeBytes)\
-            ((uiSizeBytes)<=16?16:\
-            ((uiSizeBytes)<=32?32:\
-            ((uiSizeBytes)<=64?64:128\
-            )))))))
-    #define ALPAKA_OPTIMAL_ALIGNMENT(TYPE)\
-            ALPAKA_OPTIMAL_ALIGNMENT_SIZE(sizeof(typename std::remove_cv<TYPE>::type))
+    #define ALPAKA_OPTIMAL_ALIGNMENT_SIZE(...)\
+            ((__VA_ARGS__)<=16?16:\
+            ((__VA_ARGS__)<=32?32:\
+            ((__VA_ARGS__)<=64?64:128\
+            )))
+    #define ALPAKA_OPTIMAL_ALIGNMENT(...)\
+            ALPAKA_OPTIMAL_ALIGNMENT_SIZE(sizeof(typename std::remove_cv<__VA_ARGS__>::type))
 #else
-    #define ALPAKA_OPTIMAL_ALIGNMENT(TYPE)\
-            alpaka::align::OptimalAlignment<sizeof(typename std::remove_cv<TYPE>::type)>::value
+    #define ALPAKA_OPTIMAL_ALIGNMENT(...)\
+            alpaka::align::OptimalAlignment<sizeof(typename std::remove_cv<__VA_ARGS__>::type)>::value
 #endif
