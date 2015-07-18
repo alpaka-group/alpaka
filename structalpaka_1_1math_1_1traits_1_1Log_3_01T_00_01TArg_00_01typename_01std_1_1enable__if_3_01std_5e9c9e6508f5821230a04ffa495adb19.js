@@ -1,4 +1,0 @@
-var structalpaka_1_1math_1_1traits_1_1Log_3_01T_00_01TArg_00_01typename_01std_1_1enable__if_3_01std_5e9c9e6508f5821230a04ffa495adb19 =
-[
-    [ "log", "structalpaka_1_1math_1_1traits_1_1Log_3_01T_00_01TArg_00_01typename_01std_1_1enable__if_3_01std_5e9c9e6508f5821230a04ffa495adb19.html#ae2e32d958f5cc3d715298223ef9fa1dd", null ]
-];

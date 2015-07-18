@@ -1,8 +1,8 @@
 var Fold_8hpp =
 [
-    [ "TypeOfFold", "structalpaka_1_1detail_1_1TypeOfFold.html", null ],
-    [ "TypeOfFold< TFnObj, T >", "structalpaka_1_1detail_1_1TypeOfFold_3_01TFnObj_00_01T_01_4.html", "structalpaka_1_1detail_1_1TypeOfFold_3_01TFnObj_00_01T_01_4" ],
-    [ "TypeOfFold< TFnObj, T, P...>", "structalpaka_1_1detail_1_1TypeOfFold_3_01TFnObj_00_01T_00_01P_8_8_8_4.html", "structalpaka_1_1detail_1_1TypeOfFold_3_01TFnObj_00_01T_00_01P_8_8_8_4" ],
-    [ "foldr", "Fold_8hpp.html#a88c494ee74e6f1910715c3a80b587d2e", null ],
-    [ "foldr", "Fold_8hpp.html#a11eb911217b99625ab3e05b356af07f3", null ]
+    [ "TypeOfFold", "structalpaka_1_1core_1_1detail_1_1TypeOfFold.html", null ],
+    [ "TypeOfFold<                                                                                                                  TFnObj,                                                                                                           T >", "structalpaka_1_1core_1_1detail_1_1TypeOfFold_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_00d7ea14dc2a27e295e0133f3874a1e3c.html", "structalpaka_1_1core_1_1detail_1_1TypeOfFold_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_00d7ea14dc2a27e295e0133f3874a1e3c" ],
+    [ "TypeOfFold<                                                                                                                  TFnObj,                                                                                                           T,                                                                                                           P... >", "structalpaka_1_1core_1_1detail_1_1TypeOfFold_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_06648e935494d0157a47238d22a581eb7.html", "structalpaka_1_1core_1_1detail_1_1TypeOfFold_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_06648e935494d0157a47238d22a581eb7" ],
+    [ "foldr", "Fold_8hpp.html#aedbdcc6788c643688da782b402687712", null ],
+    [ "foldr", "Fold_8hpp.html#ab2debbeafe5c0a2cc88533b0d4055aa1", null ]
 ];

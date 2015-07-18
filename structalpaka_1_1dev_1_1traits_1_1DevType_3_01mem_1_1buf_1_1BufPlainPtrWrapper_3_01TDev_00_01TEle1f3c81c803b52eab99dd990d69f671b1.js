@@ -1,4 +1,0 @@
-var structalpaka_1_1dev_1_1traits_1_1DevType_3_01mem_1_1buf_1_1BufPlainPtrWrapper_3_01TDev_00_01TEle1f3c81c803b52eab99dd990d69f671b1 =
-[
-    [ "type", "structalpaka_1_1dev_1_1traits_1_1DevType_3_01mem_1_1buf_1_1BufPlainPtrWrapper_3_01TDev_00_01TEle1f3c81c803b52eab99dd990d69f671b1.html#aee34acfd2af33f8cf6bc582cea88d4e9", null ]
-];

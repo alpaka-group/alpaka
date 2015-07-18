@@ -1,4 +1,0 @@
-var structalpaka_1_1math_1_1traits_1_1Lround_3_01RoundCudaBuiltIn_00_01TArg_00_01typename_01std_1_1e62088c08372081be85f64912dd84a894 =
-[
-    [ "lround", "structalpaka_1_1math_1_1traits_1_1Lround_3_01RoundCudaBuiltIn_00_01TArg_00_01typename_01std_1_1e62088c08372081be85f64912dd84a894.html#ad269c7cfceb082a87e27d3c7173932cd", null ]
-];

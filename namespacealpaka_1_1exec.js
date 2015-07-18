@@ -12,5 +12,5 @@ var namespacealpaka_1_1exec =
     [ "ExecCpuOmp4", "classalpaka_1_1exec_1_1ExecCpuOmp4.html", "classalpaka_1_1exec_1_1ExecCpuOmp4" ],
     [ "ExecCpuSerial", "classalpaka_1_1exec_1_1ExecCpuSerial.html", "classalpaka_1_1exec_1_1ExecCpuSerial" ],
     [ "ExecCpuThreads", "classalpaka_1_1exec_1_1ExecCpuThreads.html", "classalpaka_1_1exec_1_1ExecCpuThreads" ],
-    [ "ExecGpuCuda", "classalpaka_1_1exec_1_1ExecGpuCuda.html", "classalpaka_1_1exec_1_1ExecGpuCuda" ]
+    [ "ExecGpuCudaRt", "classalpaka_1_1exec_1_1ExecGpuCudaRt.html", "classalpaka_1_1exec_1_1ExecGpuCudaRt" ]
 ];

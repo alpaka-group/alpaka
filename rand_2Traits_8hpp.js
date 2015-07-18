@@ -8,8 +8,8 @@ var rand_2Traits_8hpp =
     [ "DistUniRealT", "rand_2Traits_8hpp.html#aa45c7df6f1782cde2e4b68f8281115fd", null ],
     [ "DistUniUintT", "rand_2Traits_8hpp.html#a6d2720449553172ea084cdcb26d7835e", null ],
     [ "GenDefaultT", "rand_2Traits_8hpp.html#af4c1aadbe274458a28e9faac03f0c908", null ],
-    [ "createDefault", "rand_2Traits_8hpp.html#a15305f1af5702514d3274db9b6eac00f", null ],
-    [ "createNormalReal", "rand_2Traits_8hpp.html#a9c5e728376e1aeb47b7ca1d602545049", null ],
-    [ "createUniformReal", "rand_2Traits_8hpp.html#a20a93262b4a5531f890c42dad43d91f5", null ],
-    [ "createUniformUint", "rand_2Traits_8hpp.html#ad20ea791bc6ff4bf1ff46f3c17dc1ccf", null ]
+    [ "createDefault", "rand_2Traits_8hpp.html#a6aab6e8348e4caf62a133267f3f887df", null ],
+    [ "createNormalReal", "rand_2Traits_8hpp.html#ab4043212afddb6eef5cddfb3a06b932a", null ],
+    [ "createUniformReal", "rand_2Traits_8hpp.html#a6a02a5fd56e4831c45eddae73eaeb2c1", null ],
+    [ "createUniformUint", "rand_2Traits_8hpp.html#a9d60f9c555bd311de681dc3610379562", null ]
 ];

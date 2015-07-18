@@ -1,4 +1,0 @@
-var structalpaka_1_1wait_1_1traits_1_1WaiterWaitFor_3_01stream_1_1StreamCpuSync_00_01event_1_1EventCpuSync_01_4 =
-[
-    [ "waiterWaitFor", "structalpaka_1_1wait_1_1traits_1_1WaiterWaitFor_3_01stream_1_1StreamCpuSync_00_01event_1_1EventCpuSync_01_4.html#a092e77b134866c25c9c55f625aa31059", null ]
-];

@@ -1,0 +1,5 @@
+var structalpaka_1_1mem_1_1view_1_1traits_1_1GetPtrNative_3_01_01_01_01_01_01_01_01_01_01_01_01_01_0134e34e9b7966668dc34b59567a0527f =
+[
+    [ "getPtrNative", "structalpaka_1_1mem_1_1view_1_1traits_1_1GetPtrNative_3_01_01_01_01_01_01_01_01_01_01_01_01_01_0134e34e9b7966668dc34b59567a0527f.html#a5084eb8841216fafceffa0125c4cd910", null ],
+    [ "getPtrNative", "structalpaka_1_1mem_1_1view_1_1traits_1_1GetPtrNative_3_01_01_01_01_01_01_01_01_01_01_01_01_01_0134e34e9b7966668dc34b59567a0527f.html#a296434bc6614cc7136b97d720675162a", null ]
+];

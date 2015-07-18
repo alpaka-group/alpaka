@@ -1,6 +1,6 @@
 var Debug_8hpp =
 [
-    [ "ScopeLogStdOut", "classalpaka_1_1detail_1_1ScopeLogStdOut.html", "classalpaka_1_1detail_1_1ScopeLogStdOut" ],
+    [ "ScopeLogStdOut", "classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut.html", "classalpaka_1_1core_1_1detail_1_1ScopeLogStdOut" ],
     [ "ALPAKA_DEBUG", "Debug_8hpp.html#a7f84384a17e301a636770e17c2951383", null ],
     [ "ALPAKA_DEBUG_BREAK", "Debug_8hpp.html#ac3248b76e967a40d459bf83b17de9b03", null ],
     [ "ALPAKA_DEBUG_DISABLED", "Debug_8hpp.html#a47f20425304365ddf7b5bd4426987a8e", null ],

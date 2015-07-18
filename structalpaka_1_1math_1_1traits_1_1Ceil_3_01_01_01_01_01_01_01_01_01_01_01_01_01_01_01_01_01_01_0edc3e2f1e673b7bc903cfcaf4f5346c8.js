@@ -1,0 +1,4 @@
+var structalpaka_1_1math_1_1traits_1_1Ceil_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_0edc3e2f1e673b7bc903cfcaf4f5346c8 =
+[
+    [ "ceil", "structalpaka_1_1math_1_1traits_1_1Ceil_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_0edc3e2f1e673b7bc903cfcaf4f5346c8.html#a8e746b0e72cef04f7841fd5c7784117d", null ]
+];

@@ -1,0 +1,4 @@
+var structalpaka_1_1acc_1_1traits_1_1GetAccDevProps_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_08645fb59cc47f14e91e3c4da421fc60c =
+[
+    [ "getAccDevProps", "structalpaka_1_1acc_1_1traits_1_1GetAccDevProps_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_08645fb59cc47f14e91e3c4da421fc60c.html#a7c7dd10726cb13f7b466e50577efccb3", null ]
+];

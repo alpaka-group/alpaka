@@ -8,7 +8,7 @@ var classalpaka_1_1workdiv_1_1WorkDivMembers =
     [ "~WorkDivMembers", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#a65d1486b39c2fac9353a8b37e5950796", null ],
     [ "operator=", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#a33abe5ddc34e6d7a2faadbc8d1263b69", null ],
     [ "operator=", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#ab9c3b3727a4d16981dee81d648b0e377", null ],
-    [ "operator=", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#a1efb0d0e7b5af388f5fea911276dd039", null ],
+    [ "operator=", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#ac0bbba1e3d662237b04a266db454329a", null ],
     [ "m_vuiBlockThreadExtents", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#a11149d4db13272541b5fc8c6e2ccb606", null ],
     [ "m_vuiGridBlockExtents", "classalpaka_1_1workdiv_1_1WorkDivMembers.html#a6942dbc4fe0af1e729ce8ed574399fcf", null ]
 ];

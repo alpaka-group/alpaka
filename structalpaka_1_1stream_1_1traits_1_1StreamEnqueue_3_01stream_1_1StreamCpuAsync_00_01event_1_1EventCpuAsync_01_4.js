@@ -1,4 +1,0 @@
-var structalpaka_1_1stream_1_1traits_1_1StreamEnqueue_3_01stream_1_1StreamCpuAsync_00_01event_1_1EventCpuAsync_01_4 =
-[
-    [ "streamEnqueue", "structalpaka_1_1stream_1_1traits_1_1StreamEnqueue_3_01stream_1_1StreamCpuAsync_00_01event_1_1EventCpuAsync_01_4.html#a3c83468f479d8054e8b6fed755c957a5", null ]
-];

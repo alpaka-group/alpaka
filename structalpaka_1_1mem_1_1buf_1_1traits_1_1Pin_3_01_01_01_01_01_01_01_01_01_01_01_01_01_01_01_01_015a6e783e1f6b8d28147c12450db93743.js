@@ -1,0 +1,4 @@
+var structalpaka_1_1mem_1_1buf_1_1traits_1_1Pin_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_015a6e783e1f6b8d28147c12450db93743 =
+[
+    [ "pin", "structalpaka_1_1mem_1_1buf_1_1traits_1_1Pin_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_015a6e783e1f6b8d28147c12450db93743.html#a5f08b73e679a49edbaee3a4f99c36f44", null ]
+];

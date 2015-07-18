@@ -1,0 +1,5 @@
+var structalpaka_1_1mem_1_1view_1_1cuda_1_1detail_1_1MemCopyCudaPeer_3_01_01_01_01_01_01_01_01_01_011e3c582a2e984da0ea37271a54bde880 =
+[
+    [ "memCopyCudaPeer", "structalpaka_1_1mem_1_1view_1_1cuda_1_1detail_1_1MemCopyCudaPeer_3_01_01_01_01_01_01_01_01_01_011e3c582a2e984da0ea37271a54bde880.html#a891934840fda5b2b816d83d9b8b36aa9", null ],
+    [ "memCopyCudaPeer", "structalpaka_1_1mem_1_1view_1_1cuda_1_1detail_1_1MemCopyCudaPeer_3_01_01_01_01_01_01_01_01_01_011e3c582a2e984da0ea37271a54bde880.html#a2a03aec0420dfe1adb2debeb5820dea7", null ]
+];

@@ -1,0 +1,4 @@
+var structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_0b26f35c895c4e9b34abc0e449a70202f =
+[
+    [ "atomicOp", "structalpaka_1_1atomic_1_1traits_1_1AtomicOp_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_0b26f35c895c4e9b34abc0e449a70202f.html#a5fe62b786529aa07d647c2aab1cde0ae", null ]
+];

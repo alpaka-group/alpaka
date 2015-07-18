@@ -1,0 +1,4 @@
+var structalpaka_1_1dev_1_1traits_1_1GetDev_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_9b9ed7dd0e7ac3e07e2e75c3d0a0575c =
+[
+    [ "getDev", "structalpaka_1_1dev_1_1traits_1_1GetDev_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_9b9ed7dd0e7ac3e07e2e75c3d0a0575c.html#a326c43ed3b98706a028852ef74fc2c7e", null ]
+];

@@ -1,0 +1,4 @@
+var structalpaka_1_1mem_1_1view_1_1traits_1_1GetPitchBytes_3_01_01_01_01_01_01_01_01_01_01_01_01_01_e8778bf0f82e7d64b3968b4688fc8f9b =
+[
+    [ "getPitchBytes", "structalpaka_1_1mem_1_1view_1_1traits_1_1GetPitchBytes_3_01_01_01_01_01_01_01_01_01_01_01_01_01_e8778bf0f82e7d64b3968b4688fc8f9b.html#aaf27e11a42b4ee4578acd0687091b998", null ]
+];

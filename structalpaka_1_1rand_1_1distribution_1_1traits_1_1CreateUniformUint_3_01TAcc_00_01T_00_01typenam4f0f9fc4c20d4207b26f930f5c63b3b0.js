@@ -1,4 +1,0 @@
-var structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateUniformUint_3_01TAcc_00_01T_00_01typenam4f0f9fc4c20d4207b26f930f5c63b3b0 =
-[
-    [ "createUniformUint", "structalpaka_1_1rand_1_1distribution_1_1traits_1_1CreateUniformUint_3_01TAcc_00_01T_00_01typenam4f0f9fc4c20d4207b26f930f5c63b3b0.html#a0e73d9dd2be4019989e24e2e874ae9d0", null ]
-];

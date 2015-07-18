@@ -1,4 +1,0 @@
-var structalpaka_1_1block_1_1shared_1_1traits_1_1AllocArr_3_01T_00_01TuiNumElements_00_01BlockSharedAllocMasterSync_01_4 =
-[
-    [ "allocArr", "structalpaka_1_1block_1_1shared_1_1traits_1_1AllocArr_3_01T_00_01TuiNumElements_00_01BlockSharedAllocMasterSync_01_4.html#a13a60e24d0c7e716312bc824889d3f31", null ]
-];

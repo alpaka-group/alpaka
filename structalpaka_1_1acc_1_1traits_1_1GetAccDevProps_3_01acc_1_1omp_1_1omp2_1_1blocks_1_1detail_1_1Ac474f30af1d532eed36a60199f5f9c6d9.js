@@ -1,4 +1,0 @@
-var structalpaka_1_1acc_1_1traits_1_1GetAccDevProps_3_01acc_1_1omp_1_1omp2_1_1blocks_1_1detail_1_1Ac474f30af1d532eed36a60199f5f9c6d9 =
-[
-    [ "getAccDevProps", "structalpaka_1_1acc_1_1traits_1_1GetAccDevProps_3_01acc_1_1omp_1_1omp2_1_1blocks_1_1detail_1_1Ac474f30af1d532eed36a60199f5f9c6d9.html#ad2d5ecc98b9034c9af414f4304adf6ff", null ]
-];

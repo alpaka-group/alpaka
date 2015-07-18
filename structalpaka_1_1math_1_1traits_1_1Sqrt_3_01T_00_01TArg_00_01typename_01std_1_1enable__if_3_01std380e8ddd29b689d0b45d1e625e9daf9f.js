@@ -1,4 +1,0 @@
-var structalpaka_1_1math_1_1traits_1_1Sqrt_3_01T_00_01TArg_00_01typename_01std_1_1enable__if_3_01std380e8ddd29b689d0b45d1e625e9daf9f =
-[
-    [ "sqrt", "structalpaka_1_1math_1_1traits_1_1Sqrt_3_01T_00_01TArg_00_01typename_01std_1_1enable__if_3_01std380e8ddd29b689d0b45d1e625e9daf9f.html#a3a50fe5f17888ba0ff9510dee6690f25", null ]
-];

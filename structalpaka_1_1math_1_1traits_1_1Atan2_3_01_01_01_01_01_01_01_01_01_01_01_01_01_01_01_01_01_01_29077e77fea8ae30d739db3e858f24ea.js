@@ -1,0 +1,4 @@
+var structalpaka_1_1math_1_1traits_1_1Atan2_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_29077e77fea8ae30d739db3e858f24ea =
+[
+    [ "atan2", "structalpaka_1_1math_1_1traits_1_1Atan2_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_29077e77fea8ae30d739db3e858f24ea.html#a09dda854548ac549135cca2c0ad55a24", null ]
+];

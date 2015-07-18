@@ -1,0 +1,4 @@
+var structalpaka_1_1acc_1_1traits_1_1GetAccName_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01016422a0f9f059d2abad94c032795691 =
+[
+    [ "getAccName", "structalpaka_1_1acc_1_1traits_1_1GetAccName_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01016422a0f9f059d2abad94c032795691.html#aaf7ef417c2e9bfd011f946f46e5cbdf1", null ]
+];

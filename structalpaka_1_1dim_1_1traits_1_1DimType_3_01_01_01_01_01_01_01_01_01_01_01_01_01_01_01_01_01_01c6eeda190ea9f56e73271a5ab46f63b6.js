@@ -1,0 +1,4 @@
+var structalpaka_1_1dim_1_1traits_1_1DimType_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01c6eeda190ea9f56e73271a5ab46f63b6 =
+[
+    [ "type", "structalpaka_1_1dim_1_1traits_1_1DimType_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01c6eeda190ea9f56e73271a5ab46f63b6.html#a48731e910ff63566dff45b13932ec779", null ]
+];

@@ -1,0 +1,5 @@
+var structalpaka_1_1mem_1_1view_1_1cuda_1_1detail_1_1MemCopyCudaPeer_3_01_01_01_01_01_01_01_01_01_0134469237286664ea63a198ac39a48d54 =
+[
+    [ "memCopyCudaPeer", "structalpaka_1_1mem_1_1view_1_1cuda_1_1detail_1_1MemCopyCudaPeer_3_01_01_01_01_01_01_01_01_01_0134469237286664ea63a198ac39a48d54.html#a24bd2ca4c2e2975025402abbd0c190c5", null ],
+    [ "memCopyCudaPeer", "structalpaka_1_1mem_1_1view_1_1cuda_1_1detail_1_1MemCopyCudaPeer_3_01_01_01_01_01_01_01_01_01_0134469237286664ea63a198ac39a48d54.html#af27f1d565dfc6485fc5529334d1fed10", null ]
+];

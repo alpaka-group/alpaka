@@ -1,5 +1,0 @@
-var structalpaka_1_1mem_1_1view_1_1traits_1_1GetPtrNative_3_01std_1_1vector_3_01TElem_00_01TAllocator_01_4_01_4 =
-[
-    [ "getPtrNative", "structalpaka_1_1mem_1_1view_1_1traits_1_1GetPtrNative_3_01std_1_1vector_3_01TElem_00_01TAllocator_01_4_01_4.html#a8d80c735c599083d47927407356812e4", null ],
-    [ "getPtrNative", "structalpaka_1_1mem_1_1view_1_1traits_1_1GetPtrNative_3_01std_1_1vector_3_01TElem_00_01TAllocator_01_4_01_4.html#a5322b8d75e2f84a5d3a2145c90122eb8", null ]
-];

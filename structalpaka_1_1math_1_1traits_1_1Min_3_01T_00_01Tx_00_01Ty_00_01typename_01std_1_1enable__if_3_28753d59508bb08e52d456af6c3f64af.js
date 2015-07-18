@@ -1,4 +1,0 @@
-var structalpaka_1_1math_1_1traits_1_1Min_3_01T_00_01Tx_00_01Ty_00_01typename_01std_1_1enable__if_3_28753d59508bb08e52d456af6c3f64af =
-[
-    [ "min", "structalpaka_1_1math_1_1traits_1_1Min_3_01T_00_01Tx_00_01Ty_00_01typename_01std_1_1enable__if_3_28753d59508bb08e52d456af6c3f64af.html#a210ded280d193f09dbaa8fb88d0e0ac7", null ]
-];

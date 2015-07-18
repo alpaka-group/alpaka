@@ -1,0 +1,4 @@
+var structalpaka_1_1event_1_1traits_1_1EventTest_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_02be522abbe37eaff414697cb10ec37aa =
+[
+    [ "eventTest", "structalpaka_1_1event_1_1traits_1_1EventTest_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_02be522abbe37eaff414697cb10ec37aa.html#aa10921b9d4fe0c602efd12913ad3f437", null ]
+];

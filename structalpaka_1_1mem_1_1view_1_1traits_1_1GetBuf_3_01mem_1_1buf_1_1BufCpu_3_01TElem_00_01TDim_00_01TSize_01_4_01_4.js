@@ -1,5 +1,0 @@
-var structalpaka_1_1mem_1_1view_1_1traits_1_1GetBuf_3_01mem_1_1buf_1_1BufCpu_3_01TElem_00_01TDim_00_01TSize_01_4_01_4 =
-[
-    [ "getBuf", "structalpaka_1_1mem_1_1view_1_1traits_1_1GetBuf_3_01mem_1_1buf_1_1BufCpu_3_01TElem_00_01TDim_00_01TSize_01_4_01_4.html#a19e4a56165a3014aff24c22f48e41f02", null ],
-    [ "getBuf", "structalpaka_1_1mem_1_1view_1_1traits_1_1GetBuf_3_01mem_1_1buf_1_1BufCpu_3_01TElem_00_01TDim_00_01TSize_01_4_01_4.html#a1d7e0f0e1e599f511c775a6a7312712c", null ]
-];

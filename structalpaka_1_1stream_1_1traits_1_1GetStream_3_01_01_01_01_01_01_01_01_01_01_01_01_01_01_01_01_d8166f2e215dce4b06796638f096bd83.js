@@ -1,0 +1,4 @@
+var structalpaka_1_1stream_1_1traits_1_1GetStream_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_d8166f2e215dce4b06796638f096bd83 =
+[
+    [ "getStream", "structalpaka_1_1stream_1_1traits_1_1GetStream_3_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_01_d8166f2e215dce4b06796638f096bd83.html#ab4664bae8351189622a29d20fd3fb2db", null ]
+];

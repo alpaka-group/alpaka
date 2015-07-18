@@ -1,4 +1,0 @@
-var structalpaka_1_1math_1_1traits_1_1Remainder_3_01RemainderCudaBuiltIn_00_01TArg_00_01typename_01s44616c0535ae551699aea67984b61bb5 =
-[
-    [ "remainder", "structalpaka_1_1math_1_1traits_1_1Remainder_3_01RemainderCudaBuiltIn_00_01TArg_00_01typename_01s44616c0535ae551699aea67984b61bb5.html#a6aede466c175b275933dc268d7ed1ae5", null ]
-];

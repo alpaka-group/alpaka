@@ -1,9 +1,9 @@
 var namespacealpaka =
 [
     [ "acc", "namespacealpaka_1_1acc.html", "namespacealpaka_1_1acc" ],
-    [ "align", "namespacealpaka_1_1align.html", "namespacealpaka_1_1align" ],
     [ "atomic", "namespacealpaka_1_1atomic.html", "namespacealpaka_1_1atomic" ],
     [ "block", "namespacealpaka_1_1block.html", "namespacealpaka_1_1block" ],
+    [ "core", "namespacealpaka_1_1core.html", "namespacealpaka_1_1core" ],
     [ "cuda", "namespacealpaka_1_1cuda.html", "namespacealpaka_1_1cuda" ],
     [ "detail", "namespacealpaka_1_1detail.html", "namespacealpaka_1_1detail" ],
     [ "dev", "namespacealpaka_1_1dev.html", "namespacealpaka_1_1dev" ],
@@ -21,7 +21,5 @@ var namespacealpaka =
     [ "stream", "namespacealpaka_1_1stream.html", "namespacealpaka_1_1stream" ],
     [ "wait", "namespacealpaka_1_1wait.html", "namespacealpaka_1_1wait" ],
     [ "workdiv", "namespacealpaka_1_1workdiv.html", "namespacealpaka_1_1workdiv" ],
-    [ "dependent_false_type", "structalpaka_1_1dependent__false__type.html", null ],
-    [ "RoundUpToPowerOfTwo", "structalpaka_1_1RoundUpToPowerOfTwo.html", null ],
     [ "Vec", "classalpaka_1_1Vec.html", "classalpaka_1_1Vec" ]
 ];

@@ -1,4 +1,0 @@
-var structalpaka_1_1math_1_1traits_1_1Min_3_01MinCudaBuiltIn_00_01Tx_00_01Ty_00_01typename_01std_1_1e2086710da7b108c5435df4903ff4fb2 =
-[
-    [ "max", "structalpaka_1_1math_1_1traits_1_1Min_3_01MinCudaBuiltIn_00_01Tx_00_01Ty_00_01typename_01std_1_1e2086710da7b108c5435df4903ff4fb2.html#ab70d9501c10ff4ee8462538927913287", null ]
-];
