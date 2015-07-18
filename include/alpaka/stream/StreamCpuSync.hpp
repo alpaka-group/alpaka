@@ -22,7 +22,7 @@
 #pragma once
 
 #include <alpaka/dev/Traits.hpp>                // GetDev
-#include <alpaka/dev/DevCpu.hpp>                // DevCpu
+#include <alpaka/dev/DevCpu.hpp>                // dev::DevCpu
 #include <alpaka/stream/Traits.hpp>             // stream::StreamEnqueue, ...
 #include <alpaka/wait/Traits.hpp>               // CurrentThreadWaitFor, WaiterWaitFor
 

@@ -23,7 +23,7 @@
 
 #include <alpaka/dim/Traits.hpp>            // dim::DimType
 #include <alpaka/dim/DimIntegralConst.hpp>  // dim::DimInt<N>
-#include <alpaka/size/Traits.hpp>           // size::SizeType
+#include <alpaka/size/Traits.hpp>           // size::traits::SizeType
 #include <alpaka/workdiv/Traits.hpp>        // workdiv::getWorkDiv
 
 #include <alpaka/core/Positioning.hpp>      // origin::Grid/Blocks, unit::Blocks, unit::Threads

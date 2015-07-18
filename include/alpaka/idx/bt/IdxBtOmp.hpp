@@ -24,7 +24,7 @@
 #include <alpaka/idx/Traits.hpp>            // idx::GetIdx
 
 #include <alpaka/core/OpenMp.hpp>
-#include <alpaka/core/MapIdx.hpp>           // mapIdx
+#include <alpaka/core/MapIdx.hpp>           // core::mapIdx
 
 #include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
 
@@ -119,7 +119,7 @@ namespace alpaka
                     // We assume that the thread id is positive.
                     assert(::omp_get_thread_num()>=0);
                     // \TODO: Would it be faster to precompute the index and cache it inside an array?
-                    return mapIdx<TDim::value>(
+                    return core::mapIdx<TDim::value>(
                         Vec1<TSize>(static_cast<TSize>(::omp_get_thread_num())),
                         workdiv::getWorkDiv<Block, Threads>(workDiv));
                 }

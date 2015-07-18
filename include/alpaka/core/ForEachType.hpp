@@ -39,107 +39,110 @@
 
 namespace alpaka
 {
-    namespace detail
+    namespace core
     {
-        //#############################################################################
-        //!
-        //#############################################################################
-        template<
-            bool TbDone = true>
-        struct ForEachTypeImpl
+        namespace detail
         {
-            //-----------------------------------------------------------------------------
+            //#############################################################################
             //!
-            //-----------------------------------------------------------------------------
-            ALPAKA_NO_HOST_ACC_WARNING
+            //#############################################################################
             template<
-                typename TElemIt,
-                typename TLastIt,
-                typename TFnObj,
-                typename... TArgs>
-            ALPAKA_FN_HOST_ACC static auto forEachTypeImpl(
-                TFnObj && f ,
-                TArgs && ... args)
-            -> void
+                bool TbDone = true>
+            struct ForEachTypeImpl
             {
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
+                template<
+                    typename TElemIt,
+                    typename TLastIt,
+                    typename TFnObj,
+                    typename... TArgs>
+                ALPAKA_FN_HOST_ACC static auto forEachTypeImpl(
+                    TFnObj && f ,
+                    TArgs && ... args)
+                -> void
+                {
 #if !defined(__CUDA_ARCH__)
-                boost::ignore_unused(f);
-                boost::ignore_unused(args...);
+                    boost::ignore_unused(f);
+                    boost::ignore_unused(args...);
 #endif
-            }
-        };
+                }
+            };
 
-        //#############################################################################
-        //!
-        //#############################################################################
-        template<>
-        struct ForEachTypeImpl<
-            false>
-        {
-            //-----------------------------------------------------------------------------
+            //#############################################################################
             //!
-            //-----------------------------------------------------------------------------
-            ALPAKA_NO_HOST_ACC_WARNING
-            template<
-                typename TElemIt,
-                typename TLastIt,
-                typename TFnObj,
-                typename... TArgs>
-            ALPAKA_FN_HOST_ACC static auto forEachTypeImpl(
-                TFnObj && f,
-                TArgs && ... args)
-            -> void
+            //#############################################################################
+            template<>
+            struct ForEachTypeImpl<
+                false>
             {
-                using Elem = typename boost::mpl::deref<TElemIt>::type;
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
+                template<
+                    typename TElemIt,
+                    typename TLastIt,
+                    typename TFnObj,
+                    typename... TArgs>
+                ALPAKA_FN_HOST_ACC static auto forEachTypeImpl(
+                    TFnObj && f,
+                    TArgs && ... args)
+                -> void
+                {
+                    using Elem = typename boost::mpl::deref<TElemIt>::type;
 
-                // Call the function object template call operator.
+                    // Call the function object template call operator.
 #if BOOST_COMP_MSVC
-                boost::mpl::aux::unwrap(f, 0).operator()<Elem>(
-                    std::forward<TArgs>(args)...);
-#else
-                boost::mpl::aux::unwrap(f, 0).template operator()<Elem>(
-                    std::forward<TArgs>(args)...);
-#endif
-                // Recurse to the next element.
-                using NextIt = typename boost::mpl::next<TElemIt>::type;
-                ForEachTypeImpl<
-                    std::is_same<NextIt, TLastIt>::value>
-                ::template forEachTypeImpl<
-                    NextIt,
-                    TLastIt>(
-                        std::forward<TFnObj>(f),
+                    boost::mpl::aux::unwrap(f, 0).operator()<Elem>(
                         std::forward<TArgs>(args)...);
-            }
-        };
-    }
+#else
+                    boost::mpl::aux::unwrap(f, 0).template operator()<Elem>(
+                        std::forward<TArgs>(args)...);
+#endif
+                    // Recurse to the next element.
+                    using NextIt = typename boost::mpl::next<TElemIt>::type;
+                    ForEachTypeImpl<
+                        std::is_same<NextIt, TLastIt>::value>
+                    ::template forEachTypeImpl<
+                        NextIt,
+                        TLastIt>(
+                            std::forward<TFnObj>(f),
+                            std::forward<TArgs>(args)...);
+                }
+            };
+        }
 
-    //-----------------------------------------------------------------------------
-    //! Equivalent to boost::mpl::for_each but does not require the types of the sequence to be default constructible.
-    //! This function does not create instances of the types instead it passes the types as template parameter.
-    //-----------------------------------------------------------------------------
-    ALPAKA_NO_HOST_ACC_WARNING
-    template<
-        typename TSequence,
-        typename TFnObj,
-        typename... TArgs>
-    ALPAKA_FN_HOST_ACC auto forEachType(
-        TFnObj && f,
-        TArgs && ... args)
-    -> void
-    {
-        static_assert(
-            boost::mpl::is_sequence<TSequence>::value,
-            "for_each_type requires the TSequence to satisfy boost::mpl::is_sequence!");
+        //-----------------------------------------------------------------------------
+        //! Equivalent to boost::mpl::for_each but does not require the types of the sequence to be default constructible.
+        //! This function does not create instances of the types instead it passes the types as template parameter.
+        //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
+        template<
+            typename TSequence,
+            typename TFnObj,
+            typename... TArgs>
+        ALPAKA_FN_HOST_ACC auto forEachType(
+            TFnObj && f,
+            TArgs && ... args)
+        -> void
+        {
+            static_assert(
+                boost::mpl::is_sequence<TSequence>::value,
+                "for_each_type requires the TSequence to satisfy boost::mpl::is_sequence!");
 
-        using FirstIt = typename boost::mpl::begin<TSequence>::type;
-        using LastIt = typename boost::mpl::end<TSequence>::type;
+            using FirstIt = typename boost::mpl::begin<TSequence>::type;
+            using LastIt = typename boost::mpl::end<TSequence>::type;
 
-        detail::ForEachTypeImpl<
-            std::is_same<FirstIt, LastIt>::value>
-        ::template forEachTypeImpl<
-            FirstIt,
-            LastIt>(
-                std::forward<TFnObj>(f),
-                std::forward<TArgs>(args)...);
+            detail::ForEachTypeImpl<
+                std::is_same<FirstIt, LastIt>::value>
+            ::template forEachTypeImpl<
+                FirstIt,
+                LastIt>(
+                    std::forward<TFnObj>(f),
+                    std::forward<TArgs>(args)...);
+        }
     }
 }

@@ -22,20 +22,20 @@
 #pragma once
 
 // Specialized traits.
-#include <alpaka/acc/Traits.hpp>                // AccType
-#include <alpaka/dev/Traits.hpp>                // DevType
-#include <alpaka/event/Traits.hpp>              // EventType
-#include <alpaka/exec/Traits.hpp>               // ExecType
-#include <alpaka/size/Traits.hpp>               // size::SizeType
-#include <alpaka/stream/Traits.hpp>             // StreamType
+#include <alpaka/acc/Traits.hpp>                // acc::traits::AccType
+#include <alpaka/dev/Traits.hpp>                // dev::traits::DevType
+#include <alpaka/event/Traits.hpp>              // event::traits::EventType
+#include <alpaka/exec/Traits.hpp>               // exec::traits::ExecType
+#include <alpaka/size/Traits.hpp>               // size::traits::SizeType
+#include <alpaka/stream/Traits.hpp>             // stream::traits::StreamType
 
 // Implementation details.
-#include <alpaka/acc/threads/Acc.hpp>           // AccCpuThreads
-#include <alpaka/dev/DevCpu.hpp>                // DevCpu
-#include <alpaka/event/EventCpuAsync.hpp>       // EventCpuAsync
-#include <alpaka/kernel/Traits.hpp>             // BlockSharedExternMemSizeBytes
-#include <alpaka/stream/StreamCpuAsync.hpp>     // StreamCpuAsync
-#include <alpaka/workdiv/WorkDivMembers.hpp>    // WorkDivThreads
+#include <alpaka/acc/AccCpuThreads.hpp>         // acc:AccCpuThreads
+#include <alpaka/dev/DevCpu.hpp>                // dev::DevCpu
+#include <alpaka/event/EventCpuAsync.hpp>       // event::EventCpuAsync
+#include <alpaka/kernel/Traits.hpp>             // kernel::getBlockSharedExternMemSizeBytes
+#include <alpaka/stream/StreamCpuAsync.hpp>     // stream::StreamCpuAsync
+#include <alpaka/workdiv/WorkDivMembers.hpp>    // workdiv::WorkDivMembers
 
 #include <alpaka/core/ConcurrentExecPool.hpp>   // ConcurrentExecPool
 #include <alpaka/core/NdLoop.hpp>               // NdLoop
@@ -86,7 +86,7 @@ namespace alpaka
                     // Using condition variables and going to sleep is very costly for real threads.
                     // Especially when the time to wait is really short (syncBlockThreads) yielding is much faster.
                     //#############################################################################
-                    using ThreadPool = alpaka::detail::ConcurrentExecPool<
+                    using ThreadPool = alpaka::core::detail::ConcurrentExecPool<
                         TSize,
                         std::thread,        // The concurrent execution type.
                         std::promise,       // The promise type.
@@ -145,7 +145,7 @@ namespace alpaka
                         auto const uiBlockSharedExternMemSizeBytes(
                             kernel::getBlockSharedExternMemSizeBytes<
                                 typename std::decay<TKernelFnObj>::type,
-                                AccCpuThreads<TDim, TSize>>(
+                                acc::AccCpuThreads<TDim, TSize>>(
                                     vuiBlockThreadExtents,
                                     args...));
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -153,7 +153,7 @@ namespace alpaka
                             << " BlockSharedExternMemSizeBytes: " << uiBlockSharedExternMemSizeBytes << " B"
                             << std::endl;
 #endif
-                        AccCpuThreads<TDim, TSize> acc(workDiv);
+                        acc::AccCpuThreads<TDim, TSize> acc(workDiv);
 
                         if(uiBlockSharedExternMemSizeBytes > 0u)
                         {
@@ -176,7 +176,7 @@ namespace alpaka
                             std::ref(args)...));
 
                         // Execute the blocks serially.
-                        ndLoop(
+                        core::ndLoop(
                             vuiGridBlockExtents,
                             boundGridBlockExecHost);
 
@@ -192,7 +192,7 @@ namespace alpaka
                         typename TKernelFnObj,
                         typename... TArgs>
                     ALPAKA_FN_HOST static auto gridBlockExecHost(
-                        AccCpuThreads<TDim, TSize> & acc,
+                        acc::AccCpuThreads<TDim, TSize> & acc,
                         Vec<TDim, TSize> const & vuiGridBlockIdx,
                         Vec<TDim, TSize> const & vuiBlockThreadExtents,
                         ThreadPool & threadPool,
@@ -216,7 +216,7 @@ namespace alpaka
                             std::ref(kernelFnObj),
                             std::ref(args)...));
                         // Execute the block threads in parallel.
-                        ndLoop(
+                        core::ndLoop(
                             vuiBlockThreadExtents,
                             boundBlockThreadExecHost);
 
@@ -245,7 +245,7 @@ namespace alpaka
                         typename TKernelFnObj,
                         typename... TArgs>
                     ALPAKA_FN_HOST static auto blockThreadExecHost(
-                        AccCpuThreads<TDim, TSize> & acc,
+                        acc::AccCpuThreads<TDim, TSize> & acc,
                         std::vector<std::future<void>> & vFuturesInBlock,
                         Vec<TDim, TSize> const & vuiBlockThreadIdx,
                         ThreadPool & threadPool,
@@ -276,7 +276,7 @@ namespace alpaka
                         typename TKernelFnObj,
                         typename... TArgs>
                     ALPAKA_FN_HOST static auto blockThreadExecAcc(
-                        AccCpuThreads<TDim, TSize> & acc,
+                        acc::AccCpuThreads<TDim, TSize> & acc,
                         Vec<TDim, TSize> const & vuiBlockThreadIdx,
                         TKernelFnObj const & kernelFnObj,
                         TArgs const & ... args)
@@ -309,7 +309,7 @@ namespace alpaka
 
                         // Execute the kernel itself.
                         kernelFnObj(
-                            const_cast<AccCpuThreads<TDim, TSize> const &>(acc),
+                            const_cast<acc::AccCpuThreads<TDim, TSize> const &>(acc),
                             args...);
 
                         // We have to sync all threads here because if a thread would finish before all threads have been started,
@@ -412,7 +412,7 @@ namespace alpaka
             struct AccType<
                 exec::ExecCpuThreads<TDim, TSize>>
             {
-                using type = acc::threads::detail::AccCpuThreads<TDim, TSize>;
+                using type = acc::AccCpuThreads<TDim, TSize>;
             };
         }
     }

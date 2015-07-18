@@ -22,19 +22,20 @@
 #pragma once
 
 // Specialized traits.
-#include <alpaka/acc/Traits.hpp>            // AccType
-#include <alpaka/dev/Traits.hpp>            // DevType
-#include <alpaka/event/Traits.hpp>          // EventType
-#include <alpaka/exec/Traits.hpp>           // ExecType
-#include <alpaka/size/Traits.hpp>           // size::SizeType
-#include <alpaka/stream/Traits.hpp>         // StreamType
+#include <alpaka/acc/Traits.hpp>            // acc::traits::AccType
+#include <alpaka/dev/Traits.hpp>            // dev::traits::DevType
+#include <alpaka/event/Traits.hpp>          // event::traits::EventType
+#include <alpaka/exec/Traits.hpp>           // exec::traits::ExecType
+#include <alpaka/size/Traits.hpp>           // size::traits::SizeType
+#include <alpaka/stream/Traits.hpp>         // stream::traits::StreamType
 
 // Implementation details.
-#include <alpaka/acc/cuda/Acc.hpp>          // AccGpuCuda
-#include <alpaka/dev/DevCudaRt.hpp>         // DevCudaRt
-#include <alpaka/event/EventCudaRt.hpp>     // EventCudaRt
-#include <alpaka/kernel/Traits.hpp>         // BlockSharedExternMemSizeBytes
-#include <alpaka/stream/StreamCudaRt.hpp>   // StreamCudaRt
+#include <alpaka/acc/AccGpuCudaRt.hpp>      // acc:AccGpuCudaRt
+#include <alpaka/dev/DevCudaRt.hpp>         // dev::DevCudaRt
+#include <alpaka/event/EventCudaRt.hpp>     // event::EventCudaRt
+#include <alpaka/kernel/Traits.hpp>         // kernel::getBlockSharedExternMemSizeBytes
+#include <alpaka/stream/StreamCudaRt.hpp>   // stream::StreamCudaRt
+#include <alpaka/workdiv/WorkDivMembers.hpp>// workdiv::WorkDivMembers
 
 #include <alpaka/core/Cuda.hpp>             // ALPAKA_CUDA_RT_CHECK
 
@@ -71,10 +72,10 @@ namespace alpaka
 #if defined(__CUDA_ARCH__) && (__CUDA_ARCH__ < 200)
     #error "Cuda device capability >= 2.0 is required!"
 #endif
-                    acc::cuda::detail::AccGpuCuda<TDim, TSize> acc;
+                    acc::AccGpuCudaRt<TDim, TSize> acc;
 
                     kernelFnObj(
-                        const_cast<acc::cuda::detail::AccGpuCuda<TDim, TSize> const &>(acc),
+                        const_cast<acc::AccGpuCudaRt<TDim, TSize> const &>(acc),
                         args...);
                 }
             }
@@ -86,7 +87,7 @@ namespace alpaka
         template<
             typename TDim,
             typename TSize>
-        class ExecGpuCuda final :
+        class ExecGpuCudaRt final :
             public workdiv::WorkDivMembers<TDim, TSize>
         {
         public:
@@ -95,7 +96,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TWorkDiv>
-            ALPAKA_FN_HOST ExecGpuCuda(
+            ALPAKA_FN_HOST ExecGpuCudaRt(
                 TWorkDiv const & workDiv,
                 stream::StreamCudaRt & stream) :
                     workdiv::WorkDivMembers<TDim, TSize>(workDiv),
@@ -106,23 +107,23 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST ExecGpuCuda(ExecGpuCuda const &) = default;
+            ALPAKA_FN_HOST ExecGpuCudaRt(ExecGpuCudaRt const &) = default;
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST ExecGpuCuda(ExecGpuCuda &&) = default;
+            ALPAKA_FN_HOST ExecGpuCudaRt(ExecGpuCudaRt &&) = default;
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(ExecGpuCuda const &) -> ExecGpuCuda & = default;
+            ALPAKA_FN_HOST auto operator=(ExecGpuCudaRt const &) -> ExecGpuCudaRt & = default;
             //-----------------------------------------------------------------------------
             //! Move assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(ExecGpuCuda &&) -> ExecGpuCuda & = default;
+            ALPAKA_FN_HOST auto operator=(ExecGpuCudaRt &&) -> ExecGpuCudaRt & = default;
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST ~ExecGpuCuda() = default;
+            ALPAKA_FN_HOST ~ExecGpuCudaRt() = default;
 
             //-----------------------------------------------------------------------------
             //! Executes the kernel function object.
@@ -196,7 +197,7 @@ namespace alpaka
                 auto const uiBlockSharedExternMemSizeBytes(
                     kernel::getBlockSharedExternMemSizeBytes<
                         typename std::decay<TKernelFnObj>::type,
-                        AccGpuCuda<TDim, TSize>>(
+                        acc::AccGpuCudaRt<TDim, TSize>>(
                             vuiBlockThreadExtents,
                             args...));
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -265,9 +266,9 @@ namespace alpaka
                 typename TDim,
                 typename TSize>
             struct AccType<
-                exec::ExecGpuCuda<TDim, TSize>>
+                exec::ExecGpuCudaRt<TDim, TSize>>
             {
-                using type = acc::cuda::detail::AccGpuCuda<TDim, TSize>;
+                using type = acc::AccGpuCudaRt<TDim, TSize>;
             };
         }
     }
@@ -282,7 +283,7 @@ namespace alpaka
                 typename TDim,
                 typename TSize>
             struct DevType<
-                exec::ExecGpuCuda<TDim, TSize>>
+                exec::ExecGpuCudaRt<TDim, TSize>>
             {
                 using type = dev::DevCudaRt;
             };
@@ -293,7 +294,7 @@ namespace alpaka
                 typename TDim,
                 typename TSize>
             struct DevManType<
-                exec::ExecGpuCuda<TDim, TSize>>
+                exec::ExecGpuCudaRt<TDim, TSize>>
             {
                 using type = dev::DevManCudaRt;
             };
@@ -310,7 +311,7 @@ namespace alpaka
                 typename TDim,
                 typename TSize>
             struct DimType<
-                exec::ExecGpuCuda<TDim, TSize>>
+                exec::ExecGpuCudaRt<TDim, TSize>>
             {
                 using type = TDim;
             };
@@ -327,7 +328,7 @@ namespace alpaka
                 typename TDim,
                 typename TSize>
             struct EventType<
-                exec::ExecGpuCuda<TDim, TSize>>
+                exec::ExecGpuCudaRt<TDim, TSize>>
             {
                 using type = event::EventCudaRt;
             };
@@ -344,9 +345,9 @@ namespace alpaka
                 typename TDim,
                 typename TSize>
             struct ExecType<
-                exec::ExecGpuCuda<TDim, TSize>>
+                exec::ExecGpuCudaRt<TDim, TSize>>
             {
-                using type = exec::ExecGpuCuda<TDim, TSize>;
+                using type = exec::ExecGpuCudaRt<TDim, TSize>;
             };
         }
     }
@@ -361,7 +362,7 @@ namespace alpaka
                 typename TDim,
                 typename TSize>
             struct SizeType<
-                exec::ExecGpuCuda<TDim, TSize>>
+                exec::ExecGpuCudaRt<TDim, TSize>>
             {
                 using type = TSize;
             };
@@ -378,7 +379,7 @@ namespace alpaka
                 typename TDim,
                 typename TSize>
             struct StreamType<
-                exec::ExecGpuCuda<TDim, TSize>>
+                exec::ExecGpuCudaRt<TDim, TSize>>
             {
                 using type = stream::StreamCudaRt;
             };
@@ -389,10 +390,10 @@ namespace alpaka
                 typename TDim,
                 typename TSize>
             struct GetStream<
-                exec::ExecGpuCuda<TDim, TSize>>
+                exec::ExecGpuCudaRt<TDim, TSize>>
             {
                 ALPAKA_FN_HOST static auto getStream(
-                    exec::ExecGpuCuda<TDim, TSize> const & exec)
+                    exec::ExecGpuCudaRt<TDim, TSize> const & exec)
                 -> stream::StreamCudaRt
                 {
                     return exec.m_Stream;

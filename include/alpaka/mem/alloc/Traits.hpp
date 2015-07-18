@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/dev/Traits.hpp>        // dev::DevType, ...
+#include <alpaka/dev/Traits.hpp>        // dev::traits::DevType, ...
 #include <alpaka/dim/Traits.hpp>        // dim::DimType
 #include <alpaka/extent/Traits.hpp>     // extent::GetExtent
 

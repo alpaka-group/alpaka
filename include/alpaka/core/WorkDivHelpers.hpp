@@ -26,7 +26,6 @@
 #include <alpaka/dev/Traits.hpp>                // dev::DevMan
 #include <alpaka/acc/Traits.hpp>                // getAccDevProps
 
-#include <alpaka/core/ForEachType.hpp>          // forEachType
 #include <alpaka/core/Vec.hpp>                  // Vec
 #include <alpaka/core/Common.hpp>               // ALPAKA_FN_HOST
 
@@ -73,8 +72,8 @@ namespace alpaka
             {
                 T uiDivisor(uiMaxDivisor);
 
-                assertValueUnsigned(uiDividend);
-                assertValueUnsigned(uiMaxDivisor);
+                core::assertValueUnsigned(uiDividend);
+                core::assertValueUnsigned(uiMaxDivisor);
                 assert(uiDividend <= uiMaxDivisor);
 
                 while((uiDividend%uiDivisor) != 0)
@@ -99,8 +98,8 @@ namespace alpaka
             {
                 std::set<T> setDivisors;
 
-                assertValueUnsigned(uiVal);
-                assertValueUnsigned(uiMaxDivisor);
+                core::assertValueUnsigned(uiVal);
+                core::assertValueUnsigned(uiMaxDivisor);
                 assert(uiMaxDivisor <= uiVal);
 
                 for(T i(1); i <= std::min(uiVal, uiMaxDivisor); ++i)

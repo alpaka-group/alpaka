@@ -23,7 +23,7 @@
 
 #include <alpaka/core/IntegerSequence.hpp>  // integer_sequence
 #include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
-#include <alpaka/core/Fold.hpp>             // foldr
+#include <alpaka/core/Fold.hpp>             // core::foldr
 
 #if !defined(__CUDA_ARCH__)
     #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
@@ -76,7 +76,7 @@ namespace alpaka
         }
 
         //-----------------------------------------------------------------------------
-        //! \return The width.
+        //! \return The extent in the given dimension.
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
@@ -141,14 +141,14 @@ namespace alpaka
                 size_t... TIndices>
             ALPAKA_FN_HOST static auto getProductOfExtentsInternal(
                 TExtents const & extents,
-                alpaka::detail::index_sequence<TIndices...> const & indices)
+                alpaka::core::detail::index_sequence<TIndices...> const & indices)
             -> size::Size<TExtents>
             {
 #if !defined(__CUDA_ARCH__)
                 boost::ignore_unused(indices);
 #endif
                 return
-                    foldr(
+                    core::foldr(
                         std::multiplies<size::Size<TExtents>>(),
                         getExtent<TIndices>(extents)...);
             }
@@ -164,7 +164,7 @@ namespace alpaka
             TExtents const & extents = TExtents())
         -> size::Size<TExtents>
         {
-            using IdxSequence = alpaka::detail::make_index_sequence<dim::Dim<TExtents>::value>;
+            using IdxSequence = alpaka::core::detail::make_index_sequence<dim::Dim<TExtents>::value>;
             return
                 detail::getProductOfExtentsInternal(
                     extents,
@@ -172,7 +172,7 @@ namespace alpaka
         }
 
         //-----------------------------------------------------------------------------
-        //! \return The width.
+        //! Sets the extent in the given dimension.
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<

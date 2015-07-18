@@ -26,7 +26,7 @@
 #include <alpaka/extent/Traits.hpp>                 // view::getXXX
 #include <alpaka/mem/view/Traits.hpp>
 #include <alpaka/offset/Traits.hpp>                 // traits::getOffsetX
-#include <alpaka/size/Traits.hpp>                   // size::SizeType
+#include <alpaka/size/Traits.hpp>                   // size::traits::SizeType
 
 #include <alpaka/mem/buf/BufPlainPtrWrapper.hpp>    // BufPlainPtrWrapper
 #include <alpaka/core/Vec.hpp>                      // Vec
@@ -441,7 +441,7 @@ namespace alpaka
                     mem::view::ViewBasic<TDev, TElem, TDim, TSize>>
                 {
                 private:
-                    using IdxSequence = alpaka::detail::make_integer_sequence<std::size_t, TDim::value>;
+                    using IdxSequence = alpaka::core::detail::make_integer_sequence<std::size_t, TDim::value>;
                 public:
                     //-----------------------------------------------------------------------------
                     //!
@@ -483,11 +483,11 @@ namespace alpaka
                     ALPAKA_FN_HOST static auto pitchedOffsetBytes(
                         TView const & view,
                         TBuf const & buf,
-                        alpaka::detail::integer_sequence<std::size_t, TIndices...> const &)
+                        alpaka::core::detail::integer_sequence<std::size_t, TIndices...> const &)
                     -> TSize
                     {
                         return
-                            foldr(
+                            core::foldr(
                                 std::plus<TSize>(),
                                 pitchedOffsetBytesDim<TIndices>(view, buf)...);
                     }

@@ -30,135 +30,138 @@
 
 namespace alpaka
 {
-    namespace detail
+    namespace core
     {
-        //#############################################################################
-        //! N-dimensional loop iteration template.
-        //#############################################################################
+        namespace detail
+        {
+            //#############################################################################
+            //! N-dimensional loop iteration template.
+            //#############################################################################
+            template<
+                bool TbLastLoop>
+            struct NdLoop;
+            //#############################################################################
+            //! N-dimensional loop iteration template.
+            //#############################################################################
+            template<>
+            struct NdLoop<
+                true>
+            {
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
+                template<
+                    std::size_t TuiCurDim,
+                    typename TIndex,
+                    typename TExtentsVec,
+                    typename TFnObj,
+                    typename... TArgs>
+                ALPAKA_FN_HOST_ACC static auto ndLoop(
+                    TIndex & idx,
+                    TExtentsVec const & extents,
+                    TFnObj && f,
+                    TArgs && ... args)
+                -> void
+                {
+                    static_assert(
+                        dim::Dim<TIndex>::value > 0u,
+                        "The dimension given to ndLoop has to be larger than zero!");
+                    static_assert(
+                        dim::Dim<TIndex>::value == dim::Dim<TExtentsVec>::value,
+                        "The dimensions of the iteration vector and the extents vector have to be identical!");
+                    static_assert(
+                        dim::Dim<TIndex>::value > TuiCurDim,
+                        "The current dimension has to be in the rang [0,dim-1]!");
+
+                    for(idx[TuiCurDim] = 0u; idx[TuiCurDim] < extents[TuiCurDim]; ++idx[TuiCurDim])
+                    {
+                        std::forward<TFnObj>(f)(idx, std::forward<TArgs>(args)...);
+                    }
+                }
+            };
+            //#############################################################################
+            //! N-dimensional loop iteration template.
+            //#############################################################################
+            template<>
+            struct NdLoop<
+                false>
+            {
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
+                template<
+                    std::size_t TuiCurDim,
+                    typename TIndex,
+                    typename TExtentsVec,
+                    typename TFnObj,
+                    typename... TArgs>
+                ALPAKA_FN_HOST_ACC static auto ndLoop(
+                    TIndex & idx,
+                    TExtentsVec const & extents,
+                    TFnObj && f,
+                    TArgs && ... args)
+                -> void
+                {
+                    static_assert(
+                        dim::Dim<TIndex>::value > 0u,
+                        "The dimension given to ndLoop has to be larger than zero!");
+                    static_assert(
+                        dim::Dim<TIndex>::value == dim::Dim<TExtentsVec>::value,
+                        "The dimensions of the iteration vector and the extents vector have to be identical!");
+                    static_assert(
+                        dim::Dim<TIndex>::value > TuiCurDim,
+                        "The current dimension has to be in the rang [0,dim-1]!");
+
+                    for(idx[TuiCurDim] = 0u; idx[TuiCurDim] < extents[TuiCurDim]; ++idx[TuiCurDim])
+                    {
+                        detail::NdLoop<
+                            (TuiCurDim+2u == dim::Dim<TIndex>::value)>
+                        ::template ndLoop<
+                            TuiCurDim+1u>(
+                                idx,
+                                extents,
+                                std::forward<TFnObj>(f),
+                                std::forward<TArgs>(args)...);
+                    }
+                }
+            };
+        }
+        //-----------------------------------------------------------------------------
+        //! Loops over an n-dimensional iteration index variable calling f(idx, args...) for each iteration.
+        //! The loops are nested from index zero outmost to index (dim-1) innermost.
+        //!
+        //! \param extents N-dimensional loop extents.
+        //! \param f The function called at each iteration.
+        //! \param args,... The additional arguments given to each function call.
+        //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
-            bool TbLastLoop>
-        struct NdLoop;
-        //#############################################################################
-        //! N-dimensional loop iteration template.
-        //#############################################################################
-        template<>
-        struct NdLoop<
-            true>
+            typename TExtentsVec,
+            typename TFnObj,
+            typename... TArgs>
+        ALPAKA_FN_HOST_ACC auto ndLoop(
+            TExtentsVec const & extents,
+            TFnObj && f,
+            TArgs && ... args)
+        -> void
         {
-            //-----------------------------------------------------------------------------
-            //!
-            //-----------------------------------------------------------------------------
-            ALPAKA_NO_HOST_ACC_WARNING
-            template<
-                std::size_t TuiCurDim,
-                typename TIndex,
-                typename TExtentsVec,
-                typename TFnObj,
-                typename... TArgs>
-            ALPAKA_FN_HOST_ACC static auto ndLoop(
-                TIndex & idx,
-                TExtentsVec const & extents,
-                TFnObj && f,
-                TArgs && ... args)
-            -> void
-            {
-                static_assert(
-                    dim::Dim<TIndex>::value > 0u,
-                    "The dimension given to ndLoop has to be larger than zero!");
-                static_assert(
-                    dim::Dim<TIndex>::value == dim::Dim<TExtentsVec>::value,
-                    "The dimensions of the iteration vector and the extents vector have to be identical!");
-                static_assert(
-                    dim::Dim<TIndex>::value > TuiCurDim,
-                    "The current dimension has to be in the rang [0,dim-1]!");
+            static_assert(
+                dim::Dim<TExtentsVec>::value > 0u,
+                "The dimension given to ndLoop has to be larger than zero!");
 
-                for(idx[TuiCurDim] = 0u; idx[TuiCurDim] < extents[TuiCurDim]; ++idx[TuiCurDim])
-                {
-                    std::forward<TFnObj>(f)(idx, std::forward<TArgs>(args)...);
-                }
-            }
-        };
-        //#############################################################################
-        //! N-dimensional loop iteration template.
-        //#############################################################################
-        template<>
-        struct NdLoop<
-            false>
-        {
-            //-----------------------------------------------------------------------------
-            //!
-            //-----------------------------------------------------------------------------
-            ALPAKA_NO_HOST_ACC_WARNING
-            template<
-                std::size_t TuiCurDim,
-                typename TIndex,
-                typename TExtentsVec,
-                typename TFnObj,
-                typename... TArgs>
-            ALPAKA_FN_HOST_ACC static auto ndLoop(
-                TIndex & idx,
-                TExtentsVec const & extents,
-                TFnObj && f,
-                TArgs && ... args)
-            -> void
-            {
-                static_assert(
-                    dim::Dim<TIndex>::value > 0u,
-                    "The dimension given to ndLoop has to be larger than zero!");
-                static_assert(
-                    dim::Dim<TIndex>::value == dim::Dim<TExtentsVec>::value,
-                    "The dimensions of the iteration vector and the extents vector have to be identical!");
-                static_assert(
-                    dim::Dim<TIndex>::value > TuiCurDim,
-                    "The current dimension has to be in the rang [0,dim-1]!");
+            auto vuiIdx(
+                Vec<dim::Dim<TExtentsVec>, size::Size<TExtentsVec>>::zeros());
 
-                for(idx[TuiCurDim] = 0u; idx[TuiCurDim] < extents[TuiCurDim]; ++idx[TuiCurDim])
-                {
-                    detail::NdLoop<
-                        (TuiCurDim+2u == dim::Dim<TIndex>::value)>
-                    ::template ndLoop<
-                        TuiCurDim+1u>(
-                            idx,
-                            extents,
-                            std::forward<TFnObj>(f),
-                            std::forward<TArgs>(args)...);
-                }
-            }
-        };
-    }
-    //-----------------------------------------------------------------------------
-    //! Loops over an n-dimensional iteration index variable calling f(idx, args...) for each iteration.
-    //! The loops are nested from index zero outmost to index (dim-1) innermost.
-    //!
-    //! \param extents N-dimensional loop extents.
-    //! \param f The function called at each iteration.
-    //! \param args,... The additional arguments given to each function call.
-    //-----------------------------------------------------------------------------
-    ALPAKA_NO_HOST_ACC_WARNING
-    template<
-        typename TExtentsVec,
-        typename TFnObj,
-        typename... TArgs>
-    ALPAKA_FN_HOST_ACC auto ndLoop(
-        TExtentsVec const & extents,
-        TFnObj && f,
-        TArgs && ... args)
-    -> void
-    {
-        static_assert(
-            dim::Dim<TExtentsVec>::value > 0u,
-            "The dimension given to ndLoop has to be larger than zero!");
-
-        auto vuiIdx(
-            Vec<dim::Dim<TExtentsVec>, size::Size<TExtentsVec>>::zeros());
-
-        detail::NdLoop<
-            (dim::Dim<TExtentsVec>::value == 1u)>
-        ::template ndLoop<
-            0u>(
-                vuiIdx,
-                extents,
-                std::forward<TFnObj>(f),
-                std::forward<TArgs>(args)...);
+            detail::NdLoop<
+                (dim::Dim<TExtentsVec>::value == 1u)>
+            ::template ndLoop<
+                0u>(
+                    vuiIdx,
+                    extents,
+                    std::forward<TFnObj>(f),
+                    std::forward<TArgs>(args)...);
+        }
     }
 }

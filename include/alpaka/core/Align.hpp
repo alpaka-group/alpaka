@@ -28,99 +28,103 @@
 
 namespace alpaka
 {
-    //-----------------------------------------------------------------------------
-    //! Rounds to the next higher power of two (if not already power of two).
-    // Adapted from llvm/ADT/SmallPtrSet.h
-    //-----------------------------------------------------------------------------
-    template<
-        std::size_t N>
-    struct RoundUpToPowerOfTwo;
-
-    //-----------------------------------------------------------------------------
-    //! Defines implementation details that should not be used directly by the user.
-    //-----------------------------------------------------------------------------
-    namespace detail
+    namespace core
     {
         //-----------------------------------------------------------------------------
-        //! Base case for N being a power of two.
-        //-----------------------------------------------------------------------------
-        template<
-            std::size_t N,
-            bool TbIsPowerTwo>
-        struct RoundUpToPowerOfTwoHelper :
-            std::integral_constant<
-                std::size_t,
-                N>
-        {};
-        //-----------------------------------------------------------------------------
-        //! Case for N not being a power of two.
-        // We could just use NextVal = N+1, but this converges faster.  N|(N-1) sets
-        // the right-most zero bits to one all at once, e.g. 0b0011000 -> 0b0011111.
+        //! Rounds to the next higher power of two (if not already power of two).
+        // Adapted from llvm/ADT/SmallPtrSet.h
         //-----------------------------------------------------------------------------
         template<
             std::size_t N>
-        struct RoundUpToPowerOfTwoHelper<
-            N,
-            false> :
+        struct RoundUpToPowerOfTwo;
+
+        //-----------------------------------------------------------------------------
+        //! Defines implementation details that should not be used directly by the user.
+        //-----------------------------------------------------------------------------
+        namespace detail
+        {
+            //-----------------------------------------------------------------------------
+            //! Base case for N being a power of two.
+            //-----------------------------------------------------------------------------
+            template<
+                std::size_t N,
+                bool TbIsPowerTwo>
+            struct RoundUpToPowerOfTwoHelper :
                 std::integral_constant<
                     std::size_t,
-                    RoundUpToPowerOfTwo<(N | (N - 1)) + 1>::value>
-        {};
-    }
-    //-----------------------------------------------------------------------------
-    //
-    //-----------------------------------------------------------------------------
-    template<
-        std::size_t N>
-    struct RoundUpToPowerOfTwo :
-        std::integral_constant<
-            std::size_t,
-            detail::RoundUpToPowerOfTwoHelper<
+                    N>
+            {};
+            //-----------------------------------------------------------------------------
+            //! Case for N not being a power of two.
+            // We could just use NextVal = N+1, but this converges faster.  N|(N-1) sets
+            // the right-most zero bits to one all at once, e.g. 0b0011000 -> 0b0011111.
+            //-----------------------------------------------------------------------------
+            template<
+                std::size_t N>
+            struct RoundUpToPowerOfTwoHelper<
                 N,
-                (N&(N - 1)) == 0>::value>
-    {};
-
-    //-----------------------------------------------------------------------------
-    //! The alignment methods.
-    //-----------------------------------------------------------------------------
-    namespace align
-    {
+                false> :
+                    std::integral_constant<
+                        std::size_t,
+                        RoundUpToPowerOfTwo<(N | (N - 1)) + 1>::value>
+            {};
+        }
         //-----------------------------------------------------------------------------
-        //! Calculates the optimal alignment for data of the given size.
+        //
         //-----------------------------------------------------------------------------
         template<
-            std::size_t TuiSizeBytes>
-        struct OptimalAlignment :
+            std::size_t N>
+        struct RoundUpToPowerOfTwo :
             std::integral_constant<
                 std::size_t,
-#if BOOST_COMP_GNUC
-                // GCC does not support alignments larger then 128: "warning: requested alignment 256 is larger than 128[-Wattributes]".
-                (TuiSizeBytes > 64)
-                    ? 128
-                    :
-#endif
-                // Align at a minimum of 16 Bytes.
-                        ((TuiSizeBytes <= 16)
-                        ? 16
-                        : RoundUpToPowerOfTwo<TuiSizeBytes>::value)>
+                detail::RoundUpToPowerOfTwoHelper<
+                    N,
+                    (N&(N - 1)) == 0>::value>
         {};
+
+        //-----------------------------------------------------------------------------
+        //! The alignment specifics.
+        //-----------------------------------------------------------------------------
+        namespace align
+        {
+            //-----------------------------------------------------------------------------
+            //! Calculates the optimal alignment for data of the given size.
+            //-----------------------------------------------------------------------------
+            template<
+                std::size_t TuiSizeBytes>
+            struct OptimalAlignment :
+                std::integral_constant<
+                    std::size_t,
+#if BOOST_COMP_GNUC
+                    // GCC does not support alignments larger then 128: "warning: requested alignment 256 is larger than 128[-Wattributes]".
+                    (TuiSizeBytes > 64)
+                        ? 128
+                        :
+#endif
+                            // Align at a minimum of 16 Bytes.
+                            (/*(TuiSizeBytes <= 16)
+                            ? 16
+                            :*/ RoundUpToPowerOfTwo<TuiSizeBytes>::value)>
+            {};
+        }
     }
 }
 
-// Newer GCC versions >= 4.9 do not support constant expressions as parameters to alignas: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=58109
-            /*((uiSizeBytes)==1?1:\
-            ((uiSizeBytes)<=2?2:\
-            ((uiSizeBytes)<=4?4:\
-            ((uiSizeBytes)<=8?8:\*/
+// GCC does not support constant expressions as parameters to alignas: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=58109
+// The optimal alignment for a type is the next higher or equal power of two.
+// TODO: Is a alignment < 16 really optimal on a GPU?
 #if BOOST_COMP_GNUC || BOOST_COMP_INTEL
     #define ALPAKA_OPTIMAL_ALIGNMENT_SIZE(...)\
+            ((__VA_ARGS__)==1?1:\
+            ((__VA_ARGS__)<=2?2:\
+            ((__VA_ARGS__)<=4?4:\
             ((__VA_ARGS__)<=16?16:\
             ((__VA_ARGS__)<=32?32:\
             ((__VA_ARGS__)<=64?64:128\
-            )))
+            ))))))
     #define ALPAKA_OPTIMAL_ALIGNMENT(...)\
             ALPAKA_OPTIMAL_ALIGNMENT_SIZE(sizeof(typename std::remove_cv<__VA_ARGS__>::type))
 #else
     #define ALPAKA_OPTIMAL_ALIGNMENT(...)\
-            alpaka::align::OptimalAlignment<sizeof(typename std::remove_cv<__VA_ARGS__>::type)>::value
+            alpaka::core::align::OptimalAlignment<sizeof(typename std::remove_cv<__VA_ARGS__>::type)>::value
 #endif

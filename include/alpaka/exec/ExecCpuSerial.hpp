@@ -22,19 +22,19 @@
 #pragma once
 
 // Specialized traits.
-#include <alpaka/acc/Traits.hpp>                // AccType
-#include <alpaka/dev/Traits.hpp>                // DevType
-#include <alpaka/event/Traits.hpp>              // EventType
-#include <alpaka/exec/Traits.hpp>               // ExecType
-#include <alpaka/size/Traits.hpp>               // size::SizeType
-#include <alpaka/stream/Traits.hpp>             // StreamType
+#include <alpaka/acc/Traits.hpp>                // acc::traits::AccType
+#include <alpaka/dev/Traits.hpp>                // dev::traits::DevType
+#include <alpaka/event/Traits.hpp>              // event::traits::EventType
+#include <alpaka/exec/Traits.hpp>               // exec::traits::ExecType
+#include <alpaka/size/Traits.hpp>               // size::traits::SizeType
+#include <alpaka/stream/Traits.hpp>             // stream::traits::StreamType
 
 // Implementation details.
-#include <alpaka/acc/serial/Acc.hpp>            // AccCpuSerial
-#include <alpaka/dev/DevCpu.hpp>                // DevCpu
-#include <alpaka/event/EventCpuAsync.hpp>       // EventCpuAsync
-#include <alpaka/kernel/Traits.hpp>             // BlockSharedExternMemSizeBytes
-#include <alpaka/stream/StreamCpuAsync.hpp>     // StreamCpuAsync
+#include <alpaka/acc/AccCpuSerial.hpp>          // acc:AccCpuSerial
+#include <alpaka/dev/DevCpu.hpp>                // dev::DevCpu
+#include <alpaka/event/EventCpuAsync.hpp>       // event::EventCpuAsync
+#include <alpaka/kernel/Traits.hpp>             // kernel::getBlockSharedExternMemSizeBytes
+#include <alpaka/stream/StreamCpuAsync.hpp>     // stream::StreamCpuAsync
 #include <alpaka/workdiv/WorkDivMembers.hpp>    // workdiv::WorkDivMembers
 
 #include <alpaka/core/NdLoop.hpp>               // NdLoop
@@ -116,7 +116,7 @@ namespace alpaka
                         auto const uiBlockSharedExternMemSizeBytes(
                             kernel::getBlockSharedExternMemSizeBytes<
                                 typename std::decay<TKernelFnObj>::type,
-                                AccCpuSerial<TDim, TSize>>(
+                                acc::AccCpuSerial<TDim, TSize>>(
                                     vuiBlockThreadExtents,
                                     args...));
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -124,7 +124,7 @@ namespace alpaka
                             << " BlockSharedExternMemSizeBytes: " << uiBlockSharedExternMemSizeBytes << " B"
                             << std::endl;
 #endif
-                        AccCpuSerial<TDim, TSize> acc(workDiv);
+                        acc::AccCpuSerial<TDim, TSize> acc(workDiv);
 
                         if(uiBlockSharedExternMemSizeBytes > 0u)
                         {
@@ -137,14 +137,14 @@ namespace alpaka
                         assert(vuiBlockThreadExtents.prod() == 1u);
 
                         // Execute the blocks serially.
-                        ndLoop(
+                        core::ndLoop(
                             vuiGridBlockExtents,
                             [&](Vec<TDim, TSize> const & vuiBlockThreadIdx)
                             {
                                 acc.m_vuiGridBlockIdx = vuiBlockThreadIdx;
 
                                 kernelFnObj(
-                                    const_cast<AccCpuSerial<TDim, TSize> const &>(acc),
+                                    const_cast<acc::AccCpuSerial<TDim, TSize> const &>(acc),
                                     args...);
 
                                 // After a block has been processed, the shared memory has to be deleted.
@@ -250,7 +250,7 @@ namespace alpaka
             struct AccType<
                 exec::ExecCpuSerial<TDim, TSize>>
             {
-                using type = acc::serial::detail::AccCpuSerial<TDim, TSize>;
+                using type = acc::AccCpuSerial<TDim, TSize>;
             };
         }
     }

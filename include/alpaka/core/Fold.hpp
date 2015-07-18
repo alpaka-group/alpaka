@@ -31,104 +31,107 @@
 
 namespace alpaka
 {
-    //-----------------------------------------------------------------------------
-    //!
-    //-----------------------------------------------------------------------------
-    ALPAKA_NO_HOST_ACC_WARNING
-    template<
-        typename TFnObj,
-        typename T>
-    ALPAKA_FN_HOST_ACC auto foldr(
-        TFnObj const & f,
-        T const & t)
-    -> T
+    namespace core
     {
-#if !defined(__CUDA_ARCH__)
-        boost::ignore_unused(f);
-#endif
-        return t;
-    }
-#if __cplusplus >= 201402L
-    //-----------------------------------------------------------------------------
-    //!
-    //-----------------------------------------------------------------------------
-    ALPAKA_NO_HOST_ACC_WARNING
-    template<
-        typename TFnObj,
-        typename T0,
-        typename T1,
-        typename... Ts>
-    ALPAKA_FN_HOST_ACC auto foldr(
-        TFnObj const & f,
-        T0 const & t0,
-        T1 const & t1,
-        Ts const & ... ts)
-    {
-        return f(t0, foldr(f, t1, ts...));
-    }
-#else
-    namespace detail
-    {
-        //#############################################################################
+        //-----------------------------------------------------------------------------
         //!
-        //#############################################################################
-        template<
-            typename TFnObj,
-            typename... T>
-        struct TypeOfFold;
-        //#############################################################################
-        //!
-        //#############################################################################
+        //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TFnObj,
             typename T>
-        struct TypeOfFold<
-            TFnObj,
-            T>
+        ALPAKA_FN_HOST_ACC auto foldr(
+            TFnObj const & f,
+            T const & t)
+        -> T
         {
-            using type = T;
-        };
-        //#############################################################################
+#if !defined(__CUDA_ARCH__)
+            boost::ignore_unused(f);
+#endif
+            return t;
+        }
+#if __cplusplus >= 201402L
+        //-----------------------------------------------------------------------------
         //!
-        //#############################################################################
+        //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TFnObj,
-            typename T,
-            typename... P>
-        struct TypeOfFold<
-            TFnObj,
-            T,
-            P...>
+            typename T0,
+            typename T1,
+            typename... Ts>
+        ALPAKA_FN_HOST_ACC auto foldr(
+            TFnObj const & f,
+            T0 const & t0,
+            T1 const & t1,
+            Ts const & ... ts)
         {
-            using type =
-                typename std::result_of<
-                    TFnObj(T, typename TypeOfFold<TFnObj, P...>::type)>::type;
-        };
-    }
+            return f(t0, foldr(f, t1, ts...));
+        }
+#else
+        namespace detail
+        {
+            //#############################################################################
+            //!
+            //#############################################################################
+            template<
+                typename TFnObj,
+                typename... T>
+            struct TypeOfFold;
+            //#############################################################################
+            //!
+            //#############################################################################
+            template<
+                typename TFnObj,
+                typename T>
+            struct TypeOfFold<
+                TFnObj,
+                T>
+            {
+                using type = T;
+            };
+            //#############################################################################
+            //!
+            //#############################################################################
+            template<
+                typename TFnObj,
+                typename T,
+                typename... P>
+            struct TypeOfFold<
+                TFnObj,
+                T,
+                P...>
+            {
+                using type =
+                    typename std::result_of<
+                        TFnObj(T, typename TypeOfFold<TFnObj, P...>::type)>::type;
+            };
+        }
 
-    //-----------------------------------------------------------------------------
-    //!
-    //-----------------------------------------------------------------------------
-    ALPAKA_NO_HOST_ACC_WARNING
-    template<
-        typename TFnObj,
-        typename T0,
-        typename T1,
-        typename... Ts>
-    ALPAKA_FN_HOST_ACC auto foldr(
-        TFnObj const & f,
-        T0 const & t0,
-        T1 const & t1,
-        Ts const & ... ts)
-    // NOTE: This is not allowed because the point of function declaration is after the trailing return type.
-    // Thus the function itself is not available inside its return type declaration.
-    // http://www.open-std.org/jtc1/sc22/wg21/docs/cwg_closed.html#1433
-    // http://stackoverflow.com/questions/3744400/trailing-return-type-using-decltype-with-a-variadic-template-function
-    // http://stackoverflow.com/questions/11596898/variadic-template-and-inferred-return-type-in-concat/11597196#11597196
-    //-> decltype(f(t0, foldr(f, t1, ts...)))
-    -> typename detail::TypeOfFold<TFnObj, T0, T1, Ts...>::type
-    {
-        return f(t0, foldr(f, t1, ts...));
-    }
+        //-----------------------------------------------------------------------------
+        //!
+        //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
+        template<
+            typename TFnObj,
+            typename T0,
+            typename T1,
+            typename... Ts>
+        ALPAKA_FN_HOST_ACC auto foldr(
+            TFnObj const & f,
+            T0 const & t0,
+            T1 const & t1,
+            Ts const & ... ts)
+        // NOTE: This is not allowed because the point of function declaration is after the trailing return type.
+        // Thus the function itself is not available inside its return type declaration.
+        // http://www.open-std.org/jtc1/sc22/wg21/docs/cwg_closed.html#1433
+        // http://stackoverflow.com/questions/3744400/trailing-return-type-using-decltype-with-a-variadic-template-function
+        // http://stackoverflow.com/questions/11596898/variadic-template-and-inferred-return-type-in-concat/11597196#11597196
+        //-> decltype(f(t0, foldr(f, t1, ts...)))
+        -> typename detail::TypeOfFold<TFnObj, T0, T1, Ts...>::type
+        {
+            return f(t0, foldr(f, t1, ts...));
+        }
 #endif
+    }
 }

@@ -122,77 +122,80 @@
 
 namespace alpaka
 {
-    //#############################################################################
-    //! A false_type being dependent on a ignored template parameter.
-    //! This allows to use static_assert in uninstantiated template specializations without triggering.
-    //#############################################################################
-    template<
-        typename T>
-    struct dependent_false_type :
-        std::false_type
-    {};
+    namespace core
+    {
+        //#############################################################################
+        //! A false_type being dependent on a ignored template parameter.
+        //! This allows to use static_assert in uninstantiated template specializations without triggering.
+        //#############################################################################
+        template<
+            typename T>
+        struct DependentFalseType :
+            std::false_type
+        {};
 
-    namespace detail
-    {
-        //#############################################################################
-        //!
-        //#############################################################################
-        template<
-            typename TArg,
-            typename TSfinae = void>
-        struct AssertValueUnsigned;
-        //#############################################################################
-        //!
-        //#############################################################################
-        template<
-            typename TArg>
-        struct AssertValueUnsigned<
-            TArg,
-            typename std::enable_if<!std::is_unsigned<TArg>::value>::type>
+        namespace detail
         {
-            ALPAKA_NO_HOST_ACC_WARNING
-            ALPAKA_FN_HOST_ACC static auto assertValueUnsigned(
-                TArg const & arg)
-            -> void
+            //#############################################################################
+            //!
+            //#############################################################################
+            template<
+                typename TArg,
+                typename TSfinae = void>
+            struct AssertValueUnsigned;
+            //#############################################################################
+            //!
+            //#############################################################################
+            template<
+                typename TArg>
+            struct AssertValueUnsigned<
+                TArg,
+                typename std::enable_if<!std::is_unsigned<TArg>::value>::type>
             {
-                assert(arg >= 0);
-            }
-        };
-        //#############################################################################
-        //!
-        //#############################################################################
-        template<
-            typename TArg>
-        struct AssertValueUnsigned<
-            TArg,
-            typename std::enable_if<std::is_unsigned<TArg>::value>::type>
-        {
-            ALPAKA_NO_HOST_ACC_WARNING
-            ALPAKA_FN_HOST_ACC static auto assertValueUnsigned(
-                TArg const & arg)
-            -> void
+                ALPAKA_NO_HOST_ACC_WARNING
+                ALPAKA_FN_HOST_ACC static auto assertValueUnsigned(
+                    TArg const & arg)
+                -> void
+                {
+                    assert(arg >= 0);
+                }
+            };
+            //#############################################################################
+            //!
+            //#############################################################################
+            template<
+                typename TArg>
+            struct AssertValueUnsigned<
+                TArg,
+                typename std::enable_if<std::is_unsigned<TArg>::value>::type>
             {
+                ALPAKA_NO_HOST_ACC_WARNING
+                ALPAKA_FN_HOST_ACC static auto assertValueUnsigned(
+                    TArg const & arg)
+                -> void
+                {
 #if !defined(__CUDA_ARCH__)
-                boost::ignore_unused(arg);
+                    boost::ignore_unused(arg);
 #endif
-                // Nothing to do for unsigned types.
-            }
-        };
-    }
-    //-----------------------------------------------------------------------------
-    //! This method checks integral values if they are greater or equal zero.
-    //! The implementation prevents warnings for checking this for unsigned types.
-    //-----------------------------------------------------------------------------
-    template<
-        typename TArg>
-    ALPAKA_NO_HOST_ACC_WARNING
-    ALPAKA_FN_HOST_ACC auto assertValueUnsigned(
-        TArg const & arg)
-    -> void
-    {
-        detail::AssertValueUnsigned<
-            TArg>
-        ::assertValueUnsigned(
-            arg);
+                    // Nothing to do for unsigned types.
+                }
+            };
+        }
+        //-----------------------------------------------------------------------------
+        //! This method checks integral values if they are greater or equal zero.
+        //! The implementation prevents warnings for checking this for unsigned types.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TArg>
+        ALPAKA_NO_HOST_ACC_WARNING
+        ALPAKA_FN_HOST_ACC auto assertValueUnsigned(
+            TArg const & arg)
+        -> void
+        {
+            detail::AssertValueUnsigned<
+                TArg>
+            ::assertValueUnsigned(
+                arg);
+        }
     }
 }

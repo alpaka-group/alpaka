@@ -21,12 +21,12 @@
 
 #pragma once
 
-#include <alpaka/dev/DevCpu.hpp>            // DevCpu
-#include <alpaka/dev/DevCudaRt.hpp>         // DevCudaRt
+#include <alpaka/dev/DevCpu.hpp>            // dev::DevCpu
+#include <alpaka/dev/DevCudaRt.hpp>         // dev::DevCudaRt
 #include <alpaka/dim/DimIntegralConst.hpp>  // dim::DimInt<N>
 #include <alpaka/extent/Traits.hpp>         // view::getXXX
 #include <alpaka/mem/view/Traits.hpp>       // view::Copy
-#include <alpaka/stream/StreamCudaRt.hpp>   // StreamCudaRt
+#include <alpaka/stream/StreamCudaRt.hpp>   // stream::StreamCudaRt
 
 #include <alpaka/core/Cuda.hpp>             // cudaMemcpy, ...
 

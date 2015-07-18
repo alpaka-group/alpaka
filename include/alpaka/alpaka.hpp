@@ -38,34 +38,41 @@
 // acc
 //-----------------------------------------------------------------------------
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_SEQ_ENABLED
-    #include <alpaka/acc/serial/Serial.hpp>
+    #include <alpaka/acc/AccCpuSerial.hpp>
+    #include <alpaka/exec/ExecCpuSerial.hpp>
 #endif
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED
-    #include <alpaka/acc/threads/Threads.hpp>
+    #include <alpaka/acc/AccCpuThreads.hpp>
+    #include <alpaka/exec/ExecCpuThreads.hpp>
 #endif
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLED
-    #include <alpaka/acc/fibers/Fibers.hpp>
+    #include <alpaka/acc/AccCpuFibers.hpp>
+    #include <alpaka/exec/ExecCpuFibers.hpp>
 #endif
 #ifdef ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED
     #if _OPENMP < 200203
         #error If ALPAKA_ACC_CPU_B_OMP2_T_SEQ_ENABLED is set, the compiler has to support OpenMP 2.0 or higher!
     #endif
-    #include <alpaka/acc/omp/omp2/blocks/Omp2Blocks.hpp>
+    #include <alpaka/acc/AccCpuOmp2Blocks.hpp>
+    #include <alpaka/exec/ExecCpuOmp2Blocks.hpp>
 #endif
 #ifdef ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED
     #if _OPENMP < 200203
         #error If ALPAKA_ACC_CPU_B_SEQ_T_OMP2_ENABLED is set, the compiler has to support OpenMP 2.0 or higher!
     #endif
-    #include <alpaka/acc/omp/omp2/threads/Omp2Threads.hpp>
+    #include <alpaka/acc/AccCpuOmp2Threads.hpp>
+    #include <alpaka/exec/ExecCpuOmp2Threads.hpp>
 #endif
 #ifdef ALPAKA_ACC_CPU_BT_OMP4_ENABLED
     #if _OPENMP < 201307
         #error If ALPAKA_ACC_CPU_BT_OMP4_ENABLED is set, the compiler has to support OpenMP 4.0 or higher!
     #endif
-    #include <alpaka/acc/omp/omp4/cpu/Omp4Cpu.hpp>
+    #include <alpaka/acc/AccCpuOmp4.hpp>
+    #include <alpaka/exec/ExecCpuOmp4.hpp>
 #endif
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
-    #include <alpaka/acc/cuda/Cuda.hpp>
+    #include <alpaka/acc/AccGpuCudaRt.hpp>
+    #include <alpaka/exec/ExecGpuCudaRt.hpp>
 #endif
 #include <alpaka/acc/AccDevProps.hpp>
 #include <alpaka/acc/Traits.hpp>

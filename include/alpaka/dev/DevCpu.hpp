@@ -21,14 +21,14 @@
 
 #pragma once
 
-#include <alpaka/dev/Traits.hpp>        // DevType
-#include <alpaka/event/Traits.hpp>      // EventType
-#include <alpaka/stream/Traits.hpp>     // StreamType
+#include <alpaka/dev/Traits.hpp>        // dev::traits::DevType
+#include <alpaka/event/Traits.hpp>      // event::traits::EventType
+#include <alpaka/stream/Traits.hpp>     // stream::traits::StreamType
 #include <alpaka/wait/Traits.hpp>       // CurrentThreadWaitFor
-#include <alpaka/mem/buf/Traits.hpp>    // BufType
-#include <alpaka/mem/view/Traits.hpp>   // ViewType
+#include <alpaka/mem/buf/Traits.hpp>    // mem::buf::traits::BufType
+#include <alpaka/mem/view/Traits.hpp>   // mem::view::traits::ViewType
 
-#include <alpaka/core/SysInfo.hpp>      // getCpuName, getGlobalMemSizeBytes
+#include <alpaka/dev/cpu/SysInfo.hpp>   // getCpuName, getGlobalMemSizeBytes
 
 #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 
@@ -67,7 +67,7 @@ namespace alpaka
                 //#############################################################################
                 class DevCpuImpl
                 {
-                    friend stream::StreamCpuAsync;                   // StreamCpuAsync::StreamCpuAsync calls RegisterAsyncStream.
+                    friend stream::StreamCpuAsync;                   // stream::StreamCpuAsync::StreamCpuAsync calls RegisterAsyncStream.
                     friend stream::cpu::detail::StreamCpuAsyncImpl;  // StreamCpuAsyncImpl::~StreamCpuAsyncImpl calls UnregisterAsyncStream.
                 public:
                     //-----------------------------------------------------------------------------

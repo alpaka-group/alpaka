@@ -30,13 +30,13 @@
 #include <alpaka/block/shared/BlockSharedAllocMasterSync.hpp>  // BlockSharedAllocMasterSync
 
 // Specialized traits.
-#include <alpaka/acc/Traits.hpp>                // AccType
-#include <alpaka/exec/Traits.hpp>               // ExecType
-#include <alpaka/dev/Traits.hpp>                // DevType
-#include <alpaka/size/Traits.hpp>               // size::SizeType
+#include <alpaka/acc/Traits.hpp>                // acc::traits::AccType
+#include <alpaka/exec/Traits.hpp>               // exec::traits::ExecType
+#include <alpaka/dev/Traits.hpp>                // dev::traits::DevType
+#include <alpaka/size/Traits.hpp>               // size::traits::SizeType
 
 // Implementation details.
-#include <alpaka/dev/DevCpu.hpp>                // DevCpu
+#include <alpaka/dev/DevCpu.hpp>                // dev::DevCpu
 
 #include <alpaka/core/OpenMp.hpp>
 
@@ -73,120 +73,97 @@ namespace alpaka
     }
     namespace acc
     {
-        namespace omp
+        //#############################################################################
+        //! The CPU OpenMP 2.0 thread accelerator.
+        //!
+        //! This accelerator allows parallel kernel execution on a CPU device.
+        //! It uses OpenMP 2.0 to implement the block thread parallelism.
+        //#############################################################################
+        template<
+            typename TDim,
+            typename TSize>
+        class AccCpuOmp2Threads final :
+            public workdiv::WorkDivMembers<TDim, TSize>,
+            public idx::gb::IdxGbRef<TDim, TSize>,
+            public idx::bt::IdxBtOmp<TDim, TSize>,
+            public atomic::AtomicOmpCritSec,
+            public math::MathStl,
+            public block::shared::BlockSharedAllocMasterSync
         {
+        public:
+            friend class ::alpaka::exec::omp::omp2::threads::detail::ExecCpuOmp2ThreadsImpl<TDim, TSize>;
+
+        private:
             //-----------------------------------------------------------------------------
-            //! The CPU OpenMP 2.0 thread accelerator.
+            //! Constructor.
             //-----------------------------------------------------------------------------
-            namespace omp2
+            template<
+                typename TWorkDiv>
+            ALPAKA_FN_ACC_NO_CUDA AccCpuOmp2Threads(
+                TWorkDiv const & workDiv) :
+                    workdiv::WorkDivMembers<TDim, TSize>(workDiv),
+                    idx::gb::IdxGbRef<TDim, TSize>(m_vuiGridBlockIdx),
+                    idx::bt::IdxBtOmp<TDim, TSize>(),
+                    AtomicOmpCritSec(),
+                    math::MathStl(),
+                    block::shared::BlockSharedAllocMasterSync(
+                        [this](){syncBlockThreads();},
+                        [](){return (::omp_get_thread_num() == 0);}),
+                    m_vuiGridBlockIdx(Vec<TDim, TSize>::zeros())
+            {}
+
+        public:
+            //-----------------------------------------------------------------------------
+            //! Copy constructor.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_ACC_NO_CUDA AccCpuOmp2Threads(AccCpuOmp2Threads const &) = delete;
+            //-----------------------------------------------------------------------------
+            //! Move constructor.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_ACC_NO_CUDA AccCpuOmp2Threads(AccCpuOmp2Threads &&) = delete;
+            //-----------------------------------------------------------------------------
+            //! Copy assignment operator.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_ACC_NO_CUDA auto operator=(AccCpuOmp2Threads const &) -> AccCpuOmp2Threads & = delete;
+            //-----------------------------------------------------------------------------
+            //! Move assignment operator.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_ACC_NO_CUDA auto operator=(AccCpuOmp2Threads &&) -> AccCpuOmp2Threads & = delete;
+            //-----------------------------------------------------------------------------
+            //! Destructor.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~AccCpuOmp2Threads() = default;
+
+            //-----------------------------------------------------------------------------
+            //! Syncs all threads in the current block.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_ACC_NO_CUDA auto syncBlockThreads() const
+            -> void
             {
-                namespace threads
-                {
-                    //-----------------------------------------------------------------------------
-                    //! The CPU OpenMP 2.0 thread accelerator implementation details.
-                    //-----------------------------------------------------------------------------
-                    namespace detail
-                    {
-                        //#############################################################################
-                        //! The CPU OpenMP 2.0 thread accelerator.
-                        //!
-                        //! This accelerator allows parallel kernel execution on a CPU device.
-                        //! It uses OpenMP 2.0 to implement the block thread parallelism.
-                        //#############################################################################
-                        template<
-                            typename TDim,
-                            typename TSize>
-                        class AccCpuOmp2Threads final :
-                            public workdiv::WorkDivMembers<TDim, TSize>,
-                            public idx::gb::IdxGbRef<TDim, TSize>,
-                            public idx::bt::IdxBtOmp<TDim, TSize>,
-                            public atomic::AtomicOmpCritSec,
-                            public math::MathStl,
-                            public block::shared::BlockSharedAllocMasterSync
-                        {
-                        public:
-                            friend class ::alpaka::exec::omp::omp2::threads::detail::ExecCpuOmp2ThreadsImpl<TDim, TSize>;
-
-                        private:
-                            //-----------------------------------------------------------------------------
-                            //! Constructor.
-                            //-----------------------------------------------------------------------------
-                            template<
-                                typename TWorkDiv>
-                            ALPAKA_FN_ACC_NO_CUDA AccCpuOmp2Threads(
-                                TWorkDiv const & workDiv) :
-                                    workdiv::WorkDivMembers<TDim, TSize>(workDiv),
-                                    idx::gb::IdxGbRef<TDim, TSize>(m_vuiGridBlockIdx),
-                                    idx::bt::IdxBtOmp<TDim, TSize>(),
-                                    AtomicOmpCritSec(),
-                                    math::MathStl(),
-                                    block::shared::BlockSharedAllocMasterSync(
-                                        [this](){syncBlockThreads();},
-                                        [](){return (::omp_get_thread_num() == 0);}),
-                                    m_vuiGridBlockIdx(Vec<TDim, TSize>::zeros())
-                            {}
-
-                        public:
-                            //-----------------------------------------------------------------------------
-                            //! Copy constructor.
-                            //-----------------------------------------------------------------------------
-                            ALPAKA_FN_ACC_NO_CUDA AccCpuOmp2Threads(AccCpuOmp2Threads const &) = delete;
-                            //-----------------------------------------------------------------------------
-                            //! Move constructor.
-                            //-----------------------------------------------------------------------------
-                            ALPAKA_FN_ACC_NO_CUDA AccCpuOmp2Threads(AccCpuOmp2Threads &&) = delete;
-                            //-----------------------------------------------------------------------------
-                            //! Copy assignment operator.
-                            //-----------------------------------------------------------------------------
-                            ALPAKA_FN_ACC_NO_CUDA auto operator=(AccCpuOmp2Threads const &) -> AccCpuOmp2Threads & = delete;
-                            //-----------------------------------------------------------------------------
-                            //! Move assignment operator.
-                            //-----------------------------------------------------------------------------
-                            ALPAKA_FN_ACC_NO_CUDA auto operator=(AccCpuOmp2Threads &&) -> AccCpuOmp2Threads & = delete;
-                            //-----------------------------------------------------------------------------
-                            //! Destructor.
-                            //-----------------------------------------------------------------------------
-                            ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~AccCpuOmp2Threads() = default;
-
-                            //-----------------------------------------------------------------------------
-                            //! Syncs all threads in the current block.
-                            //-----------------------------------------------------------------------------
-                            ALPAKA_FN_ACC_NO_CUDA auto syncBlockThreads() const
-                            -> void
-                            {
-                                // Barrier implementation not waiting for all threads:
-                                // http://berenger.eu/blog/copenmp-custom-barrier-a-barrier-for-a-group-of-threads/
-                                #pragma omp barrier
-                            }
-
-                            //-----------------------------------------------------------------------------
-                            //! \return The pointer to the externally allocated block shared memory.
-                            //-----------------------------------------------------------------------------
-                            template<
-                                typename T>
-                            ALPAKA_FN_ACC_NO_CUDA auto getBlockSharedExternMem() const
-                            -> T *
-                            {
-                                return reinterpret_cast<T*>(m_vuiExternalSharedMem.get());
-                            }
-
-                        private:
-                            // getIdx
-                            alignas(16u) Vec<TDim, TSize> mutable m_vuiGridBlockIdx;   //!< The index of the currently executed block.
-
-                            // getBlockSharedExternMem
-                            std::unique_ptr<uint8_t, boost::alignment::aligned_delete> mutable m_vuiExternalSharedMem;  //!< External block shared memory.
-                        };
-                    }
-                }
+                // Barrier implementation not waiting for all threads:
+                // http://berenger.eu/blog/copenmp-custom-barrier-a-barrier-for-a-group-of-threads/
+                #pragma omp barrier
             }
-        }
-    }
 
-    template<
-        typename TDim,
-        typename TSize>
-    using AccCpuOmp2Threads = acc::omp::omp2::threads::detail::AccCpuOmp2Threads<TDim, TSize>;
+            //-----------------------------------------------------------------------------
+            //! \return The pointer to the externally allocated block shared memory.
+            //-----------------------------------------------------------------------------
+            template<
+                typename T>
+            ALPAKA_FN_ACC_NO_CUDA auto getBlockSharedExternMem() const
+            -> T *
+            {
+                return reinterpret_cast<T*>(m_vuiExternalSharedMem.get());
+            }
+
+        private:
+            // getIdx
+            alignas(16u) Vec<TDim, TSize> mutable m_vuiGridBlockIdx;   //!< The index of the currently executed block.
+
+            // getBlockSharedExternMem
+            std::unique_ptr<uint8_t, boost::alignment::aligned_delete> mutable m_vuiExternalSharedMem;  //!< External block shared memory.
+        };
+    }
 
     namespace acc
     {
@@ -199,9 +176,9 @@ namespace alpaka
                 typename TDim,
                 typename TSize>
             struct AccType<
-                acc::omp::omp2::threads::detail::AccCpuOmp2Threads<TDim, TSize>>
+                acc::AccCpuOmp2Threads<TDim, TSize>>
             {
-                using type = acc::omp::omp2::threads::detail::AccCpuOmp2Threads<TDim, TSize>;
+                using type = acc::AccCpuOmp2Threads<TDim, TSize>;
             };
             //#############################################################################
             //! The CPU OpenMP 2.0 thread accelerator device properties get trait specialization.
@@ -210,7 +187,7 @@ namespace alpaka
                 typename TDim,
                 typename TSize>
             struct GetAccDevProps<
-                acc::omp::omp2::threads::detail::AccCpuOmp2Threads<TDim, TSize>>
+                acc::AccCpuOmp2Threads<TDim, TSize>>
             {
                 ALPAKA_FN_HOST static auto getAccDevProps(
                     dev::DevCpu const & dev)
@@ -247,7 +224,7 @@ namespace alpaka
                 typename TDim,
                 typename TSize>
             struct GetAccName<
-                acc::omp::omp2::threads::detail::AccCpuOmp2Threads<TDim, TSize>>
+                acc::AccCpuOmp2Threads<TDim, TSize>>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getAccName()
@@ -269,7 +246,7 @@ namespace alpaka
                 typename TDim,
                 typename TSize>
             struct DevType<
-                acc::omp::omp2::threads::detail::AccCpuOmp2Threads<TDim, TSize>>
+                acc::AccCpuOmp2Threads<TDim, TSize>>
             {
                 using type = dev::DevCpu;
             };
@@ -280,7 +257,7 @@ namespace alpaka
                 typename TDim,
                 typename TSize>
             struct DevManType<
-                acc::omp::omp2::threads::detail::AccCpuOmp2Threads<TDim, TSize>>
+                acc::AccCpuOmp2Threads<TDim, TSize>>
             {
                 using type = dev::DevManCpu;
             };
@@ -297,7 +274,7 @@ namespace alpaka
                 typename TDim,
                 typename TSize>
             struct DimType<
-                acc::omp::omp2::threads::detail::AccCpuOmp2Threads<TDim, TSize>>
+                acc::AccCpuOmp2Threads<TDim, TSize>>
             {
                 using type = TDim;
             };
@@ -314,7 +291,7 @@ namespace alpaka
                 typename TDim,
                 typename TSize>
             struct ExecType<
-                acc::omp::omp2::threads::detail::AccCpuOmp2Threads<TDim, TSize>>
+                acc::AccCpuOmp2Threads<TDim, TSize>>
             {
                 using type = exec::ExecCpuOmp2Threads<TDim, TSize>;
             };
@@ -331,7 +308,7 @@ namespace alpaka
                 typename TDim,
                 typename TSize>
             struct SizeType<
-                acc::omp::omp2::threads::detail::AccCpuOmp2Threads<TDim, TSize>>
+                acc::AccCpuOmp2Threads<TDim, TSize>>
             {
                 using type = TSize;
             };

@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/dev/DevCudaRt.hpp> // DevCudaRt
+#include <alpaka/dev/DevCudaRt.hpp> // dev::DevCudaRt
 #include <alpaka/dev/Traits.hpp>    // GetDev
 #include <alpaka/event/Traits.hpp>
 #include <alpaka/wait/Traits.hpp>   // CurrentThreadWaitFor

@@ -22,19 +22,19 @@
 #pragma once
 
 // Specialized traits.
-#include <alpaka/acc/Traits.hpp>                // AccType
-#include <alpaka/dev/Traits.hpp>                // DevType
-#include <alpaka/event/Traits.hpp>              // EventType
-#include <alpaka/exec/Traits.hpp>               // ExecType
-#include <alpaka/size/Traits.hpp>               // size::SizeType
-#include <alpaka/stream/Traits.hpp>             // StreamType
+#include <alpaka/acc/Traits.hpp>                // acc::traits::AccType
+#include <alpaka/dev/Traits.hpp>                // dev::traits::DevType
+#include <alpaka/event/Traits.hpp>              // event::traits::EventType
+#include <alpaka/exec/Traits.hpp>               // exec::traits::ExecType
+#include <alpaka/size/Traits.hpp>               // size::traits::SizeType
+#include <alpaka/stream/Traits.hpp>             // stream::traits::StreamType
 
 // Implementation details.
-#include <alpaka/acc/fibers/Acc.hpp>            // AccCpuFibers
-#include <alpaka/dev/DevCpu.hpp>                // DevCpu
-#include <alpaka/event/EventCpuAsync.hpp>       // EventCpuAsync
-#include <alpaka/kernel/Traits.hpp>             // BlockSharedExternMemSizeBytes
-#include <alpaka/stream/StreamCpuAsync.hpp>     // StreamCpuAsync
+#include <alpaka/acc/AccCpuFibers.hpp>          // acc:AccCpuFibers
+#include <alpaka/dev/DevCpu.hpp>                // dev::DevCpu
+#include <alpaka/event/EventCpuAsync.hpp>       // event::EventCpuAsync
+#include <alpaka/kernel/Traits.hpp>             // kernel::getBlockSharedExternMemSizeBytes
+#include <alpaka/stream/StreamCpuAsync.hpp>     // stream::StreamCpuAsync
 #include <alpaka/workdiv/WorkDivMembers.hpp>    // workdiv::WorkDivMembers
 
 #include <alpaka/core/Fibers.hpp>
@@ -85,7 +85,7 @@ namespace alpaka
                     // Yielding is not faster for fibers. Therefore we use condition variables.
                     // It is better to wake them up when the conditions are fulfilled because this does not cost as much as for real threads.
                     //#############################################################################
-                    using FiberPool = alpaka::detail::ConcurrentExecPool<
+                    using FiberPool = alpaka::core::detail::ConcurrentExecPool<
                         TSize,
                         boost::fibers::fiber,               // The concurrent execution type.
                         boost::fibers::promise,             // The promise type.
@@ -147,7 +147,7 @@ namespace alpaka
                         auto const uiBlockSharedExternMemSizeBytes(
                             kernel::getBlockSharedExternMemSizeBytes<
                                 typename std::decay<TKernelFnObj>::type,
-                                AccCpuFibers<TDim, TSize>>(
+                                acc::AccCpuFibers<TDim, TSize>>(
                                     vuiBlockThreadExtents,
                                     args...));
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -155,7 +155,7 @@ namespace alpaka
                             << " BlockSharedExternMemSizeBytes: " << uiBlockSharedExternMemSizeBytes << " B"
                             << std::endl;
 #endif
-                        AccCpuFibers<TDim, TSize> acc(workDiv);
+                        acc::AccCpuFibers<TDim, TSize> acc(workDiv);
 
                         if(uiBlockSharedExternMemSizeBytes > 0u)
                         {
@@ -178,7 +178,7 @@ namespace alpaka
                             std::ref(args)...));
 
                         // Execute the blocks serially.
-                        ndLoop(
+                        core::ndLoop(
                             vuiGridBlockExtents,
                             boundGridBlockExecHost);
 
@@ -194,7 +194,7 @@ namespace alpaka
                         typename TKernelFnObj,
                         typename... TArgs>
                     ALPAKA_FN_HOST static auto gridBlockExecHost(
-                        AccCpuFibers<TDim, TSize> & acc,
+                        acc::AccCpuFibers<TDim, TSize> & acc,
                         Vec<TDim, TSize> const & vuiGridBlockIdx,
                         Vec<TDim, TSize> const & vuiBlockThreadExtents,
                         FiberPool & fiberPool,
@@ -218,7 +218,7 @@ namespace alpaka
                             std::ref(kernelFnObj),
                             std::ref(args)...));
                         // Execute the block threads in parallel.
-                        ndLoop(
+                        core::ndLoop(
                             vuiBlockThreadExtents,
                             boundBlockThreadExecHost);
 
@@ -247,7 +247,7 @@ namespace alpaka
                         typename TKernelFnObj,
                         typename... TArgs>
                     ALPAKA_FN_HOST static auto blockThreadExecHost(
-                        AccCpuFibers<TDim, TSize> & acc,
+                        acc::AccCpuFibers<TDim, TSize> & acc,
                         std::vector<boost::fibers::future<void>> & vFuturesInBlock,
                         Vec<TDim, TSize> const & vuiBlockThreadIdx,
                         FiberPool & fiberPool,
@@ -278,7 +278,7 @@ namespace alpaka
                         typename TKernelFnObj,
                         typename... TArgs>
                     ALPAKA_FN_HOST static auto blockThreadFiberFn(
-                        AccCpuFibers<TDim, TSize> & acc,
+                        acc::AccCpuFibers<TDim, TSize> & acc,
                         Vec<TDim, TSize> const & vuiBlockThreadIdx,
                         TKernelFnObj const & kernelFnObj,
                         TArgs const & ... args)
@@ -306,7 +306,7 @@ namespace alpaka
 
                         // Execute the kernel itself.
                         kernelFnObj(
-                            const_cast<AccCpuFibers<TDim, TSize> const &>(acc),
+                            const_cast<acc::AccCpuFibers<TDim, TSize> const &>(acc),
                             args...);
 
                         // We have to sync all fibers here because if a fiber would finish before all fibers have been started, the new fiber could get a recycled (then duplicate) fiber id!
@@ -408,7 +408,7 @@ namespace alpaka
             struct AccType<
                 exec::ExecCpuFibers<TDim, TSize>>
             {
-                using type = acc::fibers::detail::AccCpuFibers<TDim, TSize>;
+                using type = acc::AccCpuFibers<TDim, TSize>;
             };
         }
     }

@@ -21,12 +21,12 @@
 
 #pragma once
 
-#include <alpaka/dev/Traits.hpp>        // dev::DevType, ...
+#include <alpaka/dev/Traits.hpp>        // dev::traits::DevType, ...
 #include <alpaka/dim/Traits.hpp>        // dim::DimType
 #include <alpaka/extent/Traits.hpp>     // extent::GetExtent
 #include <alpaka/offset/Traits.hpp>     // offset::GetOffset
 
-#include <alpaka/core/Fold.hpp>         // foldr
+#include <alpaka/core/Fold.hpp>         // core::foldr
 #include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST
 
 #include <iosfwd>                       // std::ostream
@@ -97,7 +97,7 @@ namespace alpaka
                         TView const & view)
                     -> size::Size<TView>
                     {
-                        using IdxSequence = alpaka::detail::make_integer_sequence_offset<std::size_t, TIdx::value, dim::Dim<TView>::value - TIdx::value>;
+                        using IdxSequence = alpaka::core::detail::make_integer_sequence_offset<std::size_t, TIdx::value, dim::Dim<TView>::value - TIdx::value>;
                         return
                             extentsProd(view, IdxSequence())
                             * sizeof(typename ElemType<TView>::type);
@@ -110,12 +110,12 @@ namespace alpaka
                         std::size_t... TIndices>
                     ALPAKA_FN_HOST static auto extentsProd(
                         TView const & view,
-                        alpaka::detail::integer_sequence<std::size_t, TIndices...> const &)
+                        alpaka::core::detail::integer_sequence<std::size_t, TIndices...> const &)
                     -> size::Size<TView>
                     {
                         // For the case that the sequence is empty (index out of range), 1 is returned.
                         return
-                            foldr(
+                            core::foldr(
                                 std::multiplies<size::Size<TView>>(),
                                 1u,
                                 extent::getExtent<TIndices>(view)...);

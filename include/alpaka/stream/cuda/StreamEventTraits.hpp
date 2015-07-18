@@ -21,8 +21,8 @@
 
 #pragma once
 
-#include <alpaka/event/EventCudaRt.hpp>       // EventCuda
-#include <alpaka/stream/StreamCudaRt.hpp>   // StreamCudaRt
+#include <alpaka/event/EventCudaRt.hpp>     // EventCuda
+#include <alpaka/stream/StreamCudaRt.hpp>   // stream::StreamCudaRt
 
 #include <alpaka/core/Cuda.hpp>             // ALPAKA_CUDA_RT_CHECK
 

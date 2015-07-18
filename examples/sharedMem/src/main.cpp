@@ -292,7 +292,7 @@ auto main()
         SharedMemTester<TuiNumUselessWork> sharedMemTester;
 
         // Execute the kernel on all enabled accelerators.
-        alpaka::forEachType<
+        alpaka::core::forEachType<
             alpaka::examples::accs::EnabledAccs<alpaka::dim::DimInt<1u>, std::uint32_t>>(
                 sharedMemTester,
                 static_cast<std::uint32_t>(512u),

@@ -30,13 +30,13 @@
 #include <alpaka/block/shared/BlockSharedAllocCudaBuiltIn.hpp>  // BlockSharedAllocCudaBuiltIn
 
 // Specialized traits.
-#include <alpaka/acc/Traits.hpp>                    // AccType
-#include <alpaka/dev/Traits.hpp>                    // DevType
-#include <alpaka/exec/Traits.hpp>                   // ExecType
-#include <alpaka/size/Traits.hpp>                   // size::SizeType
+#include <alpaka/acc/Traits.hpp>                    // acc::traits::AccType
+#include <alpaka/dev/Traits.hpp>                    // dev::traits::DevType
+#include <alpaka/exec/Traits.hpp>                   // exec::traits::ExecType
+#include <alpaka/size/Traits.hpp>                   // size::traits::SizeType
 
 // Implementation details.
-#include <alpaka/dev/DevCudaRt.hpp>                 // DevCudaRt
+#include <alpaka/dev/DevCudaRt.hpp>                 // dev::DevCudaRt
 #include <alpaka/core/Cuda.hpp>                     // ALPAKA_CUDA_RT_CHECK
 
 #include <boost/predef.h>                           // workarounds
@@ -51,104 +51,87 @@ namespace alpaka
         template<
             typename TDim,
             typename TSize>
-        class ExecGpuCuda;
+        class ExecGpuCudaRt;
     }
     namespace acc
     {
-        //-----------------------------------------------------------------------------
+        //#############################################################################
         //! The GPU CUDA accelerator.
-        //-----------------------------------------------------------------------------
-        namespace cuda
+        //!
+        //! This accelerator allows parallel kernel execution on devices supporting CUDA.
+        //#############################################################################
+        template<
+            typename TDim,
+            typename TSize>
+        class AccGpuCudaRt final :
+            public workdiv::WorkDivCudaBuiltIn<TDim, TSize>,
+            public idx::gb::IdxGbCudaBuiltIn<TDim, TSize>,
+            public idx::bt::IdxBtCudaBuiltIn<TDim, TSize>,
+            public atomic::AtomicCudaBuiltIn,
+            public math::MathCudaBuiltIn,
+            public block::shared::BlockSharedAllocCudaBuiltIn
         {
+        public:
             //-----------------------------------------------------------------------------
-            //! The GPU CUDA accelerator implementation details.
+            //! Constructor.
             //-----------------------------------------------------------------------------
-            namespace detail
+            ALPAKA_FN_ACC_CUDA_ONLY AccGpuCudaRt() :
+                workdiv::WorkDivCudaBuiltIn<TDim, TSize>(),
+                idx::gb::IdxGbCudaBuiltIn<TDim, TSize>(),
+                idx::bt::IdxBtCudaBuiltIn<TDim, TSize>(),
+                atomic::AtomicCudaBuiltIn(),
+                math::MathCudaBuiltIn(),
+                block::shared::BlockSharedAllocCudaBuiltIn()
+            {}
+
+        public:
+            //-----------------------------------------------------------------------------
+            //! Copy constructor.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_ACC_CUDA_ONLY AccGpuCudaRt(AccGpuCudaRt const &) = delete;
+            //-----------------------------------------------------------------------------
+            //! Move constructor.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_ACC_CUDA_ONLY AccGpuCudaRt(AccGpuCudaRt &&) = delete;
+            //-----------------------------------------------------------------------------
+            //! Copy assignment operator.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_ACC_CUDA_ONLY auto operator=(AccGpuCudaRt const &) -> AccGpuCudaRt & = delete;
+            //-----------------------------------------------------------------------------
+            //! Move assignment operator.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_ACC_CUDA_ONLY auto operator=(AccGpuCudaRt &&) -> AccGpuCudaRt & = delete;
+            //-----------------------------------------------------------------------------
+            //! Destructor.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_ACC_CUDA_ONLY ~AccGpuCudaRt() = default;
+
+            //-----------------------------------------------------------------------------
+            //! Syncs all threads in the current block.
+            //-----------------------------------------------------------------------------
+            ALPAKA_FN_ACC_CUDA_ONLY auto syncBlockThreads() const
+            -> void
             {
-                //#############################################################################
-                //! The GPU CUDA accelerator.
-                //!
-                //! This accelerator allows parallel kernel execution on devices supporting CUDA.
-                //#############################################################################
-                template<
-                    typename TDim,
-                    typename TSize>
-                class AccGpuCuda final :
-                    public workdiv::WorkDivCudaBuiltIn<TDim, TSize>,
-                    public idx::gb::IdxGbCudaBuiltIn<TDim, TSize>,
-                    public idx::bt::IdxBtCudaBuiltIn<TDim, TSize>,
-                    public atomic::AtomicCudaBuiltIn,
-                    public math::MathCudaBuiltIn,
-                    public block::shared::BlockSharedAllocCudaBuiltIn
-                {
-                public:
-                    //-----------------------------------------------------------------------------
-                    //! Constructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FN_ACC_CUDA_ONLY AccGpuCuda() :
-                        workdiv::WorkDivCudaBuiltIn<TDim, TSize>(),
-                        idx::gb::IdxGbCudaBuiltIn<TDim, TSize>(),
-                        idx::bt::IdxBtCudaBuiltIn<TDim, TSize>(),
-                        atomic::AtomicCudaBuiltIn(),
-                        math::MathCudaBuiltIn(),
-                        block::shared::BlockSharedAllocCudaBuiltIn()
-                    {}
-
-                public:
-                    //-----------------------------------------------------------------------------
-                    //! Copy constructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FN_ACC_CUDA_ONLY AccGpuCuda(AccGpuCuda const &) = delete;
-                    //-----------------------------------------------------------------------------
-                    //! Move constructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FN_ACC_CUDA_ONLY AccGpuCuda(AccGpuCuda &&) = delete;
-                    //-----------------------------------------------------------------------------
-                    //! Copy assignment operator.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FN_ACC_CUDA_ONLY auto operator=(AccGpuCuda const &) -> AccGpuCuda & = delete;
-                    //-----------------------------------------------------------------------------
-                    //! Move assignment operator.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FN_ACC_CUDA_ONLY auto operator=(AccGpuCuda &&) -> AccGpuCuda & = delete;
-                    //-----------------------------------------------------------------------------
-                    //! Destructor.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FN_ACC_CUDA_ONLY ~AccGpuCuda() = default;
-
-                    //-----------------------------------------------------------------------------
-                    //! Syncs all threads in the current block.
-                    //-----------------------------------------------------------------------------
-                    ALPAKA_FN_ACC_CUDA_ONLY auto syncBlockThreads() const
-                    -> void
-                    {
-                        __syncthreads();
-                    }
-
-                    //-----------------------------------------------------------------------------
-                    //! \return The pointer to the externally allocated block shared memory.
-                    //-----------------------------------------------------------------------------
-                    template<
-                        typename T>
-                    ALPAKA_FN_ACC_CUDA_ONLY auto getBlockSharedExternMem() const
-                    -> T *
-                    {
-                        // Because unaligned access to variables is not allowed in device code,
-                        // we have to use the widest possible type to have all types aligned correctly.
-                        // See: http://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#shared
-                        // http://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#vector-types
-                        extern __shared__ float4 shMem[];
-                        return reinterpret_cast<T *>(shMem);
-                    }
-                };
+                __syncthreads();
             }
-        }
-    }
 
-    template<
-        typename TDim,
-        typename TSize>
-    using AccGpuCuda = acc::cuda::detail::AccGpuCuda<TDim, TSize>;
+            //-----------------------------------------------------------------------------
+            //! \return The pointer to the externally allocated block shared memory.
+            //-----------------------------------------------------------------------------
+            template<
+                typename T>
+            ALPAKA_FN_ACC_CUDA_ONLY auto getBlockSharedExternMem() const
+            -> T *
+            {
+                // Because unaligned access to variables is not allowed in device code,
+                // we have to use the widest possible type to have all types aligned correctly.
+                // See: http://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#shared
+                // http://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#vector-types
+                extern __shared__ float4 shMem[];
+                return reinterpret_cast<T *>(shMem);
+            }
+        };
+    }
 
     namespace acc
     {
@@ -161,9 +144,9 @@ namespace alpaka
                 typename TDim,
                 typename TSize>
             struct AccType<
-                acc::cuda::detail::AccGpuCuda<TDim, TSize>>
+                acc::AccGpuCudaRt<TDim, TSize>>
             {
-                using type = acc::cuda::detail::AccGpuCuda<TDim, TSize>;
+                using type = acc::AccGpuCudaRt<TDim, TSize>;
             };
             //#############################################################################
             //! The GPU CUDA accelerator device properties get trait specialization.
@@ -172,7 +155,7 @@ namespace alpaka
                 typename TDim,
                 typename TSize>
             struct GetAccDevProps<
-                acc::cuda::detail::AccGpuCuda<TDim, TSize>>
+                acc::AccGpuCudaRt<TDim, TSize>>
             {
                 ALPAKA_FN_HOST static auto getAccDevProps(
                     dev::DevCudaRt const & dev)
@@ -209,13 +192,13 @@ namespace alpaka
                 typename TDim,
                 typename TSize>
             struct GetAccName<
-                acc::cuda::detail::AccGpuCuda<TDim, TSize>>
+                acc::AccGpuCudaRt<TDim, TSize>>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getAccName()
                 -> std::string
                 {
-                    return "AccGpuCuda<" + std::to_string(TDim::value) + "," + typeid(TSize).name() + ">";
+                    return "AccGpuCudaRt<" + std::to_string(TDim::value) + "," + typeid(TSize).name() + ">";
                 }
             };
         }
@@ -231,7 +214,7 @@ namespace alpaka
                 typename TDim,
                 typename TSize>
             struct DevType<
-                acc::cuda::detail::AccGpuCuda<TDim, TSize>>
+                acc::AccGpuCudaRt<TDim, TSize>>
             {
                 using type = dev::DevCudaRt;
             };
@@ -242,7 +225,7 @@ namespace alpaka
                 typename TDim,
                 typename TSize>
             struct DevManType<
-                acc::cuda::detail::AccGpuCuda<TDim, TSize>>
+                acc::AccGpuCudaRt<TDim, TSize>>
             {
                 using type = dev::DevManCudaRt;
             };
@@ -259,7 +242,7 @@ namespace alpaka
                 typename TDim,
                 typename TSize>
             struct DimType<
-                acc::cuda::detail::AccGpuCuda<TDim, TSize>>
+                acc::AccGpuCudaRt<TDim, TSize>>
             {
                 using type = TDim;
             };
@@ -276,9 +259,9 @@ namespace alpaka
                 typename TDim,
                 typename TSize>
             struct ExecType<
-                acc::cuda::detail::AccGpuCuda<TDim, TSize>>
+                acc::AccGpuCudaRt<TDim, TSize>>
             {
-                using type = exec::ExecGpuCuda<TDim, TSize>;
+                using type = exec::ExecGpuCudaRt<TDim, TSize>;
             };
         }
     }
@@ -293,7 +276,7 @@ namespace alpaka
                 typename TDim,
                 typename TSize>
             struct SizeType<
-                acc::cuda::detail::AccGpuCuda<TDim, TSize>>
+                acc::AccGpuCudaRt<TDim, TSize>>
             {
                 using type = TSize;
             };

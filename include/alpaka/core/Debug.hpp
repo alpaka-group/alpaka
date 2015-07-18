@@ -59,50 +59,53 @@
 
 namespace alpaka
 {
-    namespace detail
+    namespace core
     {
-        //#############################################################################
-        //! Scope logger.
-        //#############################################################################
-        class ScopeLogStdOut final
+        namespace detail
         {
-        public:
-            //-----------------------------------------------------------------------------
-            //! Constructor.
-            //-----------------------------------------------------------------------------
-            ScopeLogStdOut(
-                std::string const & sScope) :
-                    m_sScope(sScope)
+            //#############################################################################
+            //! Scope logger.
+            //#############################################################################
+            class ScopeLogStdOut final
             {
-                std::cout << "[+] " << m_sScope << std::endl;
-            }
-            //-----------------------------------------------------------------------------
-            //! Copy constructor.
-            //-----------------------------------------------------------------------------
-            ScopeLogStdOut(ScopeLogStdOut const &) = delete;
-            //-----------------------------------------------------------------------------
-            //! Move constructor.
-            //-----------------------------------------------------------------------------
-            ScopeLogStdOut(ScopeLogStdOut &&) = delete;
-            //-----------------------------------------------------------------------------
-            //! Copy assignment operator.
-            //-----------------------------------------------------------------------------
-            auto operator=(ScopeLogStdOut const &) -> ScopeLogStdOut & = delete;
-            //-----------------------------------------------------------------------------
-            //! Move assignment operator.
-            //-----------------------------------------------------------------------------
-            auto operator=(ScopeLogStdOut &&) -> ScopeLogStdOut & = delete;
-            //-----------------------------------------------------------------------------
-            //! Destructor.
-            //-----------------------------------------------------------------------------
-            ~ScopeLogStdOut()
-            {
-                std::cout << "[-] " << m_sScope << std::endl;
-            }
+            public:
+                //-----------------------------------------------------------------------------
+                //! Constructor.
+                //-----------------------------------------------------------------------------
+                ScopeLogStdOut(
+                    std::string const & sScope) :
+                        m_sScope(sScope)
+                {
+                    std::cout << "[+] " << m_sScope << std::endl;
+                }
+                //-----------------------------------------------------------------------------
+                //! Copy constructor.
+                //-----------------------------------------------------------------------------
+                ScopeLogStdOut(ScopeLogStdOut const &) = delete;
+                //-----------------------------------------------------------------------------
+                //! Move constructor.
+                //-----------------------------------------------------------------------------
+                ScopeLogStdOut(ScopeLogStdOut &&) = delete;
+                //-----------------------------------------------------------------------------
+                //! Copy assignment operator.
+                //-----------------------------------------------------------------------------
+                auto operator=(ScopeLogStdOut const &) -> ScopeLogStdOut & = delete;
+                //-----------------------------------------------------------------------------
+                //! Move assignment operator.
+                //-----------------------------------------------------------------------------
+                auto operator=(ScopeLogStdOut &&) -> ScopeLogStdOut & = delete;
+                //-----------------------------------------------------------------------------
+                //! Destructor.
+                //-----------------------------------------------------------------------------
+                ~ScopeLogStdOut()
+                {
+                    std::cout << "[-] " << m_sScope << std::endl;
+                }
 
-        private:
-            std::string const m_sScope;
-        };
+            private:
+                std::string const m_sScope;
+            };
+        }
     }
 }
 
@@ -111,7 +114,7 @@ namespace alpaka
 //-----------------------------------------------------------------------------
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
     #define ALPAKA_DEBUG_MINIMAL_LOG_SCOPE\
-        ::alpaka::detail::ScopeLogStdOut const scopeLogStdOut(BOOST_CURRENT_FUNCTION)
+        ::alpaka::core::detail::ScopeLogStdOut const scopeLogStdOut(BOOST_CURRENT_FUNCTION)
 #else
     #define ALPAKA_DEBUG_MINIMAL_LOG_SCOPE
 #endif
@@ -121,7 +124,7 @@ namespace alpaka
 //-----------------------------------------------------------------------------
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
     #define ALPAKA_DEBUG_FULL_LOG_SCOPE\
-        ::alpaka::detail::ScopeLogStdOut const scopeLogStdOut(BOOST_CURRENT_FUNCTION)
+        ::alpaka::core::detail::ScopeLogStdOut const scopeLogStdOut(BOOST_CURRENT_FUNCTION)
 #else
     #define ALPAKA_DEBUG_FULL_LOG_SCOPE
 #endif

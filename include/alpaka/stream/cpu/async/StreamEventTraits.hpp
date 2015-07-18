@@ -21,8 +21,8 @@
 
 #pragma once
 
-#include <alpaka/event/EventCpuAsync.hpp>   // EventCpuAsync
-#include <alpaka/stream/StreamCpuAsync.hpp> // StreamCpuAsync
+#include <alpaka/event/EventCpuAsync.hpp>   // event::EventCpuAsync
+#include <alpaka/stream/StreamCpuAsync.hpp> // stream::StreamCpuAsync
 
 #include <alpaka/wait/Traits.hpp>           // wait
 

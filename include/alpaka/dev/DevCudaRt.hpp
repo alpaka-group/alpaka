@@ -21,12 +21,12 @@
 
 #pragma once
 
-#include <alpaka/dev/Traits.hpp>        // DevType
-#include <alpaka/event/Traits.hpp>      // EventType
-#include <alpaka/stream/Traits.hpp>     // StreamType
+#include <alpaka/dev/Traits.hpp>        // dev::traits::DevType
+#include <alpaka/event/Traits.hpp>      // event::traits::EventType
+#include <alpaka/stream/Traits.hpp>     // stream::traits::StreamType
 #include <alpaka/wait/Traits.hpp>       // CurrentThreadWaitFor
-#include <alpaka/mem/buf/Traits.hpp>    // BufType
-#include <alpaka/mem/view/Traits.hpp>   // ViewType
+#include <alpaka/mem/buf/Traits.hpp>    // mem::buf::traits::BufType
+#include <alpaka/mem/view/Traits.hpp>   // mem::view::traits::ViewType
 
 #include <alpaka/core/Cuda.hpp>         // cudaGetDeviceCount, ...
 

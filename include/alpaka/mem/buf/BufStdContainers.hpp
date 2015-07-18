@@ -21,12 +21,12 @@
 
 #pragma once
 
-#include <alpaka/mem/buf/Traits.hpp>    // DevType, DimType, GetExtent,Copy, GetOffset, ...
+#include <alpaka/mem/buf/Traits.hpp>    // dev::traits::DevType, DimType, GetExtent,Copy, GetOffset, ...
 
 #include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST
 
 // FIXME: This include can lead to circular include problems!
-#include <alpaka/dev/DevCpu.hpp>        // DevCpu
+#include <alpaka/dev/DevCpu.hpp>        // dev::DevCpu
 
 #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 #include <boost/predef.h>               // workarounds

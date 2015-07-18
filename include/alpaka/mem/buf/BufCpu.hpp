@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/dev/Traits.hpp>            // dev::DevType
+#include <alpaka/dev/Traits.hpp>            // dev::traits::DevType
 #include <alpaka/mem/buf/Traits.hpp>        // mem::buf::Alloc, ...
 
 #include <alpaka/core/Vec.hpp>              // Vec<TDim, TSize>
@@ -555,7 +555,7 @@ namespace alpaka
                             buf.m_spBufCpuImpl->m_bPinned = true;
 #else
                             static_assert(
-                                dependent_false_type<TElem>::value,
+                                core::DependentFalseType<TElem>::value,
                                 "Memory pinning of BufCpu is not implemented when CUDA is not enabled!");
 #endif
                         }
@@ -611,7 +611,7 @@ namespace alpaka
                             bufImpl.m_bPinned = false;
 #else
                             static_assert(
-                                dependent_false_type<TElem>::value,
+                                core::DependentFalseType<TElem>::value,
                                 "Memory unpinning of BufCpu is not implemented when CUDA is not enabled!");
 #endif
                         }

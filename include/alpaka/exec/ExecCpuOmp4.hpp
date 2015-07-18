@@ -22,23 +22,23 @@
 #pragma once
 
 // Specialized traits.
-#include <alpaka/acc/Traits.hpp>                // AccType
-#include <alpaka/dev/Traits.hpp>                // DevType
-#include <alpaka/event/Traits.hpp>              // EventType
-#include <alpaka/exec/Traits.hpp>               // ExecType
-#include <alpaka/size/Traits.hpp>               // size::SizeType
-#include <alpaka/stream/Traits.hpp>             // StreamType
+#include <alpaka/acc/Traits.hpp>                // acc::traits::AccType
+#include <alpaka/dev/Traits.hpp>                // dev::traits::DevType
+#include <alpaka/event/Traits.hpp>              // event::traits::EventType
+#include <alpaka/exec/Traits.hpp>               // exec::traits::ExecType
+#include <alpaka/size/Traits.hpp>               // size::traits::SizeType
+#include <alpaka/stream/Traits.hpp>             // stream::traits::StreamType
 
 // Implementation details.
-#include <alpaka/acc/omp/omp2/threads/Acc.hpp>  // AccCpuOmp2Threads
-#include <alpaka/dev/DevCpu.hpp>                // DevCpu
-#include <alpaka/event/EventCpuAsync.hpp>       // EventCpuAsync
-#include <alpaka/kernel/Traits.hpp>             // BlockSharedExternMemSizeBytes
-#include <alpaka/stream/StreamCpuAsync.hpp>     // StreamCpuAsync
+#include <alpaka/acc/AccCpuOmp4.hpp>            // acc:AccCpuOmp4
+#include <alpaka/dev/DevCpu.hpp>                // dev::DevCpu
+#include <alpaka/event/EventCpuAsync.hpp>       // event::EventCpuAsync
+#include <alpaka/kernel/Traits.hpp>             // kernel::getBlockSharedExternMemSizeBytes
+#include <alpaka/stream/StreamCpuAsync.hpp>     // stream::StreamCpuAsync
 #include <alpaka/workdiv/WorkDivMembers.hpp>    // workdiv::WorkDivMembers
 
 #include <alpaka/core/OpenMp.hpp>
-#include <alpaka/core/NdLoop.hpp>               // NdLoop
+#include <alpaka/core/MapIdx.hpp>               // core::mapIdx
 
 #include <boost/align.hpp>                      // boost::aligned_alloc
 
@@ -54,45 +54,45 @@ namespace alpaka
     {
         namespace omp
         {
-            namespace omp2
+            namespace omp4
             {
-                namespace threads
+                namespace cpu
                 {
                     namespace detail
                     {
                         //#############################################################################
-                        //! The CPU OpenMP 2.0 thread accelerator executor implementation.
+                        //! The CPU OpenMP 4.0 accelerator executor implementation.
                         //#############################################################################
                         template<
                             typename TDim,
                             typename TSize>
-                        class ExecCpuOmp2ThreadsImpl final
+                        class ExecCpuOmp4Impl final
                         {
                         public:
                             //-----------------------------------------------------------------------------
                             //! Constructor.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FN_HOST ExecCpuOmp2ThreadsImpl() = default;
+                            ALPAKA_FN_HOST ExecCpuOmp4Impl() = default;
                             //-----------------------------------------------------------------------------
                             //! Copy constructor.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FN_HOST ExecCpuOmp2ThreadsImpl(ExecCpuOmp2ThreadsImpl const &) = default;
+                            ALPAKA_FN_HOST ExecCpuOmp4Impl(ExecCpuOmp4Impl const & other) = default;
                             //-----------------------------------------------------------------------------
                             //! Move constructor.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FN_HOST ExecCpuOmp2ThreadsImpl(ExecCpuOmp2ThreadsImpl &&) = default;
+                            ALPAKA_FN_HOST ExecCpuOmp4Impl(ExecCpuOmp4Impl && other) = default;
                             //-----------------------------------------------------------------------------
                             //! Copy assignment operator.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FN_HOST auto operator=(ExecCpuOmp2ThreadsImpl const &) -> ExecCpuOmp2ThreadsImpl & = default;
+                            ALPAKA_FN_HOST auto operator=(ExecCpuOmp4Impl const &) -> ExecCpuOmp4Impl & = default;
                             //-----------------------------------------------------------------------------
                             //! Move assignment operator.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FN_HOST auto operator=(ExecCpuOmp2ThreadsImpl &&) -> ExecCpuOmp2ThreadsImpl & = default;
+                            ALPAKA_FN_HOST auto operator=(ExecCpuOmp4Impl &&) -> ExecCpuOmp4Impl & = default;
                             //-----------------------------------------------------------------------------
                             //! Destructor.
                             //-----------------------------------------------------------------------------
-                            ALPAKA_FN_HOST ~ExecCpuOmp2ThreadsImpl() = default;
+                            ALPAKA_FN_HOST ~ExecCpuOmp4Impl() = default;
 
                             //-----------------------------------------------------------------------------
                             //! Executes the kernel function object.
@@ -121,7 +121,7 @@ namespace alpaka
                                 auto const uiBlockSharedExternMemSizeBytes(
                                     kernel::getBlockSharedExternMemSizeBytes<
                                         typename std::decay<TKernelFnObj>::type,
-                                        AccCpuOmp2Threads<TDim, TSize>>(
+                                        acc::AccCpuOmp4<TDim, TSize>>(
                                             vuiBlockThreadExtents,
                                             args...));
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -129,76 +129,95 @@ namespace alpaka
                                     << " BlockSharedExternMemSizeBytes: " << uiBlockSharedExternMemSizeBytes << " B"
                                     << std::endl;
 #endif
-                                AccCpuOmp2Threads<TDim, TSize> acc(workDiv);
-
-                                if(uiBlockSharedExternMemSizeBytes > 0u)
-                                {
-                                    acc.m_vuiExternalSharedMem.reset(
-                                        reinterpret_cast<uint8_t *>(
-                                            boost::alignment::aligned_alloc(16u, uiBlockSharedExternMemSizeBytes)));
-                                }
-
-                                // The number of threads in this block.
+                                // The number of blocks in the grid.
+                                TSize const uiNumBlocksInGrid(vuiGridBlockExtents.prod());
+                                int const iNumBlocksInGrid(static_cast<int>(uiNumBlocksInGrid));
+                                // The number of threads in a block.
                                 TSize const uiNumThreadsInBlock(vuiBlockThreadExtents.prod());
                                 int const iNumThreadsInBlock(static_cast<int>(uiNumThreadsInBlock));
 
-                                // Force the environment to use the given number of threads.
-                                int const iOmpIsDynamic(::omp_get_dynamic());
-                                ::omp_set_dynamic(0);
-
-                                // Execute the blocks serially.
-                                ndLoop(
-                                    vuiGridBlockExtents,
-                                    [&](Vec<TDim, TSize> const & vuiGridBlockIdx)
+                                // `When an if(scalar-expression) evaluates to false, the structured block is executed on the host.`
+                                #pragma omp target if(0)
+                                {
+                                    #pragma omp teams/* num_teams(iNumBlocksInGrid) thread_limit(iNumThreadsInBlock)*/
                                     {
-                                        acc.m_vuiGridBlockIdx = vuiGridBlockIdx;
-
-                                        // Execute the threads in parallel.
-
-                                        // Parallel execution of the threads in a block is required because when syncBlockThreads is called all of them have to be done with their work up to this line.
-                                        // So we have to spawn one OS thread per thread in a block.
-                                        // 'omp for' is not useful because it is meant for cases where multiple iterations are executed by one thread but in our case a 1:1 mapping is required.
-                                        // Therefore we use 'omp parallel' with the specified number of threads in a block.
-                                        #pragma omp parallel num_threads(iNumThreadsInBlock)
-                                        {
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                                            // GCC 5.1 fails with:
-                                            // error: redeclaration of ‘const int& iNumThreadsInBlock’
-                                            // if(iNumThreads != iNumThreadsInBloc
-                                            //                ^
-                                            // note: ‘const int& iNumThreadsInBlock’ previously declared here
-                                            // #pragma omp parallel num_threads(iNumThread
-                                            //         ^
-#if (!BOOST_COMP_GNUC) || (BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(5, 0, 0))
-                                            // The first thread does some checks in the first block executed.
-                                            if((::omp_get_thread_num() == 0) && (acc.m_vuiGridBlockIdx.sum() == 0u))
+                                        // The first team does some checks ...
+                                        if((::omp_get_team_num() == 0))
+                                        {
+                                            int const iNumTeams(::omp_get_num_teams());
+                                            // NOTE: No std::cout in omp target!
+                                            printf("%s omp_get_num_teams: %d\n", BOOST_CURRENT_FUNCTION, iNumTeams);
+                                            if(iNumTeams <= 0)    // NOTE: No throw inside target region
                                             {
-                                                int const iNumThreads(::omp_get_num_threads());
-                                                std::cout << BOOST_CURRENT_FUNCTION << " omp_get_num_threads: " << iNumThreads << std::endl;
-                                                if(iNumThreads != iNumThreadsInBlock)
-                                                {
-                                                    throw std::runtime_error("The OpenMP 2.0 runtime did not use the number of threads that had been required!");
-                                                }
+                                                throw std::runtime_error("The CPU OpenMP4 runtime did not use a valid number of teams!");
                                             }
+                                        }
 #endif
-#endif
-                                            kernelFnObj(
-                                                const_cast<AccCpuOmp2Threads<TDim, TSize> const &>(acc),
-                                                args...);
+                                        acc::AccCpuOmp4<TDim, TSize> acc(workDiv);
 
-                                            // Wait for all threads to finish before deleting the shared memory.
-                                            acc.syncBlockThreads();
+                                        if(uiBlockSharedExternMemSizeBytes > 0u)
+                                        {
+                                            acc.m_vuiExternalSharedMem.reset(
+                                                reinterpret_cast<uint8_t *>(
+                                                    boost::alignment::aligned_alloc(16u, uiBlockSharedExternMemSizeBytes)));
                                         }
 
-                                        // After a block has been processed, the shared memory has to be deleted.
-                                        block::shared::freeMem(acc);
-                                    });
+                                        #pragma omp distribute
+                                        for(TSize b = 0u; b<uiNumBlocksInGrid; ++b)
+                                        {
+                                            Vec1<TSize> const v1iIdxGridBlock(b);
+                                            // When this is not repeated here:
+                                            // error: ‘vuiGridBlockExtents’ referenced in target region does not have a mappable type
+                                            auto const vuiGridBlockExtents2(
+                                                workdiv::getWorkDiv<Grid, Blocks>(workDiv));
+                                            acc.m_vuiGridBlockIdx = core::mapIdx<TDim::value>(
+                                                v1iIdxGridBlock,
+                                                vuiGridBlockExtents2);
 
-                                // After all blocks have been processed, the external shared memory has to be deleted.
-                                acc.m_vuiExternalSharedMem.reset();
+                                            // Execute the threads in parallel.
 
-                                // Reset the dynamic thread number setting.
-                                ::omp_set_dynamic(iOmpIsDynamic);
+                                            // Force the environment to use the given number of threads.
+                                            int const iOmpIsDynamic(::omp_get_dynamic());
+                                            ::omp_set_dynamic(0);
+
+                                            // Parallel execution of the threads in a block is required because when syncBlockThreads is called all of them have to be done with their work up to this line.
+                                            // So we have to spawn one OS thread per thread in a block.
+                                            // 'omp for' is not useful because it is meant for cases where multiple iterations are executed by one thread but in our case a 1:1 mapping is required.
+                                            // Therefore we use 'omp parallel' with the specified number of threads in a block.
+                                            #pragma omp parallel num_threads(iNumThreadsInBlock)
+                                            {
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+                                                // The first thread does some checks in the first block executed.
+                                                if((::omp_get_thread_num() == 0) && (b == 0))
+                                                {
+                                                    int const iNumThreads(::omp_get_num_threads());
+                                                    // NOTE: No std::cout in omp target!
+                                                    printf("%s omp_get_num_threads: %d\n", BOOST_CURRENT_FUNCTION, iNumThreads);
+                                                    if(iNumThreads != iNumThreadsInBlock)
+                                                    {
+                                                        throw std::runtime_error("The CPU OpenMP4 runtime did not use the number of threads that had been required!");
+                                                    }
+                                                }
+#endif
+                                                kernelFnObj(
+                                                    const_cast<acc::AccCpuOmp4<TDim, TSize> const &>(acc),
+                                                    args...);
+
+                                                // Wait for all threads to finish before deleting the shared memory.
+                                                acc.syncBlockThreads();
+                                            }
+
+                                            // Reset the dynamic thread number setting.
+                                            ::omp_set_dynamic(iOmpIsDynamic);
+
+                                            // After a block has been processed, the shared memory has to be deleted.
+                                            block::shared::freeMem(acc);
+                                        }
+                                        // After all blocks have been processed, the external shared memory has to be deleted.
+                                        acc.m_vuiExternalSharedMem.reset();
+                                    }
+                                }
                             }
                         };
                     }
@@ -207,12 +226,12 @@ namespace alpaka
         }
 
         //#############################################################################
-        //! The CPU OpenMP 2.0 thread accelerator executor.
+        //! The CPU OpenMP 4.0 accelerator executor.
         //#############################################################################
         template<
             typename TDim,
             typename TSize>
-        class ExecCpuOmp2Threads final :
+        class ExecCpuOmp4 final :
             public workdiv::WorkDivMembers<TDim, TSize>
         {
         public:
@@ -221,7 +240,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TWorkDiv>
-            ALPAKA_FN_HOST ExecCpuOmp2Threads(
+            ALPAKA_FN_HOST ExecCpuOmp4(
                 TWorkDiv const & workDiv,
                 stream::StreamCpuAsync & stream) :
                     workdiv::WorkDivMembers<TDim, TSize>(workDiv),
@@ -236,23 +255,23 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST ExecCpuOmp2Threads(ExecCpuOmp2Threads const &) = default;
+            ALPAKA_FN_HOST ExecCpuOmp4(ExecCpuOmp4 const & other) = default;
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST ExecCpuOmp2Threads(ExecCpuOmp2Threads &&) = default;
+            ALPAKA_FN_HOST ExecCpuOmp4(ExecCpuOmp4 && other) = default;
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(ExecCpuOmp2Threads const &) -> ExecCpuOmp2Threads & = default;
+            ALPAKA_FN_HOST auto operator=(ExecCpuOmp4 const &) -> ExecCpuOmp4 & = default;
             //-----------------------------------------------------------------------------
             //! Move assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(ExecCpuOmp2Threads &&) -> ExecCpuOmp2Threads & = default;
+            ALPAKA_FN_HOST auto operator=(ExecCpuOmp4 &&) -> ExecCpuOmp4 & = default;
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST ~ExecCpuOmp2Threads() = default;
+            ALPAKA_FN_HOST ~ExecCpuOmp4() = default;
 
             //-----------------------------------------------------------------------------
             //! Enqueues the kernel function object.
@@ -272,7 +291,7 @@ namespace alpaka
                 m_Stream.m_spAsyncStreamCpu->m_workerThread.enqueueTask(
                     [workDiv, kernelFnObj, args...]()
                     {
-                        omp::omp2::threads::detail::ExecCpuOmp2ThreadsImpl<TDim, TSize> exec;
+                        omp::omp4::cpu::detail::ExecCpuOmp4Impl<TDim, TSize> exec;
                         exec(
                             workDiv,
                             kernelFnObj,
@@ -290,15 +309,15 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU OpenMP 2.0 block thread executor accelerator type trait specialization.
+            //! The CPU OpenMP4 executor accelerator type trait specialization.
             //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
             struct AccType<
-                exec::ExecCpuOmp2Threads<TDim, TSize>>
+                exec::ExecCpuOmp4<TDim, TSize>>
             {
-                using type = acc::omp::omp2::threads::detail::AccCpuOmp2Threads<TDim, TSize>;
+                using type = acc::AccCpuOmp4<TDim, TSize>;
             };
         }
     }
@@ -307,24 +326,24 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU OpenMP 2.0 block thread executor device type trait specialization.
+            //! The CPU OpenMP4 executor device type trait specialization.
             //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
             struct DevType<
-                exec::ExecCpuOmp2Threads<TDim, TSize>>
+                exec::ExecCpuOmp4<TDim, TSize>>
             {
                 using type = dev::DevCpu;
             };
             //#############################################################################
-            //! The CPU OpenMP 2.0 block thread executor device manager type trait specialization.
+            //! The CPU OpenMP4 executor device manager type trait specialization.
             //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
             struct DevManType<
-                exec::ExecCpuOmp2Threads<TDim, TSize>>
+                exec::ExecCpuOmp4<TDim, TSize>>
             {
                 using type = dev::DevManCpu;
             };
@@ -335,13 +354,13 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU OpenMP 2.0 block thread executor dimension getter trait specialization.
+            //! The CPU OpenMP4 executor dimension getter trait specialization.
             //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
             struct DimType<
-                exec::ExecCpuOmp2Threads<TDim, TSize>>
+                exec::ExecCpuOmp4<TDim, TSize>>
             {
                 using type = TDim;
             };
@@ -352,13 +371,13 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU OpenMP 2.0 block thread executor event type trait specialization.
+            //! The CPU OpenMP4 executor event type trait specialization.
             //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
             struct EventType<
-                exec::ExecCpuOmp2Threads<TDim, TSize>>
+                exec::ExecCpuOmp4<TDim, TSize>>
             {
                 using type = event::EventCpuAsync;
             };
@@ -369,15 +388,15 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU OpenMP 2.0 block thread executor executor type trait specialization.
+            //! The CPU OpenMP4 executor executor type trait specialization.
             //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
             struct ExecType<
-                exec::ExecCpuOmp2Threads<TDim, TSize>>
+                exec::ExecCpuOmp4<TDim, TSize>>
             {
-                using type = exec::ExecCpuOmp2Threads<TDim, TSize>;
+                using type = exec::ExecCpuOmp4<TDim, TSize>;
             };
         }
     }
@@ -386,13 +405,13 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU OpenMP 2.0 block thread executor size type trait specialization.
+            //! The CPU OpenMP 4.0 executor size type trait specialization.
             //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
             struct SizeType<
-                exec::ExecCpuOmp2Threads<TDim, TSize>>
+                exec::ExecCpuOmp4<TDim, TSize>>
             {
                 using type = TSize;
             };
@@ -403,27 +422,27 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU OpenMP 2.0 block thread executor stream type trait specialization.
+            //! The CPU OpenMP4 executor stream type trait specialization.
             //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
             struct StreamType<
-                exec::ExecCpuOmp2Threads<TDim, TSize>>
+                exec::ExecCpuOmp4<TDim, TSize>>
             {
                 using type = stream::StreamCpuAsync;
             };
             //#############################################################################
-            //! The CPU OpenMP 2.0 block thread executor stream get trait specialization.
+            //! The CPU OpenMP4 executor stream get trait specialization.
             //#############################################################################
             template<
                 typename TDim,
                 typename TSize>
             struct GetStream<
-                exec::ExecCpuOmp2Threads<TDim, TSize>>
+                exec::ExecCpuOmp4<TDim, TSize>>
             {
                 ALPAKA_FN_HOST static auto getStream(
-                    exec::ExecCpuOmp2Threads<TDim, TSize> const & exec)
+                    exec::ExecCpuOmp4<TDim, TSize> const & exec)
                 -> stream::StreamCpuAsync
                 {
                     return exec.m_Stream;

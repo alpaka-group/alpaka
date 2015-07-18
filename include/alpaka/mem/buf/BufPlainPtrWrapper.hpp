@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/mem/buf/Traits.hpp>    // DevType, DimType, GetExtent,Copy, GetOffset, ...
+#include <alpaka/mem/buf/Traits.hpp>    // dev::traits::DevType, DimType, GetExtent,Copy, GetOffset, ...
 
 #include <alpaka/core/Vec.hpp>          // Vec<N>
 

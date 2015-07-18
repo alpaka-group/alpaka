@@ -21,11 +21,11 @@
 
 #pragma once
 
-#include <alpaka/dev/DevCudaRt.hpp>     // DevCudaRt
+#include <alpaka/dev/DevCudaRt.hpp>     // dev::DevCudaRt
 
 #include <alpaka/stream/Traits.hpp>
 #include <alpaka/wait/Traits.hpp>       // CurrentThreadWaitFor, WaiterWaitFor
-#include <alpaka/acc/Traits.hpp>        // AccType
+#include <alpaka/acc/Traits.hpp>        // acc::traits::AccType
 #include <alpaka/dev/Traits.hpp>        // GetDev
 
 #include <alpaka/core/Cuda.hpp>         // ALPAKA_CUDA_RT_CHECK

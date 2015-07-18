@@ -23,7 +23,7 @@
 
 #include <alpaka/rand/Traits.hpp>       // CreateNormalReal, ...
 
-#include <alpaka/dev/DevCudaRt.hpp>       // DevCudaRt
+#include <alpaka/dev/DevCudaRt.hpp>     // dev::DevCudaRt
 
 #include <alpaka/core/Common.hpp>       // ALPAKA_FN_ACC_CUDA_ONLY
 #include <alpaka/core/Cuda.hpp>         // ALPAKA_CUDA_RT_CHECK

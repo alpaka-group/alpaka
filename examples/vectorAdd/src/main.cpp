@@ -223,7 +223,7 @@ auto main()
             std::cout << std::endl;
 
             // Execute the kernel on all enabled accelerators.
-            alpaka::forEachType<
+            alpaka::core::forEachType<
                 alpaka::examples::accs::EnabledAccs<alpaka::dim::DimInt<1u>, std::size_t>>(
                     vectorAddKernelTester,
                     uiSize);

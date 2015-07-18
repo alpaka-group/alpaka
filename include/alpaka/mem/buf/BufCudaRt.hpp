@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/dev/Traits.hpp>            // dev::DevType
+#include <alpaka/dev/Traits.hpp>            // dev::traits::DevType
 #include <alpaka/dim/DimIntegralConst.hpp>  // dim::DimInt<N>
 #include <alpaka/mem/buf/Traits.hpp>        // view::Copy, ...
 

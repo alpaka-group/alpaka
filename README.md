@@ -41,8 +41,8 @@ Accelerator Back-ends
 
 |Accelerator Back-end|Lib/API|Devices|Execution strategy grid-blocks|Execution strategy block-threads|
 |---|---|---|---|---|
-|Serial|n/a|Host CPU (single core)|sequential|sequential|
-|OpenMP 2.0 blocks|OpenMP 2.0|Host CPU (multi core)|parallel (preemptive multitasking)|sequential|
+|Serial|n/a|Host CPU (single core)|sequential|sequential (1 thread/block)|
+|OpenMP 2.0 blocks|OpenMP 2.0|Host CPU (multi core)|parallel (preemptive multitasking)|sequential (1 thread/block)|
 |OpenMP 2.0 threads|OpenMP 2.0|Host CPU (multi core)|sequential|parallel (preemptive multitasking)|
 |OpenMP 4.0|OpenMP 4.0|Host CPU (multi core)|parallel (undefined)|parallel (preemptive multitasking)|
 | std::thread | std::thread |Host CPU (multi core)|sequential|parallel (preemptive multitasking)|

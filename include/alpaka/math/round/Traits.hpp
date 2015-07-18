@@ -94,7 +94,7 @@ namespace alpaka
         //!
         //! \tparam T The type of the object specializing Round.
         //! \tparam TArg The arg type.
-        //! \param round The object specializing Round.
+        //! \param lround The object specializing Round.
         //! \param arg The arg.
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
@@ -118,7 +118,7 @@ namespace alpaka
         //!
         //! \tparam T The type of the object specializing Round.
         //! \tparam TArg The arg type.
-        //! \param round The object specializing Round.
+        //! \param llround The object specializing Round.
         //! \param arg The arg.
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING

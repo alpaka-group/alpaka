@@ -24,7 +24,7 @@
 #include <alpaka/dim/DimIntegralConst.hpp>  // dim::DimInt<N>
 #include <alpaka/extent/Traits.hpp>         // extent::getXXX
 #include <alpaka/mem/view/Traits.hpp>       // view::Copy, ...
-#include <alpaka/stream/StreamCpuAsync.hpp> // StreamCpuAsync
+#include <alpaka/stream/StreamCpuAsync.hpp> // stream::StreamCpuAsync
 
 #include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
 

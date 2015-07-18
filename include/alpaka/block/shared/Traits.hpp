@@ -73,7 +73,7 @@ namespace alpaka
             //!
             //! \tparam T The element type.
             //! \tparam TBlockSharedAlloc The block shared allocator implementation type.
-            //! \param blockSharedMem The block shared allocator implementation.
+            //! \param blockSharedAlloc The block shared allocator implementation.
             //-----------------------------------------------------------------------------
             ALPAKA_NO_HOST_ACC_WARNING
             template<
@@ -96,7 +96,7 @@ namespace alpaka
             //! \tparam T The element type.
             //! \tparam TuiNumElements The Number of elements.
             //! \tparam TBlockSharedAlloc The block shared allocator implementation type.
-            //! \param blockSharedMem The block shared allocator implementation.
+            //! \param blockSharedAlloc The block shared allocator implementation.
             //-----------------------------------------------------------------------------
             ALPAKA_NO_HOST_ACC_WARNING
             template<
@@ -123,7 +123,7 @@ namespace alpaka
             //! Frees all block shared memory.
             //!
             //! \tparam TBlockSharedAlloc The block shared allocator implementation type.
-            //! \param blockSharedMem The block shared allocator implementation.
+            //! \param blockSharedAlloc The block shared allocator implementation.
             //-----------------------------------------------------------------------------
             ALPAKA_NO_HOST_ACC_WARNING
             template<
