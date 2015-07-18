@@ -257,7 +257,7 @@ namespace alpaka
                 if(uiIdx >= uiNumDevices)
                 {
                     std::stringstream ssErr;
-                    ssErr << "Unable to return device handle for device " << uiIdx << " because there are only " << uiNumDevices << " threads devices!";
+                    ssErr << "Unable to return device handle for CPU device with index " << uiIdx << " because there are only " << uiNumDevices << " devices!";
                     throw std::runtime_error(ssErr.str());
                 }
 

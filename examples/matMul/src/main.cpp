@@ -285,13 +285,13 @@ struct MatMulTester
         // For 1D data this would not be required because alpaka::mem::view::copy is specialized for std::vector and std::array.
         // For multi dimensional data you could directly create them using alpaka::mem::buf::alloc<Type>(devHost, extents), which is not used here.
         // Instead we use BufPlainPtrWrapper to wrap the data.
-        using bufWrapper = alpaka::mem::buf::BufPlainPtrWrapper<
+        using BufWrapper = alpaka::mem::buf::BufPlainPtrWrapper<
             std::decay<decltype(devHost)>::type,
             Val,
             alpaka::dim::DimInt<2u>,
             TSize>;
-        bufWrapper bufAHost(vuiA.data(), devHost, v2uiExtentsA);
-        bufWrapper bufBHost(vuiB.data(), devHost, v2uiExtentsB);
+        BufWrapper bufAHost(vuiA.data(), devHost, v2uiExtentsA);
+        BufWrapper bufBHost(vuiB.data(), devHost, v2uiExtentsB);
 
         // Allocate C and set it to zero.
         auto bufCHost(alpaka::mem::buf::alloc<Val, TSize>(devHost, v2uiExtentsC));

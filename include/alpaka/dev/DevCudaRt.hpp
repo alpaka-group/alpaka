@@ -116,6 +116,7 @@ namespace alpaka
             }
             //-----------------------------------------------------------------------------
             //! \return The number of devices available.
+            //! \throw std::runtime_error if the device index is out-of-range or if the device is not accessible.
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto getDevByIdx(
                 std::size_t const & uiIdx)
@@ -129,40 +130,33 @@ namespace alpaka
                 if(uiIdx >= uiNumDevices)
                 {
                     std::stringstream ssErr;
-                    ssErr << "Unable to return device handle for device " << uiIdx << " because there are only " << uiNumDevices << " CUDA devices!";
+                    ssErr << "Unable to return device handle for device " << uiIdx << ". There are only " << uiNumDevices << " CUDA devices!";
                     throw std::runtime_error(ssErr.str());
                 }
 
-                // Initialize the cuda runtime.
-                //init();
-
-                // Try all devices if the given one is unusable.
-                for(std::size_t iDeviceOffset(0); iDeviceOffset < uiNumDevices; ++iDeviceOffset)
+                if(isDevUsable(uiIdx))
                 {
-                    std::size_t const iDevice((uiIdx + iDeviceOffset) % uiNumDevices);
+                    dev.m_iDevice = static_cast<int>(uiIdx);
 
-                    if(isDevUsable(iDevice))
-                    {
-                        dev.m_iDevice = static_cast<int>(iDevice);
-
-                        // Log this device.
+                    // Log this device.
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                        cudaDeviceProp devProp;
-                        ALPAKA_CUDA_RT_CHECK(cudaGetDeviceProperties(&devProp, dev.m_iDevice));
+                    cudaDeviceProp devProp;
+                    ALPAKA_CUDA_RT_CHECK(cudaGetDeviceProperties(&devProp, dev.m_iDevice));
 #endif
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                        printDeviceProperties(devProp);
+                    printDeviceProperties(devProp);
 #elif ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                        std::cout << BOOST_CURRENT_FUNCTION << devProp.name << std::endl;
+                    std::cout << BOOST_CURRENT_FUNCTION << devProp.name << std::endl;
 #endif
-                        return dev;
-                    }
+                }
+                else
+                {
+                    std::stringstream ssErr;
+                    ssErr << "Unable to return device handle for device " << uiIdx << ". It is not accessible!";
+                    throw std::runtime_error(ssErr.str());
                 }
 
-                // If we came until here, none of the devices was usable.
-                std::stringstream ssErr;
-                ssErr << "Unable to return device handle for device " << uiIdx << " because none of the " << uiNumDevices << " CUDA devices is usable!";
-                throw std::runtime_error(ssErr.str());
+                return dev;
             }
 
         private:
@@ -176,8 +170,8 @@ namespace alpaka
                 cudaError rc(cudaSetDevice(static_cast<int>(iDevice)));
 
                 // Create a dummy stream to check if the device is already used by an other process.
+                // cudaSetDevice never returns an error if another process already uses the selected device and gpu compute mode is set "process exclusive".
                 // \TODO: Check if this workaround is needed!
-                // Since NVIDIA changed something in the runtime cudaSetDevice never returns an error if another process already uses the selected device and gpu compute mode is set "process exclusive".
                 if(rc == cudaSuccess)
                 {
                     cudaStream_t stream;
@@ -197,31 +191,6 @@ namespace alpaka
                     return false;
                 }
             }
-            //-----------------------------------------------------------------------------
-            //! Initializes the cuda runtime.
-            //-----------------------------------------------------------------------------
-            /*ALPAKA_FN_HOST static auto init()
-            -> void
-            {
-                static bool s_bInitialized = false;
-
-                if(!s_bInitialized)
-                {
-                    s_bInitialized = true;
-
-                    // - cudaDeviceScheduleSpin:
-                    //   Instruct CUDA to actively spin when waiting for results from the device.
-                    //   This can decrease latency when waiting for the device, but may lower the performance of CPU threads if they are performing work in parallel with the CUDA thread.
-                    // - cudaDeviceMapHost:
-                    //   This flag must be set in order to allocate pinned host memory that is accessible to the device.
-                    //   If this flag is not set, cudaHostGetDevicePointer() will always return a failure code.
-                    // NOTE: This is disabled because we have to support interop with native CUDA applications.
-                    // They could already have set a device before calling into alpaka and we would get:
-                    // cudaSetDeviceFlags( 0x01 | 0x08)' returned error: 'cannot set while device is active in this process'
-                    //ALPAKA_CUDA_RT_CHECK(cudaSetDeviceFlags(
-                    //    cudaDeviceScheduleSpin | cudaDeviceMapHost));
-                }
-            }*/
 
         private:
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL

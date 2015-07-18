@@ -65,7 +65,7 @@ namespace alpaka
                         // - cudaStreamNonBlocking: Specifies that work running in the created stream may run concurrently with work in stream 0 (the NULL stream),
                         //   and that the created stream should perform no implicit synchronization with stream 0.
                         // Create the stream on the current device.
-                        // NOTE: cudaStreamNonBlocking is required to match the semantic implemented in the CPU stream.
+                        // NOTE: cudaStreamNonBlocking is required to match the semantic implemented in the alpaka CPU stream.
                         // It would be too much work to implement implicit default stream synchronization on CPU.
                         ALPAKA_CUDA_RT_CHECK(cudaStreamCreateWithFlags(
                             &m_CudaStream,
@@ -227,7 +227,7 @@ namespace alpaka
                     }
                     else
                     {
-                        throw std::runtime_error(("Unexpected return value '" + std::string(cudaGetErrorString(ret)) + "'from cudaStreamQuery!"));
+                        throw std::runtime_error(("Unexpected return value '" + std::string(cudaGetErrorString(ret)) + "' from cudaStreamQuery!"));
                     }
                 }
             };

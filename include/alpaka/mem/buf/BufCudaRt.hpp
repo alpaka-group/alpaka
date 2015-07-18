@@ -72,7 +72,7 @@ namespace alpaka
                 template<
                     typename TExtents>
                 ALPAKA_FN_HOST BufCudaRt(
-                    dev::DevCudaRt dev,
+                    dev::DevCudaRt const & dev,
                     TElem * const pMem,
                     TSize const & uiPitchBytes,
                     TExtents const & extents) :
