@@ -93,20 +93,21 @@ SET_PROPERTY(CACHE ALPAKA_DEBUG PROPERTY STRINGS "0;1;2")
 #-------------------------------------------------------------------------------
 # Find Boost.
 #-------------------------------------------------------------------------------
+SET(_ALPAKA_BOOST_MIN_VER "1.56.0") # minimum version for basic features
 IF(${ALPAKA_DEBUG} GREATER 1)
     SET(Boost_DEBUG ON)
     SET(Boost_DETAILED_FAILURE_MSG ON)
 ENDIF()
 IF(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE)
-    FIND_PACKAGE(Boost COMPONENTS fiber context system thread atomic chrono date_time)
+    FIND_PACKAGE(Boost ${_ALPAKA_BOOST_MIN_VER} QUIET COMPONENTS fiber context system thread atomic chrono date_time)
     IF(NOT Boost_FIBER_FOUND)
         MESSAGE(WARNING "Optional alpaka dependency Boost fiber could not be found! Fibers accelerator disabled!")
         SET(ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLE OFF CACHE BOOL "Enable the Fibers CPU accelerator" FORCE)
-        FIND_PACKAGE(Boost)
+        FIND_PACKAGE(Boost ${_ALPAKA_BOOST_MIN_VER} QUIET)
     ENDIF()
 
 ELSE()
-    FIND_PACKAGE(Boost)
+    FIND_PACKAGE(Boost ${_ALPAKA_BOOST_MIN_VER} QUIET)
 ENDIF()
 
 IF(${ALPAKA_DEBUG} GREATER 1)
@@ -163,7 +164,7 @@ IF(${ALPAKA_DEBUG} GREATER 1)
 ENDIF()
 
 IF(NOT Boost_FOUND)
-    MESSAGE(WARNING "Required alpaka dependency Boost could not be found!")
+    MESSAGE(WARNING "Required alpaka dependency Boost (>=${_ALPAKA_BOOST_MIN_VER}) could not be found!")
     SET(_ALPAKA_FOUND FALSE)
 
 ELSE()
@@ -491,6 +492,7 @@ IF(NOT _ALPAKA_FOUND)
     UNSET(_ALPAKA_FILES_HEADER)
     UNSET(_ALPAKA_FILES_SOURCE)
     UNSET(_ALPAKA_FILES_OTHER)
+    UNSET(_ALPAKA_BOOST_MIN_VER)
     UNSET(_ALPAKA_VERSION_DEFINE)
     UNSET(_ALPAKA_VER_MAJOR)
     UNSET(_ALPAKA_VER_MINOR)
@@ -511,6 +513,7 @@ ELSE()
         _ALPAKA_FILES_HEADER
         _ALPAKA_FILES_SOURCE
         _ALPAKA_FILES_OTHER
+        _ALPAKA_BOOST_MIN_VER
         _ALPAKA_VERSION_DEFINE
         _ALPAKA_VER_MAJOR
         _ALPAKA_VER_MINOR
