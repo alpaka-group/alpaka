@@ -84,11 +84,13 @@ namespace alpaka
                 << ", blockThreadExtents: " << workdiv::getWorkDiv<Block, Threads>(workDiv)
                 << std::endl;
 #endif
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
             // This checks for a valid work division that is also compliant with the maxima of the accelerator.
             if(!workdiv::isValidWorkDiv<TAcc>(dev::getDev(stream), workDiv))
             {
                 throw std::runtime_error("The given work division is not valid or not supported by the " + acc::getAccName<TAcc>() + " accelerator!");
             }
+#endif
 
             return
                 ExecT<TAcc>(
