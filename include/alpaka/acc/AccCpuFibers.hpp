@@ -236,9 +236,9 @@ namespace alpaka
                     boost::ignore_unused(dev);
 
 #if ALPAKA_INTEGRATION_TEST
-                    auto const uiBlockThreadsCountMax(static_cast<TSize>(24));
+                    auto const uiBlockThreadsCountMax(static_cast<TSize>(3));
 #else
-                    auto const uiBlockThreadsCountMax(static_cast<TSize>(32));  // \TODO: What is the maximum? Just set a reasonable value?
+                    auto const uiBlockThreadsCountMax(static_cast<TSize>(4));  // \TODO: What is the maximum? Just set a reasonable value?
 #endif
                     return {
                         // m_uiMultiProcessorCount
