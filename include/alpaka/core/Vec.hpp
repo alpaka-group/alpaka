@@ -58,9 +58,10 @@ namespace alpaka
         typename TDim,
         template<std::size_t> class TTFnObj,
         typename... TArgs,
-        std::size_t... TIndices>
+        typename TIdxSize,
+        TIdxSize... TIndices>
     ALPAKA_FN_HOST_ACC auto createVecFromIndexedFnArbitrary(
-        core::detail::integer_sequence<std::size_t, TIndices...> const & indices,
+        core::detail::integer_sequence<TIdxSize, TIndices...> const & indices,
         TArgs && ... args)
     -> Vec<TDim, decltype(TTFnObj<0>::create(std::forward<TArgs>(args)...))>
     {
@@ -85,10 +86,10 @@ namespace alpaka
         createVecFromIndexedFnArbitrary<
             TDim,
             TTFnObj>(
-                alpaka::core::detail::make_integer_sequence<std::size_t, TDim::value>(),
+                alpaka::core::detail::make_integer_sequence<typename TDim::value_type, TDim::value>(),
                 std::forward<TArgs>(args)...))
     {
-        using IdxSequence = alpaka::core::detail::make_integer_sequence<std::size_t, TDim::value>;
+        using IdxSequence = alpaka::core::detail::make_integer_sequence<typename TDim::value_type, TDim::value>;
         return
             createVecFromIndexedFnArbitrary<
                 TDim,
@@ -112,10 +113,10 @@ namespace alpaka
         createVecFromIndexedFnArbitrary<
             TDim,
             TTFnObj>(
-                alpaka::core::detail::make_integer_sequence_offset<std::size_t, TIdxOffset::value, TDim::value>(),
+                alpaka::core::detail::make_integer_sequence_offset<typename TIdxOffset::value_type, TIdxOffset::value, TDim::value>(),
                 std::forward<TArgs>(args)...))
     {
-        using IdxSubSequence = alpaka::core::detail::make_integer_sequence_offset<std::size_t, TIdxOffset::value, TDim::value>;
+        using IdxSubSequence = alpaka::core::detail::make_integer_sequence_offset<typename TIdxOffset::value_type, TIdxOffset::value, TDim::value>;
         return
             createVecFromIndexedFnArbitrary<
                 TDim,
@@ -181,9 +182,10 @@ namespace alpaka
         template<
             template<std::size_t> class TTFnObj,
             typename... TArgs,
-            std::size_t... TIndices>
+            typename TIdxSize,
+            TIdxSize... TIndices>
         ALPAKA_FN_HOST_ACC static auto createVecFromIndexedFnArbitrary(
-            core::detail::integer_sequence<std::size_t, TIndices...> const & indices,
+            core::detail::integer_sequence<TIdxSize, TIndices...> const & indices,
             TArgs && ... args)
         -> Vec<TDim, TVal>
         {
@@ -224,7 +226,7 @@ namespace alpaka
             TArgs && ... args)
         -> Vec<TDim, TVal>
         {
-            using IdxSubSequence = alpaka::core::detail::make_integer_sequence_offset<std::size_t, TIdxOffset::value, TDim::value>;
+            using IdxSubSequence = alpaka::core::detail::make_integer_sequence_offset<typename TDim::value_type, TIdxOffset::value, TDim::value>;
             return
                 createVecFromIndexedFnArbitrary<
                     TTFnObj>(
@@ -906,7 +908,7 @@ namespace alpaka
             TExtents const & extents = TExtents())
         -> Vec<TDim, size::Size<TExtents>>
         {
-            using IdxOffset = std::integral_constant<std::size_t, (std::size_t)(((std::intmax_t)dim::Dim<TExtents>::value)-((std::intmax_t)TDim::value))>;
+            using IdxOffset = std::integral_constant<std::intmax_t, ((std::intmax_t)dim::Dim<TExtents>::value)-((std::intmax_t)TDim::value)>;
             return
 #ifdef __CUDACC__
             Vec<TDim, size::Size<TExtents>>::template
