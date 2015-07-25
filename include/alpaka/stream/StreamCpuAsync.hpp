@@ -26,7 +26,7 @@
 #include <alpaka/stream/Traits.hpp>             // stream::StreamEnqueue, ...
 #include <alpaka/wait/Traits.hpp>               // CurrentThreadWaitFor, WaiterWaitFor
 
-#include <alpaka/core/ConcurrentExecPool.hpp>   // ConcurrentExecPool
+#include <alpaka/core/ConcurrentExecPool.hpp>   // core::ConcurrentExecPool
 
 #include <boost/uuid/uuid.hpp>                  // boost::uuids::uuid
 #include <boost/uuid/uuid_generators.hpp>       // boost::uuids::random_generator

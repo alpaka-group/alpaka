@@ -24,6 +24,7 @@
 // Specialized traits.
 #include <alpaka/acc/Traits.hpp>                // acc::traits::AccType
 #include <alpaka/dev/Traits.hpp>                // dev::traits::DevType
+#include <alpaka/dim/Traits.hpp>                // dim::traits::DimType
 #include <alpaka/event/Traits.hpp>              // event::traits::EventType
 #include <alpaka/exec/Traits.hpp>               // exec::traits::ExecType
 #include <alpaka/size/Traits.hpp>               // size::traits::SizeType
@@ -38,7 +39,7 @@
 #include <alpaka/workdiv/WorkDivMembers.hpp>    // workdiv::WorkDivMembers
 
 #include <alpaka/core/OpenMp.hpp>
-#include <alpaka/core/NdLoop.hpp>               // NdLoop
+#include <alpaka/core/NdLoop.hpp>               // core::NdLoop
 
 #include <boost/align.hpp>                      // boost::aligned_alloc
 
@@ -111,7 +112,7 @@ namespace alpaka
 
                                 static_assert(
                                     dim::Dim<TWorkDiv>::value == TDim::value,
-                                    "The work division and the executor have to of the same dimensionality!");
+                                    "The work division and the executor have to be of the same dimensionality!");
 
                                 auto const vuiGridBlockExtents(
                                     workdiv::getWorkDiv<Grid, Blocks>(workDiv));
@@ -231,7 +232,7 @@ namespace alpaka
 
                 static_assert(
                     dim::Dim<TWorkDiv>::value == TDim::value,
-                    "The work division and the executor have to of the same dimensionality!");
+                    "The work division and the executor have to be of the same dimensionality!");
             }
             //-----------------------------------------------------------------------------
             //! Copy constructor.

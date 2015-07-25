@@ -24,6 +24,7 @@
 // Specialized traits.
 #include <alpaka/acc/Traits.hpp>            // acc::traits::AccType
 #include <alpaka/dev/Traits.hpp>            // dev::traits::DevType
+#include <alpaka/dim/Traits.hpp>            // dim::traits::DimType
 #include <alpaka/event/Traits.hpp>          // event::traits::EventType
 #include <alpaka/exec/Traits.hpp>           // exec::traits::ExecType
 #include <alpaka/size/Traits.hpp>           // size::traits::SizeType

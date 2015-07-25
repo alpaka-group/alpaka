@@ -71,10 +71,8 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST ~StreamCpuSyncImpl() = default;// noexcept(false)
-                    //{
-                        //m_Dev.m_spDevCpuImpl->UnregisterAsyncStream(this);
-                    //}
+                    ALPAKA_FN_HOST ~StreamCpuSyncImpl() = default;
+
                 public:
                     boost::uuids::uuid const m_Uuid;    //!< The unique ID.
                     dev::DevCpu const m_Dev;            //!< The device this stream is bound to.
@@ -94,9 +92,7 @@ namespace alpaka
             ALPAKA_FN_HOST StreamCpuSync(
                 dev::DevCpu & dev) :
                     m_spSyncStreamCpu(std::make_shared<cpu::detail::StreamCpuSyncImpl>(dev))
-            {
-                //dev.m_spDevCpuImpl->RegisterAsyncStream(m_spAsyncStreamCpu);
-            }
+            {}
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
