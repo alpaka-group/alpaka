@@ -331,8 +331,7 @@ namespace alpaka
 
                 traits::Set<
                     dim::Dim<TView>,
-                    dev::Dev<TView>,
-                    TStream>
+                    dev::Dev<TView>>
                 ::set(
                     buf,
                     byte,

@@ -162,8 +162,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     template<
                         typename TBuf,
-                        typename TExtents,
-                        typename TDev>
+                        typename TExtents>
                     ALPAKA_FN_HOST static auto set(
                         TBuf & buf,
                         std::uint8_t const & byte,
