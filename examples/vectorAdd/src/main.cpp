@@ -100,8 +100,7 @@ struct VectorAddKernelTester
             alpaka::dev::DevMan<TAcc>::getDevByIdx(0));
 
         // Get a stream on this device.
-        alpaka::stream::Stream<alpaka::dev::Dev<TAcc>> stream(
-            alpaka::stream::create(devAcc));
+        alpaka::examples::Stream<alpaka::dev::Dev<TAcc>> stream(devAcc);
 
         alpaka::Vec1<TSize> const v1uiExtents(
             uiNumElements);
@@ -140,25 +139,28 @@ struct VectorAddKernelTester
         auto memBufAccC(alpaka::mem::buf::alloc<Val, TSize>(devAcc, v1uiExtents));
 
         // Copy Host -> Acc.
-        alpaka::mem::view::copy(memBufAccA, memBufHostA, v1uiExtents, stream);
-        alpaka::mem::view::copy(memBufAccB, memBufHostB, v1uiExtents, stream);
+        alpaka::mem::view::copy(stream, memBufAccA, memBufHostA, v1uiExtents);
+        alpaka::mem::view::copy(stream, memBufAccB, memBufHostB, v1uiExtents);
 
-        // Create the executor.
-        auto exec(alpaka::exec::create<TAcc>(workDiv, stream));
+        // Create the executor task.
+        auto /*const*/ exec(alpaka::exec::create<TAcc>(
+            workDiv,
+            kernel,
+            alpaka::mem::view::getPtrNative(memBufAccA),
+            alpaka::mem::view::getPtrNative(memBufAccB),
+            alpaka::mem::view::getPtrNative(memBufAccC),
+            uiNumElements));
+
         // Profile the kernel execution.
         std::cout << "Execution time: "
             << alpaka::examples::measureKernelRunTimeMs(
-                exec,
-                kernel,
-                alpaka::mem::view::getPtrNative(memBufAccA),
-                alpaka::mem::view::getPtrNative(memBufAccB),
-                alpaka::mem::view::getPtrNative(memBufAccC),
-                uiNumElements)
+                stream,
+                exec)
             << " ms"
             << std::endl;
 
         // Copy back the result.
-        alpaka::mem::view::copy(memBufHostC, memBufAccC, v1uiExtents, stream);
+        alpaka::mem::view::copy(stream, memBufHostC, memBufAccC, v1uiExtents);
 
         // Wait for the stream to finish the memory operation.
         alpaka::wait::wait(stream);

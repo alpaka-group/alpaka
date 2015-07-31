@@ -23,7 +23,7 @@
 
 #include <alpaka/dev/Traits.hpp>                // GetDev
 #include <alpaka/dev/DevCpu.hpp>                // dev::DevCpu
-#include <alpaka/stream/Traits.hpp>             // stream::StreamEnqueue, ...
+#include <alpaka/stream/Traits.hpp>             // stream::traits::Enqueue, ...
 #include <alpaka/wait/Traits.hpp>               // CurrentThreadWaitFor, WaiterWaitFor
 
 #include <alpaka/core/ConcurrentExecPool.hpp>   // core::ConcurrentExecPool
@@ -34,6 +34,14 @@
 #include <type_traits>                          // std::is_base
 #include <thread>                               // std::thread
 #include <mutex>                                // std::mutex
+
+namespace alpaka
+{
+    namespace event
+    {
+        class EventCpu;
+    }
+}
 
 namespace alpaka
 {
@@ -165,7 +173,16 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU device stream device get trait specialization.
+            //! The CPU async device stream device type trait specialization.
+            //#############################################################################
+            template<>
+            struct DevType<
+                stream::StreamCpuAsync>
+            {
+                using type = dev::DevCpu;
+            };
+            //#############################################################################
+            //! The CPU async device stream device get trait specialization.
             //#############################################################################
             template<>
             struct GetDev<
@@ -180,28 +197,51 @@ namespace alpaka
             };
         }
     }
+    namespace event
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The CPU async device stream event type trait specialization.
+            //#############################################################################
+            template<>
+            struct EventType<
+                stream::StreamCpuAsync>
+            {
+                using type = event::EventCpu;
+            };
+        }
+    }
     namespace stream
     {
         namespace traits
         {
             //#############################################################################
-            //! The CPU device stream stream type trait specialization.
+            //! The CPU async device stream enqueue trait specialization.
             //#############################################################################
-            template<>
-            struct StreamType<
-                stream::StreamCpuAsync>
+            template<
+                typename TTask>
+            struct Enqueue<
+                stream::StreamCpuAsync,
+                TTask>
             {
-                using type = stream::StreamCpuAsync;
+                ALPAKA_FN_HOST static auto enqueue(
+                    stream::StreamCpuAsync & stream,
+                    TTask & task)
+                -> void
+                {
+                    stream.m_spAsyncStreamCpu->m_workerThread.enqueueTask(
+                        task);
+                }
             };
-
             //#############################################################################
-            //! The CPU device stream test trait specialization.
+            //! The CPU async device stream test trait specialization.
             //#############################################################################
             template<>
-            struct StreamTest<
+            struct Empty<
                 stream::StreamCpuAsync>
             {
-                ALPAKA_FN_HOST static auto streamTest(
+                ALPAKA_FN_HOST static auto empty(
                     stream::StreamCpuAsync const & stream)
                 -> bool
                 {
@@ -211,5 +251,3 @@ namespace alpaka
         }
     }
 }
-
-#include <alpaka/stream/cpu/async/StreamEventTraits.hpp>

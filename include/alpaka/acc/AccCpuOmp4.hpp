@@ -51,25 +51,10 @@ namespace alpaka
     {
         template<
             typename TDim,
-            typename TSize>
+            typename TSize,
+            typename TKernelFnObj,
+            typename... TArgs>
         class ExecCpuOmp4;
-
-        namespace omp
-        {
-            namespace omp4
-            {
-                namespace cpu
-                {
-                    namespace detail
-                    {
-                        template<
-                            typename TDim,
-                            typename TSize>
-                        class ExecCpuOmp4Impl;
-                    }
-                }
-            }
-        }
     }
     namespace acc
     {
@@ -91,7 +76,13 @@ namespace alpaka
             public block::shared::BlockSharedAllocMasterSync
         {
         public:
-            friend class ::alpaka::exec::omp::omp4::cpu::detail::ExecCpuOmp4Impl<TDim, TSize>;
+            // Partial specialization with the correct TDim and TSize is not allowed.
+            template<
+                typename TDim2,
+                typename TSize2,
+                typename TKernelFnObj,
+                typename... TArgs>
+            friend class ::alpaka::exec::ExecCpuOmp4;
 
         private:
             //-----------------------------------------------------------------------------
@@ -282,11 +273,15 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TDim,
-                typename TSize>
+                typename TSize,
+                typename TKernelFnObj,
+                typename... TArgs>
             struct ExecType<
-                acc::AccCpuOmp4<TDim, TSize>>
+                acc::AccCpuOmp4<TDim, TSize>,
+                TKernelFnObj,
+                TArgs...>
             {
-                using type = exec::ExecCpuOmp4<TDim, TSize>;
+                using type = exec::ExecCpuOmp4<TDim, TSize, TKernelFnObj, TArgs...>;
             };
         }
     }

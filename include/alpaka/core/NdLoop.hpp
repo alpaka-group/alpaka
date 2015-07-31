@@ -26,8 +26,6 @@
 #include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST_ACC
 #include <alpaka/core/Vec.hpp>      // Vec
 
-#include <utility>                  // std::forward
-
 namespace alpaka
 {
     namespace core
@@ -60,8 +58,8 @@ namespace alpaka
                 ALPAKA_FN_HOST_ACC static auto ndLoop(
                     TIndex & idx,
                     TExtentsVec const & extents,
-                    TFnObj && f,
-                    TArgs && ... args)
+                    TFnObj const & f,
+                    TArgs const & ... args)
                 -> void
                 {
                     static_assert(
@@ -76,7 +74,7 @@ namespace alpaka
 
                     for(idx[TuiCurDim] = 0u; idx[TuiCurDim] < extents[TuiCurDim]; ++idx[TuiCurDim])
                     {
-                        std::forward<TFnObj>(f)(idx, std::forward<TArgs>(args)...);
+                        f(idx, args...);
                     }
                 }
             };
@@ -100,8 +98,8 @@ namespace alpaka
                 ALPAKA_FN_HOST_ACC static auto ndLoop(
                     TIndex & idx,
                     TExtentsVec const & extents,
-                    TFnObj && f,
-                    TArgs && ... args)
+                    TFnObj const & f,
+                    TArgs const & ... args)
                 -> void
                 {
                     static_assert(
@@ -122,8 +120,8 @@ namespace alpaka
                             TuiCurDim+1u>(
                                 idx,
                                 extents,
-                                std::forward<TFnObj>(f),
-                                std::forward<TArgs>(args)...);
+                                f,
+                                args...);
                     }
                 }
             };
@@ -143,8 +141,8 @@ namespace alpaka
             typename... TArgs>
         ALPAKA_FN_HOST_ACC auto ndLoop(
             TExtentsVec const & extents,
-            TFnObj && f,
-            TArgs && ... args)
+            TFnObj const & f,
+            TArgs const & ... args)
         -> void
         {
             static_assert(
@@ -160,8 +158,8 @@ namespace alpaka
                 0u>(
                     vuiIdx,
                     extents,
-                    std::forward<TFnObj>(f),
-                    std::forward<TArgs>(args)...);
+                    f,
+                    args...);
         }
     }
 }

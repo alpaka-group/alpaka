@@ -376,8 +376,7 @@ struct MandelbrotKernelTester
             alpaka::dev::DevMan<TAcc>::getDevByIdx(0));
 
         // Get a stream on this device.
-        alpaka::stream::Stream<alpaka::dev::Dev<TAcc>> stream(
-            alpaka::stream::create(devAcc));
+        alpaka::examples::Stream<alpaka::dev::Dev<TAcc>> stream(devAcc);
 
         alpaka::Vec2<TSize> const v2uiExtents(
             static_cast<TSize>(uiNumRows),
@@ -410,29 +409,32 @@ struct MandelbrotKernelTester
             alpaka::mem::buf::alloc<Val, TSize>(devAcc, v2uiExtents));
 
         // Copy Host -> Acc.
-        alpaka::mem::view::copy(bufColorAcc, bufColorHost, v2uiExtents, stream);
+        alpaka::mem::view::copy(stream, bufColorAcc, bufColorHost, v2uiExtents);
 
-        // Create the executor.
-        auto exec(alpaka::exec::create<TAcc>(workDiv, stream));
+        // Create the executor task.
+        auto /*const*/ exec(alpaka::exec::create<TAcc>(
+            workDiv,
+            kernel,
+            alpaka::mem::view::getPtrNative(bufColorAcc),
+            uiNumRows,
+            uiNumCols,
+            alpaka::mem::view::getPitchBytes<1u>(bufColorAcc),
+            fMinR,
+            fMaxR,
+            fMinI,
+            fMaxI,
+            uiMaxIterations));
+
         // Profile the kernel execution.
         std::cout << "Execution time: "
             << alpaka::examples::measureKernelRunTimeMs(
-                exec,
-                kernel,
-                alpaka::mem::view::getPtrNative(bufColorAcc),
-                uiNumRows,
-                uiNumCols,
-                alpaka::mem::view::getPitchBytes<1u>(bufColorAcc),
-                fMinR,
-                fMaxR,
-                fMinI,
-                fMaxI,
-                uiMaxIterations)
+                stream,
+                exec)
             << " ms"
             << std::endl;
 
         // Copy back the result.
-        alpaka::mem::view::copy(bufColorHost, bufColorAcc, v2uiExtents, stream);
+        alpaka::mem::view::copy(stream, bufColorHost, bufColorAcc, v2uiExtents);
 
         // Wait for the stream to finish the memory operation.
         alpaka::wait::wait(stream);

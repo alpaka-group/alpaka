@@ -50,7 +50,9 @@ namespace alpaka
     {
         template<
             typename TDim,
-            typename TSize>
+            typename TSize,
+            typename TKernelFnObj,
+            typename... TArgs>
         class ExecGpuCudaRt;
     }
     namespace acc
@@ -257,11 +259,15 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TDim,
-                typename TSize>
+                typename TSize,
+                typename TKernelFnObj,
+                typename... TArgs>
             struct ExecType<
-                acc::AccGpuCudaRt<TDim, TSize>>
+                acc::AccGpuCudaRt<TDim, TSize>,
+                TKernelFnObj,
+                TArgs...>
             {
-                using type = exec::ExecGpuCudaRt<TDim, TSize>;
+                using type = exec::ExecGpuCudaRt<TDim, TSize, TKernelFnObj, TArgs...>;
             };
         }
     }

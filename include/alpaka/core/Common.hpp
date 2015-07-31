@@ -25,7 +25,7 @@
 
 #include <type_traits>                      // std::enable_if
 
-#if !defined(__CUDA_ARCH__)
+#if (!defined(__CUDA_ARCH__)) || defined(NDEBUG)
     #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 #endif
 #include <boost/predef.h>                   // workarounds
@@ -157,7 +157,11 @@ namespace alpaka
                     TArg const & arg)
                 -> void
                 {
+#ifdef NDEBUG
+                    boost::ignore_unused(arg);
+#else
                     assert(arg >= 0);
+#endif
                 }
             };
             //#############################################################################
@@ -174,10 +178,11 @@ namespace alpaka
                     TArg const & arg)
                 -> void
                 {
-#if !defined(__CUDA_ARCH__)
+#ifndef __CUDA_ARCH__
                     boost::ignore_unused(arg);
-#endif
+#else
                     // Nothing to do for unsigned types.
+#endif
                 }
             };
         }

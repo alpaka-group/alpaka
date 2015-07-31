@@ -29,7 +29,7 @@
 #include <alpaka/core/WorkDivHelpers.hpp>   // workdiv::isValidWorkDiv
 #include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST
 
-#include <type_traits>                      // std::is_same
+#include <type_traits>                      // std::is_same, std::decay
 
 namespace alpaka
 {
@@ -48,7 +48,9 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TExec,
-                typename TSfinae = void>
+                typename TKernelFnObj,
+                typename... TArgs/*,
+                typename TSfinae = void*/>
             struct ExecType;
         }
 
@@ -56,26 +58,33 @@ namespace alpaka
         //! The executor type trait alias template to remove the ::type.
         //#############################################################################
         template<
-            typename TExec>
-        using ExecT = typename traits::ExecType<TExec>::type;
+            typename TExec,
+            typename TKernelFnObj,
+            typename... TArgs>
+        using Exec = typename traits::ExecType<TExec, TKernelFnObj, TArgs...>::type;
 
         //-----------------------------------------------------------------------------
         //! \return An executor.
         //-----------------------------------------------------------------------------
         template<
             typename TAcc,
-            typename TStream,
-            typename TWorkDiv>
+            typename TWorkDiv,
+            typename TKernelFnObj,
+            typename... TArgs>
         ALPAKA_FN_HOST auto create(
-            TWorkDiv const & workDiv,
-            TStream & stream)
-        -> ExecT<TAcc>
+            TWorkDiv && workDiv,
+            TKernelFnObj && kernelFnObj,
+            TArgs && ... args)
+        -> Exec<
+            TAcc,
+            typename std::decay<TKernelFnObj>::type,
+            typename std::decay<TArgs>::type...>
         {
             static_assert(
-                dim::Dim<TWorkDiv>::value == dim::Dim<TAcc>::value,
+                dim::Dim<typename std::decay<TWorkDiv>::type>::value == dim::Dim<TAcc>::value,
                 "The dimensions of TAcc and TWorkDiv have to be identical!");
             static_assert(
-                std::is_same<size::Size<TWorkDiv>, size::Size<TAcc>>::value,
+                std::is_same<size::Size<typename std::decay<TWorkDiv>::type>, size::Size<TAcc>>::value,
                 "The size type of TAcc and the size type of TWorkDiv have to be identical!");
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -84,34 +93,43 @@ namespace alpaka
                 << ", blockThreadExtents: " << workdiv::getWorkDiv<Block, Threads>(workDiv)
                 << std::endl;
 #endif
-#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+/*#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
             // This checks for a valid work division that is also compliant with the maxima of the accelerator.
             if(!workdiv::isValidWorkDiv<TAcc>(dev::getDev(stream), workDiv))
             {
                 throw std::runtime_error("The given work division is not valid or not supported by the " + acc::getAccName<TAcc>() + " accelerator!");
             }
-#endif
+#endif*/
 
             return
-                ExecT<TAcc>(
-                    workDiv,
-                    stream);
+                Exec<
+                    TAcc,
+                    typename std::decay<TKernelFnObj>::type,
+                    typename std::decay<TArgs>::type...>(
+                        std::forward<TWorkDiv>(workDiv),
+                        std::forward<TKernelFnObj>(kernelFnObj),
+                        std::forward<TArgs>(args)...);
         }
         //-----------------------------------------------------------------------------
         //! Creates an executor for the given accelerator with the work division given by grid block extents and block thread extents.
         //! The larger of the two dimensions specifies the executor dimension.
         //! \return An executor.
         //-----------------------------------------------------------------------------
-        template<
+        /*template<
             typename TAcc,
-            typename TStream,
+            typename TWorkDiv,
+            typename TKernelFnObj,
             typename TGridBlockExtents,
             typename TBlockThreadExtents>
         ALPAKA_FN_HOST auto create(
             TGridBlockExtents const & gridBlockExtents,
             TBlockThreadExtents const & blockThreadExtents,
-            TStream & stream)
-        -> ExecT<TAcc>
+            TKernelFnObj && kernelFnObj,
+            TArgs && ... args)
+        -> Exec<
+            typename std::decay<TAcc>::type,
+            typename std::decay<TKernelFnObj>::type,
+            typename std::decay<TArgs>::type...>
         {
             static_assert(
                 (dim::Dim<TAcc>::value >= dim::Dim<TBlockThreadExtents>::value) && (dim::Dim<TAcc>::value >= dim::Dim<TGridBlockExtents>::value),
@@ -124,7 +142,8 @@ namespace alpaka
                         size::Size<TAcc>>(
                             gridBlockExtents,
                             blockThreadExtents),
-                    stream);
-        }
+                    std::forward<TKernelFnObj>(kernelFnObj),
+                    std::forward<TArgs>(args)...);
+        }*/
     }
 }

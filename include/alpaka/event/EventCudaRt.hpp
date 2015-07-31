@@ -21,16 +21,18 @@
 
 #pragma once
 
-#include <alpaka/dev/DevCudaRt.hpp> // dev::DevCudaRt
-#include <alpaka/dev/Traits.hpp>    // GetDev
-#include <alpaka/event/Traits.hpp>
-#include <alpaka/wait/Traits.hpp>   // CurrentThreadWaitFor
+#include <alpaka/dev/DevCudaRt.hpp>             // dev::DevCudaRt
+#include <alpaka/dev/Traits.hpp>                // GetDev
+#include <alpaka/event/Traits.hpp>              // EventTest, ...
+#include <alpaka/wait/Traits.hpp>               // CurrentThreadWaitFor
 
-#include <alpaka/core/Cuda.hpp>     // ALPAKA_CUDA_RT_CHECK
+#include <alpaka/stream/StreamCudaRtAsync.hpp>  // stream::StreamCudaRtAsync
+#include <alpaka/stream/StreamCudaRtSync.hpp>   // stream::StreamCudaRtSync
+#include <alpaka/core/Cuda.hpp>                 // ALPAKA_CUDA_RT_CHECK
 
-#include <stdexcept>                // std::runtime_error
-#include <memory>                   // std::shared_ptr
-#include <functional>               // std::bind
+#include <stdexcept>                            // std::runtime_error
+#include <memory>                               // std::shared_ptr
+#include <functional>                           // std::bind
 
 namespace alpaka
 {
@@ -58,17 +60,19 @@ namespace alpaka
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                         // Set the current device.
-                        ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
-                            m_Dev.m_iDevice));
+                        ALPAKA_CUDA_RT_CHECK(
+                            cudaSetDevice(
+                                m_Dev.m_iDevice));
                         // Create the event on the current device with the specified flags. Valid flags include:
                         // - cudaEventDefault: Default event creation flag.
                         // - cudaEventBlockingSync : Specifies that event should use blocking synchronization.
                         //   A host thread that uses cudaEventSynchronize() to wait on an event created with this flag will block until the event actually completes.
                         // - cudaEventDisableTiming : Specifies that the created event does not need to record timing data.
                         //   Events created with this flag specified and the cudaEventBlockingSync flag not specified will provide the best performance when used with cudaStreamWaitEvent() and cudaEventQuery().
-                        ALPAKA_CUDA_RT_CHECK(cudaEventCreateWithFlags(
-                            &m_CudaEvent,
-                            (bBusyWait ? cudaEventDefault : cudaEventBlockingSync) | cudaEventDisableTiming));
+                        ALPAKA_CUDA_RT_CHECK(
+                            cudaEventCreateWithFlags(
+                                &m_CudaEvent,
+                                (bBusyWait ? cudaEventDefault : cudaEventBlockingSync) | cudaEventDisableTiming));
                     }
                     //-----------------------------------------------------------------------------
                     //! Copy constructor.
@@ -235,6 +239,52 @@ namespace alpaka
             };
         }
     }
+    namespace stream
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The CUDA RT stream enqueue trait specialization.
+            //#############################################################################
+            template<>
+            struct Enqueue<
+                stream::StreamCudaRtAsync,
+                event::EventCudaRt>
+            {
+                ALPAKA_FN_HOST static auto enqueue(
+                    stream::StreamCudaRtAsync & stream,
+                    event::EventCudaRt & event)
+                -> void
+                {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                    ALPAKA_CUDA_RT_CHECK(cudaEventRecord(
+                        event.m_spEventCudaImpl->m_CudaEvent,
+                        stream.m_spStreamCudaRtAsyncImpl->m_CudaStream));
+                }
+            };
+            //#############################################################################
+            //! The CUDA RT stream enqueue trait specialization.
+            //#############################################################################
+            template<>
+            struct Enqueue<
+                stream::StreamCudaRtSync,
+                event::EventCudaRt>
+            {
+                ALPAKA_FN_HOST static auto enqueue(
+                    stream::StreamCudaRtSync & stream,
+                    event::EventCudaRt & event)
+                -> void
+                {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                    ALPAKA_CUDA_RT_CHECK(cudaEventRecord(
+                        event.m_spEventCudaImpl->m_CudaEvent,
+                        stream.m_spStreamCudaRtSyncImpl->m_CudaStream));
+                }
+            };
+        }
+    }
     namespace wait
     {
         namespace traits
@@ -258,6 +308,76 @@ namespace alpaka
                     // Sync is allowed even for events on non current device.
                     ALPAKA_CUDA_RT_CHECK(cudaEventSynchronize(
                         event.m_spEventCudaImpl->m_CudaEvent));
+                }
+            };
+            //#############################################################################
+            //! The CUDA RT stream event wait trait specialization.
+            //#############################################################################
+            template<>
+            struct WaiterWaitFor<
+                stream::StreamCudaRtAsync,
+                event::EventCudaRt>
+            {
+                ALPAKA_FN_HOST static auto waiterWaitFor(
+                    stream::StreamCudaRtAsync & stream,
+                    event::EventCudaRt const & event)
+                -> void
+                {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                    ALPAKA_CUDA_RT_CHECK(cudaStreamWaitEvent(
+                        stream.m_spStreamCudaRtAsyncImpl->m_CudaStream,
+                        event.m_spEventCudaImpl->m_CudaEvent,
+                        0));
+                }
+            };
+            //#############################################################################
+            //! The CUDA RT stream event wait trait specialization.
+            //#############################################################################
+            template<>
+            struct WaiterWaitFor<
+                stream::StreamCudaRtSync,
+                event::EventCudaRt>
+            {
+                ALPAKA_FN_HOST static auto waiterWaitFor(
+                    stream::StreamCudaRtSync & stream,
+                    event::EventCudaRt const & event)
+                -> void
+                {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                    ALPAKA_CUDA_RT_CHECK(cudaStreamWaitEvent(
+                        stream.m_spStreamCudaRtSyncImpl->m_CudaStream,
+                        event.m_spEventCudaImpl->m_CudaEvent,
+                        0));
+                }
+            };
+            //#############################################################################
+            //! The CUDA RT device event wait trait specialization.
+            //!
+            //! Any future work submitted in any stream of this device will wait for event to complete before beginning execution.
+            //#############################################################################
+            template<>
+            struct WaiterWaitFor<
+                dev::DevCudaRt,
+                event::EventCudaRt>
+            {
+                ALPAKA_FN_HOST static auto waiterWaitFor(
+                    dev::DevCudaRt & dev,
+                    event::EventCudaRt const & event)
+                -> void
+                {
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                    // Set the current device.
+                    ALPAKA_CUDA_RT_CHECK(
+                        cudaSetDevice(
+                            dev.m_iDevice));
+
+                    ALPAKA_CUDA_RT_CHECK(cudaStreamWaitEvent(
+                        0,
+                        event.m_spEventCudaImpl->m_CudaEvent,
+                        0));
                 }
             };
         }

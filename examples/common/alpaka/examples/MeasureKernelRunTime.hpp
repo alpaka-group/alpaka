@@ -24,6 +24,7 @@
 #include <alpaka/alpaka.hpp>
 
 #include <utility>          // std::forward
+#include <functional>       // std::bind
 
 namespace alpaka
 {
@@ -34,30 +35,30 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         template<
             typename TExec,
-            typename TKernelFunctor,
-            typename... TArgs>
+            typename TStream>
         auto measureKernelRunTimeMs(
-            TExec const & exec,
-            TKernelFunctor && kernelFunctor,
-            TArgs && ... args)
+            TStream & stream,
+            TExec /*&*/ & exec)
         -> std::chrono::milliseconds::rep
         {
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
             std::cout
                 << "measureKernelRunTime("
                 << " exec: " << typeid(TExec).name()
+                << " stream: " << typeid(TStream).name()
                 << ")" << std::endl;
 #endif
+            // Wait for the stream to finish all tasks enqueued prior to the kernel.
+            alpaka::wait::wait(stream);
+
             // Take the time prior to the execution.
             auto const tpStart(std::chrono::high_resolution_clock::now());
 
             // Execute the kernel functor.
-            exec(
-                std::forward<TKernelFunctor>(kernelFunctor),
-                std::forward<TArgs>(args)...);
+            alpaka::stream::enqueue(stream, exec);
 
             // Wait for the stream to finish the kernel execution to measure its run time.
-            alpaka::wait::wait(alpaka::stream::getStream(exec));
+            alpaka::wait::wait(stream);
 
             // Take the time after the execution.
             auto const tpEnd(std::chrono::high_resolution_clock::now());

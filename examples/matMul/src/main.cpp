@@ -238,13 +238,15 @@ struct MatMulTester
         // Get the host device.
         auto devHost(alpaka::dev::cpu::getDev());
 
+        // Get a stream on the host device.
+        alpaka::stream::StreamCpuAsync streamHost(devHost);
+
         // Select a device to execute on.
         alpaka::dev::Dev<TAcc> devAcc(
             alpaka::dev::DevMan<TAcc>::getDevByIdx(0));
 
-        // Get a stream on this device.
-        alpaka::stream::Stream<alpaka::dev::Dev<TAcc>> stream(
-            alpaka::stream::create(devAcc));
+        // Get a stream on the accelerator device.
+        alpaka::examples::Stream<alpaka::dev::Dev<TAcc>> streamAcc(devAcc);
 
         alpaka::Vec2<TSize> const v2uiExtentsA(
             static_cast<TSize>(m),
@@ -295,7 +297,7 @@ struct MatMulTester
 
         // Allocate C and set it to zero.
         auto bufCHost(alpaka::mem::buf::alloc<Val, TSize>(devHost, v2uiExtentsC));
-        alpaka::mem::view::set(bufCHost, 0u, v2uiExtentsC);
+        alpaka::mem::view::set(streamHost, bufCHost, 0u, v2uiExtentsC);
 
         // Allocate the buffers on the accelerator.
         auto bufAAcc(alpaka::mem::buf::alloc<Val, TSize>(devAcc, v2uiExtentsA));
@@ -303,36 +305,40 @@ struct MatMulTester
         auto bufCAcc(alpaka::mem::buf::alloc<Val, TSize>(devAcc, v2uiExtentsC));
 
         // Copy Host -> Acc.
-        alpaka::mem::view::copy(bufAAcc, bufAHost, v2uiExtentsA, stream);
-        alpaka::mem::view::copy(bufBAcc, bufBHost, v2uiExtentsB, stream);
-        alpaka::mem::view::copy(bufCAcc, bufCHost, v2uiExtentsC, stream);
+        alpaka::mem::view::copy(streamAcc, bufAAcc, bufAHost, v2uiExtentsA);
+        alpaka::mem::view::copy(streamAcc, bufBAcc, bufBHost, v2uiExtentsB);
+        alpaka::wait::wait(streamHost);
+        alpaka::mem::view::copy(streamAcc, bufCAcc, bufCHost, v2uiExtentsC);
 
-        // Create the executor.
-        auto exec(alpaka::exec::create<TAcc>(workDiv, stream));
+        // Create the executor task.
+        auto /*const*/ exec(alpaka::exec::create<TAcc>(
+            workDiv,
+            kernel,
+            m,
+            n,
+            k,
+            static_cast<Val>(1),
+            alpaka::mem::view::getPtrNative(bufAAcc),
+            static_cast<TSize>(alpaka::mem::view::getPitchBytes<1u>(bufAAcc) / sizeof(Val)),
+            alpaka::mem::view::getPtrNative(bufBAcc),
+            static_cast<TSize>(alpaka::mem::view::getPitchBytes<1u>(bufBAcc) / sizeof(Val)),
+            static_cast<Val>(1),
+            alpaka::mem::view::getPtrNative(bufCAcc),
+            static_cast<TSize>(alpaka::mem::view::getPitchBytes<1u>(bufCAcc) / sizeof(Val))));
+
         // Profile the kernel execution.
         std::cout << "Execution time: "
             << alpaka::examples::measureKernelRunTimeMs(
-                exec,
-                kernel,
-                m,
-                n,
-                k,
-                static_cast<Val>(1),
-                alpaka::mem::view::getPtrNative(bufAAcc),
-                static_cast<TSize>(alpaka::mem::view::getPitchBytes<1u>(bufAAcc) / sizeof(Val)),
-                alpaka::mem::view::getPtrNative(bufBAcc),
-                static_cast<TSize>(alpaka::mem::view::getPitchBytes<1u>(bufBAcc) / sizeof(Val)),
-                static_cast<Val>(1),
-                alpaka::mem::view::getPtrNative(bufCAcc),
-                static_cast<TSize>(alpaka::mem::view::getPitchBytes<1u>(bufCAcc) / sizeof(Val)))
+                streamAcc,
+                exec)
             << " ms"
             << std::endl;
 
         // Copy back the result.
-        alpaka::mem::view::copy(bufCHost, bufCAcc, v2uiExtentsC, stream);
+        alpaka::mem::view::copy(streamAcc, bufCHost, bufCAcc, v2uiExtentsC);
 
         // Wait for the stream to finish the memory operation.
-        alpaka::wait::wait(stream);
+        alpaka::wait::wait(streamAcc);
 
         // Assert that the results are correct.
         // When multiplying square matrices filled with ones, the result of each cell is the size of the matrix.

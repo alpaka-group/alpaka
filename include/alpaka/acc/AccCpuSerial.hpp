@@ -49,19 +49,10 @@ namespace alpaka
     {
         template<
             typename TDim,
-            typename TSize>
+            typename TSize,
+            typename TKernelFnObj,
+            typename... TArgs>
         class ExecCpuSerial;
-
-        namespace serial
-        {
-            namespace detail
-            {
-                template<
-                    typename TDim,
-                    typename TSize>
-                class ExecCpuSerialImpl;
-            }
-        }
     }
     namespace acc
     {
@@ -83,7 +74,13 @@ namespace alpaka
             public block::shared::BlockSharedAllocNoSync
         {
         public:
-            friend class ::alpaka::exec::serial::detail::ExecCpuSerialImpl<TDim, TSize>;
+            // Partial specialization with the correct TDim and TSize is not allowed.
+            template<
+                typename TDim2,
+                typename TSize2,
+                typename TKernelFnObj,
+                typename... TArgs>
+            friend class ::alpaka::exec::ExecCpuSerial;
 
         private:
             //-----------------------------------------------------------------------------
@@ -266,11 +263,15 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TDim,
-                typename TSize>
+                typename TSize,
+                typename TKernelFnObj,
+                typename... TArgs>
             struct ExecType<
-                acc::AccCpuSerial<TDim, TSize>>
+                acc::AccCpuSerial<TDim, TSize>,
+                TKernelFnObj,
+                TArgs...>
             {
-                using type = exec::ExecCpuSerial<TDim, TSize>;
+                using type = exec::ExecCpuSerial<TDim, TSize, TKernelFnObj, TArgs...>;
             };
         }
     }

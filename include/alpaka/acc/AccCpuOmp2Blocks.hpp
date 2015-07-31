@@ -51,25 +51,10 @@ namespace alpaka
     {
         template<
             typename TDim,
-            typename TSize>
+            typename TSize,
+            typename TKernelFnObj,
+            typename... TArgs>
         class ExecCpuOmp2Blocks;
-
-        namespace omp
-        {
-            namespace omp2
-            {
-                namespace blocks
-                {
-                    namespace detail
-                    {
-                        template<
-                            typename TDim,
-                            typename TSize>
-                        class ExecCpuOmp2BlocksImpl;
-                    }
-                }
-            }
-        }
     }
     namespace acc
     {
@@ -92,7 +77,13 @@ namespace alpaka
             public block::shared::BlockSharedAllocNoSync
         {
         public:
-            friend class ::alpaka::exec::omp::omp2::blocks::detail::ExecCpuOmp2BlocksImpl<TDim, TSize>;
+            // Partial specialization with the correct TDim and TSize is not allowed.
+            template<
+                typename TDim2,
+                typename TSize2,
+                typename TKernelFnObj,
+                typename... TArgs>
+            friend class ::alpaka::exec::ExecCpuOmp2Blocks;
 
         private:
             //-----------------------------------------------------------------------------
@@ -275,11 +266,15 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TDim,
-                typename TSize>
+                typename TSize,
+                typename TKernelFnObj,
+                typename... TArgs>
             struct ExecType<
-                acc::AccCpuOmp2Blocks<TDim, TSize>>
+                acc::AccCpuOmp2Blocks<TDim, TSize>,
+                TKernelFnObj,
+                TArgs...>
             {
-                using type = exec::ExecCpuOmp2Blocks<TDim, TSize>;
+                using type = exec::ExecCpuOmp2Blocks<TDim, TSize, TKernelFnObj, TArgs...>;
             };
         }
     }

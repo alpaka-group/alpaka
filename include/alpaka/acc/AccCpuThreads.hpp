@@ -55,19 +55,10 @@ namespace alpaka
     {
         template<
             typename TDim,
-            typename TSize>
+            typename TSize,
+            typename TKernelFnObj,
+            typename... TArgs>
         class ExecCpuThreads;
-
-        namespace threads
-        {
-            namespace detail
-            {
-                template<
-                    typename TDim,
-                    typename TSize>
-                class ExecCpuThreadsImpl;
-            }
-        }
     }
     namespace acc
     {
@@ -89,7 +80,13 @@ namespace alpaka
             public block::shared::BlockSharedAllocMasterSync
         {
         public:
-            friend class ::alpaka::exec::threads::detail::ExecCpuThreadsImpl<TDim, TSize>;
+            // Partial specialization with the correct TDim and TSize is not allowed.
+            template<
+                typename TDim2,
+                typename TSize2,
+                typename TKernelFnObj,
+                typename... TArgs>
+            friend class ::alpaka::exec::ExecCpuThreads;
 
         private:
             //-----------------------------------------------------------------------------
@@ -329,11 +326,15 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TDim,
-                typename TSize>
+                typename TSize,
+                typename TKernelFnObj,
+                typename... TArgs>
             struct ExecType<
-                acc::AccCpuThreads<TDim, TSize>>
+                acc::AccCpuThreads<TDim, TSize>,
+                TKernelFnObj,
+                TArgs...>
             {
-                using type = exec::ExecCpuThreads<TDim, TSize>;
+                using type = exec::ExecCpuThreads<TDim, TSize, TKernelFnObj, TArgs...>;
             };
         }
     }

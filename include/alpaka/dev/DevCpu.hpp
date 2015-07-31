@@ -23,11 +23,11 @@
 
 #include <alpaka/dev/Traits.hpp>        // dev::traits::DevType
 #include <alpaka/event/Traits.hpp>      // event::traits::EventType
-#include <alpaka/stream/Traits.hpp>     // stream::traits::StreamType
 #include <alpaka/wait/Traits.hpp>       // CurrentThreadWaitFor
 #include <alpaka/mem/buf/Traits.hpp>    // mem::buf::traits::BufType
 #include <alpaka/mem/view/Traits.hpp>   // mem::view::traits::ViewType
 
+#include <alpaka/stream/Traits.hpp>     // stream::enqueue
 #include <alpaka/dev/cpu/SysInfo.hpp>   // getCpuName, getGlobalMemSizeBytes
 
 #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
@@ -282,11 +282,7 @@ namespace alpaka
 
     namespace event
     {
-        class EventCpuAsync;
-    }
-    namespace stream
-    {
-        class StreamCpuAsync;
+        class EventCpu;
     }
     namespace dev
     {
@@ -466,21 +462,6 @@ namespace alpaka
             }
         }
     }
-    namespace stream
-    {
-        namespace traits
-        {
-            //#############################################################################
-            //! The CPU device stream type trait specialization.
-            //#############################################################################
-            template<>
-            struct StreamType<
-                dev::DevCpu>
-            {
-                using type = stream::StreamCpuAsync;
-            };
-        }
-    }
     namespace wait
     {
         namespace traits
@@ -506,10 +487,10 @@ namespace alpaka
                     auto vspStreams(
                         dev.m_spDevCpuImpl->GetAllAsyncStreamImpls());
 
-                    // Enqueue an event in every stream on the device.
+                    // Enqueue an event in every asynchronous stream on the device.
                     // \TODO: This should be done atomically for all streams.
                     // Furthermore there should not even be a chance to enqueue something between getting the streams and adding our wait events!
-                    std::vector<event::EventCpuAsync> vEvents;
+                    std::vector<event::EventCpu> vEvents;
                     for(auto && spStream : vspStreams)
                     {
                         vEvents.emplace_back(dev);

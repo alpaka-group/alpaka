@@ -31,8 +31,7 @@
 #include <utility>                                  // std::forward
 
 //#############################################################################
-//! An accelerated test kernel.
-//! Uses atomicOp, syncBlockThreads, getBlockSharedExternMem, getIdx, getWorkDiv and global memory to compute a (useless) result.
+//! A kernel using atomicOp, syncBlockThreads, getBlockSharedExternMem, getIdx, getWorkDiv and global memory to compute a (useless) result.
 //! \tparam TAcc The accelerator environment to be executed on.
 //! \tparam TuiNumUselessWork The number of useless calculations done in each kernel execution.
 //#############################################################################
@@ -183,16 +182,12 @@ struct SharedMemTester
         // Create the kernel function object.
         SharedMemKernel<TuiNumUselessWork> kernel(42);
 
-        // Get the host device.
-        //auto devHost(alpaka::dev::cpu::getDev());
-
         // Select a device to execute on.
         alpaka::dev::Dev<TAcc> devAcc(
             alpaka::dev::DevMan<TAcc>::getDevByIdx(0));
 
         // Get a stream on this device.
-        alpaka::stream::Stream<alpaka::dev::Dev<TAcc>> stream(
-            alpaka::stream::create(devAcc));
+        alpaka::examples::Stream<alpaka::dev::Dev<TAcc>> stream(devAcc);
 
         // Set the grid blocks extent.
         alpaka::workdiv::WorkDivMembers<alpaka::dim::DimInt<1u>, TSize> const workDiv(
@@ -220,22 +215,28 @@ struct SharedMemTester
         // Allocate accelerator buffers and copy.
         TSize const uiSizeElements(uiGridBlocksCount);
         auto blockRetValsAcc(alpaka::mem::buf::alloc<TVal, TSize>(devAcc, uiSizeElements));
-        alpaka::mem::view::copy(blockRetValsAcc, vuiBlockRetVals, uiSizeElements);
+        alpaka::mem::view::copy(stream, blockRetValsAcc, vuiBlockRetVals, uiSizeElements);
 
-        // Create the executor.
-        auto exec(alpaka::exec::create<TAcc>(workDiv, stream));
+        // Create the executor task.
+        auto /*const*/ exec(alpaka::exec::create<TAcc>(
+            workDiv,
+            kernel,
+            alpaka::mem::view::getPtrNative(blockRetValsAcc),
+            uiMult2));
+
         // Profile the kernel execution.
         std::cout << "Execution time: "
             << alpaka::examples::measureKernelRunTimeMs(
-                exec,
-                kernel,
-                alpaka::mem::view::getPtrNative(blockRetValsAcc),
-                uiMult2)
+                stream,
+                exec)
             << " ms"
             << std::endl;
 
         // Copy back the result.
-        alpaka::mem::view::copy(vuiBlockRetVals, blockRetValsAcc, uiSizeElements);
+        alpaka::mem::view::copy(stream, vuiBlockRetVals, blockRetValsAcc, uiSizeElements);
+
+        // Wait for the stream to finish the memory operation.
+        alpaka::wait::wait(stream);
 
         // Assert that the results are correct.
         TVal const uiCorrectResult(

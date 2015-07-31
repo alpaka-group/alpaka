@@ -203,5 +203,45 @@ namespace alpaka
                 os << std::endl;
             }
         }
+
+        namespace detail
+        {
+            //#############################################################################
+            //! The stream type trait for the stream that should be used for the given accelerator.
+            //#############################################################################
+            template<
+                typename TDev,
+                typename TSfinae = void>
+            struct StreamType
+            {
+#if (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
+                using type = alpaka::stream::StreamCpuSync;
+#else
+                using type = alpaka::stream::StreamCpuAsync;
+#endif
+            };
+
+#if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
+            //#############################################################################
+            //! The stream type trait specialization for the CUDA accelerator.
+            //#############################################################################
+            template<>
+            struct StreamType<
+                alpaka::dev::DevCudaRt>
+            {
+#if (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
+                using type = alpaka::stream::StreamCudaRtSync;
+#else
+                using type = alpaka::stream::StreamCudaRtAsync;
+#endif
+            };
+#endif
+        }
+        //#############################################################################
+        //! The stream type that should be used for the given accelerator.
+        //#############################################################################
+        template<
+            typename TAcc>
+        using Stream = typename detail::StreamType<TAcc>::type;
     }
 }

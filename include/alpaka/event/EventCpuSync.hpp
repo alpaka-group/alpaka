@@ -23,16 +23,12 @@
 
 #include <alpaka/dev/DevCpu.hpp>            // dev::DevCpu
 #include <alpaka/dev/Traits.hpp>            // GetDev
-#include <alpaka/event/Traits.hpp>          // StreamEnqueue, ...
+#include <alpaka/event/Traits.hpp>          // EventTest, ...
 #include <alpaka/wait/Traits.hpp>           // CurrentThreadWaitFor
 #include <alpaka/dev/Traits.hpp>            // GetDev
 
 #include <boost/uuid/uuid.hpp>              // boost::uuids::uuid
 #include <boost/uuid/uuid_generators.hpp>   // boost::uuids::random_generator
-
-#include <type_traits>                      // std::is_base
-#include <mutex>                            // std::mutex
-#include <condition_variable>               // std::condition_variable
 
 namespace alpaka
 {
@@ -78,8 +74,8 @@ namespace alpaka
                     ALPAKA_FN_HOST ~EventCpuSyncImpl() noexcept = default;
 
                 public:
-                    boost::uuids::uuid const m_Uuid;                        //!< The unique ID.
-                    dev::DevCpu const m_Dev;                                //!< The device this event is bound to.
+                    boost::uuids::uuid const m_Uuid;    //!< The unique ID.
+                    dev::DevCpu const m_Dev;            //!< The device this event is bound to.
                 };
             }
         }

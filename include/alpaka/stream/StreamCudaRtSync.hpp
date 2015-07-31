@@ -21,20 +21,24 @@
 
 #pragma once
 
-#include <alpaka/dev/Traits.hpp>                // GetDev
-#include <alpaka/dev/DevCpu.hpp>                // dev::DevCpu
-#include <alpaka/stream/Traits.hpp>             // stream::traits::Enqueue, ...
-#include <alpaka/wait/Traits.hpp>               // CurrentThreadWaitFor, WaiterWaitFor
+#include <alpaka/dev/DevCudaRt.hpp>     // dev::DevCudaRt
 
-#include <boost/core/ignore_unused.hpp>         // boost::ignore_unused
-#include <boost/uuid/uuid.hpp>                  // boost::uuids::uuid
-#include <boost/uuid/uuid_generators.hpp>       // boost::uuids::random_generator
+#include <alpaka/stream/Traits.hpp>     // stream::traits::Enqueue, ...
+#include <alpaka/wait/Traits.hpp>       // CurrentThreadWaitFor, WaiterWaitFor
+#include <alpaka/acc/Traits.hpp>        // acc::traits::AccType
+#include <alpaka/dev/Traits.hpp>        // GetDev
+
+#include <alpaka/core/Cuda.hpp>         // ALPAKA_CUDA_RT_CHECK
+
+#include <stdexcept>                    // std::runtime_error
+#include <memory>                       // std::shared_ptr
+#include <functional>                   // std::bind
 
 namespace alpaka
 {
     namespace event
     {
-        class EventCpu;
+        class EventCudaRt;
     }
 }
 
@@ -42,93 +46,124 @@ namespace alpaka
 {
     namespace stream
     {
-        namespace cpu
+        namespace cuda
         {
             namespace detail
             {
                 //#############################################################################
-                //! The CPU device stream implementation.
+                //! The CUDA RT stream implementation.
                 //#############################################################################
-                class StreamCpuSyncImpl final
+                class StreamCudaRtSyncImpl final
                 {
                 public:
                     //-----------------------------------------------------------------------------
                     //! Constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST StreamCpuSyncImpl(
-                        dev::DevCpu & dev) :
-                            m_Uuid(boost::uuids::random_generator()()),
-                            m_Dev(dev)
-                    {}
+                    StreamCudaRtSyncImpl(
+                        dev::DevCudaRt const & dev) :
+                            m_Dev(dev),
+                            m_CudaStream()
+                    {
+                        ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                        // Set the current device.
+                        ALPAKA_CUDA_RT_CHECK(
+                            cudaSetDevice(
+                                m_Dev.m_iDevice));
+                        // - cudaStreamDefault: Default stream creation flag.
+                        // - cudaStreamNonBlocking: Specifies that work running in the created stream may run concurrently with work in stream 0 (the NULL stream),
+                        //   and that the created stream should perform no implicit synchronization with stream 0.
+                        // Create the stream on the current device.
+                        // NOTE: cudaStreamNonBlocking is required to match the semantic implemented in the alpaka CPU stream.
+                        // It would be too much work to implement implicit default stream synchronization on CPU.
+                        ALPAKA_CUDA_RT_CHECK(
+                            cudaStreamCreateWithFlags(
+                                &m_CudaStream,
+                                cudaStreamNonBlocking));
+                    }
                     //-----------------------------------------------------------------------------
                     //! Copy constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST StreamCpuSyncImpl(StreamCpuSyncImpl const &) = delete;
+                    ALPAKA_FN_HOST StreamCudaRtSyncImpl(StreamCudaRtSyncImpl const &) = delete;
                     //-----------------------------------------------------------------------------
                     //! Move constructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST StreamCpuSyncImpl(StreamCpuSyncImpl &&) = default;
+                    ALPAKA_FN_HOST StreamCudaRtSyncImpl(StreamCudaRtSyncImpl &&) = default;
                     //-----------------------------------------------------------------------------
                     //! Copy assignment operator.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST auto operator=(StreamCpuSyncImpl const &) -> StreamCpuSyncImpl & = delete;
+                    ALPAKA_FN_HOST auto operator=(StreamCudaRtSyncImpl const &) -> StreamCudaRtSyncImpl & = delete;
                     //-----------------------------------------------------------------------------
                     //! Move assignment operator.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST auto operator=(StreamCpuSyncImpl &&) -> StreamCpuSyncImpl & = default;
+                    ALPAKA_FN_HOST auto operator=(StreamCudaRtSyncImpl &&) -> StreamCudaRtSyncImpl & = default;
                     //-----------------------------------------------------------------------------
                     //! Destructor.
                     //-----------------------------------------------------------------------------
-                    ALPAKA_FN_HOST ~StreamCpuSyncImpl() = default;
+                    ~StreamCudaRtSyncImpl()
+                    {
+                        ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                        // Set the current device. \TODO: Is setting the current device before cudaStreamDestroy required?
+                        ALPAKA_CUDA_RT_CHECK(
+                            cudaSetDevice(
+                                m_Dev.m_iDevice));
+                        // In case the device is still doing work in the stream when cudaStreamDestroy() is called, the function will return immediately
+                        // and the resources associated with stream will be released automatically once the device has completed all work in stream.
+                        // -> No need to synchronize here.
+                        ALPAKA_CUDA_RT_CHECK(
+                            cudaStreamDestroy(
+                                m_CudaStream));
+                    }
 
                 public:
-                    boost::uuids::uuid const m_Uuid;    //!< The unique ID.
-                    dev::DevCpu const m_Dev;            //!< The device this stream is bound to.
+                    dev::DevCudaRt const m_Dev;   //!< The device this stream is bound to.
+                    cudaStream_t m_CudaStream;
                 };
             }
         }
 
         //#############################################################################
-        //! The CPU device stream.
+        //! The CUDA RT stream.
         //#############################################################################
-        class StreamCpuSync final
+        class StreamCudaRtSync final
         {
         public:
             //-----------------------------------------------------------------------------
             //! Constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST StreamCpuSync(
-                dev::DevCpu & dev) :
-                    m_spSyncStreamCpu(std::make_shared<cpu::detail::StreamCpuSyncImpl>(dev))
+            ALPAKA_FN_HOST StreamCudaRtSync(
+                dev::DevCudaRt & dev) :
+                m_spStreamCudaRtSyncImpl(std::make_shared<cuda::detail::StreamCudaRtSyncImpl>(dev))
             {}
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST StreamCpuSync(StreamCpuSync const &) = default;
+            ALPAKA_FN_HOST StreamCudaRtSync(StreamCudaRtSync const &) = default;
             //-----------------------------------------------------------------------------
             //! Move constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST StreamCpuSync(StreamCpuSync &&) = default;
+            ALPAKA_FN_HOST StreamCudaRtSync(StreamCudaRtSync &&) = default;
             //-----------------------------------------------------------------------------
             //! Copy assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(StreamCpuSync const &) -> StreamCpuSync & = default;
+            ALPAKA_FN_HOST auto operator=(StreamCudaRtSync const &) -> StreamCudaRtSync & = default;
             //-----------------------------------------------------------------------------
             //! Move assignment operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator=(StreamCpuSync &&) -> StreamCpuSync & = default;
+            ALPAKA_FN_HOST auto operator=(StreamCudaRtSync &&) -> StreamCudaRtSync & = default;
             //-----------------------------------------------------------------------------
             //! Equality comparison operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator==(StreamCpuSync const & rhs) const
+            ALPAKA_FN_HOST auto operator==(StreamCudaRtSync const & rhs) const
             -> bool
             {
-                return (m_spSyncStreamCpu->m_Uuid == rhs.m_spSyncStreamCpu->m_Uuid);
+                return (m_spStreamCudaRtSyncImpl->m_CudaStream == rhs.m_spStreamCudaRtSyncImpl->m_CudaStream);
             }
             //-----------------------------------------------------------------------------
-            //! Inequality comparison operator.
+            //! Equality comparison operator.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST auto operator!=(StreamCpuSync const & rhs) const
+            ALPAKA_FN_HOST auto operator!=(StreamCudaRtSync const & rhs) const
             -> bool
             {
                 return !((*this) == rhs);
@@ -136,10 +171,10 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_HOST ~StreamCpuSync() = default;
+            ALPAKA_FN_HOST ~StreamCudaRtSync() = default;
 
         public:
-            std::shared_ptr<cpu::detail::StreamCpuSyncImpl> m_spSyncStreamCpu;
+            std::shared_ptr<cuda::detail::StreamCudaRtSyncImpl> m_spStreamCudaRtSyncImpl;
         };
     }
 
@@ -148,26 +183,26 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU sync device stream device type trait specialization.
+            //! The CUDA RT stream device type trait specialization.
             //#############################################################################
             template<>
             struct DevType<
-                stream::StreamCpuSync>
+                stream::StreamCudaRtSync>
             {
-                using type = dev::DevCpu;
+                using type = dev::DevCudaRt;
             };
             //#############################################################################
-            //! The CPU sync device stream device get trait specialization.
+            //! The CUDA RT stream device get trait specialization.
             //#############################################################################
             template<>
             struct GetDev<
-                stream::StreamCpuSync>
+                stream::StreamCudaRtSync>
             {
                 ALPAKA_FN_HOST static auto getDev(
-                    stream::StreamCpuSync const & stream)
-                -> dev::DevCpu
+                    stream::StreamCudaRtSync const & stream)
+                -> dev::DevCudaRt
                 {
-                    return stream.m_spSyncStreamCpu->m_Dev;
+                    return stream.m_spStreamCudaRtSyncImpl->m_Dev;
                 }
             };
         }
@@ -177,13 +212,13 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU sync device stream event type trait specialization.
+            //! The CUDA RT stream event type trait specialization.
             //#############################################################################
             template<>
             struct EventType<
-                stream::StreamCpuSync>
+                stream::StreamCudaRtSync>
             {
-                using type = event::EventCpu;
+                using type = event::EventCudaRt;
             };
         }
     }
@@ -192,59 +227,60 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The CPU sync device stream enqueue trait specialization.
-            //#############################################################################
-            template<
-                typename TTask>
-            struct Enqueue<
-                stream::StreamCpuSync,
-                TTask>
-            {
-                ALPAKA_FN_HOST static auto enqueue(
-                    stream::StreamCpuSync & stream,
-                    TTask & task)
-                -> void
-                {
-                    boost::ignore_unused(stream);
-                    task();
-                }
-            };
-            //#############################################################################
-            //! The CPU sync device stream test trait specialization.
+            //! The CUDA RT stream test trait specialization.
             //#############################################################################
             template<>
             struct Empty<
-                stream::StreamCpuSync>
+                stream::StreamCudaRtSync>
             {
                 ALPAKA_FN_HOST static auto empty(
-                    stream::StreamCpuSync const & stream)
+                    stream::StreamCudaRtSync const & stream)
                 -> bool
                 {
-                    boost::ignore_unused(stream);
-                    return true;
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                    // Query is allowed even for streams on non current device.
+                    auto const ret(
+                        cudaStreamQuery(
+                            stream.m_spStreamCudaRtSyncImpl->m_CudaStream));
+                    if(ret == cudaSuccess)
+                    {
+                        return true;
+                    }
+                    else if(ret == cudaErrorNotReady)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        throw std::runtime_error(("Unexpected return value '" + std::string(cudaGetErrorString(ret)) + "' from cudaStreamQuery!"));
+                    }
                 }
             };
         }
     }
-
     namespace wait
     {
         namespace traits
         {
             //#############################################################################
-            //! The CPU sync device stream thread wait trait specialization.
+            //! The CUDA RT stream thread wait trait specialization.
             //!
             //! Blocks execution of the calling thread until the stream has finished processing all previously requested tasks (kernels, data copies, ...)
             //#############################################################################
             template<>
             struct CurrentThreadWaitFor<
-                stream::StreamCpuSync>
+                stream::StreamCudaRtSync>
             {
                 ALPAKA_FN_HOST static auto currentThreadWaitFor(
-                    stream::StreamCpuSync const & stream)
+                    stream::StreamCudaRtSync const & stream)
                 -> void
                 {
-                    boost::ignore_unused(stream);
+                    ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
+
+                    // Sync is allowed even for streams on non current device.
+                    ALPAKA_CUDA_RT_CHECK(cudaStreamSynchronize(
+                        stream.m_spStreamCudaRtSyncImpl->m_CudaStream));
                 }
             };
         }

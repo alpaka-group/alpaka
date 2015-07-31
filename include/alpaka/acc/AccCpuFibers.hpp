@@ -54,19 +54,10 @@ namespace alpaka
     {
         template<
             typename TDim,
-            typename TSize>
+            typename TSize,
+            typename TKernelFnObj,
+            typename... TArgs>
         class ExecCpuFibers;
-
-        namespace fibers
-        {
-            namespace detail
-            {
-                template<
-                    typename TDim,
-                    typename TSize>
-                class ExecCpuFibersImpl;
-            }
-        }
     }
     namespace acc
     {
@@ -90,7 +81,13 @@ namespace alpaka
             public block::shared::BlockSharedAllocMasterSync
         {
         public:
-            friend class ::alpaka::exec::fibers::detail::ExecCpuFibersImpl<TDim, TSize>;
+            // Partial specialization with the correct TDim and TSize is not allowed.
+            template<
+                typename TDim2,
+                typename TSize2,
+                typename TKernelFnObj,
+                typename... TArgs>
+            friend class ::alpaka::exec::ExecCpuFibers;
 
         private:
             //-----------------------------------------------------------------------------
@@ -323,11 +320,15 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TDim,
-                typename TSize>
+                typename TSize,
+                typename TKernelFnObj,
+                typename... TArgs>
             struct ExecType<
-                acc::AccCpuFibers<TDim, TSize>>
+                acc::AccCpuFibers<TDim, TSize>,
+                TKernelFnObj,
+                TArgs...>
             {
-                using type = exec::ExecCpuFibers<TDim, TSize>;
+                using type = exec::ExecCpuFibers<TDim, TSize, TKernelFnObj, TArgs...>;
             };
         }
     }

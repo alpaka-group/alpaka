@@ -25,6 +25,7 @@
 #include <alpaka/dim/Traits.hpp>        // dim::DimType
 #include <alpaka/extent/Traits.hpp>     // extent::GetExtent
 #include <alpaka/offset/Traits.hpp>     // offset::GetOffset
+#include <alpaka/stream/Traits.hpp>     // stream::enqueue
 
 #include <alpaka/core/Fold.hpp>         // core::foldr
 #include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST
@@ -131,7 +132,7 @@ namespace alpaka
                     typename TDim,
                     typename TDev,
                     typename TSfinae = void>
-                struct Set;
+                struct TaskSet;
 
                 //#############################################################################
                 //! The memory copy trait.
@@ -143,7 +144,7 @@ namespace alpaka
                     typename TDevDst,
                     typename TDevSrc,
                     typename TSfinae = void>
-                struct Copy;
+                struct TaskCopy;
 
                 //#############################################################################
                 //! The memory buffer view creation type trait.
@@ -278,32 +279,40 @@ namespace alpaka
             }
 
             //-----------------------------------------------------------------------------
-            //! Sets the memory to the given value.
+            //! Create a memory set task.
             //!
             //! \param buf The memory buffer to fill.
             //! \param byte Value to set for each element of the specified buffer.
             //! \param extents The extents of the buffer to fill.
             //-----------------------------------------------------------------------------
             template<
-                typename TView,
-                typename TExtents>
-            ALPAKA_FN_HOST auto set(
+                typename TExtents,
+                typename TView>
+            ALPAKA_FN_HOST auto taskSet(
                 TView & buf,
                 std::uint8_t const & byte,
                 TExtents const & extents)
-            -> void
+            -> decltype(
+                traits::TaskSet<
+                    dim::Dim<TView>,
+                    dev::Dev<TView>>
+                ::taskSet(
+                    buf,
+                    byte,
+                    extents))
             {
                 static_assert(
                     dim::Dim<TView>::value == dim::Dim<TExtents>::value,
                     "The buffer and the extents are required to have the same dimensionality!");
 
-                traits::Set<
-                    dim::Dim<TView>,
-                    dev::Dev<TView>>
-                ::set(
-                    buf,
-                    byte,
-                    extents);
+                return
+                    traits::TaskSet<
+                        dim::Dim<TView>,
+                        dev::Dev<TView>>
+                    ::taskSet(
+                        buf,
+                        byte,
+                        extents);
             }
 
             //-----------------------------------------------------------------------------
@@ -315,46 +324,51 @@ namespace alpaka
             //! \param stream The stream to enqueue the buffer fill task into.
             //-----------------------------------------------------------------------------
             template<
-                typename TView,
                 typename TExtents,
+                typename TView,
                 typename TStream>
             ALPAKA_FN_HOST auto set(
+                TStream & stream,
                 TView & buf,
                 std::uint8_t const & byte,
-                TExtents const & extents,
-                TStream const & stream)
+                TExtents const & extents)
             -> void
             {
-                static_assert(
-                    dim::Dim<TView>::value == dim::Dim<TExtents>::value,
-                    "The buffer and the extents are required to have the same dimensionality!");
+                auto /*const*/ taskSet(
+                    mem::view::taskSet(
+                        buf,
+                        byte,
+                        extents));
 
-                traits::Set<
-                    dim::Dim<TView>,
-                    dev::Dev<TView>>
-                ::set(
-                    buf,
-                    byte,
-                    extents,
-                    stream);
+                stream::enqueue(
+                    stream,
+                    taskSet);
             }
 
             //-----------------------------------------------------------------------------
-            //! Copies memory possibly between different memory spaces.
+            //! Creates a memory copy task.
             //!
             //! \param bufDst The destination memory buffer.
             //! \param bufSrc The source memory buffer.
             //! \param extents The extents of the buffer to copy.
             //-----------------------------------------------------------------------------
             template<
-                typename TBufDst,
+                typename TExtents,
                 typename TBufSrc,
-                typename TExtents>
-            ALPAKA_FN_HOST auto copy(
+                typename TBufDst>
+            ALPAKA_FN_HOST auto taskCopy(
                 TBufDst & bufDst,
                 TBufSrc const & bufSrc,
                 TExtents const & extents)
-            -> void
+            -> decltype(
+                traits::TaskCopy<
+                    dim::Dim<TBufDst>,
+                    dev::Dev<TBufDst>,
+                    dev::Dev<TBufSrc>>
+                ::taskCopy(
+                    bufDst,
+                    bufSrc,
+                    extents))
             {
                 static_assert(
                     dim::Dim<TBufDst>::value == dim::Dim<TBufSrc>::value,
@@ -366,14 +380,15 @@ namespace alpaka
                     std::is_same<Elem<TBufDst>, typename std::remove_const<Elem<TBufSrc>>::type>::value,
                     "The source and the destination buffers are required to have the same element type!");
 
-                traits::Copy<
-                    dim::Dim<TBufDst>,
-                    dev::Dev<TBufDst>,
-                    dev::Dev<TBufSrc>>
-                ::copy(
-                    bufDst,
-                    bufSrc,
-                    extents);
+                return
+                    traits::TaskCopy<
+                        dim::Dim<TBufDst>,
+                        dev::Dev<TBufDst>,
+                        dev::Dev<TBufSrc>>
+                    ::taskCopy(
+                        bufDst,
+                        bufSrc,
+                        extents);
             }
 
             //-----------------------------------------------------------------------------
@@ -385,36 +400,26 @@ namespace alpaka
             //! \param stream The stream to enqueue the buffer copy task into.
             //-----------------------------------------------------------------------------
             template<
-                typename TBufDst,
-                typename TBufSrc,
                 typename TExtents,
+                typename TBufSrc,
+                typename TBufDst,
                 typename TStream>
             ALPAKA_FN_HOST auto copy(
+                TStream & stream,
                 TBufDst & bufDst,
                 TBufSrc const & bufSrc,
-                TExtents const & extents,
-                TStream const & stream)
+                TExtents const & extents)
             -> void
             {
-                static_assert(
-                    dim::Dim<TBufDst>::value == dim::Dim<TBufSrc>::value,
-                    "The source and the destination buffers are required to have the same dimensionality!");
-                static_assert(
-                    dim::Dim<TBufDst>::value == dim::Dim<TExtents>::value,
-                    "The destination buffer and the extents are required to have the same dimensionality!");
-                static_assert(
-                    std::is_same<Elem<TBufDst>, typename std::remove_const<Elem<TBufSrc>>::type>::value,
-                    "The source and the destination buffers are required to have the same element type!");
+                auto /*const*/ taskCopy(
+                    mem::view::taskCopy(
+                        bufDst,
+                        bufSrc,
+                        extents));
 
-                traits::Copy<
-                    dim::Dim<TBufDst>,
-                    dev::Dev<TBufDst>,
-                    dev::Dev<TBufSrc>>
-                ::copy(
-                    bufDst,
-                    bufSrc,
-                    extents,
-                    stream);
+                stream::enqueue(
+                    stream,
+                    taskCopy);
             }
 
             //-----------------------------------------------------------------------------
@@ -426,12 +431,17 @@ namespace alpaka
                 typename TBuf>
             ALPAKA_FN_HOST auto createView(
                 TBuf const & buf)
-            -> decltype(traits::CreateView<TView>::createView(buf))
-            {
-                return traits::CreateView<
+            -> decltype(
+                traits::CreateView<
                     TView>
                 ::createView(
-                    buf);
+                    buf))
+            {
+                return
+                    traits::CreateView<
+                        TView>
+                    ::createView(
+                        buf);
             }
             //-----------------------------------------------------------------------------
             //! Constructor.
@@ -442,12 +452,17 @@ namespace alpaka
                 typename TBuf>
             ALPAKA_FN_HOST auto createView(
                 TBuf & buf)
-            -> decltype(traits::CreateView<TView>::createView(buf))
-            {
-                return traits::CreateView<
+            -> decltype(
+                traits::CreateView<
                     TView>
                 ::createView(
-                    buf);
+                    buf))
+            {
+                return
+                    traits::CreateView<
+                        TView>
+                    ::createView(
+                        buf);
             }
             //-----------------------------------------------------------------------------
             //! Constructor.
@@ -464,14 +479,21 @@ namespace alpaka
                 TBuf const & buf,
                 TExtents const & extentsElements,
                 TOffsets const & relativeOffsetsElements = TOffsets())
-            -> decltype(traits::CreateView<TView>::createView(buf, extentsElements, relativeOffsetsElements))
-            {
-                return traits::CreateView<
+            -> decltype(
+                traits::CreateView<
                     TView>
                 ::createView(
                     buf,
                     extentsElements,
-                    relativeOffsetsElements);
+                    relativeOffsetsElements))
+            {
+                return
+                    traits::CreateView<
+                        TView>
+                    ::createView(
+                        buf,
+                        extentsElements,
+                        relativeOffsetsElements);
             }
             //-----------------------------------------------------------------------------
             //! Constructor.
@@ -488,14 +510,21 @@ namespace alpaka
                 TBuf & buf,
                 TExtents const & extentsElements,
                 TOffsets const & relativeOffsetsElements = TOffsets())
-            -> decltype(traits::CreateView<TView>::createView(buf, extentsElements, relativeOffsetsElements))
-            {
-                return traits::CreateView<
+            -> decltype(
+                traits::CreateView<
                     TView>
                 ::createView(
                     buf,
                     extentsElements,
-                    relativeOffsetsElements);
+                    relativeOffsetsElements))
+            {
+                return
+                    traits::CreateView<
+                        TView>
+                    ::createView(
+                        buf,
+                        extentsElements,
+                        relativeOffsetsElements);
             }
 
             //-----------------------------------------------------------------------------
@@ -508,12 +537,17 @@ namespace alpaka
                 typename TView>
             ALPAKA_FN_HOST auto getBuf(
                 TView const & view)
-            -> decltype(traits::GetBuf<TView>::getBuf(view))
-            {
-                return traits::GetBuf<
+            -> decltype(
+                traits::GetBuf<
                     TView>
                 ::getBuf(
-                    view);
+                    view))
+            {
+                return
+                    traits::GetBuf<
+                        TView>
+                    ::getBuf(
+                        view);
             }
             //-----------------------------------------------------------------------------
             //! Gets the memory buffer.
@@ -525,12 +559,17 @@ namespace alpaka
                 typename TView>
             ALPAKA_FN_HOST auto getBuf(
                 TView & view)
-            -> decltype(traits::GetBuf<TView>::getBuf(view))
-            {
-                return traits::GetBuf<
+            -> decltype(
+                traits::GetBuf<
                     TView>
                 ::getBuf(
-                    view);
+                    view))
+            {
+                return
+                    traits::GetBuf<
+                        TView>
+                    ::getBuf(
+                        view);
             }
 
             namespace detail

@@ -38,56 +38,21 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The stream type trait.
-            //#############################################################################
-            template<
-                typename TAcc,
-                typename TSfinae = void>
-            struct StreamType;
-
-            //#############################################################################
-            //! The stream test trait.
-            //#############################################################################
-            template<
-                typename TStream,
-                typename TSfinae = void>
-            struct StreamTest;
-
-            //#############################################################################
             //! The stream enqueue trait.
             //#############################################################################
             template<
                 typename TStream,
-                typename TEvent,
+                typename TTask,
                 typename TSfinae = void>
-            struct StreamEnqueue;
+            struct Enqueue;
 
             //#############################################################################
-            //! The stream get trait.
+            //! The stream empty trait.
             //#############################################################################
             template<
-                typename T,
+                typename TStream,
                 typename TSfinae = void>
-            struct GetStream;
-        }
-
-        //#############################################################################
-        //! The stream type trait alias template to remove the ::type.
-        //#############################################################################
-        template<
-            typename TAcc>
-        using Stream = typename traits::StreamType<TAcc>::type;
-
-        //-----------------------------------------------------------------------------
-        //! Creates a stream on a device.
-        //-----------------------------------------------------------------------------
-        template<
-            typename TDev>
-        ALPAKA_FN_HOST auto create(
-            TDev & dev)
-        -> Stream<TDev>
-        {
-            return Stream<TDev>(dev);
+            struct Empty;
         }
 
         //-----------------------------------------------------------------------------
@@ -104,42 +69,28 @@ namespace alpaka
             TTask & task)
         -> void
         {
-            traits::StreamEnqueue<
+            traits::Enqueue<
                 TStream,
                 TTask>
-            ::streamEnqueue(
+            ::enqueue(
                 stream,
                 task);
         }
 
         //-----------------------------------------------------------------------------
-        //! Tests if all ops in the given stream have been completed.
+        //! Tests if the stream is empty (all ops in the given stream have been completed).
         //-----------------------------------------------------------------------------
         template<
             typename TStream>
-        ALPAKA_FN_HOST auto test(
+        ALPAKA_FN_HOST auto empty(
             TStream const & stream)
         -> bool
         {
-            return traits::StreamTest<
-                TStream>
-            ::streamTest(
-                stream);
-        }
-
-        //-----------------------------------------------------------------------------
-        //! \return The stream.
-        //-----------------------------------------------------------------------------
-        template<
-            typename T>
-        ALPAKA_FN_HOST auto getStream(
-            T const & type)
-        -> decltype(traits::GetStream<T>::getStream(type))
-        {
-            return traits::GetStream<
-                T>
-            ::getStream(
-                type);
+            return
+                traits::Empty<
+                    TStream>
+                ::empty(
+                    stream);
         }
     }
 }

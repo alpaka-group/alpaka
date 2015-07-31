@@ -25,26 +25,25 @@
 #include <alpaka/acc/Traits.hpp>                // acc::traits::AccType
 #include <alpaka/dev/Traits.hpp>                // dev::traits::DevType
 #include <alpaka/dim/Traits.hpp>                // dim::traits::DimType
-#include <alpaka/event/Traits.hpp>              // event::traits::EventType
 #include <alpaka/exec/Traits.hpp>               // exec::traits::ExecType
 #include <alpaka/size/Traits.hpp>               // size::traits::SizeType
-#include <alpaka/stream/Traits.hpp>             // stream::traits::StreamType
 
 // Implementation details.
 #include <alpaka/acc/AccCpuOmp2Threads.hpp>     // acc:AccCpuOmp2Threads
 #include <alpaka/dev/DevCpu.hpp>                // dev::DevCpu
-#include <alpaka/event/EventCpuAsync.hpp>       // event::EventCpuAsync
 #include <alpaka/kernel/Traits.hpp>             // kernel::getBlockSharedExternMemSizeBytes
-#include <alpaka/stream/StreamCpuAsync.hpp>     // stream::StreamCpuAsync
 #include <alpaka/workdiv/WorkDivMembers.hpp>    // workdiv::WorkDivMembers
 
 #include <alpaka/core/OpenMp.hpp>
 #include <alpaka/core/NdLoop.hpp>               // core::NdLoop
+#include <alpaka/core/ApplyTuple.hpp>           // core::Apply
 
 #include <boost/align.hpp>                      // boost::aligned_alloc
 
 #include <cassert>                              // assert
 #include <stdexcept>                            // std::runtime_error
+#include <tuple>                                // std::tuple
+#include <type_traits>                          // std::decay
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
     #include <iostream>                         // std::cout
 #endif
@@ -53,166 +52,14 @@ namespace alpaka
 {
     namespace exec
     {
-        namespace omp
-        {
-            namespace omp2
-            {
-                namespace threads
-                {
-                    namespace detail
-                    {
-                        //#############################################################################
-                        //! The CPU OpenMP 2.0 thread accelerator executor implementation.
-                        //#############################################################################
-                        template<
-                            typename TDim,
-                            typename TSize>
-                        class ExecCpuOmp2ThreadsImpl final
-                        {
-                        public:
-                            //-----------------------------------------------------------------------------
-                            //! Constructor.
-                            //-----------------------------------------------------------------------------
-                            ALPAKA_FN_HOST ExecCpuOmp2ThreadsImpl() = default;
-                            //-----------------------------------------------------------------------------
-                            //! Copy constructor.
-                            //-----------------------------------------------------------------------------
-                            ALPAKA_FN_HOST ExecCpuOmp2ThreadsImpl(ExecCpuOmp2ThreadsImpl const &) = default;
-                            //-----------------------------------------------------------------------------
-                            //! Move constructor.
-                            //-----------------------------------------------------------------------------
-                            ALPAKA_FN_HOST ExecCpuOmp2ThreadsImpl(ExecCpuOmp2ThreadsImpl &&) = default;
-                            //-----------------------------------------------------------------------------
-                            //! Copy assignment operator.
-                            //-----------------------------------------------------------------------------
-                            ALPAKA_FN_HOST auto operator=(ExecCpuOmp2ThreadsImpl const &) -> ExecCpuOmp2ThreadsImpl & = default;
-                            //-----------------------------------------------------------------------------
-                            //! Move assignment operator.
-                            //-----------------------------------------------------------------------------
-                            ALPAKA_FN_HOST auto operator=(ExecCpuOmp2ThreadsImpl &&) -> ExecCpuOmp2ThreadsImpl & = default;
-                            //-----------------------------------------------------------------------------
-                            //! Destructor.
-                            //-----------------------------------------------------------------------------
-                            ALPAKA_FN_HOST ~ExecCpuOmp2ThreadsImpl() = default;
-
-                            //-----------------------------------------------------------------------------
-                            //! Executes the kernel function object.
-                            //-----------------------------------------------------------------------------
-                            template<
-                                typename TWorkDiv,
-                                typename TKernelFnObj,
-                                typename... TArgs>
-                            ALPAKA_FN_HOST auto operator()(
-                                TWorkDiv const & workDiv,
-                                TKernelFnObj const & kernelFnObj,
-                                TArgs const & ... args) const
-                            -> void
-                            {
-                                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
-                                static_assert(
-                                    dim::Dim<TWorkDiv>::value == TDim::value,
-                                    "The work division and the executor have to be of the same dimensionality!");
-
-                                auto const vuiGridBlockExtents(
-                                    workdiv::getWorkDiv<Grid, Blocks>(workDiv));
-                                auto const vuiBlockThreadExtents(
-                                    workdiv::getWorkDiv<Block, Threads>(workDiv));
-
-                                auto const uiBlockSharedExternMemSizeBytes(
-                                    kernel::getBlockSharedExternMemSizeBytes<
-                                        typename std::decay<TKernelFnObj>::type,
-                                        acc::AccCpuOmp2Threads<TDim, TSize>>(
-                                            vuiBlockThreadExtents,
-                                            args...));
-#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                                std::cout << BOOST_CURRENT_FUNCTION
-                                    << " BlockSharedExternMemSizeBytes: " << uiBlockSharedExternMemSizeBytes << " B"
-                                    << std::endl;
-#endif
-                                acc::AccCpuOmp2Threads<TDim, TSize> acc(workDiv);
-
-                                if(uiBlockSharedExternMemSizeBytes > 0u)
-                                {
-                                    acc.m_vuiExternalSharedMem.reset(
-                                        reinterpret_cast<uint8_t *>(
-                                            boost::alignment::aligned_alloc(16u, uiBlockSharedExternMemSizeBytes)));
-                                }
-
-                                // The number of threads in this block.
-                                TSize const uiNumThreadsInBlock(vuiBlockThreadExtents.prod());
-                                int const iNumThreadsInBlock(static_cast<int>(uiNumThreadsInBlock));
-
-                                // Force the environment to use the given number of threads.
-                                int const iOmpIsDynamic(::omp_get_dynamic());
-                                ::omp_set_dynamic(0);
-
-                                // Execute the blocks serially.
-                                core::ndLoop(
-                                    vuiGridBlockExtents,
-                                    [&](Vec<TDim, TSize> const & vuiGridBlockIdx)
-                                    {
-                                        acc.m_vuiGridBlockIdx = vuiGridBlockIdx;
-
-                                        // Execute the threads in parallel.
-
-                                        // Parallel execution of the threads in a block is required because when syncBlockThreads is called all of them have to be done with their work up to this line.
-                                        // So we have to spawn one OS thread per thread in a block.
-                                        // 'omp for' is not useful because it is meant for cases where multiple iterations are executed by one thread but in our case a 1:1 mapping is required.
-                                        // Therefore we use 'omp parallel' with the specified number of threads in a block.
-                                        #pragma omp parallel num_threads(iNumThreadsInBlock)
-                                        {
-#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                                            // GCC 5.1 fails with:
-                                            // error: redeclaration of ‘const int& iNumThreadsInBlock’
-                                            // if(iNumThreads != iNumThreadsInBloc
-                                            //                ^
-                                            // note: ‘const int& iNumThreadsInBlock’ previously declared here
-                                            // #pragma omp parallel num_threads(iNumThread
-                                            //         ^
-#if (!BOOST_COMP_GNUC) || (BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(5, 0, 0))
-                                            // The first thread does some checks in the first block executed.
-                                            if((::omp_get_thread_num() == 0) && (acc.m_vuiGridBlockIdx.sum() == 0u))
-                                            {
-                                                int const iNumThreads(::omp_get_num_threads());
-                                                std::cout << BOOST_CURRENT_FUNCTION << " omp_get_num_threads: " << iNumThreads << std::endl;
-                                                if(iNumThreads != iNumThreadsInBlock)
-                                                {
-                                                    throw std::runtime_error("The OpenMP 2.0 runtime did not use the number of threads that had been required!");
-                                                }
-                                            }
-#endif
-#endif
-                                            kernelFnObj(
-                                                const_cast<acc::AccCpuOmp2Threads<TDim, TSize> const &>(acc),
-                                                args...);
-
-                                            // Wait for all threads to finish before deleting the shared memory.
-                                            acc.syncBlockThreads();
-                                        }
-
-                                        // After a block has been processed, the shared memory has to be deleted.
-                                        block::shared::freeMem(acc);
-                                    });
-
-                                // After all blocks have been processed, the external shared memory has to be deleted.
-                                acc.m_vuiExternalSharedMem.reset();
-
-                                // Reset the dynamic thread number setting.
-                                ::omp_set_dynamic(iOmpIsDynamic);
-                            }
-                        };
-                    }
-                }
-            }
-        }
-
         //#############################################################################
         //! The CPU OpenMP 2.0 thread accelerator executor.
         //#############################################################################
         template<
             typename TDim,
-            typename TSize>
+            typename TSize,
+            typename TKernelFnObj,
+            typename... TArgs>
         class ExecCpuOmp2Threads final :
             public workdiv::WorkDivMembers<TDim, TSize>
         {
@@ -223,15 +70,15 @@ namespace alpaka
             template<
                 typename TWorkDiv>
             ALPAKA_FN_HOST ExecCpuOmp2Threads(
-                TWorkDiv const & workDiv,
-                stream::StreamCpuAsync & stream) :
-                    workdiv::WorkDivMembers<TDim, TSize>(workDiv),
-                    m_Stream(stream)
+                TWorkDiv && workDiv,
+                TKernelFnObj const & kernelFnObj,
+                TArgs const & ... args) :
+                    workdiv::WorkDivMembers<TDim, TSize>(std::forward<TWorkDiv>(workDiv)),
+                    m_kernelFnObj(kernelFnObj),
+                    m_args(args...)
             {
-                ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-
                 static_assert(
-                    dim::Dim<TWorkDiv>::value == TDim::value,
+                    dim::Dim<typename std::decay<TWorkDiv>::type>::value == TDim::value,
                     "The work division and the executor have to be of the same dimensionality!");
             }
             //-----------------------------------------------------------------------------
@@ -256,33 +103,123 @@ namespace alpaka
             ALPAKA_FN_HOST ~ExecCpuOmp2Threads() = default;
 
             //-----------------------------------------------------------------------------
-            //! Enqueues the kernel function object.
+            //! Executes the kernel function object.
             //-----------------------------------------------------------------------------
-            template<
-                typename TKernelFnObj,
-                typename... TArgs>
-            ALPAKA_FN_HOST auto operator()(
-                TKernelFnObj const & kernelFnObj,
-                TArgs const & ... args) const
+            ALPAKA_FN_HOST auto operator()() const
             -> void
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                auto const & workDiv(*static_cast<workdiv::WorkDivMembers<TDim, TSize> const *>(this));
+                auto const vuiGridBlockExtents(
+                    workdiv::getWorkDiv<Grid, Blocks>(*this));
+                auto const vuiBlockThreadExtents(
+                    workdiv::getWorkDiv<Block, Threads>(*this));
 
-                m_Stream.m_spAsyncStreamCpu->m_workerThread.enqueueTask(
-                    [workDiv, kernelFnObj, args...]()
+                // Get the size of the block shared extern memory.
+                auto const uiBlockSharedExternMemSizeBytes(
+                    core::apply(
+                        [&](TArgs const & ... args)
+                        {
+                            return
+                                kernel::getBlockSharedExternMemSizeBytes<
+                                    TKernelFnObj,
+                                    acc::AccCpuOmp2Threads<TDim, TSize>>(
+                                        vuiBlockThreadExtents,
+                                        args...);
+                        },
+                        m_args));
+
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+                std::cout << BOOST_CURRENT_FUNCTION
+                    << " BlockSharedExternMemSizeBytes: " << uiBlockSharedExternMemSizeBytes << " B" << std::endl;
+#endif
+                // Bind all arguments except the accelerator.
+                // TODO: With C++14 we could create a perfectly argument forwarding function object within the constructor.
+                auto const boundKernelFnObj(
+                    core::apply(
+                        [this](TArgs const & ... args)
+                        {
+                            return
+                                std::bind(
+                                    std::ref(m_kernelFnObj),
+                                    std::placeholders::_1,
+                                    std::ref(args)...);
+                        },
+                        m_args));
+
+                acc::AccCpuOmp2Threads<TDim, TSize> acc(*static_cast<workdiv::WorkDivMembers<TDim, TSize> const *>(this));
+
+                if(uiBlockSharedExternMemSizeBytes > 0u)
+                {
+                    acc.m_vuiExternalSharedMem.reset(
+                        reinterpret_cast<uint8_t *>(
+                            boost::alignment::aligned_alloc(16u, uiBlockSharedExternMemSizeBytes)));
+                }
+
+                // The number of threads in this block.
+                TSize const uiNumThreadsInBlock(vuiBlockThreadExtents.prod());
+                int const iNumThreadsInBlock(static_cast<int>(uiNumThreadsInBlock));
+
+                // Force the environment to use the given number of threads.
+                int const iOmpIsDynamic(::omp_get_dynamic());
+                ::omp_set_dynamic(0);
+
+                // Execute the blocks serially.
+                core::ndLoop(
+                    vuiGridBlockExtents,
+                    [&](Vec<TDim, TSize> const & vuiGridBlockIdx)
                     {
-                        omp::omp2::threads::detail::ExecCpuOmp2ThreadsImpl<TDim, TSize> exec;
-                        exec(
-                            workDiv,
-                            kernelFnObj,
-                            args...);
+                        acc.m_vuiGridBlockIdx = vuiGridBlockIdx;
+
+                        // Execute the threads in parallel.
+
+                        // Parallel execution of the threads in a block is required because when syncBlockThreads is called all of them have to be done with their work up to this line.
+                        // So we have to spawn one OS thread per thread in a block.
+                        // 'omp for' is not useful because it is meant for cases where multiple iterations are executed by one thread but in our case a 1:1 mapping is required.
+                        // Therefore we use 'omp parallel' with the specified number of threads in a block.
+                        #pragma omp parallel num_threads(iNumThreadsInBlock)
+                        {
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+                            // GCC 5.1 fails with:
+                            // error: redeclaration of ‘const int& iNumThreadsInBlock’
+                            // if(iNumThreads != iNumThreadsInBloc
+                            //                ^
+                            // note: ‘const int& iNumThreadsInBlock’ previously declared here
+                            // #pragma omp parallel num_threads(iNumThread
+                            //         ^
+#if (!BOOST_COMP_GNUC) || (BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(5, 0, 0))
+                            // The first thread does some checks in the first block executed.
+                            if((::omp_get_thread_num() == 0) && (acc.m_vuiGridBlockIdx.sum() == 0u))
+                            {
+                                int const iNumThreads(::omp_get_num_threads());
+                                std::cout << BOOST_CURRENT_FUNCTION << " omp_get_num_threads: " << iNumThreads << std::endl;
+                                if(iNumThreads != iNumThreadsInBlock)
+                                {
+                                    throw std::runtime_error("The OpenMP 2.0 runtime did not use the number of threads that had been required!");
+                                }
+                            }
+#endif
+#endif
+                            boundKernelFnObj(
+                                acc);
+
+                            // Wait for all threads to finish before deleting the shared memory.
+                            acc.syncBlockThreads();
+                        }
+
+                        // After a block has been processed, the shared memory has to be deleted.
+                        block::shared::freeMem(acc);
                     });
+
+                // After all blocks have been processed, the external shared memory has to be deleted.
+                acc.m_vuiExternalSharedMem.reset();
+
+                // Reset the dynamic thread number setting.
+                ::omp_set_dynamic(iOmpIsDynamic);
             }
 
-        public:
-            stream::StreamCpuAsync m_Stream;
+            TKernelFnObj m_kernelFnObj;
+            std::tuple<TArgs...> m_args;
         };
     }
 
@@ -295,9 +232,11 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TDim,
-                typename TSize>
+                typename TSize,
+                typename TKernelFnObj,
+                typename... TArgs>
             struct AccType<
-                exec::ExecCpuOmp2Threads<TDim, TSize>>
+                exec::ExecCpuOmp2Threads<TDim, TSize, TKernelFnObj, TArgs...>>
             {
                 using type = acc::AccCpuOmp2Threads<TDim, TSize>;
             };
@@ -312,9 +251,11 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TDim,
-                typename TSize>
+                typename TSize,
+                typename TKernelFnObj,
+                typename... TArgs>
             struct DevType<
-                exec::ExecCpuOmp2Threads<TDim, TSize>>
+                exec::ExecCpuOmp2Threads<TDim, TSize, TKernelFnObj, TArgs...>>
             {
                 using type = dev::DevCpu;
             };
@@ -323,9 +264,11 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TDim,
-                typename TSize>
+                typename TSize,
+                typename TKernelFnObj,
+                typename... TArgs>
             struct DevManType<
-                exec::ExecCpuOmp2Threads<TDim, TSize>>
+                exec::ExecCpuOmp2Threads<TDim, TSize, TKernelFnObj, TArgs...>>
             {
                 using type = dev::DevManCpu;
             };
@@ -340,28 +283,13 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TDim,
-                typename TSize>
+                typename TSize,
+                typename TKernelFnObj,
+                typename... TArgs>
             struct DimType<
-                exec::ExecCpuOmp2Threads<TDim, TSize>>
+                exec::ExecCpuOmp2Threads<TDim, TSize, TKernelFnObj, TArgs...>>
             {
                 using type = TDim;
-            };
-        }
-    }
-    namespace event
-    {
-        namespace traits
-        {
-            //#############################################################################
-            //! The CPU OpenMP 2.0 block thread executor event type trait specialization.
-            //#############################################################################
-            template<
-                typename TDim,
-                typename TSize>
-            struct EventType<
-                exec::ExecCpuOmp2Threads<TDim, TSize>>
-            {
-                using type = event::EventCpuAsync;
             };
         }
     }
@@ -374,11 +302,15 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TDim,
-                typename TSize>
+                typename TSize,
+                typename TKernelFnObj,
+                typename... TArgs>
             struct ExecType<
-                exec::ExecCpuOmp2Threads<TDim, TSize>>
+                exec::ExecCpuOmp2Threads<TDim, TSize, TKernelFnObj, TArgs...>,
+                TKernelFnObj,
+                TArgs...>
             {
-                using type = exec::ExecCpuOmp2Threads<TDim, TSize>;
+                using type = exec::ExecCpuOmp2Threads<TDim, TSize, TKernelFnObj, TArgs...>;
             };
         }
     }
@@ -391,44 +323,13 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TDim,
-                typename TSize>
+                typename TSize,
+                typename TKernelFnObj,
+                typename... TArgs>
             struct SizeType<
-                exec::ExecCpuOmp2Threads<TDim, TSize>>
+                exec::ExecCpuOmp2Threads<TDim, TSize, TKernelFnObj, TArgs...>>
             {
                 using type = TSize;
-            };
-        }
-    }
-    namespace stream
-    {
-        namespace traits
-        {
-            //#############################################################################
-            //! The CPU OpenMP 2.0 block thread executor stream type trait specialization.
-            //#############################################################################
-            template<
-                typename TDim,
-                typename TSize>
-            struct StreamType<
-                exec::ExecCpuOmp2Threads<TDim, TSize>>
-            {
-                using type = stream::StreamCpuAsync;
-            };
-            //#############################################################################
-            //! The CPU OpenMP 2.0 block thread executor stream get trait specialization.
-            //#############################################################################
-            template<
-                typename TDim,
-                typename TSize>
-            struct GetStream<
-                exec::ExecCpuOmp2Threads<TDim, TSize>>
-            {
-                ALPAKA_FN_HOST static auto getStream(
-                    exec::ExecCpuOmp2Threads<TDim, TSize> const & exec)
-                -> stream::StreamCpuAsync
-                {
-                    return exec.m_Stream;
-                }
             };
         }
     }

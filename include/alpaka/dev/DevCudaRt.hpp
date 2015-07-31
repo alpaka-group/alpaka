@@ -22,8 +22,6 @@
 #pragma once
 
 #include <alpaka/dev/Traits.hpp>        // dev::traits::DevType
-#include <alpaka/event/Traits.hpp>      // event::traits::EventType
-#include <alpaka/stream/Traits.hpp>     // stream::traits::StreamType
 #include <alpaka/wait/Traits.hpp>       // CurrentThreadWaitFor
 #include <alpaka/mem/buf/Traits.hpp>    // mem::buf::traits::BufType
 #include <alpaka/mem/view/Traits.hpp>   // mem::view::traits::ViewType
@@ -260,14 +258,6 @@ namespace alpaka
 #endif
         };
     }
-    namespace event
-    {
-        class EventCudaRt;
-    }
-    namespace stream
-    {
-        class StreamCudaRt;
-    }
 
     namespace dev
     {
@@ -319,9 +309,10 @@ namespace alpaka
                 -> std::string
                 {
                     cudaDeviceProp cudaDevProp;
-                    ALPAKA_CUDA_RT_CHECK(cudaGetDeviceProperties(
-                        &cudaDevProp,
-                        dev.m_iDevice));
+                    ALPAKA_CUDA_RT_CHECK(
+                        cudaGetDeviceProperties(
+                            &cudaDevProp,
+                            dev.m_iDevice));
 
                     return std::string(cudaDevProp.name);
                 }
@@ -338,19 +329,19 @@ namespace alpaka
                     dev::DevCudaRt const & dev)
                 -> std::size_t
                 {
-                    // \TODO: Check which is faster: cudaMemGetInfo().totalInternal vs cudaGetDeviceProperties().totalGlobalMem
-                    // \TODO: This should be secured by a lock.
-
                     // Set the current device to wait for.
-                    ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
-                        dev.m_iDevice));
+                    ALPAKA_CUDA_RT_CHECK(
+                        cudaSetDevice(
+                            dev.m_iDevice));
 
                     std::size_t freeInternal(0u);
                     std::size_t totalInternal(0u);
 
-                    ALPAKA_CUDA_RT_CHECK(cudaMemGetInfo(
-                        &freeInternal,
-                        &totalInternal));
+                    // \TODO: Check which is faster: cudaMemGetInfo().totalInternal vs cudaGetDeviceProperties().totalGlobalMem
+                    ALPAKA_CUDA_RT_CHECK(
+                        cudaMemGetInfo(
+                            &freeInternal,
+                            &totalInternal));
 
                     return totalInternal;
                 }
@@ -367,18 +358,18 @@ namespace alpaka
                     dev::DevCudaRt const & dev)
                 -> std::size_t
                 {
-                    // \TODO: This should be secured by a lock.
-
                     // Set the current device to wait for.
-                    ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
-                        dev.m_iDevice));
+                    ALPAKA_CUDA_RT_CHECK(
+                        cudaSetDevice(
+                            dev.m_iDevice));
 
                     std::size_t freeInternal(0u);
                     std::size_t totalInternal(0u);
 
-                    ALPAKA_CUDA_RT_CHECK(cudaMemGetInfo(
-                        &freeInternal,
-                        &totalInternal));
+                    ALPAKA_CUDA_RT_CHECK(
+                        cudaMemGetInfo(
+                            &freeInternal,
+                            &totalInternal));
 
                     return freeInternal;
                 }
@@ -397,12 +388,12 @@ namespace alpaka
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                    // \TODO: This should be secured by a lock.
-
                     // Set the current device to wait for.
-                    ALPAKA_CUDA_RT_CHECK(cudaSetDevice(
-                        dev.m_iDevice));
-                    ALPAKA_CUDA_RT_CHECK(cudaDeviceReset());
+                    ALPAKA_CUDA_RT_CHECK(
+                        cudaSetDevice(
+                            dev.m_iDevice));
+                    ALPAKA_CUDA_RT_CHECK(
+                        cudaDeviceReset());
                 }
             };
             //#############################################################################
@@ -483,21 +474,6 @@ namespace alpaka
             }
         }
     }
-    namespace stream
-    {
-        namespace traits
-        {
-            //#############################################################################
-            //! The CUDA RT device stream type trait specialization.
-            //#############################################################################
-            template<>
-            struct StreamType<
-                dev::DevCudaRt>
-            {
-                using type = stream::StreamCudaRt;
-            };
-        }
-    }
     namespace wait
     {
         namespace traits
@@ -517,8 +493,6 @@ namespace alpaka
                 -> void
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
-
-                    // \TODO: This should be secured by a lock.
 
                     // Set the current device to wait for.
                     ALPAKA_CUDA_RT_CHECK(cudaSetDevice(

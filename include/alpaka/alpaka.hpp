@@ -111,8 +111,7 @@
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
     #include <alpaka/event/EventCudaRt.hpp>
 #endif
-#include <alpaka/event/EventCpuAsync.hpp>
-#include <alpaka/event/EventCpuSync.hpp>
+#include <alpaka/event/EventCpu.hpp>
 #include <alpaka/event/Traits.hpp>
 
 //-----------------------------------------------------------------------------
@@ -196,7 +195,8 @@
 // stream
 //-----------------------------------------------------------------------------
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
-    #include <alpaka/stream/StreamCudaRt.hpp>
+    #include <alpaka/stream/StreamCudaRtAsync.hpp>
+    #include <alpaka/stream/StreamCudaRtSync.hpp>
 #endif
 #include <alpaka/stream/StreamCpuAsync.hpp>
 #include <alpaka/stream/StreamCpuSync.hpp>
