@@ -166,7 +166,7 @@ namespace alpaka
                     // And there is either more than one argument ...
                     (sizeof...(TArgs) > 0u)
                     // ... or the first argument is not applicable for the copy constructor.
-                    || (!std::is_same<typename std::decay<TArg0>::type, Vec<TDim, TVal>>::value))
+                    || (!std::is_base_of<Vec<TDim, TVal>, typename std::remove_reference<TArg0>::type>::value))
                 >::type>
         ALPAKA_FN_HOST_ACC Vec(
             TArg0 && arg0,
