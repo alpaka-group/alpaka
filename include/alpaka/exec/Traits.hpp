@@ -21,15 +21,15 @@
 
 #pragma once
 
-#include <alpaka/acc/Traits.hpp>            // acc::getAccName
-#include <alpaka/dev/Traits.hpp>            // dev::getDev
-#include <alpaka/workdiv/Traits.hpp>        // workdiv::getWorkDiv
+#include <alpaka/dim/Traits.hpp>            // dim::Dim
 #include <alpaka/size/Traits.hpp>           // size::Size
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
+    #include <alpaka/workdiv/Traits.hpp>    // workdiv::getWorkDiv
+#endif
 
-#include <alpaka/core/WorkDivHelpers.hpp>   // workdiv::isValidWorkDiv
 #include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST
 
-#include <type_traits>                      // std::is_same, std::decay
+#include <type_traits>                      // std::decay
 
 namespace alpaka
 {
@@ -93,14 +93,6 @@ namespace alpaka
                 << ", blockThreadExtents: " << workdiv::getWorkDiv<Block, Threads>(workDiv)
                 << std::endl;
 #endif
-/*#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-            // This checks for a valid work division that is also compliant with the maxima of the accelerator.
-            if(!workdiv::isValidWorkDiv<TAcc>(dev::getDev(stream), workDiv))
-            {
-                throw std::runtime_error("The given work division is not valid or not supported by the " + acc::getAccName<TAcc>() + " accelerator!");
-            }
-#endif*/
-
             return
                 Exec<
                     TAcc,
@@ -110,40 +102,5 @@ namespace alpaka
                         std::forward<TKernelFnObj>(kernelFnObj),
                         std::forward<TArgs>(args)...);
         }
-        //-----------------------------------------------------------------------------
-        //! Creates an executor for the given accelerator with the work division given by grid block extents and block thread extents.
-        //! The larger of the two dimensions specifies the executor dimension.
-        //! \return An executor.
-        //-----------------------------------------------------------------------------
-        /*template<
-            typename TAcc,
-            typename TWorkDiv,
-            typename TKernelFnObj,
-            typename TGridBlockExtents,
-            typename TBlockThreadExtents>
-        ALPAKA_FN_HOST auto create(
-            TGridBlockExtents const & gridBlockExtents,
-            TBlockThreadExtents const & blockThreadExtents,
-            TKernelFnObj && kernelFnObj,
-            TArgs && ... args)
-        -> Exec<
-            typename std::decay<TAcc>::type,
-            typename std::decay<TKernelFnObj>::type,
-            typename std::decay<TArgs>::type...>
-        {
-            static_assert(
-                (dim::Dim<TAcc>::value >= dim::Dim<TBlockThreadExtents>::value) && (dim::Dim<TAcc>::value >= dim::Dim<TGridBlockExtents>::value),
-                "The dimension of the accelerator has to be larger or equal dimensionality than the grid block and block thread extents!");
-
-            return
-                create<TAcc>(
-                    workdiv::WorkDivMembers<
-                        dim::DimInt<dim::Dim<TAcc>::value>,
-                        size::Size<TAcc>>(
-                            gridBlockExtents,
-                            blockThreadExtents),
-                    std::forward<TKernelFnObj>(kernelFnObj),
-                    std::forward<TArgs>(args)...);
-        }*/
     }
 }

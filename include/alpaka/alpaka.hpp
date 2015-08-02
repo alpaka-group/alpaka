@@ -212,6 +212,7 @@
 //-----------------------------------------------------------------------------
 #include <alpaka/workdiv/WorkDivMembers.hpp>
 #include <alpaka/workdiv/Traits.hpp>
+#include <alpaka/workdiv/WorkDivHelpers.hpp>
 
 //-----------------------------------------------------------------------------
 // core
@@ -224,4 +225,3 @@
 #include <alpaka/core/NdLoop.hpp>
 #include <alpaka/core/Positioning.hpp>
 #include <alpaka/core/Vec.hpp>
-#include <alpaka/core/WorkDivHelpers.hpp>

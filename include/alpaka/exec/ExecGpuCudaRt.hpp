@@ -37,6 +37,12 @@
 #include <alpaka/stream/StreamCudaRtSync.hpp>   // stream::StreamCudaRtSync
 #include <alpaka/workdiv/WorkDivMembers.hpp>    // workdiv::WorkDivMembers
 
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+    #include <alpaka/acc/Traits.hpp>            // acc::getAccName
+    #include <alpaka/dev/Traits.hpp>            // dev::getDev
+    #include <alpaka/workdiv/WorkDivHelpers.hpp>// workdiv::isValidWorkDiv
+#endif
+
 #include <alpaka/core/Cuda.hpp>                 // ALPAKA_CUDA_RT_CHECK
 #include <alpaka/core/ApplyTuple.hpp>           // core::Apply
 
@@ -321,6 +327,14 @@ namespace alpaka
                     std::cout << BOOST_CURRENT_FUNCTION << "blockDim: " <<  blockDim.z << " " <<  blockDim.y << " " <<  blockDim.x << std::endl;
 #endif
 
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+                    // This checks for a valid work division that is also compliant with the maxima of the accelerator.
+                    if(!workdiv::isValidWorkDiv<acc::AccGpuCudaRt<TDim, TSize>>(dev::getDev(stream), task))
+                    {
+                        throw std::runtime_error("The given work division is not valid or not supported by the device of type " + acc::getAccName<acc::AccGpuCudaRt<TDim, TSize>>() + "!");
+                    }
+#endif
+
                     // Get the size of the block shared extern memory.
                     auto const uiBlockSharedExternMemSizeBytes(
                         core::apply(
@@ -444,6 +458,14 @@ namespace alpaka
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                     std::cout << BOOST_CURRENT_FUNCTION << "gridDim: " <<  gridDim.z << " " <<  gridDim.y << " " <<  gridDim.x << std::endl;
                     std::cout << BOOST_CURRENT_FUNCTION << "blockDim: " <<  blockDim.z << " " <<  blockDim.y << " " <<  blockDim.x << std::endl;
+#endif
+
+#if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
+                    // This checks for a valid work division that is also compliant with the maxima of the accelerator.
+                    if(!workdiv::isValidWorkDiv<acc::AccGpuCudaRt<TDim, TSize>>(dev::getDev(stream), task))
+                    {
+                        throw std::runtime_error("The given work division is not valid or not supported by the device of type " + acc::getAccName<acc::AccGpuCudaRt<TDim, TSize>>() + "!");
+                    }
 #endif
 
                     // Get the size of the block shared extern memory.

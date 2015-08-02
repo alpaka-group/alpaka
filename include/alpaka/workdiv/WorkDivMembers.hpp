@@ -47,8 +47,8 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Default constructor.
             //-----------------------------------------------------------------------------
-            //ALPAKA_NO_HOST_ACC_WARNING
-            //ALPAKA_FN_HOST_ACC WorkDivMembers() = delete;
+            ALPAKA_NO_HOST_ACC_WARNING
+            ALPAKA_FN_HOST_ACC WorkDivMembers() = delete;
             //-----------------------------------------------------------------------------
             //! Constructor from values.
             //-----------------------------------------------------------------------------
