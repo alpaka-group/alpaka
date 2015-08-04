@@ -79,7 +79,7 @@ public:
     -> void
     {
         static_assert(alpaka::dim::Dim<TAcc>::value == 2u,
-            "The accelerator used for with MatMulKernel has to be 2 dimensional!");
+            "The accelerator used for the GemmAlpakaKernel has to be 2 dimensional!");
 
         // Column and row of C to calculate.
         auto const v2uiGridThreadIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc));
@@ -104,6 +104,7 @@ public:
 
         auto const uiSharedBlockIdx1d(uiBlockThreadIdxY*uiBlockThreadsExtentX + uiBlockThreadIdxX);
 
+        // If the element corresponding to the current thread is outside of the respective matrix.
         bool const bInsideA(uiGridThreadIdxY < m);
         bool const bInsideB(uiGridThreadIdxX < n);
         bool const bInsideC(bInsideA && bInsideB);
@@ -114,7 +115,9 @@ public:
         auto const uiBlockMulCount(static_cast<TIndex>(std::ceil(static_cast<float>(k)/static_cast<float>(uiBlockThreadsExtent))));
         for(TIndex k2(0u); k2 < uiBlockMulCount; ++k2)
         {
-            // Copy data to shared memory.
+            // Copy the current blocks of A and B into shared memory in parallel.
+            // If the element of the current thread is outside of the matrix, zero is written into the shared memory.
+            // This is possible because zero is a result neutral extension of the matrices regarding the dot product.
             auto const uiAIdxX(k2*uiBlockThreadsExtentX + uiBlockThreadIdxX);
             auto const uiAIdx1d(uiGridThreadIdxY*lda + uiAIdxX);
             pBlockSharedA[uiSharedBlockIdx1d] = (
@@ -129,13 +132,13 @@ public:
                 ? static_cast<TElem>(0)
                 : B[uiBIdx1d]);
 
-            // Synchronize to make sure the sub-matrices are loaded before starting the computation.
+            // Synchronize to make sure the complete blocks are loaded before starting the computation.
             acc.syncBlockThreads();
 
             // Not really necessary because we wrote zeros into those cells.
             //if(bInsideC)
             //{
-                // Dyadic product within shared memory.
+                // Compute the dot products within shared memory.
                 for(TIndex k3(0); k3 < uiBlockThreadsExtent; ++k3)
                 {
                     fCSum += pBlockSharedA[uiBlockThreadIdxY*uiBlockThreadsExtentX + k3]
@@ -143,11 +146,11 @@ public:
                 }
             //}
 
-            // Synchronize to make sure that the preceding computation is done before loading two new sub-matrices of A and B in the next iteration.
+            // Synchronize to make sure that the preceding computation is done before loading the next blocks of A and B.
             acc.syncBlockThreads();
         }
 
-        // If the element is outside of the matrix it was only a helper thread that did not calculate any meaningful results
+        // If the element is outside of the matrix it was only a helper thread that did not calculate any meaningful results.
         if(bInsideC)
         {
             auto const uiIdxC(uiGridThreadIdxY*ldc + uiGridThreadIdxX);
