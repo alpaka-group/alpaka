@@ -182,10 +182,10 @@ namespace alpaka
 #if _OPENMP < 200805    // For OpenMP < 3.0 you have to declare the loop index (a signed integer) outside of the loop header.
                     std::intmax_t iNumBlocksInGrid(static_cast<std::intmax_t>(uiNumBlocksInGrid));
                     std::intmax_t i;
-                    #pragma omp for nowait
+                    #pragma omp for nowait schedule(guided)
                     for(i = 0; i < iNumBlocksInGrid; ++i)
 #else
-                    #pragma omp for nowait
+                    #pragma omp for nowait schedule(guided)
                     for(TSize i = 0; i < uiNumBlocksInGrid; ++i)
 #endif
                     {
