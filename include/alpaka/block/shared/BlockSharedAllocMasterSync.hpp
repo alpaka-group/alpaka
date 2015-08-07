@@ -49,10 +49,10 @@ namespace alpaka
                 //! Default constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA BlockSharedAllocMasterSync(
-                    std::function<void()> funcSync,
-                    std::function<bool()> funcIsMasterThread) :
-                        m_funcSync(funcSync),
-                        m_funcIsMasterThread(funcIsMasterThread)
+                    std::function<void()> fnSync,
+                    std::function<bool()> fnIsMasterThread) :
+                        m_fnSync(fnSync),
+                        m_fnIsMasterThread(fnIsMasterThread)
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
@@ -77,15 +77,15 @@ namespace alpaka
 
             public:
                 // TODO: We should add the size of the (current) allocation.
-                //  This would allow to assert that all function request to allocate the same size. 
+                // This would allow to assert that all parallel function calls request to allocate the same size.
                 std::vector<
                     std::unique_ptr<
                         uint8_t,
                         boost::alignment::aligned_delete>> mutable
                     m_vvuiSharedMem;    //!< Block shared memory.
 
-                std::function<void()> m_funcSync;
-                std::function<bool()> m_funcIsMasterThread;
+                std::function<void()> m_fnSync;
+                std::function<bool()> m_fnIsMasterThread;
             };
 
             namespace traits
@@ -104,16 +104,16 @@ namespace alpaka
                     -> T &
                     {
                         // Assure that all threads have executed the return of the last allocBlockSharedArr function (if there was one before).
-                        blockSharedAlloc.m_funcSync();
+                        blockSharedAlloc.m_fnSync();
 
                         // Arbitrary decision: The fiber that was created first has to allocate the memory.
-                        if(blockSharedAlloc.m_funcIsMasterThread())
+                        if(blockSharedAlloc.m_fnIsMasterThread())
                         {
                             blockSharedAlloc.m_vvuiSharedMem.emplace_back(
                                 reinterpret_cast<uint8_t *>(
                                     boost::alignment::aligned_alloc(16u, sizeof(T))));
                         }
-                        blockSharedAlloc.m_funcSync();
+                        blockSharedAlloc.m_fnSync();
 
                         return
                             std::ref(
@@ -137,16 +137,16 @@ namespace alpaka
                     -> T *
                     {
                         // Assure that all threads have executed the return of the last allocBlockSharedArr function (if there was one before).
-                        blockSharedAlloc.m_funcSync();
+                        blockSharedAlloc.m_fnSync();
 
                         // Arbitrary decision: The fiber that was created first has to allocate the memory.
-                        if(blockSharedAlloc.m_funcIsMasterThread())
+                        if(blockSharedAlloc.m_fnIsMasterThread())
                         {
                             blockSharedAlloc.m_vvuiSharedMem.emplace_back(
                                 reinterpret_cast<uint8_t *>(
                                     boost::alignment::aligned_alloc(16u, sizeof(T) * TuiNumElements)));
                         }
-                        blockSharedAlloc.m_funcSync();
+                        blockSharedAlloc.m_fnSync();
 
                         return
                             reinterpret_cast<T*>(

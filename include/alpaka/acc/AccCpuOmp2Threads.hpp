@@ -28,6 +28,7 @@
 #include <alpaka/atomic/AtomicOmpCritSec.hpp>   // AtomicOmpCritSec
 #include <alpaka/math/MathStl.hpp>              // MathStl
 #include <alpaka/block/shared/BlockSharedAllocMasterSync.hpp>  // BlockSharedAllocMasterSync
+#include <alpaka/block/sync/BlockSyncOmpBarrier.hpp>    // BlockSyncOmpBarrier
 
 // Specialized traits.
 #include <alpaka/acc/Traits.hpp>                // acc::traits::AccType
@@ -73,7 +74,8 @@ namespace alpaka
             public idx::bt::IdxBtOmp<TDim, TSize>,
             public atomic::AtomicOmpCritSec,
             public math::MathStl,
-            public block::shared::BlockSharedAllocMasterSync
+            public block::shared::BlockSharedAllocMasterSync,
+            public block::sync::BlockSyncOmpBarrier
         {
         public:
             // Partial specialization with the correct TDim and TSize is not allowed.
@@ -95,11 +97,12 @@ namespace alpaka
                     workdiv::WorkDivMembers<TDim, TSize>(workDiv),
                     idx::gb::IdxGbRef<TDim, TSize>(m_vuiGridBlockIdx),
                     idx::bt::IdxBtOmp<TDim, TSize>(),
-                    AtomicOmpCritSec(),
+                    atomic::AtomicOmpCritSec(),
                     math::MathStl(),
                     block::shared::BlockSharedAllocMasterSync(
-                        [this](){syncBlockThreads();},
+                        [this](){block::sync::syncBlockThreads(*this);},
                         [](){return (::omp_get_thread_num() == 0);}),
+                    block::sync::BlockSyncOmpBarrier(),
                     m_vuiGridBlockIdx(Vec<TDim, TSize>::zeros())
             {}
 
@@ -124,17 +127,6 @@ namespace alpaka
             //! Destructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~AccCpuOmp2Threads() = default;
-
-            //-----------------------------------------------------------------------------
-            //! Syncs all threads in the current block.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA auto syncBlockThreads() const
-            -> void
-            {
-                // Barrier implementation not waiting for all threads:
-                // http://berenger.eu/blog/copenmp-custom-barrier-a-barrier-for-a-group-of-threads/
-                #pragma omp barrier
-            }
 
             //-----------------------------------------------------------------------------
             //! \return The pointer to the externally allocated block shared memory.

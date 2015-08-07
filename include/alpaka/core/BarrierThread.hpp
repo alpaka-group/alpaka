@@ -21,98 +21,98 @@
 
 #pragma once
 
-#include <alpaka/core/Fibers.hpp>
-
 #include <alpaka/core/Common.hpp>   // ALPAKA_FN_ACC_NO_CUDA
 
-#include <mutex>                    // std::unique_lock
+#include <mutex>                    // std::mutex
+#include <condition_variable>       // std::condition_variable
 
 namespace alpaka
 {
-    namespace acc
+    namespace core
     {
-        namespace fibers
+        namespace threads
         {
             //#############################################################################
             //! A barrier.
-            // NOTE: We do not use the boost::fibers::barrier because it does not support simple resetting.
             //#############################################################################
             template<
                 typename TSize>
-            class FiberBarrier
+            class BarrierThread final
             {
             public:
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA explicit FiberBarrier(
-                    TSize const & uiNumFibersToWaitFor = 0) :
-                    m_uiNumFibersToWaitFor{uiNumFibersToWaitFor}
+                ALPAKA_FN_ACC_NO_CUDA explicit BarrierThread(
+                    TSize const & uiNumThreadsToWaitFor = 0) :
+                    m_uiNumThreadsToWaitFor(uiNumThreadsToWaitFor)
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA FiberBarrier(FiberBarrier const &) = delete;
+                ALPAKA_FN_ACC_NO_CUDA BarrierThread(
+                    BarrierThread const & other) = delete;/* :
+                    m_uiNumThreadsToWaitFor(other.m_uiNumThreadsToWaitFor)
+                {}*/
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA FiberBarrier(FiberBarrier &&) = delete;
+                ALPAKA_FN_ACC_NO_CUDA BarrierThread(BarrierThread &&) = delete;
                 //-----------------------------------------------------------------------------
                 //! Copy assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA auto operator=(FiberBarrier const &) -> FiberBarrier & = delete;
+                ALPAKA_FN_ACC_NO_CUDA auto operator=(BarrierThread const &) -> BarrierThread & = delete;
                 //-----------------------------------------------------------------------------
                 //! Move assignment operator.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA auto operator=(FiberBarrier &&) -> FiberBarrier & = delete;
+                ALPAKA_FN_ACC_NO_CUDA auto operator=(BarrierThread &&) -> BarrierThread & = delete;
                 //-----------------------------------------------------------------------------
                 //! Destructor.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~FiberBarrier() = default;
+                ALPAKA_FN_ACC_NO_CUDA ~BarrierThread() = default;
 
                 //-----------------------------------------------------------------------------
-                //! Waits for all the other fibers to reach the barrier.
+                //! Waits for all the other threads to reach the barrier.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA auto wait()
                 -> void
                 {
-                    std::unique_lock<boost::fibers::mutex> lock(m_mtxBarrier);
-                    if(--m_uiNumFibersToWaitFor == 0)
+                    std::unique_lock<std::mutex> lock(m_mtxBarrier);
+                    if(--m_uiNumThreadsToWaitFor == 0)
                     {
-                        m_cvAllFibersReachedBarrier.notify_all();
+                        m_cvAllThreadsReachedBarrier.notify_all();
                     }
                     else
                     {
-                        m_cvAllFibersReachedBarrier.wait(lock, [this] { return m_uiNumFibersToWaitFor == 0; });
+                        m_cvAllThreadsReachedBarrier.wait(lock, [this] { return m_uiNumThreadsToWaitFor == 0; });
                     }
                 }
 
                 //-----------------------------------------------------------------------------
-                //! \return The number of fibers to wait for.
+                //! \return The number of threads to wait for.
                 //! NOTE: The value almost always is invalid the time you get it.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA auto getNumFibersToWaitFor() const
+                ALPAKA_FN_ACC_NO_CUDA auto getNumThreadsToWaitFor() const
                 -> TSize
                 {
-                    return m_uiNumFibersToWaitFor;
+                    return m_uiNumThreadsToWaitFor;
                 }
 
                 //-----------------------------------------------------------------------------
-                //! Resets the number of fibers to wait for to the given number.
+                //! Resets the number of threads to wait for to the given number.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA auto reset(
-                    TSize const & uiNumFibersToWaitFor)
+                    TSize const & uiNumThreadsToWaitFor)
                 -> void
                 {
-                    // A lock is not required in the fiber implementation.
-                    //boost::unique_lock<boost::fibers::mutex> lock(m_mtxBarrier);
-                    m_uiNumFibersToWaitFor = uiNumFibersToWaitFor;
+                    std::lock_guard<std::mutex> lock(m_mtxBarrier);
+                    m_uiNumThreadsToWaitFor = uiNumThreadsToWaitFor;
                 }
 
             private:
-                boost::fibers::mutex m_mtxBarrier;
-                boost::fibers::condition_variable m_cvAllFibersReachedBarrier;
-                TSize m_uiNumFibersToWaitFor;
+                std::mutex m_mtxBarrier;
+                std::condition_variable m_cvAllThreadsReachedBarrier;
+                TSize m_uiNumThreadsToWaitFor;
             };
         }
     }

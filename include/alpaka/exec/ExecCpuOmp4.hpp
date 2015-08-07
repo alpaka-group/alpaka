@@ -222,7 +222,7 @@ namespace alpaka
                                     acc);
 
                                 // Wait for all threads to finish before deleting the shared memory.
-                                acc.syncBlockThreads();
+                                block::sync::syncBlockThreads(acc);
                             }
 
                             // Reset the dynamic thread number setting.

@@ -28,6 +28,7 @@
 #include <alpaka/atomic/AtomicNoOp.hpp>         // AtomicNoOp
 #include <alpaka/math/MathStl.hpp>              // MathStl
 #include <alpaka/block/shared/BlockSharedAllocNoSync.hpp>  // BlockSharedAllocNoSync
+#include <alpaka/block/sync/BlockSyncNoOp.hpp>  // BlockSyncNoOp
 
 // Specialized traits.
 #include <alpaka/acc/Traits.hpp>                // acc::traits::AccType
@@ -71,7 +72,8 @@ namespace alpaka
             public idx::bt::IdxBtZero<TDim, TSize>,
             public atomic::AtomicNoOp,
             public math::MathStl,
-            public block::shared::BlockSharedAllocNoSync
+            public block::shared::BlockSharedAllocNoSync,
+            public block::sync::BlockSyncNoOp
         {
         public:
             // Partial specialization with the correct TDim and TSize is not allowed.
@@ -96,6 +98,7 @@ namespace alpaka
                     atomic::AtomicNoOp(),
                     math::MathStl(),
                     block::shared::BlockSharedAllocNoSync(),
+                    block::sync::BlockSyncNoOp(),
                     m_vuiGridBlockIdx(Vec<TDim, TSize>::zeros())
             {}
 
@@ -121,14 +124,6 @@ namespace alpaka
             //! Destructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~AccCpuSerial() = default;
-
-            //-----------------------------------------------------------------------------
-            //! Syncs all threads in the current block.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA void syncBlockThreads() const
-            {
-                // Nothing to do in here because only one thread in a group is allowed.
-            }
 
             //-----------------------------------------------------------------------------
             //! \return The pointer to the externally allocated block shared memory.

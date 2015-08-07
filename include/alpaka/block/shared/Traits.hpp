@@ -33,7 +33,7 @@ namespace alpaka
     namespace block
     {
         //-----------------------------------------------------------------------------
-        //! The block shared memory operation traits specifics.
+        //! The block shared memory operation specifics.
         //-----------------------------------------------------------------------------
         namespace shared
         {

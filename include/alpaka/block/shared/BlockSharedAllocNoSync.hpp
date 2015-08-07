@@ -71,7 +71,7 @@ namespace alpaka
 
             public:
                 // TODO: We should add the size of the (current) allocation.
-                //  This would allow to assert that all function request to allocate the same size. 
+                // This would allow to assert that all parallel function calls request to allocate the same size.
                 std::vector<
                     std::unique_ptr<
                         uint8_t,

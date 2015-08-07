@@ -88,7 +88,7 @@ public:
 
 
         // Synchronize all threads because now we are writing to the memory again but inverse.
-        acc.syncBlockThreads();
+        alpaka::block::sync::syncBlockThreads(acc);
 
         // Do something useless.
         std::uint32_t iSum2(static_cast<std::uint32_t>(uiIdxBlockThreadsLin));
@@ -101,7 +101,7 @@ public:
 
 
         // Synchronize all threads again.
-        acc.syncBlockThreads();
+        alpaka::block::sync::syncBlockThreads(acc);
 
         // Now add up all the cells atomically and write the result to cell 0 of the shared memory.
         if(uiIdxBlockThreadsLin > 0)
@@ -110,7 +110,7 @@ public:
         }
 
 
-        acc.syncBlockThreads();
+        alpaka::block::sync::syncBlockThreads(acc);
 
         // Only master writes result to global memory.
         if(uiIdxBlockThreadsLin==0)

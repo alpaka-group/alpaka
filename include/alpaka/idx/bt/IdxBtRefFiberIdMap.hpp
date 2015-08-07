@@ -77,7 +77,7 @@ namespace alpaka
                 ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~IdxBtRefFiberIdMap() = default;
 
             public:
-                FiberIdToIdxMap const & m_mFibersToIndices;         //!< The mapping of fibers id's to fibers indices.
+                FiberIdToIdxMap const & m_mFibersToIndices; //!< The mapping of fiber id's to fiber indices.
             };
         }
     }

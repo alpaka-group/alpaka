@@ -28,6 +28,7 @@
 #include <alpaka/atomic/AtomicCudaBuiltIn.hpp>      // AtomicCudaBuiltIn
 #include <alpaka/math/MathCudaBuiltIn.hpp>          // MathCudaBuiltIn
 #include <alpaka/block/shared/BlockSharedAllocCudaBuiltIn.hpp>  // BlockSharedAllocCudaBuiltIn
+#include <alpaka/block/sync/BlockSyncCudaBuiltIn.hpp>   // BlockSyncCudaBuiltIn
 
 // Specialized traits.
 #include <alpaka/acc/Traits.hpp>                    // acc::traits::AccType
@@ -71,7 +72,8 @@ namespace alpaka
             public idx::bt::IdxBtCudaBuiltIn<TDim, TSize>,
             public atomic::AtomicCudaBuiltIn,
             public math::MathCudaBuiltIn,
-            public block::shared::BlockSharedAllocCudaBuiltIn
+            public block::shared::BlockSharedAllocCudaBuiltIn,
+            public block::sync::BlockSyncCudaBuiltIn
         {
         public:
             //-----------------------------------------------------------------------------
@@ -83,7 +85,8 @@ namespace alpaka
                 idx::bt::IdxBtCudaBuiltIn<TDim, TSize>(),
                 atomic::AtomicCudaBuiltIn(),
                 math::MathCudaBuiltIn(),
-                block::shared::BlockSharedAllocCudaBuiltIn()
+                block::shared::BlockSharedAllocCudaBuiltIn(),
+                block::sync::BlockSyncCudaBuiltIn()
             {}
 
         public:
@@ -106,16 +109,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Destructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_CUDA_ONLY ~AccGpuCudaRt() = default;
-
-            //-----------------------------------------------------------------------------
-            //! Syncs all threads in the current block.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_CUDA_ONLY auto syncBlockThreads() const
-            -> void
-            {
-                __syncthreads();
-            }
+            ALPAKA_FN_ACC_CUDA_ONLY /*virtual*/ ~AccGpuCudaRt() = default;
 
             //-----------------------------------------------------------------------------
             //! \return The pointer to the externally allocated block shared memory.

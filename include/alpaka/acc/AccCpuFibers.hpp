@@ -26,9 +26,9 @@
 #include <alpaka/idx/gb/IdxGbRef.hpp>           // IdxGbRef
 #include <alpaka/idx/bt/IdxBtRefFiberIdMap.hpp> // IdxBtRefFiberIdMap
 #include <alpaka/atomic/AtomicNoOp.hpp>         // AtomicNoOp
-#include <alpaka/acc/fibers/Barrier.hpp>        // BarrierFibers
 #include <alpaka/math/MathStl.hpp>              // MathStl
-#include <alpaka/block/shared/BlockSharedAllocMasterSync.hpp>  // BlockSharedAllocMasterSync
+#include <alpaka/block/shared/BlockSharedAllocMasterSync.hpp>   // BlockSharedAllocMasterSync
+#include <alpaka/block/sync/BlockSyncFiberIdMapBarrier.hpp>     // BlockSyncFiberIdMapBarrier
 
 // Specialized traits.
 #include <alpaka/acc/Traits.hpp>                // acc::traits::AccType
@@ -78,7 +78,8 @@ namespace alpaka
             public idx::bt::IdxBtRefFiberIdMap<TDim, TSize>,
             public atomic::AtomicNoOp,
             public math::MathStl,
-            public block::shared::BlockSharedAllocMasterSync
+            public block::shared::BlockSharedAllocMasterSync,
+            public block::sync::BlockSyncFiberIdMapBarrier<TSize>
         {
         public:
             // Partial specialization with the correct TDim and TSize is not allowed.
@@ -103,8 +104,11 @@ namespace alpaka
                     atomic::AtomicNoOp(),
                     math::MathStl(),
                     block::shared::BlockSharedAllocMasterSync(
-                        [this](){syncBlockThreads();},
+                        [this](){block::sync::syncBlockThreads(*this);},
                         [this](){return (m_idMasterFiber == boost::this_fiber::get_id());}),
+                    block::sync::BlockSyncFiberIdMapBarrier<TSize>(
+                        m_uiNumThreadsPerBlock,
+                        m_mFibersToBarrier),
                     m_vuiGridBlockIdx(Vec<TDim, TSize>::zeros()),
                     m_uiNumThreadsPerBlock(workdiv::getWorkDiv<Block, Threads>(workDiv).prod())
             {}
@@ -132,45 +136,6 @@ namespace alpaka
             ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~AccCpuFibers() = default;
 
             //-----------------------------------------------------------------------------
-            //! Syncs all threads in the current block.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA auto syncBlockThreads() const
-            -> void
-            {
-                auto const idFiber(boost::this_fiber::get_id());
-                auto const itFind(m_mFibersToBarrier.find(idFiber));
-
-                syncBlockThreads(itFind);
-            }
-
-        private:
-            //-----------------------------------------------------------------------------
-            //! Syncs all threads in the current block.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA auto syncBlockThreads(
-                typename std::map<boost::fibers::fiber::id, TSize>::iterator const & itFind) const
-            -> void
-            {
-                assert(itFind != m_mFibersToBarrier.end());
-
-                auto & uiBarrierIdx(itFind->second);
-                TSize const uiModBarrierIdx(uiBarrierIdx % 2);
-
-                auto & bar(m_abarSyncFibers[uiModBarrierIdx]);
-
-                // (Re)initialize a barrier if this is the first fiber to reach it.
-                if(bar.getNumFibersToWaitFor() == 0)
-                {
-                    // No DCLP required because there can not be an interruption in between the check and the reset.
-                    bar.reset(m_uiNumThreadsPerBlock);
-                }
-
-                // Wait for the barrier.
-                bar.wait();
-                ++uiBarrierIdx;
-            }
-        public:
-            //-----------------------------------------------------------------------------
             //! \return The pointer to the externally allocated block shared memory.
             //-----------------------------------------------------------------------------
             template<
@@ -191,7 +156,6 @@ namespace alpaka
             std::map<
                 boost::fibers::fiber::id,
                 TSize> mutable m_mFibersToBarrier;                      //!< The mapping of fibers id's to their current barrier.
-            fibers::FiberBarrier<TSize> mutable m_abarSyncFibers[2];            //!< The barriers for the synchronization of fibers.
             //!< We have to keep the current and the last barrier because one of the fibers can reach the next barrier before another fiber was wakeup from the last one and has checked if it can run.
 
             // allocBlockSharedArr

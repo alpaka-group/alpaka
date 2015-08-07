@@ -26,9 +26,9 @@
 #include <alpaka/idx/gb/IdxGbRef.hpp>               // IdxGbRef
 #include <alpaka/idx/bt/IdxBtRefThreadIdMap.hpp>    // IdxBtRefThreadIdMap
 #include <alpaka/atomic/AtomicStlLock.hpp>          // AtomicStlLock
-#include <alpaka/acc/threads/Barrier.hpp>           // BarrierThreads
 #include <alpaka/math/MathStl.hpp>                  // MathStl
-#include <alpaka/block/shared/BlockSharedAllocMasterSync.hpp>  // BlockSharedAllocMasterSync
+#include <alpaka/block/shared/BlockSharedAllocMasterSync.hpp>   // BlockSharedAllocMasterSync
+#include <alpaka/block/sync/BlockSyncThreadIdMapBarrier.hpp>    // BlockSyncThreadIdMapBarrier
 
 // Specialized traits.
 #include <alpaka/acc/Traits.hpp>                    // acc::traits::AccType
@@ -38,7 +38,6 @@
 
 // Implementation details.
 #include <alpaka/dev/DevCpu.hpp>                    // dev::DevCpu
-#include <alpaka/acc/threads/Barrier.hpp>           // ThreadBarrier
 
 #include <boost/core/ignore_unused.hpp>             // boost::ignore_unused
 #include <boost/predef.h>                           // workarounds
@@ -46,7 +45,6 @@
 #include <cassert>                                  // assert
 #include <memory>                                   // std::unique_ptr
 #include <thread>                                   // std::thread
-#include <mutex>                                    // std::mutex
 #include <typeinfo>                                 // typeid
 
 namespace alpaka
@@ -77,7 +75,8 @@ namespace alpaka
             public idx::bt::IdxBtRefThreadIdMap<TDim, TSize>,
             public atomic::AtomicStlLock,
             public math::MathStl,
-            public block::shared::BlockSharedAllocMasterSync
+            public block::shared::BlockSharedAllocMasterSync,
+            public block::sync::BlockSyncThreadIdMapBarrier<TSize>
         {
         public:
             // Partial specialization with the correct TDim and TSize is not allowed.
@@ -102,8 +101,11 @@ namespace alpaka
                     atomic::AtomicStlLock(),
                     math::MathStl(),
                     block::shared::BlockSharedAllocMasterSync(
-                        [this](){syncBlockThreads();},
+                        [this](){block::sync::syncBlockThreads(*this);},
                         [this](){return (m_idMasterThread == std::this_thread::get_id());}),
+                    block::sync::BlockSyncThreadIdMapBarrier<TSize>(
+                        m_uiNumThreadsPerBlock,
+                        m_mThreadsToBarrier),
                     m_vuiGridBlockIdx(Vec<TDim, TSize>::zeros()),
                     m_uiNumThreadsPerBlock(workdiv::getWorkDiv<Block, Threads>(workDiv).prod())
             {}
@@ -131,48 +133,6 @@ namespace alpaka
             ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~AccCpuThreads() = default;
 
             //-----------------------------------------------------------------------------
-            //! Syncs all threads in the current block.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA auto syncBlockThreads() const
-            -> void
-            {
-                auto const idThread(std::this_thread::get_id());
-                auto const itFind(m_mThreadsToBarrier.find(idThread));
-
-                syncBlockThreads(itFind);
-            }
-        private:
-            //-----------------------------------------------------------------------------
-            //! Syncs all threads in the current block.
-            //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_NO_CUDA auto syncBlockThreads(
-                typename std::map<std::thread::id, TSize>::iterator const & itFind) const
-            -> void
-            {
-                assert(itFind != m_mThreadsToBarrier.end());
-
-                auto & uiBarrierIdx(itFind->second);
-                TSize const uiModBarrierIdx(uiBarrierIdx % 2);
-
-                auto & bar(m_abarSyncThreads[uiModBarrierIdx]);
-
-                // (Re)initialize a barrier if this is the first thread to reach it.
-                // DCLP: Double checked locking pattern for better performance.
-                if(bar.getNumThreadsToWaitFor() == 0)
-                {
-                    std::lock_guard<std::mutex> lock(m_mtxBarrier);
-                    if(bar.getNumThreadsToWaitFor() == 0)
-                    {
-                        bar.reset(m_uiNumThreadsPerBlock);
-                    }
-                }
-
-                // Wait for the barrier.
-                bar.wait();
-                ++uiBarrierIdx;
-            }
-        public:
-            //-----------------------------------------------------------------------------
             //! \return The pointer to the externally allocated block shared memory.
             //-----------------------------------------------------------------------------
             template<
@@ -194,9 +154,6 @@ namespace alpaka
             std::map<
                 std::thread::id,
                 TSize> mutable m_mThreadsToBarrier;                         //!< The mapping of thread id's to their current barrier.
-            std::mutex mutable m_mtxBarrier;
-            threads::ThreadBarrier<TSize> mutable m_abarSyncThreads[2];     //!< The barriers for the synchronization of threads.
-            //!< We have to keep the current and the last barrier because one of the threads can reach the next barrier before a other thread was wakeup from the last one and has checked if it can run.
 
             // allocBlockSharedArr
             std::thread::id mutable m_idMasterThread;                       //!< The id of the master thread.

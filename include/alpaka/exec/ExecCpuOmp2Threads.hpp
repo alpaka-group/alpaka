@@ -204,7 +204,7 @@ namespace alpaka
                                 acc);
 
                             // Wait for all threads to finish before deleting the shared memory.
-                            acc.syncBlockThreads();
+                            block::sync::syncBlockThreads(acc);
                         }
 
                         // After a block has been processed, the shared memory has to be deleted.

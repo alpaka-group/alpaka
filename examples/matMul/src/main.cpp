@@ -133,7 +133,7 @@ public:
                 : B[uiBIdx1d]);
 
             // Synchronize to make sure the complete blocks are loaded before starting the computation.
-            acc.syncBlockThreads();
+            alpaka::block::sync::syncBlockThreads(acc);
 
             // Not really necessary because we wrote zeros into those cells.
             //if(bInsideC)
@@ -147,7 +147,7 @@ public:
             //}
 
             // Synchronize to make sure that the preceding computation is done before loading the next blocks of A and B.
-            acc.syncBlockThreads();
+            alpaka::block::sync::syncBlockThreads(acc);
         }
 
         // If the element is outside of the matrix it was only a helper thread that did not calculate any meaningful results.

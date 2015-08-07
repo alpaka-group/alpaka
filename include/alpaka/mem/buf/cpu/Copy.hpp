@@ -87,20 +87,20 @@ namespace alpaka
                                 m_uiExtentWidthBytes(m_uiExtentWidth * sizeof(mem::view::Elem<TBufDst>)),
                                 m_uiDstWidth(extent::getWidth(bufDst)),
                                 m_uiSrcWidth(extent::getWidth(bufSrc)),
+                                m_uiDstBufWidth(extent::getWidth(mem::view::getBuf(bufDst))),
+                                m_uiSrcBufWidth(extent::getWidth(mem::view::getBuf(bufSrc))),
 
                                 m_uiExtentHeight(extent::getHeight(extents)),
                                 m_uiDstHeight(extent::getHeight(bufDst)),
                                 m_uiSrcHeight(extent::getHeight(bufSrc)),
+                                m_uiDstBufHeight(extent::getHeight(mem::view::getBuf(bufDst))),
+                                m_uiSrcBufHeight(extent::getHeight(mem::view::getBuf(bufSrc))),
 
                                 m_uiExtentDepth(extent::getDepth(extents)),
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                                 m_uiDstDepth(extent::getDepth(bufDst)),
                                 m_uiSrcDepth(extent::getDepth(bufSrc)),
 #endif
-                                m_uiDstBufWidth(extent::getWidth(mem::view::getBuf(bufDst))),
-                                m_uiSrcBufWidth(extent::getWidth(mem::view::getBuf(bufSrc))),
-                                m_uiDstBufHeight(extent::getHeight(mem::view::getBuf(bufDst))),
-                                m_uiSrcBufHeight(extent::getHeight(mem::view::getBuf(bufSrc))),
                                 m_uiDstPitchBytes(mem::view::getPitchBytes<dim::Dim<TBufDst>::value - 1u>(bufDst)),
                                 m_uiSrcPitchBytes(mem::view::getPitchBytes<dim::Dim<TBufSrc>::value - 1u>(bufSrc)),
 

@@ -90,6 +90,37 @@
 #include <alpaka/atomic/Traits.hpp>
 
 //-----------------------------------------------------------------------------
+// block
+//-----------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------
+    // shared
+    //-----------------------------------------------------------------------------
+    #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
+        #include <alpaka/block/shared/BlockSharedAllocCudaBuiltIn.hpp>
+    #endif
+    #include <alpaka/block/shared/BlockSharedAllocMasterSync.hpp>
+    #include <alpaka/block/shared/BlockSharedAllocNoSync.hpp>
+    #include <alpaka/block/shared/Traits.hpp>
+
+    //-----------------------------------------------------------------------------
+    // sync
+    //-----------------------------------------------------------------------------
+    #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
+        #include <alpaka/block/sync/BlockSyncCudaBuiltIn.hpp>
+    #endif
+    #ifdef ALPAKA_ACC_CPU_B_SEQ_T_FIBERS_ENABLED
+        #include <alpaka/block/sync/BlockSyncFiberIdMapBarrier.hpp>
+    #endif
+    #include <alpaka/block/sync/BlockSyncNoOp.hpp>
+    #ifdef _OPENMP
+        #include <alpaka/block/sync/BlockSyncOmpBarrier.hpp>
+    #endif
+    #ifdef ALPAKA_ACC_CPU_B_SEQ_T_THREADS_ENABLED
+        #include <alpaka/block/sync/BlockSyncThreadIdMapBarrier.hpp>
+    #endif
+    #include <alpaka/block/sync/Traits.hpp>
+
+//-----------------------------------------------------------------------------
 // dev
 //-----------------------------------------------------------------------------
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
