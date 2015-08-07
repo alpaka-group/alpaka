@@ -204,7 +204,8 @@ namespace alpaka
                                 acc);
 
                             // Wait for all threads to finish before deleting the shared memory.
-                            block::sync::syncBlockThreads(acc);
+                            // This is done by default if the omp 'nowait' clause is missing
+                            //block::sync::syncBlockThreads(acc);
                         }
 
                         // After a block has been processed, the shared memory has to be deleted.

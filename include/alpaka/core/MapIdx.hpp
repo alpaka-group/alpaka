@@ -91,8 +91,8 @@ namespace alpaka
                     Vec<dim::DimInt<3u>, TElem> const & extents)
                 -> Vec<dim::DimInt<3u>, TElem>
                 {
-                    auto const & uiIdx(idx[0]);
-                    auto const uiXyExtentsProd(extents.prod());
+                    auto const & uiIdx(idx[0u]);
+                    auto const uiXyExtentsProd(extents[2u] * extents[1u]);
                     auto const & uiExtentX(extents[2]);
 
                     return {
@@ -123,8 +123,8 @@ namespace alpaka
                     Vec<dim::DimInt<2u>, TElem> const & extents)
                 -> Vec<dim::DimInt<2u>, TElem>
                 {
-                    auto const & uiIdx(idx[0]);
-                    auto const & uiExtentX(extents[1]);
+                    auto const & uiIdx(idx[0u]);
+                    auto const & uiExtentX(extents[1u]);
 
                     return {
                         uiIdx / uiExtentX,
