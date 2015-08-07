@@ -183,6 +183,9 @@ namespace alpaka
             struct GetDev<
                 event::EventCudaRt>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getDev(
                     event::EventCudaRt const & event)
                 -> dev::DevCudaRt
@@ -213,6 +216,9 @@ namespace alpaka
             struct EventTest<
                 event::EventCudaRt>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto eventTest(
                     event::EventCudaRt const & event)
                 -> bool
@@ -251,6 +257,9 @@ namespace alpaka
                 stream::StreamCudaRtAsync,
                 event::EventCudaRt>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
                     stream::StreamCudaRtAsync & stream,
                     event::EventCudaRt & event)
@@ -271,6 +280,9 @@ namespace alpaka
                 stream::StreamCudaRtSync,
                 event::EventCudaRt>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
                     stream::StreamCudaRtSync & stream,
                     event::EventCudaRt & event)
@@ -299,6 +311,9 @@ namespace alpaka
             struct CurrentThreadWaitFor<
                 event::EventCudaRt>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto currentThreadWaitFor(
                     event::EventCudaRt const & event)
                 -> void
@@ -318,6 +333,9 @@ namespace alpaka
                 stream::StreamCudaRtAsync,
                 event::EventCudaRt>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto waiterWaitFor(
                     stream::StreamCudaRtAsync & stream,
                     event::EventCudaRt const & event)
@@ -339,6 +357,9 @@ namespace alpaka
                 stream::StreamCudaRtSync,
                 event::EventCudaRt>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto waiterWaitFor(
                     stream::StreamCudaRtSync & stream,
                     event::EventCudaRt const & event)
@@ -362,6 +383,9 @@ namespace alpaka
                 dev::DevCudaRt,
                 event::EventCudaRt>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto waiterWaitFor(
                     dev::DevCudaRt & dev,
                     event::EventCudaRt const & event)

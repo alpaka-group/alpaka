@@ -86,6 +86,9 @@ namespace alpaka
                 atomic::AtomicStlLock,
                 T>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA static auto atomicOp(
                     atomic::AtomicStlLock const & atomic,
                     T * const addr,

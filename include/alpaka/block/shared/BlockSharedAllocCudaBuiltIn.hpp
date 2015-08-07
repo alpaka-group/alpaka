@@ -76,6 +76,9 @@ namespace alpaka
                     T,
                     BlockSharedAllocCudaBuiltIn>
                 {
+                    //-----------------------------------------------------------------------------
+                    //
+                    //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_CUDA_ONLY static auto allocVar(
                         block::shared::BlockSharedAllocCudaBuiltIn const &)
                     -> T &
@@ -97,6 +100,9 @@ namespace alpaka
                 {
                     static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
 
+                    //-----------------------------------------------------------------------------
+                    //
+                    //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_CUDA_ONLY static auto allocArr(
                         block::shared::BlockSharedAllocCudaBuiltIn const &)
                     -> T *
@@ -112,6 +118,9 @@ namespace alpaka
                 struct FreeMem<
                     BlockSharedAllocCudaBuiltIn>
                 {
+                    //-----------------------------------------------------------------------------
+                    //
+                    //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_CUDA_ONLY static auto freeMem(
                         block::shared::BlockSharedAllocCudaBuiltIn const &)
                     -> void

@@ -169,6 +169,9 @@ namespace alpaka
             struct GetAccDevProps<
                 acc::AccCpuSerial<TDim, TSize>>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getAccDevProps(
                     dev::DevCpu const & dev)
                 -> acc::AccDevProps<TDim, TSize>
@@ -195,6 +198,9 @@ namespace alpaka
             struct GetAccName<
                 acc::AccCpuSerial<TDim, TSize>>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getAccName()
                 -> std::string

@@ -229,6 +229,9 @@ namespace alpaka
             struct GetDev<
                 mem::view::ViewBasic<TDev, TElem, TDim, TSize>>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getDev(
                     mem::view::ViewBasic<TDev, TElem, TDim, TSize> const & view)
                 -> TDev

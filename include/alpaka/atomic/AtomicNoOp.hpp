@@ -76,6 +76,9 @@ namespace alpaka
                 atomic::AtomicNoOp,
                 T>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA static auto atomicOp(
                     atomic::AtomicNoOp const & atomic,
                     T * const addr,

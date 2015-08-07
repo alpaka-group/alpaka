@@ -25,6 +25,9 @@
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST
 
+#include <type_traits>              // std::decay
+#include <utility>                  // std::forward
+
 namespace alpaka
 {
     //-----------------------------------------------------------------------------
@@ -66,15 +69,15 @@ namespace alpaka
             typename TTask>
         ALPAKA_FN_HOST auto enqueue(
             TStream & stream,
-            TTask & task)
+            TTask && task)
         -> void
         {
             traits::Enqueue<
                 TStream,
-                TTask>
+                typename std::decay<TTask>::type>
             ::enqueue(
                 stream,
-                task);
+                std::forward<TTask>(task));
         }
 
         //-----------------------------------------------------------------------------

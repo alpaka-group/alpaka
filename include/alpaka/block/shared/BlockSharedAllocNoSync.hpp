@@ -90,6 +90,9 @@ namespace alpaka
                     T,
                     BlockSharedAllocNoSync>
                 {
+                    //-----------------------------------------------------------------------------
+                    //
+                    //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_NO_CUDA static auto allocVar(
                         block::shared::BlockSharedAllocNoSync const & blockSharedAlloc)
                     -> T &
@@ -114,6 +117,9 @@ namespace alpaka
                     TuiNumElements,
                     BlockSharedAllocNoSync>
                 {
+                    //-----------------------------------------------------------------------------
+                    //
+                    //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_NO_CUDA static auto allocArr(
                         block::shared::BlockSharedAllocNoSync const & blockSharedAlloc)
                     -> T *
@@ -133,6 +139,9 @@ namespace alpaka
                 struct FreeMem<
                     BlockSharedAllocNoSync>
                 {
+                    //-----------------------------------------------------------------------------
+                    //
+                    //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_NO_CUDA static auto freeMem(
                         block::shared::BlockSharedAllocNoSync const & blockSharedAlloc)
                     -> void

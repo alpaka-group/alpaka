@@ -54,6 +54,9 @@ namespace alpaka
                     T,
                     AllocCpuNew>
                 {
+                    //-----------------------------------------------------------------------------
+                    //
+                    //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto alloc(
                         AllocCpuNew const & alloc,
                         std::size_t const & sizeElems)
@@ -74,6 +77,9 @@ namespace alpaka
                     T,
                     AllocCpuNew>
                 {
+                    //-----------------------------------------------------------------------------
+                    //
+                    //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto free(
                         AllocCpuNew const & alloc,
                         T const * const ptr)

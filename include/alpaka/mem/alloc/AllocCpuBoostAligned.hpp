@@ -61,6 +61,9 @@ namespace alpaka
                     T,
                     AllocCpuBoostAligned<TAlignment>>
                 {
+                    //-----------------------------------------------------------------------------
+                    //
+                    //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto alloc(
                         AllocCpuBoostAligned<TAlignment> const & alloc,
                         std::size_t const & sizeElems)
@@ -84,6 +87,9 @@ namespace alpaka
                     T,
                     AllocCpuBoostAligned<TAlignment>>
                 {
+                    //-----------------------------------------------------------------------------
+                    //
+                    //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto free(
                         AllocCpuBoostAligned<TAlignment> const & alloc,
                         T const * const ptr)

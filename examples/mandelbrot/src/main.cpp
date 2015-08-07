@@ -412,7 +412,7 @@ struct MandelbrotKernelTester
         alpaka::mem::view::copy(stream, bufColorAcc, bufColorHost, v2uiExtents);
 
         // Create the executor task.
-        auto /*const*/ exec(alpaka::exec::create<TAcc>(
+        auto const exec(alpaka::exec::create<TAcc>(
             workDiv,
             kernel,
             alpaka::mem::view::getPtrNative(bufColorAcc),

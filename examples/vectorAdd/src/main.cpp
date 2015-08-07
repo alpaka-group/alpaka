@@ -143,7 +143,7 @@ struct VectorAddKernelTester
         alpaka::mem::view::copy(stream, memBufAccB, memBufHostB, v1uiExtents);
 
         // Create the executor task.
-        auto /*const*/ exec(alpaka::exec::create<TAcc>(
+        auto const exec(alpaka::exec::create<TAcc>(
             workDiv,
             kernel,
             alpaka::mem::view::getPtrNative(memBufAccA),

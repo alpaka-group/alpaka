@@ -82,6 +82,9 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 int>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     int * const addr,
@@ -100,6 +103,9 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 unsigned int>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned int * const addr,
@@ -118,6 +124,9 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 unsigned long long int>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned long long int * const addr,
@@ -136,6 +145,9 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 float>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     float * const addr,
@@ -154,6 +166,9 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 double>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     double * const addr,
@@ -187,6 +202,9 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 int>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     int * const addr,
@@ -205,6 +223,9 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 unsigned int>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned int * const addr,
@@ -226,6 +247,9 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 int>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     int * const addr,
@@ -244,6 +268,9 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 unsigned int>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned int * const addr,
@@ -262,6 +289,9 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 unsigned long long int>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned long long int * const addr,
@@ -283,6 +313,9 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 int>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     int * const addr,
@@ -319,6 +352,9 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 unsigned long long int>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned long long int * const addr,
@@ -340,6 +376,9 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 int>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     int * const addr,
@@ -358,6 +397,9 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 unsigned int>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned int * const addr,
@@ -376,6 +418,9 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 unsigned long long int>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned long long int * const addr,
@@ -394,6 +439,9 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 float>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     float * const addr,
@@ -415,6 +463,9 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 unsigned int>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned int * const addr,
@@ -436,6 +487,9 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 unsigned int>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned int * const addr,
@@ -457,6 +511,9 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 int>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     int * const addr,
@@ -475,6 +532,9 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 unsigned int>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned int * const addr,
@@ -493,6 +553,9 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 unsigned long long int>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned long long int * const addr,
@@ -514,6 +577,9 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 int>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     int * const addr,
@@ -532,6 +598,9 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 unsigned int>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned int * const addr,
@@ -550,6 +619,9 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 unsigned long long int>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned long long int * const addr,
@@ -571,6 +643,9 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 int>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     int * const addr,
@@ -589,6 +664,9 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 unsigned int>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned int * const addr,
@@ -607,6 +685,9 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 unsigned long long int>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned long long int * const addr,
@@ -628,6 +709,9 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 int>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     int * const addr,
@@ -647,6 +731,9 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 unsigned int>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned int * const addr,
@@ -666,6 +753,9 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn,
                 unsigned long long int>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto atomicOp(
                     atomic::AtomicCudaBuiltIn const &,
                     unsigned long long int * const addr,

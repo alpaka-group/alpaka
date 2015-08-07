@@ -74,6 +74,9 @@ namespace alpaka
                 struct SyncBlockThreads<
                     BlockSyncCudaBuiltIn>
                 {
+                    //-----------------------------------------------------------------------------
+                    //
+                    //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_CUDA_ONLY static auto syncBlockThreads(
                         block::sync::BlockSyncCudaBuiltIn const &)
                     -> void

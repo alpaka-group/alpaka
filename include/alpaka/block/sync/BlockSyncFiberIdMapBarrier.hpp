@@ -124,6 +124,9 @@ namespace alpaka
                 struct SyncBlockThreads<
                     BlockSyncFiberIdMapBarrier<TSize>>
                 {
+                    //-----------------------------------------------------------------------------
+                    //
+                    //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_NO_CUDA static auto syncBlockThreads(
                         block::sync::BlockSyncFiberIdMapBarrier<TSize> const & blockSync)
                     -> void

@@ -21,8 +21,10 @@
 
 #pragma once
 
-#include <alpaka/dev/Traits.hpp>                // GetDev
 #include <alpaka/dev/DevCpu.hpp>                // dev::DevCpu
+
+#include <alpaka/dev/Traits.hpp>                // dev::GetDev, dev::DevType
+#include <alpaka/event/Traits.hpp>              // event::EventType
 #include <alpaka/stream/Traits.hpp>             // stream::traits::Enqueue, ...
 #include <alpaka/wait/Traits.hpp>               // CurrentThreadWaitFor, WaiterWaitFor
 
@@ -163,6 +165,9 @@ namespace alpaka
             struct GetDev<
                 stream::StreamCpuSync>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getDev(
                     stream::StreamCpuSync const & stream)
                 -> dev::DevCpu
@@ -200,9 +205,23 @@ namespace alpaka
                 stream::StreamCpuSync,
                 TTask>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
                     stream::StreamCpuSync & stream,
                     TTask & task)
+                -> void
+                {
+                    boost::ignore_unused(stream);
+                    task();
+                }
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_HOST static auto enqueue(
+                    stream::StreamCpuSync & stream,
+                    TTask const & task)
                 -> void
                 {
                     boost::ignore_unused(stream);
@@ -216,6 +235,9 @@ namespace alpaka
             struct Empty<
                 stream::StreamCpuSync>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto empty(
                     stream::StreamCpuSync const & stream)
                 -> bool
@@ -240,6 +262,9 @@ namespace alpaka
             struct CurrentThreadWaitFor<
                 stream::StreamCpuSync>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto currentThreadWaitFor(
                     stream::StreamCpuSync const & stream)
                 -> void

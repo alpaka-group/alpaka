@@ -141,6 +141,9 @@ namespace alpaka
                 stream::StreamCudaRtAsync,
                 mem::view::cuda::detail::TaskSet<dim::DimInt<1u>, TBuf, TExtents>>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
                     stream::StreamCudaRtAsync & stream,
                     mem::view::cuda::detail::TaskSet<dim::DimInt<1u>, TBuf, TExtents> const & task)
@@ -189,6 +192,9 @@ namespace alpaka
                 stream::StreamCudaRtSync,
                 mem::view::cuda::detail::TaskSet<dim::DimInt<1u>, TBuf, TExtents>>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
                     stream::StreamCudaRtSync & stream,
                     mem::view::cuda::detail::TaskSet<dim::DimInt<1u>, TBuf, TExtents> const & task)
@@ -236,6 +242,9 @@ namespace alpaka
                 stream::StreamCudaRtAsync,
                 mem::view::cuda::detail::TaskSet<dim::DimInt<2u>, TBuf, TExtents>>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
                     stream::StreamCudaRtAsync & stream,
                     mem::view::cuda::detail::TaskSet<dim::DimInt<2u>, TBuf, TExtents> const & task)
@@ -290,6 +299,9 @@ namespace alpaka
                 stream::StreamCudaRtSync,
                 mem::view::cuda::detail::TaskSet<dim::DimInt<2u>, TBuf, TExtents>>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
                     stream::StreamCudaRtSync & stream,
                     mem::view::cuda::detail::TaskSet<dim::DimInt<2u>, TBuf, TExtents> const & task)
@@ -343,6 +355,9 @@ namespace alpaka
                 stream::StreamCudaRtAsync,
                 mem::view::cuda::detail::TaskSet<dim::DimInt<3u>, TBuf, TExtents>>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
                     stream::StreamCudaRtAsync & stream,
                     mem::view::cuda::detail::TaskSet<dim::DimInt<3u>, TBuf, TExtents> const & task)
@@ -411,6 +426,9 @@ namespace alpaka
                 stream::StreamCudaRtSync,
                 mem::view::cuda::detail::TaskSet<dim::DimInt<3u>, TBuf, TExtents>>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
                     stream::StreamCudaRtSync & stream,
                     mem::view::cuda::detail::TaskSet<dim::DimInt<3u>, TBuf, TExtents> const & task)

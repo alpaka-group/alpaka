@@ -334,15 +334,12 @@ namespace alpaka
                 TExtents const & extents)
             -> void
             {
-                auto /*const*/ taskSet(
+                stream::enqueue(
+                    stream,
                     mem::view::taskSet(
                         buf,
                         byte,
                         extents));
-
-                stream::enqueue(
-                    stream,
-                    taskSet);
             }
 
             //-----------------------------------------------------------------------------
@@ -411,15 +408,12 @@ namespace alpaka
                 TExtents const & extents)
             -> void
             {
-                auto /*const*/ taskCopy(
+                stream::enqueue(
+                    stream,
                     mem::view::taskCopy(
                         bufDst,
                         bufSrc,
                         extents));
-
-                stream::enqueue(
-                    stream,
-                    taskCopy);
             }
 
             //-----------------------------------------------------------------------------

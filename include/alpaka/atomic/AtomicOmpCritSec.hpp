@@ -79,6 +79,9 @@ namespace alpaka
                 atomic::AtomicOmpCritSec,
                 T>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA static auto atomicOp(
                     atomic::AtomicOmpCritSec const & atomic,
                     T * const addr,

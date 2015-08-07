@@ -76,6 +76,9 @@ namespace alpaka
                 struct SyncBlockThreads<
                     BlockSyncNoOp>
                 {
+                    //-----------------------------------------------------------------------------
+                    //
+                    //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC static auto syncBlockThreads(
                         block::sync::BlockSyncNoOp const & blockSync)
                     -> void

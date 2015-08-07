@@ -173,6 +173,9 @@ namespace alpaka
             struct GetDev<
                 event::EventCpu>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getDev(
                     event::EventCpu const & event)
                 -> dev::DevCpu
@@ -229,6 +232,9 @@ namespace alpaka
                 std::shared_ptr<stream::cpu::detail::StreamCpuAsyncImpl>,
                 event::EventCpu>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
                     std::shared_ptr<stream::cpu::detail::StreamCpuAsyncImpl> & spStreamImpl,
                     event::EventCpu & event)
@@ -300,6 +306,9 @@ namespace alpaka
                 stream::StreamCpuAsync,
                 event::EventCpu>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
                     stream::StreamCpuAsync & stream,
                     event::EventCpu & event)
@@ -316,6 +325,9 @@ namespace alpaka
                 std::shared_ptr<stream::cpu::detail::StreamCpuSyncImpl>,
                 event::EventCpu>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
                     std::shared_ptr<stream::cpu::detail::StreamCpuSyncImpl> & spStreamImpl,
                     event::EventCpu & event)
@@ -382,6 +394,9 @@ namespace alpaka
                 stream::StreamCpuSync,
                 event::EventCpu>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
                     stream::StreamCpuSync & stream,
                     event::EventCpu & event)
@@ -406,6 +421,9 @@ namespace alpaka
             struct CurrentThreadWaitFor<
                 event::EventCpu>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto currentThreadWaitFor(
                     event::EventCpu const & event)
                 -> void
@@ -425,6 +443,9 @@ namespace alpaka
             struct CurrentThreadWaitFor<
                 std::shared_ptr<event::cpu::detail::EventCpuImpl>>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto currentThreadWaitFor(
                     std::shared_ptr<event::cpu::detail::EventCpuImpl> const & spEventCpuImpl)
                 -> void
@@ -448,6 +469,9 @@ namespace alpaka
                 std::shared_ptr<stream::cpu::detail::StreamCpuAsyncImpl>,
                 event::EventCpu>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto waiterWaitFor(
                     std::shared_ptr<stream::cpu::detail::StreamCpuAsyncImpl> & spStreamImpl,
                     event::EventCpu const & event)
@@ -478,6 +502,9 @@ namespace alpaka
                 stream::StreamCpuAsync,
                 event::EventCpu>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto waiterWaitFor(
                     stream::StreamCpuAsync & stream,
                     event::EventCpu const & event)
@@ -494,6 +521,9 @@ namespace alpaka
                 std::shared_ptr<stream::cpu::detail::StreamCpuSyncImpl>,
                 event::EventCpu>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto waiterWaitFor(
                     std::shared_ptr<stream::cpu::detail::StreamCpuSyncImpl> & spStreamImpl,
                     event::EventCpu const & event)
@@ -522,6 +552,9 @@ namespace alpaka
                 stream::StreamCpuSync,
                 event::EventCpu>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto waiterWaitFor(
                     stream::StreamCpuSync & stream,
                     event::EventCpu const & event)
@@ -540,6 +573,9 @@ namespace alpaka
                 dev::DevCpu,
                 event::EventCpu>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto waiterWaitFor(
                     dev::DevCpu & dev,
                     event::EventCpu const & event)
@@ -569,6 +605,9 @@ namespace alpaka
             struct CurrentThreadWaitFor<
                 stream::StreamCpuAsync>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto currentThreadWaitFor(
                     stream::StreamCpuAsync const & stream)
                 -> void

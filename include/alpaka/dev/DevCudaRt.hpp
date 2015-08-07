@@ -289,6 +289,9 @@ namespace alpaka
             struct GetDev<
                 dev::DevCudaRt>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getDev(
                     dev::DevCudaRt const & dev)
                 -> dev::DevCudaRt
@@ -304,6 +307,9 @@ namespace alpaka
             struct GetName<
                 dev::DevCudaRt>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getName(
                     dev::DevCudaRt const & dev)
                 -> std::string
@@ -325,6 +331,9 @@ namespace alpaka
             struct GetMemBytes<
                 dev::DevCudaRt>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getMemBytes(
                     dev::DevCudaRt const & dev)
                 -> std::size_t
@@ -354,6 +363,9 @@ namespace alpaka
             struct GetFreeMemBytes<
                 dev::DevCudaRt>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getFreeMemBytes(
                     dev::DevCudaRt const & dev)
                 -> std::size_t
@@ -382,6 +394,9 @@ namespace alpaka
             struct Reset<
                 dev::DevCudaRt>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto reset(
                     dev::DevCudaRt const & dev)
                 -> void
@@ -488,6 +503,9 @@ namespace alpaka
             struct CurrentThreadWaitFor<
                 dev::DevCudaRt>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto currentThreadWaitFor(
                     dev::DevCudaRt const & dev)
                 -> void

@@ -314,7 +314,7 @@ struct MatMulTester
         alpaka::mem::view::copy(streamAcc, bufCAcc, bufCHost, v2uiExtentsC);
 
         // Create the executor task.
-        auto /*const*/ exec(alpaka::exec::create<TAcc>(
+        auto const exec(alpaka::exec::create<TAcc>(
             workDiv,
             kernel,
             m,

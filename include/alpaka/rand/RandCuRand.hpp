@@ -248,6 +248,9 @@ namespace alpaka
                             dev::DevCudaRt>::value
                         && std::is_floating_point<T>::value>::type>
                 {
+                    //-----------------------------------------------------------------------------
+                    //
+                    //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_CUDA_ONLY static auto createNormalReal(
                         TAcc const & acc)
                     -> rand::distribution::cuda::NormalReal<T>
@@ -270,6 +273,9 @@ namespace alpaka
                             dev::DevCudaRt>::value
                         && std::is_floating_point<T>::value>::type>
                 {
+                    //-----------------------------------------------------------------------------
+                    //
+                    //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_CUDA_ONLY static auto createUniformReal(
                         TAcc const & acc)
                     -> rand::distribution::cuda::UniformReal<T>
@@ -292,6 +298,9 @@ namespace alpaka
                             dev::DevCudaRt>::value
                         && std::is_integral<T>::value>::type>
                 {
+                    //-----------------------------------------------------------------------------
+                    //
+                    //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_CUDA_ONLY static auto createUniformUint(
                         TAcc const & acc)
                     -> rand::distribution::cuda::UniformUint<T>
@@ -317,6 +326,9 @@ namespace alpaka
                             dev::Dev<TAcc>,
                             dev::DevCudaRt>::value>::type>
                 {
+                    //-----------------------------------------------------------------------------
+                    //
+                    //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_CUDA_ONLY static auto createDefault(
                         TAcc const & acc,
                         std::uint32_t const & seed,

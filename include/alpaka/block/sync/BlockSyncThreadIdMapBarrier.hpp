@@ -128,6 +128,9 @@ namespace alpaka
                 struct SyncBlockThreads<
                     BlockSyncThreadIdMapBarrier<TSize>>
                 {
+                    //-----------------------------------------------------------------------------
+                    //
+                    //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_NO_CUDA static auto syncBlockThreads(
                         block::sync::BlockSyncThreadIdMapBarrier<TSize> const & blockSync)
                     -> void

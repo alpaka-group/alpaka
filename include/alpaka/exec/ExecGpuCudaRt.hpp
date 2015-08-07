@@ -286,6 +286,9 @@ namespace alpaka
                 stream::StreamCudaRtAsync,
                 exec::ExecGpuCudaRt<TDim, TSize, TKernelFnObj, TArgs...>>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
                     stream::StreamCudaRtAsync & stream,
                     exec::ExecGpuCudaRt<TDim, TSize, TKernelFnObj, TArgs...> const & task)
@@ -419,6 +422,9 @@ namespace alpaka
                 stream::StreamCudaRtSync,
                 exec::ExecGpuCudaRt<TDim, TSize, TKernelFnObj, TArgs...>>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
                     stream::StreamCudaRtSync & stream,
                     exec::ExecGpuCudaRt<TDim, TSize, TKernelFnObj, TArgs...> const & task)

@@ -23,10 +23,10 @@
 
 #include <alpaka/dev/DevCudaRt.hpp>     // dev::DevCudaRt
 
+#include <alpaka/dev/Traits.hpp>        // dev::GetDev, dev::DevType
+#include <alpaka/event/Traits.hpp>      // event::EventType
 #include <alpaka/stream/Traits.hpp>     // stream::traits::Enqueue, ...
 #include <alpaka/wait/Traits.hpp>       // CurrentThreadWaitFor, WaiterWaitFor
-#include <alpaka/acc/Traits.hpp>        // acc::traits::AccType
-#include <alpaka/dev/Traits.hpp>        // GetDev
 
 #include <alpaka/core/Cuda.hpp>         // ALPAKA_CUDA_RT_CHECK
 
@@ -198,6 +198,9 @@ namespace alpaka
             struct GetDev<
                 stream::StreamCudaRtAsync>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getDev(
                     stream::StreamCudaRtAsync const & stream)
                 -> dev::DevCudaRt
@@ -233,6 +236,9 @@ namespace alpaka
             struct Empty<
                 stream::StreamCudaRtAsync>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto empty(
                     stream::StreamCudaRtAsync const & stream)
                 -> bool
@@ -272,6 +278,9 @@ namespace alpaka
             struct CurrentThreadWaitFor<
                 stream::StreamCudaRtAsync>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto currentThreadWaitFor(
                     stream::StreamCudaRtAsync const & stream)
                 -> void

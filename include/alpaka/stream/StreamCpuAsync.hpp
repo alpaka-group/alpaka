@@ -21,8 +21,10 @@
 
 #pragma once
 
-#include <alpaka/dev/Traits.hpp>                // GetDev
 #include <alpaka/dev/DevCpu.hpp>                // dev::DevCpu
+
+#include <alpaka/dev/Traits.hpp>                // dev::GetDev, dev::DevType
+#include <alpaka/event/Traits.hpp>              // event::EventType
 #include <alpaka/stream/Traits.hpp>             // stream::traits::Enqueue, ...
 #include <alpaka/wait/Traits.hpp>               // CurrentThreadWaitFor, WaiterWaitFor
 
@@ -188,6 +190,9 @@ namespace alpaka
             struct GetDev<
                 stream::StreamCpuAsync>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getDev(
                     stream::StreamCpuAsync const & stream)
                 -> dev::DevCpu
@@ -225,9 +230,23 @@ namespace alpaka
                 stream::StreamCpuAsync,
                 TTask>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto enqueue(
                     stream::StreamCpuAsync & stream,
                     TTask & task)
+                -> void
+                {
+                    stream.m_spAsyncStreamCpu->m_workerThread.enqueueTask(
+                        task);
+                }
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
+                ALPAKA_FN_HOST static auto enqueue(
+                    stream::StreamCpuAsync & stream,
+                    TTask const & task)
                 -> void
                 {
                     stream.m_spAsyncStreamCpu->m_workerThread.enqueueTask(
@@ -241,6 +260,9 @@ namespace alpaka
             struct Empty<
                 stream::StreamCpuAsync>
             {
+                //-----------------------------------------------------------------------------
+                //
+                //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto empty(
                     stream::StreamCpuAsync const & stream)
                 -> bool

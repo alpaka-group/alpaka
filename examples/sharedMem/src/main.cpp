@@ -218,7 +218,7 @@ struct SharedMemTester
         alpaka::mem::view::copy(stream, blockRetValsAcc, vuiBlockRetVals, uiSizeElements);
 
         // Create the executor task.
-        auto /*const*/ exec(alpaka::exec::create<TAcc>(
+        auto const exec(alpaka::exec::create<TAcc>(
             workDiv,
             kernel,
             alpaka::mem::view::getPtrNative(blockRetValsAcc),
