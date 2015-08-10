@@ -83,39 +83,39 @@ namespace alpaka
                             TBufDst & bufDst,
                             TBufSrc const & bufSrc,
                             TExtents const & extents) :
-                                m_uiExtentWidth(extent::getWidth(extents)),
-                                m_uiExtentWidthBytes(m_uiExtentWidth * sizeof(mem::view::Elem<TBufDst>)),
-                                m_uiDstWidth(extent::getWidth(bufDst)),
-                                m_uiSrcWidth(extent::getWidth(bufSrc)),
-                                m_uiDstBufWidth(extent::getWidth(mem::view::getBuf(bufDst))),
-                                m_uiSrcBufWidth(extent::getWidth(mem::view::getBuf(bufSrc))),
+                                m_extentWidth(extent::getWidth(extents)),
+                                m_extentWidthBytes(static_cast<Size>(m_extentWidth * sizeof(mem::view::Elem<TBufDst>))),
+                                m_dstWidth(static_cast<Size>(extent::getWidth(bufDst))),
+                                m_srcWidth(static_cast<Size>(extent::getWidth(bufSrc))),
+                                m_dstBufWidth(static_cast<Size>(extent::getWidth(mem::view::getBuf(bufDst)))),
+                                m_srcBufWidth(static_cast<Size>(extent::getWidth(mem::view::getBuf(bufSrc)))),
 
-                                m_uiExtentHeight(extent::getHeight(extents)),
-                                m_uiDstHeight(extent::getHeight(bufDst)),
-                                m_uiSrcHeight(extent::getHeight(bufSrc)),
-                                m_uiDstBufHeight(extent::getHeight(mem::view::getBuf(bufDst))),
-                                m_uiSrcBufHeight(extent::getHeight(mem::view::getBuf(bufSrc))),
+                                m_extentHeight(extent::getHeight(extents)),
+                                m_dstHeight(static_cast<Size>(extent::getHeight(bufDst))),
+                                m_srcHeight(static_cast<Size>(extent::getHeight(bufSrc))),
+                                m_dstBufHeight(static_cast<Size>(extent::getHeight(mem::view::getBuf(bufDst)))),
+                                m_srcBufHeight(static_cast<Size>(extent::getHeight(mem::view::getBuf(bufSrc)))),
 
-                                m_uiExtentDepth(extent::getDepth(extents)),
+                                m_extentDepth(extent::getDepth(extents)),
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                                m_uiDstDepth(extent::getDepth(bufDst)),
-                                m_uiSrcDepth(extent::getDepth(bufSrc)),
+                                m_dstDepth(static_cast<Size>(extent::getDepth(bufDst))),
+                                m_srcDepth(static_cast<Size>(extent::getDepth(bufSrc))),
 #endif
-                                m_uiDstPitchBytes(mem::view::getPitchBytes<dim::Dim<TBufDst>::value - 1u>(bufDst)),
-                                m_uiSrcPitchBytes(mem::view::getPitchBytes<dim::Dim<TBufSrc>::value - 1u>(bufSrc)),
+                                m_dstPitchBytes(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TBufDst>::value - 1u>(bufDst))),
+                                m_srcPitchBytes(static_cast<Size>(mem::view::getPitchBytes<dim::Dim<TBufSrc>::value - 1u>(bufSrc))),
 
-                                m_pDstNative(reinterpret_cast<std::uint8_t *>(mem::view::getPtrNative(bufDst))),
-                                m_pSrcNative(reinterpret_cast<std::uint8_t const *>(mem::view::getPtrNative(bufSrc)))
+                                m_dstMemNative(reinterpret_cast<std::uint8_t *>(mem::view::getPtrNative(bufDst))),
+                                m_srcMemNative(reinterpret_cast<std::uint8_t const *>(mem::view::getPtrNative(bufSrc)))
                         {
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                            assert(m_uiExtentWidth <= m_uiDstWidth);
-                            assert(m_uiExtentHeight <= m_uiDstHeight);
-                            assert(m_uiExtentDepth <= m_uiDstDepth);
-                            assert(m_uiExtentWidth <= m_uiSrcWidth);
-                            assert(m_uiExtentHeight <= m_uiSrcHeight);
-                            assert(m_uiExtentDepth <= m_uiSrcDepth);
-                            assert(m_uiExtentWidthBytes <= m_uiDstPitchBytes);
-                            assert(m_uiExtentWidthBytes <= m_uiSrcPitchBytes);
+                            assert(m_extentWidth <= m_dstWidth);
+                            assert(m_extentHeight <= m_dstHeight);
+                            assert(m_extentDepth <= m_dstDepth);
+                            assert(m_extentWidth <= m_srcWidth);
+                            assert(m_extentHeight <= m_srcHeight);
+                            assert(m_extentDepth <= m_srcDepth);
+                            assert(m_extentWidthBytes <= m_dstPitchBytes);
+                            assert(m_extentWidthBytes <= m_srcPitchBytes);
 #endif
                         }
 
@@ -127,24 +127,24 @@ namespace alpaka
                         -> void
                         {
                             std::cout << BOOST_CURRENT_FUNCTION
-                                << " ew: " << m_uiExtentWidth
-                                << " eh: " << m_uiExtentHeight
-                                << " ed: " << m_uiExtentDepth
-                                << " ewb: " << m_uiExtentWidthBytes
-                                << " dw: " << m_uiDstWidth
-                                << " dh: " << m_uiDstHeight
-                                << " dd: " << m_uiDstDepth
-                                << " dptr: " << m_pDstNative
-                                << " dpitchb: " << m_uiDstPitchBytes
-                                << " dbasew: " << m_uiDstBufWidth
-                                << " dbaseh: " << m_uiDstBufHeight
-                                << " sw: " << m_uiSrcWidth
-                                << " sh: " << m_uiSrcHeight
-                                << " sd: " << m_uiSrcDepth
-                                << " sptr: " << m_pSrcNative
-                                << " spitchb: " << m_uiSrcPitchBytes
-                                << " sbasew: " << m_uiSrcBufWidth
-                                << " sbaseh: " << m_uiSrcBufHeight
+                                << " ew: " << m_extentWidth
+                                << " eh: " << m_extentHeight
+                                << " ed: " << m_extentDepth
+                                << " ewb: " << m_extentWidthBytes
+                                << " dw: " << m_dstWidth
+                                << " dh: " << m_dstHeight
+                                << " dd: " << m_dstDepth
+                                << " dptr: " << m_dstMemNative
+                                << " dpitchb: " << m_dstPitchBytes
+                                << " dbasew: " << m_dstBufWidth
+                                << " dbaseh: " << m_dstBufHeight
+                                << " sw: " << m_srcWidth
+                                << " sh: " << m_srcHeight
+                                << " sd: " << m_srcDepth
+                                << " sptr: " << m_srcMemNative
+                                << " spitchb: " << m_srcPitchBytes
+                                << " sbasew: " << m_srcBufWidth
+                                << " sbaseh: " << m_srcBufHeight
                                 << std::endl;
                         }
 #endif
@@ -156,95 +156,95 @@ namespace alpaka
                         {
                             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                            auto const uiDstSliceSizeBytes(m_uiDstPitchBytes * m_uiDstHeight);
-                            auto const uiSrcSliceSizeBytes(m_uiSrcPitchBytes * m_uiSrcHeight);
+                            auto const dstSliceSizeBytes(m_dstPitchBytes * m_dstHeight);
+                            auto const srcSliceSizeBytes(m_srcPitchBytes * m_srcHeight);
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                             printDebug();
 #endif
-                            auto const bEqualWidths(
-                                (m_uiExtentWidth == m_uiDstWidth)
-                                && (m_uiExtentWidth == m_uiSrcWidth)
-                                && (m_uiExtentWidth == m_uiDstBufWidth)
-                                && (m_uiExtentWidth == m_uiSrcBufWidth));
+                            auto const equalWidths(
+                                (m_extentWidth == m_dstWidth)
+                                && (m_extentWidth == m_srcWidth)
+                                && (m_extentWidth == m_dstBufWidth)
+                                && (m_extentWidth == m_srcBufWidth));
 
                             // If:
                             // - the copy extents width is identical to the dst and src extents width
                             // - the copy extents width is identical to the dst and src memory buffer extents width
                             // - the src and dst pitch is identical
                             // -> we can copy whole slices at once overwriting the pitch bytes
-                            auto const bCopySlice(
-                                bEqualWidths
-                                && (m_uiDstPitchBytes == m_uiSrcPitchBytes));
+                            auto const copySliceAtOnce(
+                                equalWidths
+                                && (m_dstPitchBytes == m_srcPitchBytes));
 
                             // If:
                             // - the copy extents width and height are identical to the dst and src extents width and height
                             // - the copy extents width and height are identical to the dst and src memory buffer extents width and height
                             // - the src and dst slice size is identical
                             // -> we can copy the whole memory at once overwriting the pitch bytes
-                            auto const bSingleCopy(
-                                (m_uiExtentHeight == m_uiDstHeight)
-                                && (m_uiExtentHeight == m_uiSrcHeight)
-                                && (m_uiExtentHeight == m_uiDstBufHeight)
-                                && (m_uiExtentHeight == m_uiSrcBufHeight)
-                                && (uiDstSliceSizeBytes == uiSrcSliceSizeBytes)
-                                && bCopySlice);
+                            auto const copyAllAtOnce(
+                                (m_extentHeight == m_dstHeight)
+                                && (m_extentHeight == m_srcHeight)
+                                && (m_extentHeight == m_dstBufHeight)
+                                && (m_extentHeight == m_srcBufHeight)
+                                && (dstSliceSizeBytes == srcSliceSizeBytes)
+                                && copySliceAtOnce);
 
-                            if(bSingleCopy)
+                            if(copyAllAtOnce)
                             {
                                 std::memcpy(
-                                    reinterpret_cast<void *>(m_pDstNative),
-                                    reinterpret_cast<void const *>(m_pSrcNative),
-                                    uiDstSliceSizeBytes*m_uiExtentDepth);
+                                    reinterpret_cast<void *>(m_dstMemNative),
+                                    reinterpret_cast<void const *>(m_srcMemNative),
+                                    dstSliceSizeBytes*m_extentDepth);
                             }
                             else
                             {
-                                for(auto z(decltype(m_uiExtentDepth)(0)); z < m_uiExtentDepth; ++z)
+                                for(auto z(decltype(m_extentDepth)(0)); z < m_extentDepth; ++z)
                                 {
-                                    if(bCopySlice)
+                                    if(copySliceAtOnce)
                                     {
                                         std::memcpy(
-                                            reinterpret_cast<void *>(m_pDstNative + z*uiDstSliceSizeBytes),
-                                            reinterpret_cast<void const *>(m_pSrcNative + z*uiSrcSliceSizeBytes),
-                                            m_uiDstPitchBytes*m_uiExtentHeight);
+                                            reinterpret_cast<void *>(m_dstMemNative + z*dstSliceSizeBytes),
+                                            reinterpret_cast<void const *>(m_srcMemNative + z*srcSliceSizeBytes),
+                                            m_dstPitchBytes*m_extentHeight);
                                     }
                                     else
                                     {
-                                        for(auto y((decltype(m_uiExtentHeight)(0))); y < m_uiExtentHeight; ++y)
+                                        for(auto y((decltype(m_extentHeight)(0))); y < m_extentHeight; ++y)
                                         {
                                             std::memcpy(
-                                                reinterpret_cast<void *>(m_pDstNative + y*m_uiDstPitchBytes + z*uiDstSliceSizeBytes),
-                                                reinterpret_cast<void const *>(m_pSrcNative + y*m_uiSrcPitchBytes + z*uiSrcSliceSizeBytes),
-                                                m_uiExtentWidthBytes);
+                                                reinterpret_cast<void *>(m_dstMemNative + y*m_dstPitchBytes + z*dstSliceSizeBytes),
+                                                reinterpret_cast<void const *>(m_srcMemNative + y*m_srcPitchBytes + z*srcSliceSizeBytes),
+                                                m_extentWidthBytes);
                                         }
                                     }
                                 }
                             }
                         }
 
-                        Size m_uiExtentWidth;
-                        Size m_uiExtentWidthBytes;
-                        Size m_uiDstWidth;
-                        Size m_uiSrcWidth;
-                        Size m_uiDstBufWidth;
-                        Size m_uiSrcBufWidth;
+                        Size m_extentWidth;
+                        Size m_extentWidthBytes;
+                        Size m_dstWidth;
+                        Size m_srcWidth;
+                        Size m_dstBufWidth;
+                        Size m_srcBufWidth;
 
-                        Size m_uiExtentHeight;
-                        Size m_uiDstHeight;
-                        Size m_uiSrcHeight;
-                        Size m_uiDstBufHeight;
-                        Size m_uiSrcBufHeight;
+                        Size m_extentHeight;
+                        Size m_dstHeight;
+                        Size m_srcHeight;
+                        Size m_dstBufHeight;
+                        Size m_srcBufHeight;
 
-                        Size m_uiExtentDepth;
+                        Size m_extentDepth;
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                        Size m_uiDstDepth;
-                        Size m_uiSrcDepth;
+                        Size m_dstDepth;
+                        Size m_srcDepth;
 #endif
-                        Size m_uiDstPitchBytes;
-                        Size m_uiSrcPitchBytes;
+                        Size m_dstPitchBytes;
+                        Size m_srcPitchBytes;
 
-                        std::uint8_t * m_pDstNative;
-                        std::uint8_t const * m_pSrcNative;
+                        std::uint8_t * m_dstMemNative;
+                        std::uint8_t const * m_srcMemNative;
                     };
                 }
             }

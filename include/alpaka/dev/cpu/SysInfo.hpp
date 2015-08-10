@@ -153,13 +153,13 @@ namespace alpaka
                         HW_PHYSMEM64
         #endif
                     };
-                    std::uint64_t uiSize(0);
-                    std::size_t const uiSizeLen{sizeof(uiSize)};
-                    if(sysctl(mib, 2, &uiSize, &uiSizeLen, nullptr, 0) < 0)
+                    std::uint64_t size(0);
+                    std::size_t const sizeLen{sizeof(size)};
+                    if(sysctl(mib, 2, &size, &sizeLen, nullptr, 0) < 0)
                     {
                         throw std::logic_error("getGlobalMemSizeBytes failed calling sysctl!");
                     }
-                    return static_cast<std::size_t>(uiSize);
+                    return static_cast<std::size_t>(size);
 
     #elif defined(_SC_AIX_REALMEM)                                          // AIX.
                     return static_cast<std::size_t>(sysconf(_SC_AIX_REALMEM)) * static_cast<std::size_t>(1024);
@@ -178,13 +178,13 @@ namespace alpaka
                         HW_PHYSMEM;
         #endif
                     };
-                    std::uint32_t uiSize(0);
-                    std::size_t const uiSizeLen{sizeof(uiSize)};
-                    if(sysctl(mib, 2, &uiSize, &uiSizeLen, nullptr, 0) < 0)
+                    std::uint32_t size(0);
+                    std::size_t const sizeLen{sizeof(size)};
+                    if(sysctl(mib, 2, &size, &sizeLen, nullptr, 0) < 0)
                     {
                         throw std::logic_error("getGlobalMemSizeBytes failed calling sysctl!");
                     }
-                    return static_cast<std::size_t>(uiSize);
+                    return static_cast<std::size_t>(size);
     #endif
 
 #else

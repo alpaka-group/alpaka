@@ -138,13 +138,13 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                auto const vuiGridBlockExtents(
+                auto const gridBlockExtents(
                     workdiv::getWorkDiv<Grid, Blocks>(*this));
-                auto const vuiBlockThreadExtents(
+                auto const blockThreadExtents(
                     workdiv::getWorkDiv<Block, Threads>(*this));
 
                 // Get the size of the block shared extern memory.
-                auto const uiBlockSharedExternMemSizeBytes(
+                auto const blockSharedExternMemSizeBytes(
                     core::apply(
                         [&](TArgs const & ... args)
                         {
@@ -152,38 +152,38 @@ namespace alpaka
                                 kernel::getBlockSharedExternMemSizeBytes<
                                     TKernelFnObj,
                                     acc::AccCpuThreads<TDim, TSize>>(
-                                        vuiBlockThreadExtents,
+                                        blockThreadExtents,
                                         args...);
                         },
                         m_args));
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 std::cout << BOOST_CURRENT_FUNCTION
-                    << " BlockSharedExternMemSizeBytes: " << uiBlockSharedExternMemSizeBytes << " B" << std::endl;
+                    << " BlockSharedExternMemSizeBytes: " << blockSharedExternMemSizeBytes << " B" << std::endl;
 #endif
                 acc::AccCpuThreads<TDim, TSize> acc(*static_cast<workdiv::WorkDivMembers<TDim, TSize> const *>(this));
 
-                if(uiBlockSharedExternMemSizeBytes > 0u)
+                if(blockSharedExternMemSizeBytes > 0u)
                 {
-                    acc.m_vuiExternalSharedMem.reset(
+                    acc.m_externalSharedMem.reset(
                         reinterpret_cast<uint8_t *>(
-                            boost::alignment::aligned_alloc(16u, uiBlockSharedExternMemSizeBytes)));
+                            boost::alignment::aligned_alloc(16u, blockSharedExternMemSizeBytes)));
                 }
 
-                auto const uiNumThreadsInBlock(vuiBlockThreadExtents.prod());
-                ThreadPool threadPool(uiNumThreadsInBlock, uiNumThreadsInBlock);
+                auto const numThreadsInBlock(blockThreadExtents.prod());
+                ThreadPool threadPool(numThreadsInBlock, numThreadsInBlock);
 
                 // Bind the kernel and its arguments to the grid block function.
                 auto const boundGridBlockExecHost(
                     core::apply(
-                        [this, &acc, &vuiBlockThreadExtents, &threadPool](TArgs const & ... args)
+                        [this, &acc, &blockThreadExtents, &threadPool](TArgs const & ... args)
                         {
                             return
                                 std::bind(
                                     &ExecCpuThreads<TDim, TSize, TKernelFnObj, TArgs...>::gridBlockExecHost,
                                     std::ref(acc),
                                     std::placeholders::_1,
-                                    std::ref(vuiBlockThreadExtents),
+                                    std::ref(blockThreadExtents),
                                     std::ref(threadPool),
                                     std::ref(m_kernelFnObj),
                                     std::ref(args)...);
@@ -192,11 +192,11 @@ namespace alpaka
 
                 // Execute the blocks serially.
                 core::ndLoop(
-                    vuiGridBlockExtents,
+                    gridBlockExtents,
                     boundGridBlockExecHost);
 
                 // After all blocks have been processed, the external shared memory has to be deleted.
-                acc.m_vuiExternalSharedMem.reset();
+                acc.m_externalSharedMem.reset();
             }
 
         private:
@@ -205,46 +205,46 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto gridBlockExecHost(
                 acc::AccCpuThreads<TDim, TSize> & acc,
-                Vec<TDim, TSize> const & vuiGridBlockIdx,
-                Vec<TDim, TSize> const & vuiBlockThreadExtents,
+                Vec<TDim, TSize> const & gridBlockIdx,
+                Vec<TDim, TSize> const & blockThreadExtents,
                 ThreadPool & threadPool,
                 TKernelFnObj const & kernelFnObj,
                 TArgs const & ... args)
             -> void
             {
                     // The futures of the threads in the current block.
-                std::vector<std::future<void>> vFuturesInBlock;
+                std::vector<std::future<void>> futuresInBlock;
 
                 // Set the index of the current block
-                acc.m_vuiGridBlockIdx = vuiGridBlockIdx;
+                acc.m_gridBlockIdx = gridBlockIdx;
 
                 // Bind the kernel and its arguments to the host block thread execution function.
                 auto boundBlockThreadExecHost(std::bind(
                     &ExecCpuThreads<TDim, TSize, TKernelFnObj, TArgs...>::blockThreadExecHost,
                     std::ref(acc),
-                    std::ref(vFuturesInBlock),
+                    std::ref(futuresInBlock),
                     std::placeholders::_1,
                     std::ref(threadPool),
                     std::ref(kernelFnObj),
                     std::ref(args)...));
                 // Execute the block threads in parallel.
                 core::ndLoop(
-                    vuiBlockThreadExtents,
+                    blockThreadExtents,
                     boundBlockThreadExecHost);
 
                 // Wait for the completion of the block thread kernels.
                 std::for_each(
-                    vFuturesInBlock.begin(),
-                    vFuturesInBlock.end(),
+                    futuresInBlock.begin(),
+                    futuresInBlock.end(),
                     [](std::future<void> & t)
                     {
                         t.wait();
                     }
                 );
                 // Clean up.
-                vFuturesInBlock.clear();
+                futuresInBlock.clear();
 
-                acc.m_mThreadsToIndices.clear();
+                acc.m_threadsToIndices.clear();
                 acc.m_mThreadsToBarrier.clear();
 
                 // After a block has been processed, the shared memory has to be deleted.
@@ -255,26 +255,26 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto blockThreadExecHost(
                 acc::AccCpuThreads<TDim, TSize> & acc,
-                std::vector<std::future<void>> & vFuturesInBlock,
-                Vec<TDim, TSize> const & vuiBlockThreadIdx,
+                std::vector<std::future<void>> & futuresInBlock,
+                Vec<TDim, TSize> const & blockThreadIdx,
                 ThreadPool & threadPool,
                 TKernelFnObj const & kernelFnObj,
                 TArgs const & ... args)
             -> void
             {
                 // Bind the arguments to the accelerator block thread execution function.
-                // The vuiBlockThreadIdx is required to be copied in because the variable will get changed for the next iteration/thread.
+                // The blockThreadIdx is required to be copied in because the variable will get changed for the next iteration/thread.
                 auto boundBlockThreadExecAcc(
-                    [&, vuiBlockThreadIdx]()
+                    [&, blockThreadIdx]()
                     {
                         blockThreadExecAcc(
                             acc,
-                            vuiBlockThreadIdx,
+                            blockThreadIdx,
                             kernelFnObj,
                             args...);
                     });
                 // Add the bound function to the block thread pool.
-                vFuturesInBlock.emplace_back(
+                futuresInBlock.emplace_back(
                     threadPool.enqueueTask(
                         boundBlockThreadExecAcc));
             }
@@ -283,18 +283,18 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto blockThreadExecAcc(
                 acc::AccCpuThreads<TDim, TSize> & acc,
-                Vec<TDim, TSize> const & vuiBlockThreadIdx,
+                Vec<TDim, TSize> const & blockThreadIdx,
                 TKernelFnObj const & kernelFnObj,
                 TArgs const & ... args)
             -> void
             {
                 // We have to store the thread data before the kernel is calling any of the methods of this class depending on them.
-                auto const idThread(std::this_thread::get_id());
+                auto const threadId(std::this_thread::get_id());
 
                 // Set the master thread id.
-                if(vuiBlockThreadIdx.sum() == 0)
+                if(blockThreadIdx.sum() == 0)
                 {
-                    acc.m_idMasterThread = idThread;
+                    acc.m_idMasterThread = threadId;
                 }
 
                 // We can not use the default syncBlockThreads here because it searches inside m_mThreadsToBarrier for the thread id.
@@ -306,8 +306,8 @@ namespace alpaka
                     std::lock_guard<std::mutex> lock(acc.m_mtxMapInsert);
 
                     // Save the thread id, and index.
-                    acc.m_mThreadsToIndices.emplace(idThread, vuiBlockThreadIdx);
-                    itThreadToBarrier = acc.m_mThreadsToBarrier.emplace(idThread, 0).first;
+                    acc.m_threadsToIndices.emplace(threadId, blockThreadIdx);
+                    itThreadToBarrier = acc.m_mThreadsToBarrier.emplace(threadId, 0).first;
                 }
 
                 // Sync all threads so that the maps with thread id's are complete and not changed after here.

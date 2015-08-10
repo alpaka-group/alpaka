@@ -92,13 +92,13 @@ namespace alpaka
                 //#############################################################################
                 template<
                     typename T,
-                    std::size_t TuiNumElements>
+                    std::size_t TnumElements>
                 struct AllocArr<
                     T,
-                    TuiNumElements,
+                    TnumElements,
                     BlockSharedAllocCudaBuiltIn>
                 {
-                    static_assert(TuiNumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
+                    static_assert(TnumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
 
                     //-----------------------------------------------------------------------------
                     //
@@ -107,7 +107,7 @@ namespace alpaka
                         block::shared::BlockSharedAllocCudaBuiltIn const &)
                     -> T *
                     {
-                        __shared__ T shMem[TuiNumElements];
+                        __shared__ T shMem[TnumElements];
                         return shMem;
                     }
                 };

@@ -44,20 +44,20 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_NO_HOST_ACC_WARNING
             ALPAKA_FN_HOST AccDevProps(
-                TSize const & uiMultiProcessorCount,
-                TSize const & uiBlockThreadsCountMax,
-                Vec<TDim, TSize> const & vuiBlockThreadExtentsMax,
-                Vec<TDim, TSize> const & vuiGridBlockExtentsMax) :
-                    m_uiMultiProcessorCount(uiMultiProcessorCount),
-                    m_uiBlockThreadsCountMax(uiBlockThreadsCountMax),
-                    m_vuiBlockThreadExtentsMax(vuiBlockThreadExtentsMax),
-                    m_vuiGridBlockExtentsMax(vuiGridBlockExtentsMax)
+                TSize const & multiProcessorCount,
+                TSize const & blockThreadsCountMax,
+                Vec<TDim, TSize> const & blockThreadExtentsMax,
+                Vec<TDim, TSize> const & gridBlockExtentsMax) :
+                    m_multiProcessorCount(multiProcessorCount),
+                    m_blockThreadsCountMax(blockThreadsCountMax),
+                    m_blockThreadExtentsMax(blockThreadExtentsMax),
+                    m_gridBlockExtentsMax(gridBlockExtentsMax)
             {}
 
-            TSize m_uiMultiProcessorCount;                  //!< The number of multiprocessors.
-            TSize m_uiBlockThreadsCountMax;                 //!< The maximum number of threads in a block.
-            Vec<TDim, TSize> m_vuiBlockThreadExtentsMax;    //!< The maximum number of threads in each dimension of a block.
-            Vec<TDim, TSize> m_vuiGridBlockExtentsMax;      //!< The maximum number of blocks in each dimension of the grid.
+            TSize m_multiProcessorCount;                  //!< The number of multiprocessors.
+            TSize m_blockThreadsCountMax;                 //!< The maximum number of threads in a block.
+            Vec<TDim, TSize> m_blockThreadExtentsMax;    //!< The maximum number of threads in each dimension of a block.
+            Vec<TDim, TSize> m_gridBlockExtentsMax;      //!< The maximum number of blocks in each dimension of the grid.
             //TSize m_uiSharedMemSizeBytes;                 //!< Size of the available block shared memory in bytes.
         };
     }

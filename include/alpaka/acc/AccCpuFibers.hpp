@@ -99,18 +99,18 @@ namespace alpaka
             ALPAKA_FN_ACC_NO_CUDA AccCpuFibers(
                 TWorkDiv const & workDiv) :
                     workdiv::WorkDivMembers<TDim, TSize>(workDiv),
-                    idx::gb::IdxGbRef<TDim, TSize>(m_vuiGridBlockIdx),
-                    idx::bt::IdxBtRefFiberIdMap<TDim, TSize>(m_mFibersToIndices),
+                    idx::gb::IdxGbRef<TDim, TSize>(m_gridBlockIdx),
+                    idx::bt::IdxBtRefFiberIdMap<TDim, TSize>(m_fibersToIndices),
                     atomic::AtomicNoOp(),
                     math::MathStl(),
                     block::shared::BlockSharedAllocMasterSync(
                         [this](){block::sync::syncBlockThreads(*this);},
-                        [this](){return (m_idMasterFiber == boost::this_fiber::get_id());}),
+                        [this](){return (m_masterFiberId == boost::this_fiber::get_id());}),
                     block::sync::BlockSyncFiberIdMapBarrier<TSize>(
-                        m_uiNumThreadsPerBlock,
-                        m_mFibersToBarrier),
-                    m_vuiGridBlockIdx(Vec<TDim, TSize>::zeros()),
-                    m_uiNumThreadsPerBlock(workdiv::getWorkDiv<Block, Threads>(workDiv).prod())
+                        m_threadsPerBlockCount,
+                        m_fibersToBarrier),
+                    m_gridBlockIdx(Vec<TDim, TSize>::zeros()),
+                    m_threadsPerBlockCount(workdiv::getWorkDiv<Block, Threads>(workDiv).prod())
             {}
 
         public:
@@ -143,26 +143,26 @@ namespace alpaka
             ALPAKA_FN_ACC_NO_CUDA auto getBlockSharedExternMem() const
             -> T *
             {
-                return reinterpret_cast<T*>(m_vuiExternalSharedMem.get());
+                return reinterpret_cast<T*>(m_externalSharedMem.get());
             }
 
         private:
             // getIdx
-            typename idx::bt::IdxBtRefFiberIdMap<TDim, TSize>::FiberIdToIdxMap mutable m_mFibersToIndices;  //!< The mapping of fibers id's to indices.
-            alignas(16u) Vec<TDim, TSize> mutable m_vuiGridBlockIdx;    //!< The index of the currently executed block.
+            typename idx::bt::IdxBtRefFiberIdMap<TDim, TSize>::FiberIdToIdxMap mutable m_fibersToIndices;  //!< The mapping of fibers id's to indices.
+            alignas(16u) Vec<TDim, TSize> mutable m_gridBlockIdx;    //!< The index of the currently executed block.
 
             // syncBlockThreads
-            TSize const m_uiNumThreadsPerBlock;                         //!< The number of threads per block the barrier has to wait for.
+            TSize const m_threadsPerBlockCount;                         //!< The number of threads per block the barrier has to wait for.
             std::map<
                 boost::fibers::fiber::id,
-                TSize> mutable m_mFibersToBarrier;                      //!< The mapping of fibers id's to their current barrier.
+                TSize> mutable m_fibersToBarrier;                      //!< The mapping of fibers id's to their current barrier.
             //!< We have to keep the current and the last barrier because one of the fibers can reach the next barrier before another fiber was wakeup from the last one and has checked if it can run.
 
             // allocBlockSharedArr
-            boost::fibers::fiber::id mutable m_idMasterFiber;           //!< The id of the master fiber.
+            boost::fibers::fiber::id mutable m_masterFiberId;           //!< The id of the master fiber.
 
             // getBlockSharedExternMem
-            std::unique_ptr<uint8_t, boost::alignment::aligned_delete> mutable m_vuiExternalSharedMem;  //!< External block shared memory.
+            std::unique_ptr<uint8_t, boost::alignment::aligned_delete> mutable m_externalSharedMem;  //!< External block shared memory.
         };
     }
 
@@ -200,18 +200,18 @@ namespace alpaka
                     boost::ignore_unused(dev);
 
 #if ALPAKA_INTEGRATION_TEST
-                    auto const uiBlockThreadsCountMax(static_cast<TSize>(3));
+                    auto const blockThreadsCountMax(static_cast<TSize>(3));
 #else
-                    auto const uiBlockThreadsCountMax(static_cast<TSize>(4));  // \TODO: What is the maximum? Just set a reasonable value?
+                    auto const blockThreadsCountMax(static_cast<TSize>(4));  // \TODO: What is the maximum? Just set a reasonable value?
 #endif
                     return {
-                        // m_uiMultiProcessorCount
+                        // m_multiProcessorCount
                         std::max(static_cast<TSize>(1), static_cast<TSize>(std::thread::hardware_concurrency())),   // \TODO: This may be inaccurate.
-                        // m_uiBlockThreadsCountMax
-                        uiBlockThreadsCountMax,
-                        // m_vuiBlockThreadExtentsMax
-                        Vec<TDim, TSize>::all(uiBlockThreadsCountMax),
-                        // m_vuiGridBlockExtentsMax
+                        // m_blockThreadsCountMax
+                        blockThreadsCountMax,
+                        // m_blockThreadExtentsMax
+                        Vec<TDim, TSize>::all(blockThreadsCountMax),
+                        // m_gridBlockExtentsMax
                         Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max())};
                 }
             };

@@ -51,8 +51,8 @@ namespace alpaka
                 ALPAKA_FN_ACC_NO_CUDA BlockSharedAllocMasterSync(
                     std::function<void()> fnSync,
                     std::function<bool()> fnIsMasterThread) :
-                        m_fnSync(fnSync),
-                        m_fnIsMasterThread(fnIsMasterThread)
+                        m_syncFn(fnSync),
+                        m_isMasterThreadFn(fnIsMasterThread)
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
@@ -82,10 +82,10 @@ namespace alpaka
                     std::unique_ptr<
                         uint8_t,
                         boost::alignment::aligned_delete>> mutable
-                    m_vvuiSharedMem;    //!< Block shared memory.
+                    m_sharedAllocs;
 
-                std::function<void()> m_fnSync;
-                std::function<bool()> m_fnIsMasterThread;
+                std::function<void()> m_syncFn;
+                std::function<bool()> m_isMasterThreadFn;
             };
 
             namespace traits
@@ -107,21 +107,21 @@ namespace alpaka
                     -> T &
                     {
                         // Assure that all threads have executed the return of the last allocBlockSharedArr function (if there was one before).
-                        blockSharedAlloc.m_fnSync();
+                        blockSharedAlloc.m_syncFn();
 
                         // Arbitrary decision: The fiber that was created first has to allocate the memory.
-                        if(blockSharedAlloc.m_fnIsMasterThread())
+                        if(blockSharedAlloc.m_isMasterThreadFn())
                         {
-                            blockSharedAlloc.m_vvuiSharedMem.emplace_back(
+                            blockSharedAlloc.m_sharedAllocs.emplace_back(
                                 reinterpret_cast<uint8_t *>(
                                     boost::alignment::aligned_alloc(16u, sizeof(T))));
                         }
-                        blockSharedAlloc.m_fnSync();
+                        blockSharedAlloc.m_syncFn();
 
                         return
                             std::ref(
                                 *reinterpret_cast<T*>(
-                                    blockSharedAlloc.m_vvuiSharedMem.back().get()));
+                                    blockSharedAlloc.m_sharedAllocs.back().get()));
                     }
                 };
                 //#############################################################################
@@ -129,10 +129,10 @@ namespace alpaka
                 //#############################################################################
                 template<
                     typename T,
-                    std::size_t TuiNumElements>
+                    std::size_t TnumElements>
                 struct AllocArr<
                     T,
-                    TuiNumElements,
+                    TnumElements,
                     BlockSharedAllocMasterSync>
                 {
                     //-----------------------------------------------------------------------------
@@ -143,20 +143,20 @@ namespace alpaka
                     -> T *
                     {
                         // Assure that all threads have executed the return of the last allocBlockSharedArr function (if there was one before).
-                        blockSharedAlloc.m_fnSync();
+                        blockSharedAlloc.m_syncFn();
 
                         // Arbitrary decision: The fiber that was created first has to allocate the memory.
-                        if(blockSharedAlloc.m_fnIsMasterThread())
+                        if(blockSharedAlloc.m_isMasterThreadFn())
                         {
-                            blockSharedAlloc.m_vvuiSharedMem.emplace_back(
+                            blockSharedAlloc.m_sharedAllocs.emplace_back(
                                 reinterpret_cast<uint8_t *>(
-                                    boost::alignment::aligned_alloc(16u, sizeof(T) * TuiNumElements)));
+                                    boost::alignment::aligned_alloc(16u, sizeof(T) * TnumElements)));
                         }
-                        blockSharedAlloc.m_fnSync();
+                        blockSharedAlloc.m_syncFn();
 
                         return
                             reinterpret_cast<T*>(
-                                blockSharedAlloc.m_vvuiSharedMem.back().get());
+                                blockSharedAlloc.m_sharedAllocs.back().get());
                     }
                 };
                 //#############################################################################
@@ -173,7 +173,7 @@ namespace alpaka
                         block::shared::BlockSharedAllocMasterSync const & blockSharedAlloc)
                     -> void
                     {
-                        blockSharedAlloc.m_vvuiSharedMem.clear();
+                        blockSharedAlloc.m_sharedAllocs.clear();
                     }
                 };
             }

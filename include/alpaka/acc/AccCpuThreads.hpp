@@ -96,18 +96,18 @@ namespace alpaka
             ALPAKA_FN_ACC_NO_CUDA AccCpuThreads(
                 TWorkDiv const & workDiv) :
                     workdiv::WorkDivMembers<TDim, TSize>(workDiv),
-                    idx::gb::IdxGbRef<TDim, TSize>(m_vuiGridBlockIdx),
-                    idx::bt::IdxBtRefThreadIdMap<TDim, TSize>(m_mThreadsToIndices),
+                    idx::gb::IdxGbRef<TDim, TSize>(m_gridBlockIdx),
+                    idx::bt::IdxBtRefThreadIdMap<TDim, TSize>(m_threadsToIndices),
                     atomic::AtomicStlLock(),
                     math::MathStl(),
                     block::shared::BlockSharedAllocMasterSync(
                         [this](){block::sync::syncBlockThreads(*this);},
                         [this](){return (m_idMasterThread == std::this_thread::get_id());}),
                     block::sync::BlockSyncThreadIdMapBarrier<TSize>(
-                        m_uiNumThreadsPerBlock,
+                        m_threadsPerBlockCount,
                         m_mThreadsToBarrier),
-                    m_vuiGridBlockIdx(Vec<TDim, TSize>::zeros()),
-                    m_uiNumThreadsPerBlock(workdiv::getWorkDiv<Block, Threads>(workDiv).prod())
+                    m_gridBlockIdx(Vec<TDim, TSize>::zeros()),
+                    m_threadsPerBlockCount(workdiv::getWorkDiv<Block, Threads>(workDiv).prod())
             {}
 
         public:
@@ -140,17 +140,17 @@ namespace alpaka
             ALPAKA_FN_ACC_NO_CUDA auto getBlockSharedExternMem() const
             -> T *
             {
-                return reinterpret_cast<T*>(m_vuiExternalSharedMem.get());
+                return reinterpret_cast<T*>(m_externalSharedMem.get());
             }
 
         private:
             // getIdx
             std::mutex mutable m_mtxMapInsert;                              //!< The mutex used to secure insertion into the ThreadIdToIdxMap.
-            typename idx::bt::IdxBtRefThreadIdMap<TDim, TSize>::ThreadIdToIdxMap mutable m_mThreadsToIndices;    //!< The mapping of thread id's to indices.
-            alignas(16u) Vec<TDim, TSize> mutable m_vuiGridBlockIdx;        //!< The index of the currently executed block.
+            typename idx::bt::IdxBtRefThreadIdMap<TDim, TSize>::ThreadIdToIdxMap mutable m_threadsToIndices;    //!< The mapping of thread id's to indices.
+            alignas(16u) Vec<TDim, TSize> mutable m_gridBlockIdx;        //!< The index of the currently executed block.
 
             // syncBlockThreads
-            TSize const m_uiNumThreadsPerBlock;                             //!< The number of threads per block the barrier has to wait for.
+            TSize const m_threadsPerBlockCount;                             //!< The number of threads per block the barrier has to wait for.
             std::map<
                 std::thread::id,
                 TSize> mutable m_mThreadsToBarrier;                         //!< The mapping of thread id's to their current barrier.
@@ -159,7 +159,7 @@ namespace alpaka
             std::thread::id mutable m_idMasterThread;                       //!< The id of the master thread.
 
             // getBlockSharedExternMem
-            std::unique_ptr<uint8_t, boost::alignment::aligned_delete> mutable m_vuiExternalSharedMem;      //!< External block shared memory.
+            std::unique_ptr<uint8_t, boost::alignment::aligned_delete> mutable m_externalSharedMem;      //!< External block shared memory.
         };
     }
 
@@ -197,20 +197,20 @@ namespace alpaka
                     boost::ignore_unused(dev);
 
 #if ALPAKA_INTEGRATION_TEST
-                    auto const uiBlockThreadsCountMax(static_cast<TSize>(8));
+                    auto const blockThreadsCountMax(static_cast<TSize>(8));
 #else
                     // \TODO: Magic number. What is the maximum? Just set a reasonable value? There is a implementation defined maximum where the creation of a new thread crashes.
                     // std::thread::hardware_concurrency can return 0, so 1 is the default case?
-                    auto const uiBlockThreadsCountMax(std::max(static_cast<TSize>(1), static_cast<TSize>(std::thread::hardware_concurrency() * 8)));
+                    auto const blockThreadsCountMax(std::max(static_cast<TSize>(1), static_cast<TSize>(std::thread::hardware_concurrency() * 8)));
 #endif
                     return {
-                        // m_uiMultiProcessorCount
+                        // m_multiProcessorCount
                         static_cast<TSize>(1),
-                        // m_uiBlockThreadsCountMax
-                        uiBlockThreadsCountMax,
-                        // m_vuiBlockThreadExtentsMax
-                        Vec<TDim, TSize>::all(uiBlockThreadsCountMax),
-                        // m_vuiGridBlockExtentsMax
+                        // m_blockThreadsCountMax
+                        blockThreadsCountMax,
+                        // m_blockThreadExtentsMax
+                        Vec<TDim, TSize>::all(blockThreadsCountMax),
+                        // m_gridBlockExtentsMax
                         Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max())};
                 }
             };

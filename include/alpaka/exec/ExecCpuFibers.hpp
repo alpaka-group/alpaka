@@ -140,13 +140,13 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                auto const vuiGridBlockExtents(
+                auto const gridBlockExtents(
                     workdiv::getWorkDiv<Grid, Blocks>(*this));
-                auto const vuiBlockThreadExtents(
+                auto const blockThreadExtents(
                     workdiv::getWorkDiv<Block, Threads>(*this));
 
                 // Get the size of the block shared extern memory.
-                auto const uiBlockSharedExternMemSizeBytes(
+                auto const blockSharedExternMemSizeBytes(
                     core::apply(
                         [&](TArgs const & ... args)
                         {
@@ -154,30 +154,30 @@ namespace alpaka
                                 kernel::getBlockSharedExternMemSizeBytes<
                                     TKernelFnObj,
                                     acc::AccCpuFibers<TDim, TSize>>(
-                                        vuiBlockThreadExtents,
+                                        blockThreadExtents,
                                         args...);
                         },
                         m_args));
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 std::cout << BOOST_CURRENT_FUNCTION
-                    << " BlockSharedExternMemSizeBytes: " << uiBlockSharedExternMemSizeBytes << " B" << std::endl;
+                    << " BlockSharedExternMemSizeBytes: " << blockSharedExternMemSizeBytes << " B" << std::endl;
 #endif
                 acc::AccCpuFibers<TDim, TSize> acc(*static_cast<workdiv::WorkDivMembers<TDim, TSize> const *>(this));
 
-                if(uiBlockSharedExternMemSizeBytes > 0u)
+                if(blockSharedExternMemSizeBytes > 0u)
                 {
-                    acc.m_vuiExternalSharedMem.reset(
+                    acc.m_externalSharedMem.reset(
                         reinterpret_cast<uint8_t *>(
-                            boost::alignment::aligned_alloc(16u, uiBlockSharedExternMemSizeBytes)));
+                            boost::alignment::aligned_alloc(16u, blockSharedExternMemSizeBytes)));
                 }
 
-                auto const uiNumThreadsInBlock(vuiBlockThreadExtents.prod());
-                FiberPool fiberPool(uiNumThreadsInBlock, uiNumThreadsInBlock);
+                auto const numThreadsInBlock(blockThreadExtents.prod());
+                FiberPool fiberPool(numThreadsInBlock, numThreadsInBlock);
 
                 auto const boundGridBlockExecHost(
                     core::apply(
-                        [this, &acc, &vuiBlockThreadExtents, &fiberPool](TArgs const & ... args)
+                        [this, &acc, &blockThreadExtents, &fiberPool](TArgs const & ... args)
                         {
                             // Bind the kernel and its arguments to the grid block function.
                             return
@@ -185,7 +185,7 @@ namespace alpaka
                                     &ExecCpuFibers<TDim, TSize, TKernelFnObj, TArgs...>::gridBlockExecHost,
                                     std::ref(acc),
                                     std::placeholders::_1,
-                                    std::ref(vuiBlockThreadExtents),
+                                    std::ref(blockThreadExtents),
                                     std::ref(fiberPool),
                                     std::ref(m_kernelFnObj),
                                     std::ref(args)...);
@@ -194,11 +194,11 @@ namespace alpaka
 
                 // Execute the blocks serially.
                 core::ndLoop(
-                    vuiGridBlockExtents,
+                    gridBlockExtents,
                     boundGridBlockExecHost);
 
                 // After all blocks have been processed, the external shared memory has to be deleted.
-                acc.m_vuiExternalSharedMem.reset();
+                acc.m_externalSharedMem.reset();
             }
 
         private:
@@ -207,47 +207,47 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto gridBlockExecHost(
                 acc::AccCpuFibers<TDim, TSize> & acc,
-                Vec<TDim, TSize> const & vuiGridBlockIdx,
-                Vec<TDim, TSize> const & vuiBlockThreadExtents,
+                Vec<TDim, TSize> const & gridBlockIdx,
+                Vec<TDim, TSize> const & blockThreadExtents,
                 FiberPool & fiberPool,
                 TKernelFnObj const & kernelFnObj,
                 TArgs const & ... args)
             -> void
             {
                     // The futures of the threads in the current block.
-                std::vector<boost::fibers::future<void>> vFuturesInBlock;
+                std::vector<boost::fibers::future<void>> futuresInBlock;
 
                 // Set the index of the current block
-                acc.m_vuiGridBlockIdx = vuiGridBlockIdx;
+                acc.m_gridBlockIdx = gridBlockIdx;
 
                 // Bind the kernel and its arguments to the host block thread execution function.
                 auto boundBlockThreadExecHost(std::bind(
                     &ExecCpuFibers<TDim, TSize, TKernelFnObj, TArgs...>::blockThreadExecHost,
                     std::ref(acc),
-                    std::ref(vFuturesInBlock),
+                    std::ref(futuresInBlock),
                     std::placeholders::_1,
                     std::ref(fiberPool),
                     std::ref(kernelFnObj),
                     std::ref(args)...));
                 // Execute the block threads in parallel.
                 core::ndLoop(
-                    vuiBlockThreadExtents,
+                    blockThreadExtents,
                     boundBlockThreadExecHost);
 
                 // Wait for the completion of the block thread kernels.
                 std::for_each(
-                    vFuturesInBlock.begin(),
-                    vFuturesInBlock.end(),
+                    futuresInBlock.begin(),
+                    futuresInBlock.end(),
                     [](boost::fibers::future<void> & t)
                     {
                         t.wait();
                     }
                 );
                 // Clean up.
-                vFuturesInBlock.clear();
+                futuresInBlock.clear();
 
-                acc.m_mFibersToIndices.clear();
-                acc.m_mFibersToBarrier.clear();
+                acc.m_fibersToIndices.clear();
+                acc.m_fibersToBarrier.clear();
 
                 // After a block has been processed, the shared memory has to be deleted.
                 block::shared::freeMem(acc);
@@ -257,26 +257,26 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto blockThreadExecHost(
                 acc::AccCpuFibers<TDim, TSize> & acc,
-                std::vector<boost::fibers::future<void>> & vFuturesInBlock,
-                Vec<TDim, TSize> const & vuiBlockThreadIdx,
+                std::vector<boost::fibers::future<void>> & futuresInBlock,
+                Vec<TDim, TSize> const & blockThreadIdx,
                 FiberPool & fiberPool,
                 TKernelFnObj const & kernelFnObj,
                 TArgs const & ... args)
             -> void
             {
                 // Bind the arguments to the accelerator block thread execution function.
-                // The vuiBlockThreadIdx is required to be copied in because the variable will get changed for the next iteration/thread.
+                // The blockThreadIdx is required to be copied in because the variable will get changed for the next iteration/thread.
                 auto boundBlockThreadExecAcc(
-                    [&, vuiBlockThreadIdx]()
+                    [&, blockThreadIdx]()
                     {
                         blockThreadFiberFn(
                             acc,
-                            vuiBlockThreadIdx,
+                            blockThreadIdx,
                             kernelFnObj,
                             args...);
                     });
                 // Add the bound function to the block thread pool.
-                vFuturesInBlock.emplace_back(
+                futuresInBlock.emplace_back(
                     fiberPool.enqueueTask(
                         boundBlockThreadExecAcc));
             }
@@ -285,27 +285,27 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto blockThreadFiberFn(
                 acc::AccCpuFibers<TDim, TSize> & acc,
-                Vec<TDim, TSize> const & vuiBlockThreadIdx,
+                Vec<TDim, TSize> const & blockThreadIdx,
                 TKernelFnObj const & kernelFnObj,
                 TArgs const & ... args)
             -> void
             {
                 // We have to store the fiber data before the kernel is calling any of the methods of this class depending on them.
-                auto const idFiber(boost::this_fiber::get_id());
+                auto const fiberId(boost::this_fiber::get_id());
 
                 // Set the master thread id.
-                if(vuiBlockThreadIdx.sum() == 0)
+                if(blockThreadIdx.sum() == 0)
                 {
-                    acc.m_idMasterFiber = idFiber;
+                    acc.m_masterFiberId = fiberId;
                 }
 
-                // We can not use the default syncBlockThreads here because it searches inside m_mFibersToBarrier for the thread id.
+                // We can not use the default syncBlockThreads here because it searches inside m_fibersToBarrier for the thread id.
                 // Concurrently searching while others use emplace is unsafe!
                 typename std::map<boost::fibers::fiber::id, TSize>::iterator itFiberToBarrier;
 
                 // Save the fiber id, and index.
-                acc.m_mFibersToIndices.emplace(idFiber, vuiBlockThreadIdx);
-                itFiberToBarrier = acc.m_mFibersToBarrier.emplace(idFiber, 0).first;
+                acc.m_fibersToIndices.emplace(fiberId, blockThreadIdx);
+                itFiberToBarrier = acc.m_fibersToBarrier.emplace(fiberId, 0).first;
 
                 // Sync all threads so that the maps with thread id's are complete and not changed after here.
                 acc.syncBlockThreads(itFiberToBarrier);

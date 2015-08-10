@@ -59,12 +59,12 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST EventCpuImpl(
                         dev::DevCpu const & dev) :
-                            m_Uuid(boost::uuids::random_generator()()),
-                            m_Dev(dev),
+                            m_uuid(boost::uuids::random_generator()()),
+                            m_dev(dev),
                             m_Mutex(),
                             m_bIsReady(true),
                             m_bIsWaitedFor(false),
-                            m_uiNumCanceledEnqueues(0)
+                            m_canceledEnqueueCount(0)
                     {}
                     //-----------------------------------------------------------------------------
                     //! Copy constructor.
@@ -96,8 +96,8 @@ namespace alpaka
                     = default;
 #endif
                 public:
-                    boost::uuids::uuid const m_Uuid;                        //!< The unique ID.
-                    dev::DevCpu const m_Dev;                                //!< The device this event is bound to.
+                    boost::uuids::uuid const m_uuid;                        //!< The unique ID.
+                    dev::DevCpu const m_dev;                                //!< The device this event is bound to.
 
                     std::mutex mutable m_Mutex;                             //!< The mutex used to synchronize access to the event.
 
@@ -106,7 +106,7 @@ namespace alpaka
 
                     bool m_bIsWaitedFor;                                    //!< If a (one or multiple) streams wait for this event. The event can not be changed (deleted/re-enqueued) until completion.
 
-                    std::size_t m_uiNumCanceledEnqueues;                    //!< The number of successive re-enqueues while it was already in the queue. Reset on completion.
+                    std::size_t m_canceledEnqueueCount;                    //!< The number of successive re-enqueues while it was already in the queue. Reset on completion.
                 };
             }
         }
@@ -146,7 +146,7 @@ namespace alpaka
             ALPAKA_FN_HOST auto operator==(EventCpu const & rhs) const
             -> bool
             {
-                return (m_spEventCpuImpl->m_Uuid == rhs.m_spEventCpuImpl->m_Uuid);
+                return (m_spEventCpuImpl->m_uuid == rhs.m_spEventCpuImpl->m_uuid);
             }
             //-----------------------------------------------------------------------------
             //! Inequality comparison operator.
@@ -180,7 +180,7 @@ namespace alpaka
                     event::EventCpu const & event)
                 -> dev::DevCpu
                 {
-                    return event.m_spEventCpuImpl->m_Dev;
+                    return event.m_spEventCpuImpl->m_dev;
                 }
             };
         }
@@ -264,7 +264,7 @@ namespace alpaka
                         // ... and was enqueued before, increment the cancel counter.
                         else
                         {
-                            ++spEventCpuImpl->m_uiNumCanceledEnqueues;
+                            ++spEventCpuImpl->m_canceledEnqueueCount;
                         }
                     }
                     // If it is not enqueued, set its state to enqueued.
@@ -283,9 +283,9 @@ namespace alpaka
                             {
                                 std::lock_guard<std::mutex> lk(spEventCpuImpl->m_Mutex);
                                 // Nothing to do if it has been re-enqueued to a later position in the queue.
-                                if(spEventCpuImpl->m_uiNumCanceledEnqueues > 0)
+                                if(spEventCpuImpl->m_canceledEnqueueCount > 0)
                                 {
-                                    --spEventCpuImpl->m_uiNumCanceledEnqueues;
+                                    --spEventCpuImpl->m_canceledEnqueueCount;
                                     return;
                                 }
                                 else
@@ -360,7 +360,7 @@ namespace alpaka
                             // ... and was enqueued before, increment the cancel counter.
                             else
                             {
-                                ++spEventCpuImpl->m_uiNumCanceledEnqueues;
+                                ++spEventCpuImpl->m_canceledEnqueueCount;
                             }
                         }
                         // If it is not enqueued, set its state to enqueued.
@@ -372,9 +372,9 @@ namespace alpaka
                         // NOTE: Difference to async version: directly reset the event flag instead of enqueuing.
 
                         // Nothing to do if it has been re-enqueued to a later position in any queue.
-                        if(spEventCpuImpl->m_uiNumCanceledEnqueues > 0)
+                        if(spEventCpuImpl->m_canceledEnqueueCount > 0)
                         {
-                            --spEventCpuImpl->m_uiNumCanceledEnqueues;
+                            --spEventCpuImpl->m_canceledEnqueueCount;
                             return;
                         }
                         else

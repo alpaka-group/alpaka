@@ -48,8 +48,8 @@ namespace alpaka
                 //! Default constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA IdxGbRef(
-                    Vec<TDim, TSize> const & vuiGridBlockIdx) :
-                        m_vuiGridBlockIdx(vuiGridBlockIdx)
+                    Vec<TDim, TSize> const & gridBlockIdx) :
+                        m_gridBlockIdx(gridBlockIdx)
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
@@ -73,7 +73,7 @@ namespace alpaka
                 ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~IdxGbRef() = default;
 
             public:
-                alignas(16u) Vec<TDim, TSize> const & m_vuiGridBlockIdx;
+                alignas(16u) Vec<TDim, TSize> const & m_gridBlockIdx;
             };
         }
     }
@@ -121,7 +121,7 @@ namespace alpaka
                 -> Vec<TDim, TSize>
                 {
                     boost::ignore_unused(workDiv);
-                    return idx.m_vuiGridBlockIdx;
+                    return idx.m_gridBlockIdx;
                 }
             };
         }

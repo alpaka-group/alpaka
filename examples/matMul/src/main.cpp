@@ -82,67 +82,67 @@ public:
             "The accelerator used for the GemmAlpakaKernel has to be 2 dimensional!");
 
         // Column and row of C to calculate.
-        auto const v2uiGridThreadIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc));
-        auto const & uiGridThreadIdxX(v2uiGridThreadIdx[1u]);
-        auto const & uiGridThreadIdxY(v2uiGridThreadIdx[0u]);
+        auto const gridThreadIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc));
+        auto const & gridThreadIdxX(gridThreadIdx[1u]);
+        auto const & gridThreadIdxY(gridThreadIdx[0u]);
 
         // Column and row inside the block of C to calculate.
-        auto const v2uiBlockThreadIdx(alpaka::idx::getIdx<alpaka::Block, alpaka::Threads>(acc));
-        auto const & uiBlockThreadIdxX(v2uiBlockThreadIdx[1u]);
-        auto const & uiBlockThreadIdxY(v2uiBlockThreadIdx[0u]);
+        auto const blockThreadIdx(alpaka::idx::getIdx<alpaka::Block, alpaka::Threads>(acc));
+        auto const & blockThreadIdxX(blockThreadIdx[1u]);
+        auto const & blockThreadIdxY(blockThreadIdx[0u]);
 
         // The block threads extents.
-        auto const v2uiBlockThreadsExtents(alpaka::workdiv::getWorkDiv<alpaka::Block, alpaka::Threads>(acc));
-        auto const & uiBlockThreadsExtentX(v2uiBlockThreadsExtents[1u]);
-        auto const & uiBlockThreadsExtentY(v2uiBlockThreadsExtents[0u]);
-        //assert(uiBlockThreadsExtentX == uiBlockThreadsExtentY);
-        auto const & uiBlockThreadsExtent(uiBlockThreadsExtentX);
+        auto const blockThreadsExtents(alpaka::workdiv::getWorkDiv<alpaka::Block, alpaka::Threads>(acc));
+        auto const & blockThreadsExtentX(blockThreadsExtents[1u]);
+        auto const & blockThreadsExtentY(blockThreadsExtents[0u]);
+        //assert(blockThreadsExtentX == blockThreadsExtentY);
+        auto const & blockThreadsExtent(blockThreadsExtentX);
 
         // Shared memory used to store the current blocks of A and B.
         auto * const pBlockSharedA(acc.template getBlockSharedExternMem<TElem>());
-        auto * const pBlockSharedB(pBlockSharedA + uiBlockThreadsExtentX*uiBlockThreadsExtentY);
+        auto * const pBlockSharedB(pBlockSharedA + blockThreadsExtentX*blockThreadsExtentY);
 
-        auto const uiSharedBlockIdx1d(uiBlockThreadIdxY*uiBlockThreadsExtentX + uiBlockThreadIdxX);
+        auto const sharedBlockIdx1d(blockThreadIdxY*blockThreadsExtentX + blockThreadIdxX);
 
         // If the element corresponding to the current thread is outside of the respective matrix.
-        bool const bInsideA(uiGridThreadIdxY < m);
-        bool const bInsideB(uiGridThreadIdxX < n);
-        bool const bInsideC(bInsideA && bInsideB);
+        bool const insideA(gridThreadIdxY < m);
+        bool const insideB(gridThreadIdxX < n);
+        bool const insideC(insideA && insideB);
 
-        TElem fCSum(0);
+        TElem dotProduct(0);
 
         // Loop over all blocks of A and B that are required to compute the C block.
-        auto const uiBlockMulCount(static_cast<TIndex>(std::ceil(static_cast<float>(k)/static_cast<float>(uiBlockThreadsExtent))));
-        for(TIndex k2(0u); k2 < uiBlockMulCount; ++k2)
+        auto const blockMulCount(static_cast<TIndex>(std::ceil(static_cast<float>(k)/static_cast<float>(blockThreadsExtent))));
+        for(TIndex k2(0u); k2 < blockMulCount; ++k2)
         {
             // Copy the current blocks of A and B into shared memory in parallel.
             // If the element of the current thread is outside of the matrix, zero is written into the shared memory.
             // This is possible because zero is a result neutral extension of the matrices regarding the dot product.
-            auto const uiAIdxX(k2*uiBlockThreadsExtentX + uiBlockThreadIdxX);
-            auto const uiAIdx1d(uiGridThreadIdxY*lda + uiAIdxX);
-            pBlockSharedA[uiSharedBlockIdx1d] = (
-                ((!bInsideA) || (uiAIdxX>=k))
+            auto const AIdxX(k2*blockThreadsExtentX + blockThreadIdxX);
+            auto const AIdx1d(gridThreadIdxY*lda + AIdxX);
+            pBlockSharedA[sharedBlockIdx1d] = (
+                ((!insideA) || (AIdxX>=k))
                 ? static_cast<TElem>(0)
-                : A[uiAIdx1d]);
+                : A[AIdx1d]);
 
-            auto const uiBIdxY(k2*uiBlockThreadsExtentY + uiBlockThreadIdxY);
-            auto const uiBIdx1d(uiBIdxY*ldb + uiGridThreadIdxX);
-            pBlockSharedB[uiSharedBlockIdx1d] = (
-                ((!bInsideB) || (uiBIdxY>=k))
+            auto const BIdxY(k2*blockThreadsExtentY + blockThreadIdxY);
+            auto const BIdx1d(BIdxY*ldb + gridThreadIdxX);
+            pBlockSharedB[sharedBlockIdx1d] = (
+                ((!insideB) || (BIdxY>=k))
                 ? static_cast<TElem>(0)
-                : B[uiBIdx1d]);
+                : B[BIdx1d]);
 
             // Synchronize to make sure the complete blocks are loaded before starting the computation.
             alpaka::block::sync::syncBlockThreads(acc);
 
             // Not really necessary because we wrote zeros into those cells.
-            //if(bInsideC)
+            //if(insideC)
             //{
                 // Compute the dot products within shared memory.
-                for(TIndex k3(0); k3 < uiBlockThreadsExtent; ++k3)
+                for(TIndex k3(0); k3 < blockThreadsExtent; ++k3)
                 {
-                    fCSum += pBlockSharedA[uiBlockThreadIdxY*uiBlockThreadsExtentX + k3]
-                        * pBlockSharedB[k3*uiBlockThreadsExtentY + uiBlockThreadIdxX];
+                    dotProduct += pBlockSharedA[blockThreadIdxY*blockThreadsExtentX + k3]
+                        * pBlockSharedB[k3*blockThreadsExtentY + blockThreadIdxX];
                 }
             //}
 
@@ -151,10 +151,10 @@ public:
         }
 
         // If the element is outside of the matrix it was only a helper thread that did not calculate any meaningful results.
-        if(bInsideC)
+        if(insideC)
         {
-            auto const uiIdxC(uiGridThreadIdxY*ldc + uiGridThreadIdxX);
-            C[uiIdxC] = alpha * fCSum + beta * C[uiIdxC];
+            auto const CIdx1d(gridThreadIdxY*ldc + gridThreadIdxX);
+            C[CIdx1d] = alpha * dotProduct + beta * C[CIdx1d];
         }
     }
 };
@@ -182,7 +182,7 @@ namespace alpaka
                     typename TIndex,
                     typename TElem>
                 ALPAKA_FN_HOST static auto getBlockSharedExternMemSizeBytes(
-                    TVec const & vuiBlockThreadsExtents,
+                    TVec const & blockThreadsExtents,
                     TIndex const & m,
                     TIndex const & n,
                     TIndex const & k,
@@ -209,7 +209,7 @@ namespace alpaka
                     boost::ignore_unused(ldc);
 
                     // Reserve the buffer for the two blocks of A and B.
-                    return 2u * vuiBlockThreadsExtents.prod() * sizeof(TElem);
+                    return 2u * blockThreadsExtents.prod() * sizeof(TElem);
                 }
             };
         }
@@ -284,8 +284,8 @@ struct MatMulTester
 
         // Allocate the A and B matrices as st::vectors because this allows them to be filled with uint32_t(1).
         // alpaka::mem::view::set only supports setting all bytes leading to a value of 16843009 in all elements.
-        std::vector<Val> vuiA(m * k, static_cast<Val>(1));
-        std::vector<Val> vuiB(k * n, static_cast<Val>(1));
+        std::vector<Val> bufAHost1d(m * k, static_cast<Val>(1));
+        std::vector<Val> bufBHost1d(k * n, static_cast<Val>(1));
         // Wrap the std::vectors into a memory buffer object.
         // For 1D data this would not be required because alpaka::mem::view::copy is specialized for std::vector and std::array.
         // For multi dimensional data you could directly create them using alpaka::mem::buf::alloc<Type>(devHost, extents), which is not used here.
@@ -295,8 +295,8 @@ struct MatMulTester
             Val,
             alpaka::dim::DimInt<2u>,
             TSize>;
-        BufWrapper bufAHost(vuiA.data(), devHost, v2uiExtentsA);
-        BufWrapper bufBHost(vuiB.data(), devHost, v2uiExtentsB);
+        BufWrapper bufAHost(bufAHost1d.data(), devHost, v2uiExtentsA);
+        BufWrapper bufBHost(bufBHost1d.data(), devHost, v2uiExtentsB);
 
         // Allocate C and set it to zero.
         auto bufCHost(alpaka::mem::buf::alloc<Val, TSize>(devHost, v2uiExtentsC));
@@ -345,34 +345,34 @@ struct MatMulTester
 
         // Assert that the results are correct.
         // When multiplying square matrices filled with ones, the result of each cell is the size of the matrix.
-        auto const uiCorrectResult(static_cast<Val>(k));
+        auto const correctResult(static_cast<Val>(k));
 
-        bool bResultCorrect(true);
+        bool resultCorrect(true);
         auto const pHostData(alpaka::mem::view::getPtrNative(bufCHost));
         for(TSize i(0u);
             i < m * n;
             ++i)
         {
-            auto const & uiVal(pHostData[i]);
-            if(uiVal != uiCorrectResult)
+            auto const & val(pHostData[i]);
+            if(val != correctResult)
             {
-                std::cout << "C[" << i << "] == " << uiVal << " != " << uiCorrectResult << std::endl;
-                bResultCorrect = false;
+                std::cout << "C[" << i << "] == " << val << " != " << correctResult << std::endl;
+                resultCorrect = false;
             }
         }
 
-        if(bResultCorrect)
+        if(resultCorrect)
         {
             std::cout << "Execution results correct!" << std::endl;
         }
 
         std::cout << "################################################################################" << std::endl;
 
-        bAllResultsCorrect = bAllResultsCorrect && bResultCorrect;
+        allResultsCorrect = allResultsCorrect && resultCorrect;
     }
 
 public:
-    bool bAllResultsCorrect = true;
+    bool allResultsCorrect = true;
 };
 
 //-----------------------------------------------------------------------------
@@ -423,7 +423,7 @@ auto main()
                     }
                 }
             }
-            return matMulTester.bAllResultsCorrect ? EXIT_SUCCESS : EXIT_FAILURE;
+            return matMulTester.allResultsCorrect ? EXIT_SUCCESS : EXIT_FAILURE;
         }
     }
     catch(std::exception const & e)

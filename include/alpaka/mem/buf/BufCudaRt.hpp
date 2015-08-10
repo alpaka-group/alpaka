@@ -74,14 +74,14 @@ namespace alpaka
                 ALPAKA_FN_HOST BufCudaRt(
                     dev::DevCudaRt const & dev,
                     TElem * const pMem,
-                    TSize const & uiPitchBytes,
+                    TSize const & pitchBytes,
                     TExtents const & extents) :
-                        m_Dev(dev),
-                        m_vExtentsElements(extent::getExtentsVecEnd<TDim>(extents)),
+                        m_dev(dev),
+                        m_extentsElements(extent::getExtentsVecEnd<TDim>(extents)),
                         m_spMem(
                             pMem,
-                            std::bind(&BufCudaRt::freeBuffer, std::placeholders::_1, std::ref(m_Dev))),
-                        m_uiPitchBytes(uiPitchBytes)
+                            std::bind(&BufCudaRt::freeBuffer, std::placeholders::_1, std::ref(m_dev))),
+                        m_pitchBytes(pitchBytes)
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
@@ -98,27 +98,27 @@ namespace alpaka
                 //! Frees the shared buffer.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto freeBuffer(
-                    TElem * pBuffer,
+                    TElem * memPtr,
                     dev::DevCudaRt const & dev)
                 -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                    assert(pBuffer);
+                    assert(memPtr);
 
                     // Set the current device. \TODO: Is setting the current device before cudaFree required?
                     ALPAKA_CUDA_RT_CHECK(
                         cudaSetDevice(
                             dev.m_iDevice));
                     // Free the buffer.
-                    cudaFree(reinterpret_cast<void *>(pBuffer));
+                    cudaFree(reinterpret_cast<void *>(memPtr));
                 }
 
             public:
-                dev::DevCudaRt m_Dev;
-                Vec<TDim, TSize> m_vExtentsElements;
+                dev::DevCudaRt m_dev;
+                Vec<TDim, TSize> m_extentsElements;
                 std::shared_ptr<TElem> m_spMem;
-                TSize m_uiPitchBytes;
+                TSize m_pitchBytes;
             };
         }
     }
@@ -156,7 +156,7 @@ namespace alpaka
                     mem::buf::BufCudaRt<TElem, TDim, TSize> const & buf)
                 -> dev::DevCudaRt
                 {
-                    return buf.m_Dev;
+                    return buf.m_dev;
                 }
             };
         }
@@ -203,7 +203,7 @@ namespace alpaka
                     mem::buf::BufCudaRt<TElem, TDim, TSize> const & extent)
                 -> TSize
                 {
-                    return extent.m_vExtentsElements[TIdx::value];
+                    return extent.m_extentsElements[TIdx::value];
                 }
             };
         }
@@ -348,7 +348,7 @@ namespace alpaka
                         mem::buf::BufCudaRt<TElem, TDim, TSize> const & buf)
                     -> TSize
                     {
-                        return buf.m_uiPitchBytes;
+                        return buf.m_pitchBytes;
                     }
                 };
             }
@@ -381,35 +381,35 @@ namespace alpaka
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                        auto const uiWidth(extent::getWidth(extents));
-                        assert(uiWidth>0);
-                        auto const uiWidthBytes(uiWidth * sizeof(T));
-                        assert(uiWidthBytes>0);
+                        auto const width(extent::getWidth(extents));
+                        assert(width>0);
+                        auto const widthBytes(width * sizeof(T));
+                        assert(widthBytes>0);
 
                         // Set the current device.
                         ALPAKA_CUDA_RT_CHECK(
                             cudaSetDevice(
                                 dev.m_iDevice));
                         // Allocate the buffer on this device.
-                        void * pBuffer;
+                        void * memPtr;
                         ALPAKA_CUDA_RT_CHECK(
                             cudaMalloc(
-                                &pBuffer,
-                                uiWidthBytes));
-                        assert((pBuffer));
+                                &memPtr,
+                                widthBytes));
+                        assert((memPtr));
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                         std::cout << BOOST_CURRENT_FUNCTION
-                            << " ew: " << uiWidth
-                            << " ewb: " << uiWidthBytes
-                            << " ptr: " << pBuffer
+                            << " ew: " << width
+                            << " ewb: " << widthBytes
+                            << " ptr: " << memPtr
                             << std::endl;
 #endif
                         return
                             mem::buf::BufCudaRt<T, dim::DimInt<1u>, TSize>(
                                 dev,
-                                reinterpret_cast<T *>(pBuffer),
-                                uiWidthBytes,
+                                reinterpret_cast<T *>(memPtr),
+                                widthBytes,
                                 extents);
                     }
                 };
@@ -437,45 +437,45 @@ namespace alpaka
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                        auto const uiWidth(extent::getWidth(extents));
-                        auto const uiWidthBytes(uiWidth * sizeof(T));
-                        assert(uiWidthBytes>0);
-                        auto const uiHeight(extent::getHeight(extents));
+                        auto const width(extent::getWidth(extents));
+                        auto const widthBytes(width * sizeof(T));
+                        assert(widthBytes>0);
+                        auto const height(extent::getHeight(extents));
 #ifndef NDEBUG
-                        auto const uiElementCount(uiWidth * uiHeight);
+                        auto const elementCount(width * height);
 #endif
-                        assert(uiElementCount>0);
+                        assert(elementCount>0);
 
                         // Set the current device.
                         ALPAKA_CUDA_RT_CHECK(
                             cudaSetDevice(
                                 dev.m_iDevice));
                         // Allocate the buffer on this device.
-                        void * pBuffer;
-                        std::size_t uiPitch;
+                        void * memPtr;
+                        std::size_t pitchBytes;
                         ALPAKA_CUDA_RT_CHECK(
                             cudaMallocPitch(
-                                &pBuffer,
-                                &uiPitch,
-                                uiWidthBytes,
-                                uiHeight));
-                        assert(pBuffer);
-                        assert(uiPitch>=uiWidthBytes);
+                                &memPtr,
+                                &pitchBytes,
+                                widthBytes,
+                                height));
+                        assert(memPtr);
+                        assert(pitchBytes>=widthBytes);
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                         std::cout << BOOST_CURRENT_FUNCTION
-                            << " ew: " << uiWidth
-                            << " eh: " << uiHeight
-                            << " ewb: " << uiWidthBytes
-                            << " ptr: " << pBuffer
-                            << " pitch: " << uiPitch
+                            << " ew: " << width
+                            << " eh: " << height
+                            << " ewb: " << widthBytes
+                            << " ptr: " << memPtr
+                            << " pitch: " << pitchBytes
                             << std::endl;
 #endif
                         return
                             mem::buf::BufCudaRt<T, dim::DimInt<2u>, TSize>(
                                 dev,
-                                reinterpret_cast<T *>(pBuffer),
-                                static_cast<TSize>(uiPitch),
+                                reinterpret_cast<T *>(memPtr),
+                                static_cast<TSize>(pitchBytes),
                                 extents);
                     }
                 };

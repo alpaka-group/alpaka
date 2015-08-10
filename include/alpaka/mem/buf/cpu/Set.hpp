@@ -83,87 +83,87 @@ namespace alpaka
                         {
                             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                            auto const uiExtentWidth(extent::getWidth(m_extents));
-                            auto const uiExtentHeight(extent::getHeight(m_extents));
-                            auto const uiExtentDepth(extent::getDepth(m_extents));
-                            auto const uiDstWidth(extent::getWidth(m_buf));
-                            auto const uiDstHeight(extent::getHeight(m_buf));
+                            auto const extentWidth(extent::getWidth(m_extents));
+                            auto const extentHeight(extent::getHeight(m_extents));
+                            auto const extentDepth(extent::getDepth(m_extents));
+                            auto const dstWidth(extent::getWidth(m_buf));
+                            auto const dstHeight(extent::getHeight(m_buf));
         #if (!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
-                            auto const uiDstDepth(extent::getDepth(m_buf));
+                            auto const dstDepth(extent::getDepth(m_buf));
         #endif
-                            assert(uiExtentWidth <= uiDstWidth);
-                            assert(uiExtentHeight <= uiDstHeight);
-                            assert(uiExtentDepth <= uiDstDepth);
+                            assert(extentWidth <= dstWidth);
+                            assert(extentHeight <= dstHeight);
+                            assert(extentDepth <= dstDepth);
 
-                            auto const uiExtentWidthBytes(uiExtentWidth * sizeof(mem::view::Elem<TBuf>));
-                            auto const uiDstPitchBytes(mem::view::getPitchBytes<dim::Dim<TBuf>::value - 1u>(m_buf));
-                            assert(uiExtentWidthBytes <= uiDstPitchBytes);
+                            auto const extentWidthBytes(extentWidth * sizeof(mem::view::Elem<TBuf>));
+                            auto const dstPitchBytes(mem::view::getPitchBytes<dim::Dim<TBuf>::value - 1u>(m_buf));
+                            assert(extentWidthBytes <= dstPitchBytes);
 
-                            auto const pDstNative(reinterpret_cast<std::uint8_t *>(mem::view::getPtrNative(m_buf)));
-                            auto const uiDstSliceSizeBytes(uiDstPitchBytes * uiDstHeight);
+                            auto const dstNativePtr(reinterpret_cast<std::uint8_t *>(mem::view::getPtrNative(m_buf)));
+                            auto const dstSliceSizeBytes(dstPitchBytes * dstHeight);
 
                             auto const & dstBuf(mem::view::getBuf(m_buf));
-                            auto const uiDstBufWidth(extent::getWidth(dstBuf));
-                            auto const uiDstBufHeight(extent::getHeight(dstBuf));
+                            auto const dstBufWidth(extent::getWidth(dstBuf));
+                            auto const dstBufHeight(extent::getHeight(dstBuf));
 
                             int iByte(static_cast<int>(m_byte));
 
         #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                             std::cout << BOOST_CURRENT_FUNCTION
-                                << " ew: " << uiExtentWidth
-                                << " eh: " << uiExtentHeight
-                                << " ed: " << uiExtentDepth
-                                << " ewb: " << uiExtentWidthBytes
-                                << " dw: " << uiDstWidth
-                                << " dh: " << uiDstHeight
-                                << " dd: " << uiDstDepth
-                                << " dptr: " << reinterpret_cast<void *>(pDstNative)
-                                << " dpitchb: " << uiDstPitchBytes
-                                << " dbasew: " << uiDstBufWidth
-                                << " dbaseh: " << uiDstBufHeight
+                                << " ew: " << extentWidth
+                                << " eh: " << extentHeight
+                                << " ed: " << extentDepth
+                                << " ewb: " << extentWidthBytes
+                                << " dw: " << dstWidth
+                                << " dh: " << dstHeight
+                                << " dd: " << dstDepth
+                                << " dptr: " << reinterpret_cast<void *>(dstNativePtr)
+                                << " dpitchb: " << dstPitchBytes
+                                << " dbasew: " << dstBufWidth
+                                << " dbaseh: " << dstBufHeight
                                 << std::endl;
         #endif
                             // If:
                             // - the set extents width is identical to the dst extents width
                             // -> we can set whole slices at once overwriting the pitch bytes
-                            auto const bExtentsWidthsEqualDstWidths(
-                                (uiExtentWidth == uiDstWidth)
-                                && (uiExtentWidth == uiDstBufWidth));
+                            auto const copySliceAtOnce(
+                                (extentWidth == dstWidth)
+                                && (extentWidth == dstBufWidth));
 
                             // If:
                             // - the set extents width and height are identical to the dst extents width and height
                             // -> we can set the whole memory at once overwriting the pitch bytes
-                            auto const bEqualWidths(
-                                bExtentsWidthsEqualDstWidths
-                                && (uiExtentHeight == uiDstHeight)
-                                && (uiExtentHeight == uiDstBufHeight));
+                            auto const copyAllAtOnce(
+                                copySliceAtOnce
+                                && (extentHeight == dstHeight)
+                                && (extentHeight == dstBufHeight));
 
-                            if(bEqualWidths)
+                            if(copyAllAtOnce)
                             {
                                 std::memset(
-                                    reinterpret_cast<void *>(pDstNative),
+                                    reinterpret_cast<void *>(dstNativePtr),
                                     iByte,
-                                    uiDstSliceSizeBytes*uiExtentDepth);
+                                    dstSliceSizeBytes*extentDepth);
                             }
                             else
                             {
-                                for(auto z(decltype(uiExtentDepth)(0)); z < uiExtentDepth; ++z)
+                                for(auto z(decltype(extentDepth)(0)); z < extentDepth; ++z)
                                 {
-                                    if(bExtentsWidthsEqualDstWidths)
+                                    if(copySliceAtOnce)
                                     {
                                         std::memset(
-                                            reinterpret_cast<void *>(pDstNative + z*uiDstSliceSizeBytes),
+                                            reinterpret_cast<void *>(dstNativePtr + z*dstSliceSizeBytes),
                                             iByte,
-                                            uiDstPitchBytes*uiExtentHeight);
+                                            dstPitchBytes*extentHeight);
                                     }
                                     else
                                     {
-                                        for(auto y(decltype(uiExtentHeight)(0)); y < uiExtentHeight; ++y)
+                                        for(auto y(decltype(extentHeight)(0)); y < extentHeight; ++y)
                                         {
                                             std::memset(
-                                                reinterpret_cast<void *>(pDstNative + y*uiDstPitchBytes + z*uiDstSliceSizeBytes),
+                                                reinterpret_cast<void *>(dstNativePtr + y*dstPitchBytes + z*dstSliceSizeBytes),
                                                 iByte,
-                                                uiExtentWidthBytes);
+                                                extentWidthBytes);
                                         }
                                     }
                                 }

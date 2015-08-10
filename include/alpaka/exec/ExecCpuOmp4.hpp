@@ -110,13 +110,13 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                auto const vuiGridBlockExtents(
+                auto const gridBlockExtents(
                     workdiv::getWorkDiv<Grid, Blocks>(*this));
-                auto const vuiBlockThreadExtents(
+                auto const blockThreadExtents(
                     workdiv::getWorkDiv<Block, Threads>(*this));
 
                 // Get the size of the block shared extern memory.
-                auto const uiBlockSharedExternMemSizeBytes(
+                auto const blockSharedExternMemSizeBytes(
                     core::apply(
                         [&](TArgs const & ... args)
                         {
@@ -124,14 +124,14 @@ namespace alpaka
                                 kernel::getBlockSharedExternMemSizeBytes<
                                     TKernelFnObj,
                                     acc::AccCpuOmp4<TDim, TSize>>(
-                                        vuiBlockThreadExtents,
+                                        blockThreadExtents,
                                         args...);
                         },
                         m_args));
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 std::cout << BOOST_CURRENT_FUNCTION
-                    << " BlockSharedExternMemSizeBytes: " << uiBlockSharedExternMemSizeBytes << " B" << std::endl;
+                    << " BlockSharedExternMemSizeBytes: " << blockSharedExternMemSizeBytes << " B" << std::endl;
 #endif
                 // Bind all arguments except the accelerator.
                 // TODO: With C++14 we could create a perfectly argument forwarding function object within the constructor.
@@ -148,16 +148,14 @@ namespace alpaka
                         m_args));
 
                 // The number of blocks in the grid.
-                TSize const uiNumBlocksInGrid(vuiGridBlockExtents.prod());
-                int const iNumBlocksInGrid(static_cast<int>(uiNumBlocksInGrid));
+                TSize const numBlocksInGrid(gridBlockExtents.prod());
                 // The number of threads in a block.
-                TSize const uiNumThreadsInBlock(vuiBlockThreadExtents.prod());
-                int const iNumThreadsInBlock(static_cast<int>(uiNumThreadsInBlock));
+                TSize const numThreadsInBlock(blockThreadExtents.prod());
 
                 // `When an if(scalar-expression) evaluates to false, the structured block is executed on the host.`
                 #pragma omp target if(0)
                 {
-                    #pragma omp teams/* num_teams(iNumBlocksInGrid) thread_limit(iNumThreadsInBlock)*/
+                    #pragma omp teams/* num_teams(numBlocksInGrid) thread_limit(numThreadsInBlock)*/
                     {
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                         // The first team does some checks ...
@@ -174,45 +172,45 @@ namespace alpaka
 #endif
                         acc::AccCpuOmp4<TDim, TSize> acc(*static_cast<workdiv::WorkDivMembers<TDim, TSize> const *>(this));
 
-                        if(uiBlockSharedExternMemSizeBytes > 0u)
+                        if(blockSharedExternMemSizeBytes > 0u)
                         {
-                            acc.m_vuiExternalSharedMem.reset(
+                            acc.m_externalSharedMem.reset(
                                 reinterpret_cast<uint8_t *>(
-                                    boost::alignment::aligned_alloc(16u, uiBlockSharedExternMemSizeBytes)));
+                                    boost::alignment::aligned_alloc(16u, blockSharedExternMemSizeBytes)));
                         }
 
                         #pragma omp distribute
-                        for(TSize b = 0u; b<uiNumBlocksInGrid; ++b)
+                        for(TSize b = 0u; b<numBlocksInGrid; ++b)
                         {
-                            Vec1<TSize> const v1iIdxGridBlock(b);
+                            Vec1<TSize> const gridBlockIdx(b);
                             // When this is not repeated here:
-                            // error: ‘vuiGridBlockExtents’ referenced in target region does not have a mappable type
-                            auto const vuiGridBlockExtents2(
+                            // error: ‘gridBlockExtents’ referenced in target region does not have a mappable type
+                            auto const gridBlockExtents2(
                                 workdiv::getWorkDiv<Grid, Blocks>(*static_cast<workdiv::WorkDivMembers<TDim, TSize> const *>(this)));
-                            acc.m_vuiGridBlockIdx = core::mapIdx<TDim::value>(
-                                v1iIdxGridBlock,
-                                vuiGridBlockExtents2);
+                            acc.m_gridBlockIdx = core::mapIdx<TDim::value>(
+                                gridBlockIdx,
+                                gridBlockExtents2);
 
                             // Execute the threads in parallel.
 
                             // Force the environment to use the given number of threads.
-                            int const iOmpIsDynamic(::omp_get_dynamic());
+                            int const ompIsDynamic(::omp_get_dynamic());
                             ::omp_set_dynamic(0);
 
                             // Parallel execution of the threads in a block is required because when syncBlockThreads is called all of them have to be done with their work up to this line.
                             // So we have to spawn one OS thread per thread in a block.
                             // 'omp for' is not useful because it is meant for cases where multiple iterations are executed by one thread but in our case a 1:1 mapping is required.
                             // Therefore we use 'omp parallel' with the specified number of threads in a block.
-                            #pragma omp parallel num_threads(iNumThreadsInBlock)
+                            #pragma omp parallel num_threads(numThreadsInBlock)
                             {
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                                 // The first thread does some checks in the first block executed.
                                 if((::omp_get_thread_num() == 0) && (b == 0))
                                 {
-                                    int const iNumThreads(::omp_get_num_threads());
+                                    int const numThreads(::omp_get_num_threads());
                                     // NOTE: No std::cout in omp target!
-                                    printf("%s omp_get_num_threads: %d\n", BOOST_CURRENT_FUNCTION, iNumThreads);
-                                    if(iNumThreads != iNumThreadsInBlock)
+                                    printf("%s omp_get_num_threads: %d\n", BOOST_CURRENT_FUNCTION, numThreads);
+                                    if(numThreads != numThreadsInBlock)
                                     {
                                         throw std::runtime_error("The CPU OpenMP4 runtime did not use the number of threads that had been required!");
                                     }
@@ -226,13 +224,13 @@ namespace alpaka
                             }
 
                             // Reset the dynamic thread number setting.
-                            ::omp_set_dynamic(iOmpIsDynamic);
+                            ::omp_set_dynamic(ompIsDynamic);
 
                             // After a block has been processed, the shared memory has to be deleted.
                             block::shared::freeMem(acc);
                         }
                         // After all blocks have been processed, the external shared memory has to be deleted.
-                        acc.m_vuiExternalSharedMem.reset();
+                        acc.m_externalSharedMem.reset();
                     }
                 }
             }

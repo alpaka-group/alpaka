@@ -44,8 +44,8 @@ public:
     //! Constructor.
     //-----------------------------------------------------------------------------
     SharedMemKernel(
-        std::uint32_t const uiMult = 2) :
-        m_uiMult(uiMult)
+        std::uint32_t const mult = 2) :
+        m_mult(mult)
     {}
 
     //-----------------------------------------------------------------------------
@@ -57,7 +57,7 @@ public:
     ALPAKA_FN_ACC auto operator()(
         TAcc const & acc,
         std::uint32_t * const puiBlockRetVals,
-        std::uint32_t const uiMult2) const
+        std::uint32_t const mult2) const
     -> void
     {
         static_assert(
@@ -65,7 +65,7 @@ public:
             "The SharedMemKernel expects 1-dimensional indices!");
 
         // The number of threads in this block.
-        std::size_t const uiNumKernelsInBlock(alpaka::workdiv::getWorkDiv<alpaka::Block, alpaka::Threads>(acc)[0u]);
+        std::size_t const threadsInBlockCount(alpaka::workdiv::getWorkDiv<alpaka::Block, alpaka::Threads>(acc)[0u]);
 
         // Get the extern allocated shared memory.
         std::uint32_t * const pBlockShared(acc.template getBlockSharedExternMem<std::uint32_t>());
@@ -75,55 +75,55 @@ public:
         //std::uint32_t * const pBlockShared2(alpaka::block::shared::allocArr<std::uint32_t, TuiNumUselessWork::value>());
 
         // Calculate linearized index of the thread in the block.
-        std::size_t const uiIdxBlockThreadsLin(alpaka::idx::getIdx<alpaka::Block, alpaka::Threads>(acc)[0u]);
+        std::size_t const blockThreadsIdx1d(alpaka::idx::getIdx<alpaka::Block, alpaka::Threads>(acc)[0u]);
 
 
         // Fill the shared block with the thread ids [1+X, 2+X, 3+X, ..., #Threads+X].
-        std::uint32_t iSum1(static_cast<std::uint32_t>(uiIdxBlockThreadsLin+1));
+        std::uint32_t iSum1(static_cast<std::uint32_t>(blockThreadsIdx1d+1));
         for(std::uint32_t i(0); i<TuiNumUselessWork::value; ++i)
         {
             iSum1 += i;
         }
-        pBlockShared[uiIdxBlockThreadsLin] = iSum1;
+        pBlockShared[blockThreadsIdx1d] = iSum1;
 
 
         // Synchronize all threads because now we are writing to the memory again but inverse.
         alpaka::block::sync::syncBlockThreads(acc);
 
         // Do something useless.
-        std::uint32_t iSum2(static_cast<std::uint32_t>(uiIdxBlockThreadsLin));
+        std::uint32_t iSum2(static_cast<std::uint32_t>(blockThreadsIdx1d));
         for(std::uint32_t i(0); i<TuiNumUselessWork::value; ++i)
         {
             iSum2 -= i;
         }
         // Add the inverse so that every cell is filled with [#Threads, #Threads, ..., #Threads].
-        pBlockShared[(uiNumKernelsInBlock-1)-uiIdxBlockThreadsLin] += iSum2;
+        pBlockShared[(threadsInBlockCount-1)-blockThreadsIdx1d] += iSum2;
 
 
         // Synchronize all threads again.
         alpaka::block::sync::syncBlockThreads(acc);
 
         // Now add up all the cells atomically and write the result to cell 0 of the shared memory.
-        if(uiIdxBlockThreadsLin > 0)
+        if(blockThreadsIdx1d > 0)
         {
-            alpaka::atomic::atomicOp<alpaka::atomic::op::Add>(acc, &pBlockShared[0], pBlockShared[uiIdxBlockThreadsLin]);
+            alpaka::atomic::atomicOp<alpaka::atomic::op::Add>(acc, &pBlockShared[0], pBlockShared[blockThreadsIdx1d]);
         }
 
 
         alpaka::block::sync::syncBlockThreads(acc);
 
         // Only master writes result to global memory.
-        if(uiIdxBlockThreadsLin==0)
+        if(blockThreadsIdx1d==0)
         {
             // Calculate linearized block id.
-            std::size_t const uiblockIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Blocks>(acc)[0u]);
+            std::size_t const blockIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Blocks>(acc)[0u]);
 
-            puiBlockRetVals[uiblockIdx] = pBlockShared[0] * m_uiMult * uiMult2;
+            puiBlockRetVals[blockIdx] = pBlockShared[0] * m_mult * mult2;
         }
     }
 
 public:
-    std::uint32_t const m_uiMult;
+    std::uint32_t const m_mult;
 };
 
 namespace alpaka
@@ -149,11 +149,11 @@ namespace alpaka
                     typename TVec,
                     typename... TArgs>
                 ALPAKA_FN_HOST static auto getBlockSharedExternMemSizeBytes(
-                    TVec const & vuiBlockThreadsExtents,
+                    TVec const & blockThreadsExtents,
                     TArgs && ...)
                 -> std::uint32_t
                 {
-                    return vuiBlockThreadsExtents.prod() * sizeof(std::uint32_t);
+                    return blockThreadsExtents.prod() * sizeof(std::uint32_t);
                 }
             };
         }
@@ -172,8 +172,8 @@ struct SharedMemTester
         typename TSize,
         typename TVal>
     auto operator()(
-        TSize const uiNumElements,
-        TVal const uiMult2)
+        TSize const numElements,
+        TVal const mult2)
     -> void
     {
         std::cout << std::endl;
@@ -193,7 +193,7 @@ struct SharedMemTester
         alpaka::workdiv::WorkDivMembers<alpaka::dim::DimInt<1u>, TSize> const workDiv(
             alpaka::workdiv::getValidWorkDiv<TAcc>(
                 devAcc,
-                uiNumElements,
+                numElements,
                 false,
                 alpaka::workdiv::GridBlockExtentsSubDivRestrictions::Unrestricted));
 
@@ -204,25 +204,25 @@ struct SharedMemTester
             << ", workDiv: " << workDiv
             << ")" << std::endl;
 
-        TSize const uiGridBlocksCount(
+        TSize const gridBlocksCount(
             alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Blocks>(workDiv)[0u]);
-        TSize const uiBlockThreadsCount(
+        TSize const blockThreadsCount(
             alpaka::workdiv::getWorkDiv<alpaka::Block, alpaka::Threads>(workDiv)[0u]);
 
         // An array for the return values calculated by the blocks.
-        std::vector<TVal> vuiBlockRetVals(uiGridBlocksCount, static_cast<TVal>(0));
+        std::vector<TVal> blockRetVals(gridBlocksCount, static_cast<TVal>(0));
 
         // Allocate accelerator buffers and copy.
-        TSize const uiSizeElements(uiGridBlocksCount);
-        auto blockRetValsAcc(alpaka::mem::buf::alloc<TVal, TSize>(devAcc, uiSizeElements));
-        alpaka::mem::view::copy(stream, blockRetValsAcc, vuiBlockRetVals, uiSizeElements);
+        TSize const resultElemCount(gridBlocksCount);
+        auto blockRetValsAcc(alpaka::mem::buf::alloc<TVal, TSize>(devAcc, resultElemCount));
+        alpaka::mem::view::copy(stream, blockRetValsAcc, blockRetVals, resultElemCount);
 
         // Create the executor task.
         auto const exec(alpaka::exec::create<TAcc>(
             workDiv,
             kernel,
             alpaka::mem::view::getPtrNative(blockRetValsAcc),
-            uiMult2));
+            mult2));
 
         // Profile the kernel execution.
         std::cout << "Execution time: "
@@ -233,39 +233,39 @@ struct SharedMemTester
             << std::endl;
 
         // Copy back the result.
-        alpaka::mem::view::copy(stream, vuiBlockRetVals, blockRetValsAcc, uiSizeElements);
+        alpaka::mem::view::copy(stream, blockRetVals, blockRetValsAcc, resultElemCount);
 
         // Wait for the stream to finish the memory operation.
         alpaka::wait::wait(stream);
 
         // Assert that the results are correct.
-        TVal const uiCorrectResult(
-            static_cast<TVal>(uiBlockThreadsCount*uiBlockThreadsCount)
-            * kernel.m_uiMult
-            * uiMult2);
+        TVal const correctResult(
+            static_cast<TVal>(blockThreadsCount*blockThreadsCount)
+            * kernel.m_mult
+            * mult2);
 
-        bool bResultCorrect(true);
-        for(std::size_t i(0); i<uiGridBlocksCount; ++i)
+        bool resultCorrect(true);
+        for(std::size_t i(0); i<gridBlocksCount; ++i)
         {
-            if(vuiBlockRetVals[i] != uiCorrectResult)
+            if(blockRetVals[i] != correctResult)
             {
-                std::cout << "vuiBlockRetVals[" << i << "] == " << vuiBlockRetVals[i] << " != " << uiCorrectResult << std::endl;
-                bResultCorrect = false;
+                std::cout << "blockRetVals[" << i << "] == " << blockRetVals[i] << " != " << correctResult << std::endl;
+                resultCorrect = false;
             }
         }
 
-        if(bResultCorrect)
+        if(resultCorrect)
         {
             std::cout << "Execution results correct!" << std::endl;
         }
 
         std::cout << "################################################################################" << std::endl;
 
-        bAllResultsCorrect = bAllResultsCorrect && bResultCorrect;
+        allResultsCorrect = allResultsCorrect && resultCorrect;
     }
 
 public:
-    bool bAllResultsCorrect = true;
+    bool allResultsCorrect = true;
 };
 
 //-----------------------------------------------------------------------------
@@ -288,7 +288,7 @@ auto main()
         std::cout << std::endl;
 
         using TuiNumUselessWork = std::integral_constant<std::size_t, 100u>;
-        std::uint32_t const uiMult2(5u);
+        std::uint32_t const mult2(5u);
 
         SharedMemTester<TuiNumUselessWork> sharedMemTester;
 
@@ -297,9 +297,9 @@ auto main()
             alpaka::examples::accs::EnabledAccs<alpaka::dim::DimInt<1u>, std::uint32_t>>(
                 sharedMemTester,
                 static_cast<std::uint32_t>(512u),
-                uiMult2);
+                mult2);
 
-        return sharedMemTester.bAllResultsCorrect ? EXIT_SUCCESS : EXIT_FAILURE;
+        return sharedMemTester.allResultsCorrect ? EXIT_SUCCESS : EXIT_FAILURE;
     }
     catch(std::exception const & e)
     {

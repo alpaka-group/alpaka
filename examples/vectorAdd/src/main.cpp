@@ -44,7 +44,7 @@ public:
     //! \param A The first source vector.
     //! \param B The second source vector.
     //! \param C The destination vector.
-    //! \param uiNumElements The number of elements.
+    //! \param numElements The number of elements.
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     template<
@@ -56,18 +56,18 @@ public:
         TElem const * const A,
         TElem const * const B,
         TElem * const C,
-        TSize const & uiNumElements) const
+        TSize const & numElements) const
     -> void
     {
         static_assert(
             alpaka::dim::Dim<TAcc>::value == 1,
             "The VectorAddKernel expects 1-dimensional indices!");
 
-        auto const uiGridThreadIdxX(alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u]);
+        auto const gridThreadIdxX(alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u]);
 
-        if (uiGridThreadIdxX < uiNumElements)
+        if (gridThreadIdxX < numElements)
         {
-            C[uiGridThreadIdxX] = A[uiGridThreadIdxX] + B[uiGridThreadIdxX];
+            C[gridThreadIdxX] = A[gridThreadIdxX] + B[gridThreadIdxX];
         }
     }
 };
@@ -81,7 +81,7 @@ struct VectorAddKernelTester
         typename TAcc,
         typename TSize>
     auto operator()(
-        TSize const & uiNumElements)
+        TSize const & numElements)
     -> void
     {
         std::cout << std::endl;
@@ -103,7 +103,7 @@ struct VectorAddKernelTester
         alpaka::examples::Stream<alpaka::dev::Dev<TAcc>> stream(devAcc);
 
         alpaka::Vec1<TSize> const v1uiExtents(
-            uiNumElements);
+            numElements);
 
         // Let alpaka calculate good block and grid sizes given our full problem extents.
         alpaka::workdiv::WorkDivMembers<alpaka::dim::DimInt<1u>, TSize> const workDiv(
@@ -115,7 +115,7 @@ struct VectorAddKernelTester
 
         std::cout
             << "VectorAddKernelTester("
-            << " uiNumElements:" << uiNumElements
+            << " numElements:" << numElements
             << ", accelerator: " << alpaka::acc::getAccName<TAcc>()
             << ", kernel: " << typeid(kernel).name()
             << ", workDiv: " << workDiv
@@ -127,7 +127,7 @@ struct VectorAddKernelTester
         auto memBufHostC(alpaka::mem::buf::alloc<Val, TSize>(devHost, v1uiExtents));
 
         // Initialize the host input vectors
-        for (TSize i(0); i < uiNumElements; ++i)
+        for (TSize i(0); i < numElements; ++i)
         {
             alpaka::mem::view::getPtrNative(memBufHostA)[i] = static_cast<Val>(rand());
             alpaka::mem::view::getPtrNative(memBufHostB)[i] = static_cast<Val>(rand());
@@ -149,7 +149,7 @@ struct VectorAddKernelTester
             alpaka::mem::view::getPtrNative(memBufAccA),
             alpaka::mem::view::getPtrNative(memBufAccB),
             alpaka::mem::view::getPtrNative(memBufAccC),
-            uiNumElements));
+            numElements));
 
         // Profile the kernel execution.
         std::cout << "Execution time: "
@@ -165,33 +165,33 @@ struct VectorAddKernelTester
         // Wait for the stream to finish the memory operation.
         alpaka::wait::wait(stream);
 
-        bool bResultCorrect(true);
+        bool resultCorrect(true);
         auto const pHostData(alpaka::mem::view::getPtrNative(memBufHostC));
         for(TSize i(0u);
-            i < uiNumElements;
+            i < numElements;
             ++i)
         {
-            auto const & uiVal(pHostData[i]);
-            auto const uiCorrectResult(alpaka::mem::view::getPtrNative(memBufHostA)[i]+alpaka::mem::view::getPtrNative(memBufHostB)[i]);
-            if(uiVal != uiCorrectResult)
+            auto const & val(pHostData[i]);
+            auto const correctResult(alpaka::mem::view::getPtrNative(memBufHostA)[i]+alpaka::mem::view::getPtrNative(memBufHostB)[i]);
+            if(val != correctResult)
             {
-                std::cout << "C[" << i << "] == " << uiVal << " != " << uiCorrectResult << std::endl;
-                bResultCorrect = false;
+                std::cout << "C[" << i << "] == " << val << " != " << correctResult << std::endl;
+                resultCorrect = false;
             }
         }
 
-        if(bResultCorrect)
+        if(resultCorrect)
         {
             std::cout << "Execution results correct!" << std::endl;
         }
 
         std::cout << "################################################################################" << std::endl;
 
-        bAllResultsCorrect = bAllResultsCorrect && bResultCorrect;
+        allResultsCorrect = allResultsCorrect && resultCorrect;
     }
 
 public:
-    bool bAllResultsCorrect = true;
+    bool allResultsCorrect = true;
 };
 
 //-----------------------------------------------------------------------------
@@ -217,9 +217,9 @@ auto main()
 
         // For different sizes.
 #if ALPAKA_INTEGRATION_TEST
-        for(std::size_t uiSize(1u); uiSize <= 1u<<9u; uiSize *= 8u)
+        for(std::size_t vecSize(1u); vecSize <= 1u<<9u; vecSize *= 8u)
 #else
-        for(std::size_t uiSize(1u); uiSize <= 1u<<16u; uiSize *= 2u)
+        for(std::size_t vecSize(1u); vecSize <= 1u<<16u; vecSize *= 2u)
 #endif
         {
             std::cout << std::endl;
@@ -228,7 +228,7 @@ auto main()
             alpaka::core::forEachType<
                 alpaka::examples::accs::EnabledAccs<alpaka::dim::DimInt<1u>, std::size_t>>(
                     vectorAddKernelTester,
-                    uiSize);
+                    vecSize);
         }
         return EXIT_SUCCESS;
     }

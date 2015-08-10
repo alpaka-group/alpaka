@@ -59,8 +59,8 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST StreamCpuSyncImpl(
                         dev::DevCpu & dev) :
-                            m_Uuid(boost::uuids::random_generator()()),
-                            m_Dev(dev)
+                            m_uuid(boost::uuids::random_generator()()),
+                            m_dev(dev)
                     {}
                     //-----------------------------------------------------------------------------
                     //! Copy constructor.
@@ -84,8 +84,8 @@ namespace alpaka
                     ALPAKA_FN_HOST ~StreamCpuSyncImpl() = default;
 
                 public:
-                    boost::uuids::uuid const m_Uuid;    //!< The unique ID.
-                    dev::DevCpu const m_Dev;            //!< The device this stream is bound to.
+                    boost::uuids::uuid const m_uuid;    //!< The unique ID.
+                    dev::DevCpu const m_dev;            //!< The device this stream is bound to.
                 };
             }
         }
@@ -125,7 +125,7 @@ namespace alpaka
             ALPAKA_FN_HOST auto operator==(StreamCpuSync const & rhs) const
             -> bool
             {
-                return (m_spSyncStreamCpu->m_Uuid == rhs.m_spSyncStreamCpu->m_Uuid);
+                return (m_spSyncStreamCpu->m_uuid == rhs.m_spSyncStreamCpu->m_uuid);
             }
             //-----------------------------------------------------------------------------
             //! Inequality comparison operator.
@@ -172,7 +172,7 @@ namespace alpaka
                     stream::StreamCpuSync const & stream)
                 -> dev::DevCpu
                 {
-                    return stream.m_spSyncStreamCpu->m_Dev;
+                    return stream.m_spSyncStreamCpu->m_dev;
                 }
             };
         }

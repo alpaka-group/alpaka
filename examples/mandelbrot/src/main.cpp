@@ -117,22 +117,22 @@ public:
     ALPAKA_FN_ACC MandelbrotKernel()
     {
         // Banding can be prevented by a continuous color functions.
-        m_aColors[0u] = convertRgbSingleToBgra(66, 30, 15);
-        m_aColors[1u] = convertRgbSingleToBgra(25, 7, 26);
-        m_aColors[2u] = convertRgbSingleToBgra(9, 1, 47);
-        m_aColors[3u] = convertRgbSingleToBgra(4, 4, 73);
-        m_aColors[4u] = convertRgbSingleToBgra(0, 7, 100);
-        m_aColors[5u] = convertRgbSingleToBgra(12, 44, 138);
-        m_aColors[6u] = convertRgbSingleToBgra(24, 82, 177);
-        m_aColors[7u] = convertRgbSingleToBgra(57, 125, 209);
-        m_aColors[8u] = convertRgbSingleToBgra(134, 181, 229);
-        m_aColors[9u] = convertRgbSingleToBgra(211, 236, 248);
-        m_aColors[10u] = convertRgbSingleToBgra(241, 233, 191);
-        m_aColors[11u] = convertRgbSingleToBgra(248, 201, 95);
-        m_aColors[12u] = convertRgbSingleToBgra(255, 170, 0);
-        m_aColors[13u] = convertRgbSingleToBgra(204, 128, 0);
-        m_aColors[14u] = convertRgbSingleToBgra(153, 87, 0);
-        m_aColors[15u] = convertRgbSingleToBgra(106, 52, 3);
+        m_colors[0u] = convertRgbSingleToBgra(66, 30, 15);
+        m_colors[1u] = convertRgbSingleToBgra(25, 7, 26);
+        m_colors[2u] = convertRgbSingleToBgra(9, 1, 47);
+        m_colors[3u] = convertRgbSingleToBgra(4, 4, 73);
+        m_colors[4u] = convertRgbSingleToBgra(0, 7, 100);
+        m_colors[5u] = convertRgbSingleToBgra(12, 44, 138);
+        m_colors[6u] = convertRgbSingleToBgra(24, 82, 177);
+        m_colors[7u] = convertRgbSingleToBgra(57, 125, 209);
+        m_colors[8u] = convertRgbSingleToBgra(134, 181, 229);
+        m_colors[9u] = convertRgbSingleToBgra(211, 236, 248);
+        m_colors[10u] = convertRgbSingleToBgra(241, 233, 191);
+        m_colors[11u] = convertRgbSingleToBgra(248, 201, 95);
+        m_colors[12u] = convertRgbSingleToBgra(255, 170, 0);
+        m_colors[13u] = convertRgbSingleToBgra(204, 128, 0);
+        m_colors[14u] = convertRgbSingleToBgra(153, 87, 0);
+        m_colors[15u] = convertRgbSingleToBgra(106, 52, 3);
     }
 #endif
 
@@ -141,14 +141,14 @@ public:
     //!
     //! \param acc The accelerator to be executed on.
     //! \param pColors The output image.
-    //! \param uiNumRows The number of rows in the image
-    //! \param uiNumCols The number of columns in the image.
-    //! \param uiPitchElems The pitch size in elements in the image.
+    //! \param numRows The number of rows in the image
+    //! \param numCols The number of columns in the image.
+    //! \param pitchElems The pitch size in elements in the image.
     //! \param fMinR The left border.
     //! \param fMaxR The right border.
     //! \param fMinI The bottom border.
     //! \param fMaxI The top border.
-    //! \param uiMaxIterations The maximum number of iterations.
+    //! \param maxIterations The maximum number of iterations.
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     template<
@@ -156,53 +156,53 @@ public:
     ALPAKA_FN_ACC auto operator()(
         TAcc const & acc,
         std::uint32_t * const pColors,
-        std::uint32_t const & uiNumRows,
-        std::uint32_t const & uiNumCols,
-        std::uint32_t const & uiPitchBytes,
+        std::uint32_t const & numRows,
+        std::uint32_t const & numCols,
+        std::uint32_t const & pitchBytes,
         float const & fMinR,
         float const & fMaxR,
         float const & fMinI,
         float const & fMaxI,
-        std::uint32_t const & uiMaxIterations) const
+        std::uint32_t const & maxIterations) const
     -> void
     {
         static_assert(
             alpaka::dim::Dim<TAcc>::value == 2,
             "The MandelbrotKernel expects 2-dimensional indices!");
 
-        auto const uiGridThreadIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc));
-        auto const & uiGridThreadIdxX(uiGridThreadIdx[1u]);
-        auto const & uiGridThreadIdxY(uiGridThreadIdx[0u]);
+        auto const gridThreadIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc));
+        auto const & gridThreadIdxX(gridThreadIdx[1u]);
+        auto const & gridThreadIdxY(gridThreadIdx[0u]);
 
-        if((uiGridThreadIdxY < uiNumRows) && (uiGridThreadIdxX < uiNumCols))
+        if((gridThreadIdxY < numRows) && (gridThreadIdxX < numCols))
         {
             SimpleComplex<float> c(
-                (fMinR + (static_cast<float>(uiGridThreadIdxX)/float(uiNumCols-1)*(fMaxR - fMinR))),
-                (fMinI + (static_cast<float>(uiGridThreadIdxY)/float(uiNumRows-1)*(fMaxI - fMinI))));
+                (fMinR + (static_cast<float>(gridThreadIdxX)/float(numCols-1)*(fMaxR - fMinR))),
+                (fMinI + (static_cast<float>(gridThreadIdxY)/float(numRows-1)*(fMaxI - fMinI))));
 
-            auto const uiIterationCount(iterateMandelbrot(c, uiMaxIterations));
+            auto const iterationCount(iterateMandelbrot(c, maxIterations));
 
-            auto const pColorsRow(reinterpret_cast<std::uint32_t *>(reinterpret_cast<std::uint8_t *>(pColors) + uiGridThreadIdxY * uiPitchBytes));
-            pColorsRow[uiGridThreadIdxX] =
+            auto const pColorsRow(reinterpret_cast<std::uint32_t *>(reinterpret_cast<std::uint8_t *>(pColors) + gridThreadIdxY * pitchBytes));
+            pColorsRow[gridThreadIdxX] =
 #ifdef ALPAKA_MANDELBROT_TEST_CONTINOUS_COLOR_MAPPING
-                iterationCountToContinousColor(uiIterationCount, uiMaxIterations);
+                iterationCountToContinousColor(iterationCount, maxIterations);
 #else
-                iterationCountToRepeatedColor(uiIterationCount);
+                iterationCountToRepeatedColor(iterationCount);
 #endif
         }
     }
     //-----------------------------------------------------------------------------
     //! \return The number of iterations until the Mandelbrot iteration with the given Value reaches the absolute value of 2.
-    //!     Only does uiMaxIterations steps and returns uiMaxIterations if the value would be higher.
+    //!     Only does maxIterations steps and returns maxIterations if the value would be higher.
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_ACC static auto iterateMandelbrot(
         SimpleComplex<float> const & c,
-        std::uint32_t const & uiMaxIterations)
+        std::uint32_t const & maxIterations)
     -> std::uint32_t
     {
         SimpleComplex<float> z(0.0f, 0.0f);
-        for(std::uint32_t iterations(0); iterations<uiMaxIterations; ++iterations)
+        for(std::uint32_t iterations(0); iterations<maxIterations; ++iterations)
         {
             z = z*z + c;
             if(z.absSq() > 4.0f)
@@ -210,7 +210,7 @@ public:
                 return iterations;
             }
         }
-        return uiMaxIterations;
+        return maxIterations;
     }
 
     //-----------------------------------------------------------------------------
@@ -233,12 +233,12 @@ public:
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_ACC static auto iterationCountToContinousColor(
-        std::uint32_t const & uiIterationCount,
-        std::uint32_t const & uiMaxIterations)
+        std::uint32_t const & iterationCount,
+        std::uint32_t const & maxIterations)
     -> std::uint32_t
     {
         // Map the iteration count on the 0..1 interval.
-        float const t(static_cast<float>(uiIterationCount)/static_cast<float>(uiMaxIterations));
+        float const t(static_cast<float>(iterationCount)/static_cast<float>(maxIterations));
         float const oneMinusT(1.0f-t);
         // Use some modified Bernstein polynomials for r, g, b.
         std::uint32_t const r(static_cast<std::uint32_t>(9.0f*oneMinusT*t*t*t*255.0f));
@@ -253,13 +253,13 @@ public:
     //-----------------------------------------------------------------------------
     ALPAKA_NO_HOST_ACC_WARNING
     ALPAKA_FN_ACC auto iterationCountToRepeatedColor(
-        std::uint32_t const & uiIterationCount) const
+        std::uint32_t const & iterationCount) const
     -> std::uint32_t
     {
-        return m_aColors[uiIterationCount%16];
+        return m_colors[iterationCount%16];
     }
 
-    alignas(16) std::uint32_t m_aColors[16];
+    alignas(16) std::uint32_t m_colors[16];
 #endif
 };
 
@@ -269,7 +269,7 @@ public:
 template<
     typename TBuf>
 auto writeTgaColorImage(
-    std::string const & sFileName,
+    std::string const & fileName,
     TBuf const & bufRgba)
 -> void
 {
@@ -281,24 +281,24 @@ auto writeTgaColorImage(
         "The buffer element type has to be integral!");
 
     // The width of the input buffer is in input elements.
-    auto const uiBufWidthElems(alpaka::extent::getWidth(bufRgba));
-    auto const uiBufWidthBytes(uiBufWidthElems * sizeof(alpaka::mem::view::Elem<TBuf>));
+    auto const bufWidthElems(alpaka::extent::getWidth(bufRgba));
+    auto const bufWidthBytes(bufWidthElems * sizeof(alpaka::mem::view::Elem<TBuf>));
     // The row width in bytes has to be dividable by 4 Bytes (RGBA).
-    assert(uiBufWidthBytes % sizeof(std::uint32_t) == 0);
+    assert(bufWidthBytes % sizeof(std::uint32_t) == 0);
     // The number of colors in a row.
-    auto const uiBufWidthColors(uiBufWidthBytes / sizeof(std::uint32_t));
-    assert(uiBufWidthColors >= 1);
-    auto const uiBufHeightColors(alpaka::extent::getHeight(bufRgba));
-    assert(uiBufHeightColors >= 1);
-    auto const uiBufPitchBytes(alpaka::mem::view::getPitchBytes<alpaka::dim::Dim<TBuf>::value - 1u>(bufRgba));
-    assert(uiBufPitchBytes >= uiBufWidthBytes);
+    auto const bufWidthColors(bufWidthBytes / sizeof(std::uint32_t));
+    assert(bufWidthColors >= 1);
+    auto const bufHeightColors(alpaka::extent::getHeight(bufRgba));
+    assert(bufHeightColors >= 1);
+    auto const bufPitchBytes(alpaka::mem::view::getPitchBytes<alpaka::dim::Dim<TBuf>::value - 1u>(bufRgba));
+    assert(bufPitchBytes >= bufWidthBytes);
 
     std::ofstream ofs(
-        sFileName,
+        fileName,
         std::ofstream::out | std::ofstream::binary);
     if(!ofs.is_open())
     {
-        throw std::invalid_argument("Unable to open file: "+sFileName);
+        throw std::invalid_argument("Unable to open file: "+fileName);
     }
 
     // Write tga image header.
@@ -314,30 +314,30 @@ auto writeTgaColorImage(
     ofs.put(0x00);
     ofs.put(0x00);                      // Y Origin of Image.
     ofs.put(0x00);
-    ofs.put((uiBufWidthColors & 0xFF)); // Width of Image.
-    ofs.put((uiBufWidthColors >> 8) & 0xFF);
-    ofs.put((uiBufHeightColors & 0xFF));// Height of Image.
-    ofs.put((uiBufHeightColors >> 8) & 0xFF);
+    ofs.put((bufWidthColors & 0xFF)); // Width of Image.
+    ofs.put((bufWidthColors >> 8) & 0xFF);
+    ofs.put((bufHeightColors & 0xFF));// Height of Image.
+    ofs.put((bufHeightColors >> 8) & 0xFF);
     ofs.put(0x20);                      // Image Pixel Size.
     ofs.put(0x20);                      // Image Descriptor Byte.
 
     // Write the data.
     char const * pData(reinterpret_cast<char const *>(alpaka::mem::view::getPtrNative(bufRgba)));
     // If there is no padding, we can directly write the whole buffer data ...
-    if(uiBufPitchBytes == uiBufWidthBytes)
+    if(bufPitchBytes == bufWidthBytes)
     {
         ofs.write(
             pData,
-            uiBufWidthColors*uiBufHeightColors);
+            bufWidthColors*bufHeightColors);
     }
     // ... else we have to write row by row.
     else
     {
-        for(auto uiRow(decltype(uiBufHeightColors)(0)); uiRow<uiBufHeightColors; ++uiRow)
+        for(auto row(decltype(bufHeightColors)(0)); row<bufHeightColors; ++row)
         {
             ofs.write(
-                pData + uiBufPitchBytes*uiRow,
-                uiBufWidthColors);
+                pData + bufPitchBytes*row,
+                bufWidthColors);
         }
     }
 }
@@ -351,13 +351,13 @@ struct MandelbrotKernelTester
         typename TAcc,
         typename TSize>
     auto operator()(
-        TSize const & uiNumRows,
-        TSize const & uiNumCols,
+        TSize const & numRows,
+        TSize const & numCols,
         float const & fMinR,
         float const & fMaxR,
         float const & fMinI,
         float const & fMaxI,
-        TSize const & uiMaxIterations)
+        TSize const & maxIterations)
     -> void
     {
         std::cout << std::endl;
@@ -379,8 +379,8 @@ struct MandelbrotKernelTester
         alpaka::examples::Stream<alpaka::dev::Dev<TAcc>> stream(devAcc);
 
         alpaka::Vec2<TSize> const v2uiExtents(
-            static_cast<TSize>(uiNumRows),
-            static_cast<TSize>(uiNumCols));
+            static_cast<TSize>(numRows),
+            static_cast<TSize>(numCols));
 
         // Let alpaka calculate good block and grid sizes given our full problem extents.
         alpaka::workdiv::WorkDivMembers<alpaka::dim::DimInt<2u>, TSize> const workDiv(
@@ -392,9 +392,9 @@ struct MandelbrotKernelTester
 
         std::cout
             << "MandelbrotKernelTester("
-            << " uiNumRows:" << uiNumRows
-            << ", uiNumCols:" << uiNumCols
-            << ", uiMaxIterations:" << uiMaxIterations
+            << " numRows:" << numRows
+            << ", numCols:" << numCols
+            << ", maxIterations:" << maxIterations
             << ", accelerator: " << alpaka::acc::getAccName<TAcc>()
             << ", kernel: " << typeid(kernel).name()
             << ", workDiv: " << workDiv
@@ -416,14 +416,14 @@ struct MandelbrotKernelTester
             workDiv,
             kernel,
             alpaka::mem::view::getPtrNative(bufColorAcc),
-            uiNumRows,
-            uiNumCols,
+            numRows,
+            numCols,
             alpaka::mem::view::getPitchBytes<1u>(bufColorAcc),
             fMinR,
             fMaxR,
             fMinI,
             fMaxI,
-            uiMaxIterations));
+            maxIterations));
 
         // Profile the kernel execution.
         std::cout << "Execution time: "
@@ -440,11 +440,11 @@ struct MandelbrotKernelTester
         alpaka::wait::wait(stream);
 
         // Write the image to a file.
-        std::string sFileName("mandelbrot"+std::to_string(uiNumCols)+"x"+std::to_string(uiNumRows)+"_"+alpaka::acc::getAccName<TAcc>()+".tga");
-        std::replace(sFileName.begin(), sFileName.end(), '<', '_');
-        std::replace(sFileName.begin(), sFileName.end(), '>', '_');
+        std::string fileName("mandelbrot"+std::to_string(numCols)+"x"+std::to_string(numRows)+"_"+alpaka::acc::getAccName<TAcc>()+".tga");
+        std::replace(fileName.begin(), fileName.end(), '<', '_');
+        std::replace(fileName.begin(), fileName.end(), '>', '_');
         writeTgaColorImage(
-            sFileName,
+            fileName,
             bufColorHost);
 
         std::cout << "################################################################################" << std::endl;
@@ -473,13 +473,13 @@ auto main()
         MandelbrotKernelTester mandelbrotTester;
 
         // For different sizes.
-        for(std::uint32_t uiSize(1u<<3u);
+        for(std::uint32_t imageSize(1u<<3u);
 #if ALPAKA_INTEGRATION_TEST
-            uiSize <= 1u<<8u;
+            imageSize <= 1u<<8u;
 #else
-            uiSize <= 1u<<13u;
+            imageSize <= 1u<<13u;
 #endif
-            uiSize *= 2u)
+            imageSize *= 2u)
         {
             std::cout << std::endl;
 
@@ -487,8 +487,8 @@ auto main()
             alpaka::core::forEachType<
                 alpaka::examples::accs::EnabledAccs<alpaka::dim::DimInt<2u>, std::uint32_t>>(
                     mandelbrotTester,
-                    uiSize,
-                    uiSize,
+                    imageSize,
+                    imageSize,
                     -2.0f,
                     +1.0f,
                     -1.2f,

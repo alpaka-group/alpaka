@@ -590,8 +590,8 @@ namespace alpaka
                         os << rowPrefix;
 
                         auto const pitch(view::getPitchBytes<TDim::value+1u>(view));
-                        auto const uiLastIdx(extents[TDim::value]-1u);
-                        for(auto i(decltype(uiLastIdx)(0)); i<=uiLastIdx ;++i)
+                        auto const lastIdx(extents[TDim::value]-1u);
+                        for(auto i(decltype(lastIdx)(0)); i<=lastIdx ;++i)
                         {
                             Print<
                                 dim::DimInt<TDim::value+1u>,
@@ -607,7 +607,7 @@ namespace alpaka
                                 rowSuffix);
 
                             // While we are not at the end of a row, add the row separator.
-                            if(i != uiLastIdx)
+                            if(i != lastIdx)
                             {
                                 os << rowSeparator;
                             }
@@ -638,14 +638,14 @@ namespace alpaka
                     {
                         os << rowPrefix;
 
-                        auto const uiLastIdx(extents[dim::Dim<TView>::value-1u]-1u);
-                        for(auto i(decltype(uiLastIdx)(0)); i<=uiLastIdx ;++i)
+                        auto const lastIdx(extents[dim::Dim<TView>::value-1u]-1u);
+                        for(auto i(decltype(lastIdx)(0)); i<=lastIdx ;++i)
                         {
                             // Add the current element.
                             os << *(ptr+i);
 
                             // While we are not at the end of a line, add the element separator.
-                            if(i != uiLastIdx)
+                            if(i != lastIdx)
                             {
                                 os << elementSeparator;
                             }

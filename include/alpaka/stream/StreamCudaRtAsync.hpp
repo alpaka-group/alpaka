@@ -61,7 +61,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     StreamCudaRtAsyncImpl(
                         dev::DevCudaRt const & dev) :
-                            m_Dev(dev),
+                            m_dev(dev),
                             m_CudaStream()
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -69,7 +69,7 @@ namespace alpaka
                         // Set the current device.
                         ALPAKA_CUDA_RT_CHECK(
                             cudaSetDevice(
-                                m_Dev.m_iDevice));
+                                m_dev.m_iDevice));
                         // - cudaStreamDefault: Default stream creation flag.
                         // - cudaStreamNonBlocking: Specifies that work running in the created stream may run concurrently with work in stream 0 (the NULL stream),
                         //   and that the created stream should perform no implicit synchronization with stream 0.
@@ -107,7 +107,7 @@ namespace alpaka
                         // Set the current device. \TODO: Is setting the current device before cudaStreamDestroy required?
                         ALPAKA_CUDA_RT_CHECK(
                             cudaSetDevice(
-                                m_Dev.m_iDevice));
+                                m_dev.m_iDevice));
                         // In case the device is still doing work in the stream when cudaStreamDestroy() is called, the function will return immediately
                         // and the resources associated with stream will be released automatically once the device has completed all work in stream.
                         // -> No need to synchronize here.
@@ -117,7 +117,7 @@ namespace alpaka
                     }
 
                 public:
-                    dev::DevCudaRt const m_Dev;   //!< The device this stream is bound to.
+                    dev::DevCudaRt const m_dev;   //!< The device this stream is bound to.
                     cudaStream_t m_CudaStream;
                 };
             }
@@ -205,7 +205,7 @@ namespace alpaka
                     stream::StreamCudaRtAsync const & stream)
                 -> dev::DevCudaRt
                 {
-                    return stream.m_spStreamCudaRtAsyncImpl->m_Dev;
+                    return stream.m_spStreamCudaRtAsyncImpl->m_dev;
                 }
             };
         }

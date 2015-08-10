@@ -52,7 +52,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA IdxBtRefThreadIdMap(
                     ThreadIdToIdxMap const & mThreadsToIndices) :
-                    m_mThreadsToIndices(mThreadsToIndices)
+                    m_threadsToIndices(mThreadsToIndices)
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
@@ -76,7 +76,7 @@ namespace alpaka
                 ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~IdxBtRefThreadIdMap() = default;
 
             public:
-                ThreadIdToIdxMap const & m_mThreadsToIndices;   //!< The mapping of thread id's to thread indices.
+                ThreadIdToIdxMap const & m_threadsToIndices;   //!< The mapping of thread id's to thread indices.
             };
         }
     }
@@ -124,10 +124,10 @@ namespace alpaka
                 -> Vec<TDim, TSize>
                 {
                     boost::ignore_unused(workDiv);
-                    auto const idThread(std::this_thread::get_id());
-                    auto const itFind(idx.m_mThreadsToIndices.find(idThread));
-                    assert(itFind != idx.m_mThreadsToIndices.end());
-                    return itFind->second;
+                    auto const threadId(std::this_thread::get_id());
+                    auto const threadEntry(idx.m_threadsToIndices.find(threadId));
+                    assert(threadEntry != idx.m_threadsToIndices.end());
+                    return threadEntry->second;
                 }
             };
         }

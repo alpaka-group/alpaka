@@ -149,14 +149,14 @@ namespace alpaka
                 dim::Dim<TExtentsVec>::value > 0u,
                 "The dimension given to ndLoop has to be larger than zero!");
 
-            auto vuiIdx(
+            auto idx(
                 Vec<dim::Dim<TExtentsVec>, size::Size<TExtentsVec>>::zeros());
 
             detail::NdLoop<
                 (dim::Dim<TExtentsVec>::value == 1u)>
             ::template ndLoop<
                 0u>(
-                    vuiIdx,
+                    idx,
                     extents,
                     f,
                     args...);

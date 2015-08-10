@@ -87,7 +87,7 @@ namespace alpaka
                             extent::getExtentsVecEnd<TDim>(buf),
                             mem::view::getPitchBytes<TDim::value - 1u>(buf)),
                         m_vOffsetsElements(offset::getOffsetsVecEnd<TDim>(buf)),
-                        m_vExtentsElements(extent::getExtentsVecEnd<TDim>(buf))
+                        m_extentsElements(extent::getExtentsVecEnd<TDim>(buf))
                 {}
                 //-----------------------------------------------------------------------------
                 //! Constructor.
@@ -103,7 +103,7 @@ namespace alpaka
                             extent::getExtentsVecEnd<TDim>(buf),
                             mem::view::getPitchBytes<TDim::value - 1u>(buf)),
                         m_vOffsetsElements(offset::getOffsetsVecEnd<TDim>(buf)),
-                        m_vExtentsElements(extent::getExtentsVecEnd<TDim>(buf))
+                        m_extentsElements(extent::getExtentsVecEnd<TDim>(buf))
                 {
                     static_assert(
                         std::is_same<TSize, size::Size<TBuf>>::value,
@@ -129,7 +129,7 @@ namespace alpaka
                             dev::getDev(buf),
                             extent::getExtentsVecEnd<TDim>(buf),
                             mem::view::getPitchBytes<TDim::value - 1u>(buf)),
-                        m_vExtentsElements(extent::getExtentsVecEnd<TDim>(extentsElements)),
+                        m_extentsElements(extent::getExtentsVecEnd<TDim>(extentsElements)),
                         m_vOffsetsElements(offset::getOffsetsVecEnd<TDim>(relativeOffsetsElements) + offset::getOffsetsVecEnd<TDim>(buf))
                 {
                     static_assert(
@@ -168,7 +168,7 @@ namespace alpaka
                             dev::getDev(buf),
                             extent::getExtentsVecEnd<TDim>(buf),
                             mem::view::getPitchBytes<TDim::value - 1u>(buf)),
-                        m_vExtentsElements(extent::getExtentsVecEnd<TDim>(extentsElements)),
+                        m_extentsElements(extent::getExtentsVecEnd<TDim>(extentsElements)),
                         m_vOffsetsElements(offset::getOffsetsVecEnd<TDim>(relativeOffsetsElements) + offset::getOffsetsVecEnd<TDim>(buf))
                 {
                     static_assert(
@@ -191,7 +191,7 @@ namespace alpaka
 
             public:
                 Buf m_Buf;
-                Vec<TDim, TSize> m_vExtentsElements;
+                Vec<TDim, TSize> m_extentsElements;
                 Vec<TDim, TSize> m_vOffsetsElements;
             };
         }
@@ -287,7 +287,7 @@ namespace alpaka
                     mem::view::ViewBasic<TDev, TElem, TDim, TSize> const & extents)
                 -> TSize
                 {
-                    return extents.m_vExtentsElements[TIdx::value];
+                    return extents.m_extentsElements[TIdx::value];
                 }
             };
         }

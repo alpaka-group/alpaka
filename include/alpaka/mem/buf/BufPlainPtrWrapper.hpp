@@ -58,9 +58,9 @@ namespace alpaka
                     TDev const & dev,
                     TExtents const & extents = TExtents()) :
                         m_pMem(pMem),
-                        m_Dev(dev),
-                        m_vExtentsElements(extent::getExtentsVecEnd<TDim>(extents)),
-                        m_uiPitchBytes(extent::getWidth(extents) * sizeof(TElem))
+                        m_dev(dev),
+                        m_extentsElements(extent::getExtentsVecEnd<TDim>(extents)),
+                        m_pitchBytes(extent::getWidth(extents) * sizeof(TElem))
                 {}
 
                 //-----------------------------------------------------------------------------
@@ -73,11 +73,11 @@ namespace alpaka
                     TElem * pMem,
                     TDev const dev,
                     TExtents const & extents,
-                    TSize const & uiPitch) :
+                    TSize const & pitchBytes) :
                         m_pMem(pMem),
-                        m_Dev(dev),
-                        m_vExtentsElements(extent::getExtentsVecEnd<TDim>(extents)),
-                        m_uiPitchBytes(uiPitch)
+                        m_dev(dev),
+                        m_extentsElements(extent::getExtentsVecEnd<TDim>(extents)),
+                        m_pitchBytes(pitchBytes)
                 {}
 
                 //-----------------------------------------------------------------------------
@@ -108,9 +108,9 @@ namespace alpaka
 
             public:
                 TElem * m_pMem;
-                TDev m_Dev;
-                Vec<TDim, TSize> m_vExtentsElements;
-                TSize m_uiPitchBytes;
+                TDev m_dev;
+                Vec<TDim, TSize> m_extentsElements;
+                TSize m_pitchBytes;
             };
         }
     }
@@ -152,7 +152,7 @@ namespace alpaka
                     mem::buf::BufPlainPtrWrapper<TDev, TElem, TDim, TSize> const & buf)
                     -> TDev
                 {
-                    return buf.m_Dev;
+                    return buf.m_dev;
                 }
             };
         }
@@ -199,7 +199,7 @@ namespace alpaka
                     mem::buf::BufPlainPtrWrapper<TDev, TElem, TDim, TSize> const & extents)
                 -> TSize
                 {
-                    return extents.m_vExtentsElements[TIdx::value];
+                    return extents.m_extentsElements[TIdx::value];
                 }
             };
         }
@@ -301,7 +301,7 @@ namespace alpaka
                         buf::BufPlainPtrWrapper<TDev, TElem, TDim, TSize> const & buf)
                     -> TSize
                     {
-                        return buf.m_uiPitchBytes;
+                        return buf.m_pitchBytes;
                     }
                 };
             }

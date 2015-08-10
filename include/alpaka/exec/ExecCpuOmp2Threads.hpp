@@ -110,13 +110,13 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                auto const vuiGridBlockExtents(
+                auto const gridBlockExtents(
                     workdiv::getWorkDiv<Grid, Blocks>(*this));
-                auto const vuiBlockThreadExtents(
+                auto const blockThreadExtents(
                     workdiv::getWorkDiv<Block, Threads>(*this));
 
                 // Get the size of the block shared extern memory.
-                auto const uiBlockSharedExternMemSizeBytes(
+                auto const blockSharedExternMemSizeBytes(
                     core::apply(
                         [&](TArgs const & ... args)
                         {
@@ -124,14 +124,14 @@ namespace alpaka
                                 kernel::getBlockSharedExternMemSizeBytes<
                                     TKernelFnObj,
                                     acc::AccCpuOmp2Threads<TDim, TSize>>(
-                                        vuiBlockThreadExtents,
+                                        blockThreadExtents,
                                         args...);
                         },
                         m_args));
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 std::cout << BOOST_CURRENT_FUNCTION
-                    << " BlockSharedExternMemSizeBytes: " << uiBlockSharedExternMemSizeBytes << " B" << std::endl;
+                    << " BlockSharedExternMemSizeBytes: " << blockSharedExternMemSizeBytes << " B" << std::endl;
 #endif
                 // Bind all arguments except the accelerator.
                 // TODO: With C++14 we could create a perfectly argument forwarding function object within the constructor.
@@ -149,27 +149,27 @@ namespace alpaka
 
                 acc::AccCpuOmp2Threads<TDim, TSize> acc(*static_cast<workdiv::WorkDivMembers<TDim, TSize> const *>(this));
 
-                if(uiBlockSharedExternMemSizeBytes > 0u)
+                if(blockSharedExternMemSizeBytes > 0u)
                 {
-                    acc.m_vuiExternalSharedMem.reset(
+                    acc.m_externalSharedMem.reset(
                         reinterpret_cast<uint8_t *>(
-                            boost::alignment::aligned_alloc(16u, uiBlockSharedExternMemSizeBytes)));
+                            boost::alignment::aligned_alloc(16u, blockSharedExternMemSizeBytes)));
                 }
 
                 // The number of threads in this block.
-                TSize const uiNumThreadsInBlock(vuiBlockThreadExtents.prod());
-                int const iNumThreadsInBlock(static_cast<int>(uiNumThreadsInBlock));
+                TSize const numThreadsInBlock(blockThreadExtents.prod());
+                int const iNumThreadsInBlock(static_cast<int>(numThreadsInBlock));
 
                 // Force the environment to use the given number of threads.
-                int const iOmpIsDynamic(::omp_get_dynamic());
+                int const ompIsDynamic(::omp_get_dynamic());
                 ::omp_set_dynamic(0);
 
                 // Execute the blocks serially.
                 core::ndLoop(
-                    vuiGridBlockExtents,
-                    [&](Vec<TDim, TSize> const & vuiGridBlockIdx)
+                    gridBlockExtents,
+                    [&](Vec<TDim, TSize> const & gridBlockIdx)
                     {
-                        acc.m_vuiGridBlockIdx = vuiGridBlockIdx;
+                        acc.m_gridBlockIdx = gridBlockIdx;
 
                         // Execute the threads in parallel.
 
@@ -182,18 +182,18 @@ namespace alpaka
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                             // GCC 5.1 fails with:
                             // error: redeclaration of ‘const int& iNumThreadsInBlock’
-                            // if(iNumThreads != iNumThreadsInBloc
+                            // if(numThreads != iNumThreadsInBloc
                             //                ^
                             // note: ‘const int& iNumThreadsInBlock’ previously declared here
                             // #pragma omp parallel num_threads(iNumThread
                             //         ^
 #if (!BOOST_COMP_GNUC) || (BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(5, 0, 0))
                             // The first thread does some checks in the first block executed.
-                            if((::omp_get_thread_num() == 0) && (acc.m_vuiGridBlockIdx.sum() == 0u))
+                            if((::omp_get_thread_num() == 0) && (acc.m_gridBlockIdx.sum() == 0u))
                             {
-                                int const iNumThreads(::omp_get_num_threads());
-                                std::cout << BOOST_CURRENT_FUNCTION << " omp_get_num_threads: " << iNumThreads << std::endl;
-                                if(iNumThreads != iNumThreadsInBlock)
+                                int const numThreads(::omp_get_num_threads());
+                                std::cout << BOOST_CURRENT_FUNCTION << " omp_get_num_threads: " << numThreads << std::endl;
+                                if(numThreads != iNumThreadsInBlock)
                                 {
                                     throw std::runtime_error("The OpenMP 2.0 runtime did not use the number of threads that had been required!");
                                 }
@@ -213,10 +213,10 @@ namespace alpaka
                     });
 
                 // After all blocks have been processed, the external shared memory has to be deleted.
-                acc.m_vuiExternalSharedMem.reset();
+                acc.m_externalSharedMem.reset();
 
                 // Reset the dynamic thread number setting.
-                ::omp_set_dynamic(iOmpIsDynamic);
+                ::omp_set_dynamic(ompIsDynamic);
             }
 
             TKernelFnObj m_kernelFnObj;

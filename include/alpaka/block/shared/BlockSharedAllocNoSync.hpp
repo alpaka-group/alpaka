@@ -76,7 +76,7 @@ namespace alpaka
                     std::unique_ptr<
                         uint8_t,
                         boost::alignment::aligned_delete>> mutable
-                    m_vvuiSharedMem;    //!< Block shared memory.
+                    m_sharedAllocs;    //!< Block shared memory.
             };
 
             namespace traits
@@ -97,13 +97,13 @@ namespace alpaka
                         block::shared::BlockSharedAllocNoSync const & blockSharedAlloc)
                     -> T &
                     {
-                        blockSharedAlloc.m_vvuiSharedMem.emplace_back(
+                        blockSharedAlloc.m_sharedAllocs.emplace_back(
                             reinterpret_cast<uint8_t *>(
                                 boost::alignment::aligned_alloc(16u, sizeof(T))));
                         return
                             std::ref(
                                 *reinterpret_cast<T*>(
-                                    blockSharedAlloc.m_vvuiSharedMem.back().get()));
+                                    blockSharedAlloc.m_sharedAllocs.back().get()));
                     }
                 };
                 //#############################################################################
@@ -111,10 +111,10 @@ namespace alpaka
                 //#############################################################################
                 template<
                     typename T,
-                    std::size_t TuiNumElements>
+                    std::size_t TnumElements>
                 struct AllocArr<
                     T,
-                    TuiNumElements,
+                    TnumElements,
                     BlockSharedAllocNoSync>
                 {
                     //-----------------------------------------------------------------------------
@@ -124,12 +124,12 @@ namespace alpaka
                         block::shared::BlockSharedAllocNoSync const & blockSharedAlloc)
                     -> T *
                     {
-                        blockSharedAlloc.m_vvuiSharedMem.emplace_back(
+                        blockSharedAlloc.m_sharedAllocs.emplace_back(
                             reinterpret_cast<uint8_t *>(
-                                boost::alignment::aligned_alloc(16u, sizeof(T) * TuiNumElements)));
+                                boost::alignment::aligned_alloc(16u, sizeof(T) * TnumElements)));
                         return
                             reinterpret_cast<T*>(
-                                blockSharedAlloc.m_vvuiSharedMem.back().get());
+                                blockSharedAlloc.m_sharedAllocs.back().get());
                     }
                 };
                 //#############################################################################
@@ -146,7 +146,7 @@ namespace alpaka
                         block::shared::BlockSharedAllocNoSync const & blockSharedAlloc)
                     -> void
                     {
-                        blockSharedAlloc.m_vvuiSharedMem.clear();
+                        blockSharedAlloc.m_sharedAllocs.clear();
                     }
                 };
             }

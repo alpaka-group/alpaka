@@ -248,16 +248,16 @@ namespace alpaka
             //! \return The number of devices available.
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto getDevByIdx(
-                std::size_t const & uiIdx)
+                std::size_t const & devIdx)
             -> DevCpu
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                std::size_t const uiNumDevices(getDevCount());
-                if(uiIdx >= uiNumDevices)
+                std::size_t const devCount(getDevCount());
+                if(devIdx >= devCount)
                 {
                     std::stringstream ssErr;
-                    ssErr << "Unable to return device handle for CPU device with index " << uiIdx << " because there are only " << uiNumDevices << " devices!";
+                    ssErr << "Unable to return device handle for CPU device with index " << devIdx << " because there are only " << devCount << " devices!";
                     throw std::runtime_error(ssErr.str());
                 }
 

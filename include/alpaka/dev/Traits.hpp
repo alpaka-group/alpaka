@@ -133,15 +133,15 @@ namespace alpaka
         ALPAKA_FN_HOST auto getDevs()
         -> std::vector<Dev<TDevMan>>
         {
-            std::vector<Dev<TDevMan>> vDevices;
+            std::vector<Dev<TDevMan>> devs;
 
-            std::size_t const uiDeviceCount(TDevMan::getDevCount());
-            for(std::size_t uiDeviceIdx(0); uiDeviceIdx < uiDeviceCount; ++uiDeviceIdx)
+            std::size_t const devCount(TDevMan::getDevCount());
+            for(std::size_t devIdx(0); devIdx < devCount; ++devIdx)
             {
-                vDevices.push_back(TDevMan::getDevByIdx(uiDeviceIdx));
+                devs.push_back(TDevMan::getDevByIdx(devIdx));
             }
 
-            return vDevices;
+            return devs;
         }
 
         //-----------------------------------------------------------------------------

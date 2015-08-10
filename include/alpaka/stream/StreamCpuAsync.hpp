@@ -77,8 +77,8 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST StreamCpuAsyncImpl(
                         dev::DevCpu & dev) :
-                            m_Uuid(boost::uuids::random_generator()()),
-                            m_Dev(dev),
+                            m_uuid(boost::uuids::random_generator()()),
+                            m_dev(dev),
                             m_workerThread(1u, 128u)
                     {}
                     //-----------------------------------------------------------------------------
@@ -102,11 +102,11 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST ~StreamCpuAsyncImpl() noexcept(false)
                     {
-                        m_Dev.m_spDevCpuImpl->UnregisterAsyncStream(this);
+                        m_dev.m_spDevCpuImpl->UnregisterAsyncStream(this);
                     }
                 public:
-                    boost::uuids::uuid const m_Uuid;    //!< The unique ID.
-                    dev::DevCpu const m_Dev;            //!< The device this stream is bound to.
+                    boost::uuids::uuid const m_uuid;    //!< The unique ID.
+                    dev::DevCpu const m_dev;            //!< The device this stream is bound to.
 
                     ThreadPool m_workerThread;
                 };
@@ -150,7 +150,7 @@ namespace alpaka
             ALPAKA_FN_HOST auto operator==(StreamCpuAsync const & rhs) const
             -> bool
             {
-                return (m_spAsyncStreamCpu->m_Uuid == rhs.m_spAsyncStreamCpu->m_Uuid);
+                return (m_spAsyncStreamCpu->m_uuid == rhs.m_spAsyncStreamCpu->m_uuid);
             }
             //-----------------------------------------------------------------------------
             //! Inequality comparison operator.
@@ -197,7 +197,7 @@ namespace alpaka
                     stream::StreamCpuAsync const & stream)
                 -> dev::DevCpu
                 {
-                    return stream.m_spAsyncStreamCpu->m_Dev;
+                    return stream.m_spAsyncStreamCpu->m_dev;
                 }
             };
         }

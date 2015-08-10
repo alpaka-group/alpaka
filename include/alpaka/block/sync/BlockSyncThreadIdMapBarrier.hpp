@@ -54,10 +54,10 @@ namespace alpaka
                 //! Default constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA BlockSyncThreadIdMapBarrier(
-                    TSize const & uiNumThreadsPerBlock,
-                    ThreadIdToBarrierIdxMap & mThreadIdToBarrierIdxMap) :
-                        m_uiNumThreadsPerBlock(uiNumThreadsPerBlock),
-                        m_mThreadIdToBarrierIdxMap(mThreadIdToBarrierIdxMap)
+                    TSize const & numThreadsPerBlock,
+                    ThreadIdToBarrierIdxMap & threadIdToBarrierIdxMap) :
+                        m_threadsPerBlockCount(numThreadsPerBlock),
+                        m_threadIdToBarrierIdxMap(threadIdToBarrierIdxMap)
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
@@ -87,12 +87,12 @@ namespace alpaka
                     ThreadIdToBarrierIdxMapIterator const & itFind) const
                 -> void
                 {
-                    assert(itFind != m_mThreadIdToBarrierIdxMap.end());
+                    assert(itFind != m_threadIdToBarrierIdxMap.end());
 
-                    auto & uiBarrierIdx(itFind->second);
-                    TSize const uiModBarrierIdx(uiBarrierIdx % 2);
+                    auto & barrierIdx(itFind->second);
+                    TSize const modBarrierIdx(barrierIdx % 2);
 
-                    auto & bar(m_abarSyncThreads[uiModBarrierIdx]);
+                    auto & bar(m_abarSyncThreads[modBarrierIdx]);
 
                     // (Re)initialize a barrier if this is the first thread to reach it.
                     // DCLP: Double checked locking pattern for better performance.
@@ -101,18 +101,18 @@ namespace alpaka
                         std::lock_guard<std::mutex> lock(m_mtxBarrier);
                         if(bar.getNumThreadsToWaitFor() == 0)
                         {
-                            bar.reset(m_uiNumThreadsPerBlock);
+                            bar.reset(m_threadsPerBlockCount);
                         }
                     }
 
                     // Wait for the barrier.
                     bar.wait();
-                    ++uiBarrierIdx;
+                    ++barrierIdx;
                 }
 
-                TSize const & m_uiNumThreadsPerBlock;           //!< The number of threads per block the barrier has to wait for.
+                TSize const & m_threadsPerBlockCount;           //!< The number of threads per block the barrier has to wait for.
 
-                ThreadIdToBarrierIdxMap & m_mThreadIdToBarrierIdxMap;
+                ThreadIdToBarrierIdxMap & m_threadIdToBarrierIdxMap;
                 //!< We have to keep the current and the last barrier because one of the threads can reach the next barrier before a other thread was wakeup from the last one and has checked if it can run.
                 Barrier mutable m_abarSyncThreads[2];           //!< The barriers for the synchronization of threads.
                 std::mutex mutable m_mtxBarrier;
@@ -136,7 +136,7 @@ namespace alpaka
                     -> void
                     {
                         auto const threadId(std::this_thread::get_id());
-                        typename block::sync::BlockSyncThreadIdMapBarrier<TSize>::ThreadIdToBarrierIdxMapIterator const itFind(blockSync.m_mThreadIdToBarrierIdxMap.find(threadId));
+                        typename block::sync::BlockSyncThreadIdMapBarrier<TSize>::ThreadIdToBarrierIdxMapIterator const itFind(blockSync.m_threadIdToBarrierIdxMap.find(threadId));
                         blockSync.syncBlockThreads(itFind);
                     }
                 };

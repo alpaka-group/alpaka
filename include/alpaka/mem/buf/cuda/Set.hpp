@@ -163,11 +163,11 @@ namespace alpaka
                     auto const & extents(task.m_extents);
                     auto const & iDevice(task.m_iDevice);
 
-                    auto const uiExtentWidth(extent::getWidth(extents));
-                    auto const uiExtentWidthBytes(uiExtentWidth * sizeof(mem::view::Elem<TBuf>));
-                    auto const uiDstWidth(extent::getWidth(buf));
-                    auto const pDstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(buf)));
-                    assert(uiExtentWidth <= uiDstWidth);
+                    auto const extentWidth(extent::getWidth(extents));
+                    auto const extentWidthBytes(extentWidth * sizeof(mem::view::Elem<TBuf>));
+                    auto const dstWidth(extent::getWidth(buf));
+                    auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(buf)));
+                    assert(extentWidth <= dstWidth);
 
                     // Set the current device.
                     ALPAKA_CUDA_RT_CHECK(
@@ -176,9 +176,9 @@ namespace alpaka
                     // Initiate the memory set.
                     ALPAKA_CUDA_RT_CHECK(
                         cudaMemsetAsync(
-                            pDstNativePtr,
+                            dstNativePtr,
                             static_cast<int>(byte),
-                            uiExtentWidthBytes,
+                            extentWidthBytes,
                             stream.m_spStreamCudaRtAsyncImpl->m_CudaStream));
                 }
             };
@@ -214,11 +214,11 @@ namespace alpaka
                     auto const & extents(task.m_extents);
                     auto const & iDevice(task.m_iDevice);
 
-                    auto const uiExtentWidth(extent::getWidth(extents));
-                    auto const uiExtentWidthBytes(uiExtentWidth * sizeof(mem::view::Elem<TBuf>));
-                    auto const uiDstWidth(extent::getWidth(buf));
-                    auto const pDstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(buf)));
-                    assert(uiExtentWidth <= uiDstWidth);
+                    auto const extentWidth(extent::getWidth(extents));
+                    auto const extentWidthBytes(extentWidth * sizeof(mem::view::Elem<TBuf>));
+                    auto const dstWidth(extent::getWidth(buf));
+                    auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(buf)));
+                    assert(extentWidth <= dstWidth);
 
                     // Set the current device.
                     ALPAKA_CUDA_RT_CHECK(
@@ -227,9 +227,9 @@ namespace alpaka
                     // Initiate the memory set.
                     ALPAKA_CUDA_RT_CHECK(
                         cudaMemset(
-                            pDstNativePtr,
+                            dstNativePtr,
                             static_cast<int>(byte),
-                            uiExtentWidthBytes));
+                            extentWidthBytes));
                 }
             };
             //#############################################################################
@@ -264,15 +264,15 @@ namespace alpaka
                     auto const & extents(task.m_extents);
                     auto const & iDevice(task.m_iDevice);
 
-                    auto const uiExtentWidth(extent::getWidth(extents));
-                    auto const uiExtentWidthBytes(uiExtentWidth * sizeof(mem::view::Elem<TBuf>));
-                    auto const uiExtentHeight(extent::getHeight(extents));
-                    auto const uiDstWidth(extent::getWidth(buf));
-                    auto const uiDstHeight(extent::getHeight(buf));
-                    auto const uiDstPitchBytes(mem::view::getPitchBytes<std::integral_constant<std::size_t, dim::Dim<TBuf>::value - 1u>>(buf));
-                    auto const pDstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(buf)));
-                    assert(uiExtentWidth <= uiDstWidth);
-                    assert(uiExtentHeight <= uiDstHeight);
+                    auto const extentWidth(extent::getWidth(extents));
+                    auto const extentWidthBytes(extentWidth * sizeof(mem::view::Elem<TBuf>));
+                    auto const extentHeight(extent::getHeight(extents));
+                    auto const dstWidth(extent::getWidth(buf));
+                    auto const dstHeight(extent::getHeight(buf));
+                    auto const dstPitchBytes(mem::view::getPitchBytes<std::integral_constant<std::size_t, dim::Dim<TBuf>::value - 1u>>(buf));
+                    auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(buf)));
+                    assert(extentWidth <= dstWidth);
+                    assert(extentHeight <= dstHeight);
 
                     // Set the current device.
                     ALPAKA_CUDA_RT_CHECK(
@@ -281,11 +281,11 @@ namespace alpaka
                     // Initiate the memory set.
                     ALPAKA_CUDA_RT_CHECK(
                         cudaMemset2DAsync(
-                            pDstNativePtr,
-                            uiDstPitchBytes,
+                            dstNativePtr,
+                            dstPitchBytes,
                             static_cast<int>(byte),
-                            uiExtentWidthBytes,
-                            uiExtentHeight,
+                            extentWidthBytes,
+                            extentHeight,
                             stream.m_spStreamCudaRtAsyncImpl->m_CudaStream));
                 }
             };
@@ -321,15 +321,15 @@ namespace alpaka
                     auto const & extents(task.m_extents);
                     auto const & iDevice(task.m_iDevice);
 
-                    auto const uiExtentWidth(extent::getWidth(extents));
-                    auto const uiExtentWidthBytes(uiExtentWidth * sizeof(mem::view::Elem<TBuf>));
-                    auto const uiExtentHeight(extent::getHeight(extents));
-                    auto const uiDstWidth(extent::getWidth(buf));
-                    auto const uiDstHeight(extent::getHeight(buf));
-                    auto const uiDstPitchBytes(mem::view::getPitchBytes<std::integral_constant<std::size_t, dim::Dim<TBuf>::value - 1u>>(buf));
-                    auto const pDstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(buf)));
-                    assert(uiExtentWidth <= uiDstWidth);
-                    assert(uiExtentHeight <= uiDstHeight);
+                    auto const extentWidth(extent::getWidth(extents));
+                    auto const extentWidthBytes(extentWidth * sizeof(mem::view::Elem<TBuf>));
+                    auto const extentHeight(extent::getHeight(extents));
+                    auto const dstWidth(extent::getWidth(buf));
+                    auto const dstHeight(extent::getHeight(buf));
+                    auto const dstPitchBytes(mem::view::getPitchBytes<std::integral_constant<std::size_t, dim::Dim<TBuf>::value - 1u>>(buf));
+                    auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(buf)));
+                    assert(extentWidth <= dstWidth);
+                    assert(extentHeight <= dstHeight);
 
                     // Set the current device.
                     ALPAKA_CUDA_RT_CHECK(
@@ -338,11 +338,11 @@ namespace alpaka
                     // Initiate the memory set.
                     ALPAKA_CUDA_RT_CHECK(
                         cudaMemset2D(
-                            pDstNativePtr,
-                            uiDstPitchBytes,
+                            dstNativePtr,
+                            dstPitchBytes,
                             static_cast<int>(byte),
-                            uiExtentWidthBytes,
-                            uiExtentHeight));
+                            extentWidthBytes,
+                            extentHeight));
                 }
             };
             //#############################################################################
@@ -377,31 +377,31 @@ namespace alpaka
                     auto const & extents(task.m_extents);
                     auto const & iDevice(task.m_iDevice);
 
-                    auto const uiExtentWidth(extent::getWidth(extents));
-                    auto const uiExtentHeight(extent::getHeight(extents));
-                    auto const uiExtentDepth(extent::getDepth(extents));
-                    auto const uiDstWidth(extent::getWidth(buf));
-                    auto const uiDstHeight(extent::getHeight(buf));
-                    auto const uiDstDepth(extent::getDepth(buf));
-                    auto const uiDstPitchBytes(mem::view::getPitchBytes<std::integral_constant<std::size_t, dim::Dim<TBuf>::value - 1u>>(buf));
-                    auto const pDstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(buf)));
-                    assert(uiExtentWidth <= uiDstWidth);
-                    assert(uiExtentHeight <= uiDstHeight);
-                    assert(uiExtentDepth <= uiDstDepth);
+                    auto const extentWidth(extent::getWidth(extents));
+                    auto const extentHeight(extent::getHeight(extents));
+                    auto const extentDepth(extent::getDepth(extents));
+                    auto const dstWidth(extent::getWidth(buf));
+                    auto const dstHeight(extent::getHeight(buf));
+                    auto const dstDepth(extent::getDepth(buf));
+                    auto const dstPitchBytes(mem::view::getPitchBytes<std::integral_constant<std::size_t, dim::Dim<TBuf>::value - 1u>>(buf));
+                    auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(buf)));
+                    assert(extentWidth <= dstWidth);
+                    assert(extentHeight <= dstHeight);
+                    assert(extentDepth <= dstDepth);
 
                     // Fill CUDA parameter structures.
                     cudaPitchedPtr const cudaPitchedPtrVal(
                         make_cudaPitchedPtr(
-                            pDstNativePtr,
-                            uiDstPitchBytes,
-                            uiDstWidth,
-                            uiDstHeight));
+                            dstNativePtr,
+                            dstPitchBytes,
+                            dstWidth,
+                            dstHeight));
 
                     cudaExtent const cudaExtentVal(
                         make_cudaExtent(
-                            uiExtentWidth,
-                            uiExtentHeight,
-                            uiExtentDepth));
+                            extentWidth,
+                            extentHeight,
+                            extentDepth));
 
                     // Set the current device.
                     ALPAKA_CUDA_RT_CHECK(
@@ -448,31 +448,31 @@ namespace alpaka
                     auto const & extents(task.m_extents);
                     auto const & iDevice(task.m_iDevice);
 
-                    auto const uiExtentWidth(extent::getWidth(extents));
-                    auto const uiExtentHeight(extent::getHeight(extents));
-                    auto const uiExtentDepth(extent::getDepth(extents));
-                    auto const uiDstWidth(extent::getWidth(buf));
-                    auto const uiDstHeight(extent::getHeight(buf));
-                    auto const uiDstDepth(extent::getDepth(buf));
-                    auto const uiDstPitchBytes(mem::view::getPitchBytes<std::integral_constant<std::size_t, dim::Dim<TBuf>::value - 1u>>(buf));
-                    auto const pDstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(buf)));
-                    assert(uiExtentWidth <= uiDstWidth);
-                    assert(uiExtentHeight <= uiDstHeight);
-                    assert(uiExtentDepth <= uiDstDepth);
+                    auto const extentWidth(extent::getWidth(extents));
+                    auto const extentHeight(extent::getHeight(extents));
+                    auto const extentDepth(extent::getDepth(extents));
+                    auto const dstWidth(extent::getWidth(buf));
+                    auto const dstHeight(extent::getHeight(buf));
+                    auto const dstDepth(extent::getDepth(buf));
+                    auto const dstPitchBytes(mem::view::getPitchBytes<std::integral_constant<std::size_t, dim::Dim<TBuf>::value - 1u>>(buf));
+                    auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(buf)));
+                    assert(extentWidth <= dstWidth);
+                    assert(extentHeight <= dstHeight);
+                    assert(extentDepth <= dstDepth);
 
                     // Fill CUDA parameter structures.
                     cudaPitchedPtr const cudaPitchedPtrVal(
                         make_cudaPitchedPtr(
-                            pDstNativePtr,
-                            uiDstPitchBytes,
-                            uiDstWidth,
-                            uiDstHeight));
+                            dstNativePtr,
+                            dstPitchBytes,
+                            dstWidth,
+                            dstHeight));
 
                     cudaExtent const cudaExtentVal(
                         make_cudaExtent(
-                            uiExtentWidth,
-                            uiExtentHeight,
-                            uiExtentDepth));
+                            extentWidth,
+                            extentHeight,
+                            extentDepth));
 
                     // Set the current device.
                     ALPAKA_CUDA_RT_CHECK(

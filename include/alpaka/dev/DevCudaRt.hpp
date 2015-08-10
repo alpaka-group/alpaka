@@ -117,24 +117,24 @@ namespace alpaka
             //! \throw std::runtime_error if the device index is out-of-range or if the device is not accessible.
             //-----------------------------------------------------------------------------
             ALPAKA_FN_HOST static auto getDevByIdx(
-                std::size_t const & uiIdx)
+                std::size_t const & devIdx)
             -> DevCudaRt
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                 DevCudaRt dev;
 
-                std::size_t const uiNumDevices(getDevCount());
-                if(uiIdx >= uiNumDevices)
+                std::size_t const devCount(getDevCount());
+                if(devIdx >= devCount)
                 {
                     std::stringstream ssErr;
-                    ssErr << "Unable to return device handle for device " << uiIdx << ". There are only " << uiNumDevices << " CUDA devices!";
+                    ssErr << "Unable to return device handle for device " << devIdx << ". There are only " << devCount << " CUDA devices!";
                     throw std::runtime_error(ssErr.str());
                 }
 
-                if(isDevUsable(uiIdx))
+                if(isDevUsable(devIdx))
                 {
-                    dev.m_iDevice = static_cast<int>(uiIdx);
+                    dev.m_iDevice = static_cast<int>(devIdx);
 
                     // Log this device.
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
@@ -150,7 +150,7 @@ namespace alpaka
                 else
                 {
                     std::stringstream ssErr;
-                    ssErr << "Unable to return device handle for device " << uiIdx << ". It is not accessible!";
+                    ssErr << "Unable to return device handle for device " << devIdx << ". It is not accessible!";
                     throw std::runtime_error(ssErr.str());
                 }
 
@@ -201,11 +201,11 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
-                std::size_t const uiKiB(1024);
-                std::size_t const uiMiB(uiKiB * uiKiB);
+                std::size_t const kiB(1024);
+                std::size_t const miB(kiB * kiB);
                 std::cout << "name: " << devProp.name << std::endl;
-                std::cout << "totalGlobalMem: " << devProp.totalGlobalMem/uiMiB << " MiB" << std::endl;
-                std::cout << "sharedMemPerBlock: " << devProp.sharedMemPerBlock/uiKiB << " KiB" << std::endl;
+                std::cout << "totalGlobalMem: " << devProp.totalGlobalMem/miB << " MiB" << std::endl;
+                std::cout << "sharedMemPerBlock: " << devProp.sharedMemPerBlock/kiB << " KiB" << std::endl;
                 std::cout << "regsPerBlock: " << devProp.regsPerBlock << std::endl;
                 std::cout << "warpSize: " << devProp.warpSize << std::endl;
                 std::cout << "memPitch: " << devProp.memPitch << " B" << std::endl;
@@ -213,7 +213,7 @@ namespace alpaka
                 std::cout << "maxThreadsDim[3]: (" << devProp.maxThreadsDim[0] << ", " << devProp.maxThreadsDim[1] << ", " << devProp.maxThreadsDim[2] << ")" << std::endl;
                 std::cout << "maxGridSize[3]: (" << devProp.maxGridSize[0] << ", " << devProp.maxGridSize[1] << ", " << devProp.maxGridSize[2] << ")" << std::endl;
                 std::cout << "clockRate: " << devProp.clockRate << " kHz" << std::endl;
-                std::cout << "totalConstMem: " << devProp.totalConstMem/uiKiB << " KiB" << std::endl;
+                std::cout << "totalConstMem: " << devProp.totalConstMem/kiB << " KiB" << std::endl;
                 std::cout << "major: " << devProp.major << std::endl;
                 std::cout << "minor: " << devProp.minor << std::endl;
                 std::cout << "textureAlignment: " << devProp.textureAlignment << std::endl;

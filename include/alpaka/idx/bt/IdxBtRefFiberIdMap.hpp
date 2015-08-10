@@ -53,7 +53,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA IdxBtRefFiberIdMap(
                     FiberIdToIdxMap const & mFibersToIndices) :
-                    m_mFibersToIndices(mFibersToIndices)
+                    m_fibersToIndices(mFibersToIndices)
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
@@ -77,7 +77,7 @@ namespace alpaka
                 ALPAKA_FN_ACC_NO_CUDA /*virtual*/ ~IdxBtRefFiberIdMap() = default;
 
             public:
-                FiberIdToIdxMap const & m_mFibersToIndices; //!< The mapping of fiber id's to fiber indices.
+                FiberIdToIdxMap const & m_fibersToIndices; //!< The mapping of fiber id's to fiber indices.
             };
         }
     }
@@ -125,10 +125,10 @@ namespace alpaka
                 -> Vec<TDim, TSize>
                 {
                     boost::ignore_unused(workDiv);
-                    auto const idFiber(boost::this_fiber::get_id());
-                    auto const itFind(idx.m_mFibersToIndices.find(idFiber));
-                    assert(itFind != idx.m_mFibersToIndices.end());
-                    return itFind->second;
+                    auto const fiberId(boost::this_fiber::get_id());
+                    auto const fiberEntry(idx.m_fibersToIndices.find(fiberId));
+                    assert(fiberEntry != idx.m_fibersToIndices.end());
+                    return fiberEntry->second;
                 }
             };
         }

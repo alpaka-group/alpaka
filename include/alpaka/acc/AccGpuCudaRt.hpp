@@ -166,17 +166,17 @@ namespace alpaka
                         dev.m_iDevice));
 
                     return {
-                        // m_uiMultiProcessorCount
+                        // m_multiProcessorCount
                         static_cast<TSize>(cudaDevProp.multiProcessorCount),
-                        // m_uiBlockThreadsCountMax
+                        // m_blockThreadsCountMax
                         static_cast<TSize>(cudaDevProp.maxThreadsPerBlock),
-                        // m_vuiBlockThreadExtentsMax
+                        // m_blockThreadExtentsMax
                         extent::getExtentsVecEnd<TDim>(
                             Vec<dim::DimInt<3u>, TSize>(
                                 static_cast<TSize>(cudaDevProp.maxThreadsDim[2]),
                                 static_cast<TSize>(cudaDevProp.maxThreadsDim[1]),
                                 static_cast<TSize>(cudaDevProp.maxThreadsDim[0]))),
-                        // m_vuiGridBlockExtentsMax
+                        // m_gridBlockExtentsMax
                         extent::getExtentsVecEnd<TDim>(
                             Vec<dim::DimInt<3u>, TSize>(
                                 static_cast<TSize>(cudaDevProp.maxGridSize[2]),

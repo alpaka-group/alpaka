@@ -59,8 +59,8 @@ namespace alpaka
             ALPAKA_FN_HOST_ACC explicit WorkDivMembers(
                 TGridBlockExtents const & gridBlockExtents = TGridBlockExtents(),
                 TBlockThreadExtents const & blockThreadExtents = TBlockThreadExtents()) :
-                m_vuiGridBlockExtents(extent::getExtentsVecEnd<TDim>(gridBlockExtents)),
-                m_vuiBlockThreadExtents(extent::getExtentsVecEnd<TDim>(blockThreadExtents))
+                m_gridBlockExtents(extent::getExtentsVecEnd<TDim>(gridBlockExtents)),
+                m_blockThreadExtents(extent::getExtentsVecEnd<TDim>(blockThreadExtents))
             {}
             //-----------------------------------------------------------------------------
             //! Copy constructor.
@@ -68,8 +68,8 @@ namespace alpaka
             ALPAKA_NO_HOST_ACC_WARNING
             ALPAKA_FN_HOST_ACC explicit WorkDivMembers(
                 WorkDivMembers const & other) :
-                    m_vuiGridBlockExtents(other.m_vuiGridBlockExtents),
-                    m_vuiBlockThreadExtents(other.m_vuiBlockThreadExtents)
+                    m_gridBlockExtents(other.m_gridBlockExtents),
+                    m_blockThreadExtents(other.m_blockThreadExtents)
             {}
             //-----------------------------------------------------------------------------
             //! Copy constructor.
@@ -79,8 +79,8 @@ namespace alpaka
                 typename TWorkDiv>
             ALPAKA_FN_HOST_ACC explicit WorkDivMembers(
                 TWorkDiv const & other) :
-                    m_vuiGridBlockExtents(subVecEnd<TDim>(getWorkDiv<Grid, Blocks>(other))),
-                    m_vuiBlockThreadExtents(subVecEnd<TDim>(getWorkDiv<Block, Threads>(other)))
+                    m_gridBlockExtents(subVecEnd<TDim>(getWorkDiv<Grid, Blocks>(other))),
+                    m_blockThreadExtents(subVecEnd<TDim>(getWorkDiv<Block, Threads>(other)))
             {}
             //-----------------------------------------------------------------------------
             //! Move constructor.
@@ -107,8 +107,8 @@ namespace alpaka
                 TWorkDiv const & other)
             -> WorkDivMembers<TDim, TSize> &
             {
-                m_vuiGridBlockExtents = subVecEnd<TDim>(getWorkDiv<Grid, Blocks>(other));
-                m_vuiBlockThreadExtents = subVecEnd<TDim>(getWorkDiv<Block, Threads>(other));
+                m_gridBlockExtents = subVecEnd<TDim>(getWorkDiv<Grid, Blocks>(other));
+                m_blockThreadExtents = subVecEnd<TDim>(getWorkDiv<Block, Threads>(other));
                 return *this;
             }
             //-----------------------------------------------------------------------------
@@ -118,8 +118,8 @@ namespace alpaka
             ALPAKA_FN_HOST_ACC /*virtual*/ ~WorkDivMembers() = default;
 
         public:
-            Vec<TDim, TSize> m_vuiGridBlockExtents;
-            Vec<TDim, TSize> m_vuiBlockThreadExtents;
+            Vec<TDim, TSize> m_gridBlockExtents;
+            Vec<TDim, TSize> m_blockThreadExtents;
         };
 
         //-----------------------------------------------------------------------------
@@ -134,8 +134,8 @@ namespace alpaka
         -> std::ostream &
         {
             return (os
-                << "{gridBlockExtents: " << workDiv.m_vuiGridBlockExtents
-                << ", blockThreadExtents: " << workDiv.m_vuiBlockThreadExtents
+                << "{gridBlockExtents: " << workDiv.m_gridBlockExtents
+                << ", blockThreadExtents: " << workDiv.m_blockThreadExtents
                 << "}");
         }
     }
@@ -197,7 +197,7 @@ namespace alpaka
                     WorkDivMembers<TDim, TSize> const & workDiv)
                 -> Vec<TDim, TSize>
                 {
-                    return workDiv.m_vuiBlockThreadExtents;
+                    return workDiv.m_blockThreadExtents;
                 }
             };
 
@@ -220,7 +220,7 @@ namespace alpaka
                     WorkDivMembers<TDim, TSize> const & workDiv)
                 -> Vec<TDim, TSize>
                 {
-                    return workDiv.m_vuiGridBlockExtents;
+                    return workDiv.m_gridBlockExtents;
                 }
             };
         }

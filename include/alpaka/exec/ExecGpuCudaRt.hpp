@@ -298,16 +298,16 @@ namespace alpaka
                     // TODO: Check that (sizeof(TKernelFnObj) * m_3uiBlockThreadExtents.prod()) < available memory size
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                    //std::size_t uiPrintfFifoSize;
-                    //cudaDeviceGetLimit(&uiPrintfFifoSize, cudaLimitPrintfFifoSize);
-                    //std::cout << BOOST_CURRENT_FUNCTION << "INFO: uiPrintfFifoSize: " << uiPrintfFifoSize << std::endl;
-                    //cudaDeviceSetLimit(cudaLimitPrintfFifoSize, uiPrintfFifoSize*10);
-                    //cudaDeviceGetLimit(&uiPrintfFifoSize, cudaLimitPrintfFifoSize);
-                    //std::cout << BOOST_CURRENT_FUNCTION << "INFO: uiPrintfFifoSize: " <<  uiPrintfFifoSize << std::endl;
+                    //std::size_t printfFifoSize;
+                    //cudaDeviceGetLimit(&printfFifoSize, cudaLimitPrintfFifoSize);
+                    //std::cout << BOOST_CURRENT_FUNCTION << "INFO: printfFifoSize: " << printfFifoSize << std::endl;
+                    //cudaDeviceSetLimit(cudaLimitPrintfFifoSize, printfFifoSize*10);
+                    //cudaDeviceGetLimit(&printfFifoSize, cudaLimitPrintfFifoSize);
+                    //std::cout << BOOST_CURRENT_FUNCTION << "INFO: printfFifoSize: " <<  printfFifoSize << std::endl;
 #endif
-                    auto const vuiGridBlockExtents(
+                    auto const gridBlockExtents(
                         workdiv::getWorkDiv<Grid, Blocks>(task));
-                    auto const vuiBlockThreadExtents(
+                    auto const blockThreadExtents(
                         workdiv::getWorkDiv<Block, Threads>(task));
 
                     dim3 gridDim(1u, 1u, 1u);
@@ -315,14 +315,14 @@ namespace alpaka
                     // \FIXME: CUDA currently supports a maximum of 3 dimensions!
                     for(auto i(static_cast<typename TDim::value_type>(0)); i<std::min(static_cast<typename TDim::value_type>(3), TDim::value); ++i)
                     {
-                        reinterpret_cast<unsigned int *>(&gridDim)[i] = vuiGridBlockExtents[TDim::value-1u-i];
-                        reinterpret_cast<unsigned int *>(&blockDim)[i] = vuiBlockThreadExtents[TDim::value-1u-i];
+                        reinterpret_cast<unsigned int *>(&gridDim)[i] = gridBlockExtents[TDim::value-1u-i];
+                        reinterpret_cast<unsigned int *>(&blockDim)[i] = blockThreadExtents[TDim::value-1u-i];
                     }
                     // Assert that all extents of the higher dimensions are 1!
                     for(auto i(std::min(static_cast<typename TDim::value_type>(3), TDim::value)); i<TDim::value; ++i)
                     {
-                        assert(vuiGridBlockExtents[TDim::value-1u-i] == 1);
-                        assert(vuiBlockThreadExtents[TDim::value-1u-i] == 1);
+                        assert(gridBlockExtents[TDim::value-1u-i] == 1);
+                        assert(blockThreadExtents[TDim::value-1u-i] == 1);
                     }
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -339,7 +339,7 @@ namespace alpaka
 #endif
 
                     // Get the size of the block shared extern memory.
-                    auto const uiBlockSharedExternMemSizeBytes(
+                    auto const blockSharedExternMemSizeBytes(
                         core::apply(
                             [&](TArgs const & ... args)
                             {
@@ -347,7 +347,7 @@ namespace alpaka
                                     kernel::getBlockSharedExternMemSizeBytes<
                                         typename std::decay<TKernelFnObj>::type,
                                         acc::AccGpuCudaRt<TDim, TSize>>(
-                                            vuiBlockThreadExtents,
+                                            blockThreadExtents,
                                             args...);
                             },
                             task.m_args));
@@ -355,7 +355,7 @@ namespace alpaka
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                     // Log the block shared memory size.
                     std::cout << BOOST_CURRENT_FUNCTION
-                        << " BlockSharedExternMemSizeBytes: " << uiBlockSharedExternMemSizeBytes << " B" << std::endl;
+                        << " BlockSharedExternMemSizeBytes: " << blockSharedExternMemSizeBytes << " B" << std::endl;
 #endif
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -376,7 +376,7 @@ namespace alpaka
                     // Set the current device.
                     ALPAKA_CUDA_RT_CHECK(
                         cudaSetDevice(
-                            stream.m_spStreamCudaRtAsyncImpl->m_Dev.m_iDevice));
+                            stream.m_spStreamCudaRtAsyncImpl->m_dev.m_iDevice));
                     // Enqueue the kernel execution.
                     // \NOTE: No const reference (const &) is allowed as the parameter type because the kernel launch language extension expects the arguments by value.
                     // This forces the type of a float argument given with std::forward to this function to be of type float instead of e.g. "float const & __ptr64" (MSVC).
@@ -387,7 +387,7 @@ namespace alpaka
                             exec::cuda::detail::cudaKernel<TDim, TSize, TKernelFnObj, TArgs...><<<
                                 gridDim,
                                 blockDim,
-                                uiBlockSharedExternMemSizeBytes,
+                                blockSharedExternMemSizeBytes,
                                 stream.m_spStreamCudaRtAsyncImpl->m_CudaStream>>>(
                                     task.m_kernelFnObj,
                                     args...);
@@ -434,16 +434,16 @@ namespace alpaka
                     // TODO: Check that (sizeof(TKernelFnObj) * m_3uiBlockThreadExtents.prod()) < available memory size
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                    //std::size_t uiPrintfFifoSize;
-                    //cudaDeviceGetLimit(&uiPrintfFifoSize, cudaLimitPrintfFifoSize);
-                    //std::cout << BOOST_CURRENT_FUNCTION << "INFO: uiPrintfFifoSize: " << uiPrintfFifoSize << std::endl;
-                    //cudaDeviceSetLimit(cudaLimitPrintfFifoSize, uiPrintfFifoSize*10);
-                    //cudaDeviceGetLimit(&uiPrintfFifoSize, cudaLimitPrintfFifoSize);
-                    //std::cout << BOOST_CURRENT_FUNCTION << "INFO: uiPrintfFifoSize: " <<  uiPrintfFifoSize << std::endl;
+                    //std::size_t printfFifoSize;
+                    //cudaDeviceGetLimit(&printfFifoSize, cudaLimitPrintfFifoSize);
+                    //std::cout << BOOST_CURRENT_FUNCTION << "INFO: printfFifoSize: " << printfFifoSize << std::endl;
+                    //cudaDeviceSetLimit(cudaLimitPrintfFifoSize, printfFifoSize*10);
+                    //cudaDeviceGetLimit(&printfFifoSize, cudaLimitPrintfFifoSize);
+                    //std::cout << BOOST_CURRENT_FUNCTION << "INFO: printfFifoSize: " <<  printfFifoSize << std::endl;
 #endif
-                    auto const vuiGridBlockExtents(
+                    auto const gridBlockExtents(
                         workdiv::getWorkDiv<Grid, Blocks>(task));
-                    auto const vuiBlockThreadExtents(
+                    auto const blockThreadExtents(
                         workdiv::getWorkDiv<Block, Threads>(task));
 
                     dim3 gridDim(1u, 1u, 1u);
@@ -451,14 +451,14 @@ namespace alpaka
                     // \FIXME: CUDA currently supports a maximum of 3 dimensions!
                     for(auto i(static_cast<typename TDim::value_type>(0)); i<std::min(static_cast<typename TDim::value_type>(3), TDim::value); ++i)
                     {
-                        reinterpret_cast<unsigned int *>(&gridDim)[i] = vuiGridBlockExtents[TDim::value-1u-i];
-                        reinterpret_cast<unsigned int *>(&blockDim)[i] = vuiBlockThreadExtents[TDim::value-1u-i];
+                        reinterpret_cast<unsigned int *>(&gridDim)[i] = gridBlockExtents[TDim::value-1u-i];
+                        reinterpret_cast<unsigned int *>(&blockDim)[i] = blockThreadExtents[TDim::value-1u-i];
                     }
                     // Assert that all extents of the higher dimensions are 1!
                     for(auto i(std::min(static_cast<typename TDim::value_type>(3), TDim::value)); i<TDim::value; ++i)
                     {
-                        assert(vuiGridBlockExtents[TDim::value-1u-i] == 1);
-                        assert(vuiBlockThreadExtents[TDim::value-1u-i] == 1);
+                        assert(gridBlockExtents[TDim::value-1u-i] == 1);
+                        assert(blockThreadExtents[TDim::value-1u-i] == 1);
                     }
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -475,7 +475,7 @@ namespace alpaka
 #endif
 
                     // Get the size of the block shared extern memory.
-                    auto const uiBlockSharedExternMemSizeBytes(
+                    auto const blockSharedExternMemSizeBytes(
                         core::apply(
                             [&](TArgs const & ... args)
                             {
@@ -483,7 +483,7 @@ namespace alpaka
                                     kernel::getBlockSharedExternMemSizeBytes<
                                         TKernelFnObj,
                                         acc::AccGpuCudaRt<TDim, TSize>>(
-                                            vuiBlockThreadExtents,
+                                            blockThreadExtents,
                                             args...);
                             },
                             task.m_args));
@@ -491,7 +491,7 @@ namespace alpaka
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                     // Log the block shared memory size.
                     std::cout << BOOST_CURRENT_FUNCTION
-                        << " BlockSharedExternMemSizeBytes: " << uiBlockSharedExternMemSizeBytes << " B" << std::endl;
+                        << " BlockSharedExternMemSizeBytes: " << blockSharedExternMemSizeBytes << " B" << std::endl;
 #endif
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -512,7 +512,7 @@ namespace alpaka
                     // Set the current device.
                     ALPAKA_CUDA_RT_CHECK(
                         cudaSetDevice(
-                            stream.m_spStreamCudaRtSyncImpl->m_Dev.m_iDevice));
+                            stream.m_spStreamCudaRtSyncImpl->m_dev.m_iDevice));
                     // Enqueue the kernel execution.
                     // \NOTE: No const reference (const &) is allowed as the parameter type because the kernel launch language extension expects the arguments by value.
                     // This forces the type of a float argument given with std::forward to this function to be of type float instead of e.g. "float const & __ptr64" (MSVC).
@@ -523,7 +523,7 @@ namespace alpaka
                             exec::cuda::detail::cudaKernel<TDim, TSize, TKernelFnObj, TArgs...><<<
                                 gridDim,
                                 blockDim,
-                                uiBlockSharedExternMemSizeBytes,
+                                blockSharedExternMemSizeBytes,
                                 stream.m_spStreamCudaRtSyncImpl->m_CudaStream>>>(
                                     task.m_kernelFnObj,
                                     args...);

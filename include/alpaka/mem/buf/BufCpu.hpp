@@ -70,10 +70,10 @@ namespace alpaka
                             dev::DevCpu const & dev,
                             TExtents const & extents) :
                                 mem::alloc::AllocCpuBoostAligned<std::integral_constant<std::size_t, 16u>>(),
-                                m_Dev(dev),
-                                m_vExtentsElements(extent::getExtentsVecEnd<TDim>(extents)),
+                                m_dev(dev),
+                                m_extentsElements(extent::getExtentsVecEnd<TDim>(extents)),
                                 m_pMem(mem::alloc::alloc<TElem>(*this, computeElementCount(extents))),
-                                m_uiPitchBytes(static_cast<TSize>(extent::getWidth(extents) * sizeof(TElem)))
+                                m_pitchBytes(static_cast<TSize>(extent::getWidth(extents) * sizeof(TElem)))
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
                                 ,m_bPinned(false)
 #endif
@@ -89,9 +89,9 @@ namespace alpaka
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                             std::cout << BOOST_CURRENT_FUNCTION
-                                << " e: " << m_vExtentsElements
+                                << " e: " << m_extentsElements
                                 << " ptr: " << static_cast<void *>(m_pMem)
-                                << " pitch: " << m_uiPitchBytes
+                                << " pitch: " << m_pitchBytes
                                 << std::endl;
 #endif
                         }
@@ -136,17 +136,17 @@ namespace alpaka
                             TExtents const & extents)
                         -> TSize
                         {
-                            auto const uiExtentsElementCount(extent::getProductOfExtents(extents));
-                            assert(uiExtentsElementCount>0);
+                            auto const extentsElementCount(extent::getProductOfExtents(extents));
+                            assert(extentsElementCount>0);
 
-                            return uiExtentsElementCount;
+                            return extentsElementCount;
                         }
 
                     public:
-                        dev::DevCpu const m_Dev;
-                        Vec<TDim, TSize> const m_vExtentsElements;
+                        dev::DevCpu const m_dev;
+                        Vec<TDim, TSize> const m_extentsElements;
                         TElem * const m_pMem;
-                        TSize const m_uiPitchBytes;
+                        TSize const m_pitchBytes;
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
                         bool m_bPinned;
 #endif
@@ -229,7 +229,7 @@ namespace alpaka
                     mem::buf::BufCpu<TElem, TDim, TSize> const & buf)
                 -> dev::DevCpu
                 {
-                    return buf.m_spBufCpuImpl->m_Dev;
+                    return buf.m_spBufCpuImpl->m_dev;
                 }
             };
         }
@@ -276,7 +276,7 @@ namespace alpaka
                     mem::buf::BufCpu<TElem, TDim, TSize> const & extents)
                 -> TSize
                 {
-                    return extents.m_spBufCpuImpl->m_vExtentsElements[TIdx::value];
+                    return extents.m_spBufCpuImpl->m_extentsElements[TIdx::value];
                 }
             };
         }
@@ -421,7 +421,7 @@ namespace alpaka
                         mem::buf::BufCpu<TElem, TDim, TSize> const & pitch)
                     -> TSize
                     {
-                        return pitch.m_spBufCpuImpl->m_uiPitchBytes;
+                        return pitch.m_spBufCpuImpl->m_pitchBytes;
                     }
                 };
             }

@@ -109,13 +109,13 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                auto const vuiGridBlockExtents(
+                auto const gridBlockExtents(
                     workdiv::getWorkDiv<Grid, Blocks>(*this));
-                auto const vuiBlockThreadExtents(
+                auto const blockThreadExtents(
                     workdiv::getWorkDiv<Block, Threads>(*this));
 
                 // Get the size of the block shared extern memory.
-                auto const uiBlockSharedExternMemSizeBytes(
+                auto const blockSharedExternMemSizeBytes(
                     core::apply(
                         [&](TArgs const & ... args)
                         {
@@ -123,14 +123,14 @@ namespace alpaka
                                 kernel::getBlockSharedExternMemSizeBytes<
                                     TKernelFnObj,
                                     acc::AccCpuSerial<TDim, TSize>>(
-                                        vuiBlockThreadExtents,
+                                        blockThreadExtents,
                                         args...);
                         },
                         m_args));
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                 std::cout << BOOST_CURRENT_FUNCTION
-                    << " BlockSharedExternMemSizeBytes: " << uiBlockSharedExternMemSizeBytes << " B" << std::endl;
+                    << " BlockSharedExternMemSizeBytes: " << blockSharedExternMemSizeBytes << " B" << std::endl;
 #endif
                 // Bind all arguments except the accelerator.
                 // TODO: With C++14 we could create a perfectly argument forwarding function object within the constructor.
@@ -148,22 +148,22 @@ namespace alpaka
 
                 acc::AccCpuSerial<TDim, TSize> acc(*static_cast<workdiv::WorkDivMembers<TDim, TSize> const *>(this));
 
-                if(uiBlockSharedExternMemSizeBytes > 0u)
+                if(blockSharedExternMemSizeBytes > 0u)
                 {
-                    acc.m_vuiExternalSharedMem.reset(
+                    acc.m_externalSharedMem.reset(
                         reinterpret_cast<uint8_t *>(
-                            boost::alignment::aligned_alloc(16u, uiBlockSharedExternMemSizeBytes)));
+                            boost::alignment::aligned_alloc(16u, blockSharedExternMemSizeBytes)));
                 }
 
                 // There is only ever one thread in a block in the serial accelerator.
-                assert(vuiBlockThreadExtents.prod() == 1u);
+                assert(blockThreadExtents.prod() == 1u);
 
                 // Execute the blocks serially.
                 core::ndLoop(
-                    vuiGridBlockExtents,
-                    [&](Vec<TDim, TSize> const & vuiBlockThreadIdx)
+                    gridBlockExtents,
+                    [&](Vec<TDim, TSize> const & blockThreadIdx)
                     {
-                        acc.m_vuiGridBlockIdx = vuiBlockThreadIdx;
+                        acc.m_gridBlockIdx = blockThreadIdx;
 
                         boundKernelFnObj(
                             acc);
@@ -173,7 +173,7 @@ namespace alpaka
                     });
 
                 // After all blocks have been processed, the external shared memory has to be deleted.
-                acc.m_vuiExternalSharedMem.reset();
+                acc.m_externalSharedMem.reset();
             }
 
             TKernelFnObj m_kernelFnObj;

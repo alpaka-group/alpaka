@@ -285,22 +285,22 @@ namespace alpaka
                 //!
                 //! Creates a concurrent executor pool with a specific number of concurrent executors and a maximum number of queued tasks.
                 //!
-                //! \param uiConcurrentExecutionCount   The guaranteed number of concurrent executors used in the pool.
+                //! \param concurrentExecutionCount   The guaranteed number of concurrent executors used in the pool.
                 //!                                     This is also the maximum number of tasks worked on concurrently.
-                //! \param uiQueueSize  The maximum number of tasks that can be queued for completion.
+                //! \param queueSize  The maximum number of tasks that can be queued for completion.
                 //!                     Currently running tasks do not belong to the queue anymore.
                 //-----------------------------------------------------------------------------
                 ConcurrentExecPool(
-                    TSize uiConcurrentExecutionCount,
-                    TSize uiQueueSize = 128u) :
+                    TSize concurrentExecutionCount,
+                    TSize queueSize = 128u) :
                     m_vConcurrentExecs(),
-                    m_qTasks(uiQueueSize),
+                    m_qTasks(queueSize),
                     m_bShutdownFlag(false)
                 {
-                    m_vConcurrentExecs.reserve(uiConcurrentExecutionCount);
+                    m_vConcurrentExecs.reserve(concurrentExecutionCount);
 
                     // Create all concurrent executors.
-                    for(size_t uiConcurrentExec(0u); uiConcurrentExec < uiConcurrentExecutionCount; ++uiConcurrentExec)
+                    for(size_t concurrentExec(0u); concurrentExec < concurrentExecutionCount; ++concurrentExec)
                     {
                         m_vConcurrentExecs.emplace_back(std::bind(&ConcurrentExecPool::concurrentExecFn, this));
                     }
@@ -492,24 +492,24 @@ namespace alpaka
                 //!
                 //! Creates a concurrent executor pool with a specific number of concurrent executors and a maximum number of queued tasks.
                 //!
-                //! \param uiConcurrentExecutionCount   The guaranteed number of concurrent executors used in the pool.
+                //! \param concurrentExecutionCount   The guaranteed number of concurrent executors used in the pool.
                 //!                                     This is also the maximum number of tasks worked on concurrently.
-                //! \param uiQueueSize  The maximum number of tasks that can be queued for completion.
+                //! \param queueSize  The maximum number of tasks that can be queued for completion.
                 //!                     Currently running tasks do not belong to the queue anymore.
                 //-----------------------------------------------------------------------------
                 ConcurrentExecPool(
-                    TSize uiConcurrentExecutionCount,
-                    TSize uiQueueSize = 128u) :
+                    TSize concurrentExecutionCount,
+                    TSize queueSize = 128u) :
                     m_vConcurrentExecs(),
-                    m_qTasks(uiQueueSize),
+                    m_qTasks(queueSize),
                     m_mtxWakeup(),
                     m_bShutdownFlag(false),
                     m_cvWakeup()
                 {
-                    m_vConcurrentExecs.reserve(uiConcurrentExecutionCount);
+                    m_vConcurrentExecs.reserve(concurrentExecutionCount);
 
                     // Create all concurrent executors.
-                    for(TSize uiConcurrentExec(0u); uiConcurrentExec < uiConcurrentExecutionCount; ++uiConcurrentExec)
+                    for(TSize concurrentExec(0u); concurrentExec < concurrentExecutionCount; ++concurrentExec)
                     {
                         m_vConcurrentExecs.emplace_back(std::bind(&ConcurrentExecPool::concurrentExecFn, this));
                     }

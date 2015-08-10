@@ -55,7 +55,7 @@ namespace alpaka
                 //#############################################################################
                 template<
                     typename T,
-                    std::size_t TuiNumElements,
+                    std::size_t TnumElements,
                     typename TBlockSharedAlloc,
                     typename TSfinae = void>
                 struct AllocArr;
@@ -94,26 +94,26 @@ namespace alpaka
             //! Allocates an array in block shared memory.
             //!
             //! \tparam T The element type.
-            //! \tparam TuiNumElements The Number of elements.
+            //! \tparam TnumElements The Number of elements.
             //! \tparam TBlockSharedAlloc The block shared allocator implementation type.
             //! \param blockSharedAlloc The block shared allocator implementation.
             //-----------------------------------------------------------------------------
             ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename T,
-                std::size_t TuiNumElements,
+                std::size_t TnumElements,
                 typename TBlockSharedAlloc>
             ALPAKA_FN_HOST_ACC auto allocArr(
                 TBlockSharedAlloc const & blockSharedAlloc)
             -> T *
             {
                 static_assert(
-                    TuiNumElements > 0,
+                    TnumElements > 0,
                     "The number of elements to allocate in block shared memory must not be zero!");
 
                 return traits::AllocArr<
                     T,
-                    TuiNumElements,
+                    TnumElements,
                     TBlockSharedAlloc>
                 ::allocArr(
                     blockSharedAlloc);
@@ -174,10 +174,10 @@ namespace alpaka
                 template<
                     typename TBlockSharedAlloc,
                     typename T,
-                    std::size_t TuiNumElements>
+                    std::size_t TnumElements>
                 struct AllocArr<
                     T,
-                    TuiNumElements,
+                    TnumElements,
                     TBlockSharedAlloc,
                     typename std::enable_if<
                         std::is_base_of<typename TBlockSharedAlloc::BlockSharedAllocBase, typename std::decay<TBlockSharedAlloc>::type>::value
@@ -195,7 +195,7 @@ namespace alpaka
                         return
                             block::shared::allocArr<
                                 T,
-                                TuiNumElements>(
+                                TnumElements>(
                                     static_cast<typename TBlockSharedAlloc::BlockSharedAllocBase const &>(blockSharedAlloc));
                     }
                 };

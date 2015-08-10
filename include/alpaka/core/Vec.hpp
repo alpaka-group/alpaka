@@ -333,9 +333,9 @@ namespace alpaka
         -> TVal &
         {
             core::assertValueUnsigned(iIdx);
-            auto const uiIdx(static_cast<typename TDim::value_type>(iIdx));
-            assert(uiIdx<TDim::value);
-            return m_auiData[uiIdx];
+            auto const idx(static_cast<typename TDim::value_type>(iIdx));
+            assert(idx<TDim::value);
+            return m_auiData[idx];
         }
 
         //-----------------------------------------------------------------------------
@@ -352,9 +352,9 @@ namespace alpaka
         -> TVal
         {
             core::assertValueUnsigned(iIdx);
-            auto const uiIdx(static_cast<typename TDim::value_type>(iIdx));
-            assert(uiIdx<TDim::value);
-            return m_auiData[uiIdx];
+            auto const idx(static_cast<typename TDim::value_type>(iIdx));
+            assert(idx<TDim::value);
+            return m_auiData[idx];
         }
 
         //-----------------------------------------------------------------------------

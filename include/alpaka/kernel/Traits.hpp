@@ -56,7 +56,7 @@ namespace alpaka
             struct BlockSharedExternMemSizeBytes
             {
                 //-----------------------------------------------------------------------------
-                //! \param vuiBlockThreadExtents The size of the blocks for which the block shared memory size should be calculated.
+                //! \param blockThreadExtents The size of the blocks for which the block shared memory size should be calculated.
                 //! \tparam TArgs The kernel invocation argument types pack.
                 //! \param args,... The kernel invocation arguments for which the block shared memory size should be calculated.
                 //! \return The size of the shared memory allocated for a block in bytes.
@@ -67,11 +67,11 @@ namespace alpaka
                     typename TDim,
                     typename... TArgs>
                 ALPAKA_FN_HOST_ACC static auto getBlockSharedExternMemSizeBytes(
-                    Vec<TDim, size::Size<TAcc>> const & vuiBlockThreadExtents,
+                    Vec<TDim, size::Size<TAcc>> const & blockThreadExtents,
                     TArgs const & ... args)
                 -> size::Size<TAcc>
                 {
-                    boost::ignore_unused(vuiBlockThreadExtents);
+                    boost::ignore_unused(blockThreadExtents);
                     boost::ignore_unused(args...);
 
                     return 0;
@@ -80,7 +80,7 @@ namespace alpaka
         }
 
         //-----------------------------------------------------------------------------
-        //! \param vuiBlockThreadExtents The size of the blocks for which the block shared memory size should be calculated.
+        //! \param blockThreadExtents The size of the blocks for which the block shared memory size should be calculated.
         //! \tparam TArgs The kernel invocation argument types pack.
         //! \param args,... The kernel invocation arguments for which the block shared memory size should be calculated.
         //! \return The size of the shared memory allocated for a block in bytes.
@@ -93,7 +93,7 @@ namespace alpaka
             typename TDim,
             typename... TArgs>
         ALPAKA_FN_HOST_ACC auto getBlockSharedExternMemSizeBytes(
-            Vec<TDim, size::Size<TAcc>> const & vuiBlockThreadExtents,
+            Vec<TDim, size::Size<TAcc>> const & blockThreadExtents,
             TArgs const & ... args)
         -> size::Size<TAcc>
         {
@@ -101,7 +101,7 @@ namespace alpaka
                 TKernelFnObj,
                 TAcc>
             ::getBlockSharedExternMemSizeBytes(
-                vuiBlockThreadExtents,
+                blockThreadExtents,
                 args...);
         }
     }
