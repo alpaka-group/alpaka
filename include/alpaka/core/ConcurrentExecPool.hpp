@@ -375,9 +375,9 @@ namespace alpaka
                     // \TODO: C++14 std::make_unique would be better.
                     auto packagePtr(std::unique_ptr<TaskPackage>(new TaskPackage(std::move(boundTask))));
 
-                    m_qTasks.push(static_cast<ITaskPkg *>(packagePtr.get()));
-
                     auto future(packagePtr->m_Promise.get_future());
+
+                    m_qTasks.push(static_cast<ITaskPkg *>(packagePtr.get()));
 
                     // No longer in danger, can revoke ownership so m_qTasks is not left with dangling reference.
                     packagePtr.release();
@@ -590,9 +590,9 @@ namespace alpaka
                     // \TODO: C++14 std::make_unique would be better.
                     auto packagePtr(std::unique_ptr<TaskPackage>(new TaskPackage(std::move(boundTask))));
 
-                    m_qTasks.push(static_cast<ITaskPkg *>(packagePtr.get()));
-
                     auto future(packagePtr->m_Promise.get_future());
+
+                    m_qTasks.push(static_cast<ITaskPkg *>(packagePtr.get()));
 
                     // No longer in danger, can revoke ownership so m_qTasks is not left with dangling reference.
                     packagePtr.release();
