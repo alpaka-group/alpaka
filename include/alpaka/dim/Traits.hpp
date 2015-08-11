@@ -21,8 +21,6 @@
 
 #pragma once
 
-#include <type_traits>                      // std::enable_if, std::is_integral, std::is_unsigned
-
 namespace alpaka
 {
     //-----------------------------------------------------------------------------

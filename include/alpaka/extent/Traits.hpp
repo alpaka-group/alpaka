@@ -249,7 +249,7 @@ namespace alpaka
                 std::integral_constant<std::size_t, 0u>,
                 TExtents,
                 typename std::enable_if<
-                    std::is_integral<TExtents>::value && std::is_unsigned<TExtents>::value>::type>
+                    std::is_integral<TExtents>::value>::type>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getExtent(
@@ -270,7 +270,7 @@ namespace alpaka
                 TExtents,
                 TExtent,
                 typename std::enable_if<
-                    std::is_integral<TExtents>::value && std::is_unsigned<TExtents>::value>::type>
+                    std::is_integral<TExtents>::value>::type>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto setExtent(

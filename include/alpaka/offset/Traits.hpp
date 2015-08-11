@@ -203,7 +203,7 @@ namespace alpaka
                 std::integral_constant<std::size_t, 0u>,
                 TOffsets,
                 typename std::enable_if<
-                    std::is_integral<TOffsets>::value && std::is_unsigned<TOffsets>::value>::type>
+                    std::is_integral<TOffsets>::value>::type>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getOffset(
@@ -224,7 +224,7 @@ namespace alpaka
                 TOffsets,
                 TOffset,
                 typename std::enable_if<
-                    std::is_integral<TOffsets>::value && std::is_unsigned<TOffsets>::value>::type>
+                    std::is_integral<TOffsets>::value>::type>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto setOffset(
