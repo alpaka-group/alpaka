@@ -264,7 +264,7 @@ namespace alpaka
             //! \return The pitch in bytes. This is the distance between two consecutive rows.
             //-----------------------------------------------------------------------------
             template<
-                std::size_t TuiIdx,
+                std::size_t Tidx,
                 typename TView>
             ALPAKA_FN_HOST auto getPitchBytes(
                 TView const & buf)
@@ -272,7 +272,7 @@ namespace alpaka
             {
                 return
                     traits::GetPitchBytes<
-                        std::integral_constant<std::size_t, TuiIdx>,
+                        std::integral_constant<std::size_t, Tidx>,
                         TView>
                     ::getPitchBytes(
                         buf);

@@ -25,6 +25,8 @@
 
 #include <alpaka/core/Common.hpp>           // ALPAKA_FN_ACC_CUDA_ONLY
 
+#include <type_traits>                      // std::is_trivially_default_constructible, std::is_trivially_destructible
+
 namespace alpaka
 {
     namespace block
@@ -76,6 +78,15 @@ namespace alpaka
                     T,
                     BlockSharedAllocCudaBuiltIn>
                 {
+                    // NOTE: CUDA requires the constructor and destructor of shared objects to be empty.
+                    //  That means it is either std::is_trivially_default_constructible or of the form Type(){}.
+                    //static_assert(
+                    //    std::is_trivially_default_constructible<T>::value,
+                    //    "The type of the object to allocate in block shared memory has to be trivially default constructible!");
+                    //static_assert(
+                    //    std::is_trivially_destructible<T>::value,
+                    //    "The type of the object to allocate in block shared memory has to be trivially destructible!");
+
                     //-----------------------------------------------------------------------------
                     //
                     //-----------------------------------------------------------------------------
@@ -98,7 +109,17 @@ namespace alpaka
                     TnumElements,
                     BlockSharedAllocCudaBuiltIn>
                 {
-                    static_assert(TnumElements > 0, "The number of elements to allocate in block shared memory must not be zero!");
+                    // NOTE: CUDA requires the constructor and destructor of shared objects to be empty.
+                    //  That means it is either std::is_trivially_default_constructible or of the form Type(){}.
+                    //static_assert(
+                    //    std::is_trivially_default_constructible<T>::value,
+                    //    "The type of the objects to allocate in block shared memory has to be trivially default constructible!");
+                    //static_assert(
+                    //    std::is_trivially_destructible<T>::value,
+                    //    "The type of the objects to allocate in block shared memory has to be trivially destructible!");
+                    static_assert(
+                        TnumElements > 0,
+                        "The number of elements to allocate in block shared memory must not be zero!");
 
                     //-----------------------------------------------------------------------------
                     //

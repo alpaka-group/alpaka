@@ -498,7 +498,7 @@ namespace alpaka
                     //!
                     //-----------------------------------------------------------------------------
                     template<
-                        std::size_t TuiIdx,
+                        std::size_t Tidx,
                         typename TView,
                         typename TBuf>
                     ALPAKA_FN_HOST static auto pitchedOffsetBytesDim(
@@ -507,8 +507,8 @@ namespace alpaka
                     -> TSize
                     {
                         return
-                            offset::getOffset<TuiIdx>(view)
-                            * view::getPitchBytes<TuiIdx + 1u>(buf);
+                            offset::getOffset<Tidx>(view)
+                            * view::getPitchBytes<Tidx + 1u>(buf);
                     }
                 };
 

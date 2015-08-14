@@ -80,7 +80,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
-            std::size_t TuiIdx,
+            std::size_t Tidx,
             typename TExtents>
         ALPAKA_FN_HOST_ACC auto getExtent(
             TExtents const & extents = TExtents())
@@ -88,7 +88,7 @@ namespace alpaka
         {
             return
                 traits::GetExtent<
-                    std::integral_constant<std::size_t, TuiIdx>,
+                    std::integral_constant<std::size_t, Tidx>,
                     TExtents>
                 ::getExtent(
                     extents);
@@ -176,7 +176,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
-            std::size_t TuiIdx,
+            std::size_t Tidx,
             typename TExtents,
             typename TExtent>
         ALPAKA_FN_HOST_ACC auto setExtent(
@@ -185,7 +185,7 @@ namespace alpaka
         -> void
         {
             traits::SetExtent<
-                std::integral_constant<std::size_t, TuiIdx>,
+                std::integral_constant<std::size_t, Tidx>,
                 TExtents,
                 TExtent>
             ::setExtent(

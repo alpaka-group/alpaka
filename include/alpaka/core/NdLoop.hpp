@@ -36,7 +36,7 @@ namespace alpaka
             //! N-dimensional loop iteration template.
             //#############################################################################
             template<
-                bool TbLastLoop>
+                bool TisLastLoop>
             struct NdLoop;
             //#############################################################################
             //! N-dimensional loop iteration template.
@@ -50,7 +50,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 template<
-                    std::size_t TuiCurDim,
+                    std::size_t TcurDim,
                     typename TIndex,
                     typename TExtentsVec,
                     typename TFnObj,
@@ -69,10 +69,10 @@ namespace alpaka
                         dim::Dim<TIndex>::value == dim::Dim<TExtentsVec>::value,
                         "The dimensions of the iteration vector and the extents vector have to be identical!");
                     static_assert(
-                        dim::Dim<TIndex>::value > TuiCurDim,
+                        dim::Dim<TIndex>::value > TcurDim,
                         "The current dimension has to be in the rang [0,dim-1]!");
 
-                    for(idx[TuiCurDim] = 0u; idx[TuiCurDim] < extents[TuiCurDim]; ++idx[TuiCurDim])
+                    for(idx[TcurDim] = 0u; idx[TcurDim] < extents[TcurDim]; ++idx[TcurDim])
                     {
                         f(idx, args...);
                     }
@@ -90,7 +90,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 template<
-                    std::size_t TuiCurDim,
+                    std::size_t TcurDim,
                     typename TIndex,
                     typename TExtentsVec,
                     typename TFnObj,
@@ -109,15 +109,15 @@ namespace alpaka
                         dim::Dim<TIndex>::value == dim::Dim<TExtentsVec>::value,
                         "The dimensions of the iteration vector and the extents vector have to be identical!");
                     static_assert(
-                        dim::Dim<TIndex>::value > TuiCurDim,
+                        dim::Dim<TIndex>::value > TcurDim,
                         "The current dimension has to be in the rang [0,dim-1]!");
 
-                    for(idx[TuiCurDim] = 0u; idx[TuiCurDim] < extents[TuiCurDim]; ++idx[TuiCurDim])
+                    for(idx[TcurDim] = 0u; idx[TcurDim] < extents[TcurDim]; ++idx[TcurDim])
                     {
                         detail::NdLoop<
-                            (TuiCurDim+2u == dim::Dim<TIndex>::value)>
+                            (TcurDim+2u == dim::Dim<TIndex>::value)>
                         ::template ndLoop<
-                            TuiCurDim+1u>(
+                            TcurDim+1u>(
                                 idx,
                                 extents,
                                 f,

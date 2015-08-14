@@ -38,8 +38,8 @@ namespace alpaka
             //! Maps a linear index to a N dimensional index.
             //#############################################################################
             template<
-                std::size_t TuiIdxDimOut,
-                std::size_t TuiIdxDimIn>
+                std::size_t TidxDimOut,
+                std::size_t TidxDimIn>
             struct MapIdx;
             //#############################################################################
             //! Maps a linear index to a linear index.
@@ -53,7 +53,7 @@ namespace alpaka
                 // \tparam TElem Type of the index values.
                 // \param Index Idx to be mapped.
                 // \param Extents Spatial size to map the index to.
-                // \return Vector of dimension TuiDimDst.
+                // \return Vector of dimension TidxDimOut.
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 template<
@@ -81,7 +81,7 @@ namespace alpaka
                 // \tparam TElem Type of the index values.
                 // \param Index Idx to be mapped.
                 // \param Extents Spatial size to map the index to.
-                // \return Vector of dimension TuiDimDst.
+                // \return Vector of dimension TidxDimOut.
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 template<
@@ -113,7 +113,7 @@ namespace alpaka
                 // \tparam TElem Type of the index values.
                 // \param Index Idx to be mapped.
                 // \param Extents Spatial size to map the index to.
-                // \return Vector of dimension TuiDimDst.
+                // \return Vector of dimension TidxDimOut.
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 template<
@@ -143,7 +143,7 @@ namespace alpaka
                 // \tparam TElem Type of the index values.
                 // \param Index Idx to be mapped.
                 // \param Extents Spatial size to map the index to.
-                // \return Vector of dimension TuiDimDst.
+                // \return Vector of dimension TidxDimOut.
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 template<
@@ -168,7 +168,7 @@ namespace alpaka
                 // \tparam TElem Type of the index values.
                 // \param Index Idx to be mapped.
                 // \param Extents Spatial size to map the index to.
-                // \return Vector of dimension TuiDimDst.
+                // \return Vector of dimension TidxDimOut.
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 template<
@@ -186,24 +186,23 @@ namespace alpaka
         //#############################################################################
         //! Maps a N dimensional index to a N dimensional position.
         //!
-        //! \tparam TuiIdxDimOut Dimension of the index vector to map to.
-        //! \tparam TuiIdxDimIn Dimension of the index vector to map from.
-        //! \tparam TuiIdxDimExt Dimension of the extents vector to map use for mapping.
+        //! \tparam TidxDimOut Dimension of the index vector to map to.
+        //! \tparam TidxDimIn Dimension of the index vector to map from.
         //! \tparam TElem Type of the elements of the index vector to map from.
         //#############################################################################
         ALPAKA_NO_HOST_ACC_WARNING
         template<
-            std::size_t TuiIdxDimOut,
-            std::size_t TuiIdxDimIn,
+            std::size_t TidxDimOut,
+            std::size_t TidxDimIn,
             typename TElem>
         ALPAKA_FN_HOST_ACC auto mapIdx(
-            Vec<dim::DimInt<TuiIdxDimIn>, TElem> const & idx,
-            Vec<dim::DimInt<(TuiIdxDimOut < TuiIdxDimIn) ? TuiIdxDimIn : TuiIdxDimOut>, TElem> const & extents)
-        -> Vec<dim::DimInt<TuiIdxDimOut>, TElem>
+            Vec<dim::DimInt<TidxDimIn>, TElem> const & idx,
+            Vec<dim::DimInt<(TidxDimOut < TidxDimIn) ? TidxDimIn : TidxDimOut>, TElem> const & extents)
+        -> Vec<dim::DimInt<TidxDimOut>, TElem>
         {
             return detail::MapIdx<
-                TuiIdxDimOut,
-                TuiIdxDimIn>
+                TidxDimOut,
+                TidxDimIn>
             ::mapIdx(
                 idx,
                 extents);

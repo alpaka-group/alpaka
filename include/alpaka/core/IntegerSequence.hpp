@@ -53,34 +53,34 @@ namespace alpaka
                 }
             };
 
-            template<bool TbNegativeSize, bool TbIsBegin, class T, T TuiBegin, class TIntCon, class TIntSeq>
+            template<bool TisSizeNegative, bool TbIsBegin, class T, T Tbegin, class TIntCon, class TIntSeq>
             struct make_integer_sequence_helper
             {
-                static_assert(!TbNegativeSize, "make_integer_sequence<T, N> requires N to be non-negative.");
+                static_assert(!TisSizeNegative, "make_integer_sequence<T, N> requires N to be non-negative.");
             };
-            template<class T, T TuiBegin, T... TVals>
-            struct make_integer_sequence_helper<false, true, T, TuiBegin, std::integral_constant<T, TuiBegin>, integer_sequence<T, TVals...> > :
+            template<class T, T Tbegin, T... TVals>
+            struct make_integer_sequence_helper<false, true, T, Tbegin, std::integral_constant<T, Tbegin>, integer_sequence<T, TVals...> > :
                 integer_sequence<T, TVals...>
             {};
-            template<class T, T TuiBegin, T TIdx, T... TVals>
-            struct make_integer_sequence_helper<false, false, T, TuiBegin, std::integral_constant<T, TIdx>, integer_sequence<T, TVals...> > :
-                make_integer_sequence_helper<false, TIdx == (TuiBegin+1), T, TuiBegin, std::integral_constant<T, TIdx - 1>, integer_sequence<T, TIdx - 1, TVals...> >
+            template<class T, T Tbegin, T TIdx, T... TVals>
+            struct make_integer_sequence_helper<false, false, T, Tbegin, std::integral_constant<T, TIdx>, integer_sequence<T, TVals...> > :
+                make_integer_sequence_helper<false, TIdx == (Tbegin+1), T, Tbegin, std::integral_constant<T, TIdx - 1>, integer_sequence<T, TIdx - 1, TVals...> >
             {};
 
-            template<class T, T TuiBegin, T TuiSize>
-            using make_integer_sequence_offset = typename make_integer_sequence_helper<(TuiSize < 0), (TuiSize == 0), T, TuiBegin, std::integral_constant<T, TuiBegin+TuiSize>, integer_sequence<T> >::type;
+            template<class T, T Tbegin, T Tsize>
+            using make_integer_sequence_offset = typename make_integer_sequence_helper<(Tsize < 0), (Tsize == 0), T, Tbegin, std::integral_constant<T, Tbegin+Tsize>, integer_sequence<T> >::type;
 
-            template<class T, T TuiSize>
-            using make_integer_sequence = make_integer_sequence_offset<T, 0u, TuiSize>;
+            template<class T, T Tsize>
+            using make_integer_sequence = make_integer_sequence_offset<T, 0u, Tsize>;
 
             template<std::size_t... TVals>
             using index_sequence = integer_sequence<std::size_t, TVals...>;
 
-            template<class T, T TuiBegin, T TuiSize>
-            using make_index_sequence_offset = make_integer_sequence_offset<std::size_t, TuiBegin, TuiSize>;
+            template<class T, T Tbegin, T Tsize>
+            using make_index_sequence_offset = make_integer_sequence_offset<std::size_t, Tbegin, Tsize>;
 
-            template<std::size_t TuiSize>
-            using make_index_sequence = make_integer_sequence<std::size_t, TuiSize>;
+            template<std::size_t Tsize>
+            using make_index_sequence = make_integer_sequence<std::size_t, Tsize>;
 
             template<typename... Ts>
             using index_sequence_for = make_index_sequence<sizeof...(Ts)>;

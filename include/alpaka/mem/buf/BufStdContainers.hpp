@@ -299,9 +299,9 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TElem,
-                std::size_t TuiSize>
+                std::size_t Tsize>
             struct DevType<
-                std::array<TElem, TuiSize>>
+                std::array<TElem, Tsize>>
             {
                 using type = dev::DevCpu;
             };
@@ -311,15 +311,15 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TElem,
-                std::size_t TuiSize>
+                std::size_t Tsize>
             struct GetDev<
-                std::array<TElem, TuiSize>>
+                std::array<TElem, Tsize>>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getDev(
-                    std::array<TElem, TuiSize> const & buf)
+                    std::array<TElem, Tsize> const & buf)
                 -> dev::DevCpu
                 {
                     return dev::cpu::getDev();
@@ -336,9 +336,9 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TElem,
-                std::size_t TuiSize>
+                std::size_t Tsize>
             struct DimType<
-                std::array<TElem, TuiSize>>
+                std::array<TElem, Tsize>>
             {
                 using type = dim::DimInt<1u>;
             };
@@ -353,21 +353,21 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TElem,
-                std::size_t TuiSize>
+                std::size_t Tsize>
             struct GetExtent<
                 std::integral_constant<std::size_t, 0u>,
-                std::array<TElem, TuiSize>>
+                std::array<TElem, Tsize>>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static constexpr auto getExtent(
-                    std::array<TElem, TuiSize> const & /*extents*/)
-                -> size::Size<std::array<TElem, TuiSize>>
+                    std::array<TElem, Tsize> const & /*extents*/)
+                -> size::Size<std::array<TElem, Tsize>>
                 {
                     // C++14
                     /*boost::ignore_unused(extents);*/
-                    return TuiSize;
+                    return Tsize;
                 }
             };
         }
@@ -383,9 +383,9 @@ namespace alpaka
                 //#############################################################################
                 template<
                     typename TElem,
-                    std::size_t TuiSize>
+                    std::size_t Tsize>
                 struct ElemType<
-                    std::array<TElem, TuiSize>>
+                    std::array<TElem, Tsize>>
                 {
                     using type = TElem;
                 };
@@ -395,16 +395,16 @@ namespace alpaka
                 //#############################################################################
                 template<
                     typename TElem,
-                    std::size_t TuiSize>
+                    std::size_t Tsize>
                 struct GetBuf<
-                    std::array<TElem, TuiSize>>
+                    std::array<TElem, Tsize>>
                 {
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto getBuf(
-                        std::array<TElem, TuiSize> const & buf)
-                    -> std::array<TElem, TuiSize> const &
+                        std::array<TElem, Tsize> const & buf)
+                    -> std::array<TElem, Tsize> const &
                     {
                         return buf;
                     }
@@ -412,8 +412,8 @@ namespace alpaka
                     //!
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto getBuf(
-                        std::array<TElem, TuiSize> & buf)
-                    -> std::array<TElem, TuiSize> &
+                        std::array<TElem, Tsize> & buf)
+                    -> std::array<TElem, Tsize> &
                     {
                         return buf;
                     }
@@ -424,15 +424,15 @@ namespace alpaka
                 //#############################################################################
                 template<
                     typename TElem,
-                    std::size_t TuiSize>
+                    std::size_t Tsize>
                 struct GetPtrNative<
-                    std::array<TElem, TuiSize>>
+                    std::array<TElem, Tsize>>
                 {
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto getPtrNative(
-                        std::array<TElem, TuiSize> const & buf)
+                        std::array<TElem, Tsize> const & buf)
                     -> TElem const *
                     {
                         return buf.data();
@@ -441,7 +441,7 @@ namespace alpaka
                     //!
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto getPtrNative(
-                        std::array<TElem, TuiSize> & buf)
+                        std::array<TElem, Tsize> & buf)
                     -> TElem *
                     {
                         return buf.data();
@@ -453,17 +453,17 @@ namespace alpaka
                 //#############################################################################
                 template<
                     typename TElem,
-                    std::size_t TuiSize>
+                    std::size_t Tsize>
                 struct GetPitchBytes<
                     std::integral_constant<std::size_t, 0u>,
-                    std::array<TElem, TuiSize>>
+                    std::array<TElem, Tsize>>
                 {
                     //-----------------------------------------------------------------------------
                     //!
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_HOST static auto getPitchBytes(
-                        std::array<TElem, TuiSize> const & pitch)
-                    -> size::Size<std::array<TElem, TuiSize>>
+                        std::array<TElem, Tsize> const & pitch)
+                    -> size::Size<std::array<TElem, Tsize>>
                     {
                         return sizeof(TElem) * pitch.size();
                     }
@@ -481,17 +481,17 @@ namespace alpaka
             template<
                 typename TIdx,
                 typename TElem,
-                std::size_t TuiSize>
+                std::size_t Tsize>
             struct GetOffset<
                 TIdx,
-                std::array<TElem, TuiSize>>
+                std::array<TElem, Tsize>>
             {
                 //-----------------------------------------------------------------------------
                 //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getOffset(
-                    std::array<TElem, TuiSize> const &)
-                -> size::Size<std::array<TElem, TuiSize>>
+                    std::array<TElem, Tsize> const &)
+                -> size::Size<std::array<TElem, Tsize>>
                 {
                     return 0u;
                 }
@@ -507,9 +507,9 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TElem,
-                std::size_t TuiSize>
+                std::size_t Tsize>
             struct SizeType<
-                std::array<TElem, TuiSize>>
+                std::array<TElem, Tsize>>
             {
                 using type = std::size_t;
             };

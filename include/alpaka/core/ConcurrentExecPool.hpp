@@ -267,7 +267,7 @@ namespace alpaka
             //! \tparam TYield The type is required to have a static method "void yield()" to yield the current thread if there is no work.
             //! \tparam TMutex Unused. The mutex type used for locking threads.
             //! \tparam TCondVar Unused. The condition variable type used to make the threads wait if there is no work.
-            //! \tparam TbYield Boolean value if the threads should yield instead of wait for a condition variable.
+            //! \tparam TisYielding Boolean value if the threads should yield instead of wait for a condition variable.
             //#############################################################################
             template<
                 typename TSize,
@@ -276,7 +276,7 @@ namespace alpaka
                 typename TYield,
                 typename TMutex = void,
                 typename TCondVar = void,
-                bool TbYield = true>
+                bool TisYielding = true>
             class ConcurrentExecPool final
             {
             public:

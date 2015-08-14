@@ -135,6 +135,10 @@ namespace alpaka
                     TnumElements,
                     BlockSharedAllocMasterSync>
                 {
+                    static_assert(
+                        TnumElements > 0,
+                        "The number of elements to allocate in block shared memory must not be zero!");
+
                     //-----------------------------------------------------------------------------
                     //
                     //-----------------------------------------------------------------------------

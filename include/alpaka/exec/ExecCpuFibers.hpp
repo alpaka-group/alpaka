@@ -89,8 +89,8 @@ namespace alpaka
                 boost::fibers::fiber,               // The concurrent execution type.
                 boost::fibers::promise,             // The promise type.
                 FiberPoolYield,                     // The type yielding the current concurrent execution.
-                boost::fibers::mutex,               // The mutex type to use. Only required if TbYield is true.
-                boost::fibers::condition_variable,  // The condition variable type to use. Only required if TbYield is true.
+                boost::fibers::mutex,               // The mutex type to use. Only required if TisYielding is true.
+                boost::fibers::condition_variable,  // The condition variable type to use. Only required if TisYielding is true.
                 false>;                             // If the threads should yield.
 
         public:

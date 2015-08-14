@@ -67,8 +67,8 @@ namespace alpaka
                         std::thread,                // The concurrent execution type.
                         std::promise,               // The promise type.
                         void,                       // The type yielding the current concurrent execution.
-                        std::mutex,                 // The mutex type to use. Only required if TbYield is true.
-                        std::condition_variable,    // The condition variable type to use. Only required if TbYield is true.
+                        std::mutex,                 // The mutex type to use. Only required if TisYielding is true.
+                        std::condition_variable,    // The condition variable type to use. Only required if TisYielding is true.
                         false>;                     // If the threads should yield.
 
                 public:

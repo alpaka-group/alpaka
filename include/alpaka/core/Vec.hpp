@@ -266,7 +266,7 @@ namespace alpaka
         //! A function object that returns the given value for each index.
         //#############################################################################
         template<
-            std::size_t TuiIdx>
+            std::size_t Tidx>
         struct CreateSingleVal
         {
             //-----------------------------------------------------------------------------
@@ -531,7 +531,7 @@ namespace alpaka
         //! A function object that returns the sum of the two input vectors elements.
         //#############################################################################
         template<
-            std::size_t TuiIdx>
+            std::size_t Tidx>
         struct CreateAdd
         {
             //-----------------------------------------------------------------------------
@@ -546,7 +546,7 @@ namespace alpaka
                 Vec<TDim, TVal> const & q)
             -> TVal
             {
-                return p[TuiIdx] + q[TuiIdx];
+                return p[Tidx] + q[Tidx];
             }
         };
     }
@@ -581,7 +581,7 @@ namespace alpaka
         //! A function object that returns the product of the two input vectors elements.
         //#############################################################################
         template<
-            std::size_t TuiIdx>
+            std::size_t Tidx>
         struct CreateMul
         {
             //-----------------------------------------------------------------------------
@@ -596,7 +596,7 @@ namespace alpaka
                 Vec<TDim, TVal> const & q)
             -> TVal
             {
-                return p[TuiIdx] * q[TuiIdx];
+                return p[Tidx] * q[Tidx];
             }
         };
     }
@@ -761,7 +761,7 @@ namespace alpaka
         //! A function object that returns the given value for each index.
         //#############################################################################
         template<
-            std::size_t TuiIdx>
+            std::size_t Tidx>
         struct CreateCast
         {
             //-----------------------------------------------------------------------------
@@ -777,7 +777,7 @@ namespace alpaka
                 Vec<TDim, TVal> const & vec)
             -> TValNew
             {
-                return static_cast<TValNew>(vec[TuiIdx]);
+                return static_cast<TValNew>(vec[Tidx]);
             }
         };
     }
@@ -810,7 +810,7 @@ namespace alpaka
         //! A function object that returns the value at the index from the back of the vector.
         //#############################################################################
         template<
-            std::size_t TuiIdx>
+            std::size_t Tidx>
         struct CreateReverse
         {
             //-----------------------------------------------------------------------------
@@ -824,7 +824,7 @@ namespace alpaka
                 Vec<TDim, TVal> const & vec)
             -> TVal
             {
-                return vec[TDim::value - 1u - TuiIdx];
+                return vec[TDim::value - 1u - Tidx];
             }
         };
     }
@@ -859,7 +859,7 @@ namespace alpaka
             //! A function object that returns the extent for each index.
             //#############################################################################
             template<
-                std::size_t TuiIdx>
+                std::size_t Tidx>
             struct CreateExtent
             {
                 //-----------------------------------------------------------------------------
@@ -872,7 +872,7 @@ namespace alpaka
                     TExtents const & extents)
                 -> size::Size<TExtents>
                 {
-                    return extent::getExtent<TuiIdx>(extents);
+                    return extent::getExtent<Tidx>(extents);
                 }
             };
         }
@@ -931,7 +931,7 @@ namespace alpaka
             //! A function object that returns the offsets for each index.
             //#############################################################################
             template<
-                std::size_t TuiIdx>
+                std::size_t Tidx>
             struct CreateOffset
             {
                 //-----------------------------------------------------------------------------
@@ -944,7 +944,7 @@ namespace alpaka
                     TOffsets const & offsets)
                 -> size::Size<TOffsets>
                 {
-                    return offset::getOffset<TuiIdx>(offsets);
+                    return offset::getOffset<Tidx>(offsets);
                 }
             };
         }

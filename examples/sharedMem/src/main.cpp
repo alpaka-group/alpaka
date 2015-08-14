@@ -33,10 +33,10 @@
 //#############################################################################
 //! A kernel using atomicOp, syncBlockThreads, getBlockSharedExternMem, getIdx, getWorkDiv and global memory to compute a (useless) result.
 //! \tparam TAcc The accelerator environment to be executed on.
-//! \tparam TuiNumUselessWork The number of useless calculations done in each kernel execution.
+//! \tparam TnumUselessWork The number of useless calculations done in each kernel execution.
 //#############################################################################
 template<
-    typename TuiNumUselessWork>
+    typename TnumUselessWork>
 class SharedMemKernel
 {
 public:
@@ -71,8 +71,8 @@ public:
         std::uint32_t * const pBlockShared(acc.template getBlockSharedExternMem<std::uint32_t>());
 
         // Get some shared memory (allocate a second buffer directly afterwards to check for some synchronization bugs).
-        //std::uint32_t * const pBlockShared1(alpaka::block::shared::allocArr<std::uint32_t, TuiNumUselessWork::value>());
-        //std::uint32_t * const pBlockShared2(alpaka::block::shared::allocArr<std::uint32_t, TuiNumUselessWork::value>());
+        //std::uint32_t * const pBlockShared1(alpaka::block::shared::allocArr<std::uint32_t, TnumUselessWork::value>());
+        //std::uint32_t * const pBlockShared2(alpaka::block::shared::allocArr<std::uint32_t, TnumUselessWork::value>());
 
         // Calculate linearized index of the thread in the block.
         std::size_t const blockThreadsIdx1d(alpaka::idx::getIdx<alpaka::Block, alpaka::Threads>(acc)[0u]);
@@ -80,7 +80,7 @@ public:
 
         // Fill the shared block with the thread ids [1+X, 2+X, 3+X, ..., #Threads+X].
         std::uint32_t iSum1(static_cast<std::uint32_t>(blockThreadsIdx1d+1));
-        for(std::uint32_t i(0); i<TuiNumUselessWork::value; ++i)
+        for(std::uint32_t i(0); i<TnumUselessWork::value; ++i)
         {
             iSum1 += i;
         }
@@ -92,7 +92,7 @@ public:
 
         // Do something useless.
         std::uint32_t iSum2(static_cast<std::uint32_t>(blockThreadsIdx1d));
-        for(std::uint32_t i(0); i<TuiNumUselessWork::value; ++i)
+        for(std::uint32_t i(0); i<TnumUselessWork::value; ++i)
         {
             iSum2 -= i;
         }
@@ -136,10 +136,10 @@ namespace alpaka
             //! The trait for getting the size of the block shared extern memory for a kernel.
             //#############################################################################
             template<
-                typename TuiNumUselessWork,
+                typename TnumUselessWork,
                 typename TAcc>
             struct BlockSharedExternMemSizeBytes<
-                SharedMemKernel<TuiNumUselessWork>,
+                SharedMemKernel<TnumUselessWork>,
                 TAcc>
             {
                 //-----------------------------------------------------------------------------
@@ -164,7 +164,7 @@ namespace alpaka
 //! Profiles the example kernel and checks the result.
 //#############################################################################
 template<
-    typename TuiNumUselessWork>
+    typename TnumUselessWork>
 struct SharedMemTester
 {
     template<
@@ -180,7 +180,7 @@ struct SharedMemTester
         std::cout << "################################################################################" << std::endl;
 
         // Create the kernel function object.
-        SharedMemKernel<TuiNumUselessWork> kernel(42);
+        SharedMemKernel<TnumUselessWork> kernel(42);
 
         // Select a device to execute on.
         alpaka::dev::Dev<TAcc> devAcc(
@@ -287,10 +287,10 @@ auto main()
 
         std::cout << std::endl;
 
-        using TuiNumUselessWork = std::integral_constant<std::size_t, 100u>;
+        using TnumUselessWork = std::integral_constant<std::size_t, 100u>;
         std::uint32_t const mult2(5u);
 
-        SharedMemTester<TuiNumUselessWork> sharedMemTester;
+        SharedMemTester<TnumUselessWork> sharedMemTester;
 
         // Execute the kernel on all enabled accelerators.
         alpaka::core::forEachType<

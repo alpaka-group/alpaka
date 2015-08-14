@@ -75,7 +75,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
-            std::size_t TuiIdx,
+            std::size_t Tidx,
             typename TOffsets>
         ALPAKA_FN_HOST_ACC auto getOffset(
             TOffsets const & offsets)
@@ -83,7 +83,7 @@ namespace alpaka
         {
             return
                 traits::GetOffset<
-                    std::integral_constant<std::size_t, TuiIdx>,
+                    std::integral_constant<std::size_t, Tidx>,
                     TOffsets>
                 ::getOffset(
                     offsets);
@@ -130,7 +130,7 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
-            std::size_t TuiIdx,
+            std::size_t Tidx,
             typename TOffsets,
             typename TOffset>
         ALPAKA_FN_HOST_ACC auto setOffset(
@@ -139,7 +139,7 @@ namespace alpaka
         -> void
         {
             traits::SetOffset<
-                std::integral_constant<std::size_t, TuiIdx>,
+                std::integral_constant<std::size_t, Tidx>,
                 TOffsets,
                 TOffset>
             ::setOffset(

@@ -48,7 +48,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 std::size_t N,
-                bool TbIsPowerTwo>
+                bool TisPowerTwo>
             struct RoundUpToPowerOfTwoHelper :
                 std::integral_constant<
                     std::size_t,
@@ -91,20 +91,20 @@ namespace alpaka
             //! Calculates the optimal alignment for data of the given size.
             //-----------------------------------------------------------------------------
             template<
-                std::size_t TuiSizeBytes>
+                std::size_t TsizeBytes>
             struct OptimalAlignment :
                 std::integral_constant<
                     std::size_t,
 #if BOOST_COMP_GNUC
                     // GCC does not support alignments larger then 128: "warning: requested alignment 256 is larger than 128[-Wattributes]".
-                    (TuiSizeBytes > 64)
+                    (TsizeBytes > 64)
                         ? 128
                         :
 #endif
                             // Align at a minimum of 16 Bytes.
-                            (/*(TuiSizeBytes <= 16)
+                            (/*(TsizeBytes <= 16)
                             ? 16
-                            :*/ RoundUpToPowerOfTwo<TuiSizeBytes>::value)>
+                            :*/ RoundUpToPowerOfTwo<TsizeBytes>::value)>
             {};
         }
     }
