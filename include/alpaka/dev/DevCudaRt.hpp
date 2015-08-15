@@ -167,22 +167,28 @@ namespace alpaka
             {
                 cudaError rc(cudaSetDevice(static_cast<int>(iDevice)));
 
+                cudaStream_t stream;
                 // Create a dummy stream to check if the device is already used by an other process.
                 // cudaSetDevice never returns an error if another process already uses the selected device and gpu compute mode is set "process exclusive".
                 // \TODO: Check if this workaround is needed!
                 if(rc == cudaSuccess)
                 {
-                    cudaStream_t stream;
                     rc = cudaStreamCreate(&stream);
                 }
 
                 if(rc == cudaSuccess)
                 {
+                    // Destroy the dummy stream.
+                    ALPAKA_CUDA_RT_CHECK(
+                        cudaStreamDestroy(
+                            stream));
                     return true;
                 }
                 else
                 {
-                    ALPAKA_CUDA_RT_CHECK(rc);
+                    // Return the previous error from cudaStreamCreate.
+                    ALPAKA_CUDA_RT_CHECK(
+                        rc);
                     // Reset the Error state.
                     cudaGetLastError();
 
