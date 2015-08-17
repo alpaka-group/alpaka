@@ -62,7 +62,7 @@ This library uses C++11 (or newer when available).
 |OpenMP 2.0 threads|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
 |OpenMP 4.0|:white_check_mark:|:white_check_mark:|:x:|:x:|:x:|:white_check_mark:|
 | std::thread |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
-| Boost.Fiber |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|
+| Boost.Fiber |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
 |CUDA 7.0|:white_check_mark:|:x:|:x:|:x:|:x:|:white_check_mark:|
 
 **NOTE**: :bangbang: Currently the *CUDA accelerator back-end* can not be enabled together with the *std::thread accelerator back-end* or the *Boost.Fiber accelerator back-end* due to bugs in the NVIDIA nvcc compiler :bangbang:
