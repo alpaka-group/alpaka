@@ -180,9 +180,8 @@ namespace alpaka
                 {
 #ifndef __CUDA_ARCH__
                     boost::ignore_unused(arg);
-#else
-                    // Nothing to do for unsigned types.
 #endif
+                    // Nothing to do for unsigned types.
                 }
             };
         }
