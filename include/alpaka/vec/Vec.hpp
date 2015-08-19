@@ -756,56 +756,57 @@ namespace alpaka
             using IdxSubSequence = alpaka::core::detail::make_integer_sequence_offset<std::size_t, TDim::value-TSubDim::value, TSubDim::value>;
             return subVecFromIndices(vec, IdxSubSequence());
         }
-    }
 
-    namespace detail
-    {
-        //#############################################################################
-        //! A function object that returns the given value for each index.
-        //#############################################################################
-        template<
-            std::size_t Tidx>
-        struct CreateCast
+        namespace detail
         {
-            //-----------------------------------------------------------------------------
-            //!
-            //-----------------------------------------------------------------------------
-            ALPAKA_NO_HOST_ACC_WARNING
+            //#############################################################################
+            //! A function object that returns the given value for each index.
+            //#############################################################################
             template<
-                typename TValNew,
-                typename TDim,
-                typename TVal>
-            ALPAKA_FN_HOST_ACC static auto create(
-                TValNew const &/* valNew*/,
-                Vec<TDim, TVal> const & vec)
-            -> TValNew
+                std::size_t Tidx>
+            struct CreateCast
             {
-                return static_cast<TValNew>(vec[Tidx]);
-            }
-        };
+                //-----------------------------------------------------------------------------
+                //!
+                //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
+                template<
+                    typename TValNew,
+                    typename TDim,
+                    typename TVal>
+                ALPAKA_FN_HOST_ACC static auto create(
+                    TValNew const &/* valNew*/,
+                    Vec<TDim, TVal> const & vec)
+                -> TValNew
+                {
+                    return static_cast<TValNew>(vec[Tidx]);
+                }
+            };
+
     }
-    //-----------------------------------------------------------------------------
-    //! Cast constructor.
-    //-----------------------------------------------------------------------------
-    ALPAKA_NO_HOST_ACC_WARNING
-    template<
-        typename TValNew,
-        typename TDim,
-        typename TVal>
-    ALPAKA_FN_HOST_ACC static auto castVec(Vec<TDim, TVal> const & other)
-    -> Vec<TDim, TValNew>
-    {
-        return
+        //-----------------------------------------------------------------------------
+        //! Cast constructor.
+        //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
+        template<
+            typename TValNew,
+            typename TDim,
+            typename TVal>
+        ALPAKA_FN_HOST_ACC static auto cast(Vec<TDim, TVal> const & other)
+        -> Vec<TDim, TValNew>
+        {
+            return
 #ifdef __CUDACC__
-        Vec<TDim, TValNew>::template
+            Vec<TDim, TValNew>::template
 #endif
-            createVecFromIndexedFn<
+                createVecFromIndexedFn<
 #ifndef __CUDACC__
-                TDim,
+                    TDim,
 #endif
-                detail::CreateCast>(
-                    TValNew(),
-                    other);
+                    detail::CreateCast>(
+                        TValNew(),
+                        other);
+        }
     }
     namespace detail
     {

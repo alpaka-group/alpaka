@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/math/atan/Traits.hpp>   // Atan
+#include <alpaka/math/atan/Traits.hpp>  // Atan
 
 //#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 

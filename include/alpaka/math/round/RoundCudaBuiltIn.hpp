@@ -23,7 +23,7 @@
 
 #include <alpaka/math/round/Traits.hpp> // Round
 
-#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+//#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 
 #include <type_traits>                  // std::enable_if, std::is_arithmetic
 #include <math_functions.hpp>           // ::round
@@ -59,7 +59,7 @@ namespace alpaka
                     TArg const & arg)
                 -> decltype(::round(arg))
                 {
-                    boost::ignore_unused(round);
+                    //boost::ignore_unused(round);
                     return ::round(arg);
                 }
             };
@@ -79,7 +79,7 @@ namespace alpaka
                     TArg const & arg)
                 -> long int
                 {
-                    boost::ignore_unused(lround);
+                    //boost::ignore_unused(lround);
                     return ::lround(arg);
                 }
             };
@@ -99,7 +99,7 @@ namespace alpaka
                     TArg const & arg)
                 -> long int
                 {
-                    boost::ignore_unused(llround);
+                    //boost::ignore_unused(llround);
                     return ::llround(arg);
                 }
             };

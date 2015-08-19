@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/math/asin/Traits.hpp>   // Asin
+#include <alpaka/math/asin/Traits.hpp>  // Asin
 
 //#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 

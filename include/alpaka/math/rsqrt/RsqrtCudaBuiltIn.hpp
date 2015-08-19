@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/math/rsqrt/Traits.hpp>  // Rsqrt
+#include <alpaka/math/rsqrt/Traits.hpp> // Rsqrt
 
 //#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 

@@ -27,8 +27,6 @@
 #include <alpaka/stream/StreamCpuAsync.hpp> // stream::StreamCpuAsync
 #include <alpaka/stream/StreamCpuSync.hpp>  // stream::StreamCpuSync
 
-#include <boost/core/ignore_unused.hpp>     // boost::ignore_unused
-
 #include <cassert>                          // assert
 #include <cstring>                          // std::memset
 
