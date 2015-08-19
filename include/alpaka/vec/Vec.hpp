@@ -650,109 +650,112 @@ namespace alpaka
         return os;
     }
 
-    namespace detail
+    namespace vec
     {
-        //#############################################################################
-        //! Specialization for selecting a sub-vector.
-        //#############################################################################
+        namespace detail
+        {
+            //#############################################################################
+            //! Specialization for selecting a sub-vector.
+            //#############################################################################
+            template<
+                typename TDim,
+                typename TIndexSequence>
+            struct SubVecFromIndices
+            {
+                ALPAKA_NO_HOST_ACC_WARNING
+                template<
+                    typename TVal,
+                    std::size_t... TIndices>
+                ALPAKA_FN_HOST_ACC static auto subVecFromIndices(
+                    Vec<TDim, TVal> const & vec,
+                    alpaka::core::detail::integer_sequence<std::size_t, TIndices...> const &)
+                -> Vec<dim::DimInt<sizeof...(TIndices)>, TVal>
+                {
+                    static_assert(sizeof...(TIndices) <= TDim::value, "The sub-vector has to be smaller (or same size) then the origin vector.");
+
+                    return Vec<dim::DimInt<sizeof...(TIndices)>, TVal>(vec[TIndices]...);
+                }
+            };
+            //#############################################################################
+            //! Specialization for selecting the whole vector.
+            //#############################################################################
+            template<
+                typename TDim>
+            struct SubVecFromIndices<
+                TDim,
+                alpaka::core::detail::make_integer_sequence<std::size_t, TDim::value>>
+            {
+                ALPAKA_NO_HOST_ACC_WARNING
+                template<
+                    typename TVal>
+                ALPAKA_FN_HOST_ACC static auto subVecFromIndices(
+                    Vec<TDim, TVal> const & vec,
+                    alpaka::core::detail::make_integer_sequence<std::size_t, TDim::value> const &)
+                -> Vec<TDim, TVal>
+                {
+                    return vec;
+                }
+            };
+        }
+        //-----------------------------------------------------------------------------
+        //! Builds a new vector by selecting the elements of the source vector in the given order.
+        //! Repeating and swizzling elements is allowed.
+        //! \return The sub-vector consisting of the elements specified by the indices.
+        //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TDim,
-            typename TIndexSequence>
-        struct SubVecFromIndices
+            typename TVal,
+            std::size_t... TIndices>
+        ALPAKA_FN_HOST_ACC auto subVecFromIndices(
+            Vec<TDim, TVal> const & vec,
+            core::detail::integer_sequence<std::size_t, TIndices...> const & indices)
+        -> Vec<dim::DimInt<sizeof...(TIndices)>, TVal>
         {
-            ALPAKA_NO_HOST_ACC_WARNING
-            template<
-                typename TVal,
-                std::size_t... TIndices>
-            ALPAKA_FN_HOST_ACC static auto subVecFromIndices(
-                Vec<TDim, TVal> const & vec,
-                alpaka::core::detail::integer_sequence<std::size_t, TIndices...> const &)
-            -> Vec<dim::DimInt<sizeof...(TIndices)>, TVal>
-            {
-                static_assert(sizeof...(TIndices) <= TDim::value, "The sub-vector has to be smaller (or same size) then the origin vector.");
-
-                return Vec<dim::DimInt<sizeof...(TIndices)>, TVal>(vec[TIndices]...);
-            }
-        };
-        //#############################################################################
-        //! Specialization for selecting the whole vector.
-        //#############################################################################
+            return
+                detail::SubVecFromIndices<
+                    TDim,
+                    core::detail::integer_sequence<std::size_t, TIndices...>>
+                ::subVecFromIndices(
+                    vec,
+                    indices);
+        }
+        //-----------------------------------------------------------------------------
+        //! \return The sub-vector consisting of the first N elements of the source vector.
+        //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
         template<
-            typename TDim>
-        struct SubVecFromIndices<
-            TDim,
-            alpaka::core::detail::make_integer_sequence<std::size_t, TDim::value>>
+            typename TSubDim,
+            typename TDim,
+            typename TVal>
+        ALPAKA_FN_HOST_ACC auto subVecBegin(
+            Vec<TDim, TVal> const & vec)
+        -> Vec<TSubDim, TVal>
         {
-            ALPAKA_NO_HOST_ACC_WARNING
-            template<
-                typename TVal>
-            ALPAKA_FN_HOST_ACC static auto subVecFromIndices(
-                Vec<TDim, TVal> const & vec,
-                alpaka::core::detail::make_integer_sequence<std::size_t, TDim::value> const &)
-            -> Vec<TDim, TVal>
-            {
-                return vec;
-            }
-        };
-    }
-    //-----------------------------------------------------------------------------
-    //! Builds a new vector by selecting the elements of the source vector in the given order.
-    //! Repeating and swizzling elements is allowed.
-    //! \return The sub-vector consisting of the elements specified by the indices.
-    //-----------------------------------------------------------------------------
-    ALPAKA_NO_HOST_ACC_WARNING
-    template<
-        typename TDim,
-        typename TVal,
-        std::size_t... TIndices>
-    ALPAKA_FN_HOST_ACC auto subVecFromIndices(
-        Vec<TDim, TVal> const & vec,
-        core::detail::integer_sequence<std::size_t, TIndices...> const & indices)
-    -> Vec<dim::DimInt<sizeof...(TIndices)>, TVal>
-    {
-        return
-            detail::SubVecFromIndices<
-                TDim,
-                core::detail::integer_sequence<std::size_t, TIndices...>>
-            ::subVecFromIndices(
-                vec,
-                indices);
-    }
-    //-----------------------------------------------------------------------------
-    //! \return The sub-vector consisting of the first N elements of the source vector.
-    //-----------------------------------------------------------------------------
-    ALPAKA_NO_HOST_ACC_WARNING
-    template<
-        typename TSubDim,
-        typename TDim,
-        typename TVal>
-    ALPAKA_FN_HOST_ACC auto subVecBegin(
-        Vec<TDim, TVal> const & vec)
-    -> Vec<TSubDim, TVal>
-    {
-        static_assert(TSubDim::value <= TDim::value, "The sub-Vec has to be smaller (or same size) then the original Vec.");
+            static_assert(TSubDim::value <= TDim::value, "The sub-Vec has to be smaller (or same size) then the original Vec.");
 
-        //! A sequence of integers from 0 to dim-1.
-        using IdxSubSequence = alpaka::core::detail::make_integer_sequence<std::size_t, TSubDim::value>;
-        return subVecFromIndices(vec, IdxSubSequence());
-    }
-    //-----------------------------------------------------------------------------
-    //! \return The sub-vector consisting of the last N elements of the source vector.
-    //-----------------------------------------------------------------------------
-    ALPAKA_NO_HOST_ACC_WARNING
-    template<
-        typename TSubDim,
-        typename TDim,
-        typename TVal>
-    ALPAKA_FN_HOST_ACC auto subVecEnd(
-        Vec<TDim, TVal> const & vec)
-    -> Vec<TSubDim, TVal>
-    {
-        static_assert(TSubDim::value <= TDim::value, "The sub-Vec has to be smaller (or same size) then the original Vec.");
+            //! A sequence of integers from 0 to dim-1.
+            using IdxSubSequence = alpaka::core::detail::make_integer_sequence<std::size_t, TSubDim::value>;
+            return subVecFromIndices(vec, IdxSubSequence());
+        }
+        //-----------------------------------------------------------------------------
+        //! \return The sub-vector consisting of the last N elements of the source vector.
+        //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
+        template<
+            typename TSubDim,
+            typename TDim,
+            typename TVal>
+        ALPAKA_FN_HOST_ACC auto subVecEnd(
+            Vec<TDim, TVal> const & vec)
+        -> Vec<TSubDim, TVal>
+        {
+            static_assert(TSubDim::value <= TDim::value, "The sub-Vec has to be smaller (or same size) then the original Vec.");
 
-        //! A sequence of integers from 0 to dim-1.
-        using IdxSubSequence = alpaka::core::detail::make_integer_sequence_offset<std::size_t, TDim::value-TSubDim::value, TSubDim::value>;
-        return subVecFromIndices(vec, IdxSubSequence());
+            //! A sequence of integers from 0 to dim-1.
+            using IdxSubSequence = alpaka::core::detail::make_integer_sequence_offset<std::size_t, TDim::value-TSubDim::value, TSubDim::value>;
+            return subVecFromIndices(vec, IdxSubSequence());
+        }
     }
 
     namespace detail

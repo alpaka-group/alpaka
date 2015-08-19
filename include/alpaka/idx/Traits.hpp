@@ -27,7 +27,7 @@
 #include <alpaka/workdiv/Traits.hpp>        // workdiv::getWorkDiv
 
 #include <alpaka/core/Positioning.hpp>      // origin::Grid/Blocks, unit::Blocks, unit::Threads
-#include <alpaka/core/Vec.hpp>              // Vec<N>
+#include <alpaka/vec/Vec.hpp>               // Vec<N>
 #include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
 
 #include <utility>                          // std::forward

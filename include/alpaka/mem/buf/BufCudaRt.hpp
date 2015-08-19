@@ -25,7 +25,7 @@
 #include <alpaka/dim/DimIntegralConst.hpp>  // dim::DimInt<N>
 #include <alpaka/mem/buf/Traits.hpp>        // view::Copy, ...
 
-#include <alpaka/core/Vec.hpp>              // Vec<TDim, TSize>
+#include <alpaka/vec/Vec.hpp>               // Vec<TDim, TSize>
 #include <alpaka/core/Cuda.hpp>             // cudaMalloc, ...
 
 #include <cassert>                          // assert

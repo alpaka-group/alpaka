@@ -24,7 +24,7 @@
 #include <alpaka/dev/Traits.hpp>            // dev::traits::DevType
 #include <alpaka/mem/buf/Traits.hpp>        // mem::buf::Alloc, ...
 
-#include <alpaka/core/Vec.hpp>              // Vec<TDim, TSize>
+#include <alpaka/vec/Vec.hpp>               // Vec<TDim, TSize>
 
 // \TODO: Remove CUDA inclusion for BufCpu by replacing pinning with non CUDA code!
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)

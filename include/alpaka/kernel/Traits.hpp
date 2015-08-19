@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/core/Vec.hpp>          // Vec
+#include <alpaka/vec/Vec.hpp>           // Vec
 #include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
 
 #include <boost/core/ignore_unused.hpp> // boost::ignore_unused

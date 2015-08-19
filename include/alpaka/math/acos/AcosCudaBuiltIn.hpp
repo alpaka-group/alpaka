@@ -21,9 +21,9 @@
 
 #pragma once
 
-#include <alpaka/math/acos/Traits.hpp>   // Acos
+#include <alpaka/math/acos/Traits.hpp>  // Acos
 
-//#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 
 #include <type_traits>                  // std::enable_if, std::is_floating_point
 #include <math_functions.hpp>           // ::acos
@@ -54,12 +54,13 @@ namespace alpaka
                 typename std::enable_if<
                     std::is_floating_point<TArg>::value>::type>
             {
+                ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_ACC_CUDA_ONLY static auto acos(
                     AcosCudaBuiltIn const & acos,
                     TArg const & arg)
                 -> decltype(::acos(arg))
                 {
-                    //boost::ignore_unused(acos);
+                    boost::ignore_unused(acos);
                     return ::acos(arg);
                 }
             };

@@ -24,7 +24,7 @@
 #include <alpaka/dim/Traits.hpp>    // Dim
 
 #include <alpaka/core/Common.hpp>   // ALPAKA_FN_HOST_ACC
-#include <alpaka/core/Vec.hpp>      // Vec
+#include <alpaka/vec/Vec.hpp>       // Vec
 
 namespace alpaka
 {

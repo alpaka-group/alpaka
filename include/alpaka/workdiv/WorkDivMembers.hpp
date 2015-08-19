@@ -24,7 +24,7 @@
 #include <alpaka/workdiv/Traits.hpp>    // GetWorkDiv
 #include <alpaka/size/Traits.hpp>       // size::Size
 
-#include <alpaka/core/Vec.hpp>          // Vec
+#include <alpaka/vec/Vec.hpp>           // Vec
 #include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST
 
 #include <iosfwd>                       // std::ostream
@@ -79,8 +79,8 @@ namespace alpaka
                 typename TWorkDiv>
             ALPAKA_FN_HOST_ACC explicit WorkDivMembers(
                 TWorkDiv const & other) :
-                    m_gridBlockExtents(subVecEnd<TDim>(getWorkDiv<Grid, Blocks>(other))),
-                    m_blockThreadExtents(subVecEnd<TDim>(getWorkDiv<Block, Threads>(other)))
+                    m_gridBlockExtents(vec::subVecEnd<TDim>(getWorkDiv<Grid, Blocks>(other))),
+                    m_blockThreadExtents(vec::subVecEnd<TDim>(getWorkDiv<Block, Threads>(other)))
             {}
             //-----------------------------------------------------------------------------
             //! Move constructor.
@@ -107,8 +107,8 @@ namespace alpaka
                 TWorkDiv const & other)
             -> WorkDivMembers<TDim, TSize> &
             {
-                m_gridBlockExtents = subVecEnd<TDim>(getWorkDiv<Grid, Blocks>(other));
-                m_blockThreadExtents = subVecEnd<TDim>(getWorkDiv<Block, Threads>(other));
+                m_gridBlockExtents = vec::subVecEnd<TDim>(getWorkDiv<Grid, Blocks>(other));
+                m_blockThreadExtents = vec::subVecEnd<TDim>(getWorkDiv<Block, Threads>(other));
                 return *this;
             }
             //-----------------------------------------------------------------------------

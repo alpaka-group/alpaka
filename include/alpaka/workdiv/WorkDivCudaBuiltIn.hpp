@@ -24,7 +24,7 @@
 #include <alpaka/workdiv/Traits.hpp>        // workdiv::GetWorkDiv
 #include <alpaka/size/Traits.hpp>           // size::Size
 
-#include <alpaka/core/Vec.hpp>              // Vec, getExtentsVecEnd
+#include <alpaka/vec/Vec.hpp>               // Vec, getExtentsVecEnd
 #include <alpaka/core/Common.hpp>           // ALPAKA_FN_ACC_CUDA_ONLY
 #include <alpaka/core/Cuda.hpp>             // getExtent(dim3)
 
@@ -129,7 +129,7 @@ namespace alpaka
                 -> Vec<TDim, TSize>
                 {
                     //boost::ignore_unused(workDiv);
-                    return castVec<TSize>(extent::getExtentsVecEnd<TDim>(blockDim));
+                    return vec::cast<TSize>(extent::getExtentsVecEnd<TDim>(blockDim));
                 }
             };
 
@@ -152,7 +152,7 @@ namespace alpaka
                 -> Vec<TDim, TSize>
                 {
                     //boost::ignore_unused(workDiv);
-                    return castVec<TSize>(extent::getExtentsVecEnd<TDim>(gridDim));
+                    return vec::cast<TSize>(extent::getExtentsVecEnd<TDim>(gridDim));
                 }
             };
         }

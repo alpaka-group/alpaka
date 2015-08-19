@@ -23,7 +23,7 @@
 
 #include <alpaka/mem/buf/Traits.hpp>    // dev::traits::DevType, DimType, GetExtent,Copy, GetOffset, ...
 
-#include <alpaka/core/Vec.hpp>          // Vec<N>
+#include <alpaka/vec/Vec.hpp>           // Vec<N>
 
 namespace alpaka
 {

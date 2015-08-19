@@ -26,7 +26,7 @@
 #include <alpaka/dev/Traits.hpp>                // dev::DevMan
 #include <alpaka/acc/Traits.hpp>                // getAccDevProps
 
-#include <alpaka/core/Vec.hpp>                  // Vec
+#include <alpaka/vec/Vec.hpp>                   // Vec
 #include <alpaka/core/Common.hpp>               // ALPAKA_FN_HOST
 
 #include <cassert>                              // assert
@@ -363,7 +363,7 @@ namespace alpaka
             auto const blockThreadExtents(getWorkDiv<Block, Threads>(workDiv));
 
             auto const devProps(acc::getAccDevProps<TAcc>(dev));
-            auto const blockThreadExtentsMax(subVecEnd<dim::Dim<TWorkDiv>>(devProps.m_blockThreadExtentsMax));
+            auto const blockThreadExtentsMax(vec::subVecEnd<dim::Dim<TWorkDiv>>(devProps.m_blockThreadExtentsMax));
             auto const blockThreadCountMax(devProps.m_blockThreadsCountMax);
 
             if(blockThreadCountMax < blockThreadExtents.prod())
