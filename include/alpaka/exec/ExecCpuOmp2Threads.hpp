@@ -165,7 +165,7 @@ namespace alpaka
                 ::omp_set_dynamic(0);
 
                 // Execute the blocks serially.
-                core::ndLoop(
+                core::ndLoopIncIdx(
                     gridBlockExtents,
                     [&](Vec<TDim, TSize> const & gridBlockIdx)
                     {

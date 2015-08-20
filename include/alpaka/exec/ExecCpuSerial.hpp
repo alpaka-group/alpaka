@@ -159,7 +159,7 @@ namespace alpaka
                 assert(blockThreadExtents.prod() == 1u);
 
                 // Execute the blocks serially.
-                core::ndLoop(
+                core::ndLoopIncIdx(
                     gridBlockExtents,
                     [&](Vec<TDim, TSize> const & blockThreadIdx)
                     {

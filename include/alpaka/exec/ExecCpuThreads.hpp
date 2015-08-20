@@ -191,7 +191,7 @@ namespace alpaka
                         m_args));
 
                 // Execute the blocks serially.
-                core::ndLoop(
+                core::ndLoopIncIdx(
                     gridBlockExtents,
                     boundGridBlockExecHost);
 
@@ -228,7 +228,7 @@ namespace alpaka
                     std::ref(kernelFnObj),
                     std::ref(args)...));
                 // Execute the block threads in parallel.
-                core::ndLoop(
+                core::ndLoopIncIdx(
                     blockThreadExtents,
                     boundBlockThreadExecHost);
 
