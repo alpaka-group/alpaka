@@ -181,16 +181,11 @@ namespace alpaka
                 {
                     boost::ignore_unused(dev);
 
+                    // m_blockThreadsCountMax
 #if ALPAKA_INTEGRATION_TEST
                     auto const blockThreadsCountMax(static_cast<TSize>(4));
 #else
-                    // m_blockThreadsCountMax
-                    // HACK: ::omp_get_max_threads() does not return the real limit of the underlying OpenMP 2.0 runtime:
-                    // 'The omp_get_max_threads routine returns the value of the internal control variable, which is used to determine the number of threads that would form the new team,
-                    // if an active parallel region without a num_threads clause were to be encountered at that point in the program.'
-                    // How to do this correctly? Is there even a way to get the hard limit apart from omp_set_num_threads(high_value) -> omp_get_max_threads()?
-                    ::omp_set_num_threads(1024);
-                    auto const blockThreadsCountMax(static_cast<TSize>(::omp_get_max_threads()));
+                    auto const blockThreadsCountMax(static_cast<TSize>(omp::getMaxOmpThreads()));
 #endif
                     return {
                         // m_multiProcessorCount

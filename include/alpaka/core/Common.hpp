@@ -105,19 +105,21 @@
 //! Suggests vectorization of the directly following loop to the compiler.
 //!
 //! Usage:
-//!  `ALPAKA_VECTORIZE
+//!  `ALPAKA_VECTORIZE_HINT
 //!  for(...){...}`
 // \TODO: Implement for other compilers.
 // See: http://stackoverflow.com/questions/2706286/pragmas-swp-ivdep-prefetch-support-in-various-compilers
 //-----------------------------------------------------------------------------
 #if BOOST_COMP_INTEL || BOOST_COMP_HPACC
-    #define ALPAKA_VECTORIZE(...)  _Pragma("ivdep")
+    #define ALPAKA_VECTORIZE_HINT(...)  _Pragma("ivdep")
 #elif BOOST_COMP_PGI
-    #define ALPAKA_VECTORIZE(...)  _Pragma("vector")
+    #define ALPAKA_VECTORIZE_HINT(...)  _Pragma("vector")
 #elif BOOST_COMP_MSVC
-    #define ALPAKA_VECTORIZE(...)  __pragma(loop(ivdep))
+    #define ALPAKA_VECTORIZE_HINT(...)  __pragma(loop(ivdep))
+#elif BOOST_COMP_GNUC
+    #define ALPAKA_VECTORIZE_HINT(...)  _Pragma("GCC ivdep")
 #else
-    #define ALPAKA_VECTORIZE(...)
+    #define ALPAKA_VECTORIZE_HINT(...)
 #endif
 
 namespace alpaka
