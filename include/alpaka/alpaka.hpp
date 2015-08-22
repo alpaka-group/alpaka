@@ -266,3 +266,5 @@
 #include <alpaka/core/MapIdx.hpp>
 #include <alpaka/core/NdLoop.hpp>
 #include <alpaka/core/Positioning.hpp>
+#include <alpaka/core/Unroll.hpp>
+#include <alpaka/core/Vectorize.hpp>

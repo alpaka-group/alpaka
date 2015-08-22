@@ -75,53 +75,6 @@
     #define ALPAKA_NO_HOST_ACC_WARNING
 #endif
 
-//-----------------------------------------------------------------------------
-//! Suggests unrolling of the directly following loop to the compiler.
-//!
-//! Usage:
-//!  `ALPAKA_UNROLL
-//!  for(...){...}`
-// \TODO: Implement for other compilers.
-//-----------------------------------------------------------------------------
-#ifdef __CUDA_ARCH__
-    #if BOOST_COMP_MSVC
-        #define ALPAKA_UNROLL(...) __pragma(unroll __VA_ARGS__)
-    #else
-        #define ALPAKA_UNROLL_STRINGIFY(x) #x
-        #define ALPAKA_UNROLL(...)  _Pragma(ALPAKA_UNROLL_STRINGIFY(unroll __VA_ARGS__))
-    #endif
-#else
-    #if BOOST_COMP_INTEL || BOOST_COMP_IBM || BOOST_COMP_SUNPRO || BOOST_COMP_HPACC
-        #define ALPAKA_UNROLL_STRINGIFY(x) #x
-        #define ALPAKA_UNROLL(...)  _Pragma(ALPAKA_UNROLL_STRINGIFY(unroll(__VA_ARGS__)))
-    #elif BOOST_COMP_PGI
-        #define ALPAKA_UNROLL(...)  _Pragma("unroll")
-    #else
-        #define ALPAKA_UNROLL(...)
-    #endif
-#endif
-
-//-----------------------------------------------------------------------------
-//! Suggests vectorization of the directly following loop to the compiler.
-//!
-//! Usage:
-//!  `ALPAKA_VECTORIZE_HINT
-//!  for(...){...}`
-// \TODO: Implement for other compilers.
-// See: http://stackoverflow.com/questions/2706286/pragmas-swp-ivdep-prefetch-support-in-various-compilers
-//-----------------------------------------------------------------------------
-#if BOOST_COMP_INTEL || BOOST_COMP_HPACC
-    #define ALPAKA_VECTORIZE_HINT(...)  _Pragma("ivdep")
-#elif BOOST_COMP_PGI
-    #define ALPAKA_VECTORIZE_HINT(...)  _Pragma("vector")
-#elif BOOST_COMP_MSVC
-    #define ALPAKA_VECTORIZE_HINT(...)  __pragma(loop(ivdep))
-#elif BOOST_COMP_GNUC
-    #define ALPAKA_VECTORIZE_HINT(...)  _Pragma("GCC ivdep")
-#else
-    #define ALPAKA_VECTORIZE_HINT(...)
-#endif
-
 namespace alpaka
 {
     namespace core

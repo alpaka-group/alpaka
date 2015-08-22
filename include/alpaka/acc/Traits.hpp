@@ -97,7 +97,6 @@ namespace alpaka
                 ::getAccDevProps(
                     dev);
         }
-        }
 
         //-----------------------------------------------------------------------------
         //! Writes the accelerator name to the given stream.
