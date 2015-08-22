@@ -33,7 +33,7 @@ namespace alpaka
     //-----------------------------------------------------------------------------
     namespace vec
     {
-        namespace triets
+        namespace traits
         {
         }
     }

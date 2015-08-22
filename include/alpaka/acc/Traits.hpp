@@ -91,10 +91,12 @@ namespace alpaka
             TDev const & dev)
         -> AccDevProps<dim::Dim<TAcc>, size::Size<TAcc>>
         {
-            return traits::GetAccDevProps<
-                TAcc>
-            ::getAccDevProps(
-                dev);
+            return
+                traits::GetAccDevProps<
+                    TAcc>
+                ::getAccDevProps(
+                    dev);
+        }
         }
 
         //-----------------------------------------------------------------------------
@@ -108,9 +110,10 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto getAccName()
         -> std::string
         {
-            return traits::GetAccName<
-                TAcc>
-            ::getAccName();
+            return
+                traits::GetAccName<
+                    TAcc>
+                ::getAccName();
         }
     }
 }

@@ -84,7 +84,7 @@ namespace alpaka
         //! \tparam TArgs The kernel invocation argument types pack.
         //! \param args,... The kernel invocation arguments for which the block shared memory size should be calculated.
         //! \return The size of the shared memory allocated for a block in bytes.
-        //! The default version always returns zero.
+        //! The default implementation always returns zero.
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
@@ -97,12 +97,13 @@ namespace alpaka
             TArgs const & ... args)
         -> size::Size<TAcc>
         {
-            return traits::BlockSharedExternMemSizeBytes<
-                TKernelFnObj,
-                TAcc>
-            ::getBlockSharedExternMemSizeBytes(
-                blockThreadExtents,
-                args...);
+            return
+                traits::BlockSharedExternMemSizeBytes<
+                    TKernelFnObj,
+                    TAcc>
+                ::getBlockSharedExternMemSizeBytes(
+                    blockThreadExtents,
+                    args...);
         }
     }
 }

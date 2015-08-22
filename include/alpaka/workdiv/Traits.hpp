@@ -60,7 +60,7 @@ namespace alpaka
         template<
             typename TOrigin,
             typename TUnit,
-            typename TWorkDiv = void>
+            typename TWorkDiv>
         ALPAKA_FN_HOST_ACC auto getWorkDiv(
             TWorkDiv const & workDiv)
         -> Vec<dim::Dim<TWorkDiv>, size::Size<TWorkDiv>>
