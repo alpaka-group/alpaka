@@ -80,11 +80,10 @@ namespace alpaka
                     //
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC static auto syncBlockThreads(
-                        block::sync::BlockSyncNoOp const & blockSync)
+                        block::sync::BlockSyncNoOp const & /*blockSync*/)
                     -> void
                     {
-                        boost::ignore_unused(blockSync);
-
+                        //boost::ignore_unused(blockSync);
                         // Nothing to do.
                     }
                 };
