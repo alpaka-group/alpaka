@@ -54,13 +54,11 @@ namespace alpaka
                 template<
                     typename TIndex,
                     typename TExtentsVec,
-                    typename TFnObj,
-                    typename... TArgs>
+                    typename TFnObj>
                 ALPAKA_FN_HOST_ACC static auto ndLoop(
                     TIndex & idx,
                     TExtentsVec const & extents,
-                    TFnObj const & f,
-                    TArgs const & ... args)
+                    TFnObj const & f)
                 -> void
                 {
                 }
@@ -80,13 +78,11 @@ namespace alpaka
                 template<
                     typename TIndex,
                     typename TExtentsVec,
-                    typename TFnObj,
-                    typename... TArgs>
+                    typename TFnObj>
                 ALPAKA_FN_HOST_ACC static auto ndLoop(
                     TIndex & idx,
                     TExtentsVec const & extents,
-                    TFnObj const & f,
-                    TArgs const & ... args)
+                    TFnObj const & f)
                 -> void
                 {
                     static_assert(
@@ -101,7 +97,7 @@ namespace alpaka
 
                     for(idx[Tdim] = 0u; idx[Tdim] < extents[Tdim]; ++idx[Tdim])
                     {
-                        f(idx, args...);
+                        f(idx);
                     }
                 }
             };
@@ -121,13 +117,11 @@ namespace alpaka
                 template<
                     typename TIndex,
                     typename TExtentsVec,
-                    typename TFnObj,
-                    typename... TArgs>
+                    typename TFnObj>
                 ALPAKA_FN_HOST_ACC static auto ndLoop(
                     TIndex & idx,
                     TExtentsVec const & extents,
-                    TFnObj const & f,
-                    TArgs const & ... args)
+                    TFnObj const & f)
                 -> void
                 {
                     static_assert(
@@ -147,8 +141,7 @@ namespace alpaka
                         ::template ndLoop(
                                 idx,
                                 extents,
-                                f,
-                                args...);
+                                f);
                     }
                 }
             };
@@ -166,13 +159,11 @@ namespace alpaka
         template<
             typename TExtentsVec,
             typename TFnObj,
-            typename... TArgs,
             std::size_t... Tdims>
         ALPAKA_FN_HOST_ACC auto ndLoop(
             core::detail::index_sequence<Tdims...> const & indexSequence,
             TExtentsVec const & extents,
-            TFnObj const & f,
-            TArgs const & ... args)
+            TFnObj const & f)
         -> void
         {
             static_assert(
@@ -193,8 +184,7 @@ namespace alpaka
             ::template ndLoop(
                     idx,
                     extents,
-                    f,
-                    args...);
+                    f);
         }
         //-----------------------------------------------------------------------------
         //! Loops over an n-dimensional iteration index variable calling f(idx, args...) for each iteration.
@@ -207,19 +197,16 @@ namespace alpaka
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TExtentsVec,
-            typename TFnObj,
-            typename... TArgs>
+            typename TFnObj>
         ALPAKA_FN_HOST_ACC auto ndLoopIncIdx(
             TExtentsVec const & extents,
-            TFnObj const & f,
-            TArgs const & ... args)
+            TFnObj const & f)
         -> void
         {
             ndLoop(
                 core::detail::make_index_sequence<dim::Dim<TExtentsVec>::value>(),
                 extents,
-                f,
-                args...);
+                f);
         }
     }
 }
