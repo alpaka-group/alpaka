@@ -58,7 +58,7 @@ namespace alpaka
                     && std::is_floating_point<Tx>::value>::type>
             {
                 ALPAKA_FN_ACC_CUDA_ONLY static auto atan2(
-                    Atan2CudaBuiltIn const & abs,
+                    Atan2CudaBuiltIn const & /*abs*/,
                     Ty const & y,
                     Tx const & x)
                 -> decltype(::atan2(y, x))

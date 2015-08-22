@@ -55,7 +55,7 @@ namespace alpaka
                     std::is_floating_point<TArg>::value>::type>
             {
                 ALPAKA_FN_ACC_NO_CUDA static auto sin(
-                    SinCudaBuiltIn const & sin,
+                    SinCudaBuiltIn const & /*sin*/,
                     TArg const & arg)
                 -> decltype(::sin(arg))
                 {

@@ -58,7 +58,7 @@ namespace alpaka
                     && std::is_floating_point<TExp>::value>::type>
             {
                 ALPAKA_FN_ACC_CUDA_ONLY static auto pow(
-                    PowCudaBuiltIn const & pow,
+                    PowCudaBuiltIn const & /*pow*/,
                     TBase const & base,
                     TExp const & exp)
                 -> decltype(::pow(base, exp))

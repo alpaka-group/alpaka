@@ -111,7 +111,7 @@ namespace alpaka
                 template<
                     typename TWorkDiv>
                 ALPAKA_FN_ACC_CUDA_ONLY static auto getIdx(
-                    idx::bt::IdxBtCudaBuiltIn<TDim, TSize> const & idx,
+                    idx::bt::IdxBtCudaBuiltIn<TDim, TSize> const & /*idx*/,
                     TWorkDiv const &)
                 -> Vec<TDim, TSize>
                 {

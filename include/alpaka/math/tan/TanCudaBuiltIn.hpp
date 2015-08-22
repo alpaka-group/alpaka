@@ -55,7 +55,7 @@ namespace alpaka
                     std::is_floating_point<TArg>::value>::type>
             {
                 ALPAKA_FN_ACC_CUDA_ONLY static auto tan(
-                    TanCudaBuiltIn const & tan,
+                    TanCudaBuiltIn const & /*tan*/,
                     TArg const & arg)
                 -> decltype(::tan(arg))
                 {

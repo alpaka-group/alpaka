@@ -55,7 +55,7 @@ namespace alpaka
                     std::is_floating_point<TArg>::value>::type>
             {
                 ALPAKA_FN_ACC_CUDA_ONLY static auto round(
-                    RoundCudaBuiltIn const & round,
+                    RoundCudaBuiltIn const & /*round*/,
                     TArg const & arg)
                 -> decltype(::round(arg))
                 {
@@ -75,7 +75,7 @@ namespace alpaka
                     std::is_floating_point<TArg>::value>::type>
             {
                 ALPAKA_FN_ACC_CUDA_ONLY static auto lround(
-                    RoundCudaBuiltIn const & lround,
+                    RoundCudaBuiltIn const & /*lround*/,
                     TArg const & arg)
                 -> long int
                 {
@@ -95,7 +95,7 @@ namespace alpaka
                     std::is_floating_point<TArg>::value>::type>
             {
                 ALPAKA_FN_ACC_CUDA_ONLY static auto llround(
-                    RoundCudaBuiltIn const & llround,
+                    RoundCudaBuiltIn const & /*llround*/,
                     TArg const & arg)
                 -> long int
                 {

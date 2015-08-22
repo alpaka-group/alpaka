@@ -125,7 +125,7 @@ namespace alpaka
                 //! \return The number of threads in each dimension of a block.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto getWorkDiv(
-                    WorkDivCudaBuiltIn<TDim, TSize> const & workDiv)
+                    WorkDivCudaBuiltIn<TDim, TSize> const & /*workDiv*/)
                 -> Vec<TDim, TSize>
                 {
                     //boost::ignore_unused(workDiv);
@@ -148,7 +148,7 @@ namespace alpaka
                 //! \return The number of blocks in each dimension of the grid.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto getWorkDiv(
-                    WorkDivCudaBuiltIn<TDim, TSize> const & workDiv)
+                    WorkDivCudaBuiltIn<TDim, TSize> const & /*workDiv*/)
                 -> Vec<TDim, TSize>
                 {
                     //boost::ignore_unused(workDiv);

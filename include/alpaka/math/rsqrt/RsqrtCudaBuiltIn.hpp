@@ -55,7 +55,7 @@ namespace alpaka
                     std::is_arithmetic<TArg>::value>::type>
             {
                 ALPAKA_FN_ACC_NO_CUDA static auto rsqrt(
-                    RsqrtCudaBuiltIn const & rsqrt,
+                    RsqrtCudaBuiltIn const & /*rsqrt*/,
                     TArg const & arg)
                 -> decltype(::rsqrt(arg))
                 {
