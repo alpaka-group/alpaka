@@ -74,9 +74,6 @@ namespace alpaka
                                 m_iDevice(dev::getDev(buf).m_iDevice)
                         {
                             static_assert(
-                                dim::Dim<TBuf>::value == 1u,
-                                "The destination buffer is required to be 1-dimensional for this specialization!");
-                            static_assert(
                                 dim::Dim<TBuf>::value == dim::Dim<TExtents>::value,
                                 "The destination buffer and the extents are required to have the same dimensionality!");
                         }
