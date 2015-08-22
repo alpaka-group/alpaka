@@ -557,7 +557,7 @@ namespace alpaka
                         //cudaMemCpy3DParms.srcPos;       // Optional. Offset in bytes.
                         cudaMemCpy3DParms.srcPtr =
                             make_cudaPitchedPtr(
-                                srcNativePtr,
+                                const_cast<void *>(srcNativePtr),
                                 srcPitchBytes,
                                 srcWidth,
                                 srcHeight);
@@ -691,7 +691,7 @@ namespace alpaka
                         //cudaMemCpy3DPeerParms.srcPos;       // Optional. Offset in bytes.
                         cudaMemCpy3DPeerParms.srcPtr =
                             make_cudaPitchedPtr(
-                                srcNativePtr,
+                                const_cast<void *>(srcNativePtr),
                                 srcPitchBytes,
                                 srcWidth,
                                 srcHeight);
