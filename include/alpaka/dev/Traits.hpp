@@ -21,16 +21,12 @@
 
 #pragma once
 
-#include <alpaka/acc/AccDevProps.hpp>   // AccDevProps
 #include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST
 
 namespace alpaka
 {
     //-----------------------------------------------------------------------------
     //! The device specifics.
-    //
-    // \TODO:
-    // std::size_t m_uiMaxClockFrequencyHz;  //!< Maximum clock frequency of the device in Hz.
     //-----------------------------------------------------------------------------
     namespace dev
     {

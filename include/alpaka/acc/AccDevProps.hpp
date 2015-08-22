@@ -33,6 +33,10 @@ namespace alpaka
     {
         //#############################################################################
         //! The acceleration properties on a device.
+        //
+        // \TODO:
+        //  TSize m_maxClockFrequencyHz;            //!< Maximum clock frequency of the device in Hz.
+        //  TSize m_sharedMemSizeBytes;             //!< Size of the available block shared memory in bytes.
         //#############################################################################
         template<
             typename TDim,
@@ -54,11 +58,10 @@ namespace alpaka
                     m_gridBlockExtentsMax(gridBlockExtentsMax)
             {}
 
-            TSize m_multiProcessorCount;                  //!< The number of multiprocessors.
-            TSize m_blockThreadsCountMax;                 //!< The maximum number of threads in a block.
-            Vec<TDim, TSize> m_blockThreadExtentsMax;    //!< The maximum number of threads in each dimension of a block.
-            Vec<TDim, TSize> m_gridBlockExtentsMax;      //!< The maximum number of blocks in each dimension of the grid.
-            //TSize m_uiSharedMemSizeBytes;                 //!< Size of the available block shared memory in bytes.
+            TSize m_multiProcessorCount;                //!< The number of multiprocessors.
+            TSize m_blockThreadsCountMax;               //!< The maximum number of threads in a block.
+            Vec<TDim, TSize> m_blockThreadExtentsMax;   //!< The maximum number of threads in each dimension of a block.
+            Vec<TDim, TSize> m_gridBlockExtentsMax;     //!< The maximum number of blocks in each dimension of the grid.
         };
     }
 }
