@@ -517,9 +517,9 @@ namespace alpaka
                 //#############################################################################
                 template<
                     typename TIdx,
+                    typename TDev,
                     typename TElem,
                     typename TDim,
-                    typename TDev,
                     typename TSize>
                 struct GetPitchBytes<
                     TIdx,

@@ -96,10 +96,10 @@ namespace alpaka
                     template<
                         typename TGenerator>
                     ALPAKA_FN_ACC_CUDA_ONLY auto operator()(
-                        TGenerator const & generator)
+                        TGenerator & generator)
                     -> float
                     {
-                        return curand_normal(generator.m_State);
+                        return curand_normal(&generator.m_State);
                     }
                 };
                 //#############################################################################
@@ -121,10 +121,10 @@ namespace alpaka
                     template<
                         typename TGenerator>
                     ALPAKA_FN_ACC_CUDA_ONLY auto operator()(
-                        TGenerator const & generator)
+                        TGenerator & generator)
                     -> double
                     {
-                        return curand_normal_double(generator.m_State);
+                        return curand_normal_double(&generator.m_State);
                     }
                 };
 
@@ -154,11 +154,11 @@ namespace alpaka
                     template<
                         typename TGenerator>
                     ALPAKA_FN_ACC_CUDA_ONLY auto operator()(
-                        TGenerator const & generator)
+                        TGenerator & generator)
                     -> float
                     {
                         // (0.f, 1.0f]
-                        float const fUniformRand(curand_uniform(generator.m_State));
+                        float const fUniformRand(curand_uniform(&generator.m_State));
                         // NOTE: (1.0f - curand_uniform) does not work, because curand_uniform seems to return denormalized floats around 0.f.
                         // [0.f, 1.0f)
                         return fUniformRand * static_cast<float>( fUniformRand != 1.0f );
@@ -183,11 +183,11 @@ namespace alpaka
                     template<
                         typename TGenerator>
                     ALPAKA_FN_ACC_CUDA_ONLY auto operator()(
-                        TGenerator const & generator)
+                        TGenerator & generator)
                     -> double
                     {
                         // (0.f, 1.0f]
-                        double const fUniformRand(curand_uniform_double(generator.m_State));
+                        double const fUniformRand(curand_uniform_double(&generator.m_State));
                         // NOTE: (1.0f - curand_uniform_double) does not work, because curand_uniform_double seems to return denormalized floats around 0.f.
                         // [0.f, 1.0f)
                         return fUniformRand * static_cast<double>( fUniformRand != 1.0f );
@@ -220,10 +220,10 @@ namespace alpaka
                     template<
                         typename TGenerator>
                     ALPAKA_FN_ACC_CUDA_ONLY auto operator()(
-                        TGenerator const & generator)
+                        TGenerator & generator)
                     -> unsigned int
                     {
-                        return curand(generator.m_State);
+                        return curand(&generator.m_State);
                     }
                 };
             }
