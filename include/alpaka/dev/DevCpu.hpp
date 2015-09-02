@@ -28,7 +28,7 @@
 #include <alpaka/mem/view/Traits.hpp>   // mem::view::traits::ViewType
 
 #include <alpaka/stream/Traits.hpp>     // stream::enqueue
-#include <alpaka/dev/cpu/SysInfo.hpp>   // getCpuName, getGlobalMemSizeBytes
+#include <alpaka/dev/cpu/SysInfo.hpp>   // getCpuName, getTotalGlobalMemSizeBytes, getFreeGlobalMemSizeBytes
 
 #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 
@@ -361,7 +361,7 @@ namespace alpaka
                 {
                     boost::ignore_unused(dev);
 
-                    return dev::cpu::detail::getGlobalMemSizeBytes();
+                    return dev::cpu::detail::getTotalGlobalMemSizeBytes();
                 }
             };
 
@@ -381,8 +381,7 @@ namespace alpaka
                 {
                     boost::ignore_unused(dev);
 
-                    // \FIXME: Get correct free memory size!
-                    return dev::cpu::detail::getGlobalMemSizeBytes();
+                    return dev::cpu::detail::getFreeGlobalMemSizeBytes();
                 }
             };
 

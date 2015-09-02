@@ -40,6 +40,10 @@
     #endif
 #endif
 
+#if defined(__linux)
+    #include <fstream>
+#endif
+
 #include <boost/predef.h>   // BOOST_XXX
 
 #include <cstring>          // std::memcpy
@@ -90,7 +94,7 @@ namespace alpaka
                     std::uint32_t const nExIds(ex[0]);
 
                     // Get the information associated with each extended ID.
-                    char pCpuBrandString[0x40] = {0};
+                    char cpuBrandString[0x40] = {0};
                     for(std::uint32_t i(0x80000000); i<=nExIds; ++i)
                     {
                         cpuid(i, 0, ex);
@@ -98,18 +102,18 @@ namespace alpaka
                         // Interpret CPU brand string and cache information.
                         if(i == 0x80000002)
                         {
-                            std::memcpy(pCpuBrandString, ex, sizeof(ex));
+                            std::memcpy(cpuBrandString, ex, sizeof(ex));
                         }
                         else if(i == 0x80000003)
                         {
-                            std::memcpy(pCpuBrandString + 16, ex, sizeof(ex));
+                            std::memcpy(cpuBrandString + 16, ex, sizeof(ex));
                         }
                         else if(i == 0x80000004)
                         {
-                            std::memcpy(pCpuBrandString + 32, ex, sizeof(ex));
+                            std::memcpy(cpuBrandString + 32, ex, sizeof(ex));
                         }
                     }
-                    return std::string(pCpuBrandString);
+                    return std::string(cpuBrandString);
 #else
                     return "<unknown>";
 #endif
@@ -124,10 +128,10 @@ namespace alpaka
                     return 0;
                 }*/
                 //-----------------------------------------------------------------------------
-                //! \return The number of bytes of global memory.
+                //! \return The total number of bytes of global memory.
                 //! Adapted from David Robert Nadeau: http://nadeausoftware.com/articles/2012/09/c_c_tip_how_get_physical_memory_size_system
                 //-----------------------------------------------------------------------------
-                inline auto getGlobalMemSizeBytes()
+                inline auto getTotalGlobalMemSizeBytes()
                 -> std::size_t
                 {
 #if BOOST_OS_WINDOWS
@@ -157,7 +161,7 @@ namespace alpaka
                     std::size_t const sizeLen{sizeof(size)};
                     if(sysctl(mib, 2, &size, &sizeLen, nullptr, 0) < 0)
                     {
-                        throw std::logic_error("getGlobalMemSizeBytes failed calling sysctl!");
+                        throw std::logic_error("getTotalGlobalMemSizeBytes failed calling sysctl!");
                     }
                     return static_cast<std::size_t>(size);
 
@@ -182,13 +186,67 @@ namespace alpaka
                     std::size_t const sizeLen{sizeof(size)};
                     if(sysctl(mib, 2, &size, &sizeLen, nullptr, 0) < 0)
                     {
-                        throw std::logic_error("getGlobalMemSizeBytes failed calling sysctl!");
+                        throw std::logic_error("getTotalGlobalMemSizeBytes failed calling sysctl!");
                     }
                     return static_cast<std::size_t>(size);
     #endif
 
 #else
-                    throw std::logic_error("getGlobalMemSizeBytes not implemented for this system!");
+                    throw std::logic_error("getTotalGlobalMemSizeBytes not implemented for this system!");
+#endif
+                }
+                //-----------------------------------------------------------------------------
+                //! \return The free number of bytes of global memory.
+                //! \throws std::logic_error if not implemented on the system and std::runtime_error on other errors.
+                //-----------------------------------------------------------------------------
+                inline auto getFreeGlobalMemSizeBytes()
+                -> std::size_t
+                {
+#if BOOST_OS_WINDOWS
+                    MEMORYSTATUSEX status;
+                    status.dwLength = sizeof(status);
+                    GlobalMemoryStatusEx(&status);
+                    return static_cast<std::size_t>(status.ullAvailPhys);
+
+#elif defined(__linux)
+#include <fstream>
+                    std::string token;
+                    std::ifstream file("/proc/meminfo");
+                    if(file)
+                    {
+                        while(file >> token)
+                        {
+                            if(token == "MemFree:")
+                            {
+                                std::size_t freeGlobalMemSizeBytes(0);
+                                if(file >> freeGlobalMemSizeBytes)
+                                {
+                                    return freeGlobalMemSizeBytes;
+                                }
+                                else
+                                {
+                                    throw std::runtime_error("Unable to read MemFree value!");
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        throw std::runtime_error("Unable to open /proc/meminfo!");
+                    }
+#elif defined(AIXUSEPERFSTAT) && defined(_AIX)
+                    perfstat_memory_total_t minfo;
+                    perfstat_memory_total(nullptr, &minfo, sizeof(perfstat_memory_total_t), 1);
+                    return minfo.real_free * (4096u/1024u);
+#elif defined(_SC_PAGESIZE) && defined(_SC_AVPHYS_PAGES)
+                    // SysV Unix
+                    long pgsz = sysconf(_SC_PAGESIZE);
+                    long avphyspgs = sysconf(_SC_AVPHYS_PAGES);
+                    return ((pgsz / 1024u) * avphyspgs);
+#elif defined(__APPLE__)
+                    throw std::logic_error("getFreeGlobalMemSizeBytes not implemented for __APPLE__!");
+#else
+                    throw std::logic_error("getFreeGlobalMemSizeBytes not implemented for this system!");
 #endif
                 }
             }
