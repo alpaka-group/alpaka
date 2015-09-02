@@ -29,6 +29,7 @@
 #include <alpaka/math/MathStl.hpp>                  // MathStl
 #include <alpaka/block/shared/BlockSharedAllocMasterSync.hpp>   // BlockSharedAllocMasterSync
 #include <alpaka/block/sync/BlockSyncThreadIdMapBarrier.hpp>    // BlockSyncThreadIdMapBarrier
+#include <alpaka/rand/RandStl.hpp>              // RandStl
 
 // Specialized traits.
 #include <alpaka/acc/Traits.hpp>                    // acc::traits::AccType
@@ -76,7 +77,8 @@ namespace alpaka
             public atomic::AtomicStlLock,
             public math::MathStl,
             public block::shared::BlockSharedAllocMasterSync,
-            public block::sync::BlockSyncThreadIdMapBarrier<TSize>
+            public block::sync::BlockSyncThreadIdMapBarrier<TSize>,
+            public rand::RandStl
         {
         public:
             // Partial specialization with the correct TDim and TSize is not allowed.
@@ -106,6 +108,7 @@ namespace alpaka
                     block::sync::BlockSyncThreadIdMapBarrier<TSize>(
                         m_threadsPerBlockCount,
                         m_mThreadsToBarrier),
+                    rand::RandStl(),
                     m_gridBlockIdx(Vec<TDim, TSize>::zeros()),
                     m_threadsPerBlockCount(workdiv::getWorkDiv<Block, Threads>(workDiv).prod())
             {}
@@ -147,7 +150,7 @@ namespace alpaka
             // getIdx
             std::mutex mutable m_mtxMapInsert;                              //!< The mutex used to secure insertion into the ThreadIdToIdxMap.
             typename idx::bt::IdxBtRefThreadIdMap<TDim, TSize>::ThreadIdToIdxMap mutable m_threadsToIndices;    //!< The mapping of thread id's to indices.
-            alignas(16u) Vec<TDim, TSize> mutable m_gridBlockIdx;        //!< The index of the currently executed block.
+            alignas(16u) Vec<TDim, TSize> mutable m_gridBlockIdx;           //!< The index of the currently executed block.
 
             // syncBlockThreads
             TSize const m_threadsPerBlockCount;                             //!< The number of threads per block the barrier has to wait for.

@@ -29,6 +29,7 @@
 #include <alpaka/math/MathCudaBuiltIn.hpp>          // MathCudaBuiltIn
 #include <alpaka/block/shared/BlockSharedAllocCudaBuiltIn.hpp>  // BlockSharedAllocCudaBuiltIn
 #include <alpaka/block/sync/BlockSyncCudaBuiltIn.hpp>   // BlockSyncCudaBuiltIn
+#include <alpaka/rand/RandCuRand.hpp>               // RandCuRand
 
 // Specialized traits.
 #include <alpaka/acc/Traits.hpp>                    // acc::traits::AccType
@@ -73,7 +74,8 @@ namespace alpaka
             public atomic::AtomicCudaBuiltIn,
             public math::MathCudaBuiltIn,
             public block::shared::BlockSharedAllocCudaBuiltIn,
-            public block::sync::BlockSyncCudaBuiltIn
+            public block::sync::BlockSyncCudaBuiltIn,
+            public rand::RandCuRand
         {
         public:
             //-----------------------------------------------------------------------------
@@ -86,7 +88,8 @@ namespace alpaka
                 atomic::AtomicCudaBuiltIn(),
                 math::MathCudaBuiltIn(),
                 block::shared::BlockSharedAllocCudaBuiltIn(),
-                block::sync::BlockSyncCudaBuiltIn()
+                block::sync::BlockSyncCudaBuiltIn(),
+                rand::RandCuRand()
             {}
 
         public:

@@ -25,6 +25,8 @@
 
 #include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
 
+#include <boost/core/ignore_unused.hpp> // boost::ignore_unused
+
 #include <random>                       // std::mt19937, std::uniform_real_distribution, ...
 #include <type_traits>                  // std::enable_if
 
@@ -32,6 +34,15 @@ namespace alpaka
 {
     namespace rand
     {
+        //#############################################################################
+        //! The standard library rand implementation.
+        //#############################################################################
+        class RandStl
+        {
+        public:
+            using RandBase = RandStl;
+        };
+
         namespace distribution
         {
             namespace traits
@@ -40,24 +51,21 @@ namespace alpaka
                 //! The CPU device random number float normal distribution get trait specialization.
                 //#############################################################################
                 template<
-                    typename TAcc,
                     typename T>
                 struct CreateNormalReal<
-                    TAcc,
+                    RandStl,
                     T,
                     typename std::enable_if<
-                        std::is_same<
-                            dev::Dev<TAcc>,
-                            dev::DevCpu>::value
-                        && std::is_floating_point<T>::value>::type>
+                        std::is_floating_point<T>::value>::type>
                 {
                     //-----------------------------------------------------------------------------
                     //
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_NO_CUDA static auto createNormalReal(
-                        TAcc const & acc)
+                        RandStl const & rand)
                     -> std::normal_distribution<T>
                     {
+                        boost::ignore_unused(rand);
                         return std::normal_distribution<T>();
                     }
                 };
@@ -65,24 +73,21 @@ namespace alpaka
                 //! The CPU device random number float uniform distribution get trait specialization.
                 //#############################################################################
                 template<
-                    typename TAcc,
                     typename T>
                 struct CreateUniformReal<
-                    TAcc,
+                    RandStl,
                     T,
                     typename std::enable_if<
-                        std::is_same<
-                            dev::Dev<TAcc>,
-                            dev::DevCpu>::value
-                        && std::is_floating_point<T>::value>::type>
+                        std::is_floating_point<T>::value>::type>
                 {
                     //-----------------------------------------------------------------------------
                     //
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_NO_CUDA static auto createUniformReal(
-                        TAcc const & acc)
+                        RandStl const & rand)
                     -> std::uniform_real_distribution<T>
                     {
+                        boost::ignore_unused(rand);
                         return std::uniform_real_distribution<T>();
                     }
                 };
@@ -90,24 +95,21 @@ namespace alpaka
                 //! The CPU device random number integer uniform distribution get trait specialization.
                 //#############################################################################
                 template<
-                    typename TAcc,
                     typename T>
                 struct CreateUniformUint<
-                    TAcc,
+                    RandStl,
                     T,
                     typename std::enable_if<
-                        std::is_same<
-                            dev::Dev<TAcc>,
-                            dev::DevCpu>::value
-                        && std::is_integral<T>::value>::type>
+                        std::is_integral<T>::value>::type>
                 {
                     //-----------------------------------------------------------------------------
                     //
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_NO_CUDA static auto createUniformUint(
-                        TAcc const & acc)
+                        RandStl const & rand)
                     -> std::uniform_int_distribution<T>
                     {
+                        boost::ignore_unused(rand);
                         return std::uniform_int_distribution<T>(
                             0,  // For signed integer: std::numeric_limits<T>::lowest()
                             std::numeric_limits<T>::max());
@@ -122,24 +124,20 @@ namespace alpaka
                 //#############################################################################
                 //! The CPU device random number default generator get trait specialization.
                 //#############################################################################
-                template<
-                    typename TAcc>
+                template<>
                 struct CreateDefault<
-                    TAcc,
-                    typename std::enable_if<
-                        std::is_same<
-                            dev::Dev<TAcc>,
-                            dev::DevCpu>::value>::type>
+                    RandStl>
                 {
                     //-----------------------------------------------------------------------------
                     //
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_NO_CUDA static auto createDefault(
-                        TAcc const & acc,
+                        RandStl const & rand,
                         std::uint32_t const & seed,
                         std::uint32_t const & subsequence)
                     -> std::mt19937
                     {
+                        boost::ignore_unused(rand);
                         // NOTE: XOR the seed and the subsequence to generate a unique seed.
                         return std::mt19937(seed ^ subsequence);
                     }

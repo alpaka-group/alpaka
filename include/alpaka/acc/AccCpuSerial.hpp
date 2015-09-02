@@ -29,6 +29,7 @@
 #include <alpaka/math/MathStl.hpp>              // MathStl
 #include <alpaka/block/shared/BlockSharedAllocNoSync.hpp>  // BlockSharedAllocNoSync
 #include <alpaka/block/sync/BlockSyncNoOp.hpp>  // BlockSyncNoOp
+#include <alpaka/rand/RandStl.hpp>              // RandStl
 
 // Specialized traits.
 #include <alpaka/acc/Traits.hpp>                // acc::traits::AccType
@@ -73,7 +74,8 @@ namespace alpaka
             public atomic::AtomicNoOp,
             public math::MathStl,
             public block::shared::BlockSharedAllocNoSync,
-            public block::sync::BlockSyncNoOp
+            public block::sync::BlockSyncNoOp,
+            public rand::RandStl
         {
         public:
             // Partial specialization with the correct TDim and TSize is not allowed.
@@ -99,6 +101,7 @@ namespace alpaka
                     math::MathStl(),
                     block::shared::BlockSharedAllocNoSync(),
                     block::sync::BlockSyncNoOp(),
+                    rand::RandStl(),
                     m_gridBlockIdx(Vec<TDim, TSize>::zeros())
             {}
 

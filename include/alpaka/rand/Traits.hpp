@@ -47,7 +47,7 @@ namespace alpaka
                 //! The random number float normal distribution get trait.
                 //#############################################################################
                 template<
-                    typename TAcc,
+                    typename TRand,
                     typename T,
                     typename TSfinae = void>
                 struct CreateNormalReal;
@@ -56,7 +56,7 @@ namespace alpaka
                 //! The random number float uniform distribution get trait.
                 //#############################################################################
                 template<
-                    typename TAcc,
+                    typename TRand,
                     typename T,
                     typename TSfinae = void>
                 struct CreateUniformReal;
@@ -65,7 +65,7 @@ namespace alpaka
                 //! The random number integer uniform distribution get trait.
                 //#############################################################################
                 template<
-                    typename TAcc,
+                    typename TRand,
                     typename T,
                     typename TSfinae = void>
                 struct CreateUniformUint;
@@ -77,25 +77,26 @@ namespace alpaka
             ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename T,
-                typename TAcc>
+                typename TRand>
             ALPAKA_FN_HOST_ACC auto createNormalReal(
-                TAcc const & acc)
+                TRand const & rand)
             -> decltype(
                 traits::CreateNormalReal<
-                    TAcc,
+                    TRand,
                     T>
                 ::createNormalReal(
-                    std::declval<TAcc const &>()))
+                    std::declval<TRand const &>()))
             {
                 static_assert(
                     std::is_floating_point<T>::value,
                     "The value type T has to be a floating point type!");
 
-                return traits::CreateNormalReal<
-                    TAcc,
-                    T>
-                ::createNormalReal(
-                    acc);
+                return
+                    traits::CreateNormalReal<
+                        TRand,
+                        T>
+                    ::createNormalReal(
+                        rand);
             }
             //-----------------------------------------------------------------------------
             //! \return A uniform floating point distribution [0.0, 1.0).
@@ -103,25 +104,26 @@ namespace alpaka
             ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename T,
-                typename TAcc>
+                typename TRand>
             ALPAKA_FN_HOST_ACC auto createUniformReal(
-                TAcc const & acc)
+                TRand const & rand)
             -> decltype(
                 traits::CreateUniformReal<
-                    TAcc,
+                    TRand,
                     T>
                 ::createUniformReal(
-                    std::declval<TAcc const &>()))
+                    std::declval<TRand const &>()))
             {
                 static_assert(
                     std::is_floating_point<T>::value,
                     "The value type T has to be a floating point type!");
 
-                return traits::CreateUniformReal<
-                    TAcc,
-                    T>
-                ::createUniformReal(
-                    acc);
+                return
+                    traits::CreateUniformReal<
+                        TRand,
+                        T>
+                    ::createUniformReal(
+                        rand);
             }
             //-----------------------------------------------------------------------------
             //! \return A uniform integer distribution [0, UINT_MAX].
@@ -129,25 +131,116 @@ namespace alpaka
             ALPAKA_NO_HOST_ACC_WARNING
             template<
                 typename T,
-                typename TAcc>
+                typename TRand>
             ALPAKA_FN_HOST_ACC auto createUniformUint(
-                TAcc const & acc)
+                TRand const & rand)
             -> decltype(
                 traits::CreateUniformUint<
-                    TAcc,
+                    TRand,
                     T>
                 ::createUniformUint(
-                    std::declval<TAcc const &>()))
+                    std::declval<TRand const &>()))
             {
                 static_assert(
                     std::is_integral<T>::value && std::is_unsigned<T>::value,
                     "The value type T has to be a unsigned integral type!");
 
-                return traits::CreateUniformUint<
-                    TAcc,
-                    T>
-                ::createUniformUint(
-                    acc);
+                return
+                    traits::CreateUniformUint<
+                        TRand,
+                        T>
+                    ::createUniformUint(
+                        rand);
+            }
+            namespace traits
+            {
+                //#############################################################################
+                //! The CreateNormalReal specialization for classes with RandBase member type.
+                //#############################################################################
+                template<
+                    typename TRand,
+                    typename T>
+                struct CreateNormalReal<
+                    TRand,
+                    T,
+                    typename std::enable_if<
+                        std::is_base_of<typename TRand::RandBase, typename std::decay<TRand>::type>::value
+                        && (!std::is_same<typename TRand::RandBase, typename std::decay<TRand>::type>::value)>::type>
+                {
+                    //-----------------------------------------------------------------------------
+                    //
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_NO_HOST_ACC_WARNING
+                    ALPAKA_FN_HOST_ACC static auto createNormalReal(
+                        TRand const & rand)
+                    -> decltype(
+                        rand::distribution::createNormalReal<T>(
+                            static_cast<typename TRand::RandBase const &>(rand)))
+                    {
+                        // Delegate the call to the base class.
+                        return
+                            rand::distribution::createNormalReal<T>(
+                                static_cast<typename TRand::RandBase const &>(rand));
+                    }
+                };
+                //#############################################################################
+                //! The CreateUniformReal specialization for classes with RandBase member type.
+                //#############################################################################
+                template<
+                    typename TRand,
+                    typename T>
+                struct CreateUniformReal<
+                    TRand,
+                    T,
+                    typename std::enable_if<
+                        std::is_base_of<typename TRand::RandBase, typename std::decay<TRand>::type>::value
+                        && (!std::is_same<typename TRand::RandBase, typename std::decay<TRand>::type>::value)>::type>
+                {
+                    //-----------------------------------------------------------------------------
+                    //
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_NO_HOST_ACC_WARNING
+                    ALPAKA_FN_HOST_ACC static auto createUniformReal(
+                        TRand const & rand)
+                    -> decltype(
+                        rand::distribution::createUniformReal<T>(
+                            static_cast<typename TRand::RandBase const &>(rand)))
+                    {
+                        // Delegate the call to the base class.
+                        return
+                            rand::distribution::createUniformReal<T>(
+                                static_cast<typename TRand::RandBase const &>(rand));
+                    }
+                };
+                //#############################################################################
+                //! The CreateUniformUint specialization for classes with RandBase member type.
+                //#############################################################################
+                template<
+                    typename TRand,
+                    typename T>
+                struct CreateUniformUint<
+                    TRand,
+                    T,
+                    typename std::enable_if<
+                        std::is_base_of<typename TRand::RandBase, typename std::decay<TRand>::type>::value
+                        && (!std::is_same<typename TRand::RandBase, typename std::decay<TRand>::type>::value)>::type>
+                {
+                    //-----------------------------------------------------------------------------
+                    //
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_NO_HOST_ACC_WARNING
+                    ALPAKA_FN_HOST_ACC static auto createUniformUint(
+                        TRand const & rand)
+                    -> decltype(
+                        rand::distribution::createUniformUint<T>(
+                            static_cast<typename TRand::RandBase const &>(rand)))
+                    {
+                        // Delegate the call to the base class.
+                        return
+                            rand::distribution::createUniformUint<T>(
+                                static_cast<typename TRand::RandBase const &>(rand));
+                    }
+                };
             }
         }
         //-----------------------------------------------------------------------------
@@ -164,7 +257,7 @@ namespace alpaka
                 //! The random number default generator get trait.
                 //#############################################################################
                 template<
-                    typename TAcc,
+                    typename TRand,
                     typename TSfinae = void>
                 struct CreateDefault;
             }
@@ -173,25 +266,62 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_NO_HOST_ACC_WARNING
             template<
-                typename TAcc>
+                typename TRand>
             ALPAKA_FN_HOST_ACC auto createDefault(
-                TAcc const & acc,
+                TRand const & rand,
                 std::uint32_t const & seed,
                 std::uint32_t const & subsequence)
             -> decltype(
                 traits::CreateDefault<
-                    TAcc>
+                    TRand>
                 ::createDefault(
-                    std::declval<TAcc const &>(),
+                    std::declval<TRand const &>(),
                     std::declval<std::uint32_t const &>(),
                     std::declval<std::uint32_t const &>()))
             {
-                return traits::CreateDefault<
-                    TAcc>
-                ::createDefault(
-                    acc,
-                    seed,
-                    subsequence);
+                return
+                    traits::CreateDefault<
+                        TRand>
+                    ::createDefault(
+                        rand,
+                        seed,
+                        subsequence);
+            }
+            namespace traits
+            {
+                //#############################################################################
+                //! The CreateDefault specialization for classes with RandBase member type.
+                //#############################################################################
+                template<
+                    typename TRand>
+                struct CreateDefault<
+                    TRand,
+                    typename std::enable_if<
+                        std::is_base_of<typename TRand::RandBase, typename std::decay<TRand>::type>::value
+                        && (!std::is_same<typename TRand::RandBase, typename std::decay<TRand>::type>::value)>::type>
+                {
+                    //-----------------------------------------------------------------------------
+                    //
+                    //-----------------------------------------------------------------------------
+                    ALPAKA_NO_HOST_ACC_WARNING
+                    ALPAKA_FN_HOST_ACC static auto createDefault(
+                        TRand const & rand,
+                        std::uint32_t const & seed,
+                        std::uint32_t const & subsequence)
+                    -> decltype(
+                        rand::generator::createDefault(
+                            static_cast<typename TRand::RandBase const &>(rand),
+                            seed,
+                            subsequence))
+                    {
+                        // Delegate the call to the base class.
+                        return
+                            rand::generator::createDefault(
+                                static_cast<typename TRand::RandBase const &>(rand),
+                                seed,
+                                subsequence);
+                    }
+                };
             }
         }
     }

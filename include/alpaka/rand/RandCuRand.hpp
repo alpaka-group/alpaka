@@ -36,6 +36,15 @@ namespace alpaka
 {
     namespace rand
     {
+        //#############################################################################
+        //! The CUDA rand implementation.
+        //#############################################################################
+        class RandCuRand
+        {
+        public:
+            using RandBase = RandCuRand;
+        };
+
         namespace generator
         {
             namespace cuda
@@ -237,22 +246,18 @@ namespace alpaka
                 //! The CUDA random number float normal distribution get trait specialization.
                 //#############################################################################
                 template<
-                    typename TAcc,
                     typename T>
                 struct CreateNormalReal<
-                    TAcc,
+                    RandCuRand,
                     T,
                     typename std::enable_if<
-                        std::is_same<
-                            dev::Dev<TAcc>,
-                            dev::DevCudaRt>::value
-                        && std::is_floating_point<T>::value>::type>
+                        std::is_floating_point<T>::value>::type>
                 {
                     //-----------------------------------------------------------------------------
                     //
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_CUDA_ONLY static auto createNormalReal(
-                        TAcc const & acc)
+                        RandCuRand const & /*rand*/)
                     -> rand::distribution::cuda::NormalReal<T>
                     {
                         return rand::distribution::cuda::NormalReal<T>();
@@ -262,22 +267,18 @@ namespace alpaka
                 //! The CUDA random number float uniform distribution get trait specialization.
                 //#############################################################################
                 template<
-                    typename TAcc,
                     typename T>
                 struct CreateUniformReal<
-                    TAcc,
+                    RandCuRand,
                     T,
                     typename std::enable_if<
-                        std::is_same<
-                            dev::Dev<TAcc>,
-                            dev::DevCudaRt>::value
-                        && std::is_floating_point<T>::value>::type>
+                        std::is_floating_point<T>::value>::type>
                 {
                     //-----------------------------------------------------------------------------
                     //
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_CUDA_ONLY static auto createUniformReal(
-                        TAcc const & acc)
+                        RandCuRand const & /*rand*/)
                     -> rand::distribution::cuda::UniformReal<T>
                     {
                         return rand::distribution::cuda::UniformReal<T>();
@@ -287,22 +288,18 @@ namespace alpaka
                 //! The CUDA random number integer uniform distribution get trait specialization.
                 //#############################################################################
                 template<
-                    typename TAcc,
                     typename T>
                 struct CreateUniformUint<
-                    TAcc,
+                    RandCuRand,
                     T,
                     typename std::enable_if<
-                        std::is_same<
-                            dev::Dev<TAcc>,
-                            dev::DevCudaRt>::value
-                        && std::is_integral<T>::value>::type>
+                        std::is_integral<T>::value>::type>
                 {
                     //-----------------------------------------------------------------------------
                     //
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_CUDA_ONLY static auto createUniformUint(
-                        TAcc const & acc)
+                        RandCuRand const & /*rand*/)
                     -> rand::distribution::cuda::UniformUint<T>
                     {
                         return rand::distribution::cuda::UniformUint<T>();
@@ -317,20 +314,15 @@ namespace alpaka
                 //#############################################################################
                 //! The CUDA random number default generator get trait specialization.
                 //#############################################################################
-                template<
-                    typename TAcc>
+                template<>
                 struct CreateDefault<
-                    TAcc,
-                    typename std::enable_if<
-                        std::is_same<
-                            dev::Dev<TAcc>,
-                            dev::DevCudaRt>::value>::type>
+                    RandCuRand>
                 {
                     //-----------------------------------------------------------------------------
                     //
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_CUDA_ONLY static auto createDefault(
-                        TAcc const & acc,
+                        RandCuRand const & /*rand*/,
                         std::uint32_t const & seed,
                         std::uint32_t const & subsequence)
                     -> rand::generator::cuda::Xor
