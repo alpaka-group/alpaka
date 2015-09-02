@@ -69,7 +69,6 @@ namespace alpaka
                         std::size_t const & sizeElems)
                     -> T *
                     {
-                        assert(sizeElems>0);
                         boost::ignore_unused(alloc);
                         return
                             reinterpret_cast<T *>(
