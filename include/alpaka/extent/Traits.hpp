@@ -24,6 +24,7 @@
 #include <alpaka/core/IntegerSequence.hpp>  // integer_sequence
 #include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
 #include <alpaka/core/Fold.hpp>             // core::foldr
+#include <alpaka/size/Traits.hpp>           // size::Size
 
 #if !defined(__CUDA_ARCH__)
     #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
