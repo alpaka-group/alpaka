@@ -71,14 +71,15 @@ namespace alpaka
                 y,
                 x))
         {
-            return traits::Atan2<
-                T,
-                Ty,
-                Tx>
-            ::atan2(
-                atan2,
-                y,
-                x);
+            return
+                traits::Atan2<
+                    T,
+                    Ty,
+                    Tx>
+                ::atan2(
+                    atan2,
+                    y,
+                    x);
         }
 
         namespace traits

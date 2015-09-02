@@ -72,14 +72,15 @@ namespace alpaka
                 x,
                 y))
         {
-            return traits::Max<
-                T,
-                Tx,
-                Ty>
-            ::max(
-                max,
-                x,
-                y);
+            return
+                traits::Max<
+                    T,
+                    Tx,
+                    Ty>
+                ::max(
+                    max,
+                    x,
+                    y);
         }
 
         namespace traits

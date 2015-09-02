@@ -171,7 +171,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC Vec(
             TArg0 && arg0,
             TArgs && ... args) :
-                m_auiData{std::forward<TArg0>(arg0), std::forward<TArgs>(args)...}
+                m_data{std::forward<TArg0>(arg0), std::forward<TArgs>(args)...}
         {}
 
 #ifdef __CUDACC__
@@ -335,7 +335,7 @@ namespace alpaka
             core::assertValueUnsigned(iIdx);
             auto const idx(static_cast<typename TDim::value_type>(iIdx));
             assert(idx<TDim::value);
-            return m_auiData[idx];
+            return m_data[idx];
         }
 
         //-----------------------------------------------------------------------------
@@ -354,7 +354,7 @@ namespace alpaka
             core::assertValueUnsigned(iIdx);
             auto const idx(static_cast<typename TDim::value_type>(iIdx));
             assert(idx<TDim::value);
-            return m_auiData[idx];
+            return m_data[idx];
         }
 
         //-----------------------------------------------------------------------------
@@ -483,10 +483,10 @@ namespace alpaka
             return
                 static_cast<typename TDim::value_type>(
                     std::distance(
-                        std::begin(m_auiData),
+                        std::begin(m_data),
                         std::min_element(
-                            std::begin(m_auiData),
-                            std::end(m_auiData))));
+                            std::begin(m_data),
+                            std::end(m_data))));
         }
         //-----------------------------------------------------------------------------
         //! \return The index of the maximal element.
@@ -498,15 +498,15 @@ namespace alpaka
             return
                 static_cast<typename TDim::value_type>(
                     std::distance(
-                        std::begin(m_auiData),
+                        std::begin(m_data),
                         std::max_element(
-                            std::begin(m_auiData),
-                            std::end(m_auiData))));
+                            std::begin(m_data),
+                            std::end(m_data))));
         }
 
     private:
         // 16 Byte alignment for usage inside of CUDA kernels.
-        alignas(16u) TSize m_auiData[TDim::value];
+        alignas(16u) TSize m_data[TDim::value];
     };
 
     template<

@@ -192,10 +192,11 @@ namespace alpaka
                 TBuf const & buf)
             -> Elem<TBuf> const *
             {
-                return traits::GetPtrNative<
-                    TBuf>
-                ::getPtrNative(
-                    buf);
+                return
+                    traits::GetPtrNative<
+                        TBuf>
+                    ::getPtrNative(
+                        buf);
             }
             //-----------------------------------------------------------------------------
             //! Gets the native pointer of the memory buffer.
@@ -209,10 +210,11 @@ namespace alpaka
                 TBuf & buf)
             -> Elem<TBuf> *
             {
-                return traits::GetPtrNative<
-                    TBuf>
-                ::getPtrNative(
-                    buf);
+                return
+                    traits::GetPtrNative<
+                        TBuf>
+                    ::getPtrNative(
+                        buf);
             }
 
             //-----------------------------------------------------------------------------
@@ -230,12 +232,13 @@ namespace alpaka
                 TDev const & dev)
             -> Elem<TBuf> const *
             {
-                return traits::GetPtrDev<
-                    TBuf,
-                    TDev>
-                ::getPtrDev(
-                    buf,
-                    dev);
+                return
+                    traits::GetPtrDev<
+                        TBuf,
+                        TDev>
+                    ::getPtrDev(
+                        buf,
+                        dev);
             }
             //-----------------------------------------------------------------------------
             //! Gets the pointer to the buffer on the given device.
@@ -252,12 +255,13 @@ namespace alpaka
                 TDev const & dev)
             -> Elem<TBuf> *
             {
-                return traits::GetPtrDev<
-                    TBuf,
-                    TDev>
-                ::getPtrDev(
-                    buf,
-                    dev);
+                return
+                    traits::GetPtrDev<
+                        TBuf,
+                        TDev>
+                    ::getPtrDev(
+                        buf,
+                        dev);
             }
 
             //-----------------------------------------------------------------------------

@@ -64,12 +64,13 @@ namespace alpaka
                 floor,
                 arg))
         {
-            return traits::Floor<
-                T,
-                TArg>
-            ::floor(
-                floor,
-                arg);
+            return
+                traits::Floor<
+                    T,
+                    TArg>
+                ::floor(
+                    floor,
+                    arg);
         }
 
         namespace traits

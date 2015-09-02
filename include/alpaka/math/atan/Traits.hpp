@@ -63,12 +63,13 @@ namespace alpaka
                 atan,
                 arg))
         {
-            return traits::Atan<
-                T,
-                TArg>
-            ::atan(
-                atan,
-                arg);
+            return
+                traits::Atan<
+                    T,
+                    TArg>
+                ::atan(
+                    atan,
+                    arg);
         }
 
         namespace traits

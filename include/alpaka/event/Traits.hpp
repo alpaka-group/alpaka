@@ -80,10 +80,11 @@ namespace alpaka
             TEvent const & event)
         -> bool
         {
-            return traits::EventTest<
-                TEvent>
-            ::eventTest(
-                event);
+            return
+                traits::EventTest<
+                    TEvent>
+                ::eventTest(
+                    event);
         }
     }
 }

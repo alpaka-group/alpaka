@@ -69,13 +69,14 @@ namespace alpaka
             TWorkDiv const & workDiv)
         -> Vec<dim::Dim<TWorkDiv>, size::Size<TIdx>>
         {
-            return traits::GetIdx<
-                TIdx,
-                TOrigin,
-                TUnit>
-            ::getIdx(
-                idx,
-                workDiv);
+            return
+                traits::GetIdx<
+                    TIdx,
+                    TOrigin,
+                    TUnit>
+                ::getIdx(
+                    idx,
+                    workDiv);
         }
         //-----------------------------------------------------------------------------
         //! Get the indices requested.
@@ -89,13 +90,14 @@ namespace alpaka
             TIdxWorkDiv const & idxWorkDiv)
         -> Vec<dim::Dim<TIdxWorkDiv>, size::Size<TIdxWorkDiv>>
         {
-            return traits::GetIdx<
-                TIdxWorkDiv,
-                TOrigin,
-                TUnit>
-            ::getIdx(
-                idxWorkDiv,
-                idxWorkDiv);
+            return
+                traits::GetIdx<
+                    TIdxWorkDiv,
+                    TOrigin,
+                    TUnit>
+                ::getIdx(
+                    idxWorkDiv,
+                    idxWorkDiv);
         }
 
         namespace traits

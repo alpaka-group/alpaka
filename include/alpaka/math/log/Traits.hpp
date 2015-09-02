@@ -64,12 +64,13 @@ namespace alpaka
                 log,
                 arg))
         {
-            return traits::Log<
-                T,
-                TArg>
-            ::log(
-                log,
-                arg);
+            return
+                traits::Log<
+                    T,
+                    TArg>
+                ::log(
+                    log,
+                    arg);
         }
 
         namespace traits

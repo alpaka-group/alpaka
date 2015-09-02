@@ -63,12 +63,13 @@ namespace alpaka
                 asin,
                 arg))
         {
-            return traits::Asin<
-                T,
-                TArg>
-            ::asin(
-                asin,
-                arg);
+            return
+                traits::Asin<
+                    T,
+                    TArg>
+                ::asin(
+                    asin,
+                    arg);
         }
 
         namespace traits

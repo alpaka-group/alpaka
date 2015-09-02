@@ -64,12 +64,13 @@ namespace alpaka
                 cos,
                 arg))
         {
-            return traits::Cos<
-                T,
-                TArg>
-            ::cos(
-                cos,
-                arg);
+            return
+                traits::Cos<
+                    T,
+                    TArg>
+                ::cos(
+                    cos,
+                    arg);
         }
 
         namespace traits

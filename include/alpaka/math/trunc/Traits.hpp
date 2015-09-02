@@ -64,12 +64,13 @@ namespace alpaka
                 trunc,
                 arg))
         {
-            return traits::Trunc<
-                T,
-                TArg>
-            ::trunc(
-                trunc,
-                arg);
+            return
+                traits::Trunc<
+                    T,
+                    TArg>
+                ::trunc(
+                    trunc,
+                    arg);
         }
 
         namespace traits

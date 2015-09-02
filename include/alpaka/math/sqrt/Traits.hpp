@@ -64,12 +64,13 @@ namespace alpaka
                 sqrt,
                 arg))
         {
-            return traits::Sqrt<
-                T,
-                TArg>
-            ::sqrt(
-                sqrt,
-                arg);
+            return
+                traits::Sqrt<
+                    T,
+                    TArg>
+                ::sqrt(
+                    sqrt,
+                    arg);
         }
 
         namespace traits

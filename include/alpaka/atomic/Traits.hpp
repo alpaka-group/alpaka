@@ -69,14 +69,15 @@ namespace alpaka
             T const & value)
         -> T
         {
-            return traits::AtomicOp<
-                TOp,
-                TAtomic,
-                T>
-            ::atomicOp(
-                atomic,
-                addr,
-                value);
+            return
+                traits::AtomicOp<
+                    TOp,
+                    TAtomic,
+                    T>
+                ::atomicOp(
+                    atomic,
+                    addr,
+                    value);
         }
 
         namespace traits

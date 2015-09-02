@@ -92,7 +92,7 @@ namespace alpaka
                     auto & barrierIdx(itFind->second);
                     TSize const modBarrierIdx(barrierIdx % 2);
 
-                    auto & bar(m_abarSyncThreads[modBarrierIdx]);
+                    auto & bar(m_barriers[modBarrierIdx]);
 
                     // (Re)initialize a barrier if this is the first thread to reach it.
                     // DCLP: Double checked locking pattern for better performance.
@@ -111,7 +111,7 @@ namespace alpaka
 
                 ThreadIdToBarrierIdxMap & m_threadIdToBarrierIdxMap;
                 //!< We have to keep the current and the last barrier because one of the threads can reach the next barrier before a other thread was wakeup from the last one and has checked if it can run.
-                Barrier mutable m_abarSyncThreads[2];           //!< The barriers for the synchronization of threads.
+                Barrier mutable m_barriers[2];           //!< The barriers for the synchronization of threads.
             };
 
             namespace traits

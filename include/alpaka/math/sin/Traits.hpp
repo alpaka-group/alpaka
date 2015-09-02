@@ -64,12 +64,13 @@ namespace alpaka
                 sin,
                 arg))
         {
-            return traits::Sin<
-                T,
-                TArg>
-            ::sin(
-                sin,
-                arg);
+            return
+                traits::Sin<
+                    T,
+                    TArg>
+                ::sin(
+                    sin,
+                    arg);
         }
 
         namespace traits

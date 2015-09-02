@@ -82,12 +82,13 @@ namespace alpaka
                 round,
                 arg))
         {
-            return traits::Round<
-                T,
-                TArg>
-            ::round(
-                round,
-                arg);
+            return
+                traits::Round<
+                    T,
+                    TArg>
+                ::round(
+                    round,
+                    arg);
         }
         //-----------------------------------------------------------------------------
         //! Computes the nearest integer value to arg (in integer format), rounding halfway cases away from zero, regardless of the current rounding mode.
@@ -106,12 +107,13 @@ namespace alpaka
             TArg const & arg)
         -> long int
         {
-            return traits::Lround<
-                T,
-                TArg>
-            ::lround(
-                lround,
-                arg);
+            return
+                traits::Lround<
+                    T,
+                    TArg>
+                ::lround(
+                    lround,
+                    arg);
         }
         //-----------------------------------------------------------------------------
         //! Computes the nearest integer value to arg (in integer format), rounding halfway cases away from zero, regardless of the current rounding mode.
@@ -130,12 +132,13 @@ namespace alpaka
             TArg const & arg)
         -> long long int
         {
-            return traits::Llround<
-                T,
-                TArg>
-            ::llround(
-                llround,
-                arg);
+            return
+                traits::Llround<
+                    T,
+                    TArg>
+                ::llround(
+                    llround,
+                    arg);
         }
 
         namespace traits

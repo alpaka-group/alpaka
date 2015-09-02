@@ -115,10 +115,11 @@ namespace alpaka
             T const & t)
         -> decltype(traits::GetDev<T>::getDev(t))
         {
-            return traits::GetDev<
-                T>
-            ::getDev(
-                t);
+            return
+                traits::GetDev<
+                    T>
+                ::getDev(
+                    t);
         }
 
         //-----------------------------------------------------------------------------
@@ -149,10 +150,11 @@ namespace alpaka
             TDev const & dev)
         -> std::string
         {
-            return traits::GetName<
-                TDev>
-            ::getName(
-                dev);
+            return
+                traits::GetName<
+                    TDev>
+                ::getName(
+                    dev);
         }
 
         //-----------------------------------------------------------------------------
@@ -164,10 +166,11 @@ namespace alpaka
             TDev const & dev)
         -> std::size_t
         {
-            return traits::GetMemBytes<
-                TDev>
-            ::getMemBytes(
-                dev);
+            return
+                traits::GetMemBytes<
+                    TDev>
+                ::getMemBytes(
+                    dev);
         }
 
         //-----------------------------------------------------------------------------
@@ -179,10 +182,11 @@ namespace alpaka
             TDev const & dev)
         -> std::size_t
         {
-            return traits::GetFreeMemBytes<
-                TDev>
-            ::getFreeMemBytes(
-                dev);
+            return
+                traits::GetFreeMemBytes<
+                    TDev>
+                ::getFreeMemBytes(
+                    dev);
         }
 
         //-----------------------------------------------------------------------------

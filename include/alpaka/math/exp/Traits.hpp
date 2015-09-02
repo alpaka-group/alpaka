@@ -63,12 +63,13 @@ namespace alpaka
                 exp,
                 arg))
         {
-            return traits::Exp<
-                T,
-                TArg>
-            ::exp(
-                exp,
-                arg);
+            return
+                traits::Exp<
+                    T,
+                    TArg>
+                ::exp(
+                    exp,
+                    arg);
         }
 
         namespace traits

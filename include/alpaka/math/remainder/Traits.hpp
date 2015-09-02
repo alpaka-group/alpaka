@@ -71,14 +71,15 @@ namespace alpaka
                 x,
                 y))
         {
-            return traits::Remainder<
-                T,
-                Tx,
-                Ty>
-            ::remainder(
-                remainder,
-                x,
-                y);
+            return
+                traits::Remainder<
+                    T,
+                    Tx,
+                    Ty>
+                ::remainder(
+                    remainder,
+                    x,
+                    y);
         }
 
         namespace traits

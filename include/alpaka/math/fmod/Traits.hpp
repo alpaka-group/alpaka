@@ -71,14 +71,15 @@ namespace alpaka
                 x,
                 y))
         {
-            return traits::Fmod<
-                T,
-                Tx,
-                Ty>
-            ::fmod(
-                fmod,
-                x,
-                y);
+            return
+                traits::Fmod<
+                    T,
+                    Tx,
+                    Ty>
+                ::fmod(
+                    fmod,
+                    x,
+                    y);
         }
 
         namespace traits

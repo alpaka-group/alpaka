@@ -67,12 +67,13 @@ namespace alpaka
                 abs,
                 arg))
         {
-            return traits::Abs<
-                T,
-                TArg>
-            ::abs(
-                abs,
-                arg);
+            return
+                traits::Abs<
+                    T,
+                    TArg>
+                ::abs(
+                    abs,
+                    arg);
         }
 
         namespace traits

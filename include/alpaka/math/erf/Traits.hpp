@@ -64,12 +64,13 @@ namespace alpaka
                 erf,
                 arg))
         {
-            return traits::Erf<
-                T,
-                TArg>
-            ::erf(
-                erf,
-                arg);
+            return
+                traits::Erf<
+                    T,
+                    TArg>
+                ::erf(
+                    erf,
+                    arg);
         }
 
         namespace traits

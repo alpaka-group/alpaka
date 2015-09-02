@@ -78,7 +78,7 @@ namespace alpaka
                     //
                     //-----------------------------------------------------------------------------
                     ALPAKA_FN_ACC_CUDA_ONLY static auto syncBlockThreads(
-                        block::sync::BlockSyncCudaBuiltIn const &)
+                        block::sync::BlockSyncCudaBuiltIn const & /*blockSync*/)
                     -> void
                     {
                         __syncthreads();

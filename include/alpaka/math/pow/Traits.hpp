@@ -71,14 +71,15 @@ namespace alpaka
                 base,
                 exp))
         {
-            return traits::Pow<
-                T,
-                TBase,
-                TExp>
-            ::pow(
-                pow,
-                base,
-                exp);
+            return
+                traits::Pow<
+                    T,
+                    TBase,
+                    TExp>
+                ::pow(
+                    pow,
+                    base,
+                    exp);
         }
 
         namespace traits

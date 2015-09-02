@@ -145,14 +145,15 @@ namespace alpaka
                     dev,
                     extents))
             {
-                return traits::Alloc<
-                    TElem,
-                    dim::Dim<TExtents>,
-                    TSize,
-                    TDev>
-                ::alloc(
-                    dev,
-                    extents);
+                return
+                    traits::Alloc<
+                        TElem,
+                        dim::Dim<TExtents>,
+                        TSize,
+                        TDev>
+                    ::alloc(
+                        dev,
+                        extents);
             }
             //-----------------------------------------------------------------------------
             //! Maps the buffer into the memory of the given device.
@@ -170,12 +171,13 @@ namespace alpaka
                 TDev const & dev)
             -> void
             {
-                return traits::Map<
-                    TBuf,
-                    TDev>
-                ::map(
-                    buf,
-                    dev);
+                return
+                    traits::Map<
+                        TBuf,
+                        TDev>
+                    ::map(
+                        buf,
+                        dev);
             }
             //-----------------------------------------------------------------------------
             //! Unmaps the buffer from the memory of the given device.
@@ -193,12 +195,13 @@ namespace alpaka
                 TDev const & dev)
             -> void
             {
-                return traits::Unmap<
-                    TBuf,
-                    TDev>
-                ::unmap(
-                    buf,
-                    dev);
+                return
+                    traits::Unmap<
+                        TBuf,
+                        TDev>
+                    ::unmap(
+                        buf,
+                        dev);
             }
             //-----------------------------------------------------------------------------
             //! Pins the buffer.
@@ -212,10 +215,11 @@ namespace alpaka
                 TBuf & buf)
             -> void
             {
-                return traits::Pin<
-                    TBuf>
-                ::pin(
-                    buf);
+                return
+                    traits::Pin<
+                        TBuf>
+                    ::pin(
+                        buf);
             }
             //-----------------------------------------------------------------------------
             //! Unpins the buffer.
@@ -229,10 +233,11 @@ namespace alpaka
                 TBuf & buf)
             -> void
             {
-                return traits::Unpin<
-                    TBuf>
-                ::unpin(
-                    buf);
+                return
+                    traits::Unpin<
+                        TBuf>
+                    ::unpin(
+                        buf);
             }
             //-----------------------------------------------------------------------------
             //! The pin state of the buffer.
@@ -246,10 +251,11 @@ namespace alpaka
                 TBuf const & buf)
             -> bool
             {
-                return traits::IsPinned<
-                    TBuf>
-                ::isPinned(
-                    buf);
+                return
+                    traits::IsPinned<
+                        TBuf>
+                    ::isPinned(
+                        buf);
             }
         }
     }

@@ -64,12 +64,13 @@ namespace alpaka
                 cbrt,
                 arg))
         {
-            return traits::Cbrt<
-                T,
-                TArg>
-            ::cbrt(
-                cbrt,
-                arg);
+            return
+                traits::Cbrt<
+                    T,
+                    TArg>
+                ::cbrt(
+                    cbrt,
+                    arg);
         }
 
         namespace traits

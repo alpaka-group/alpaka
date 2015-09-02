@@ -83,11 +83,12 @@ namespace alpaka
                 TBlockSharedAlloc const & blockSharedAlloc)
             -> T &
             {
-                return traits::AllocVar<
-                    T,
-                    TBlockSharedAlloc>
-                ::allocVar(
-                    blockSharedAlloc);
+                return
+                    traits::AllocVar<
+                        T,
+                        TBlockSharedAlloc>
+                    ::allocVar(
+                        blockSharedAlloc);
             }
 
             //-----------------------------------------------------------------------------
@@ -111,12 +112,13 @@ namespace alpaka
                     TnumElements > 0,
                     "The number of elements to allocate in block shared memory must not be zero!");
 
-                return traits::AllocArr<
-                    T,
-                    TnumElements,
-                    TBlockSharedAlloc>
-                ::allocArr(
-                    blockSharedAlloc);
+                return
+                    traits::AllocArr<
+                        T,
+                        TnumElements,
+                        TBlockSharedAlloc>
+                    ::allocArr(
+                        blockSharedAlloc);
             }
 
             //-----------------------------------------------------------------------------

@@ -64,12 +64,13 @@ namespace alpaka
                 ceil,
                 arg))
         {
-            return traits::Ceil<
-                T,
-                TArg>
-            ::ceil(
-                ceil,
-                arg);
+            return
+                traits::Ceil<
+                    T,
+                    TArg>
+                ::ceil(
+                    ceil,
+                    arg);
         }
 
         namespace traits

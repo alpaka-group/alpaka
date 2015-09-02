@@ -72,14 +72,15 @@ namespace alpaka
                 x,
                 y))
         {
-            return traits::Min<
-                T,
-                Tx,
-                Ty>
-            ::min(
-                min,
-                x,
-                y);
+            return
+                traits::Min<
+                    T,
+                    Tx,
+                    Ty>
+                ::min(
+                    min,
+                    x,
+                    y);
         }
 
         namespace traits
