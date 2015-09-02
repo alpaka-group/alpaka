@@ -84,7 +84,9 @@
     #include <alpaka/atomic/AtomicCudaBuiltIn.hpp>
 #endif
 #include <alpaka/atomic/AtomicNoOp.hpp>
-#include <alpaka/atomic/AtomicOmpCritSec.hpp>
+#ifdef _OPENMP
+    #include <alpaka/atomic/AtomicOmpCritSec.hpp>
+#endif
 #include <alpaka/atomic/AtomicStlLock.hpp>
 #include <alpaka/atomic/Op.hpp>
 #include <alpaka/atomic/Traits.hpp>
