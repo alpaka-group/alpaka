@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2014-2015 Benjamin Worpitz
+* Copyright 2014-2015 Benjamin Worpitz, Rene Widera
 *
 * This file is part of alpaka.
 *
@@ -79,6 +79,7 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     //
                     //-----------------------------------------------------------------------------
+                    ALPAKA_NO_HOST_ACC_WARNING
                     ALPAKA_FN_ACC static auto syncBlockThreads(
                         block::sync::BlockSyncNoOp const & /*blockSync*/)
                     -> void
