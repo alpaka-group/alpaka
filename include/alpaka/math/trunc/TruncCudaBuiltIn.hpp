@@ -1,6 +1,6 @@
 /**
 * \file
-* Copyright 2014-2015 Benjarint Worpitz
+* Copyright 2014-2015 Benjarint Worpitz, Rene Widera
 *
 * This file is part of alpaka.
 *
@@ -55,11 +55,10 @@ namespace alpaka
                     std::is_floating_point<TArg>::value>::type>
             {
                 ALPAKA_FN_ACC_CUDA_ONLY static auto trunc(
-                    TruncCudaBuiltIn const & trunc,
+                    TruncCudaBuiltIn const & /*trunc*/,
                     TArg const & arg)
                 -> decltype(::trunc(arg))
                 {
-                    boost::ignore_unused(trunc);
                     return ::trunc(arg);
                 }
             };
