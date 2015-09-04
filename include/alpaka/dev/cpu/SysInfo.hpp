@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include <boost/predef.h>   // BOOST_XXX
+
 #if BOOST_OS_WINDOWS || BOOST_OS_CYGWIN
     #ifndef NOMINMAX
         #define NOMINMAX
@@ -40,11 +42,9 @@
     #endif
 #endif
 
-#if defined(__linux)
+#if BOOST_OS_LINUX
     #include <fstream>
 #endif
-
-#include <boost/predef.h>   // BOOST_XXX
 
 #include <cstring>          // std::memcpy
 #include <string>           // std::string
@@ -192,7 +192,7 @@ namespace alpaka
     #endif
 
 #else
-                    throw std::logic_error("getTotalGlobalMemSizeBytes not implemented for this system!");
+    #error "getTotalGlobalMemSizeBytes not implemented for this system!"
 #endif
                 }
                 //-----------------------------------------------------------------------------
@@ -208,8 +208,7 @@ namespace alpaka
                     GlobalMemoryStatusEx(&status);
                     return static_cast<std::size_t>(status.ullAvailPhys);
 
-#elif defined(__linux)
-#include <fstream>
+#elif BOOST_OS_LINUX
                     std::string token;
                     std::ifstream file("/proc/meminfo");
                     if(file)
@@ -229,24 +228,16 @@ namespace alpaka
                                 }
                             }
                         }
+                        throw std::runtime_error("Unable to find MemFree in '/proc/meminfo'!");
                     }
                     else
                     {
-                        throw std::runtime_error("Unable to open /proc/meminfo!");
+                        throw std::runtime_error("Unable to open '/proc/meminfo'!");
                     }
-#elif defined(AIXUSEPERFSTAT) && defined(_AIX)
-                    perfstat_memory_total_t minfo;
-                    perfstat_memory_total(nullptr, &minfo, sizeof(perfstat_memory_total_t), 1);
-                    return minfo.real_free * (4096u/1024u);
-#elif defined(_SC_PAGESIZE) && defined(_SC_AVPHYS_PAGES)
-                    // SysV Unix
-                    long pgsz = sysconf(_SC_PAGESIZE);
-                    long avphyspgs = sysconf(_SC_AVPHYS_PAGES);
-                    return ((pgsz / 1024u) * avphyspgs);
-#elif defined(__APPLE__)
-                    throw std::logic_error("getFreeGlobalMemSizeBytes not implemented for __APPLE__!");
+#elif BOOST_OS_MACOS
+    #error "getFreeGlobalMemSizeBytes not implemented for __APPLE__!"
 #else
-                    throw std::logic_error("getFreeGlobalMemSizeBytes not implemented for this system!");
+    #error "getFreeGlobalMemSizeBytes not implemented for this system!"
 #endif
                 }
             }
