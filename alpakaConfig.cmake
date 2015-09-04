@@ -454,6 +454,7 @@ SET(alpaka_INCLUDE_DIR ${_ALPAKA_INCLUDE_DIRECTORY})
 SET(alpaka_INCLUDE_DIRS ${_ALPAKA_INCLUDE_DIRECTORIES_PUBLIC})
 SET(alpaka_LIBRARY ${_ALPAKA_LINK_LIBRARY})
 SET(alpaka_LIBRARIES ${_ALPAKA_LINK_LIBRARIES_PUBLIC})
+LIST(APPEND alpaka_LIBRARIES ${_ALPAKA_LINK_FLAGS_PUBLIC})
 
 #-------------------------------------------------------------------------------
 # Print the return values.
