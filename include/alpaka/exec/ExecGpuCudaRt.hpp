@@ -326,8 +326,10 @@ namespace alpaka
                     }
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
-                    std::cout << BOOST_CURRENT_FUNCTION << "gridDim: " <<  gridDim.z << " " <<  gridDim.y << " " <<  gridDim.x << std::endl;
-                    std::cout << BOOST_CURRENT_FUNCTION << "blockDim: " <<  blockDim.z << " " <<  blockDim.y << " " <<  blockDim.x << std::endl;
+                    std::cout << BOOST_CURRENT_FUNCTION
+                        << " gridDim: " <<  gridDim.z << " " <<  gridDim.y << " " <<  gridDim.x
+                        << " blockDim: " <<  blockDim.z << " " <<  blockDim.y << " " <<  blockDim.x
+                        << std::endl;
 #endif
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
