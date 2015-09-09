@@ -23,7 +23,7 @@
 
 #include <alpaka/dim/Traits.hpp>                    // Dim
 #include <alpaka/dev/Traits.hpp>                    // Dev
-#include <alpaka/extent/Traits.hpp>                 // view::getXXX
+#include <alpaka/extent/Traits.hpp>                 // mem::view::getXXX
 #include <alpaka/mem/view/Traits.hpp>
 #include <alpaka/offset/Traits.hpp>                 // traits::getOffsetX
 #include <alpaka/size/Traits.hpp>                   // size::traits::SizeType
@@ -68,7 +68,7 @@ namespace alpaka
                 using Dev = TDev;
                 using Elem = TElem;
                 using Dim = TDim;
-                using Buf = buf::BufPlainPtrWrapper<TDev, TElem, TDim, TSize>;
+                using Buf = mem::buf::BufPlainPtrWrapper<TDev, TElem, TDim, TSize>;
                 // If the value type is const, we store a const buffer.
                 //using BufC = detail::MimicConst<TElem, Buf>;
 
@@ -88,7 +88,9 @@ namespace alpaka
                             mem::view::getPitchBytes<TDim::value - 1u>(buf)),
                         m_vOffsetsElements(offset::getOffsetsVecEnd<TDim>(buf)),
                         m_extentsElements(extent::getExtentsVecEnd<TDim>(buf))
-                {}
+                {
+                    ALPAKA_DEBUG_FULL_LOG_SCOPE;
+                }
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //! \param buf This can be either a memory buffer or a memory view.
@@ -105,6 +107,8 @@ namespace alpaka
                         m_vOffsetsElements(offset::getOffsetsVecEnd<TDim>(buf)),
                         m_extentsElements(extent::getExtentsVecEnd<TDim>(buf))
                 {
+                    ALPAKA_DEBUG_FULL_LOG_SCOPE;
+
                     static_assert(
                         std::is_same<TSize, size::Size<TBuf>>::value,
                         "The size type of TBuf and the TSize template parameter have to be identical!");
@@ -132,6 +136,8 @@ namespace alpaka
                         m_extentsElements(extent::getExtentsVecEnd<TDim>(extentsElements)),
                         m_vOffsetsElements(offset::getOffsetsVecEnd<TDim>(relativeOffsetsElements) + offset::getOffsetsVecEnd<TDim>(buf))
                 {
+                    ALPAKA_DEBUG_FULL_LOG_SCOPE;
+
                     static_assert(
                         std::is_same<TDim, dim::Dim<TExtents>>::value,
                         "The buffer and the extents are required to have the same dimensionality!");
@@ -171,6 +177,8 @@ namespace alpaka
                         m_extentsElements(extent::getExtentsVecEnd<TDim>(extentsElements)),
                         m_vOffsetsElements(offset::getOffsetsVecEnd<TDim>(relativeOffsetsElements) + offset::getOffsetsVecEnd<TDim>(buf))
                 {
+                    ALPAKA_DEBUG_FULL_LOG_SCOPE;
+
                     static_assert(
                         std::is_same<TDim, dim::Dim<TExtents>>::value,
                         "The buffer and the extents are required to have the same dimensionality!");
@@ -508,7 +516,7 @@ namespace alpaka
                     {
                         return
                             offset::getOffset<Tidx>(view)
-                            * view::getPitchBytes<Tidx + 1u>(buf);
+                            * mem::view::getPitchBytes<Tidx + 1u>(buf);
                     }
                 };
 
@@ -533,7 +541,7 @@ namespace alpaka
                     -> TSize
                     {
                         return
-                            view::getPitchBytes<TIdx::value>(
+                            mem::view::getPitchBytes<TIdx::value>(
                                 mem::view::getBuf(view));
                     }
                 };

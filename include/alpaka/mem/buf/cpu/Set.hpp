@@ -22,8 +22,8 @@
 #pragma once
 
 #include <alpaka/dim/DimIntegralConst.hpp>  // dim::DimInt<N>
-#include <alpaka/extent/Traits.hpp>         // view::getXXX
-#include <alpaka/mem/view/Traits.hpp>       // view::Set, ...
+#include <alpaka/extent/Traits.hpp>         // mem::view::getXXX
+#include <alpaka/mem/view/Traits.hpp>       // mem::view::Set, ...
 #include <alpaka/stream/StreamCpuAsync.hpp> // stream::StreamCpuAsync
 #include <alpaka/stream/StreamCpuSync.hpp>  // stream::StreamCpuSync
 

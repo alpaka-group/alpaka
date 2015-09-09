@@ -680,7 +680,7 @@ namespace alpaka
                     TView>
                 ::print(
                     view,
-                    view::getPtrNative(view),
+                    mem::view::getPtrNative(view),
                     extent::getExtentsVec(view),
                     os,
                     elementSeparator,

@@ -23,8 +23,8 @@
 
 #include <alpaka/dev/Traits.hpp>            // dev::getDev
 #include <alpaka/dim/DimIntegralConst.hpp>  // dim::DimInt<N>
-#include <alpaka/extent/Traits.hpp>         // view::getXXX
-#include <alpaka/mem/view/Traits.hpp>       // view::Set
+#include <alpaka/extent/Traits.hpp>         // mem::view::getXXX
+#include <alpaka/mem/view/Traits.hpp>       // mem::view::Set
 #include <alpaka/stream/Traits.hpp>         // stream::Enqueue
 
 #include <alpaka/core/Cuda.hpp>             // cudaMemset, ...

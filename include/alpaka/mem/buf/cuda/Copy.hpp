@@ -24,8 +24,8 @@
 #include <alpaka/dev/DevCpu.hpp>                // dev::DevCpu
 #include <alpaka/dev/DevCudaRt.hpp>             // dev::DevCudaRt
 #include <alpaka/dim/DimIntegralConst.hpp>      // dim::DimInt<N>
-#include <alpaka/extent/Traits.hpp>             // view::getXXX
-#include <alpaka/mem/view/Traits.hpp>           // view::Copy
+#include <alpaka/extent/Traits.hpp>             // mem::view::getXXX
+#include <alpaka/mem/view/Traits.hpp>           // mem::view::Copy
 #include <alpaka/stream/StreamCudaRtAsync.hpp>  // stream::StreamCudaRtAsync
 #include <alpaka/stream/StreamCudaRtSync.hpp>   // stream::StreamCudaRtSync
 
@@ -378,7 +378,7 @@ namespace alpaka
             }
 
             //-----------------------------------------------------------------------------
-            // Trait specializations for view::TaskCopy.
+            // Trait specializations for TaskCopy.
             //-----------------------------------------------------------------------------
             namespace traits
             {
