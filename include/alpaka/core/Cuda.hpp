@@ -331,6 +331,24 @@ namespace alpaka
             };
         }
     }
+    namespace elem
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The CUDA vectors elem type trait specialization.
+            //#############################################################################
+            template<
+                typename TSize>
+            struct ElemType<
+                TSize,
+                typename std::enable_if<
+                    cuda::traits::IsCudaBuiltInType<TSize>::value>::type>
+            {
+                using type = decltype(TSize().x);
+            };
+        }
+    }
     namespace extent
     {
         namespace traits
@@ -701,7 +719,7 @@ namespace alpaka
                 typename std::enable_if<
                     cuda::traits::IsCudaBuiltInType<TSize>::value>::type>
             {
-                using type = decltype(TSize().x);
+                using type = std::size_t;
             };
         }
     }

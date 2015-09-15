@@ -509,21 +509,6 @@ namespace alpaka
         alignas(16u) TSize m_data[TDim::value];
     };
 
-    template<
-        typename TSize>
-    using Vec1 = Vec<dim::DimInt<1u>, TSize>;
-
-    template<
-        typename TSize>
-    using Vec2 = Vec<dim::DimInt<2u>, TSize>;
-
-    template<
-        typename TSize>
-    using Vec3 = Vec<dim::DimInt<3u>, TSize>;
-
-    template<
-        typename TSize>
-    using Vec4 = Vec<dim::DimInt<4u>, TSize>;
 
     namespace detail
     {

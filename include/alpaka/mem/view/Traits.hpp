@@ -262,7 +262,7 @@ namespace alpaka
             {
                 return
                     traits::GetPitchBytes<
-                        std::integral_constant<std::size_t, Tidx>,
+                        dim::DimInt<Tidx>,
                         TView>
                     ::getPitchBytes(
                         buf);

@@ -251,16 +251,16 @@ struct MatMulTester
         // Get a stream on the accelerator device.
         alpaka::examples::Stream<alpaka::dev::Dev<TAcc>> streamAcc(devAcc);
 
-        alpaka::Vec2<TSize> const v2uiExtentsA(
+        alpaka::Vec<alpaka::dim::DimInt<2u>, TSize> const v2uiExtentsA(
             static_cast<TSize>(m),
             static_cast<TSize>(k));
 
-        alpaka::Vec2<TSize> const v2uiExtentsB(
+        alpaka::Vec<alpaka::dim::DimInt<2u>, TSize> const v2uiExtentsB(
             static_cast<TSize>(k),
             static_cast<TSize>(n));
 
         // Result matrix is MxN. We create one worker per result matrix cell.
-        alpaka::Vec2<TSize> const v2uiExtentsC(
+        alpaka::Vec<alpaka::dim::DimInt<2u>, TSize> const v2uiExtentsC(
             static_cast<TSize>(m),
             static_cast<TSize>(n));
 

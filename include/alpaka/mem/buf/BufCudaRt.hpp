@@ -344,7 +344,7 @@ namespace alpaka
                     typename TDim,
                     typename TSize>
                 struct GetPitchBytes<
-                    std::integral_constant<std::size_t, TDim::value - 1u>,
+                    dim::DimInt<TDim::value - 1u>,
                     mem::buf::BufCudaRt<TElem, TDim, TSize>>
                 {
                     //-----------------------------------------------------------------------------

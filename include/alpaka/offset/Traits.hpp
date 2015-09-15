@@ -83,7 +83,7 @@ namespace alpaka
         {
             return
                 traits::GetOffset<
-                    std::integral_constant<std::size_t, Tidx>,
+                    dim::DimInt<Tidx>,
                     TOffsets>
                 ::getOffset(
                     offsets);
@@ -139,7 +139,7 @@ namespace alpaka
         -> void
         {
             traits::SetOffset<
-                std::integral_constant<std::size_t, Tidx>,
+                dim::DimInt<Tidx>,
                 TOffsets,
                 TOffset>
             ::setOffset(
@@ -200,7 +200,7 @@ namespace alpaka
             template<
                 typename TOffsets>
             struct GetOffset<
-                std::integral_constant<std::size_t, 0u>,
+                dim::DimInt<0u>,
                 TOffsets,
                 typename std::enable_if<
                     std::is_integral<TOffsets>::value>::type>
@@ -220,7 +220,7 @@ namespace alpaka
                 typename TOffsets,
                 typename TOffset>
             struct SetOffset<
-                std::integral_constant<std::size_t, 0u>,
+                dim::DimInt<0u>,
                 TOffsets,
                 TOffset,
                 typename std::enable_if<

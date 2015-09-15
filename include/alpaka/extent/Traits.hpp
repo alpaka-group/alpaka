@@ -89,7 +89,7 @@ namespace alpaka
         {
             return
                 traits::GetExtent<
-                    std::integral_constant<std::size_t, Tidx>,
+                    dim::DimInt<Tidx>,
                     TExtents>
                 ::getExtent(
                     extents);
@@ -186,7 +186,7 @@ namespace alpaka
         -> void
         {
             traits::SetExtent<
-                std::integral_constant<std::size_t, Tidx>,
+                dim::DimInt<Tidx>,
                 TExtents,
                 TExtent>
             ::setExtent(
@@ -247,7 +247,7 @@ namespace alpaka
             template<
                 typename TExtents>
             struct GetExtent<
-                std::integral_constant<std::size_t, 0u>,
+                dim::DimInt<0u>,
                 TExtents,
                 typename std::enable_if<
                     std::is_integral<TExtents>::value>::type>
@@ -267,7 +267,7 @@ namespace alpaka
                 typename TExtents,
                 typename TExtent>
             struct SetExtent<
-                std::integral_constant<std::size_t, 0u>,
+                dim::DimInt<0u>,
                 TExtents,
                 TExtent,
                 typename std::enable_if<

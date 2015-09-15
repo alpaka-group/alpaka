@@ -298,7 +298,7 @@ namespace alpaka
                     typename TDim,
                     typename TSize>
                 struct GetPitchBytes<
-                    std::integral_constant<std::size_t, TDim::value - 1u>,
+                    dim::DimInt<TDim::value - 1u>,
                     mem::buf::BufPlainPtrWrapper<TDev, TElem, TDim, TSize>>
                 {
                     ALPAKA_NO_HOST_ACC_WARNING

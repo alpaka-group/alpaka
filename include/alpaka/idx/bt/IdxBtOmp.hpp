@@ -120,7 +120,7 @@ namespace alpaka
                     assert(::omp_get_thread_num()>=0);
                     // \TODO: Would it be faster to precompute the index and cache it inside an array?
                     return core::mapIdx<TDim::value>(
-                        Vec1<TSize>(static_cast<TSize>(::omp_get_thread_num())),
+                        Vec<dim::DimInt<1u>, TSize>(static_cast<TSize>(::omp_get_thread_num())),
                         workdiv::getWorkDiv<Block, Threads>(workDiv));
                 }
             };

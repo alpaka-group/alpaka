@@ -182,7 +182,7 @@ namespace alpaka
                         #pragma omp distribute
                         for(TSize b = 0u; b<numBlocksInGrid; ++b)
                         {
-                            Vec1<TSize> const gridBlockIdx(b);
+                            Vec<dim::DimInt<1u>, TSize> const gridBlockIdx(b);
                             // When this is not repeated here:
                             // error: ‘gridBlockExtents’ referenced in target region does not have a mappable type
                             auto const gridBlockExtents2(

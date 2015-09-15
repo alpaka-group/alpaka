@@ -43,7 +43,7 @@ namespace alpaka
                 T,
                 typename std::enable_if<std::is_arithmetic<T>::value>::type>
             {
-                using type = std::integral_constant<std::size_t, 1u>;
+                using type = dim::DimInt<1u>;
             };
         }
     }

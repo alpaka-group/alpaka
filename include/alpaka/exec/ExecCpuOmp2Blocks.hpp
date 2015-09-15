@@ -192,9 +192,9 @@ namespace alpaka
                         acc.m_gridBlockIdx =
                             core::mapIdx<TDim::value>(
 #if _OPENMP < 200805
-                                Vec1<TSize>(static_cast<TSize>(i)),
+                                Vec<dim::DimInt<1u>, TSize>(static_cast<TSize>(i)),
 #else
-                                Vec1<TSize>(i),
+                                Vec<dim::DimInt<1u>, TSize>(i),
 #endif
                                 gridBlockExtents);
 

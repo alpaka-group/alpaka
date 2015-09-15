@@ -378,7 +378,7 @@ struct MandelbrotKernelTester
         // Get a stream on this device.
         alpaka::examples::Stream<alpaka::dev::Dev<TAcc>> stream(devAcc);
 
-        alpaka::Vec2<TSize> const v2uiExtents(
+        alpaka::Vec<alpaka::dim::DimInt<2u>, TSize> const v2uiExtents(
             static_cast<TSize>(numRows),
             static_cast<TSize>(numCols));
 

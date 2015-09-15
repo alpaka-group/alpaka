@@ -102,7 +102,7 @@ struct VectorAddKernelTester
         // Get a stream on this device.
         alpaka::examples::Stream<alpaka::dev::Dev<TAcc>> stream(devAcc);
 
-        alpaka::Vec1<TSize> const v1uiExtents(
+        alpaka::Vec<alpaka::dim::DimInt<1u>, TSize> const v1uiExtents(
             numElements);
 
         // Let alpaka calculate good block and grid sizes given our full problem extents.

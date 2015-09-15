@@ -224,7 +224,7 @@ namespace alpaka
                 template<
                     typename TFixedSizeArray>
                 struct GetPitchBytes<
-                    std::integral_constant<std::size_t, std::rank<TFixedSizeArray>::value - 1u>,
+                    dim::DimInt<std::rank<TFixedSizeArray>::value - 1u>,
                     TFixedSizeArray,
                     typename std::enable_if<
                         std::is_array<TFixedSizeArray>::value
@@ -377,7 +377,7 @@ namespace alpaka
                 typename TElem,
                 std::size_t Tsize>
             struct GetExtent<
-                std::integral_constant<std::size_t, 0u>,
+                dim::DimInt<0u>,
                 std::array<TElem, Tsize>>
             {
                 //-----------------------------------------------------------------------------
@@ -465,7 +465,7 @@ namespace alpaka
                     typename TElem,
                     std::size_t Tsize>
                 struct GetPitchBytes<
-                    std::integral_constant<std::size_t, 0u>,
+                    dim::DimInt<0u>,
                     std::array<TElem, Tsize>>
                 {
                     //-----------------------------------------------------------------------------
@@ -611,7 +611,7 @@ namespace alpaka
                 typename TElem,
                 typename TAllocator>
             struct GetExtent<
-                std::integral_constant<std::size_t, 0u>,
+                dim::DimInt<0u>,
                 std::vector<TElem, TAllocator>>
             {
                 //-----------------------------------------------------------------------------
@@ -697,7 +697,7 @@ namespace alpaka
                     typename TElem,
                     typename TAllocator>
                 struct GetPitchBytes<
-                    std::integral_constant<std::size_t, 0u>,
+                    dim::DimInt<0u>,
                     std::vector<TElem, TAllocator>>
                 {
                     //-----------------------------------------------------------------------------
