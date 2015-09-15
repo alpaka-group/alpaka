@@ -25,7 +25,7 @@
 #include <alpaka/dim/DimIntegralConst.hpp>  // dim::DimInt<N>
 #include <alpaka/mem/buf/Traits.hpp>        // mem::view::Copy, ...
 
-#include <alpaka/vec/Vec.hpp>               // Vec<TDim, TSize>
+#include <alpaka/vec/Vec.hpp>               // Vec
 #include <alpaka/core/Cuda.hpp>             // cudaMalloc, ...
 
 #include <cassert>                          // assert
@@ -179,6 +179,24 @@ namespace alpaka
             };
         }
     }
+    namespace elem
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The BufCudaRt memory element type get trait specialization.
+            //#############################################################################
+            template<
+                typename TElem,
+                typename TDim,
+                typename TSize>
+            struct ElemType<
+                mem::buf::BufCudaRt<TElem, TDim, TSize>>
+            {
+                using type = TElem;
+            };
+        }
+    }
     namespace extent
     {
         namespace traits
@@ -214,18 +232,6 @@ namespace alpaka
         {
             namespace traits
             {
-                //#############################################################################
-                //! The BufCudaRt memory element type get trait specialization.
-                //#############################################################################
-                template<
-                    typename TElem,
-                    typename TDim,
-                    typename TSize>
-                struct ElemType<
-                    mem::buf::BufCudaRt<TElem, TDim, TSize>>
-                {
-                    using type = TElem;
-                };
                 //#############################################################################
                 //! The BufCudaRt buf trait specialization.
                 //#############################################################################
@@ -753,7 +759,7 @@ namespace alpaka
                             ALPAKA_CUDA_RT_CHECK(
                                 cudaHostRegister(
                                     const_cast<void *>(reinterpret_cast<void const *>(mem::view::getPtrNative(buf))),
-                                    extent::getProductOfExtents(buf) * sizeof(mem::view::Elem<BufCpu<TElem, TDim, TSize>>),
+                                    extent::getProductOfExtents(buf) * sizeof(elem::Elem<BufCpu<TElem, TDim, TSize>>),
                                     cudaHostRegisterMapped));
                         }
                         // If it is already the same device, nothing has to be mapped.

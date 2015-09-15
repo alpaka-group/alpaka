@@ -161,7 +161,7 @@ namespace alpaka
                     auto const & iDevice(task.m_iDevice);
 
                     auto const extentWidth(extent::getWidth(extents));
-                    auto const extentWidthBytes(extentWidth * sizeof(mem::view::Elem<TBuf>));
+                    auto const extentWidthBytes(extentWidth * sizeof(elem::Elem<TBuf>));
                     auto const dstWidth(extent::getWidth(buf));
                     auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(buf)));
                     assert(extentWidth <= dstWidth);
@@ -212,7 +212,7 @@ namespace alpaka
                     auto const & iDevice(task.m_iDevice);
 
                     auto const extentWidth(extent::getWidth(extents));
-                    auto const extentWidthBytes(extentWidth * sizeof(mem::view::Elem<TBuf>));
+                    auto const extentWidthBytes(extentWidth * sizeof(elem::Elem<TBuf>));
                     auto const dstWidth(extent::getWidth(buf));
                     auto const dstNativePtr(reinterpret_cast<void *>(mem::view::getPtrNative(buf)));
                     assert(extentWidth <= dstWidth);
@@ -262,7 +262,7 @@ namespace alpaka
                     auto const & iDevice(task.m_iDevice);
 
                     auto const extentWidth(extent::getWidth(extents));
-                    auto const extentWidthBytes(extentWidth * sizeof(mem::view::Elem<TBuf>));
+                    auto const extentWidthBytes(extentWidth * sizeof(elem::Elem<TBuf>));
                     auto const extentHeight(extent::getHeight(extents));
                     auto const dstWidth(extent::getWidth(buf));
                     auto const dstHeight(extent::getHeight(buf));
@@ -319,7 +319,7 @@ namespace alpaka
                     auto const & iDevice(task.m_iDevice);
 
                     auto const extentWidth(extent::getWidth(extents));
-                    auto const extentWidthBytes(extentWidth * sizeof(mem::view::Elem<TBuf>));
+                    auto const extentWidthBytes(extentWidth * sizeof(elem::Elem<TBuf>));
                     auto const extentHeight(extent::getHeight(extents));
                     auto const dstWidth(extent::getWidth(buf));
                     auto const dstHeight(extent::getHeight(buf));

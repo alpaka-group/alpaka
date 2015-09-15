@@ -198,6 +198,7 @@ namespace alpaka
         {
             //#############################################################################
             //! The CPU sync device stream enqueue trait specialization.
+            //! This default implementation for all tasks directly invokes the function call operator of the task.
             //#############################################################################
             template<
                 typename TTask>

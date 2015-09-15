@@ -210,7 +210,7 @@ namespace alpaka
                                     int const numThreads(::omp_get_num_threads());
                                     // NOTE: No std::cout in omp target!
                                     printf("%s omp_get_num_threads: %d\n", BOOST_CURRENT_FUNCTION, numThreads);
-                                    if(numThreads != numThreadsInBlock)
+                                    if(numThreads != static_cast<int>(numThreadsInBlock))
                                     {
                                         throw std::runtime_error("The CPU OpenMP4 runtime did not use the number of threads that had been required!");
                                     }

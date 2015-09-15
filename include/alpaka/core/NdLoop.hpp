@@ -161,7 +161,7 @@ namespace alpaka
             typename TFnObj,
             std::size_t... Tdims>
         ALPAKA_FN_HOST_ACC auto ndLoop(
-            core::detail::index_sequence<Tdims...> const & indexSequence,
+            core::detail::index_sequence<Tdims...> const & /*indexSequence*/,
             TExtentsVec const & extents,
             TFnObj const & f)
         -> void

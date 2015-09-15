@@ -71,7 +71,7 @@ namespace alpaka
                             "The buffers and the extents are required to have the same dimensionality!");
                         // TODO: Maybe check for Size of TBufDst and TBufSrc to have greater or equal range than TExtents.
                         static_assert(
-                            std::is_same<mem::view::Elem<TBufDst>, typename std::remove_const<mem::view::Elem<TBufSrc>>::type>::value,
+                            std::is_same<elem::Elem<TBufDst>, typename std::remove_const<elem::Elem<TBufSrc>>::type>::value,
                             "The source and the destination buffers are required to have the same element type!");
 
                         //-----------------------------------------------------------------------------
@@ -82,7 +82,7 @@ namespace alpaka
                             TBufSrc const & bufSrc,
                             TExtents const & extents) :
                                 m_extentWidth(extent::getWidth(extents)),
-                                m_extentWidthBytes(static_cast<Size>(m_extentWidth * sizeof(mem::view::Elem<TBufDst>))),
+                                m_extentWidthBytes(static_cast<Size>(m_extentWidth * sizeof(elem::Elem<TBufDst>))),
                                 m_dstWidth(static_cast<Size>(extent::getWidth(bufDst))),
                                 m_srcWidth(static_cast<Size>(extent::getWidth(bufSrc))),
                                 m_dstBufWidth(static_cast<Size>(extent::getWidth(mem::view::getBuf(bufDst)))),

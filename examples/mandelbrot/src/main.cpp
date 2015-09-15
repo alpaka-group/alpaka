@@ -277,12 +277,12 @@ auto writeTgaColorImage(
         alpaka::dim::Dim<TBuf>::value == 2,
         "The buffer has to be 2 dimensional!");
     static_assert(
-        std::is_integral<alpaka::mem::view::Elem<TBuf>>::value,
+        std::is_integral<alpaka::elem::Elem<TBuf>>::value,
         "The buffer element type has to be integral!");
 
     // The width of the input buffer is in input elements.
     auto const bufWidthElems(alpaka::extent::getWidth(bufRgba));
-    auto const bufWidthBytes(bufWidthElems * sizeof(alpaka::mem::view::Elem<TBuf>));
+    auto const bufWidthBytes(bufWidthElems * sizeof(alpaka::elem::Elem<TBuf>));
     // The row width in bytes has to be dividable by 4 Bytes (RGBA).
     assert(bufWidthBytes % sizeof(std::uint32_t) == 0);
     // The number of colors in a row.

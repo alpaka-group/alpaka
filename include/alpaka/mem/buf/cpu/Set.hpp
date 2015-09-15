@@ -93,7 +93,7 @@ namespace alpaka
                             assert(extentHeight <= dstHeight);
                             assert(extentDepth <= dstDepth);
 
-                            auto const extentWidthBytes(extentWidth * sizeof(mem::view::Elem<TBuf>));
+                            auto const extentWidthBytes(extentWidth * sizeof(elem::Elem<TBuf>));
                             auto const dstPitchBytes(mem::view::getPitchBytes<dim::Dim<TBuf>::value - 1u>(m_buf));
                             assert(extentWidthBytes <= dstPitchBytes);
 

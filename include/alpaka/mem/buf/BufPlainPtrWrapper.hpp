@@ -176,6 +176,25 @@ namespace alpaka
             };
         }
     }
+    namespace elem
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The BufPlainPtrWrapper memory element type get trait specialization.
+            //#############################################################################
+            template<
+                typename TDev,
+                typename TElem,
+                typename TDim,
+                typename TSize>
+            struct ElemType<
+                mem::buf::BufPlainPtrWrapper<TDev, TElem, TDim, TSize>>
+            {
+                using type = TElem;
+            };
+        }
+    }
     namespace extent
     {
         namespace traits
@@ -210,20 +229,6 @@ namespace alpaka
         {
             namespace traits
             {
-                //#############################################################################
-                //! The BufPlainPtrWrapper memory element type get trait specialization.
-                //#############################################################################
-                template<
-                    typename TDev,
-                    typename TElem,
-                    typename TDim,
-                    typename TSize>
-                struct ElemType<
-                    mem::buf::BufPlainPtrWrapper<TDev, TElem, TDim, TSize>>
-                {
-                    using type = TElem;
-                };
-
                 //#############################################################################
                 //! The BufPlainPtrWrapper buf trait specialization.
                 //#############################################################################

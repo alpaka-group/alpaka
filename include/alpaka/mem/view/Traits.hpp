@@ -21,8 +21,9 @@
 
 #pragma once
 
-#include <alpaka/dev/Traits.hpp>        // dev::traits::DevType, ...
-#include <alpaka/dim/Traits.hpp>        // dim::DimType
+#include <alpaka/dev/Traits.hpp>        // dev::Dev, ...
+#include <alpaka/dim/Traits.hpp>        // dim::Dim
+#include <alpaka/elem/Traits.hpp>       // elem::Elem
 #include <alpaka/extent/Traits.hpp>     // extent::GetExtent
 #include <alpaka/offset/Traits.hpp>     // offset::GetOffset
 #include <alpaka/stream/Traits.hpp>     // stream::enqueue
@@ -53,14 +54,6 @@ namespace alpaka
                     typename TSize,
                     typename TSfinae = void>
                 struct ViewType;
-
-                //#############################################################################
-                //! The memory element type trait.
-                //#############################################################################
-                template<
-                    typename TView,
-                    typename TSfinae = void>
-                struct ElemType;
 
                 //#############################################################################
                 //! The native pointer get trait.
@@ -101,7 +94,7 @@ namespace alpaka
                         using IdxSequence = alpaka::core::detail::make_integer_sequence_offset<std::size_t, TIdx::value, dim::Dim<TView>::value - TIdx::value>;
                         return
                             extentsProd(view, IdxSequence())
-                            * sizeof(typename ElemType<TView>::type);
+                            * sizeof(typename elem::Elem<TView>);
                     }
                 private:
                     //-----------------------------------------------------------------------------
@@ -164,13 +157,6 @@ namespace alpaka
             }
 
             //#############################################################################
-            //! The memory element type trait alias template to remove the ::type.
-            //#############################################################################
-            template<
-                typename TView>
-            using Elem = typename std::remove_volatile<typename traits::ElemType<TView>::type>::type;
-
-            //#############################################################################
             //! The memory buffer view type trait alias template to remove the ::type.
             //#############################################################################
             template<
@@ -190,7 +176,7 @@ namespace alpaka
                 typename TBuf>
             ALPAKA_FN_HOST auto getPtrNative(
                 TBuf const & buf)
-            -> Elem<TBuf> const *
+            -> elem::Elem<TBuf> const *
             {
                 return
                     traits::GetPtrNative<
@@ -208,7 +194,7 @@ namespace alpaka
                 typename TBuf>
             ALPAKA_FN_HOST auto getPtrNative(
                 TBuf & buf)
-            -> Elem<TBuf> *
+            -> elem::Elem<TBuf> *
             {
                 return
                     traits::GetPtrNative<
@@ -230,7 +216,7 @@ namespace alpaka
             ALPAKA_FN_HOST auto getPtrDev(
                 TBuf const & buf,
                 TDev const & dev)
-            -> Elem<TBuf> const *
+            -> elem::Elem<TBuf> const *
             {
                 return
                     traits::GetPtrDev<
@@ -253,7 +239,7 @@ namespace alpaka
             ALPAKA_FN_HOST auto getPtrDev(
                 TBuf & buf,
                 TDev const & dev)
-            -> Elem<TBuf> *
+            -> elem::Elem<TBuf> *
             {
                 return
                     traits::GetPtrDev<
@@ -378,7 +364,7 @@ namespace alpaka
                     dim::Dim<TBufDst>::value == dim::Dim<TExtents>::value,
                     "The destination buffer and the extents are required to have the same dimensionality!");
                 static_assert(
-                    std::is_same<Elem<TBufDst>, typename std::remove_const<Elem<TBufSrc>>::type>::value,
+                    std::is_same<elem::Elem<TBufDst>, typename std::remove_const<elem::Elem<TBufSrc>>::type>::value,
                     "The source and the destination buffers are required to have the same element type!");
 
                 return
@@ -582,7 +568,7 @@ namespace alpaka
                 {
                     ALPAKA_FN_HOST static auto print(
                         TView const & view,
-                        Elem<TView> const * const ptr,
+                        elem::Elem<TView> const * const ptr,
                         Vec<dim::Dim<TView>, size::Size<TView>> const & extents,
                         std::ostream & os,
                         std::string const & elementSeparator,
@@ -602,7 +588,7 @@ namespace alpaka
                                 TView>
                             ::print(
                                 view,
-                                reinterpret_cast<Elem<TView> const *>(reinterpret_cast<std::uint8_t const *>(ptr)+i*pitch),
+                                reinterpret_cast<elem::Elem<TView> const *>(reinterpret_cast<std::uint8_t const *>(ptr)+i*pitch),
                                 extents,
                                 os,
                                 elementSeparator,
@@ -631,7 +617,7 @@ namespace alpaka
                 {
                     ALPAKA_FN_HOST static auto print(
                         TView const & view,
-                        Elem<TView> const * const ptr,
+                        elem::Elem<TView> const * const ptr,
                         Vec<dim::Dim<TView>, size::Size<TView>> const & extents,
                         std::ostream & os,
                         std::string const & elementSeparator,

@@ -270,6 +270,25 @@ namespace alpaka
             };
         }
     }
+    namespace elem
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The ViewBasic memory element type get trait specialization.
+            //#############################################################################
+            template<
+                typename TElem,
+                typename TDim,
+                typename TDev,
+                typename TSize>
+            struct ElemType<
+                mem::view::ViewBasic<TDev, TElem, TDim, TSize>>
+            {
+                using type = TElem;
+            };
+        }
+    }
     namespace extent
     {
         namespace traits
@@ -306,20 +325,6 @@ namespace alpaka
         {
             namespace traits
             {
-                //#############################################################################
-                //! The ViewBasic memory element type get trait specialization.
-                //#############################################################################
-                template<
-                    typename TElem,
-                    typename TDim,
-                    typename TDev,
-                    typename TSize>
-                struct ElemType<
-                    mem::view::ViewBasic<TDev, TElem, TDim, TSize>>
-                {
-                    using type = TElem;
-                };
-
                 //#############################################################################
                 //! The memory buffer view creation type trait.
                 //#############################################################################

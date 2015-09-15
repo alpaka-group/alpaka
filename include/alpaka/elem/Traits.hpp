@@ -21,32 +21,35 @@
 
 #pragma once
 
-#include <type_traits>  // std::enable_if, std::is_arithmetic
+#include <type_traits>  // std::enable_if, std::is_fundamental
 
 namespace alpaka
 {
     //-----------------------------------------------------------------------------
-    //! The size specifics.
+    //! The element specifics.
     //-----------------------------------------------------------------------------
-    namespace size
+    namespace elem
     {
         //-----------------------------------------------------------------------------
-        //! The size traits.
+        //! The element traits.
         //-----------------------------------------------------------------------------
         namespace traits
         {
             //#############################################################################
-            //! The size type trait.
+            //! The element type trait.
             //#############################################################################
             template<
-                typename T,
+                typename TView,
                 typename TSfinae = void>
-            struct SizeType;
+            struct ElemType;
         }
 
+        //#############################################################################
+        //! The element type trait alias template to remove the ::type.
+        //#############################################################################
         template<
-            typename T>
-        using Size = typename traits::SizeType<T>::type;
+            typename TView>
+        using Elem = typename std::remove_volatile<typename traits::ElemType<TView>::type>::type;
 
         //-----------------------------------------------------------------------------
         // Trait specializations for unsigned integral types.
@@ -54,13 +57,13 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The arithmetic size type trait specialization.
+            //! The fundamental type elem type trait specialization.
             //#############################################################################
             template<
                 typename T>
-            struct SizeType<
+            struct ElemType<
                 T,
-                typename std::enable_if<std::is_arithmetic<T>::value>::type>
+                typename std::enable_if<std::is_fundamental<T>::value>::type>
             {
                 using type = T;
             };

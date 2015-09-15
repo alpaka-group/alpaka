@@ -24,7 +24,7 @@
 #include <alpaka/dev/Traits.hpp>            // dev::traits::DevType
 #include <alpaka/mem/buf/Traits.hpp>        // mem::buf::Alloc, ...
 
-#include <alpaka/vec/Vec.hpp>               // Vec<TDim, TSize>
+#include <alpaka/vec/Vec.hpp>               // Vec
 
 // \TODO: Remove CUDA inclusion for BufCpu by replacing pinning with non CUDA code!
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
@@ -252,6 +252,24 @@ namespace alpaka
             };
         }
     }
+    namespace elem
+    {
+        namespace traits
+        {
+            //#############################################################################
+            //! The BufCpu memory element type get trait specialization.
+            //#############################################################################
+            template<
+                typename TElem,
+                typename TDim,
+                typename TSize>
+            struct ElemType<
+                mem::buf::BufCpu<TElem, TDim, TSize>>
+            {
+                using type = TElem;
+            };
+        }
+    }
     namespace extent
     {
         namespace traits
@@ -287,18 +305,6 @@ namespace alpaka
         {
             namespace traits
             {
-                //#############################################################################
-                //! The BufCpu memory element type get trait specialization.
-                //#############################################################################
-                template<
-                    typename TElem,
-                    typename TDim,
-                    typename TSize>
-                struct ElemType<
-                    mem::buf::BufCpu<TElem, TDim, TSize>>
-                {
-                    using type = TElem;
-                };
                 //#############################################################################
                 //! The BufCpu buf trait specialization.
                 //#############################################################################
@@ -548,7 +554,7 @@ namespace alpaka
                             ALPAKA_CUDA_RT_CHECK_IGNORE(
                                 cudaHostRegister(
                                     const_cast<void *>(reinterpret_cast<void const *>(mem::view::getPtrNative(buf))),
-                                    extent::getProductOfExtents(buf) * sizeof(mem::view::Elem<buf::BufCpu<TElem, TDim, TSize>>),
+                                    extent::getProductOfExtents(buf) * sizeof(elem::Elem<buf::BufCpu<TElem, TDim, TSize>>),
                                     cudaHostRegisterDefault),
                                 cudaErrorHostMemoryAlreadyRegistered);
 

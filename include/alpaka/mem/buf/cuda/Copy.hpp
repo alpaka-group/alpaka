@@ -74,7 +74,7 @@ namespace alpaka
                             "The destination buffer and the extents are required to have the same dimensionality!");
                         // TODO: Maybe check for Size of TBufDst and TBufSrc to have greater or equal range than TExtents.
                         static_assert(
-                            std::is_same<mem::view::Elem<TBufDst>, typename std::remove_const<mem::view::Elem<TBufSrc>>::type>::value,
+                            std::is_same<elem::Elem<TBufDst>, typename std::remove_const<elem::Elem<TBufSrc>>::type>::value,
                             "The source and the destination buffers are required to have the same element type!");
 
                         using Size = size::Size<TExtents>;
@@ -97,7 +97,7 @@ namespace alpaka
                                 m_dstWidth(static_cast<Size>(extent::getWidth(bufDst))),
                                 m_srcWidth(static_cast<Size>(extent::getWidth(bufSrc))),
 #endif
-                                m_extentWidthBytes(static_cast<Size>(extent::getWidth(extents) * sizeof(mem::view::Elem<TBufDst>))),
+                                m_extentWidthBytes(static_cast<Size>(extent::getWidth(extents) * sizeof(elem::Elem<TBufDst>))),
                                 m_dstMemNative(reinterpret_cast<void *>(mem::view::getPtrNative(bufDst))),
                                 m_srcMemNative(reinterpret_cast<void const *>(mem::view::getPtrNative(bufSrc)))
                         {
@@ -159,7 +159,7 @@ namespace alpaka
                             "The destination buffer and the extents are required to have the same dimensionality!");
                         // TODO: Maybe check for Size of TBufDst and TBufSrc to have greater or equal range than TExtents.
                         static_assert(
-                            std::is_same<mem::view::Elem<TBufDst>, typename std::remove_const<mem::view::Elem<TBufSrc>>::type>::value,
+                            std::is_same<elem::Elem<TBufDst>, typename std::remove_const<elem::Elem<TBufSrc>>::type>::value,
                             "The source and the destination buffers are required to have the same element type!");
 
                         using Size = size::Size<TExtents>;
@@ -180,7 +180,7 @@ namespace alpaka
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                                 m_extentWidth(extent::getWidth(extents)),
 #endif
-                                m_extentWidthBytes(static_cast<Size>(extent::getWidth(extents) * sizeof(mem::view::Elem<TBufDst>))),
+                                m_extentWidthBytes(static_cast<Size>(extent::getWidth(extents) * sizeof(elem::Elem<TBufDst>))),
                                 m_dstWidth(static_cast<Size>(extent::getWidth(bufDst))),      // required for 3D peer copy
                                 m_srcWidth(static_cast<Size>(extent::getWidth(bufSrc))),      // required for 3D peer copy
 
@@ -270,7 +270,7 @@ namespace alpaka
                             "The destination buffer and the extents are required to have the same dimensionality!");
                         // TODO: Maybe check for Size of TBufDst and TBufSrc to have greater or equal range than TExtents.
                         static_assert(
-                            std::is_same<mem::view::Elem<TBufDst>, typename std::remove_const<mem::view::Elem<TBufSrc>>::type>::value,
+                            std::is_same<elem::Elem<TBufDst>, typename std::remove_const<elem::Elem<TBufSrc>>::type>::value,
                             "The source and the destination buffers are required to have the same element type!");
 
                         using Size = size::Size<TExtents>;
@@ -291,7 +291,7 @@ namespace alpaka
                                 m_iSrcDevice(iSrcDevice),
 
                                 m_extentWidth(extent::getWidth(extents)),
-                                m_extentWidthBytes(static_cast<Size>(m_extentWidth * sizeof(mem::view::Elem<TBufDst>))),
+                                m_extentWidthBytes(static_cast<Size>(m_extentWidth * sizeof(elem::Elem<TBufDst>))),
                                 m_dstWidth(static_cast<Size>(extent::getWidth(bufDst))),
                                 m_srcWidth(static_cast<Size>(extent::getWidth(bufSrc))),
 
