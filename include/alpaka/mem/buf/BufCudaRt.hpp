@@ -80,7 +80,9 @@ namespace alpaka
                         m_extentsElements(extent::getExtentsVecEnd<TDim>(extents)),
                         m_spMem(
                             pMem,
-                            std::bind(&BufCudaRt::freeBuffer, std::placeholders::_1, std::ref(m_dev))),
+                            // NOTE: Because the BufCudaRt object can be copied and the original object could have been destroyed,
+                            // a std::ref(m_dev) or a this pointer can not be bound to the callback because they are not always valid at time of destruction.
+                            std::bind(&BufCudaRt::freeBuffer, std::placeholders::_1, m_dev)),
                         m_pitchBytes(pitchBytes)
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -115,7 +117,7 @@ namespace alpaka
                 }
 
             public:
-                dev::DevCudaRt m_dev;
+                dev::DevCudaRt m_dev;               // NOTE: The device has to be destructed after the memory pointer because it is required for destruction.
                 Vec<TDim, TSize> m_extentsElements;
                 std::shared_ptr<TElem> m_spMem;
                 TSize m_pitchBytes;

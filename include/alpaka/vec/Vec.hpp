@@ -756,15 +756,15 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 template<
-                    typename TValNew,
+                    typename TSizeNew,
                     typename TDim,
                     typename TSize>
                 ALPAKA_FN_HOST_ACC static auto create(
-                    TValNew const &/* valNew*/,
+                    TSizeNew const &/* valNew*/,
                     Vec<TDim, TSize> const & vec)
-                -> TValNew
+                -> TSizeNew
                 {
-                    return static_cast<TValNew>(vec[Tidx]);
+                    return static_cast<TSizeNew>(vec[Tidx]);
                 }
             };
 
@@ -774,22 +774,22 @@ namespace alpaka
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
-            typename TValNew,
+            typename TSizeNew,
             typename TDim,
             typename TSize>
         ALPAKA_FN_HOST_ACC static auto cast(Vec<TDim, TSize> const & other)
-        -> Vec<TDim, TValNew>
+        -> Vec<TDim, TSizeNew>
         {
             return
 #ifdef __CUDACC__
-            Vec<TDim, TValNew>::template
+            Vec<TDim, TSizeNew>::template
 #endif
                 createVecFromIndexedFn<
 #ifndef __CUDACC__
                     TDim,
 #endif
                     detail::CreateCast>(
-                        TValNew(),
+                        TSizeNew(),
                         other);
         }
     }
