@@ -17,15 +17,15 @@
 #------------------------------------------------------------------------------
 # Calls CUDA_ADD_EXECUTABLE or ADD_EXECUTABLE depending on the enabled alpaka accelerators.
 #------------------------------------------------------------------------------
-FUNCTION(ALPAKA_ADD_EXECUTABLE In_Name In_Files)
+FUNCTION(ALPAKA_ADD_EXECUTABLE In_Name)
     IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
         CMAKE_POLICY(SET CMP0023 OLD)   # CUDA_ADD_EXECUTABLE calls TARGET_LINK_LIBRARIES without keywords.
         CUDA_ADD_EXECUTABLE(
             ${In_Name}
-            ${In_Files})
+            ${ARGN})
     ELSE()
         ADD_EXECUTABLE(
             ${In_Name}
-            ${In_Files})
+            ${ARGN})
     ENDIF()
 ENDFUNCTION()
