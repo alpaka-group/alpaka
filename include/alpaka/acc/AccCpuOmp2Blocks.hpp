@@ -74,7 +74,7 @@ namespace alpaka
             public workdiv::WorkDivMembers<TDim, TSize>,
             public idx::gb::IdxGbRef<TDim, TSize>,
             public idx::bt::IdxBtZero<TDim, TSize>,
-            public atomic::AtomicNoOp,
+            public atomic::AtomicOmpCritSec,
             public math::MathStl,
             public block::shared::BlockSharedAllocNoSync,
             public block::sync::BlockSyncNoOp,
