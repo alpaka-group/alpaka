@@ -95,7 +95,7 @@ namespace alpaka
                     -> T &
                     {
                         __shared__ T shMem;
-                        return std::ref(shMem);
+                        return shMem;
                     }
                 };
                 //#############################################################################
