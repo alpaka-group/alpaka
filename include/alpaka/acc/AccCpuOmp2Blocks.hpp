@@ -25,7 +25,7 @@
 #include <alpaka/workdiv/WorkDivMembers.hpp>    // workdiv::WorkDivMembers
 #include <alpaka/idx/gb/IdxGbRef.hpp>           // IdxGbRef
 #include <alpaka/idx/bt/IdxBtZero.hpp>          // IdxBtZero
-#include <alpaka/atomic/AtomicNoOp.hpp>         // AtomicNoOp
+#include <alpaka/atomic/AtomicOmpCritSec.hpp>   // AtomicOmpCritSec
 #include <alpaka/math/MathStl.hpp>              // MathStl
 #include <alpaka/block/shared/BlockSharedAllocNoSync.hpp>  // BlockSharedAllocNoSync
 #include <alpaka/block/sync/BlockSyncNoOp.hpp>  // BlockSyncNoOp
@@ -100,7 +100,7 @@ namespace alpaka
                     workdiv::WorkDivMembers<TDim, TSize>(workDiv),
                     idx::gb::IdxGbRef<TDim, TSize>(m_gridBlockIdx),
                     idx::bt::IdxBtZero<TDim, TSize>(),
-                    atomic::AtomicNoOp(),
+                    atomic::AtomicOmpCritSec(),
                     math::MathStl(),
                     block::shared::BlockSharedAllocNoSync(),
                     block::sync::BlockSyncNoOp(),
