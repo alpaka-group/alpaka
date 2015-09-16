@@ -261,7 +261,7 @@ namespace alpaka
 #endif
                             return;
                         }
-                        // ... and was enqueued before, increment the cancel counter.
+                        // ... and noby is waiting for it, increment the cancel counter.
                         else
                         {
                             ++spEventCpuImpl->m_canceledEnqueueCount;
@@ -353,11 +353,11 @@ namespace alpaka
                             if(spEventCpuImpl->m_bIsWaitedFor)
                             {
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
-                               std::cout << BOOST_CURRENT_FUNCTION << "WARNING: The event to enqueue is already enqueued AND waited on. It can NOT be re-enqueued!" << std::endl;
+                                std::cout << BOOST_CURRENT_FUNCTION << "WARNING: The event to enqueue is already enqueued AND waited on. It can NOT be re-enqueued!" << std::endl;
 #endif
                                 return;
                             }
-                            // ... and was enqueued before, increment the cancel counter.
+                            // ... and noby is waiting for it, increment the cancel counter.
                             else
                             {
                                 ++spEventCpuImpl->m_canceledEnqueueCount;

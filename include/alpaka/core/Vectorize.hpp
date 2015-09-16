@@ -395,7 +395,7 @@ namespace alpaka
             namespace detail
             {
                 //#############################################################################
-                //!
+                //! The general vectorization implementation.
                 //#############################################################################
                 template<
                     std::size_t TvecRegElemCount>
@@ -414,19 +414,20 @@ namespace alpaka
                     {
 #ifdef __CUDACC__   // nvcc seems not to support constexpr correctly
                         static_assert(
-                            (TvecRegElemCount > 0),
+                            (static_cast<TSize>(TvecRegElemCount) > 0),
                             "The number of elements per vector register has to be greater zero!");
 
                         TSize i(0);
-                        while((count-i) >= TvecRegElemCount)
+                        while((count-i) >= static_cast<TSize>(TvecRegElemCount))
                         {
-                            for(TSize j(0); j<TvecRegElemCount; ++j)
+                            for(TSize j(0); j<static_cast<TSize>(TvecRegElemCount); ++j)
                             {
                                 fnObj(i+j);
                             }
-                            i += TvecRegElemCount;
+                            i += static_cast<TSize>(TvecRegElemCount);
                         }
 #else
+                        // Cast it to the user defined type.
                         constexpr TSize vecRegElems(
                             static_cast<TSize>(TvecRegElemCount));
 
@@ -434,9 +435,12 @@ namespace alpaka
                             (vecRegElems > 0),
                             "The number of elements per vector register has to be greater zero!");
 
+                        // While we have more then TvecRegElemCount elements left ... 
                         TSize i(0);
                         while((count-i) >= vecRegElems)
                         {
+                            // ... execute exactly TvecRegElemCount invocations of the loop.
+                            // This enables the compiler to optimize much better because of the compile-time loop bounds.
                             for(TSize j(0); j<vecRegElems; ++j)
                             {
                                 fnObj(i+j);
@@ -444,6 +448,7 @@ namespace alpaka
                             i += vecRegElems;
                         }
 #endif
+                        // Execute the last (count % TvecRegElemCount) invocations.
                         for(; i<count; ++i)
                         {
                             fnObj(i);
@@ -451,7 +456,7 @@ namespace alpaka
                     }
                 };
                 //#############################################################################
-                //!
+                //! The vectorization specialization for one element vectors.
                 //#############################################################################
                 template<>
                 struct Vectorize<
