@@ -77,16 +77,14 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The WorkDivMembers block thread extents trait specialization for classes with WorkDivBase member type.
+            //! The WorkDivMembers grid block extents trait specialization for classes with WorkDivBase member type.
             //#############################################################################
             template<
-                typename TWorkDiv,
-                typename TOrigin,
-                typename TUnit>
+                typename TWorkDiv>
             struct GetWorkDiv<
                 TWorkDiv,
-                TOrigin,
-                TUnit,
+                origin::Grid,
+                unit::Blocks,
                 typename std::enable_if<
                     std::is_base_of<typename TWorkDiv::WorkDivBase, typename std::decay<TWorkDiv>::type>::value
                     && (!std::is_same<typename TWorkDiv::WorkDivBase, typename std::decay<TWorkDiv>::type>::value)>::type>
@@ -102,8 +100,37 @@ namespace alpaka
                     // Delegate the call to the base class.
                     return
                         workdiv::getWorkDiv<
-                            TOrigin,
-                            TUnit>(
+                            origin::Grid,
+                            unit::Blocks>(
+                                static_cast<typename TWorkDiv::WorkDivBase const &>(workDiv));
+                }
+            };
+            //#############################################################################
+            //! The WorkDivMembers block thread extents trait specialization for classes with WorkDivBase member type.
+            //#############################################################################
+            template<
+                typename TWorkDiv>
+            struct GetWorkDiv<
+                TWorkDiv,
+                origin::Block,
+                unit::Threads,
+                typename std::enable_if<
+                    std::is_base_of<typename TWorkDiv::WorkDivBase, typename std::decay<TWorkDiv>::type>::value
+                    && (!std::is_same<typename TWorkDiv::WorkDivBase, typename std::decay<TWorkDiv>::type>::value)>::type>
+            {
+                //-----------------------------------------------------------------------------
+                //! \return The number of threads in each dimension of a block.
+                //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
+                ALPAKA_FN_HOST_ACC static auto getWorkDiv(
+                    TWorkDiv const & workDiv)
+                -> Vec<dim::Dim<typename TWorkDiv::WorkDivBase>, size::Size<TWorkDiv>>
+                {
+                    // Delegate the call to the base class.
+                    return
+                        workdiv::getWorkDiv<
+                            origin::Block,
+                            unit::Threads>(
                                 static_cast<typename TWorkDiv::WorkDivBase const &>(workDiv));
                 }
             };
