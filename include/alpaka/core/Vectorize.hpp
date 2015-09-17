@@ -59,7 +59,7 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             template<
                 typename TElem>
-            struct GetCurrentThreadVectorRegisterSizeElems
+            struct GetVectorizationSizeElems
             {
                 static constexpr std::size_t value = 1u;
             };
@@ -68,7 +68,7 @@ namespace alpaka
             // Number of elements of the given type that can be processed in parallel in a vector register.
             //-----------------------------------------------------------------------------
             template<>
-            struct GetCurrentThreadVectorRegisterSizeElems<
+            struct GetVectorizationSizeElems<
                 double>
             {
                 static constexpr std::size_t value =
@@ -100,7 +100,7 @@ namespace alpaka
             // Number of elements of the given type that can be processed in parallel in a vector register.
             //-----------------------------------------------------------------------------
             template<>
-            struct GetCurrentThreadVectorRegisterSizeElems<
+            struct GetVectorizationSizeElems<
                 float>
             {
                 static constexpr std::size_t value =
@@ -131,7 +131,7 @@ namespace alpaka
             // Number of elements of the given type that can be processed in parallel in a vector register.
             //-----------------------------------------------------------------------------
             template<>
-            struct GetCurrentThreadVectorRegisterSizeElems<
+            struct GetVectorizationSizeElems<
                 std::int8_t>
             {
                 static constexpr std::size_t value =
@@ -167,7 +167,7 @@ namespace alpaka
             // Number of elements of the given type that can be processed in parallel in a vector register.
             //-----------------------------------------------------------------------------
             template<>
-            struct GetCurrentThreadVectorRegisterSizeElems<
+            struct GetVectorizationSizeElems<
                 std::uint8_t>
             {
                 static constexpr std::size_t value =
@@ -203,7 +203,7 @@ namespace alpaka
             // Number of elements of the given type that can be processed in parallel in a vector register.
             //-----------------------------------------------------------------------------
             template<>
-            struct GetCurrentThreadVectorRegisterSizeElems<
+            struct GetVectorizationSizeElems<
                 std::int16_t>
             {
                 static constexpr std::size_t value =
@@ -239,7 +239,7 @@ namespace alpaka
             // Number of elements of the given type that can be processed in parallel in a vector register.
             //-----------------------------------------------------------------------------
             template<>
-            struct GetCurrentThreadVectorRegisterSizeElems<
+            struct GetVectorizationSizeElems<
                 std::uint16_t>
             {
                 static constexpr std::size_t value =
@@ -275,7 +275,7 @@ namespace alpaka
             // Number of elements of the given type that can be processed in parallel in a vector register.
             //-----------------------------------------------------------------------------
             template<>
-            struct GetCurrentThreadVectorRegisterSizeElems<
+            struct GetVectorizationSizeElems<
                 std::int32_t>
             {
                 static constexpr std::size_t value =
@@ -306,7 +306,7 @@ namespace alpaka
             // Number of elements of the given type that can be processed in parallel in a vector register.
             //-----------------------------------------------------------------------------
             template<>
-            struct GetCurrentThreadVectorRegisterSizeElems<
+            struct GetVectorizationSizeElems<
                 std::uint32_t>
             {
                 static constexpr std::size_t value =
@@ -337,7 +337,7 @@ namespace alpaka
             // Number of elements of the given type that can be processed in parallel in a vector register.
             //-----------------------------------------------------------------------------
             template<>
-            struct GetCurrentThreadVectorRegisterSizeElems<
+            struct GetVectorizationSizeElems<
                 std::int64_t>
             {
                 static constexpr std::size_t value =
@@ -366,7 +366,7 @@ namespace alpaka
             // Number of elements of the given type that can be processed in parallel in a vector register.
             //-----------------------------------------------------------------------------
             template<>
-            struct GetCurrentThreadVectorRegisterSizeElems<
+            struct GetVectorizationSizeElems<
                 std::uint64_t>
             {
                 static constexpr std::size_t value =
@@ -398,7 +398,7 @@ namespace alpaka
                 //! The general vectorization implementation.
                 //#############################################################################
                 template<
-                    std::size_t TvecRegElemCount>
+                    std::size_t TvectorizationCount>
                 struct Vectorize
                 {
                     //-----------------------------------------------------------------------------
@@ -414,32 +414,32 @@ namespace alpaka
                     {
 #ifdef __CUDACC__   // nvcc seems not to support constexpr correctly
                         static_assert(
-                            (static_cast<TSize>(TvecRegElemCount) > 0),
-                            "The number of elements per vector register has to be greater zero!");
+                            (static_cast<TSize>(TvectorizationCount) > 0),
+                            "The number of loop invocations to vectorize (TvectorizationCount) has to be greater zero!");
 
                         TSize i(0);
-                        while((count-i) >= static_cast<TSize>(TvecRegElemCount))
+                        while((count-i) >= static_cast<TSize>(TvectorizationCount))
                         {
-                            for(TSize j(0); j<static_cast<TSize>(TvecRegElemCount); ++j)
+                            for(TSize j(0); j<static_cast<TSize>(TvectorizationCount); ++j)
                             {
                                 fnObj(i+j);
                             }
-                            i += static_cast<TSize>(TvecRegElemCount);
+                            i += static_cast<TSize>(TvectorizationCount);
                         }
 #else
                         // Cast it to the user defined type.
                         constexpr TSize vecRegElems(
-                            static_cast<TSize>(TvecRegElemCount));
+                            static_cast<TSize>(TvectorizationCount));
 
                         static_assert(
                             (vecRegElems > 0),
-                            "The number of elements per vector register has to be greater zero!");
+                            "The number of loop invocations to vectorize (TvectorizationCount) has to be greater zero!");
 
-                        // While we have more then TvecRegElemCount elements left ... 
+                        // While we have more then TvectorizationCount elements left ...
                         TSize i(0);
                         while((count-i) >= vecRegElems)
                         {
-                            // ... execute exactly TvecRegElemCount invocations of the loop.
+                            // ... execute exactly TvectorizationCount invocations of the loop.
                             // This enables the compiler to optimize much better because of the compile-time loop bounds.
                             for(TSize j(0); j<vecRegElems; ++j)
                             {
@@ -448,7 +448,7 @@ namespace alpaka
                             i += vecRegElems;
                         }
 #endif
-                        // Execute the last (count % TvecRegElemCount) invocations.
+                        // Execute the last (count % TvectorizationCount) invocations.
                         for(; i<count; ++i)
                         {
                             fnObj(i);
@@ -489,41 +489,29 @@ namespace alpaka
             }
 
             //-----------------------------------------------------------------------------
+            //! Calls the given function object fnObj count times trying to utilize vectorization with TVectorizationCount elements.
             //!
+            //! The supported number of elements per vector of a given type on the current architecture can be queried with registerGetVectorizationSizeElems<TElem>::value.
+            //! For optimal vectorization, the fnObj should be only consist of one line.
             //-----------------------------------------------------------------------------
             template<
+                std::size_t TvectorizationCount,
                 typename TSize,
-                typename TElem,
                 typename TFnObj>
             ALPAKA_FN_HOST auto vectorize(
                 TSize const & count,
                 TFnObj const & fnObj)
             -> void
             {
-#ifdef __CUDACC__   // nvcc seems not to support constexpr correctly
                 static_assert(
-                    (GetCurrentThreadVectorRegisterSizeElems<TElem>::value > 0),
-                    "The number of elements per vector register has to be greater zero!");
+                    (TvectorizationCount > 0),
+                    "The number of loop invocations to vectorize (TvectorizationCount) has to be greater zero!");
 
                 detail::Vectorize<
-                    GetCurrentThreadVectorRegisterSizeElems<TElem>::value>
+                    TvectorizationCount>
                 ::vectorize(
                     count,
                     fnObj);
-#else
-                constexpr auto vecRegElems(
-                    GetCurrentThreadVectorRegisterSizeElems<TElem>::value);
-
-                static_assert(
-                    (vecRegElems > 0),
-                    "The number of elements per vector register has to be greater zero!");
-
-                detail::Vectorize<
-                    vecRegElems>
-                ::vectorize(
-                    count,
-                    fnObj);
-#endif
             }
         }
     }
