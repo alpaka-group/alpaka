@@ -184,21 +184,27 @@ namespace alpaka
                 {
                     boost::ignore_unused(dev);
 
-                    // m_blockThreadsCountMax
+                    // m_blockThreadCountMax
 #if ALPAKA_INTEGRATION_TEST
-                    auto const blockThreadsCountMax(static_cast<TSize>(4));
+                    auto const blockThreadCountMax(static_cast<TSize>(4));
 #else
-                    auto const blockThreadsCountMax(static_cast<TSize>(omp::getMaxOmpThreads()));
+                    auto const blockThreadCountMax(static_cast<TSize>(omp::getMaxOmpThreads()));
 #endif
                     return {
                         // m_multiProcessorCount
                         static_cast<TSize>(1),
-                        // m_blockThreadsCountMax
-                        blockThreadsCountMax,
-                        // m_blockThreadExtentsMax
-                        Vec<TDim, TSize>::all(blockThreadsCountMax),
-                        // m_gridBlockExtentsMax
-                        Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max())};
+                        // m_gridBlockExtentMax
+                        Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max()),
+                        // m_gridBlockCountMax
+                        std::numeric_limits<TSize>::max(),
+                        // m_blockThreadExtentMax
+                        Vec<TDim, TSize>::all(blockThreadCountMax),
+                        // m_blockThreadCountMax
+                        blockThreadCountMax,
+                        // m_threadElemExtentMax
+                        Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max()),
+                        // m_threadElemCountMax
+                        std::numeric_limits<TSize>::max()};
                 }
             };
             //#############################################################################

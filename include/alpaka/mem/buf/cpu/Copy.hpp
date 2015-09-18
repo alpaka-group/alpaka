@@ -58,18 +58,18 @@ namespace alpaka
                     template<
                         typename TBufDst,
                         typename TBufSrc,
-                        typename TExtents>
+                        typename TExtent>
                     struct TaskCopy
                     {
-                        using Size = size::Size<TExtents>;
+                        using Size = size::Size<TExtent>;
 
                         static_assert(
                             dim::Dim<TBufDst>::value == dim::Dim<TBufSrc>::value,
                             "The source and the destination buffers are required to have the same dimensionality!");
                         static_assert(
-                            dim::Dim<TBufDst>::value == dim::Dim<TExtents>::value,
-                            "The buffers and the extents are required to have the same dimensionality!");
-                        // TODO: Maybe check for Size of TBufDst and TBufSrc to have greater or equal range than TExtents.
+                            dim::Dim<TBufDst>::value == dim::Dim<TExtent>::value,
+                            "The buffers and the extent are required to have the same dimensionality!");
+                        // TODO: Maybe check for Size of TBufDst and TBufSrc to have greater or equal range than TExtent.
                         static_assert(
                             std::is_same<elem::Elem<TBufDst>, typename std::remove_const<elem::Elem<TBufSrc>>::type>::value,
                             "The source and the destination buffers are required to have the same element type!");
@@ -80,21 +80,21 @@ namespace alpaka
                         TaskCopy(
                             TBufDst & bufDst,
                             TBufSrc const & bufSrc,
-                            TExtents const & extents) :
-                                m_extentWidth(extent::getWidth(extents)),
+                            TExtent const & extent) :
+                                m_extentWidth(extent::getWidth(extent)),
                                 m_extentWidthBytes(static_cast<Size>(m_extentWidth * sizeof(elem::Elem<TBufDst>))),
                                 m_dstWidth(static_cast<Size>(extent::getWidth(bufDst))),
                                 m_srcWidth(static_cast<Size>(extent::getWidth(bufSrc))),
                                 m_dstBufWidth(static_cast<Size>(extent::getWidth(mem::view::getBuf(bufDst)))),
                                 m_srcBufWidth(static_cast<Size>(extent::getWidth(mem::view::getBuf(bufSrc)))),
 
-                                m_extentHeight(extent::getHeight(extents)),
+                                m_extentHeight(extent::getHeight(extent)),
                                 m_dstHeight(static_cast<Size>(extent::getHeight(bufDst))),
                                 m_srcHeight(static_cast<Size>(extent::getHeight(bufSrc))),
                                 m_dstBufHeight(static_cast<Size>(extent::getHeight(mem::view::getBuf(bufDst)))),
                                 m_srcBufHeight(static_cast<Size>(extent::getHeight(mem::view::getBuf(bufSrc)))),
 
-                                m_extentDepth(extent::getDepth(extents)),
+                                m_extentDepth(extent::getDepth(extent)),
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                                 m_dstDepth(static_cast<Size>(extent::getDepth(bufDst))),
                                 m_srcDepth(static_cast<Size>(extent::getDepth(bufSrc))),
@@ -167,8 +167,8 @@ namespace alpaka
                                 && (m_extentWidth == m_srcBufWidth));
 
                             // If:
-                            // - the copy extents width is identical to the dst and src extents width
-                            // - the copy extents width is identical to the dst and src memory buffer extents width
+                            // - the copy extent width is identical to the dst and src extent width
+                            // - the copy extent width is identical to the dst and src memory buffer extent width
                             // - the src and dst pitch is identical
                             // -> we can copy whole slices at once overwriting the pitch bytes
                             auto const copySliceAtOnce(
@@ -176,8 +176,8 @@ namespace alpaka
                                 && (m_dstPitchBytes == m_srcPitchBytes));
 
                             // If:
-                            // - the copy extents width and height are identical to the dst and src extents width and height
-                            // - the copy extents width and height are identical to the dst and src memory buffer extents width and height
+                            // - the copy extent width and height are identical to the dst and src extent width and height
+                            // - the copy extent width and height are identical to the dst and src memory buffer extent width and height
                             // - the src and dst slice size is identical
                             // -> we can copy the whole memory at once overwriting the pitch bytes
                             auto const copyAllAtOnce(
@@ -265,26 +265,26 @@ namespace alpaka
                     //!
                     //-----------------------------------------------------------------------------
                     template<
-                        typename TExtents,
+                        typename TExtent,
                         typename TBufSrc,
                         typename TBufDst>
                     ALPAKA_FN_HOST static auto taskCopy(
                         TBufDst & bufDst,
                         TBufSrc const & bufSrc,
-                        TExtents const & extents)
+                        TExtent const & extent)
                     -> cpu::detail::TaskCopy<
                         TBufDst,
                         TBufSrc,
-                        TExtents>
+                        TExtent>
                     {
                         return
                             cpu::detail::TaskCopy<
                                 TBufDst,
                                 TBufSrc,
-                                TExtents>(
+                                TExtent>(
                                     bufDst,
                                     bufSrc,
-                                    extents);
+                                    extent);
                     }
                 };
             }

@@ -54,7 +54,7 @@ namespace alpaka
         }
 
         //-----------------------------------------------------------------------------
-        //! Get the extents requested.
+        //! Get the extent requested.
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
@@ -77,7 +77,7 @@ namespace alpaka
         namespace traits
         {
             //#############################################################################
-            //! The WorkDivMembers grid block extents trait specialization for classes with WorkDivBase member type.
+            //! The WorkDivMembers grid block extent trait specialization for classes with WorkDivBase member type.
             //#############################################################################
             template<
                 typename TWorkDiv>
@@ -106,7 +106,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The WorkDivMembers block thread extents trait specialization for classes with WorkDivBase member type.
+            //! The WorkDivMembers block thread extent trait specialization for classes with WorkDivBase member type.
             //#############################################################################
             template<
                 typename TWorkDiv>
@@ -134,9 +134,38 @@ namespace alpaka
                                 static_cast<typename TWorkDiv::WorkDivBase const &>(workDiv));
                 }
             };
+            //#############################################################################
+            //! The WorkDivMembers block thread extent trait specialization for classes with WorkDivBase member type.
+            //#############################################################################
+            template<
+                typename TWorkDiv>
+            struct GetWorkDiv<
+                TWorkDiv,
+                origin::Thread,
+                unit::Elems,
+                typename std::enable_if<
+                    std::is_base_of<typename TWorkDiv::WorkDivBase, typename std::decay<TWorkDiv>::type>::value
+                    && (!std::is_same<typename TWorkDiv::WorkDivBase, typename std::decay<TWorkDiv>::type>::value)>::type>
+            {
+                //-----------------------------------------------------------------------------
+                //! \return The number of threads in each dimension of a block.
+                //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
+                ALPAKA_FN_HOST_ACC static auto getWorkDiv(
+                    TWorkDiv const & workDiv)
+                -> Vec<dim::Dim<typename TWorkDiv::WorkDivBase>, size::Size<TWorkDiv>>
+                {
+                    // Delegate the call to the base class.
+                    return
+                        workdiv::getWorkDiv<
+                            origin::Thread,
+                            unit::Elems>(
+                                static_cast<typename TWorkDiv::WorkDivBase const &>(workDiv));
+                }
+            };
 
             //#############################################################################
-            //! The work div grid thread extents trait specialization.
+            //! The work div grid thread extent trait specialization.
             //#############################################################################
             template<
                 typename TWorkDiv>
@@ -156,6 +185,29 @@ namespace alpaka
                     return
                         workdiv::getWorkDiv<origin::Grid, unit::Blocks>(workDiv)
                         * workdiv::getWorkDiv<origin::Block, unit::Threads>(workDiv);
+                }
+            };
+            //#############################################################################
+            //! The work div grid thread extents trait specialization.
+            //#############################################################################
+            template<
+                typename TWorkDiv>
+            struct GetWorkDiv<
+                TWorkDiv,
+                origin::Grid,
+                unit::Elems>
+            {
+                //-----------------------------------------------------------------------------
+                //! \return The number of threads in each dimension of the grid.
+                //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
+                ALPAKA_FN_HOST_ACC static auto getWorkDiv(
+                    TWorkDiv const & workDiv)
+                -> Vec<dim::Dim<typename TWorkDiv::WorkDivBase>, size::Size<TWorkDiv>>
+                {
+                    return
+                        workdiv::getWorkDiv<origin::Grid, unit::Threads>(workDiv)
+                        * workdiv::getWorkDiv<origin::Thread, unit::Elems>(workDiv);
                 }
             };
         }

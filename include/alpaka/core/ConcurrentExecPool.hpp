@@ -286,10 +286,12 @@ namespace alpaka
                 //!
                 //! Creates a concurrent executor pool with a specific number of concurrent executors and a maximum number of queued tasks.
                 //!
-                //! \param concurrentExecutionCount   The guaranteed number of concurrent executors used in the pool.
-                //!                                     This is also the maximum number of tasks worked on concurrently.
-                //! \param queueSize  The maximum number of tasks that can be queued for completion.
-                //!                     Currently running tasks do not belong to the queue anymore.
+                //! \param concurrentExecutionCount
+                //!    The guaranteed number of concurrent executors used in the pool.
+                //!    This is also the maximum number of tasks worked on concurrently.
+                //! \param queueSize
+                //!    The maximum number of tasks that can be queued for completion.
+                //!    Currently running tasks do not belong to the queue anymore.
                 //-----------------------------------------------------------------------------
                 ConcurrentExecPool(
                     TSize concurrentExecutionCount,
@@ -493,10 +495,12 @@ namespace alpaka
                 //!
                 //! Creates a concurrent executor pool with a specific number of concurrent executors and a maximum number of queued tasks.
                 //!
-                //! \param concurrentExecutionCount   The guaranteed number of concurrent executors used in the pool.
-                //!                                     This is also the maximum number of tasks worked on concurrently.
-                //! \param queueSize  The maximum number of tasks that can be queued for completion.
-                //!                     Currently running tasks do not belong to the queue anymore.
+                //! \param concurrentExecutionCount
+                //!    The guaranteed number of concurrent executors used in the pool.
+                //!    This is also the maximum number of tasks worked on concurrently.
+                //! \param queueSize
+                //!    The maximum number of tasks that can be queued for completion.
+                //!    Currently running tasks do not belong to the queue anymore.
                 //-----------------------------------------------------------------------------
                 ConcurrentExecPool(
                     TSize concurrentExecutionCount,

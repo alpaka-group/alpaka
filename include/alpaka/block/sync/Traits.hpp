@@ -48,7 +48,7 @@ namespace alpaka
                 template<
                     typename TBlockSync,
                     typename TSfinae = void>
-                struct SyncBlockThreads;
+                struct SyncBlockThread;
             }
 
             //-----------------------------------------------------------------------------
@@ -64,7 +64,7 @@ namespace alpaka
                 TBlockSync const & blockSync)
             -> void
             {
-                traits::SyncBlockThreads<
+                traits::SyncBlockThread<
                     TBlockSync>
                 ::syncBlockThreads(
                     blockSync);
@@ -77,7 +77,7 @@ namespace alpaka
                 //#############################################################################
                 template<
                     typename TBlockSync>
-                struct SyncBlockThreads<
+                struct SyncBlockThread<
                     TBlockSync,
                     typename std::enable_if<
                         std::is_base_of<typename TBlockSync::BlockSyncBase, typename std::decay<TBlockSync>::type>::value

@@ -862,51 +862,51 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 template<
-                    typename TExtents>
+                    typename TExtent>
                 ALPAKA_FN_HOST_ACC static auto create(
-                    TExtents const & extents)
-                -> size::Size<TExtents>
+                    TExtent const & extent)
+                -> size::Size<TExtent>
                 {
-                    return extent::getExtent<Tidx>(extents);
+                    return extent::getExtent<Tidx>(extent);
                 }
             };
         }
         //-----------------------------------------------------------------------------
-        //! \return The extents.
+        //! \return The extent.
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
-            typename TExtents>
-        ALPAKA_FN_HOST_ACC auto getExtentsVec(
-            TExtents const & extents = TExtents())
-        -> Vec<dim::Dim<TExtents>, size::Size<TExtents>>
+            typename TExtent>
+        ALPAKA_FN_HOST_ACC auto getExtentVec(
+            TExtent const & extent = TExtent())
+        -> Vec<dim::Dim<TExtent>, size::Size<TExtent>>
         {
             return
 #ifdef ALPAKA_CREATE_VEC_IN_CLASS
-            Vec<dim::Dim<TExtents>, size::Size<TExtents>>::template
+            Vec<dim::Dim<TExtent>, size::Size<TExtent>>::template
 #endif
                 createVecFromIndexedFn<
 #ifndef ALPAKA_CREATE_VEC_IN_CLASS
-                    dim::Dim<TExtents>,
+                    dim::Dim<TExtent>,
 #endif
                     detail::CreateExtent>(
-                        extents);
+                        extent);
         }
         //-----------------------------------------------------------------------------
-        //! \return The extents but only the last N elements.
+        //! \return The extent but only the last N elements.
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             typename TDim,
-            typename TExtents>
-        ALPAKA_FN_HOST_ACC auto getExtentsVecEnd(
-            TExtents const & extents = TExtents())
-        -> Vec<TDim, size::Size<TExtents>>
+            typename TExtent>
+        ALPAKA_FN_HOST_ACC auto getExtentVecEnd(
+            TExtent const & extent = TExtent())
+        -> Vec<TDim, size::Size<TExtent>>
         {
-            using IdxOffset = std::integral_constant<std::intmax_t, ((std::intmax_t)dim::Dim<TExtents>::value)-((std::intmax_t)TDim::value)>;
+            using IdxOffset = std::integral_constant<std::intmax_t, ((std::intmax_t)dim::Dim<TExtent>::value)-((std::intmax_t)TDim::value)>;
             return
 #ifdef ALPAKA_CREATE_VEC_IN_CLASS
-            Vec<TDim, size::Size<TExtents>>::template
+            Vec<TDim, size::Size<TExtent>>::template
 #endif
                 createVecFromIndexedFnOffset<
 #ifndef ALPAKA_CREATE_VEC_IN_CLASS
@@ -914,7 +914,7 @@ namespace alpaka
 #endif
                     detail::CreateExtent,
                     IdxOffset>(
-                        extents);
+                        extent);
         }
     }
 
@@ -1024,10 +1024,10 @@ namespace alpaka
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getExtent(
-                    Vec<TDim, TSize> const & extents)
+                    Vec<TDim, TSize> const & extent)
                 -> TSize
                 {
-                    return extents[TIdx::value];
+                    return extent[TIdx::value];
                 }
             };
             //#############################################################################
@@ -1037,20 +1037,20 @@ namespace alpaka
                 typename TIdx,
                 typename TDim,
                 typename TSize,
-                typename TExtent>
+                typename TExtentVal>
             struct SetExtent<
                 TIdx,
                 Vec<TDim, TSize>,
-                TExtent,
+                TExtentVal,
                 typename std::enable_if<(TDim::value > TIdx::value)>::type>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto setExtent(
-                    Vec<TDim, TSize> & extents,
-                    TExtent const & extent)
+                    Vec<TDim, TSize> & extent,
+                    TExtentVal const & extentVal)
                 -> void
                 {
-                    extents[TIdx::value] = extent;
+                    extent[TIdx::value] = extentVal;
                 }
             };
         }

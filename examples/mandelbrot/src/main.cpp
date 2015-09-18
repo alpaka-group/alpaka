@@ -378,17 +378,18 @@ struct MandelbrotKernelTester
         // Get a stream on this device.
         alpaka::examples::Stream<alpaka::dev::Dev<TAcc>> stream(devAcc);
 
-        alpaka::Vec<alpaka::dim::DimInt<2u>, TSize> const v2uiExtents(
+        alpaka::Vec<alpaka::dim::DimInt<2u>, TSize> const extent(
             static_cast<TSize>(numRows),
             static_cast<TSize>(numCols));
 
-        // Let alpaka calculate good block and grid sizes given our full problem extents.
+        // Let alpaka calculate good block and grid sizes given our full problem extent.
         alpaka::workdiv::WorkDivMembers<alpaka::dim::DimInt<2u>, TSize> const workDiv(
             alpaka::workdiv::getValidWorkDiv<TAcc>(
                 devAcc,
-                v2uiExtents,
+                extent,
+                alpaka::Vec<alpaka::dim::DimInt<2u>, TSize>::ones(),
                 false,
-                alpaka::workdiv::GridBlockExtentsSubDivRestrictions::Unrestricted));
+                alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted));
 
         std::cout
             << "MandelbrotKernelTester("
@@ -402,14 +403,14 @@ struct MandelbrotKernelTester
 
         // allocate host memory
         auto bufColorHost(
-            alpaka::mem::buf::alloc<Val, TSize>(devHost, v2uiExtents));
+            alpaka::mem::buf::alloc<Val, TSize>(devHost, extent));
 
         // Allocate the buffer on the accelerator.
         auto bufColorAcc(
-            alpaka::mem::buf::alloc<Val, TSize>(devAcc, v2uiExtents));
+            alpaka::mem::buf::alloc<Val, TSize>(devAcc, extent));
 
         // Copy Host -> Acc.
-        alpaka::mem::view::copy(stream, bufColorAcc, bufColorHost, v2uiExtents);
+        alpaka::mem::view::copy(stream, bufColorAcc, bufColorHost, extent);
 
         // Create the executor task.
         auto const exec(alpaka::exec::create<TAcc>(
@@ -434,7 +435,7 @@ struct MandelbrotKernelTester
             << std::endl;
 
         // Copy back the result.
-        alpaka::mem::view::copy(stream, bufColorHost, bufColorAcc, v2uiExtents);
+        alpaka::mem::view::copy(stream, bufColorHost, bufColorAcc, extent);
 
         // Wait for the stream to finish the memory operation.
         alpaka::wait::wait(stream);

@@ -49,19 +49,28 @@ namespace alpaka
             ALPAKA_NO_HOST_ACC_WARNING
             ALPAKA_FN_HOST AccDevProps(
                 TSize const & multiProcessorCount,
-                TSize const & blockThreadsCountMax,
-                Vec<TDim, TSize> const & blockThreadExtentsMax,
-                Vec<TDim, TSize> const & gridBlockExtentsMax) :
+                Vec<TDim, TSize> const & gridBlockExtentMax,
+                TSize const & gridBlockCountMax,
+                Vec<TDim, TSize> const & blockThreadExtentMax,
+                TSize const & blockThreadCountMax,
+                Vec<TDim, TSize> const & threadElemExtentMax,
+                TSize const & threadElemCountMax) :
                     m_multiProcessorCount(multiProcessorCount),
-                    m_blockThreadsCountMax(blockThreadsCountMax),
-                    m_blockThreadExtentsMax(blockThreadExtentsMax),
-                    m_gridBlockExtentsMax(gridBlockExtentsMax)
+                    m_gridBlockExtentMax(gridBlockExtentMax),
+                    m_gridBlockCountMax(gridBlockCountMax),
+                    m_blockThreadExtentMax(blockThreadExtentMax),
+                    m_blockThreadCountMax(blockThreadCountMax),
+                    m_threadElemExtentMax(threadElemExtentMax),
+                    m_threadElemCountMax(threadElemCountMax)
             {}
 
             TSize m_multiProcessorCount;                //!< The number of multiprocessors.
-            TSize m_blockThreadsCountMax;               //!< The maximum number of threads in a block.
-            Vec<TDim, TSize> m_blockThreadExtentsMax;   //!< The maximum number of threads in each dimension of a block.
-            Vec<TDim, TSize> m_gridBlockExtentsMax;     //!< The maximum number of blocks in each dimension of the grid.
+            Vec<TDim, TSize> m_gridBlockExtentMax;      //!< The maximum number of blocks in each dimension of the grid.
+            TSize m_gridBlockCountMax;                  //!< The maximum number of blocks in a grid.
+            Vec<TDim, TSize> m_blockThreadExtentMax;    //!< The maximum number of threads in each dimension of a block.
+            TSize m_blockThreadCountMax;                //!< The maximum number of threads in a block.
+            Vec<TDim, TSize> m_threadElemExtentMax;     //!< The maximum number of elements in each dimension of a thread.
+            TSize m_threadElemCountMax;                 //!< The maximum number of elements in a threads.
         };
     }
 }

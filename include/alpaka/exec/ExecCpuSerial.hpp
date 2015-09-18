@@ -109,9 +109,9 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                auto const gridBlockExtents(
+                auto const gridBlockExtent(
                     workdiv::getWorkDiv<Grid, Blocks>(*this));
-                auto const blockThreadExtents(
+                auto const blockThreadExtent(
                     workdiv::getWorkDiv<Block, Threads>(*this));
 
                 // Get the size of the block shared extern memory.
@@ -123,7 +123,7 @@ namespace alpaka
                                 kernel::getBlockSharedExternMemSizeBytes<
                                     TKernelFnObj,
                                     acc::AccCpuSerial<TDim, TSize>>(
-                                        blockThreadExtents,
+                                        blockThreadExtent,
                                         args...);
                         },
                         m_args));
@@ -156,11 +156,11 @@ namespace alpaka
                 }
 
                 // There is only ever one thread in a block in the serial accelerator.
-                assert(blockThreadExtents.prod() == 1u);
+                assert(blockThreadExtent.prod() == 1u);
 
                 // Execute the blocks serially.
                 core::ndLoopIncIdx(
-                    gridBlockExtents,
+                    gridBlockExtent,
                     [&](Vec<TDim, TSize> const & blockThreadIdx)
                     {
                         acc.m_gridBlockIdx = blockThreadIdx;

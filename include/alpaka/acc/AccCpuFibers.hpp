@@ -109,11 +109,11 @@ namespace alpaka
                         [this](){block::sync::syncBlockThreads(*this);},
                         [this](){return (m_masterFiberId == boost::this_fiber::get_id());}),
                     block::sync::BlockSyncFiberIdMapBarrier<TSize>(
-                        m_threadsPerBlockCount,
+                        m_blockThreadCount,
                         m_fibersToBarrier),
                     rand::RandStl(),
                     m_gridBlockIdx(Vec<TDim, TSize>::zeros()),
-                    m_threadsPerBlockCount(workdiv::getWorkDiv<Block, Threads>(workDiv).prod())
+                    m_blockThreadCount(workdiv::getWorkDiv<Block, Threads>(workDiv).prod())
             {}
 
         public:
@@ -155,7 +155,7 @@ namespace alpaka
             alignas(16u) Vec<TDim, TSize> mutable m_gridBlockIdx;    //!< The index of the currently executed block.
 
             // syncBlockThreads
-            TSize const m_threadsPerBlockCount;                         //!< The number of threads per block the barrier has to wait for.
+            TSize const m_blockThreadCount;                         //!< The number of threads per block the barrier has to wait for.
             std::map<
                 boost::fibers::fiber::id,
                 TSize> mutable m_fibersToBarrier;                      //!< The mapping of fibers id's to their current barrier.
@@ -203,19 +203,25 @@ namespace alpaka
                     boost::ignore_unused(dev);
 
 #if ALPAKA_INTEGRATION_TEST
-                    auto const blockThreadsCountMax(static_cast<TSize>(3));
+                    auto const blockThreadCountMax(static_cast<TSize>(3));
 #else
-                    auto const blockThreadsCountMax(static_cast<TSize>(4));  // \TODO: What is the maximum? Just set a reasonable value?
+                    auto const blockThreadCountMax(static_cast<TSize>(4));  // \TODO: What is the maximum? Just set a reasonable value?
 #endif
                     return {
                         // m_multiProcessorCount
                         std::max(static_cast<TSize>(1), static_cast<TSize>(std::thread::hardware_concurrency())),   // \TODO: This may be inaccurate.
-                        // m_blockThreadsCountMax
-                        blockThreadsCountMax,
-                        // m_blockThreadExtentsMax
-                        Vec<TDim, TSize>::all(blockThreadsCountMax),
-                        // m_gridBlockExtentsMax
-                        Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max())};
+                        // m_gridBlockExtentMax
+                        Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max()),
+                        // m_gridBlockCountMax
+                        std::numeric_limits<TSize>::max(),
+                        // m_blockThreadExtentMax
+                        Vec<TDim, TSize>::all(blockThreadCountMax),
+                        // m_blockThreadCountMax
+                        blockThreadCountMax,
+                        // m_threadElemExtentMax
+                        Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max()),
+                        // m_threadElemCountMax
+                        std::numeric_limits<TSize>::max()};
                 }
             };
             //#############################################################################

@@ -121,39 +121,39 @@ namespace alpaka
             //! Allocates memory on the given device.
             //!
             //! \tparam TElem The element type of the returned buffer.
-            //! \tparam TExtents The extents of the buffer.
+            //! \tparam TExtent The extent of the buffer.
             //! \tparam TDev The type of device the buffer is allocated on.
             //! \param dev The device to allocate the buffer on.
-            //! \param extents The extents of the buffer.
+            //! \param extent The extent of the buffer.
             //! \return The newly allocated buffer.
             //-----------------------------------------------------------------------------
             template<
                 typename TElem,
                 typename TSize,
-                typename TExtents,
+                typename TExtent,
                 typename TDev>
             ALPAKA_FN_HOST auto alloc(
                 TDev const & dev,
-                TExtents const & extents = TExtents())
+                TExtent const & extent = TExtent())
             -> decltype(
                 traits::Alloc<
                     TElem,
-                    dim::Dim<TExtents>,
+                    dim::Dim<TExtent>,
                     TSize,
                     TDev>
                 ::alloc(
                     dev,
-                    extents))
+                    extent))
             {
                 return
                     traits::Alloc<
                         TElem,
-                        dim::Dim<TExtents>,
+                        dim::Dim<TExtent>,
                         TSize,
                         TDev>
                     ::alloc(
                         dev,
-                        extents);
+                        extent);
             }
             //-----------------------------------------------------------------------------
             //! Maps the buffer into the memory of the given device.

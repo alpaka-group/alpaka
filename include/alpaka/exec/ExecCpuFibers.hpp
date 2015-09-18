@@ -140,9 +140,9 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                auto const gridBlockExtents(
+                auto const gridBlockExtent(
                     workdiv::getWorkDiv<Grid, Blocks>(*this));
-                auto const blockThreadExtents(
+                auto const blockThreadExtent(
                     workdiv::getWorkDiv<Block, Threads>(*this));
 
                 // Get the size of the block shared extern memory.
@@ -154,7 +154,7 @@ namespace alpaka
                                 kernel::getBlockSharedExternMemSizeBytes<
                                     TKernelFnObj,
                                     acc::AccCpuFibers<TDim, TSize>>(
-                                        blockThreadExtents,
+                                        blockThreadExtent,
                                         args...);
                         },
                         m_args));
@@ -172,12 +172,12 @@ namespace alpaka
                             boost::alignment::aligned_alloc(16u, blockSharedExternMemSizeBytes)));
                 }
 
-                auto const numThreadsInBlock(blockThreadExtents.prod());
-                FiberPool fiberPool(numThreadsInBlock, numThreadsInBlock);
+                auto const blockThreadCount(blockThreadExtent.prod());
+                FiberPool fiberPool(blockThreadCount, blockThreadCount);
 
                 auto const boundGridBlockExecHost(
                     core::apply(
-                        [this, &acc, &blockThreadExtents, &fiberPool](TArgs const & ... args)
+                        [this, &acc, &blockThreadExtent, &fiberPool](TArgs const & ... args)
                         {
                             // Bind the kernel and its arguments to the grid block function.
                             return
@@ -185,7 +185,7 @@ namespace alpaka
                                     &ExecCpuFibers<TDim, TSize, TKernelFnObj, TArgs...>::gridBlockExecHost,
                                     std::ref(acc),
                                     std::placeholders::_1,
-                                    std::ref(blockThreadExtents),
+                                    std::ref(blockThreadExtent),
                                     std::ref(fiberPool),
                                     std::ref(m_kernelFnObj),
                                     std::ref(args)...);
@@ -194,7 +194,7 @@ namespace alpaka
 
                 // Execute the blocks serially.
                 core::ndLoopIncIdx(
-                    gridBlockExtents,
+                    gridBlockExtent,
                     boundGridBlockExecHost);
 
                 // After all blocks have been processed, the external shared memory has to be deleted.
@@ -208,7 +208,7 @@ namespace alpaka
             ALPAKA_FN_HOST static auto gridBlockExecHost(
                 acc::AccCpuFibers<TDim, TSize> & acc,
                 Vec<TDim, TSize> const & gridBlockIdx,
-                Vec<TDim, TSize> const & blockThreadExtents,
+                Vec<TDim, TSize> const & blockThreadExtent,
                 FiberPool & fiberPool,
                 TKernelFnObj const & kernelFnObj,
                 TArgs const & ... args)
@@ -231,7 +231,7 @@ namespace alpaka
                     std::ref(args)...));
                 // Execute the block threads in parallel.
                 core::ndLoopIncIdx(
-                    blockThreadExtents,
+                    blockThreadExtent,
                     boundBlockThreadExecHost);
 
                 // Wait for the completion of the block thread kernels.

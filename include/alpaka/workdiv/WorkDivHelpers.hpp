@@ -44,12 +44,12 @@ namespace alpaka
     namespace workdiv
     {
         //#############################################################################
-        //! The grid block extents subdivision restrictions.
+        //! The grid block extent subdivision restrictions.
         //#############################################################################
-        enum class GridBlockExtentsSubDivRestrictions
+        enum class GridBlockExtentSubDivRestrictions
         {
-            EqualExtents,       //!< The block thread extents will be equal in all dimensions.
-            CloseToEqualExtents,//!< The block thread extents will be as close to equal as possible in all dimensions.
+            EqualExtent,       //!< The block thread extent will be equal in all dimensions.
+            CloseToEqualExtent,//!< The block thread extent will be as close to equal as possible in all dimensions.
             Unrestricted,
         };
 
@@ -115,105 +115,172 @@ namespace alpaka
         }
 
         //-----------------------------------------------------------------------------
-        //! Subdivides the given grid thread extents into blocks restricted by:
-        //! 1. The maximum block thread extents
-        //! 2. The maximum block thread count
-        //! 3. The requirement of the block thread extents to divide the grid thread extents without remainder
-        //! 4. The requirement of the block extents.
+        //! \tparam TDim The dimensionality of the accelerator device properties.
+        //! \tparam TSize The size type of the accelerator device properties.
+        //! \param accDevProps The maxima for the work division.
+        //! \return If the accelerator device properties are valid.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TDim,
+            typename TSize>
+        ALPAKA_FN_HOST auto isValidAccDevProps(
+            acc::AccDevProps<TDim, TSize> const & accDevProps)
+        -> bool
+        {
+            // Check that the maximum counts are greater or equal 1.
+            if((accDevProps.m_gridBlockCountMax < 1)
+                || (accDevProps.m_blockThreadCountMax < 1)
+                || (accDevProps.m_threadElemCountMax < 1))
+            {
+                return false;
+            }
+
+            // Store the maxima allowed for extents of grid, blocks and threads.
+            auto const gridBlockExtentMax(vec::subVecEnd<TDim>(accDevProps.m_gridBlockExtentMax));
+            auto const blockThreadExtentMax(vec::subVecEnd<TDim>(accDevProps.m_blockThreadExtentMax));
+            auto const threadElemExtentMax(vec::subVecEnd<TDim>(accDevProps.m_threadElemExtentMax));
+
+            // Check that the extents for all dimensions are correct.
+            for(typename TDim::value_type i(0); i<TDim::value; ++i)
+            {
+                // Check that the maximum extents are greater or equal 1.
+                if((gridBlockExtentMax[i] < 1)
+                    || (blockThreadExtentMax[i] < 1)
+                    || (threadElemExtentMax[i] < 1))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        //-----------------------------------------------------------------------------
+        //! Subdivides the given grid thread extent into blocks restricted by the maxima allowed.
+        //! 1. The the maxima block, thread and element extents and counts
+        //! 2. The requirement of the block thread extent to divide the grid thread extent without remainder
+        //! 3. The requirement of the block extent.
         //!
-        //! \param gridThreadExtents
-        //!     The full extents of threads in the grid.
-        //! \param blockThreadExtentsMax
-        //!     The maximum extents of threads in a block.
-        //! \param blockThreadsCountMax
-        //!     The maximum number of threads in a block.
-        //! \param requireBlockThreadExtentsToDivideGridThreadExtents
-        //!     If this is true, the grid thread extents will be multiples of the corresponding block thread extents.
-        //!     NOTE: If this is true and gridThreadExtents is prime (or otherwise bad chosen) in a dimension, the block thread extent will be one in this dimension.
-        //! \param gridBlockExtentsSubDivRestrictions
+        //! \param gridElemExtent
+        //!     The full extent of elements in the grid.
+        //! \param threadElemExtents
+        //!     the number of elements computed per thread.
+        //! \param accDevProps
+        //!     The maxima for the work division.
+        //! \param requireBlockThreadExtentToDivideGridThreadExtent
+        //!     If this is true, the grid thread extent will be multiples of the corresponding block thread extent.
+        //!     NOTE: If this is true and gridThreadExtent is prime (or otherwise bad chosen) in a dimension, the block thread extent will be one in this dimension.
+        //! \param gridBlockExtentSubDivRestrictions
         //!     The grid block extent subdivision restrictions.
         //-----------------------------------------------------------------------------
         template<
             typename TDim,
             typename TSize>
-        ALPAKA_FN_HOST auto subDivideGridThreads(
-            Vec<TDim, TSize> const & gridThreadExtents,
-            Vec<TDim, TSize> const & blockThreadExtentsMax,
-            TSize const & blockThreadsCountMax,
-            bool requireBlockThreadExtentsToDivideGridThreadExtents = true,
-            GridBlockExtentsSubDivRestrictions gridBlockExtentsSubDivRestrictions = GridBlockExtentsSubDivRestrictions::Unrestricted)
+        ALPAKA_FN_HOST auto subDivideGridElems(
+            Vec<TDim, TSize> const & gridElemExtent,
+            Vec<TDim, TSize> threadElemExtent,
+            acc::AccDevProps<TDim, TSize> const & accDevProps,
+            bool requireBlockThreadExtentToDivideGridThreadExtent = true,
+            GridBlockExtentSubDivRestrictions gridBlockExtentSubDivRestrictions = GridBlockExtentSubDivRestrictions::Unrestricted)
         -> workdiv::WorkDivMembers<TDim, TSize>
         {
-            // Assert valid input.
-            assert(blockThreadsCountMax>0u);
-            for(typename TDim::value_type i(0u); i<TDim::value; ++i)
-            {
-                assert(gridThreadExtents[i]>0u);
-                assert(blockThreadExtentsMax[i]>0u);
-            }
-
-            // Initialize the block thread extents with the maximum possible.
-            auto blockThreadExtents(blockThreadExtentsMax);
-
-            // Restrict the max block thread extents with the grid thread extents.
-            // This removes dimensions not required in the given grid thread extents.
-            // This has to be done before the blockThreadsCountMax clipping to get the maximum correctly.
+            ///////////////////////////////////////////////////////////////////
+            // Check that the input data is valid.
             for(typename TDim::value_type i(0); i<TDim::value; ++i)
             {
-                blockThreadExtents[i] = std::min(blockThreadExtents[i], gridThreadExtents[i]);
+                assert(gridElemExtent[i] >= 1);
+                assert(threadElemExtent[i] >= 1);
+                assert(threadElemExtent[i] <= accDevProps.m_threadElemExtentMax[i]);
+            }
+            assert(threadElemExtent.prod() <= accDevProps.m_threadElemCountMax);
+            assert(isValidAccDevProps(accDevProps));
+
+            ///////////////////////////////////////////////////////////////////
+            // Handle the given threadElemExtent. After this only the blockThreadExtent has to be optimized.
+
+            // Restrict the thread elem extent with the grid elem extent.
+            for(typename TDim::value_type i(0); i<TDim::value; ++i)
+            {
+                threadElemExtent[i] = std::min(threadElemExtent[i], gridElemExtent[i]);
             }
 
-            // For equal block thread extents, restrict it to its minimum component.
-            // For example (512, 256, 1024) will get (256, 256, 256).
-            if(gridBlockExtentsSubDivRestrictions == GridBlockExtentsSubDivRestrictions::EqualExtents)
+            // Calculate the grid thread extent.
+            auto gridThreadExtent(Vec<TDim, TSize>::zeros());
+            for(typename TDim::value_type i(0u); i<TDim::value; ++i)
             {
-                auto const minBlockThreadExtent(blockThreadExtents.min());
+                gridThreadExtent[i] =
+                    static_cast<TSize>(
+                        std::ceil(
+                            static_cast<double>(gridElemExtent[i])
+                            / static_cast<double>(threadElemExtent[i])));
+            }
+
+            ///////////////////////////////////////////////////////////////////
+            // Try to calculate an optimal blockThreadExtent.
+
+            // Initialize the block thread extent with the maximum possible.
+            auto blockThreadExtent(accDevProps.m_blockThreadExtentMax);
+
+            // Restrict the max block thread extent with the grid thread extent.
+            // This removes dimensions not required in the grid thread extent.
+            // This has to be done before the blockThreadCountMax clipping to get the maximum correctly.
+            for(typename TDim::value_type i(0); i<TDim::value; ++i)
+            {
+                blockThreadExtent[i] = std::min(blockThreadExtent[i], gridThreadExtent[i]);
+            }
+
+            // For equal block thread extent, restrict it to its minimum component.
+            // For example (512, 256, 1024) will get (256, 256, 256).
+            if(gridBlockExtentSubDivRestrictions == GridBlockExtentSubDivRestrictions::EqualExtent)
+            {
+                auto const minBlockThreadExtent(blockThreadExtent.min());
                 for(typename TDim::value_type i(0u); i<TDim::value; ++i)
                 {
-                    blockThreadExtents[i] = minBlockThreadExtent;
+                    blockThreadExtent[i] = minBlockThreadExtent;
                 }
             }
 
-            // Adjust blockThreadExtents if its product is too large.
-            if(blockThreadExtents.prod() > blockThreadsCountMax)
+            auto const & blockThreadCountMax(accDevProps.m_blockThreadCountMax);
+            // Adjust blockThreadExtent if its product is too large.
+            if(blockThreadExtent.prod() > blockThreadCountMax)
             {
                 // Satisfy the following equation:
-                // blockThreadsCountMax >= blockThreadExtents.prod()
+                // blockThreadCountMax >= blockThreadExtent.prod()
                 // For example 1024 >= 512 * 512 * 1024
 
-                // For equal block thread extent this is easily the nth root of blockThreadsCountMax.
-                if(gridBlockExtentsSubDivRestrictions == GridBlockExtentsSubDivRestrictions::EqualExtents)
+                // For equal block thread extent this is easily the nth root of blockThreadCountMax.
+                if(gridBlockExtentSubDivRestrictions == GridBlockExtentSubDivRestrictions::EqualExtent)
                 {
-                    double const fNthRoot(std::pow(blockThreadsCountMax, 1.0/static_cast<double>(TDim::value)));
+                    double const fNthRoot(std::pow(blockThreadCountMax, 1.0/static_cast<double>(TDim::value)));
                     TSize const nthRoot(static_cast<TSize>(fNthRoot));
                     for(typename TDim::value_type i(0u); i<TDim::value; ++i)
                     {
-                        blockThreadExtents[i] = nthRoot;
+                        blockThreadExtent[i] = nthRoot;
                     }
                 }
-                else if(gridBlockExtentsSubDivRestrictions == GridBlockExtentsSubDivRestrictions::CloseToEqualExtents)
+                else if(gridBlockExtentSubDivRestrictions == GridBlockExtentSubDivRestrictions::CloseToEqualExtent)
                 {
                     // Very primitive clipping. Just halve the largest value until it fits.
-                    while(blockThreadExtents.prod() > blockThreadsCountMax)
+                    while(blockThreadExtent.prod() > blockThreadCountMax)
                     {
-                        auto const maxElemIdx(blockThreadExtents.maxElem());
-                        blockThreadExtents[maxElemIdx] = blockThreadExtents[maxElemIdx] / 2u;
+                        auto const maxElemIdx(blockThreadExtent.maxElem());
+                        blockThreadExtent[maxElemIdx] = blockThreadExtent[maxElemIdx] / 2u;
                     }
                 }
                 else
                 {
                     // Very primitive clipping. Just halve the smallest value until it fits.
-                    while(blockThreadExtents.prod() > blockThreadsCountMax)
+                    while(blockThreadExtent.prod() > blockThreadCountMax)
                     {
                         // Compute the minimum element index but ignore ones.
                         // Ones compare always larger to everything else.
                         auto const minElemIdx(
                             static_cast<TSize>(
                                 std::distance(
-                                    &blockThreadExtents[0],
+                                    &blockThreadExtent[0],
                                     std::min_element(
-                                        &blockThreadExtents[0],
-                                        &blockThreadExtents[TDim::value-1u],
+                                        &blockThreadExtent[0],
+                                        &blockThreadExtent[TDim::value-1u],
                                         [](TSize const & a, TSize const & b)
                                         {
                                             // This first case is redundant.
@@ -234,120 +301,204 @@ namespace alpaka
                                                 return a < b;
                                             }
                                         }))));
-                        blockThreadExtents[minElemIdx] = blockThreadExtents[minElemIdx] / 2u;
+                        blockThreadExtent[minElemIdx] = blockThreadExtent[minElemIdx] / 2u;
                     }
                 }
             }
 
-            // Make the block thread extents divide the grid thread extents.
-            if(requireBlockThreadExtentsToDivideGridThreadExtents)
+            // Make the block thread extent divide the grid thread extent.
+            if(requireBlockThreadExtentToDivideGridThreadExtent)
             {
-                if(gridBlockExtentsSubDivRestrictions == GridBlockExtentsSubDivRestrictions::EqualExtents)
+                if(gridBlockExtentSubDivRestrictions == GridBlockExtentSubDivRestrictions::EqualExtent)
                 {
-                    // For equal size block extents we have to compute the gcd of all grid thread extents that is less then the current maximal block thread extent.
-                    // For this we compute the divisors of all grid thread extents less then the current maximal block thread extent.
-                    std::array<std::set<TSize>, TDim::value> gridThreadExtentsDivisors;
+                    // For equal size block extent we have to compute the gcd of all grid thread extent that is less then the current maximal block thread extent.
+                    // For this we compute the divisors of all grid thread extent less then the current maximal block thread extent.
+                    std::array<std::set<TSize>, TDim::value> gridThreadExtentDivisors;
                     for(typename TDim::value_type i(0u); i<TDim::value; ++i)
                     {
-                        gridThreadExtentsDivisors[i] =
+                        gridThreadExtentDivisors[i] =
                             detail::allDivisorsLessOrEqual(
-                                gridThreadExtents[i],
-                                blockThreadExtents[i]);
+                                gridThreadExtent[i],
+                                blockThreadExtent[i]);
                     }
-                    // The maximal common divisor of all block thread extents is the optimal solution.
+                    // The maximal common divisor of all block thread extent is the optimal solution.
                     std::set<TSize> intersects[2u];
                     for(typename TDim::value_type i(1u); i<TDim::value; ++i)
                     {
-                        intersects[(i-1u)%2u] = gridThreadExtentsDivisors[0];
+                        intersects[(i-1u)%2u] = gridThreadExtentDivisors[0];
                         intersects[(i)%2u].clear();
                         set_intersection(
                             intersects[(i-1u)%2u].begin(),
                             intersects[(i-1u)%2u].end(),
-                            gridThreadExtentsDivisors[i].begin(),
-                            gridThreadExtentsDivisors[i].end(),
+                            gridThreadExtentDivisors[i].begin(),
+                            gridThreadExtentDivisors[i].end(),
                             std::inserter(intersects[i%2], intersects[i%2u].begin()));
                     }
                     TSize const maxCommonDivisor(*(--intersects[(TDim::value-1)%2u].end()));
                     for(typename TDim::value_type i(0u); i<TDim::value; ++i)
                     {
-                        blockThreadExtents[i] = maxCommonDivisor;
+                        blockThreadExtent[i] = maxCommonDivisor;
                     }
                 }
-                else if(gridBlockExtentsSubDivRestrictions == GridBlockExtentsSubDivRestrictions::CloseToEqualExtents)
+                else if(gridBlockExtentSubDivRestrictions == GridBlockExtentSubDivRestrictions::CloseToEqualExtent)
                 {
                     for(typename TDim::value_type i(0); i<TDim::value; ++i)
                     {
-                        blockThreadExtents[i] =
+                        blockThreadExtent[i] =
                             detail::nextDivisorLowerOrEqual(
-                                blockThreadExtents[i],
-                                gridThreadExtents[i]);
+                                blockThreadExtent[i],
+                                gridThreadExtent[i]);
                     }
                 }
                 else
                 {
                     for(typename TDim::value_type i(0); i<TDim::value; ++i)
                     {
-                        blockThreadExtents[i] =
+                        blockThreadExtent[i] =
                             detail::nextDivisorLowerOrEqual(
-                                blockThreadExtents[i],
-                                gridThreadExtents[i]);
+                                blockThreadExtent[i],
+                                gridThreadExtent[i]);
                     }
                 }
             }
 
-            // Set the grid block extents (rounded to the next integer not less then the quotient.
-            auto gridBlockExtents(Vec<TDim, TSize>::ones());
+            ///////////////////////////////////////////////////////////////////
+            // Compute the gridBlockExtent.
+
+            // Set the grid block extent (rounded to the next integer not less then the quotient.
+            auto gridBlockExtent(Vec<TDim, TSize>::ones());
             for(typename TDim::value_type i(0); i<TDim::value; ++i)
             {
-                gridBlockExtents[i] =
+                gridBlockExtent[i] =
                     static_cast<TSize>(
-                        std::ceil(static_cast<double>(gridThreadExtents[i])
-                        / static_cast<double>(blockThreadExtents[i])));
+                        std::ceil(
+                            static_cast<double>(gridThreadExtent[i])
+                            / static_cast<double>(blockThreadExtent[i])));
             }
 
-            return workdiv::WorkDivMembers<TDim, TSize>(gridBlockExtents, blockThreadExtents);
+            ///////////////////////////////////////////////////////////////////
+            // Return the final work division.
+            return
+                workdiv::WorkDivMembers<TDim, TSize>(
+                    gridBlockExtent,
+                    blockThreadExtent,
+                    threadElemExtent);
         }
 
         //-----------------------------------------------------------------------------
         //! \tparam TAcc The accelerator for which this work division has to be valid.
-        //! \param dev The device for which this work division has to be valid.
-        //! \param gridThreadExtents The full extents of threads in the grid.
-        //! \param requireBlockThreadExtentsToDivideGridThreadExtents If the grid thread extents have to be a multiple of the block thread extents.
-        //! \param gridBlockExtentsSubDivRestrictions The grid block extent subdivision restrictions.
+        //! \tparam TGridElemExtent The type of the grid element extent.
+        //! \tparam TThreadElemExtent The type of the thread element extent.
+        //! \tparam TDev The type of the device.
+        //! \param dev
+        //!     The device the work division should be valid for.
+        //! \param gridElemExtent
+        //!     The full extent of elements in the grid.
+        //! \param threadElemExtents
+        //!     the number of elements computed per thread.
+        //! \param requireBlockThreadExtentToDivideGridThreadExtent
+        //!     If this is true, the grid thread extent will be multiples of the corresponding block thread extent.
+        //!     NOTE: If this is true and gridThreadExtent is prime (or otherwise bad chosen) in a dimension, the block thread extent will be one in this dimension.
+        //! \param gridBlockExtentSubDivRestrictions
+        //!     The grid block extent subdivision restrictions.
         //! \return The work division.
         //-----------------------------------------------------------------------------
         template<
             typename TAcc,
-            typename TExtents,
+            typename TGridElemExtent,
+            typename TThreadElemExtent,
             typename TDev>
         ALPAKA_FN_HOST auto getValidWorkDiv(
             TDev const & dev,
-            TExtents const & gridThreadExtents = TExtents(),
-            bool requireBlockThreadExtentsToDivideGridThreadExtents = true,
-            GridBlockExtentsSubDivRestrictions gridBlockExtentsSubDivRestrictions = GridBlockExtentsSubDivRestrictions::Unrestricted)
-        -> workdiv::WorkDivMembers<dim::Dim<TExtents>, size::Size<TAcc>>
+            TGridElemExtent const & gridElemExtent = TGridElemExtent(),
+            TThreadElemExtent const & threadElemExtents = TThreadElemExtent(),
+            bool requireBlockThreadExtentToDivideGridThreadExtent = true,
+            GridBlockExtentSubDivRestrictions gridBlockExtentSubDivRestrictions = GridBlockExtentSubDivRestrictions::Unrestricted)
+        -> workdiv::WorkDivMembers<dim::Dim<TGridElemExtent>, size::Size<TGridElemExtent>>
         {
             static_assert(
-                dim::Dim<TExtents>::value == dim::Dim<TAcc>::value,
-                "The dimension of TAcc and the dimension of TExtents have to be identical!");
+                dim::Dim<TGridElemExtent>::value == dim::Dim<TAcc>::value,
+                "The dimension of TAcc and the dimension of TGridElemExtent have to be identical!");
             static_assert(
-                std::is_same<size::Size<TExtents>, size::Size<TAcc>>::value,
-                "The size type of TAcc and the size type of TExtents have to be identical!");
+                dim::Dim<TThreadElemExtent>::value == dim::Dim<TAcc>::value,
+                "The dimension of TAcc and the dimension of TThreadElemExtent have to be identical!");
+            static_assert(
+                std::is_same<size::Size<TGridElemExtent>, size::Size<TAcc>>::value,
+                "The size type of TAcc and the size type of TGridElemExtent have to be identical!");
+            static_assert(
+                std::is_same<size::Size<TThreadElemExtent>, size::Size<TAcc>>::value,
+                "The size type of TAcc and the size type of TThreadElemExtent have to be identical!");
 
-            auto const devProps(acc::getAccDevProps<TAcc>(dev));
-
-            return subDivideGridThreads(
-                extent::getExtentsVec(gridThreadExtents),
-                devProps.m_blockThreadExtentsMax,
-                devProps.m_blockThreadsCountMax,
-                requireBlockThreadExtentsToDivideGridThreadExtents,
-                gridBlockExtentsSubDivRestrictions);
+            return subDivideGridElems(
+                extent::getExtentVec(gridElemExtent),
+                extent::getExtentVec(threadElemExtents),
+                acc::getAccDevProps<TAcc>(dev),
+                requireBlockThreadExtentToDivideGridThreadExtent,
+                gridBlockExtentSubDivRestrictions);
         }
 
         //-----------------------------------------------------------------------------
+        //! \tparam TDim The dimensionality of the accelerator device properties.
+        //! \tparam TSize The size type of the accelerator device properties.
+        //! \tparam TWorkDiv The type of the work division.
+        //! \param accDevProps The maxima for the work division.
+        //! \param workDiv The work division to test for validity.
+        //! \return If the work division is valid for the given accelerator device properties.
+        //-----------------------------------------------------------------------------
+        template<
+            typename TDim,
+            typename TSize,
+            typename TWorkDiv>
+        ALPAKA_FN_HOST auto isValidWorkDiv(
+            acc::AccDevProps<TDim, TSize> const & accDevProps,
+            TWorkDiv const & workDiv)
+        -> bool
+        {
+            // Store the maxima allowed for extents of grid, blocks and threads.
+            auto const gridBlockExtentMax(vec::subVecEnd<dim::Dim<TWorkDiv>>(accDevProps.m_gridBlockExtentMax));
+            auto const blockThreadExtentMax(vec::subVecEnd<dim::Dim<TWorkDiv>>(accDevProps.m_blockThreadExtentMax));
+            auto const threadElemExtentMax(vec::subVecEnd<dim::Dim<TWorkDiv>>(accDevProps.m_threadElemExtentMax));
+
+            // Get the extents of grid, blocks and threads of the work division to check.
+            auto const gridBlockExtent(getWorkDiv<Grid, Blocks>(workDiv));
+            auto const blockThreadExtent(getWorkDiv<Block, Threads>(workDiv));
+            auto const threadElemExtent(getWorkDiv<Block, Threads>(workDiv));
+
+            // Check that the maximal counts are satisfied.
+            if(accDevProps.m_gridBlockCountMax < gridBlockExtent.prod())
+            {
+                return false;
+            }
+            if(accDevProps.m_blockThreadCountMax < blockThreadExtent.prod())
+            {
+                return false;
+            }
+            if(accDevProps.m_threadElemCountMax < threadElemExtent.prod())
+            {
+                return false;
+            }
+
+            // Check that the extents for all dimensions are correct.
+            for(typename dim::Dim<TWorkDiv>::value_type i(0); i<dim::Dim<TWorkDiv>::value; ++i)
+            {
+                // No extent is allowed to be zero or greater then the allowed maximum.
+                if((gridBlockExtent[i] < 1)
+                    || (blockThreadExtent[i] < 1)
+                    || (threadElemExtent[i] < 1)
+                    || (gridBlockExtentMax[i] < gridBlockExtent[i])
+                    || (blockThreadExtentMax[i] < blockThreadExtent[i])
+                    || (threadElemExtentMax[i] < threadElemExtent[i]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+        //-----------------------------------------------------------------------------
         //! \tparam TAcc The accelerator to test the validity on.
-        //! \param dev The device to test the work div to for validity on.
-        //! \param workDiv The work div to test for validity.
+        //! \param dev The device to test the work division for validity on.
+        //! \param workDiv The work division to test for validity.
         //! \return If the work division is valid on this accelerator.
         //-----------------------------------------------------------------------------
         template<
@@ -359,29 +510,10 @@ namespace alpaka
             TWorkDiv const & workDiv)
         -> bool
         {
-            auto const gridBlockExtents(getWorkDiv<Grid, Blocks>(workDiv));
-            auto const blockThreadExtents(getWorkDiv<Block, Threads>(workDiv));
-
-            auto const devProps(acc::getAccDevProps<TAcc>(dev));
-            auto const blockThreadExtentsMax(vec::subVecEnd<dim::Dim<TWorkDiv>>(devProps.m_blockThreadExtentsMax));
-            auto const blockThreadCountMax(devProps.m_blockThreadsCountMax);
-
-            if(blockThreadCountMax < blockThreadExtents.prod())
-            {
-                return false;
-            }
-
-            for(typename dim::Dim<TWorkDiv>::value_type i(0); i<dim::Dim<TWorkDiv>::value; ++i)
-            {
-                if((gridBlockExtents[i] == 0)
-                    || (blockThreadExtents[i] == 0)
-                    || (blockThreadExtentsMax[i] < blockThreadExtents[i]))
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return
+                workdiv::isValidWorkDiv(
+                    acc::getAccDevProps<TAcc>(dev),
+                    workDiv);
         }
     }
 }

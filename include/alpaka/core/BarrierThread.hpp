@@ -44,15 +44,15 @@ namespace alpaka
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA explicit BarrierThread(
-                    TSize const & numThreadsToWaitFor = 0) :
-                    m_numThreadsToWaitFor(numThreadsToWaitFor)
+                    TSize const & threadCount = 0) :
+                    m_threadCount(threadCount)
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA BarrierThread(
                     BarrierThread const & other) = delete;/* :
-                    m_numThreadsToWaitFor(other.m_numThreadsToWaitFor)
+                    m_threadCount(other.m_threadCount)
                 {}*/
                 //-----------------------------------------------------------------------------
                 //! Move constructor.
@@ -78,13 +78,13 @@ namespace alpaka
                 -> void
                 {
                     std::unique_lock<std::mutex> lock(m_mtxBarrier);
-                    if(--m_numThreadsToWaitFor == 0)
+                    if(--m_threadCount == 0)
                     {
                         m_cvAllThreadsReachedBarrier.notify_all();
                     }
                     else
                     {
-                        m_cvAllThreadsReachedBarrier.wait(lock, [this] { return m_numThreadsToWaitFor == 0; });
+                        m_cvAllThreadsReachedBarrier.wait(lock, [this] { return m_threadCount == 0; });
                     }
                 }
 
@@ -92,27 +92,27 @@ namespace alpaka
                 //! \return The number of threads to wait for.
                 //! NOTE: The value almost always is invalid the time you get it.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA auto getNumThreadsToWaitFor() const
+                ALPAKA_FN_ACC_NO_CUDA auto getThreadCount() const
                 -> TSize
                 {
-                    return m_numThreadsToWaitFor;
+                    return m_threadCount;
                 }
 
                 //-----------------------------------------------------------------------------
                 //! Resets the number of threads to wait for to the given number.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA auto reset(
-                    TSize const & numThreadsToWaitFor)
+                    TSize const & threadCount)
                 -> void
                 {
                     std::lock_guard<std::mutex> lock(m_mtxBarrier);
-                    m_numThreadsToWaitFor = numThreadsToWaitFor;
+                    m_threadCount = threadCount;
                 }
 
             private:
                 std::mutex m_mtxBarrier;
                 std::condition_variable m_cvAllThreadsReachedBarrier;
-                TSize m_numThreadsToWaitFor;
+                TSize m_threadCount;
             };
         }
     }

@@ -111,9 +111,9 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                auto const gridBlockExtents(
+                auto const gridBlockExtent(
                     workdiv::getWorkDiv<Grid, Blocks>(*this));
-                auto const blockThreadExtents(
+                auto const blockThreadExtent(
                     workdiv::getWorkDiv<Block, Threads>(*this));
 
                 // Get the size of the block shared extern memory.
@@ -125,7 +125,7 @@ namespace alpaka
                                 kernel::getBlockSharedExternMemSizeBytes<
                                     TKernelFnObj,
                                     acc::AccCpuOmp2Blocks<TDim, TSize>>(
-                                        blockThreadExtents,
+                                        blockThreadExtent,
                                         args...);
                         },
                         m_args));
@@ -149,9 +149,9 @@ namespace alpaka
                         m_args));
 
                 // The number of blocks in the grid.
-                TSize const numBlocksInGrid(gridBlockExtents.prod());
+                TSize const numBlocksInGrid(gridBlockExtent.prod());
                 // There is only ever one thread in a block in the OpenMP 2.0 block accelerator.
-                assert(blockThreadExtents.prod() == 1u);
+                assert(blockThreadExtent.prod() == 1u);
 
                 // Force the environment to use the given number of threads.
                 int const ompIsDynamic(::omp_get_dynamic());
@@ -196,7 +196,7 @@ namespace alpaka
 #else
                                 Vec<dim::DimInt<1u>, TSize>(i),
 #endif
-                                gridBlockExtents);
+                                gridBlockExtent);
 
                         boundKernelFnObj(
                             acc);

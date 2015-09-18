@@ -55,12 +55,12 @@ namespace alpaka
                     //#############################################################################
                     template<
                         typename TBuf,
-                        typename TExtents>
+                        typename TExtent>
                     struct TaskSet
                     {
                         static_assert(
-                            dim::Dim<TBuf>::value == dim::Dim<TExtents>::value,
-                            "The destination buffer and the extents are required to have the same dimensionality!");
+                            dim::Dim<TBuf>::value == dim::Dim<TExtent>::value,
+                            "The destination buffer and the extent are required to have the same dimensionality!");
 
                         //-----------------------------------------------------------------------------
                         //! Constructor.
@@ -68,10 +68,10 @@ namespace alpaka
                         TaskSet(
                             TBuf & buf,
                             std::uint8_t const & byte,
-                            TExtents const & extents) :
+                            TExtent const & extent) :
                                 m_buf(buf),
                                 m_byte(byte),
-                                m_extents(extents)
+                                m_extent(extent)
                         {}
                         //-----------------------------------------------------------------------------
                         //!
@@ -81,9 +81,9 @@ namespace alpaka
                         {
                             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                            auto const extentWidth(extent::getWidth(m_extents));
-                            auto const extentHeight(extent::getHeight(m_extents));
-                            auto const extentDepth(extent::getDepth(m_extents));
+                            auto const extentWidth(extent::getWidth(m_extent));
+                            auto const extentHeight(extent::getHeight(m_extent));
+                            auto const extentDepth(extent::getDepth(m_extent));
                             auto const dstWidth(extent::getWidth(m_buf));
                             auto const dstHeight(extent::getHeight(m_buf));
         #if (!defined(NDEBUG)) || (ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL)
@@ -122,14 +122,14 @@ namespace alpaka
                                 << std::endl;
         #endif
                             // If:
-                            // - the set extents width is identical to the dst extents width
+                            // - the set extent width is identical to the dst extent width
                             // -> we can set whole slices at once overwriting the pitch bytes
                             auto const copySliceAtOnce(
                                 (extentWidth == dstWidth)
                                 && (extentWidth == dstBufWidth));
 
                             // If:
-                            // - the set extents width and height are identical to the dst extents width and height
+                            // - the set extent width and height are identical to the dst extent width and height
                             // -> we can set the whole memory at once overwriting the pitch bytes
                             auto const copyAllAtOnce(
                                 copySliceAtOnce
@@ -171,7 +171,7 @@ namespace alpaka
                         // FIXME: Copy buffer handle, do NOT take reference!
                         TBuf & m_buf;
                         std::uint8_t const m_byte;
-                        TExtents const m_extents;
+                        TExtent const m_extent;
                     };
                 }
             }
@@ -191,23 +191,23 @@ namespace alpaka
                     //!
                     //-----------------------------------------------------------------------------
                     template<
-                        typename TExtents,
+                        typename TExtent,
                         typename TBuf>
                     ALPAKA_FN_HOST static auto taskSet(
                         TBuf & buf,
                         std::uint8_t const & byte,
-                        TExtents const & extents)
+                        TExtent const & extent)
                     -> cpu::detail::TaskSet<
                         TBuf,
-                        TExtents>
+                        TExtent>
                     {
                         return
                             cpu::detail::TaskSet<
                                 TBuf,
-                                TExtents>(
+                                TExtent>(
                                     buf,
                                     byte,
-                                    extents);
+                                    extent);
                     }
                 };
             }

@@ -70,14 +70,14 @@ namespace alpaka
                 //! Constructor
                 //-----------------------------------------------------------------------------
                 template<
-                    typename TExtents>
+                    typename TExtent>
                 ALPAKA_FN_HOST BufCudaRt(
                     dev::DevCudaRt const & dev,
                     TElem * const pMem,
                     TSize const & pitchBytes,
-                    TExtents const & extents) :
+                    TExtent const & extent) :
                         m_dev(dev),
-                        m_extentsElements(extent::getExtentsVecEnd<TDim>(extents)),
+                        m_extentElements(extent::getExtentVecEnd<TDim>(extent)),
                         m_spMem(
                             pMem,
                             // NOTE: Because the BufCudaRt object can be copied and the original object could have been destroyed,
@@ -88,11 +88,11 @@ namespace alpaka
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                     static_assert(
-                        TDim::value == dim::Dim<TExtents>::value,
-                        "The dimensionality of TExtents and the dimensionality of the TDim template parameter have to be identical!");
+                        TDim::value == dim::Dim<TExtent>::value,
+                        "The dimensionality of TExtent and the dimensionality of the TDim template parameter have to be identical!");
                     static_assert(
-                        std::is_same<TSize, size::Size<TExtents>>::value,
-                        "The size type of TExtents and the TSize template parameter have to be identical!");
+                        std::is_same<TSize, size::Size<TExtent>>::value,
+                        "The size type of TExtent and the TSize template parameter have to be identical!");
                 }
 
             private:
@@ -118,7 +118,7 @@ namespace alpaka
 
             public:
                 dev::DevCudaRt m_dev;               // NOTE: The device has to be destructed after the memory pointer because it is required for destruction.
-                Vec<TDim, TSize> m_extentsElements;
+                Vec<TDim, TSize> m_extentElements;
                 std::shared_ptr<TElem> m_spMem;
                 TSize m_pitchBytes;
             };
@@ -223,7 +223,7 @@ namespace alpaka
                     mem::buf::BufCudaRt<TElem, TDim, TSize> const & extent)
                 -> TSize
                 {
-                    return extent.m_extentsElements[TIdx::value];
+                    return extent.m_extentElements[TIdx::value];
                 }
             };
         }
@@ -381,15 +381,15 @@ namespace alpaka
                     //!
                     //-----------------------------------------------------------------------------
                     template<
-                        typename TExtents>
+                        typename TExtent>
                     ALPAKA_FN_HOST static auto alloc(
                         dev::DevCudaRt const & dev,
-                        TExtents const & extents)
+                        TExtent const & extent)
                     -> mem::buf::BufCudaRt<T, dim::DimInt<1u>, TSize>
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                        auto const width(extent::getWidth(extents));
+                        auto const width(extent::getWidth(extent));
                         assert(width>0);
                         auto const widthBytes(width * sizeof(T));
                         assert(widthBytes>0);
@@ -418,7 +418,7 @@ namespace alpaka
                                 dev,
                                 reinterpret_cast<T *>(memPtr),
                                 widthBytes,
-                                extents);
+                                extent);
                     }
                 };
                 //#############################################################################
@@ -437,18 +437,18 @@ namespace alpaka
                     //!
                     //-----------------------------------------------------------------------------
                     template<
-                        typename TExtents>
+                        typename TExtent>
                     ALPAKA_FN_HOST static auto alloc(
                         dev::DevCudaRt const & dev,
-                        TExtents const & extents)
+                        TExtent const & extent)
                     -> mem::buf::BufCudaRt<T, dim::DimInt<2u>, TSize>
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                        auto const width(extent::getWidth(extents));
+                        auto const width(extent::getWidth(extent));
                         auto const widthBytes(width * sizeof(T));
                         assert(widthBytes>0);
-                        auto const height(extent::getHeight(extents));
+                        auto const height(extent::getHeight(extent));
 #ifndef NDEBUG
                         auto const elementCount(width * height);
 #endif
@@ -484,7 +484,7 @@ namespace alpaka
                                 dev,
                                 reinterpret_cast<T *>(memPtr),
                                 static_cast<TSize>(pitchBytes),
-                                extents);
+                                extent);
                     }
                 };
                 //#############################################################################
@@ -503,19 +503,19 @@ namespace alpaka
                     //!
                     //-----------------------------------------------------------------------------
                     template<
-                        typename TExtents>
+                        typename TExtent>
                     ALPAKA_FN_HOST static auto alloc(
                         dev::DevCudaRt const & dev,
-                        TExtents const & extents)
+                        TExtent const & extent)
                     -> mem::buf::BufCudaRt<T, dim::DimInt<3u>, TSize>
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                         cudaExtent const cudaExtentVal(
                             make_cudaExtent(
-                                extent::getWidth(extents) * sizeof(T),
-                                extent::getHeight(extents),
-                                extent::getDepth(extents)));
+                                extent::getWidth(extent) * sizeof(T),
+                                extent::getHeight(extent),
+                                extent::getDepth(extent)));
 
                         // Set the current device.
                         ALPAKA_CUDA_RT_CHECK(
@@ -532,7 +532,7 @@ namespace alpaka
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                         std::cout << BOOST_CURRENT_FUNCTION
-                            << " ew: " << extent::getWidth(extents)
+                            << " ew: " << extent::getWidth(extent)
                             << " eh: " << cudaExtentVal.height
                             << " ed: " << cudaExtentVal.depth
                             << " ewb: " << cudaExtentVal.width
@@ -547,7 +547,7 @@ namespace alpaka
                                 dev,
                                 reinterpret_cast<T *>(cudaPitchedPtrVal.ptr),
                                 static_cast<TSize>(cudaPitchedPtrVal.pitch),
-                                extents);
+                                extent);
                     }
                 };
                 //#############################################################################
@@ -761,7 +761,7 @@ namespace alpaka
                             ALPAKA_CUDA_RT_CHECK(
                                 cudaHostRegister(
                                     const_cast<void *>(reinterpret_cast<void const *>(mem::view::getPtrNative(buf))),
-                                    extent::getProductOfExtents(buf) * sizeof(elem::Elem<BufCpu<TElem, TDim, TSize>>),
+                                    extent::getProductOfExtent(buf) * sizeof(elem::Elem<BufCpu<TElem, TDim, TSize>>),
                                     cudaHostRegisterMapped));
                         }
                         // If it is already the same device, nothing has to be mapped.

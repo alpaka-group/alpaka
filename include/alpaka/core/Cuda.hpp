@@ -361,172 +361,172 @@ namespace alpaka
             //! The CUDA vectors extent get trait specialization.
             //#############################################################################
             template<
-                typename TExtents>
+                typename TExtent>
             struct GetExtent<
-                dim::DimInt<dim::Dim<TExtents>::value - 1u>,
-                TExtents,
+                dim::DimInt<dim::Dim<TExtent>::value - 1u>,
+                TExtent,
                 typename std::enable_if<
-                    cuda::traits::IsCudaBuiltInType<TExtents>::value
-                    && (dim::Dim<TExtents>::value >= 1)>::type>
+                    cuda::traits::IsCudaBuiltInType<TExtent>::value
+                    && (dim::Dim<TExtent>::value >= 1)>::type>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getExtent(
-                    TExtents const & extents)
-                -> decltype(extents.x)
+                    TExtent const & extent)
+                -> decltype(extent.x)
                 {
-                    return extents.x;
+                    return extent.x;
                 }
             };
             //#############################################################################
             //! The CUDA vectors extent get trait specialization.
             //#############################################################################
             template<
-                typename TExtents>
+                typename TExtent>
             struct GetExtent<
-                dim::DimInt<dim::Dim<TExtents>::value - 2u>,
-                TExtents,
+                dim::DimInt<dim::Dim<TExtent>::value - 2u>,
+                TExtent,
                 typename std::enable_if<
-                    cuda::traits::IsCudaBuiltInType<TExtents>::value
-                    && (dim::Dim<TExtents>::value >= 2)>::type>
+                    cuda::traits::IsCudaBuiltInType<TExtent>::value
+                    && (dim::Dim<TExtent>::value >= 2)>::type>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getExtent(
-                    TExtents const & extents)
-                -> decltype(extents.y)
+                    TExtent const & extent)
+                -> decltype(extent.y)
                 {
-                    return extents.y;
+                    return extent.y;
                 }
             };
             //#############################################################################
             //! The CUDA vectors extent get trait specialization.
             //#############################################################################
             template<
-                typename TExtents>
+                typename TExtent>
             struct GetExtent<
-                dim::DimInt<dim::Dim<TExtents>::value - 3u>,
-                TExtents,
+                dim::DimInt<dim::Dim<TExtent>::value - 3u>,
+                TExtent,
                 typename std::enable_if<
-                    cuda::traits::IsCudaBuiltInType<TExtents>::value
-                    && (dim::Dim<TExtents>::value >= 3)>::type>
+                    cuda::traits::IsCudaBuiltInType<TExtent>::value
+                    && (dim::Dim<TExtent>::value >= 3)>::type>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getExtent(
-                    TExtents const & extents)
-                -> decltype(extents.z)
+                    TExtent const & extent)
+                -> decltype(extent.z)
                 {
-                    return extents.z;
+                    return extent.z;
                 }
             };
             //#############################################################################
             //! The CUDA vectors extent get trait specialization.
             //#############################################################################
             template<
-                typename TExtents>
+                typename TExtent>
             struct GetExtent<
-                dim::DimInt<dim::Dim<TExtents>::value - 4u>,
-                TExtents,
+                dim::DimInt<dim::Dim<TExtent>::value - 4u>,
+                TExtent,
                 typename std::enable_if<
-                    cuda::traits::IsCudaBuiltInType<TExtents>::value
-                    && (dim::Dim<TExtents>::value >= 4)>::type>
+                    cuda::traits::IsCudaBuiltInType<TExtent>::value
+                    && (dim::Dim<TExtent>::value >= 4)>::type>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getExtent(
-                    TExtents const & extents)
-                -> decltype(extents.w)
+                    TExtent const & extent)
+                -> decltype(extent.w)
                 {
-                    return extents.w;
+                    return extent.w;
                 }
             };
             //#############################################################################
             //! The CUDA vectors extent set trait specialization.
             //#############################################################################
             template<
-                typename TExtents,
-                typename TExtent>
+                typename TExtent,
+                typename TExtentVal>
             struct SetExtent<
-                dim::DimInt<dim::Dim<TExtents>::value - 1u>,
-                TExtents,
+                dim::DimInt<dim::Dim<TExtent>::value - 1u>,
                 TExtent,
+                TExtentVal,
                 typename std::enable_if<
-                    cuda::traits::IsCudaBuiltInType<TExtents>::value
-                    && (dim::Dim<TExtents>::value >= 1)>::type>
+                    cuda::traits::IsCudaBuiltInType<TExtent>::value
+                    && (dim::Dim<TExtent>::value >= 1)>::type>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto setExtent(
-                    TExtents const & extents,
-                    TExtent const & extent)
+                    TExtent const & extent,
+                    TExtentVal const & extentVal)
                 -> void
                 {
-                    extents.x = extent;
+                    extent.x = extentVal;
                 }
             };
             //#############################################################################
             //! The CUDA vectors extent set trait specialization.
             //#############################################################################
             template<
-                typename TExtents,
-                typename TExtent>
+                typename TExtent,
+                typename TExtentVal>
             struct SetExtent<
-                dim::DimInt<dim::Dim<TExtents>::value - 2u>,
-                TExtents,
+                dim::DimInt<dim::Dim<TExtent>::value - 2u>,
                 TExtent,
+                TExtentVal,
                 typename std::enable_if<
-                    cuda::traits::IsCudaBuiltInType<TExtents>::value
-                    && (dim::Dim<TExtents>::value >= 2)>::type>
+                    cuda::traits::IsCudaBuiltInType<TExtent>::value
+                    && (dim::Dim<TExtent>::value >= 2)>::type>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto setExtent(
-                    TExtents const & extents,
-                    TExtent const & extent)
+                    TExtent const & extent,
+                    TExtentVal const & extentVal)
                 -> void
                 {
-                    extents.y = extent;
+                    extent.y = extentVal;
                 }
             };
             //#############################################################################
             //! The CUDA vectors extent set trait specialization.
             //#############################################################################
             template<
-                typename TExtents,
-                typename TExtent>
+                typename TExtent,
+                typename TExtentVal>
             struct SetExtent<
-                dim::DimInt<dim::Dim<TExtents>::value - 3u>,
-                TExtents,
+                dim::DimInt<dim::Dim<TExtent>::value - 3u>,
                 TExtent,
+                TExtentVal,
                 typename std::enable_if<
-                    cuda::traits::IsCudaBuiltInType<TExtents>::value
-                    && (dim::Dim<TExtents>::value >= 3)>::type>
+                    cuda::traits::IsCudaBuiltInType<TExtent>::value
+                    && (dim::Dim<TExtent>::value >= 3)>::type>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto setExtent(
-                    TExtents const & extents,
-                    TExtent const & extent)
+                    TExtent const & extent,
+                    TExtentVal const & extentVal)
                 -> void
                 {
-                    extents.z = extent;
+                    extent.z = extentVal;
                 }
             };
             //#############################################################################
             //! The CUDA vectors extent set trait specialization.
             //#############################################################################
             template<
-                typename TExtents,
-                typename TExtent>
+                typename TExtent,
+                typename TExtentVal>
             struct SetExtent<
-                dim::DimInt<dim::Dim<TExtents>::value - 4u>,
-                TExtents,
+                dim::DimInt<dim::Dim<TExtent>::value - 4u>,
                 TExtent,
+                TExtentVal,
                 typename std::enable_if<
-                    cuda::traits::IsCudaBuiltInType<TExtents>::value
-                    && (dim::Dim<TExtents>::value >= 4)>::type>
+                    cuda::traits::IsCudaBuiltInType<TExtent>::value
+                    && (dim::Dim<TExtent>::value >= 4)>::type>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto setExtent(
-                    TExtents const & extents,
-                    TExtent const & extent)
+                    TExtent const & extent,
+                    TExtentVal const & extentVal)
                 -> void
                 {
-                    extents.w = extent;
+                    extent.w = extentVal;
                 }
             };
         }

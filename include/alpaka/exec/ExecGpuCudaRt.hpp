@@ -295,7 +295,7 @@ namespace alpaka
                 -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-                    // TODO: Check that (sizeof(TKernelFnObj) * m_3uiBlockThreadExtents.prod()) < available memory size
+                    // TODO: Check that (sizeof(TKernelFnObj) * m_3uiBlockThreadExtent.prod()) < available memory size
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                     //std::size_t printfFifoSize;
@@ -305,9 +305,9 @@ namespace alpaka
                     //cudaDeviceGetLimit(&printfFifoSize, cudaLimitPrintfFifoSize);
                     //std::cout << BOOST_CURRENT_FUNCTION << "INFO: printfFifoSize: " <<  printfFifoSize << std::endl;
 #endif
-                    auto const gridBlockExtents(
+                    auto const gridBlockExtent(
                         workdiv::getWorkDiv<Grid, Blocks>(task));
-                    auto const blockThreadExtents(
+                    auto const blockThreadExtent(
                         workdiv::getWorkDiv<Block, Threads>(task));
 
                     dim3 gridDim(1u, 1u, 1u);
@@ -315,14 +315,14 @@ namespace alpaka
                     // \FIXME: CUDA currently supports a maximum of 3 dimensions!
                     for(auto i(static_cast<typename TDim::value_type>(0)); i<std::min(static_cast<typename TDim::value_type>(3), TDim::value); ++i)
                     {
-                        reinterpret_cast<unsigned int *>(&gridDim)[i] = gridBlockExtents[TDim::value-1u-i];
-                        reinterpret_cast<unsigned int *>(&blockDim)[i] = blockThreadExtents[TDim::value-1u-i];
+                        reinterpret_cast<unsigned int *>(&gridDim)[i] = gridBlockExtent[TDim::value-1u-i];
+                        reinterpret_cast<unsigned int *>(&blockDim)[i] = blockThreadExtent[TDim::value-1u-i];
                     }
-                    // Assert that all extents of the higher dimensions are 1!
+                    // Assert that all extent of the higher dimensions are 1!
                     for(auto i(std::min(static_cast<typename TDim::value_type>(3), TDim::value)); i<TDim::value; ++i)
                     {
-                        assert(gridBlockExtents[TDim::value-1u-i] == 1);
-                        assert(blockThreadExtents[TDim::value-1u-i] == 1);
+                        assert(gridBlockExtent[TDim::value-1u-i] == 1);
+                        assert(blockThreadExtent[TDim::value-1u-i] == 1);
                     }
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -349,7 +349,7 @@ namespace alpaka
                                     kernel::getBlockSharedExternMemSizeBytes<
                                         typename std::decay<TKernelFnObj>::type,
                                         acc::AccGpuCudaRt<TDim, TSize>>(
-                                            blockThreadExtents,
+                                            blockThreadExtent,
                                             args...);
                             },
                             task.m_args));
@@ -433,7 +433,7 @@ namespace alpaka
                 -> void
                 {
                     ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
-                    // TODO: Check that (sizeof(TKernelFnObj) * m_3uiBlockThreadExtents.prod()) < available memory size
+                    // TODO: Check that (sizeof(TKernelFnObj) * m_3uiBlockThreadExtent.prod()) < available memory size
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                     //std::size_t printfFifoSize;
@@ -443,24 +443,29 @@ namespace alpaka
                     //cudaDeviceGetLimit(&printfFifoSize, cudaLimitPrintfFifoSize);
                     //std::cout << BOOST_CURRENT_FUNCTION << "INFO: printfFifoSize: " <<  printfFifoSize << std::endl;
 #endif
-                    auto const gridBlockExtents(
+                    auto const gridBlockExtent(
                         workdiv::getWorkDiv<Grid, Blocks>(task));
-                    auto const blockThreadExtents(
+                    auto const blockThreadExtent(
                         workdiv::getWorkDiv<Block, Threads>(task));
+#ifndef NDEBUG
+                    auto const threadElemExtent(
+                        workdiv::getWorkDiv<Thread, Elems>(task));
+#endif
 
                     dim3 gridDim(1u, 1u, 1u);
                     dim3 blockDim(1u, 1u, 1u);
                     // \FIXME: CUDA currently supports a maximum of 3 dimensions!
                     for(auto i(static_cast<typename TDim::value_type>(0)); i<std::min(static_cast<typename TDim::value_type>(3), TDim::value); ++i)
                     {
-                        reinterpret_cast<unsigned int *>(&gridDim)[i] = gridBlockExtents[TDim::value-1u-i];
-                        reinterpret_cast<unsigned int *>(&blockDim)[i] = blockThreadExtents[TDim::value-1u-i];
+                        reinterpret_cast<unsigned int *>(&gridDim)[i] = gridBlockExtent[TDim::value-1u-i];
+                        reinterpret_cast<unsigned int *>(&blockDim)[i] = blockThreadExtent[TDim::value-1u-i];
+                        assert(threadElemExtent[TDim::value-1u-i] == 1);
                     }
-                    // Assert that all extents of the higher dimensions are 1!
+                    // Assert that all extent of the higher dimensions are 1!
                     for(auto i(std::min(static_cast<typename TDim::value_type>(3), TDim::value)); i<TDim::value; ++i)
                     {
-                        assert(gridBlockExtents[TDim::value-1u-i] == 1);
-                        assert(blockThreadExtents[TDim::value-1u-i] == 1);
+                        assert(gridBlockExtent[TDim::value-1u-i] == 1);
+                        assert(blockThreadExtent[TDim::value-1u-i] == 1);
                     }
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
@@ -485,7 +490,7 @@ namespace alpaka
                                     kernel::getBlockSharedExternMemSizeBytes<
                                         TKernelFnObj,
                                         acc::AccGpuCudaRt<TDim, TSize>>(
-                                            blockThreadExtents,
+                                            blockThreadExtent,
                                             args...);
                             },
                             task.m_args));

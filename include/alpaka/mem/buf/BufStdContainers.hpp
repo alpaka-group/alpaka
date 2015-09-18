@@ -111,7 +111,7 @@ namespace alpaka
                 typename std::enable_if<
                     std::is_array<TFixedSizeArray>::value>::type>
             {
-                using type = typename std::remove_all_extents<TFixedSizeArray>::type;
+                using type = typename std::remove_all_extent<TFixedSizeArray>::type;
             };
         }
     }
@@ -138,11 +138,11 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static constexpr auto getExtent(
-                    TFixedSizeArray const & //extents
+                    TFixedSizeArray const & //extent
                 )
                 -> size::Size<TFixedSizeArray>
                 {
-                    //boost::ignore_unused(extents);
+                    //boost::ignore_unused(extent);
                     return std::extent<TFixedSizeArray, TIdx::value>::value;
                 }
             };
@@ -194,7 +194,7 @@ namespace alpaka
                     typename std::enable_if<
                         std::is_array<TFixedSizeArray>::value>::type>
                 {
-                    using TElem = typename std::remove_all_extents<TFixedSizeArray>::type;
+                    using TElem = typename std::remove_all_extent<TFixedSizeArray>::type;
 
                     //-----------------------------------------------------------------------------
                     //!
@@ -230,7 +230,7 @@ namespace alpaka
                         std::is_array<TFixedSizeArray>::value
                         && (std::extent<TFixedSizeArray, std::rank<TFixedSizeArray>::value - 1u>::value > 0u)>::type>
                 {
-                    using TElem = typename std::remove_all_extents<TFixedSizeArray>::type;
+                    using TElem = typename std::remove_all_extent<TFixedSizeArray>::type;
 
                     //-----------------------------------------------------------------------------
                     //!
@@ -384,11 +384,11 @@ namespace alpaka
                 //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static constexpr auto getExtent(
-                    std::array<TElem, Tsize> const & /*extents*/)
+                    std::array<TElem, Tsize> const & /*extent*/)
                 -> size::Size<std::array<TElem, Tsize>>
                 {
                     // C++14
-                    /*boost::ignore_unused(extents);*/
+                    /*boost::ignore_unused(extent);*/
                     return Tsize;
                 }
             };
@@ -618,10 +618,10 @@ namespace alpaka
                 //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getExtent(
-                    std::vector<TElem, TAllocator> const & extents)
+                    std::vector<TElem, TAllocator> const & extent)
                 -> size::Size<std::vector<TElem, TAllocator>>
                 {
-                    return extents.size();
+                    return extent.size();
                 }
             };
         }

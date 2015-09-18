@@ -186,12 +186,18 @@ namespace alpaka
                     return {
                         // m_multiProcessorCount
                         static_cast<TSize>(1),
-                        // m_blockThreadsCountMax
-                        static_cast<TSize>(1),
-                        // m_blockThreadExtentsMax
+                        // m_gridBlockExtentMax
+                        Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max()),
+                        // m_gridBlockCountMax
+                        std::numeric_limits<TSize>::max(),
+                        // m_blockThreadExtentMax
                         Vec<TDim, TSize>::ones(),
-                        // m_gridBlockExtentsMax
-                        Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max())};
+                        // m_blockThreadCountMax
+                        static_cast<TSize>(1),
+                        // m_threadElemExtentMax
+                        Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max()),
+                        // m_threadElemCountMax
+                        std::numeric_limits<TSize>::max()};
                 }
             };
             //#############################################################################

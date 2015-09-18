@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <alpaka/block/sync/Traits.hpp> // SyncBlockThreads
+#include <alpaka/block/sync/Traits.hpp> // SyncBlockThread
 
 #include <alpaka/core/BarrierThread.hpp>// BarrierThread
 
@@ -54,9 +54,9 @@ namespace alpaka
                 //! Default constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA BlockSyncThreadIdMapBarrier(
-                    TSize const & numThreadsPerBlock,
+                    TSize const & blockThreadCount,
                     ThreadIdToBarrierIdxMap & threadIdToBarrierIdxMap) :
-                        m_threadsPerBlockCount(numThreadsPerBlock),
+                        m_blockThreadCount(blockThreadCount),
                         m_threadIdToBarrierIdxMap(threadIdToBarrierIdxMap)
                 {}
                 //-----------------------------------------------------------------------------
@@ -96,12 +96,12 @@ namespace alpaka
 
                     // (Re)initialize a barrier if this is the first thread to reach it.
                     // DCLP: Double checked locking pattern for better performance.
-                    if(bar.getNumThreadsToWaitFor() == 0)
+                    if(bar.getThreadCount() == 0)
                     {
                         std::lock_guard<std::mutex> lock(m_mtxBarrier);
-                        if(bar.getNumThreadsToWaitFor() == 0)
+                        if(bar.getThreadCount() == 0)
                         {
-                            bar.reset(m_threadsPerBlockCount);
+                            bar.reset(m_blockThreadCount);
                         }
                     }
 
@@ -110,7 +110,7 @@ namespace alpaka
                     ++barrierIdx;
                 }
 
-                TSize const & m_threadsPerBlockCount;           //!< The number of threads per block the barrier has to wait for.
+                TSize const & m_blockThreadCount;           //!< The number of threads per block the barrier has to wait for.
 
                 ThreadIdToBarrierIdxMap & m_threadIdToBarrierIdxMap;
                 //!< We have to keep the current and the last barrier because one of the threads can reach the next barrier before a other thread was wakeup from the last one and has checked if it can run.
@@ -125,7 +125,7 @@ namespace alpaka
                 //#############################################################################
                 template<
                     typename TSize>
-                struct SyncBlockThreads<
+                struct SyncBlockThread<
                     BlockSyncThreadIdMapBarrier<TSize>>
                 {
                     //-----------------------------------------------------------------------------

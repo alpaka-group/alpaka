@@ -52,7 +52,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 // \tparam TElem Type of the index values.
                 // \param Index Idx to be mapped.
-                // \param Extents Spatial size to map the index to.
+                // \param Extent Spatial size to map the index to.
                 // \return Vector of dimension TidxDimOut.
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
@@ -60,11 +60,11 @@ namespace alpaka
                     typename TElem>
                 ALPAKA_FN_HOST_ACC static auto mapIdx(
                     Vec<dim::DimInt<1u>, TElem> const & idx,
-                    Vec<dim::DimInt<1u>, TElem> const & extents)
+                    Vec<dim::DimInt<1u>, TElem> const & extent)
                 -> Vec<dim::DimInt<1u>, TElem>
                 {
 #if !defined(__CUDA_ARCH__)
-                    boost::ignore_unused(extents);
+                    boost::ignore_unused(extent);
 #endif
                     return idx;
                 }
@@ -80,7 +80,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 // \tparam TElem Type of the index values.
                 // \param Index Idx to be mapped.
-                // \param Extents Spatial size to map the index to.
+                // \param Extent Spatial size to map the index to.
                 // \return Vector of dimension TidxDimOut.
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
@@ -88,16 +88,16 @@ namespace alpaka
                     typename TElem>
                 ALPAKA_FN_HOST_ACC static auto mapIdx(
                     Vec<dim::DimInt<1u>, TElem> const & idx,
-                    Vec<dim::DimInt<3u>, TElem> const & extents)
+                    Vec<dim::DimInt<3u>, TElem> const & extent)
                 -> Vec<dim::DimInt<3u>, TElem>
                 {
                     auto const & idx1d(idx[0u]);
-                    auto const xyExtentsProd(extents[2u] * extents[1u]);
-                    auto const & extentX(extents[2]);
+                    auto const xyExtentProd(extent[2u] * extent[1u]);
+                    auto const & extentX(extent[2]);
 
                     return {
-                        idx1d / xyExtentsProd,
-                        (idx1d % xyExtentsProd) / extentX,
+                        idx1d / xyExtentProd,
+                        (idx1d % xyExtentProd) / extentX,
                         idx1d % extentX};
                 }
             };
@@ -112,7 +112,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 // \tparam TElem Type of the index values.
                 // \param Index Idx to be mapped.
-                // \param Extents Spatial size to map the index to.
+                // \param Extent Spatial size to map the index to.
                 // \return Vector of dimension TidxDimOut.
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
@@ -120,11 +120,11 @@ namespace alpaka
                     typename TElem>
                 ALPAKA_FN_HOST_ACC static auto mapIdx(
                     Vec<dim::DimInt<1u>, TElem> const & idx,
-                    Vec<dim::DimInt<2u>, TElem> const & extents)
+                    Vec<dim::DimInt<2u>, TElem> const & extent)
                 -> Vec<dim::DimInt<2u>, TElem>
                 {
                     auto const & idx1d(idx[0u]);
-                    auto const & extentX(extents[1u]);
+                    auto const & extentX(extent[1u]);
 
                     return {
                         idx1d / extentX,
@@ -142,7 +142,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 // \tparam TElem Type of the index values.
                 // \param Index Idx to be mapped.
-                // \param Extents Spatial size to map the index to.
+                // \param Extent Spatial size to map the index to.
                 // \return Vector of dimension TidxDimOut.
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
@@ -150,10 +150,10 @@ namespace alpaka
                     typename TElem>
                 ALPAKA_FN_HOST_ACC static auto mapIdx(
                     Vec<dim::DimInt<3u>, TElem> const & idx,
-                    Vec<dim::DimInt<3u>, TElem> const & extents)
+                    Vec<dim::DimInt<3u>, TElem> const & extent)
                 -> Vec<dim::DimInt<1u>, TElem>
                 {
-                    return (idx[0u] * extents[1u] + idx[1u]) * extents[2u] + idx[2u];
+                    return (idx[0u] * extent[1u] + idx[1u]) * extent[2u] + idx[2u];
                 }
             };
             //#############################################################################
@@ -167,7 +167,7 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 // \tparam TElem Type of the index values.
                 // \param Index Idx to be mapped.
-                // \param Extents Spatial size to map the index to.
+                // \param Extent Spatial size to map the index to.
                 // \return Vector of dimension TidxDimOut.
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
@@ -175,10 +175,10 @@ namespace alpaka
                     typename TElem>
                 ALPAKA_FN_HOST_ACC static auto mapIdx(
                     Vec<dim::DimInt<2u>, TElem> const & idx,
-                    Vec<dim::DimInt<2u>, TElem> const & extents)
+                    Vec<dim::DimInt<2u>, TElem> const & extent)
                 -> Vec<dim::DimInt<1u>, TElem>
                 {
-                    return idx[0u] * extents[1u] + idx[1u];
+                    return idx[0u] * extent[1u] + idx[1u];
                 }
             };
         }
@@ -197,7 +197,7 @@ namespace alpaka
             typename TElem>
         ALPAKA_FN_HOST_ACC auto mapIdx(
             Vec<dim::DimInt<TidxDimIn>, TElem> const & idx,
-            Vec<dim::DimInt<(TidxDimOut < TidxDimIn) ? TidxDimIn : TidxDimOut>, TElem> const & extents)
+            Vec<dim::DimInt<(TidxDimOut < TidxDimIn) ? TidxDimIn : TidxDimOut>, TElem> const & extent)
         -> Vec<dim::DimInt<TidxDimOut>, TElem>
         {
             return detail::MapIdx<
@@ -205,7 +205,7 @@ namespace alpaka
                 TidxDimIn>
             ::mapIdx(
                 idx,
-                extents);
+                extent);
         }
     }
 }

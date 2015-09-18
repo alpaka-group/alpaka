@@ -89,8 +89,8 @@ namespace alpaka
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
             std::cout << BOOST_CURRENT_FUNCTION
-                << " gridBlockExtents: " << workdiv::getWorkDiv<Grid, Blocks>(workDiv)
-                << ", blockThreadExtents: " << workdiv::getWorkDiv<Block, Threads>(workDiv)
+                << " gridBlockExtent: " << workdiv::getWorkDiv<Grid, Blocks>(workDiv)
+                << ", blockThreadExtent: " << workdiv::getWorkDiv<Block, Threads>(workDiv)
                 << std::endl;
 #endif
             return

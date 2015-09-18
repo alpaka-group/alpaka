@@ -46,8 +46,8 @@ namespace alpaka
                 //! Constructor.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA explicit BarrierFiber(
-                    TSize const & numThreadsToWaitFor = 0) :
-                    m_numThreadsToWaitFor{numThreadsToWaitFor}
+                    TSize const & threadCount = 0) :
+                    m_threadCount{threadCount}
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
@@ -77,13 +77,13 @@ namespace alpaka
                 -> void
                 {
                     std::unique_lock<boost::fibers::mutex> lock(m_mtxBarrier);
-                    if(--m_numThreadsToWaitFor == 0)
+                    if(--m_threadCount == 0)
                     {
                         m_cvAllFibersReachedBarrier.notify_all();
                     }
                     else
                     {
-                        m_cvAllFibersReachedBarrier.wait(lock, [this] { return m_numThreadsToWaitFor == 0; });
+                        m_cvAllFibersReachedBarrier.wait(lock, [this] { return m_threadCount == 0; });
                     }
                 }
 
@@ -91,28 +91,28 @@ namespace alpaka
                 //! \return The number of fibers to wait for.
                 //! NOTE: The value almost always is invalid the time you get it.
                 //-----------------------------------------------------------------------------
-                ALPAKA_FN_ACC_NO_CUDA auto getNumThreadsToWaitFor() const
+                ALPAKA_FN_ACC_NO_CUDA auto getThreadCount() const
                 -> TSize
                 {
-                    return m_numThreadsToWaitFor;
+                    return m_threadCount;
                 }
 
                 //-----------------------------------------------------------------------------
                 //! Resets the number of fibers to wait for to the given number.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_NO_CUDA auto reset(
-                    TSize const & numThreadsToWaitFor)
+                    TSize const & threadCount)
                 -> void
                 {
                     // A lock is not required in the fiber implementation.
                     //boost::unique_lock<boost::fibers::mutex> lock(m_mtxBarrier);
-                    m_numThreadsToWaitFor = numThreadsToWaitFor;
+                    m_threadCount = threadCount;
                 }
 
             private:
                 boost::fibers::mutex m_mtxBarrier;
                 boost::fibers::condition_variable m_cvAllFibersReachedBarrier;
-                TSize m_numThreadsToWaitFor;
+                TSize m_threadCount;
             };
         }
     }

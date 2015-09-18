@@ -138,9 +138,9 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                auto const gridBlockExtents(
+                auto const gridBlockExtent(
                     workdiv::getWorkDiv<Grid, Blocks>(*this));
-                auto const blockThreadExtents(
+                auto const blockThreadExtent(
                     workdiv::getWorkDiv<Block, Threads>(*this));
 
                 // Get the size of the block shared extern memory.
@@ -152,7 +152,7 @@ namespace alpaka
                                 kernel::getBlockSharedExternMemSizeBytes<
                                     TKernelFnObj,
                                     acc::AccCpuThreads<TDim, TSize>>(
-                                        blockThreadExtents,
+                                        blockThreadExtent,
                                         args...);
                         },
                         m_args));
@@ -170,20 +170,20 @@ namespace alpaka
                             boost::alignment::aligned_alloc(16u, blockSharedExternMemSizeBytes)));
                 }
 
-                auto const numThreadsInBlock(blockThreadExtents.prod());
-                ThreadPool threadPool(numThreadsInBlock, numThreadsInBlock);
+                auto const blockThreadCount(blockThreadExtent.prod());
+                ThreadPool threadPool(blockThreadCount, blockThreadCount);
 
                 // Bind the kernel and its arguments to the grid block function.
                 auto const boundGridBlockExecHost(
                     core::apply(
-                        [this, &acc, &blockThreadExtents, &threadPool](TArgs const & ... args)
+                        [this, &acc, &blockThreadExtent, &threadPool](TArgs const & ... args)
                         {
                             return
                                 std::bind(
                                     &ExecCpuThreads<TDim, TSize, TKernelFnObj, TArgs...>::gridBlockExecHost,
                                     std::ref(acc),
                                     std::placeholders::_1,
-                                    std::ref(blockThreadExtents),
+                                    std::ref(blockThreadExtent),
                                     std::ref(threadPool),
                                     std::ref(m_kernelFnObj),
                                     std::ref(args)...);
@@ -192,7 +192,7 @@ namespace alpaka
 
                 // Execute the blocks serially.
                 core::ndLoopIncIdx(
-                    gridBlockExtents,
+                    gridBlockExtent,
                     boundGridBlockExecHost);
 
                 // After all blocks have been processed, the external shared memory has to be deleted.
@@ -206,7 +206,7 @@ namespace alpaka
             ALPAKA_FN_HOST static auto gridBlockExecHost(
                 acc::AccCpuThreads<TDim, TSize> & acc,
                 Vec<TDim, TSize> const & gridBlockIdx,
-                Vec<TDim, TSize> const & blockThreadExtents,
+                Vec<TDim, TSize> const & blockThreadExtent,
                 ThreadPool & threadPool,
                 TKernelFnObj const & kernelFnObj,
                 TArgs const & ... args)
@@ -229,7 +229,7 @@ namespace alpaka
                     std::ref(args)...));
                 // Execute the block threads in parallel.
                 core::ndLoopIncIdx(
-                    blockThreadExtents,
+                    blockThreadExtent,
                     boundBlockThreadExecHost);
 
                 // Wait for the completion of the block thread kernels.
@@ -244,8 +244,8 @@ namespace alpaka
                 // Clean up.
                 futuresInBlock.clear();
 
-                acc.m_threadsToIndices.clear();
-                acc.m_mThreadsToBarrier.clear();
+                acc.m_threadToIndexMap.clear();
+                acc.m_threadToBarrierMap.clear();
 
                 // After a block has been processed, the shared memory has to be deleted.
                 block::shared::freeMem(acc);
@@ -297,7 +297,7 @@ namespace alpaka
                     acc.m_idMasterThread = threadId;
                 }
 
-                // We can not use the default syncBlockThreads here because it searches inside m_mThreadsToBarrier for the thread id.
+                // We can not use the default syncBlockThreads here because it searches inside m_threadToBarrierMap for the thread id.
                 // Concurrently searching while others use emplace is unsafe!
                 typename std::map<std::thread::id, TSize>::iterator itThreadToBarrier;
 
@@ -306,8 +306,8 @@ namespace alpaka
                     std::lock_guard<std::mutex> lock(acc.m_mtxMapInsert);
 
                     // Save the thread id, and index.
-                    acc.m_threadsToIndices.emplace(threadId, blockThreadIdx);
-                    itThreadToBarrier = acc.m_mThreadsToBarrier.emplace(threadId, 0).first;
+                    acc.m_threadToIndexMap.emplace(threadId, blockThreadIdx);
+                    itThreadToBarrier = acc.m_threadToBarrierMap.emplace(threadId, 0).first;
                 }
 
                 // Sync all threads so that the maps with thread id's are complete and not changed after here.

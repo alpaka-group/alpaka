@@ -110,9 +110,9 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                auto const gridBlockExtents(
+                auto const gridBlockExtent(
                     workdiv::getWorkDiv<Grid, Blocks>(*this));
-                auto const blockThreadExtents(
+                auto const blockThreadExtent(
                     workdiv::getWorkDiv<Block, Threads>(*this));
 
                 // Get the size of the block shared extern memory.
@@ -124,7 +124,7 @@ namespace alpaka
                                 kernel::getBlockSharedExternMemSizeBytes<
                                     TKernelFnObj,
                                     acc::AccCpuOmp4<TDim, TSize>>(
-                                        blockThreadExtents,
+                                        blockThreadExtent,
                                         args...);
                         },
                         m_args));
@@ -148,14 +148,14 @@ namespace alpaka
                         m_args));
 
                 // The number of blocks in the grid.
-                TSize const numBlocksInGrid(gridBlockExtents.prod());
+                TSize const numBlocksInGrid(gridBlockExtent.prod());
                 // The number of threads in a block.
-                TSize const numThreadsInBlock(blockThreadExtents.prod());
+                TSize const blockThreadCount(blockThreadExtent.prod());
 
                 // `When an if(scalar-expression) evaluates to false, the structured block is executed on the host.`
                 #pragma omp target if(0)
                 {
-                    #pragma omp teams/* num_teams(numBlocksInGrid) thread_limit(numThreadsInBlock)*/
+                    #pragma omp teams/* num_teams(numBlocksInGrid) thread_limit(blockThreadCount)*/
                     {
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                         // The first team does some checks ...
@@ -184,12 +184,12 @@ namespace alpaka
                         {
                             Vec<dim::DimInt<1u>, TSize> const gridBlockIdx(b);
                             // When this is not repeated here:
-                            // error: ‘gridBlockExtents’ referenced in target region does not have a mappable type
-                            auto const gridBlockExtents2(
+                            // error: ‘gridBlockExtent’ referenced in target region does not have a mappable type
+                            auto const gridBlockExtent2(
                                 workdiv::getWorkDiv<Grid, Blocks>(*static_cast<workdiv::WorkDivMembers<TDim, TSize> const *>(this)));
                             acc.m_gridBlockIdx = core::mapIdx<TDim::value>(
                                 gridBlockIdx,
-                                gridBlockExtents2);
+                                gridBlockExtent2);
 
                             // Execute the threads in parallel.
 
@@ -201,7 +201,7 @@ namespace alpaka
                             // So we have to spawn one OS thread per thread in a block.
                             // 'omp for' is not useful because it is meant for cases where multiple iterations are executed by one thread but in our case a 1:1 mapping is required.
                             // Therefore we use 'omp parallel' with the specified number of threads in a block.
-                            #pragma omp parallel num_threads(numThreadsInBlock)
+                            #pragma omp parallel num_threads(blockThreadCount)
                             {
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                                 // The first thread does some checks in the first block executed.
@@ -210,7 +210,7 @@ namespace alpaka
                                     int const numThreads(::omp_get_num_threads());
                                     // NOTE: No std::cout in omp target!
                                     printf("%s omp_get_num_threads: %d\n", BOOST_CURRENT_FUNCTION, numThreads);
-                                    if(numThreads != static_cast<int>(numThreadsInBlock))
+                                    if(numThreads != static_cast<int>(blockThreadCount))
                                     {
                                         throw std::runtime_error("The CPU OpenMP4 runtime did not use the number of threads that had been required!");
                                     }

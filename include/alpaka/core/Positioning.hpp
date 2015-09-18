@@ -24,7 +24,7 @@
 namespace alpaka
 {
     //-----------------------------------------------------------------------------
-    //! Defines the origins available for getting extents and indices of kernel executions.
+    //! Defines the origins available for getting extent and indices of kernel executions.
     //-----------------------------------------------------------------------------
     namespace origin
     {
@@ -33,24 +33,31 @@ namespace alpaka
         //#############################################################################
         struct Grid;
         //#############################################################################
-        //! This type is used to get the extents/indices relative to a/the current block.
+        //! This type is used to get the extent/indices relative to a/the current block.
         //#############################################################################
         struct Block;
+        //#############################################################################
+        //! This type is used to get the extents relative to the thread.
+        //#############################################################################
+        struct Thread;
     }
     //-----------------------------------------------------------------------------
-    //! Defines the units available for getting extents and indices of kernel executions.
+    //! Defines the units available for getting extent and indices of kernel executions.
     //-----------------------------------------------------------------------------
     namespace unit
     {
         //#############################################################################
+        //! This type is used to get the extent/indices in units of blocks.
         //#############################################################################
-        //! This type is used to get the extents/indices in units of threads.
+        struct Blocks;
+        //#############################################################################
+        //! This type is used to get the extent/indices in units of threads.
         //#############################################################################
         struct Threads;
         //#############################################################################
-        //! This type is used to get the extents/indices in units of blocks.
+        //! This type is used to get the extents/indices in units of elements.
         //#############################################################################
-        struct Blocks;
+        struct Elems;
     }
 
     using namespace origin;

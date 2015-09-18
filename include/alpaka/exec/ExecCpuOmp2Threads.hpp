@@ -110,9 +110,9 @@ namespace alpaka
             {
                 ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
-                auto const gridBlockExtents(
+                auto const gridBlockExtent(
                     workdiv::getWorkDiv<Grid, Blocks>(*this));
-                auto const blockThreadExtents(
+                auto const blockThreadExtent(
                     workdiv::getWorkDiv<Block, Threads>(*this));
 
                 // Get the size of the block shared extern memory.
@@ -124,7 +124,7 @@ namespace alpaka
                                 kernel::getBlockSharedExternMemSizeBytes<
                                     TKernelFnObj,
                                     acc::AccCpuOmp2Threads<TDim, TSize>>(
-                                        blockThreadExtents,
+                                        blockThreadExtent,
                                         args...);
                         },
                         m_args));
@@ -157,8 +157,8 @@ namespace alpaka
                 }
 
                 // The number of threads in this block.
-                TSize const numThreadsInBlock(blockThreadExtents.prod());
-                int const iNumThreadsInBlock(static_cast<int>(numThreadsInBlock));
+                TSize const blockThreadCount(blockThreadExtent.prod());
+                int const iblockThreadCount(static_cast<int>(blockThreadCount));
 
                 // Force the environment to use the given number of threads.
                 int const ompIsDynamic(::omp_get_dynamic());
@@ -166,7 +166,7 @@ namespace alpaka
 
                 // Execute the blocks serially.
                 core::ndLoopIncIdx(
-                    gridBlockExtents,
+                    gridBlockExtent,
                     [&](Vec<TDim, TSize> const & gridBlockIdx)
                     {
                         acc.m_gridBlockIdx = gridBlockIdx;
@@ -177,14 +177,14 @@ namespace alpaka
                         // So we have to spawn one OS thread per thread in a block.
                         // 'omp for' is not useful because it is meant for cases where multiple iterations are executed by one thread but in our case a 1:1 mapping is required.
                         // Therefore we use 'omp parallel' with the specified number of threads in a block.
-                        #pragma omp parallel num_threads(iNumThreadsInBlock)
+                        #pragma omp parallel num_threads(iblockThreadCount)
                         {
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_MINIMAL
                             // GCC 5.1 fails with:
-                            // error: redeclaration of ‘const int& iNumThreadsInBlock’
+                            // error: redeclaration of ‘const int& iblockThreadCount’
                             // if(numThreads != iNumThreadsInBloc
                             //                ^
-                            // note: ‘const int& iNumThreadsInBlock’ previously declared here
+                            // note: ‘const int& iblockThreadCount’ previously declared here
                             // #pragma omp parallel num_threads(iNumThread
                             //         ^
 #if (!BOOST_COMP_GNUC) || (BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(5, 0, 0))
@@ -193,7 +193,7 @@ namespace alpaka
                             {
                                 int const numThreads(::omp_get_num_threads());
                                 std::cout << BOOST_CURRENT_FUNCTION << " omp_get_num_threads: " << numThreads << std::endl;
-                                if(numThreads != iNumThreadsInBlock)
+                                if(numThreads != iblockThreadCount)
                                 {
                                     throw std::runtime_error("The OpenMP 2.0 runtime did not use the number of threads that had been required!");
                                 }

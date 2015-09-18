@@ -53,11 +53,11 @@ namespace alpaka
                 ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename TIndex,
-                    typename TExtentsVec,
+                    typename TExtentVec,
                     typename TFnObj>
                 ALPAKA_FN_HOST_ACC static auto ndLoop(
                     TIndex & idx,
-                    TExtentsVec const & extents,
+                    TExtentVec const & extent,
                     TFnObj const & f)
                 -> void
                 {
@@ -77,11 +77,11 @@ namespace alpaka
                 ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename TIndex,
-                    typename TExtentsVec,
+                    typename TExtentVec,
                     typename TFnObj>
                 ALPAKA_FN_HOST_ACC static auto ndLoop(
                     TIndex & idx,
-                    TExtentsVec const & extents,
+                    TExtentVec const & extent,
                     TFnObj const & f)
                 -> void
                 {
@@ -89,13 +89,13 @@ namespace alpaka
                         dim::Dim<TIndex>::value > 0u,
                         "The dimension given to ndLoopIncIdx has to be larger than zero!");
                     static_assert(
-                        dim::Dim<TIndex>::value == dim::Dim<TExtentsVec>::value,
-                        "The dimensions of the iteration vector and the extents vector have to be identical!");
+                        dim::Dim<TIndex>::value == dim::Dim<TExtentVec>::value,
+                        "The dimensions of the iteration vector and the extent vector have to be identical!");
                     static_assert(
                         dim::Dim<TIndex>::value > Tdim,
                         "The current dimension has to be in the rang [0,dim-1]!");
 
-                    for(idx[Tdim] = 0u; idx[Tdim] < extents[Tdim]; ++idx[Tdim])
+                    for(idx[Tdim] = 0u; idx[Tdim] < extent[Tdim]; ++idx[Tdim])
                     {
                         f(idx);
                     }
@@ -116,11 +116,11 @@ namespace alpaka
                 ALPAKA_NO_HOST_ACC_WARNING
                 template<
                     typename TIndex,
-                    typename TExtentsVec,
+                    typename TExtentVec,
                     typename TFnObj>
                 ALPAKA_FN_HOST_ACC static auto ndLoop(
                     TIndex & idx,
-                    TExtentsVec const & extents,
+                    TExtentVec const & extent,
                     TFnObj const & f)
                 -> void
                 {
@@ -128,19 +128,19 @@ namespace alpaka
                         dim::Dim<TIndex>::value > 0u,
                         "The dimension given to ndLoop has to be larger than zero!");
                     static_assert(
-                        dim::Dim<TIndex>::value == dim::Dim<TExtentsVec>::value,
-                        "The dimensions of the iteration vector and the extents vector have to be identical!");
+                        dim::Dim<TIndex>::value == dim::Dim<TExtentVec>::value,
+                        "The dimensions of the iteration vector and the extent vector have to be identical!");
                     static_assert(
                         dim::Dim<TIndex>::value > Tdim,
                         "The current dimension has to be in the rang [0,dim-1]!");
 
-                    for(idx[Tdim] = 0u; idx[Tdim] < extents[Tdim]; ++idx[Tdim])
+                    for(idx[Tdim] = 0u; idx[Tdim] < extent[Tdim]; ++idx[Tdim])
                     {
                         detail::NdLoop<
                             core::detail::index_sequence<Tdims...>>
                         ::template ndLoop(
                                 idx,
-                                extents,
+                                extent,
                                 f);
                     }
                 }
@@ -151,61 +151,61 @@ namespace alpaka
         //! The loops are nested in the order given by the index_sequence with the first element being the outermost and the last index the innermost loop.
         //!
         //! \param indexSequence A sequence of indices being a permutation of the values [0, dim-1], where every values occurs at most once.
-        //! \param extents N-dimensional loop extents.
+        //! \param extent N-dimensional loop extent.
         //! \param f The function called at each iteration.
         //! \param args,... The additional arguments given to each function call.
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
-            typename TExtentsVec,
+            typename TExtentVec,
             typename TFnObj,
             std::size_t... Tdims>
         ALPAKA_FN_HOST_ACC auto ndLoop(
             core::detail::index_sequence<Tdims...> const & /*indexSequence*/,
-            TExtentsVec const & extents,
+            TExtentVec const & extent,
             TFnObj const & f)
         -> void
         {
             static_assert(
-                dim::Dim<TExtentsVec>::value > 0u,
-                "The dimension of the extents given to ndLoop has to be larger than zero!");
+                dim::Dim<TExtentVec>::value > 0u,
+                "The dimension of the extent given to ndLoop has to be larger than zero!");
             static_assert(
-                core::detail::IntegerSequenceValuesInRange<core::detail::index_sequence<Tdims...>, std::size_t, 0, dim::Dim<TExtentsVec>::value>::value,
+                core::detail::IntegerSequenceValuesInRange<core::detail::index_sequence<Tdims...>, std::size_t, 0, dim::Dim<TExtentVec>::value>::value,
                 "The values in the index_sequence have to in the rang [0,dim-1]!");
             static_assert(
                 core::detail::IntegerSequenceValuesUnique<core::detail::index_sequence<Tdims...>>::value,
                 "The values in the index_sequence have to be unique!");
 
             auto idx(
-                Vec<dim::Dim<TExtentsVec>, size::Size<TExtentsVec>>::zeros());
+                Vec<dim::Dim<TExtentVec>, size::Size<TExtentVec>>::zeros());
 
             detail::NdLoop<
                 core::detail::index_sequence<Tdims...>>
             ::template ndLoop(
                     idx,
-                    extents,
+                    extent,
                     f);
         }
         //-----------------------------------------------------------------------------
         //! Loops over an n-dimensional iteration index variable calling f(idx, args...) for each iteration.
         //! The loops are nested from index zero outmost to index (dim-1) innermost.
         //!
-        //! \param extents N-dimensional loop extents.
+        //! \param extent N-dimensional loop extent.
         //! \param f The function called at each iteration.
         //! \param args,... The additional arguments given to each function call.
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
-            typename TExtentsVec,
+            typename TExtentVec,
             typename TFnObj>
         ALPAKA_FN_HOST_ACC auto ndLoopIncIdx(
-            TExtentsVec const & extents,
+            TExtentVec const & extent,
             TFnObj const & f)
         -> void
         {
             ndLoop(
-                core::detail::make_index_sequence<dim::Dim<TExtentsVec>::value>(),
-                extents,
+                core::detail::make_index_sequence<dim::Dim<TExtentVec>::value>(),
+                extent,
                 f);
         }
     }

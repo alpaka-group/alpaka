@@ -65,7 +65,7 @@ public:
 
         auto const gridThreadIdxX(alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u]);
 
-        if (gridThreadIdxX < numElements)
+        if(gridThreadIdxX < numElements)
         {
             C[gridThreadIdxX] = A[gridThreadIdxX] + B[gridThreadIdxX];
         }
@@ -102,16 +102,17 @@ struct VectorAddKernelTester
         // Get a stream on this device.
         alpaka::examples::Stream<alpaka::dev::Dev<TAcc>> stream(devAcc);
 
-        alpaka::Vec<alpaka::dim::DimInt<1u>, TSize> const v1uiExtents(
+        alpaka::Vec<alpaka::dim::DimInt<1u>, TSize> const extent(
             numElements);
 
-        // Let alpaka calculate good block and grid sizes given our full problem extents.
+        // Let alpaka calculate good block and grid sizes given our full problem extent.
         alpaka::workdiv::WorkDivMembers<alpaka::dim::DimInt<1u>, TSize> const workDiv(
             alpaka::workdiv::getValidWorkDiv<TAcc>(
                 devAcc,
-                v1uiExtents,
+                extent,
+                static_cast<TSize>(1u),
                 false,
-                alpaka::workdiv::GridBlockExtentsSubDivRestrictions::Unrestricted));
+                alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted));
 
         std::cout
             << "VectorAddKernelTester("
@@ -122,9 +123,9 @@ struct VectorAddKernelTester
             << ")" << std::endl;
 
         // Allocate host memory buffers.
-        auto memBufHostA(alpaka::mem::buf::alloc<Val, TSize>(devHost, v1uiExtents));
-        auto memBufHostB(alpaka::mem::buf::alloc<Val, TSize>(devHost, v1uiExtents));
-        auto memBufHostC(alpaka::mem::buf::alloc<Val, TSize>(devHost, v1uiExtents));
+        auto memBufHostA(alpaka::mem::buf::alloc<Val, TSize>(devHost, extent));
+        auto memBufHostB(alpaka::mem::buf::alloc<Val, TSize>(devHost, extent));
+        auto memBufHostC(alpaka::mem::buf::alloc<Val, TSize>(devHost, extent));
 
         // Initialize the host input vectors
         for (TSize i(0); i < numElements; ++i)
@@ -134,13 +135,13 @@ struct VectorAddKernelTester
         }
 
         // Allocate the buffer on the accelerator.
-        auto memBufAccA(alpaka::mem::buf::alloc<Val, TSize>(devAcc, v1uiExtents));
-        auto memBufAccB(alpaka::mem::buf::alloc<Val, TSize>(devAcc, v1uiExtents));
-        auto memBufAccC(alpaka::mem::buf::alloc<Val, TSize>(devAcc, v1uiExtents));
+        auto memBufAccA(alpaka::mem::buf::alloc<Val, TSize>(devAcc, extent));
+        auto memBufAccB(alpaka::mem::buf::alloc<Val, TSize>(devAcc, extent));
+        auto memBufAccC(alpaka::mem::buf::alloc<Val, TSize>(devAcc, extent));
 
         // Copy Host -> Acc.
-        alpaka::mem::view::copy(stream, memBufAccA, memBufHostA, v1uiExtents);
-        alpaka::mem::view::copy(stream, memBufAccB, memBufHostB, v1uiExtents);
+        alpaka::mem::view::copy(stream, memBufAccA, memBufHostA, extent);
+        alpaka::mem::view::copy(stream, memBufAccB, memBufHostB, extent);
 
         // Create the executor task.
         auto const exec(alpaka::exec::create<TAcc>(
@@ -160,7 +161,7 @@ struct VectorAddKernelTester
             << std::endl;
 
         // Copy back the result.
-        alpaka::mem::view::copy(stream, memBufHostC, memBufAccC, v1uiExtents);
+        alpaka::mem::view::copy(stream, memBufHostC, memBufAccC, extent);
 
         // Wait for the stream to finish the memory operation.
         alpaka::wait::wait(stream);

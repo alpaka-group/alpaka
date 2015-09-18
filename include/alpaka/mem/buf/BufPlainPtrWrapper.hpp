@@ -52,15 +52,15 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 template<
-                    typename TExtents>
+                    typename TExtent>
                 ALPAKA_FN_HOST_ACC BufPlainPtrWrapper(
                     TElem * pMem,
                     TDev const & dev,
-                    TExtents const & extents = TExtents()) :
+                    TExtent const & extent = TExtent()) :
                         m_pMem(pMem),
                         m_dev(dev),
-                        m_extentsElements(extent::getExtentsVecEnd<TDim>(extents)),
-                        m_pitchBytes(extent::getWidth(extents) * sizeof(TElem))
+                        m_extentElements(extent::getExtentVecEnd<TDim>(extent)),
+                        m_pitchBytes(extent::getWidth(extent) * sizeof(TElem))
                 {}
 
                 //-----------------------------------------------------------------------------
@@ -68,15 +68,15 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 ALPAKA_NO_HOST_ACC_WARNING
                 template<
-                    typename TExtents>
+                    typename TExtent>
                 ALPAKA_FN_HOST_ACC BufPlainPtrWrapper(
                     TElem * pMem,
                     TDev const dev,
-                    TExtents const & extents,
+                    TExtent const & extent,
                     TSize const & pitchBytes) :
                         m_pMem(pMem),
                         m_dev(dev),
-                        m_extentsElements(extent::getExtentsVecEnd<TDim>(extents)),
+                        m_extentElements(extent::getExtentVecEnd<TDim>(extent)),
                         m_pitchBytes(pitchBytes)
                 {}
 
@@ -109,7 +109,7 @@ namespace alpaka
             public:
                 TElem * m_pMem;
                 TDev m_dev;
-                Vec<TDim, TSize> m_extentsElements;
+                Vec<TDim, TSize> m_extentElements;
                 TSize m_pitchBytes;
             };
         }
@@ -215,10 +215,10 @@ namespace alpaka
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getExtent(
-                    mem::buf::BufPlainPtrWrapper<TDev, TElem, TDim, TSize> const & extents)
+                    mem::buf::BufPlainPtrWrapper<TDev, TElem, TDim, TSize> const & extent)
                 -> TSize
                 {
-                    return extents.m_extentsElements[TIdx::value];
+                    return extent.m_extentElements[TIdx::value];
                 }
             };
         }

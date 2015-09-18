@@ -65,15 +65,15 @@ namespace alpaka
                         //! Constructor
                         //-----------------------------------------------------------------------------
                         template<
-                            typename TExtents>
+                            typename TExtent>
                         ALPAKA_FN_HOST BufCpuImpl(
                             dev::DevCpu const & dev,
-                            TExtents const & extents) :
+                            TExtent const & extent) :
                                 mem::alloc::AllocCpuBoostAligned<std::integral_constant<std::size_t, 16u>>(),
                                 m_dev(dev),
-                                m_extentsElements(extent::getExtentsVecEnd<TDim>(extents)),
-                                m_pMem(mem::alloc::alloc<TElem>(*this, computeElementCount(extents))),
-                                m_pitchBytes(static_cast<TSize>(extent::getWidth(extents) * sizeof(TElem)))
+                                m_extentElements(extent::getExtentVecEnd<TDim>(extent)),
+                                m_pMem(mem::alloc::alloc<TElem>(*this, computeElementCount(extent))),
+                                m_pitchBytes(static_cast<TSize>(extent::getWidth(extent) * sizeof(TElem)))
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
                                 ,m_bPinned(false)
 #endif
@@ -81,15 +81,15 @@ namespace alpaka
                             ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
 
                             static_assert(
-                                TDim::value == dim::Dim<TExtents>::value,
-                                "The dimensionality of TExtents and the dimensionality of the TDim template parameter have to be identical!");
+                                TDim::value == dim::Dim<TExtent>::value,
+                                "The dimensionality of TExtent and the dimensionality of the TDim template parameter have to be identical!");
                             static_assert(
-                                std::is_same<TSize, size::Size<TExtents>>::value,
-                                "The size type of TExtents and the TSize template parameter have to be identical!");
+                                std::is_same<TSize, size::Size<TExtent>>::value,
+                                "The size type of TExtent and the TSize template parameter have to be identical!");
 
 #if ALPAKA_DEBUG >= ALPAKA_DEBUG_FULL
                             std::cout << BOOST_CURRENT_FUNCTION
-                                << " e: " << m_extentsElements
+                                << " e: " << m_extentElements
                                 << " ptr: " << static_cast<void *>(m_pMem)
                                 << " pitch: " << m_pitchBytes
                                 << std::endl;
@@ -131,20 +131,20 @@ namespace alpaka
                         //! \return The number of elements to allocate.
                         //-----------------------------------------------------------------------------
                         template<
-                            typename TExtents>
+                            typename TExtent>
                         ALPAKA_FN_HOST static auto computeElementCount(
-                            TExtents const & extents)
+                            TExtent const & extent)
                         -> TSize
                         {
-                            auto const extentsElementCount(extent::getProductOfExtents(extents));
-                            assert(extentsElementCount>0);
+                            auto const extentElementCount(extent::getProductOfExtent(extent));
+                            assert(extentElementCount>0);
 
-                            return extentsElementCount;
+                            return extentElementCount;
                         }
 
                     public:
                         dev::DevCpu const m_dev;
-                        Vec<TDim, TSize> const m_extentsElements;
+                        Vec<TDim, TSize> const m_extentElements;
                         TElem * const m_pMem;
                         TSize const m_pitchBytes;
 #if defined(ALPAKA_ACC_GPU_CUDA_ENABLED) && defined(__CUDACC__)
@@ -167,11 +167,11 @@ namespace alpaka
                 //! Constructor
                 //-----------------------------------------------------------------------------
                 template<
-                    typename TExtents>
+                    typename TExtent>
                 ALPAKA_FN_HOST BufCpu(
                     dev::DevCpu const & dev,
-                    TExtents const & extents) :
-                        m_spBufCpuImpl(std::make_shared<cpu::detail::BufCpuImpl<TElem, TDim, TSize>>(dev, extents))
+                    TExtent const & extent) :
+                        m_spBufCpuImpl(std::make_shared<cpu::detail::BufCpuImpl<TElem, TDim, TSize>>(dev, extent))
                 {}
                 //-----------------------------------------------------------------------------
                 //! Copy constructor.
@@ -291,10 +291,10 @@ namespace alpaka
                 //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getExtent(
-                    mem::buf::BufCpu<TElem, TDim, TSize> const & extents)
+                    mem::buf::BufCpu<TElem, TDim, TSize> const & extent)
                 -> TSize
                 {
-                    return extents.m_spBufCpuImpl->m_extentsElements[TIdx::value];
+                    return extent.m_spBufCpuImpl->m_extentElements[TIdx::value];
                 }
             };
         }
@@ -453,10 +453,10 @@ namespace alpaka
                     //!
                     //-----------------------------------------------------------------------------
                     template<
-                        typename TExtents>
+                        typename TExtent>
                     ALPAKA_FN_HOST static auto alloc(
                         dev::DevCpu const & dev,
-                        TExtents const & extents)
+                        TExtent const & extent)
                     -> mem::buf::BufCpu<TElem, TDim, TSize>
                     {
                         ALPAKA_DEBUG_MINIMAL_LOG_SCOPE;
@@ -466,7 +466,7 @@ namespace alpaka
                             TDim,
                             TSize>(
                                 dev,
-                                extents);
+                                extent);
                     }
                 };
                 //#############################################################################
@@ -554,7 +554,7 @@ namespace alpaka
                             ALPAKA_CUDA_RT_CHECK_IGNORE(
                                 cudaHostRegister(
                                     const_cast<void *>(reinterpret_cast<void const *>(mem::view::getPtrNative(buf))),
-                                    extent::getProductOfExtents(buf) * sizeof(elem::Elem<buf::BufCpu<TElem, TDim, TSize>>),
+                                    extent::getProductOfExtent(buf) * sizeof(elem::Elem<buf::BufCpu<TElem, TDim, TSize>>),
                                     cudaHostRegisterDefault),
                                 cudaErrorHostMemoryAlreadyRegistered);
 

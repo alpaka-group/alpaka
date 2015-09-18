@@ -52,16 +52,16 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TIdx,
-                typename TExtents,
+                typename TExtent,
                 typename TSfinae = void>
             struct GetExtent
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getExtent(
-                    TExtents const &)
-                -> size::Size<TExtents>
+                    TExtent const &)
+                -> size::Size<TExtent>
                 {
-                    return static_cast<size::Size<TExtents>>(1);
+                    return static_cast<size::Size<TExtent>>(1);
                 }
             };
 
@@ -70,8 +70,8 @@ namespace alpaka
             //#############################################################################
             template<
                 typename TIdx,
-                typename TExtents,
                 typename TExtent,
+                typename TExtentVal,
                 typename TSfinae = void>
             struct SetExtent;
         }
@@ -82,53 +82,53 @@ namespace alpaka
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             std::size_t Tidx,
-            typename TExtents>
+            typename TExtent>
         ALPAKA_FN_HOST_ACC auto getExtent(
-            TExtents const & extents = TExtents())
-        -> size::Size<TExtents>
+            TExtent const & extent = TExtent())
+        -> size::Size<TExtent>
         {
             return
                 traits::GetExtent<
                     dim::DimInt<Tidx>,
-                    TExtents>
+                    TExtent>
                 ::getExtent(
-                    extents);
+                    extent);
         }
         //-----------------------------------------------------------------------------
         //! \return The width.
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
-            typename TExtents>
+            typename TExtent>
         ALPAKA_FN_HOST_ACC auto getWidth(
-            TExtents const & extents = TExtents())
-        -> size::Size<TExtents>
+            TExtent const & extent = TExtent())
+        -> size::Size<TExtent>
         {
-            return getExtent<dim::Dim<TExtents>::value - 1u>(extents);
+            return getExtent<dim::Dim<TExtent>::value - 1u>(extent);
         }
         //-----------------------------------------------------------------------------
         //! \return The height.
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
-            typename TExtents>
+            typename TExtent>
         ALPAKA_FN_HOST_ACC auto getHeight(
-            TExtents const & extents = TExtents())
-        -> size::Size<TExtents>
+            TExtent const & extent = TExtent())
+        -> size::Size<TExtent>
         {
-            return getExtent<dim::Dim<TExtents>::value - 2u>(extents);
+            return getExtent<dim::Dim<TExtent>::value - 2u>(extent);
         }
         //-----------------------------------------------------------------------------
         //! \return The depth.
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
-            typename TExtents>
+            typename TExtent>
         ALPAKA_FN_HOST_ACC auto getDepth(
-            TExtents const & extents = TExtents())
-        -> size::Size<TExtents>
+            TExtent const & extent = TExtent())
+        -> size::Size<TExtent>
         {
-            return getExtent<dim::Dim<TExtents>::value - 3u>(extents);
+            return getExtent<dim::Dim<TExtent>::value - 3u>(extent);
         }
 
         namespace detail
@@ -138,37 +138,37 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             ALPAKA_NO_HOST_ACC_WARNING
             template<
-                typename TExtents,
+                typename TExtent,
                 size_t... TIndices>
-            ALPAKA_FN_HOST static auto getProductOfExtentsInternal(
-                TExtents const & extents,
+            ALPAKA_FN_HOST static auto getProductOfExtentInternal(
+                TExtent const & extent,
                 alpaka::core::detail::index_sequence<TIndices...> const & indices)
-            -> size::Size<TExtents>
+            -> size::Size<TExtent>
             {
 #if !defined(__CUDA_ARCH__)
                 boost::ignore_unused(indices);
 #endif
                 return
                     core::foldr(
-                        std::multiplies<size::Size<TExtents>>(),
-                        getExtent<TIndices>(extents)...);
+                        std::multiplies<size::Size<TExtent>>(),
+                        getExtent<TIndices>(extent)...);
             }
         }
 
         //-----------------------------------------------------------------------------
-        //! \return The product of the extents.
+        //! \return The product of the extent.
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
-            typename TExtents>
-        ALPAKA_FN_HOST_ACC auto getProductOfExtents(
-            TExtents const & extents = TExtents())
-        -> size::Size<TExtents>
+            typename TExtent>
+        ALPAKA_FN_HOST_ACC auto getProductOfExtent(
+            TExtent const & extent = TExtent())
+        -> size::Size<TExtent>
         {
-            using IdxSequence = alpaka::core::detail::make_index_sequence<dim::Dim<TExtents>::value>;
+            using IdxSequence = alpaka::core::detail::make_index_sequence<dim::Dim<TExtent>::value>;
             return
-                detail::getProductOfExtentsInternal(
-                    extents,
+                detail::getProductOfExtentInternal(
+                    extent,
                     IdxSequence());
         }
 
@@ -178,62 +178,62 @@ namespace alpaka
         ALPAKA_NO_HOST_ACC_WARNING
         template<
             std::size_t Tidx,
-            typename TExtents,
-            typename TExtent>
+            typename TExtent,
+            typename TExtentVal>
         ALPAKA_FN_HOST_ACC auto setExtent(
-            TExtents & extents,
-            TExtent const & extent)
+            TExtent & extent,
+            TExtentVal const & extentVal)
         -> void
         {
             traits::SetExtent<
                 dim::DimInt<Tidx>,
-                TExtents,
-                TExtent>
+                TExtent,
+                TExtentVal>
             ::setExtent(
-                extents,
-                extent);
+                extent,
+                extentVal);
         }
         //-----------------------------------------------------------------------------
         //! Sets the width.
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
-            typename TExtents,
-            typename TExtent>
+            typename TExtent,
+            typename TWidth>
         ALPAKA_FN_HOST_ACC auto setWidth(
-            TExtents & extents,
-            TExtent const & width)
+            TExtent & extent,
+            TWidth const & width)
         -> void
         {
-            setExtent<dim::Dim<TExtents>::value - 1u>(extents, width);
+            setExtent<dim::Dim<TExtent>::value - 1u>(extent, width);
         }
         //-----------------------------------------------------------------------------
         //! Sets the height.
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
-            typename TExtents,
-            typename TExtent>
+            typename TExtent,
+            typename THeight>
         ALPAKA_FN_HOST_ACC auto setHeight(
-            TExtents & extents,
-            TExtent const & height)
+            TExtent & extent,
+            THeight const & height)
         -> void
         {
-            setExtent<dim::Dim<TExtents>::value - 2u>(extents, height);
+            setExtent<dim::Dim<TExtent>::value - 2u>(extent, height);
         }
         //-----------------------------------------------------------------------------
         //! Sets the depth.
         //-----------------------------------------------------------------------------
         ALPAKA_NO_HOST_ACC_WARNING
         template<
-            typename TExtents,
-            typename TExtent>
+            typename TExtent,
+            typename TDepth>
         ALPAKA_FN_HOST_ACC auto setDepth(
-            TExtents & extents,
-            TExtent const & depth)
+            TExtent & extent,
+            TDepth const & depth)
         -> void
         {
-            setExtent<dim::Dim<TExtents>::value - 3u>(extents, depth);
+            setExtent<dim::Dim<TExtent>::value - 3u>(extent, depth);
         }
 
         //-----------------------------------------------------------------------------
@@ -245,41 +245,41 @@ namespace alpaka
             //! The unsigned integral width get trait specialization.
             //#############################################################################
             template<
-                typename TExtents>
+                typename TExtent>
             struct GetExtent<
                 dim::DimInt<0u>,
-                TExtents,
+                TExtent,
                 typename std::enable_if<
-                    std::is_integral<TExtents>::value>::type>
+                    std::is_integral<TExtent>::value>::type>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getExtent(
-                    TExtents const & extents)
-                -> size::Size<TExtents>
+                    TExtent const & extent)
+                -> size::Size<TExtent>
                 {
-                    return extents;
+                    return extent;
                 }
             };
             //#############################################################################
             //! The unsigned integral width set trait specialization.
             //#############################################################################
             template<
-                typename TExtents,
-                typename TExtent>
+                typename TExtent,
+                typename TExtentVal>
             struct SetExtent<
                 dim::DimInt<0u>,
-                TExtents,
                 TExtent,
+                TExtentVal,
                 typename std::enable_if<
-                    std::is_integral<TExtents>::value>::type>
+                    std::is_integral<TExtent>::value>::type>
             {
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto setExtent(
-                    TExtents const & extents,
-                    TExtent const & extent)
+                    TExtent const & extent,
+                    TExtentVal const & extentVal)
                 -> void
                 {
-                    extents = extent;
+                    extent = extentVal;
                 }
             };
         }

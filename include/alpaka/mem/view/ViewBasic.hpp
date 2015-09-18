@@ -84,10 +84,10 @@ namespace alpaka
                         m_Buf(
                             mem::view::getPtrNative(buf),
                             dev::getDev(buf),
-                            extent::getExtentsVecEnd<TDim>(buf),
+                            extent::getExtentVecEnd<TDim>(buf),
                             mem::view::getPitchBytes<TDim::value - 1u>(buf)),
                         m_vOffsetsElements(offset::getOffsetsVecEnd<TDim>(buf)),
-                        m_extentsElements(extent::getExtentsVecEnd<TDim>(buf))
+                        m_extentElements(extent::getExtentVecEnd<TDim>(buf))
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
                 }
@@ -102,10 +102,10 @@ namespace alpaka
                         m_Buf(
                             mem::view::getPtrNative(buf),
                             dev::getDev(buf),
-                            extent::getExtentsVecEnd<TDim>(buf),
+                            extent::getExtentVecEnd<TDim>(buf),
                             mem::view::getPitchBytes<TDim::value - 1u>(buf)),
                         m_vOffsetsElements(offset::getOffsetsVecEnd<TDim>(buf)),
-                        m_extentsElements(extent::getExtentsVecEnd<TDim>(buf))
+                        m_extentElements(extent::getExtentVecEnd<TDim>(buf))
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
@@ -117,33 +117,33 @@ namespace alpaka
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //! \param buf This can be either a memory buffer or a memory view.
-                //! \param extentsElements The extents in elements.
+                //! \param extentElements The extent in elements.
                 //! \param relativeOffsetsElements The offsets in elements.
                 //-----------------------------------------------------------------------------
                 template<
                     typename TBuf,
                     typename TOffsets,
-                    typename TExtents>
+                    typename TExtent>
                 ViewBasic(
                     TBuf const & buf,
-                    TExtents const & extentsElements,
+                    TExtent const & extentElements,
                     TOffsets const & relativeOffsetsElements = TOffsets()) :
                         m_Buf(
                             mem::view::getPtrNative(buf),
                             dev::getDev(buf),
-                            extent::getExtentsVecEnd<TDim>(buf),
+                            extent::getExtentVecEnd<TDim>(buf),
                             mem::view::getPitchBytes<TDim::value - 1u>(buf)),
-                        m_extentsElements(extent::getExtentsVecEnd<TDim>(extentsElements)),
+                        m_extentElements(extent::getExtentVecEnd<TDim>(extentElements)),
                         m_vOffsetsElements(offset::getOffsetsVecEnd<TDim>(relativeOffsetsElements) + offset::getOffsetsVecEnd<TDim>(buf))
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                     static_assert(
-                        std::is_same<TDim, dim::Dim<TExtents>>::value,
-                        "The buffer and the extents are required to have the same dimensionality!");
+                        std::is_same<TDim, dim::Dim<TExtent>>::value,
+                        "The buffer and the extent are required to have the same dimensionality!");
                     static_assert(
-                        std::is_same<TSize, size::Size<TExtents>>::value,
-                        "The size type of TExtents and the TSize template parameter have to be identical!");
+                        std::is_same<TSize, size::Size<TExtent>>::value,
+                        "The size type of TExtent and the TSize template parameter have to be identical!");
                     static_assert(
                         std::is_same<TSize, size::Size<TBuf>>::value,
                         "The size type of TBuf and the TSize template parameter have to be identical!");
@@ -151,40 +151,40 @@ namespace alpaka
                     assert(extent::getWidth(relativeOffsetsElements) <= extent::getWidth(buf));
                     assert(extent::getHeight(relativeOffsetsElements) <= extent::getHeight(buf));
                     assert(extent::getDepth(relativeOffsetsElements) <= extent::getDepth(buf));
-                    assert((offset::getOffsetX(relativeOffsetsElements)+offset::getOffsetX(buf)+extent::getWidth(extentsElements)) <= extent::getWidth(buf));
-                    assert((offset::getOffsetY(relativeOffsetsElements)+offset::getOffsetY(buf)+extent::getHeight(extentsElements)) <= extent::getHeight(buf));
-                    assert((offset::getOffsetZ(relativeOffsetsElements)+offset::getOffsetZ(buf)+extent::getDepth(extentsElements)) <= extent::getDepth(buf));
+                    assert((offset::getOffsetX(relativeOffsetsElements)+offset::getOffsetX(buf)+extent::getWidth(extentElements)) <= extent::getWidth(buf));
+                    assert((offset::getOffsetY(relativeOffsetsElements)+offset::getOffsetY(buf)+extent::getHeight(extentElements)) <= extent::getHeight(buf));
+                    assert((offset::getOffsetZ(relativeOffsetsElements)+offset::getOffsetZ(buf)+extent::getDepth(extentElements)) <= extent::getDepth(buf));
                 }
                 //-----------------------------------------------------------------------------
                 //! Constructor.
                 //! \param buf This can be either a memory buffer or a memory view.
-                //! \param extentsElements The extents in elements.
+                //! \param extentElements The extent in elements.
                 //! \param relativeOffsetsElements The offsets in elements.
                 //-----------------------------------------------------------------------------
                 template<
                     typename TBuf,
                     typename TOffsets,
-                    typename TExtents>
+                    typename TExtent>
                 ViewBasic(
                     TBuf & buf,
-                    TExtents const & extentsElements,
+                    TExtent const & extentElements,
                     TOffsets const & relativeOffsetsElements = TOffsets()) :
                         m_Buf(
                             mem::view::getPtrNative(buf),
                             dev::getDev(buf),
-                            extent::getExtentsVecEnd<TDim>(buf),
+                            extent::getExtentVecEnd<TDim>(buf),
                             mem::view::getPitchBytes<TDim::value - 1u>(buf)),
-                        m_extentsElements(extent::getExtentsVecEnd<TDim>(extentsElements)),
+                        m_extentElements(extent::getExtentVecEnd<TDim>(extentElements)),
                         m_vOffsetsElements(offset::getOffsetsVecEnd<TDim>(relativeOffsetsElements) + offset::getOffsetsVecEnd<TDim>(buf))
                 {
                     ALPAKA_DEBUG_FULL_LOG_SCOPE;
 
                     static_assert(
-                        std::is_same<TDim, dim::Dim<TExtents>>::value,
-                        "The buffer and the extents are required to have the same dimensionality!");
+                        std::is_same<TDim, dim::Dim<TExtent>>::value,
+                        "The buffer and the extent are required to have the same dimensionality!");
                     static_assert(
-                        std::is_same<TSize, size::Size<TExtents>>::value,
-                        "The size type of TExtents and the TSize template parameter have to be identical!");
+                        std::is_same<TSize, size::Size<TExtent>>::value,
+                        "The size type of TExtent and the TSize template parameter have to be identical!");
                     static_assert(
                         std::is_same<TSize, size::Size<TBuf>>::value,
                         "The size type of TBuf and the TSize template parameter have to be identical!");
@@ -192,14 +192,14 @@ namespace alpaka
                     assert(extent::getWidth(relativeOffsetsElements) <= extent::getWidth(buf));
                     assert(extent::getHeight(relativeOffsetsElements) <= extent::getHeight(buf));
                     assert(extent::getDepth(relativeOffsetsElements) <= extent::getDepth(buf));
-                    assert((offset::getOffsetX(relativeOffsetsElements)+offset::getOffsetX(buf)+extent::getWidth(extentsElements)) <= extent::getWidth(buf));
-                    assert((offset::getOffsetY(relativeOffsetsElements)+offset::getOffsetY(buf)+extent::getHeight(extentsElements)) <= extent::getHeight(buf));
-                    assert((offset::getOffsetZ(relativeOffsetsElements)+offset::getOffsetZ(buf)+extent::getDepth(extentsElements)) <= extent::getDepth(buf));
+                    assert((offset::getOffsetX(relativeOffsetsElements)+offset::getOffsetX(buf)+extent::getWidth(extentElements)) <= extent::getWidth(buf));
+                    assert((offset::getOffsetY(relativeOffsetsElements)+offset::getOffsetY(buf)+extent::getHeight(extentElements)) <= extent::getHeight(buf));
+                    assert((offset::getOffsetZ(relativeOffsetsElements)+offset::getOffsetZ(buf)+extent::getDepth(extentElements)) <= extent::getDepth(buf));
                 }
 
             public:
                 Buf m_Buf;
-                Vec<TDim, TSize> m_extentsElements;
+                Vec<TDim, TSize> m_extentElements;
                 Vec<TDim, TSize> m_vOffsetsElements;
             };
         }
@@ -311,10 +311,10 @@ namespace alpaka
                 //!
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_HOST static auto getExtent(
-                    mem::view::ViewBasic<TDev, TElem, TDim, TSize> const & extents)
+                    mem::view::ViewBasic<TDev, TElem, TDim, TSize> const & extent)
                 -> TSize
                 {
-                    return extents.m_extentsElements[TIdx::value];
+                    return extent.m_extentElements[TIdx::value];
                 }
             };
         }
@@ -373,11 +373,11 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     template<
                         typename TBuf,
-                        typename TExtents,
+                        typename TExtent,
                         typename TOffsets>
                     ALPAKA_FN_HOST static auto createView(
                         TBuf const & buf,
-                        TExtents const & extentsElements,
+                        TExtent const & extentElements,
                         TOffsets const & relativeOffsetsElements)
                     -> mem::view::ViewBasic<typename std::add_const<TElem>::type, TDim, TDev, TSize>
                     {
@@ -387,7 +387,7 @@ namespace alpaka
                             TDim,
                             TSize>(
                                 buf,
-                                extentsElements,
+                                extentElements,
                                 relativeOffsetsElements);
                     }
                     //-----------------------------------------------------------------------------
@@ -395,11 +395,11 @@ namespace alpaka
                     //-----------------------------------------------------------------------------
                     template<
                         typename TBuf,
-                        typename TExtents,
+                        typename TExtent,
                         typename TOffsets>
                     ALPAKA_FN_HOST static auto createView(
                         TBuf & buf,
-                        TExtents const & extentsElements,
+                        TExtent const & extentElements,
                         TOffsets const & relativeOffsetsElements)
                     -> mem::view::ViewBasic<TDev, TElem, TDim, TSize>
                     {
@@ -409,7 +409,7 @@ namespace alpaka
                             TDim,
                             TSize>(
                                 buf,
-                                extentsElements,
+                                extentElements,
                                 relativeOffsetsElements);
                     }
                 };

@@ -65,7 +65,7 @@ public:
             "The SharedMemKernel expects 1-dimensional indices!");
 
         // The number of threads in this block.
-        std::size_t const threadsInBlockCount(alpaka::workdiv::getWorkDiv<alpaka::Block, alpaka::Threads>(acc)[0u]);
+        std::size_t const blockThreadCount(alpaka::workdiv::getWorkDiv<alpaka::Block, alpaka::Threads>(acc)[0u]);
 
         // Get the extern allocated shared memory.
         std::uint32_t * const pBlockShared(acc.template getBlockSharedExternMem<std::uint32_t>());
@@ -75,45 +75,45 @@ public:
         //std::uint32_t * const pBlockShared2(alpaka::block::shared::allocArr<std::uint32_t, TnumUselessWork::value>());
 
         // Calculate linearized index of the thread in the block.
-        std::size_t const blockThreadsIdx1d(alpaka::idx::getIdx<alpaka::Block, alpaka::Threads>(acc)[0u]);
+        std::size_t const blockThreadIdx1d(alpaka::idx::getIdx<alpaka::Block, alpaka::Threads>(acc)[0u]);
 
 
         // Fill the shared block with the thread ids [1+X, 2+X, 3+X, ..., #Threads+X].
-        std::uint32_t iSum1(static_cast<std::uint32_t>(blockThreadsIdx1d+1));
+        std::uint32_t iSum1(static_cast<std::uint32_t>(blockThreadIdx1d+1));
         for(std::uint32_t i(0); i<TnumUselessWork::value; ++i)
         {
             iSum1 += i;
         }
-        pBlockShared[blockThreadsIdx1d] = iSum1;
+        pBlockShared[blockThreadIdx1d] = iSum1;
 
 
         // Synchronize all threads because now we are writing to the memory again but inverse.
         alpaka::block::sync::syncBlockThreads(acc);
 
         // Do something useless.
-        std::uint32_t iSum2(static_cast<std::uint32_t>(blockThreadsIdx1d));
+        std::uint32_t iSum2(static_cast<std::uint32_t>(blockThreadIdx1d));
         for(std::uint32_t i(0); i<TnumUselessWork::value; ++i)
         {
             iSum2 -= i;
         }
         // Add the inverse so that every cell is filled with [#Threads, #Threads, ..., #Threads].
-        pBlockShared[(threadsInBlockCount-1)-blockThreadsIdx1d] += iSum2;
+        pBlockShared[(blockThreadCount-1)-blockThreadIdx1d] += iSum2;
 
 
         // Synchronize all threads again.
         alpaka::block::sync::syncBlockThreads(acc);
 
         // Now add up all the cells atomically and write the result to cell 0 of the shared memory.
-        if(blockThreadsIdx1d > 0)
+        if(blockThreadIdx1d > 0)
         {
-            alpaka::atomic::atomicOp<alpaka::atomic::op::Add>(acc, &pBlockShared[0], pBlockShared[blockThreadsIdx1d]);
+            alpaka::atomic::atomicOp<alpaka::atomic::op::Add>(acc, &pBlockShared[0], pBlockShared[blockThreadIdx1d]);
         }
 
 
         alpaka::block::sync::syncBlockThreads(acc);
 
         // Only master writes result to global memory.
-        if(blockThreadsIdx1d==0)
+        if(blockThreadIdx1d==0)
         {
             // Calculate linearized block id.
             std::size_t const blockIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Blocks>(acc)[0u]);
@@ -149,11 +149,11 @@ namespace alpaka
                     typename TVec,
                     typename... TArgs>
                 ALPAKA_FN_HOST static auto getBlockSharedExternMemSizeBytes(
-                    TVec const & blockThreadsExtents,
+                    TVec const & blockThreadExtent,
                     TArgs && ...)
                 -> std::uint32_t
                 {
-                    return blockThreadsExtents.prod() * sizeof(std::uint32_t);
+                    return blockThreadExtent.prod() * sizeof(std::uint32_t);
                 }
             };
         }
@@ -194,8 +194,9 @@ struct SharedMemTester
             alpaka::workdiv::getValidWorkDiv<TAcc>(
                 devAcc,
                 numElements,
+                static_cast<TSize>(1u),
                 false,
-                alpaka::workdiv::GridBlockExtentsSubDivRestrictions::Unrestricted));
+                alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted));
 
         std::cout
             << "SharedMemTester("
@@ -206,7 +207,7 @@ struct SharedMemTester
 
         TSize const gridBlocksCount(
             alpaka::workdiv::getWorkDiv<alpaka::Grid, alpaka::Blocks>(workDiv)[0u]);
-        TSize const blockThreadsCount(
+        TSize const blockThreadCount(
             alpaka::workdiv::getWorkDiv<alpaka::Block, alpaka::Threads>(workDiv)[0u]);
 
         // An array for the return values calculated by the blocks.
@@ -240,7 +241,7 @@ struct SharedMemTester
 
         // Assert that the results are correct.
         TVal const correctResult(
-            static_cast<TVal>(blockThreadsCount*blockThreadsCount)
+            static_cast<TVal>(blockThreadCount*blockThreadCount)
             * kernel.m_mult
             * mult2);
 

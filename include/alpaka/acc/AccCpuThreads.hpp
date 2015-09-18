@@ -99,18 +99,18 @@ namespace alpaka
                 TWorkDiv const & workDiv) :
                     workdiv::WorkDivMembers<TDim, TSize>(workDiv),
                     idx::gb::IdxGbRef<TDim, TSize>(m_gridBlockIdx),
-                    idx::bt::IdxBtRefThreadIdMap<TDim, TSize>(m_threadsToIndices),
+                    idx::bt::IdxBtRefThreadIdMap<TDim, TSize>(m_threadToIndexMap),
                     atomic::AtomicStlLock(),
                     math::MathStl(),
                     block::shared::BlockSharedAllocMasterSync(
                         [this](){block::sync::syncBlockThreads(*this);},
                         [this](){return (m_idMasterThread == std::this_thread::get_id());}),
                     block::sync::BlockSyncThreadIdMapBarrier<TSize>(
-                        m_threadsPerBlockCount,
-                        m_mThreadsToBarrier),
+                        m_blockThreadCount,
+                        m_threadToBarrierMap),
                     rand::RandStl(),
                     m_gridBlockIdx(Vec<TDim, TSize>::zeros()),
-                    m_threadsPerBlockCount(workdiv::getWorkDiv<Block, Threads>(workDiv).prod())
+                    m_blockThreadCount(workdiv::getWorkDiv<Block, Threads>(workDiv).prod())
             {}
 
         public:
@@ -149,14 +149,14 @@ namespace alpaka
         private:
             // getIdx
             std::mutex mutable m_mtxMapInsert;                              //!< The mutex used to secure insertion into the ThreadIdToIdxMap.
-            typename idx::bt::IdxBtRefThreadIdMap<TDim, TSize>::ThreadIdToIdxMap mutable m_threadsToIndices;    //!< The mapping of thread id's to indices.
+            typename idx::bt::IdxBtRefThreadIdMap<TDim, TSize>::ThreadIdToIdxMap mutable m_threadToIndexMap;    //!< The mapping of thread id's to indices.
             alignas(16u) Vec<TDim, TSize> mutable m_gridBlockIdx;           //!< The index of the currently executed block.
 
             // syncBlockThreads
-            TSize const m_threadsPerBlockCount;                             //!< The number of threads per block the barrier has to wait for.
+            TSize const m_blockThreadCount;                             //!< The number of threads per block the barrier has to wait for.
             std::map<
                 std::thread::id,
-                TSize> mutable m_mThreadsToBarrier;                         //!< The mapping of thread id's to their current barrier.
+                TSize> mutable m_threadToBarrierMap;                         //!< The mapping of thread id's to their current barrier.
 
             // allocBlockSharedArr
             std::thread::id mutable m_idMasterThread;                       //!< The id of the master thread.
@@ -200,21 +200,27 @@ namespace alpaka
                     boost::ignore_unused(dev);
 
 #if ALPAKA_INTEGRATION_TEST
-                    auto const blockThreadsCountMax(static_cast<TSize>(8));
+                    auto const blockThreadCountMax(static_cast<TSize>(8));
 #else
                     // \TODO: Magic number. What is the maximum? Just set a reasonable value? There is a implementation defined maximum where the creation of a new thread crashes.
                     // std::thread::hardware_concurrency can return 0, so 1 is the default case?
-                    auto const blockThreadsCountMax(std::max(static_cast<TSize>(1), static_cast<TSize>(std::thread::hardware_concurrency() * 8)));
+                    auto const blockThreadCountMax(std::max(static_cast<TSize>(1), static_cast<TSize>(std::thread::hardware_concurrency() * 8)));
 #endif
                     return {
                         // m_multiProcessorCount
                         static_cast<TSize>(1),
-                        // m_blockThreadsCountMax
-                        blockThreadsCountMax,
-                        // m_blockThreadExtentsMax
-                        Vec<TDim, TSize>::all(blockThreadsCountMax),
-                        // m_gridBlockExtentsMax
-                        Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max())};
+                        // m_gridBlockExtentMax
+                        Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max()),
+                        // m_gridBlockCountMax
+                        std::numeric_limits<TSize>::max(),
+                        // m_blockThreadExtentMax
+                        Vec<TDim, TSize>::all(blockThreadCountMax),
+                        // m_blockThreadCountMax
+                        blockThreadCountMax,
+                        // m_threadElemExtentMax
+                        Vec<TDim, TSize>::all(std::numeric_limits<TSize>::max()),
+                        // m_threadElemCountMax
+                        std::numeric_limits<TSize>::max()};
                 }
             };
             //#############################################################################
