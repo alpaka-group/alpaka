@@ -96,11 +96,10 @@ This allows to include the whole alpaka library with: `#include <alpaka/alpaka.h
 
 Code not intended to be utilized by users is hidden in the `detail` namespace.
 
-If you are building with the *CUDA accelerator back-end* enabled, your source files are required to have the ending `.cu` to comply with the nvcc (NVIDIA CUDA C++ compiler) rules for code files using CUDA.
-When the *CUDA accelerator back-end* is disabled, this is not required and a `.cpp` extension is enough.
-To allow both use-cases, it is desirable to have both, a `.cpp` file with the implementation and a `.cu` file containing only `#include <PATH/TO/IMPL.cpp>` to forward to the implementation.
-The build system then has to use the `.cu` files when the *CUDA accelerator back-end* is enabled and the `.cpp` files else.
-Examples how to do this with CMake can be found in the `examples` folder.
+The library uses CMake to provide the correct defines and include paths.
+Source files do not need a special file ending.
+Just call `ALPAKA_ADD_EXECUTABLE` instead of `CUDA_ADD_EXECUTABLE` or `ADD_EXECUTABLE` and the difficulties of the CUDA nvcc compier in handling `.cu` and `.cpp` files is automatically taken care of.
+Examples how to utilize alpake within CMake can be found in the `examples` folder.
 
 
 Authors

@@ -63,41 +63,15 @@ append_recursive_files_add_to_src_group("${_SUFFIXED_INCLUDE_DIR}" "" "hpp" _FIL
 # Add all the source files in all recursive subdirectories and group them accordingly.
 append_recursive_files_add_to_src_group("${_SOURCE_DIR}" "" "cpp" _FILES_SOURCE_CXX)
 
-# Add all the CUDA source files in all recursive subdirectories and group them accordingly.
-append_recursive_files_add_to_src_group("${_SOURCE_DIR}" "" "cu" _FILES_SOURCE_CU)
-
+INCLUDE_DIRECTORIES(
+    ${_INCLUDE_DIRECTORIES_PRIVATE}
+    ${alpaka_INCLUDE_DIRS})
+ADD_DEFINITIONS(
+    ${alpaka_DEFINITIONS} ${ALPAKA_DEV_COMPILE_OPTIONS})
 # Always add all files to the target executable build call to add them to the build project.
-IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
-    # Force the .cpp files to be recognized as headers and not be compiled so there wont be a second entry point.
-    SET_SOURCE_FILES_PROPERTIES(
-        ${_FILES_SOURCE_CXX}
-        PROPERTIES HEADER_FILE_ONLY TRUE)
-    # CUDA does not work well with the much better target dependent TARGET_XXX commands but requires the settings to be available globally: https://www.cmake.org/Bug/view.php?id=14201&nbn=1
-    INCLUDE_DIRECTORIES(
-        ${_INCLUDE_DIRECTORIES_PRIVATE}
-        ${alpaka_INCLUDE_DIRS})
-    ADD_DEFINITIONS(
-        ${alpaka_DEFINITIONS} ${ALPAKA_DEV_COMPILE_OPTIONS})
-    CMAKE_POLICY(SET CMP0023 OLD)   # CUDA_ADD_EXECUTABLE calls TARGET_LINK_LIBRARIES without keywords.
-    CUDA_ADD_EXECUTABLE(
-        "vectorAdd"
-        ${_FILES_HEADER} ${_FILES_SOURCE_CXX} ${_FILES_SOURCE_CU})
-ELSE()
-    # Force the .cu files to be recognized as headers and not be compiled so there wont be a second entry point.
-    SET_SOURCE_FILES_PROPERTIES(
-        ${_FILES_SOURCE_CU}
-        PROPERTIES HEADER_FILE_ONLY TRUE)
-    ADD_EXECUTABLE(
-        "vectorAdd"
-        ${_FILES_HEADER} ${_FILES_SOURCE_CXX} ${_FILES_SOURCE_CU})
-    TARGET_INCLUDE_DIRECTORIES(
-        "vectorAdd"
-        PRIVATE ${_INCLUDE_DIRECTORIES_PRIVATE})
-    TARGET_COMPILE_OPTIONS(
-        "vectorAdd"
-        PRIVATE ${ALPAKA_DEV_COMPILE_OPTIONS})
-ENDIF()
-
+ALPAKA_ADD_EXECUTABLE(
+    "vectorAdd"
+    ${_FILES_HEADER} ${_FILES_SOURCE_CXX})
 # Set the link libraries for this library (adds libs, include directories, defines and compile options).
 TARGET_LINK_LIBRARIES(
     "vectorAdd"

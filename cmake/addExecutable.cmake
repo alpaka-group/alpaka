@@ -14,11 +14,19 @@
 # USE OR PERFORMANCE OF THIS SOFTWARE.
 ################################################################################
 
+# CUDA_SOURCE_PROPERTY_FORMAT is only supported starting from 3.3.0.
+CMAKE_MINIMUM_REQUIRED(VERSION 3.3.0)
+
 #------------------------------------------------------------------------------
 # Calls CUDA_ADD_EXECUTABLE or ADD_EXECUTABLE depending on the enabled alpaka accelerators.
 #------------------------------------------------------------------------------
 FUNCTION(ALPAKA_ADD_EXECUTABLE In_Name)
     IF(ALPAKA_ACC_GPU_CUDA_ENABLE)
+        FOREACH(_file ${ARGN})
+            IF((${_file} MATCHES "\\.cpp$") OR (${_file} MATCHES "\\.cxx$"))
+                SET_SOURCE_FILES_PROPERTIES(${_file} PROPERTIES CUDA_SOURCE_PROPERTY_FORMAT OBJ)
+            ENDIF()
+        ENDFOREACH()
         CMAKE_POLICY(SET CMP0023 OLD)   # CUDA_ADD_EXECUTABLE calls TARGET_LINK_LIBRARIES without keywords.
         CUDA_ADD_EXECUTABLE(
             ${In_Name}
