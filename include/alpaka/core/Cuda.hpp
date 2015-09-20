@@ -24,6 +24,10 @@
 #include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST
 #include <alpaka/vec/Vec.hpp>               // Vec
 #include <alpaka/core/IntegerSequence.hpp>  // integer_sequence
+#include <alpaka/elem/Traits.hpp>           // ElemType
+#include <alpaka/offset/Traits.hpp>         // GetOffset/SetOffset
+#include <alpaka/extent/Traits.hpp>         // GetExtent/SetExtent
+#include <alpaka/size/Traits.hpp>           // SizeType
 
 #include <boost/mpl/apply.hpp>              // boost::mpl::apply
 #include <boost/mpl/and.hpp>                // boost::mpl::and_
