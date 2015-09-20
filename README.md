@@ -44,7 +44,7 @@ Accelerator Back-ends
 |Serial|n/a|Host CPU (single core)|sequential|sequential (only 1 thread per block)|
 |OpenMP 2.0 blocks|OpenMP 2.0|Host CPU (multi core)|parallel (preemptive multitasking)|sequential (only 1 thread per block)|
 |OpenMP 2.0 threads|OpenMP 2.0|Host CPU (multi core)|sequential|parallel (preemptive multitasking)|
-|OpenMP 4.0|OpenMP 4.0|Host CPU (multi core)|parallel (undefined)|parallel (preemptive multitasking)|
+|OpenMP 4.0 (CPU)|OpenMP 4.0|Host CPU (multi core)|parallel (undefined)|parallel (preemptive multitasking)|
 | std::thread | std::thread |Host CPU (multi core)|sequential|parallel (preemptive multitasking)|
 | Boost.Fiber | boost::fibers::fiber |Host CPU (single core)|sequential|parallel (cooperative multitasking)|
 |CUDA 7.0|CUDA 7.0|NVIDIA GPUs SM 2.0+|parallel (undefined)|parallel (lock-step within warps)|
@@ -55,15 +55,15 @@ Supported Compilers
 
 This library uses C++11 (or newer when available).
 
-|Accelerator Back-end|gcc 4.9.2|gcc 5.2|clang 3.5/3.6|clang 3.7|MSVC 2015|icc 15.0+ (untested)|
-|---|---|---|---|---|---|---|
-|Serial|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
-|OpenMP 2.0 blocks|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
-|OpenMP 2.0 threads|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
-|OpenMP 4.0|:white_check_mark:|:white_check_mark:|:x:|:x:|:x:|:white_check_mark:|
-| std::thread |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
-| Boost.Fiber |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
-|CUDA 7.0|:white_check_mark:|:x:|:x:|:x:|:x:|:white_check_mark:|
+|Accelerator Back-end|gcc 4.9.2|gcc 5.2|clang 3.5/3.6|clang 3.7|MSVC 2015|
+|---|---|---|---|---|---|
+|Serial|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
+|OpenMP 2.0 blocks|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|:white_check_mark:|
+|OpenMP 2.0 threads|:white_check_mark:|:white_check_mark:|:x:|:white_check_mark:|:white_check_mark:|
+|OpenMP 4.0 (CPU)|:white_check_mark:|:white_check_mark:|:x:|:x:|:x:|
+| std::thread |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
+| Boost.Fiber |:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|:white_check_mark:|
+|CUDA 7.0|:white_check_mark:|:x:|:x:|:x:|:x:|
 
 **NOTE**: :bangbang: Currently the *CUDA accelerator back-end* can not be enabled together with the *std::thread accelerator back-end* or the *Boost.Fiber accelerator back-end* due to bugs in the NVIDIA nvcc compiler :bangbang:
 
@@ -91,15 +91,13 @@ Usage
 -----
 
 The library is header only so nothing has to be build.
-Only the include path (`-I` or `export CPLUS_INCLUDE_PATH=`) has to be set to `<PATH-TO-ALPAKA-LIB>/include/`.
-This allows to include the whole alpaka library with: `#include <alpaka/alpaka.hpp>`
-
-Code not intended to be utilized by users is hidden in the `detail` namespace.
-
-The library uses CMake to provide the correct defines and include paths.
-Source files do not need a special file ending.
+CMake 3.3.0+ is required to provide the correct defines and include paths.
 Just call `ALPAKA_ADD_EXECUTABLE` instead of `CUDA_ADD_EXECUTABLE` or `ADD_EXECUTABLE` and the difficulties of the CUDA nvcc compier in handling `.cu` and `.cpp` files is automatically taken care of.
-Examples how to utilize alpake within CMake can be found in the `examples` folder.
+Examples how to utilize alpaka within CMake can be found in the `examples` folder.
+
+Source files do not need any special file ending.
+The whole alpaka library can be included with: `#include <alpaka/alpaka.hpp>`
+Code not intended to be utilized by users is hidden in the `detail` namespace.
 
 
 Authors
