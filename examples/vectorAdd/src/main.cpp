@@ -63,11 +63,20 @@ public:
             alpaka::dim::Dim<TAcc>::value == 1,
             "The VectorAddKernel expects 1-dimensional indices!");
 
-        auto const gridThreadIdxX(alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u]);
+        auto const gridThreadIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(acc)[0u]);
+        auto const threadElemExtent(alpaka::workdiv::getWorkDiv<alpaka::Thread, alpaka::Elems>(acc)[0u]);
+        auto const threadFirstElemIdx(gridThreadIdx * threadElemExtent);
 
-        if(gridThreadIdxX < numElements)
+        if(threadFirstElemIdx < numElements)
         {
-            C[gridThreadIdxX] = A[gridThreadIdxX] + B[gridThreadIdxX];
+            // Calculate the number of elements to compute in this thread.
+            // The result is uniform for all but the last thread.
+            auto const elems(threadElemExtent + alpaka::math::min(acc, static_cast<unsigned long long>(0u), static_cast<unsigned long long>(numElements-(threadFirstElemIdx+threadElemExtent))));
+
+            for(TSize i(threadFirstElemIdx); i<(threadFirstElemIdx+elems); ++i)
+            {
+                C[gridThreadIdx] = A[gridThreadIdx] + B[gridThreadIdx];
+            }
         }
     }
 };
@@ -110,7 +119,7 @@ struct VectorAddKernelTester
             alpaka::workdiv::getValidWorkDiv<TAcc>(
                 devAcc,
                 extent,
-                static_cast<TSize>(1u),
+                static_cast<TSize>(3u),
                 false,
                 alpaka::workdiv::GridBlockExtentSubDivRestrictions::Unrestricted));
 
