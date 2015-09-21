@@ -28,17 +28,26 @@ namespace alpaka
     namespace omp
     {
         //-----------------------------------------------------------------------------
-        //! \return The device this object is bound to.
+        //! \return The maximum number of threads the OpenMP 2.0 runtime is capable of.
         //-----------------------------------------------------------------------------
         ALPAKA_FN_HOST auto getMaxOmpThreads()
         -> int
         {
-            // HACK: ::omp_get_max_threads() does not return the real limit of the underlying OpenMP 2.0 runtime:
+            // NOTE: ::omp_get_max_threads() does not return the real limit of the underlying OpenMP 2.0 runtime at any time:
             // 'The omp_get_max_threads routine returns the value of the internal control variable, which is used to determine the number of threads that would form the new team,
             // if an active parallel region without a num_threads clause were to be encountered at that point in the program.'
             // How to do this correctly? Is there even a way to get the hard limit apart from omp_set_num_threads(high_value) -> omp_get_max_threads()?
+
+            // Get the current thread number. This is OMP_NUM_THREADS if it has not been changed up to here.
+            auto const maxThreadsOld(::omp_get_max_threads());
+
             ::omp_set_num_threads(1024);
-            return ::omp_get_max_threads();
+            auto const maxThreadsReal(::omp_get_max_threads());
+
+            // Reset the max threads.
+            ::omp_set_num_threads(maxThreadsOld);
+
+            return maxThreadsReal;
         }
     }
 }
