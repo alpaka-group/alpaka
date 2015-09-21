@@ -75,13 +75,14 @@ namespace alpaka
                     typename TKernelFnObj,
                     typename... TArgs>
                 __global__ void cudaKernel(
+                    Vec<TDim, TSize> const threadElemExtent,
                     TKernelFnObj const kernelFnObj,
                     TArgs ... args)
                 {
 #if defined(__CUDA_ARCH__) && (__CUDA_ARCH__ < 200)
     #error "Cuda device capability >= 2.0 is required!"
 #endif
-                    acc::AccGpuCudaRt<TDim, TSize> acc;
+                    acc::AccGpuCudaRt<TDim, TSize> acc(threadElemExtent);
 
                     kernelFnObj(
                         const_cast<acc::AccGpuCudaRt<TDim, TSize> const &>(acc),
@@ -309,6 +310,8 @@ namespace alpaka
                         workdiv::getWorkDiv<Grid, Blocks>(task));
                     auto const blockThreadExtent(
                         workdiv::getWorkDiv<Block, Threads>(task));
+                    auto const threadElemExtent(
+                        workdiv::getWorkDiv<Thread, Elems>(task));
 
                     dim3 gridDim(1u, 1u, 1u);
                     dim3 blockDim(1u, 1u, 1u);
@@ -317,6 +320,7 @@ namespace alpaka
                     {
                         reinterpret_cast<unsigned int *>(&gridDim)[i] = gridBlockExtent[TDim::value-1u-i];
                         reinterpret_cast<unsigned int *>(&blockDim)[i] = blockThreadExtent[TDim::value-1u-i];
+                        assert(threadElemExtent[TDim::value-1u-i] == 1);
                     }
                     // Assert that all extent of the higher dimensions are 1!
                     for(auto i(std::min(static_cast<typename TDim::value_type>(3), TDim::value)); i<TDim::value; ++i)
@@ -391,6 +395,7 @@ namespace alpaka
                                 blockDim,
                                 blockSharedExternMemSizeBytes,
                                 stream.m_spStreamCudaRtAsyncImpl->m_CudaStream>>>(
+                                    threadElemExtent,
                                     task.m_kernelFnObj,
                                     args...);
                         },
@@ -447,10 +452,8 @@ namespace alpaka
                         workdiv::getWorkDiv<Grid, Blocks>(task));
                     auto const blockThreadExtent(
                         workdiv::getWorkDiv<Block, Threads>(task));
-#ifndef NDEBUG
                     auto const threadElemExtent(
                         workdiv::getWorkDiv<Thread, Elems>(task));
-#endif
 
                     dim3 gridDim(1u, 1u, 1u);
                     dim3 blockDim(1u, 1u, 1u);
@@ -532,6 +535,7 @@ namespace alpaka
                                 blockDim,
                                 blockSharedExternMemSizeBytes,
                                 stream.m_spStreamCudaRtSyncImpl->m_CudaStream>>>(
+                                    threadElemExtent,
                                     task.m_kernelFnObj,
                                     args...);
                         },

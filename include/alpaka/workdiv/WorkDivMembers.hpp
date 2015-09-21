@@ -56,14 +56,14 @@ namespace alpaka
             template<
                 typename TGridBlockExtent,
                 typename TBlockThreadExtent,
-                typename TThreadElementExtent>
+                typename TThreadElemExtent>
             ALPAKA_FN_HOST_ACC explicit WorkDivMembers(
                 TGridBlockExtent const & gridBlockExtent = TGridBlockExtent(),
                 TBlockThreadExtent const & blockThreadExtent = TBlockThreadExtent(),
-                TThreadElementExtent const & threadElementExtent = TThreadElementExtent()) :
+                TThreadElemExtent const & threadElemExtent = TThreadElemExtent()) :
                 m_gridBlockExtent(extent::getExtentVecEnd<TDim>(gridBlockExtent)),
                 m_blockThreadExtent(extent::getExtentVecEnd<TDim>(blockThreadExtent)),
-                m_threadElemExtent(extent::getExtentVecEnd<TDim>(threadElementExtent))
+                m_threadElemExtent(extent::getExtentVecEnd<TDim>(threadElemExtent))
             {}
             //-----------------------------------------------------------------------------
             //! Copy constructor.
@@ -143,7 +143,7 @@ namespace alpaka
             return (os
                 << "{gridBlockExtent: " << workDiv.m_gridBlockExtent
                 << ", blockThreadExtent: " << workDiv.m_blockThreadExtent
-                << ", threadElementExtent: " << workDiv.m_threadElemExtent
+                << ", threadElemExtent: " << workDiv.m_threadElemExtent
                 << "}");
         }
     }

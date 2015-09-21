@@ -163,7 +163,8 @@ namespace alpaka
                 std::cout << BOOST_CURRENT_FUNCTION
                     << " BlockSharedExternMemSizeBytes: " << blockSharedExternMemSizeBytes << " B" << std::endl;
 #endif
-                acc::AccCpuFibers<TDim, TSize> acc(*static_cast<workdiv::WorkDivMembers<TDim, TSize> const *>(this));
+                acc::AccCpuFibers<TDim, TSize> acc(
+                    *static_cast<workdiv::WorkDivMembers<TDim, TSize> const *>(this));
 
                 if(blockSharedExternMemSizeBytes > 0u)
                 {

@@ -48,7 +48,10 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Default constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_CUDA_ONLY WorkDivCudaBuiltIn() = default;
+            ALPAKA_FN_ACC_CUDA_ONLY WorkDivCudaBuiltIn(
+                Vec<TDim, TSize> const & threadElemExtent) :
+                    m_threadElemExtent(threadElemExtent)
+            {}
             //-----------------------------------------------------------------------------
             //! Copy constructor.
             //-----------------------------------------------------------------------------
@@ -69,6 +72,11 @@ namespace alpaka
             //! Destructor.
             //-----------------------------------------------------------------------------
             ALPAKA_FN_ACC_CUDA_ONLY /*virtual*/ ~WorkDivCudaBuiltIn() = default;
+
+        public:
+            // \TODO: Optimize! Add WorkDivCudaBuiltInNoElems that has no member m_threadElemExtent as well as AccGpuCudaRtNoElems.
+            // Use it instead of AccGpuCudaRt if the thread element extent is one to reduce the register usage.
+            Vec<TDim, TSize> const & m_threadElemExtent;
         };
     }
 
@@ -171,11 +179,10 @@ namespace alpaka
                 //! \return The number of blocks in each dimension of the grid.
                 //-----------------------------------------------------------------------------
                 ALPAKA_FN_ACC_CUDA_ONLY static auto getWorkDiv(
-                    WorkDivCudaBuiltIn<TDim, TSize> const & /*workDiv*/)
+                    WorkDivCudaBuiltIn<TDim, TSize> const & workDiv)
                 -> Vec<TDim, TSize>
                 {
-                    //boost::ignore_unused(workDiv);
-                    return Vec<TDim, TSize>::ones();
+                    return workDiv.m_threadElemExtent;
                 }
             };
         }

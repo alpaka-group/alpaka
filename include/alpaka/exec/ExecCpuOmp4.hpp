@@ -170,7 +170,8 @@ namespace alpaka
                             }
                         }
 #endif
-                        acc::AccCpuOmp4<TDim, TSize> acc(*static_cast<workdiv::WorkDivMembers<TDim, TSize> const *>(this));
+                        acc::AccCpuOmp4<TDim, TSize> acc(
+                            *static_cast<workdiv::WorkDivMembers<TDim, TSize> const *>(this));
 
                         if(blockSharedExternMemSizeBytes > 0u)
                         {

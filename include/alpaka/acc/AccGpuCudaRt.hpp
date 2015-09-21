@@ -81,15 +81,16 @@ namespace alpaka
             //-----------------------------------------------------------------------------
             //! Constructor.
             //-----------------------------------------------------------------------------
-            ALPAKA_FN_ACC_CUDA_ONLY AccGpuCudaRt() :
-                workdiv::WorkDivCudaBuiltIn<TDim, TSize>(),
-                idx::gb::IdxGbCudaBuiltIn<TDim, TSize>(),
-                idx::bt::IdxBtCudaBuiltIn<TDim, TSize>(),
-                atomic::AtomicCudaBuiltIn(),
-                math::MathCudaBuiltIn(),
-                block::shared::BlockSharedAllocCudaBuiltIn(),
-                block::sync::BlockSyncCudaBuiltIn(),
-                rand::RandCuRand()
+            ALPAKA_FN_ACC_CUDA_ONLY AccGpuCudaRt(
+                Vec<TDim, TSize> const & threadElemExtent) :
+                    workdiv::WorkDivCudaBuiltIn<TDim, TSize>(threadElemExtent),
+                    idx::gb::IdxGbCudaBuiltIn<TDim, TSize>(),
+                    idx::bt::IdxBtCudaBuiltIn<TDim, TSize>(),
+                    atomic::AtomicCudaBuiltIn(),
+                    math::MathCudaBuiltIn(),
+                    block::shared::BlockSharedAllocCudaBuiltIn(),
+                    block::sync::BlockSyncCudaBuiltIn(),
+                    rand::RandCuRand()
             {}
 
         public:

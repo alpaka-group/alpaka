@@ -169,7 +169,8 @@ namespace alpaka
                         std::cout << BOOST_CURRENT_FUNCTION << " omp_get_num_threads: " << numThreads << std::endl;
                     }
 #endif
-                    acc::AccCpuOmp2Blocks<TDim, TSize> acc(*static_cast<workdiv::WorkDivMembers<TDim, TSize> const *>(this));
+                    acc::AccCpuOmp2Blocks<TDim, TSize> acc(
+                        *static_cast<workdiv::WorkDivMembers<TDim, TSize> const *>(this));
 
                     if(blockSharedExternMemSizeBytes > 0u)
                     {

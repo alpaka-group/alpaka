@@ -147,7 +147,8 @@ namespace alpaka
                         },
                         m_args));
 
-                acc::AccCpuOmp2Threads<TDim, TSize> acc(*static_cast<workdiv::WorkDivMembers<TDim, TSize> const *>(this));
+                acc::AccCpuOmp2Threads<TDim, TSize> acc(
+                    *static_cast<workdiv::WorkDivMembers<TDim, TSize> const *>(this));
 
                 if(blockSharedExternMemSizeBytes > 0u)
                 {
