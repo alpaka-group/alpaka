@@ -114,6 +114,8 @@ namespace alpaka
                     workdiv::getWorkDiv<Grid, Blocks>(*this));
                 auto const blockThreadExtent(
                     workdiv::getWorkDiv<Block, Threads>(*this));
+                auto const blockElemExtent(
+                    workdiv::getWorkDiv<Block, Elems>(*this));
 
                 // Get the size of the block shared extern memory.
                 auto const blockSharedExternMemSizeBytes(
@@ -124,7 +126,7 @@ namespace alpaka
                                 kernel::getBlockSharedExternMemSizeBytes<
                                     TKernelFnObj,
                                     acc::AccCpuOmp2Threads<TDim, TSize>>(
-                                        blockThreadExtent,
+                                        blockElemExtent,
                                         args...);
                         },
                         m_args));

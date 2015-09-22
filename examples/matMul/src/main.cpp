@@ -182,7 +182,7 @@ namespace alpaka
                     typename TIndex,
                     typename TElem>
                 ALPAKA_FN_HOST static auto getBlockSharedExternMemSizeBytes(
-                    TVec const & blockThreadExtent,
+                    TVec const & blockElemExtent,
                     TIndex const & m,
                     TIndex const & n,
                     TIndex const & k,
@@ -209,7 +209,7 @@ namespace alpaka
                     boost::ignore_unused(ldc);
 
                     // Reserve the buffer for the two blocks of A and B.
-                    return 2u * blockThreadExtent.prod() * sizeof(TElem);
+                    return 2u * blockElemExtent.prod() * sizeof(TElem);
                 }
             };
         }
