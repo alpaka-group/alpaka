@@ -210,6 +210,29 @@ namespace alpaka
                         * workdiv::getWorkDiv<origin::Thread, unit::Elems>(workDiv);
                 }
             };
+            //#############################################################################
+            //! The work div grid thread extents trait specialization.
+            //#############################################################################
+            template<
+                typename TWorkDiv>
+            struct GetWorkDiv<
+                TWorkDiv,
+                origin::Block,
+                unit::Elems>
+            {
+                //-----------------------------------------------------------------------------
+                //! \return The number of threads in each dimension of the grid.
+                //-----------------------------------------------------------------------------
+                ALPAKA_NO_HOST_ACC_WARNING
+                ALPAKA_FN_HOST_ACC static auto getWorkDiv(
+                    TWorkDiv const & workDiv)
+                -> Vec<dim::Dim<TWorkDiv>, size::Size<TWorkDiv>>
+                {
+                    return
+                        workdiv::getWorkDiv<origin::Block, unit::Threads>(workDiv)
+                        * workdiv::getWorkDiv<origin::Thread, unit::Elems>(workDiv);
+                }
+            };
         }
     }
 }
