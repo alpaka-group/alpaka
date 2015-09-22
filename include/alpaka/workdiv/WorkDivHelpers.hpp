@@ -157,7 +157,7 @@ namespace alpaka
 
         //-----------------------------------------------------------------------------
         //! Subdivides the given grid thread extent into blocks restricted by the maxima allowed.
-        //! 1. The the maxima block, thread and element extents and counts
+        //! 1. The the maxima block, thread and element extent and counts
         //! 2. The requirement of the block thread extent to divide the grid thread extent without remainder
         //! 3. The requirement of the block extent.
         //!

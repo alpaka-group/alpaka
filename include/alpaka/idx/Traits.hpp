@@ -189,7 +189,10 @@ namespace alpaka
                 ALPAKA_FN_HOST_ACC static auto getIdx(
                     TIdx const & idx,
                     TWorkDiv const & workDiv)
-                -> Vec<dim::Dim<TIdx>, size::Size<TIdx>>
+                -> decltype(
+                    idx::getIdx<origin::Grid, unit::Blocks>(idx, workDiv)
+                    * workdiv::getWorkDiv<origin::Block, unit::Threads>(workDiv)
+                    + idx::getIdx<origin::Block, unit::Threads>(idx, workDiv))
                 {
                     return
                         idx::getIdx<origin::Grid, unit::Blocks>(idx, workDiv)

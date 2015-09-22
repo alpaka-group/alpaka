@@ -165,7 +165,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The GPU CUDA accelerator work division thread element extents trait specialization.
+            //! The GPU CUDA accelerator work division thread element extent trait specialization.
             //#############################################################################
             template<
                 typename TDim,

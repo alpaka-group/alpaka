@@ -180,7 +180,9 @@ namespace alpaka
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getWorkDiv(
                     TWorkDiv const & workDiv)
-                -> Vec<dim::Dim<TWorkDiv>, size::Size<TWorkDiv>>
+                -> decltype(
+                    workdiv::getWorkDiv<origin::Grid, unit::Blocks>(workDiv)
+                    * workdiv::getWorkDiv<origin::Block, unit::Threads>(workDiv))
                 {
                     return
                         workdiv::getWorkDiv<origin::Grid, unit::Blocks>(workDiv)
@@ -188,7 +190,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The work div grid thread extents trait specialization.
+            //! The work div grid element extent trait specialization.
             //#############################################################################
             template<
                 typename TWorkDiv>
@@ -203,7 +205,9 @@ namespace alpaka
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getWorkDiv(
                     TWorkDiv const & workDiv)
-                -> Vec<dim::Dim<TWorkDiv>, size::Size<TWorkDiv>>
+                -> decltype(
+                    workdiv::getWorkDiv<origin::Grid, unit::Threads>(workDiv)
+                    * workdiv::getWorkDiv<origin::Thread, unit::Elems>(workDiv))
                 {
                     return
                         workdiv::getWorkDiv<origin::Grid, unit::Threads>(workDiv)
@@ -211,7 +215,7 @@ namespace alpaka
                 }
             };
             //#############################################################################
-            //! The work div grid thread extents trait specialization.
+            //! The work div block element extent trait specialization.
             //#############################################################################
             template<
                 typename TWorkDiv>
@@ -226,7 +230,9 @@ namespace alpaka
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getWorkDiv(
                     TWorkDiv const & workDiv)
-                -> Vec<dim::Dim<TWorkDiv>, size::Size<TWorkDiv>>
+                -> decltype(
+                    workdiv::getWorkDiv<origin::Block, unit::Threads>(workDiv)
+                    * workdiv::getWorkDiv<origin::Thread, unit::Elems>(workDiv))
                 {
                     return
                         workdiv::getWorkDiv<origin::Block, unit::Threads>(workDiv)

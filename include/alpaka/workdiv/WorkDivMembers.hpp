@@ -233,7 +233,7 @@ namespace alpaka
             };
 
             //#############################################################################
-            //! The WorkDivMembers thread element extents trait specialization.
+            //! The WorkDivMembers thread element extent trait specialization.
             //#############################################################################
             template<
                 typename TDim,
