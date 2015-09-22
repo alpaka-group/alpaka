@@ -422,7 +422,7 @@ namespace alpaka
                         {
                             for(TSize j(0); j<static_cast<TSize>(TvectorizationCount); ++j)
                             {
-                                fnObj(i+j);
+                                fnObj(i, j);
                             }
                             i += static_cast<TSize>(TvectorizationCount);
                         }
@@ -443,15 +443,15 @@ namespace alpaka
                             // This enables the compiler to optimize much better because of the compile-time loop bounds.
                             for(TSize j(0); j<vecRegElems; ++j)
                             {
-                                fnObj(i+j);
+                                fnObj(i, j);
                             }
                             i += vecRegElems;
                         }
 #endif
                         // Execute the last (count % TvectorizationCount) invocations.
-                        for(; i<count; ++i)
+                        for(TSize j(0); j<(count-i); ++j)
                         {
-                            fnObj(i);
+                            fnObj(i, j);
                         }
                     }
                 };
@@ -475,13 +475,13 @@ namespace alpaka
                     {
                         if(count==1)
                         {
-                            fnObj(0);
+                            fnObj(0, 0);
                         }
                         else
                         {
                             for(TSize i(0); i<count; ++i)
                             {
-                                fnObj(i);
+                                fnObj(i, 0);
                             }
                         }
                     }
