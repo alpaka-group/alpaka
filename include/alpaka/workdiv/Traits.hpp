@@ -95,7 +95,7 @@ namespace alpaka
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getWorkDiv(
                     TWorkDiv const & workDiv)
-                -> Vec<dim::Dim<typename TWorkDiv::WorkDivBase>, size::Size<TWorkDiv>>
+                -> Vec<dim::Dim<typename TWorkDiv::WorkDivBase>, size::Size<typename TWorkDiv::WorkDivBase>>
                 {
                     // Delegate the call to the base class.
                     return
@@ -124,7 +124,7 @@ namespace alpaka
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getWorkDiv(
                     TWorkDiv const & workDiv)
-                -> Vec<dim::Dim<typename TWorkDiv::WorkDivBase>, size::Size<TWorkDiv>>
+                -> Vec<dim::Dim<typename TWorkDiv::WorkDivBase>, size::Size<typename TWorkDiv::WorkDivBase>>
                 {
                     // Delegate the call to the base class.
                     return
@@ -153,7 +153,7 @@ namespace alpaka
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getWorkDiv(
                     TWorkDiv const & workDiv)
-                -> Vec<dim::Dim<typename TWorkDiv::WorkDivBase>, size::Size<TWorkDiv>>
+                -> Vec<dim::Dim<typename TWorkDiv::WorkDivBase>, size::Size<typename TWorkDiv::WorkDivBase>>
                 {
                     // Delegate the call to the base class.
                     return
@@ -180,7 +180,7 @@ namespace alpaka
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getWorkDiv(
                     TWorkDiv const & workDiv)
-                -> Vec<dim::Dim<typename TWorkDiv::WorkDivBase>, size::Size<TWorkDiv>>
+                -> Vec<dim::Dim<TWorkDiv>, size::Size<TWorkDiv>>
                 {
                     return
                         workdiv::getWorkDiv<origin::Grid, unit::Blocks>(workDiv)
@@ -203,7 +203,7 @@ namespace alpaka
                 ALPAKA_NO_HOST_ACC_WARNING
                 ALPAKA_FN_HOST_ACC static auto getWorkDiv(
                     TWorkDiv const & workDiv)
-                -> Vec<dim::Dim<typename TWorkDiv::WorkDivBase>, size::Size<TWorkDiv>>
+                -> Vec<dim::Dim<TWorkDiv>, size::Size<TWorkDiv>>
                 {
                     return
                         workdiv::getWorkDiv<origin::Grid, unit::Threads>(workDiv)
