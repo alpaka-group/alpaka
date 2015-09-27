@@ -201,5 +201,49 @@ namespace alpaka
                 }
             };
         }
+        //-----------------------------------------------------------------------------
+        //! Get the index of the first element this thread computes.
+        //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
+        template<
+            typename TIdxWorkDiv,
+            typename TGridThreadIdx,
+            typename TThreadElemExtent>
+        ALPAKA_FN_HOST_ACC auto getIdxThreadFirstElem(
+            TIdxWorkDiv const & idxWorkDiv,
+            TGridThreadIdx const & gridThreadIdx,
+            TThreadElemExtent const & threadElemExtent)
+        -> Vec<dim::Dim<TIdxWorkDiv>, size::Size<TIdxWorkDiv>>
+        {
+            return gridThreadIdx * threadElemExtent;
+        }
+        //-----------------------------------------------------------------------------
+        //! Get the index of the first element this thread computes.
+        //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
+        template<
+            typename TIdxWorkDiv,
+            typename TGridThreadIdx>
+        ALPAKA_FN_HOST_ACC auto getIdxThreadFirstElem(
+            TIdxWorkDiv const & idxWorkDiv,
+            TGridThreadIdx const & gridThreadIdx)
+        -> Vec<dim::Dim<TIdxWorkDiv>, size::Size<TIdxWorkDiv>>
+        {
+            auto const threadElemExtent(alpaka::workdiv::getWorkDiv<alpaka::Thread, alpaka::Elems>(idxWorkDiv));
+            return getIdxThreadFirstElem(idxWorkDiv, gridThreadIdx, threadElemExtent);
+        }
+        //-----------------------------------------------------------------------------
+        //! Get the index of the first element this thread computes.
+        //-----------------------------------------------------------------------------
+        ALPAKA_NO_HOST_ACC_WARNING
+        template<
+            typename TIdxWorkDiv>
+        ALPAKA_FN_HOST_ACC auto getIdxThreadFirstElem(
+            TIdxWorkDiv const & idxWorkDiv)
+        -> Vec<dim::Dim<TIdxWorkDiv>, size::Size<TIdxWorkDiv>>
+        {
+            auto const gridThreadIdx(alpaka::idx::getIdx<alpaka::Grid, alpaka::Threads>(idxWorkDiv));
+            return getIdxThreadFirstElem(idxWorkDiv, gridThreadIdx);
+        }
     }
 }
