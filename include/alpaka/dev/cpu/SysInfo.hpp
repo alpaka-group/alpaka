@@ -58,7 +58,7 @@ namespace alpaka
 #if BOOST_ARCH_X86
             namespace detail
             {
-    #if BOOST_COMP_GNUC || BOOST_COMP_CLANG || (BOOST_COMP_INTEL && BOOST_COMP_GNUC_EMULATED)
+    #if BOOST_COMP_GNUC || BOOST_COMP_CLANG || __INTEL_COMPILER
         #include <cpuid.h>
                 //-----------------------------------------------------------------------------
                 //!
@@ -69,7 +69,7 @@ namespace alpaka
                     __cpuid_count(level, subfunction, ex[0], ex[1], ex[2], ex[3]);
                 }
 
-    #elif BOOST_COMP_MSVC || (BOOST_COMP_INTEL && BOOST_COMP_MSVC_EMULATED)
+    #elif BOOST_COMP_MSVC
         #include <intrin.h>
                 //-----------------------------------------------------------------------------
                 //!
