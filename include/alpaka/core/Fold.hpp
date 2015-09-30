@@ -21,13 +21,15 @@
 
 #pragma once
 
-#include <alpaka/core/Common.hpp>       // ALPAKA_FN_HOST_ACC
+#include <alpaka/core/Common.hpp>           // ALPAKA_FN_HOST_ACC
 
 #if !defined(__CUDA_ARCH__)
     #include <boost/core/ignore_unused.hpp> // boost::ignore_unused
 #endif
 
-#include <type_traits>                  // std::result_of
+#if !(__cplusplus >= 201402L)
+    #include <type_traits>                  // std::result_of
+#endif
 
 namespace alpaka
 {
@@ -122,7 +124,7 @@ namespace alpaka
             T0 const & t0,
             T1 const & t1,
             Ts const & ... ts)
-        // NOTE: This is not allowed because the point of function declaration is after the trailing return type.
+        // NOTE: The following line is not allowed because the point of function declaration is after the trailing return type.
         // Thus the function itself is not available inside its return type declaration.
         // http://www.open-std.org/jtc1/sc22/wg21/docs/cwg_closed.html#1433
         // http://stackoverflow.com/questions/3744400/trailing-return-type-using-decltype-with-a-variadic-template-function

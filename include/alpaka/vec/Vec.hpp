@@ -422,7 +422,7 @@ namespace alpaka
         ALPAKA_FN_HOST_ACC auto foldrAll(
             TFnObj const & f) const
         -> decltype(
-#if (BOOST_COMP_GNUC) && (BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(5, 0, 0))
+#if (BOOST_COMP_GNUC && (BOOST_COMP_GNUC < BOOST_VERSION_NUMBER(5, 0, 0))) || __INTEL_COMPILER
             this->foldrByIndices(
 #else
             foldrByIndices(
