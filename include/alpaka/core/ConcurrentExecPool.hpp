@@ -22,6 +22,7 @@
 #pragma once
 
 #include <boost/predef.h>   // workarounds
+#include <boost/version.hpp>// workarounds
 
 // nvcc does not currently support boost correctly.
 // boost/utility/detail/result_of_iterate.hpp:148:75: error: invalid use of qualified-name 'std::allocator_traits<_Alloc>::propagate_on_container_swap'
@@ -398,7 +399,7 @@ namespace alpaka
                 auto isQueueEmpty() const
                 -> bool
                 {
-#if BOOST_COMP_GNUC
+#if (BOOST_VERSION < 105700)
                     return const_cast<ThreadSafeQueue<ITaskPkg *> &>(m_qTasks).empty();
 #else
                     return m_qTasks.empty();
@@ -615,7 +616,7 @@ namespace alpaka
                 auto isQueueEmpty() const
                 -> bool
                 {
-#if BOOST_COMP_GNUC
+#if (BOOST_VERSION < 105700)
                     return const_cast<ThreadSafeQueue<ITaskPkg *> &>(m_qTasks).empty();
 #else
                     return m_qTasks.empty();
