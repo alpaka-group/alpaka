@@ -11,25 +11,26 @@ Creation of gh-pages
 *NOTE:* This has already been done once and does not have to be repeated!
 
 On working branch:
-- Add deploy directory to .gitignore (if not already done)
-- Create the gh-pages branch: git checkout --orphan gh-pages
-- Clean the branch: git rm -rf .
-- Commit and push the branch: git add --all; git commit -m"add gh-pages branch"; git push
+- Add deploy directory to `.gitignore` (if not already done)
+- Create the `gh-pages` branch: `git checkout --orphan gh-pages`
+- Clean the branch: `git rm -rf .`
+- Commit and push the branch: `git add --all`, `git commit -m"add gh-pages branch"`, `git push`
 
-Clone ourself
--------------
+Setup
+-----
 
 *NOTE:* This has to be done once per cloned alpaka repository that is used to deploy the doxygen documentation!
 
 On working branch:
-- Clone the repo on the gh-pages branch inside the deploy folder: git clone -b gh-pages git@github.com:ComputationalRadiationPhysics/alpaka.git doc/doxygen/html
+- Clone the repo on the gh-pages branch inside the deploy folder: `git clone -b gh-pages git@github.com:ComputationalRadiationPhysics/alpaka.git doc/doxygen/html`
 
 Update
 ------
 
-- From within develop/master: Execute doxygen
-- cd doc/doxygen/html
-- git add .
-- git commit -m "updated doxygen documentation"
-- git push
-- cd ../../../
+From within `develop`/`master`: 
+- Execute doxygen
+- `cd doc/doxygen/html`
+- `git add .`
+- `git commit -m "updated doxygen documentation"`
+- `git push`
+- `cd ../../../`
